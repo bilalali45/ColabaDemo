@@ -17,9 +17,9 @@ namespace DocumentManagement.API.Controllers
             this.dashboardService = dashboardService;
         }
         [HttpGet("GetPendingDocuments")]
-        public async Task<IActionResult> GetPendingDocuments(int loadApplicationId, int tenantId)
+        public async Task<IActionResult> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
-            var docQuery = await dashboardService.GetPendingDocuments(loadApplicationId,tenantId);
+            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId);
             return null;
         }
     }
