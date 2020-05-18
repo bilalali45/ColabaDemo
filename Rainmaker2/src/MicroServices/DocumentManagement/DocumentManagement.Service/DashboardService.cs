@@ -44,7 +44,6 @@ namespace DocumentManagement.Service
                 .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
                 .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
                 .Project(projectionDefinition)
-                .SortBy(e=>e["createdOn"])
                 .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
@@ -94,7 +93,6 @@ namespace DocumentManagement.Service
                 .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
                 .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
                 .Project(projectionDefinition)
-                .SortBy(e => e["createdOn"])
                 .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
