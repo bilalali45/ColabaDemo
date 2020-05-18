@@ -13,5 +13,11 @@
     <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DocumentManagement.Entity\DocumentManagement.Entity.csproj" />
+    <ProjectReference Include="..\DocumentManagement.Model\DocumentManagement.Model.csproj" />
+    <ProjectReference Include="..\DocumentManagement.Service\DocumentManagement.Service.csproj" />
+  </ItemGroup>
+
 
 </Project>
