@@ -22,5 +22,11 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId);
             return Ok(docQuery);
         }
+        [HttpGet("GetSubmittedDocuments")]
+        public async Task<IActionResult> GetSubmittedDocuments(int loanApplicationId, int tenantId)
+        {
+            var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId, tenantId);
+            return Ok(docQuery);
+        }
     }
 }

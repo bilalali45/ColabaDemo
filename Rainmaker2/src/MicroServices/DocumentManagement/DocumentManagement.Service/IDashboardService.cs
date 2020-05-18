@@ -9,5 +9,6 @@ namespace DocumentManagement.Service
     public interface IDashboardService
     {
         Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId);
+        Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId);
     }
 }
