@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,7 @@ namespace DocumentManagement.Service
                 .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
                 .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
                 .Project(projectionDefinition)
+                .SortBy(e=>e["createdOn"])
                 .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
@@ -49,6 +51,16 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
+                    DashboardDTO dto = new DashboardDTO();
+                    dto.Id = query.Id;
+                    dto.docId = query.docId;
+                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ? 
+                        (query.messages?.Any(x=>x.tenantId==tenantId)==true ? 
+                        query.messages.Where(x => x.tenantId == tenantId).First().message : 
+                        query.typeName) : 
+                        query.docMessage;
+                    result.Add(dto);
                 }
             }
             return result;

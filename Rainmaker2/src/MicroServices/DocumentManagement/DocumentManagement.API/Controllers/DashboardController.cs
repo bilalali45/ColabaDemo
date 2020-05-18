@@ -20,7 +20,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
             var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId);
-            return null;
+            return Ok(docQuery);
         }
     }
 }
