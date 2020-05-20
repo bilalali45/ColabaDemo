@@ -12,6 +12,7 @@
     <ProjectReference Include="..\RainMaker.Common\RainMaker.Common.csproj" />
     <ProjectReference Include="..\Rainmaker.Data\RainMaker.Data.csproj" />
     <ProjectReference Include="..\RainMaker.Entity\RainMaker.Entity.csproj" />
+    <ProjectReference Include="..\Rainmaker.Model\Rainmaker.Model.csproj" />
   </ItemGroup>
 
 </Project>
