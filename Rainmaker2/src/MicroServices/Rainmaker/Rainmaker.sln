@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "URF.Core.EF", "..\..\Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainmaker.Service", "Rainmaker.Service\Rainmaker.Service.csproj", "{2E2B44EE-6A8D-4928-AA73-6EA9E93DEE87}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainMaker.Common", "RainMaker.Common\RainMaker.Common.csproj", "{D173BA52-962A-4B5F-B76A-AE575BFEC9E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{2E2B44EE-6A8D-4928-AA73-6EA9E93DEE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E2B44EE-6A8D-4928-AA73-6EA9E93DEE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E2B44EE-6A8D-4928-AA73-6EA9E93DEE87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D173BA52-962A-4B5F-B76A-AE575BFEC9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D173BA52-962A-4B5F-B76A-AE575BFEC9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D173BA52-962A-4B5F-B76A-AE575BFEC9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D173BA52-962A-4B5F-B76A-AE575BFEC9E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
