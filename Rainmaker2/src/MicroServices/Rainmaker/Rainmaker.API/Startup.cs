@@ -6,10 +6,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Rainmaker.Service;
+using RainMaker.Service;
+using URF.Core.Abstractions;
+using URF.Core.EF;
+using URF.Core.EF.Factories;
 
 namespace Rainmaker.API
 {
@@ -25,6 +31,13 @@ namespace Rainmaker.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(Configuration["Data:ConnectionStringRainMaker"]));
+            services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
+            services.AddScoped<IUnitOfWork<RainMaker.Data.RainMakerContext>, UnitOfWork<RainMaker.Data.RainMakerContext>>();
+            services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IStringResourceService, StringResourceService>();
+            services.AddSingleton<ICommonService, CommonService>();
+            services.AddScoped<ILoanApplicationService, LoanApplicationService>();
             services.AddControllers();
         }
 
