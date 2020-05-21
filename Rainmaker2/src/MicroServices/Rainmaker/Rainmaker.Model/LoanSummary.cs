@@ -13,4 +13,15 @@ namespace Rainmaker.Model
         public string ZipCode { get; set; }
         public decimal? LoanAmount { get; set; }
     }
+
+    public class LoanOfficer
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string WebUrl { get; set; }
+        public string NMLS { get; set; }
+        public string Photo { get; set; }
+    }
 }

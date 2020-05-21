@@ -11,5 +11,6 @@ namespace Rainmaker.Service
     public interface ILoanApplicationService : IServiceBase<LoanApplication>
     {
         Task<LoanSummary> GetLoanSummary(int loanApplicationId);
+        Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId);
     }
 }

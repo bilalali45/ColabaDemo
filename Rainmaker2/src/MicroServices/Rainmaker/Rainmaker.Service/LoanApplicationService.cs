@@ -36,5 +36,28 @@ namespace Rainmaker.Service
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode
                 }).FirstOrDefaultAsync();
         }
+
+        public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId && x.BusinessUnit.Id == businessUnitId)
+                .Include(x => x.Opportunity).ThenInclude(x => x.Employee).ThenInclude(x=>x.Contact)
+                .Include(x => x.Opportunity).ThenInclude(x => x.Employee)
+                .ThenInclude(x => x.EmployeeBusinessUnitEmails).ThenInclude(x => x.EmailAccount)
+                .Include(x => x.BusinessUnit)
+                .Include(x => x.Opportunity).ThenInclude(x => x.Employee)
+                .ThenInclude(x => x.EmployeePhoneBinders).ThenInclude(x => x.CompanyPhoneInfo)
+                .Select(x =>
+                    new LoanOfficer()
+                    {
+                        Email = x.Opportunity.Employee.EmployeeBusinessUnitEmails.Where(y=>y.BusinessUnitId==businessUnitId).First().EmailAccount.Email,
+                        FirstName = x.Opportunity.Employee.Contact.FirstName,
+                        LastName = x.Opportunity.Employee.Contact.LastName,
+                        NMLS = x.Opportunity.Employee.NmlsNo,
+                        Phone = x.Opportunity.Employee.EmployeePhoneBinders.Where(y=>y.TypeId==3).First().CompanyPhoneInfo.Phone,
+                        Photo = x.Opportunity.Employee.Photo,
+                        WebUrl = x.BusinessUnit.WebUrl+"/lo/"+x.Opportunity.Employee.CmsName
+                    }
+                ).FirstOrDefaultAsync();
+        }
     }
 }
