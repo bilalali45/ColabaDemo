@@ -5,7 +5,6 @@ export default class ImageAssets {
     static header = {
         logo192,
     };
-
     static footer = {
         logo512,
     };
