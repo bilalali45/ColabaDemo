@@ -10,5 +10,7 @@ namespace DocumentManagement.Entity
         public string serverName { get; set; }
         public DateTime fileUploadedOn { get; set; }
         public int size { get; set; }
+        public string encryptionKey { get; set; }
+        public string encryptionAlgorithm { get; set; }
     }
 }
