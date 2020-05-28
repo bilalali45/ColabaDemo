@@ -16,7 +16,7 @@ export const Home = () => {
             
             <Footer />
 
-            {/* <div className="alert alert-primary" role="alert">
+            /* <div className="alert alert-primary" role="alert">
             A simple primary alert—check it out!
             </div>
             <div className="alert alert-secondary" role="alert">
@@ -39,7 +39,7 @@ export const Home = () => {
             </div>
             <div className="alert alert-dark" role="alert">
             A simple dark alert—check it out!
-            </div> */}
+            </div> 
 
             <Switch>
                 <Route path="/home/activity" component={Activity}/>
