@@ -1,5 +1,5 @@
 {
-  "ReRoutes": [
+  "Routes": [
     //Identity api config
     {
       "DownstreamPathTemplate": "/api/token/{everything}",
