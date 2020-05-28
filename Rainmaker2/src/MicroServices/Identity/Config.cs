@@ -28,7 +28,7 @@ namespace Identity
                         new Secret("ClientSecret".Sha256())
                     },
                     AllowedScopes = { "SampleService" },
-                    AccessTokenLifetime =3600
+                    AccessTokenLifetime =60*60*24
                 }
             };
         }
