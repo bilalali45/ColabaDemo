@@ -7,13 +7,19 @@ namespace Identity.Controllers
 {
     [Route("api/token")]
     [ApiController]
-    public class TokenController : ControllerBase
+    public class TokenController : Controller
     {
+        private readonly IHttpClientFactory clientFactory;
+        public TokenController(IHttpClientFactory clientFactory)
+        {
+            this.clientFactory = clientFactory;
+        }
+
         [Route("authorize")]
         [HttpGet]
         public async Task<IActionResult> GenerateToken()
         {
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = clientFactory.CreateClient();
             var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
                 Address = "http://localhost:5010/connect/token",
