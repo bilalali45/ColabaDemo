@@ -29,7 +29,7 @@ namespace MainGateway
             var authenticationProviderKey = "TestKey";
             Action<IdentityServerAuthenticationOptions> opt = o =>
             {
-                o.Authority = "http://localhost:6000";
+                o.Authority = "http://localhost:5010";
                 o.ApiName = "SampleService";
                 o.SupportedTokens = SupportedTokens.Both;
                 o.RequireHttpsMetadata = false;

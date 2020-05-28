@@ -11,12 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/token/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -25,52 +20,19 @@
         "Limit": 1
       }
     },
-    //product api config
+
+    //Document Management api config
     {
-      "DownstreamPathTemplate": "/api/product/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/DocumentManagement/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 44309
+          "Port": 5020
         }
       ],
-      "UpstreamPathTemplate": "/api/product/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      },
-      "FileCacheOptions": {
-        "TtlSeconds": 15,
-        "Region": "productcaching"
-      }
-    },
-    //payment api config
-    {
-      "DownstreamPathTemplate": "/api/payment/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 44392
-        }
-      ],
-      "UpstreamPathTemplate": "/api/payment/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ],
+      "UpstreamPathTemplate": "/api/DocumentManagement/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TestKey",
         "AllowedScopes": []
@@ -86,9 +48,31 @@
         "TtlSeconds": 15,
         "Region": "paymentcaching"
       }
+    },
+    //product api config
+    {
+      "DownstreamPathTemplate": "/api/product/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44309
+        }
+      ],
+      "UpstreamPathTemplate": "/api/product/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "productcaching"
+      }
     }
   ],
-  "GlobalConfiguration": {
-
-  }
+  "GlobalConfiguration": {}
 }
