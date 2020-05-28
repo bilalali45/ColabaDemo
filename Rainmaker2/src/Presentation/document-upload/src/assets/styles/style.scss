@@ -1,0 +1,25 @@
+@import './theme-variables';
+
+@import './bootstrap/bootstrap.scss';
+
+@import './functions/color',
+        './functions/fontFamily',
+        './functions/fontSizes';
+
+
+// Components
+@import './components/Header',
+        './components/Footer',
+        '/components/Activity',
+        './components/ActivityHeader',
+        './components/ContactUs',
+        './components/DocumentItem',
+        './components/DocumentRequest',
+        './components/DocumentsRequired',
+        './components/DocumentStatus',
+        './components/DocumentUpload',
+        './components/LoanProgress',
+        './components/LoanStatus',
+        './components/SelectedDocuments',
+        './components/UploadedDocuments',
+        './components/UploadedDocumentsTable';

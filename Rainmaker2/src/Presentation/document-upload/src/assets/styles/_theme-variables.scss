@@ -1,0 +1,21 @@
+
+$color:(
+    primary             :       #003c5c,
+    primary-text        :       #fff,
+    secondry            :       #f02242,
+    secondry-text       :       #fff,
+);
+
+$font:(
+    base            :      'Roboto'#{', sans-serif'},
+    heading         :      'Roboto'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 11px,
+    sm: 12px,
+    nr: 14px,
+    lg: 30px,
+    xlg: 36px,
+)
+
