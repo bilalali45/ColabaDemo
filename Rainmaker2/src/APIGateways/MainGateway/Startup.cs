@@ -1,5 +1,6 @@
 ﻿using System;
 using IdentityServer4.AccessTokenValidation;
+using MainGateway.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,7 @@ namespace MainGateway
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseRouting();
@@ -56,7 +58,7 @@ namespace MainGateway
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 endpoints.MapControllers();
             });
-
+            
             app.UseOcelot().Wait();
         }
     }
