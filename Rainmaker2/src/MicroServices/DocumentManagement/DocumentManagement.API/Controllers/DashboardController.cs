@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DocumentManagement.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/DocumentManagement/[controller]")]
     public class DashboardController : Controller
     {
         private readonly IDashboardService dashboardService;
@@ -27,6 +27,11 @@ namespace DocumentManagement.API.Controllers
         {
             var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId, tenantId);
             return Ok(docQuery);
+        }
+        [HttpGet("Test")]
+        public  string Test()
+        {
+            return "response from document management";
         }
     }
 }

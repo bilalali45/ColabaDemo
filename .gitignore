@@ -10,3 +10,4 @@ obj
 packages
 .vs
 package-lock.json
+/Rainmaker2/src/MicroServices/DocumentManagement/.vscode
