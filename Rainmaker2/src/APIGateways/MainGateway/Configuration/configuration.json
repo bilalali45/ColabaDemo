@@ -57,7 +57,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 44357
+          "Port": 5009
         }
       ],
       "UpstreamPathTemplate": "/api/LoanApplication/{everything}",
