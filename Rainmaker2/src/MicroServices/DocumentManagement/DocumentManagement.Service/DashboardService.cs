@@ -20,18 +20,6 @@ namespace DocumentManagement.Service
         }
         public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
-            var projectionDefinition = new BsonDocument
-            {
-                { "_id" , 1 },
-                { "createdOn" , "$requests.createdOn" },
-                { "docId" , "$requests.documents.id" },
-                { "docName" , "$requests.documents.displayName" },
-                { "docMessage" , "$requests.documents.message" },
-                { "typeName" , "$documentObjects.name" },
-                { "typeMessage" , "$documentObjects.message" },
-                { "messages" , "$documentObjects.messages" },
-                { "files" , "$requests.documents.files"}
-            };
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             using var asyncCursor = await collection.Aggregate()
                 .Match(Builders<Request>.Filter.And(
@@ -43,7 +31,18 @@ namespace DocumentManagement.Service
                 .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested))
                 .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
                 .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(projectionDefinition)
+                .Project(new BsonDocument
+                    {
+                        { "_id" , 1 },
+                        { "createdOn" , "$requests.createdOn" },
+                        { "docId" , "$requests.documents.id" },
+                        { "docName" , "$requests.documents.displayName" },
+                        { "docMessage" , "$requests.documents.message" },
+                        { "typeName" , "$documentObjects.name" },
+                        { "typeMessage" , "$documentObjects.message" },
+                        { "messages" , "$documentObjects.messages" },
+                        { "files" , "$requests.documents.files"}
+                    })
                 .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
@@ -69,18 +68,6 @@ namespace DocumentManagement.Service
 
         public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId)
         {
-            var projectionDefinition = new BsonDocument
-            {
-                { "_id" , 1 },
-                { "createdOn" , "$requests.createdOn" },
-                { "docId" , "$requests.documents.id" },
-                { "docName" , "$requests.documents.displayName" },
-                { "docMessage" , "$requests.documents.message" },
-                { "typeName" , "$documentObjects.name" },
-                { "typeMessage" , "$documentObjects.message" },
-                { "messages" , "$documentObjects.messages" },
-                { "files" , "$requests.documents.files"}
-            };
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             using var asyncCursor = await collection.Aggregate()
                 .Match(Builders<Request>.Filter.And(
@@ -92,7 +79,18 @@ namespace DocumentManagement.Service
                 .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Submitted))
                 .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
                 .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(projectionDefinition)
+                .Project(new BsonDocument
+                    {
+                        { "_id" , 1 },
+                        { "createdOn" , "$requests.createdOn" },
+                        { "docId" , "$requests.documents.id" },
+                        { "docName" , "$requests.documents.displayName" },
+                        { "docMessage" , "$requests.documents.message" },
+                        { "typeName" , "$documentObjects.name" },
+                        { "typeMessage" , "$documentObjects.message" },
+                        { "messages" , "$documentObjects.messages" },
+                        { "files" , "$requests.documents.files"}
+                    })
                 .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
