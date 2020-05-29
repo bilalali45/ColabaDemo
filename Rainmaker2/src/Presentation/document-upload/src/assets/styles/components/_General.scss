@@ -1,0 +1,130 @@
+[class^="heading-"],[class*="heading-"]{
+    font-family: fontFamily('heading');
+    font-weight: 900;
+}
+.heading-h1{
+    font-size: fontSize('xlg');
+}
+.heading-h2{
+    font-size: fontSize('lg');
+}
+.heading-h3{
+    font-size: fontSize('md');
+}
+.heading-h4{
+    font-size: fontSize('nr');
+}
+.heading-h5{
+    font-size: fontSize('sm');
+}
+.heading-h6{
+    font-size: fontSize('xs');
+}
+
+
+.flex{
+    display: -webkit-flex;
+    display: flex;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    &--side{
+        flex: 1 0 0;
+        padding: 0 10px;
+
+        & + .flex--side{
+            border-left: 1px solid color('border');
+        }
+    }
+}
+
+.sub-header{
+    border-bottom: 3px solid #EBEBEB;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    margin: 50px 0 30px;
+
+    &--right .heading-h4{
+        font-size: 17px;
+        margin: 10px 0;
+    }
+
+    &--link {
+        display: -webkit-flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #000;
+
+        &:hover{
+            text-decoration: none;
+            color: #000;
+            
+            .btn-folk--icon{
+                transform: rotate(15deg);
+            }
+
+        }
+    }
+
+    .btn-folk{
+        margin-right: 15px;
+    }    
+}//.sub-header
+
+.sub-header--link
+.sub-header--link:hover .btn-folk{
+    transform: rotate(75deg);
+}
+
+.btn-folk{
+    width: 35px;
+    height: 35px;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: #4484F4;
+    color: #fff;
+    display: inline-block;
+    transform: rotate(45deg);
+    transition: 0.3s all ease-in-out;
+
+    &--icon{
+        position: relative;
+        width: 18px;
+        height: 18px;
+        display: block;
+        transform: rotate(-45deg);
+        transition: 0.3s all ease-in-out;
+    
+        &::before{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    
+        &::after{
+            content: "";
+            display: block;
+            width: 2px;
+            height: 100%;
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);    
+        }
+    
+    }
+}// .btn-folk
+
+

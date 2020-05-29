@@ -4,7 +4,8 @@ import ImageAssets from '../../../utils/image_assets/ImageAssets';
 const Header = () => {
     return (
         <header className="header-main">
-            <img src={ImageAssets.footer.logo512} alt=""/>
+       
+            <h1 className='text-center'>Header</h1>
         </header>
     )
 }
