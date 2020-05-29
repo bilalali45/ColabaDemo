@@ -1,21 +1,22 @@
 
 $color:(
-    primary             :       #003c5c,
-    primary-text        :       #ffffff,
-    secondry            :       #f02242,
-    colorwhite       :       #ffffff,
-    colordarkblue       :       #04202e,
+    primary             :       #4484F4,
+    primary-text        :       #fff,
+    secondry            :       #DD3126,
+    secondry-text       :       #fff,
+    border              :       #EBEBEB
 );
 
 $font:(
-    base            :      'Roboto'#{', sans-serif'},
-    heading         :      'Roboto'#{', sans-serif'}
+    base            :      'Poppins'#{', sans-serif'},
+    heading         :      'Poppins'#{', sans-serif'}
 );
 
 $font-size:(
     xs: 11px,
     sm: 12px,
     nr: 14px,
+    md: 18px,
     lg: 30px,
     xlg: 36px,
 );
