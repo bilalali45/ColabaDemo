@@ -1,3 +1,28 @@
 .header-main{
     font-size: fontSize('lg');
+    border-top: none;
+    border-bottom: 1px solid rgba(205, 205, 205, 0.2);
+    min-height: 80px;
+    padding: 0;
+    background: color('colorwhite');
+    .d-name {
+        color: color('colordarkblue');  
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-right: 22px;
+        position: relative;
+        font-size: 18px;
+       // display: inline-block;
+        float: left;
+        &:after {
+            content: '';
+            position: absolute;
+            height: 18px;
+            width: 2px;
+            background: #cccccc;
+            right: -12px;
+            top: 5px;
+        }
+    }
+
 }
