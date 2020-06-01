@@ -6,9 +6,10 @@ import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
 // import ImageAssets from '../../utils/image_assets/ImageAssets'
 
-import Header from '../../shared/Components/Header/Header'
-import Footer from '../../shared/Components/Footer/Footer'
-import MyLoan from './../MyLoans/MyLoan'
+import Header from '../../shared/Components/Header/Header';
+import Footer from '../../shared/Components/Footer/Footer';
+import {LoanStatus} from './Activity/LoanStatus/LoanStatus';
+import {DocumentStatus} from './Activity/DocumentsStatus/DocumentStatus';
 
 export const Home = () => {
     return (
@@ -17,10 +18,11 @@ export const Home = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-5">
-                        <MyLoan 
-                        />
+                        <LoanStatus/>
                     </div>
-                    <div className="col-md-6"></div>
+                    <div className="col-md-6">
+                        <DocumentStatus/>
+                    </div>
                 </div>
             </div>
             <Footer />
