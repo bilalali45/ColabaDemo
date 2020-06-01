@@ -17,7 +17,8 @@ export const Home = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-5">
-                        <MyLoan/>
+                        <MyLoan 
+                        />
                     </div>
                     <div className="col-md-6"></div>
                 </div>

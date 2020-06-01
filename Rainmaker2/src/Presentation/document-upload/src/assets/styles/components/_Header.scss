@@ -5,6 +5,52 @@
     min-height: 80px;
     padding: 0;
     background: color('colorwhite');
+    .h-logo {
+        max-width: 131px;
+        margin-left:40px;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+    .s-account{
+        color: #4e4e4e;
+        text-align: right;
+        margin-top: 26px;
+        margin-right: 40px;
+    .userdropdown {
+        float: right;
+        margin: -14px 0 0 0;
+        .hd-shorname {
+            cursor: pointer;
+           span {
+            background: #4484f4;
+            color: #fff;
+            border-radius: 50%;
+            height: 36px;
+            width: 36px;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+            line-height: 36px;
+            letter-spacing: normal;
+           }
+           &:after {
+            color: color('colordarkblue'); 
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: middle;
+            content: "";
+            border-top: 6px solid;
+            border-right: 6px solid transparent;
+            border-left: 6px solid transparent;
+            border-bottom: 0;
+           }
+         
+        }
+    }
+}
     .d-name {
         color: color('colordarkblue');  
         font-family: 'Poppins', sans-serif;
