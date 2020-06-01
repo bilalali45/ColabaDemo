@@ -1,0 +1,20 @@
+.DocumentStatus{
+    border: 2px solid color('border');
+    padding: 15px;
+    font: 300 fontSize('sm')/22px fontFamily('base');
+    margin-bottom: 30px;
+
+    &--header{
+        border-bottom: 1px solid color('border');
+        padding-bottom: 15px;
+        display: block;
+        margin-bottom: 10px;
+        p{
+            margin: 0px;
+        }
+    }
+   
+    &--get-link{
+        
+    }
+}
