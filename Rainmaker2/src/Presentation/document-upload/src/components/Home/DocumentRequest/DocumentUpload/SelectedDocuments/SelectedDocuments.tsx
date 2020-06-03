@@ -15,10 +15,13 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
 
     const [showingDoc, setShowingDoc] = useState<boolean>(false);
     const [currentDoc, setCurrentDoc] = useState<string>('');
+    const [fileType, setFileType] = useState<string>('');
     const [uploadedPercent, setUploadPercent] = useState<number>();
+    const [showProgressBar, setShowProgressBar] = useState<boolean>();
 
     const viewDocument = (file: File) => {
         setShowingDoc(true);
+        setFileType(file.type);
         setCurrentDoc(file.name);
     }
 
@@ -34,17 +37,19 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         for (const file of files) {
             data.append('file', file);
         }
-
+        setShowProgressBar(true);
         try {
             let res = await httpClient.fetch({
                 method: httpClient.methods.POST,
                 url,
                 data,
                 onUploadProgress: e => {
-                    setUploadPercent(e.loaded / e.total * 100);
+                    let p = (e.loaded / e.total * 100);
+                    setUploadPercent(p);
                 }
             });
             console.log(res);
+            setShowProgressBar(false);
         } catch (error) {
             console.log(error);
         }
@@ -60,7 +65,12 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                         viewDocument={viewDocument} />)
                 })
             }
-            {showingDoc ? <DocumentView url={`http://localhost:5000/pdf/${currentDoc}`} hide={closeDocumentView} /> : ''}
+            {showingDoc ? <DocumentView
+                type={fileType}
+                url={`http://localhost:5000/pdf/${currentDoc}`}
+                hide={closeDocumentView} />
+                : ''}
+            {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
             <button onClick={uploadFile}>Submit</button>
         </div>
     )

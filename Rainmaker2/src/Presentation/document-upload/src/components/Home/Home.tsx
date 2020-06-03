@@ -42,7 +42,7 @@ export const Home = () => {
 
 
     useEffect(() => {
-        if (location.pathname === '/home') {
+        if (location.pathname === '/') {
             history.push('/home/activity');
         }
     }, [])
@@ -59,7 +59,6 @@ export const Home = () => {
                 <Route path="/home/activity" component={Activity} />
                 <Route path="/home/documentsRequest" component={DocumentRequest} />
                 <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
-                
             </Switch>
         </div>
     )

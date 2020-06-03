@@ -1,57 +1,31 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
+import React, { useState, ChangeEvent, useRef, useEffect, DragEvent } from 'react';
 import { Http } from '../../../services/http/Http';
 
 
 const httpClient = new Http();
 
-type DocumentDropBoxPropsType = { url: string, setSelectedFile: Function, setFileInput: Function };
+type DocumentDropBoxPropsType = { url: string, setSelectedFiles: Function, setFileInput: Function };
 
-export const DocumentDropBox = ({ url, setSelectedFile, setFileInput }: DocumentDropBoxPropsType) => {
+export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: DocumentDropBoxPropsType) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const [file, setFile] = useState<File>();
-    const [uploadedPercent, setUploadPercent] = useState<number>();
 
     useEffect(() => {
         setFileInput(inputRef.current)
     }, [])
 
     const handleChange = ({ target: { files } }: ChangeEvent<HTMLInputElement>) => {
-        console.log('files', files);
+
         if (files) {
-            setFile(() => files[0]);
-            setSelectedFile(files[0]);
+            setSelectedFiles(files);
         }
     }
 
-    const getDroppedFile = (e: any) => {
+    const getDroppedFile = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            let file = e.dataTransfer.files[i];
-            setFile(file);
-            setSelectedFile(file);
-        }
-    }
-
-    const uploadFile = async () => {
-        console.log(file);
-        const data = new FormData();
-        if (file) {
-            data.append('file', file);
-            try {
-                let res = await httpClient.fetch({
-                    method: httpClient.methods.POST,
-                    url,
-                    data,
-                    onUploadProgress: e => {
-                        setUploadPercent(e.loaded / e.total * 100);
-                    }
-                });
-                console.log(res);
-            } catch (error) {
-
-            }
+            let {files} = e.dataTransfer;
+            setSelectedFiles(files);
         }
     }
 
@@ -68,6 +42,7 @@ export const DocumentDropBox = ({ url, setSelectedFile, setFileInput }: Document
     }
 
     const onDrop = (e: any) => {
+        
         e.preventDefault();
         e.target.classList.remove('drag-enter');
         getDroppedFile(e);
@@ -86,15 +61,12 @@ export const DocumentDropBox = ({ url, setSelectedFile, setFileInput }: Document
             onDragOver={ondragover}
             onDrop={onDrop}>
             <h1>Document Drop Box</h1>
-            <h1>{file?.name}</h1>
-            <h1>{uploadedPercent}</h1>
             <input 
                 ref={inputRef} 
                 type="file" 
                 name="file" 
                 onChange={(e) => handleChange(e)}
                 multiple />
-            <button onClick={uploadFile}>Testing</button>
         </div>
     )
 }

@@ -6,14 +6,22 @@ export const DocumentUpload = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [fileInput, setFileInput] = useState<HTMLInputElement>();
 
-    const getSelectedFile = (file: File) => {
-        console.log(file);
+
+
+    const updateFiles = (files: File[]) => {
         setFiles((previousFiles) => {
-            return [
-                ...previousFiles,
-                file
-            ]
-        })
+            let allSelectedFiles: File[] = [];
+            allSelectedFiles = [...previousFiles];
+            for (let f of files) {
+                allSelectedFiles.push(f);
+            }
+            return allSelectedFiles;
+        });
+    }
+
+
+    const getSelectedFiles = (files: File[]) => {
+        updateFiles(files);
     }
 
     const getFileInput = (fileInputEl: HTMLInputElement) => {
@@ -24,19 +32,12 @@ export const DocumentUpload = () => {
         fileInput?.click();
         if (fileInput) {
             fileInput.onchange = (e: any) => {
-                if (e?.target?.files) {
-                    setFiles((previousFiles) => {
-                        return [
-                            ...previousFiles,
-                            e.target.files[0]
-                        ]
-                    })
+                let files = e?.target?.files;
+                if (files) {
+                    updateFiles(files);
                 }
             };
         }
-        setTimeout(() => {
-            console.log(fileInput?.files);
-        }, 10000);
     }
 
     return (
@@ -45,11 +46,11 @@ export const DocumentUpload = () => {
             {!files.length ?
                 <DocumentDropBox
                     url={'http://localhost:5000/upload'}
-                    setSelectedFile={getSelectedFile}
+                    setSelectedFiles={getSelectedFiles}
                     setFileInput={getFileInput} />
                 : <>
-                    <SelectedDocuments 
-                        files={files} 
+                    <SelectedDocuments
+                        files={files}
                         url={'http://localhost:5000/upload'} />
                     <button onClick={showFileExplorer}>Add More</button>
                 </>

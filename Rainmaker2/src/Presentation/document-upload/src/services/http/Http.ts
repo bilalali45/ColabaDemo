@@ -76,6 +76,7 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
+            console.log(error?.response?.data?.name);
             if(error?.response?.data?.name === 'TokenExpiredError') {
                 Auth.removeAuth();
             }
