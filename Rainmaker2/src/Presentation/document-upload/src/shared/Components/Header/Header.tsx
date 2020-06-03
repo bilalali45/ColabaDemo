@@ -1,6 +1,7 @@
 import React from 'react'
 import ImageAssets from '../../../utils/image_assets/ImageAssets';
-import Dropdown from 'react-bootstrap/Dropdown'
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 const Header = () => {
     return (

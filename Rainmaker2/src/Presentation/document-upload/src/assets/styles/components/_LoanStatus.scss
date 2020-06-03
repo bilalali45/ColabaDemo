@@ -1,17 +1,12 @@
 .LoanStatus{
-    .heading-h2{
-        font-size: fontSize('md');
-    }
-    
+        
     &--header{
 
     }
 
     &--heading{
         margin: 0 0 5px;
-        font: fontFamily('heading');
-        font-size: fontSize('md'); 
-        font-weight: 800; 
+        font: 800 #{fontSize('nr')+'/18px'} fontFamily('heading');
     }
 
     &--body{

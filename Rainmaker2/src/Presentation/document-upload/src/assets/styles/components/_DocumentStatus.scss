@@ -8,6 +8,12 @@
         p{
             margin: 0px;
         }
+        
+    }
+
+    &--count{
+        color: color('primary');
+        font: bolder #{fontSize('md')+'/18px'} fontFamily('heading');
     }
    
     &--get-link{
