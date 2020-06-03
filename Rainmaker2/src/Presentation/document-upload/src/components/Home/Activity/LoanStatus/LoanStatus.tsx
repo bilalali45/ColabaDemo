@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 
  export const LoanStatus = () => {
     return (
-        <div className="LoanStatus">
+        <div className="LoanStatus box-wrap">
             <div className="LoanStatus--body">
                 <ul>
                     <li>

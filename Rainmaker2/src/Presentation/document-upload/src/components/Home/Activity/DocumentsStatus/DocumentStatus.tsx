@@ -3,7 +3,7 @@ import arrowForward from './../../../../assets/images/arrow-forward.svg';
 
 export const DocumentStatus = () => {
     return (
-        <div className="DocumentStatus">
+        <div className="DocumentStatus box-wrap">
             <div className="DocumentStatus--header">
                 <h2 className="heading-h2">Loan Application</h2>
                 <p>You have <span className="count">8</span> items to complete</p>

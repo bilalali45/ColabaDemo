@@ -15,16 +15,20 @@ export const Home = () => {
     return (
         <div>
             <Header />
+
+<section className="page-content">
             <div className="container">
-                <div className="row">
+                <div className="row gutter15">
                     <div className="col-md-5">
                         <LoanStatus/>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-7">
                         <DocumentStatus/>
                     </div>
                 </div>
             </div>
+            </section>
+
             <Footer />
 
             <Switch>

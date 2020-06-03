@@ -1,8 +1,9 @@
 import React from 'react'
-
+import ImageAssets from '../../../utils/image_assets/ImageAssets';
 const Footer = () => {
     return (
-        <footer>
+        <section>
+        <footer className="mainfooter">
         <div className="container">
             <div className="row">
                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
@@ -37,13 +38,16 @@ const Footer = () => {
                     </div>
                     <div className="nmls text-right">
                         <a href="http://www.nmlsconsumeraccess.org/Home.aspx/SubSearch?searchText=277676" target="_blank" rel="noopener noreferrer" >
-                            <img src="/Content/images/nmls.png" alt="Illinois Residential Mortgage Licensee NMLS License #277676" />
+                            <img src={ImageAssets.footer.nmlsLogo} alt="Illinois Residential Mortgage Licensee NMLS License #277676" />
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+
     </footer>
+    <div className="bg-shape d-none d-lg-block"></div>
+    </section>
     )
 }
 
