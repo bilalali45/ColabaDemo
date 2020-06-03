@@ -1,5 +1,9 @@
 .DocumentStatus{
 
+    &.box-wrap{
+        padding: 15px 25px;
+    }
+
     &--header{
         border-bottom: 1px solid color('border');
         padding-bottom: 15px;
@@ -17,6 +21,34 @@
     }
    
     &--get-link{
-        
+        padding: 18px 0;
+        display: block;
+        font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+        text-transform: uppercase;
+        .tt-svg{
+            @include transition(all 0.5s ease-out);
+        }
+        &:hover{
+            text-decoration: none;
+            color:color('colordarkblue');
+            .tt-svg{
+                @include transform(translateX(10px));
+                svg path{
+                    fill: color('colordarkblue');
+                }
+            }
+        }
     }
+
+    &--left-side{
+
+    }
+
+    &--right-side{
+        svg{
+            margin-bottom: 10px;
+        }
+    }
+
+    
 }
