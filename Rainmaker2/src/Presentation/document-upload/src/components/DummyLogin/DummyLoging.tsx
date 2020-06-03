@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Http } from '../../services/http/Http';
 import { Redirect, useHistory } from 'react-router-dom';
 import { Auth } from '../../services/auth/Auth';
+import { AuthActions } from '../../store/actions/User';
+import { Store } from '../../store/store';
+import { AuthTypes } from '../../store/reducers/aauthReducer';
 
 const httpClient = new Http();
 
 
 const DummyLogin = () => {
+
+    const {state, dispatch} = useContext(Store);
     
     console.log(httpClient);
     let history = useHistory();
 
     const login = async () => {
 
-        const res: any = await httpClient.post('/login', { email: 'test@test.com', password: 'test123' });
-        let token = res?.data?.token;
-        if (token) {
-            Auth.saveAuth(token);
-            history.push('/');
+        let res = await AuthActions.login({});
+        if(res) {
+            dispatch({type: AuthTypes.Save, payload: {token: res}});
         }
-        console.log(res);
+        
     }
 
     if (Auth.checkAuth()) {

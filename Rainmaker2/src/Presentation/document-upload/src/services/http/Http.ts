@@ -22,7 +22,7 @@ export class Http {
     private static instance: Http | null = null;
     public baseUrl: string = '';
 
-    private methods: CommonHTTPMethods<HTTPMethod> = {
+    public methods: CommonHTTPMethods<HTTPMethod> = {
         GET: 'GET',
         POST: 'POST',
         PUT: 'PUT',
@@ -72,7 +72,7 @@ export class Http {
 
     private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) {
 
-        try {   
+        try {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
