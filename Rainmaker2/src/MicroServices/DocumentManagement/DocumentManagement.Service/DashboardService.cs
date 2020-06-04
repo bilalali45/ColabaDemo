@@ -18,20 +18,22 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId,IMongoServiceAggregate<Request> requestService,IMongoServiceAggregate<BsonDocument> bsonService)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = await collection.Aggregate()
+            using var asyncCursor = await
+                bsonService.Project(
+                bsonService.Unwind(
+                bsonService.Lookup(
+                bsonService.Unwind(
+                requestService.Unwind(collection.Aggregate()
                 .Match(Builders<Request>.Filter.And(
                     Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
                     Builders<Request>.Filter.Eq("tenantId", tenantId)
-                    ))
-                .Unwind("requests")
-                .Unwind("requests.documents")
-                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested))
-                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
-                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(new BsonDocument
+                    )),"requests"),"requests.documents")
+                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested)),"DocumentType", "requests.documents.typeId", "_id", "documentObjects"),
+                "documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
+                ,new BsonDocument
                     {
                         { "_id" , 1 },
                         { "createdOn" , "$requests.createdOn" },

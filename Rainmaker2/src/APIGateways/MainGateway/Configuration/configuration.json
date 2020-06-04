@@ -2,7 +2,7 @@
   "Routes": [
     //Identity api config
     {
-      "DownstreamPathTemplate": "/api/token/{everything}",
+      "DownstreamPathTemplate": "/api/Identity/token/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -10,7 +10,7 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "/api/token/{everything}",
+      "UpstreamPathTemplate": "/api/Identity/token/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -52,7 +52,7 @@
 
     //rainmaker 2.0 api config
     {
-      "DownstreamPathTemplate": "/api/LoanApplication/{everything}",
+      "DownstreamPathTemplate": "/api/RainMaker/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -60,7 +60,7 @@
           "Port": 5009
         }
       ],
-      "UpstreamPathTemplate": "/api/LoanApplication/{everything}",
+      "UpstreamPathTemplate": "/api/RainMaker/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TestKey",

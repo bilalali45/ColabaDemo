@@ -1,4 +1,6 @@
-﻿using DocumentManagement.Model;
+﻿using DocumentManagement.Entity;
+using DocumentManagement.Model;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +10,7 @@ namespace DocumentManagement.Service
 {
     public interface IDashboardService
     {
-        Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId);
+        Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, IMongoServiceAggregate<Request> requestService, IMongoServiceAggregate<BsonDocument> bsonService);
         Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId);
     }
 }

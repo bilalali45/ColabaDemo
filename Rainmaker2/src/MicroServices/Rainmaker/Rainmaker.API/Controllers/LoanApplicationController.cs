@@ -8,7 +8,7 @@ using Rainmaker.Service;
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/RainMaker/[controller]")]
     public class LoanApplicationController : Controller
     {
         private readonly ILoanApplicationService loanApplicationService;

@@ -29,4 +29,20 @@ namespace DocumentManagement.Service
             db = client.GetDatabase(config["Mongo:Database"]);
         }
     }
+
+    public class MongoServiceAggregate<T> : IMongoServiceAggregate<T>
+    {
+        public IAggregateFluent<BsonDocument> Unwind(IAggregateFluent<T> aggregateFluent,FieldDefinition<T> field,AggregateUnwindOptions<BsonDocument> options=null)
+        {
+            return aggregateFluent.Unwind(field,options);
+        }
+        public IAggregateFluent<BsonDocument> Lookup(IAggregateFluent<T> aggregateFluent,string foreignCollection, FieldDefinition<T> localField, FieldDefinition<BsonDocument> foreignField, FieldDefinition<BsonDocument> @as)
+        {
+            return aggregateFluent.Lookup(foreignCollection,localField,foreignField,@as);
+        }
+        public IAggregateFluent<BsonDocument> Project(IAggregateFluent<T> aggregateFluent,ProjectionDefinition<T, BsonDocument> projection)
+        {
+            return aggregateFluent.Project(projection);
+        }
+    }
 }
