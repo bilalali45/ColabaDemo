@@ -3,15 +3,38 @@ import React, { useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-type DocumentViewPropsType = { type: string, url: string, hide: Function }
+type DocumentViewPropsType = { type: string, url: string, file: File | null, hide: Function }
 
-export const DocumentView = ({ type, url, hide }: DocumentViewPropsType) => {
+export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [imageSrc, setImageSrc] = useState<string>('');
 
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     console.log('numPages', numPages);
     setNumPages(numPages);
+  }
+
+  const readLocalFile = (file: any) => {
+    const reader = new FileReader();
+
+    reader.addEventListener('loadstart', () => console.log('Read file...'));
+
+    reader.addEventListener('load', (e: any) => {
+      const fileContent = e.target.result;
+      setImageSrc(fileContent);
+    });
+
+    reader.addEventListener('error', (e) => console.log(e));
+
+    reader.addEventListener('progress', (e: any) => {
+      if (e.lengthComputable) {
+        const percentRead = e.loaded;
+        console.log(percentRead);
+      }
+    });
+
+    reader.readAsDataURL(file);
   }
 
   const handlePage = (e: any) => {
@@ -32,7 +55,7 @@ export const DocumentView = ({ type, url, hide }: DocumentViewPropsType) => {
         <div className="modal-content">
           <Document
 
-            file={url}
+            file={file}
             onLoadSuccess={onDocumentLoadSuccess}
           >
             <Page pageNumber={pageNumber} />
@@ -54,8 +77,15 @@ export const DocumentView = ({ type, url, hide }: DocumentViewPropsType) => {
     )
   }
 
+  const renderPlanTextView = () => {
+    // return <div className={'text-file-viewer'}>{imageSrc}</div>
+  }
+
   const renderImageView = () => {
-    return <img style={{width: "50%", height: "50%"}} src={url} alt="" />
+    if(imageSrc) {
+      return <img style={{ width: "50%", height: "50%" }} src={imageSrc} alt="" />
+    }
+    return '';
   }
 
   const renderView = () => {
@@ -63,8 +93,12 @@ export const DocumentView = ({ type, url, hide }: DocumentViewPropsType) => {
       case 'application/pdf':
         return renderPdfView();
       case 'application/msword':
-        return renderTextView();
+         return renderTextView();
       case 'image/jpeg':
+      case 'image/png':
+      case 'image/jpg':
+      case 'image/gif':
+        readLocalFile(file);
         return renderImageView();
 
       default:

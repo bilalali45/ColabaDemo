@@ -14,7 +14,7 @@ type SelectedDocumentsType = {
 export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
 
     const [showingDoc, setShowingDoc] = useState<boolean>(false);
-    const [currentDoc, setCurrentDoc] = useState<string>('');
+    const [currentDoc, setCurrentDoc] = useState<File | null>(null);
     const [fileType, setFileType] = useState<string>('');
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
@@ -22,7 +22,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const viewDocument = (file: File) => {
         setShowingDoc(true);
         setFileType(file.type);
-        setCurrentDoc(file.name);
+        setCurrentDoc(file);
     }
 
 
@@ -66,8 +66,9 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 })
             }
             {showingDoc ? <DocumentView
+                file={currentDoc}
                 type={fileType}
-                url={`http://localhost:5000/pdf/${currentDoc}`}
+                url={`http://localhost:5000/pdf/${currentDoc?.name}`}
                 hide={closeDocumentView} />
                 : ''}
             {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}

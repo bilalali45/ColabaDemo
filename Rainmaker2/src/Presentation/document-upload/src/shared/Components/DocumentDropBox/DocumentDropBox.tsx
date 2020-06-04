@@ -18,6 +18,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
 
         if (files) {
             setSelectedFiles(files);
+            console.log(files);
         }
     }
 
@@ -44,7 +45,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
     const onDrop = (e: any) => {
         
         e.preventDefault();
-        e.target.classList.remove('drag-enter');
+        e.target.classList.remove('drag-enter')
         getDroppedFile(e);
         return false;
     }
