@@ -29,7 +29,6 @@ namespace DocumentManagement.API
             services.AddControllers();
             services.AddScoped<IMongoService, MongoService>();
             services.AddScoped<IDashboardService, DashboardService>();
-            services.AddScoped(typeof(IMongoAggregateService<>), typeof(MongoAggregateService<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

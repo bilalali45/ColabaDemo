@@ -10,7 +10,7 @@ namespace DocumentManagement.Service
 {
     public interface IDashboardService
     {
-        Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, IMongoAggregateService<Request> requestService, IMongoAggregateService<BsonDocument> bsonService);
+        Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId);
         Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId);
     }
 }

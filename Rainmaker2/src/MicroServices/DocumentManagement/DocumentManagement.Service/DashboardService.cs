@@ -18,22 +18,20 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, IMongoAggregateService<Request> requestService, IMongoAggregateService<BsonDocument> bsonService)
+        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = await
-                bsonService.Project(
-                bsonService.Unwind(
-                bsonService.Lookup(
-                bsonService.Unwind(
-                requestService.Unwind(collection.Aggregate()
+            using var asyncCursor = await collection.Aggregate()
                 .Match(Builders<Request>.Filter.And(
                     Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
                     Builders<Request>.Filter.Eq("tenantId", tenantId)
-                    )),"requests"),"requests.documents")
-                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested)),"DocumentType", "requests.documents.typeId", "_id", "documentObjects"),
-                "documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                ,new BsonDocument
+                    ))
+                .Unwind("requests")
+                .Unwind("requests.documents")
+                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested))
+                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
+                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
+                .Project(new BsonDocument
                     {
                         { "_id" , 1 },
                         { "createdOn" , "$requests.createdOn" },
@@ -56,10 +54,10 @@ namespace DocumentManagement.Service
                     dto.Id = query.Id;
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ? 
-                        (query.messages?.Any(x=>x.tenantId==tenantId)==true ? 
-                        query.messages.Where(x => x.tenantId == tenantId).First().message : 
-                        query.typeName) : 
+                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ?
+                        (query.messages?.Any(x => x.tenantId == tenantId) == true ?
+                        query.messages.Where(x => x.tenantId == tenantId).First().message :
+                        query.typeName) :
                         query.docMessage;
                     dto.files = query.files;
                     result.Add(dto);

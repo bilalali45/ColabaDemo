@@ -14,18 +14,14 @@ namespace DocumentManagement.API.Controllers
     public class DashboardController : Controller
     {
         private readonly IDashboardService dashboardService;
-        private readonly IMongoAggregateService<Request> requestService;
-        private readonly IMongoAggregateService<BsonDocument> bsonService;
-        public DashboardController(IDashboardService dashboardService, IMongoAggregateService<Request> requestService, IMongoAggregateService<BsonDocument> bsonService)
+        public DashboardController(IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
-            this.requestService = requestService;
-            this.bsonService = bsonService;
         }
         [HttpGet("GetPendingDocuments")]
         public async Task<IActionResult> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
-            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId,requestService,bsonService);
+            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId);
             return Ok(docQuery);
         }
         [HttpGet("GetSubmittedDocuments")]
