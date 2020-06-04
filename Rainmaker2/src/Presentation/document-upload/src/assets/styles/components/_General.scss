@@ -169,5 +169,6 @@ min-height: 100vh;
 .btn{
     border-radius: 0px;
     font: 400 #{fontSize('nr')+'/1'} fontFamily('heading');
-    padding: 20px 55px;
+    padding: 20px 50px;
+    min-width: 86px;
 }

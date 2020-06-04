@@ -1,31 +1,37 @@
 import React from 'react'
-//import arrowForward from './../../../../assets/images/arrow-forward.svg';
 import {SVG} from './../../../../shared/Components/Assets/SVG';
 
-export const DocumentStatus = () => {
+type Props = {
+    heading?: string,
+    counts: number,
+    moreTask?: any,
+    getStarted?: any,
+    tasks?: any
+}
+
+export const DocumentStatus: React.SFC<Props> = (props) => {
     return (
         <div className="DocumentStatus box-wrap">
             <div className="row">
                 <div className="col-md-7 DocumentStatus--left-side">
                     <div className="DocumentStatus--header">
-                        <h2 className="heading-h2">Document Request</h2>
-                        <p>You have <span className="DocumentStatus--count">8</span> items to complete</p>
+                        <h2 className="heading-h2"> {props.heading} </h2>
+    <p>You have <span className="DocumentStatus--count">{ props.counts }</span> items to complete</p>
                     </div>
                     <div className="DocumentStatus--body">
                         <ul className="list">
-                            <li>Bank Statement</li>
-                            <li>W-2s 2017</li>
-                            <li>W-2s 2018</li>
-                            <li>Personal Tax Returns</li>
+                                { props.tasks.map( (item:any) => {
+                                        return <li> {item.task} </li>
+                                }) }
                         </ul>
                         <div>
-                            <a href="" className="DocumentStatus--get-link">Show 4 more Tasks <SVG  shape="arrowFarword"/></a>
+                            <a href={ props.moreTask } className="DocumentStatus--get-link">Show 4 more Tasks <SVG  shape="arrowFarword"/></a>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-5 DocumentStatus--right-side">
                     <SVG shape="storage"/>
-                    <button className="btn btn-primary float-right">Get Started</button>
+                    <a href={ props.getStarted } className="btn btn-primary float-right">Get Started</a>
                 </div>
             </div>
         </div>
