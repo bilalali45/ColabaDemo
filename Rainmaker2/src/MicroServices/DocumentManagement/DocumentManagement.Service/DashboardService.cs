@@ -18,7 +18,7 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId,IMongoServiceAggregate<Request> requestService,IMongoServiceAggregate<BsonDocument> bsonService)
+        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, IMongoAggregateService<Request> requestService, IMongoAggregateService<BsonDocument> bsonService)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             using var asyncCursor = await

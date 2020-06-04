@@ -14,9 +14,9 @@ namespace DocumentManagement.API.Controllers
     public class DashboardController : Controller
     {
         private readonly IDashboardService dashboardService;
-        private readonly IMongoServiceAggregate<Request> requestService;
-        private readonly IMongoServiceAggregate<BsonDocument> bsonService;
-        public DashboardController(IDashboardService dashboardService, IMongoServiceAggregate<Request> requestService, IMongoServiceAggregate<BsonDocument> bsonService)
+        private readonly IMongoAggregateService<Request> requestService;
+        private readonly IMongoAggregateService<BsonDocument> bsonService;
+        public DashboardController(IDashboardService dashboardService, IMongoAggregateService<Request> requestService, IMongoAggregateService<BsonDocument> bsonService)
         {
             this.dashboardService = dashboardService;
             this.requestService = requestService;

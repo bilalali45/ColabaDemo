@@ -22,9 +22,9 @@ namespace DocumentManagement.Tests
             Mock<IDashboardService> mock = new Mock<IDashboardService>();
             List<DashboardDTO> list = new List<DashboardDTO>() { { new DashboardDTO() { docId="1" } } };
             
-            mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(),It.IsAny<IMongoAggregateService<Request>>(),It.IsAny<IMongoAggregateService<BsonDocument>>())).ReturnsAsync(list);
             
-            DashboardController controller = new DashboardController(mock.Object);
+            DashboardController controller = new DashboardController(mock.Object,null,null);
             //Act
             IActionResult result = await controller.GetPendingDocuments(1, 1);
             //Assert
@@ -45,6 +45,8 @@ namespace DocumentManagement.Tests
             Mock<IAggregateFluent<Request>> mockAggregate = new Mock<IAggregateFluent<Request>>();
             Mock<IAggregateFluent<BsonDocument>> mockBson = new Mock<IAggregateFluent<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoAggregateService<Request>> requestMock = new Mock<IMongoAggregateService<Request>>();
+            Mock<IMongoAggregateService<BsonDocument>> bsonMock = new Mock<IMongoAggregateService<BsonDocument>>();
             List<BsonDocument> list = new List<BsonDocument>()
             { new BsonDocument
                     {
@@ -64,9 +66,9 @@ namespace DocumentManagement.Tests
             mockCursor.SetupGet(x => x.Current).Returns(list);
             
             mockBson.Setup(x => x.Match(It.IsAny<FilterDefinition<BsonDocument>>())).Returns(mockBson.Object);
-            mockBson.Setup(x => x.Unwind(It.IsAny<FieldDefinition<BsonDocument>>())).Returns(mockBson.Object);
-            mockBson.Setup(x => x.Lookup<BsonDocument>(It.IsAny<string>(), It.IsAny<FieldDefinition<BsonDocument>>(), It.IsAny<FieldDefinition<BsonDocument>>(), It.IsAny<FieldDefinition<BsonDocument>>())).Returns(mockBson.Object);
-            mockBson.Setup(x => x.Project(It.IsAny<ProjectionDefinition<BsonDocument,BsonDocument>>())).Returns(mockBson.Object);
+            //mockBson.Setup(x => x.Unwind(It.IsAny<FieldDefinition<BsonDocument>>())).Returns(mockBson.Object);
+            //mockBson.Setup(x => x.Lookup<BsonDocument>(It.IsAny<string>(), It.IsAny<FieldDefinition<BsonDocument>>(), It.IsAny<FieldDefinition<BsonDocument>>(), It.IsAny<FieldDefinition<BsonDocument>>())).Returns(mockBson.Object);
+            //mockBson.Setup(x => x.Project(It.IsAny<ProjectionDefinition<BsonDocument,BsonDocument>>())).Returns(mockBson.Object);
             mockBson.Setup(x => x.ToCursorAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(mockCursor.Object);
 
             mockAggregate.Setup(x => x.Match(It.IsAny<FilterDefinition<Request>>())).Returns(mockAggregate.Object);
@@ -80,7 +82,7 @@ namespace DocumentManagement.Tests
             
             var service = new DashboardService(mock.Object);
             //Act
-            List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1);
+            List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1,requestMock.Object,bsonMock.Object);
             //Assert
             Assert.NotNull(dto);
             Assert.Single(dto);

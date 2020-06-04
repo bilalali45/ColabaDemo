@@ -30,7 +30,7 @@ namespace DocumentManagement.Service
         }
     }
 
-    public class MongoServiceAggregate<T> : IMongoServiceAggregate<T>
+    public class MongoAggregateService<T> : IMongoAggregateService<T>
     {
         public IAggregateFluent<BsonDocument> Unwind(IAggregateFluent<T> aggregateFluent,FieldDefinition<T> field,AggregateUnwindOptions<BsonDocument> options=null)
         {
