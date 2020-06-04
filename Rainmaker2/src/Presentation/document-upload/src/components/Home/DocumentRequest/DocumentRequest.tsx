@@ -5,7 +5,7 @@ import { DocumentUpload } from './DocumentUpload/DocumentUpload'
 export const DocumentRequest = () => {
     return (
         <div>
-            <h1>Document Requests</h1>
+            <p>Document Requests</p>
             <DocumentsRequired/>
             <DocumentUpload/>
         </div>

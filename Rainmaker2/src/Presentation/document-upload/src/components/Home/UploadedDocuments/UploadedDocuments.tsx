@@ -4,7 +4,7 @@ import { UploadedDocumentsTable } from './UploadedDocumentsTable/UploadedDocumen
 export const UploadedDocuments = () => {
     return (
         <div>
-            <h1>Uploaded Documents</h1>
+            <p>Uploaded Documents</p>
             <UploadedDocumentsTable/>
         </div>
     )

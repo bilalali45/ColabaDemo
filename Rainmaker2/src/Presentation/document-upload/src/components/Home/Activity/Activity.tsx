@@ -7,11 +7,23 @@ import { ContactUs } from './ContactUs/ContactUs'
 export const Activity = () => {
     return (
         <div>
-            <h1>Activity</h1>
+            <section className="page-content">
+                <div className="container">
+                    <div className="row gutter15">
+                        <div className="col-md-5">
+                            <LoanStatus />
+                        </div>
+                        <div className="col-md-7">
+                            <DocumentStatus />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* <h1>Activity</h1>
             <LoanStatus/>
             <LoanProgress/>
             <DocumentStatus/>
-            <ContactUs/>
+            <ContactUs/> */}
         </div>
     )
 }

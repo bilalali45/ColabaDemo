@@ -3,7 +3,7 @@ import React from 'react'
 export const DocumentsRequired = () => {
     return (
         <div>
-            <h1>Documents Required</h1>
+            <p>Documents Required</p>
         </div>
     )
 }

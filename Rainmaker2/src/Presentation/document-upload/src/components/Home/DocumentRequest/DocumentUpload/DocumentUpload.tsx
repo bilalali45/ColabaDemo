@@ -42,7 +42,7 @@ export const DocumentUpload = () => {
 
     return (
         <div>
-            <h1>Document Upload</h1>
+            <p>Document Upload</p>
             {!files.length ?
                 <DocumentDropBox
                     url={'http://localhost:5000/upload'}

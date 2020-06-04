@@ -61,7 +61,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
             onDragLeave={onDragLeave}
             onDragOver={ondragover}
             onDrop={onDrop}>
-            <h1>Document Drop Box</h1>
+            <p>Document Drop Box</p>
             <input 
                 ref={inputRef} 
                 type="file" 
