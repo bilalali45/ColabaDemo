@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 
-export const DocumentItem = () => {
+type DocumentItemType = {
+    file: File,
+    viewDocument: Function
+}
+
+export const DocumentItem = ({file, viewDocument }: DocumentItemType) => {
+
     return (
         <div>
-            <p>Document Item</p>
+            <p>{file.name}</p>
+            <button onClick={() => viewDocument(file)}>View</button>
         </div>
     )
 }
