@@ -14,12 +14,21 @@ namespace Identity.Controllers
         {
             this.clientFactory = clientFactory;
         }
+        static HttpClient client = new HttpClient();
 
         [Route("authorize")]
         [HttpGet]
         public async Task<IActionResult> GenerateToken()
         {
             HttpClient httpClient = clientFactory.CreateClient();
+
+            HttpResponseMessage response = await client.GetAsync("https://localhost:5031/api/membership/validateuser?userName=danish&password=Rainsoft&employee=true");
+            if (response.IsSuccessStatusCode)
+            {
+                var dd = await response.Content.ReadAsStringAsync();
+            }
+
+
             var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
                 Address = "http://localhost:5010/connect/token",
