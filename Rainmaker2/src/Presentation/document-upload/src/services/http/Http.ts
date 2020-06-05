@@ -32,7 +32,7 @@ export class Http {
     constructor() {
         if (!Http.instance) {
             Http.instance = this;
-        }else {
+        } else {
             return Http.instance;
         }
 
@@ -42,21 +42,21 @@ export class Http {
     async get<T>(url: string) {
         return this.createRequest<T>(this.methods.GET, url);
     }
-    
+
     async post<T, R>(url: string, data: R) {
-       return this.createRequest<T>(this.methods.POST, url, data);
+        return this.createRequest<T>(this.methods.POST, url, data);
     }
-    
+
     async put<T, R>(url: string, data: R) {
-       return this.createRequest<T>(this.methods.PUT, url, data);
+        return this.createRequest<T>(this.methods.PUT, url, data);
     }
-    
+
     async delete<T>(url: string) {
-       return this.createRequest<T>(this.methods.DELETE, url);
+        return this.createRequest<T>(this.methods.DELETE, url);
     }
 
     async fetch(config: AxiosRequestConfig, headers?: OutgoingHttpHeaders) {
-       return axios.request({
+        return axios.request({
             ...config,
             headers: headers
         });
@@ -76,8 +76,10 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log(error?.response?.data?.name);
-            if(error?.response?.data?.name === 'TokenExpiredError') {
+            console.log(error?.response);
+            if (error?.response?.data?.name === 'TokenExpiredError' || error?.response?.data?.name === 'JsonWebTokenError' || error?.response?.data === 'Could not login') {
+                
+                window.open('http://localhost:5000/app', '_self');
                 Auth.removeAuth();
             }
 
@@ -89,11 +91,11 @@ export class Http {
 
     private getFonfig<T>(method: HTTPMethod, url: string, data?: T): ReqConfig<T> {
         let completeUrl = this.createUrl(this.baseUrl, url);
-        
-        let headers : OutgoingHttpHeaders = {}
+
+        let headers: OutgoingHttpHeaders = {}
         let auth = Auth.checkAuth();
-        if(auth && (!url.includes('login') || !url.includes('register'))) {
-            headers['Authorization'] = auth; 
+        if (auth && (!url.includes('login') || !url.includes('authorize'))) {
+            headers['Authorization'] = auth;
         }
 
         let config: ReqConfig<T> = {

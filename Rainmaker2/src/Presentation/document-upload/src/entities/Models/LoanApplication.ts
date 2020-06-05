@@ -52,9 +52,9 @@ export class LoanApplication {
                 if (amountSplitByPoint[1]) {
                     return `$${seperatorAdded}.${amountSplitByPoint[1]}`
                 }
-                return `$${amountSplitByPoint}`
+                return `$${seperatorAdded}`
             },
-            BRL: () => `R$${this.addAmountSeperator(strAmount, 'BRL')}`,
+            BRL: () => `R$${this.addAmountSeperator(strAmount, 'BRL')}`
 
         }
     }

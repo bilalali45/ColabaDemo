@@ -32,7 +32,6 @@ const DummyLogin = () => {
 
     return (
         <div>
-
             <input type="email" value="test@test.com" />
             <input type="password" value="test123" />
             <button onClick={login}>Login</button>

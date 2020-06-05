@@ -4,6 +4,8 @@ import { LoanProgress } from './LoanProgress/LoanProgress'
 import { DocumentStatus } from './DocumentsStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
 
+// 3.7.5
+
 export const Activity = () => {
     return (
         <div>

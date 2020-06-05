@@ -1,8 +1,16 @@
 import React from 'react'
 //import arrowForward from './../../../../assets/images/arrow-forward.svg';
 import {SVG} from './../../../../shared/Components/Assets/SVG';
+import { Link, useHistory } from 'react-router-dom';
 
 export const DocumentStatus = () => {
+
+    const history = useHistory();
+
+    const getStarted = () => {
+        history.push('/home/documentsRequest');
+    }
+
     return (
         <div className="DocumentStatus box-wrap">
             <div className="row">
@@ -25,7 +33,7 @@ export const DocumentStatus = () => {
                 </div>
                 <div className="col-md-5 DocumentStatus--right-side">
                     <SVG shape="storage"/>
-                    <button className="btn btn-primary float-right">Get Started</button>
+                    <button onClick={getStarted} className="btn btn-primary float-right">Get Started</button>
                 </div>
             </div>
         </div>
