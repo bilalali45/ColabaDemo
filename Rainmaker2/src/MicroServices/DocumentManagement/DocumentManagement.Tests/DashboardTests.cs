@@ -16,7 +16,7 @@ namespace DocumentManagement.Tests
 {
     public class DashboardTests
     {
-        //[Fact]
+        [Fact]
         public async Task TestGetAllPendingDocumentsController()
         {
             //Arrange
