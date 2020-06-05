@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Rainmaker.Service;
 using RainMaker.Service;
 using URF.Core.Abstractions;
@@ -38,7 +39,10 @@ namespace Rainmaker.API
             services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddSingleton<ICommonService, CommonService>();
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
-            services.AddControllers();
+            services.AddScoped<IMembershipService, MembershipService>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                                                           options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                                                      ); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
