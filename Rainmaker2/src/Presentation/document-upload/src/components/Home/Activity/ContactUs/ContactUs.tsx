@@ -17,10 +17,10 @@ export const ContactUs: React.SFC<Props> = (props) => {
             <div className="row">
                 
                 <div className="col-md-7">
-                    <div className="ContactUs--header">
+                    <div className="box-wrap--header">
                         <h2 className="heading-h2"> Contact Us </h2>
                     </div>
-                    <div className="ContactUs--body">
+                    <div className="box-wrap--body">
                         <h2 className="ContactUs--user"><a href="">{props.userName}</a> <span className="ContactUs--user-id">ID#{props.userId}</span></h2>
                         <ul className="ContactUs--list">
                             <li><SVG shape="tel" /> <a href="tel:8889711254">{props.userContact}</a></li>

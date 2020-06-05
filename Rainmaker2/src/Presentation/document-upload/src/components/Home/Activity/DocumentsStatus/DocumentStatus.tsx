@@ -14,11 +14,11 @@ export const DocumentStatus: React.SFC<Props> = (props) => {
         <div className="DocumentStatus box-wrap">
             <div className="row">
                 <div className="col-md-7 DocumentStatus--left-side">
-                    <div className="DocumentStatus--header">
+                    <div className="box-wrap--header">
                         <h2 className="heading-h2"> {props.heading} </h2>
     <p>You have <span className="DocumentStatus--count">{ props.counts }</span> items to complete</p>
                     </div>
-                    <div className="DocumentStatus--body">
+                    <div className="box-wrap--body">
                         <ul className="list">
                                 { props.tasks.map( (item:any) => {
                                         return <li> {item.task} </li>
