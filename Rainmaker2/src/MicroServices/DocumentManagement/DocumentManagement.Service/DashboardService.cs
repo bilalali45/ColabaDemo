@@ -21,29 +21,48 @@ namespace DocumentManagement.Service
         public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = await collection.Aggregate()
-                .Match(Builders<Request>.Filter.And(
-                    Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
-                    Builders<Request>.Filter.Eq("tenantId", tenantId)
-                    ))
-                .Unwind("requests")
-                .Unwind("requests.documents")
-                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested))
-                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
-                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(new BsonDocument
-                    {
-                        { "_id" , 1 },
-                        { "createdOn" , "$requests.createdOn" },
-                        { "docId" , "$requests.documents.id" },
-                        { "docName" , "$requests.documents.displayName" },
-                        { "docMessage" , "$requests.documents.message" },
-                        { "typeName" , "$documentObjects.name" },
-                        { "typeMessage" , "$documentObjects.message" },
-                        { "messages" , "$documentObjects.messages" },
-                        { "files" , "$requests.documents.files"}
-                    })
-                .ToCursorAsync();
+            
+            var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""loanApplicationId"": " + loanApplicationId + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$unwind"": ""$requests.documents""
+                        }", @"{
+                            ""$match"": {
+                                ""requests.documents.status"": ""requested""
+                            }
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""requests.documents.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documentObjects""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documentObjects"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1,
+                                ""createdOn"": ""$requests.createdOn"",
+                                ""docId"": ""$requests.documents.id"",
+                                ""docName"": ""$requests.documents.displayName"",
+                                ""docMessage"": ""$requests.documents.message"",
+                                ""typeName"": ""$documentObjects.name"",
+                                ""typeMessage"": ""$documentObjects.message"",
+                                ""messages"": ""$documentObjects.messages"",
+                                ""files"": ""$requests.documents.files""
+                            }
+                        }"
+                ));
+
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
             {
