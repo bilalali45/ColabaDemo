@@ -1,12 +1,16 @@
 $color:(
     primary             :       #4484F4,
-    colorwhite          :       #fff,
+    primary-text        :       #ffffff,
     secondry            :       #DD3126,
-    secondry-text       :       #fff,
+    secondry-text       :       #ffffff,
     border              :       #EBEBEB,
     font                :       #4E4E4E,   
     colordarkblue       :       #04202e,
-    colorBlack          :       #000000
+    colorBlack          :       #000000,
+    colorWhite          :       #ffffff,
+    statusCompleted     :       #32B93B,
+    statusCurrent       :       #4484F4,
+    statusUpcomming     :       #8A8A8A
 );
 
 $font:(

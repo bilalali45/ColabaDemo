@@ -128,9 +128,22 @@ min-height: 100vh;
     padding: 15px;
     font: 400 #{fontSize('sm')+'/21px'} fontFamily('base');
     margin-bottom: 15px;
-    background: color('colorwhite');
-}
+    background: color('colorWhite');
+    
+    &--header{
+        border-bottom: 1px solid color('border');
+        padding-bottom: 15px;
+        display: block;
+        margin-bottom: 10px;
+        p{
+            margin: 0px;
+        }
+    }
 
+    &--body{
+        padding: 10px 0 0;
+    }
+}// .box-wrap
 .list-style-none{
     list-style: none;
     margin: 0;

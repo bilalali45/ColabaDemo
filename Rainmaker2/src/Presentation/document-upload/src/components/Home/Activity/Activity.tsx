@@ -34,6 +34,7 @@ export class Activity extends React.Component {
                         <div className="row gutter15">
                             <div className="col-md-5">
                                 <LoanStatus />
+                                <LoanProgress />
                             </div>
                             <div className="col-md-7">
                                 <DocumentStatus 
