@@ -1,0 +1,35 @@
+$color:(
+    primary             :       #4484F4,
+    primary-text        :       #ffffff,
+    secondry            :       #DD3126,
+    secondry-text       :       #ffffff,
+    border              :       #EBEBEB,
+    font                :       #4E4E4E,   
+    colordarkblue       :       #04202e,
+    colorBlack          :       #000000,
+    colorWhite          :       #ffffff,
+    statusCompleted     :       #32B93B,
+    statusCurrent       :       #4484F4,
+    statusUpcomming     :       #8A8A8A
+);
+
+$font:(
+    base            :      'Roboto'#{', sans-serif'},
+    heading         :      'Poppins'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 10px,
+    sm: 14px,
+    nr: 16px,
+    md: 17px,
+    lg: 24px,
+    xlg: 34px,
+    h1:48px,
+    h2:24px,
+    h3:17px,
+);
+
+
+// Bootstrap Variables
+$grid-gutter-width:           30px !default;

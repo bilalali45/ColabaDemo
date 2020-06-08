@@ -1,0 +1,45 @@
+.LoanStatus{
+        
+    &--header{
+
+    }
+
+    &--heading{
+        margin: 0 0 5px;
+        font: 800 #{fontSize('nr')+'/18px'} fontFamily('heading');
+    }
+
+    .box-wrap--body{
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        
+            > li{
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid #EBEBEB;
+        
+                &:first-child{
+                    padding-top: 0;
+                }
+        
+                &:last-child{
+                    border-bottom: none;
+                }
+        
+                p {
+                    height: 45px;
+                    margin: 0;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+
+    &-actions a{
+        color: color('primary');
+    }
+
+    
+}
