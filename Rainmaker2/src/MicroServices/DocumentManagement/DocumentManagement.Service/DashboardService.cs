@@ -22,7 +22,7 @@ namespace DocumentManagement.Service
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",
@@ -34,7 +34,7 @@ namespace DocumentManagement.Service
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": {
-                                ""requests.documents.status"": """+Status.Requested+@"""
+                                ""requests.documents.status"": ""requested""
                             }
                         }", @"{
                             ""$lookup"": {
@@ -73,21 +73,11 @@ namespace DocumentManagement.Service
                     dto.Id = query.Id;
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (string.IsNullOrEmpty(query.docMessage))
-                    {
-                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
-                        {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
-                        }
-                        else
-                        {
-                            dto.docMessage = query.typeMessage;
-                        }
-                    }
-                    else
-                    {
-                        dto.docMessage = query.docMessage;
-                    }
+                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ?
+                        (query.messages?.Any(x => x.tenantId == tenantId) == true ?
+                        query.messages.Where(x => x.tenantId == tenantId).First().message :
+                        query.typeName) :
+                        query.docMessage;
                     dto.files = query.files;
                     result.Add(dto);
                 }
@@ -98,46 +88,29 @@ namespace DocumentManagement.Service
         public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
-                @"{""$match"": {
-
-                  ""loanApplicationId"": " + loanApplicationId + @",
-                  ""tenantId"": " + tenantId + @"
-                            }
-                        }", @"{
-                            ""$unwind"": ""$requests""
-                        }", @"{
-                            ""$unwind"": ""$requests.documents""
-                        }", @"{
-                            ""$match"": {
-                                ""requests.documents.status"": """ + Status.Submitted + @"""
-                            }
-                        }", @"{
-                            ""$lookup"": {
-                                ""from"": ""DocumentType"",
-                                ""localField"": ""requests.documents.typeId"",
-                                ""foreignField"": ""_id"",
-                                ""as"": ""documentObjects""
-                            }
-                        }", @"{
-                            ""$unwind"": {
-                                ""path"": ""$documentObjects"",
-                                ""preserveNullAndEmptyArrays"": true
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1,
-                                ""createdOn"": ""$requests.createdOn"",
-                                ""docId"": ""$requests.documents.id"",
-                                ""docName"": ""$requests.documents.displayName"",
-                                ""docMessage"": ""$requests.documents.message"",
-                                ""typeName"": ""$documentObjects.name"",
-                                ""typeMessage"": ""$documentObjects.message"",
-                                ""messages"": ""$documentObjects.messages"",
-                                ""files"": ""$requests.documents.files""
-                            }
-                        }"
-                ));
+            using var asyncCursor = await collection.Aggregate()
+                .Match(Builders<Request>.Filter.And(
+                    Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
+                    Builders<Request>.Filter.Eq("tenantId", tenantId)
+                    ))
+                .Unwind("requests")
+                .Unwind("requests.documents")
+                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Submitted))
+                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
+                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
+                .Project(new BsonDocument
+                    {
+                        { "_id" , 1 },
+                        { "createdOn" , "$requests.createdOn" },
+                        { "docId" , "$requests.documents.id" },
+                        { "docName" , "$requests.documents.displayName" },
+                        { "docMessage" , "$requests.documents.message" },
+                        { "typeName" , "$documentObjects.name" },
+                        { "typeMessage" , "$documentObjects.message" },
+                        { "messages" , "$documentObjects.messages" },
+                        { "files" , "$requests.documents.files"}
+                    })
+                .ToCursorAsync();
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
             {
@@ -148,21 +121,11 @@ namespace DocumentManagement.Service
                     dto.Id = query.Id;
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (string.IsNullOrEmpty(query.docMessage))
-                    {
-                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
-                        {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
-                        }
-                        else
-                        {
-                            dto.docMessage = query.typeMessage;
-                        }
-                    }
-                    else
-                    {
-                        dto.docMessage = query.docMessage;
-                    }
+                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ?
+                        (query.messages?.Any(x => x.tenantId == tenantId) == true ?
+                        query.messages.Where(x => x.tenantId == tenantId).First().message :
+                        query.typeName) :
+                        query.docMessage;
                     dto.files = query.files;
                     result.Add(dto);
                 }
