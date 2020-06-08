@@ -195,7 +195,7 @@ namespace DocumentManagement.Tests
 
             DashboardController controller = new DashboardController(mock.Object);
             //Act
-            IActionResult result = await controller.GetPendingDocuments(1, 1);
+            IActionResult result = await controller.GetSubmittedDocuments(1, 1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
