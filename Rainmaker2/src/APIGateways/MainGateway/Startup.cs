@@ -50,7 +50,7 @@ namespace MainGateway
             }
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
