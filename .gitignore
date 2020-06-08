@@ -11,3 +11,4 @@ packages
 .vs
 package-lock.json
 /Rainmaker2/src/MicroServices/DocumentManagement/.vscode
+/Rainmaker2/src/MicroServices/DocumentManagement/TestResults
