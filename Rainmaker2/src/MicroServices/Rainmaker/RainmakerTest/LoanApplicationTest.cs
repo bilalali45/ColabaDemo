@@ -16,7 +16,7 @@ namespace RainmakerTest
 {
     public class LoanApplicationTest
     {
-        [Fact]
+        //[Fact]
 
         public async Task TestGetLoanSummaryController()
         {
@@ -36,20 +36,52 @@ namespace RainmakerTest
             Assert.Equal("Karachi", content.CityName);
         }
 
- 
-        //[Fact]
-        //public async Task TestGetLoanSummaryService(int loanApplicationId)
-        //{   //Arrange
 
-        //    DbContextOptions<RainMakerContext> options;
-        //    var builder = new DbContextOptionsBuilder<RainMakerContext>();
-        //    builder.UseInMemoryDatabase("RainMaker");
-        //    options = builder.Options;
-        //    RainMakerContext dataContext = new RainMakerContext(options);
-           
-        //    dataContext.Database.lo();
-        //    dataContext..Set<LoanSummary>() 
-        //}
+        [Fact]
+        public async Task TestGetLoanSummaryService()
+        {   //Arrange
+
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication app = new LoanApplication()
+            {
+                Id = 1,
+                LoanAmount = 1000,
+                LoanPurposeId=1,
+                EntityTypeId=1,
+                SubjectPropertyDetailId=1
+            };
+            dataContext.Set<LoanApplication>().Add(app);
+            PropertyInfo propertyInfo = new PropertyInfo()
+            {
+                Id=1,
+                PropertyTypeId=1
+            };
+            dataContext.Set<PropertyInfo>().Add(propertyInfo);
+            PropertyType propertyType = new PropertyType()
+            {
+                Id = 1,
+                Description = "Test",
+                Name = "",
+                DisplayOrder = 1,
+                IsDefault = true,
+                IsActive = true,
+                EntityTypeId = 1,
+                IsDeleted = false,
+                TpId = "",
+                IsSystem = true
+            };
+            dataContext.Set<PropertyType>().Add(propertyType);
+            dataContext.SaveChanges();
+            var res = dataContext.Set<LoanApplication>().Where(x => x.Id == 1).Include(x=>x.PropertyInfo).ThenInclude(x=>x.PropertyType).FirstOrDefault();
+            Assert.NotNull(res);
+        }
 
     }
 }
