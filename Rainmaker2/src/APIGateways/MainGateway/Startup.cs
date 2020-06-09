@@ -26,7 +26,7 @@ namespace MainGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddCors();
             var authenticationProviderKey = "TestKey";
             Action<IdentityServerAuthenticationOptions> opt = o =>
             {
@@ -48,6 +48,7 @@ namespace MainGateway
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             //app.UseHttpsRedirection();
