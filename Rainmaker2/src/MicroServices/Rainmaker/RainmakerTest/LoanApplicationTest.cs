@@ -200,9 +200,9 @@ namespace RainmakerTest
                 IsSystem = true,
                 EntityTypeId = 1,
                 IsDeleted = false,
-                NmlsNo = "02092",
-                Photo = "avccc",
-                CmsName = "ABC"
+                NmlsNo = "030012345",
+                Photo = "abc.png",
+                CmsName = "Shehroz"
                 ,ContactId=1
                
             }; 
@@ -223,7 +223,7 @@ namespace RainmakerTest
             CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo
             {
                 Id=1,
-                Phone = "023565552",
+                Phone = "030012345678",
                 IsDeleted=false,
                 EntityTypeId=1,
                 IsDefault=true,
@@ -256,8 +256,8 @@ namespace RainmakerTest
                 IsDefault = true,
                 IsSystem = true,
                 IsDeleted = false,
-                WebUrl = "abcbbc"
-               
+                WebUrl = "https://entityframeworkcore.com/"
+
             };
             dataContext.Set<BusinessUnit>().Add(businessUnit);
 
@@ -272,7 +272,7 @@ namespace RainmakerTest
                 IsDefault = true,
                 IsSystem = true,
                 IsDeleted = false,
-                Email="sdddd"
+                Email="shehroz@gmail.com"
                
             };
             dataContext.Set<EmailAccount>().Add(emailAccount);
@@ -282,8 +282,8 @@ namespace RainmakerTest
                 Id = 1,
                 EntityTypeId = 1,
                 IsDeleted = false,
-                FirstName = "ABC",
-                LastName = "A"
+                FirstName = "Shehroz",
+                LastName = "Riaz"
             };
             dataContext.Set<Contact>().Add(contact);
 
@@ -299,13 +299,13 @@ namespace RainmakerTest
 
             // Assert
             Assert.NotNull(res);
-            Assert.Equal("sdddd", res.Email);
-            Assert.Equal("ABC", res.FirstName);
-            Assert.Equal("A", res.LastName);
-            Assert.Equal("02092", res.NMLS);
-            Assert.Equal("023565552", res.Phone);
-            Assert.Equal("avccc", res.Photo);
-            Assert.Equal("abcbbc", res.WebUrl);
+            Assert.Equal("shehroz@gmail.com", res.Email);
+            Assert.Equal("Shehroz", res.FirstName);
+            Assert.Equal("Riaz", res.LastName);
+            Assert.Equal("030012345", res.NMLS);
+            Assert.Equal("030012345678", res.Phone);
+            Assert.Equal("abc.png", res.Photo);
+            Assert.Equal("https://entityframeworkcore.com//lo/Shehroz", res.WebUrl);
         
 
         }
