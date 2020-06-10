@@ -1,4 +1,12 @@
-﻿using System;
+﻿using DocumentManagement.API.Controllers;
+using DocumentManagement.Entity;
+using DocumentManagement.Model;
+using DocumentManagement.Service;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Moq;
+using System;
 using System.Collections.Generic;
 using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
@@ -19,6 +27,85 @@ namespace DocumentManagement.Tests
 {
     public class FileTests
     {
+        [Fact]
+        public async Task TestDoneTrue ()
+        {
+            Mock<IFileService> mock = new Mock<IFileService>();
+            DoneModel obj = new DoneModel();
+            obj.id = "1";
+            obj.docId = "1";
+            obj.requestId = "1";
+            mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(true);
+            FileController controller = new FileController(mock.Object);
+            //Act
+            IActionResult result = await controller.Done(obj);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+          
+        }
+        [Fact]
+        public async Task TestDoneFalse()
+        {
+            Mock<IFileService> mock = new Mock<IFileService>();
+            DoneModel obj = new DoneModel();
+            obj.id = "1";
+            obj.docId = "1";
+            obj.requestId = "1";
+            mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(false);
+            FileController controller = new FileController(mock.Object);
+            //Act
+            IActionResult result = await controller.Done(obj);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+
+        }
+
+        [Fact]
+        public async Task TestDoneFileServiceTrue()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            var doneModel = new DoneModel() { id = "5eb25d1fe519051af2eeb72d", docId = "aaa25d1fe456051af2eeb72d", requestId = "abc15d1fe456051af2eeb768" };
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IFileService fileService = new FileService(mock.Object);
+            bool result = await fileService.Done(doneModel);
+            //Assert
+            Assert.True(result);
+        }
+
+
+
+
+        [Fact]
+        public async Task TestDoneFileServiceFalse()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            var doneModel = new DoneModel() { id = "5eb25d1fe519051af2eeb72d", docId = "aaa25d1fe456051af2eeb72d", requestId = "abc15d1fe456051af2eeb768" };
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IFileService fileService = new FileService(mock.Object);
+            bool result = await fileService.Done(doneModel);
+            //Assert
+            Assert.False(result);
+        }
         [Fact]
         public async Task TestRenameControllerTrue()
         {
