@@ -1,10 +1,6 @@
 import React from 'react'
-import { SVG } from './../../../../shared/Components/Assets/SVG';
+import { SVGstorage } from '../../../../shared/Components/Assets/SVG';
 import { Link, useHistory } from 'react-router-dom';
-
-
-
-
 
 type Props = {
     heading?: string,
@@ -19,7 +15,7 @@ export const DocumentStatus: React.SFC<Props> = (props) => {
     const history = useHistory();
 
     const getStarted = () => {
-        history.push('/home/documentsRequest');
+        history.push('/home/DocumentStatus');
     }
 
     return (
@@ -36,14 +32,11 @@ export const DocumentStatus: React.SFC<Props> = (props) => {
                                 return <li> {item.task} </li>
                             })}
                         </ul>
-                        <div>
-                            <a href={props.moreTask} className="DocumentStatus--get-link">Show 4 more Tasks <SVG shape="arrowFarword" /></a>
-                        </div>
                     </div>
                 </div>
                 <div className="col-md-5 DocumentStatus--right-side">
-                    <SVG shape="storage" />
-                    <button onClick={getStarted} className="btn btn-primary float-right">Get Started</button>
+                    <SVGstorage />
+                    <button onClick={getStarted} className="btn btn-primary float-right">Get Started <em className="zmdi zmdi-arrow-right"></em></button>
                 </div>
             </div>
         </div>

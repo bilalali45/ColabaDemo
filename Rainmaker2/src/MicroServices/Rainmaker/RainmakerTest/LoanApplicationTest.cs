@@ -26,7 +26,7 @@ namespace RainmakerTest
 
             mock.Setup(x => x.GetLoanSummary(It.IsAny<int>())).ReturnsAsync(obj);
 
-            LoanApplicationController controller = new LoanApplicationController(mock.Object);
+            LoanApplicationController controller = new LoanApplicationController(mock.Object,null,null);
             ////Act
             IActionResult result = await controller.GetLoanInfo(1);
             ////Assert
@@ -143,7 +143,7 @@ namespace RainmakerTest
 
 
 
-            LoanApplicationController controller = new LoanApplicationController(mock.Object);
+            LoanApplicationController controller = new LoanApplicationController(mock.Object,null,null);
             //Act
             IActionResult result = await controller.GetLOInfo(1, 1);
             //Assert

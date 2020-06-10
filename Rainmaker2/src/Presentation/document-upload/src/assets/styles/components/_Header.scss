@@ -1,10 +1,11 @@
 .header-main{
     font-size: fontSize('lg');
     border-top: none;
-    border-bottom: 1px solid rgba(205, 205, 205, 0.2);
+    box-shadow: $shadow;
     min-height: 80px;
     padding: 0;
-    background: color('colorwhite');
+    background: color('colorWhite');
+    position: relative;
     .navbar {
         margin: 0;
         padding: 16px 0;

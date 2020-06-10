@@ -8,6 +8,11 @@ h1, h2, h3, h4, h5, h6 {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
+ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+}
 [class^="heading-"],[class*="heading-"]{
     font-family: fontFamily('heading');
     font-weight: 400;
@@ -18,6 +23,7 @@ h1, h2, h3, h4, h5, h6 {
 .heading-h2{
     font-size: fontSize('lg');
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 .heading-h3{
     font-size: fontSize('md');
@@ -107,16 +113,14 @@ position: relative;
 min-height: 100vh;
 }
 .page-content {
-    min-height: calc(100vh - 375px);
-    padding-top: 110px;
-    background: #FCFCFC;
-    padding-bottom: 90px;
+    min-height: calc(100vh - 280px);
+    padding-bottom: 40px;
 }
 .gutter15 {
     margin-left: -7.5px;
     margin-right: -7.5px; 
 
-    [class*="col-"] {
+    > [class*="col-"] {
         padding-right: 7.5px;
     padding-left: 7.5px;
     }
@@ -136,6 +140,7 @@ min-height: 100vh;
         margin-bottom: 5px;
         h2{
             font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+            text-transform: uppercase;
         }
         p{
             margin: 0px;
@@ -188,3 +193,11 @@ min-height: 100vh;
     padding: 20px 50px;
     min-width: 86px;
 }
+
+.nbox-wrap {
+    background:color('colorWhite');
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: $shadow;
+    
+    }
