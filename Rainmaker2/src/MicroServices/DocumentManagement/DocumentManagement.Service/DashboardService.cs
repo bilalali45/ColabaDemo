@@ -90,7 +90,13 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files;
+                    dto.files = query.files?.Select(x=>new FileDTO() { 
+                        clientName=x.clientName,
+                        fileUploadedOn=DateTime.SpecifyKind(x.fileUploadedOn,DateTimeKind.Utc),
+                        id=x.id,
+                        order=x.order,
+                        size=x.size
+                    }).ToList();
                     result.Add(dto);
                 }
             }
@@ -167,7 +173,14 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files;
+                    dto.files = query.files?.Select(x => new FileDTO()
+                    {
+                        clientName = x.clientName,
+                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                        id = x.id,
+                        order = x.order,
+                        size = x.size
+                    }).ToList();
                     result.Add(dto);
                 }
             }
