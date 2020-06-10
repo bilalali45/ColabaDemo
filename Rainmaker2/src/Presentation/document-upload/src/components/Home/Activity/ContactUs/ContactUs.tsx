@@ -32,7 +32,7 @@ export const ContactUs: React.SFC<Props> = (props) => {
                        
                     </div>
                     
-                    <div className="col-md-6 col-md-offset-1 ContactUs--right">                        
+                    <div className="col-md-7 col-md-offset-1 ContactUs--right">                        
                         <ul className="ContactUs--list">
                             <li><SVG shape="tel" /> <a href="tel:8889711254">{props.userContact}</a></li>
                             <li><SVG shape="mail" /> <a href="mailto:Williams.jack@texastrustloans.com">{props.userEmail}</a></li>

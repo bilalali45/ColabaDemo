@@ -1,22 +1,24 @@
 $color:(
     primary             :       #4484F4,
     primary-text        :       #ffffff,
-    secondry            :       #DD3126,
+    secondry            :       #00AD46,
     secondry-text       :       #ffffff,
-    border              :       #EBEBEB,
-    font                :       #4E4E4E,   
-    heading             :       #4E4E4E,
+    border              :       #EBEBEB, 
+    base                :       #4E4E4E, 
+    heading             :       #4E4E4E,   
     colordarkblue       :       #04202e,
     colorBlack          :       #000000,
     colorWhite          :       #ffffff,
     statusCompleted     :       #32B93B,
     statusCurrent       :       #4484F4,
-    statusUpcomming     :       #8A8A8A
+    statusUpcomming     :       #8A8A8A,
+    colorgray           :       #F8F8F8,
+    light-purple        :       #7E829E
 );
 
 $font:(
-    base            :      'Roboto'#{', sans-serif'},
-    heading         :      'Poppins'#{', sans-serif'}
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
 );
 
 $font-size:(
@@ -35,6 +37,7 @@ $font-size:(
     h5:12px,
     h6:10
 );
+$shadow:'0 0 3px rgba(0 0 0 0.16)';
 
 
 // Bootstrap Variables
