@@ -1,10 +1,14 @@
-﻿using System;
+﻿using DocumentManagement.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DocumentManagement.Service
 {
-    public class IFileService
+    public interface IFileService
     {
+        Task<DoneModel> Done(DoneModel model);
+
     }
 }
