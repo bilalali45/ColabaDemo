@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
+using DocumentManagement.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentManagement.API.Controllers
@@ -11,6 +12,13 @@ namespace DocumentManagement.API.Controllers
     [Route("api/DocumentManagement/[controller]")]
     public class FileController : Controller
     {
+        private readonly IFileService fileService;
+        public FileController(IFileService fileService)
+        {
+            this.fileService = fileService;
+        }
+
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Submit(FileSubmitModel model)
         {
@@ -20,7 +28,11 @@ namespace DocumentManagement.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> Done(DoneModel model)
         {
-            return null;
+            var docQuery = await fileService.Done(model);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
         }
 
         [HttpPut("[action]")]
