@@ -12,8 +12,23 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                 <h2 className="heading-h2"> Your Loan Progress </h2>
             </div>
             <div className="box-wrap--body">
+<div className="lp-wrap">
+    <div className="list-wrap">
+        <ul>
+            <li>
+                <div className="step-count">4</div>
+                <div className="lp-content">
+                    <div className="step-label">Current Step</div>
+                    <h6>Document upload and loan team review</h6>
+                    <p>Submit document to help us verify the information you provided. We many request follow-up items add we review your application.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 
-                <div className="progress-list">
+
+                {/* <div className="progress-list">
                     <ol>
                         <li data-status="completed">
                             <span className="progress-list--icon"><SVGchecked /></span>
@@ -47,7 +62,7 @@ make any edits before you submit your documents </p>
                             <p>tell us about yourself and you financial situation so we can find loan options for you</p>  
                         </li>
                     </ol>
-                </div>
+                </div> */}
 
             </div>
         </div>
