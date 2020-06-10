@@ -2,8 +2,9 @@
         
     &--heading{
         margin: 0 0 5px;
-        font: 800 #{fontSize('nr')+'/18px'} fontFamily('heading');
+        font: 400 #{fontSize('md')+'/1.2'} fontFamily('heading');
         color:color(light-purple);
+        text-transform: uppercase;
     }
 
     .box-wrap--body{
