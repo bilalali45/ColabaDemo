@@ -110,7 +110,6 @@ min-height: 100vh;
 .page-content {
     min-height: calc(100vh - 375px);
     padding-top: 110px;
-    background: #FCFCFC;
     padding-bottom: 90px;
 }
 .gutter15 {
@@ -190,3 +189,11 @@ min-height: 100vh;
     padding: 20px 50px;
     min-width: 86px;
 }
+
+.nbox-wrap {
+    background:color('colorWhite');
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: $shadow;
+    
+    }
