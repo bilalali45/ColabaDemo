@@ -20,24 +20,19 @@ export const DocumentStatus: React.SFC<Props> = (props) => {
 
     return (
         <div className="DocumentStatus box-wrap">
-            <div className="row">
-                <div className="col-md-7 DocumentStatus--left-side">
-                    <div className="box-wrap--header">
-                        <h2 className="heading-h2"> {props.heading} </h2>
-                        <p>You have <span className="DocumentStatus--count">{props.counts}</span> items to complete</p>
-                    </div>
-                    <div className="box-wrap--body">
-                        <ul className="list">
-                            {props.tasks.map((item: any) => {
-                                return <li> {item.task} </li>
-                            })}
-                        </ul>
-                    </div>
-                </div>
-                <div className="col-md-5 DocumentStatus--right-side">
-                    <SVGstorage />
-                    <button onClick={getStarted} className="btn btn-primary float-right">Get Started <em className="zmdi zmdi-arrow-right"></em></button>
-                </div>
+            <div className="box-wrap--header clearfix">
+                <h2 className="heading-h2"> {props.heading} </h2>
+                <p>You have <span className="DocumentStatus--count">{props.counts}</span> items to complete</p>
+            </div>
+            <div className="box-wrap--body clearfix">
+                <ul className="list">
+                    {props.tasks.map((item: any) => {
+                        return <li> {item.task} </li>
+                    })}
+                </ul>
+            </div>
+            <div className="box-wrap--footer clearfix">
+                <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
             </div>
         </div>
     )

@@ -35,6 +35,14 @@ h1, h2, h3, h4, h5, h6 {
 body ,p {
     font-family: fontFamily('base');
 }
+.clearfix{
+    &::before,
+    &::after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
 
 .flex{
     display: -webkit-flex;
@@ -183,11 +191,31 @@ min-height: 100vh;
     vertical-align: middle;
 }
 
+.btn-primary{
+    //@include button-variant(color('primary'), $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: darken($background, 10%), $active-border: darken($border, 12.5%));
+}
+
 .btn{
     border-radius: 0px;
-    font: 400 #{fontSize('nr')+'/1'} fontFamily('heading');
-    padding: 20px 50px;
+    font: 400 #{fontSize('nr')+'/1'} fontFamily('base');
+    padding: 12px 20px;
     min-width: 86px;
+    text-transform: uppercase;
+
+    em,i{
+        position: relative;
+        padding-left: 30px;
+        &::after{
+            content: "";
+            display: inline-block;
+            width: 1px;
+            height: 20px;
+            background-color: rgba(#000,0.2);
+            position: absolute;
+            top: -3px;
+            left: 15px;
+        }
+    }
 }
 
 .nbox-wrap {
