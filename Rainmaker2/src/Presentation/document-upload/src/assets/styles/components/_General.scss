@@ -4,7 +4,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     font-family: fontFamily('heading');
-    color: color('colordarkblue'); 
+    color: color('base'); 
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -129,9 +129,9 @@ min-height: 100vh;
 
 }
 .box-wrap {
-    border: 2px solid color('border');
+    box-shadow: $shadow;
     padding: 15px;
-    font: 400 #{fontSize('sm')+'/21px'} fontFamily('base');
+    font: 400 #{fontSize('nr')+'/17px'} fontFamily('base');
     margin-bottom: 15px;
     background: color('colorWhite');
     
@@ -139,8 +139,9 @@ min-height: 100vh;
         display: block;
         margin-bottom: 5px;
         h2{
-            font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+            font: 500 #{fontSize('md')+'/1.2'} fontFamily('heading');
             text-transform: uppercase;
+            color: color('base');
         }
         p{
             margin: 0px;
