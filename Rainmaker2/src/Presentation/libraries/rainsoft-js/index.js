@@ -1,4 +1,4 @@
-"use strict";
+
 exports.__esModule = true;
 exports.UnMaskPhone = exports.MaskPhone = void 0;
 exports.MaskPhone = function (number) {

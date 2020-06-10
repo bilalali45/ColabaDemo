@@ -11,3 +11,4 @@ packages
 .vs
 package-lock.json
 node_modules
+/Rainmaker2/src/Presentation/libraries/rainsoft-rc/dist

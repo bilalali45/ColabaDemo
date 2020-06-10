@@ -4,6 +4,7 @@ import { LoanProgress } from './LoanProgress/LoanProgress'
 import { DocumentStatus } from './DocumentsStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
 import Williams_Jack from '../../../assets/images/Williams_Jack.jpg';
+import {MaskPhone} from 'rainsoft-js';
 
 export class Activity extends React.Component {
 
@@ -48,7 +49,7 @@ export class Activity extends React.Component {
                                 <ContactUs  
                                     userName="Williams Jack" 
                                     userId={254545} 
-                                    userContact="(888) 971-1254" 
+                                    userContact={MaskPhone(8889711254)} 
                                     userEmail="Williams.jack@texastrustloans.com"
                                     userWebsite="www.texatrustloans.com"
                                     userImg={Williams_Jack}

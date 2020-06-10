@@ -8,16 +8,16 @@ export const MaskPhone = (number: number) => {
         }
 
         if (i === 5) {
-            return `${n} - `
+            return `${n}-`
         }
 
         return n;
     }).join('');
 };
 
-export const UnMaskPhone = (formattedNumber: any) => {
-	return formattedNumber.split('').filter(n => {
-        if (!isNaN(n) && n !== ' ') {
+export const UnMaskPhone = (formattedNumber: string) => {
+	return formattedNumber.split('').filter((n: string) => {
+        if (!isNaN(parseInt(n)) && n !== ' ') {
             return n
         }
     }).join('');

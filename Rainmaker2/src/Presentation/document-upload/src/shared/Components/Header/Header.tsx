@@ -4,20 +4,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { UserActions } from '../../../store/actions/UserActions';
 import { useHistory, useLocation } from 'react-router-dom';
 
-// const menuItems = [
-//     "/Dashboard",
-//     "/Account/ManagePassword",
-//     "/Account/LogOff",
-// ]
 
 const Header = () => {
 
     const history = useHistory();
-    // console.log('his', useLocation());
     const logout = () => {
         UserActions.logout();
         window.open('http://localhost:5000/app', '_self');
-        // history.push('/login')
     }
 
     return (
