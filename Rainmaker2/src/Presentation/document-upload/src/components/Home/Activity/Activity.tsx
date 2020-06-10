@@ -36,11 +36,8 @@ export class Activity extends React.Component {
                 <section className="page-content">
                     <div className="container">
                         <div className="row gutter15">
-                            <div className="col-md-5">
+                            <div className="col-md-6">
                                 {/* <LoanStatus /> */}
-                                <LoanProgress />
-                            </div>
-                            <div className="col-md-7">
                                 <DocumentStatus 
                                     heading="Document Request" 
                                     counts={8} 
@@ -49,6 +46,9 @@ export class Activity extends React.Component {
                                     tasks={this.state.tasks}
                                 />
                                 
+                            </div>
+                            <div className="col-md-6">
+                                <LoanProgress />                                
                                 <ContactUs  
                                     userName="Williams Jack" 
                                     userId={254545} 

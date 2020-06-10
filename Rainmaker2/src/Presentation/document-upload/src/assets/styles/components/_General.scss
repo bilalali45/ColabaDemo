@@ -4,7 +4,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     font-family: fontFamily('heading');
-    color: color('colordarkblue'); 
+    color: color('base'); 
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -39,6 +39,14 @@ ul {
 }
 body ,p {
     font-family: fontFamily('base');
+}
+.clearfix{
+    &::before,
+    &::after{
+        content: "";
+        display: table;
+        clear: both;
+    }
 }
 
 .flex{
@@ -129,9 +137,9 @@ min-height: 100vh;
 
 }
 .box-wrap {
-    border: 2px solid color('border');
+    box-shadow: $shadow;
     padding: 15px;
-    font: 400 #{fontSize('sm')+'/21px'} fontFamily('base');
+    font: 400 #{fontSize('nr')+'/17px'} fontFamily('base');
     margin-bottom: 15px;
     background: color('colorWhite');
     
@@ -139,8 +147,9 @@ min-height: 100vh;
         display: block;
         margin-bottom: 5px;
         h2{
-            font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+            font: 500 #{fontSize('md')+'/1.2'} fontFamily('heading');
             text-transform: uppercase;
+            color: color('base');
         }
         p{
             margin: 0px;
@@ -187,11 +196,31 @@ min-height: 100vh;
     vertical-align: middle;
 }
 
+.btn-primary{
+    //@include button-variant(color('primary'), $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: darken($background, 10%), $active-border: darken($border, 12.5%));
+}
+
 .btn{
     border-radius: 0px;
-    font: 400 #{fontSize('nr')+'/1'} fontFamily('heading');
-    padding: 20px 50px;
+    font: 400 #{fontSize('nr')+'/1'} fontFamily('base');
+    padding: 12px 20px;
     min-width: 86px;
+    text-transform: uppercase;
+
+    em,i{
+        position: relative;
+        padding-left: 30px;
+        &::after{
+            content: "";
+            display: inline-block;
+            width: 1px;
+            height: 20px;
+            background-color: rgba(#000,0.2);
+            position: absolute;
+            top: -3px;
+            left: 15px;
+        }
+    }
 }
 
 .nbox-wrap {
