@@ -38,7 +38,6 @@ export const SVG = ({shape}:SVGprops) => {
             }
 
             {shape == 'mail' &&
-
                 <svg xmlns="http://www.w3.org/2000/svg" width="18.842" height="13.459" viewBox="0 0 18.842 13.459">
                 <g id="mail" transform="translate(0 -68.267)">
                     <g id="Group_20" data-name="Group 20" transform="translate(0.673 68.267)">
@@ -111,3 +110,4 @@ export const SVG = ({shape}:SVGprops) => {
         </div>
     )
 }
+

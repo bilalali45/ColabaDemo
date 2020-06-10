@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
-import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
 
 import { Http } from '../../services/http/Http'
@@ -13,6 +12,7 @@ import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
 import Header from '../../shared/Components/Header/Header'
 import Footer from '../../shared/Components/Footer/Footer'
+import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
 const httpClient = new Http();
 
 export const Home = () => {
@@ -41,7 +41,7 @@ export const Home = () => {
             <ActivityHeader />
             <Switch>
                 <Route path="/home/activity" component={Activity} />
-                <Route path="/home/documentsRequest" component={DocumentRequest} />
+                <Route path="/home/DocumentStatus" component={DocumentStatus} />
                 <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
             </Switch>
             <Footer></Footer>
