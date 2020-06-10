@@ -26,8 +26,8 @@ export const DocumentStatus: React.SFC<Props> = (props) => {
             </div>
             <div className="box-wrap--body clearfix">
                 <ul className="list">
-                    {props.tasks.map((item: any) => {
-                        return <li> {item.task} </li>
+                    {props.tasks.map((item: any,index:any) => {
+                        return <li key={index}> {item.task} </li>
                     })}
                 </ul>
             </div>

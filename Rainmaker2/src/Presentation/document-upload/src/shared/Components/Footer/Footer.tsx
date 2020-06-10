@@ -1,9 +1,19 @@
 import React from 'react'
 import ImageAssets from '../../../utils/image_assets/ImageAssets';
+const currentyear = new Date().getFullYear();
 const Footer = () => {
     return (
         <section>
-        <footer className="mainfooter">
+            <footer className="mainfooter">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            Copyright 2002 – {currentyear}. All rights reserved. American Heritage Capital, LP. NMLS 277676
+        </div>
+                    </div>
+                </div>
+            </footer>
+            {/* <footer className="mainfooter">
         <div className="container">
             <div className="row">
                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
@@ -46,8 +56,8 @@ const Footer = () => {
         </div>
 
     </footer>
-    <div className="bg-shape d-none d-lg-block"></div>
-    </section>
+    <div className="bg-shape d-none d-lg-block"></div> */}
+        </section>
     )
 }
 
