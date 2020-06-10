@@ -156,7 +156,21 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonNull.Value}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "createdOn" , BsonDateTime.Create(DateTime.Now) },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "docMessage" , BsonString.Empty },
+                        { "typeName" ,  BsonString.Empty },
+                        { "typeMessage" , BsonString.Empty },
+                        { "messages" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
                     }
             };
 
@@ -174,7 +188,7 @@ namespace DocumentManagement.Tests
             List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(8, dto.Count);
+            Assert.Equal(9, dto.Count);
             Assert.Equal("House Document", dto[1].docName);
             Assert.Equal("Property", dto[2].docName);
             Assert.Equal("please upload house document", dto[3].docMessage);
@@ -182,6 +196,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[5].docMessage);
             Assert.Equal("please upload house document", dto[6].docMessage);
             Assert.Equal("please upload house document", dto[7].docMessage);
+            Assert.Equal("please upload house document", dto[8].docMessage);
         }
 
         [Fact]
@@ -323,7 +338,21 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonNull.Value }
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "createdOn" , BsonDateTime.Create(DateTime.Now) },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "docMessage" , BsonString.Empty },
+                        { "typeName" ,  BsonString.Empty },
+                        { "typeMessage" , BsonString.Empty },
+                        { "messages" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
                     }
             };
 
@@ -341,7 +370,7 @@ namespace DocumentManagement.Tests
             List<DashboardDTO> dto = await service.GetSubmittedDocuments(1, 1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(8, dto.Count);
+            Assert.Equal(9, dto.Count);
             Assert.Equal("House Document", dto[1].docName);
             Assert.Equal("Property", dto[2].docName);
             Assert.Equal("please upload house document", dto[3].docMessage);
@@ -349,6 +378,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[5].docMessage);
             Assert.Equal("please upload house document", dto[6].docMessage);
             Assert.Equal("please upload house document", dto[7].docMessage);
+            Assert.Equal("please upload house document", dto[8].docMessage);
         }
     }
 }
