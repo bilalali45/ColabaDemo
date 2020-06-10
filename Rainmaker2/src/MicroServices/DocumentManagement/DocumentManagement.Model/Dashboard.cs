@@ -37,6 +37,15 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
-        public List<RequestFile> files { get; set; }
+        public List<FileDTO> files { get; set; }
+    }
+
+    public class FileDTO
+    {
+        public string id { get; set; }
+        public string clientName { get; set; }
+        public DateTime fileUploadedOn { get; set; }
+        public int size { get; set; }
+        public int order { get; set; }
     }
 }
