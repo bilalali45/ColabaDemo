@@ -13,7 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Rainmaker.Service;
+using Rainmaker.Service.Helpers;
 using RainMaker.Service;
+using RainMaker.Service.Helpers;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -40,6 +42,7 @@ namespace Rainmaker.API
             services.AddSingleton<ICommonService, CommonService>();
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
             services.AddScoped<IMembershipService, MembershipService>();
+            services.AddScoped<IFtpHelper,FtpHelper>();
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       ); 

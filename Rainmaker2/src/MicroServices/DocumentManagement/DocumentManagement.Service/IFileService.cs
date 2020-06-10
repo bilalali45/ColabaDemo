@@ -10,6 +10,7 @@ namespace DocumentManagement.Service
     {
      
         Task<bool> Done(DoneModel model);
+        Task<bool> Rename(FileRenameModel model);
 
     }
 }

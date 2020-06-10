@@ -38,8 +38,10 @@ $font-size:(
     h5:12px,
     h6:10
 );
-$shadow:'0 0 3px rgba(0 0 0 0.16)';
+$shadow:0 0 3px rgba(0, 0, 0, 0.16);
 
 
 // Bootstrap Variables
 $grid-gutter-width:           30px !default;
+$primary:       #4484F4 !default;
+$secondary:     #00AD46 !default;

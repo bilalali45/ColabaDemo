@@ -1,6 +1,7 @@
 import React from 'react'
-import {SVG} from './../../../../shared/Components/Assets/SVG';
+// import {StorageSVG} from './../../../../shared/Components/Assets/SVG';
 import { userInfo } from 'os';
+import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
 
 type Props = {
     userName: string,
@@ -17,6 +18,7 @@ export const ContactUs: React.SFC<Props> = (props) => {
             <div className="box-wrap--header">
                 <h2 className="heading-h2"> Contact Us </h2>
             </div>
+            
             <div className="box-wrap--body">
                 <div className="row">
                     
@@ -34,9 +36,9 @@ export const ContactUs: React.SFC<Props> = (props) => {
                     
                     <div className="col-md-7 col-md-offset-1 ContactUs--right">                        
                         <ul className="ContactUs--list">
-                            <li><SVG shape="tel" /> <a href="tel:8889711254">{props.userContact}</a></li>
-                            <li><SVG shape="mail" /> <a href="mailto:Williams.jack@texastrustloans.com">{props.userEmail}</a></li>
-                            <li><SVG shape="internet" /> <a href="www.texatrustloans.com" target="_blank">{props.userWebsite}</a></li>
+                            <li><SVGtel /> <a href="tel:8889711254">{props.userContact}</a></li>
+                            <li><SVGmail /> <a href="mailto:Williams.jack@texastrustloans.com">{props.userEmail}</a></li>
+                            <li><SVGinternet /> <a href="www.texatrustloans.com" target="_blank">{props.userWebsite}</a></li>
                         </ul>
                     </div>
 

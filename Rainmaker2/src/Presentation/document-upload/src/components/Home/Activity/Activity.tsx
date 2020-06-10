@@ -1,7 +1,7 @@
 import React from 'react'
 // import { LoanStatus } from './LoanStatus/LoanStatus'
 import { LoanProgress } from './LoanProgress/LoanProgress'
-import { DocumentStatus } from './DocumentsStatus/DocumentStatus'
+import { DocumentStatus } from './DocumentStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
 import Williams_Jack from '../../../assets/images/Williams_Jack.jpg';
 
@@ -12,7 +12,11 @@ export class Activity extends React.Component {
             {task:'Bank Statement'}, 
             {task:'W-2s 2017'}, 
             {task:'W-2s 2018'}, 
-            {task:'Personal Tax Returns'}
+            {task:'Personal Tax Returns'},
+            {task: 'Tax Transcripts'},
+            {task: 'Home Insurance'},
+            {task: 'Bank Deposit Slip'},
+            {task: 'Alimony Income Verification'},
         ]
     }
 
@@ -32,11 +36,8 @@ export class Activity extends React.Component {
                 <section className="page-content">
                     <div className="container">
                         <div className="row gutter15">
-                            <div className="col-md-5">
+                            <div className="col-md-6">
                                 {/* <LoanStatus /> */}
-                                <LoanProgress />
-                            </div>
-                            <div className="col-md-7">
                                 <DocumentStatus 
                                     heading="Document Request" 
                                     counts={8} 
@@ -45,6 +46,9 @@ export class Activity extends React.Component {
                                     tasks={this.state.tasks}
                                 />
                                 
+                            </div>
+                            <div className="col-md-6">
+                                <LoanProgress />                                
                                 <ContactUs  
                                     userName="Williams Jack" 
                                     userId={254545} 

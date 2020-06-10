@@ -38,7 +38,11 @@ namespace DocumentManagement.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> Rename(FileRenameModel model)
         {
-            return null;
+            var docQuery = await fileService.Rename(model);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
         }
         [HttpPut("[action]")]
         public async Task<IActionResult> Order(List<FileNameModel> model)

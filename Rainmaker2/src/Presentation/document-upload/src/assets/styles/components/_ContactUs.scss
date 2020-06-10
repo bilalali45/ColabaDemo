@@ -1,6 +1,6 @@
 .ContactUs{
     color: color('font');
-    padding: 15px 25px;
+    padding: 15px;
 
     &--header{
         display: block;
@@ -77,6 +77,19 @@
             width: 100%;
             min-height: 100%;
             @include transform(translateX(-50%));
+        }
+    }
+
+    &--left{
+        position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background-color: color('border');
+            top: 0;
+            right: 20px;
         }
     }
 

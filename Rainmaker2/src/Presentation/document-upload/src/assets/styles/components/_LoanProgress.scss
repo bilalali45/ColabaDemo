@@ -1,6 +1,36 @@
 .LoanProgress{
-
-    
+    .lp-wrap{
+padding: 10px 40px;
+.list-wrap {
+    ul {
+        li{
+            position: relative;
+            padding-left: 104px;
+            .step-count {
+                position: absolute;
+                left: 0;
+                font: 500 #{fontSize('sm')*12+'/1.2'} fontFamily('heading');
+               color: color('primary');
+            }
+            .lp-content {
+                .step-label {
+                    font: 500 #{fontSize('sm')+'/1.2'} fontFamily('heading');
+                    color: color('primary');
+                    text-transform: uppercase;
+                }
+                h6{
+                    font: 400 #{fontSize('nr')+'/1.2'} fontFamily('heading');
+                    color: color('colorBlack'); 
+                }
+                p {
+                    font: 400 #{fontSize('nr')+'/1.2'} fontFamily('base');
+                    color: color('base');  
+                }
+            }
+        }
+    }
+}
+    }
 
 }
 

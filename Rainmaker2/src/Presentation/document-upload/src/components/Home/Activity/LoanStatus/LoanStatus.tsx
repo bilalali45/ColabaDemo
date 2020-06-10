@@ -1,12 +1,17 @@
 import React, {useState} from 'react'
 import icon1 from '../../../../assets/images/property-address-icon.svg';
+import icon2 from '../../../../assets/images/property-type-icon.svg';
+import icon3 from '../../../../assets/images/loan-purpose-icon.svg';
+import icon4 from '../../../../assets/images/loan-amount-icon.svg';
+
+
 
  export const LoanStatus = () => {
     return (
         <section className="row">
     <div className="container">
-        <div className="LoanStatus box-wrap">
-            <div className="box-wrap--body">
+        <div className="LoanStatus nbox-wrap">
+            <div className="nbox-wrap--body">
                 <ul className="row ls-wrap">
                     <li className="col-sm-3 ls-box">
                         <div className="i-wrap">
@@ -23,22 +28,57 @@ import icon1 from '../../../../assets/images/property-address-icon.svg';
                             
                         </div>
                     </li>
-                    <li className="col-sm-3">
-                        <div className="flex">
-                            <div className="flex--side">
-                                <h4 className="LoanStatus--heading">Property Type</h4>
-                                <p className="LoanStatus--text">Single Family Detached</p>
+                    <li className="col-sm-3 ls-box">
+                        <div className="i-wrap">
+                            <div className="icon-wrap">
+                            <img src={icon2} alt="" />
                             </div>
+                                <div className="c-wrap">
+                                <h4 className="LoanStatus--heading">Property Type</h4>
+                                <p className="LoanStatus--text">
+                                Single Family 
+                                Detached
+                                </p>
+                                </div>
+                            
+                            
                         </div>
                     </li>
-                    <li className="col-sm-3">
-                        <h5 className="LoanStatus--heading">Property Address</h5>
-                        <p className="LoanStatus--text">7951 Northeast Bayshore Court, Miami, FL, USA</p>
+                    <li className="col-sm-3 ls-box">
+                        <div className="i-wrap">
+                            <div className="icon-wrap">
+                            <img src={icon3} alt="" />
+                            </div>
+                                <div className="c-wrap">
+                                <h4 className="LoanStatus--heading">Loan Purpose</h4>
+                                <p className="LoanStatus--text">
+                                Purchase a <br />
+                                home   
+                                </p>
+                                </div>
+                            
+                            
+                        </div>
                     </li>
-                    <li className="col-sm-3">
-                        <h5 className="LoanStatus--heading">Loan Amount</h5>
-                        <p className="LoanStatus--text">$40,000</p>
+                    <li className="col-sm-3 ls-box">
+                        <div className="i-wrap">
+                            <div className="icon-wrap">
+                            <img src={icon4} alt="" />
+                            </div>
+                                <div className="c-wrap">
+                                <h4 className="LoanStatus--heading">Loan Amount</h4>
+                                <p className="LoanStatus--text">
+                                <div className="number-loanAmount">
+                                   <sup>$</sup>
+                                   <span>40,000</span> 
+                               </div>
+                                    </p>
+                                </div>
+                            
+                            
+                        </div>
                     </li>
+                   
                 </ul>
             </div>
         </div>

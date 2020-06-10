@@ -1,55 +1,61 @@
 .LoanStatus{
-        
+    min-height: 80px; 
     &--heading{
         margin: 0 0 5px;
-        font: 400 #{fontSize('md')+'/1.2'} fontFamily('heading');
+        font: 400 #{fontSize('sm')+'/1.2'} fontFamily('heading');
         color:color(light-purple);
         text-transform: uppercase;
     }
+    &--text{
 
-    .box-wrap--body{
-        ul{
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        
-            > li{
-                display: block;
-                padding: 10px 0;
-                border-right: 1px solid #EBEBEB;
-        
-                &:first-child{
-                    padding-top: 0;
-                }
-        
-                &:last-child{
-                    border-right: none;
-                }
-        
-                p {
-                    height: 45px;
-                    margin: 0;
-                    overflow: hidden;
-                }
-            }
-        }
+        font: 500 #{fontSize('nr')+'/1.3'} fontFamily('base');
+        color:color(base);
+        padding-right: 20px;
+        margin-bottom: 0;
+
     }
-
-    &-actions a{
-        color: color('primary');
+    ul{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    
+        > li{
+            display: block;
+            border-right: 1px solid #EBEBEB;
+            display: flex;
+            align-items: center;
+            &:last-child{
+                border-right: none;
+            }
+    
+        }
     }
 
     .i-wrap {
         position: relative;
         padding-left: 70px;
+        display: flex;
+        align-items: center;
         .icon-wrap {
             position: absolute;
             left: 0;
         }
+        .c-wrap {
+            padding-top: 5px;
+        }
+
+        .number-loanAmount {
+            sup {
+                color: color('primary');
+                font: 500 #{fontSize('sm')+'/1'} fontFamily('base');
+            }
+            span {
+                font: 500 #{fontSize('lg')+'/1'} fontFamily('base');
+            }
+        }
         
     }
-
-    
+ 
 }
 
 
