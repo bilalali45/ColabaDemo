@@ -196,7 +196,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[5].docMessage);
             Assert.Equal("please upload house document", dto[6].docMessage);
             Assert.Equal("please upload house document", dto[7].docMessage);
-            Assert.Equal("please upload house document", dto[8].docMessage);
+            Assert.Equal("asd", dto[8].files[0].clientName);
         }
 
         [Fact]
@@ -378,7 +378,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[5].docMessage);
             Assert.Equal("please upload house document", dto[6].docMessage);
             Assert.Equal("please upload house document", dto[7].docMessage);
-            Assert.Equal("please upload house document", dto[8].docMessage);
+            Assert.Equal("asd", dto[8].files[0].clientName);
         }
     }
 }
