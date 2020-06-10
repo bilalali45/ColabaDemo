@@ -1,0 +1,51 @@
+.my-loan-widget{
+    border: 2px solid color('border');
+    padding: 15px;
+    font: 300 fontSize('sm')/22px fontFamily('base');
+    margin-bottom: 30px;
+    
+    &--header{
+
+    }
+
+    &--heading{
+        margin: 0 0 5px;
+        font: fontFamily('heading');
+        font-size: fontSize('md'); 
+        font-weight: 800; 
+    }
+
+    &--body{
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        
+            > li{
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid #EBEBEB;
+        
+                &:first-child{
+                    padding-top: 0;
+                }
+        
+                &:last-child{
+                    border-bottom: none;
+                }
+        
+                p {
+                    height: 45px;
+                    margin: 0;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+
+    &-actions a{
+        color: color('primary');
+    }
+
+    
+}

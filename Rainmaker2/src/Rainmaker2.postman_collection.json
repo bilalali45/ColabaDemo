@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "b3ab276d-41e5-47cf-a39b-014ae4480da8",
+		"name": "Rainmaker2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "xtest",
+			"item": [
+				{
+					"name": "dddd",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5031/api/membership/validateuser?userName=danish&password=Rainsoft&employee=true",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5031",
+							"path": [
+								"api",
+								"membership",
+								"validateuser"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "danish"
+								},
+								{
+									"key": "password",
+									"value": "Rainsoft"
+								},
+								{
+									"key": "employee",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "token/authorize Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5011/api/token/authorize",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5011",
+							"path": [
+								"api",
+								"token",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "78e232fa-c1c0-4543-b149-ef26e438ac9b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a1f859f-69e5-481a-844f-3e9965235cb1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Token",
+					"item": [
+						{
+							"name": "authorize",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Identity/token/authorize",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Identity",
+										"token",
+										"authorize"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DocumentManagement",
+			"item": [
+				{
+					"name": "Dashboard",
+					"item": [
+						{
+							"name": "GetPendingDocuments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetPendingDocuments?loanApplicationId=1&tenantId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"dashboard",
+										"GetPendingDocuments"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "tenantId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetSubmittedDocuments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetSubmittedDocuments?loanApplicationId=1&tenantId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"dashboard",
+										"GetSubmittedDocuments"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "tenantId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "RainMaker",
+			"item": [
+				{
+					"name": "LoanApplication",
+					"item": [
+						{
+							"name": "GetLoanInfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetLoanInfo?loanApplicationId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetLoanInfo"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetLOInfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetLOInfo?loanApplicationId=1&businessUnitId=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetLOInfo"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "businessUnitId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
