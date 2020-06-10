@@ -18,6 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 .heading-h2{
     font-size: fontSize('lg');
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 .heading-h3{
     font-size: fontSize('md');
@@ -115,7 +116,7 @@ min-height: 100vh;
     margin-left: -7.5px;
     margin-right: -7.5px; 
 
-    [class*="col-"] {
+    > [class*="col-"] {
         padding-right: 7.5px;
     padding-left: 7.5px;
     }
@@ -135,6 +136,7 @@ min-height: 100vh;
         margin-bottom: 5px;
         h2{
             font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+            text-transform: uppercase;
         }
         p{
             margin: 0px;
