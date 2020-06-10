@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoanStatus } from './LoanStatus/LoanStatus'
+// import { LoanStatus } from './LoanStatus/LoanStatus'
 import { LoanProgress } from './LoanProgress/LoanProgress'
 import { DocumentStatus } from './DocumentsStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
@@ -33,7 +33,7 @@ export class Activity extends React.Component {
                     <div className="container">
                         <div className="row gutter15">
                             <div className="col-md-5">
-                                <LoanStatus />
+                                {/* <LoanStatus /> */}
                                 <LoanProgress />
                             </div>
                             <div className="col-md-7">

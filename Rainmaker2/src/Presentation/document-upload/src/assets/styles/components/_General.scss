@@ -1,9 +1,8 @@
+body {
+    background:color('colorgray');
+}
 h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.5px;
-    font-weight: 700;
-    position: relative;
-    padding: 0;
-    margin: 0;
+    font-weight: 400;
     font-family: fontFamily('heading');
     color: color('colordarkblue'); 
     text-rendering: optimizeLegibility;
@@ -11,7 +10,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 [class^="heading-"],[class*="heading-"]{
     font-family: fontFamily('heading');
-    font-weight: 900;
+    font-weight: 400;
 }
 .heading-h1{
     font-size: fontSize('xlg');
