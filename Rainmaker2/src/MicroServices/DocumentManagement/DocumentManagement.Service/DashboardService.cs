@@ -52,6 +52,7 @@ namespace DocumentManagement.Service
                             ""$project"": {
                                 ""_id"": 1,
                                 ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""docMessage"": ""$requests.documents.message"",
@@ -70,8 +71,9 @@ namespace DocumentManagement.Service
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
+                    dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (string.IsNullOrEmpty(query.docMessage))
                     {
@@ -128,6 +130,7 @@ namespace DocumentManagement.Service
                             ""$project"": {
                                 ""_id"": 1,
                                 ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""docMessage"": ""$requests.documents.message"",
@@ -145,8 +148,9 @@ namespace DocumentManagement.Service
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
+                    dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (string.IsNullOrEmpty(query.docMessage))
                     {
