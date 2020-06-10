@@ -8,7 +8,7 @@ namespace DocumentManagement.Service
 {
     public interface IFileService
     {
-        Task<DoneModel> Done(DoneModel model);
+        Task<bool> Rename(FileRenameModel model);
 
     }
 }
