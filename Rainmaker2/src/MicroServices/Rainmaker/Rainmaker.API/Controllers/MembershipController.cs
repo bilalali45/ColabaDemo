@@ -22,10 +22,19 @@ namespace Rainmaker.API.Controllers
                                                   string password,
                                                   bool employee = false)
         {
-            var loanApplication =  _membershipService.ValidateUser(userName,
+            var userProfile =  _membershipService.ValidateUser(userName,
                                                                         password,
                                                                         employee);
-            return Ok(value: loanApplication);
+
+            if (userProfile != null)
+            {
+                return Ok(value: userProfile);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
         }
     }
 }

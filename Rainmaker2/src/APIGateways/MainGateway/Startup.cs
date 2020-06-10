@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Text;
 using IdentityServer4.AccessTokenValidation;
 using MainGateway.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -27,17 +30,49 @@ namespace MainGateway
         {
             services.AddControllers();
 
-            var authenticationProviderKey = "TestKey";
-            Action<IdentityServerAuthenticationOptions> opt = o =>
-            {
-                o.Authority = "http://localhost:5010";
-                o.ApiName = "SampleService";
-                o.SupportedTokens = SupportedTokens.Both;
-                o.RequireHttpsMetadata = false;
-            };
+            #region IdentityServer4 Authentication
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(authenticationProviderKey, opt);
+            //var authenticationProviderKey = "TestKey";
+            //Action<IdentityServerAuthenticationOptions> opt = o =>
+            //{
+            //    o.Authority = "http://localhost:5010";
+            //    o.ApiName = "SampleService";
+            //    o.SupportedTokens = SupportedTokens.Both;
+            //    o.RequireHttpsMetadata = false;
+            //};
+
+            //services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            //        .AddIdentityServerAuthentication(authenticationProviderKey, opt);
+
+            #endregion
+
+
+            #region JWT
+
+            /**START : JWT**************************************************************/
+
+            var securityKey = Configuration[key: "JWT:SecurityKey"];
+            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+
+            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(configureOptions: options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                                                            {
+                                                                //what to validate
+                                                                ValidateIssuer = true,
+                                                                ValidateAudience = true,
+                                                                ValidateIssuerSigningKey = true,
+                                                                //setup validate data
+                                                                ValidIssuer = "rainsoftfn",
+                                                                ValidAudience = "readers",
+                                                                IssuerSigningKey = symmetricSecurityKey
+                                                            };
+                    });
+            /**END : JWT**************************************************************/
+
+            #endregion
+
             services.AddOcelot();
         }
 
@@ -52,6 +87,7 @@ namespace MainGateway
 
             //app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

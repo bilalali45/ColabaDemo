@@ -30,5 +30,11 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId, tenantId);
             return Ok(docQuery);
         }
+
+        [HttpGet("test")]
+        public string test()
+        {
+            return "response from document management";
+        }
     }
 }

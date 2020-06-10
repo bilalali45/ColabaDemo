@@ -34,7 +34,7 @@
       "UpstreamPathTemplate": "/api/DocumentManagement/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
       "RateLimitOptions": {
@@ -62,10 +62,10 @@
       ],
       "UpstreamPathTemplate": "/api/RainMaker/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      },
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "TestKey",
+      //  "AllowedScopes": []
+      //},
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
