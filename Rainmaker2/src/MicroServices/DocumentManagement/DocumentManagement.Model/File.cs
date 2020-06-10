@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +26,7 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         public string docId { get; set; }
         public string requestId { get; set; }
+     
     }
 
     public class FileViewModel
@@ -41,4 +44,6 @@ namespace DocumentManagement.Model
         public string fileId { get; set; }
         public string fileName { get; set; }
     }
+
+   
 }

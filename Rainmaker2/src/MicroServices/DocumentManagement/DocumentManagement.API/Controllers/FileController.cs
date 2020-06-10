@@ -17,6 +17,8 @@ namespace DocumentManagement.API.Controllers
         {
             this.fileService = fileService;
         }
+
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Submit(FileSubmitModel model)
         {
@@ -26,7 +28,11 @@ namespace DocumentManagement.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> Done(DoneModel model)
         {
-            return null;
+            var docQuery = await fileService.Done(model);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
         }
 
         [HttpPut("[action]")]

@@ -96,7 +96,7 @@ namespace DocumentManagement.Service
                         id=x.id,
                         order=x.order,
                         size=x.size
-                    }).ToList();
+                    }).OrderBy(x=>x.order).ToList();
                     result.Add(dto);
                 }
             }
@@ -180,7 +180,7 @@ namespace DocumentManagement.Service
                         id = x.id,
                         order = x.order,
                         size = x.size
-                    }).ToList();
+                    }).OrderBy(x => x.order).ToList();
                     result.Add(dto);
                 }
             }
