@@ -122,6 +122,8 @@ min-height: 100vh;
     padding-left: 7.5px;
     }
 
+    font-size: fontSize('nr') - 4px;
+
 }
 .box-wrap {
     border: 2px solid color('border');
@@ -131,10 +133,11 @@ min-height: 100vh;
     background: color('colorWhite');
     
     &--header{
-        border-bottom: 1px solid color('border');
-        padding-bottom: 15px;
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        h2{
+            font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
+        }
         p{
             margin: 0px;
         }

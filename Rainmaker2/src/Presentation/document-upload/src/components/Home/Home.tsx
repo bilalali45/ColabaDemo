@@ -25,12 +25,12 @@ export const Home = () => {
     useEffect(() => {
         console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
         console.log('in here!!!', location);
-        if(!Auth.checkAuth()) {
-            history.push('/loading');
-        }
-        if (location.pathname === '/') {
-            history.push('/home/activity');
-        }
+        // if(!Auth.checkAuth()) {
+        //     history.push('/loading');
+        // }
+        // if (location.pathname === '/') {
+        //     history.push('/home/activity');
+        // }
     }, [])
 
     httpClient.get('/home');
