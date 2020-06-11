@@ -29,6 +29,7 @@ namespace MainGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors();
 
             #region IdentityServer4 Authentication
 
@@ -83,6 +84,8 @@ namespace MainGateway
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             //app.UseHttpsRedirection();
