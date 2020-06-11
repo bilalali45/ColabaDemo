@@ -17,17 +17,26 @@ namespace Rainmaker.API.Controllers
 
 
         [HttpPost(template: "[action]")]
-        public IActionResult ValidateUser([FromForm] string userName,
-                                          [FromForm] string password,
-                                          [FromForm] bool employee = false)
+        public IActionResult ValidateUser(ValidateUserRequest request)
         {
-            var userProfile = _membershipService.ValidateUser(userName: userName,
-                                                              password: password,
-                                                              employee: employee);
+            var userProfile = _membershipService.ValidateUser(userName: request.UserName,
+                                                              password: request.Password,
+                                                              employee: request.Employee);
 
             if (userProfile != null)
                 return Ok(value: userProfile);
             return NotFound();
         }
     }
+
+    public class ValidateUserRequest
+
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public bool Employee { get; set; }
+    }
 }
+
+
+ 
