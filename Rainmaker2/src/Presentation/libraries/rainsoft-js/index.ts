@@ -23,5 +23,42 @@ export const UnMaskPhone = (formattedNumber: string) => {
     }).join('');
 }
 
+const addAmountSeperator = (amount: string, currency: string) => {
+    let counter = 0;
+
+    return amount.split('').reverse().map((n, i) => {
+        if (counter === 2 && i !== amount.length - 1) {
+            counter = 0;
+            switch (currency) {
+                case 'US':
+                    return `,${n}`
+                case 'BRL':
+                    return `.${n}`
+
+                default:
+                    break;
+            }
+        }
+        counter++;
+        return n;
+    }).reverse().join('');
+}
+
+export const FormatAmountByCountry = (amount: number) => {
+    let strAmount = String(amount);
+    let amountSplitByPoint = strAmount.split('.');
+    if (amountSplitByPoint.length > 2) {
+        return;
+    }
+
+    let seperatorAdded = addAmountSeperator(amountSplitByPoint[0].toString(), 'US');
+
+    return (() => {
+            if (amountSplitByPoint[1]) {
+                return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+            }
+            return `$${seperatorAdded}`
+        })();
+}
 
 
