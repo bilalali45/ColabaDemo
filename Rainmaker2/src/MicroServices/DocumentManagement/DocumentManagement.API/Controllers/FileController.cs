@@ -16,9 +16,11 @@ namespace DocumentManagement.API.Controllers
     public class FileController : Controller
     {
         private readonly IFileService fileService;
-        public FileController(IFileService fileService)
+        private readonly IFileEncryptionFactory fileEncryptionFactory;
+        public FileController(IFileService fileService, IFileEncryptionFactory fileEncryptionFactory)
         {
             this.fileService = fileService;
+            this.fileEncryptionFactory = fileEncryptionFactory;
         }
 
 
@@ -30,17 +32,10 @@ namespace DocumentManagement.API.Controllers
             {
                 if (formFile.Length > 0)
                 {
-                    var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(formFile.FileName)); 
-
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                    // todo: encrypt file
+                    var filePath = fileEncryptionFactory.GetEncryptor("AES").EncryptFile(formFile.OpenReadStream(),"this is a very long password");
                     // todo: upload to ftp
                     // todo: insert into mongo
                     System.IO.File.Delete(filePath);
-
                 }
             }
             // set order
