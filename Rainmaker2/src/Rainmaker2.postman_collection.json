@@ -14,8 +14,28 @@
 						{
 							"name": "authorize",
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userName",
+											"value": "danish",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rainsoft",
+											"type": "text"
+										},
+										{
+											"key": "employee",
+											"value": "true",
+											"type": "text"
+										}
+									]
+								},
 								"url": {
 									"raw": "{{baseUrl}}/api/Identity/token/authorize",
 									"host": [
@@ -297,12 +317,10 @@
 									]
 								},
 								"url": {
-									"raw": "https://localhost:44376/api/Documentmanagement/file/submit",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/submit",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "44376",
 									"path": [
 										"api",
 										"Documentmanagement",
