@@ -45,5 +45,14 @@ namespace DocumentManagement.Model
         public string fileName { get; set; }
     }
 
+    public class FileOrderModel
+    {
+        public string id { get; set; }
+        public string docId { get; set; }
+        public string requestId { get; set; }
+        public List<FileNameModel> files { get; set; }
+
+    }
+
    
 }

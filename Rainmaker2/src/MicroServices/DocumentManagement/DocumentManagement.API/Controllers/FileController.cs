@@ -45,9 +45,10 @@ namespace DocumentManagement.API.Controllers
                 return NotFound();
         }
         [HttpPut("[action]")]
-        public async Task<IActionResult> Order(List<FileNameModel> model)
+        public async Task<IActionResult> Order(FileOrderModel model)
         {
-            return null;
+            await fileService.Order(model);
+            return Ok();
         }
         [HttpGet("[action]")]
         public async Task<byte[]> View(FileViewModel model)
