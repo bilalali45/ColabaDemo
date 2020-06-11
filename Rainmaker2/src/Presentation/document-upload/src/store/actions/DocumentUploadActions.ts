@@ -9,7 +9,7 @@ export class DocumentUploadActions {
         const data = new FormData();
 
         for (const file of files) {
-            data.append('file', file, 'changed file name');
+            data.append('file', file);
         }
         
         try {

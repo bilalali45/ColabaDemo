@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react'
+import { FileSelected } from '../../DocumentUpload'
 
 type DocumentItemType = {
-    file: File,
+    file: FileSelected,
     viewDocument: Function,
     changeName: Function,
 }
@@ -12,7 +13,7 @@ export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType
         <div>
             <p>{file.name}</p>
             <button onClick={() => viewDocument(file)}>View</button>
-            <input type="text" onChange={(e) => changeName(e.target.value)}/>
+            <input type="text" onChange={(e) => changeName(file, e.target.value)}/>
         </div>
     )
 }
