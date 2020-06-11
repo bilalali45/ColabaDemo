@@ -24,7 +24,7 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(true);
-            FileController controller = new FileController(mock.Object);
+            FileController controller = new FileController(mock.Object,null);
             //Act
             IActionResult result = await controller.Done(obj);
             //Assert
@@ -41,7 +41,7 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(false);
-            FileController controller = new FileController(mock.Object);
+            FileController controller = new FileController(mock.Object,null);
             //Act
             IActionResult result = await controller.Done(obj);
             //Assert
@@ -103,7 +103,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(true);
 
-            FileController controller = new FileController(mock.Object);
+            FileController controller = new FileController(mock.Object,null);
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert
@@ -119,7 +119,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(false);
 
-            FileController controller = new FileController(mock.Object);
+            FileController controller = new FileController(mock.Object,null);
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert

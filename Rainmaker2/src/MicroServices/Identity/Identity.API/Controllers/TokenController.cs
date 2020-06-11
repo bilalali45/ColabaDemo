@@ -30,7 +30,7 @@ namespace Identity.Controllers
 
         [Route("authorize")]
         [HttpPost]
-        public async Task<IActionResult> GenerateToken(string userName, string password,bool employee)
+        public async Task<IActionResult> GenerateToken([FromForm]string userName, [FromForm]string password, [FromForm]bool employee)
         {
             var response = new ApiResponse();
 
@@ -90,7 +90,7 @@ namespace Identity.Controllers
                     Token = tokenString,
                     UserProfileId = userProfile.Id,
                     userProfile.UserName,
-                    CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
+                    //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
                     token.ValidFrom,
                     token.ValidTo
                 };
