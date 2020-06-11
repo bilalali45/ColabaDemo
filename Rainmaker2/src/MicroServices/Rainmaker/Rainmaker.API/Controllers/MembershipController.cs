@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Rainmaker.Service;
 
 namespace Rainmaker.API.Controllers
@@ -18,23 +17,17 @@ namespace Rainmaker.API.Controllers
 
 
         [HttpPost(template: "[action]")]
-        public  IActionResult ValidateUser(string userName,
-                                                  string password,
-                                                  bool employee = false)
+        public IActionResult ValidateUser([FromForm] string userName,
+                                          [FromForm] string password,
+                                          [FromForm] bool employee = false)
         {
-            var userProfile =  _membershipService.ValidateUser(userName,
-                                                                        password,
-                                                                        employee);
+            var userProfile = _membershipService.ValidateUser(userName: userName,
+                                                              password: password,
+                                                              employee: employee);
 
             if (userProfile != null)
-            {
                 return Ok(value: userProfile);
-            }
-            else
-            {
-                return NotFound();
-            }
-            
+            return NotFound();
         }
     }
 }
