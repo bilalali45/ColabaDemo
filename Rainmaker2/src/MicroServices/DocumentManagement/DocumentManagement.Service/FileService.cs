@@ -1,17 +1,10 @@
 ﻿using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using DocumentManagement.Entity;
-using MongoDB.Driver;
 using System.Threading.Tasks;
-using DocumentManagement.Model;
-using MongoDB.Bson;
-using Microsoft.AspNetCore.Http;
 
 namespace DocumentManagement.Service
 {
