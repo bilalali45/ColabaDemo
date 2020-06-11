@@ -10,17 +10,30 @@ import { Store } from '../../store/store'
 import ActivityHeader from './AcitivityHeader/ActivityHeader'
 import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
-import Header from '../../shared/Components/Header/Header'
-import Footer from '../../shared/Components/Footer/Footer'
+import {RainsoftRcHeader, RainsoftRcFooter} from 'rainsoft-rc';
 import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
+import ImageAssets from '../../utils/image_assets/ImageAssets';
 const httpClient = new Http();
-
+const currentyear = new Date().getFullYear();
 export const Home = () => {
     const location = useLocation();
     const history = useHistory();
-
     const [authenticated, setAuthenticated] = useState<boolean>(false);
-
+    const gotoDashboardHandler = () => {
+        console.log('gotoDashboardHandler')
+    }
+    const changePasswordHandler = () => {
+        console.log('changePasswordHandler')
+    }
+    const signOutHandler = () => {
+        console.log('gotoDashboardHandler')
+    }
+    const headerDropdowmMenu = [
+        { name: 'Dashboard', callback: gotoDashboardHandler },
+        { name: 'Change Password', callback: changePasswordHandler },
+        { name: 'Sign Out', callback: signOutHandler }
+    ]
+    const footerContent = "Copyright 2002 – "+currentyear+". All rights reserved. American Heritage Capital, LP. NMLS 277676";
 
     useEffect(() => {
         console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
@@ -37,14 +50,21 @@ export const Home = () => {
 
     return (
         <div>
-            <Header></Header>
+             <RainsoftRcHeader
+                logoSrc={ImageAssets.header.logoheader}
+                displayName={'Jehangir Babul'}
+                displayNameOnClick={gotoDashboardHandler}
+                options={headerDropdowmMenu}
+            />
             <ActivityHeader />
             <Switch>
                 <Route path="/home/activity" component={Activity} />
                 <Route path="/home/DocumentStatus" component={DocumentStatus} />
                 <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
             </Switch>
-            <Footer></Footer>
+            <RainsoftRcFooter
+             content = {footerContent}
+            />
         </div>
     )
 }
