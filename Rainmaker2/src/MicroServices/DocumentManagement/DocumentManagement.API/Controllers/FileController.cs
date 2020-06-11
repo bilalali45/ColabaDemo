@@ -84,6 +84,8 @@ namespace DocumentManagement.API.Controllers
         {
             await fileService.Order(model);
             return Ok();
+
+
         }
         [HttpGet("[action]")]
         public async Task<byte[]> View(FileViewModel model)
