@@ -38,9 +38,9 @@ namespace DocumentManagement.API.Controllers
                     }
                     // todo: encrypt file
                     // todo: upload to ftp
-                    // todo: insert into mongo
+                    // insert into mongo
+                    var docQuery = await fileService.Submit(id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,"","AES");
                     System.IO.File.Delete(filePath);
-
                 }
             }
             // set order
