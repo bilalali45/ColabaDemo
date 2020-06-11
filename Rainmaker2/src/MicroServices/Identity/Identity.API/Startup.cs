@@ -27,14 +27,14 @@ namespace Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson(); ;
-            services.AddIdentityServer(x =>
-                    {
-                        x.IssuerUri = "none";
-                    })
-                    .AddDeveloperSigningCredential()
-                    .AddInMemoryApiResources(Config.GetAllApiResources())
-                    .AddInMemoryClients(Config.GetClients(Configuration));
-            services.AddHttpClient();
+            //services.AddIdentityServer(x =>
+            //        {
+            //            x.IssuerUri = "none";
+            //        })
+            //        .AddDeveloperSigningCredential()
+            //        .AddInMemoryApiResources(Config.GetAllApiResources())
+            //        .AddInMemoryClients(Config.GetClients(Configuration));
+            //services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +44,7 @@ namespace Identity
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

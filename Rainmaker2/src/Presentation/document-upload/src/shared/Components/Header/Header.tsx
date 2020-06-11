@@ -43,7 +43,6 @@ const Header = () => {
                     </a>
                                 <Dropdown className="userdropdown">
                                     <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="a">
-                                        <span>MU</span>
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>

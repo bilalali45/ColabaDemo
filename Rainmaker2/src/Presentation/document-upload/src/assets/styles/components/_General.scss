@@ -121,7 +121,7 @@ position: relative;
 min-height: 100vh;
 }
 .page-content {
-    min-height: calc(100vh - 280px);
+    min-height: calc(100vh - 320px);
     padding-bottom: 40px;
 }
 .gutter15 {
@@ -150,6 +150,7 @@ min-height: 100vh;
             font: 500 #{fontSize('md')+'/1.2'} fontFamily('heading');
             text-transform: uppercase;
             color: color('base');
+            margin-top: 0;
         }
         p{
             margin: 0px;
