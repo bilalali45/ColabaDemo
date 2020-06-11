@@ -1,0 +1,11 @@
+{
+  "name": "rainsoft-js",
+  "version": "1.0.11",
+  "description": "Rainsoft reuseable js files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rainsoft",
+  "license": "ISC"
+}
