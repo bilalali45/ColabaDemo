@@ -181,7 +181,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Order(It.IsAny<FileOrderModel>()));
 
-            FileController controller = new FileController(mock.Object);
+            FileController controller = new FileController(mock.Object,null,null,null);
             //Act
             IActionResult result = await controller.Order(fileOrder);
             //Assert
