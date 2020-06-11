@@ -26,17 +26,22 @@ namespace Identity.Controllers
             this.clientFactory = clientFactory;
             _configuration = configuration;
         }
-        static HttpClient client = new HttpClient();
+        //static HttpClient client = new HttpClient();
 
         [Route("authorize")]
-        [HttpGet]
-        public async Task<IActionResult> GenerateToken(string userName, string password)
+        [HttpPost]
+        public async Task<IActionResult> GenerateToken(string userName, string password,bool employee)
         {
             var response = new ApiResponse();
 
             HttpClient httpClient = clientFactory.CreateClient();
-
-            HttpResponseMessage callResponse = await client.GetAsync($"https://localhost:5031/api/membership/validateuser?userName={userName}&password={password}&employee=true");
+            var values = new Dictionary<string, string>()
+            {
+                { "userName",userName },
+                { "password",password },
+                { "employee",employee.ToString() }
+            };
+            HttpResponseMessage callResponse = await httpClient.PostAsync($"{_configuration["RainMaker:Url"]}/api/rainmaker/membership/validateuser", new FormUrlEncodedContent(nameValueCollection: values));
             if (callResponse.IsSuccessStatusCode)
             {
                 var userProfile = await callResponse.Content.ReadAsAsync<UserProfile>();
@@ -58,11 +63,11 @@ namespace Identity.Controllers
                 
 
                 claims.Add(item: new Claim(type: ClaimTypes.Role,
-                                           value: "Agent"));
+                                           value: userProfile.Employees.FirstOrDefault() != null ? "MCU":"Customer"));
                 claims.Add(item: new Claim(type: "UserProfileId",
                                            value: userProfile.Id.ToString()));
                 claims.Add(item: new Claim(type: "UserName",
-                                           value: userProfile.UserName));
+                                           value: userProfile.UserName.ToLower()));
                 if (userProfile.Employees.FirstOrDefault() != null)
                     claims.Add(item: new Claim(type: "EmployeeId",
                                                value: userProfile.Employees.Single().Id.ToString()));

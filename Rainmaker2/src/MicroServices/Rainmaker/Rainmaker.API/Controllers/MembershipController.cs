@@ -5,7 +5,7 @@ using Rainmaker.Service;
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
-    [Route(template: "api/[controller]")]
+    [Route(template: "api/rainmaker/[controller]")]
     public class MembershipController : Controller
     {
         private readonly IMembershipService _membershipService;
@@ -17,7 +17,7 @@ namespace Rainmaker.API.Controllers
         }
 
 
-        [HttpGet(template: "[action]")]
+        [HttpPost(template: "[action]")]
         public  IActionResult ValidateUser(string userName,
                                                   string password,
                                                   bool employee = false)
