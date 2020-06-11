@@ -67,7 +67,7 @@ namespace DocumentManagement.Tests
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
-                        { "docName" , "W2 2016" },
+                        { "docName" , "House Document" },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
@@ -83,7 +83,7 @@ namespace DocumentManagement.Tests
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
-                        { "typeName" ,  "Salary Slip" },
+                        { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
@@ -96,7 +96,7 @@ namespace DocumentManagement.Tests
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
-                        { "docMessage" , "please upload salary slip for year 2016" },
+                        { "docMessage" , "please upload house document" },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
@@ -112,7 +112,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" , BsonString.Empty  },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
@@ -127,7 +127,7 @@ namespace DocumentManagement.Tests
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
-                        { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "Salary Slip" },{ "tenantId" , 1 } } })},
+                        { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
                   ,
@@ -140,7 +140,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
@@ -154,9 +154,23 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonNull.Value}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "createdOn" , BsonDateTime.Create(DateTime.Now) },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "docMessage" , BsonString.Empty },
+                        { "typeName" ,  BsonString.Empty },
+                        { "typeMessage" , BsonString.Empty },
+                        { "messages" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
                     }
             };
 
@@ -174,14 +188,15 @@ namespace DocumentManagement.Tests
             List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(8, dto.Count);
-            Assert.Equal("W2 2016", dto[1].docName);
-            Assert.Equal("Salary Slip", dto[2].docName);
-            Assert.Equal("please upload salary slip for year 2016", dto[3].docMessage);
-            Assert.Equal("Salary Slip", dto[4].docMessage);
-            Assert.Equal("Salary Slip", dto[5].docMessage);
-            Assert.Equal("Salary Slip", dto[6].docMessage);
-            Assert.Equal("Salary Slip", dto[7].docMessage);
+            Assert.Equal(9, dto.Count);
+            Assert.Equal("House Document", dto[1].docName);
+            Assert.Equal("Property", dto[2].docName);
+            Assert.Equal("please upload house document", dto[3].docMessage);
+            Assert.Equal("please upload house document", dto[4].docMessage);
+            Assert.Equal("please upload house document", dto[5].docMessage);
+            Assert.Equal("please upload house document", dto[6].docMessage);
+            Assert.Equal("please upload house document", dto[7].docMessage);
+            Assert.Equal("asd", dto[8].files[0].clientName);
         }
 
         [Fact]
@@ -234,7 +249,7 @@ namespace DocumentManagement.Tests
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
-                        { "docName" , "W2 2016" },
+                        { "docName" , "House Document" },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
@@ -250,7 +265,7 @@ namespace DocumentManagement.Tests
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
-                        { "typeName" ,  "Salary Slip" },
+                        { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
@@ -263,7 +278,7 @@ namespace DocumentManagement.Tests
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
-                        { "docMessage" , "please upload salary slip for year 2016" },
+                        { "docMessage" , "please upload house document" },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
@@ -279,7 +294,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" , BsonString.Empty  },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
@@ -294,7 +309,7 @@ namespace DocumentManagement.Tests
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
-                        { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "Salary Slip" },{ "tenantId" , 1 } } })},
+                        { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
                   ,
@@ -307,7 +322,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
                         { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
@@ -321,9 +336,23 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "docMessage" , BsonString.Empty },
                         { "typeName" ,  BsonString.Empty },
-                        { "typeMessage" , "Salary Slip" },
+                        { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonNull.Value }
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "createdOn" , BsonDateTime.Create(DateTime.Now) },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "docMessage" , BsonString.Empty },
+                        { "typeName" ,  BsonString.Empty },
+                        { "typeMessage" , BsonString.Empty },
+                        { "messages" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
                     }
             };
 
@@ -341,14 +370,15 @@ namespace DocumentManagement.Tests
             List<DashboardDTO> dto = await service.GetSubmittedDocuments(1, 1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(8, dto.Count);
-            Assert.Equal("W2 2016", dto[1].docName);
-            Assert.Equal("Salary Slip", dto[2].docName);
-            Assert.Equal("please upload salary slip for year 2016", dto[3].docMessage);
-            Assert.Equal("Salary Slip", dto[4].docMessage);
-            Assert.Equal("Salary Slip", dto[5].docMessage);
-            Assert.Equal("Salary Slip", dto[6].docMessage);
-            Assert.Equal("Salary Slip", dto[7].docMessage);
+            Assert.Equal(9, dto.Count);
+            Assert.Equal("House Document", dto[1].docName);
+            Assert.Equal("Property", dto[2].docName);
+            Assert.Equal("please upload house document", dto[3].docMessage);
+            Assert.Equal("please upload house document", dto[4].docMessage);
+            Assert.Equal("please upload house document", dto[5].docMessage);
+            Assert.Equal("please upload house document", dto[6].docMessage);
+            Assert.Equal("please upload house document", dto[7].docMessage);
+            Assert.Equal("asd", dto[8].files[0].clientName);
         }
     }
 }

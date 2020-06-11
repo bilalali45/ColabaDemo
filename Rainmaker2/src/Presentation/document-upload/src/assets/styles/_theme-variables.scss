@@ -1,35 +1,48 @@
 $color:(
     primary             :       #4484F4,
     primary-text        :       #ffffff,
-    secondry            :       #DD3126,
+    secondry            :       #00AD46,
     secondry-text       :       #ffffff,
-    border              :       #EBEBEB,
-    font                :       #4E4E4E,   
+    border              :       #EBEBEB, 
+    base                :       #4E4E4E, 
+    heading             :       #4E4E4E,   
     colordarkblue       :       #04202e,
     colorBlack          :       #000000,
     colorWhite          :       #ffffff,
     statusCompleted     :       #32B93B,
     statusCurrent       :       #4484F4,
-    statusUpcomming     :       #8A8A8A
+    statusUpcomming     :       #8A8A8A,
+    colorgray           :       #F8F8F8,
+    light-purple        :       #7E829E,
+    colorlightGray      :       #CCCCCC,
 );
 
 $font:(
-    base            :      'Roboto'#{', sans-serif'},
-    heading         :      'Poppins'#{', sans-serif'}
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
 );
 
 $font-size:(
     xs: 10px,
-    sm: 14px,
-    nr: 16px,
-    md: 17px,
+    sm: 12px,
+    nr: 14px,
+    md: 15px,
+    xmd:16px,
     lg: 24px,
     xlg: 34px,
-    h1:48px,
+    
+
+    h1:34px,
     h2:24px,
-    h3:17px,
+    h3:16px,
+    h4:14px,
+    h5:12px,
+    h6:10
 );
+$shadow:0 0 3px rgba(0, 0, 0, 0.16);
 
 
 // Bootstrap Variables
 $grid-gutter-width:           30px !default;
+$primary:       #4484F4 !default;
+$secondary:     #00AD46 !default;

@@ -56,7 +56,8 @@ namespace MainGateway.Middleware
             _logger.LogInformation(builder.ToString());
 
             //Copy the contents of the new memory stream (which contains the response) to the original stream, which is then returned to the client.
-            await responseBody.CopyToAsync(originalBodyStream);
+            if(responseBody.Length>0)
+                await responseBody.CopyToAsync(originalBodyStream);
         }
 
         private async Task<string> FormatRequest(HttpRequest request)

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
-import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
 
 import { Http } from '../../services/http/Http'
@@ -13,6 +12,8 @@ import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
 import Header from '../../shared/Components/Header/Header'
 import Footer from '../../shared/Components/Footer/Footer'
+import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
+import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 const httpClient = new Http();
 
 export const Home = () => {

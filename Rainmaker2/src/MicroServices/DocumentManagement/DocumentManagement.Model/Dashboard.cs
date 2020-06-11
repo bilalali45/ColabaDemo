@@ -16,10 +16,12 @@ namespace DocumentManagement.Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string id { get; set; }
         public DateTime createdOn { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
         public string typeName { get; set; }
@@ -30,10 +32,20 @@ namespace DocumentManagement.Model
 
     public class DashboardDTO
     {
-        public string Id { get; set; }
+        public string id { get; set; }
+        public string requestId { get; set; }
         public string docId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
-        public List<RequestFile> files { get; set; }
+        public List<FileDTO> files { get; set; }
+    }
+
+    public class FileDTO
+    {
+        public string id { get; set; }
+        public string clientName { get; set; }
+        public DateTime fileUploadedOn { get; set; }
+        public int size { get; set; }
+        public int order { get; set; }
     }
 }

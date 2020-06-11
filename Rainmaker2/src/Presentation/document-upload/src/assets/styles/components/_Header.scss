@@ -1,10 +1,11 @@
 .header-main{
     font-size: fontSize('lg');
     border-top: none;
-    border-bottom: 1px solid rgba(205, 205, 205, 0.2);
+    box-shadow: $shadow;
     min-height: 80px;
     padding: 0;
-    background: color('colorwhite');
+    background: color('colorWhite');
+    position: relative;
     .navbar {
         margin: 0;
         padding: 16px 0;
@@ -27,55 +28,39 @@
         margin: -8px 0 0 0;
         .hd-shorname {
             cursor: pointer;
-           span {
-            background: #4484f4;
-            color: #fff;
-            border-radius: 50%;
-            height: 36px;
-            width: 36px;
-            display: inline-block;
-            text-align: center;
-            font-size: 16px;
-            line-height: 36px;
-            letter-spacing: normal;
-           }
+            height: 14px;
+    width: 14px;
+    background:color('primary');
+    display: inline-block;
+    vertical-align: middle;
+    @include borderRadius(100%,false);
+    margin-top: 5px;
+    text-align: center;
+    line-height: 14px;
            &:after {
-            color: color('colordarkblue'); 
+            color: color('primary-text'); 
             display: inline-block;
             width: 0;
             height: 0;
-            vertical-align: middle;
             content: "";
-            border-top: 6px solid;
-            border-right: 6px solid transparent;
-            border-left: 6px solid transparent;
+            border-top: 4px solid;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
             border-bottom: 0;
-            margin-top: 5px;
            }
          
         }
     }
 }
     .d-name {
-        color: color('colordarkblue');  
-        font-family: fontFamily('heading');
-        font-weight: 700;
-        margin-right: 22px;
+        color: color('light-purple');  
+        font: 400 #{fontSize("nr")+"/30px"} fontFamily("heading");
+        margin-right: 10px;
         position: relative;
-        font-size: 18px;
         cursor: default;
         float: left;
         &:hover {
             text-decoration: none;
-        }
-        &:after {
-            content: '';
-            position: absolute;
-            height: 18px;
-            width: 2px;
-            background: #cccccc;
-            right: -12px;
-            top: 5px;
         }
     }
 

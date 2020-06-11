@@ -52,6 +52,7 @@ namespace DocumentManagement.Service
                             ""$project"": {
                                 ""_id"": 1,
                                 ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""docMessage"": ""$requests.documents.message"",
@@ -70,8 +71,9 @@ namespace DocumentManagement.Service
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
+                    dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (string.IsNullOrEmpty(query.docMessage))
                     {
@@ -88,7 +90,13 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files;
+                    dto.files = query.files?.Select(x=>new FileDTO() { 
+                        clientName=x.clientName,
+                        fileUploadedOn=DateTime.SpecifyKind(x.fileUploadedOn,DateTimeKind.Utc),
+                        id=x.id,
+                        order=x.order,
+                        size=x.size
+                    }).OrderBy(x=>x.order).ToList();
                     result.Add(dto);
                 }
             }
@@ -128,6 +136,7 @@ namespace DocumentManagement.Service
                             ""$project"": {
                                 ""_id"": 1,
                                 ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""docMessage"": ""$requests.documents.message"",
@@ -145,8 +154,9 @@ namespace DocumentManagement.Service
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
+                    dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (string.IsNullOrEmpty(query.docMessage))
                     {
@@ -163,7 +173,14 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files;
+                    dto.files = query.files?.Select(x => new FileDTO()
+                    {
+                        clientName = x.clientName,
+                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                        id = x.id,
+                        order = x.order,
+                        size = x.size
+                    }).OrderBy(x => x.order).ToList();
                     result.Add(dto);
                 }
             }

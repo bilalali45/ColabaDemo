@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { SVG } from './../../../../shared/Components/Assets/SVG';
+// import { SVG } from './../../../../shared/Components/Assets/SVG';
 import { Link, useHistory } from 'react-router-dom';
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import { Store } from '../../../../store/store';
@@ -46,12 +46,12 @@ export const DocumentStatus = () => {
                                 })}
                             </ul>
                             {pendingDocs.length > 4 && <div>
-                                <a href='' className="DocumentStatus--get-link">Show {pendingDocs.length - 4} more Tasks <SVG shape="arrowFarword" /></a>
+                                <a href='' className="DocumentStatus--get-link">Show {pendingDocs.length - 4} more Tasks </a>
                             </div>}
                         </div>
                     </div>
                     <div className="col-md-5 DocumentStatus--right-side">
-                        <SVG shape="storage" />
+                        {/* <SVG shape="storage" /> */}
                         <button onClick={getStarted} className="btn btn-primary float-right">Get Started</button>
                     </div>
                 </div>

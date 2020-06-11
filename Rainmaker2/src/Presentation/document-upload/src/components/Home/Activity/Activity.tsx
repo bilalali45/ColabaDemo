@@ -1,8 +1,9 @@
 import React from 'react'
-import { LoanStatus } from './LoanStatus/LoanStatus'
+// import { LoanStatus } from './LoanStatus/LoanStatus'
 import { LoanProgress } from './LoanProgress/LoanProgress'
-import { DocumentStatus } from './DocumentsStatus/DocumentStatus'
+import { DocumentStatus } from './DocumentStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
+import { LoanStatus } from './LoanStatus/LoanStatus'
 
 export const Activity = () => {
     return (
@@ -15,7 +16,7 @@ export const Activity = () => {
                             <LoanProgress />
                         </div>
                         <div className="col-md-7">
-                            <DocumentStatus />
+                            {/* <DocumentStatus /> */}
                             <ContactUs />
                         </div>
                     </div>

@@ -1,6 +1,200 @@
-.LoanProgress{
+.LoanProgress {
+    .lp-wrap {
+        padding: 10px 55px;
+        .list-wrap {
+            padding-bottom: 10px;
+            min-height: 138px;
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 30px;
+                color: color("colorBlack");
+                font: 500 #{fontSize("xlg") * 2+"/1"} fontFamily("heading");
+                i {
+                    color: color("colorBlack");
+                }
+            }
+            .carousel-control-prev {
+                left: -40px;
+            }
+            .carousel-control-next {
+                right: -40px;
+            }
+            .lp-list {
+                background: color("colorWhite");
+                position: relative;
+                padding-left: 104px;
+                display: flex;
+                align-items: center;
+                .step-count {
+                    position: absolute;
+                    left: 0;
+                    font: 500 #{fontSize("sm") * 12+"/1"} fontFamily("heading");
+                    color: color("primary");
+                }
+                .lp-content {
+                    .step-label {
+                        font: 500 #{fontSize("sm") + "/1.2"} fontFamily("heading");
+                        color: color("primary");
+                        text-transform: uppercase;
+                        margin-bottom: 10px;
+                    }
+                    h6 {
+                        font: 500 #{fontSize("nr") + "/1.2"} fontFamily("heading");
+                        color: color("colorBlack");
+                    }
+                    p {
+                        font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+                        color: color("base");
+                    }
+                }
+            }
+        }
+        .lp-footer {
+            &::before {
+                content: "";
+                background: color("primary");
+                background: -moz-linear-gradient(
+                    left,
+                    rgba(color("colorWhite"), 1) 0%,
+                    rgba(color("primary"), 1) 50%,
+                    rgba(color("colorWhite"), 1) 100%
+                );
+                background: -webkit-linear-gradient(
+                    left,
+                    rgba(color("colorWhite"), 1) 0%,
+                    rgba(color("primary"), 1) 50%,
+                    rgba(color("colorWhite"), 1) 100%
+                );
+                background: linear-gradient(
+                    to right,
+                    rgba(color("colorWhite"), 1) 0%,
+                    rgba(color("primary"), 1) 50%,
+                    rgba(color("colorWhite"), 1) 100%
+                );
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=color('primary'), endColorstr=color('primary'),GradientType=1 );
+                display: block;
+                width: 100%;
+                height: 1px;
+            }
+            ul {
+                display: flex;
+                justify-content: center;
+                position: relative;
+                padding: 15px 0 0 0;
 
-    
+                li {
+                    margin: 0 15px;
+                    position: relative;
+                    z-index: 2;
+                    &.active {
+                        &::after {
+                            content: "";
+                            display: block;
+                            height: 0;
+                            width: 0;
+                            border-top: 10px solid color("primary");
+                            border-right: 17px solid transparent;
+                            border-left: 17px solid transparent;
+                            position: absolute;
+                            top: -15px;
+                            left: -4px;
+                        }
+                    }
+                    & + li {
+                        &::before {
+                            content: "";
+                            height: 2px;
+                            background: color("primary");
+                            display: block;
+                            width: 30px;
+                            position: absolute;
+                            top: 50%;
+                            margin-top: -1px;
+                            right: 100%;
+                        }
+                    }
 
+                    a {
+                        background: color("primary");
+                        color: color("primary-text");
+                        width: 25px;
+                        height: 25px;
+                        display: block;
+                        @include borderRadius(50%, false);
+                        text-align: center;
+                        line-height: 26px;
+                        font-size: fontSize("xmd") + 1;
+                        position: relative;
+                    }
+                    &.current-icon {
+                        a {
+                            background: color("secondry");
+                            color: color("secondry-text");
+
+                        }  
+                    }
+                    &.upcoming-icon {
+                        a {
+                            background: color("colorlightGray");
+                            color: color("colorWhite");
+
+                        }  
+                    }
+                }
+            }
+        }
+        &.current-step {
+            .list-wrap {
+                .lp-list {
+                    .step-count {
+                        color: color("secondry");
+                    }
+                    .lp-content {
+                        .step-label {
+                            color: color("secondry");
+                        }
+                    }
+                }
+            }
+
+            .lp-footer {
+                ul {
+                    li {
+                        &.active {
+                            &::after {
+                                border-top: 10px solid color("secondry");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.upcoming-step {
+            .list-wrap {
+                .lp-list {
+                    .step-count {
+                        color: color("colorlightGray");
+                    }
+                    .lp-content {
+                        .step-label {
+                            color: color("light-purple");
+                        }
+                    }
+                }
+            }
+
+            .lp-footer {
+                ul {
+                    li {
+                        &.active {
+                            &::after {
+                                border-top: 10px solid color("colorlightGray");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-
