@@ -96,7 +96,7 @@ namespace DocumentManagement.Service
                     {
                         new JsonArrayFilterDefinition<Request>("{ \"request.id\": ObjectId(\""+model.requestId+"\")}"),
                         new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+model.docId+"\")}"),
-                        new JsonArrayFilterDefinition<Request>("{ \"file.clientName\": \""+item.fileName+"\"}")
+                        new JsonArrayFilterDefinition<Request>("{ \"file.clientName\": \""+item.fileName.Replace("\"","\\\"")+"\"}")
                     }
                 });
             }
