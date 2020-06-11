@@ -12,15 +12,6 @@ namespace DocumentManagement.Model
         public string fileName { get; set; }
         public int order { get; set; }
     }
-    public class FileSubmitModel
-    {
-        public List<IFormFile> documents { get; set; }
-        public List<FileNameModel> fileNames { get; set; }
-        public string id { get; set; }
-        public string docId { get; set; }
-        public string requestId { get; set; }
-    }
-
     public class DoneModel
     {
         public string id { get; set; }

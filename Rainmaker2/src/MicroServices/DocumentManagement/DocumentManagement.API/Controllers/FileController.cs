@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -20,9 +23,36 @@ namespace DocumentManagement.API.Controllers
 
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Submit(FileSubmitModel model)
+        public async Task<IActionResult> Submit([FromForm]string id, [FromForm] string requestId, [FromForm] string docId, [FromForm] string order, List<IFormFile> files)
         {
-            return null;
+            // save
+            foreach(var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(formFile.FileName)); 
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                    // todo: encrypt file
+                    // todo: upload to ftp
+                    // todo: insert into mongo
+                    System.IO.File.Delete(filePath);
+
+                }
+            }
+            // set order
+            FileOrderModel model = new FileOrderModel
+            {
+                id = id,
+                docId = docId,
+                requestId = requestId,
+                files = JsonConvert.DeserializeObject<List<FileNameModel>>(order)
+            };
+            await fileService.Order(model);
+            return Ok();
         }
 
         [HttpPut("[action]")]
