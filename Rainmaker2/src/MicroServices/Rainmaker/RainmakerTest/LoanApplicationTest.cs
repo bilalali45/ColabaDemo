@@ -4,15 +4,17 @@ using Moq;
 using Rainmaker.API.Controllers;
 using Rainmaker.Model;
 using Rainmaker.Service;
+using Rainmaker.Service.Helpers;
+using RainMaker.Common;
 using RainMaker.Data;
 using RainMaker.Entity.Models;
-using System.Collections.Generic;
-using System.Linq;
+using RainMaker.Service;
+using System.IO;
 using System.Threading.Tasks;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
 using Xunit;
-
+ 
 namespace RainmakerTest
 {
     public class LoanApplicationTest
@@ -310,5 +312,50 @@ namespace RainmakerTest
 
         }
 
+
+             [Fact]
+
+        public async Task TestGetPhotoIsNotNullController()
+        {
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
+            Mock<IFtpHelper> mockftpservice = new Mock<IFtpHelper>();
+            int? businessUnitId = 1;
+           
+            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId,default)).ReturnsAsync(string.Empty);
+            mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
+
+            LoanApplicationController controller = new LoanApplicationController( null, mockcommonservice.Object, mockftpservice.Object);
+            ////Act
+            IActionResult result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder,(int)businessUnitId);
+
+
+          
+            ////Assert
+            Assert.NotNull(result);
+            Assert.IsType<FileStreamResult>(result);
+            var content = (result as FileStreamResult).FileStream as MemoryStream;
+            Assert.NotNull(content);
+            
+        }
+        [Fact]
+        public async Task TestGetPhotoNullController()
+        {
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
+            Mock<IFtpHelper> mockftpservice = new Mock<IFtpHelper>();
+            int? businessUnitId = 1;
+
+            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId, default)).ReturnsAsync(string.Empty);
+            mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(It.IsAny<Stream>());
+
+            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
+            ////Act
+            IActionResult result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
+
+
+
+            ////Assert
+            Assert.Null(result);
+
+        }
     }
 }
