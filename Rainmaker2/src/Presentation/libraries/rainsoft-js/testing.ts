@@ -1,6 +1,5 @@
-import {MaskPhone, FormatAmountByCountry} from './index';
+import {MaskPhone,UnMaskPhone, FormatAmountByCountry} from './index';
 
 console.log(MaskPhone(2340982340))
-
-let am = FormatAmountByCountry(250000.56);
-console.log(am)
+console.log(UnMaskPhone("(258) 896-454"))
+console.log(FormatAmountByCountry(250000.56))
