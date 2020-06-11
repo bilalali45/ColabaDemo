@@ -34,7 +34,7 @@ namespace Identity
             //        .AddDeveloperSigningCredential()
             //        .AddInMemoryApiResources(Config.GetAllApiResources())
             //        .AddInMemoryClients(Config.GetClients(Configuration));
-            //services.AddHttpClient();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
