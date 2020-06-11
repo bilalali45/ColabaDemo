@@ -19,6 +19,9 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
 
+
+    const data =  new FormData();
+
     const viewDocument = (file: File) => {
         setShowingDoc(true);
         setFileType(file.type);
@@ -31,12 +34,12 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     const uploadFile = async () => {
-        console.log(files[0]);
-        const data = new FormData();
 
         for (const file of files) {
-            data.append('file', file);
+            console.log(file);
+            data.append('file', file, `${'abc what ever'}.${file.type.split('/')[1]}`);
         }
+        console.log(data);
         setShowProgressBar(true);
         try {
             let res = await httpClient.fetch({
@@ -48,11 +51,14 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                     setUploadPercent(p);
                 }
             });
-            console.log(res);
             setShowProgressBar(false);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const changeName = () => {
+        console.log(data.get('file'));
     }
 
     return (
@@ -62,7 +68,8 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 files.map(f => {
                     return (<DocumentItem
                         file={f}
-                        viewDocument={viewDocument} />)
+                        viewDocument={viewDocument} 
+                        changeName={changeName}/>)
                 })
             }
             {showingDoc ? <DocumentView

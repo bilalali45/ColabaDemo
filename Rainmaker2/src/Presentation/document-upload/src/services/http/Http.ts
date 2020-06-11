@@ -35,8 +35,6 @@ export class Http {
         } else {
             return Http.instance;
         }
-
-
     }
 
     async get<T>(url: string) {
@@ -70,7 +68,7 @@ export class Http {
         return `${baseUrl}${url}`
     }
 
-    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) {
+    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) : Promise<AxiosResponse<T>> {
 
         try {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
@@ -95,7 +93,7 @@ export class Http {
         let headers: OutgoingHttpHeaders = {}
         let auth = Auth.checkAuth();
         if (auth && (!url.includes('login') || !url.includes('authorize'))) {
-            headers['Authorization'] = auth;
+            headers['Authorization'] = `Bearer ${auth}`;
         }
 
         let config: ReqConfig<T> = {

@@ -1,7 +1,6 @@
 export class Auth {
     
     public static saveAuth(token: string) {
-        console.log('in here!!', token);
         localStorage.setItem('auth', token);
     }
     

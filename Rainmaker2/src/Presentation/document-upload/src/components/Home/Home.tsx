@@ -21,28 +21,32 @@ export const Home = () => {
 
     const [authenticated, setAuthenticated] = useState<boolean>(false);
 
+    const authenticate = async () => {
+        let res = UserActions.authenticate();
+    }
+
+    if (!Auth.checkAuth()) {
+        authenticate();
+    }
+
 
     useEffect(() => {
-        console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
-        console.log('in here!!!', location);
-        if(!Auth.checkAuth()) {
-            history.push('/loading');
-        }
-        if (location.pathname === '/') {
-            history.push('/home/activity');
-        }
-    }, [])
-
-    httpClient.get('/home');
+        // if(!Auth.checkAuth()) {
+        //     history.push('/loading');
+        // }
+        // if (location.pathname === '/') {
+        //     history.push('/activity');
+        // }
+    }, []);
 
     return (
         <div>
             <Header></Header>
             <ActivityHeader />
             <Switch>
-                <Route path="/home/activity" component={Activity} />
-                <Route path="/home/documentsRequest" component={DocumentRequest} />
-                <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
+                <Route path="/activity" component={Activity} />
+                <Route path="/documentsRequest" component={DocumentRequest} />
+                <Route path="/uploadedDocuments" component={UploadedDocuments} />
             </Switch>
             <Footer></Footer>
         </div>

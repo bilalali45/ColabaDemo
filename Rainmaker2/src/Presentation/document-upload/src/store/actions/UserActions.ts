@@ -1,35 +1,25 @@
 import { Http } from "../../services/http/Http";
 import { Auth } from "../../services/auth/Auth";
+import { Endpoints } from "../endpoints/Endpoints";
 
 const http = new Http();
 
 export class UserActions {
-    static async authenticate() {
-      let res: any = await http.post<{token: string}, {email: string}>('/authorize', {email: 'test@test.com'});
-      return res.data;
+  static async authenticate() {
+    try {
+      let res: any = await http.get(Endpoints.user.GET.authorize());
+      Auth.saveAuth(res.data.access_token);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    static async getUserInfo() {
+  static async getUserInfo() {
 
-    }
+  }
 
-    static async getLoanApplication() {
-
-    }
-
-    static async getRequiredDocuments() {
-
-    }
-
-    static async getSubmittedDocuments() {
-
-    }
-
-    static async submitDocuments() {
-
-    }
-
-    static async logout() {
-        Auth.removeAuth();
-    }
+  
+  static async logout() {
+    Auth.removeAuth();
+  }
 }
