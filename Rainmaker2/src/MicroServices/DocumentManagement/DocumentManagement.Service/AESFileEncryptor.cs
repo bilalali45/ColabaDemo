@@ -36,6 +36,7 @@ namespace DocumentManagement.Service
             {
                 fsOut.Write(buffer, 0, read);
             }
+            fsOut.Position = 0;
             return fsOut;
         }
 

@@ -48,4 +48,14 @@ namespace DocumentManagement.Model
         public int size { get; set; }
         public int order { get; set; }
     }
+
+
+    public class FileViewDTO
+    {
+        public string serverName { get; set; }
+        public string encryptionKey { get; set; }
+        public string encryptionAlgorithm { get; set; }
+        public string clientName { get; set; }
+        public string contentType { get; set; }
+    }
 }

@@ -20,8 +20,8 @@ namespace DocumentManagement.Service
         public async Task<Setting> GetSetting()
         {
             IMongoCollection<Setting> collection = mongoService.db.GetCollection<Setting>("Setting");
-            IAsyncCursor<Setting> setting = await collection.FindAsync(FilterDefinition<Setting>.Empty);
-            setting.MoveNext();
+            using IAsyncCursor<Setting> setting = await collection.FindAsync(FilterDefinition<Setting>.Empty);
+            await setting.MoveNextAsync();
             return setting.Current.FirstOrDefault();
         }
     }
