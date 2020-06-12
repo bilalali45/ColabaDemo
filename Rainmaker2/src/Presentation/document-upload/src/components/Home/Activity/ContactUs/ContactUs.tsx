@@ -12,7 +12,7 @@ type Props = {
     userImg: any
 }
 
-export const ContactUs: React.SFC<Props> = (props) => {
+export const ContactUs: React.FC<Props> = (props) => {
     return (
         <div className="ContactUs box-wrap">
             <div className="box-wrap--header">
@@ -22,23 +22,55 @@ export const ContactUs: React.SFC<Props> = (props) => {
             <div className="box-wrap--body">
                 <div className="row">
                     
-                    <div className="col-md-5 ContactUs--left">
-                        <div className="row ContactUs--user">
+                    <div className="col-md-12 col-lg-6 ContactUs--left">
+                        {/* <div className="row ContactUs--user">
                             <div className="col-4 ContactUs--user---img">
                                 <div className="ContactUs--user-image"><img src={ props.userImg } alt="Williams Jack" /></div>
                             </div>
+
                             <div className="col-8 ContactUs--user---detail">
+                                <h2><a href="">{props.userName}</a> <span className="ContactUs--user-id">ID#{props.userId}</span></h2>
+                            </div>
+                        </div> */}
+                                                <div className="ContactUs--user">
+                            <div className="ContactUs--user---img">
+                                <div className="ContactUs--user-image"><img src={ props.userImg } alt="Williams Jack" /></div>
+                            </div>
+                            
+                            <div className="ContactUs--user---detail">
                                 <h2><a href="">{props.userName}</a> <span className="ContactUs--user-id">ID#{props.userId}</span></h2>
                             </div>
                         </div>
                        
                     </div>
                     
-                    <div className="col-md-7 col-md-offset-1 ContactUs--right">                        
+                    <div className="col-md-12 col-lg-6  ContactUs--right">                        
                         <ul className="ContactUs--list">
-                            <li><SVGtel /> <a href="tel:8889711254">{props.userContact}</a></li>
-                            <li><SVGmail /> <a href="mailto:Williams.jack@texastrustloans.com">{props.userEmail}</a></li>
-                            <li><SVGinternet /> <a href="www.texatrustloans.com" target="_blank">{props.userWebsite}</a></li>
+                            <li>
+                            <a title={props.userContact} href={"tel:"+props.userContact}> 
+                            <span>
+                            <i className="zmdi zmdi-phone"></i> 
+                            <span>{props.userContact}</span>
+                            </span>
+                            </a></li>
+                            <li>
+                                <a title={props.userEmail} href={"mailto:"+props.userEmail}>
+                                    <span>
+                                    <i className="zmdi zmdi-email"></i>  
+                                     <span>{props.userEmail}</span>
+                                    </span>
+                                
+                                </a>
+                                </li>
+                            <li>
+                             <a title={props.userWebsite} href="{props.userWebsite}" target="_blank">
+                             <span>
+                                    <i className="zmdi zmdi-globe-alt"></i>  
+                                    <span>{props.userWebsite}</span>
+                                    </span>
+                                 
+                                 </a>
+                                 </li>
                         </ul>
                     </div>
 

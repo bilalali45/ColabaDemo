@@ -3,7 +3,7 @@ import React from 'react'
 import { LoanProgress } from './LoanProgress/LoanProgress'
 import { DocumentStatus } from './DocumentStatus/DocumentStatus'
 import { ContactUs } from './ContactUs/ContactUs'
-import Williams_Jack from '../../../assets/images/Williams_Jack.jpg';
+import contactAvatar from '../../../assets/images/contact-avatar-icon.svg';
 
 export class Activity extends React.Component {
 
@@ -50,12 +50,12 @@ export class Activity extends React.Component {
                             <div className="col-md-6">
                                 <LoanProgress />                                
                                 <ContactUs  
-                                    userName="Williams Jack" 
-                                    userId={254545} 
-                                    userContact="(888) 971-1254" 
-                                    userEmail="Williams.jack@texastrustloans.com"
+                                    userName="Jony Leo" 
+                                    userId={290290} 
+                                    userContact="(888) 971-1425" 
+                                    userEmail="Jony.leo@texastrustloans.com"
                                     userWebsite="www.texatrustloans.com"
-                                    userImg={Williams_Jack}
+                                    userImg={contactAvatar}
                                 />
                             </div>
                         </div>
