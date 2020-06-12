@@ -12,6 +12,8 @@ import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
 import {RainsoftRcHeader, RainsoftRcFooter} from 'rainsoft-rc';
 import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
+import { DocumentRequest } from './DocumentRequest/DocumentRequest'
+
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 const httpClient = new Http();
 const currentyear = new Date().getFullYear();
@@ -19,6 +21,16 @@ export const Home = () => {
     const location = useLocation();
     const history = useHistory();
     const [authenticated, setAuthenticated] = useState<boolean>(false);
+
+    const authenticate = async () => {
+        console.log('in authenticate');
+        let res = UserActions.authenticate();
+    }
+
+    if (!Auth.checkAuth()) {
+        authenticate();
+    }
+
     const gotoDashboardHandler = () => {
         console.log('gotoDashboardHandler')
     }
@@ -36,17 +48,13 @@ export const Home = () => {
     const footerContent = "Copyright 2002 – "+currentyear+". All rights reserved. American Heritage Capital, LP. NMLS 277676";
 
     useEffect(() => {
-        console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
-        console.log('in here!!!', location);
         // if(!Auth.checkAuth()) {
         //     history.push('/loading');
         // }
         // if (location.pathname === '/') {
-        //     history.push('/home/activity');
+        //     history.push('/activity');
         // }
-    }, [])
-
-    httpClient.get('/home');
+    }, []);
 
     return (
         <div>
@@ -58,9 +66,9 @@ export const Home = () => {
             />
             <ActivityHeader />
             <Switch>
-                <Route path="/home/activity" component={Activity} />
-                <Route path="/home/DocumentStatus" component={DocumentStatus} />
-                <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
+                <Route path="/activity" component={Activity} />
+                <Route path="/documentsRequest" component={DocumentRequest} />
+                <Route path="/uploadedDocuments" component={UploadedDocuments} />
             </Switch>
             <RainsoftRcFooter
              content = {footerContent}

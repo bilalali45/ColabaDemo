@@ -18,7 +18,6 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
 
         if (files) {
             setSelectedFiles(files);
-            console.log(files);
         }
     }
 

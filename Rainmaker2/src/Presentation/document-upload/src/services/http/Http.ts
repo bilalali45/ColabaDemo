@@ -35,8 +35,6 @@ export class Http {
         } else {
             return Http.instance;
         }
-
-
     }
 
     async get<T>(url: string) {
@@ -70,13 +68,13 @@ export class Http {
         return `${baseUrl}${url}`
     }
 
-    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) {
+    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) : Promise<AxiosResponse<T>> {
 
         try {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log(error?.response);
+            console.log(error?.response?.data);
             if (error?.response?.data?.name === 'TokenExpiredError' || error?.response?.data?.name === 'JsonWebTokenError' || error?.response?.data === 'Could not login') {
                 
                 window.open('http://localhost:5000/app', '_self');
@@ -95,7 +93,7 @@ export class Http {
         let headers: OutgoingHttpHeaders = {}
         let auth = Auth.checkAuth();
         if (auth && (!url.includes('login') || !url.includes('authorize'))) {
-            headers['Authorization'] = auth;
+            headers['Authorization'] = `Bearer ${auth}`;
         }
 
         let config: ReqConfig<T> = {
@@ -108,6 +106,7 @@ export class Http {
         if (data) {
             config.data = data;
         }
+        console.log(data);
         return config;
     }
 
