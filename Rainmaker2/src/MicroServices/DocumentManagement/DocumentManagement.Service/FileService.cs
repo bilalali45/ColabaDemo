@@ -157,8 +157,8 @@ namespace DocumentManagement.Service
 
                         @"{
                             ""$project"": {
-                               
-                                 ""serverName"": ""$requests.documents.files.serverName"",
+                                ""_id"": 0,                               
+                                ""serverName"": ""$requests.documents.files.serverName"",
                                 ""encryptionKey"": ""$requests.documents.files.encryptionKey"",
                                 ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.files.clientName"",

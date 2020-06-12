@@ -88,8 +88,9 @@ namespace DocumentManagement.API.Controllers
 
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> View(FileViewModel model)
+        public async Task<IActionResult> View(string id, string requestId, string docId, string fileId)
         {
+            FileViewModel model = new FileViewModel{docId=docId,fileId=fileId,id=id,requestId=requestId  };
             var fileviewdto = await fileService.View(model);
             Setting setting = await settingService.GetSetting();
             ftpClient.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword);
