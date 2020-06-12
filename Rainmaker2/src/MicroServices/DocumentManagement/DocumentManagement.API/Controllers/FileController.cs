@@ -96,7 +96,7 @@ namespace DocumentManagement.API.Controllers
             ftpClient.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword);
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
-            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, "this is a very long password",fileviewdto.clientName),fileviewdto.contentType);
+            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, "this is a very long password",fileviewdto.clientName),fileviewdto.contentType,fileviewdto.clientName);
         }
     }
 }
