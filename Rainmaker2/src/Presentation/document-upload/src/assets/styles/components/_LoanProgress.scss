@@ -1,9 +1,18 @@
 .LoanProgress {
     .lp-wrap {
-        padding: 10px 55px;
+        padding: 36px 55px 10px;
+        @include media-breakpoint-down(lg) {
+            padding: 36px 20px 10px;
+          }
+          @include media-breakpoint-down(md) {
+            padding: 20px 0 10px;
+          }
         .list-wrap {
             padding-bottom: 10px;
-            min-height: 138px;
+            min-height: 148px;
+            @include media-breakpoint-down(md) {
+                min-height: 165px;
+              }
             .carousel-control-prev,
             .carousel-control-next {
                 width: 30px;
@@ -24,12 +33,29 @@
                 position: relative;
                 padding-left: 104px;
                 display: flex;
+                padding-bottom: 5px;
+                padding-top: 5px;
                 align-items: center;
+                @include media-breakpoint-down(md) {
+                    padding-left: 84px;
+                  }
                 .step-count {
                     position: absolute;
                     left: 0;
                     font: 500 #{fontSize("sm") * 12+"/1"} fontFamily("heading");
                     color: color("primary");
+                    align-items: center;
+                    display: flex;
+                    max-width: 91px;
+                    @include media-breakpoint-down(md) {
+                        font-size:fontSize("sm") * 9  ;
+                        max-width: 71px;
+                      }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+
                 }
                 .lp-content {
                     .step-label {
@@ -41,10 +67,16 @@
                     h6 {
                         font: 500 #{fontSize("nr") + "/1.2"} fontFamily("heading");
                         color: color("colorBlack");
+                        @include media-breakpoint-down(md) {
+                            font-size:fontSize('nr')-1 ;
+                          }
                     }
                     p {
                         font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
                         color: color("base");
+                        @include media-breakpoint-down(md) {
+                            font-size:fontSize('nr')-1 ;
+                          }
                     }
                 }
             }
@@ -86,6 +118,9 @@
                     margin: 0 15px;
                     position: relative;
                     z-index: 2;
+                    @include media-breakpoint-down(md) {
+                        margin: 0 10px;
+                      }
                     &.active {
                         &::after {
                             content: "";
@@ -111,6 +146,9 @@
                             top: 50%;
                             margin-top: -1px;
                             right: 100%;
+                            @include media-breakpoint-down(md) {
+                                width: 20px;
+                              }
                         }
                     }
 
@@ -125,20 +163,21 @@
                         line-height: 26px;
                         font-size: fontSize("xmd") + 1;
                         position: relative;
+                        &:hover{
+                            text-decoration: none;
+                        }
                     }
                     &.current-icon {
                         a {
                             background: color("secondry");
                             color: color("secondry-text");
-
-                        }  
+                        }
                     }
                     &.upcoming-icon {
                         a {
                             background: color("colorlightGray");
                             color: color("colorWhite");
-
-                        }  
+                        }
                     }
                 }
             }

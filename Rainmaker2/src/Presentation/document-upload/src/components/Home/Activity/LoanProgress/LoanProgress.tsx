@@ -6,7 +6,7 @@ type Props = {
 }
 
 export const LoanProgress: React.SFC<Props> = (props) => {
-    const [index, setIndex] = useState(3);
+    const [index, setIndex] = useState(2);
 
     function handleSelect(selectedIndex: any, e: any) {
         setIndex(selectedIndex);
@@ -17,7 +17,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                 <h2 className="heading-h2"> Your Loan Progress </h2>
             </div>
             <div className="box-wrap--body">
-                <div className={index == 4 ? "lp-wrap upcoming-step" : index == 3 ? "lp-wrap current-step" : "lp-wrap"}>
+                <div className={index == 4 ||index == 3  ? "lp-wrap upcoming-step" : index == 2 ? "lp-wrap current-step" : "lp-wrap"}>
                     <div className="list-wrap">
                         <Carousel as="div"
                             activeIndex={index}
@@ -68,7 +68,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                                 <div className="lp-list ">
                                     <div className="step-count">4</div>
                                     <div className="lp-content">
-                                        <div className="step-label">Current Step</div>
+                                        <div className="step-label">Upcoming</div>
                                         <h6>Document upload and loan team review</h6>
                                         <p>Submit document to help us verify the information you provided. We many request follow-up items add we review your application.</p>
                                     </div>
@@ -103,14 +103,15 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                                 </a>
                             </li>
 
-                            <li className={index==2?"completed-icon active":"completed-icon"}>
+                         
+                            <li className={index==2?"current-icon active":"current-icon"}>
                                 <a href="javascrit:" onClick={(e) => handleSelect(2, e)}>
-                                    <i className="zmdi zmdi-check"></i>
+                                    <i className="zmdi zmdi-male-alt"></i>
                                 </a>
                             </li>
-                            <li className={index==3?"current-icon active":"current-icon"}>
+                            <li className={index==3?"upcoming-icon active":"upcoming-icon"}>
                                 <a href="javascrit:" onClick={(e) => handleSelect(3, e)}>
-                                    <i className="zmdi zmdi-male-alt"></i>
+                                    <span>4</span>
                                 </a>
                             </li>
                             <li className={index==4?"upcoming-icon active":"upcoming-icon"}>

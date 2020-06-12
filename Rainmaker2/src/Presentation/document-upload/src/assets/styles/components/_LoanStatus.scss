@@ -5,6 +5,9 @@
         font: 400 #{fontSize('sm')+'/1.2'} fontFamily('heading');
         color:color(light-purple);
         text-transform: uppercase;
+        @include media-breakpoint-down(md) {
+            font-size:fontSize('sm')-2 ;
+          }
     }
     &--text{
 
@@ -12,6 +15,10 @@
         color:color(base);
         padding-right: 20px;
         margin-bottom: 0;
+        @include media-breakpoint-down(lg) {
+            font-size:fontSize('nr')-2 ;
+            padding-right: 5px;
+          }
 
     }
     ul{
@@ -36,9 +43,26 @@
         padding-left: 70px;
         display: flex;
         align-items: center;
+        @include media-breakpoint-down(lg) {
+            padding-left: 55px;
+          }
+          @include media-breakpoint-down(md) {
+            padding-left: 40px;
+          }
         .icon-wrap {
             position: absolute;
             left: 0;
+            img{
+                max-width: 100%;
+                height: auto;
+            }
+
+            @include media-breakpoint-down(lg) {
+                max-width: 45px;
+              }
+              @include media-breakpoint-down(md) {
+                max-width: 30px;
+              }
         }
         .c-wrap {
             padding-top: 5px;
@@ -51,6 +75,9 @@
             }
             span {
                 font: 500 #{fontSize('lg')+'/1'} fontFamily('base');
+                @include media-breakpoint-down(lg) {
+                    font-size:fontSize('lg')-2 ;
+                  }
             }
         }
         
