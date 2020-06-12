@@ -1,10 +1,13 @@
 ﻿using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace DocumentManagement.Service
 {
@@ -96,7 +99,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm)
+        public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -107,7 +110,7 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType } }   }
                     }
                 }
             }, new UpdateOptions()
@@ -118,7 +121,58 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+docId+"\")}")
                 }
             });
-            return result.ModifiedCount==1;
+            return result.ModifiedCount == 1;
         }
+
+        public async Task<FileViewDTO> View(FileViewModel model)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" 
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.files.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                               
+                                 ""serverName"": ""$requests.documents.files.serverName"",
+                                ""encryptionKey"": ""$requests.documents.files.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
+                                ""clientName"": ""$requests.documents.files.clientName"",
+                                ""contentType"": ""$requests.documents.files.contentType""
+                            }
+                             } "
+
+));
+
+
+            await asyncCursor.MoveNextAsync();
+            FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+            return fileViewDTO;
+        }
+
     }
 }

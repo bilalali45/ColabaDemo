@@ -44,7 +44,7 @@ namespace DocumentManagement.API.Controllers
                     // upload to ftp
                     await ftpClient.UploadAsync(Path.GetFileName(filePath),filePath);
                     // insert into mongo
-                    var docQuery = await fileService.Submit(id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,"","AES");
+                    var docQuery = await fileService.Submit(formFile.ContentType,id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,"","AES");
                     System.IO.File.Delete(filePath);
                 }
             }
@@ -88,9 +88,14 @@ namespace DocumentManagement.API.Controllers
 
         }
         [HttpGet("[action]")]
-        public async Task<byte[]> View(FileViewModel model)
+        public async Task<IActionResult> View(FileViewModel model)
         {
-            return null;
+            var fileviewdto = await fileService.View(model);
+            Setting setting = await settingService.GetSetting();
+            ftpClient.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword);
+            var filepath = Path.GetTempFileName();
+            await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
+            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, "this is a very long password",fileviewdto.clientName),fileviewdto.contentType);
         }
     }
 }
