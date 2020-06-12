@@ -17,24 +17,13 @@
 								"method": "POST",
 								"header": [],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "userName",
-											"value": "danish",
-											"type": "text"
-										},
-										{
-											"key": "password",
-											"value": "Rainsoft",
-											"type": "text"
-										},
-										{
-											"key": "employee",
-											"value": "true",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\r\n    \"userName\":\"danish\",\r\n    \"password\":\"Rainsoft\",\r\n    \"employee\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
 									"raw": "{{baseUrl}}/api/Identity/token/authorize",
@@ -269,7 +258,7 @@
 							"response": []
 						},
 						{
-							"name": "Upload",
+							"name": "Submit",
 							"request": {
 								"auth": {
 									"type": "bearer",

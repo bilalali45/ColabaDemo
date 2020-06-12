@@ -12,7 +12,6 @@ export class AuthActions {
             Auth.saveAuth(token);
             return token;
         }
-        console.log(res);
     }
 }
 

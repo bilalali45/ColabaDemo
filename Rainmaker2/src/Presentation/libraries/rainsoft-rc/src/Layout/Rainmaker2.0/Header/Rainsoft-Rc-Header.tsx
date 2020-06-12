@@ -32,7 +32,7 @@ export const RainsoftRcHeader = ({ logoSrc, displayName, displayNameOnClick, opt
                                 </a>
                                 <HeaderMenu
                                     options={options}
-                                    displayName={displayName} />
+                                />
                             </div>
                         </nav>
                     </div>

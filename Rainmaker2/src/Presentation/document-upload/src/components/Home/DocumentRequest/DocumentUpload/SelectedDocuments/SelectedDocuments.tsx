@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 import { DocumentItem } from './DocumentItem/DocumentItem'
 import { DocumentView } from '../../../../../shared/Components/DocumentView/DocumentView'
 import { Http } from '../../../../../services/http/Http';
+import { FileSelected } from '../DocumentUpload';
 
 const httpClient = new Http();
 
 
 type SelectedDocumentsType = {
-    files: File[],
+    files: FileSelected[],
     url: string
 }
 
 export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
 
     const [showingDoc, setShowingDoc] = useState<boolean>(false);
+    const [selectedFiles, setSelectedFiles] = useState<FileSelected[]>(files);
     const [currentDoc, setCurrentDoc] = useState<File | null>(null);
     const [fileType, setFileType] = useState<string>('');
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
+
+
+    const data = new FormData();
 
     const viewDocument = (file: File) => {
         setShowingDoc(true);
@@ -25,18 +30,19 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         setCurrentDoc(file);
     }
 
+    
 
     const closeDocumentView = () => {
         setShowingDoc(false);
     }
 
     const uploadFile = async () => {
-        console.log(files[0]);
-        const data = new FormData();
 
         for (const file of files) {
-            data.append('file', file);
+            console.log(file);
+            data.append('file', file.file, `${file.name}`);
         }
+        console.log(data);
         setShowProgressBar(true);
         try {
             let res = await httpClient.fetch({
@@ -48,21 +54,35 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                     setUploadPercent(p);
                 }
             });
-            console.log(res);
             setShowProgressBar(false);
         } catch (error) {
             console.log(error);
         }
     }
 
+    const changeName = (file: FileSelected, newName: string) => {
+        console.log(file, newName);
+        setSelectedFiles((prevFiles: FileSelected[]) => {
+            return prevFiles.map((f: FileSelected) => {
+                if (f.file.name === file.file.name) {
+                    f.name = `${newName}.${file.file.type.split('/')[1]}`;
+                    return f;
+                }
+                return f;
+            })
+        })
+        // console.log(data.get('file'));
+    }
+
     return (
         <div className="file-drop-box">
             <h1>Selected Documents</h1>
             {
-                files.map(f => {
+                selectedFiles.map(f => {
                     return (<DocumentItem
                         file={f}
-                        viewDocument={viewDocument} />)
+                        viewDocument={viewDocument}
+                        changeName={changeName} />)
                 })
             }
             {showingDoc ? <DocumentView

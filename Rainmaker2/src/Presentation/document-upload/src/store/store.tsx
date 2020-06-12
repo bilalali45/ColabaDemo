@@ -3,19 +3,25 @@ import { authReducer } from './reducers/aauthReducer';
 import { userReducer } from './reducers/userReducer';
 import { mainReducer } from './reducers/reducers';
 import { Http } from '../services/http/Http';
+import { ContactUs } from '../entities/Models/ContactU';
 
 const httpClient = new Http();
 
-httpClient.setBaseUrl('http://localhost:5000');
+// httpClient.setBaseUrl('http://localhost:5000');
+httpClient.setBaseUrl('https://alphamaingateway.rainsoftfn.com');
 
 export type InitialStateType = {
-    auth: {} | null,
-    user: {} | null
+    // auth: {} | null,
+    // user: {} | null
+    loan?: {},
+    documents: {}
 }
 
 export const initialState = {
-    auth: {},
-    user: {}
+    // auth: {},
+    // user: {}, 
+    loan: {},
+    documents: {}
 };
 
 const Store = createContext<{

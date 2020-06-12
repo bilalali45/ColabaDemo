@@ -138,7 +138,7 @@ min-height: 100vh;
 }
 .box-wrap {
     box-shadow: $shadow;
-    padding: 15px;
+    padding: 20px;
     font: 400 #{fontSize('nr')+'/17px'} fontFamily('base');
     margin-bottom: 15px;
     background: color('colorWhite');
@@ -172,22 +172,24 @@ min-height: 100vh;
     @extend .list-style-none;
     margin: 26px 0;
     font: #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('base');
-
+    @include media-breakpoint-down(md) {
+        font-size:fontSize('nr')-1 ;
+        }
     >li{
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         position: relative;
-        padding-left: 35px;
+        padding-left: 20px;
         
         &::before{
             content: "";
-            width: 12px;
-            height: 12px;
+            width: 6px;
+            height: 6px;
             display: block;
             background-color: color('primary');
             border-radius: 50%;
             position: absolute;
-            left: 10px;
-            top: 0;
+            left: 0;
+            top: 2px;
         }
     }
 }

@@ -9231,6 +9231,19 @@ raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
+rainsoft-js@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.11.tgz#f5de915b8eeca155a29871596fb679b3b1af80df"
+  integrity sha512-H1yZ4wUAWMkj/BBSzIe2d1RAbdKv6/2Tc83QY3+momYd5klefUjK/qL/Q9tS3gHzf1Zwlw9qSyP1li9yoBLxYw==
+
+rainsoft-rc@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.5.tgz#7b4160d1b40a1cdb19621bd27b485310b5fcd472"
+  integrity sha512-MZWS6XW/P3PGiFbcplxdokSHO7fx6P1Mebd4BnfV3I89/WFg3MDbNsqw8Y3Wf9Vn91bHOWRL7tF7LriQeZ7cUw==
+  dependencies:
+    node-sass "^4.14.1"
+    react-bootstrap "^1.0.1"
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"

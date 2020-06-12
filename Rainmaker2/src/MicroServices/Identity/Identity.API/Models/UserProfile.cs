@@ -34,16 +34,16 @@ namespace Identity.Models
         public bool IsSystem { get; set; }
 
         [JsonProperty("modifiedBy")]
-        public long ModifiedBy { get; set; }
+        public long? ModifiedBy { get; set; }
 
         [JsonProperty("modifiedOnUtc")]
-        public DateTimeOffset ModifiedOnUtc { get; set; }
+        public DateTimeOffset? ModifiedOnUtc { get; set; }
 
         [JsonProperty("createdBy")]
-        public long CreatedBy { get; set; }
+        public long? CreatedBy { get; set; }
 
         [JsonProperty("createdOnUtc")]
-        public DateTimeOffset CreatedOnUtc { get; set; }
+        public DateTimeOffset? CreatedOnUtc { get; set; }
 
         [JsonProperty("tpId")]
         public object TpId { get; set; }
@@ -65,7 +65,7 @@ namespace Identity.Models
         public long EntityRefTypeId { get; set; }
 
         [JsonProperty("entityRefId")]
-        public long EntityRefId { get; set; }
+        public long? EntityRefId { get; set; }
 
         [JsonProperty("isDeleted")]
         public bool IsDeleted { get; set; }
@@ -74,13 +74,13 @@ namespace Identity.Models
         public bool IsSystemAdmin { get; set; }
 
         [JsonProperty("isLoggedIn")]
-        public bool IsLoggedIn { get; set; }
+        public bool? IsLoggedIn { get; set; }
 
         [JsonProperty("lastIpAddress")]
         public object LastIpAddress { get; set; }
 
         [JsonProperty("lastLoginOnUtc")]
-        public DateTimeOffset LastLoginOnUtc { get; set; }
+        public DateTimeOffset? LastLoginOnUtc { get; set; }
 
         [JsonProperty("lastLogoutOnUtc")]
         public object LastLogoutOnUtc { get; set; }

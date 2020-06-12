@@ -12,7 +12,6 @@ import { Loading } from './components/Loading/Loading';
 const App = () => {
 
   const history = useHistory();
-  console.log(history);
   
 
   return (
@@ -20,9 +19,8 @@ const App = () => {
       <StoreProvider>
         <Router>
           <Switch>
-            {/* <Route path="/login" component={DummyLogin} /> */}
-            <Route exact path="/" component={Loading} />
-            <Route path="/home" component={Home} />
+            <Route path="/" component={Home} />
+            {/* <Route path="/home" component={Home} /> */}
           </Switch>
         </Router>
       </StoreProvider>

@@ -2,18 +2,27 @@ import React, { useState, ChangeEvent } from 'react'
 import { DocumentDropBox } from '../../../../shared/Components/DocumentDropBox/DocumentDropBox'
 import { SelectedDocuments } from './SelectedDocuments/SelectedDocuments'
 
+export type FileSelected = {
+    name: string;
+    file: File;
+}
+
 export const DocumentUpload = () => {
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileSelected[]>([]);
     const [fileInput, setFileInput] = useState<HTMLInputElement>();
 
 
 
     const updateFiles = (files: File[]) => {
         setFiles((previousFiles) => {
-            let allSelectedFiles: File[] = [];
+            let allSelectedFiles: FileSelected[] = [];
             allSelectedFiles = [...previousFiles];
             for (let f of files) {
-                allSelectedFiles.push(f);
+                let selectedFile = {
+                    name: f.name,
+                    file: f
+                }
+                allSelectedFiles.push(selectedFile);
             }
             return allSelectedFiles;
         });

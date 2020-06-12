@@ -1,76 +1,119 @@
-.ContactUs{
-    color: color('font');
-    padding: 15px;
+.ContactUs {
+    color: color("font");
+    padding:15px 20px;
 
-    &--header{
+    &--header {
         display: block;
         margin-bottom: 5px;
-        p{
+        p {
             margin: 0px;
         }
     }
 
-    &--body{
+    &--body {
         padding: 0;
     }
 
-    &--user{
-        
-
-        a{
-            color: color('heading');
+    &--user {
+        position: relative;
+        padding-left: 85px;
+        min-height: 100%;
+        padding-bottom: 20px;
+        border-right: 1px solid color("border");
+        padding-right: 15px;
+        @include media-breakpoint-down(md) {
+            padding-right: 0;
+            border-right: 0px solid color("border");
+            border-bottom: 1px solid color("border");
+            padding-bottom: 30px;
+          }
+        a {
+            color: color("heading");
+            overflow-wrap: break-word;
         }
 
-        &---img{
-
+        &---img {
+            position: absolute;
+            left: 0;
+            top: 0;
         }
-        &---detail{
-            h2{
-                font: 900 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
-                color: color('heading');
-                margin: 30px 0;
+        &---detail {
+            h2 {
+                font: 900 #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("heading");
+                color: color("heading");
+                // margin: 30px 0;
+
+                padding-top: 20px;
             }
         }
     }
 
-    &--user-id{
-        font: 900 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('heading');
-        color: color('colorBlack');
+    &--user-id {
+        font: 900 #{fontSize("sm") + "/" + fontSize("sm")} fontFamily("heading");
+        color: color("colorBlack");
         padding: 0;
         opacity: 0.2;
         display: block;
         margin-top: 5px;
     }
 
-    &--list{
+    &--list {
         @extend .list-style-none;
-        font: 400 #{fontSize('md')+'/'+fontSize('md')} fontFamily('base');
-
-        >li{
-            padding: 2px 0;
+        font: 400 #{fontSize("md") + "/" + fontSize("md")} fontFamily("base");
+        @include media-breakpoint-down(md) {
+            padding-top: 20px; 
+      }
+        > li {
+            padding: 0px 0;
             display: block;
-            vertical-align: middle;
+            margin-bottom: 15px;
 
-            a{
-                color: color('light-purple');
-                display: inline-block;
-                vertical-align: middle;
-                padding: 2px 10px;
+            a {
+                color: color("light-purple");
+                font-size: fontSize('xmd');
+                display: block;
+                position: relative;
+                padding-left: 9px;
+                &:hover {
+                    text-decoration: none;
+                }
+                @include media-breakpoint-down(md) {
+                     padding-left: 25px; 
+                     font-size: fontSize('xmd')-2;
+               }
+                i {
+                    font-size: fontSize('xmd');
+                    color: color('primary');
+                    position: absolute;
+                    left: -15px;
+
+                    @include media-breakpoint-down(md) {
+                        left: 0;
+                    }
+                }
+                span{
+                    span{
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                    }   
+                }
             }
         }
     }
 
-    &--user-image{
+    &--user-image {
         width: 70px;
         height: 70px;
         border: 5px solid #fff;
         border-radius: 50%;
         overflow: hidden;
         position: relative;
-        margin: 10px auto;
-        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        margin: 0 auto;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
         float: left;
-        img{
+        img {
             position: absolute;
             top: 0;
             left: 50%;
@@ -80,24 +123,21 @@
         }
     }
 
-    &--left{
-        position: relative;
-        &::after{
-            content: "";
-            position: absolute;
-            width: 1px;
-            height: 100%;
-            background-color: color('border');
-            top: 0;
-            right: 20px;
-        }
+    &--left {
+        position: relative; 
+        padding-right: 30px;
+    }
+    &--right {
+        margin-left: -15px;
+        @include media-breakpoint-down(md) {
+            margin-left: 0;
+          }
     }
 
-    .tt-svg{
-        svg{
-            width: map-get($font-size , 'sm');
-            height: map-get($font-size , 'sm');
+    .tt-svg {
+        svg {
+            width: map-get($font-size, "sm");
+            height: map-get($font-size, "sm");
         }
     }
-
 }

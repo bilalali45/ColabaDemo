@@ -11,7 +11,6 @@ export const Loading = () => {
     const isAuthenticated = async () => {
 
         let auth = Auth.checkAuth();
-        console.log('in loading....');
         let isAuthenticated: any = null;
         if (!auth) {
             isAuthenticated = await UserActions.authenticate();

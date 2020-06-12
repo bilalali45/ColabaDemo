@@ -13,7 +13,6 @@ const DummyLogin = () => {
 
     const {state, dispatch} = useContext(Store);
     
-    console.log(httpClient);
     let history = useHistory();
 
     const login = async () => {
