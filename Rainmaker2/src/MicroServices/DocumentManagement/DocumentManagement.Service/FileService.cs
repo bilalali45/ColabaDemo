@@ -1,17 +1,10 @@
 ﻿using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using DocumentManagement.Entity;
-using MongoDB.Driver;
 using System.Threading.Tasks;
-using DocumentManagement.Model;
-using MongoDB.Bson;
-using Microsoft.AspNetCore.Http;
 
 namespace DocumentManagement.Service
 {
@@ -41,9 +34,9 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": ObjectId(\""+model.requestId+"\")}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+model.docId+"\")}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"file.id\": ObjectId(\""+model.fileId+"\")}")
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"file.id\": "+new ObjectId(model.fileId).ToJson()+"}")
                 }
             });
 
@@ -67,8 +60,8 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": ObjectId(\""+model.requestId+"\")}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+model.docId+"\")}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
                 }
             });
             return result.ModifiedCount == 1;
@@ -95,8 +88,8 @@ namespace DocumentManagement.Service
                 {
                     ArrayFilters = new List<ArrayFilterDefinition>()
                     {
-                        new JsonArrayFilterDefinition<Request>("{ \"request.id\": ObjectId(\""+model.requestId+"\")}"),
-                        new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+model.docId+"\")}"),
+                        new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
                         new JsonArrayFilterDefinition<Request>("{ \"file.clientName\": \""+item.fileName.Replace("\"","\\\"")+"\"}")
                     }
                 });
@@ -121,8 +114,8 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": ObjectId(\""+requestId+"\")}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": ObjectId(\""+docId+"\")}")
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
                 }
             });
             return result.ModifiedCount==1;
