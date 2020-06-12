@@ -30,6 +30,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         setCurrentDoc(file);
     }
 
+    
 
     const closeDocumentView = () => {
         setShowingDoc(false);

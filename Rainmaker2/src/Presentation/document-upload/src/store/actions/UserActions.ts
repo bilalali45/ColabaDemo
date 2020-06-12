@@ -6,11 +6,17 @@ const http = new Http();
 
 export class UserActions {
   static async authenticate() {
-    try {
-      let res: any = await http.get(Endpoints.user.GET.authorize());
-      Auth.saveAuth(res.data.access_token);
-    } catch (error) {
-      console.log(error);
+
+    const credentials = {
+      userName: 'danish',
+      password: 'Rainsoft',
+      employee: true
+    }
+
+    let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
+
+    if (res.data.data.token) {
+      Auth.saveAuth(res.data.data.token);
     }
   }
 
@@ -18,7 +24,7 @@ export class UserActions {
 
   }
 
-  
+
   static async logout() {
     Auth.removeAuth();
   }

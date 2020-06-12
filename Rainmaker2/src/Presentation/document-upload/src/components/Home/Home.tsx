@@ -14,7 +14,6 @@ import Header from '../../shared/Components/Header/Header'
 import Footer from '../../shared/Components/Footer/Footer'
 import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
 import { DocumentRequest } from './DocumentRequest/DocumentRequest'
-const httpClient = new Http();
 
 export const Home = () => {
     const location = useLocation();
@@ -23,6 +22,7 @@ export const Home = () => {
     const [authenticated, setAuthenticated] = useState<boolean>(false);
 
     const authenticate = async () => {
+        console.log('in authenticate');
         let res = UserActions.authenticate();
     }
 

@@ -2,11 +2,10 @@
 
 export class UserEndpoints {
     static GET = {
-        authorize: () => `/api/Identity/token/authorize`,
     }
 
     static POST = {
-
+        authorize: () => `/api/Identity/token/authorize`,
     }
 
     static PUT = {

@@ -27,4 +27,17 @@ export class LaonActions {
       console.log(error);
     }
   }
+
+  static async getLOPhoto(lOPhotoId: string = '', businessUnitId: string = '') {
+    if(!lOPhotoId) {
+      return 'Photo Id & business Unit Id are requireq.';
+    }
+    try {
+      let res = await http.get(Endpoints.loan.GET.getLOPhoto(lOPhotoId, businessUnitId));
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
