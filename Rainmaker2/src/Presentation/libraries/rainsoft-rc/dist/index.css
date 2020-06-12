@@ -1,0 +1,69 @@
+._Header__header-main__1L9El {
+  font-size: fontSize("lg");
+  border-top: none;
+  border-bottom: 1px solid rgba(205, 205, 205, 0.2);
+  min-height: 80px;
+  padding: 0;
+  background: color("colorwhite"); }
+  ._Header__header-main__1L9El ._Header__navbar__3kmLO {
+    margin: 0;
+    padding: 16px 0; }
+  ._Header__header-main__1L9El ._Header__h-logo__TXHf_ {
+    max-width: 131px;
+    margin-left: 40px;
+    border: 1px solid #f30; }
+    ._Header__header-main__1L9El ._Header__h-logo__TXHf_ img {
+      max-width: 100%;
+      height: auto; }
+  ._Header__header-main__1L9El ._Header__s-account__1Qo9d {
+    color: #4e4e4e;
+    text-align: right;
+    padding-top: 16px;
+    margin-right: 40px; }
+    ._Header__header-main__1L9El ._Header__s-account__1Qo9d ._Header__userdropdown__ew6Ju {
+      float: right;
+      margin: -8px 0 0 0; }
+      ._Header__header-main__1L9El ._Header__s-account__1Qo9d ._Header__userdropdown__ew6Ju ._Header__hd-shorname__2QT3z {
+        cursor: pointer; }
+        ._Header__header-main__1L9El ._Header__s-account__1Qo9d ._Header__userdropdown__ew6Ju ._Header__hd-shorname__2QT3z span {
+          background: #4484f4;
+          color: #fff;
+          border-radius: 50%;
+          height: 36px;
+          width: 36px;
+          display: inline-block;
+          text-align: center;
+          font-size: 16px;
+          line-height: 36px;
+          letter-spacing: normal; }
+        ._Header__header-main__1L9El ._Header__s-account__1Qo9d ._Header__userdropdown__ew6Ju ._Header__hd-shorname__2QT3z:after {
+          color: color("colordarkblue");
+          display: inline-block;
+          width: 0;
+          height: 0;
+          vertical-align: middle;
+          content: "";
+          border-top: 6px solid;
+          border-right: 6px solid transparent;
+          border-left: 6px solid transparent;
+          border-bottom: 0;
+          margin-top: 5px; }
+  ._Header__header-main__1L9El ._Header__d-name__3f1ma {
+    color: color("colordarkblue");
+    font-family: fontFamily("heading");
+    font-weight: 700;
+    margin-right: 22px;
+    position: relative;
+    font-size: 18px;
+    cursor: default;
+    float: left; }
+    ._Header__header-main__1L9El ._Header__d-name__3f1ma:hover {
+      text-decoration: none; }
+    ._Header__header-main__1L9El ._Header__d-name__3f1ma:after {
+      content: '';
+      position: absolute;
+      height: 18px;
+      width: 2px;
+      background: #cccccc;
+      right: -12px;
+      top: 5px; }

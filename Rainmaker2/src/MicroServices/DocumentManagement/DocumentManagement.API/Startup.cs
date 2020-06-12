@@ -30,6 +30,9 @@ namespace DocumentManagement.API
             services.AddScoped<IMongoService, MongoService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IFileEncryptionFactory, FileEncryptionFactory>();
+            services.AddScoped<IFtpClient, FtpClient>();
+            services.AddScoped<ISettingService, SettingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

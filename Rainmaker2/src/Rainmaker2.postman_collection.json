@@ -1,94 +1,10 @@
 {
 	"info": {
-		"_postman_id": "b3ab276d-41e5-47cf-a39b-014ae4480da8",
+		"_postman_id": "cbbdf986-9cf5-45c0-917b-b3e191ec352e",
 		"name": "Rainmaker2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "xtest",
-			"item": [
-				{
-					"name": "dddd",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://localhost:5031/api/membership/validateuser?userName=danish&password=Rainsoft&employee=true",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5031",
-							"path": [
-								"api",
-								"membership",
-								"validateuser"
-							],
-							"query": [
-								{
-									"key": "userName",
-									"value": "danish"
-								},
-								{
-									"key": "password",
-									"value": "Rainsoft"
-								},
-								{
-									"key": "employee",
-									"value": "true"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "token/authorize Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://localhost:5011/api/token/authorize",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5011",
-							"path": [
-								"api",
-								"token",
-								"authorize"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "78e232fa-c1c0-4543-b149-ef26e438ac9b",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "4a1f859f-69e5-481a-844f-3e9965235cb1",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
 		{
 			"name": "Identity",
 			"item": [
@@ -98,8 +14,17 @@
 						{
 							"name": "authorize",
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userName\":\"danish\",\r\n    \"password\":\"Rainsoft\",\r\n    \"employee\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{baseUrl}}/api/Identity/token/authorize",
 									"host": [
@@ -211,6 +136,193 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "File",
+					"item": [
+						{
+							"name": "Rename",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n    \"docId\":\"ddd25d1fe456057652eeb72d\",\r\n    \"fileId\":\"5eb25d1fe456051475eebccc\",\r\n    \"fileName\":\"test1.txt\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/rename",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"rename"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n    \"docId\":\"ddd25d1fe456057652eeb72d\",\r\n    \"files\":[{\r\n        \"fileName\":\"\\\"test1.txt\",\r\n        \"order\":1\r\n        }]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/order",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Done",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n      \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n      \"docId\":\"aaa25d1fe456051af2eeb72d\",\r\n      \"requestId\":\"abc15d1fe456051af2eeb768\"\r\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/done",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"done"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Submit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "5eb25d1fe519051af2eeb72d",
+											"type": "text"
+										},
+										{
+											"key": "requestId",
+											"value": "abc15d1fe456051af2eeb768",
+											"type": "text"
+										},
+										{
+											"key": "docId",
+											"value": "ddd25d1fe456057652eeb72d",
+											"type": "text"
+										},
+										{
+											"key": "order",
+											"value": "[{\n        \"fileName\":\"\\\"test1.txt\",\n        \"order\":1\n        }]",
+											"type": "text"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"/C:/Users/Mubashir/Downloads/Mirza Kashan Baig.pdf",
+												"/C:/Users/Mubashir/Downloads/2FA Borrower Workflow.pdf"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/submit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"submit"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -287,6 +399,46 @@
 										{
 											"key": "loanApplicationId",
 											"value": "1"
+										},
+										{
+											"key": "businessUnitId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetPhoto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetPhoto?photo=aliya-4ca15a93-e0a2-40d2-a32a-a20dd451460b.jpg&businessUnitId=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetPhoto"
+									],
+									"query": [
+										{
+											"key": "photo",
+											"value": "aliya-4ca15a93-e0a2-40d2-a32a-a20dd451460b.jpg"
 										},
 										{
 											"key": "businessUnitId",

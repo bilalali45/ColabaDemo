@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Common;
+using RainMaker.Common.FTP;
 using RainMaker.Service;
 
 namespace Rainmaker.API.Controllers
@@ -39,7 +40,7 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> GetPhoto(string photo, int businessUnitId)
         {
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
-
+        
             var imageData = await ftp.DownloadStream(remoteFilePath);
 
             if (imageData != null)

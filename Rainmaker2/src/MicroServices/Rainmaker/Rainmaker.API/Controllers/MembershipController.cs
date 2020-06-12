@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Rainmaker.Service;
 
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
-    [Route(template: "api/[controller]")]
+    [Route(template: "api/rainmaker/[controller]")]
     public class MembershipController : Controller
     {
         private readonly IMembershipService _membershipService;
@@ -17,24 +16,27 @@ namespace Rainmaker.API.Controllers
         }
 
 
-        [HttpGet(template: "[action]")]
-        public  IActionResult ValidateUser(string userName,
-                                                  string password,
-                                                  bool employee = false)
+        [HttpPost(template: "[action]")]
+        public IActionResult ValidateUser(ValidateUserRequest request)
         {
-            var userProfile =  _membershipService.ValidateUser(userName,
-                                                                        password,
-                                                                        employee);
+            var userProfile = _membershipService.ValidateUser(userName: request.UserName,
+                                                              password: request.Password,
+                                                              employee: request.Employee);
 
             if (userProfile != null)
-            {
                 return Ok(value: userProfile);
-            }
-            else
-            {
-                return NotFound();
-            }
-            
+            return NotFound();
         }
     }
+
+    public class ValidateUserRequest
+
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public bool Employee { get; set; }
+    }
 }
+
+
+ 
