@@ -13,6 +13,7 @@ export const DocumentStatus = () => {
 
 
     useEffect(() => {
+
         if (!pendingDocs.length) {
             fetchPendingDocs();
         }
