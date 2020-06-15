@@ -8,18 +8,6 @@ import { LoanStatus } from './LoanStatus/LoanStatus'
 
 export class Activity extends React.Component {
 
-    state = {
-        tasks: [
-            { task: 'Bank Statement' },
-            { task: 'W-2s 2017' },
-            { task: 'W-2s 2018' },
-            { task: 'Personal Tax Returns' },
-            { task: 'Tax Transcripts' },
-            { task: 'Home Insurance' },
-            { task: 'Bank Deposit Slip' },
-            { task: 'Alimony Income Verification' },
-        ]
-    }
 
     render() {
         return (
@@ -29,13 +17,7 @@ export class Activity extends React.Component {
                         <div className="row gutter15">
                             <div className="col-md-6">
                                 {/* <LoanStatus /> */}
-                                <DocumentStatus
-                                    heading="Document Request"
-                                    counts={8}
-                                    moreTask="/#"
-                                    getStarted="/#"
-                                    tasks={this.state.tasks}
-                                />
+                                <DocumentStatus/>
 
                             </div>
                             <div className="col-md-6">

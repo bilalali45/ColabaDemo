@@ -1,33 +1,57 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SVGstorage } from '../../../../shared/Components/Assets/SVG';
 import { Link, useHistory } from 'react-router-dom';
+import { DocumentActions } from '../../../../store/actions/DocumentActions';
+import { Endpoints } from '../../../../store/endpoints/Endpoints';
 
-type Props = {
-    heading?: string,
-    counts: number,
-    moreTask?: any,
-    getStarted?: any,
-    tasks?: any
-}
+export const DocumentStatus = () => {
 
-export const DocumentStatus: React.SFC<Props> = (props) => {
+    const [pendingDocs, setPendingDocs] = useState([])
 
     const history = useHistory();
 
+
+    useEffect(() => {
+        console.log('in here!!@!');
+
+        if(!pendingDocs.length) {
+            fetchPendingDocs();
+        }
+    }, []);
+
     const getStarted = () => {
-        history.push('/home/DocumentStatus');
+        history.push('/documentsRequest');
+    }
+    
+    const fetchPendingDocs = async () => {
+
+        let docsPending = await DocumentActions.getPendingDocuments('1', '1');
+        console.log('docsPending', docsPending);
+        if(docsPending) {
+            setPendingDocs(docsPending);
+        }
+    }
+
+    // heading="Document Request"
+    // counts={8}
+    // moreTask="/#"
+    // getStarted="/#"
+    // tasks={this.state.tasks
+
+    if(!pendingDocs) {
+        return <p>...loading...</p>
     }
 
     return (
         <div className="DocumentStatus box-wrap">
             <div className="box-wrap--header clearfix">
-                <h2 className="heading-h2"> {props.heading} </h2>
-                <p>You have <span className="DocumentStatus--count">{props.counts}</span> items to complete</p>
+                <h2 className="heading-h2"> Document Request</h2>
+                <p>You have <span className="DocumentStatus--count">{pendingDocs.length}</span> items to complete</p>
             </div>
             <div className="box-wrap--body clearfix">
                 <ul className="list">
-                    {props.tasks.map((item: any,index:any) => {
-                        return <li key={index}> {item.task} </li>
+                    {pendingDocs.map((item: any,index:any) => {
+                        return <li key={index}> {item.docName} </li>
                     })}
                 </ul>
             </div>

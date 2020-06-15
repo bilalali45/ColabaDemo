@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext, useState, useRef } from 'react'
 // import { SVG } from './../../../../shared/Components/Assets/SVG';
 import { userInfo, loadavg } from 'os';
 import { LaonActions } from '../../../../store/actions/LoanActions';
@@ -6,11 +6,14 @@ import { Store } from '../../../../store/store';
 import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { ContactUs as ContactUsModal } from '../../../../entities/Models/ContactU';
 import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
-
+import { MaskPhone } from 'rainsoft-js';
 
 export const ContactUs = ({ }) => {
 
     const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
+    const [lOPhotoSrc, setLOPhotoSrc] = useState<string>();
+
+    const LOphotoRef: any = useRef();
 
     useEffect(() => {
         if (!loanOfficer) {
@@ -21,7 +24,27 @@ export const ContactUs = ({ }) => {
     const fetchLoanOfficer = async () => {
         let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer('1', '2');
         if (loanOfficer) {
-            setLoanOfficer(loanOfficer)
+            console.log(loanOfficer);
+            let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, '2');
+            // let blob : any = new Blob(src.data, {type: "image/jpeg"});
+            let blob = btoa(unescape(encodeURIComponent(src.data)));
+            // getBase64(blob);
+            // setLOPhotoSrc(blob);
+            // src = `data:image/png;base64,${blob}}`;
+            //  btoa(unescape(encodeURIComponent(src.data)))
+            // console.log(blob);
+            if (LOphotoRef.current) {
+                LOphotoRef.current.src = src;
+            }
+            setLOPhotoSrc(src);
+            setLoanOfficer(loanOfficer);
+        }
+    }
+
+    const getFormattedPhone = () => {
+        if (loanOfficer && loanOfficer.phone) {
+            let phone: any = Number(loanOfficer.phone) | 0;
+            return MaskPhone(+phone)
         }
     }
 
@@ -47,11 +70,11 @@ export const ContactUs = ({ }) => {
                             </div> */}
                             <div className="ContactUs--user">
                                 <div className="ContactUs--user---img">
-                                    <div className="ContactUs--user-image"><img src={'userImg'} alt="Williams Jack" /></div>
+                                    <div className="ContactUs--user-image"><img ref={LOphotoRef} src={lOPhotoSrc} alt="Williams Jack" /></div>
                                 </div>
 
                                 <div className="ContactUs--user---detail">
-                                    <h2><a href="">{'props.userName'}</a> <span className="ContactUs--user-id">ID#{'props.userId'}</span></h2>
+                                    <h2><a href="">{loanOfficer.completeName()}</a> <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span></h2>
                                 </div>
                             </div>
 
@@ -60,26 +83,26 @@ export const ContactUs = ({ }) => {
                         <div className="col-md-12 col-lg-6  ContactUs--right">
                             <ul className="ContactUs--list">
                                 <li>
-                                    <a title={'props.userContact'} href={"tel:" + 'props.userContact'}>
+                                    <a title={loanOfficer.phone} href={`tel:${loanOfficer.phone}`}>
                                         <span>
                                             <i className="zmdi zmdi-phone"></i>
-                                            <span>{'props.userContact'}</span>
+                                            <span>{getFormattedPhone()}</span>
                                         </span>
                                     </a></li>
                                 <li>
-                                    <a title={'props.userEmail'} href={"mailto:" + 'props.userEmail'}>
+                                    <a title={loanOfficer.email} href={`mailto:${loanOfficer.email}`}>
                                         <span>
                                             <i className="zmdi zmdi-email"></i>
-                                            <span>{'props.userEmail'}</span>
+                                            <span>{loanOfficer.email}</span>
                                         </span>
 
                                     </a>
                                 </li>
                                 <li>
-                                    <a title={'props.userWebsite'} href="{props.userWebsite}" target="_blank">
+                                    <a title={loanOfficer.webUrl} href={loanOfficer.webUrl} target="_blank">
                                         <span>
                                             <i className="zmdi zmdi-globe-alt"></i>
-                                            <span>{'props.userWebsite'}</span>
+                                            <span>{loanOfficer.webUrl}</span>
                                         </span>
 
                                     </a>
