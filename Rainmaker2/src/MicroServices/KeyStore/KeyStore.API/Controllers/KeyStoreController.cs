@@ -18,12 +18,12 @@ namespace KeyStore.API.Controllers
             this.keyStore = keyStore;
         }
         [HttpGet]
-        public IActionResult Get(string key)
+        public string Get(string key)
         {
             var keyData = keyStore.Get(key);
             if (string.IsNullOrEmpty(keyData))
-                return NotFound();
-            return Ok(new { key=keyData });
+                throw new Exception("unable to get key");
+            return keyData;
         }
     }
 }
