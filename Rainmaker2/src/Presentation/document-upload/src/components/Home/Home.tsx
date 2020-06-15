@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
+import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
 
@@ -40,12 +40,15 @@ export const Home = () => {
 
     const gotoDashboardHandler = () => {
         console.log('gotoDashboardHandler')
+        window.open('https://alphatx.rainsoftfn.com/', '_self');
     }
     const changePasswordHandler = () => {
         console.log('changePasswordHandler')
+        window.open('https://alphatx.rainsoftfn.com/', '_self');
     }
     const signOutHandler = () => {
-        console.log('gotoDashboardHandler')
+        UserActions.logout();
+        window.open('https://alphatx.rainsoftfn.com/', '_self');
     }
     const headerDropdowmMenu = [
         { name: 'Dashboard', callback: gotoDashboardHandler },
@@ -74,9 +77,10 @@ export const Home = () => {
             />
             <ActivityHeader />
             <Switch>
-                <Route exact path="/activity" component={Activity} />
-                <Route exact path="/documentsRequest" component={DocumentRequest} />
-                <Route exact path="/uploadedDocuments" component={UploadedDocuments} />
+                <Redirect exact from={ "/" } to={"/activity"} />
+                <Route path="/activity" component={Activity} />
+                <Route path="/documentsRequest" component={DocumentRequest} />
+                <Route path="/uploadedDocuments" component={UploadedDocuments} />
             </Switch>
             <RainsoftRcFooter
                 content={footerContent}

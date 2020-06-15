@@ -10,17 +10,21 @@ import { Loading } from './components/Loading/Loading';
 
 
 const App = () => {
-
+  // let baseURL;
+  // if (process.env.NODE_ENV.toLowerCase() === 'development') {
+  //     baseURL = process.env.PUBLIC_URL;
+  // } else {
+  //     baseURL = true ? "" : "/react"
+  // }
   const history = useHistory();
   
 
   return (
     <div className="app">
       <StoreProvider>
-        <Router>
+        <Router basename="/documentmanagement" >
           <Switch>
             <Route path="/" component={Home} />
-            {/* <Route path="/home" component={Home} /> */}
           </Switch>
         </Router>
       </StoreProvider>
