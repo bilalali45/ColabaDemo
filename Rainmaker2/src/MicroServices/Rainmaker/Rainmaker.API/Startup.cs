@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,7 @@ namespace Rainmaker.API
 {
     public class Startup
     {
+        private static HttpClient httpClient = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,7 +36,12 @@ namespace Rainmaker.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(Configuration["Data:ConnectionStringRainMaker"]));
+            var csResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS").Result;
+            if (!csResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key store");
+            }
+            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(csResponse.Content.ReadAsStringAsync().Result));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<RainMaker.Data.RainMakerContext>, UnitOfWork<RainMaker.Data.RainMakerContext>>();
             services.AddScoped<ISettingService, SettingService>();

@@ -33,6 +33,7 @@ namespace DocumentManagement.API
             services.AddScoped<IFileEncryptionFactory, FileEncryptionFactory>();
             services.AddScoped<IFtpClient, FtpClient>();
             services.AddScoped<ISettingService, SettingService>();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

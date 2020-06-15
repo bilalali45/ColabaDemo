@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -24,7 +25,7 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(true);
-            FileController controller = new FileController(mock.Object,null, null, null);
+            FileController controller = new FileController(mock.Object, null, null, null,null,null);
             //Act
             IActionResult result = await controller.Done(obj);
             //Assert
@@ -41,7 +42,7 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(false);
-            FileController controller = new FileController(mock.Object,null,null,null);
+            FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
             IActionResult result = await controller.Done(obj);
             //Assert
@@ -103,7 +104,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(true);
 
-            FileController controller = new FileController(mock.Object,null, null, null);
+            FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert
@@ -119,7 +120,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(false);
 
-            FileController controller = new FileController(mock.Object,null, null, null);
+            FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert
@@ -181,7 +182,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Order(It.IsAny<FileOrderModel>()));
 
-            FileController controller = new FileController(mock.Object,null,null,null);
+            FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
             IActionResult result = await controller.Order(fileOrder);
             //Assert
@@ -210,6 +211,50 @@ namespace DocumentManagement.Tests
             await fileService.Order(fileOrderModel);
             //Assert
             mockCollection.VerifyAll();
+        }
+
+
+
+        [Fact]
+        public async Task TestViewController()
+        {
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
+            Mock<IFileService> mockfileservice = new Mock<IFileService>();
+            Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
+            
+            Mock<IFileEncryptionFactory> mockfileencryptionfactory= new Mock<IFileEncryptionFactory>();
+            Mock<IMongoService> mockmongoservice = new Mock<IMongoService>();
+            Mock<IActionResult> mockactionresult= new Mock<IActionResult>();
+            Mock<IMongoCollection<Setting>> collection = new Mock<IMongoCollection<Setting>>();
+             FileViewDTO fileViewDTO = new FileViewDTO();
+            FileViewModel fileViewModel = new FileViewModel();
+          
+            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ee33b1e01ba190fe04a21eb";
+            Setting setting = new Setting();
+            setting.id = "";
+            setting.ftpServer = "";
+            setting.ftpUser = "";
+            setting.ftpPassword = "";
+
+            mockfileservice.Setup(x => x.View(fileViewModel));//.ReturnsAsync(fileViewDTO);
+          //  mocksettingservice.Setup(x => x.GetSetting());
+            mockmongoservice.Setup(x => x.db.GetCollection<Setting>("Setting",null)).Returns(collection.Object);
+            collection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<Setting>>(),null,default));//.Returns(collection.Object);
+            
+            mockftpclient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
+            mockftpclient.Setup(x => x.DownloadAsync(fileViewDTO.serverName,Path.GetTempFileName()));
+
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptionfactory.Object, mockftpclient.Object, mocksettingservice.Object, null, null);
+            //Act
+
+            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+
         }
     }
 }
