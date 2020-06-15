@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Common;
@@ -37,15 +38,23 @@ namespace Rainmaker.API.Controllers
             return Ok(lo);
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetPhoto(string photo, int businessUnitId)
+        public async Task<string> GetPhoto(string photo, int businessUnitId)
         {
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
         
             var imageData = await ftp.DownloadStream(remoteFilePath);
+            var data = new byte[imageData.Length];
+            int res = 0;
+            do
+            {
+                int i = imageData.Read(data, res, data.Length-res);
+                res += i;
+            }
+            while (res<data.Length);
 
             if (imageData != null)
 
-                return File(imageData, "image/jpeg");
+                return Convert.ToBase64String(data);
 
             else
                 return null;
