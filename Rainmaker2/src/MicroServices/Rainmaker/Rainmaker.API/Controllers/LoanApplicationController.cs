@@ -50,7 +50,7 @@ namespace Rainmaker.API.Controllers
                 int i = imageData.Read(data, res, data.Length-res);
                 res += i;
             }
-            while (res<data.Length);
+            while (res<data.Length-1);
 
             if (imageData != null)
 
