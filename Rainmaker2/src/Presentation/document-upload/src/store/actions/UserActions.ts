@@ -14,7 +14,9 @@ export class UserActions {
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
-
+    if(!res.data.data) {
+      return ''
+    }
     if (res.data.data.token) {
       Auth.saveAuth(res.data.data.token);
     }
@@ -23,7 +25,6 @@ export class UserActions {
   static async getUserInfo() {
 
   }
-
 
   static async logout() {
     Auth.removeAuth();

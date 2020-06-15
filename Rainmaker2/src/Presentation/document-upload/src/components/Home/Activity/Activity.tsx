@@ -8,7 +8,6 @@ import { LoanStatus } from './LoanStatus/LoanStatus'
 
 export class Activity extends React.Component {
 
-
     render() {
         return (
             <div>

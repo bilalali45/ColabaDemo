@@ -18,6 +18,7 @@ export class DocumentUploadActions {
                 url,
                 data,
                 onUploadProgress: e => {
+                 
                     let p = (e.loaded / e.total * 100);
                     getUploadProgress(p);
                 }

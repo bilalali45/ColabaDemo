@@ -50,6 +50,7 @@ export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) =
   }
 
   const renderPdfView = () => {
+    console.log('----------------', file);
     return (
       <>
         <div className="modal-content">
