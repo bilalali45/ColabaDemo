@@ -16,7 +16,6 @@ import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 const httpClient = new Http();
-const currentyear = new Date().getFullYear();
 export const Home = () => {
     const location = useLocation();
     const history = useHistory();
@@ -38,24 +37,6 @@ export const Home = () => {
         authenticate();
     }
 
-    const gotoDashboardHandler = () => {
-        console.log('gotoDashboardHandler')
-        window.open('https://alphatx.rainsoftfn.com/', '_self');
-    }
-    const changePasswordHandler = () => {
-        console.log('changePasswordHandler')
-        window.open('https://alphatx.rainsoftfn.com/', '_self');
-    }
-    const signOutHandler = () => {
-        UserActions.logout();
-        window.open('https://alphatx.rainsoftfn.com/', '_self');
-    }
-    const headerDropdowmMenu = [
-        { name: 'Dashboard', callback: gotoDashboardHandler },
-        { name: 'Change Password', callback: changePasswordHandler },
-        { name: 'Sign Out', callback: signOutHandler }
-    ]
-    const footerContent = "Copyright 2002 – " + currentyear + ". All rights reserved. American Heritage Capital, LP. NMLS 277676";
 
     useEffect(() => {
         // if (Auth.checkAuth()) {
@@ -69,22 +50,14 @@ export const Home = () => {
 
     return (
         <div>
-            <RainsoftRcHeader
-                logoSrc={ImageAssets.header.logoheader}
-                displayName={'Jehangir Babul'}
-                displayNameOnClick={gotoDashboardHandler}
-                options={headerDropdowmMenu}
-            />
             <ActivityHeader />
             <Switch>
                 <Redirect exact from={ "/" } to={"/activity"} />
-                <Route path="/activity" component={Activity} />
-                <Route path="/documentsRequest" component={DocumentRequest} />
-                <Route path="/uploadedDocuments" component={UploadedDocuments} />
+                <Route  path="/activity" component={Activity} />
+                <Route  path="/documentsRequest" component={DocumentRequest} />
+                <Route  path="/uploadedDocuments" component={UploadedDocuments} />
+               
             </Switch>
-            <RainsoftRcFooter
-                content={footerContent}
-            />
         </div>
     )
 }
