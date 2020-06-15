@@ -12,8 +12,7 @@ import { Loading } from './components/Loading/Loading';
 const App = () => {
 
   const history = useHistory();
-  
-
+    
   return (
     <div className="app">
       <StoreProvider>

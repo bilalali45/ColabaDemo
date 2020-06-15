@@ -22,6 +22,7 @@ export const Home = () => {
     const history = useHistory();
     const [authenticated, setAuthenticated] = useState<boolean>(false);
 
+    UserActions.getUserInfo();
     const authenticate = async () => {
         console.log('in authenticate');
         try {
