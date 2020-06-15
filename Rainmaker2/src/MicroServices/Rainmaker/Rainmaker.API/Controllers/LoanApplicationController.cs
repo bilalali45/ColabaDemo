@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -43,19 +44,11 @@ namespace Rainmaker.API.Controllers
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
         
             var imageData = await ftp.DownloadStream(remoteFilePath);
-            var data = new byte[imageData.Length];
-            int res = 0;
-            do
-            {
-                int i = imageData.Read(data, res, data.Length-res);
-                res += i;
-            }
-            while (res<data.Length-1);
+            MemoryStream ms = new MemoryStream();
+            imageData.CopyTo(ms);
 
             if (imageData != null)
-
-                return Convert.ToBase64String(data);
-
+                return Convert.ToBase64String(ms.ToArray());
             else
                 return null;
         }
