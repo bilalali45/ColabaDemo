@@ -44,11 +44,13 @@ namespace Rainmaker.API.Controllers
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
         
             var imageData = await ftp.DownloadStream(remoteFilePath);
-            MemoryStream ms = new MemoryStream();
-            imageData.CopyTo(ms);
 
             if (imageData != null)
+            {
+                using MemoryStream ms = new MemoryStream();
+                imageData.CopyTo(ms);
                 return Convert.ToBase64String(ms.ToArray());
+            }
             else
                 return null;
         }
