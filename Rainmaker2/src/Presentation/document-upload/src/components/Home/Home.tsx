@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie';
 import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
@@ -20,10 +21,15 @@ export const Home = () => {
     const location = useLocation();
     const history = useHistory();
     const [authenticated, setAuthenticated] = useState<boolean>(false);
-
+    const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
     const authenticate = async () => {
         console.log('in authenticate');
         try {
+            console.log("cookies" , cookies)
+            if(cookies != undefined && cookies.Rainmaker2Token != undefined)
+            {
+                localStorage.setItem('auth', cookies.Rainmaker2Token);
+            }
             let res = UserActions.authenticate();
 
         } catch (error) {
