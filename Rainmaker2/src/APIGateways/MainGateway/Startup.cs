@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Text;
 using IdentityServer4.AccessTokenValidation;
 using MainGateway.Middleware;
@@ -18,6 +19,7 @@ namespace MainGateway
 {
     public class Startup
     {
+        private static HttpClient httpClient = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -51,8 +53,12 @@ namespace MainGateway
             #region JWT
 
             /**START : JWT**************************************************************/
-
-            var securityKey = Configuration[key: "JWT:SecurityKey"];
+            var jwtKeyResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
+            if (!jwtKeyResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key from key store");
+            }
+            var securityKey = jwtKeyResponse.Content.ReadAsStringAsync().Result;
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

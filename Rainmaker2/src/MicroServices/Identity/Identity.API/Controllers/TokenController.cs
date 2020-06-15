@@ -52,54 +52,57 @@ namespace Identity.Controllers
             if (callResponse.IsSuccessStatusCode)
             {
                 var userProfile = await callResponse.Content.ReadAsAsync<UserProfile>();
+                var jwtKeyResponse = await httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT");
+                if (jwtKeyResponse.IsSuccessStatusCode)
+                {
+                    //security key
+                    var securityKey = await jwtKeyResponse.Content.ReadAsStringAsync();
+                    //symmetric security key
+                    var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
-                //security key
-                var securityKey = _configuration[key: "JWT:SecurityKey"];
-                //symmetric security key
-                var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+                    //signing credentials
+                    var signingCredentials =
+                        new SigningCredentials(key: symmetricSecurityKey,
+                                               algorithm: SecurityAlgorithms.HmacSha256Signature);
 
-                //signing credentials
-                var signingCredentials =
-                    new SigningCredentials(key: symmetricSecurityKey,
-                                           algorithm: SecurityAlgorithms.HmacSha256Signature);
+                    //add claims
+                    var claims = new List<Claim>();
 
-                //add claims
-                var claims = new List<Claim>();
+                    claims.Add(item: new Claim(type: ClaimTypes.Role,
+                                               value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"));
+                    claims.Add(item: new Claim(type: "UserProfileId",
+                                               value: userProfile.Id.ToString()));
+                    claims.Add(item: new Claim(type: "UserName",
+                                               value: userProfile.UserName.ToLower()));
+                    if (userProfile.Employees.FirstOrDefault() != null)
+                        claims.Add(item: new Claim(type: "EmployeeId",
+                                                   value: userProfile.Employees.Single().Id.ToString()));
 
-                claims.Add(item: new Claim(type: ClaimTypes.Role,
-                                           value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"));
-                claims.Add(item: new Claim(type: "UserProfileId",
-                                           value: userProfile.Id.ToString()));
-                claims.Add(item: new Claim(type: "UserName",
-                                           value: userProfile.UserName.ToLower()));
-                if (userProfile.Employees.FirstOrDefault() != null)
-                    claims.Add(item: new Claim(type: "EmployeeId",
-                                               value: userProfile.Employees.Single().Id.ToString()));
+                    //create token
+                    var token = new JwtSecurityToken(
+                                                     issuer: "rainsoftfn",
+                                                     audience: "readers",
+                                                     expires: DateTime.Now.AddHours(value: 1),
+                                                     signingCredentials: signingCredentials,
+                                                     claims: claims
+                                                    );
 
-                //create token
-                var token = new JwtSecurityToken(
-                                                 issuer: "rainsoftfn",
-                                                 audience: "readers",
-                                                 expires: DateTime.Now.AddHours(value: 1),
-                                                 signingCredentials: signingCredentials,
-                                                 claims: claims
-                                                );
+                    //return token
 
-                //return token
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token: token);
+                    response.Status = ApiResponse.ApiResponseStatus.Success;
+                    response.Data = new
+                    {
+                        Token = tokenString,
+                        UserProfileId = userProfile.Id,
+                        userProfile.UserName,
+                        //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
+                        token.ValidFrom,
+                        token.ValidTo
+                    };
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token: token);
-                response.Status = ApiResponse.ApiResponseStatus.Success;
-                response.Data = new
-                                {
-                                    Token = tokenString,
-                                    UserProfileId = userProfile.Id,
-                                    userProfile.UserName,
-                                    //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
-                                    token.ValidFrom,
-                                    token.ValidTo
-                                };
-
-                return Ok(value: response);
+                    return Ok(value: response);
+                }
             }
 
             response.Status = ApiResponse.ApiResponseStatus.Fail;
