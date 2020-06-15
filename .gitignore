@@ -14,3 +14,5 @@ package-lock.json
 /Rainmaker2/src/MicroServices/DocumentManagement/TestResults
 node_modules
 /Rainmaker2/src/MicroServices/Rainmaker/TestResults
+/Rainmaker2/src/Presentation/document-upload/build/*
+Rainmaker2/src/Presentation/document-upload/build/asset-manifest.json
