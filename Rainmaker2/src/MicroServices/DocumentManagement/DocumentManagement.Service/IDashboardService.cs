@@ -12,5 +12,6 @@ namespace DocumentManagement.Service
     {
         Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId);
         Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId);
+        Task<List<DashboardStatus>> GetDashboardStatus(int loanApplicationId, int tenantId);
     }
 }

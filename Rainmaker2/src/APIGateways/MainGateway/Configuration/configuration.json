@@ -2,7 +2,7 @@
   "Routes": [
     //Identity api config
     {
-      "DownstreamPathTemplate": "/api/Identity/token/{everything}",
+      "DownstreamPathTemplate": "/api/Identity/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -10,14 +10,14 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "/api/Identity/token/{everything}",
+      "UpstreamPathTemplate": "/api/Identity/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "1s",
         "PeriodTimespan": 1,
-        "Limit": 1
+        "Limit": 100
       }
     },
 
@@ -42,7 +42,7 @@
         "EnableRateLimiting": true,
         "Period": "1s",
         "PeriodTimespan": 1,
-        "Limit": 1
+        "Limit": 100
       },
       "FileCacheOptions": {
         "TtlSeconds": 15,
@@ -53,25 +53,25 @@
     //rainmaker 2.0 api config
     {
       "DownstreamPathTemplate": "/api/RainMaker/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5009
+          "Port": 5031
         }
       ],
       "UpstreamPathTemplate": "/api/RainMaker/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "TestKey",
-      //  "AllowedScopes": []
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "1s",
         "PeriodTimespan": 1,
-        "Limit": 1
+        "Limit": 100
       },
       "FileCacheOptions": {
         "TtlSeconds": 15,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentManagement.Entity;
+using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -29,6 +30,11 @@ namespace DocumentManagement.API.Controllers
         {
             var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId, tenantId);
             return Ok(docQuery);
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetDashboardStatus(int loanApplicationId, int tenantId)
+        {
+            return Ok(await dashboardService.GetDashboardStatus(loanApplicationId,tenantId));
         }
     }
 }
