@@ -41,14 +41,22 @@ namespace DocumentManagement.API.Controllers
         {
             var httpClient = clientFactory.CreateClient();
             var key = config["File:Key"];
+            var ftpKey = config["File:FtpKey"];
             var algo = config["File:Algo"];
             var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}").Result;
+            var ftpKeyResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}").Result;
             if (!csResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key from key store");
             }
+
+            if (!ftpKeyResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key from key store");
+            }
             Setting setting = await settingService.GetSetting();
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword);
+
+            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await ftpKeyResponse.Content.ReadAsStringAsync()));
             // save
             foreach (var formFile in files)
             {

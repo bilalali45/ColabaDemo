@@ -132,6 +132,46 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "GetDashboardStatus",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=1&tenantId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"dashboard",
+										"GetDashboardStatus"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "tenantId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -315,6 +355,54 @@
 										"Documentmanagement",
 										"file",
 										"submit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/documentmanagement/file/view?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=ddd25d1fe456057652eeb72d&fileId=5ee76ed6c766b54188e807a0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"documentmanagement",
+										"file",
+										"view"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "5eb25d1fe519051af2eeb72d"
+										},
+										{
+											"key": "requestId",
+											"value": "abc15d1fe456051af2eeb768"
+										},
+										{
+											"key": "docId",
+											"value": "ddd25d1fe456057652eeb72d"
+										},
+										{
+											"key": "fileId",
+											"value": "5ee76ed6c766b54188e807a0"
+										}
 									]
 								}
 							},

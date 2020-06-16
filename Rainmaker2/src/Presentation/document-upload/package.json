@@ -22,6 +22,7 @@
     "rainsoft-rc": "^1.0.5",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-pdf": "^4.1.0",
     "react-router-dom": "^5.2.0",
