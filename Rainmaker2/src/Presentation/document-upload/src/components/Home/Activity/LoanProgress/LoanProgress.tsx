@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { SVGchecked } from './../../../../shared/Components/Assets/SVG';
 import Carousel from 'react-bootstrap/Carousel'
+import Lpstep1 from '../../../../assets/images/lp-step1.svg';
+import Lpstep2 from '../../../../assets/images/lp-step2.svg';
+import Lpstep3 from '../../../../assets/images/lp-step3.svg';
+import Lpstep4 from '../../../../assets/images/lp-step4.svg';
+import Lpstep5 from '../../../../assets/images/lp-step5.svg';
 type Props = {
     //userName: string,
 }
@@ -34,7 +39,9 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                         >
                             <Carousel.Item>
                                 <div className="lp-list">
-                                    <div className="step-count">1</div>
+                                    <div className="step-count">
+                                        <img src={Lpstep1} alt="1" />
+                                    </div>
                                     <div className="lp-content">
                                         <div className="step-label">Completed</div>
                                         <h6>Fill out application</h6>
@@ -45,7 +52,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="lp-list">
-                                    <div className="step-count">2</div>
+                                    <div className="step-count"><img src={Lpstep2} alt="2" /></div>
                                     <div className="lp-content">
                                         <div className="step-label">Completed</div>
                                         <h6>Review and submit application</h6>
@@ -56,9 +63,9 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="lp-list">
-                                    <div className="step-count">3</div>
+                                    <div className="step-count"><img src={Lpstep3} alt="3" /></div>
                                     <div className="lp-content">
-                                        <div className="step-label">Completed</div>
+                                        <div className="step-label">Current Step</div>
                                         <h6>Loan Team Review</h6>
                                         <p>Our Loan team reviewing your application and will contact you soon.</p>
                                     </div>
@@ -66,7 +73,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="lp-list ">
-                                    <div className="step-count">4</div>
+                                    <div className="step-count"><img src={Lpstep4} alt="4" /></div>
                                     <div className="lp-content">
                                         <div className="step-label">Upcoming</div>
                                         <h6>Document upload and loan team review</h6>
@@ -76,7 +83,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                             </Carousel.Item>
                             <Carousel.Item >
                                 <div className="lp-list">
-                                    <div className="step-count">5</div>
+                                    <div className="step-count"><img src={Lpstep5} alt="5" /></div>
                                     <div className="lp-content">
                                         <div className="step-label">Upcoming</div>
                                         <h6>Submitted to Underwriting</h6>
