@@ -26,7 +26,7 @@ export const Home = () => {
 
     useEffect(() => {
 
-        if (!authenticate()) {
+        if (!authenticate() || !Auth.getLoanAppliationId() || !Auth.getBusinessUnitId() || !Auth.getBusinessUnitId()) {
             history.push('/Account/Login');
         }
     }, []);
