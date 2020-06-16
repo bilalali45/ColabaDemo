@@ -76,6 +76,24 @@ export const LoanProgress: React.SFC<Props> = (props) => {
         })
     }
 
+    const renderCarouselList = () => {
+        var totallist = loanProgress.length;
+        console.log(loanProgress)
+        return loanProgress.map((l: any, i: number) => {
+            let liclass = "completed-icon";
+            liclass = l.status == 'In progress' ? 'current-icon' : l.status == 'To be done' ? 'upcoming-icon' : 'completed-icon';
+            let step = i + 1;
+            return (
+                <li data-index={i} className={liclass}>
+                    <a href="javascrit:" onClick={(e) => handleSelect(i, e)}>
+                        {i == totallist - 1 && l.status == 'To be done' ? <i className="zmdi zmdi-flag"></i> : l.status == 'Completed' ? <i className="zmdi zmdi-check"></i> : l.status == 'In progress' ? <i className="zmdi zmdi-male-alt"></i> : <span>{step}</span>}
+                    </a>
+                </li>
+
+            )
+        })
+    }
+
     return (
         <div className="LoanProgress box-wrap">
             <div className="box-wrap--header">
@@ -90,7 +108,8 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                     </div>
                     <div className="lp-footer">
                         <ul>
-                            <li className={index == 0 ? "completed-icon active" : "completed-icon"}>
+                            {renderCarouselList()}
+                            {/* <li className={index == 0 ? "completed-icon active" : "completed-icon"}>
                                 <a href="javascrit:" onClick={(e) => handleSelect(0, e)}>
                                     <i className="zmdi zmdi-check"></i>
                                 </a>
@@ -117,7 +136,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                                 <a href="javascrit:" onClick={(e) => handleSelect(4, e)}>
                                     <i className="zmdi zmdi-flag"></i>
                                 </a>
-                            </li>
+                            </li> */}
 
 
                         </ul>
