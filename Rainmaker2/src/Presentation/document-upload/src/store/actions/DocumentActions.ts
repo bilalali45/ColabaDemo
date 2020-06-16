@@ -24,7 +24,15 @@ export class DocumentActions {
       console.log(error);
     }
   }
+  static async getDocumentsStatus(loanApplicationId: string , tenentId: string) {
+    try {
+      let res: any = await http.get(Endpoints.documents.GET.documentsProgress(loanApplicationId, tenentId));
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
 
+  }
   static async submitDocuments() {
 
   }
