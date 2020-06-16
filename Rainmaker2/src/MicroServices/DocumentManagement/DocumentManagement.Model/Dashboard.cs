@@ -58,4 +58,15 @@ namespace DocumentManagement.Model
         public string clientName { get; set; }
         public string contentType { get; set; }
     }
+
+    public class DashboardStatus
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public int order { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public bool isCurrentStep { get; set; }
+    }
 }

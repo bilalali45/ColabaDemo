@@ -74,8 +74,13 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log(error?.response?.data);
-            if (error?.response?.data?.name === 'TokenExpiredError' || error?.response?.data?.name === 'JsonWebTokenError' || error?.response?.data === 'Could not login') {
+            console.log('error?.response?.data', error?.response);
+            if (
+                    error?.response?.data?.name === 'TokenExpiredError' 
+                    || error?.response?.data?.name === 'JsonWebTokenError' 
+                    || error?.response?.data === 'Could not login'
+                    || error?.response?.status === 401
+                    ) {
                 
                 window.open('http://localhost:5000/app', '_self');
                 Auth.removeAuth();

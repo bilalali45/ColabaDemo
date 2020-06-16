@@ -15,5 +15,7 @@ namespace DocumentManagement.Entity
         public int tenantId { get; set; }
         public int loanApplicationId { get; set; }
         public List<Request> requests { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string status { get; set; }
     }
 }

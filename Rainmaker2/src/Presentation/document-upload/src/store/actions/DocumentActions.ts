@@ -24,9 +24,45 @@ export class DocumentActions {
       console.log(error);
     }
   }
+  static async getDocumentsStatus(loanApplicationId: string, tenentId: string) {
+    try {
+      let res: any = await http.get(Endpoints.documents.GET.documentsProgress(loanApplicationId, tenentId));
+      return attachStatus(res.data);
+    } catch (error) {
+      console.log(error);
+    }
 
+  }
   static async submitDocuments() {
 
   }
 
+}
+
+const attachStatus = (data: any) => {
+  let current = 0;
+
+
+  data.forEach((l: any, i: number) => {
+    // debugger;
+    if (l.isCurrentStep) {
+      current = i
+    }
+  });
+
+  return data.map((l: any, i: number) => {
+    // debugger
+    if (i < current) {
+      l.status = 'Completed';
+    }
+
+    if (i === current) {
+      l.status = 'In progress'
+    }
+
+    if (i > current) {
+      l.status = 'To be done'
+    }
+    return l;
+  })
 }

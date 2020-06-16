@@ -7,7 +7,6 @@ import Footer from './shared/Components/Footer/Footer';
 import DummyLogin from './components/DummyLogin/DummyLoging';
 import { StoreProvider } from './store/store';
 import { Loading } from './components/Loading/Loading';
-import { PageNotFound } from './shared/Errors/PageNotFound';
 import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
 import { UserActions } from './store/actions/UserActions';
 import ImageAssets from './utils/image_assets/ImageAssets';
@@ -51,10 +50,9 @@ const App = () => {
           options={headerDropdowmMenu}
         />
 
-        <Router basename="/documentmanagement" >
+        <Router basename="/DocumentManagement" >
           <Switch>
-            <Route  path="/" component={Home} />
-            <Route path={"*"} component={PageNotFound} />
+            <Route path="/" component={Home} />
           </Switch>
         </Router>
         <RainsoftRcFooter
