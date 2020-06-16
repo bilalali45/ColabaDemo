@@ -309,5 +309,16 @@ namespace Identity.Controllers
 
             return Ok(value: response);
         }
+
+
+
+        [Route(template: "[action]")]
+        [HttpPost]
+        public IActionResult TestException(GenerateTokenRequest request)
+        {
+           throw new Exception("test exception");
+
+            return Ok(value: "ok");
+        }
     }
 }
