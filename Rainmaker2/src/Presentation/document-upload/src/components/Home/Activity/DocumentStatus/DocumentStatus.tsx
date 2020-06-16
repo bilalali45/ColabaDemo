@@ -41,7 +41,7 @@ export const DocumentStatus = () => {
     if (!pendingDocs) {
         return <p>...loading...</p>
     }
-    if (pendingDocs.length == 2) {
+    if (pendingDocs.length == 0) {
         return (
             <div className="DocumentStatus box-wrap empty">
                 <div className="box-wrap--header clearfix">
