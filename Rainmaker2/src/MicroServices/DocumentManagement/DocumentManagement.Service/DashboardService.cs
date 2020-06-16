@@ -186,5 +186,40 @@ namespace DocumentManagement.Service
             }
             return result;
         }
+
+        public async Task<List<DashboardStatus>> GetDashboardStatus(int loanApplicationId, int tenantId)
+        {
+            List<DashboardStatus> statuses = new List<DashboardStatus>();
+            IMongoCollection<StatusList> collection = mongoService.db.GetCollection<StatusList>("StatusList");
+            using (var asyncCursor = await collection.FindAsync(FilterDefinition<StatusList>.Empty))
+            {
+                while (await asyncCursor.MoveNextAsync())
+                {
+                    foreach (var current in asyncCursor.Current)
+                    {
+                        statuses.Add(new DashboardStatus()
+                        {
+                            id = current.id,
+                            name = current.name,
+                            description = current.description,
+                            order = current.order,
+                            isCurrentStep = false
+                        });
+                    }
+                }
+            }
+            IMongoCollection<LoanApplication> collection1 = mongoService.db.GetCollection<LoanApplication>("Request");
+            using var asyncCursor1 = await collection1.FindAsync(new BsonDocument() {
+                {"loanApplicationId",loanApplicationId },
+                {"tenantId",tenantId }
+            },new FindOptions<LoanApplication, BsonDocument>()
+            {
+                Projection = new BsonDocument() { {"status", 1 }
+            }});
+            await asyncCursor1.MoveNextAsync();
+            string status = asyncCursor1.Current.First()["status"].ToString();
+            statuses.Where(x => x.id == status).First().isCurrentStep = true;
+            return statuses.OrderBy(x=>x.order).ToList();
+        }
     }
 }

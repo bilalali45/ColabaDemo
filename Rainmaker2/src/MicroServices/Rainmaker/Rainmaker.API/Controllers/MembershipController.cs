@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rainmaker.Service;
 
+
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
@@ -27,16 +28,22 @@ namespace Rainmaker.API.Controllers
                 return Ok(value: userProfile);
             return NotFound();
         }
-    }
 
-    public class ValidateUserRequest
 
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public bool Employee { get; set; }
+        [HttpPost(template: "[action]")]
+        public IActionResult GetUser(GetUserRequest request)
+        {
+            RainMaker.Entity.Models.UserProfile userProfile;
+            if (!request.Employee)
+                userProfile = _membershipService.GetUser(userName: request.UserName
+                                                        );
+            else
+                userProfile = _membershipService.GetEmployeeUser(userName: request.UserName
+                                                                );
+
+            if (userProfile != null)
+                return Ok(value: userProfile);
+            return NotFound();
+        }
     }
 }
-
-
- 
