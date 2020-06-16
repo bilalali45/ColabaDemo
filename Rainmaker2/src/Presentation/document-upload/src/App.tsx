@@ -19,16 +19,14 @@ const App = () => {
   const history = useHistory();
 
   const gotoDashboardHandler = () => {
-    console.log('gotoDashboardHandler')
-    window.open('https://alphatx.rainsoftfn.com/Dashboard', '_self');
+    window.open('/Dashboard', '_self');
   }
   const changePasswordHandler = () => {
-    console.log('changePasswordHandler')
-    window.open('https://alphatx.rainsoftfn.com/Account/SendResetPasswordRequest', '_self');
+    window.open('/Account/SendResetPasswordRequest', '_self');
   }
   const signOutHandler = () => {
     UserActions.logout();
-    window.open('https://alphatx.rainsoftfn.com/', '_self');
+    window.open('/Account/Login', '_self');
   }
   const headerDropdowmMenu = [
     { name: 'Dashboard', callback: gotoDashboardHandler },
@@ -38,7 +36,6 @@ const App = () => {
   const footerContent = "Copyright 2002 – " + currentyear + ". All rights reserved. American Heritage Capital, LP. NMLS 277676";
 
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
-    console.log('sdfasdfasdfaf', ParamsService.getParam('tenantId'));
 
   return (
     <div className="app">
