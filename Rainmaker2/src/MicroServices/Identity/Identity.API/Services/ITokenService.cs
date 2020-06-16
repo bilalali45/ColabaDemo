@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Identity.Services
 {
     public interface ITokenService
     {
-         JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims);         
+         Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims);         
          string GenerateRefreshToken();    
-         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);            
+         Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token);            
     }
 }

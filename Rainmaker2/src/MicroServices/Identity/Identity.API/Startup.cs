@@ -29,6 +29,8 @@ namespace Identity
         {
 
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IKeyStoreService,KeyStoreService >();
+
 
             services.AddControllers().AddNewtonsoftJson(); ;
             //services.AddIdentityServer(x =>
