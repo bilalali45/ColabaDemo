@@ -2,12 +2,18 @@
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
+using Moq.Protected;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -255,6 +261,71 @@ namespace DocumentManagement.Tests
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
 
+        }
+
+        [Fact]
+        public async Task TestSubmitController()
+        {
+            //Arrange
+            //Mock<IFileService> mock = new Mock<IFileService>();
+            //Mock<IFileEncryptionFactory> mockFileEncryptionFactory = new Mock<IFileEncryptionFactory>();
+            //Mock<IFtpClient> mockFtpClient = new Mock<IFtpClient>();
+            //Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
+            //IConfiguration config;
+
+            //mock.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()));
+            //mockSettingService.Setup(x => x.GetSetting());
+
+
+
+
+            //var httpClientFactory = new Mock<IHttpClientFactory>();
+            //var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            ////var fixture = new Fixture();
+
+            //var key = config["File:Key"];
+            //var algo = config["File:Algo"];
+            //var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}").Result;
+
+            //mockHttpMessageHandler.Protected()
+            //    .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            //    .ReturnsAsync(new HttpResponseMessage
+            //    {
+            //        StatusCode = HttpStatusCode.OK,
+            //        Content = new StringContent(fixture.Create<String>()),
+            //    });
+
+            //var client = new HttpClient(mockHttpMessageHandler.Object);
+            //client.BaseAddress = fixture.Create<Uri>();
+            //httpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
+
+
+
+            //Mock<IMongoCollection<Setting>> mockCollection = new Mock<IMongoCollection<Setting>>();
+
+            //Setting settings = new Setting();
+            //settings.ftpServer = "ftp://rsserver1/Product 2.0/BorrowerDocument";
+            //settings.ftpUser = "ftpuser";
+            //settings.ftpPassword = "Test123";
+
+            //FileOrderModel fileOrder = new FileOrderModel();
+
+            //mock.Setup(x => x.Order(It.IsAny<FileOrderModel>())).Verifiable();
+
+            //List<IFormFile> fileModel = new List<IFormFile>();
+
+            ////FileController controller = new FileController(mock.Object, mockFileEncryptionFactory.Object, mockFtpClient.Object, mockSettingService.Object);
+
+            ////FileController fileController = new FileController(mock.Object, null, null, mockSettingService.Object);
+            ////Act
+            //IActionResult result = await controller.Submit("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "ddd25d1fe456057652eeb72d", "[{\"fileName\":\"test1.txt\",\"order\":1}]", fileModel);
+            //IActionResult resultOrder = await fileController.Order(fileOrder);
+            ////Assert
+            //Assert.NotNull(result);
+            //Assert.IsType<OkResult>(result);
+            //Assert.NotNull(resultOrder);
+            //Assert.IsType<OkResult>(resultOrder);
         }
     }
 }
