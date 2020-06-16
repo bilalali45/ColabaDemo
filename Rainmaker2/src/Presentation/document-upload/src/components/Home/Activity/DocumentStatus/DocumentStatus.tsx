@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import { Endpoints } from '../../../../store/endpoints/Endpoints';
+import { Auth } from '../../../../services/auth/Auth';
 import IconEmptyDocRequest from '../../../../assets/images/empty-doc-req-icon.svg';
 
 export const DocumentStatus = () => {
@@ -25,7 +26,7 @@ export const DocumentStatus = () => {
 
     const fetchPendingDocs = async () => {
 
-        let docsPending = await DocumentActions.getPendingDocuments('1', '1');
+        let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
         console.log('docsPending', docsPending);
         if (docsPending) {
             setPendingDocs(docsPending);
@@ -41,7 +42,7 @@ export const DocumentStatus = () => {
     if (!pendingDocs) {
         return <p>...loading...</p>
     }
-    if (pendingDocs.length == 2) {
+    if (pendingDocs.length == 0) {
         return (
             <div className="DocumentStatus box-wrap empty">
                 <div className="box-wrap--header clearfix">

@@ -7,6 +7,7 @@ import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { ContactUs as ContactUsModal } from '../../../../entities/Models/ContactU';
 import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
 import { MaskPhone } from 'rainsoft-js';
+import { Auth } from '../../../../services/auth/Auth';
 
 export const ContactUs = ({ }) => {
 
@@ -22,10 +23,10 @@ export const ContactUs = ({ }) => {
     });
 
     const fetchLoanOfficer = async () => {
-        let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer('1', '2');
+        let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
             console.log(loanOfficer);
-            let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, '2');
+            let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
             // src = `data:image/jpeg;base64,${src}}`;
             setLOPhotoSrc(src);
             if (LOphotoRef.current) {
