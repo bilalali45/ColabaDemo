@@ -29,7 +29,7 @@ namespace Identity.Services
            
 
             //security key
-            var securityKey = await _keyStoreService.GetJwtSecurityKey();
+            var securityKey = await _keyStoreService.GetJwtSecurityKeyAsync();
             //symmetric security key
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -64,7 +64,7 @@ namespace Identity.Services
         {
 
             //security key
-            var securityKey = await _keyStoreService.GetJwtSecurityKey();
+            var securityKey = await _keyStoreService.GetJwtSecurityKeyAsync();
             //symmetric security key
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 

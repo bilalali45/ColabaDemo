@@ -74,7 +74,6 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log('error?.response?.data', error?.response);
             if (
                     error?.response?.data?.name === 'TokenExpiredError' 
                     || error?.response?.data?.name === 'JsonWebTokenError' 
@@ -83,7 +82,7 @@ export class Http {
                     ) {
                 
                 // window.open('http://localhost:5000/app', '_self');
-                Auth.removeAuth();
+                // Auth.removeAuth();
             }
 
             return new Promise((_, reject) => {
@@ -111,7 +110,6 @@ export class Http {
         if (data) {
             config.data = data;
         }
-        console.log(data);
         return config;
     }
 
