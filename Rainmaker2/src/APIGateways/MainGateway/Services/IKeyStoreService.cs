@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Identity.Services
+namespace MainGateway.Services
 {
     public interface IKeyStoreService
     {

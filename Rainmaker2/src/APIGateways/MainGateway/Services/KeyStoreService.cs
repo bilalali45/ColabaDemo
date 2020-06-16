@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace Identity.Services
+namespace MainGateway.Services
 {
    
 
@@ -38,7 +36,7 @@ namespace Identity.Services
         {
             var httpClient = _clientFactory.CreateClient();
             var jwtKeyResponseTask =   httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT");
-            jwtKeyResponseTask.Start();
+            //jwtKeyResponseTask.Start();
             var jwtKeyResponse = jwtKeyResponseTask.Result;
 
             if (!jwtKeyResponse.IsSuccessStatusCode)
@@ -47,7 +45,7 @@ namespace Identity.Services
             }
 
             var task = jwtKeyResponse.Content.ReadAsStringAsync();
-            task.Start();
+           // task.Start();
 
             return task.Result;
         }
