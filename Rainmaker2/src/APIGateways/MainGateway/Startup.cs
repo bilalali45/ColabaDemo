@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using IdentityServer4.AccessTokenValidation;
 using MainGateway.Middleware;
+using MainGateway.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,8 +31,17 @@ namespace MainGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+
+            services.AddHttpClient();
+
+            services.AddTransient<IKeyStoreService, KeyStoreService>();
+            
             services.AddControllers();
             services.AddCors();
+
+
 
             #region IdentityServer4 Authentication
 
@@ -53,12 +63,10 @@ namespace MainGateway
             #region JWT
 
             /**START : JWT**************************************************************/
-            var jwtKeyResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
-            if (!jwtKeyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
-            var securityKey = jwtKeyResponse.Content.ReadAsStringAsync().Result;
+
+            var keyStoreService = services.BuildServiceProvider().GetRequiredService<IKeyStoreService>();
+
+            var securityKey =   keyStoreService.GetJwtSecurityKey();
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
