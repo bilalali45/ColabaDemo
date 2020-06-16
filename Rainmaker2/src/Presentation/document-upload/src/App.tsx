@@ -11,6 +11,7 @@ import { PageNotFound } from './shared/Errors/PageNotFound';
 import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
 import { UserActions } from './store/actions/UserActions';
 import ImageAssets from './utils/image_assets/ImageAssets';
+import { ParamsService } from './utils/ParamsService';
 
 const App = () => {
 
@@ -36,21 +37,9 @@ const App = () => {
     { name: 'Sign Out', callback: signOutHandler }
   ]
   const footerContent = "Copyright 2002 – " + currentyear + ". All rights reserved. American Heritage Capital, LP. NMLS 277676";
-  
-  if(window.location.search != "" && window.location.search.split('&').length <=3){
-    if(window.location.search.split('&')[0] != undefined){
-      const loanApplicationId = window.location.search.split('&')[0].split('=')[1]
-      localStorage.setItem('loanApplicationId', loanApplicationId);
-    }
-    if(window.location.search.split('&')[1] != undefined){
-      const tenantId =  window.location.search.split('&')[1].split('=')[1]
-      localStorage.setItem('tenantId', tenantId);
-    }
-    if(window.location.search.split('&')[2] != undefined){
-      const businessUnitId = window.location.search.split('&')[2].split('=')[1]
-      localStorage.setItem('businessUnitId', businessUnitId);
-    }
-  }
+
+    ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
+    console.log('sdfasdfasdfaf', ParamsService.getParam('tenantId'));
 
   return (
     <div className="app">

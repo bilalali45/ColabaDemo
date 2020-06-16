@@ -22,44 +22,38 @@ export const Home = () => {
     const history = useHistory();
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
-    const authenticate = async () => {
-        console.log('in authenticate');
-        try {
-            console.log("cookies" , cookies)
-            if(cookies != undefined && cookies.Rainmaker2Token != undefined)
-            {
-                localStorage.setItem('auth', cookies.Rainmaker2Token);
-            }
-            let res = UserActions.authenticate();
-
-        } catch (error) {
-            if (!Auth.checkAuth()) {
-                history.push('/https://alphatx.rainsoftfn.com/Account/Login');
-            }
-        }
-    }
-
-    if (!Auth.checkAuth()) {
-        authenticate();
-    }
-
 
     useEffect(() => {
-        if (Auth.checkAuth()) {
-            history.push('/error');
-        } else {
+
+        if (!authenticate()) {
+            history.push('/Account/Login');
         }
     }, []);
+
+
+    const authenticate = () => {
+        if (!Auth.checkAuth()) {
+            if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
+                Auth.saveAuth(cookies.Rainmaker2Token);
+                return true;
+            } else {
+                UserActions.authenticate();
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     return (
         <div>
             <ActivityHeader />
             <Switch>
-                <Redirect exact from={ "/" } to={"/activity"} />
-                <Route  path="/activity" component={Activity} />
-                <Route  path="/documentsRequest" component={DocumentRequest} />
-                <Route  path="/uploadedDocuments" component={UploadedDocuments} />
-               
+                <Redirect exact from={"/"} to={"/activity"} />
+                <Route path="/activity" component={Activity} />
+                <Route path="/documentsRequest" component={DocumentRequest} />
+                <Route path="/uploadedDocuments" component={UploadedDocuments} />
+
             </Switch>
         </div>
     )
