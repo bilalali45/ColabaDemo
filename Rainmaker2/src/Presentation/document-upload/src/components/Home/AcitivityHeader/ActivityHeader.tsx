@@ -5,12 +5,10 @@ import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 const ActivityHeader = () => {
     const history = useHistory();
     const uploadDocumentHandler = () => {
-        console.log('uploadDocumentHandler')
         history.push('/documentsRequest')
     }
     const gotoDashboardHandler = () => {
-        console.log('gotoDashboardHandler')
-        window.open('https://alphatx.rainsoftfn.com/Dashboard', '_self');
+        window.open('/Dashboard', '_self');
     }
     return (
         <div className="activityHeader">

@@ -122,8 +122,8 @@ type DocumentViewPropsType = { type: string, url: string, file: File | null, hid
 // import logger from 'logging-library';
 // import { CustomErrorComponent } from 'custom-error';
 
-const filef = 'http://localhost:5000/pdf/doc2.pdf'
-const typea = 'pdf'
+const filef = 'http://localhost:5000/pdf/Book2.xlsx'
+const typea = 'xlsx'
 
 export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
 

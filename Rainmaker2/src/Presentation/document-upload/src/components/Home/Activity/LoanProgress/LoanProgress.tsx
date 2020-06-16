@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SVGchecked } from './../../../../shared/Components/Assets/SVG';
 import Carousel from 'react-bootstrap/Carousel'
-import Lpstep1 from '../../../../assets/images/lp-step1.svg';
-import Lpstep2 from '../../../../assets/images/lp-step2.svg';
-import Lpstep3 from '../../../../assets/images/lp-step3.svg';
-import Lpstep4 from '../../../../assets/images/lp-step4.svg';
-import Lpstep5 from '../../../../assets/images/lp-step5.svg';
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 type Props = {
     //userName: string,
@@ -90,6 +85,8 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                     </div>
                     <div className="lp-footer">
                         <ul>
+
+                            
                             <li className={index == 0 ? "completed-icon active" : "completed-icon"}>
                                 <a href="javascrit:" onClick={(e) => handleSelect(0, e)}>
                                     <i className="zmdi zmdi-check"></i>

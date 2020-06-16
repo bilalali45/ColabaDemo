@@ -82,7 +82,7 @@ export class Http {
                     || error?.response?.status === 401
                     ) {
                 
-                window.open('http://localhost:5000/app', '_self');
+                // window.open('http://localhost:5000/app', '_self');
                 Auth.removeAuth();
             }
 
