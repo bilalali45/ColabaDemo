@@ -8,5 +8,9 @@ namespace Rainmaker.Service
         UserProfile ValidateUser(string userName,
                                  string password,
                                  bool employee = false);
+
+
+        UserProfile GetUser(string userName);
+        UserProfile GetEmployeeUser(string userName);
     }
 }
