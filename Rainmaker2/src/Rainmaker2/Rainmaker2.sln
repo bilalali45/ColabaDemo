@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{7F402132-DFEB-47D2-BCD3-9DA453E1E0EF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyStore.API", "..\MicroServices\KeyStore\KeyStore.API\KeyStore.API.csproj", "{5C0CCF37-B2F3-45ED-B733-E840ECB84E82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{D809C4F5-2CF4-455D-A9E5-03591D91724F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D809C4F5-2CF4-455D-A9E5-03591D91724F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D809C4F5-2CF4-455D-A9E5-03591D91724F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C0CCF37-B2F3-45ED-B733-E840ECB84E82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0CCF37-B2F3-45ED-B733-E840ECB84E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0CCF37-B2F3-45ED-B733-E840ECB84E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0CCF37-B2F3-45ED-B733-E840ECB84E82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{4347384E-1CFD-4954-A0E4-0DDD41957813} = {76771F3B-38B8-4C1F-B834-94C12C3C7238}
 		{4004EF2D-5891-4060-AFE9-035A36A4A1FB} = {76771F3B-38B8-4C1F-B834-94C12C3C7238}
 		{D809C4F5-2CF4-455D-A9E5-03591D91724F} = {76771F3B-38B8-4C1F-B834-94C12C3C7238}
+		{5C0CCF37-B2F3-45ED-B733-E840ECB84E82} = {76771F3B-38B8-4C1F-B834-94C12C3C7238}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {955131A4-28B2-48A7-BB33-13D81FF2A170}
