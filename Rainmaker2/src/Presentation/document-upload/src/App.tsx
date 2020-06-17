@@ -29,6 +29,7 @@ const App = () => {
 
   useEffect(() => {
     authenticate();
+    console.log("Document Management App Version", "0.1.1")
   }, [localStorage])
  
   const authenticate = async () => {
