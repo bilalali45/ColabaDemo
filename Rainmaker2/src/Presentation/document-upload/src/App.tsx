@@ -26,10 +26,10 @@ const App = () => {
   const tokenData: any = UserActions.getUserInfo();
   const history = useHistory();
 
-
+  // setCookie('Rainmaker2Token', Auth.checkAuth());
   useEffect(() => {
     authenticate();
-    console.log("Document Management App Version", "0.1.1")
+    console.log("Document Management App Version", "0.1.2")
   }, [localStorage])
  
   const authenticate = async () => {
@@ -47,6 +47,7 @@ const App = () => {
       }
 
       if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
+        debugger
         let token = cookies.Rainmaker2Token;
         Auth.saveAuth(token);
         Auth.storeTokenPayload(UserActions.decodeJwt(token))
