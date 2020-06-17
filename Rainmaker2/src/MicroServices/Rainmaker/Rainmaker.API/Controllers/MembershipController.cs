@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Rainmaker.Service;
 
 
@@ -20,6 +21,9 @@ namespace Rainmaker.API.Controllers
         [HttpPost(template: "[action]")]
         public IActionResult ValidateUser(ValidateUserRequest request)
         {
+
+            Request.Headers.TryGetValue("CorrelationId",
+                                        out StringValues value);
             var userProfile = _membershipService.ValidateUser(userName: request.UserName,
                                                               password: request.Password,
                                                               employee: request.Employee);
