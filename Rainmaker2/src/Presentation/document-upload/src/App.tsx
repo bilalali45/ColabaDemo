@@ -14,13 +14,17 @@ import { ParamsService } from './utils/ParamsService';
 import { Auth } from './services/auth/Auth';
 import { useCookies } from 'react-cookie';
 import { Authorized } from './shared/Components/Authorized/Authorized';
+import { FooterContents } from './utils/header_footer_utils/FooterContent';
+import HeaderContent from './utils/header_footer_utils/HeaderContent';
 
 const App = () => {
 
   const currentyear = new Date().getFullYear();
-  const history = useHistory();
   const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+
+  const tokenData: any = UserActions.getUserInfo();
+  const history = useHistory();
 
 
   useEffect(() => {
@@ -31,7 +35,7 @@ const App = () => {
 
 
     if (!Auth.checkAuth()) {
-     
+
       if (process.env.NODE_ENV === 'development') {
         let token = await UserActions.authenticate();
         if (token) {
@@ -50,39 +54,22 @@ const App = () => {
     }
   }
 
-  const gotoDashboardHandler = () => {
-    window.open('/Dashboard', '_self');
-  }
-  const changePasswordHandler = () => {
-    window.open('/Account/SendResetPasswordRequest', '_self');
-  }
-  const signOutHandler = () => {
-    UserActions.logout();
-    window.open('/Account/Login', '_self');
-  }
-  const headerDropdowmMenu = [
-    { name: 'Dashboard', callback: gotoDashboardHandler },
-    { name: 'Change Password', callback: changePasswordHandler },
-    { name: 'Sign Out', callback: signOutHandler }
-  ]
-  const footerContent = "Copyright 2002 – " + currentyear + ". All rights reserved. American Heritage Capital, LP. NMLS 277676";
+  UserActions.getUserInfo();
+
 
   ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
 
   if (!authenticated) {
     return <></>
   }
-
-  UserActions.getUserInfo();
-
   return (
     <div className="app">
       <StoreProvider>
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
-          displayName={'Jehangir Babul'}
-          displayNameOnClick={gotoDashboardHandler}
-          options={headerDropdowmMenu}
+          displayName={tokenData?.UserName}
+          displayNameOnClick={HeaderContent.gotoDashboardHandler}
+          options={HeaderContent.headerDropdowmMenu}
         />
 
         <Router basename="/DocumentManagement" >
@@ -91,7 +78,7 @@ const App = () => {
           </Switch>
         </Router>
         <RainsoftRcFooter
-          content={footerContent}
+          content={FooterContents.footerContent}
         />
       </StoreProvider>
     </div>

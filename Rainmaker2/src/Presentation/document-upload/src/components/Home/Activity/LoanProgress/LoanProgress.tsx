@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { SVGchecked } from './../../../../shared/Components/Assets/SVG';
 import Carousel from 'react-bootstrap/Carousel'
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
-
 import Lpstep1 from '../../../../assets/images/lp-step1.svg';
 import Lpstep2 from '../../../../assets/images/lp-step2.svg';
 import Lpstep3 from '../../../../assets/images/lp-step3.svg';
 import Lpstep4 from '../../../../assets/images/lp-step4.svg';
 import Lpstep5 from '../../../../assets/images/lp-step5.svg';
-import { Activity } from '../Activity';
-
 
 type Props = {
     //userName: string,
 }
 
-
-
 export const LoanProgress: React.SFC<Props> = (props) => {
-    const [loanProgress, setLoanProgress] = useState([]);
-    
+
+    const [loanProgress, setLoanProgress] = useState([]); 
     const [currentItem, setCurrentItem] = useState<any>({});
     const [index, setIndex] = useState(0);
    
-
     const loanProgressImages = [
         {
             order: 1,
@@ -46,8 +39,6 @@ export const LoanProgress: React.SFC<Props> = (props) => {
             img: Lpstep5
         },
     ]
-
-
 
     useEffect(() => {
         if (!loanProgress.length) {
@@ -103,8 +94,8 @@ export const LoanProgress: React.SFC<Props> = (props) => {
     const renderCarouselItems = () => {
         return loanProgress.map((l: any, i: number) => {
             return (
-                <Carousel.Item>
-                    <div className="lp-list">
+                <Carousel.Item key={l.name}>
+                    <div  className="lp-list">
                         <div className="step-count"><img src={loanProgressImages[i].img} alt={l.order} /></div>
                         <div className="lp-content">
                             <div className="step-label">{l.status}</div>
@@ -127,7 +118,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
             let step = i + 1;
             var activeindex = i === id ? " active" : ""
             return (
-                <li data-index={activeindex} className={liclass + activeindex}>
+                <li key={l.name} data-index={activeindex} className={liclass + activeindex}>
                     <a href="javascrit:" onClick={(e) => handleSelect(i, e)}>
                         {i == totallist - 1 && l.status == 'To be done' ? <i className="zmdi zmdi-flag"></i> : l.status == 'Completed' ? <i className="zmdi zmdi-check"></i> : l.status == 'In progress' ? <i className="zmdi zmdi-male-alt"></i> : <span>{step}</span>}
                     </a>
@@ -136,11 +127,6 @@ export const LoanProgress: React.SFC<Props> = (props) => {
             )
         })
     }
-
-
-
-
-
 
     return (
         <div className="LoanProgress box-wrap">
@@ -156,37 +142,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
                     </div>
                     <div className="lp-footer">
                         <ul>
-                            {renderCarouselList()}
-                            {/* <li className={index == 0 ? "completed-icon active" : "completed-icon"}>
-                                <a href="javascrit:" onClick={(e) => handleSelect(0, e)}>
-                                    <i className="zmdi zmdi-check"></i>
-                                </a>
-                            </li>
-
-                            <li className={index == 1 ? "completed-icon active" : "completed-icon"}>
-                                <a href="javascrit:" onClick={(e) => handleSelect(1, e)}>
-                                    <i className="zmdi zmdi-check"></i>
-                                </a>
-                            </li>
-
-
-                            <li className={index == 2 ? "current-icon active" : "current-icon"}>
-                                <a href="javascrit:" onClick={(e) => handleSelect(2, e)}>
-                                    <i className="zmdi zmdi-male-alt"></i>
-                                </a>
-                            </li>
-                            <li className={index == 3 ? "upcoming-icon active" : "upcoming-icon"}>
-                                <a href="javascrit:" onClick={(e) => handleSelect(3, e)}>
-                                    <span>4</span>
-                                </a>
-                            </li>
-                            <li className={index == 4 ? "upcoming-icon active" : "upcoming-icon"}>
-                                <a href="javascrit:" onClick={(e) => handleSelect(4, e)}>
-                                    <i className="zmdi zmdi-flag"></i>
-                                </a>
-                            </li> */}
-
-
+                            {renderCarouselList()}                           
                         </ul>
                     </div>
                 </div>

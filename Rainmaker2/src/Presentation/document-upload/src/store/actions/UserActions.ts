@@ -15,7 +15,7 @@ export class UserActions {
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
-    if(!res.data.data) {
+    if (!res.data.data) {
       return ''
     }
     let token = res.data.data.token;
