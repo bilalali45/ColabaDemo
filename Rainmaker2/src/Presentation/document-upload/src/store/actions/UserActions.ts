@@ -15,7 +15,7 @@ export class UserActions {
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
-    if(!res.data.data) {
+    if (!res.data.data) {
       return ''
     }
     if (res.data.data.token) {
@@ -25,8 +25,10 @@ export class UserActions {
 
   static getUserInfo() {
     let token = Auth.checkAuth() || '';
-    let decoded = jwt_decode(token);
-    return decoded;
+    if (token) {
+      let decoded = jwt_decode(token);
+      return decoded;
+    }
   }
 
   static async logout() {
