@@ -36,7 +36,6 @@ export class UserActions {
     let token = Auth.checkAuth() || '';
     if(token) {
       let decoded = jwt_decode(token);
-      console.log('decoded', decoded);
       return decoded;
     }
   }

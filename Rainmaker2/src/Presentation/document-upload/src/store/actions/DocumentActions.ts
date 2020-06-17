@@ -9,7 +9,6 @@ export class DocumentActions {
   static async getPendingDocuments(loanApplicationId: string, tenentId: string) {
     try {
       let res: any = await http.get(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
-      console.log(res);
       return res.data;
     } catch (error) {
       console.log(error);
