@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { Home } from './components/Home/Home';
@@ -11,12 +11,44 @@ import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
 import { UserActions } from './store/actions/UserActions';
 import ImageAssets from './utils/image_assets/ImageAssets';
 import { ParamsService } from './utils/ParamsService';
+import { Auth } from './services/auth/Auth';
+import { useCookies } from 'react-cookie';
+import { Authorized } from './shared/Components/Authorized/Authorized';
 
 const App = () => {
 
   const currentyear = new Date().getFullYear();
-
   const history = useHistory();
+  const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    authenticate();
+  }, [localStorage])
+
+  const authenticate = async () => {
+
+
+    if (!Auth.checkAuth()) {
+     
+      if (process.env.NODE_ENV === 'development') {
+        let token = await UserActions.authenticate();
+        if (token) {
+          Auth.saveAuth(token);
+          setAuthenticated(true);
+        }
+
+      }
+
+      if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
+        Auth.saveAuth(cookies.Rainmaker2Token);
+        setAuthenticated(true);
+      }
+    } else {
+      setAuthenticated(true);
+    }
+  }
 
   const gotoDashboardHandler = () => {
     window.open('/Dashboard', '_self');
@@ -35,7 +67,13 @@ const App = () => {
   ]
   const footerContent = "Copyright 2002 – " + currentyear + ". All rights reserved. American Heritage Capital, LP. NMLS 277676";
 
-    ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
+  ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
+
+  if (!authenticated) {
+    return <></>
+  }
+
+  UserActions.getUserInfo();
 
   return (
     <div className="app">
@@ -49,7 +87,7 @@ const App = () => {
 
         <Router basename="/DocumentManagement" >
           <Switch>
-            <Route path="/" component={Home} />
+            <Authorized path="/" component={Home} />
           </Switch>
         </Router>
         <RainsoftRcFooter

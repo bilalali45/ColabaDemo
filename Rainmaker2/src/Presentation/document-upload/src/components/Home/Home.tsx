@@ -15,45 +15,21 @@ import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 import { PageNotFound } from '../../shared/Errors/PageNotFound';
 import { debug } from 'console';
+import { Authorized } from '../../shared/Components/Authorized/Authorized';
 
 const httpClient = new Http();
 
 export const Home = () => {
     const location = useLocation();
-    const history = useHistory();
-    const [authenticated, setAuthenticated] = useState<boolean>(false);
-    const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
-
-    useEffect(() => {
-
-        if (!authenticate() || !Auth.getLoanAppliationId() || !Auth.getBusinessUnitId() || !Auth.getBusinessUnitId()) {
-            history.push('/Account/Login');
-        }
-        setCookie('Rainmaker2Token', Auth.checkAuth());
-    }, []);
-
-
-    const authenticate = () => {
-        // debugger;
-        if (!Auth.checkAuth()) {
-            if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-                Auth.saveAuth(cookies.Rainmaker2Token);
-                return true;
-            } else {
-                // UserActions.authenticate();
-            }
-        }
-        return true;
-    }
 
     return (
         <div>
             {!location.pathname.includes('404') && <ActivityHeader />}
             <Switch>
                 <Redirect exact from={"/"} to={"/activity"} />
-                <Route path="/activity" component={Activity} />
-                <Route path="/documentsRequest" component={DocumentRequest} />
-                <Route path="/uploadedDocuments" component={UploadedDocuments} />
+                <Authorized path="/activity" component={Activity} />
+                <Authorized path="/documentsRequest" component={DocumentRequest} />
+                <Authorized path="/uploadedDocuments" component={UploadedDocuments} />
                 <Route path="/404" component={PageNotFound} />
                 <Redirect exact from={"*"} to={"/404"} />
             </Switch>

@@ -30,7 +30,6 @@ export class ContactUs {
     }
 
     public completeName() {
-        console.log('in here!!!')
         return `${this.firstName} ${this.lastName}`;
     }
 
