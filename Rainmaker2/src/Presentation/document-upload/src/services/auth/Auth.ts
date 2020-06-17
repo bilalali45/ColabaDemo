@@ -13,9 +13,9 @@ export class Auth {
         if (payload) {
             let expiry = new Date(payload.exp * 1000);
             let currentDate = new Date(Date.now());
-            if(currentDate <= expiry) {
+            if (currentDate <= expiry) {
                 return auth;
-            }else {
+            } else {
                 return false;
             }
         }
@@ -36,8 +36,17 @@ export class Auth {
 
 
     public static removeAuth() {
-        localStorage.removeItem('auth');
+        (function () {
+            var cookies = document.cookie.split(";");
 
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        })();
+        localStorage.removeItem('auth');
     }
 
     public static getLoanAppliationId() {
