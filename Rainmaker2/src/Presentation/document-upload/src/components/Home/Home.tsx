@@ -29,7 +29,7 @@ export const Home = () => {
         if (!authenticate() || !Auth.getLoanAppliationId() || !Auth.getBusinessUnitId() || !Auth.getBusinessUnitId()) {
             history.push('/Account/Login');
         }
-        setCookie('Rainmaker2Token', Auth.checkAuth());
+       
     }, []);
 
 
@@ -40,7 +40,7 @@ export const Home = () => {
                 Auth.saveAuth(cookies.Rainmaker2Token);
                 return true;
             } else {
-                // UserActions.authenticate();
+                UserActions.authenticate();
             }
         }
         return true;

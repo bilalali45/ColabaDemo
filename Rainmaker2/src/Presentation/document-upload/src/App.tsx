@@ -15,9 +15,9 @@ import { ParamsService } from './utils/ParamsService';
 const App = () => {
 
   const currentyear = new Date().getFullYear();
-
+  const tokenData : any = UserActions.getUserInfo();
   const history = useHistory();
-
+  
   const gotoDashboardHandler = () => {
     window.open('/Dashboard', '_self');
   }
@@ -42,7 +42,7 @@ const App = () => {
       <StoreProvider>
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
-          displayName={'Jehangir Babul'}
+          displayName={tokenData.UserName}
           displayNameOnClick={gotoDashboardHandler}
           options={headerDropdowmMenu}
         />
