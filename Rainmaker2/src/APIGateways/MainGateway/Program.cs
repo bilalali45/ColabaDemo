@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -19,61 +18,72 @@ namespace MainGateway
             ConfigureLogging();
 
             //then create the host, so that if the host fails we can log errors
-            CreateHost(args);
+            CreateHost(args: args);
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                   .ConfigureAppConfiguration((host, config) =>
-                   {
-                       config.AddJsonFile(Path.Combine("configuration", "configuration.json"));
-                   })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                }).UseSerilog();
+
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args: args)
+                       .ConfigureAppConfiguration(configureDelegate: (host,
+                                                                      config) =>
+                       {
+                           config.AddJsonFile(path: Path.Combine(path1: "configuration",
+                                                                 path2: "configuration.json"));
+                       })
+                       .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); }).UseSerilog();
+        }
 
 
         private static void ConfigureLogging()
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environment = Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT");
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile(
-                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
-                    optional: true)
-                .Build();
+                                .AddJsonFile(path: "appsettings.json",
+                                             optional: false,
+                                             reloadOnChange: true)
+                                .AddJsonFile(
+                                             path: $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
+                                             optional: true)
+                                .Build();
 
             Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .Enrich.WithExceptionDetails()
-                .Enrich.WithMachineName()
-                .WriteTo.Debug()
-                .WriteTo.Console()
-                .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment))
-                .Enrich.WithProperty("Environment", environment)
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+                         .Enrich.WithCorrelationIdHeader(headerKey: "CorrelationId")
+                         .Enrich.FromLogContext()
+                         .Enrich.WithExceptionDetails()
+                         .Enrich.WithMachineName()
+                         .WriteTo.Debug()
+                         .WriteTo.Console()
+                         .WriteTo.Elasticsearch(options: ConfigureElasticSink(configuration: configuration,
+                                                                              environment: environment))
+                         .Enrich.WithProperty(name: "Environment",
+                                              value: environment)
+                         .ReadFrom.Configuration(configuration: configuration)
+                         .CreateLogger();
         }
 
-        private static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
+
+        private static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration,
+                                                                     string environment)
         {
-            return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
-            {
-                AutoRegisterTemplate = true,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
-            };
+            return new ElasticsearchSinkOptions(node: new Uri(uriString: configuration[key: "ElasticConfiguration:Uri"]))
+                   {
+                       AutoRegisterTemplate = true,
+                       IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-{environment?.ToLower().Replace(oldValue: ".", newValue: "-")}-{DateTime.UtcNow:yyyy-MM}"
+                   };
         }
+
 
         private static void CreateHost(string[] args)
         {
             try
             {
-                CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args: args).Build().Run();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                Log.Fatal($"Failed to start {Assembly.GetExecutingAssembly().GetName().Name}", ex);
+                Log.Fatal(messageTemplate: $"Failed to start {Assembly.GetExecutingAssembly().GetName().Name}",
+                          propertyValue: ex);
                 throw;
             }
         }
