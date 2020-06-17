@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cbbdf986-9cf5-45c0-917b-b3e191ec352e",
+		"_postman_id": "56577b2a-1e4f-4ba7-be4b-d51229eb9fef",
 		"name": "Rainmaker2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -35,6 +35,35 @@
 										"Identity",
 										"token",
 										"authorize"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refresh",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiMzg0MiIsIlVzZXJOYW1lIjoiZGFuaXNoIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImRhbmlzaCIsIkVtcGxveWVlSWQiOiI2MCIsImV4cCI6MTU5MjMxMDE2MiwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.F-Xbxx29LJ2_kKx-mpqYys4RHzhkm_idNv4RPylHMUw\",\r\n        \"refreshToken\": \"eB8BH9D5Omv/sJKtGR5CuEWIOdyroIBonfcIwgPa96Q=\",\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Identity/token/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Identity",
+										"token",
+										"refresh"
 									]
 								}
 							},
@@ -118,46 +147,6 @@
 										"Documentmanagement",
 										"dashboard",
 										"GetSubmittedDocuments"
-									],
-									"query": [
-										{
-											"key": "loanApplicationId",
-											"value": "1"
-										},
-										{
-											"key": "tenantId",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetDashboardStatus",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=1&tenantId=1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"Documentmanagement",
-										"dashboard",
-										"GetDashboardStatus"
 									],
 									"query": [
 										{
@@ -355,54 +344,6 @@
 										"Documentmanagement",
 										"file",
 										"submit"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "View",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/documentmanagement/file/view?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=ddd25d1fe456057652eeb72d&fileId=5ee76ed6c766b54188e807a0",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"documentmanagement",
-										"file",
-										"view"
-									],
-									"query": [
-										{
-											"key": "id",
-											"value": "5eb25d1fe519051af2eeb72d"
-										},
-										{
-											"key": "requestId",
-											"value": "abc15d1fe456051af2eeb768"
-										},
-										{
-											"key": "docId",
-											"value": "ddd25d1fe456057652eeb72d"
-										},
-										{
-											"key": "fileId",
-											"value": "5ee76ed6c766b54188e807a0"
-										}
 									]
 								}
 							},

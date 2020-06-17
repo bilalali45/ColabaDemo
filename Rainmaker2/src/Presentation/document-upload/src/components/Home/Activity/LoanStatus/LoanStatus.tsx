@@ -8,6 +8,7 @@ import icon1 from '../../../../assets/images/property-address-icon.svg';
 import icon2 from '../../../../assets/images/property-type-icon.svg';
 import icon3 from '../../../../assets/images/loan-purpose-icon.svg';
 import icon4 from '../../../../assets/images/loan-amount-icon.svg';
+import { Auth } from '../../../../services/auth/Auth';
 
 
 
@@ -22,7 +23,7 @@ export const LoanStatus = () => {
     }, [])
 
     const fetchLoanStatus = async () => {
-        let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication('1');
+        let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
         if (loanInfoRes) {
             setLoanInfo(loanInfoRes);
         }

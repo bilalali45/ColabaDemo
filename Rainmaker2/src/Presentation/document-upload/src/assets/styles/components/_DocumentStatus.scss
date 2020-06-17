@@ -1,72 +1,68 @@
-.DocumentStatus{
-    background: url("/assets/img/doc-request.png") no-repeat top right #fff;
-    @include media-breakpoint-down(lg) {
-    background-position-y: 40%;
-    background-size: 60%;
-    }
-    @include media-breakpoint-down(md) {
-        background-position-y: 25%;
-        background-size: 60%;
+.DocumentStatus {
+    min-height: calc(100% - 15px);
+    position: relative;
+    &.hasData{
+        background: url("/assets/img/doc-request.png") no-repeat top right #fff;
+        @include media-breakpoint-down(lg) {
+            background-position-y: 40%;
+            background-size: 60%;
         }
+        @include media-breakpoint-down(md) {
+            background-position-y: 25%;
+            background-size: 60%;
+        }
+    }
 
-    &.box-wrap{
+
+
+    &.box-wrap {
         padding: 20px 20px;
+      
     }
 
-    &--header{
-        border-bottom: 1px solid color('border');
-        padding-bottom: 15px;
-        display: block;
-        margin-bottom: 10px;
-        p{
-            margin: 0px;
+    .box-wrap{
+        &--body {
+            padding-bottom: 50px;
+            min-height: 390px;
         }
-        
+        &--footer {
+            @extend .clearfix;
+            position: absolute;
+            width: 100%;
+            bottom: 20px;
+            right: 0;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
     }
-
-    &--body{
-        @extend .clearfix;
-    }
-
-    &--footer{
-        @extend .clearfix;
-    }
-
-    &--count{
-        color: color('primary');
-        font: bolder #{fontSize('md')+'/18px'} fontFamily('heading');
-    }
+  
    
-    &--get-link{
-        padding: 18px 0;
-        display: block;
-        font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
-        text-transform: uppercase;
-        .tt-svg{
-            @include transition(all 0.5s ease-out);
-        }
-        &:hover{
-            text-decoration: none;
-            color:color('colordarkblue');
-            .tt-svg{
-                @include transform(translateX(10px));
-                svg path{
-                    fill: color('colordarkblue');
+
+    &--count {
+        color: color("primary");
+        font: bolder #{fontSize("md") + "/18px"} fontFamily("heading");
+    }
+    &.empty {
+        background:color('colorWhite') !important; 
+
+        .edc-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 345px;
+            padding-top: 50px;
+            .eds-img {
+                text-align: center;
+                img {
+                    max-width: 100%;
+                    height: auto;
                 }
             }
+            .eds-txt {
+                text-align: center;
+                padding-top: 20px;
+            }
         }
-    }
-
-    &--left-side{
 
     }
-
-    &--right-side{
-        svg{
-            margin-bottom: 10px;
-            max-width: 100%;
-        }
-    }
-
-    
 }

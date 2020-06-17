@@ -36,86 +36,86 @@ namespace Identity.Controllers
         //static HttpClient client = new HttpClient();
 
 
-        [Route(template: "authorize")]
-        [HttpPost]
-        public async Task<IActionResult> GenerateToken(GenerateTokenRequest request)
-        {
-            var userName = request.UserName;
-            var password = request.Password;
-            var employee = request.Employee;
+        //[Route(template: "authorize")]
+        //[HttpPost]
+        //public async Task<IActionResult> GenerateToken(GenerateTokenRequest request)
+        //{
+        //    var userName = request.UserName;
+        //    var password = request.Password;
+        //    var employee = request.Employee;
 
-            var response = new ApiResponse();
+        //    var response = new ApiResponse();
 
-            var userProfile = await ValidateUser(userName: userName,
-                                                 password: password,
-                                                 employee: employee);
-            if (userProfile != null)
-            {
-                //security key
-                var securityKey = _configuration[key: "JWT:SecurityKey"];
-                //symmetric security key
-                var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+        //    var userProfile = await ValidateUser(userName: userName,
+        //                                         password: password,
+        //                                         employee: employee);
+        //    if (userProfile != null)
+        //    {
+        //        //security key
+        //        var securityKey = _configuration[key: "JWT:SecurityKey"];
+        //        //symmetric security key
+        //        var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
-                //signing credentials
-                var signingCredentials =
-                    new SigningCredentials(key: symmetricSecurityKey,
-                                           algorithm: SecurityAlgorithms.HmacSha256Signature);
+        //        //signing credentials
+        //        var signingCredentials =
+        //            new SigningCredentials(key: symmetricSecurityKey,
+        //                                   algorithm: SecurityAlgorithms.HmacSha256Signature);
 
-                //add claims
-                var claims = new List<Claim>
-                             {
-                                 new Claim(type: ClaimTypes.Role,
-                                           value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"),
-                                 new Claim(type: "UserProfileId",
-                                           value: userProfile.Id.ToString()),
-                                 new Claim(type: "UserName",
-                                           value: userProfile.UserName.ToLower())
-                             };
+        //        //add claims
+        //        var claims = new List<Claim>
+        //                     {
+        //                         new Claim(type: ClaimTypes.Role,
+        //                                   value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"),
+        //                         new Claim(type: "UserProfileId",
+        //                                   value: userProfile.Id.ToString()),
+        //                         new Claim(type: "UserName",
+        //                                   value: userProfile.UserName.ToLower())
+        //                     };
 
-                if (userProfile.Employees.FirstOrDefault() != null)
-                    claims.Add(item: new Claim(type: "EmployeeId",
-                                               value: userProfile.Employees.Single().Id.ToString()));
+        //        if (userProfile.Employees.FirstOrDefault() != null)
+        //            claims.Add(item: new Claim(type: "EmployeeId",
+        //                                       value: userProfile.Employees.Single().Id.ToString()));
 
-                //create token
-                var token = new JwtSecurityToken(
-                                                 issuer: "rainsoftfn",
-                                                 audience: "readers",
-                                                 expires: DateTime.Now.AddHours(value: 1),
-                                                 signingCredentials: signingCredentials,
-                                                 claims: claims
-                                                );
+        //        //create token
+        //        var token = new JwtSecurityToken(
+        //                                         issuer: "rainsoftfn",
+        //                                         audience: "readers",
+        //                                         expires: DateTime.Now.AddHours(value: 1),
+        //                                         signingCredentials: signingCredentials,
+        //                                         claims: claims
+        //                                        );
 
-                //return token
+        //        //return token
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token: token);
-                response.Status = ApiResponse.ApiResponseStatus.Success;
-                response.Data = new
-                {
-                    Token = tokenString,
-                    UserProfileId = userProfile.Id,
-                    userProfile.UserName,
-                    //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
-                    token.ValidFrom,
-                    token.ValidTo
-                };
+        //        var tokenString = new JwtSecurityTokenHandler().WriteToken(token: token);
+        //        response.Status = ApiResponse.ApiResponseStatus.Success;
+        //        response.Data = new
+        //        {
+        //            Token = tokenString,
+        //            UserProfileId = userProfile.Id,
+        //            userProfile.UserName,
+        //            //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
+        //            token.ValidFrom,
+        //            token.ValidTo
+        //        };
 
-                return Ok(value: response);
-            }
+        //        return Ok(value: response);
+        //    }
 
-            response.Status = ApiResponse.ApiResponseStatus.Fail;
-            response.Message = "User not found.";
+        //    response.Status = ApiResponse.ApiResponseStatus.Fail;
+        //    response.Message = "User not found.";
 
-            return Ok(value: response);
+        //    return Ok(value: response);
 
-            //var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-            //{
-            //    Address = "http://localhost:5010/connect/token",
-            //    ClientId = "ClientId",
-            //    ClientSecret = "ClientSecret",
-            //    Scope = "SampleService"
-            //});
-            //return Ok(tokenResponse.Json);
-        }
+        //    //var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+        //    //{
+        //    //    Address = "http://localhost:5010/connect/token",
+        //    //    ClientId = "ClientId",
+        //    //    ClientSecret = "ClientSecret",
+        //    //    Scope = "SampleService"
+        //    //});
+        //    //return Ok(tokenResponse.Json);
+        //}
 
         [Route(template: "[action]")]
         [HttpPost]
@@ -125,7 +125,7 @@ namespace Identity.Controllers
 
             var token = request.Token;
             var refreshToken = request.RefreshToken;
-            var principal = _tokenService.GetPrincipalFromExpiredToken(token: token);
+            var principal = await _tokenService.GetPrincipalFromExpiredToken(token: token);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
             var userRefreshToken = TokenService.RefreshTokens[key: username];
 
@@ -139,7 +139,7 @@ namespace Identity.Controllers
                 return Ok(value: response);
             }
 
-            var newJwtToken = _tokenService.GenerateAccessToken(claims: principal.Claims);
+            var newJwtToken = await _tokenService.GenerateAccessToken(claims: principal.Claims);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: newJwtToken);
@@ -235,7 +235,7 @@ namespace Identity.Controllers
 
         [Route(template: "[action]")]
         [HttpPost]
-        public async Task<IActionResult> Login(GenerateTokenRequest request)
+        public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
             var response = new ApiResponse();
 
@@ -281,7 +281,7 @@ namespace Identity.Controllers
 
             #endregion
 
-            var jwtToken = _tokenService.GenerateAccessToken(claims: usersClaims);
+            var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims);
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             //userProfile.RefreshToken = refreshToken;
@@ -308,6 +308,17 @@ namespace Identity.Controllers
             };
 
             return Ok(value: response);
+        }
+
+
+
+        [Route(template: "[action]")]
+        [HttpPost]
+        public IActionResult TestException(GenerateTokenRequest request)
+        {
+           throw new Exception("test exception");
+
+            return Ok(value: "ok");
         }
     }
 }

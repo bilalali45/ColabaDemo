@@ -14,6 +14,7 @@ import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
 import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 import { PageNotFound } from '../../shared/Errors/PageNotFound';
+import { debug } from 'console';
 
 const httpClient = new Http();
 
@@ -22,36 +23,28 @@ export const Home = () => {
     const history = useHistory();
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
-    const authenticate = async () => {
-        console.log('in authenticate');
-        try {
-            console.log("cookies", cookies)
-            if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-                localStorage.setItem('auth', cookies.Rainmaker2Token);
-            }
-            let res = UserActions.authenticate();
-
-        } catch (error) {
-            if (!Auth.checkAuth()) {
-                history.push('/error');
-            }
-        }
-    }
-
-    if (!Auth.checkAuth()) {
-        authenticate();
-    }
-
 
     useEffect(() => {
-        // if (Auth.checkAuth()) {
-        //     if (location.pathname === '/') {
-        //         history.push('/activity');
-        //     }
-        // } else {
-        //     history.push('/error');
-        // }
+
+        if (!authenticate() || !Auth.getLoanAppliationId() || !Auth.getBusinessUnitId() || !Auth.getBusinessUnitId()) {
+            history.push('/Account/Login');
+        }
+        setCookie('Rainmaker2Token', Auth.checkAuth());
     }, []);
+
+
+    const authenticate = () => {
+        // debugger;
+        if (!Auth.checkAuth()) {
+            if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
+                Auth.saveAuth(cookies.Rainmaker2Token);
+                return true;
+            } else {
+                // UserActions.authenticate();
+            }
+        }
+        return true;
+    }
 
     return (
         <div>
