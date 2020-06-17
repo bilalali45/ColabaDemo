@@ -26,7 +26,7 @@ export class UserActions {
   static getUserInfo() {
     let token = Auth.checkAuth() || '';
     let decoded = jwt_decode(token);
-    console.log('decoded', decoded);
+    return decoded;
   }
 
   static async logout() {
