@@ -380,5 +380,83 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[7].docMessage);
             Assert.Equal("asd", dto[8].files[0].clientName);
         }
+
+        [Fact]
+        public async Task TestGetDashboardStatusController()
+        {
+            //Arrange
+            Mock<IDashboardService> mock = new Mock<IDashboardService>();
+            List<DashboardStatus> list = new List<DashboardStatus>() { { new DashboardStatus() { order = 1 } } };
+
+            mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            DashboardController controller = new DashboardController(mock.Object);
+            //Act
+            IActionResult result = await controller.GetDashboardStatus(1, 1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<DashboardStatus>;
+            Assert.Single(content);
+            Assert.Equal(1, content[0].order);
+        }
+
+        [Fact]
+        public async Task TestGetDashboardStatusService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
+            Mock<IAsyncCursor<StatusList>> mockCursor = new Mock<IAsyncCursor<StatusList>>();
+            Mock<IMongoCollection<LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<LoanApplication>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor1 = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<StatusList> list = new List<StatusList>()
+            {
+                new StatusList()
+                {
+                    id="5ee86503305e33a11c51ebbc",
+                    name="Fill out application",
+                    description="Tell us about yourself and your financial situation so we can find loan options for you",
+                    order=1
+                }
+            };
+
+            List<BsonDocument> listLoanApplication = new List<BsonDocument>()
+            { new BsonDocument
+                {
+                        { "id" , "5eb25d1fe519051af2eeb72d" },
+                        { "customerId" , 1275},
+                        { "tenantId" , 1 },
+                        { "loanApplicationId" , 1 },
+                        { "requests" , BsonArray.Create(new Request[]{ }) },
+                        { "status" ,  "5ee86503305e33a11c51ebbc" }
+                }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor1.SetupGet(x => x.Current).Returns(listLoanApplication);
+
+            mockCollectionStatusList.Setup(x => x.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty, It.IsAny<FindOptions<StatusList, StatusList>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor.Object);
+            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
+
+            mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
+            mockdb.Setup(x => x.GetCollection<LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+           
+            var service = new DashboardService(mock.Object);
+            //Act
+            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Single(dto);
+            Assert.Equal(1,dto[0].order);
+
+        }
     }
 }

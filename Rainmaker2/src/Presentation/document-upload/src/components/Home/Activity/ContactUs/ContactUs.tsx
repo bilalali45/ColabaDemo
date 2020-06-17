@@ -25,7 +25,6 @@ export const ContactUs = ({ }) => {
     const fetchLoanOfficer = async () => {
         let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
-            console.log(loanOfficer);
             let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
             // src = `data:image/jpeg;base64,${src}}`;
             setLOPhotoSrc(src);

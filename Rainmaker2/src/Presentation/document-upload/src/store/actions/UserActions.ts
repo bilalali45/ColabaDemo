@@ -15,18 +15,30 @@ export class UserActions {
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
-    if(!res.data.data) {
+    if (!res.data.data) {
       return ''
     }
-    if (res.data.data.token) {
-      Auth.saveAuth(res.data.data.token);
+    let token = res.data.data.token;
+    if (token) {
+      Auth.storeTokenPayload(UserActions.decodeJwt(token));
+      return token;
+    }
+  }
+
+  static decodeJwt(token) {
+    if(token) {
+      let decoded = jwt_decode(token);
+      return decoded;
     }
   }
 
   static getUserInfo() {
     let token = Auth.checkAuth() || '';
-    let decoded = jwt_decode(token);
-    console.log('decoded', decoded);
+    if(token) {
+      let decoded = jwt_decode(token);
+      console.log('decoded', decoded);
+      return decoded;
+    }
   }
 
   static async logout() {

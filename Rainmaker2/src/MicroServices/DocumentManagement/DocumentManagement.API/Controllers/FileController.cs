@@ -43,8 +43,8 @@ namespace DocumentManagement.API.Controllers
             var key = config["File:Key"];
             var ftpKey = config["File:FtpKey"];
             var algo = config["File:Algo"];
-            var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}").Result;
-            var ftpKeyResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}").Result;
+            var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}");
+            var ftpKeyResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}");
             if (!csResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key from key store");
@@ -112,21 +112,28 @@ namespace DocumentManagement.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> View(string id, string requestId, string docId, string fileId)
         {
-            FileViewModel model = new FileViewModel{docId=docId,fileId=fileId,id=id,requestId=requestId  };
+            FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId };
+            var httpClient = clientFactory.CreateClient();
             var fileviewdto = await fileService.View(model);
             Setting setting = await settingService.GetSetting();
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword);
+            var key = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={config["File:FtpKey"]}");
+            if(!key.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key from key store");
+            }
+            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await key.Content.ReadAsStringAsync()));
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
-            
-            var httpClient = clientFactory.CreateClient();
-            var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={fileviewdto.encryptionKey}").Result;
+
+
+            var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={fileviewdto.encryptionKey}");
             if (!csResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key from key store");
             }
-            
-            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath,await csResponse.Content.ReadAsStringAsync(),fileviewdto.clientName),fileviewdto.contentType,fileviewdto.clientName);
+
+            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, await csResponse.Content.ReadAsStringAsync(), fileviewdto.clientName), fileviewdto.contentType, fileviewdto.clientName);
+
         }
     }
 }

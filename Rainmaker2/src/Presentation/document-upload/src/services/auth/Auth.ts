@@ -7,12 +7,45 @@ export class Auth {
     public static checkAuth() {
         let auth = localStorage.getItem('auth');
         if (!auth) {
-            return;
+            return false;
+        }
+        let payload = this.getUserPayload();
+        if (payload) {
+            let expiry = new Date(payload.exp * 1000);
+            let currentDate = new Date(Date.now());
+            if (currentDate <= expiry) {
+                return auth;
+            } else {
+                return false;
+            }
         }
         return auth;
     }
 
+    static storeTokenPayload(payload) {
+        if (!payload) return;
+        localStorage.setItem('payload', JSON.stringify(payload));
+    }
+
+    static getUserPayload() {
+        let payload = localStorage.getItem('payload');
+        if (payload) {
+            return JSON.parse(payload);
+        }
+    }
+
+
     public static removeAuth() {
+        (function () {
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        })();
         localStorage.removeItem('auth');
     }
 
@@ -27,7 +60,7 @@ export class Auth {
     }
 
     public static getBusinessUnitId() {
-       return localStorage.getItem('businessUnitId') || '';
+        return localStorage.getItem('businessUnitId') || '';
 
     }
 

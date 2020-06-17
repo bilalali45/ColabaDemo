@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
@@ -52,7 +55,31 @@ namespace Rainmaker.API
             services.AddScoped<IFtpHelper,FtpHelper>();
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                                                      ); 
+                                                      );
+            
+            var keyResponse= httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
+            if (!keyResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key store");
+            }
+            var securityKey = keyResponse.Content.ReadAsStringAsync().Result;
+            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+
+            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(configureOptions: options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            //what to validate
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            //setup validate data
+                            ValidIssuer = "rainsoftfn",
+                            ValidAudience = "readers",
+                            IssuerSigningKey = symmetricSecurityKey
+                        };
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +93,7 @@ namespace Rainmaker.API
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -191,7 +191,7 @@ namespace DocumentManagement.Service
         {
             List<DashboardStatus> statuses = new List<DashboardStatus>();
             IMongoCollection<StatusList> collection = mongoService.db.GetCollection<StatusList>("StatusList");
-            using (var asyncCursor = await collection.FindAsync(FilterDefinition<StatusList>.Empty))
+            using (var asyncCursor = await collection.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty))
             {
                 while (await asyncCursor.MoveNextAsync())
                 {

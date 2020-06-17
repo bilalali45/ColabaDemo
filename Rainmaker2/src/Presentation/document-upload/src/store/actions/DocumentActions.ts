@@ -12,7 +12,7 @@ export class DocumentActions {
       console.log(res);
       return res.data;
     } catch (error) {
-      console.log('in here!!!', error);
+      console.log(error);
     }
   }
 
