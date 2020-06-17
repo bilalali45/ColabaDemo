@@ -1,6 +1,7 @@
 import { Http } from "../../services/http/Http";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
+import jwt_decode from "jwt-decode";
 
 const http = new Http();
 
@@ -22,8 +23,10 @@ export class UserActions {
     }
   }
 
-  static async getUserInfo() {
-
+  static getUserInfo() {
+    let token = Auth.checkAuth() || '';
+    let decoded = jwt_decode(token);
+    console.log('decoded', decoded);
   }
 
   static async logout() {
