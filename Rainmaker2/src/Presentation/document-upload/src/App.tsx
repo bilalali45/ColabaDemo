@@ -30,7 +30,7 @@ const App = () => {
   useEffect(() => {
     authenticate();
   }, [localStorage])
-
+ 
   const authenticate = async () => {
 
 
@@ -46,7 +46,9 @@ const App = () => {
       }
 
       if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-        Auth.saveAuth(cookies.Rainmaker2Token);
+        let token = cookies.Rainmaker2Token;
+        Auth.saveAuth(token);
+        Auth.storeTokenPayload(UserActions.decodeJwt(token))
         setAuthenticated(true);
       }
     } else {
