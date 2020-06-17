@@ -7,11 +7,11 @@ export default class HeaderContent {
         window.open('/Dashboard', '_self');
       };
       static changePasswordHandler = () => {
-        window.open('/Account/SendResetPasswordRequest', '_self');
+        window.open('/Account/ManagePassword', '_self');
       };
       static signOutHandler = () => {
         UserActions.logout();
-        window.open('/Account/Login', '_self');
+        window.open('/Account/LogOff', '_self');
       };
 
 
