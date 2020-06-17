@@ -20,7 +20,6 @@ namespace RainmakerTest
     public class LoanApplicationTest
     {
         [Fact]
-
         public async Task TestGetLoanSummaryController()
         {
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
@@ -139,11 +138,7 @@ namespace RainmakerTest
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
             LoanOfficer obj = new LoanOfficer() { FirstName = "Smith" };
 
-
-
             mock.Setup(x => x.GetLOInfo(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
-
-
 
             LoanApplicationController controller = new LoanApplicationController(mock.Object,null,null);
             //Act
@@ -289,15 +284,12 @@ namespace RainmakerTest
             };
             dataContext.Set<Contact>().Add(contact);
 
-
-           
             dataContext.SaveChanges();
 
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
            LoanOfficer res = await loanService.GetLOInfo(2, 1);
-
 
             // Assert
             Assert.NotNull(res);
@@ -308,15 +300,13 @@ namespace RainmakerTest
             Assert.Equal("030012345678", res.Phone);
             Assert.Equal("abc.png", res.Photo);
             Assert.Equal("https://entityframeworkcore.com//lo/Shehroz", res.WebUrl);
-        
-
         }
 
 
-             [Fact]
-
+        [Fact]
         public async Task TestGetPhotoIsNotNullController()
         {
+            //Arrange
             Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
             Mock<IFtpHelper> mockftpservice = new Mock<IFtpHelper>();
             int? businessUnitId = 1;
@@ -325,21 +315,20 @@ namespace RainmakerTest
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
 
             LoanApplicationController controller = new LoanApplicationController( null, mockcommonservice.Object, mockftpservice.Object);
-            ////Act
-            IActionResult result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder,(int)businessUnitId);
 
+            //Act
+            string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder,(int)businessUnitId);
 
-          
-            ////Assert
+            //Assert
             Assert.NotNull(result);
-            Assert.IsType<FileStreamResult>(result);
-            var content = (result as FileStreamResult).FileStream as MemoryStream;
-            Assert.NotNull(content);
-            
+           
+            Assert.NotNull(result);
         }
+
         [Fact]
         public async Task TestGetPhotoNullController()
         {
+            //Arrange
             Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
             Mock<IFtpHelper> mockftpservice = new Mock<IFtpHelper>();
             int? businessUnitId = 1;
@@ -348,14 +337,12 @@ namespace RainmakerTest
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(It.IsAny<Stream>());
 
             LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
-            ////Act
-            IActionResult result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
 
+            //Act
+            string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
 
-
-            ////Assert
+            //Assert
             Assert.Null(result);
-
         }
     }
 }
