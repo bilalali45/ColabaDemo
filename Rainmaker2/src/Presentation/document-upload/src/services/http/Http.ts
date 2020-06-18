@@ -95,7 +95,7 @@ export class Http {
         let completeUrl = this.createUrl(this.baseUrl, url);
 
         let headers: OutgoingHttpHeaders = {}
-        let auth = Auth.checkAuth();
+        let auth = Auth.getAuth();
         if (auth && (!url.includes('login') || !url.includes('authorize'))) {
             headers['Authorization'] = `Bearer ${auth}`;
         }
