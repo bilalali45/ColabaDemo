@@ -215,13 +215,17 @@ namespace DocumentManagement.Service
                 {"loanApplicationId",loanApplicationId },
                 {"tenantId",tenantId },
                 {"userId",userProfileId }
-            },new FindOptions<LoanApplication, BsonDocument>()
+            }, new FindOptions<LoanApplication, BsonDocument>()
             {
                 Projection = new BsonDocument() { {"status", 1 }
-            }});
-            await asyncCursor1.MoveNextAsync();
-            string status = asyncCursor1.Current.First()["status"].ToString();
-            statuses.Where(x => x.id == status).First().isCurrentStep = true;
+            } });
+            if (await asyncCursor1.MoveNextAsync())
+            {
+                string status = asyncCursor1.Current.First()["status"].ToString();
+                statuses.Where(x => x.id == status).First().isCurrentStep = true;
+            }
+            else
+                statuses.Where(x => x.order == 3).First().isCurrentStep = true;
             return statuses.OrderBy(x=>x.order).ToList();
         }
     }
