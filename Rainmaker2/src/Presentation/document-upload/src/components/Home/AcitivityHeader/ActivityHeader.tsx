@@ -30,7 +30,10 @@ const ActivityHeader = () => {
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                        <a onClick={uploadDocumentHandler} >
+                                        {/* <a onClick={uploadDocumentHandler} >
+                                            Uploaded Document
+                                  </a> */}
+                                  <a>
                                             Uploaded Document
                                   </a>
                                     </div>

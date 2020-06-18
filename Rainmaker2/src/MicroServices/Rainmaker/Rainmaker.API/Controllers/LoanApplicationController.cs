@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Rainmaker.Service;
@@ -27,15 +28,23 @@ namespace Rainmaker.API.Controllers
             this.ftp = ftp;
         }
         [HttpGet("[action]")]
+        [Authorize]
         public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
         {
-            var loanApplication = await loanApplicationService.GetLoanSummary(loanApplicationId);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var loanApplication = await loanApplicationService.GetLoanSummary(loanApplicationId, userProfileId);
             return Ok(loanApplication);
         }
         [HttpGet("[action]")]
+        [Authorize]
         public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
         {
-            var lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
+            if(lo.FirstName==null)
+            {
+                lo = await loanApplicationService.GetDbaInfo(businessUnitId);
+            }
             return Ok(lo);
         }
         [HttpGet("[action]")]

@@ -61,7 +61,6 @@ export const LoanProgress: React.SFC<Props> = (props) => {
         let tenantId = localStorage.getItem('tenantId');
         let loanProgress = await DocumentActions.getDocumentsStatus(applicationId ? applicationId : '1', tenantId ? tenantId : '1')
         if (loanProgress) {
-            console.log('loanProgress', loanProgress)
             setLoanProgress(loanProgress);
         }
     }
@@ -94,7 +93,6 @@ export const LoanProgress: React.SFC<Props> = (props) => {
 
     const renderCarouselItems = () => {
         return loanProgress.map((l: any, i: number) => {
-            console.log(l)
             return (
                 <Carousel.Item key={l.name}>
                     <div  className="lp-list">
@@ -114,8 +112,6 @@ export const LoanProgress: React.SFC<Props> = (props) => {
     const renderCarouselList = () => {
         var totallist = loanProgress.length;
         var id = index;
-        // debugger
-        console.log(loanProgress)
         return loanProgress.map((l: any, i: number) => {
             let liclass = "completed-icon";
             liclass = l.status == 'In progress' ? 'current-icon' : l.status == 'To be done' ? 'upcoming-icon' : 'completed-icon';

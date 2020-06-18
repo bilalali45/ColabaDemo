@@ -8,28 +8,26 @@ export enum LoanActionsType {
     
 }
 
-type LoanType = {
-    loanOfficer?: ContactUs | null,
-    loanInfo?: LoanApplication | null
+export type LoanType = {
+    loanOfficer: ContactUs | null,
+    loanInfo: LoanApplication | null
 }
 
 
-type LoanActionPayload = {
+export type LoanActionPayload = {
     [LoanActionsType.FetchLoanInfo] : LoanApplication,
     [LoanActionsType.FetchLoanOfficer] : ContactUs,
 }
 
 export type LoanActions = ActionMap<LoanActionPayload>[keyof ActionMap<LoanActionPayload>];
 
-export const loanReducer = (state: LoanType, {type, payload} : Actions) => {
+export const loanReducer = (state: LoanType | {}, {type, payload} : Actions) => {
     switch (type) {
         case LoanActionsType.FetchLoanOfficer:
-            console.log('before merge state', state);
             let st = {
                 ...state,
                 loanOfficer: {...payload}
             };
-            console.log('state offic', st);
             return st;
     
         case LoanActionsType.FetchLoanInfo:
@@ -37,7 +35,6 @@ export const loanReducer = (state: LoanType, {type, payload} : Actions) => {
                 ...state,
                 loanInfo: {...payload}
             };
-            console.log('state linfo', s);
             return s;
     
         default:

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 using System.Linq;
+using RainMaker.Common;
 
 namespace Rainmaker.Service
 {
@@ -20,11 +21,12 @@ namespace Rainmaker.Service
         {
         }
 
-        public async Task<LoanSummary> GetLoanSummary(int loanApplicationId)
+        public async Task<LoanSummary> GetLoanSummary(int loanApplicationId, int userProfileId)
         {
-            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y=>y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact).First().Customer.UserId==userProfileId && x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
                 .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo)
                 .Include(x => x.LoanPurpose)
+                .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLeadBinders).ThenInclude(x=>x.Customer)
                 .Select(x => new LoanSummary{
                     CityName = x.PropertyInfo.AddressInfo.CityName,
                     CountyName = x.PropertyInfo.AddressInfo.CountyName,
@@ -41,12 +43,13 @@ namespace Rainmaker.Service
 
 
 
-        public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId)
+        public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId)
         {
-            return await Repository.Query(x => x.Id == loanApplicationId && x.BusinessUnit.Id == businessUnitId)
+            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).First().Customer.UserId == userProfileId && x.Id == loanApplicationId && x.BusinessUnit.Id == businessUnitId)
                 .Include(x => x.Opportunity).ThenInclude(x => x.Employee).ThenInclude(x=>x.Contact)
                 .Include(x => x.Opportunity).ThenInclude(x => x.Employee)
                 .ThenInclude(x => x.EmployeeBusinessUnitEmails).ThenInclude(x => x.EmailAccount)
+                .Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders).ThenInclude(x => x.Customer)
                 .Include(x => x.BusinessUnit)
                 .Include(x => x.Opportunity).ThenInclude(x => x.Employee)
                 .ThenInclude(x => x.EmployeePhoneBinders).ThenInclude(x => x.CompanyPhoneInfo)
@@ -62,6 +65,30 @@ namespace Rainmaker.Service
                         WebUrl = x.BusinessUnit.WebUrl+"/lo/"+x.Opportunity.Employee.CmsName
                     }
                 ).FirstOrDefaultAsync();
+        }
+
+        public async Task<LoanOfficer> GetDbaInfo(int businessUnitId)
+        {
+            var businessUnit = await Uow.Repository<BusinessUnit>().Query(x => x.Id == businessUnitId && x.BusinessUnitPhones.Where(y => y.TypeId == 3).Count() > 0)
+                .Include(x => x.EmailAccount)
+                .Include(x => x.BusinessUnitPhones).ThenInclude(x => x.CompanyPhoneInfo)
+                .Select(x => new { 
+                x.Name,
+                x.BusinessUnitPhones.FirstOrDefault().CompanyPhoneInfo.Phone,
+                x.EmailAccount.Email,
+                x.WebUrl
+                }).FirstOrDefaultAsync();
+            var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
+            return new LoanOfficer()
+            {
+                Email=businessUnit.Email,
+                FirstName=businessUnit.Name,
+                LastName=string.Empty,
+                NMLS=nmls,
+                Phone=businessUnit.Phone,
+                Photo=null,
+                WebUrl=businessUnit.WebUrl
+            };
         }
     }
 }

@@ -11,6 +11,7 @@ using Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Controllers
@@ -194,7 +195,10 @@ namespace Identity.Controllers
                                                      string password,
                                                      bool employee)
         {
-            var httpClient = _clientFactory.CreateClient();
+
+            Request.Headers.TryGetValue("OcRequestId",
+                                        out StringValues value);
+            var httpClient = _clientFactory.CreateClient("clientWithCorrelationId");
 
             var content = new
             {
@@ -216,7 +220,7 @@ namespace Identity.Controllers
         private async Task<UserProfile> GetUser(string userName,
                                                 bool employee = false)
         {
-            var httpClient = _clientFactory.CreateClient();
+            var httpClient = _clientFactory.CreateClient("clientWithCorrelationId");
 
             var content = new
             {
@@ -237,6 +241,11 @@ namespace Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
+
+            Request.Headers.TryGetValue("CorrelationId",
+                                                out StringValues value);
+
+
             var response = new ApiResponse();
 
             var userProfile = await ValidateUser(userName: request.UserName,
