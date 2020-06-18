@@ -4,6 +4,12 @@ import { Endpoints } from "../endpoints/Endpoints";
 
 const http = new Http();
 
+export const statusText = {
+  COMPLETED: 'COMPLETED',
+  CURRENT: 'CURRENT STEP',
+  UPCOMMING: 'PUCOMING'
+}
+
 export class DocumentActions {
 
   static async getPendingDocuments(loanApplicationId: string, tenentId: string) {
@@ -52,15 +58,15 @@ const attachStatus = (data: any) => {
   return data.map((l: any, i: number) => {
     // debugger
     if (i < current) {
-      l.status = 'Completed';
+      l.status = statusText.COMPLETED
     }
 
     if (i === current) {
-      l.status = 'In progress'
+      l.status = statusText.CURRENT
     }
 
     if (i > current) {
-      l.status = 'To be done'
+      l.status = statusText.UPCOMMING
     }
     return l;
   })
