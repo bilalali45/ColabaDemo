@@ -7,14 +7,14 @@ import IconEmptyDocRequest from '../../../../assets/images/empty-doc-req-icon.sv
 
 export const DocumentStatus = () => {
 
-    const [pendingDocs, setPendingDocs] = useState([])
+    const [pendingDocs, setPendingDocs] = useState<[] | null >(null)
 
     const history = useHistory();
 
 
     useEffect(() => {
 
-        if (!pendingDocs.length) {
+        if (!pendingDocs?.length ) {
             fetchPendingDocs();
         }
     }, []);
@@ -80,7 +80,8 @@ export const DocumentStatus = () => {
                     </ul>
                 </div>
                 <div className="box-wrap--footer clearfix">
-                    <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
+                <button  className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
+                    {/* <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
                 </div>
             </div>
         )

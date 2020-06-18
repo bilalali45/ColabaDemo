@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class FileController : Controller
@@ -37,8 +39,9 @@ namespace DocumentManagement.API.Controllers
 
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Submit([FromForm]string id, [FromForm] string requestId, [FromForm] string docId, [FromForm] string order, List<IFormFile> files)
+        public async Task<IActionResult> Submit([FromForm]string id, [FromForm] string requestId, [FromForm] string docId, [FromForm] string order,[FromForm] int tenantId, List<IFormFile> files)
         {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var httpClient = clientFactory.CreateClient();
             var key = config["File:Key"];
             var ftpKey = config["File:FtpKey"];
@@ -66,7 +69,7 @@ namespace DocumentManagement.API.Controllers
                     // upload to ftp
                     await ftpClient.UploadAsync(Path.GetFileName(filePath),filePath);
                     // insert into mongo
-                    var docQuery = await fileService.Submit(formFile.ContentType,id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,key,algo);
+                    var docQuery = await fileService.Submit(formFile.ContentType,id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,key,algo,tenantId,userProfileId);
                     System.IO.File.Delete(filePath);
                 }
             }
@@ -76,16 +79,18 @@ namespace DocumentManagement.API.Controllers
                 id = id,
                 docId = docId,
                 requestId = requestId,
-                files = JsonConvert.DeserializeObject<List<FileNameModel>>(order)
+                files = JsonConvert.DeserializeObject<List<FileNameModel>>(order),
+                tenantId=tenantId
             };
-            await fileService.Order(model);
+            await fileService.Order(model,userProfileId);
             return Ok();
         }
 
         [HttpPut("[action]")]
         public async Task<IActionResult> Done(DoneModel model)
         {
-            var docQuery = await fileService.Done(model);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await fileService.Done(model,userProfileId);
             if (docQuery)
                 return Ok();
             else
@@ -95,7 +100,8 @@ namespace DocumentManagement.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> Rename(FileRenameModel model)
         {
-            var docQuery = await fileService.Rename(model);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await fileService.Rename(model,userProfileId);
             if (docQuery)
                 return Ok();
             else
@@ -104,17 +110,17 @@ namespace DocumentManagement.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> Order(FileOrderModel model)
         {
-            await fileService.Order(model);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await fileService.Order(model,userProfileId);
             return Ok();
-
-
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> View(string id, string requestId, string docId, string fileId)
+        public async Task<IActionResult> View(string id, string requestId, string docId, string fileId, int tenantId)
         {
-            FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId };
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId,tenantId=tenantId };
             var httpClient = clientFactory.CreateClient();
-            var fileviewdto = await fileService.View(model);
+            var fileviewdto = await fileService.View(model,userProfileId);
             Setting setting = await settingService.GetSetting();
             var key = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={config["File:FtpKey"]}");
             if(!key.IsSuccessStatusCode)

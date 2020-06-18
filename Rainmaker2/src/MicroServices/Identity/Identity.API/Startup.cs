@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Identity.CorrelationHandlersAndMiddleware;
 using Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,8 @@ namespace Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
+            #region Denpendency Injection
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IKeyStoreService,KeyStoreService >();
 
@@ -40,12 +42,18 @@ namespace Identity
             //        .AddDeveloperSigningCredential()
             //        .AddInMemoryApiResources(Config.GetAllApiResources())
             //        .AddInMemoryClients(Config.GetClients(Configuration));
-            services.AddHttpClient();
+            services.AddTransient<RequestHandler>();
+            services.AddHttpClient("clientWithCorrelationId")
+                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
+            services.AddHttpContextAccessor();  //For http request context accessing
+            services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

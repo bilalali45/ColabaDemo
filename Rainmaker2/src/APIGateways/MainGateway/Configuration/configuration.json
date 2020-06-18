@@ -79,5 +79,8 @@
       }
     }
   ],
-  "GlobalConfiguration": {}
+  "GlobalConfiguration": {
+    "RequestIdKey": "CorrelationId"
+
+  }
 }

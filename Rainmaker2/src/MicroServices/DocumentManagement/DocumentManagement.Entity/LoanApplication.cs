@@ -17,5 +17,6 @@ namespace DocumentManagement.Entity
         public List<Request> requests { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string status { get; set; }
+        public string userId { get; set; }
     }
 }

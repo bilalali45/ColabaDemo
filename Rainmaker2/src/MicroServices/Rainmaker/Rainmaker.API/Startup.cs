@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Identity.CorrelationHandlersAndMiddleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,6 +81,17 @@ namespace Rainmaker.API
                             IssuerSigningKey = symmetricSecurityKey
                         };
                     });
+
+            #region HttpClient Dependency with correlation
+
+            services.AddTransient<RequestHandler>();
+            services.AddHttpClient("clientWithCorrelationId")
+                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
+            services.AddHttpContextAccessor();  //For http request context accessing
+            services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
