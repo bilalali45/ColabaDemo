@@ -5,7 +5,7 @@ import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 const ActivityHeader = () => {
     const history = useHistory();
     const uploadDocumentHandler = () => {
-        history.push('/documentsRequest')
+        history.push('/uploadedDocuments')
     }
     const gotoDashboardHandler = () => {
         window.open('/Dashboard', '_self');

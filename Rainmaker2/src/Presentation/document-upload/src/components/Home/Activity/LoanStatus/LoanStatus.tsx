@@ -30,7 +30,7 @@ export const LoanStatus = () => {
     }
 
     if (!loanInfo) {
-        return <p>...loading...</p>
+        return <div>...loading...</div>
     }
 
     return (
@@ -88,9 +88,9 @@ export const LoanStatus = () => {
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
                                         <p className="LoanStatus--text">
-                                            <div className="number-loanAmount">
+                                            <span className="number-loanAmount">
                                                 <span>{loanInfo.amount}</span>
-                                            </div>
+                                            </span>
                                         </p>
                                     </div>
 
