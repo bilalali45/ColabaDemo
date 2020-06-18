@@ -2,22 +2,14 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 var HeaderMenu = function HeaderMenu(_ref) {
-  var displayName = _ref.displayName,
-      options = _ref.options;
-
-  var getShortName = function getShortName(name) {
-    var splitData = name.split(" ");
-    var shortName = splitData[0].charAt(0).toUpperCase() + splitData[1].charAt(0).toUpperCase();
-    return shortName;
-  };
-
+  var options = _ref.options;
   return React.createElement(Dropdown, {
     className: "userdropdown"
   }, React.createElement(Dropdown.Toggle, {
     id: "dropdownMenuButton",
     className: "hd-shorname",
     as: "a"
-  }, React.createElement("span", null, getShortName(displayName))), React.createElement(Dropdown.Menu, null, options.map(function (item) {
+  }), React.createElement(Dropdown.Menu, null, options.map(function (item) {
     return React.createElement(Dropdown.Item, {
       key: item.name,
       onClick: function onClick(e) {
@@ -59,21 +51,12 @@ var RainsoftRcHeader = function RainsoftRcHeader(_ref) {
       return displayNameOnClick(e);
     }
   }, "Hello,", displayName), React.createElement(HeaderMenu, {
-    options: options,
-    displayName: displayName
+    options: options
   })))))));
 };
 
 var RainsoftRcFooter = function RainsoftRcFooter(_ref) {
-  var title = _ref.title,
-      streetName = _ref.streetName,
-      address = _ref.address,
-      phoneOne = _ref.phoneOne,
-      phoneTwo = _ref.phoneTwo,
-      contentOne = _ref.contentOne,
-      contentTwo = _ref.contentTwo,
-      nmlLogoSrc = _ref.nmlLogoSrc,
-      nmlUrl = _ref.nmlUrl;
+  var content = _ref.content;
   return React.createElement("section", null, React.createElement("footer", {
     className: "mainfooter"
   }, React.createElement("div", {
@@ -81,41 +64,8 @@ var RainsoftRcFooter = function RainsoftRcFooter(_ref) {
   }, React.createElement("div", {
     className: "row"
   }, React.createElement("div", {
-    className: "col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12"
-  }, React.createElement("h2", null, title), React.createElement("address", null, React.createElement("i", {
-    className: "fas fa-map-marker-alt"
-  }), React.createElement("span", null, streetName, React.createElement("br", null), address)), React.createElement("div", {
-    className: "footer-phone"
-  }, React.createElement("i", {
-    className: "fas fa-phone"
-  }), React.createElement("span", null, React.createElement("span", {
-    className: "telLinkerInserted"
-  }, React.createElement("a", {
-    className: "telLinkerInserted",
-    href: "tel:" + phoneOne,
-    title: "Call: (888) 971-1425"
-  }, phoneOne)), React.createElement("br", null), React.createElement("span", {
-    className: "telLinkerInserted"
-  }, React.createElement("a", {
-    className: "telLinkerInserted",
-    href: "tel:" + phoneTwo,
-    title: "Call: (214) 245-3929"
-  }, phoneTwo))))), React.createElement("div", {
-    className: "col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"
-  }, React.createElement("div", {
-    className: "copyright-text"
-  }, React.createElement("p", null, contentOne), React.createElement("p", null, contentTwo)), React.createElement("div", {
-    className: "nmls text-right"
-  }, React.createElement("a", {
-    href: nmlUrl,
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, React.createElement("img", {
-    src: nmlLogoSrc,
-    alt: "Illinois Residential Mortgage Licensee NMLS License #277676"
-  }))))))), React.createElement("div", {
-    className: "bg-shape d-none d-lg-block"
-  }));
+    className: "col-12 text-center"
+  }, content)))));
 };
 
 export { RainsoftRcFooter, RainsoftRcHeader };

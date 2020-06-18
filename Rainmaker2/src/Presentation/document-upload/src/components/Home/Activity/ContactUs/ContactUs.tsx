@@ -25,7 +25,6 @@ export const ContactUs = ({ }) => {
     const fetchLoanOfficer = async () => {
         let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
-            console.log(loanOfficer);
             let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
             // src = `data:image/jpeg;base64,${src}}`;
             setLOPhotoSrc(src);
@@ -49,6 +48,7 @@ export const ContactUs = ({ }) => {
     if (!loanOfficer) {
         return <div>...loading...</div>
     }
+
     return (
         <div className="ContactUs box-wrap">
             <div className="box-wrap--header">
@@ -102,7 +102,7 @@ export const ContactUs = ({ }) => {
                                 <a title={loanOfficer.webUrl} href={loanOfficer.webUrl} target="_blank">
                                     <span>
                                         <i className="zmdi zmdi-globe-alt"></i>
-                                        <span>{loanOfficer.webUrl}</span>
+                                        <span>www.{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
                                     </span>
 
                                 </a>

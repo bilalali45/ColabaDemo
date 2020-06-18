@@ -39,10 +39,8 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const uploadFile = async () => {
 
         for (const file of files) {
-            console.log(file);
             data.append('file', file.file, `${file.name}`);
         }
-        console.log(data);
         setShowProgressBar(true);
         try {
             let res = await httpClient.fetch({
@@ -61,7 +59,6 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     const changeName = (file: FileSelected, newName: string) => {
-        console.log(file, newName);
         setSelectedFiles((prevFiles: FileSelected[]) => {
             return prevFiles.map((f: FileSelected) => {
                 if (f.file.name === file.file.name) {

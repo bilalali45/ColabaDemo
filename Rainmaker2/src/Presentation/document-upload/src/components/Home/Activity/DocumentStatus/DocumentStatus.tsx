@@ -13,7 +13,6 @@ export const DocumentStatus = () => {
 
 
     useEffect(() => {
-        console.log('in here!!@!');
 
         if (!pendingDocs.length) {
             fetchPendingDocs();
@@ -27,7 +26,6 @@ export const DocumentStatus = () => {
     const fetchPendingDocs = async () => {
 
         let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
-        console.log('docsPending', docsPending);
         if (docsPending) {
             setPendingDocs(docsPending);
         }
