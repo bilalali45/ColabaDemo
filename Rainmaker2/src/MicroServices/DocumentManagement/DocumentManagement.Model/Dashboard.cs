@@ -52,6 +52,9 @@ namespace DocumentManagement.Model
 
     public class FileViewDTO
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
         public string serverName { get; set; }
         public string encryptionKey { get; set; }
         public string encryptionAlgorithm { get; set; }

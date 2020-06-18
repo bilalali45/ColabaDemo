@@ -270,6 +270,7 @@ namespace DocumentManagement.Tests
         [Fact]
         public async Task TestViewController()
         {
+            
             Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
             Mock<IFileService> mockfileservice = new Mock<IFileService>();
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
@@ -297,7 +298,7 @@ namespace DocumentManagement.Tests
             setting.ftpUser = "ftpuser";
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
 
-            mockfileservice.Setup(x => x.View(It.IsAny<FileViewModel>())).ReturnsAsync(fileViewDTO);
+            mockfileservice.Setup(x => x.View(It.IsAny<FileViewModel>(), It.IsAny<int>())).ReturnsAsync(fileViewDTO);
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockftpclient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
             mockftpclient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
@@ -350,19 +351,82 @@ namespace DocumentManagement.Tests
             mockfileencryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns( new MemoryStream());
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+       
             // also check the 'http' call was like we expected it
             // Act  
             FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
-            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId);
+            controller.ControllerContext = context; 
+            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<FileStreamResult>(result);
 
         }
+        [Fact]
+        public async Task TestViewService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ee9c912264e4c28acf5526e";
 
 
+            List<BsonDocument> list = new List<BsonDocument>()
+            { 
+                new BsonDocument
+                    {
+                        //Cover all empty fields
+                        { "_id" , BsonString.Empty },
+                        { "serverName" ,  BsonString.Empty },
+                        { "encryptionKey" , BsonString.Empty },
+                        { "encryptionAlgorithm" , BsonString.Empty },
+                        { "clientName" , BsonString.Empty },
+                        { "contentType" , BsonString.Empty}
+                    }
+            ,
+                
+            };
 
-    }
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new FileService(mock.Object);
+            //Act
+            var  dto = await service.View(fileViewModel, 1);
+            //Assert
+            //Assert.NotNull(dto);
+            //Assert.Equal(9, dto.Count);
+            //Assert.Equal("House Document", dto[1].docName);
+            //Assert.Equal("Property", dto[2].docName);
+            //Assert.Equal("please upload house document", dto[3].docMessage);
+            //Assert.Equal("please upload house document", dto[4].docMessage);
+            //Assert.Equal("please upload house document", dto[5].docMessage);
+            //Assert.Equal("please upload house document", dto[6].docMessage);
+            //Assert.Equal("please upload house document", dto[7].docMessage);
+            //Assert.Equal("asd", dto[8].files[0].clientName);
+        }
+
+        [Fact]
+        public async Task TestSubmitController()
+        {
+        }
+
+        }
 }
 
