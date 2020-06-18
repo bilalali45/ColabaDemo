@@ -20,6 +20,7 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using System.Linq;
 
 namespace RainmakerTest
 {
@@ -71,13 +72,14 @@ namespace RainmakerTest
                 LoanAmount = 1000,
                 LoanPurposeId = 1,
                 EntityTypeId = 1,
-                SubjectPropertyDetailId = 1
+                SubjectPropertyDetailId = 1,
+                OpportunityId=2
             };
             dataContext.Set<LoanApplication>().Add(app);
 
             Opportunity opportunity = new Opportunity
             {
-                Id = 1,
+                Id = 2,
                 IsActive = true,
                 EntityTypeId = 1,
                 IsDeleted = false,
@@ -92,16 +94,16 @@ namespace RainmakerTest
 
             OpportunityLeadBinder opportunityLeadBinder = new OpportunityLeadBinder
             {
-                Id = 1,
-                OpportunityId = 1,
-                CustomerId = 1,
+                Id = 2,
+                OpportunityId = 2,
+                CustomerId = 2,
                 OwnTypeId = 1
             };
             dataContext.Set<OpportunityLeadBinder>().Add(opportunityLeadBinder);
 
             Customer customer = new Customer()
             {
-                Id = 1,
+                Id = 2,
                 UserId = 1,
                 EntityTypeId = 1,
                 DisplayOrder = 1,
@@ -169,7 +171,7 @@ namespace RainmakerTest
 
             //Act
             LoanSummary res = await loanService.GetLoanSummary(1,1);
-
+          
             // Assert
             Assert.NotNull(res);
             Assert.Equal("Karachi", res.CityName);
@@ -231,7 +233,6 @@ namespace RainmakerTest
                 EntityTypeId = 1,
                 OpportunityId=1,
                 BusinessUnitId=1,
-               
             };
             dataContext.Set<LoanApplication>().Add(app);
 
@@ -247,7 +248,6 @@ namespace RainmakerTest
                 IsDuplicate = false
                 ,BusinessUnitId=1
                 ,OwnerId=1
-                
             };
             dataContext.Set<Opportunity>().Add(opportunity);
 
