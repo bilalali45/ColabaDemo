@@ -4,6 +4,7 @@ using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -14,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -31,7 +33,15 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>(), It.IsAny<int>())).ReturnsAsync(true);
-            FileController controller = new FileController(mock.Object, null, null, null,null,null);
+            var controller = new FileController(mock.Object, null, null, null,null,null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
             IActionResult result = await controller.Done(obj);
             //Assert
@@ -48,9 +58,20 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>(), It.IsAny<int>())).ReturnsAsync(false);
-            FileController controller = new FileController(mock.Object, null, null, null, null, null);
+
+            var fileController = new FileController(mock.Object, null, null, null, null, null);
+
+            //var dashboardController = new DashboardController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            fileController.ControllerContext = context;
+
             //Act
-            IActionResult result = await controller.Done(obj);
+            IActionResult result = await fileController.Done(obj);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -110,7 +131,15 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>(), It.IsAny<int>())).ReturnsAsync(true);
 
-            FileController controller = new FileController(mock.Object, null, null, null, null, null);
+            var controller = new FileController(mock.Object, null, null, null, null, null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert
@@ -126,7 +155,15 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>(), It.IsAny<int>())).ReturnsAsync(false);
 
-            FileController controller = new FileController(mock.Object, null, null, null, null, null);
+            var controller = new FileController(mock.Object, null, null, null, null, null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
             IActionResult result = await controller.Rename(new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" });
             //Assert
@@ -188,7 +225,15 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>()));
 
-            FileController controller = new FileController(mock.Object, null, null, null, null, null);
+            var controller = new FileController(mock.Object, null, null, null, null, null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
             IActionResult result = await controller.Order(fileOrder);
             //Assert

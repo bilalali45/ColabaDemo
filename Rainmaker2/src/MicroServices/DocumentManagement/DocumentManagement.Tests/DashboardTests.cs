@@ -2,16 +2,21 @@ using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using Moq.Protected;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.AspNetCore.Routing;
 
 namespace DocumentManagement.Tests
 {
@@ -26,9 +31,18 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            DashboardController controller = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            //DashboardController controller = new DashboardController(mock.Object);
             //Act
-            IActionResult result = await controller.GetPendingDocuments(1, 1);
+            IActionResult result = await dashboardController.GetPendingDocuments(1, 1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -208,9 +222,18 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            DashboardController controller = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            //DashboardController controller = new DashboardController(mock.Object);
             //Act
-            IActionResult result = await controller.GetSubmittedDocuments(1, 1);
+            IActionResult result = await dashboardController.GetSubmittedDocuments(1, 1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -390,9 +413,18 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            DashboardController controller = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            //DashboardController controller = new DashboardController(mock.Object);
             //Act
-            IActionResult result = await controller.GetDashboardStatus(1, 1);
+            IActionResult result = await dashboardController.GetDashboardStatus(1, 1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
