@@ -40,7 +40,11 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
+            Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
+            if(lo.FirstName==null)
+            {
+                lo = await loanApplicationService.GetDbaInfo(businessUnitId);
+            }
             return Ok(lo);
         }
         [HttpGet("[action]")]

@@ -5,7 +5,7 @@ import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 const ActivityHeader = () => {
     const history = useHistory();
     const uploadDocumentHandler = () => {
-        history.push('/documentsRequest')
+        history.push('/uploadedDocuments')
     }
     const gotoDashboardHandler = () => {
         window.open('/Dashboard', '_self');
@@ -30,7 +30,10 @@ const ActivityHeader = () => {
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                        <a onClick={uploadDocumentHandler} >
+                                        {/* <a onClick={uploadDocumentHandler} >
+                                            Uploaded Document
+                                  </a> */}
+                                  <a>
                                             Uploaded Document
                                   </a>
                                     </div>

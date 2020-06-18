@@ -4,6 +4,8 @@ import { userReducer } from './reducers/userReducer';
 import { mainReducer } from './reducers/reducers';
 import { Http } from '../services/http/Http';
 import { ContactUs } from '../entities/Models/ContactU';
+import { LoanType } from './reducers/loanReducer';
+import { DocumentsType } from './reducers/documentReducer';
 
 const httpClient = new Http();
 
@@ -11,15 +13,11 @@ const httpClient = new Http();
 httpClient.setBaseUrl('https://alphamaingateway.rainsoftfn.com');
 
 export type InitialStateType = {
-    // auth: {} | null,
-    // user: {} | null
-    loan?: {},
-    documents: {}
+    loan: LoanType | {}
+    documents: DocumentsType | {}
 }
 
 export const initialState = {
-    // auth: {},
-    // user: {}, 
     loan: {},
     documents: {}
 };
