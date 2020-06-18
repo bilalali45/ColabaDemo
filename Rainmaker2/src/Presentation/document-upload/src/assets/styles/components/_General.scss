@@ -47,8 +47,8 @@ body,
 p {
     font-family: fontFamily("base");
 }
-a:not([href]){
-    cursor: default;
+a[href],a[tabindex]{
+    cursor:pointer;
 }
 .clearfix {
     &::before,

@@ -89,6 +89,7 @@ export const LoanStatus = () => {
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
                                         <p className="LoanStatus--text">
                                             <span className="number-loanAmount">
+                                            <sup>$</sup>
                                                 <span>{loanInfo.amount}</span>
                                             </span>
                                         </p>

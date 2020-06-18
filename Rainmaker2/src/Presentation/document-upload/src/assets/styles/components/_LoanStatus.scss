@@ -72,6 +72,9 @@
             sup {
                 color: color('primary');
                 font: 500 #{fontSize('sm')+'/1'} fontFamily('base');
+                margin-top: -6px;
+                position: relative;
+                top: -8px;
             }
             span {
                 font: 500 #{fontSize('lg')+'/1'} fontFamily('base');

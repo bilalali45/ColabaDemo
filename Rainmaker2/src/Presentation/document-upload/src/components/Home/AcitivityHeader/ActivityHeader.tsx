@@ -23,7 +23,7 @@ const ActivityHeader = () => {
                                 <div className="col-6">
                                     <ul className="breadcrmubs">
                                         <li>
-                                            <a onClick={gotoDashboardHandler} ><i className="zmdi zmdi-arrow-left"></i> Dashboard</a>
+                                            <a tabIndex={-1} onClick={gotoDashboardHandler} ><i className="zmdi zmdi-arrow-left"></i> Dashboard</a>
                                         </li>
                                     </ul>
                                 </div>
