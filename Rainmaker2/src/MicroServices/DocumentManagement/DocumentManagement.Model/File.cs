@@ -18,7 +18,8 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         public string docId { get; set; }
         public string requestId { get; set; }
-     
+        public int tenantId { get; set; }
+
     }
 
     public class FileViewModel
@@ -27,6 +28,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string requestId { get; set; }
         public string fileId { get; set; }
+        public int tenantId { get; set; }
     }
     public class FileRenameModel
     {
@@ -35,6 +37,7 @@ namespace DocumentManagement.Model
         public string requestId { get; set; }
         public string fileId { get; set; }
         public string fileName { get; set; }
+        public int tenantId { get; set; }
     }
 
     public class FileOrderModel
@@ -43,7 +46,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string requestId { get; set; }
         public List<FileNameModel> files { get; set; }
-
+        public int tenantId { get; set; }
     }
 
    

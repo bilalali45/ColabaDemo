@@ -24,7 +24,7 @@ namespace DocumentManagement.Tests
             Mock<IDashboardService> mock = new Mock<IDashboardService>();
             List<DashboardDTO> list = new List<DashboardDTO>() { { new DashboardDTO() { docId = "1" } } };
 
-            mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
             DashboardController controller = new DashboardController(mock.Object);
             //Act
@@ -185,7 +185,7 @@ namespace DocumentManagement.Tests
 
             var service = new DashboardService(mock.Object);
             //Act
-            List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1);
+            List<DashboardDTO> dto = await service.GetPendingDocuments(1, 1,1);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -206,7 +206,7 @@ namespace DocumentManagement.Tests
             Mock<IDashboardService> mock = new Mock<IDashboardService>();
             List<DashboardDTO> list = new List<DashboardDTO>() { { new DashboardDTO() { docId = "1" } } };
 
-            mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
             DashboardController controller = new DashboardController(mock.Object);
             //Act
@@ -367,7 +367,7 @@ namespace DocumentManagement.Tests
 
             var service = new DashboardService(mock.Object);
             //Act
-            List<DashboardDTO> dto = await service.GetSubmittedDocuments(1, 1);
+            List<DashboardDTO> dto = await service.GetSubmittedDocuments(1, 1,1);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -388,7 +388,7 @@ namespace DocumentManagement.Tests
             Mock<IDashboardService> mock = new Mock<IDashboardService>();
             List<DashboardStatus> list = new List<DashboardStatus>() { { new DashboardStatus() { order = 1 } } };
 
-            mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
             DashboardController controller = new DashboardController(mock.Object);
             //Act
@@ -451,7 +451,7 @@ namespace DocumentManagement.Tests
            
             var service = new DashboardService(mock.Object);
             //Act
-            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1);
+            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1,1);
             //Assert
             Assert.NotNull(dto);
             Assert.Single(dto);

@@ -18,7 +18,7 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -26,7 +26,8 @@ namespace DocumentManagement.Service
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",
-                  ""tenantId"": " + tenantId + @"
+                  ""tenantId"": " + tenantId + @",
+                  ""userId"": " + userProfileId + @"
                             }
                         }", @"{
                             ""$unwind"": ""$requests""
@@ -103,14 +104,15 @@ namespace DocumentManagement.Service
             return result;
         }
 
-        public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",
-                  ""tenantId"": " + tenantId + @"
+                  ""tenantId"": " + tenantId + @",
+                  ""userId"": " + userProfileId + @"
                             }
                         }", @"{
                             ""$unwind"": ""$requests""
@@ -187,7 +189,7 @@ namespace DocumentManagement.Service
             return result;
         }
 
-        public async Task<List<DashboardStatus>> GetDashboardStatus(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardStatus>> GetDashboardStatus(int loanApplicationId, int tenantId, int userProfileId)
         {
             List<DashboardStatus> statuses = new List<DashboardStatus>();
             IMongoCollection<StatusList> collection = mongoService.db.GetCollection<StatusList>("StatusList");
@@ -211,7 +213,8 @@ namespace DocumentManagement.Service
             IMongoCollection<LoanApplication> collection1 = mongoService.db.GetCollection<LoanApplication>("Request");
             using var asyncCursor1 = await collection1.FindAsync(new BsonDocument() {
                 {"loanApplicationId",loanApplicationId },
-                {"tenantId",tenantId }
+                {"tenantId",tenantId },
+                {"userId",userProfileId }
             },new FindOptions<LoanApplication, BsonDocument>()
             {
                 Projection = new BsonDocument() { {"status", 1 }

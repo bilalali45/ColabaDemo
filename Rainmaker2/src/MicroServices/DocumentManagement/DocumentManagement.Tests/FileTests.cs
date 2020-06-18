@@ -30,7 +30,7 @@ namespace DocumentManagement.Tests
             obj.id = "1";
             obj.docId = "1";
             obj.requestId = "1";
-            mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(true);
+            mock.Setup(x => x.Done(It.IsAny<DoneModel>(), It.IsAny<int>())).ReturnsAsync(true);
             FileController controller = new FileController(mock.Object, null, null, null,null,null);
             //Act
             IActionResult result = await controller.Done(obj);
@@ -47,7 +47,7 @@ namespace DocumentManagement.Tests
             obj.id = "1";
             obj.docId = "1";
             obj.requestId = "1";
-            mock.Setup(x => x.Done(It.IsAny<DoneModel>())).ReturnsAsync(false);
+            mock.Setup(x => x.Done(It.IsAny<DoneModel>(), It.IsAny<int>())).ReturnsAsync(false);
             FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
             IActionResult result = await controller.Done(obj);
@@ -73,7 +73,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Done(doneModel);
+            bool result = await fileService.Done(doneModel,1);
             //Assert
             Assert.True(result);
         }
@@ -97,7 +97,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Done(doneModel);
+            bool result = await fileService.Done(doneModel,1);
             //Assert
             Assert.False(result);
         }
@@ -108,7 +108,7 @@ namespace DocumentManagement.Tests
             Mock<IFileService> mock = new Mock<IFileService>();
             FileRenameModel model = new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" };
 
-            mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(true);
+            mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>(), It.IsAny<int>())).ReturnsAsync(true);
 
             FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
@@ -124,7 +124,7 @@ namespace DocumentManagement.Tests
             Mock<IFileService> mock = new Mock<IFileService>();
             FileRenameModel model = new FileRenameModel() { docId = "1", requestId = "1", fileId = "1", fileName = "clientName.txt" };
 
-            mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>())).ReturnsAsync(false);
+            mock.Setup(x => x.Rename(It.IsAny<FileRenameModel>(), It.IsAny<int>())).ReturnsAsync(false);
 
             FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
@@ -150,7 +150,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Rename(fileRenameModel);
+            bool result = await fileService.Rename(fileRenameModel,1);
 
             //Assert
             Assert.True(result);
@@ -172,7 +172,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Rename(fileRenameModel);
+            bool result = await fileService.Rename(fileRenameModel,1);
 
             //Assert
             Assert.False(result);
@@ -186,7 +186,7 @@ namespace DocumentManagement.Tests
             Mock<IFileService> mock = new Mock<IFileService>();
             FileOrderModel fileOrder = new FileOrderModel();
 
-            mock.Setup(x => x.Order(It.IsAny<FileOrderModel>()));
+            mock.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>()));
 
             FileController controller = new FileController(mock.Object, null, null, null, null, null);
             //Act
@@ -214,7 +214,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
             IFileService fileService = new FileService(mock.Object);
             //Act
-            await fileService.Order(fileOrderModel);
+            await fileService.Order(fileOrderModel,1);
             //Assert
             mockCollection.VerifyAll();
         }
@@ -245,7 +245,7 @@ namespace DocumentManagement.Tests
             setting.ftpUser = "";
             setting.ftpPassword = "";
 
-            mockfileservice.Setup(x => x.View(fileViewModel));//.ReturnsAsync(fileViewDTO);
+            mockfileservice.Setup(x => x.View(fileViewModel,1));//.ReturnsAsync(fileViewDTO);
           //  mocksettingservice.Setup(x => x.GetSetting());
             mockmongoservice.Setup(x => x.db.GetCollection<Setting>("Setting",null)).Returns(collection.Object);
             collection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<Setting>>(),null,default));//.Returns(collection.Object);
@@ -256,7 +256,7 @@ namespace DocumentManagement.Tests
             FileController controller = new FileController(mockfileservice.Object, mockfileencryptionfactory.Object, mockftpclient.Object, mocksettingservice.Object, null, null);
             //Act
 
-            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId);
+            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId,1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
