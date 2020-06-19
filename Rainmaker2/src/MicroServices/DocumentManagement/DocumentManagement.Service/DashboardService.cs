@@ -32,11 +32,14 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
+                            ""$match"": {""requests.status"": """ + RequestStatus.Submitted + @"""}
+                        }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
-                            ""$match"": {
-                                ""requests.documents.status"": """ + Status.Requested + @"""
-                            }
+                            ""$match"": { ""$or"":[
+                                {""requests.documents.status"": """ + DocumentStatus.Requested + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Rejected + @"""}
+                            ]}
                         }", @"{
                             ""$lookup"": {
                                 ""from"": ""DocumentType"",
@@ -91,7 +94,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Select(x=>new FileDTO() { 
+                    dto.files = query.files?.Where(x=>x.status!=FileStatus.Rejected).Select(x=>new FileDTO() { 
                         clientName=x.clientName,
                         fileUploadedOn=DateTime.SpecifyKind(x.fileUploadedOn,DateTimeKind.Utc),
                         id=x.id,
@@ -116,12 +119,15 @@ namespace DocumentManagement.Service
                             }
                         }", @"{
                             ""$unwind"": ""$requests""
+                        }",@"{
+                            ""$match"": {""requests.status"": """+RequestStatus.Submitted+@"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
-                            ""$match"": {
-                                ""requests.documents.status"": """ + Status.Submitted + @"""
-                            }
+                            ""$match"": { ""$or"":[
+                                {""requests.documents.status"": """ + DocumentStatus.Submitted + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Accepted + @"""}
+                            ]}
                         }", @"{
                             ""$lookup"": {
                                 ""from"": ""DocumentType"",
@@ -175,7 +181,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Select(x => new FileDTO()
+                    dto.files = query.files?.Where(x=>x.status!=FileStatus.Rejected).Select(x => new FileDTO()
                     {
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -219,7 +225,7 @@ namespace DocumentManagement.Service
             {
                 Projection = new BsonDocument() { {"status", 1 }
             } });
-            if (await asyncCursor1.MoveNextAsync())
+            if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count()>0)
             {
                 string status = asyncCursor1.Current.First()["status"].ToString();
                 statuses.Where(x => x.id == status).First().isCurrentStep = true;

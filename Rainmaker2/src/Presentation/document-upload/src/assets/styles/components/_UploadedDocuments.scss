@@ -1,0 +1,17 @@
+.UploadedDocuments{
+
+    &.box-wrap{
+        padding: 0px;
+    }
+
+    .box-wrap{
+        &--header{
+            border-bottom: 1px solid color('border');
+            padding: 20px;
+            
+            h2{
+                margin: 0;
+            }
+        }
+    }
+}

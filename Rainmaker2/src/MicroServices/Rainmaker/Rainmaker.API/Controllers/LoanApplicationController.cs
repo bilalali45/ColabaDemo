@@ -41,7 +41,7 @@ namespace Rainmaker.API.Controllers
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
-            if(lo.FirstName==null)
+            if(lo==null || lo.FirstName==null)
             {
                 lo = await loanApplicationService.GetDbaInfo(businessUnitId);
             }

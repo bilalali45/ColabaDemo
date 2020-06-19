@@ -35,7 +35,8 @@ namespace Rainmaker.Service
                     PropertyType = x.PropertyInfo.PropertyType.Description,
                     StateName = x.PropertyInfo.AddressInfo.StateName,
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
-                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode
+                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
+                    CountryName = x.PropertyInfo.AddressInfo.CountryName
                 }).FirstOrDefaultAsync();
         }
 
@@ -76,7 +77,8 @@ namespace Rainmaker.Service
                 x.Name,
                 x.BusinessUnitPhones.FirstOrDefault().CompanyPhoneInfo.Phone,
                 x.EmailAccount.Email,
-                x.WebUrl
+                x.WebUrl,
+                x.Logo
                 }).FirstOrDefaultAsync();
             var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
             return new LoanOfficer()
@@ -86,7 +88,7 @@ namespace Rainmaker.Service
                 LastName=string.Empty,
                 NMLS=nmls,
                 Phone=businessUnit.Phone,
-                Photo=null,
+                Photo=businessUnit.Logo,
                 WebUrl=businessUnit.WebUrl
             };
         }
