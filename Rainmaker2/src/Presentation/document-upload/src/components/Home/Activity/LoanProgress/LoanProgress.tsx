@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import Carousel from 'react-bootstrap/Carousel'
-import { DocumentActions } from '../../../../store/actions/DocumentActions';
+import Carousel from 'react-bootstrap/Carousel';
 import Lpstep1 from '../../../../assets/images/lp-step1.svg';
 import Lpstep2 from '../../../../assets/images/lp-step2.svg';
 import Lpstep3 from '../../../../assets/images/lp-step3.svg';
 import Lpstep4 from '../../../../assets/images/lp-step4.svg';
 import Lpstep5 from '../../../../assets/images/lp-step5.svg';
-
+import { LaonActions } from '../../../../store/actions/LoanActions';
+import { LoanProgress as LoanProgressModel }  from '../../../../entities/Models/LoanProgress';
 type Props = {
     //userName: string,
 }
 
-export const LoanProgress: React.SFC<Props> = (props) => {
+export const LoanProgress = () => {
 
-    const [loanProgress, setLoanProgress] = useState([]); 
-    const [currentItem, setCurrentItem] = useState<any>({});
+    const [loanProgress, setLoanProgress] = useState<LoanProgressModel[]>([]); 
+    const [currentItem, setCurrentItem] = useState<LoanProgressModel>();
     const [index, setIndex] = useState(0);
    
     const loanProgressImages = [
@@ -49,6 +49,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
     });
 
     useEffect(() => {
+       
         let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
         if(activeStep){
             let a = activeStep.order - 1
@@ -59,7 +60,8 @@ export const LoanProgress: React.SFC<Props> = (props) => {
     const fetchLoanProgress = async () => {
         let applicationId = localStorage.getItem('loanApplicationId');
         let tenantId = localStorage.getItem('tenantId');
-        let loanProgress = await DocumentActions.getDocumentsStatus(applicationId ? applicationId : '1', tenantId ? tenantId : '1')
+        let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(applicationId ? applicationId : '1', tenantId ? tenantId : '1')
+        console.log('loanProgress',loanProgress)
         if (loanProgress) {
             setLoanProgress(loanProgress);
         }
@@ -128,13 +130,17 @@ export const LoanProgress: React.SFC<Props> = (props) => {
         })
     }
 
+    if(!currentItem){
+        return <></>;
+    }
+
     return (
         <div className="LoanProgress box-wrap">
             <div className="box-wrap--header">
                 <h2 className="heading-h2"> Your Loan Progress </h2>
             </div>
             <div className="box-wrap--body">
-                <div className={index == currentItem?.order - 1 ? "lp-wrap current-step" : index > currentItem?.order - 1 ? "lp-wrap upcoming-step" : "lp-wrap"}>
+                <div className={index == currentItem.order - 1 ? "lp-wrap current-step" : index > currentItem?.order - 1 ? "lp-wrap upcoming-step" : "lp-wrap"}>
                     <div className="list-wrap">
                         {
                             renderCarousel()
