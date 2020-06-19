@@ -33,7 +33,7 @@ export class UserActions {
   }
 
   static getUserInfo() {
-    let token = Auth.checkAuth() || '';
+    let token = Auth.getAuth() || '';
     if(token) {
       let decoded = jwt_decode(token);
       return decoded;

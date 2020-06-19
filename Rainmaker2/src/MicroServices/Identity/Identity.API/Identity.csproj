@@ -16,11 +16,5 @@
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="MongoDB.Driver.Core">
-      <HintPath>C:\Users\Danish Faiz\.nuget\packages\mongodb.driver.core\2.10.4\lib\netstandard1.5\MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

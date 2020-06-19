@@ -65,6 +65,8 @@ namespace DocumentManagement.API.Controllers
             {
                 if (formFile.Length > 0)
                 {
+                    if (formFile.Length > (await settingService.GetSetting()).maxFileSize)
+                        throw new Exception("File size exceeded limit");
                     var filePath = fileEncryptionFactory.GetEncryptor(algo).EncryptFile(formFile.OpenReadStream(),await csResponse.Content.ReadAsStringAsync());
                     // upload to ftp
                     await ftpClient.UploadAsync(Path.GetFileName(filePath),filePath);

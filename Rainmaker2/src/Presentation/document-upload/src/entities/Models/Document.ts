@@ -1,14 +1,16 @@
 export class Document {
     public id: string;
-    public document: string;
-    public fileName: string;
-    public addedDate: string;
+    public clientName: string;
+    public fileUploadedOn: string;
+    public size: number;
+    public order: number;
 
-    constructor(id: string, document: string, fileName: string, addedDate: string) {
-        this.document = document;
-        this.fileName = fileName;
-        this.addedDate = addedDate;
+    constructor(id: string, clientName: string, fileUploadedOn: string, size: number, order: number) {
         this.id = id;
+        this.clientName = clientName;
+        this.fileUploadedOn = fileUploadedOn;
+        this.size = size;
+        this.order = order;
     }
 
 }

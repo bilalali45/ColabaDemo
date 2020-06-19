@@ -3,9 +3,15 @@ import { UploadedDocumentsTable } from './UploadedDocumentsTable/UploadedDocumen
 
 export const UploadedDocuments = () => {
     return (
-        <div>
-            <p>Uploaded Documents</p>
-            <UploadedDocumentsTable/>
+        <div className="container">
+            <div className="UploadedDocuments box-wrap">
+                <div className="box-wrap--header">
+                    <h2>Uploaded Documents</h2>
+                </div>
+                <div className="box-wrap--body clearfix">
+                    <UploadedDocumentsTable/>
+                </div>
+            </div>            
         </div>
     )
 }

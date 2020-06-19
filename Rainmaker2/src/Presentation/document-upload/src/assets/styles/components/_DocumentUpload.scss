@@ -1,0 +1,30 @@
+.Doc-upload{
+    .Doc-head-wrap{
+        padding-top: 28px;
+        h2 {
+            font:500 #{fontSize("xmd")+"/1.2"} fontFamily("heading");
+            text-transform: uppercase;
+            color:color('heading');
+            margin-top: 0;
+            margin-bottom:5px;
+        }
+        p {
+            font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
+            margin-bottom: 0;
+            i{
+                margin-right: 8px;
+                font-size: fontSize("xmd");
+                color: color('primary');
+            }
+          }
+
+    }
+    .icon-doc-upload {
+        text-align: center;
+    }
+}
+
+.file-drop-box{
+    height: 425px;
+    width: 100%;
+}

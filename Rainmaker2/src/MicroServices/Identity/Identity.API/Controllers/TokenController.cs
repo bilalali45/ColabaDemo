@@ -196,8 +196,7 @@ namespace Identity.Controllers
                                                      bool employee)
         {
 
-            Request.Headers.TryGetValue("OcRequestId",
-                                        out StringValues value);
+            
             var httpClient = _clientFactory.CreateClient("clientWithCorrelationId");
 
             var content = new
