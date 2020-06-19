@@ -225,7 +225,7 @@ namespace DocumentManagement.Service
             {
                 Projection = new BsonDocument() { {"status", 1 }
             } });
-            if (await asyncCursor1.MoveNextAsync())
+            if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count()>0)
             {
                 string status = asyncCursor1.Current.First()["status"].ToString();
                 statuses.Where(x => x.id == status).First().isCurrentStep = true;
