@@ -4,6 +4,7 @@
             margin-left: -20px;
             max-height: 425px;
     overflow: auto;
+    @include scrollbar;
             li {
                 a { 
                 min-height: 40px;
