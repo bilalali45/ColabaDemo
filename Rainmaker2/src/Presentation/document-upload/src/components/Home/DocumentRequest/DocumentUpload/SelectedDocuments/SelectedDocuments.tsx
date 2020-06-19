@@ -72,16 +72,23 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     return (
-        <div className="file-drop-box">
-            <h1>Selected Documents</h1>
+        <section className="file-drop-box">
+            <div className="list-selected-doc">
+            <ul className="doc-list-ul">
             {
-                selectedFiles.map(f => {
-                    return (<DocumentItem
+                selectedFiles.map((f,index) => { 
+                    return (
+                        <DocumentItem
                         file={f}
                         viewDocument={viewDocument}
-                        changeName={changeName} />)
+                        changeName={changeName} 
+                        key={index}
+                        />
+                        )
                 })
             }
+            </ul>
+            </div>
             {showingDoc ? <DocumentView
                 file={currentDoc}
                 type={fileType}
@@ -90,6 +97,6 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 : ''}
             {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
             <button onClick={uploadFile}>Submit</button>
-        </div>
+        </section>
     )
 }
