@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
+import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import Lpstep1 from '../../../../assets/images/lp-step1.svg';
 import Lpstep2 from '../../../../assets/images/lp-step2.svg';
 import Lpstep3 from '../../../../assets/images/lp-step3.svg';
 import Lpstep4 from '../../../../assets/images/lp-step4.svg';
 import Lpstep5 from '../../../../assets/images/lp-step5.svg';
-import { LaonActions } from '../../../../store/actions/LoanActions';
+import { LaonActions,statusText } from '../../../../store/actions/LoanActions';
 import { LoanProgress as LoanProgressModel }  from '../../../../entities/Models/LoanProgress';
 type Props = {
     //userName: string,
@@ -116,13 +117,13 @@ export const LoanProgress = () => {
         var id = index;
         return loanProgress.map((l: any, i: number) => {
             let liclass = "completed-icon";
-            liclass = l.status == 'In progress' ? 'current-icon' : l.status == 'To be done' ? 'upcoming-icon' : 'completed-icon';
+            liclass = l.status == statusText.CURRENT ? 'current-icon' : l.status == statusText.UPCOMMING ? 'upcoming-icon' : 'completed-icon';
             let step = i + 1;
             var activeindex = i === id ? " active" : ""
             return (
                 <li key={l.name} data-index={activeindex} className={liclass + activeindex}>
                     <a href="javascrit:" onClick={(e) => handleSelect(i, e)}>
-                        {i == totallist - 1 && l.status == 'To be done' ? <i className="zmdi zmdi-flag"></i> : l.status == 'Completed' ? <i className="zmdi zmdi-check"></i> : l.status == 'In progress' ? <i className="zmdi zmdi-male-alt"></i> : <span>{step}</span>}
+                        {i == totallist - 1 && l.status == statusText.UPCOMMING ? <i className="zmdi zmdi-flag"></i> : l.status == statusText.COMPLETED ? <i className="zmdi zmdi-check"></i> : l.status == statusText.CURRENT ? <i className="zmdi zmdi-male-alt"></i> : <span>{step}</span>}
                     </a>
                 </li>
 

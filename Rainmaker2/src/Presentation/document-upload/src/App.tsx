@@ -47,7 +47,7 @@ const App = () => {
       }
 
       if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-        debugger
+        // debugger
         let token = cookies.Rainmaker2Token;
         Auth.saveAuth(token);
         Auth.storeTokenPayload(UserActions.decodeJwt(token))

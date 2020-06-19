@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, useRef, useEffect, DragEvent } from 'react';
 import { Http } from '../../../services/http/Http';
+import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
 
 
 const httpClient = new Http();
@@ -24,7 +25,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
     const getDroppedFile = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            let {files} = e.dataTransfer;
+            let { files } = e.dataTransfer;
             setSelectedFiles(files);
         }
     }
@@ -42,7 +43,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
     }
 
     const onDrop = (e: any) => {
-        
+
         e.preventDefault();
         e.target.classList.remove('drag-enter')
         getDroppedFile(e);
@@ -55,18 +56,22 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
     }
 
     return (
-        <div className="file-drop-box"
-            onDragEnter={onDragEnter}
-            onDragLeave={onDragLeave}
-            onDragOver={ondragover}
-            onDrop={onDrop}>
-            <p>Document Drop Box</p>
-            <input 
-                ref={inputRef} 
-                type="file" 
-                name="file" 
-                onChange={(e) => handleChange(e)}
-                multiple />
-        </div>
+        <section className="empty-uploader">
+            <div className="file-drop-box"
+                onDragEnter={onDragEnter}
+                onDragLeave={onDragLeave}
+                onDragOver={ondragover}
+                onDrop={onDrop}>
+                    <div className="icon-doc-upload">
+                        <img src={DocUploadIcon} alt="" />
+                    </div>
+                <input
+                    ref={inputRef}
+                    type="file"
+                    name="file"
+                    onChange={(e) => handleChange(e)}
+                    multiple />
+            </div>
+        </section>
     )
 }

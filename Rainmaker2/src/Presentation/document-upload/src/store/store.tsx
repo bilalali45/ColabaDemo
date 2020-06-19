@@ -4,22 +4,22 @@ import { userReducer } from './reducers/userReducer';
 import { mainReducer } from './reducers/reducers';
 import { Http } from '../services/http/Http';
 import { ContactUs } from '../entities/Models/ContactU';
+import { LoanType } from './reducers/loanReducer';
+import { DocumentsType } from './reducers/documentReducer';
 
 const httpClient = new Http();
 
 // httpClient.setBaseUrl('http://localhost:5000');
-httpClient.setBaseUrl('https://alphamaingateway.rainsoftfn.com');
+
+let baseUrl : any = process.env.REACT_APP_API_BASE_URL;
+httpClient.setBaseUrl(baseUrl);
 
 export type InitialStateType = {
-    // auth: {} | null,
-    // user: {} | null
-    loan?: {},
-    documents: {}
+    loan: LoanType | {}
+    documents: DocumentsType | {}
 }
 
 export const initialState = {
-    // auth: {},
-    // user: {}, 
     loan: {},
     documents: {}
 };

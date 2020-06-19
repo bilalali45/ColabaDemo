@@ -4,6 +4,8 @@ import { Endpoints } from "../endpoints/Endpoints";
 
 const http = new Http();
 
+
+
 export class DocumentActions {
 
   static async getPendingDocuments(loanApplicationId: string, tenentId: string) {
@@ -29,3 +31,4 @@ export class DocumentActions {
   }
 
 }
+

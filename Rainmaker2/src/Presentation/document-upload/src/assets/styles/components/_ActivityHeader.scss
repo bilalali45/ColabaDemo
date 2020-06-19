@@ -4,12 +4,15 @@
         padding-bottom: 35px;
         .breadcrmubs {
             a {
-                color: color("base");
+                color: color("primary");
                 font-size: fontSize("nr");
                 font-weight: 500;
-                cursor: pointer;
+                i{
+                    margin-right: 5px;
+                    font-size: fontSize("nr")+4;
+                }
                 &:hover {
-                    color: color("primary");
+                    color: color("base");
                     text-decoration: none;
                 }
             }
@@ -19,7 +22,6 @@
             color: color("primary");
             font-size: fontSize("nr");
             font-weight: 500;
-            cursor: pointer;
             &:hover {
                 color: color("base");
                 text-decoration: none;

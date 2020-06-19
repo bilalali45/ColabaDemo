@@ -4,6 +4,11 @@ export class Auth {
         localStorage.setItem('auth', token);
     }
 
+    
+    public static getAuth() {
+        return localStorage.getItem('auth');
+    }
+
     public static checkAuth() {
         let auth = localStorage.getItem('auth');
         if (!auth) {
@@ -14,12 +19,12 @@ export class Auth {
             let expiry = new Date(payload.exp * 1000);
             let currentDate = new Date(Date.now());
             if (currentDate <= expiry) {
-                return auth;
+                return true;
             } else {
                 return false;
             }
         }
-        return auth;
+        return true;
     }
 
     static storeTokenPayload(payload) {
@@ -36,17 +41,10 @@ export class Auth {
 
 
     public static removeAuth() {
-        (function () {
-            var cookies = document.cookie.split(";");
-
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i];
-                var eqPos = cookie.indexOf("=");
-                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            }
-        })();
-        localStorage.removeItem('auth');
+        let items = ['auth', 'loanApplicationId', 'tenantId', 'businessUnitId', 'payload'];
+        for (const item of items) {
+            localStorage.removeItem(item);
+        }
     }
 
     public static getLoanAppliationId() {
@@ -81,6 +79,8 @@ export class Auth {
         localStorage.setItem(name, data);
     }
 
-
+    public static removeItem(name: string) {
+        localStorage.removeItem(name);
+    }
 
 }

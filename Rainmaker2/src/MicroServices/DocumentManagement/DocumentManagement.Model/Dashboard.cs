@@ -5,13 +5,27 @@ using System;
 using System.Collections.Generic;
 
 namespace DocumentManagement.Model
-{
-    public static class Status
+{ 
+    public static class RequestStatus
     {
-        public const string Requested = "requested";
-        public const string Submitted = "submitted";
-        public const string Draft = "draft";
+        public const string Submitted = "submitted"; // mcu submit
+        public const string Draft = "draft"; // mcu draft
     }
+    public static class DocumentStatus
+    {
+        public const string Draft = "draft"; // under mcu process
+        public const string Requested = "requested"; // mcu request
+        public const string Submitted = "submitted"; // borrower submit
+        public const string Accepted = "accepted"; // mcu has accepted
+        public const string Rejected = "rejected"; // mcu has rejected, want few files again
+        public const string Stale = "stale"; // deleted
+    }
+    public static class FileStatus
+    {
+        public const string Submitted = "submitted"; // borrower submit
+        public const string Rejected = "rejected"; // mcu has rejected, want file again
+    }
+
     public class DashboardQuery
     {
         [BsonId]
@@ -52,6 +66,9 @@ namespace DocumentManagement.Model
 
     public class FileViewDTO
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
         public string serverName { get; set; }
         public string encryptionKey { get; set; }
         public string encryptionAlgorithm { get; set; }
