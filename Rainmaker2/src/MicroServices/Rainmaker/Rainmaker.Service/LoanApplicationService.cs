@@ -36,7 +36,7 @@ namespace Rainmaker.Service
                     StateName = x.PropertyInfo.AddressInfo.StateName,
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
-                    CountryName = x.PropertyInfo.AddressInfo.CountyName
+                    CountryName = x.PropertyInfo.AddressInfo.CountryName
                 }).FirstOrDefaultAsync();
         }
 
