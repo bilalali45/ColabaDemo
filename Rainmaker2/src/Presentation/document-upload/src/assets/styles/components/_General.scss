@@ -46,6 +46,7 @@ ul {
 body,
 p {
     font-family: fontFamily("base");
+    color: color('base');
 }
 a[href],a[tabindex]{
     cursor:pointer;
