@@ -31,12 +31,6 @@ export const DocumentStatus = () => {
         }
     }
 
-    // heading="Document Request"
-    // counts={8}
-    // moreTask="/#"
-    // getStarted="/#"
-    // tasks={this.state.tasks
-
     if (!pendingDocs) {
         return <p>...loading...</p>
     }
@@ -80,8 +74,7 @@ export const DocumentStatus = () => {
                     </ul>
                 </div>
                 <div className="box-wrap--footer clearfix">
-                <button  className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
-                    {/* <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
+                    <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
                 </div>
             </div>
         )

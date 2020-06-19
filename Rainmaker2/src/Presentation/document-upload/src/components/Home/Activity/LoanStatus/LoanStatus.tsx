@@ -24,6 +24,7 @@ export const LoanStatus = () => {
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
+        console.log('loanInfoRes',loanInfoRes)
         if (loanInfoRes) {
             setLoanInfo(loanInfoRes);
         }
@@ -46,7 +47,9 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
-                                        <p className="LoanStatus--text">{loanInfo.addressName || 'Address not found'} <br /> {loanInfo.countyName}, {loanInfo.stateName}, USA</p>
+                                      { loanInfo.addressName &&
+                                        <p className="LoanStatus--text">{loanInfo.addressName || ''} <br /> {loanInfo.countyName}, {loanInfo.stateName}</p>
+                                      }  
                                     </div>
                                 </div>
                             </li>
@@ -87,12 +90,14 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
-                                        <p className="LoanStatus--text">
-                                            <span className="number-loanAmount">
-                                            <sup>$</sup>
-                                                <span>{loanInfo.amount}</span>
-                                            </span>
-                                        </p>
+                                      { !loanInfo.amount &&
+ <p className="LoanStatus--text">
+ <span className="number-loanAmount">
+ <sup>$</sup>
+     <span>{loanInfo.amount}</span>
+ </span>
+</p>
+                                      } 
                                     </div>
 
 
