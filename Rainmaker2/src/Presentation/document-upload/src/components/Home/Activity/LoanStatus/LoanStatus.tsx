@@ -52,7 +52,7 @@ export const LoanStatus = () => {
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
                                       
-                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} <br /> {loanInfo.cityName}, {loanInfo.stateName+''+loanInfo.zipCode} </p>
+                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
                                       
                                     </div>
                                 </div>
