@@ -10,7 +10,8 @@ import { DocumentsType } from './reducers/documentReducer';
 const httpClient = new Http();
 
 // httpClient.setBaseUrl('http://localhost:5000');
-httpClient.setBaseUrl('https://alphamaingateway.rainsoftfn.com');
+let baseUrl : any = process.env.REACT_APP_API_BASE_URL;
+httpClient.setBaseUrl(baseUrl);
 
 export type InitialStateType = {
     loan: LoanType | {}

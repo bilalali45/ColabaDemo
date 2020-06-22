@@ -7,7 +7,6 @@
                 color: color("primary");
                 font-size: fontSize("nr");
                 font-weight: 500;
-                cursor: pointer;
                 i{
                     margin-right: 5px;
                     font-size: fontSize("nr")+4;
@@ -23,7 +22,6 @@
             color: color("primary");
             font-size: fontSize("nr");
             font-weight: 500;
-            cursor: pointer;
             &:hover {
                 color: color("base");
                 text-decoration: none;

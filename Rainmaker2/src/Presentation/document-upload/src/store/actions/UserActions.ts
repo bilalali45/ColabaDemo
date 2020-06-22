@@ -9,32 +9,50 @@ export class UserActions {
   static async authenticate() {
 
     const credentials = {
-      userName: 'danish',
-      password: 'Rainsoft',
-      employee: true
+      "userName": "pkdunnjr@dunnheat.com",
+      "password": "test123",
+      "employee": false
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);
     if (!res.data.data) {
-      return ''
+      return null
     }
-    let token = res.data.data.token;
-    if (token) {
+    let { token, refreshToken } = res.data.data;
+    if (token && refreshToken) {
       Auth.storeTokenPayload(UserActions.decodeJwt(token));
-      return token;
+      return { token, refreshToken };
+    }
+  }
+
+  static async refreshToken() {
+    let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
+      token: Auth.getAuth(),
+      refreshToken: Auth.getRefreshToken()
+    });
+    if (res.data.token) {
+      Auth.saveAuth(res.data.token);
+      Auth.saveRefreshToken(res.data.refreshToken);
+      Auth.storeTokenPayload(UserActions.decodeJwt(res.data.token));
+      console.log(res);
     }
   }
 
   static decodeJwt(token) {
-    if(token) {
-      let decoded = jwt_decode(token);
-      return decoded;
+    try {
+      if (token) {
+        let decoded = jwt_decode(token);
+        return decoded;
+      }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
   static getUserInfo() {
     let token = Auth.getAuth() || '';
-    if(token) {
+    if (token) {
       let decoded = jwt_decode(token);
       return decoded;
     }

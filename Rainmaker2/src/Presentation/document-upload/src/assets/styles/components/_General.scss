@@ -46,9 +46,13 @@ ul {
 body,
 p {
     font-family: fontFamily("base");
+    color: color('base');
 }
-a:not([href]){
-    cursor: default;
+a{
+    outline: none;
+}
+a[href],a[tabindex]{
+    cursor:pointer;
 }
 .clearfix {
     &::before,
@@ -177,7 +181,7 @@ a:not([href]){
 .list {
     @extend .list-style-none;
     margin: 26px 0;
-    font: #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("base");
+    font:400 #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("base");
     @include media-breakpoint-down(md) {
         font-size: fontSize("nr")-1;
     }
@@ -185,6 +189,8 @@ a:not([href]){
         margin-bottom: 25px;
         position: relative;
         padding-left: 20px;
+        color: color('colorBlack');
+        text-transform: capitalize;
 
         &::before {
             content: "";
@@ -225,7 +231,7 @@ a:not([href]){
             display: inline-block;
             width: 1px;
             height: 20px;
-            background-color: rgba(#000, 0.2);
+            background-color: rgba(color('colorBlack'), 0.2);
             position: absolute;
             top: -3px;
             left: 15px;
@@ -238,4 +244,18 @@ a:not([href]){
     padding-top: 10px;
     padding-bottom: 10px;
     box-shadow: $shadow;
+}
+
+.block-element{
+    display: block !important;
+}
+.loader {
+    text-align: center;
+    height: 100%;
+    box-shadow: $shadow;
+    background: color("colorWhite");
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

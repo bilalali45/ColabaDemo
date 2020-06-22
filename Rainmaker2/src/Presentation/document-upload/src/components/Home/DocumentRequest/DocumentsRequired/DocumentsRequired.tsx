@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
+import { Store } from '../../../../store/store';
+import { isArray } from 'util';
 
 export const DocumentsRequired = () => {
+
+    const { state, dispatch } = useContext(Store);
+    const { pendingDocs }: any = state.documents;
 
     useEffect(() => {
         fetchPendingDocs();
@@ -11,10 +16,40 @@ export const DocumentsRequired = () => {
         DocumentActions.getPendingDocuments('1', '1');
     }
 
+    console.log(state);
+
+    const renderRequiredDocs = () => {
+
+        if (pendingDocs) {
+            console.log('pendingDocs', isArray(pendingDocs));
+            console.log('pendingDocs', pendingDocs);
+            return (
+                <ul>
+                    {
+                        pendingDocs.map((p: any) => {
+                            return (
+                                <li>
+                                    <a className="active"><span> {p.docName}</span></a>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
+            )
+        }
+        return '';
+    }
+
+
     return (
         <div className="dr-list-wrap">
             <nav>
-                <ul>
+
+
+                {
+                    pendingDocs && renderRequiredDocs()
+                }
+                {/* <ul>
                     <li>
                         <a className="active"><span> Bank Statement</span></a>
                     </li>
@@ -80,7 +115,7 @@ export const DocumentsRequired = () => {
                     </li>
 
 
-                </ul>
+                </ul> */}
             </nav>
 
         </div>

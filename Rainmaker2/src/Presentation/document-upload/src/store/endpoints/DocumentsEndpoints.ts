@@ -5,7 +5,6 @@ export class DocumentsEndpoints {
 
         submittedDocuments: (loanApplicationId: string, tenentId: string) => `/api/Documentmanagement/dashboard/GetSubmittedDocuments?=${loanApplicationId}&tenantId=${tenentId}`,
 
-        documentsProgress: (loanApplicationId: string, tenentId: string) => `/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=${loanApplicationId}&tenantId=${tenentId}`
     }
 
     static POST = {

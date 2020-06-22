@@ -5,21 +5,32 @@ export class LoanApplication {
     public propertyType?: string;
     public propertyAddress?: string;
     public loanAmount?: number;
-    public addressName?: string;
+    public countryName?: string;
     public countyName?: string;
+    public cityName?: string;
     public stateName?: string;
+    public streetAddress?: string;
+    public zipCode?: string;
+    public unitNumber?: any
 
-    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, address?: string, county?: string, state?: string) {
+    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street?: string, zipCode?: string, unitNumber?: any) {
         this.loanPurpose = loanPurpose;
         this.propertyType = propertyType;
         this.propertyAddress = propertyAddress;
         this.loanAmount = loanAmount;
-        this.addressName = address;
+        this.countryName = country;
         this.countyName = county;
+        this.cityName = city;
         this.stateName = state;
+        this.streetAddress = street;
+        this.zipCode = zipCode;
+        this.unitNumber = unitNumber;
     }
 
     get amount() {
+        if (!this.loanAmount) {
+            return undefined;
+        }
         return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`
     }
 
@@ -28,9 +39,13 @@ export class LoanApplication {
         this.propertyType = json.propertyType;
         this.propertyAddress = json.propertyAddress;
         this.loanAmount = json.loanAmount;
-        this.addressName = json.addressName;
+        this.countryName = json.countryName;
         this.countyName = json.countyName;
-        this.stateName = json.stateName;
+        this.cityName = json.cityName;
+        this.stateName = json.stateName ? json.stateName : '';
+        this.streetAddress = json.streetAddress;
+        this.zipCode = json.zipCode ? json.zipCode : '';
+        this.unitNumber = json.unitNumber;
         return this;
     }
 
@@ -67,9 +82,9 @@ export class LoanApplication {
         return {
             US: () => {
                 if (amountSplitByPoint[1]) {
-                    return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+                    return `${seperatorAdded}.${amountSplitByPoint[1]}`
                 }
-                return `$${seperatorAdded}`
+                return `${seperatorAdded}`
             },
             BRL: () => `R$${this.addAmountSeperator(strAmount, 'BRL')}`
 

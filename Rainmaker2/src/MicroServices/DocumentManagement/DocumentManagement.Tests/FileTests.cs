@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
@@ -34,7 +36,7 @@ namespace DocumentManagement.Tests
             obj.docId = "1";
             obj.requestId = "1";
             mock.Setup(x => x.Done(It.IsAny<DoneModel>(), It.IsAny<int>())).ReturnsAsync(true);
-            var controller = new FileController(mock.Object, null, null, null,null,null);
+            var controller = new FileController(mock.Object, null, null, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -95,7 +97,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Done(doneModel,1);
+            bool result = await fileService.Done(doneModel, 1);
             //Assert
             Assert.True(result);
         }
@@ -119,7 +121,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Done(doneModel,1);
+            bool result = await fileService.Done(doneModel, 1);
             //Assert
             Assert.False(result);
         }
@@ -188,7 +190,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Rename(fileRenameModel,1);
+            bool result = await fileService.Rename(fileRenameModel, 1);
 
             //Assert
             Assert.True(result);
@@ -210,7 +212,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IFileService fileService = new FileService(mock.Object);
-            bool result = await fileService.Rename(fileRenameModel,1);
+            bool result = await fileService.Rename(fileRenameModel, 1);
 
             //Assert
             Assert.False(result);
@@ -260,7 +262,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
             IFileService fileService = new FileService(mock.Object);
             //Act
-            await fileService.Order(fileOrderModel,1);
+            await fileService.Order(fileOrderModel, 1);
             //Assert
             mockCollection.VerifyAll();
         }
@@ -270,13 +272,13 @@ namespace DocumentManagement.Tests
         [Fact]
         public async Task TestViewController()
         {
-            
+
             Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
             Mock<IFileService> mockfileservice = new Mock<IFileService>();
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            var  mockfileencryptor = new Mock<IFileEncryptor>();
+            var mockfileencryptor = new Mock<IFileEncryptor>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
             mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
             mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
@@ -286,13 +288,13 @@ namespace DocumentManagement.Tests
             fileViewDTO.encryptionAlgorithm = "AES";
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-           
+
             FileViewModel fileViewModel = new FileViewModel();
             fileViewModel.docId = "ddd25d1fe456057652eeb72d";
             fileViewModel.id = "5eb25d1fe519051af2eeb72d";
             fileViewModel.requestId = "abc15d1fe456051af2eeb768";
             fileViewModel.fileId = "5ee9c912264e4c28acf5526e";
-            
+
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -311,7 +313,7 @@ namespace DocumentManagement.Tests
                 BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
             };
             // ACT
-            
+
             handlerMock
                 .Protected()
                 // Setup the PROTECTED method to mock
@@ -348,7 +350,7 @@ namespace DocumentManagement.Tests
                   }).Verifiable(); ;
 
             httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
-            mockfileencryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns( new MemoryStream());
+            mockfileencryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             var httpContext = new Mock<HttpContext>();
@@ -356,11 +358,11 @@ namespace DocumentManagement.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-       
+
             // also check the 'http' call was like we expected it
             // Act  
             FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
-            controller.ControllerContext = context; 
+            controller.ControllerContext = context;
             IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
             //Assert
             Assert.NotNull(result);
@@ -382,7 +384,7 @@ namespace DocumentManagement.Tests
 
 
             List<BsonDocument> list = new List<BsonDocument>()
-            { 
+            {
                 new BsonDocument
                     {
                         //Cover all empty fields
@@ -394,7 +396,7 @@ namespace DocumentManagement.Tests
                         { "contentType" , BsonString.Empty}
                     }
             ,
-                
+
             };
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
@@ -408,7 +410,7 @@ namespace DocumentManagement.Tests
 
             var service = new FileService(mock.Object);
             //Act
-            var  dto = await service.View(fileViewModel, 1);
+            var dto = await service.View(fileViewModel, 1);
             //Assert
             //Assert.NotNull(dto);
             //Assert.Equal(9, dto.Count);
@@ -425,8 +427,178 @@ namespace DocumentManagement.Tests
         [Fact]
         public async Task TestSubmitController()
         {
-        }
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
+            Mock<IFileService> mockfileservice = new Mock<IFileService>();
+            Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
+            Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
+            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            Mock<IFileEncryptor> mockfileencryptor = new Mock<IFileEncryptor>();
+            Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
+            Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
+            Mock<IFormFile> mockformFile = new Mock<IFormFile>();
+            string filePath = Path.GetTempFileName();
+            MemoryStream ms = new MemoryStream();
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+            setting.maxFileSize = 10000;
+            mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
+            mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
+            mockconfiguration.Setup(x => x["File:Algo"]).Returns("Algo");
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var handlerMock2 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+           
+           
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
+            };
+            // ACT
+
+            handlerMock
+                .Protected()
+                // Setup the PROTECTED method to mock
+                .Setup<Task<HttpResponseMessage>>(
+                   "SendAsync",
+                   ItExpr.IsAny<HttpRequestMessage>(),
+                   ItExpr.IsAny<CancellationToken>()
+                )
+                // prepare the expected response of the mocked http call
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.OK,
+
+                    Content = new StringContent("this is the long and strong key."),
+                }).Verifiable();
+            var httpClient1 = new HttpClient(handlerMock1.Object)
+            {
+                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
+            };
+            handlerMock1
+                  .Protected()
+                  // Setup the PROTECTED method to mock
+                  .Setup<Task<HttpResponseMessage>>(
+                     "SendAsync",
+                     ItExpr.IsAny<HttpRequestMessage>(),
+                     ItExpr.IsAny<CancellationToken>()
+                  )
+                  // prepare the expected response of the mocked http call
+                  .ReturnsAsync(new HttpResponseMessage()
+                  {
+                      StatusCode = HttpStatusCode.OK,
+
+                      Content = new StringContent("this is a very long password"),
+                  }).Verifiable(); 
+
+            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
+            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
+            mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+
+
+         
+            // mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>()))
+            //.Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream))
+            //.Verifiable();
+
+
+
+            mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+
+            FileOrderModel model = new FileOrderModel
+            {
+                id = "1",
+                docId = "1",
+                requestId = "1",
+                files = new List<FileNameModel>(),
+                tenantId = 1
+            };
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+          
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
+            controller.ControllerContext = context;
+            string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768"; 
+            string docId = "ddd25d1fe456057652eeb72d"; string order = "0"; 
+            int tenantId = 1;
+            var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
+            FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "application/docx"
+            };
+            List<IFormFile> files = new List<IFormFile>();
+            
+            files.Add(_formFile);
+
+            mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
+            // mockformFile.SetupGet(_ => _.Length).Returns(stream.Length).Verifiable();
+
+            mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
+            mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>())).Verifiable();
+
+
+            order = @"[{ 'fileName': null,'order': 0}]";
+            IActionResult result = await controller.Submit( id,   requestId,  docId,   order, tenantId, files);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+          
 
         }
+        [Fact]
+        public async Task TestSubmitService()
+        {
+            //Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<UpdateResult> mockUpdateResult = new Mock<UpdateResult>();
+         
+            //mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(),
+            //    It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(),
+            //    It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(mockUpdateResult.Object);
+
+            //mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            //IFileService fileService = new FileService(mock.Object);
+            ////Act
+            //await fileService.Order(fileOrderModel, 1);
+            ////Assert
+            //mockCollection.VerifyAll();
+
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+             
+            
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+
+     
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            mockUpdateResult.Setup(_ => _.IsAcknowledged).Returns(true);
+            mockUpdateResult.Setup(_ => _.ModifiedCount).Returns(1);
+
+            IFileService fileService = new FileService(mock.Object);
+            //Act
+
+            string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; 
+            string id = "5eb25d1fe519051af2eeb72d";
+            string requestId = "abc15d1fe456051af2eeb768"; 
+            string docId = "ddd25d1fe456057652eeb72d"; 
+            string clientName = "NET Unit Testing.docx"; string serverName = "99e80b3c-2c09-483c-b85b-bf5d54ad45a0.enc"; int size = 84989; string encryptionKey = "FileKey";
+            string encryptionAlgorithm = ""; int tenantId = 1; int userProfileId = 1;
+            await fileService.Submit( contentType,  id,  requestId,  docId,  clientName,  serverName,  size,  encryptionKey,  encryptionAlgorithm,  tenantId,  userProfileId);
+            //Assert
+            mockCollection.VerifyAll();
+
+        }
+    }
 }
 

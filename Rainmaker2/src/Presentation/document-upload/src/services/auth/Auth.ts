@@ -4,12 +4,23 @@ export class Auth {
         localStorage.setItem('auth', token);
     }
 
-    
+    public static saveRefreshToken(refToken: string) {
+        localStorage.setItem('refreshToken', refToken);
+    }
+
+    public static getRefreshToken() {
+        localStorage.getItem('refreshToken');
+    }
+
+    public static removeRefreshToken() {
+        localStorage.removeItem('refreshToken');
+    }
+
     public static getAuth() {
         return localStorage.getItem('auth');
     }
 
-    public static checkAuth() {
+    public static checkAuth() : boolean | string {
         let auth = localStorage.getItem('auth');
         if (!auth) {
             return false;
@@ -21,7 +32,9 @@ export class Auth {
             if (currentDate <= expiry) {
                 return true;
             } else {
-                return false;
+                return 'token expired'
+                // return false;
+                // Auth.removeAuth();
             }
         }
         return true;
@@ -41,7 +54,14 @@ export class Auth {
 
 
     public static removeAuth() {
-        let items = ['auth', 'loanApplicationId', 'tenantId', 'businessUnitId', 'payload'];
+        let items = [
+            'auth',
+            'loanApplicationId',
+            'tenantId',
+            'businessUnitId',
+            'payload',
+            'refreshToken'
+        ];
         for (const item of items) {
             localStorage.removeItem(item);
         }

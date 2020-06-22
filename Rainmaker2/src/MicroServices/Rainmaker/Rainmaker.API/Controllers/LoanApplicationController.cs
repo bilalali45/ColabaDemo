@@ -41,7 +41,7 @@ namespace Rainmaker.API.Controllers
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
-            if(lo.FirstName==null)
+            if(lo==null || lo.FirstName==null)
             {
                 lo = await loanApplicationService.GetDbaInfo(businessUnitId);
             }
@@ -51,17 +51,22 @@ namespace Rainmaker.API.Controllers
         public async Task<string> GetPhoto(string photo, int businessUnitId)
         {
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
-        
-            var imageData = await ftp.DownloadStream(remoteFilePath);
-
-            if (imageData != null)
+            Stream imageData = null;
+            try
             {
-                using MemoryStream ms = new MemoryStream();
-                imageData.CopyTo(ms);
-                return Convert.ToBase64String(ms.ToArray());
+                imageData = await ftp.DownloadStream(remoteFilePath);
             }
-            else
-                return null;
+            catch
+            {
+            }
+            if (imageData == null)
+            {
+                imageData = new FileStream("Content\\images\\default-LO.jpg", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            }
+            using MemoryStream ms = new MemoryStream();
+            imageData.CopyTo(ms);
+            imageData.Close();
+            return Convert.ToBase64String(ms.ToArray());
         }
     }
 }

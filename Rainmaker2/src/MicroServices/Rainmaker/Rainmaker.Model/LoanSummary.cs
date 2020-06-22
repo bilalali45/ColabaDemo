@@ -12,6 +12,8 @@ namespace Rainmaker.Model
         public string StreetAddress { get; set; }
         public string ZipCode { get; set; }
         public decimal? LoanAmount { get; set; }
+        public string CountryName { get; set; }
+        public string UnitNumber { get; set; }
     }
 
     public class LoanOfficer

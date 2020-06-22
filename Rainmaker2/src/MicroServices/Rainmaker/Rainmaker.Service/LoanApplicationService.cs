@@ -24,7 +24,7 @@ namespace Rainmaker.Service
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId, int userProfileId)
         {
             return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y=>y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact).First().Customer.UserId==userProfileId && x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
-                .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo)
+                .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x=>x.State)
                 .Include(x => x.LoanPurpose)
                 .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLeadBinders).ThenInclude(x=>x.Customer)
                 .Select(x => new LoanSummary{
@@ -33,9 +33,11 @@ namespace Rainmaker.Service
                     LoanAmount = x.LoanAmount,
                     LoanPurpose = x.LoanPurpose.Description,
                     PropertyType = x.PropertyInfo.PropertyType.Description,
-                    StateName = x.PropertyInfo.AddressInfo.StateName,
+                    StateName = (x.PropertyInfo.AddressInfo.StateId==null || x.PropertyInfo.AddressInfo.StateId==0) ? x.PropertyInfo.AddressInfo.StateName : x.PropertyInfo.AddressInfo.State.Abbreviation,
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
-                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode
+                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
+                    CountryName = x.PropertyInfo.AddressInfo.CountryName,
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo
                 }).FirstOrDefaultAsync();
         }
 
@@ -76,17 +78,18 @@ namespace Rainmaker.Service
                 x.Name,
                 x.BusinessUnitPhones.FirstOrDefault().CompanyPhoneInfo.Phone,
                 x.EmailAccount.Email,
-                x.WebUrl
+                x.WebUrl,
+                x.Logo
                 }).FirstOrDefaultAsync();
-            var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
+            //var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
             return new LoanOfficer()
             {
                 Email=businessUnit.Email,
                 FirstName=businessUnit.Name,
                 LastName=string.Empty,
-                NMLS=nmls,
+                NMLS=null,//nmls,
                 Phone=businessUnit.Phone,
-                Photo=null,
+                Photo=businessUnit.Logo,
                 WebUrl=businessUnit.WebUrl
             };
         }
