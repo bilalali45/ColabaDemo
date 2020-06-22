@@ -48,6 +48,9 @@ p {
     font-family: fontFamily("base");
     color: color('base');
 }
+a{
+    outline: none;
+}
 a[href],a[tabindex]{
     cursor:pointer;
 }
@@ -243,4 +246,14 @@ a[href],a[tabindex]{
 
 .block-element{
     display: block !important;
+}
+.loader {
+    text-align: center;
+    height: 100%;
+    box-shadow: $shadow;
+    background: color("colorWhite");
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

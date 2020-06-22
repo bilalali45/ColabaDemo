@@ -3,12 +3,14 @@ import { LaonActions } from '../../../../store/actions/LoanActions';
 import { Store } from '../../../../store/store';
 import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { LoanApplication } from '../../../../entities/Models/LoanApplication';
-
+//import loader from '../../../../assets/images/loader.svg';
 import icon1 from '../../../../assets/images/property-address-icon.svg';
 import icon2 from '../../../../assets/images/property-type-icon.svg';
 import icon3 from '../../../../assets/images/loan-purpose-icon.svg';
 import icon4 from '../../../../assets/images/loan-amount-icon.svg';
 import { Auth } from '../../../../services/auth/Auth';
+import { Loader } from '../../../../shared/Components/Assets/loader';
+
 
 
 
@@ -32,9 +34,9 @@ export const LoanStatus = () => {
         }
     }
 
-    if (!loanInfo) {
-        return <div>...loading...</div>
-    }
+   if (!loanInfo) {
+        return <Loader containerHeight={"80px"}  />
+   }
 
     console.log(loanInfo);
 

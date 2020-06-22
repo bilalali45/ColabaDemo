@@ -7,6 +7,7 @@ import IconEmptyDocRequest from '../../../../assets/images/empty-doc-req-icon.sv
 import { Store } from '../../../../store/store';
 import { DocumentsActionType } from '../../../../store/reducers/documentReducer';
 import { DocumentRequest } from '../../../../entities/Models/DocumentRequest';
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const DocumentsStatus = () => {
 
@@ -63,7 +64,7 @@ export const DocumentsStatus = () => {
     }
 
     if (!pendingDocs) {
-        return <p>...loading...</p>
+        return <Loader containerHeight={"476px"}  />
     }
 
     if (pendingDocs.length == 0) {
