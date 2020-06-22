@@ -1,5 +1,51 @@
-.file-drop-box{
-    height: 425px;
-    width: 100%;
-    border: 1px solid grey;
+.Doc-upload {
+    .Doc-head-wrap {
+        padding-top: 28px;
+        h2 {
+            font: 500 #{fontSize("xmd") + "/1.2"} fontFamily("heading");
+            text-transform: uppercase;
+            color: color("heading");
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        p {
+            font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
+            margin-bottom: 0;
+            i {
+                margin-right: 8px;
+                font-size: fontSize("xmd");
+                color: color("primary");
+            }
+        }
+    }
+    .file-drop-box {
+        height: 425px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .f-dropbox-wrap {
+            .icon-doc-upload {
+                text-align: center;
+            }
+            .chosefileWrap {
+                padding-top: 12px;
+                text-align: center;
+                font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
+                label {
+                    display: inline-block;
+                    cursor: pointer;
+                    span {
+                        color: color("primary");
+                    }
+                }
+                input {
+                    opacity: 0;
+                    height: 0;
+                    width: 0;
+                    visibility: hidden;
+                }
+            }
+        }
+    }
 }

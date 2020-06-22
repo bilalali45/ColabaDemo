@@ -56,22 +56,16 @@ export const ContactUs = ({ }) => {
                 <div className="row">
 
                     <div className="col-md-12 col-lg-6 ContactUs--left">
-                        {/* <div className="row ContactUs--user">
-                                <div className="col-4 ContactUs--user---img">
-                                    <div className="ContactUs--user-image"><img src={ props.userImg } alt="Williams Jack" /></div>
-                                </div>
-    
-                                <div className="col-8 ContactUs--user---detail">
-                                    <h2><a href="">{props.userName}</a> <span className="ContactUs--user-id">ID#{props.userId}</span></h2>
-                                </div>
-                            </div> */}
                         <div className="ContactUs--user">
                             <div className="ContactUs--user---img">
                                 <div className="ContactUs--user-image"><ContactAvatar/></div>
                             </div>
 
                             <div className="ContactUs--user---detail">
-                                <h2><a href="">{loanOfficer.completeName()}</a> <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span></h2>
+                                <h2><a href="">{loanOfficer.completeName()}</a> 
+                               {loanOfficer.nmls &&  <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
+                               }
+                               </h2>
                             </div>
                         </div>
 

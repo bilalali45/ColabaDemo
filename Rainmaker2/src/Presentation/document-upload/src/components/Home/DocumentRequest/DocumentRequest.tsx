@@ -5,7 +5,6 @@ import { DocumentUpload } from './DocumentUpload/DocumentUpload'
 export const DocumentRequest = () => {
     return (
         <main className="dr-upload">
-            <div className="container">
                 <section className="dr-upload--header">
                     <div className="row">
                         <article className="col-sm-12">
@@ -30,10 +29,6 @@ export const DocumentRequest = () => {
                     </div>
 
                 </section>
-
-
-            </div>
-
         </main>
     )
 }

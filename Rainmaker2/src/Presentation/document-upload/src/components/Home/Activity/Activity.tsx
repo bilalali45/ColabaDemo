@@ -10,9 +10,7 @@ export class Activity extends React.Component {
 
     render() {
         return (
-            <div>
-                <section className="page-content">
-                    <div className="container">
+            <section>
                         <div className="row gutter15">
                             <div className="col-md-6">
                                 {/* <LoanStatus /> */}
@@ -24,9 +22,7 @@ export class Activity extends React.Component {
                                 <ContactUs/>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </div>
+            </section>
         );
     }
 }

@@ -46,6 +46,7 @@ ul {
 body,
 p {
     font-family: fontFamily("base");
+    color: color('base');
 }
 a[href],a[tabindex]{
     cursor:pointer;
@@ -238,4 +239,8 @@ a[href],a[tabindex]{
     padding-top: 10px;
     padding-bottom: 10px;
     box-shadow: $shadow;
+}
+
+.block-element{
+    display: block !important;
 }

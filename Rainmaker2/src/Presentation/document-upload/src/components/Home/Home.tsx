@@ -25,14 +25,18 @@ export const Home = () => {
     return (
         <div>
             {!location.pathname.includes('404') && <ActivityHeader />}
-            <Switch>
-                <Redirect exact from={"/"} to={"/activity"} />
-                <Authorized path="/activity" component={Activity} />
-                <Authorized path="/documentsRequest" component={DocumentRequest} />
-                <Authorized path="/uploadedDocuments" component={UploadedDocuments} />
-                <Route path="/404" component={PageNotFound} />
-                <Redirect exact from={"*"} to={"/404"} />
-            </Switch>
+            <main className="page-content">
+                <div className="container">
+                    <Switch>
+                        <Redirect exact from={"/"} to={"/activity"} />
+                        <Authorized path="/activity" component={Activity} />
+                        <Authorized path="/documentsRequest" component={DocumentRequest} />
+                        <Authorized path="/uploadedDocuments" component={UploadedDocuments} />
+                        <Route path="/404" component={PageNotFound} />
+                        <Redirect exact from={"*"} to={"/404"} />
+                    </Switch>
+                </div>
+            </main>
         </div>
     )
 }
