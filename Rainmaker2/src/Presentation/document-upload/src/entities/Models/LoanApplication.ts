@@ -5,22 +5,29 @@ export class LoanApplication {
     public propertyType?: string;
     public propertyAddress?: string;
     public loanAmount?: number;
-    public addressName?: string;
-    public countyName?: string;
-    public stateName?: string;
     public countryName?: string;
+    public countyName?: string;
+    public cityName? : string;
+    public stateName?: string;
+    public streetAddress?: string;
+    public zipCode? : string;
 
-    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, address?: string, county?: string, state?: string, country?: string) {
+    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street? : string, zipCode? : string) {
         this.loanPurpose = loanPurpose;
         this.propertyType = propertyType;
         this.propertyAddress = propertyAddress;
         this.loanAmount = loanAmount;
-        this.addressName = address;
+        this.countryName = country;
         this.countyName = county;
+        this.cityName = city;
         this.stateName = state;
+        this.streetAddress = street;
+        this.zipCode = zipCode;
     }
 
     get amount() {
+        if(!this.loanAmount)
+         return undefined;
         return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`
     }
 
@@ -29,10 +36,12 @@ export class LoanApplication {
         this.propertyType = json.propertyType;
         this.propertyAddress = json.propertyAddress;
         this.loanAmount = json.loanAmount;
-        this.addressName = json.addressName;
-        this.countyName = json.countyName;
         this.countryName = json.countryName;
-        this.stateName = json.stateName;
+        this.countyName = json.countyName;
+        this.cityName = json.cityName;
+        this.stateName = json.stateName ? json.stateName : '';
+        this.streetAddress = json.streetAddress;
+        this.zipCode = json.zipCode ? json.zipCode : '';
         return this;
     }
 

@@ -29,5 +29,15 @@
     <ProjectReference Include="..\Rainmaker.Service\Rainmaker.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Content\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\images\default-LO.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

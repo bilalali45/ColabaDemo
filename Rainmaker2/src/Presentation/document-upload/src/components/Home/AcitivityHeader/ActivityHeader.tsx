@@ -69,8 +69,8 @@ const ActivityHeader = () => {
                                 <div className="col-6">
                                     <ul className="breadcrmubs">
                                         <li>
-                                            
-                                            <a tabIndex={-1} onClick={() => handleNav('left')} ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a>
+                                        <a ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a>
+                                            {/* <a tabIndex={-1} onClick={() => handleNav('left')} ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a> */}
                                         </li>
                                     </ul>
                                 </div>
@@ -78,7 +78,10 @@ const ActivityHeader = () => {
 
                                     <div className="action-doc-upload">
                                         
-                                        <a onClick={() => handleNav('right')} >
+                                        {/* <a onClick={() => handleNav('right')} >
+                                            {rightNav}
+                                        </a> */}
+                                         <a >
                                             {rightNav}
                                         </a>
 
