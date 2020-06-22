@@ -80,13 +80,13 @@ namespace Rainmaker.Service
                 x.WebUrl,
                 x.Logo
                 }).FirstOrDefaultAsync();
-            var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
+            //var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
             return new LoanOfficer()
             {
                 Email=businessUnit.Email,
                 FirstName=businessUnit.Name,
                 LastName=string.Empty,
-                NMLS=nmls,
+                NMLS=null,//nmls,
                 Phone=businessUnit.Phone,
                 Photo=businessUnit.Logo,
                 WebUrl=businessUnit.WebUrl

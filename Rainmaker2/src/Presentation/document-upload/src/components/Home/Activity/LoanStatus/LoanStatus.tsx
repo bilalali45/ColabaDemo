@@ -15,6 +15,7 @@ import { Auth } from '../../../../services/auth/Auth';
 export const LoanStatus = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
+    const { state, dispatch } = useContext(Store);
 
     useEffect(() => {
         if (!loanInfo) {
@@ -24,7 +25,9 @@ export const LoanStatus = () => {
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
+        console.log('loanInfoRes', loanInfoRes)
         if (loanInfoRes) {
+            dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
             setLoanInfo(loanInfoRes);
         }
     }
@@ -32,6 +35,8 @@ export const LoanStatus = () => {
     if (!loanInfo) {
         return <div>...loading...</div>
     }
+
+    console.log(loanInfo);
 
     return (
         <section className="row">
@@ -46,7 +51,9 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
-                                        <p className="LoanStatus--text">{loanInfo.addressName || 'Address not found'} <br /> {loanInfo.countyName}, {loanInfo.stateName}, USA</p>
+                                        {loanInfo.addressName &&
+                                            <p className="LoanStatus--text">{loanInfo.addressName || ''} <br /> {loanInfo.countyName}, {loanInfo.stateName}</p>
+                                        }
                                     </div>
                                 </div>
                             </li>
@@ -87,12 +94,14 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
-                                        <p className="LoanStatus--text">
-                                            <span className="number-loanAmount">
-                                            <sup>$</sup>
-                                                <span>{loanInfo.amount}</span>
-                                            </span>
-                                        </p>
+                                        {!loanInfo.amount &&
+                                            <p className="LoanStatus--text">
+                                                <span className="number-loanAmount">
+                                                    <sup>$</sup>
+                                                    <span>{loanInfo.amount}</span>
+                                                </span>
+                                            </p>
+                                        }
                                     </div>
 
 

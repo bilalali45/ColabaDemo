@@ -9,9 +9,9 @@ export class UserActions {
   static async authenticate() {
 
     const credentials = {
-      userName: 'danish',
-      password: 'Rainsoft',
-      employee: true
+      "userName":"pkdunnjr@dunnheat.com",
+      "password":"test123",
+      "employee":false
     }
 
     let res: any = await http.post(Endpoints.user.POST.authorize(), credentials);

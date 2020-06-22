@@ -8,8 +8,9 @@ export class LoanApplication {
     public addressName?: string;
     public countyName?: string;
     public stateName?: string;
+    public countryName?: string;
 
-    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, address?: string, county?: string, state?: string) {
+    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, address?: string, county?: string, state?: string, country?: string) {
         this.loanPurpose = loanPurpose;
         this.propertyType = propertyType;
         this.propertyAddress = propertyAddress;
@@ -30,6 +31,7 @@ export class LoanApplication {
         this.loanAmount = json.loanAmount;
         this.addressName = json.addressName;
         this.countyName = json.countyName;
+        this.countryName = json.countryName;
         this.stateName = json.stateName;
         return this;
     }
