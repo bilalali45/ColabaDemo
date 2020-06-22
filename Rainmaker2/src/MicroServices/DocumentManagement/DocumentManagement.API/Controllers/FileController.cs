@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -65,6 +66,7 @@ namespace DocumentManagement.API.Controllers
             {
                 if (formFile.Length > 0)
                 {
+
                     if (formFile.Length > setting.maxFileSize)
                         throw new Exception("File size exceeded limit");
                     var filePath = fileEncryptionFactory.GetEncryptor(algo).EncryptFile(formFile.OpenReadStream(),await csResponse.Content.ReadAsStringAsync());
@@ -122,7 +124,8 @@ namespace DocumentManagement.API.Controllers
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId,tenantId=tenantId };
             var httpClient = clientFactory.CreateClient();
-            var fileviewdto = await fileService.View(model,userProfileId);
+
+            var fileviewdto = await fileService.View(model,userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
             Setting setting = await settingService.GetSetting();
             var key = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={config["File:FtpKey"]}");
             if(!key.IsSuccessStatusCode)
