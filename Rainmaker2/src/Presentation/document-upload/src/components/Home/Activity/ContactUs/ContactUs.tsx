@@ -62,7 +62,7 @@ export const ContactUs = ({ }) => {
                             </div>
 
                             <div className="ContactUs--user---detail">
-                                <h2><a href="">{loanOfficer.completeName()}</a> 
+                                <h2><a title={loanOfficer.webUrl} target="_blank" href={loanOfficer.webUrl}>{loanOfficer.completeName()}</a> 
                                {loanOfficer.nmls &&  <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
                                }
                                </h2>
@@ -90,10 +90,10 @@ export const ContactUs = ({ }) => {
                                 </a>
                             </li>
                             <li>
-                                <a title={loanOfficer.webUrl} href={loanOfficer.webUrl} target="_blank">
+                                <a title={loanOfficer.webUrl?.split('/')[2]} href={'http://'+loanOfficer.webUrl?.split('/')[2]} target="_blank">
                                     <span>
                                         <i className="zmdi zmdi-globe-alt"></i>
-                                        <span>www.{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
+                                        <span>{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
                                     </span>
 
                                 </a>

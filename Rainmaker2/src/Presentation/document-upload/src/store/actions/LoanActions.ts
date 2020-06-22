@@ -13,7 +13,7 @@ const http = new Http();
 export const statusText = {
   COMPLETED: 'COMPLETED',
   CURRENT: 'CURRENT STEP',
-  UPCOMMING: 'PUCOMING'
+  UPCOMMING: 'UPCOMING'
 }
 export class LaonActions {
 
