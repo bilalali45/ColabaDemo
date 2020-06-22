@@ -29,37 +29,37 @@ variables:
 - group: SonarCloud-Rainmaker2
 
 jobs:
-- job: SonarCloudCSharp
+# - job: SonarCloudCSharp
   
-  pool:
-    vmImage: 'windows-2019'
+#   pool:
+#     vmImage: 'windows-2019'
 
-  steps:
+#   steps:
 
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: $(sonarCloudServiceEndpoint)
-      organization: $(sonarCloudOrganization)
-      scannerMode: 'MSBuild'
-      projectKey: $(sonarCloudProjectKeyMsBuild)
+#   - task: SonarCloudPrepare@1
+#     inputs:
+#       SonarCloud: $(sonarCloudServiceEndpoint)
+#       organization: $(sonarCloudOrganization)
+#       scannerMode: 'MSBuild'
+#       projectKey: $(sonarCloudProjectKeyMsBuild)
 
-  - task: NuGetCommand@2
-    inputs:
-      command: 'restore'
-      restoreSolution: '$(codeSourceDirectory)/**/*.sln'
-      feedsToUse: 'select'
+#   - task: NuGetCommand@2
+#     inputs:
+#       command: 'restore'
+#       restoreSolution: '$(codeSourceDirectory)/**/*.sln'
+#       feedsToUse: 'select'
 
-  - task: MSBuild@1
-    inputs:
-      solution: '$(codeSourceDirectory)/**/*.sln'
-      msbuildVersion: '16.0'
-      maximumCpuCount: true
+#   - task: MSBuild@1
+#     inputs:
+#       solution: '$(codeSourceDirectory)/**/*.sln'
+#       msbuildVersion: '16.0'
+#       maximumCpuCount: true
 
-  - task: SonarCloudAnalyze@1
+#   - task: SonarCloudAnalyze@1
 
-  - task: SonarCloudPublish@1
-    inputs:
-      pollingTimeoutSec: '300'
+#   - task: SonarCloudPublish@1
+#     inputs:
+#       pollingTimeoutSec: '300'
 
 
 - job: SonarCloudOther
