@@ -22,8 +22,6 @@ schedules:
     always: true
     branches:
       include: 
-      - master
-      - develop
       - dev-*
       - releases/*
 
@@ -50,6 +48,7 @@ jobs:
       command: 'restore'
       restoreSolution: '$(codeSourceDirectory)/**/*.sln'
       feedsToUse: 'select'
+
   - task: MSBuild@1
     inputs:
       solution: '$(codeSourceDirectory)/**/*.sln'
@@ -87,12 +86,9 @@ jobs:
         
         # searches through all files in the repo and tries to find tsconfig.json files. 
         Get-childitem -Recurse -Filter tsconfig.json | foreach-object {
-          # if directory is not an already downloaded package directory (important to speed up pipeline)
-          if ($_.Directory -notlike '*node_modules*'){
-              cd $_.Directory
-              # install typescript in directory
-              npm install typescript
-            }
+            cd $_.Directory
+            # install typescript in directory
+            npm install typescript
          }
         cd $orig_dir
 
@@ -106,8 +102,8 @@ jobs:
       cliSources: $(codeSourceDirectory)
       extraProperties: | 
         # NOTE: this will need to be maintained overtime. There will be js dependencies that we will not want to scan through.
-        sonar.inclusions=**/*.js,**/*.jsx, **/*.ts, **/*.tsx,  **/*.css, **/*.html, **/*.cshtml
-        sonar.exclusions=**/*bootstrap*/**, **/*jquery*/**
+        sonar.inclusions=$(sonarInclusionsFilePathsOther)
+        sonar.exclusions=$(sonarExclusionsFilePathsOther)
 
   - task: SonarCloudAnalyze@1
 
