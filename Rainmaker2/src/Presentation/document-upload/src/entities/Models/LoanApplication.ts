@@ -7,13 +7,13 @@ export class LoanApplication {
     public loanAmount?: number;
     public countryName?: string;
     public countyName?: string;
-    public cityName? : string;
+    public cityName?: string;
     public stateName?: string;
     public streetAddress?: string;
-    public zipCode? : string;
-    public unitNumber? : any
+    public zipCode?: string;
+    public unitNumber?: any
 
-    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street? : string, zipCode? : string, unitNumber? : any) {
+    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street?: string, zipCode?: string, unitNumber?: any) {
         this.loanPurpose = loanPurpose;
         this.propertyType = propertyType;
         this.propertyAddress = propertyAddress;
@@ -28,8 +28,9 @@ export class LoanApplication {
     }
 
     get amount() {
-        if(!this.loanAmount)
-         return undefined;
+        if (!this.loanAmount) {
+            return undefined;
+        }
         return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`
     }
 
