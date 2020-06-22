@@ -15,6 +15,7 @@ import { Auth } from '../../../../services/auth/Auth';
 export const LoanStatus = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
+    const { state, dispatch } = useContext(Store);
 
     useEffect(() => {
         if (!loanInfo) {
@@ -24,8 +25,9 @@ export const LoanStatus = () => {
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
-        console.log('loanInfoRes',loanInfoRes)
+        console.log('loanInfoRes', loanInfoRes)
         if (loanInfoRes) {
+            dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
             setLoanInfo(loanInfoRes);
         }
     }
@@ -33,6 +35,8 @@ export const LoanStatus = () => {
     if (!loanInfo) {
         return <div>...loading...</div>
     }
+
+    console.log(loanInfo);
 
     return (
         <section className="row">

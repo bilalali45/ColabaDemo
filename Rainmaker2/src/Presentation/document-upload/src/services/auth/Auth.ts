@@ -21,6 +21,7 @@ export class Auth {
             if (currentDate <= expiry) {
                 return true;
             } else {
+                Auth.removeAuth()
                 return false;
             }
         }

@@ -77,7 +77,7 @@ export const LoanProgress = () => {
             <Carousel as="div"
                 activeIndex={index}
                 onSelect={handleSelect}
-                touch={true}
+                touch={true} 
                 controls={false}
                 indicators={false}
                 wrap={false}
