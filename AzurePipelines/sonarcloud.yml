@@ -42,6 +42,8 @@ jobs:
       organization: $(sonarCloudOrganization)
       scannerMode: 'MSBuild'
       projectKey: $(sonarCloudProjectKeyMsBuild)
+      extraProperties: | 
+        sonar.log.level=$(sonarCloudCSharpLogLevel)
 
   - task: NuGetCommand@2
     inputs:
@@ -104,6 +106,7 @@ jobs:
         # NOTE: this will need to be maintained overtime. There will be js dependencies that we will not want to scan through.
         sonar.inclusions=$(sonarInclusionsFilePathsOther)
         sonar.exclusions=$(sonarExclusionsFilePathsOther)
+        sonar.log.level=$(sonarCloudOtherLogLevel)
 
   - task: SonarCloudAnalyze@1
 
