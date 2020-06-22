@@ -62,6 +62,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
                 onDragLeave={onDragLeave}
                 onDragOver={ondragover}
                 onDrop={onDrop}>
+                    <div className="empty-d-box-wrap">
                     <div className="f-dropbox-wrap">
                     <div className="icon-doc-upload">
                         <img src={DocUploadIcon} alt="" />
@@ -79,6 +80,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
                     id="inputFile"
                     onChange={(e) => handleChange(e)}
                     multiple />
+                    </div>
                     </div>
                     </div>
             </div>
