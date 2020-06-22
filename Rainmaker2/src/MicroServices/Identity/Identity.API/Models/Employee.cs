@@ -175,7 +175,7 @@ namespace Identity.Models
         public object Branch { get; set; }
 
         [JsonProperty("contact")]
-        public object Contact { get; set; }
+        public Contact Contact { get; set; }
 
         [JsonProperty("emailAccount")]
         public object EmailAccount { get; set; }

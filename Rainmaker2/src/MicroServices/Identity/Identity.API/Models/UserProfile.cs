@@ -98,7 +98,7 @@ namespace Identity.Models
         public List<object> AuthTokens { get; set; }
 
         [JsonProperty("customers")]
-        public List<object> Customers { get; set; }
+        public List<Customer> Customers { get; set; }
 
         [JsonProperty("employees")]
         public List<Employee> Employees { get; set; }
