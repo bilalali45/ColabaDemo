@@ -31,26 +31,36 @@ const App = () => {
     authenticate();
     console.log("Document Management App Version", "0.1.2")
   }, [localStorage])
- 
+
   const authenticate = async () => {
 
+    let isAuth = Auth.checkAuth();
 
-    if (!Auth.checkAuth()) {
+    if (isAuth === 'token expired') {
+      Auth.removeAuth();
+      let res: any = await UserActions.refreshToken();
+      if (res.data.token && res.data.refreshToken) {
+        setAuthenticated(true);
+      }
+      return;
+    }
 
+    if (!isAuth) {
       if (process.env.NODE_ENV === 'development') {
-        let token = await UserActions.authenticate();
-        if (token) {
-          Auth.saveAuth(token);
+        let tokens: any = await UserActions.authenticate();
+        if (tokens.token) {
+          Auth.saveAuth(tokens.refreshToken);
           setAuthenticated(true);
         }
-
       }
-
-      if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-        // debugger
+      
+      if (cookies != undefined && cookies.Rainmaker2Token != undefined && cookies.Rainmaker2RefreshToken != undefined) {
         let token = cookies.Rainmaker2Token;
+        let refreshToken = cookies.Rainmaker2RefreshToken;
+
         Auth.saveAuth(token);
-        Auth.storeTokenPayload(UserActions.decodeJwt(token))
+        Auth.saveRefreshToken(refreshToken);
+        Auth.storeTokenPayload(UserActions.decodeJwt(token));
         setAuthenticated(true);
       }
     } else {

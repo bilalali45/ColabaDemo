@@ -17,18 +17,24 @@ export const LoanStatus = () => {
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
     const { state, dispatch } = useContext(Store);
 
+    const loan : any = state.loan;
+    let info = loan.loanInfo;
     useEffect(() => {
-        if (!loanInfo) {
+        if (!info) {
             fetchLoanStatus();
         }
-    }, [])
+
+        if(info) {
+            setLoanInfo(info);
+        }
+    }, [info])
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
         console.log('loanInfoRes', loanInfoRes)
         if (loanInfoRes) {
             dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
-            setLoanInfo(loanInfoRes);
+            // setLoanInfo(loanInfoRes);
         }
     }
 

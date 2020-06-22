@@ -13,9 +13,9 @@ export const ContactUs = ({ }) => {
 
     const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
     const [lOPhotoSrc, setLOPhotoSrc] = useState<string>();
-    const {state, dispatch} = useContext(Store);
+    const { state, dispatch } = useContext(Store);
 
-    const laon : any = state.loan;
+    const laon: any = state.loan;
     const LO = laon.loanOfficer;
 
     const LOphotoRef: any = useRef();
@@ -25,7 +25,7 @@ export const ContactUs = ({ }) => {
             fetchLoanOfficer();
         }
 
-        if(LO) {
+        if (LO) {
             setLoanOfficer(new ContactUsModal().fromJson(LO));
         }
 
@@ -35,15 +35,14 @@ export const ContactUs = ({ }) => {
         let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
             let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
-            dispatch({type: LoanActionsType.FetchLoanOfficer, payload: loanOfficer});
+            dispatch({ type: LoanActionsType.FetchLoanOfficer, payload: loanOfficer });
             setLOPhotoSrc(src);
         }
     }
 
     const ContactAvatar = () => <img src={`data:image/jpeg;base64,${lOPhotoSrc}`} />
-
     if (!loanOfficer) {
-        return <div>...loading...</div>
+        return null;
     }
 
     return (
@@ -58,14 +57,14 @@ export const ContactUs = ({ }) => {
                     <div className="col-md-12 col-lg-6 ContactUs--left">
                         <div className="ContactUs--user">
                             <div className="ContactUs--user---img">
-                                <div className="ContactUs--user-image"><ContactAvatar/></div>
+                                <div className="ContactUs--user-image"><ContactAvatar /></div>
                             </div>
 
                             <div className="ContactUs--user---detail">
-                                <h2><a title={loanOfficer.webUrl} target="_blank" href={loanOfficer.webUrl}>{loanOfficer.completeName()}</a> 
-                               {loanOfficer.nmls &&  <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
-                               }
-                               </h2>
+                                <h2><a title={loanOfficer.webUrl} target="_blank" href={loanOfficer.webUrl}>{loanOfficer.completeName()}</a>
+                                    {loanOfficer.nmls && <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
+                                    }
+                                </h2>
                             </div>
                         </div>
 
@@ -90,7 +89,7 @@ export const ContactUs = ({ }) => {
                                 </a>
                             </li>
                             <li>
-                                <a title={loanOfficer.webUrl?.split('/')[2]} href={'http://'+loanOfficer.webUrl?.split('/')[2]} target="_blank">
+                                <a title={loanOfficer.webUrl?.split('/')[2]} href={'http://' + loanOfficer.webUrl?.split('/')[2]} target="_blank">
                                     <span>
                                         <i className="zmdi zmdi-globe-alt"></i>
                                         <span>{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
