@@ -41,7 +41,6 @@ export class UserActions {
   static decodeJwt(token) {
     try {
       if (token) {
-        debugger
         let decoded = jwt_decode(token);
         return decoded;
       }

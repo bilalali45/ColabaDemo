@@ -67,14 +67,12 @@ const attachStatus = (data: any) => {
 
 
   data.forEach((l: any, i: number) => {
-    // debugger;
     if (l.isCurrentStep) {
       current = i
     }
   });
 
   return data.map((l: any, i: number) => {
-    // debugger
     if (i < current) {
       l.status = statusText.COMPLETED
     }

@@ -3,13 +3,13 @@ import { LaonActions } from '../../../../store/actions/LoanActions';
 import { Store } from '../../../../store/store';
 import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { LoanApplication } from '../../../../entities/Models/LoanApplication';
-
+//import loader from '../../../../assets/images/loader.svg';
 import icon1 from '../../../../assets/images/property-address-icon.svg';
 import icon2 from '../../../../assets/images/property-type-icon.svg';
 import icon3 from '../../../../assets/images/loan-purpose-icon.svg';
 import icon4 from '../../../../assets/images/loan-amount-icon.svg';
 import { Auth } from '../../../../services/auth/Auth';
-
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 
 export const LoanStatus = () => {
@@ -25,7 +25,7 @@ export const LoanStatus = () => {
         }
 
         if(info) {
-            setLoanInfo(info);
+            setLoanInfo(new LoanApplication().fromJson(info));
         }
     }, [info])
 
@@ -38,10 +38,9 @@ export const LoanStatus = () => {
         }
     }
 
-    if (!loanInfo) {
-        return <div>...loading...</div>
-    }
-
+   if (!loanInfo) {
+        return <Loader containerHeight={"80px"}  />
+   }
     console.log(loanInfo);
 
     return (
@@ -58,7 +57,7 @@ export const LoanStatus = () => {
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
                                       
-                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} <br /> {loanInfo.cityName}, {loanInfo.stateName+''+loanInfo.zipCode} </p>
+                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
                                       
                                     </div>
                                 </div>

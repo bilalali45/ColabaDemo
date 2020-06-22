@@ -21,9 +21,11 @@
     .file-drop-box {
         height: 425px;
         width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        .empty-d-box-wrap{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         .f-dropbox-wrap {
             .icon-doc-upload {
                 text-align: center;
@@ -47,5 +49,70 @@
                 }
             }
         }
+    }
+.list-selected-doc {
+    padding-top: 30px;
+    .doc-list-ul  { 
+      & > li {
+            min-height: 62px;
+            background:color('listhover');
+            box-shadow:0 0 3px  rgba(color('colorBlack'), 0.16); 
+            position: relative;
+            padding: 15px 10px;
+            padding-left: 45px;
+            padding-right: 130px;
+            .doc-icon {
+                position: absolute;
+                left: 10px;
+                width: 25px;
+                height: 33px;
+                top: 15px;
+                
+                i{
+                    font-size:33px;
+                    color: color("primary");
+                }
+            }
+            .doc-list-content {
+                .tilte {
+                    font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
+                    color: color('colorBlack');
+                    input{
+                        display: block;
+                        font-family: inherit;
+                        font-size: inherit;
+                        padding: 0;
+                        border: 1px solid transparent;
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        background: none;
+                        &:focus,&:active{
+                            outline: none;
+                        }
+                    }
+                }
+                .dl-info {
+                    font: 400 #{fontSize("xs")+1 + "/17px"} fontFamily("base");
+                    color: color('gray2');
+                    span {
+                        vertical-align: middle;
+                        // padding-right: 3px;
+                    }
+                }
+            }
+
+            .doc-list-actions {
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                padding: 15px 10px;
+            }
+        }
+    }
+}
+
     }
 }

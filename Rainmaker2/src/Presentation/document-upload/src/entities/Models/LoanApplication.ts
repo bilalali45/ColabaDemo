@@ -7,12 +7,13 @@ export class LoanApplication {
     public loanAmount?: number;
     public countryName?: string;
     public countyName?: string;
-    public cityName? : string;
+    public cityName?: string;
     public stateName?: string;
     public streetAddress?: string;
-    public zipCode? : string;
+    public zipCode?: string;
+    public unitNumber?: any
 
-    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street? : string, zipCode? : string) {
+    constructor(loanPurpose?: string, propertyType?: string, propertyAddress?: string, loanAmount?: number, country?: string, county?: string, city?: string, state?: string, street?: string, zipCode?: string, unitNumber?: any) {
         this.loanPurpose = loanPurpose;
         this.propertyType = propertyType;
         this.propertyAddress = propertyAddress;
@@ -23,11 +24,13 @@ export class LoanApplication {
         this.stateName = state;
         this.streetAddress = street;
         this.zipCode = zipCode;
+        this.unitNumber = unitNumber;
     }
 
     get amount() {
-        if(!this.loanAmount)
-         return undefined;
+        if (!this.loanAmount) {
+            return undefined;
+        }
         return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`
     }
 
@@ -42,6 +45,7 @@ export class LoanApplication {
         this.stateName = json.stateName ? json.stateName : '';
         this.streetAddress = json.streetAddress;
         this.zipCode = json.zipCode ? json.zipCode : '';
+        this.unitNumber = json.unitNumber;
         return this;
     }
 

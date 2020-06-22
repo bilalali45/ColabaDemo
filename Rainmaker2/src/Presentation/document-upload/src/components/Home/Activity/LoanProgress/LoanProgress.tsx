@@ -8,6 +8,7 @@ import Lpstep4 from '../../../../assets/images/lp-step4.svg';
 import Lpstep5 from '../../../../assets/images/lp-step5.svg';
 import { LaonActions,statusText } from '../../../../store/actions/LoanActions';
 import { LoanProgress as LoanProgressModel }  from '../../../../entities/Models/LoanProgress';
+import { Loader } from '../../../../shared/Components/Assets/loader';
 type Props = {
     //userName: string,
 }
@@ -132,7 +133,7 @@ export const LoanProgress = () => {
     }
 
     if(!currentItem){
-        return <></>;
+        return <Loader containerHeight={"308px"} marginBottom={"15px"}  />;  
     }
 
     return (

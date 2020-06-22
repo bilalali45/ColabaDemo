@@ -8,6 +8,7 @@ import { ContactUs as ContactUsModal } from '../../../../entities/Models/Contact
 import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
 import { MaskPhone } from 'rainsoft-js';
 import { Auth } from '../../../../services/auth/Auth';
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const ContactUs = ({ }) => {
 
@@ -42,7 +43,7 @@ export const ContactUs = ({ }) => {
 
     const ContactAvatar = () => <img src={`data:image/jpeg;base64,${lOPhotoSrc}`} />
     if (!loanOfficer) {
-        return null;
+        return <Loader containerHeight={"153px"}  />
     }
 
     return (

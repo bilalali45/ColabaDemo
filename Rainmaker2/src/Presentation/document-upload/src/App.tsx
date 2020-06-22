@@ -49,7 +49,7 @@ const App = () => {
       if (process.env.NODE_ENV === 'development') {
         let tokens: any = await UserActions.authenticate();
         if (tokens.token) {
-          Auth.saveAuth(tokens.refreshToken);
+          Auth.saveAuth(tokens.token);
           setAuthenticated(true);
         }
       }
