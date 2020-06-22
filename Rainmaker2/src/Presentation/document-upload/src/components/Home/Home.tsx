@@ -10,7 +10,7 @@ import ActivityHeader from './AcitivityHeader/ActivityHeader'
 import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
 import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
-import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
+import { DocumentsStatus } from './Activity/DocumentsStatus/DocumentsStatus'
 import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 import { PageNotFound } from '../../shared/Errors/PageNotFound';

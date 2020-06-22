@@ -74,7 +74,7 @@ export const LoanProgress: React.SFC<Props> = (props) => {
             <Carousel as="div"
                 activeIndex={index}
                 onSelect={handleSelect}
-                touch={true}
+                touch={true} 
                 controls={false}
                 indicators={false}
                 wrap={false}

@@ -8,12 +8,12 @@ export enum DocumentsActionType {
 }
 
 export type DocumentsType = {
-    pendingDocs: DocumentRequest | null,
+    pendingDocs: DocumentRequest[] | null,
 }
 
 
 type DocumentsActionPayload = {
-    [DocumentsActionType.FetchPendingDocs] : DocumentsType,
+    [DocumentsActionType.FetchPendingDocs] : DocumentRequest[],
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
@@ -23,7 +23,7 @@ export const documentsReducer = (state: DocumentsType | {}, {type, payload} : Ac
         case DocumentsActionType.FetchPendingDocs:
             return {
                 ...state,
-                pendingDocs: {...payload}
+                pendingDocs: payload
             };
     
         // case DocumentsActionType.FetchSubmittedDocs:

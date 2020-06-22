@@ -14,10 +14,13 @@ export class LaonActions {
   static async getLoanOfficer(loanApplicationId: string, businessUnitId: string) {
     try {
       let res: AxiosResponse<ContactUs> = await http.get<ContactUs>(Endpoints.loan.GET.officer(loanApplicationId, businessUnitId));
-
+      console.log('res.data', res.data);
       return new ContactUs().fromJson(res.data);
     } catch (error) {
-
+      if(error.response.data.errors.loanApplicationId.length) {
+        alert('The Loan Application ID provided does not exist');
+      }
+      console.log(error.response);
     }
   }
 

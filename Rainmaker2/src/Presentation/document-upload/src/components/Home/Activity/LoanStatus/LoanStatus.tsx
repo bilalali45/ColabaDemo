@@ -15,6 +15,7 @@ import { Auth } from '../../../../services/auth/Auth';
 export const LoanStatus = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
+    const { state, dispatch } = useContext(Store);
 
     useEffect(() => {
         if (!loanInfo) {
@@ -25,6 +26,7 @@ export const LoanStatus = () => {
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
         if (loanInfoRes) {
+            dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
             setLoanInfo(loanInfoRes);
         }
     }
@@ -32,6 +34,8 @@ export const LoanStatus = () => {
     if (!loanInfo) {
         return <div>...loading...</div>
     }
+
+    console.log(loanInfo);
 
     return (
         <section className="row">
@@ -89,7 +93,7 @@ export const LoanStatus = () => {
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
                                         <p className="LoanStatus--text">
                                             <span className="number-loanAmount">
-                                            <sup>$</sup>
+                                                <sup>$</sup>
                                                 <span>{loanInfo.amount}</span>
                                             </span>
                                         </p>
