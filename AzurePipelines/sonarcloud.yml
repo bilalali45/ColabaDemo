@@ -30,8 +30,7 @@ variables:
 
 jobs:
 # - job: SonarCloudCSharp
-  
-<<<<<<< HEAD
+
 #   pool:
 #     vmImage: 'windows-2019'
 
@@ -61,40 +60,6 @@ jobs:
 #   - task: SonarCloudPublish@1
 #     inputs:
 #       pollingTimeoutSec: '300'
-=======
-  pool:
-    vmImage: 'windows-2019'
-
-  steps:
-
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: $(sonarCloudServiceEndpoint)
-      organization: $(sonarCloudOrganization)
-      scannerMode: 'MSBuild'
-      projectKey: $(sonarCloudProjectKeyMsBuild)
-      extraProperties: | 
-        sonar.log.level=$(sonarCloudCSharpLogLevel)
-
-  - task: NuGetCommand@2
-    inputs:
-      command: 'restore'
-      restoreSolution: '$(codeSourceDirectory)/**/*.sln'
-      feedsToUse: 'select'
-
-  - task: MSBuild@1
-    inputs:
-      solution: '$(codeSourceDirectory)/**/*.sln'
-      msbuildVersion: '16.0'
-      maximumCpuCount: true
-
-  - task: SonarCloudAnalyze@1
-
-  - task: SonarCloudPublish@1
-    inputs:
-      pollingTimeoutSec: '300'
->>>>>>> ee553758bb99153c8b4fcd1987ac9535f5580826
-
 
 - job: SonarCloudOther
   # Publish Code Analysis from SonarQube for non .CS files.
