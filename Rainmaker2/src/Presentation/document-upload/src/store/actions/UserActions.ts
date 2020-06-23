@@ -28,6 +28,7 @@ export class UserActions {
   }
 
   static async refreshToken() {
+    console.log('in refresh token called');
     let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
       token: Auth.getAuth(),
       refreshToken: Auth.getRefreshToken()
@@ -37,18 +38,18 @@ export class UserActions {
     if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
       Auth.saveAuth(res.data.data.token);
       Auth.saveRefreshToken(res.data.data.refreshToken);
-      Auth.storeTokenPayload(UserActions.decodeJwt(res.data.data.token));
+      let payload = UserActions.decodeJwt(res.data.data.token);
+      Auth.storeTokenPayload(payload);
+      UserActions.addExpiryListener(payload);
+
       return true;
     }
     return false;
   }
 
   static async authorize() {
-
     let isAuth = Auth.checkAuth();
-
     if (isAuth === 'token expired') {
-      console.log('in token expired akldsjfkdfj');
       let res: any = await UserActions.refreshToken();
       if (res) {
         return true;
@@ -87,18 +88,16 @@ export class UserActions {
   }
 
   static addExpiryListener(payload) {
+    console.log('in listener added');
     let expiry = payload.exp;
     let currentTime = new Date(Date.now());
     let expiryTime = new Date(expiry * 1000);
     let time = expiryTime.getMinutes() - currentTime.getMinutes();
-    if(time < 1) {
-      return;
-    }
-    let t = time * 3 * 1000;
+    let t = time * 1000 * 60;
+    console.log('time', t);
     setTimeout(async () => {
       console.log('in set time out', time);
       await UserActions.refreshToken();
-    
     }, t);
   }
 

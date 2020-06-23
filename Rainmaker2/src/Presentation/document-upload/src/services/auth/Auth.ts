@@ -5,12 +5,10 @@ import { cursorTo } from "readline";
 export class Auth {
 
     public static saveAuth(token: string) {
-        debugger;
         localStorage.setItem('auth', token);
     }
 
     public static saveRefreshToken(refToken: string) {
-        debugger;
         localStorage.setItem('refreshToken', refToken);
     }
 
