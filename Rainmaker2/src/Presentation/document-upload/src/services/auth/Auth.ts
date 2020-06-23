@@ -1,3 +1,8 @@
+import { UserActions } from "../../store/actions/UserActions";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 export class Auth {
 
     public static saveAuth(token: string) {
@@ -20,7 +25,7 @@ export class Auth {
         return localStorage.getItem('auth');
     }
 
-    public static checkAuth() : boolean | string {
+    public static checkAuth(): boolean | string {
         let auth = localStorage.getItem('auth');
         if (!auth) {
             return false;
@@ -38,6 +43,49 @@ export class Auth {
             }
         }
         return true;
+    }
+
+    static async authenticate() {
+
+        let isAuth = Auth.checkAuth();
+
+        if (isAuth === 'token expired') {
+            console.log('in token expired akldsjfkdfj');
+            let res: any = await UserActions.refreshToken();
+            if (res.data.token && res.data.refreshToken) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        if (!isAuth) {
+
+            if (process.env.NODE_ENV === 'development') {
+                let tokens: any = await UserActions.authenticate();
+                if (tokens.token) {
+                    Auth.saveAuth(tokens.token);
+                    Auth.saveRefreshToken(tokens.refreshToken);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            let Rainmaker2Token = cookies.get('Rainmaker2Token');
+            let Rainmaker2RefreshToken = cookies.get('Rainmaker2RefreshToken');
+
+            if (Rainmaker2Token && Rainmaker2RefreshToken) {
+                Auth.saveAuth(Rainmaker2Token);
+                Auth.saveRefreshToken(Rainmaker2RefreshToken);
+                return true;
+            }else {
+                return false;
+            }
+
+        } else {
+            return true;
+        }
     }
 
     static storeTokenPayload(payload) {

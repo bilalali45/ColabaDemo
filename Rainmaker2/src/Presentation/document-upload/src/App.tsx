@@ -12,7 +12,6 @@ import { UserActions } from './store/actions/UserActions';
 import ImageAssets from './utils/image_assets/ImageAssets';
 import { ParamsService } from './utils/ParamsService';
 import { Auth } from './services/auth/Auth';
-import { useCookies } from 'react-cookie';
 import { Authorized } from './shared/Components/Authorized/Authorized';
 import { FooterContents } from './utils/header_footer_utils/FooterContent';
 import HeaderContent from './utils/header_footer_utils/HeaderContent';
@@ -20,7 +19,7 @@ import HeaderContent from './utils/header_footer_utils/HeaderContent';
 const App = () => {
 
   const currentyear = new Date().getFullYear();
-  const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
+  // const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   const tokenData: any = UserActions.getUserInfo();
@@ -28,50 +27,18 @@ const App = () => {
 
   // setCookie('Rainmaker2Token', Auth.checkAuth());
   useEffect(() => {
+    
+    // console.log(Cookies.get('Rainmaker2Token'))
+    console.log("Document Management App Version", "0.1.2");
     authenticate();
-    console.log("Document Management App Version", "0.1.2")
+    UserActions.getUserInfo();
+    ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
   }, [localStorage])
 
   const authenticate = async () => {
-
-    let isAuth = Auth.checkAuth();
-
-    if (isAuth === 'token expired') {
-      Auth.removeAuth();
-      let res: any = await UserActions.refreshToken();
-      if (res.data.token && res.data.refreshToken) {
-        setAuthenticated(true);
-      }
-      return;
-    }
-
-    if (!isAuth) {
-      if (process.env.NODE_ENV === 'development') {
-        let tokens: any = await UserActions.authenticate();
-        if (tokens.token) {
-          Auth.saveAuth(tokens.token);
-          setAuthenticated(true);
-        }
-      }
-      
-      if (cookies != undefined && cookies.Rainmaker2Token != undefined && cookies.Rainmaker2RefreshToken != undefined) {
-        let token = cookies.Rainmaker2Token;
-        let refreshToken = cookies.Rainmaker2RefreshToken;
-
-        Auth.saveAuth(token);
-        Auth.saveRefreshToken(refreshToken);
-        Auth.storeTokenPayload(UserActions.decodeJwt(token));
-        setAuthenticated(true);
-      }
-    } else {
-      setAuthenticated(true);
-    }
+    let isAuth = await Auth.authenticate();
+    setAuthenticated(Boolean(isAuth));
   }
-
-  UserActions.getUserInfo();
-
-
-  ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
 
   if (!authenticated) {
     return <></>

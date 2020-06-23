@@ -1,7 +1,8 @@
-import { Http } from "../../services/http/Http";
+
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import jwt_decode from "jwt-decode";
+import { Http } from "../../services/http/Http";
 
 const http = new Http();
 

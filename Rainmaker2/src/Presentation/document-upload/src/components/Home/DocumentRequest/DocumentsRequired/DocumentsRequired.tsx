@@ -2,6 +2,9 @@ import React, { useEffect, useContext } from 'react'
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import { Store } from '../../../../store/store';
 import { isArray } from 'util';
+import { Auth } from '../../../../services/auth/Auth';
+import { DocumentsActionType } from '../../../../store/reducers/documentReducer';
+import { DocumentRequest } from '../../../../entities/Models/DocumentRequest';
 
 export const DocumentsRequired = () => {
 
@@ -13,23 +16,28 @@ export const DocumentsRequired = () => {
     }, [])
 
     const fetchPendingDocs = async () => {
-        DocumentActions.getPendingDocuments('1', '1');
+        if (!pendingDocs) {
+            let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+            dispatch({type: DocumentsActionType.FetchPendingDocs, payload: docs});
+        }
     }
 
     console.log(state);
 
+    const changeCurrentDoc = (curDoc: DocumentRequest) => {
+        dispatch({type: DocumentsActionType.SetCurrentDoc, payload: curDoc})
+    }
+
     const renderRequiredDocs = () => {
 
         if (pendingDocs) {
-            console.log('pendingDocs', isArray(pendingDocs));
-            console.log('pendingDocs', pendingDocs);
             return (
                 <ul>
                     {
-                        pendingDocs.map((p: any) => {
+                        pendingDocs.map((pd: DocumentRequest) => {
                             return (
-                                <li>
-                                    <a className="active"><span> {p.docName}</span></a>
+                                <li onClick={() => changeCurrentDoc(pd)}>
+                                    <a className="active"><span> {pd.docName}</span></a>
                                 </li>
                             )
                         })
@@ -49,73 +57,6 @@ export const DocumentsRequired = () => {
                 {
                     pendingDocs && renderRequiredDocs()
                 }
-                {/* <ul>
-                    <li>
-                        <a className="active"><span> Bank Statement</span></a>
-                    </li>
-                    <li>
-                        <a> <span> W-2s 2017</span></a>
-                    </li>
-                    <li>
-                        <a>  <span>W-2s 2018</span></a>
-                    </li>
-                    <li>
-                        <a> <span> Personal Tax Returns</span></a>
-                    </li>
-                    <li>
-                        <a>
-                            <span> Alimony Income Verification</span></a>
-                    </li>
-                    <li>
-                        <a> <span> Home Insurance</span></a>
-                    </li>
-                    <li>
-                        <a> <span> W-2s 2018</span></a>
-                    </li>
-                    <li>
-                        <a>  <span>Personal Tax Returns</span></a>
-                    </li>
-                    <li>
-                        <a> <span> W-2s 2017</span></a>
-                    </li>
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-                    <li>
-                        <a> <span>Alimony Income Verification</span></a>
-                    </li>
-
-
-                </ul> */}
             </nav>
 
         </div>

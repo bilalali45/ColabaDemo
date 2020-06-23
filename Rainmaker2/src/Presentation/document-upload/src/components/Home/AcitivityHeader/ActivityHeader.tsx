@@ -67,26 +67,26 @@ console.log('props',props)
                                 <div className="col-6">
                                     <ul className="breadcrmubs">
                                         <li>
-                                        {/* <Link to={{
+                                        <Link to={{
                                                 pathname: leftNavUrl,
                                                 state: { from: location.pathname }
-                                            }}><i className="zmdi zmdi-arrow-left"></i>{leftNav}</Link> */}
+                                            }}><i className="zmdi zmdi-arrow-left"></i>{leftNav}</Link>
                                        
-                                            <a  ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a>
+                                            {/* <a  ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a> */}
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                        
+{/*                                         
                                         <a >
                                             {rightNav}
-                                        </a>
-                                         {/* <Link to={{
+                                        </a> */}
+                                         <Link to={{
                                                 pathname: rightNavUrl,
                                                 state: { from: location.pathname }
-                                            }}>{rightNav}</Link> */}
+                                            }}>{rightNav}</Link>
 
                                     </div>
 

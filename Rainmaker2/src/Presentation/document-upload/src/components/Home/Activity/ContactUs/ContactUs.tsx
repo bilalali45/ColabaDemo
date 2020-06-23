@@ -18,7 +18,7 @@ export const ContactUs = ({ }) => {
 
     const laon: any = state.loan;
     const LO = laon.loanOfficer;
-
+    const LOImage = laon.loImage;
     const LOphotoRef: any = useRef();
 
     useEffect(() => {
@@ -37,15 +37,17 @@ export const ContactUs = ({ }) => {
         if (loanOfficer) {
             let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
             dispatch({ type: LoanActionsType.FetchLoanOfficer, payload: loanOfficer });
-            setLOPhotoSrc(src);
+            dispatch({type: LoanActionsType.FetchLOImage, payload: {src}});
+            // setLOPhotoSrc(src);
         }
     }
 
-    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${lOPhotoSrc}`} />
     if (!loanOfficer) {
         return <Loader containerHeight={"153px"}  />
     }
-
+    console.log(state, 'LOImage', LOImage);
+    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${LOImage.src}`} />
+    
     return (
         <div className="ContactUs box-wrap">
             <div className="box-wrap--header">
