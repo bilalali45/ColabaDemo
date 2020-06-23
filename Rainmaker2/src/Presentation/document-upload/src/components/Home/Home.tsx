@@ -1,5 +1,4 @@
 import React, { useEffect, useState, Component } from 'react'
-import { useCookies } from 'react-cookie';
 import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'

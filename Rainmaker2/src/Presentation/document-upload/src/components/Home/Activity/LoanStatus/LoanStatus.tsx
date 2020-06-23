@@ -31,7 +31,6 @@ export const LoanStatus = () => {
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
-        console.log('loanInfoRes', loanInfoRes)
         if (loanInfoRes) {
             dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
             // setLoanInfo(loanInfoRes);
@@ -41,7 +40,6 @@ export const LoanStatus = () => {
    if (!loanInfo) {
         return <Loader containerHeight={"80px"}  />
    }
-    console.log(loanInfo);
 
     return (
         <section className="row">
