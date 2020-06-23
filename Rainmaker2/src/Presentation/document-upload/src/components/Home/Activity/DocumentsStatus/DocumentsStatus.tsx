@@ -68,7 +68,7 @@ export const DocumentsStatus = () => {
     }
 
     if (pendingDocs.length == 0) {
-        renderNoPendingDocs();
+        return renderNoPendingDocs();
     }
 
     return (

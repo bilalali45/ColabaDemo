@@ -49,7 +49,7 @@ export const LoanStatus = () => {
                 <div className="LoanStatus nbox-wrap">
                     <div className="nbox-wrap--body">
                         <ul className="row ls-wrap">
-                            <li className="col-sm-3 ls-box">
+                            <li className="col-sm-3- ls-box ls-box-add">
                                 <div className="i-wrap">
                                     <div className="icon-wrap">
                                         <img src={icon1} alt="" />
@@ -57,12 +57,12 @@ export const LoanStatus = () => {
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
                                       
-                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
+                                        <p className="LoanStatus--text add-txt">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
                                       
                                     </div>
                                 </div>
                             </li>
-                            <li className="col-sm-3 ls-box">
+                            <li className="col-sm-3- ls-box ls-box-p-type">
                                 <div className="i-wrap">
                                     <div className="icon-wrap">
                                         <img src={icon2} alt="" />
@@ -77,7 +77,7 @@ export const LoanStatus = () => {
 
                                 </div>
                             </li>
-                            <li className="col-sm-3 ls-box">
+                            <li className="col-sm-3- ls-box ls-box-l-p">
                                 <div className="i-wrap">
                                     <div className="icon-wrap">
                                         <img src={icon3} alt="" />
@@ -92,7 +92,7 @@ export const LoanStatus = () => {
 
                                 </div>
                             </li>
-                            <li className="col-sm-3 ls-box">
+                            <li className="col-sm-3- ls-box ls-box-l-a">
                                 <div className="i-wrap">
                                     <div className="icon-wrap">
                                         <img src={icon4} alt="" />
