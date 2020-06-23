@@ -109,6 +109,9 @@
                 top: 0;
                 height: 100%;
                 padding: 15px 10px;
+                .doc-rename-btn {
+                    font: 400 #{fontSize("xs") + "/1"} fontFamily("base"); 
+                }
             }
         }
     }

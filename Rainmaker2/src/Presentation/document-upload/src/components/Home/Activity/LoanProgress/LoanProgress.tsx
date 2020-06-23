@@ -63,7 +63,6 @@ export const LoanProgress = () => {
         let applicationId = localStorage.getItem('loanApplicationId');
         let tenantId = localStorage.getItem('tenantId');
         let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(applicationId ? applicationId : '1', tenantId ? tenantId : '1')
-        console.log('loanProgress',loanProgress)
         if (loanProgress) {
             setLoanProgress(loanProgress);
         }

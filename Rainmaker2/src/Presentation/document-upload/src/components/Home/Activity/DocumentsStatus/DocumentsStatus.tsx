@@ -11,11 +11,12 @@ import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const DocumentsStatus = () => {
 
-    const [pendingDocs, setPendingDocs] = useState<DocumentRequest[] | null>(null)
+    // const [pendingDocs, setPendingDocs] = useState<DocumentRequest[] | null>(null)
     const { state, dispatch } = useContext(Store);
-
+    
     const history = useHistory();
 
+    const {pendingDocs} : any = state.documents;
 
     useEffect(() => {
 
@@ -25,7 +26,7 @@ export const DocumentsStatus = () => {
     }, []);
 
     const getStarted = () => {
-        history.push('/documentsRequest');
+    history.push('/documentsRequest');
     }
 
     const fetchPendingDocs = async () => {
@@ -33,7 +34,7 @@ export const DocumentsStatus = () => {
         let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
         if (docsPending) {
             dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docsPending });
-            setPendingDocs(docsPending);
+            // setPendingDocs(docsPending);
         }
     }
 
@@ -68,7 +69,7 @@ export const DocumentsStatus = () => {
     }
 
     if (pendingDocs.length == 0) {
-        renderNoPendingDocs();
+        return renderNoPendingDocs();
     }
 
     return (

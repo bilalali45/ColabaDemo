@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @types/react-file-viewer
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @typesreact-cookie
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Danish Iqbal\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\Git\cmd;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\Danish Iqbal\AppData\Local\Microsoft\WindowsApps;C:\Users\Danish Iqbal\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Users\Danish Iqbal\AppData\Roaming\npm;C:\Users\Danish Iqbal\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Danish Iqbal\AppData\Local\Yarn\bin;C:\Users\Danish Iqbal\AppData\Local\Programs\Fiddler
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-file-viewer: Not found
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66096:18)
+  Error: https://registry.yarnpkg.com/@typesreact-cookie: Request "https://registry.yarnpkg.com/@typesreact-cookie" returned a 405
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66105:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140748:22)
       at Request.emit (events.js:310:20)
       at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141720:10)
@@ -28,8 +28,8 @@ Trace:
 
 npm manifest: 
   {
-    "name": "ttrust",
-    "version": "0.1.0",
+    "name": "documentmanagement",
+    "version": "0.1.2",
     "private": true,
     "homepage": "./",
     "dependencies": {
@@ -50,17 +50,17 @@ npm manifest:
       "jwt-decode": "^2.2.0",
       "node-sass": "^4.14.1",
       "rainsoft-js": "^1.0.11",
-      "rainsoft-rc": "^1.0.5",
+      "rainsoft-rc": "^1.0.6",
       "react": "^16.13.1",
       "react-bootstrap": "^1.0.1",
       "react-cookie": "^4.0.3",
       "react-dom": "^16.13.1",
+      "react-file-viewer": "^1.2.1",
       "react-pdf": "^4.1.0",
       "react-router-dom": "^5.2.0",
       "react-scripts": "3.4.1",
       "serve": "^11.3.2",
-      "typescript": "^3.1.1",
-      "react-file-viewer": "^1.2.1"
+      "typescript": "^3.1.1"
     },
     "scripts": {
       "start": "react-scripts start",
@@ -9504,10 +9504,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.11.tgz#f5de915b8eeca155a29871596fb679b3b1af80df"
     integrity sha512-H1yZ4wUAWMkj/BBSzIe2d1RAbdKv6/2Tc83QY3+momYd5klefUjK/qL/Q9tS3gHzf1Zwlw9qSyP1li9yoBLxYw==
   
-  rainsoft-rc@^1.0.5:
-    version "1.0.5"
-    resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.5.tgz#7b4160d1b40a1cdb19621bd27b485310b5fcd472"
-    integrity sha512-MZWS6XW/P3PGiFbcplxdokSHO7fx6P1Mebd4BnfV3I89/WFg3MDbNsqw8Y3Wf9Vn91bHOWRL7tF7LriQeZ7cUw==
+  rainsoft-rc@^1.0.6:
+    version "1.0.6"
+    resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.6.tgz#019bbeed546ba471b632ca86571b8b7a62bcf534"
+    integrity sha512-rp77Wp4PGSdcOEGeyqQYCo6P8Ui8t7GQH5/EjYzImfXepVcV+y8mBJaq414SGFypsW047Mt47Y0vLtL0fLHJyA==
     dependencies:
       node-sass "^4.14.1"
       react-bootstrap "^1.0.1"
