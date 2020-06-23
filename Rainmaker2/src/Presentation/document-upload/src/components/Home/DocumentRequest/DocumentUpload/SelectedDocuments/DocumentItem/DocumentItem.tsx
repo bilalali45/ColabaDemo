@@ -7,10 +7,10 @@ type DocumentItemType = {
 }
 export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType) => {
     // export const DocumentItem = () => {
-        const [filename,setfilename] = useState<string>("");
-        useEffect(() => {
-            setfilename(file.name);
-        })
+        const [filename,setfilename] = useState<string>(file.name);
+        // useEffect(() => {
+        //     setfilename(file.name);
+        // })
     return (
         <li className="doc-li">
             {/* <div className="editableview"></div>
@@ -24,7 +24,10 @@ export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType
               </div>
               <div className="doc-list-content">
                 <div className="tilte">
-                <input type="text" value={filename}  onChange={(e) => changeName(file, e.target.value)}/>
+                <input type="text" value={filename}  onChange={(e) => {
+                    setfilename(e.target.value);
+                    changeName(file, e.target.value);
+                }}/>
                 
                 {/* <p>{file.name}</p> */}
                 </div>
@@ -39,7 +42,7 @@ export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType
                 <div className="doc-list-actions">
                     <ul>
                         <li>
-                            <button className="btn btn-primary">save</button>
+                            <button className="btn btn-primary doc-rename-btn">save</button>
                         </li>
                     </ul>
                 </div>

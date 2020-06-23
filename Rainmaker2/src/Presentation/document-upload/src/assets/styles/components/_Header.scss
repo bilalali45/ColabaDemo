@@ -64,6 +64,25 @@
             }
 
         }
+        .dropdown-menu {
+
+        border-radius: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+        .dropdown-item {
+            border-bottom: 1px solid color('border');
+            font: 400 #{fontSize("md")+"/1.3"} fontFamily("base");
+            padding-top: 10px;
+            padding-bottom: 10px;
+            &:first-child{
+                padding-top: 10px;
+            }
+            &:last-child{
+                border-bottom: 0px solid color('border'); 
+            }
+           
+        }
+    }
     }
 }
     .d-name {

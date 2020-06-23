@@ -434,8 +434,117 @@ namespace DocumentManagement.Tests
         }
 
         [Fact]
-        public async Task TestGetDashboardStatusService()
+        public async Task TestGetDashboardStatusServiceTrue()
         { 
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
+            Mock<IAsyncCursor<StatusList>> mockCursor = new Mock<IAsyncCursor<StatusList>>();
+            Mock<IMongoCollection<LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<LoanApplication>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor1 = new Mock<IAsyncCursor<BsonDocument>>();
+            
+            List<StatusList> list = new List<StatusList>()
+            {
+                new StatusList()
+                {
+                    id="5ee86503305e33a11c51ebbc",
+                    name="Fill out application",
+                    description="Tell us about yourself and your financial situation so we can find loan options for you",
+                    order=3
+                }
+            };
+
+            List<BsonDocument> listLoanApplication = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {       //cover all field
+                        { "id" , "5eb25d1fe519051af2eeb72d" },
+                        { "customerId" , 1275},
+                        { "tenantId" , 1 },
+                        { "loanApplicationId" ,1},
+                         { "status" ,  "5ee86503305e33a11c51ebbc" },
+                       { "requests",new BsonArray {
+
+                               new BsonDocument {
+                                { "id","abc15d1fe456051af2eeb768" },
+                                { "employeeId", 1234},
+                                { "createdOn", "2020-06-17T08:00:00.000"},
+                                { "status", "requested" },
+                                { "message", "Dear John, please send following documents." } ,
+
+                                { "documents",   new BsonArray {
+                                  new BsonDocument  {
+                                {"id" , "ddd25d1fe456057652eeb72d"},
+                                { "typeId" , 1},
+                                { "displayName" , "W2 2016"},
+                                { "message" ,  "please upload salary slip for year 2016"},
+                                { "status",  "requested"},
+                                { "files" ,new BsonArray {
+                                  new BsonDocument {
+                                  {"id" ,"5ee76ed6c766b54188e807a0"},
+                                  { "clientName" , "SSL enable in mongodb"},
+                                  { "serverName", "ccb09149-a9fb-4af0-a0dd-e7daa753cb0b.enc"},
+                                  { "fileUploadedOn" ,  "2020-06-17T08:06:23.338Z"},
+                                  { "size" , 854},
+                                  {"encryptionKey" , "FileKey"},
+                                  { "encryptionAlgorithm" , "AES"},
+                                  { "order" , 3},
+                                  {"mcuName" , ""},
+                                  {"contentType" , "application/octet-stream"},
+                                  {"status" , "submitted"}
+                                                 }
+                                                         }
+                                 }
+                                                      }
+                                }
+
+                }
+                       }}}
+                    }
+                ,
+                new BsonDocument
+                 { 
+                        //cover all field except loanApplicationId
+                         { "id" ,BsonString.Empty},
+                        { "customerId" , BsonString.Empty},
+                        { "tenantId" ,  BsonString.Empty },
+                        { "loanApplicationId" , BsonString.Empty },
+                        { "requests" , BsonArray.Create(new Request[]{ }) },
+                        { "status" ,  BsonString.Empty}
+
+                 }
+                };
+         
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(true);
+            mockCursor1.SetupGet(x => x.Current).Returns(listLoanApplication);
+
+            mockCollectionStatusList.Setup(x => x.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty, It.IsAny<FindOptions<StatusList, StatusList>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor.Object);
+            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
+
+            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(true);
+
+            mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
+            mockdb.Setup(x => x.GetCollection<LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+           
+            var service = new DashboardService(mock.Object);
+            //Act
+            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1,1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Single(dto);
+            Assert.Equal(3,dto[0].order);
+
+        }
+
+        [Fact]
+        public async Task TestGetDashboardStatusServiceFalse()
+        {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
@@ -516,38 +625,31 @@ namespace DocumentManagement.Tests
 
                  }
                 };
-         
+
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false);
             mockCursor1.SetupGet(x => x.Current).Returns(listLoanApplication);
-
-            mockCursor2.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursor2.SetupGet(x => x.Current).Returns(new List<BsonDocument>());
-
-            //    mockCursor2.SetupGet(x => x.Current).Returns(new List<BsonDocument>());
 
             mockCollectionStatusList.Setup(x => x.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty, It.IsAny<FindOptions<StatusList, StatusList>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor.Object);
             mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
             mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor2.Object);
 
-            //    mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor2.Object);
-            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursor2.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false);
+            mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false);
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
-           
+
             var service = new DashboardService(mock.Object);
             //Act
-            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1,1);
+            List<DashboardStatus> dto = await service.GetDashboardStatus(1, 1, 1);
             //Assert
             Assert.NotNull(dto);
             Assert.Single(dto);
-            Assert.Equal(3,dto[0].order);
+            Assert.Equal(3, dto[0].order);
 
         }
     }
