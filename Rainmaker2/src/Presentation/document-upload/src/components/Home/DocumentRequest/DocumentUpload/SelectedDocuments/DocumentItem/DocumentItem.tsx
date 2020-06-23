@@ -8,6 +8,7 @@ type DocumentItemType = {
 export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType) => {
     // export const DocumentItem = () => {
         const [filename,setfilename] = useState<string>(file.name);
+        const [iseditable,seteditable] = useState<any>(false)
         // useEffect(() => {
         //     setfilename(file.name);
         // })
@@ -18,13 +19,13 @@ export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType
             <input type="text" onChange={(e) => changeName(file, e.target.value)}/>
             */}
 
-            <div className="noneditable">
+            <div className={iseditable?"editableview":"noneditable"}>
               <div className="doc-icon">
               <i className="far fa-file-pdf"></i>
               </div>
               <div className="doc-list-content">
                 <div className="tilte">
-                <input type="text" value={filename}  onChange={(e) => {
+                <input readOnly={iseditable?false:true} type="text" value={filename}  onChange={(e) => {
                     setfilename(e.target.value);
                     changeName(file, e.target.value);
                 }}/>
@@ -40,11 +41,28 @@ export const DocumentItem = ({file, viewDocument, changeName }: DocumentItemType
                 </div>
                 </div>  
                 <div className="doc-list-actions">
-                    <ul>
-                        <li>
-                            <button className="btn btn-primary doc-rename-btn">save</button>
-                        </li>
-                    </ul>
+{iseditable?
+ <ul className="editable-actions">
+ <li>
+     <button className="btn btn-primary doc-rename-btn">Save</button>
+ </li>
+</ul>
+: <>
+
+                    <ul className="readable-actions">
+ <li>
+ <i className="fas fa-info-circle"></i>
+ </li>
+ <li>
+ <i className="fas fa-info-circle"></i>
+ </li>
+ <li>
+ <i className="fas fa-info-circle"></i>
+ </li>
+</ul>
+</>
+}
+ 
                 </div>
             </div>
             
