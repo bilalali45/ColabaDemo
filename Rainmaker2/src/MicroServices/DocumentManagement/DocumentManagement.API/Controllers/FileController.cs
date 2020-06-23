@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -25,15 +26,15 @@ namespace DocumentManagement.API.Controllers
         private readonly IFileEncryptionFactory fileEncryptionFactory;
         private readonly IFtpClient ftpClient;
         private readonly ISettingService settingService;
-        private readonly IHttpClientFactory clientFactory;
+        private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
-        public FileController(IFileService fileService, IFileEncryptionFactory fileEncryptionFactory,IFtpClient ftpClient,ISettingService settingService, IHttpClientFactory httpClientFactory, IConfiguration config)
+        public FileController(IFileService fileService, IFileEncryptionFactory fileEncryptionFactory,IFtpClient ftpClient,ISettingService settingService, IKeyStoreService keyStoreService, IConfiguration config)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
             this.ftpClient = ftpClient;
             this.settingService = settingService;
-            this.clientFactory = httpClientFactory;
+            this.keyStoreService = keyStoreService;
             this.config = config;
         }
 
@@ -42,32 +43,20 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Submit([FromForm]string id, [FromForm] string requestId, [FromForm] string docId, [FromForm] string order,[FromForm] int tenantId, List<IFormFile> files)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var httpClient = clientFactory.CreateClient();
-            var key = config["File:Key"];
-            var ftpKey = config["File:FtpKey"];
             var algo = config["File:Algo"];
-            var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}");
-            var ftpKeyResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}");
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
-
-            if (!ftpKeyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
+            var key = config["File:Key"];
             Setting setting = await settingService.GetSetting();
 
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await ftpKeyResponse.Content.ReadAsStringAsync()));
+            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await keyStoreService.GetFtpKey()));
             // save
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
                 {
+
                     if (formFile.Length > setting.maxFileSize)
                         throw new Exception("File size exceeded limit");
-                    var filePath = fileEncryptionFactory.GetEncryptor(algo).EncryptFile(formFile.OpenReadStream(),await csResponse.Content.ReadAsStringAsync());
+                    var filePath = fileEncryptionFactory.GetEncryptor(algo).EncryptFile(formFile.OpenReadStream(),await keyStoreService.GetFileKey());
                     // upload to ftp
                     await ftpClient.UploadAsync(Path.GetFileName(filePath),filePath);
                     // insert into mongo
@@ -121,26 +110,15 @@ namespace DocumentManagement.API.Controllers
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId,tenantId=tenantId };
-            var httpClient = clientFactory.CreateClient();
-            var fileviewdto = await fileService.View(model,userProfileId);
+
+            var fileviewdto = await fileService.View(model,userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
             Setting setting = await settingService.GetSetting();
-            var key = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={config["File:FtpKey"]}");
-            if(!key.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await key.Content.ReadAsStringAsync()));
+            
+            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await keyStoreService.GetFtpKey()));
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
 
-
-            var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={fileviewdto.encryptionKey}");
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
-
-            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, await csResponse.Content.ReadAsStringAsync(), fileviewdto.clientName), fileviewdto.contentType, fileviewdto.clientName);
+            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, await keyStoreService.GetFileKey(), fileviewdto.clientName), fileviewdto.contentType, fileviewdto.clientName);
 
         }
     }

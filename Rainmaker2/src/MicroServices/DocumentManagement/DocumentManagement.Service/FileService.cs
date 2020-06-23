@@ -132,7 +132,7 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId)
+        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -181,6 +181,12 @@ namespace DocumentManagement.Service
 
             await asyncCursor.MoveNextAsync();
             FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+
+            IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.Now, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+            await viewLogCollection.InsertOneAsync(viewLog);
+
             return fileViewDTO;
         }
 

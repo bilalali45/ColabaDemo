@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import {  useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 const ActivityHeader = (props) => {
-console.log('props',props)
+    console.log('props', props)
     const [leftNav, setLeftNav] = useState('');
     const [rightNav, setRightNav] = useState('');
     const [leftNavUrl, setLeftNavUrl] = useState('');
     const [rightNavUrl, setRightNavUrl] = useState('');
-   
+
     const location = useLocation();
 
     const setNavigations = (pathname) => {
@@ -25,34 +25,40 @@ console.log('props',props)
             setRightNavUrl('/uploadedDocuments');
         }
 
-        if (pathname.includes('uploadedDocuments')) {    
-            if(props.location.state.from == '/activity'){
+        if (pathname.includes('uploadedDocuments')) {
+            if (props.location.state.from == '/activity') {
                 setLeftNav('Home');
                 setLeftNavUrl('/activity');
-                setRightNav('Document Request');          
+                setRightNav('Document Request');
                 setRightNavUrl('/documentsRequest');
-            }else{
+            } else {
                 setLeftNav('Document Request');
                 setLeftNavUrl('/documentsRequest');
-                setRightNav('');          
+                setRightNav('');
                 setRightNavUrl('');
             }
         }
     }
 
     useEffect(() => {
-       // let query = location.search.split('=')[1];
         setNavigations(location.pathname);
     }, [location.pathname]);
 
-    // const handleNav = (id: string) => {
-    //     let splitData = location.pathname.split('/');
-    //     if(id === 'right') {  
-    //         history.push(rightNavUrl+`?from=${splitData[1]}`)
-    //     }else {
-    //         history.push(leftNavUrl)
-    //     }
-    // }
+    
+
+    const renderLeftNav = () => {
+        if (leftNav === 'Dashboard') {
+            return <a tabIndex={-1} onClick={() => {
+                window.open('/Dashboard', '_self');
+            }}>
+             <i className="zmdi zmdi-arrow-left"></i>{leftNav}
+            </a>
+        }
+        return <Link to={{pathname: leftNavUrl,state: { from: location.pathname }}}> 
+                   <i className="zmdi zmdi-arrow-left"></i>{leftNav}
+               </Link >
+
+    }
 
     return (
         <div className="activityHeader">
@@ -67,26 +73,19 @@ console.log('props',props)
                                 <div className="col-6">
                                     <ul className="breadcrmubs">
                                         <li>
-                                        {/* <Link to={{
-                                                pathname: leftNavUrl,
-                                                state: { from: location.pathname }
-                                            }}><i className="zmdi zmdi-arrow-left"></i>{leftNav}</Link> */}
-                                       
-                                            <a  ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a>
+                                            {renderLeftNav()}
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                        
-                                        <a >
-                                            {rightNav}
-                                        </a>
-                                         {/* <Link to={{
-                                                pathname: rightNavUrl,
-                                                state: { from: location.pathname }
-                                            }}>{rightNav}</Link> */}
+
+
+                                        <Link to={{
+                                            pathname: rightNavUrl,
+                                            state: { from: location.pathname }
+                                        }}>{rightNav}</Link>
 
                                     </div>
 

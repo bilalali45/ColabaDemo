@@ -272,15 +272,21 @@ namespace Identity.Controllers
             //                  };
 
             //add claims
+
+            var contact = userProfile.Customers.Any() ? userProfile.Customers.First().Contact : userProfile.Employees.First().Contact;
+            
+
             var usersClaims = new List<Claim>
                               {
                                   new Claim(type: ClaimTypes.Role,
-                                            value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"),
+                                            value: userProfile.Employees.Any() ? "MCU" : "Customer"),
                                   new Claim(type: "UserProfileId",
                                             value: userProfile.Id.ToString()),
                                   new Claim(type: "UserName",
                                             value: userProfile.UserName.ToLower()),
-                                  new Claim(ClaimTypes.Name, userProfile.UserName.ToLower())
+                                  new Claim(ClaimTypes.Name, userProfile.UserName.ToLower()),
+                                  new Claim("FirstName", contact.FirstName),
+                                  new Claim("LastName", contact.LastName)
                               };
 
             if (userProfile.Employees.FirstOrDefault() != null)
