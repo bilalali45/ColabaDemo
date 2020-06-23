@@ -30,7 +30,6 @@ export class Http {
     }
 
     constructor() {
-        debugger
         if (!Http.instance) {
             Http.instance = this;
         } else {

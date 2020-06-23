@@ -45,7 +45,6 @@ export const ContactUs = ({ }) => {
     if (!loanOfficer) {
         return <Loader containerHeight={"153px"}  />
     }
-    console.log(state, 'LOImage', LOImage);
     const ContactAvatar = () => <img src={`data:image/jpeg;base64,${LOImage.src}`} />
     
     return (

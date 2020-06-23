@@ -22,7 +22,6 @@ export const DocumentsRequired = () => {
         }
     }
 
-    console.log(state);
 
     const changeCurrentDoc = (curDoc: DocumentRequest) => {
         dispatch({type: DocumentsActionType.SetCurrentDoc, payload: curDoc})

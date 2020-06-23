@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import {  useLocation, Link } from 'react-router-dom';
 import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 const ActivityHeader = (props) => {
-console.log('props',props)
     const [leftNav, setLeftNav] = useState('');
     const [rightNav, setRightNav] = useState('');
     const [leftNavUrl, setLeftNavUrl] = useState('');

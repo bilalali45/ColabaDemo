@@ -1,20 +1,21 @@
 import { UserActions } from "../../store/actions/UserActions";
-import Cookies from "universal-cookie";
+import { cursorTo } from "readline";
 
-const cookies = new Cookies();
 
 export class Auth {
 
     public static saveAuth(token: string) {
+        debugger;
         localStorage.setItem('auth', token);
     }
 
     public static saveRefreshToken(refToken: string) {
+        debugger;
         localStorage.setItem('refreshToken', refToken);
     }
 
     public static getRefreshToken() {
-        localStorage.getItem('refreshToken');
+        return localStorage.getItem('refreshToken');
     }
 
     public static removeRefreshToken() {
@@ -34,7 +35,7 @@ export class Auth {
         if (payload) {
             let expiry = new Date(payload.exp * 1000);
             let currentDate = new Date(Date.now());
-            if (currentDate <= expiry) {
+            if (currentDate < expiry) {
                 return true;
             } else {
                 return 'token expired'
@@ -43,49 +44,6 @@ export class Auth {
             }
         }
         return true;
-    }
-
-    static async authenticate() {
-
-        let isAuth = Auth.checkAuth();
-
-        if (isAuth === 'token expired') {
-            console.log('in token expired akldsjfkdfj');
-            let res: any = await UserActions.refreshToken();
-            if (res.data.token && res.data.refreshToken) {
-                return true;
-            }else {
-                return false;
-            }
-        }
-
-        if (!isAuth) {
-
-            if (process.env.NODE_ENV === 'development') {
-                let tokens: any = await UserActions.authenticate();
-                if (tokens.token) {
-                    Auth.saveAuth(tokens.token);
-                    Auth.saveRefreshToken(tokens.refreshToken);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            let Rainmaker2Token = cookies.get('Rainmaker2Token');
-            let Rainmaker2RefreshToken = cookies.get('Rainmaker2RefreshToken');
-
-            if (Rainmaker2Token && Rainmaker2RefreshToken) {
-                Auth.saveAuth(Rainmaker2Token);
-                Auth.saveRefreshToken(Rainmaker2RefreshToken);
-                return true;
-            }else {
-                return false;
-            }
-
-        } else {
-            return true;
-        }
     }
 
     static storeTokenPayload(payload) {

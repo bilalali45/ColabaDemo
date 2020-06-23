@@ -25,23 +25,24 @@ const App = () => {
   const tokenData: any = UserActions.getUserInfo();
   const history = useHistory();
 
-  // setCookie('Rainmaker2Token', Auth.checkAuth());
   useEffect(() => {
-    
-    // console.log(Cookies.get('Rainmaker2Token'))
     console.log("Document Management App Version", "0.1.2");
     authenticate();
     UserActions.getUserInfo();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
   }, [localStorage])
 
+  if (Auth.getUserPayload()) {
+    UserActions.addExpiryListener(Auth.getUserPayload());
+  }
+  
   const authenticate = async () => {
-    let isAuth = await Auth.authenticate();
+    let isAuth = await UserActions.authorize();
     setAuthenticated(Boolean(isAuth));
   }
 
   if (!authenticated) {
-    return <></>
+    return null;
   }
   return (
     <div className="app">
