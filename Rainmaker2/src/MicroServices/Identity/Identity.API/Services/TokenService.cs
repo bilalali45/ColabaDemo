@@ -42,7 +42,7 @@ namespace Identity.Services
             var token = new JwtSecurityToken(
                                              issuer: "rainsoftfn",
                                              audience: "readers",
-                                             expires: DateTime.Now.AddHours(value: 1),
+                                             expires: DateTime.Now.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
                                              signingCredentials: signingCredentials,
                                              claims: claims
                                             );
