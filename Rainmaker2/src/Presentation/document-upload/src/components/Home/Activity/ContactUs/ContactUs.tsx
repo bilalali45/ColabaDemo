@@ -8,45 +8,42 @@ import { ContactUs as ContactUsModal } from '../../../../entities/Models/Contact
 import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
 import { MaskPhone } from 'rainsoft-js';
 import { Auth } from '../../../../services/auth/Auth';
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const ContactUs = ({ }) => {
 
     const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
     const [lOPhotoSrc, setLOPhotoSrc] = useState<string>();
+    const { state, dispatch } = useContext(Store);
+
+    const laon: any = state.loan;
+    const LO = laon.loanOfficer;
 
     const LOphotoRef: any = useRef();
 
     useEffect(() => {
-        if (!loanOfficer) {
+        if (!LO) {
             fetchLoanOfficer();
         }
-    });
+
+        if (LO) {
+            setLoanOfficer(new ContactUsModal().fromJson(LO));
+        }
+
+    }, [LO]);
 
     const fetchLoanOfficer = async () => {
         let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
             let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
-            // src = `data:image/jpeg;base64,${src}}`;
+            dispatch({ type: LoanActionsType.FetchLoanOfficer, payload: loanOfficer });
             setLOPhotoSrc(src);
-            if (LOphotoRef.current) {
-                LOphotoRef.current.src = src
-            }
-            setLOPhotoSrc(src);
-            setLoanOfficer(loanOfficer);
         }
     }
 
     const ContactAvatar = () => <img src={`data:image/jpeg;base64,${lOPhotoSrc}`} />
-
-    const getFormattedPhone = () => {
-        if (loanOfficer && loanOfficer.phone) {
-            let phone: any = Number(loanOfficer.phone) | 0;
-            return MaskPhone(+phone)
-        }
-    }
-
     if (!loanOfficer) {
-        return <div>...loading...</div>
+        return <Loader containerHeight={"153px"}  />
     }
 
     return (
@@ -61,14 +58,14 @@ export const ContactUs = ({ }) => {
                     <div className="col-md-12 col-lg-6 ContactUs--left">
                         <div className="ContactUs--user">
                             <div className="ContactUs--user---img">
-                                <div className="ContactUs--user-image"><ContactAvatar/></div>
+                                <div className="ContactUs--user-image"><ContactAvatar /></div>
                             </div>
 
                             <div className="ContactUs--user---detail">
-                                <h2><a href="">{loanOfficer.completeName()}</a> 
-                               {loanOfficer.nmls &&  <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
-                               }
-                               </h2>
+                                <h2><a title={loanOfficer.webUrl} target="_blank" href={loanOfficer.webUrl}>{loanOfficer.completeName()}</a>
+                                    {loanOfficer.nmls && <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
+                                    }
+                                </h2>
                             </div>
                         </div>
 
@@ -80,7 +77,7 @@ export const ContactUs = ({ }) => {
                                 <a title={loanOfficer.phone} href={`tel:${loanOfficer.phone}`}>
                                     <span>
                                         <i className="zmdi zmdi-phone"></i>
-                                        <span>{getFormattedPhone()}</span>
+                                        <span>{MaskPhone(Number(loanOfficer.phone))}</span>
                                     </span>
                                 </a></li>
                             <li>
@@ -93,10 +90,10 @@ export const ContactUs = ({ }) => {
                                 </a>
                             </li>
                             <li>
-                                <a title={loanOfficer.webUrl} href={loanOfficer.webUrl} target="_blank">
+                                <a title={loanOfficer.webUrl?.split('/')[2]} href={'http://' + loanOfficer.webUrl?.split('/')[2]} target="_blank">
                                     <span>
                                         <i className="zmdi zmdi-globe-alt"></i>
-                                        <span>www.{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
+                                        <span>{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
                                     </span>
 
                                 </a>

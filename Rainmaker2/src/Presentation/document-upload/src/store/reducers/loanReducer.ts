@@ -26,7 +26,7 @@ export const loanReducer = (state: LoanType | {}, {type, payload} : Actions) => 
         case LoanActionsType.FetchLoanOfficer:
             let st = {
                 ...state,
-                loanOfficer: {...payload}
+                loanOfficer:  {...payload}
             };
             return st;
     

@@ -3,36 +3,45 @@ import { LaonActions } from '../../../../store/actions/LoanActions';
 import { Store } from '../../../../store/store';
 import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { LoanApplication } from '../../../../entities/Models/LoanApplication';
-
+//import loader from '../../../../assets/images/loader.svg';
 import icon1 from '../../../../assets/images/property-address-icon.svg';
 import icon2 from '../../../../assets/images/property-type-icon.svg';
 import icon3 from '../../../../assets/images/loan-purpose-icon.svg';
 import icon4 from '../../../../assets/images/loan-amount-icon.svg';
 import { Auth } from '../../../../services/auth/Auth';
-
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 
 export const LoanStatus = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
+    const { state, dispatch } = useContext(Store);
 
+    const loan : any = state.loan;
+    let info = loan.loanInfo;
     useEffect(() => {
-        if (!loanInfo) {
+        if (!info) {
             fetchLoanStatus();
         }
-    }, [])
+
+        if(info) {
+            setLoanInfo(new LoanApplication().fromJson(info));
+        }
+    }, [info])
 
     const fetchLoanStatus = async () => {
         let loanInfoRes: LoanApplication | undefined = await LaonActions.getLoanApplication(Auth.getLoanAppliationId());
-        console.log('loanInfoRes',loanInfoRes)
+        console.log('loanInfoRes', loanInfoRes)
         if (loanInfoRes) {
-            setLoanInfo(loanInfoRes);
+            dispatch({ type: LoanActionsType.FetchLoanInfo, payload: loanInfoRes });
+            // setLoanInfo(loanInfoRes);
         }
     }
 
-    if (!loanInfo) {
-        return <div>...loading...</div>
-    }
+   if (!loanInfo) {
+        return <Loader containerHeight={"80px"}  />
+   }
+    console.log(loanInfo);
 
     return (
         <section className="row">
@@ -47,9 +56,9 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
-                                      { loanInfo.addressName &&
-                                        <p className="LoanStatus--text">{loanInfo.addressName || ''} <br /> {loanInfo.countyName}, {loanInfo.stateName}</p>
-                                      }  
+                                      
+                                        <p className="LoanStatus--text">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
+                                      
                                     </div>
                                 </div>
                             </li>
@@ -90,14 +99,14 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Loan Amount</h4>
-                                      { !loanInfo.amount &&
- <p className="LoanStatus--text">
- <span className="number-loanAmount">
- <sup>$</sup>
-     <span>{loanInfo.amount}</span>
- </span>
-</p>
-                                      } 
+                                        {loanInfo.amount &&
+                                            <p className="LoanStatus--text">
+                                                <span className="number-loanAmount">
+                                                    <sup>$</sup>
+                                                    <span>{loanInfo.amount}</span>
+                                                </span>
+                                            </p>
+                                        }
                                     </div>
 
 

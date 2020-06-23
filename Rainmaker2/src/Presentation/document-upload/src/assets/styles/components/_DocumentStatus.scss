@@ -2,7 +2,7 @@
     min-height: calc(100% - 15px);
     position: relative;
     &.hasData{
-        background: url("../../images/doc-request.png") no-repeat top right #fff;
+        background: url("../../images/doc-request.png") no-repeat center right #fff;
         @include media-breakpoint-down(lg) {
             background-position-y: 40%;
             background-size: 60%;
