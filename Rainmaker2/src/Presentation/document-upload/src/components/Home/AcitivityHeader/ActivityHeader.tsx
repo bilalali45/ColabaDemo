@@ -67,12 +67,12 @@ console.log('props',props)
                                 <div className="col-6">
                                     <ul className="breadcrmubs">
                                         <li>
-                                        {/* <Link to={{
+                                        <Link to={{
                                                 pathname: leftNavUrl,
                                                 state: { from: location.pathname }
-                                            }}><i className="zmdi zmdi-arrow-left"></i>{leftNav}</Link> */}
+                                            }}><i className="zmdi zmdi-arrow-left"></i>{leftNav}</Link> 
                                        
-                                            <a  ><i className="zmdi zmdi-arrow-left"></i> {leftNav}</a>
+                                            
                                         </li>
                                     </ul>
                                 </div>
