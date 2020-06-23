@@ -1,16 +1,33 @@
-import React from 'react'
-
+import React, { useState, useEffect } from 'react'
+import { UploadedDocuments } from '../../../../entities/Models/UploadedDocuments'
+import { DocumentActions } from '../../../../store/actions/DocumentActions';
+import { Auth } from '../../../../services/auth/Auth';
 export const UploadedDocumentsTable = () => {
-    return (
-        <div className="UploadedDocumentsTable">
-            <table className="table  table-striped">
-                <thead>
-                    <tr>
-                        <th>Documents</th>
-                        <th>File Name</th>
-                        <th>Added</th>
-                    </tr>
-                </thead>
+    
+const [docList, setDocList] = useState<UploadedDocuments[] | null>(null)
+
+ useEffect(()=>{
+     if(!docList?.length){
+        fetchUploadedDocuments();
+     }
+   
+ },[]);    
+    
+  const fetchUploadedDocuments = async () => {
+   let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+   console.log('uploadedDocs',uploadedDocs)
+   if(uploadedDocs){
+    setDocList(uploadedDocs);
+   }
+  }  
+    
+    
+    
+    const renderUploadedDocs = (data) => {
+        return data.map((item: any) => {
+            debugger
+            console.log('item',item)
+            return (
                 <tbody>
                     <tr>
                         <td><em className="far fa-file"></em> Bank Statement</td>
@@ -25,43 +42,25 @@ export const UploadedDocumentsTable = () => {
                             <span className="block-element">12-04-2020 17:30</span>
                         </td>
                     </tr>
-                    <tr>
-                        <td><em className="far fa-file"></em> W-2s 2017</td>
-                        <td>
-                            <a href="" className="block-element">W-2s-2017.pdf</a>
-                        </td>
-                        <td>
-                            <span className="block-element">12-04-2020 17:30</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><em className="far fa-file"></em> W-2s 2018</td>
-                        <td>
-                            <a href="" className="block-element">W-2s-2018.pdf</a>
-                        </td>
-                        <td>
-                            <span className="block-element">12-04-2020 17:30</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><em className="far fa-file"></em> Personal Tax Returns</td>
-                        <td>
-                            <a href="" className="block-element">Personal-Tax-Returns.pdf</a>
-                        </td>
-                        <td>
-                            <span className="block-element">12-04-2020 17:30</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><em className="far fa-file"></em> Tax Transcripts</td>
-                        <td>
-                            <a href="" className="block-element">Tax-Transcripts.pdf</a>
-                        </td>
-                        <td>
-                            <span className="block-element">12-04-2020 17:30</span>
-                        </td>
-                    </tr>
+
                 </tbody>
+            )
+        })
+    }
+    
+    return (
+        <div className="UploadedDocumentsTable">
+            <table className="table  table-striped">
+                <thead>
+                    <tr>
+                        <th>Documents</th>
+                        <th>File Name</th>
+                        <th>Added</th>
+                    </tr>
+                </thead>
+               { docList &&
+               renderUploadedDocs(docList)
+               } 
             </table>
         </div>
     )
