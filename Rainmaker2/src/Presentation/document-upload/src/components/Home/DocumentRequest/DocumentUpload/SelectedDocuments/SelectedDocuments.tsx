@@ -54,7 +54,6 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
             });
             setShowProgressBar(false);
         } catch (error) {
-            console.log(error);
         }
     }
 
@@ -68,7 +67,6 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 return f;
             })
         })
-        // console.log(data.get('file'));
     }
 
     return (

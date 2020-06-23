@@ -12,7 +12,6 @@ export class DocumentActions {
   static async getPendingDocuments(loanApplicationId: string, tenentId: string) {
     try {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<DocumentRequest[]>(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
-      console.log(res);
       return res.data.map(r => r);
     } catch (error) {
       console.log(error);

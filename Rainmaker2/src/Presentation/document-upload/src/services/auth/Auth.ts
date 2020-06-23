@@ -1,3 +1,7 @@
+import { UserActions } from "../../store/actions/UserActions";
+import { cursorTo } from "readline";
+
+
 export class Auth {
 
     public static saveAuth(token: string) {
@@ -9,7 +13,7 @@ export class Auth {
     }
 
     public static getRefreshToken() {
-        localStorage.getItem('refreshToken');
+        return localStorage.getItem('refreshToken');
     }
 
     public static removeRefreshToken() {
@@ -20,7 +24,7 @@ export class Auth {
         return localStorage.getItem('auth');
     }
 
-    public static checkAuth() : boolean | string {
+    public static checkAuth(): boolean | string {
         let auth = localStorage.getItem('auth');
         if (!auth) {
             return false;
@@ -29,7 +33,7 @@ export class Auth {
         if (payload) {
             let expiry = new Date(payload.exp * 1000);
             let currentDate = new Date(Date.now());
-            if (currentDate <= expiry) {
+            if (currentDate < expiry) {
                 return true;
             } else {
                 return 'token expired'
