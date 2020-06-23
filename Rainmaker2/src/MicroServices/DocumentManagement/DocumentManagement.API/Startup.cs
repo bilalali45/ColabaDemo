@@ -39,6 +39,7 @@ namespace DocumentManagement.API
             services.AddScoped<IFtpClient, FtpClient>();
             services.AddScoped<ISettingService, SettingService>();
             services.AddHttpClient();
+            services.AddScoped<IKeyStoreService,KeyStoreService>();
 
             var keyResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
             if (!keyResponse.IsSuccessStatusCode)

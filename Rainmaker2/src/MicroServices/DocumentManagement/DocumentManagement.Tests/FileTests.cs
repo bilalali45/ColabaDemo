@@ -64,8 +64,6 @@ namespace DocumentManagement.Tests
 
             var fileController = new FileController(mock.Object, null, null, null, null, null);
 
-            //var dashboardController = new DashboardController(mock.Object);
-
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
@@ -101,9 +99,6 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.True(result);
         }
-
-
-
 
         [Fact]
         public async Task TestDoneFileServiceFalse()
@@ -218,8 +213,6 @@ namespace DocumentManagement.Tests
             Assert.False(result);
         }
 
-
-
         [Fact]
         public async Task TestOrderController()
         {
@@ -267,18 +260,16 @@ namespace DocumentManagement.Tests
             mockCollection.VerifyAll();
         }
 
-
-
         [Fact]
         public async Task TestViewController()
         {
-
             Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
             Mock<IFileService> mockfileservice = new Mock<IFileService>();
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-          
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
+
             var mockfileencryptor = new Mock<IFileEncryptor>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
             mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
@@ -306,51 +297,8 @@ namespace DocumentManagement.Tests
             mockftpclient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
             mockftpclient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
 
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
-            };
-            // ACT
-
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                   "SendAsync",
-                   ItExpr.IsAny<HttpRequestMessage>(),
-                   ItExpr.IsAny<CancellationToken>()
-                )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.OK,
-
-                    Content = new StringContent("this is the long and strong key."),
-                }).Verifiable();
-            var httpClient1 = new HttpClient(handlerMock1.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
-            };
-            handlerMock1
-                  .Protected()
-                  // Setup the PROTECTED method to mock
-                  .Setup<Task<HttpResponseMessage>>(
-                     "SendAsync",
-                     ItExpr.IsAny<HttpRequestMessage>(),
-                     ItExpr.IsAny<CancellationToken>()
-                  )
-                  // prepare the expected response of the mocked http call
-                  .ReturnsAsync(new HttpResponseMessage()
-                  {
-                      StatusCode = HttpStatusCode.OK,
-
-                      Content = new StringContent("this is a very long password"),
-                  }).Verifiable(); ;
-
-            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
             mockfileencryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
@@ -361,7 +309,7 @@ namespace DocumentManagement.Tests
 
             // also check the 'http' call was like we expected it
             // Act  
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object);
             controller.ControllerContext = context;
             IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
             //Assert
@@ -370,103 +318,6 @@ namespace DocumentManagement.Tests
 
         }
 
-        [Fact]
-        public async Task TestViewControllerFtpResponse()
-        {
-
-            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
-            Mock<IFileService> mockfileservice = new Mock<IFileService>();
-            Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
-            Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
-            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-
-            var mockfileencryptor = new Mock<IFileEncryptor>();
-            Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
-            mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
-            mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
-            FileViewDTO fileViewDTO = new FileViewDTO();
-            fileViewDTO.serverName = "a69ad17f-7505-492d-a92e-f32967cecff8.enc";
-            fileViewDTO.encryptionKey = "FileKey";
-            fileViewDTO.encryptionAlgorithm = "AES";
-            fileViewDTO.clientName = "NET Unit Testing.docx";
-            fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-
-            FileViewModel fileViewModel = new FileViewModel();
-            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
-            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
-            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
-            fileViewModel.fileId = "5ee9c912264e4c28acf5526e";
-
-            Setting setting = new Setting();
-            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
-            setting.ftpUser = "ftpuser";
-            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
-
-            mockfileservice.Setup(x => x.View(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(fileViewDTO);
-            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
-            mockftpclient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockftpclient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
-
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
-            };
-            // ACT
-
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                   "SendAsync",
-                   ItExpr.IsAny<HttpRequestMessage>(),
-                   ItExpr.IsAny<CancellationToken>()
-                )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-
-                    Content = new StringContent("this is the long and strong key."),
-                }).Verifiable();
-            var httpClient1 = new HttpClient(handlerMock1.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
-            };
-            handlerMock1
-                  .Protected()
-                  // Setup the PROTECTED method to mock
-                  .Setup<Task<HttpResponseMessage>>(
-                     "SendAsync",
-                     ItExpr.IsAny<HttpRequestMessage>(),
-                     ItExpr.IsAny<CancellationToken>()
-                  )
-                  // prepare the expected response of the mocked http call
-                  .ReturnsAsync(new HttpResponseMessage()
-                  {
-                      StatusCode = HttpStatusCode.OK,
-
-                      Content = new StringContent("this is a very long password"),
-                  }).Verifiable(); ;
-
-            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
-            mockfileencryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
-
-            mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
-            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
-            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
-
-            // also check the 'http' call was like we expected it
-            // Act  
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
-            controller.ControllerContext = context;
-            Assert.ThrowsAsync<Exception>(async () => { await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId); });
-
-        }
         [Fact]
         public async Task TestViewService()
         {
@@ -531,79 +382,28 @@ namespace DocumentManagement.Tests
             Mock<IFileService> mockfileservice = new Mock<IFileService>();
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
-            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            //Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IFileEncryptor> mockfileencryptor = new Mock<IFileEncryptor>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
-            Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
+            //Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
+
             string filePath = Path.GetTempFileName();
             MemoryStream ms = new MemoryStream();
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
-            setting.maxFileSize = 10000;
+            setting.maxFileSize = 15000000;
             mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
             mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
             mockconfiguration.Setup(x => x["File:Algo"]).Returns("Algo");
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock2 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-           
-           
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
-            };
-            // ACT
-
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                   "SendAsync",
-                   ItExpr.IsAny<HttpRequestMessage>(),
-                   ItExpr.IsAny<CancellationToken>()
-                )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.OK,
-
-                    Content = new StringContent("this is the long and strong key."),
-                }).Verifiable();
-            var httpClient1 = new HttpClient(handlerMock1.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
-            };
-            handlerMock1
-                  .Protected()
-                  // Setup the PROTECTED method to mock
-                  .Setup<Task<HttpResponseMessage>>(
-                     "SendAsync",
-                     ItExpr.IsAny<HttpRequestMessage>(),
-                     ItExpr.IsAny<CancellationToken>()
-                  )
-                  // prepare the expected response of the mocked http call
-                  .ReturnsAsync(new HttpResponseMessage()
-                  {
-                      StatusCode = HttpStatusCode.OK,
-
-                      Content = new StringContent("this is a very long password"),
-                  }).Verifiable(); 
-
-            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
+            
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-
-
-         
-            // mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>()))
-            //.Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream))
-            //.Verifiable();
-
-
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
@@ -624,10 +424,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
           
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object);
             controller.ControllerContext = context;
-            string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768"; 
-            string docId = "ddd25d1fe456057652eeb72d"; string order = "0"; 
+            string id = "5eb25d1fe519051af2eeb72d";
+            string requestId = "abc15d1fe456051af2eeb768"; 
+            string docId = "ddd25d1fe456057652eeb72d";
+            string order = "0"; 
             int tenantId = 1;
             var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
             FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
@@ -640,128 +442,16 @@ namespace DocumentManagement.Tests
             files.Add(_formFile);
 
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
-            // mockformFile.SetupGet(_ => _.Length).Returns(stream.Length).Verifiable();
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>())).Verifiable();
-
 
             order = @"[{ 'fileName': null,'order': 0}]";
             IActionResult result = await controller.Submit( id,   requestId,  docId,   order, tenantId, files);
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
-        [Fact]
-        public async Task TestSubmitControllerExceptionFtpKeyResponse()
-        {
-            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
-            Mock<IFileService> mockfileservice = new Mock<IFileService>();
-            Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
-            Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
-            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IFileEncryptor> mockfileencryptor = new Mock<IFileEncryptor>();
-            Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
-            Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
-            var formFile = new Mock<IFormFile>();
-
-            mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
-            mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
-            mockconfiguration.Setup(x => x["File:Algo"]).Returns("Algo");
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var handlerMock2 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            string filePath = Path.GetTempFileName();
-            Setting setting = new Setting();
-            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
-            setting.ftpUser = "ftpuser";
-            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
-            setting.maxFileSize = 15000000;
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
-            };
-            // ACT
-
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                   "SendAsync",
-                   ItExpr.IsAny<HttpRequestMessage>(),
-                   ItExpr.IsAny<CancellationToken>()
-                )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-
-                    Content = new StringContent("this is the long and strong key."),
-                }).Verifiable();
-            var httpClient1 = new HttpClient(handlerMock1.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
-            };
-            handlerMock1
-                  .Protected()
-                  // Setup the PROTECTED method to mock
-                  .Setup<Task<HttpResponseMessage>>(
-                     "SendAsync",
-                     ItExpr.IsAny<HttpRequestMessage>(),
-                     ItExpr.IsAny<CancellationToken>()
-                  )
-                  // prepare the expected response of the mocked http call
-                  .ReturnsAsync(new HttpResponseMessage()
-                  {
-                      StatusCode = HttpStatusCode.OK,
-
-                      Content = new StringContent("this is a very long password"),
-                  }).Verifiable(); ;
-
-            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
-            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
-            mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-
-            mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
-
-            mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-
-            FileOrderModel model = new FileOrderModel
-            {
-                id = "1",
-                docId = "1",
-                requestId = "1",
-                files = new List<FileNameModel>(),
-                tenantId = 1
-            };
-
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
-
-            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
-
-            //Assert
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
-            controller.ControllerContext = context;
-            string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
-            int tenantId = 1;
-            var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
-            FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "application/docx"
-            };
-            List<IFormFile> files = new List<IFormFile>();
-            files.Add(_formFile);
-
-            formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
-            mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>())).Verifiable();
-            order = @"[{ 'fileName': null,'order': 0}]";
-            Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, tenantId, files); });
-        }
+      
         [Fact]
         public async Task TestSubmitControllerExceptionFileSize()
         {
@@ -770,6 +460,7 @@ namespace DocumentManagement.Tests
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
             Mock<IFileEncryptor> mockfileencryptor = new Mock<IFileEncryptor>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
             Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
@@ -787,49 +478,9 @@ namespace DocumentManagement.Tests
             setting.ftpUser = "ftpuser";
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
             setting.maxFileSize = 0;
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FtpKey"),
-            };
-            // ACT
-
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                   "SendAsync",
-                   ItExpr.IsAny<HttpRequestMessage>(),
-                   ItExpr.IsAny<CancellationToken>()
-                )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.OK,
-
-                    Content = new StringContent("this is the long and strong key."),
-                }).Verifiable();
-            var httpClient1 = new HttpClient(handlerMock1.Object)
-            {
-                BaseAddress = new Uri("http://localhost:5041/api/keystore/keystore?key=FileKey"),
-            };
-            handlerMock1
-                  .Protected()
-                  // Setup the PROTECTED method to mock
-                  .Setup<Task<HttpResponseMessage>>(
-                     "SendAsync",
-                     ItExpr.IsAny<HttpRequestMessage>(),
-                     ItExpr.IsAny<CancellationToken>()
-                  )
-                  // prepare the expected response of the mocked http call
-                  .ReturnsAsync(new HttpResponseMessage()
-                  {
-                      StatusCode = HttpStatusCode.OK,
-
-                      Content = new StringContent("this is a very long password"),
-                  }).Verifiable(); ;
-
-            httpClientFactory.SetupSequence(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient).Returns(httpClient1);
+            
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
@@ -854,7 +505,7 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             //Assert
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, httpClientFactory.Object, mockconfiguration.Object);
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object);
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
@@ -876,30 +527,16 @@ namespace DocumentManagement.Tests
         [Fact]
         public async Task TestSubmitService()
         {
-            //Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<UpdateResult> mockUpdateResult = new Mock<UpdateResult>();
          
-            //mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(),
-            //    It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(),
-            //    It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(mockUpdateResult.Object);
-
-            //mock.SetupGet(x => x.db).Returns(mockdb.Object);
-            //IFileService fileService = new FileService(mock.Object);
-            ////Act
-            //await fileService.Order(fileOrderModel, 1);
-            ////Assert
-            //mockCollection.VerifyAll();
-
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
              
-            
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
 
-     
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
             mockUpdateResult.Setup(_ => _.IsAcknowledged).Returns(true);
             mockUpdateResult.Setup(_ => _.ModifiedCount).Returns(1);

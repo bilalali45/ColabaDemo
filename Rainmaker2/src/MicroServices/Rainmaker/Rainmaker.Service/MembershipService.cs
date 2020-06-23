@@ -73,7 +73,7 @@ namespace Rainmaker.Service
         {
             var query = Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
                                   .Include(navigationPropertyPath: userProfile => userProfile.Employees).ThenInclude(employee => employee.Contact)
-                                  .ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
+                                  .Include(x=>x.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
                                   .ToList();
 
             if (query.Count() > 1)
