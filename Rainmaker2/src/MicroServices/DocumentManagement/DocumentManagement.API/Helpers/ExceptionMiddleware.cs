@@ -39,7 +39,7 @@ namespace DocumentManagement.API.Helpers
             {
                 Code = context.Response.StatusCode.ToString(),
                 Message = "Internal Server Error"
-            }.ToString());
+            }.ToJson());
         }
     }
 }
