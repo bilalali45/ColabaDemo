@@ -86,4 +86,8 @@ namespace DocumentManagement.Model
         public string description { get; set; }
         public bool isCurrentStep { get; set; }
     }
-}
+    public class FooterQuery
+    {
+        public string footerText { get; set; }
+    }
+    }
