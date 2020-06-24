@@ -19,24 +19,29 @@ namespace Identity.CorrelationHandlersAndMiddleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            context.Request.Headers.TryGetValue("CorrelationId",
-                                                out StringValues value);
+            //context.Request.Headers.TryGetValue("CorrelationId",
+            //                                    out StringValues value);
 
-            var dd = context.Request.Headers.ToJson();
-
-            var header = context.Request.Headers["CorrelationId"];
-            string sessionId;
-
-            if (header.Count > 0)
+            //var dd = context.Request.Headers.ToJson();
+            try
             {
-                sessionId = header[0];
-            }
-            else
-            {
-                sessionId = Guid.NewGuid().ToString();
-            }
+                var header = context.Request.Headers["CorrelationId"];
+                string sessionId;
 
-            context.Items["CorrelationId"] = sessionId;
+                if (header.Count > 0)
+                {
+                    sessionId = header[0];
+                }
+                else
+                {
+                    sessionId = Guid.NewGuid().ToString();
+                }
+
+                context.Items["CorrelationId"] = sessionId;
+            }
+            catch
+            {
+            }
             await _next(context);
         }
     }

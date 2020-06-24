@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentManagement.API.Helpers;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -41,12 +42,12 @@ namespace DocumentManagement.API
             services.AddHttpClient();
             services.AddScoped<IKeyStoreService,KeyStoreService>();
 
-            var keyResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
+            var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key store");
             }
-            var securityKey = keyResponse.Content.ReadAsStringAsync().Result;
+            var securityKey = AsyncHelper.RunSync(() => keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
