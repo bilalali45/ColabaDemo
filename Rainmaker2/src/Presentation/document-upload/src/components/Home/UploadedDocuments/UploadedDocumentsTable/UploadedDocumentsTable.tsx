@@ -5,6 +5,8 @@ import { Auth } from '../../../../services/auth/Auth';
 import { Document } from '../../../../entities/Models/Document'
 import moment from 'moment';
 import * as momentDate from 'moment';
+//import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
+import DocUploadIcon from '../../../../assets/images/upload-doc-icon.svg';
 
 export const UploadedDocumentsTable = () => {
 
@@ -26,7 +28,7 @@ export const UploadedDocumentsTable = () => {
     const renderFileNameColumn = (data) => {
         return <td>
             {data.map((item: Document) => {
-                return <tr><a href="" className="block-element">{item.clientName}</a></tr>
+                return <a href="" className="block-element">{item.clientName}</a>
             })}
         </td>
     }
@@ -34,11 +36,13 @@ export const UploadedDocumentsTable = () => {
     const renderAddedColumn = (data) => {
         return <td>
             {data.map((item: Document) => {
-                return <tr><span className="block-element">{
-                    moment(new Date(item.fileUploadedOn)).format('MM-DD-YYYY HH:mm')
-                    }
-                    
-                    </span></tr>
+                return (
+                    <span className="block-element">{
+                        moment(new Date(item.fileUploadedOn)).format('MM-DD-YYYY HH:mm')
+                        }
+                        
+                        </span>
+                )
             })}
         </td>
     }
@@ -77,7 +81,19 @@ export const UploadedDocumentsTable = () => {
             </table>
              }
              {!docList &&
-            <div>No document</div>
+            <div className="no-document">               
+
+                 <div className="no-document--wrap">
+                        <div className="no-document--img">
+                            <img src={DocUploadIcon} alt="Your don't have any files!" />
+                        </div>
+                        <label htmlFor="inputno-document--text">
+                            Your don't have any files.<br/>
+                            Go to <a href="http://localhost:3000/DocumentManagement/uploadedDocuments">Loan Home</a>
+                        </label>
+                </div>  
+                
+            </div>
              }
         </div>
     )
