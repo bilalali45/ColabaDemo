@@ -79,11 +79,11 @@ const ActivityHeader = (props) => {
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                     
-                                         <Link to={{
+                                     <a>Uploaded Document</a>
+                                         {/* <Link to={{
                                                 pathname: rightNavUrl,
                                                 state: { from: location.pathname }
-                                            }}>{rightNav}</Link> 
+                                            }}>{rightNav}</Link>  */}
 
                                     </div>
 

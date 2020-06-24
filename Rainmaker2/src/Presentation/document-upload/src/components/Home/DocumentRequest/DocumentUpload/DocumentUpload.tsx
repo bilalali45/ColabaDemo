@@ -84,7 +84,7 @@ export const DocumentUpload = () => {
                     <SelectedDocuments
                         files={selectedfiles}
                         url={'http://localhost:5000/upload'} />
-                    <button onClick={showFileExplorer}>Add More</button>
+                    {/* <button onClick={showFileExplorer}>Add More</button> */} 
                 </>
             }
             </div>

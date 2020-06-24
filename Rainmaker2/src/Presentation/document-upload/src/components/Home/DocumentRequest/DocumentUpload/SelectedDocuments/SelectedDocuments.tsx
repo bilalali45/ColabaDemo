@@ -75,7 +75,10 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     return (
-        <section className="file-drop-box">
+        <section className="file-drop-box-wrap">
+            <div className="file-drop-box havefooter">
+
+            
             <div className="list-selected-doc">
             <ul className="doc-list-ul">
             {
@@ -91,6 +94,9 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 })
             }
             </ul>
+            <div className="addmore-wrap">
+            <a className="addmoreDoc">Add more files</a>
+            </div>
             </div>
             {showingDoc ? <DocumentView
                 file={currentDoc}
@@ -99,7 +105,15 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 hide={closeDocumentView} />
                 : ''}
             {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
-            <button onClick={uploadFile}>Submit</button>
+           
+
+           </div>
+           <div className="doc-upload-footer">
+               <div className="doc-submit-wrap">
+               <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
+               </div>
+           
+           </div>
         </section>
     )
 }
