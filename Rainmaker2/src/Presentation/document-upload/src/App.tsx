@@ -30,7 +30,7 @@ const App = () => {
     console.log("Document Management App Version", "0.1.2");
     authenticate();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
-  }, [localStorage])
+  }, [])
 
   const authenticate = async () => {
     let isAuth = await UserActions.authorize();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DocumentItem } from './DocumentItem/DocumentItem'
 import { DocumentView } from '../../../../../shared/Components/DocumentView/DocumentView'
 import { Http } from '../../../../../services/http/Http';
@@ -21,6 +21,11 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
 
+    useEffect(() => {
+        setSelectedFiles(files);
+    }, [files.length])
+
+    console.log('selectedFiles', selectedFiles);
 
     const data = new FormData();
 
