@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DocumentItem } from './DocumentItem/DocumentItem'
 import { DocumentView } from '../../../../../shared/Components/DocumentView/DocumentView'
 import { Http } from '../../../../../services/http/Http';
@@ -21,6 +21,11 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
 
+    useEffect(() => {
+        setSelectedFiles(files);
+    }, [files.length])
+
+    console.log('selectedFiles', selectedFiles);
 
     const data = new FormData();
 
@@ -70,7 +75,10 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     return (
-        <section className="file-drop-box">
+        <section className="file-drop-box-wrap">
+            <div className="file-drop-box havefooter">
+
+            
             <div className="list-selected-doc">
             <ul className="doc-list-ul">
             {
@@ -86,6 +94,9 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 })
             }
             </ul>
+            <div className="addmore-wrap">
+            <a className="addmoreDoc">Add more files</a>
+            </div>
             </div>
             {showingDoc ? <DocumentView
                 file={currentDoc}
@@ -94,7 +105,37 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 hide={closeDocumentView} />
                 : ''}
             {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
-            <button onClick={uploadFile}>Submit</button>
+           
+
+           </div>
+           <div className="doc-upload-footer">
+               <div className="doc-submit-wrap">
+               <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
+               </div>
+
+               <div className="doc-confirm-wrap d-none">
+
+                   <div className="row">
+                       <div className="col-sm-8">
+                           <div className="dc-text">
+                           <p>Are you done with this Bank statement?</p>
+
+                           </div>
+                           
+                       </div>
+
+                       <div className="col-sm-4">
+                           <div className="dc-actions">
+                       <button className="btn btn-small btn-secondary" onClick={uploadFile}>No</button>
+                       <button className="btn btn-small btn-primary" onClick={uploadFile}>Yes</button>
+                       </div>
+                       </div>
+
+                   </div>
+              
+               </div>
+           
+           </div>
         </section>
     )
 }

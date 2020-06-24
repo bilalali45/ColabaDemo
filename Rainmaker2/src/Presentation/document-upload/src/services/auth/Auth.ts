@@ -1,7 +1,3 @@
-import { UserActions } from "../../store/actions/UserActions";
-import { cursorTo } from "readline";
-
-
 export class Auth {
 
     public static saveAuth(token: string) {
