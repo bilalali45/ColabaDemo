@@ -94,7 +94,12 @@ export class UserActions {
     let currentTime = new Date(Date.now());
     let expiryTime = new Date(expiry * 1000);
     let time = expiryTime.getMinutes() - currentTime.getMinutes();
-    let t = time * 1000 * 60;
+    if (time < 1) {
+      UserActions.refreshToken();
+      return;
+    }
+    let t = (time * 1000) * 60;
+
     console.log('time', t);
     setTimeout(async () => {
       console.log('in set time out', time);
