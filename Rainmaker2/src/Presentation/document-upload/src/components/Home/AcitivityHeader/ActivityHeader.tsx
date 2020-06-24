@@ -44,8 +44,6 @@ const ActivityHeader = (props) => {
         setNavigations(location.pathname);
     }, [location.pathname]);
 
-    
-
     const renderLeftNav = () => {
         if (leftNav === 'Dashboard') {
             return <a tabIndex={-1} onClick={() => {
@@ -59,6 +57,7 @@ const ActivityHeader = (props) => {
                </Link >
 
     }
+ 
 
     return (
         <div className="activityHeader">
@@ -80,12 +79,11 @@ const ActivityHeader = (props) => {
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-
-
-                                        <Link to={{
-                                            pathname: rightNavUrl,
-                                            state: { from: location.pathname }
-                                        }}>{rightNav}</Link>
+                                     
+                                         <Link to={{
+                                                pathname: rightNavUrl,
+                                                state: { from: location.pathname }
+                                            }}>{rightNav}</Link> 
 
                                     </div>
 
