@@ -62,27 +62,27 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
                 onDragLeave={onDragLeave}
                 onDragOver={ondragover}
                 onDrop={onDrop}>
-                    <div className="empty-d-box-wrap">
+                <div className="empty-d-box-wrap">
                     <div className="f-dropbox-wrap">
-                    <div className="icon-doc-upload">
-                        <img src={DocUploadIcon} alt="" />
-                    </div>
-                    <div className="chosefileWrap">
-                        <label htmlFor="inputFile">
-                        Your don't have any files.
-                        <br/>
+                        <div className="icon-doc-upload">
+                            <img src={DocUploadIcon} alt="" />
+                        </div>
+                        <div className="chosefileWrap">
+                            <label htmlFor="inputFile">
+                                Your don't have any files.
+                        <br />
                         Drop it here or <span>upload</span>
-                        </label>
-                        <input
-                    ref={inputRef}
-                    type="file"
-                    name="file"
-                    id="inputFile"
-                    onChange={(e) => handleChange(e)}
-                    multiple />
+                            </label>
+                            <input
+                                ref={inputRef}
+                                type="file"
+                                name="file"
+                                id="inputFile"
+                                onChange={(e) => handleChange(e)}
+                                multiple />
+                        </div>
                     </div>
-                    </div>
-                    </div>
+                </div>
             </div>
         </section>
     )
