@@ -77,6 +77,7 @@ export class UserActions {
       if (Rainmaker2Token && Rainmaker2RefreshToken) {
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
+        Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
         return true;
       } else {
         return false;
