@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using RainMaker.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Rainmaker.API.CorrelationHandlersAndMiddleware
             {
                 Code = context.Response.StatusCode.ToString(),
                 Message = "Internal Server Error"
-            }.ToString());
+            }.ToJson());
         }
     }
 }

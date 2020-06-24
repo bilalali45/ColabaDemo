@@ -3,9 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Helpers
 {
+    public static partial class ObjectExtensions
+    {
+        public static string ToJson(this object value)
+        {
+            if (value == null) return null;
+
+            try
+            {
+                var jsonSerializerSettings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
+
+                string json = JsonConvert.SerializeObject(value, formatting: Formatting.Indented, settings: jsonSerializerSettings);
+                return json;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return null;
+        }
+
+    }
     public static class AsyncHelper
     {
         private static readonly TaskFactory _myTaskFactory = new
