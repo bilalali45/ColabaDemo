@@ -112,6 +112,28 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                <div className="doc-submit-wrap">
                <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
                </div>
+
+               <div className="doc-confirm-wrap d-none">
+
+                   <div className="row">
+                       <div className="col-sm-8">
+                           <div className="dc-text">
+                           <p>Are you done with this Bank statement?</p>
+
+                           </div>
+                           
+                       </div>
+
+                       <div className="col-sm-4">
+                           <div className="dc-actions">
+                       <button className="btn btn-small btn-secondary" onClick={uploadFile}>No</button>
+                       <button className="btn btn-small btn-primary" onClick={uploadFile}>Yes</button>
+                       </div>
+                       </div>
+
+                   </div>
+              
+               </div>
            
            </div>
         </section>
