@@ -61,6 +61,7 @@
             padding: 15px 10px;
             padding-left: 45px;
             padding-right: 130px;
+            margin-bottom: 5px;
             .doc-icon {
                 position: absolute;
                 left: 10px;
@@ -101,6 +102,26 @@
                         // padding-right: 3px;
                     }
                 }
+
+                
+            }
+            .editableview {
+                .doc-list-content {
+                    .tilte {
+                input{
+                    display: block;
+                    font-family: inherit;
+                    font-size: inherit;
+                    padding: 0 2px;
+                    border: 1px solid color('primary');
+                    background: color('colorWhite');
+                    width: 80%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+            }
             }
 
             .doc-list-actions {
@@ -109,10 +130,17 @@
                 top: 0;
                 height: 100%;
                 padding: 15px 10px;
+                ul {
+                    padding-top: 4px;
                 .doc-rename-btn {
                     font: 400 #{fontSize("xs") + "/1"} fontFamily("base"); 
+                    height: 30px;
+                    padding: 10px 19px;
                 }
             }
+            }
+
+
         }
     }
 }
