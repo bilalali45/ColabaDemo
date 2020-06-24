@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ namespace Rainmaker.API
     {
         public static void Main(string[] args)
         {
+            ServicePointManager.DefaultConnectionLimit = 1000;
             ConfigureLogging();
             CreateHost(args: args);
         }
