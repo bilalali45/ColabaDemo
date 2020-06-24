@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 
 export const UploadedDocumentsTable = () => {
 
-    const [docList, setDocList] = useState<UploadedDocuments[] | null>(null)
+    const [docList, setDocList] = useState<UploadedDocuments[] | [] | null>(null)
     const history = useHistory();
     useEffect(() => {
         if (!docList?.length) {
@@ -19,7 +19,6 @@ export const UploadedDocumentsTable = () => {
 
     const fetchUploadedDocuments = async () => {
         let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
-        console.log('uploadedDocs', uploadedDocs)
         if (uploadedDocs) {
             setDocList(uploadedDocs);
         }
@@ -35,8 +34,8 @@ export const UploadedDocumentsTable = () => {
     const renderAddedColumn = (data) => {
         return <td>
             {data.map((item: Document) => {
-                return <tr><span className="block-element">{DateFormat(item.fileUploadedOn, true)}           
-                    </span></tr>
+                return <tr><span className="block-element">{DateFormat(item.fileUploadedOn, true)}
+                </span></tr>
             })}
         </td>
     }
@@ -58,11 +57,12 @@ export const UploadedDocumentsTable = () => {
         })
     }
     const loanHomeHandler = () => {
-    history.push('/activity');
+        history.push('/activity');
     }
-    return (
-        <div className="UploadedDocumentsTable">
-          {docList &&
+    const renderTable = (data) => {
+        if (!data || data.length === 0)
+            return;
+        return (
             <table className="table  table-striped">
                 <thead>
                     <tr>
@@ -71,27 +71,36 @@ export const UploadedDocumentsTable = () => {
                         <th>Added</th>
                     </tr>
                 </thead>
-                
-                    {renderUploadedDocs(docList)}
-               
+                {renderUploadedDocs(data)}
+
             </table>
-             }
-            
-             {docList?.length === 0 &&
-                <div className="no-document">               
+        )
+    }
+    const renderNoData = () => {
+        return (
+            <div className="no-document">
 
                 <div className="no-document--wrap">
-                       <div className="no-document--img">
-                           <img src={DocUploadIcon} alt="Your don't have any files!" />
-                       </div>
-                       <label htmlFor="inputno-document--text">
-                           Your don't have any files.<br/>
-                           Go to <a tabIndex={-1} onClick={loanHomeHandler}>Loan Home</a>
-                       </label>
-               </div>  
-               
-           </div>
-             }
+                    <div className="no-document--img">
+                        <img src={DocUploadIcon} alt="Your don't have any files!" />
+                    </div>
+                    <label htmlFor="inputno-document--text">
+                        Your don't have any files.<br />
+               Go to <a tabIndex={-1} onClick={loanHomeHandler}>Loan Home</a>
+                    </label>
+                </div>
+
+            </div>
+        )
+    }
+    return (
+
+        <div className="UploadedDocumentsTable">
+            {renderTable(docList)}
+
+            {docList?.length === 0 &&
+                renderNoData()
+            }
         </div>
     )
 }
