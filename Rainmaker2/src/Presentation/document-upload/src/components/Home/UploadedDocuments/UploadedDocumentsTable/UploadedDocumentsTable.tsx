@@ -3,8 +3,7 @@ import { UploadedDocuments } from '../../../../entities/Models/UploadedDocuments
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import { Auth } from '../../../../services/auth/Auth';
 import { Document } from '../../../../entities/Models/Document'
-import moment from 'moment';
-import * as momentDate from 'moment';
+import { DateFormat } from '../../../../utils/helpers/DateFormat';
 
 export const UploadedDocumentsTable = () => {
 
@@ -34,10 +33,7 @@ export const UploadedDocumentsTable = () => {
     const renderAddedColumn = (data) => {
         return <td>
             {data.map((item: Document) => {
-                return <tr><span className="block-element">{
-                    moment(new Date(item.fileUploadedOn)).format('MM-DD-YYYY HH:mm')
-                    }
-                    
+                return <tr><span className="block-element">{DateFormat(item.fileUploadedOn, true)}           
                     </span></tr>
             })}
         </td>
@@ -76,7 +72,7 @@ export const UploadedDocumentsTable = () => {
                
             </table>
              }
-             {!docList &&
+             {docList?.length === 0 &&
             <div>No document</div>
              }
         </div>
