@@ -10,6 +10,7 @@ export const DocumentsRequired = () => {
 
     const { state, dispatch } = useContext(Store);
     const { pendingDocs }: any = state.documents;
+    console.log(pendingDocs);
 
     useEffect(() => {
         fetchPendingDocs();
@@ -18,13 +19,17 @@ export const DocumentsRequired = () => {
     const fetchPendingDocs = async () => {
         if (!pendingDocs) {
             let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
-            dispatch({type: DocumentsActionType.FetchPendingDocs, payload: docs});
+            if (docs) {
+                dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+                dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+            }
+
         }
     }
 
 
     const changeCurrentDoc = (curDoc: DocumentRequest) => {
-        dispatch({type: DocumentsActionType.SetCurrentDoc, payload: curDoc})
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: curDoc })
     }
 
     const renderRequiredDocs = () => {
@@ -51,8 +56,6 @@ export const DocumentsRequired = () => {
     return (
         <div className="dr-list-wrap">
             <nav>
-
-
                 {
                     pendingDocs && renderRequiredDocs()
                 }
