@@ -2,9 +2,10 @@ import React, { useState, ChangeEvent, useContext, useEffect } from 'react'
 import { DocumentDropBox } from '../../../../shared/Components/DocumentDropBox/DocumentDropBox'
 import { SelectedDocuments } from './SelectedDocuments/SelectedDocuments'
 import { Store } from '../../../../store/store'
-import { DocumentsActionType } from '../../../../store/reducers/documentReducer'
+import { DocumentsActionType, DocumentsType } from '../../../../store/reducers/documentReducer'
+import { DocumentRequest } from '../../../../entities/Models/DocumentRequest'
 
-export type FileSelected = {
+export interface FileSelected  {
     name: string;
     file: File;
 }
@@ -13,10 +14,16 @@ export const DocumentUpload = () => {
     const [files, setFiles] = useState<FileSelected[]>([]);
     const [fileInput, setFileInput] = useState<HTMLInputElement>();
     const {state, dispatch} = useContext(Store);
+    const { currentDoc } : any = state.documents;
+    const selectedfiles : FileSelected[] = currentDoc?.files;
 
     useEffect(() => {
         dispatch({type: DocumentsActionType.AddFileToDoc, payload: files}) 
-    }, [files.length])
+    }, [files?.length])
+
+    useEffect(() => {
+        setFiles(currentDoc?.files)
+    }, [currentDoc?.docName])
 
 
     const updateFiles = (files: File[]) => {
@@ -54,6 +61,7 @@ export const DocumentUpload = () => {
             };
         }
     }
+
     console.log(state);
     return (
         <section className="Doc-upload">
@@ -67,14 +75,14 @@ export const DocumentUpload = () => {
                 </div>
             </div>
             <div>
-            {!files.length ?
+            {!files?.length ?
                 <DocumentDropBox
                     url={'http://localhost:5000/upload'}
                     setSelectedFiles={getSelectedFiles}
                     setFileInput={getFileInput} />
                 : <>
                     <SelectedDocuments
-                        files={files}
+                        files={selectedfiles}
                         url={'http://localhost:5000/upload'} />
                     <button onClick={showFileExplorer}>Add More</button>
                 </>

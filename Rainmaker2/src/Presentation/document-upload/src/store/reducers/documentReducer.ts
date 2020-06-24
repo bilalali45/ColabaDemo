@@ -20,12 +20,12 @@ export type DocumentsType = {
 type DocumentsActionPayload = {
     [DocumentsActionType.FetchPendingDocs]: DocumentRequest[],
     [DocumentsActionType.SetCurrentDoc]: DocumentRequest,
-    [DocumentsActionType.AddFileToDoc] : FileSelected[]
+    [DocumentsActionType.AddFileToDoc]: FileSelected[]
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
 
-export const documentsReducer = (state: DocumentsType | {} | [], { type, payload }: Actions) => {
+export const documentsReducer = (state: DocumentsType | {}, { type, payload }: Actions) => {
     switch (type) {
         case DocumentsActionType.FetchPendingDocs:
             return {
@@ -40,18 +40,18 @@ export const documentsReducer = (state: DocumentsType | {} | [], { type, payload
             };
 
         case DocumentsActionType.AddFileToDoc:
-            // console.log(payload);
-            // if(!state['currentDoc']) return state;
-            // if(!isArray(payload)) {
-            //     return state;
-            // }
+            const pdocs = state['pendingDocs']?.map((pd: any) => {
+                if (pd?.docName === state['currentDoc']?.docName) {
+                    pd.files = payload;
+                    return pd;
+                }
+                return pd;
+            });
+            // debugger
             return {
                 ...state,
-                currentDoc: {
-                    ...state['currentDoc'],
-                    files: payload
-                }
-            };
+                pendingDocs: pdocs
+            }
 
         // case DocumentsActionType.FetchSubmittedDocs:
         //     return {
@@ -63,3 +63,19 @@ export const documentsReducer = (state: DocumentsType | {} | [], { type, payload
             return state;
     }
 }
+
+
+// pendingDocs: state['pendingDocs'].map((p: DocumentRequest) => {
+//     if (p.docName === state['currentDoc'].docName) {
+//         if (Array.isArray(payload)) {
+//             p['files'] = payload;
+//         }
+//         return {
+
+//         }
+//         currentDoc: {
+//             ...state['currentDoc'],
+//     files: payload
+//         }
+// }
+// })
