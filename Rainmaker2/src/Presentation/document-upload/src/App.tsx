@@ -27,7 +27,7 @@ const App = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("Document Management App Version", "0.1.2");
+    console.log("Document Management App Version", "0.1.3");
     authenticate();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
   }, [])
