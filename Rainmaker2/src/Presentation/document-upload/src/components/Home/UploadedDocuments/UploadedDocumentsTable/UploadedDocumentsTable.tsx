@@ -3,15 +3,14 @@ import { UploadedDocuments } from '../../../../entities/Models/UploadedDocuments
 import { DocumentActions } from '../../../../store/actions/DocumentActions';
 import { Auth } from '../../../../services/auth/Auth';
 import { Document } from '../../../../entities/Models/Document'
-import moment from 'moment';
-import * as momentDate from 'moment';
 import DocUploadIcon from '../../../../assets/images/upload-doc-icon.svg';
 import { DateFormat } from '../../../../utils/helpers/DateFormat';
+import { useHistory } from 'react-router-dom';
 
 export const UploadedDocumentsTable = () => {
 
     const [docList, setDocList] = useState<UploadedDocuments[] | null>(null)
-
+    const history = useHistory();
     useEffect(() => {
         if (!docList?.length) {
             fetchUploadedDocuments();
@@ -58,7 +57,9 @@ export const UploadedDocumentsTable = () => {
             )
         })
     }
-
+    const loanHomeHandler = () => {
+    history.push('/activity');
+    }
     return (
         <div className="UploadedDocumentsTable">
           {docList &&
@@ -76,7 +77,7 @@ export const UploadedDocumentsTable = () => {
             </table>
              }
             
-             {!docList?.length &&
+             {docList?.length === 0 &&
                 <div className="no-document">               
 
                 <div className="no-document--wrap">
@@ -85,7 +86,7 @@ export const UploadedDocumentsTable = () => {
                        </div>
                        <label htmlFor="inputno-document--text">
                            Your don't have any files.<br/>
-                           Go to <a href="http://localhost:3000/DocumentManagement/uploadedDocuments">Loan Home</a>
+                           Go to <a tabIndex={-1} onClick={loanHomeHandler}>Loan Home</a>
                        </label>
                </div>  
                
