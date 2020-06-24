@@ -61,7 +61,7 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
                                     <a onClick={EditTitle} title="Rename" tabIndex={-1}>{<DocEditIcon />}</a>
                                 </li>
                                 <li>
-                                    <a title="View Document" tabIndex={-1}>{<DocviewIcon />}</a>
+                                    <a onClick={() => viewDocument(file)} title="View Document" tabIndex={-1}>{<DocviewIcon />}</a>
                                 </li>
                                 <li>
                                     <a title="Cancel" tabIndex={-1}><i className="zmdi zmdi-close"></i></a>
