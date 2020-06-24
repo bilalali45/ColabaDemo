@@ -26,7 +26,7 @@ const ActivityHeader = (props) => {
         }
 
         if (pathname.includes('uploadedDocuments')) {
-            if (props.location.state.from == '/activity') {
+            if (props.location.state == undefined || props.location.state.from == '/activity') {
                 setLeftNav('Home');
                 setLeftNavUrl('/activity');
                 setRightNav('Document Request');
@@ -57,7 +57,7 @@ const ActivityHeader = (props) => {
                </Link >
 
     }
- 
+    
 
     return (
         <div className="activityHeader">
@@ -74,16 +74,17 @@ const ActivityHeader = (props) => {
                                         <li>
                                             {renderLeftNav()}
                                         </li>
+                                        
                                     </ul>
                                 </div>
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                     <a>Uploaded Document</a>
-                                         {/* <Link to={{
+                                     
+                                         <Link to={{
                                                 pathname: rightNavUrl,
                                                 state: { from: location.pathname }
-                                            }}>{rightNav}</Link>  */}
+                                            }}>{rightNav}</Link> 
 
                                     </div>
 
