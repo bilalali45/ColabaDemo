@@ -17,6 +17,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Rainmaker.API.CorrelationHandlersAndMiddleware;
+using Rainmaker.API.Helpers;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Service;
@@ -40,12 +42,12 @@ namespace Rainmaker.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var csResponse = httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS").Result;
+            var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
             if (!csResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key store");
             }
-            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(csResponse.Content.ReadAsStringAsync().Result));
+            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(AsyncHelper.RunSync(()=> csResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<RainMaker.Data.RainMakerContext>, UnitOfWork<RainMaker.Data.RainMakerContext>>();
             services.AddScoped<ISettingService, SettingService>();
@@ -58,12 +60,12 @@ namespace Rainmaker.API
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       );
             
-            var keyResponse= httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT").Result;
+            var keyResponse= AsyncHelper.RunSync(()=> httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load key store");
             }
-            var securityKey = keyResponse.Content.ReadAsStringAsync().Result;
+            var securityKey = AsyncHelper.RunSync(()=>keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
@@ -101,7 +103,10 @@ namespace Rainmaker.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
             //app.UseHttpsRedirection();
 
             app.UseRouting();

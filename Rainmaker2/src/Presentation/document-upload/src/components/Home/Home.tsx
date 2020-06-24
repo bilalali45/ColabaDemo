@@ -18,27 +18,6 @@ import { Authorized } from '../../shared/Components/Authorized/Authorized';
 
 const httpClient = new Http();
 
-// export const Home = () => {
-//     const location = useLocation();
-
-//     return (
-//         <div>
-//             {!location.pathname.includes('404') && <ActivityHeader />}
-//             <main className="page-content">
-//                 <div className="container">
-//                     <Switch>
-//                         <Redirect exact from={"/"} to={"/activity"} />
-//                         <Authorized path="/activity" component={Activity} />
-//                         <Authorized path="/documentsRequest" component={DocumentRequest} />
-//                         <Authorized path="/uploadedDocuments" component={UploadedDocuments} />
-//                         <Route path="/404" component={PageNotFound} />
-//                         <Redirect exact from={"*"} to={"/404"} />
-//                     </Switch>
-//                 </div>
-//             </main>
-//         </div>
-//     )
-// }
 
 export class Home extends Component {
     render() {

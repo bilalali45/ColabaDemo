@@ -259,3 +259,23 @@ a[href],a[tabindex]{
     justify-content: center;
     align-items: center;
 }
+.no-document {
+    min-height: 500px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &--wrap{
+
+    }
+
+    &--img{
+        margin-bottom: 10px;
+    }
+
+    &--text{
+
+    }
+}
