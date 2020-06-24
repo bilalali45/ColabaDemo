@@ -31,7 +31,6 @@ export const UploadedDocumentsTable = () => {
             })}
         </td>
     }
-
     const renderAddedColumn = (data) => {
         return <td>
             {data.map((item: Document) => {
