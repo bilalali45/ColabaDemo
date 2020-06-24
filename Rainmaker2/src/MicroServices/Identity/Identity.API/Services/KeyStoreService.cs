@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Identity.Helpers;
 using Microsoft.Extensions.Configuration;
 
 namespace Identity.Services
@@ -37,19 +38,16 @@ namespace Identity.Services
         public  string GetJwtSecurityKey()
         {
             var httpClient = _clientFactory.CreateClient();
-            var jwtKeyResponseTask =   httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT");
-            jwtKeyResponseTask.Start();
-            var jwtKeyResponse = jwtKeyResponseTask.Result;
+            var jwtKeyResponse = AsyncHelper.RunSync(() =>  httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
 
             if (!jwtKeyResponse.IsSuccessStatusCode)
             {
                 throw new Exception("jwt key not found");
             }
 
-            var task = jwtKeyResponse.Content.ReadAsStringAsync();
-            task.Start();
+            var result = AsyncHelper.RunSync(()=> jwtKeyResponse.Content.ReadAsStringAsync());
 
-            return task.Result;
+            return result;
         }
     }
 }

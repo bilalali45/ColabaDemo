@@ -8,16 +8,14 @@ namespace MainGateway.Middleware
 {
     public class RequestResponseLoggingMiddleware
     {
-        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
         private readonly RequestDelegate _next;
 
-        public RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<RequestResponseLoggingMiddleware> logger)
+        public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, ILogger<RequestResponseLoggingMiddleware> _logger)
         {
             context.Request.EnableBuffering();
 
