@@ -74,6 +74,10 @@ namespace DocumentManagement.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
 
             //app.UseHttpsRedirection();
 

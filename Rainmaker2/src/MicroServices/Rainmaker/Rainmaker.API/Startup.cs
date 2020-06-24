@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Rainmaker.API.CorrelationHandlersAndMiddleware;
 using Rainmaker.API.Helpers;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
@@ -102,7 +103,10 @@ namespace Rainmaker.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
             //app.UseHttpsRedirection();
 
             app.UseRouting();
