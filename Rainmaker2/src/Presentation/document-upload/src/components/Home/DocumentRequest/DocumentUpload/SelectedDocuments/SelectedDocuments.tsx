@@ -63,6 +63,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     const changeName = (file: FileSelected, newName: string) => {
+        
         setSelectedFiles((prevFiles: FileSelected[]) => {
             return prevFiles.map((f: FileSelected) => {
                 if (f.file.name === file.file.name) {
@@ -98,19 +99,14 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                         <a className="addmoreDoc">Add more files</a>
                     </div>
                 </div>
-                <DocumentView
-                    // file={currentDoc}
-                    // type={fileType}
-                    // url={`http://localhost:5000/pdf/${currentDoc?.name}`}
-                    // hide={closeDocumentView} 
-                    />
-                {/* {showingDoc ? <DocumentView
+              
+                {showingDoc ? <DocumentView
                 file={currentDoc}
                 type={fileType}
                 url={`http://localhost:5000/pdf/${currentDoc?.name}`}
                 hide={closeDocumentView} />
                 : ''}
-                {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>*/}
+                {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
            
 
            </div>

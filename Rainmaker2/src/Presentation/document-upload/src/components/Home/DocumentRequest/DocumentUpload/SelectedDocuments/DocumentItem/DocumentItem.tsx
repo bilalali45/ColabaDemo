@@ -11,11 +11,13 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
     const [filename, setfilename] = useState<string>(file.name);
     const [iseditable, seteditable] = useState<any>(false)
     const [isdeleted, setdeleted] = useState<any>(false)
-
+    
     const Rename = () => {
         seteditable(false)
+        changeName(file, filename);
     }
     const EditTitle = () => {
+
         seteditable(true)
     }
 
@@ -41,7 +43,6 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
                         <div className="tilte">
                             <input readOnly={iseditable ? false : true} type="text" value={filename} onChange={(e) => {
                                 setfilename(e.target.value);
-                                changeName(file, e.target.value);
                             }} />
 
                             {/* <p>{file.name}</p> */}

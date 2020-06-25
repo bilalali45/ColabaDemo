@@ -17,6 +17,10 @@ export const DocumentUpload = () => {
     const { currentDoc } : any = state.documents;
     const selectedfiles : FileSelected[] = currentDoc?.files;
 
+    let docTitle = currentDoc ? currentDoc.docName : '';
+    let docMessage = currentDoc ? currentDoc.docMessage : '';
+   console.log('docTitle and docMessage', docTitle,docMessage )
+
     useEffect(() => {
         dispatch({type: DocumentsActionType.AddFileToDoc, payload: files}) 
     }, [files?.length])
@@ -66,11 +70,11 @@ export const DocumentUpload = () => {
     return (
         <section className="Doc-upload">
             <div className="Doc-head-wrap">
-                <h2> Bank statement</h2>
+    <h2> {docTitle}</h2>
                 <div className="doc-note">
                     <p>
                         <i className="fas fa-info-circle"></i>
-                        Hi {"Raza"}, Please submit 2 months of the most recent Bank Statement
+                       {docMessage}
                     </p>
                 </div>
             </div>
