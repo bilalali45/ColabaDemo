@@ -38,7 +38,7 @@ namespace Rainmaker.API.Controllers
         [HttpGet("[action]")]
         [Authorize]
         public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
-        {
+        {   
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
             if(lo==null || lo.FirstName==null)
@@ -62,6 +62,7 @@ namespace Rainmaker.API.Controllers
             if (imageData == null)
             {
                 imageData = new FileStream("Content\\images\\default-LO.jpg", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                   // new FileStream(remoteFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             }
             using MemoryStream ms = new MemoryStream();
             imageData.CopyTo(ms);
