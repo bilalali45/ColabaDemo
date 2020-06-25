@@ -262,6 +262,40 @@ a[href],a[tabindex]{
     }
 }
 
+.button-float{
+    background-color: color('colorWhite');
+    color: color('base');
+    border: none;
+    box-shadow: 0 0 5px rgba(color('colorBlack'), 0.2);
+    margin: 5px;
+    width: $float-button-size;
+    height: $float-button-size;
+    border-radius: 50%;
+    text-align: center;
+    line-height: $float-button-size;
+    padding: 0;
+    @include transition(all 0.5s ease-out);
+    svg{
+        height: ceil(35 * $float-button-size / 100); //12px;
+        @include transition(all 0.5s ease-out);
+        path{
+            fill: color('base');
+            stroke:color('base');
+            opacity: 0.8;
+            @include transition(all 0.5s ease-out);
+        }
+    }
+
+    &:focus,
+    &:visited,
+    &:hover{
+        outline: none;
+    }
+
+    &:hover{
+        background-color: darken(color('colorWhite'), 20%);
+    }
+}
 
 .nbox-wrap {
     background: color("colorWhite");

@@ -35,7 +35,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         setCurrentDoc(file);
     }
 
-    
+
 
     const closeDocumentView = () => {
         setShowingDoc(false);
@@ -78,33 +78,39 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         <section className="file-drop-box-wrap">
             <div className="file-drop-box havefooter">
 
-            
-            <div className="list-selected-doc">
-            <ul className="doc-list-ul">
-            {
-                selectedFiles.map((f,index) => { 
-                    return (
-                        <DocumentItem
-                        file={f}
-                        viewDocument={viewDocument}
-                        changeName={changeName} 
-                        key={index}
-                        />
-                        )
-                })
-            }
-            </ul>
-            <div className="addmore-wrap">
-            <a className="addmoreDoc">Add more files</a>
-            </div>
-            </div>
-            {showingDoc ? <DocumentView
+
+                <div className="list-selected-doc">
+                    <ul className="doc-list-ul">
+                        {
+                            selectedFiles.map((f, index) => {
+                                return (
+                                    <DocumentItem
+                                        file={f}
+                                        viewDocument={viewDocument}
+                                        changeName={changeName}
+                                        key={index}
+                                    />
+                                )
+                            })
+                        }
+                    </ul>
+                    <div className="addmore-wrap">
+                        <a className="addmoreDoc">Add more files</a>
+                    </div>
+                </div>
+                <DocumentView
+                    // file={currentDoc}
+                    // type={fileType}
+                    // url={`http://localhost:5000/pdf/${currentDoc?.name}`}
+                    // hide={closeDocumentView} 
+                    />
+                {/* {showingDoc ? <DocumentView
                 file={currentDoc}
                 type={fileType}
                 url={`http://localhost:5000/pdf/${currentDoc?.name}`}
                 hide={closeDocumentView} />
                 : ''}
-            {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
+                {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>*/}
            
 
            </div>
