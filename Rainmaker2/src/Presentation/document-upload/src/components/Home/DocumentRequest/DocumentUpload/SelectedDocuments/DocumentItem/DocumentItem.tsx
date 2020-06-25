@@ -9,7 +9,7 @@ type DocumentItemType = {
 export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemType) => {
     // export const DocumentItem = () => {
     const [filename, setfilename] = useState<string>(file.name);
-    const [iseditable, seteditable] = useState<any>(false)
+    const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
     
     const Rename = () => {
@@ -37,7 +37,7 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
             {!isdeleted ?
                 <div className={iseditable ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                     <div className="doc-icon">
-                        <i className="far fa-file-pdf"></i>
+                        <i className="far fa-file-image"></i>
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
