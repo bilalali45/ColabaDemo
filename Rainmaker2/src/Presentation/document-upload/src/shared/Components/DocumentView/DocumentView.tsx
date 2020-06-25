@@ -127,7 +127,7 @@ type DocumentViewPropsType = { type: string, url: string, file: File | null, hid
 const filef = 'http://localhost:5000/pdf/A Sample PDF.pdf'
 const typea = 'pdf'
 
-export const DocumentView = () => {
+export const DocumentView = (props:DocumentViewPropsType) => {
 
   //let fullscreen = false;
   const [fullscreen, exitscreen] = useState(false);
