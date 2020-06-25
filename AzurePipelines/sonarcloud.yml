@@ -1,0 +1,114 @@
+
+name: SonarCloud Build
+
+# Azure Pipelines Build Jobs for running SonarCloud.
+# This is associated with two projects on SonarCloud.io - one for C# and MSBuild, and one for .css, .html, .js, .ts files. 
+
+
+trigger:
+# triggers build on changes to master and develop - necessary to update SonarCloud
+- master
+- develop
+
+pr:
+# triggers build on pull request to master and develop
+- master
+- develop
+
+schedules:
+# schedule to run on all branches at 12:00 PM Karachi time every day
+  - cron: "0 7 * * Mon,Tue,Wed,Thu,Fri"
+    # always runs even if no there are no code changes.
+    always: true
+    branches:
+      include: 
+      - dev-*
+      - releases/*
+
+variables:
+- group: SonarCloud-Rainmaker2
+
+jobs:
+- job: SonarCloudCSharp
+  
+  pool:
+    vmImage: 'windows-2019'
+
+  steps:
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: $(sonarCloudServiceEndpoint)
+      organization: $(sonarCloudOrganization)
+      scannerMode: 'MSBuild'
+      projectKey: $(sonarCloudProjectKeyMsBuild)
+
+  - task: NuGetCommand@2
+    inputs:
+      command: 'restore'
+      restoreSolution: '$(codeSourceDirectory)/**/*.sln'
+      feedsToUse: 'select'
+
+  - task: MSBuild@1
+    inputs:
+      solution: '$(codeSourceDirectory)/**/*.sln'
+      msbuildVersion: '16.0'
+      maximumCpuCount: true
+
+  - task: SonarCloudAnalyze@1
+
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
+
+
+- job: SonarCloudOther
+  # Publish Code Analysis from SonarQube for non .CS files.
+  pool:
+    # using win2016 b/c of a weird NPM inside windows-2019 build image. This caused problems when I tried to NPM install typescript.
+    # Issue: Powershell in Windows 2019 was recognizing an NPM log entry as an error and exiting. Problem doesn't occur in an older agent.
+    vmImage: 'vs2017-win2016'
+
+  steps:
+  
+  #NOTE: Need to install typescript ahead of time because of requirements by SonarCloud
+  - task: PowerShell@2
+    displayName: TypeScript Install
+    inputs:  
+      targetType: inline
+      
+      # if this step fails, stop the build
+      errorActionPreference: stop
+      
+      script: |
+      
+        Set-Variable -name 'orig_dir' -value $(pwd)
+        
+        # searches through all files in the repo and tries to find tsconfig.json files. 
+        Get-childitem -Recurse -Filter tsconfig.json | foreach-object {
+            cd $_.Directory
+            # install typescript in directory
+            npm install typescript
+         }
+        cd $orig_dir
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: $(sonarCloudServiceEndpoint)
+      organization: $(sonarCloudOrganization)
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: $(sonarCloudProjectKeyOther)
+      cliSources: $(codeSourceDirectory)
+      extraProperties: | 
+        # NOTE: this will need to be maintained overtime. There will be js dependencies that we will not want to scan through.
+        sonar.inclusions=$(sonarInclusionsFilePathsOther)
+        sonar.exclusions=$(sonarExclusionsFilePathsOther)
+        sonar.log.level=$(sonarCloudOtherLogLevel)
+
+  - task: SonarCloudAnalyze@1
+
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
+
