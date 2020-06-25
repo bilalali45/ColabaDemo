@@ -6,24 +6,21 @@ name: SonarCloud Build
 
 
 trigger:
-# triggers build on changes to master and develop - necessary to update SonarCloud
+# triggers build on changes to master - necessary to update SonarCloud
 - master
-- develop
 
 pr:
-# triggers build on pull request to master and develop
+# triggers build on pull request to master
 - master
-- develop
 
 schedules:
 # schedule to run on all branches at 12:00 PM Karachi time every day
   - cron: "0 7 * * Mon,Tue,Wed,Thu,Fri"
-    # always runs even if no there are no code changes.
-    always: true
+    # only runs even if there's a code change
+    always: false
     branches:
       include: 
-      - dev-*
-      - releases/*
+      - develop
 
 variables:
 - group: SonarCloud-Rainmaker2
