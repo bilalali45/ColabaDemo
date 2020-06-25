@@ -2,17 +2,33 @@
     min-height: calc(100% - 15px);
     position: relative;
     &.hasData{
-        background: url("../../images/doc-request.png") no-repeat center right #fff;
+        background-image: url("../../images/doc-request.png");
+        background-image: url("../../images/doc-request.svg");
+        background-position:118% 44px ;
+        background-repeat: no-repeat;
+        background-color: color('colorWhite');
         @include media-breakpoint-down(lg) {
-            background-position-y: 40%;
-            background-size: 60%;
+            background-position: 112% 43px;
+            background-size: 65%;
         }
         @include media-breakpoint-down(md) {
-            background-position-y: 25%;
-            background-size: 60%;
+            background-position: 106% 69px;
+            background-size: 58%;
         }
     }
-
+.list {
+    li {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 165px;
+        @include media-breakpoint-down(md) {
+            font-size: fontSize("nr")-1;
+            max-width: 145px
+        }
+        
+    }
+}
 
 
     &.box-wrap {

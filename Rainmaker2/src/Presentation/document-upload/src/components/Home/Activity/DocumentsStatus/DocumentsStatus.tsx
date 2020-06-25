@@ -81,7 +81,8 @@ export const DocumentsStatus = () => {
             <div className="box-wrap--body clearfix">
                 <ul className="list">
                     {pendingDocs.map((item: any, index: any) => {
-                        return <li key={index}> {item.docName} </li>
+                       if(index < 8)
+                        return <li title={item.docName}  key={index}> {item.docName} </li>
                     })}
                 </ul>
             </div>
