@@ -19,6 +19,7 @@ $color:(
     scroll              :       #DBDBDB,
     gray2               :       #919191,
     border2             :       #D9D9D9,
+    fileReaderHeaderBg  :       #2D2D2D,
     disabled            :       #E5E5E5,
     disabled-text       :       #C1C0C0,
     
@@ -46,7 +47,8 @@ $font-size:(
     h5:12px,
     h6:10
 );
-$shadow:0 0 3px rgba(0, 0, 0, 0.16);
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$float-button-size     :        35px;
 
 
 // Bootstrap Variables

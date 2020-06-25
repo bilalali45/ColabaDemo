@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Linq;
+using System;
 
 namespace RainmakerTest
 {
@@ -55,7 +56,7 @@ namespace RainmakerTest
 
         [Fact]
         public async Task TestGetLoanSummaryService()
-        {   
+        {
             //Arrange
 
             DbContextOptions<RainMakerContext> options;
@@ -73,7 +74,7 @@ namespace RainmakerTest
                 LoanPurposeId = 1,
                 EntityTypeId = 1,
                 SubjectPropertyDetailId = 1,
-                OpportunityId=2
+                OpportunityId = 2
             };
             dataContext.Set<LoanApplication>().Add(app);
 
@@ -149,7 +150,7 @@ namespace RainmakerTest
 
             };
             dataContext.Set<AddressInfo>().Add(addressInfo);
-            
+
             LoanPurpose loanPurpose = new LoanPurpose
             {
                 Id = 1,
@@ -170,8 +171,8 @@ namespace RainmakerTest
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            LoanSummary res = await loanService.GetLoanSummary(1,1);
-          
+            LoanSummary res = await loanService.GetLoanSummary(1, 1);
+
             // Assert
             Assert.NotNull(res);
             Assert.Equal("Karachi", res.CityName);
@@ -185,7 +186,7 @@ namespace RainmakerTest
             Assert.Equal("Test", res.PropertyType);
         }
         [Fact]
-        public async Task TestGetLOInfoController()
+        public async Task TestGetLOInfoIsNotNullController()
         {
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
@@ -196,11 +197,10 @@ namespace RainmakerTest
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
-            
+
             loanApplicationController.ControllerContext = context;
 
             LoanOfficer obj = new LoanOfficer() { FirstName = "Smith" };
-
             mock.Setup(x => x.GetLOInfo(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
 
             //Act
@@ -212,10 +212,65 @@ namespace RainmakerTest
             Assert.NotNull(content);
             Assert.Equal("Smith", content.FirstName);
         }
+        [Fact]
+        public async Task TestGetLOInfoIsnullController()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            LoanOfficer obj = new LoanOfficer() { FirstName = null };
+
+            mock.Setup(x => x.GetLOInfo(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
+
+            //Act
+            IActionResult result = await loanApplicationController.GetLOInfo(1, 1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as LoanOfficer;
+            Assert.Null(content);
+           // Assert.Null(content.FirstName);
+        }
+        [Fact]
+        public async Task TestGetLOInfoIsnullObjController()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            LoanOfficer obj = null;
+
+            mock.Setup(x => x.GetLOInfo(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
+
+            //Act
+            IActionResult result = await loanApplicationController.GetLOInfo(1, 1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as LoanOfficer;
+            Assert.Null(content);
+            // Assert.Null(content.FirstName);
+        }
         [Fact]
         public async Task GetLOInfo()
-        {   
+        {
             //Arrange
 
             DbContextOptions<RainMakerContext> options;
@@ -231,8 +286,8 @@ namespace RainmakerTest
                 LoanAmount = 1000,
                 LoanPurposeId = 1,
                 EntityTypeId = 1,
-                OpportunityId=1,
-                BusinessUnitId=1,
+                OpportunityId = 1,
+                BusinessUnitId = 1,
             };
             dataContext.Set<LoanApplication>().Add(app);
 
@@ -246,8 +301,10 @@ namespace RainmakerTest
                 IsAutoAssigned = true,
                 IsPickedByOwner = true,
                 IsDuplicate = false
-                ,BusinessUnitId=1
-                ,OwnerId=1
+                ,
+                BusinessUnitId = 1
+                ,
+                OwnerId = 1
             };
             dataContext.Set<Opportunity>().Add(opportunity);
 
@@ -282,9 +339,10 @@ namespace RainmakerTest
                 NmlsNo = "030012345",
                 Photo = "abc.png",
                 CmsName = "Shehroz"
-                ,ContactId=1
-               
-            }; 
+                ,
+                ContactId = 1
+
+            };
             dataContext.Set<Employee>().Add(employee);
 
 
@@ -295,21 +353,21 @@ namespace RainmakerTest
                 EmployeeId = 1,
                 CompanyPhoneInfoId = 1,
                 TypeId = 3
-              
-               
+
+
             };
             dataContext.Set<EmployeePhoneBinder>().Add(employeePhoneBinder);
             CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo
             {
-                Id=1,
+                Id = 1,
                 Phone = "030012345678",
-                IsDeleted=false,
-                EntityTypeId=1,
-                IsDefault=true,
-                DisplayOrder=1,
-                IsActive=true,
-                IsSystem=true
-               
+                IsDeleted = false,
+                EntityTypeId = 1,
+                IsDefault = true,
+                DisplayOrder = 1,
+                IsActive = true,
+                IsSystem = true
+
             };
 
             dataContext.Set<CompanyPhoneInfo>().Add(companyPhoneInfo);
@@ -320,8 +378,8 @@ namespace RainmakerTest
                 EmployeeId = 1,
                 EmailAccountId = 1,
                 TypeId = 1,
-                BusinessUnitId=1
-               
+                BusinessUnitId = 1
+
             };
 
             dataContext.Set<EmployeeBusinessUnitEmail>().Add(employeeBusinessUnitEmail);
@@ -342,7 +400,7 @@ namespace RainmakerTest
 
             EmailAccount emailAccount = new EmailAccount
             {
-                Id=1,
+                Id = 1,
                 UseDefaultCredentials = true,
                 UseReplyTo = true,
                 DisplayOrder = 1,
@@ -351,8 +409,8 @@ namespace RainmakerTest
                 IsDefault = true,
                 IsSystem = true,
                 IsDeleted = false,
-                Email="shehroz@gmail.com"
-               
+                Email = "shehroz@gmail.com"
+
             };
             dataContext.Set<EmailAccount>().Add(emailAccount);
 
@@ -371,7 +429,7 @@ namespace RainmakerTest
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-           LoanOfficer res = await loanService.GetLOInfo(2, 1, 1);
+            LoanOfficer res = await loanService.GetLOInfo(2, 1, 1);
 
             // Assert
             Assert.NotNull(res);
@@ -392,19 +450,19 @@ namespace RainmakerTest
             Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
             Mock<IFtpHelper> mockftpservice = new Mock<IFtpHelper>();
             int? businessUnitId = 1;
-           
-            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId,default)).ReturnsAsync(string.Empty);
+
+            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId, default)).ReturnsAsync(string.Empty);
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
 
-            LoanApplicationController controller = new LoanApplicationController( null, mockcommonservice.Object, mockftpservice.Object);
+            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
 
             //Act
-            string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder,(int)businessUnitId);
+            string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
 
             //Assert
             Assert.NotNull(result);
-           
-            Assert.NotNull(result);
+
+
         }
 
         [Fact]
@@ -416,15 +474,114 @@ namespace RainmakerTest
             int? businessUnitId = 1;
 
             mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId, default)).ReturnsAsync(string.Empty);
-            mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(It.IsAny<Stream>());
+            //  mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
+            mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).Throws(new Exception(""));
 
             LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
 
             //Act
-            string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
+            string result = await controller.GetPhoto(It.IsAny<string>()
+                //ystemSettingKeys.FtpEmployeePhotoFolder
+                , It.IsAny<int>());
 
             //Assert
-            Assert.Null(result);
+            Assert.NotNull(result);
+
+            Assert.IsType<string>(result);
+
+
         }
+
+
+
+        [Fact]
+        public async Task GetDbaInfo()
+        {
+            //Arrange
+
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            BusinessUnit businessUnit = new BusinessUnit()
+            {
+                Id = 2,
+                Name = "Shehroz",
+                DisplayOrder = 1,
+                IsActive = true,
+                IsDefault = true,
+                IsSystem = true,
+                IsDeleted = false,
+                EmailAccountId = 2,
+                Logo = "",
+                WebUrl = "https://entityframeworkcore.com//lo/Shehroz"
+
+
+
+            };
+            dataContext.Set<BusinessUnit>().Add(businessUnit);
+
+            EmailAccount emailAccount = new EmailAccount
+            {
+                Id = 2,
+                UseDefaultCredentials = true,
+                UseReplyTo = true,
+                DisplayOrder = 1,
+                IsActive = true,
+                EntityTypeId = 1,
+                IsDefault = true,
+                IsSystem = true,
+                IsDeleted = false,
+                Email = "shehroz@gmail.com"
+
+            };
+            dataContext.Set<EmailAccount>().Add(emailAccount);
+
+            CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo
+            {
+                Id = 2,
+                Phone = "030012345678",
+                IsDeleted = false,
+                EntityTypeId = 1,
+                IsDefault = true,
+                DisplayOrder = 1,
+                IsActive = true,
+                IsSystem = true
+
+            };
+
+            dataContext.Set<CompanyPhoneInfo>().Add(companyPhoneInfo);
+            BusinessUnitPhone businessUnitPhone = new BusinessUnitPhone()
+            {
+                Id = 1,
+                BusinessUnitId = 2,
+                CompanyPhoneInfoId = 2,
+                TypeId = 3
+
+            };
+            dataContext.Set<BusinessUnitPhone>().Add(businessUnitPhone);
+            dataContext.SaveChanges();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            LoanOfficer res = await loanService.GetDbaInfo(2);
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal("shehroz@gmail.com", res.Email);
+            Assert.Equal("Shehroz", res.FirstName);
+            Assert.Equal("", res.LastName);
+            Assert.Null(res.NMLS);
+            Assert.Equal("030012345678", res.Phone);
+            Assert.Equal("", res.Photo);
+            Assert.Equal("https://entityframeworkcore.com//lo/Shehroz", res.WebUrl);
+        }
+
+
     }
 }

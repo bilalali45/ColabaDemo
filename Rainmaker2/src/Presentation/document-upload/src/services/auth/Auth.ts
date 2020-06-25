@@ -52,6 +52,10 @@ export class Auth {
         }
     }
 
+    static removeAuthToken() {
+        localStorage.removeItem('auth');
+    }
+
 
     public static removeAuth() {
         let items = [
