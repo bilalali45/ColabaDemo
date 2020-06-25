@@ -59,7 +59,7 @@ namespace DocumentManagement.Service
             {
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].status", DocumentStatus.Submitted}
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.PendingReview}
 
                     }
                 }
@@ -118,7 +118,13 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.Submitted } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu } }   }
+                    }
+                },
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started}
+
                     }
                 }
             }, new UpdateOptions()
