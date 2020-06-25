@@ -9,8 +9,7 @@ export const UploadedDocuments = () => {
                 <h2>Uploaded Documents</h2>
             </div>
             <div className="box-wrap--body clearfix">
-                {/* <UploadedDocumentsTable/> */}
-                <DocumentView/>
+                <UploadedDocumentsTable/>
             </div>
         </div>
     )
