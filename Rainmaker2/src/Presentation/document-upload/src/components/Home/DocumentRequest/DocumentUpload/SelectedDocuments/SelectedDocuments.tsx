@@ -66,7 +66,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
         setSelectedFiles((prevFiles: FileSelected[]) => {
             return prevFiles.map((f: FileSelected) => {
                 if (f.file.name === file.file.name) {
-                    f.name = `${newName}.${file.file.type.split('/')[1]}`;
+                    f.name = `${newName}`;
                     return f;
                 }
                 return f;
