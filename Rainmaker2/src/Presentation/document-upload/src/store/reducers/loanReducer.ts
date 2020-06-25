@@ -2,41 +2,51 @@ import { Actions, ActionMap } from "./reducers";
 import { ContactUs } from "../../entities/Models/ContactU";
 import { LoanApplication } from "../../entities/Models/LoanApplication";
 
+type LOImage = {
+    src: string
+}
+
 export enum LoanActionsType {
     FetchLoanInfo = 'FETCH_LOAN_INFO',
-    FetchLoanOfficer = 'FETCH_LOAN_OFFICER'
-    
+    FetchLoanOfficer = 'FETCH_LOAN_OFFICER',
+    FetchLOImage = 'FETCH_LO_IMAGE'
 }
 
 export type LoanType = {
     loanOfficer: ContactUs | null,
-    loanInfo: LoanApplication | null
+    loanInfo: LoanApplication | null,
+    loImage: LOImage
 }
 
 
 export type LoanActionPayload = {
-    [LoanActionsType.FetchLoanInfo] : LoanApplication,
-    [LoanActionsType.FetchLoanOfficer] : ContactUs,
+    [LoanActionsType.FetchLoanInfo]: LoanApplication,
+    [LoanActionsType.FetchLoanOfficer]: ContactUs,
+    [LoanActionsType.FetchLOImage]: LOImage
 }
 
 export type LoanActions = ActionMap<LoanActionPayload>[keyof ActionMap<LoanActionPayload>];
 
-export const loanReducer = (state: LoanType | {}, {type, payload} : Actions) => {
+export const loanReducer = (state: LoanType | {}, { type, payload }: Actions) => {
     switch (type) {
         case LoanActionsType.FetchLoanOfficer:
-            let st = {
+            return {
                 ...state,
-                loanOfficer:  {...payload}
+                loanOfficer: { ...payload }
             };
-            return st;
-    
+
+        case LoanActionsType.FetchLOImage:
+            return {
+                ...state,
+                loImage: { ...payload }
+            };
+
         case LoanActionsType.FetchLoanInfo:
-            let s = {
+            return {
                 ...state,
-                loanInfo: {...payload}
+                loanInfo: { ...payload }
             };
-            return s;
-    
+
         default:
             return state;
     }

@@ -1,9 +1,11 @@
 using System;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 
 namespace Rainmaker.API
@@ -12,6 +14,7 @@ namespace Rainmaker.API
     {
         public static void Main(string[] args)
         {
+            ServicePointManager.DefaultConnectionLimit = 1000;
             ConfigureLogging();
             CreateHost(args: args);
         }
@@ -31,6 +34,7 @@ namespace Rainmaker.API
             Log.Logger = new LoggerConfiguration()
                          .Enrich.WithCorrelationIdHeader(headerKey: "CorrelationId")
                          .Enrich.FromLogContext()
+                         .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          .WriteTo.Debug()
                          .WriteTo.Console()

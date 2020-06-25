@@ -133,7 +133,7 @@ a[href],a[tabindex]{
     min-height: 100vh;
 }
 .page-content {
-    min-height: calc(100vh - 320px);
+    min-height: calc(100vh - 300px);
     padding-bottom: 40px;
 }
 .gutter15 {
@@ -181,7 +181,7 @@ a[href],a[tabindex]{
 .list {
     @extend .list-style-none;
     margin: 26px 0;
-    font: #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("base");
+    font:400 #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("base");
     @include media-breakpoint-down(md) {
         font-size: fontSize("nr")-1;
     }
@@ -189,6 +189,8 @@ a[href],a[tabindex]{
         margin-bottom: 25px;
         position: relative;
         padding-left: 20px;
+        color: color('colorBlack');
+        text-transform: capitalize;
 
         &::before {
             content: "";
@@ -215,9 +217,32 @@ a[href],a[tabindex]{
 
 .btn {
     border-radius: 0px;
-    font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
-    padding: 12px 20px;
-    min-width: 86px;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 14px 35px 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    
+    &.disabled,&:disabled{
+        color:color('disabled-text');
+        background-color: color('disabled');
+        border-color: color('disabled');
+    
+}
+
+&.btn-small {
+    font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
+    padding: 9px 20px 7px;
+}
+    
+
+}
+
+
+.DocumentStatus .btn {
+    border-radius: 0px;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 13px 20px;
+    // min-width: 86px;
     text-transform: uppercase;
 
     em,
@@ -234,6 +259,41 @@ a[href],a[tabindex]{
             top: -3px;
             left: 15px;
         }
+    }
+}
+
+.button-float{
+    background-color: color('colorWhite');
+    color: color('base');
+    border: none;
+    box-shadow: 0 0 5px rgba(color('colorBlack'), 0.2);
+    margin: 5px;
+    width: $float-button-size;
+    height: $float-button-size;
+    border-radius: 50%;
+    text-align: center;
+    line-height: $float-button-size;
+    padding: 0;
+    @include transition(all 0.5s ease-out);
+    svg{
+        height: ceil(35 * $float-button-size / 100); //12px;
+        @include transition(all 0.5s ease-out);
+        path{
+            fill: color('base');
+            stroke:color('base');
+            opacity: 0.8;
+            @include transition(all 0.5s ease-out);
+        }
+    }
+
+    &:focus,
+    &:visited,
+    &:hover{
+        outline: none;
+    }
+
+    &:hover{
+        background-color: darken(color('colorWhite'), 20%);
     }
 }
 
@@ -256,4 +316,24 @@ a[href],a[tabindex]{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.no-document {
+    min-height: 500px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &--wrap{
+
+    }
+
+    &--img{
+        margin-bottom: 10px;
+    }
+
+    &--text{
+
+    }
 }

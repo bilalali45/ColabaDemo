@@ -58,7 +58,8 @@ namespace Rainmaker.Service
                 //          .Select().FirstOrDefault();
 
                 return Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
-                                 .Include(navigationPropertyPath: x => x.Customers)
+                                 //.Include(navigationPropertyPath: x => x.Customers)
+                                 .Include(navigationPropertyPath: x => x.Customers).ThenInclude(customer=>customer.Contact)
                                  .FirstOrDefault();
             }
             catch (ArgumentException)
@@ -71,8 +72,8 @@ namespace Rainmaker.Service
         public UserProfile GetEmployeeUser(string userName)
         {
             var query = Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
-                                  .Include(navigationPropertyPath: userProfile => userProfile.Employees)
-                                  .ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
+                                  .Include(navigationPropertyPath: userProfile => userProfile.Employees).ThenInclude(employee => employee.Contact)
+                                  .Include(x=>x.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
                                   .ToList();
 
             if (query.Count() > 1)

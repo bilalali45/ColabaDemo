@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { DocumentsRequired } from './DocumentsRequired/DocumentsRequired'
 import { DocumentUpload } from './DocumentUpload/DocumentUpload'
+import { Store } from '../../../store/store';
 
 export const DocumentRequest = () => {
+    const { state, dispatch } = useContext(Store);
+    const { pendingDocs }: any = state.documents;
+    let pendingDocsCount = pendingDocs ? pendingDocs.length : '';
+
     return (
         <main className="dr-upload">
                 <section className="dr-upload--header">
@@ -10,7 +15,7 @@ export const DocumentRequest = () => {
                         <article className="col-sm-12">
                             <div className="dr-head">
                                 <h2 className="heading-h2"> Document Request</h2>
-                                <p>You have <span className="DocumentStatus--count">{2}</span> items to complete</p>
+                                <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> items to complete</p>
                             </div>
                         </article>
                     </div>

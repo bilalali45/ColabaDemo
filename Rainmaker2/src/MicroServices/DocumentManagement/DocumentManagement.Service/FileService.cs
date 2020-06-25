@@ -59,7 +59,7 @@ namespace DocumentManagement.Service
             {
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].status", DocumentStatus.Submitted}
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.PendingReview}
 
                     }
                 }
@@ -118,7 +118,13 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.Submitted } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu } }   }
+                    }
+                },
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started}
+
                     }
                 }
             }, new UpdateOptions()
@@ -132,7 +138,7 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId)
+        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -181,6 +187,12 @@ namespace DocumentManagement.Service
 
             await asyncCursor.MoveNextAsync();
             FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+
+            IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.Now, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+            await viewLogCollection.InsertOneAsync(viewLog);
+
             return fileViewDTO;
         }
 

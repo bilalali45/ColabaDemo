@@ -8,22 +8,22 @@ namespace DocumentManagement.Model
 { 
     public static class RequestStatus
     {
-        public const string Submitted = "submitted"; // mcu submit
-        public const string Draft = "draft"; // mcu draft
+        public const string Active = "Active"; // mcu submit
+        public const string Draft = "Draft"; // mcu draft
     }
     public static class DocumentStatus
     {
-        public const string Draft = "draft"; // under mcu process
-        public const string Requested = "requested"; // mcu request
-        public const string Submitted = "submitted"; // borrower submit
-        public const string Accepted = "accepted"; // mcu has accepted
-        public const string Rejected = "rejected"; // mcu has rejected, want few files again
-        public const string Stale = "stale"; // deleted
+        public const string Draft = "Draft"; // under mcu process
+        public const string BorrowerTodo = "Borrower to do"; // mcu request
+        public const string PendingReview = "Pending review"; // borrower submit
+        public const string Started = "Started"; // borrower has added a file or rejected by mcu
+        public const string Completed = "Completed"; // mcu has accepted
+        public const string Deleted = "Deleted"; // deleted
     }
     public static class FileStatus
     {
-        public const string Submitted = "submitted"; // borrower submit
-        public const string Rejected = "rejected"; // mcu has rejected, want file again
+        public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
+        public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
     }
 
     public class DashboardQuery
@@ -86,4 +86,8 @@ namespace DocumentManagement.Model
         public string description { get; set; }
         public bool isCurrentStep { get; set; }
     }
-}
+    public class FooterQuery
+    {
+        public string footerText { get; set; }
+    }
+    }

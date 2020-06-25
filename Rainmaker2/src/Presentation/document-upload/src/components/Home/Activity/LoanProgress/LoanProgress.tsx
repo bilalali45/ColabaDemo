@@ -63,7 +63,6 @@ export const LoanProgress = () => {
         let applicationId = localStorage.getItem('loanApplicationId');
         let tenantId = localStorage.getItem('tenantId');
         let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(applicationId ? applicationId : '1', tenantId ? tenantId : '1')
-        console.log('loanProgress',loanProgress)
         if (loanProgress) {
             setLoanProgress(loanProgress);
         }
@@ -87,6 +86,7 @@ export const LoanProgress = () => {
                 nextLabel=""
                 prevIcon={<i aria-hidden="true" className="zmdi zmdi-chevron-left"></i>}
                 prevLabel=""
+                fade={true}
             >
                 {
                     renderCarouselItems()
@@ -123,7 +123,7 @@ export const LoanProgress = () => {
             var activeindex = i === id ? " active" : ""
             return (
                 <li key={l.name} data-index={activeindex} className={liclass + activeindex}>
-                    <a href="javascrit:" onClick={(e) => handleSelect(i, e)}>
+                    <a  onClick={(e) => handleSelect(i, e)}>
                         {i == totallist - 1 && l.status == statusText.UPCOMMING ? <i className="zmdi zmdi-flag"></i> : l.status == statusText.COMPLETED ? <i className="zmdi zmdi-check"></i> : l.status == statusText.CURRENT ? <i className="zmdi zmdi-male-alt"></i> : <span>{step}</span>}
                     </a>
                 </li>

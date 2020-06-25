@@ -32,13 +32,13 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
-                            ""$match"": {""requests.status"": """ + RequestStatus.Submitted + @"""}
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Requested + @"""},
-                                {""requests.documents.status"": """ + DocumentStatus.Rejected + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.BorrowerTodo + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Started + @"""}
                             ]}
                         }", @"{
                             ""$lookup"": {
@@ -94,13 +94,14 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Where(x=>x.status!=FileStatus.Rejected).Select(x=>new FileDTO() { 
-                        clientName=x.clientName,
-                        fileUploadedOn=DateTime.SpecifyKind(x.fileUploadedOn,DateTimeKind.Utc),
-                        id=x.id,
-                        order=x.order,
-                        size=x.size
-                    }).OrderBy(x=>x.order).ToList();
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu).Select(x => new FileDTO()
+                    {
+                        clientName = x.clientName,
+                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                        id = x.id,
+                        order = x.order,
+                        size = x.size
+                    }).OrderBy(x => x.order).ToList();
                     result.Add(dto);
                 }
             }
@@ -119,14 +120,14 @@ namespace DocumentManagement.Service
                             }
                         }", @"{
                             ""$unwind"": ""$requests""
-                        }",@"{
-                            ""$match"": {""requests.status"": """+RequestStatus.Submitted+@"""}
+                        }", @"{
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Submitted + @"""},
-                                {""requests.documents.status"": """ + DocumentStatus.Accepted + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.PendingReview + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
                             ]}
                         }", @"{
                             ""$lookup"": {
@@ -181,7 +182,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Where(x=>x.status!=FileStatus.Rejected).Select(x => new FileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu).Select(x => new FileDTO()
                     {
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -224,15 +225,46 @@ namespace DocumentManagement.Service
             }, new FindOptions<LoanApplication, BsonDocument>()
             {
                 Projection = new BsonDocument() { {"status", 1 }
-            } });
-            if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count()>0)
+            }
+            });
+            if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count() > 0)
             {
                 string status = asyncCursor1.Current.First()["status"].ToString();
                 statuses.Where(x => x.id == status).First().isCurrentStep = true;
             }
             else
                 statuses.Where(x => x.order == 3).First().isCurrentStep = true;
-            return statuses.OrderBy(x=>x.order).ToList();
+            return statuses.OrderBy(x => x.order).ToList();
         }
+
+        public async Task<string> GetFooterText(int tenantId, int businessUnitId)
+        {
+            IMongoCollection<BusinessUnit> collection = mongoService.db.GetCollection<BusinessUnit>("BusinessUnit");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<BusinessUnit, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""tenantId"": " + tenantId + @",
+                  ""businessUnitId"": " + businessUnitId + @"}
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""footerText"": ""$footerText"",
+                            }
+                        }"
+                ));
+
+            while (await asyncCursor.MoveNextAsync())
+            {
+                string footerText = string.Empty;
+                if (asyncCursor.Current.Count() > 0)
+                {
+                    FooterQuery query = BsonSerializer.Deserialize<FooterQuery>(asyncCursor.Current.First());
+                    footerText = query.footerText;
+                }
+                return footerText;
+            }
+            return string.Empty;
+        }
+
     }
 }

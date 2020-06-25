@@ -11,11 +11,12 @@ import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const DocumentsStatus = () => {
 
-    const [pendingDocs, setPendingDocs] = useState<DocumentRequest[] | null>(null)
+    // const [pendingDocs, setPendingDocs] = useState<DocumentRequest[] | null>(null)
     const { state, dispatch } = useContext(Store);
-
+    
     const history = useHistory();
 
+    const {pendingDocs} : any = state.documents;
 
     useEffect(() => {
 
@@ -25,7 +26,7 @@ export const DocumentsStatus = () => {
     }, []);
 
     const getStarted = () => {
-        history.push('/documentsRequest');
+    history.push('/documentsRequest');
     }
 
     const fetchPendingDocs = async () => {
@@ -33,7 +34,7 @@ export const DocumentsStatus = () => {
         let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
         if (docsPending) {
             dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docsPending });
-            setPendingDocs(docsPending);
+            // setPendingDocs(docsPending);
         }
     }
 
@@ -68,7 +69,7 @@ export const DocumentsStatus = () => {
     }
 
     if (pendingDocs.length == 0) {
-        renderNoPendingDocs();
+        return renderNoPendingDocs();
     }
 
     return (
@@ -80,13 +81,14 @@ export const DocumentsStatus = () => {
             <div className="box-wrap--body clearfix">
                 <ul className="list">
                     {pendingDocs.map((item: any, index: any) => {
-                        return <li key={index}> {item.docName} </li>
+                       if(index < 8)
+                        return <li title={item.docName}  key={index}> {item.docName} </li>
                     })}
                 </ul>
             </div>
             <div className="box-wrap--footer clearfix">
-                <button className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
-                {/* <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
+                {/* <button className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
+                <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
             </div>
         </div>
     )

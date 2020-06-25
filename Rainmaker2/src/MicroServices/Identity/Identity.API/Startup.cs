@@ -58,7 +58,14 @@ namespace Identity
                               IWebHostEnvironment env)
         {
             app.UseMiddleware<LogHeaderMiddleware>();
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
             //app.UseIdentityServer();
             //app.UseHttpsRedirection();
             app.UseRouting();

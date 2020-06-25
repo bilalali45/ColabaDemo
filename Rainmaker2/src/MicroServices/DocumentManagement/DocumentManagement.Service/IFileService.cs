@@ -16,6 +16,6 @@ namespace DocumentManagement.Service
         Task Order(FileOrderModel model, int userProfileId);
 
         Task<bool> Submit(string contentType,string id,string requestId,string docId , string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId);
-        Task<FileViewDTO> View(FileViewModel model, int userProfileId);
+        Task<FileViewDTO> View(FileViewModel model, int userProfileId,string ipAddress);
     }
 }

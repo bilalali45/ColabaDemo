@@ -11,8 +11,10 @@ using Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Serilog.Core;
 
 namespace Identity.Controllers
 {
@@ -24,15 +26,18 @@ namespace Identity.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly ITokenService _tokenService;
+        private readonly ILogger<TokenController> _logger;
 
 
         public TokenController(IHttpClientFactory clientFactory,
                                IConfiguration configuration,
-                               ITokenService tokenService)
+                               ITokenService tokenService,
+                               ILogger<TokenController> logger)
         {
             _clientFactory = clientFactory;
             _configuration = configuration;
             _tokenService = tokenService;
+            _logger = logger;
         }
         //static HttpClient client = new HttpClient();
 
@@ -240,7 +245,7 @@ namespace Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
-
+            //_logger.LogInformation(request.ToJson());
             Request.Headers.TryGetValue("CorrelationId",
                                                 out StringValues value);
 
@@ -272,15 +277,21 @@ namespace Identity.Controllers
             //                  };
 
             //add claims
+
+            var contact = userProfile.Customers.Any() ? userProfile.Customers.First().Contact : userProfile.Employees.First().Contact;
+            
+
             var usersClaims = new List<Claim>
                               {
                                   new Claim(type: ClaimTypes.Role,
-                                            value: userProfile.Employees.FirstOrDefault() != null ? "MCU" : "Customer"),
+                                            value: userProfile.Employees.Any() ? "MCU" : "Customer"),
                                   new Claim(type: "UserProfileId",
                                             value: userProfile.Id.ToString()),
                                   new Claim(type: "UserName",
                                             value: userProfile.UserName.ToLower()),
-                                  new Claim(ClaimTypes.Name, userProfile.UserName.ToLower())
+                                  new Claim(ClaimTypes.Name, userProfile.UserName.ToLower()),
+                                  new Claim("FirstName", contact.FirstName),
+                                  new Claim("LastName", contact.LastName)
                               };
 
             if (userProfile.Employees.FirstOrDefault() != null)

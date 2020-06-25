@@ -18,6 +18,11 @@ $color:(
     listhover           :       #F6F6F6,
     scroll              :       #DBDBDB,
     gray2               :       #919191,
+    border2             :       #D9D9D9,
+    fileReaderHeaderBg  :       #2D2D2D,
+    disabled            :       #E5E5E5,
+    disabled-text       :       #C1C0C0,
+    
 );
 
 $font:(
@@ -42,10 +47,12 @@ $font-size:(
     h5:12px,
     h6:10
 );
-$shadow:0 0 3px rgba(0, 0, 0, 0.16);
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+$float-button-size     :        35px;
 
 
 // Bootstrap Variables
 $grid-gutter-width:           30px !default;
 $primary:       #4484F4 !default;
-$secondary:     #00AD46 !default;
+$secondary:     #7E829E !default;

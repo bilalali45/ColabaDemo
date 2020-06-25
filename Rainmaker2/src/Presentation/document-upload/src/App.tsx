@@ -2,86 +2,51 @@ import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { Home } from './components/Home/Home';
-import Header from './shared/Components/Header/Header';
-import Footer from './shared/Components/Footer/Footer';
-import DummyLogin from './components/DummyLogin/DummyLoging';
 import { StoreProvider } from './store/store';
-import { Loading } from './components/Loading/Loading';
 import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
 import { UserActions } from './store/actions/UserActions';
 import ImageAssets from './utils/image_assets/ImageAssets';
 import { ParamsService } from './utils/ParamsService';
-import { Auth } from './services/auth/Auth';
-import { useCookies } from 'react-cookie';
 import { Authorized } from './shared/Components/Authorized/Authorized';
 import { FooterContents } from './utils/header_footer_utils/FooterContent';
 import HeaderContent from './utils/header_footer_utils/HeaderContent';
+import { Auth } from './services/auth/Auth';
 
 const App = () => {
 
-  const currentyear = new Date().getFullYear();
-  const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
+
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [expListnerAdded, setExpListnerAdded] = useState(false);
 
   const tokenData: any = UserActions.getUserInfo();
   const history = useHistory();
 
-  // setCookie('Rainmaker2Token', Auth.checkAuth());
   useEffect(() => {
+    console.log("Document Management App Version", "0.1.3");
     authenticate();
-    console.log("Document Management App Version", "0.1.2")
-  }, [localStorage])
+    ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
+  }, [])
 
   const authenticate = async () => {
-
-    let isAuth = Auth.checkAuth();
-
-    if (isAuth === 'token expired') {
-      Auth.removeAuth();
-      let res: any = await UserActions.refreshToken();
-      if (res.data.token && res.data.refreshToken) {
-        setAuthenticated(true);
-      }
-      return;
-    }
-
-    if (!isAuth) {
-      if (process.env.NODE_ENV === 'development') {
-        let tokens: any = await UserActions.authenticate();
-        if (tokens.token) {
-          Auth.saveAuth(tokens.token);
-          setAuthenticated(true);
-        }
-      }
-      
-      if (cookies != undefined && cookies.Rainmaker2Token != undefined && cookies.Rainmaker2RefreshToken != undefined) {
-        let token = cookies.Rainmaker2Token;
-        let refreshToken = cookies.Rainmaker2RefreshToken;
-
-        Auth.saveAuth(token);
-        Auth.saveRefreshToken(refreshToken);
-        Auth.storeTokenPayload(UserActions.decodeJwt(token));
-        setAuthenticated(true);
-      }
-    } else {
-      setAuthenticated(true);
-    }
+    let isAuth = await UserActions.authorize();
+    setAuthenticated(Boolean(isAuth));
   }
-
-  UserActions.getUserInfo();
-
-
-  ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
 
   if (!authenticated) {
-    return <></>
+    return null;
   }
+
+  if (Auth.getUserPayload()) {
+    UserActions.addExpiryListener(Auth.getUserPayload());
+    // setExpListnerAdded(true);
+  }
+
   return (
     <div className="app">
       <StoreProvider>
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
-          displayName={tokenData?.UserName}
+          displayName={tokenData?.FirstName+' '+tokenData?.LastName}
           displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
         />

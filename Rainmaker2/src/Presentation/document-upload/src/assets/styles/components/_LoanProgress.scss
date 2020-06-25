@@ -125,6 +125,20 @@
                     @include media-breakpoint-down(md) {
                         margin: 0 10px;
                       }
+                      &::after {
+                        content: "";
+                        display: block;
+                        height: 0;
+                        width: 0;
+                        border-top: 10px solid color("primary");
+                        border-right: 17px solid transparent;
+                        border-left: 17px solid transparent;
+                        position: absolute;
+                        top: -15px;
+                        left: -4px;
+                        opacity: 0;
+                        // transition: all 0.3s linear;
+                    }
                     &.active {
                         &::after {
                             content: "";
@@ -137,6 +151,8 @@
                             position: absolute;
                             top: -15px;
                             left: -4px;
+                            opacity: 1;
+                            transition: all 0.5s ease-in-out;
                         }
                     }
                     & + li {
@@ -162,6 +178,7 @@
                         width: 25px;
                         height: 25px;
                         display: block;
+                        cursor: pointer;
                         @include borderRadius(50%, false);
                         text-align: center;
                         line-height: 26px;
