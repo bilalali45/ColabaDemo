@@ -45,7 +45,7 @@ namespace DocumentManagement.API.Controllers
         [HttpGet("GetFooterText")]
         public async Task<IActionResult> GetFooterText(int tenantId,int businessUnitId)
         {
-            var docQuery = await dashboardService.GetFooterText(businessUnitId, tenantId);
+            var docQuery = await dashboardService.GetFooterText(tenantId,businessUnitId);
             return Ok(docQuery);
         }
     }
