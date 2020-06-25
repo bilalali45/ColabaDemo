@@ -34,6 +34,9 @@ export class UserActions {
       refreshToken: Auth.getRefreshToken()
     });
     console.log(res);
+
+    Auth.removeAuthToken();
+    Auth.removeRefreshToken();
     // debugger
     if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
       Auth.saveAuth(res.data.data.token);
@@ -91,20 +94,23 @@ export class UserActions {
   static addExpiryListener(payload) {
     console.log('in listener added');
     let expiry = payload.exp;
-    let currentTime = new Date(Date.now());
-    let expiryTime = new Date(expiry * 1000);
-    let time = expiryTime.getMinutes() - currentTime.getMinutes();
+    let currentTime = Date.now();
+    let expiryTime = expiry * 1000;
+    // debugger
+    let time = expiryTime - currentTime;
+    console.log(time, time < 1);
     if (time < 1) {
+      console.log('in here if < 1', time);
       UserActions.refreshToken();
       return;
     }
-    let t = (time * 1000) * 60;
+    // let t = (time * 1000) * 60;
 
-    console.log('time', t);
+    console.log('time', time);
     setTimeout(async () => {
       console.log('in set time out', time);
       await UserActions.refreshToken();
-    }, t);
+    }, time);
   }
 
 
