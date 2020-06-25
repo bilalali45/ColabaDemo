@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import FileViewer from 'react-file-viewer';
-
 import { Document, Page, pdfjs } from 'react-pdf';
+import {SVGprint, SVGdownload, SVGclose, SVGfullScreen} from './../Assets/SVG';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
+
 type DocumentViewPropsType = { type: string, url: string, file: File | null, hide: Function }
+
 
 // export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
 //   const [numPages, setNumPages] = useState<number | null>(null);
@@ -125,15 +127,80 @@ type DocumentViewPropsType = { type: string, url: string, file: File | null, hid
 const filef = 'http://localhost:5000/pdf/A Sample PDF.pdf'
 const typea = 'pdf'
 
-export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
+export const DocumentView = () => {
+
+  //let fullscreen = false;
+  const [fullscreen, exitscreen] = useState(false);
+
+
+  
+  const updateState = (e) => {
+    console.log(fullscreen);
+    //exitscreen('false')
+
+    
+  }
+
 
   return (
-    <FileViewer
-      fileType={typea}
-      filePath={filef}
-    // errorComponent={CustomErrorComponent}
-    // onError={this.onError}
-    />
+    <div className="document-view" id="screen">
+      <div className="document-view--header">
+
+      <div className="document-view--header---options">
+          <ul>
+            <li>
+              <button className="document-view--button"><SVGprint /></button>
+            </li>
+            <li>
+              <button className="document-view--button"><SVGdownload /></button>
+            </li>
+            <li>
+              <button className="document-view--button"><SVGclose /></button>
+            </li>
+          </ul>
+        </div>
+
+        <span className="document-view--header---title">Bank-Statement-Jul-to-July-2020.pdf</span>
+
+        <div className="document-view--header---controls">
+          <ul>
+            <li>
+              <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-left"></em></button>
+            </li>
+            <li>
+              <span className="document-view--counts"><input type="text" size={4} value="1/2"/></span>
+            </li>
+            <li>
+              <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-right"></em></button>
+            </li>
+          </ul>
+        </div>
+
+        
+
+      </div>
+      <div className="document-view--body">
+          <FileViewer
+          fileType={typea}
+          filePath={filef}
+        // errorComponent={CustomErrorComponent}
+        // onError={this.onError}
+        />
+      </div>    
+      <div className="document-view--floating-options">
+        <ul>
+          <li>
+            <button className="button-float"><em className="zmdi zmdi-plus"></em></button>
+          </li>
+          <li>
+             <button className="button-float"><em className="zmdi zmdi-minus"></em></button>
+          </li>
+          <li>
+            <button className="button-float" onClick={updateState}><SVGfullScreen /></button>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
   // onError(e: any) {
   //   logger.logError(e, 'error in file-viewer');

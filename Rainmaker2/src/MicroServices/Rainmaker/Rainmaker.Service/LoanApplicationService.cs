@@ -74,23 +74,25 @@ namespace Rainmaker.Service
             var businessUnit = await Uow.Repository<BusinessUnit>().Query(x => x.Id == businessUnitId && x.BusinessUnitPhones.Where(y => y.TypeId == 3).Count() > 0)
                 .Include(x => x.EmailAccount)
                 .Include(x => x.BusinessUnitPhones).ThenInclude(x => x.CompanyPhoneInfo)
-                .Select(x => new { 
-                x.Name,
-                x.BusinessUnitPhones.FirstOrDefault().CompanyPhoneInfo.Phone,
-                x.EmailAccount.Email,
-                x.WebUrl,
-                x.Logo
-                }).FirstOrDefaultAsync();
+                .Select(x => new
+                {
+                    x.Name,
+                    x.BusinessUnitPhones.FirstOrDefault().CompanyPhoneInfo.Phone,
+                    x.EmailAccount.Email,
+                    x.WebUrl,
+                    x.Logo
+                })
+                .FirstOrDefaultAsync();
             //var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
             return new LoanOfficer()
             {
-                Email=businessUnit.Email,
-                FirstName=businessUnit.Name,
-                LastName=string.Empty,
-                NMLS=null,//nmls,
-                Phone=businessUnit.Phone,
-                Photo=businessUnit.Logo,
-                WebUrl=businessUnit.WebUrl
+                Email = businessUnit.Email,
+                FirstName = businessUnit.Name,
+                LastName = string.Empty,
+                NMLS = null,//nmls,
+                Phone = businessUnit.Phone,
+                Photo = businessUnit.Logo,
+                WebUrl = businessUnit.WebUrl
             };
         }
     }
