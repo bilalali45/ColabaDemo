@@ -245,7 +245,7 @@ namespace Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
-            _logger.LogInformation(request.ToJson());
+            //_logger.LogInformation(request.ToJson());
             Request.Headers.TryGetValue("CorrelationId",
                                                 out StringValues value);
 
