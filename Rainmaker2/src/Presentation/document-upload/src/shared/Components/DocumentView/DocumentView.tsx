@@ -132,60 +132,12 @@ export const DocumentView = () => {
   //let fullscreen = false;
   const [fullscreen, exitscreen] = useState(false);
 
-  /* Get into full screen */
-const GoInFullscreen = (element) => {
-	if(element.requestFullscreen)
-		element.requestFullscreen();
-	else if(element.mozRequestFullScreen)
-		element.mozRequestFullScreen();
-	else if(element.webkitRequestFullscreen)
-		element.webkitRequestFullscreen();
-	else if(element.msRequestFullscreen)
-		element.msRequestFullscreen();
-}
 
-/* Get out of full screen */
-const GoOutFullscreen = () => {
-	if(document.exitFullscreen)
-		document.exitFullscreen();
-	else if(document.mozCancelFullScreen)
-		document.mozCancelFullScreen();
-	else if(document.webkitExitFullscreen)
-		document.webkitExitFullscreen();
-	else if(document.msExitFullscreen)
-		document.msExitFullscreen();
-}
-
-/* Is currently in full screen or not */
-const IsFullScreenCurrently = () => {
-	var full_screen_element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null;
-	// If no element is in full-screen
-	if(full_screen_element === null)
-		return false;
-	else
-		return true;
-}
   
   const updateState = (e) => {
     console.log(fullscreen);
     //exitscreen('false')
 
-    if(fullscreen == false){
-      // var ev = new Event('keypress');
-      // ev.which = 122; // Character F11 equivalent.
-      // ev.altKey=false;
-      // ev.ctrlKey=false;
-      // ev.shiftKey=false;
-      // ev.metaKey=false;
-      // ev.bubbles=true;
-      //document.dispatchEvent(e);
-      
-    }
-
-    if(IsFullScreenCurrently())
-      GoOutFullscreen();
-    else
-      GoInFullscreen();
     
   }
 
@@ -216,7 +168,7 @@ const IsFullScreenCurrently = () => {
               <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-left"></em></button>
             </li>
             <li>
-              <span className="document-view--counts"><input type="text" size="4" value="1/2"/></span>
+              <span className="document-view--counts"><input type="text" size={4} value="1/2"/></span>
             </li>
             <li>
               <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-right"></em></button>
