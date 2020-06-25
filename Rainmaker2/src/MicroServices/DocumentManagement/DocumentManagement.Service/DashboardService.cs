@@ -32,7 +32,7 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
-                            ""$match"": {""requests.status"": """ + RequestStatus.SubmittedToBorrower + @"""}
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
@@ -121,7 +121,7 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
-                            ""$match"": {""requests.status"": """ + RequestStatus.SubmittedToBorrower + @"""}
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{

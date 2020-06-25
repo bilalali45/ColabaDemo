@@ -8,7 +8,7 @@ namespace DocumentManagement.Model
 { 
     public static class RequestStatus
     {
-        public const string SubmittedToBorrower = "Submitted to borrower"; // mcu submit
+        public const string Active = "Active"; // mcu submit
         public const string Draft = "Draft"; // mcu draft
     }
     public static class DocumentStatus
