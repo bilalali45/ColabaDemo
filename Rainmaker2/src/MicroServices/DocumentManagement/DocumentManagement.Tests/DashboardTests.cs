@@ -652,5 +652,92 @@ namespace DocumentManagement.Tests
             Assert.Equal(3, dto[0].order);
 
         }
+
+        [Fact]
+        public async Task TestGetFooterController()
+        {
+            //Arrange
+            Mock<IDashboardService> mock = new Mock<IDashboardService>();
+
+            mock.Setup(x => x.GetFooterText(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("document footer text");
+
+            DashboardController controller = new DashboardController(mock.Object);
+            //dashboardController.ControllerContext = context;
+         
+            //Act
+            IActionResult result = await controller.GetFooterText(1, 1);
+            //Assert
+            Assert.NotNull(result);
+            
+            Assert.IsType<OkObjectResult>(result);
+         }
+
+        [Fact]
+        public async Task TestGetFooterServiceTrue()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<BusinessUnit>> mockCollectionFooterText = new Mock<IMongoCollection<BusinessUnit>>();
+
+            List<BsonDocument> listFooterText = new List<BsonDocument>()
+            {
+                new BsonDocument
+                 { 
+                        { "footerText" , "document footer text"}
+                 }
+                };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(listFooterText);
+
+            mockCollectionFooterText.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<BusinessUnit, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<BusinessUnit>("BusinessUnit", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionFooterText.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DashboardService(mock.Object);
+            //Act
+            string dto = await service.GetFooterText(1, 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("document footer text", dto);
+        }
+
+        [Fact]
+        public async Task TestGetFooterServiceFalse()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<BusinessUnit>> mockCollectionFooterText = new Mock<IMongoCollection<BusinessUnit>>();
+
+            List<BsonDocument> listFooterText = new List<BsonDocument>()
+            { 
+                new BsonDocument
+                 {
+                        { "footerText" , BsonString.Empty}
+                 }
+                };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(listFooterText);
+
+            mockCollectionFooterText.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<BusinessUnit, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<BusinessUnit>("BusinessUnit", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionFooterText.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DashboardService(mock.Object);
+            //Act
+            string dto = await service.GetFooterText(1, 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(string.Empty, dto);
+        }
     }
 }

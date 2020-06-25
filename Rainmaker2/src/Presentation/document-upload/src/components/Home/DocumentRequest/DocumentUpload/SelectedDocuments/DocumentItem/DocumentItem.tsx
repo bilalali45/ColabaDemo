@@ -10,6 +10,7 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
     // export const DocumentItem = () => {
     const [filename, setfilename] = useState<string>(file.name);
     const [iseditable, seteditable] = useState<any>(false)
+    const [isdeleted, setdeleted] = useState<any>(false)
 
     const Rename = () => {
         seteditable(false)
@@ -18,6 +19,12 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
         seteditable(true)
     }
     
+    const DeleteDOChandeler = () => {
+        setdeleted(true)
+    }
+    const CancelDeleteDOC = () => {
+        setdeleted(false)
+    }
 
     return (
         <li className="doc-li">
@@ -25,8 +32,8 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
             <button onClick={() => viewDocument(file)}>View</button>
             <input type="text" onChange={(e) => changeName(file, e.target.value)}/>
             */}
-
-            <div className={iseditable ? "editableview" : "noneditable"}>
+{!isdeleted? 
+            <div className={iseditable ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                 <div className="doc-icon">
                     <i className="far fa-file-pdf"></i>
                 </div>
@@ -64,7 +71,10 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
                                     <a onClick={() => viewDocument(file)} title="View Document" tabIndex={-1}>{<DocviewIcon />}</a>
                                 </li>
                                 <li>
-                                    <a title="Cancel" tabIndex={-1}><i className="zmdi zmdi-close"></i></a>
+                                    <a title="Cancel"  onClick={() => DeleteDOChandeler()} tabIndex={-1}><i className="zmdi zmdi-close"></i></a>
+                                </li>
+                                <li>
+                                    <a title="Uploaded" className="icon-uploaded" tabIndex={-1}><i className="zmdi zmdi-check"></i></a>
                                 </li>
                             </ul>
                         </>
@@ -72,6 +82,30 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
 
                 </div>
             </div>
+           :<>
+<div className="document-confirm-wrap">
+<div className="row">
+                       <div className="col-sm-8">
+                           <div className="dc-text">
+                           <p>Are you sure to delete this file?</p>
+
+                           </div>
+                           
+                       </div>
+
+                       <div className="col-sm-4">
+                           <div className="dc-actions">
+                       <button className="btn btn-small btn-secondary" onClick={() => CancelDeleteDOC()} >No</button>
+                       <button className="btn btn-small btn-primary">Yes</button>
+                       </div>
+                       </div>
+
+                   </div>
+
+</div>
+            </>
+}
+
 
 
 

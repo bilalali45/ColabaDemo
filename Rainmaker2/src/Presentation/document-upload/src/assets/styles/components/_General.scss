@@ -217,8 +217,31 @@ a[href],a[tabindex]{
 
 .btn {
     border-radius: 0px;
-    font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
-    padding: 12px 20px;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 14px 35px 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    
+    &.disabled,&:disabled{
+        color:color('disabled-text');
+        background-color: color('disabled');
+        border-color: color('disabled');
+    
+}
+
+&.btn-small {
+    font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
+    padding: 9px 20px 7px;
+}
+    
+
+}
+
+
+.DocumentStatus .btn {
+    border-radius: 0px;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 13px 20px;
     // min-width: 86px;
     text-transform: uppercase;
 

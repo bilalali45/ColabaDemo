@@ -110,16 +110,38 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 url={`http://localhost:5000/pdf/${currentDoc?.name}`}
                 hide={closeDocumentView} />
                 : ''}
-            {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>} */}
+                {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>*/}
+           
 
+           </div>
+           <div className="doc-upload-footer">
+               <div className="doc-submit-wrap">
+               <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
+               </div>
 
-            </div>
-            <div className="doc-upload-footer">
-                <div className="doc-submit-wrap">
-                    <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
-                </div>
+               <div className="doc-confirm-wrap d-none">
 
-            </div>
+                   <div className="row">
+                       <div className="col-sm-8">
+                           <div className="dc-text">
+                           <p>Are you done with this Bank statement?</p>
+
+                           </div>
+                           
+                       </div>
+
+                       <div className="col-sm-4">
+                           <div className="dc-actions">
+                       <button className="btn btn-small btn-secondary" onClick={uploadFile}>No</button>
+                       <button className="btn btn-small btn-primary" onClick={uploadFile}>Yes</button>
+                       </div>
+                       </div>
+
+                   </div>
+              
+               </div>
+           
+           </div>
         </section>
     )
 }

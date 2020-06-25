@@ -19,6 +19,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -431,15 +432,32 @@ namespace DocumentManagement.Tests
             string docId = "ddd25d1fe456057652eeb72d";
             string order = "0"; 
             int tenantId = 1;
-            var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
-            FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            //var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
+
+            string path = Path.GetTempFileName();
+
+            //Create the file.
+            using (FileStream fs = File.Create(path))
             {
-                Headers = new HeaderDictionary(),
-                ContentType = "application/docx"
-            };
+                AddText(fs, "This is some text");
+                AddText(fs, "This is some more text,");
+                AddText(fs, "\r\nand this is on a new line");
+                AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
+            }
             List<IFormFile> files = new List<IFormFile>();
-            
-            files.Add(_formFile);
+            //Open the stream and read it back.
+
+            using (FileStream fs = File.OpenRead(path))
+            {
+                var stream = File.OpenRead(path);
+                FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = "application/docx"
+                };
+
+                files.Add(_formFile);
+            }
 
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
 
@@ -510,14 +528,31 @@ namespace DocumentManagement.Tests
             string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
             int tenantId = 1;
-            var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
-            FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+
+            string path = Path.GetTempFileName();
+
+            //Create the file.
+            using (FileStream fs = File.Create(path))
             {
-                Headers = new HeaderDictionary(),
-                ContentType = "application/docx"
-            };
+                AddText(fs, "This is some text");
+                AddText(fs, "This is some more text,");
+                AddText(fs, "\r\nand this is on a new line");
+                AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
+            }
             List<IFormFile> files = new List<IFormFile>();
-            files.Add(_formFile);
+            //Open the stream and read it back.
+
+            using (FileStream fs = File.OpenRead(path))
+            {
+                var stream = File.OpenRead(path);
+                FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = "application/docx"
+                };
+
+                files.Add(_formFile);
+            }
 
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>())).Verifiable();
@@ -554,6 +589,12 @@ namespace DocumentManagement.Tests
             //Assert
             mockCollection.VerifyAll();
 
+        }
+
+        private static void AddText(FileStream fs, string value)
+        {
+            byte[] info = new UTF8Encoding(true).GetBytes(value);
+            fs.Write(info, 0, info.Length);
         }
     }
 }
