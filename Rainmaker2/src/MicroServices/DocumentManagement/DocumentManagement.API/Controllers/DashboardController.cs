@@ -41,5 +41,12 @@ namespace DocumentManagement.API.Controllers
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             return Ok(await dashboardService.GetDashboardStatus(loanApplicationId,tenantId,userProfileId));
         }
+        [AllowAnonymous]
+        [HttpGet("GetFooterText")]
+        public async Task<IActionResult> GetFooterText(int tenantId,int businessUnitId)
+        {
+            var docQuery = await dashboardService.GetFooterText(businessUnitId, tenantId);
+            return Ok(docQuery);
+        }
     }
 }

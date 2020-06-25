@@ -1,4 +1,5 @@
 .Doc-upload {
+    margin-right: -5px;
     .Doc-head-wrap {
         padding-top: 28px;
         h2 {
@@ -11,18 +12,22 @@
         p {
             font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
             margin-bottom: 0;
+            position: relative;
+            padding-left: 25px;
             i {
                 margin-right: 8px;
                 font-size: fontSize("xmd");
                 color: color("primary");
+                position: absolute;
+                left: 0;
             }
         }
     }
     .file-drop-box {
-        height: 425px;
+        height: 415px;
         width: 100%;
         &.havefooter {
-            height: 355px;
+            height: 345px;
         }
         .empty-d-box-wrap {
             display: flex;
@@ -55,7 +60,12 @@
         }
         .list-selected-doc {
             padding-top: 30px;
+            height: 100%;
             .doc-list-ul {
+                @include scrollbar;
+                max-height: calc(100% - 50px);
+                overflow: auto;
+                margin-top: 10px;
                 & > li {
                     min-height: 62px;
                     background: color("listhover");
@@ -63,11 +73,14 @@
                     position: relative;
                     // padding: 15px 10px;
                     margin-bottom: 10px;
+                    &:last-child {
+                        margin-bottom: 0px;
+                    }
                     .doc-liWrap {
                         position: relative;
                         padding: 13px  10px;
                         padding-left: 45px;
-                        padding-right: 150px;
+                        padding-right: 170px;
                     }
                     .doc-icon {
                         position: absolute;
@@ -117,7 +130,7 @@
                         align-items: center;
                         height: 100%;
                         li {
-                            padding: 0 10px;
+                            padding: 0 15px;
                             border-right: 1px solid color("border2");
                             min-height: 24px;
                             &:last-child {
@@ -202,7 +215,9 @@
             }
         }
         .addmore-wrap {
-            text-align: right;
+            text-align: left;
+            padding-top: 10px;
+    padding-bottom: 5px;
             .addmoreDoc {
                 cursor: pointer;
                 font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
@@ -216,7 +231,7 @@
         padding-top: 10px;
         padding-bottom: 10px;
         margin-left: -15px;
-        margin-right: -20px;
+        margin-right: -15px;
         padding-left: 15px;
         padding-right: 15px;
         .doc-submit-wrap {
