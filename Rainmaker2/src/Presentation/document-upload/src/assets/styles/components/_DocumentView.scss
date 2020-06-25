@@ -43,6 +43,9 @@
         &---title,
         &---options{
             width: 30%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         &---options{
@@ -66,8 +69,8 @@
     }// header
 
     &--body{
-        max-width: 530px;
-        margin: 20px auto;
+        margin: 0 auto;
+        height: calc(100vh - 56px);
         canvas {
             margin: auto;
             display: table;
@@ -107,13 +110,19 @@
     &--counts{
         min-width: 50px;
         display: inline-block;
+        input{
+            text-align: center;
+            background-color: transparent;
+            color: color('colorWhite');
+            border: none;
+        }
     }
 
 
     &--floating-options{
         position: fixed;
         right: 30px;
-        bottom: 200px;
+        bottom: 80px;
         >ul{
             @extend .list-style-none;
             >li{
@@ -128,7 +137,16 @@
     }
     
 
-    .pg-viewer-wrapper {
-        overflow-y: auto;
+    .pg-viewer{
+        margin: 30px auto;
+        &-wrapper {
+            overflow-y: auto;
+            margin: 0px auto;
+        }
     }
+
+    .pdf-canvas {
+        margin-bottom: 30px;
+    }
+
 }

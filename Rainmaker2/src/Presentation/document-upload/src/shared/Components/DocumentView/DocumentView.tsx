@@ -216,7 +216,7 @@ const IsFullScreenCurrently = () => {
               <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-left"></em></button>
             </li>
             <li>
-              <span className="document-view--counts">1/2</span>
+              <span className="document-view--counts"><input type="text" size="4" value="1/2"/></span>
             </li>
             <li>
               <button className="document-view--arrow-button"><em className="zmdi zmdi-chevron-right"></em></button>
