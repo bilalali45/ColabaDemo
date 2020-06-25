@@ -69,11 +69,18 @@
         border-radius: 0;
         padding-bottom: 0;
         padding-top: 0;
+        border: none;
+        box-shadow: $shadow;
         .dropdown-item {
             border-bottom: 1px solid color('border');
             font: 400 #{fontSize("md")+"/1.3"} fontFamily("base");
+            color: color('base');
             padding-top: 10px;
             padding-bottom: 10px;
+            &:hover,&:active,&.active{
+                background-color: color('listhover') ;
+                color: color('base');
+            }
             &:first-child{
                 padding-top: 10px;
             }
