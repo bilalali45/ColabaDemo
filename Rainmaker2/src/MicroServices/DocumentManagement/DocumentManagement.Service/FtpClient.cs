@@ -94,7 +94,7 @@ namespace DocumentManagement.Service
             finally
             { 
                 /* Resource Cleanup */
-                _ftpResponse.Close();
+                if(_ftpResponse!=null) _ftpResponse.Close();
                 _ftpRequest = null;
             }
 
@@ -199,7 +199,7 @@ namespace DocumentManagement.Service
             finally
             { 
                 /* Resource Cleanup */
-                _ftpStream.Close();
+                if(_ftpStream!=null) _ftpStream.Close();
                 _ftpRequest = null;
             }
         }

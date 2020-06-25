@@ -10,18 +10,26 @@ export const DocumentsRequired = () => {
 
     const { state, dispatch } = useContext(Store);
     const { pendingDocs }: any = state.documents;
+    const { currentDoc }: any = state.documents;
     console.log(pendingDocs);
 
     useEffect(() => {
+        if (pendingDocs?.length) {
+            setCurrentDoc(pendingDocs[0]);
+        }
         fetchPendingDocs();
-    }, [])
+    }, []);
+
+    const setCurrentDoc = (doc) => {
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
+    }
 
     const fetchPendingDocs = async () => {
         if (!pendingDocs) {
             let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
             if (docs) {
                 dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-                dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+                setCurrentDoc(docs[0])
             }
 
         }
@@ -41,7 +49,7 @@ export const DocumentsRequired = () => {
                         pendingDocs.map((pd: DocumentRequest) => {
                             return (
                                 <li onClick={() => changeCurrentDoc(pd)}>
-                                    <a className="active"><span> {pd.docName}</span></a>
+                                    <a className={pd.docId === currentDoc?.docId ? 'active' : ''}><span> {pd.docName}</span></a>
                                 </li>
                             )
                         })

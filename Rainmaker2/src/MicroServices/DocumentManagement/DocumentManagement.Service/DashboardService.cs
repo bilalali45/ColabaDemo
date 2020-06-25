@@ -32,13 +32,13 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
-                            ""$match"": {""requests.status"": """ + RequestStatus.Submitted + @"""}
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Requested + @"""},
-                                {""requests.documents.status"": """ + DocumentStatus.Rejected + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.BorrowerTodo + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Started + @"""}
                             ]}
                         }", @"{
                             ""$lookup"": {
@@ -94,7 +94,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Where(x => x.status != FileStatus.Rejected).Select(x => new FileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu).Select(x => new FileDTO()
                     {
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -121,13 +121,13 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests""
                         }", @"{
-                            ""$match"": {""requests.status"": """ + RequestStatus.Submitted + @"""}
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Submitted + @"""},
-                                {""requests.documents.status"": """ + DocumentStatus.Accepted + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.PendingReview + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
                             ]}
                         }", @"{
                             ""$lookup"": {
@@ -182,7 +182,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Where(x => x.status != FileStatus.Rejected).Select(x => new FileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu).Select(x => new FileDTO()
                     {
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
