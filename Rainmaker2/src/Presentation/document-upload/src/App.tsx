@@ -46,7 +46,7 @@ const App = () => {
       <StoreProvider>
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
-          displayName={tokenData?.FirstName+' '+tokenData?.LastName}
+          displayName={" " +tokenData?.FirstName+' '+tokenData?.LastName}
           displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
         />
