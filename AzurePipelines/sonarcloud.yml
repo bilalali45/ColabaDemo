@@ -8,12 +8,12 @@ name: SonarCloud Build
 trigger:
 # triggers build on changes to master and develop - necessary to update SonarCloud
 - master
-- develop
+
 
 pr:
 # triggers build on pull request to master and develop
 - master
-- develop
+
 
 schedules:
 # schedule to run on all branches at 12:00 PM Karachi time every day
