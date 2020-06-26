@@ -1,20 +1,48 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { FileSelected } from '../../DocumentUpload'
 import { DocEditIcon, DocviewIcon } from '../../../../../../shared/Components/Assets/SVG'
+import { UserActions } from '../../../../../../store/actions/UserActions'
+import { formatBytes } from '../../../../../../utils/helpers/FileConversion'
+import { DateFormat } from '../../../../../../utils/helpers/DateFormat'
+
 type DocumentItemType = {
     file: FileSelected,
     viewDocument: Function,
     changeName: Function,
 }
 export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemType) => {
-    // export const DocumentItem = () => {
+    
+    const RemoveExtension = () => {
+        if(file == undefined || file.name == undefined)
+        return '';
+        let splitData = file.name.split('.');
+        let onlyName = "";
+        for (let i = 0; i < splitData.length - 1; i++) {
+            if (i != splitData.length - 2)
+                onlyName += splitData[i] + '.';
+            else
+                onlyName += splitData[i];
+        }
+        return onlyName != "" ? onlyName : file.name ;
+    }
+
     const [filename, setfilename] = useState<string>(file.name);
+    const [filenameWithoutExt, setOnlyFilename] = useState<string>(RemoveExtension());
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
-    
+    const tokenData: any = UserActions.getUserInfo();
+
+    const displayName = tokenData?.FirstName+' '+tokenData?.LastName;
+    const modifiedDate = file ? DateFormat(file.file.lastModified.toString(), true) : '';
+    const fileSize = file ? formatBytes(file.file.size, 0) : '';
+   
+    const getExtension = () => {
+        return file.file.type.split('/')[1];
+    }
+
     const Rename = () => {
         seteditable(false)
-        changeName(file, filename);
+        changeName(file, filenameWithoutExt);
     }
     const EditTitle = () => {
 
@@ -27,6 +55,13 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
     const CancelDeleteDOC = () => {
         setdeleted(false)
     }
+    const renderFileLogo = () => {
+        let ext = getExtension();
+        if(ext === 'pdf')
+            return <i className="far fa-file-pdf"></i>
+        else
+            return <i className="far fa-file-image"></i>   
+    }
 
     return (
         <li className="doc-li">
@@ -36,23 +71,24 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
             */}
             {!isdeleted ?
                 <div className={iseditable ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
-                    <div className="doc-icon">
-                        <i className="far fa-file-image"></i>
+                    <div className="doc-icon">                     
+                        {renderFileLogo()}
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
-                            <input readOnly={iseditable ? false : true} type="text" value={filename} onChange={(e) => {
-                                setfilename(e.target.value);
+                            <input readOnly={iseditable ? false : true} type="text" value={iseditable ? filenameWithoutExt : filenameWithoutExt+'.'+getExtension()} onChange={(e) => {
+                                setOnlyFilename(e.target.value) 
+                                
                             }} />
 
                             {/* <p>{file.name}</p> */}
                         </div>
                         <div className="dl-info">
-                            <span className="dl-date">May 28, 2020  17:30</span>
+                        <span className="dl-date">{modifiedDate}</span>
                             <span className="dl-text-by"> by </span>
-                            <span className="dl-text-auther">Hussain</span>
+                            <span className="dl-text-auther">{displayName}</span>
                             <span className="dl-pipe"> | </span>
-                            <span className="dl-filesize">415 kb</span>
+                        <span className="dl-filesize">{fileSize} kb</span>
                         </div>
                     </div>
                     <div className="doc-list-actions">

@@ -20,7 +20,7 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     const [fileType, setFileType] = useState<string>('');
     const [uploadedPercent, setUploadPercent] = useState<number>();
     const [showProgressBar, setShowProgressBar] = useState<boolean>();
-
+    
     useEffect(() => {
         setSelectedFiles(files);
     }, [files.length])
@@ -63,7 +63,6 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
     }
 
     const changeName = (file: FileSelected, newName: string) => {
-        
         setSelectedFiles((prevFiles: FileSelected[]) => {
             return prevFiles.map((f: FileSelected) => {
                 if (f.file.name === file.file.name) {
@@ -83,12 +82,12 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
                 <div className="list-selected-doc">
                     <ul className="doc-list-ul">
                         {
-                            selectedFiles.map((f, index) => {
+                            selectedFiles.map((f, index) => {                                                                                      
                                 return (
                                     <DocumentItem
                                         file={f}
                                         viewDocument={viewDocument}
-                                        changeName={changeName}
+                                        changeName={changeName}                                      
                                         key={index}
                                     />
                                 )
