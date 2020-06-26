@@ -195,6 +195,9 @@
                         }
                     }
                     &.upcoming-icon {
+                        &::before{
+                            background:color('colorlightGray');
+                        }
                         a {
                             background: color("colorlightGray");
                             color: color("colorWhite");
