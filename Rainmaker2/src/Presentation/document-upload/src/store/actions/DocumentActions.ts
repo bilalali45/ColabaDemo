@@ -5,6 +5,8 @@ import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
+// import { FileSelected } from "../../components/Home/DocumentRequest/DocumentUpload/DocumentUpload";
+import { Document } from "../../entities/Models/Document";
 
 const http = new Http();
 
@@ -17,7 +19,32 @@ export class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
-      return res.data.map((r) => r);
+      let d = res.data.map((d: DocumentRequest) => {
+        // debugger
+        let { id, requestId, docId, docName, docMessage, files } = d;
+        let doc = new DocumentRequest(
+          id,
+          docId,
+          requestId,
+          docName,
+          docMessage,
+          files
+        );
+        doc.files = doc.files.map((f: Document) => {
+          return new Document(
+            f.id,
+            f.clientName,
+            f.fileUploadedOn,
+            f.size,
+            f.order
+          );
+        });
+        return doc;
+      });
+      console.log(d);
+      return d;
+      console.log(d);
+      // return res.data;
     } catch (error) {
       console.log(error);
     }

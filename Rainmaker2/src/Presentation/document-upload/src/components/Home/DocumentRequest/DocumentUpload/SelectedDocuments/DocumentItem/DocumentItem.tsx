@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
-import { FileSelected } from '../../DocumentUpload'
 import { DocEditIcon, DocviewIcon } from '../../../../../../shared/Components/Assets/SVG'
+import { Document } from '../../../../../../entities/Models/Document'
 type DocumentItemType = {
-    file: FileSelected,
+    file: Document,
     viewDocument: Function,
     changeName: Function,
 }
 export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemType) => {
     // export const DocumentItem = () => {
-    const [filename, setfilename] = useState<string>(file.name);
+    const [filename, setfilename] = useState<string>(file.clientName);
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
     

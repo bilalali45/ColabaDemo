@@ -4,25 +4,27 @@ import { SelectedDocuments } from './SelectedDocuments/SelectedDocuments'
 import { Store } from '../../../../store/store'
 import { DocumentsActionType, DocumentsType } from '../../../../store/reducers/documentReducer'
 import { DocumentRequest } from '../../../../entities/Models/DocumentRequest'
+import { Document } from '../../../../entities/Models/Document'
 
-export interface FileSelected  {
-    name: string;
-    file: File;
-}
+// export interface FileSelected  {
+//     name: string;
+//     file: File;
+// }
 
 export const DocumentUpload = () => {
-    const [files, setFiles] = useState<FileSelected[]>([]);
+    const [files, setFiles] = useState<Document[]>([]);
     const [fileInput, setFileInput] = useState<HTMLInputElement>();
-    const {state, dispatch} = useContext(Store);
-    const { currentDoc } : any = state.documents;
-    const selectedfiles : FileSelected[] = currentDoc?.files;
+    const [docs, setDocs] = useState<Document[]>();
+    const { state, dispatch } = useContext(Store);
+    const { currentDoc }: any = state.documents;
+    const selectedfiles: Document[] = currentDoc?.files;
 
     let docTitle = currentDoc ? currentDoc.docName : '';
     let docMessage = currentDoc ? currentDoc.docMessage : '';
-   console.log('docTitle and docMessage', docTitle,docMessage )
+    console.log('docTitle and docMessage', docTitle, docMessage)
 
     useEffect(() => {
-        dispatch({type: DocumentsActionType.AddFileToDoc, payload: files}) 
+        dispatch({ type: DocumentsActionType.AddFileToDoc, payload: files })
     }, [files?.length])
 
     useEffect(() => {
@@ -32,13 +34,10 @@ export const DocumentUpload = () => {
 
     const updateFiles = (files: File[]) => {
         setFiles((previousFiles) => {
-            let allSelectedFiles: FileSelected[] = [];
+            let allSelectedFiles: Document[] = [];
             allSelectedFiles = [...previousFiles];
             for (let f of files) {
-                let selectedFile = {
-                    name: f.name,
-                    file: f
-                }
+                const selectedFile = new Document('', f.name, '', 0, 0, f);
                 allSelectedFiles.push(selectedFile);
             }
             return allSelectedFiles;
@@ -47,7 +46,8 @@ export const DocumentUpload = () => {
 
 
     const getSelectedFiles = (files: File[]) => {
-        updateFiles(files);
+        
+        (files);
     }
 
     const getFileInput = (fileInputEl: HTMLInputElement) => {
@@ -70,27 +70,28 @@ export const DocumentUpload = () => {
     return (
         <section className="Doc-upload">
             <div className="Doc-head-wrap">
-    <h2> {docTitle}</h2>
+                <h2> {docTitle}</h2>
                 <div className="doc-note">
                     <p>
                         <i className="fas fa-info-circle"></i>
-                       {docMessage}
+                        {docMessage}
                     </p>
                 </div>
             </div>
             <div>
-            {!files?.length ?
-                <DocumentDropBox
-                    url={'http://localhost:5000/upload'}
-                    setSelectedFiles={getSelectedFiles}
-                    setFileInput={getFileInput} />
-                : <>
-                    <SelectedDocuments
-                        files={selectedfiles}
-                        url={'http://localhost:5000/upload'} />
-                    {/* <button onClick={showFileExplorer}>Add More</button> */} 
-                </>
-            }
+                {!selectedfiles?.length ?
+                    <DocumentDropBox
+                        url={'http://localhost:5000/upload'}
+                        setSelectedFiles={getSelectedFiles}
+                        setFileInput={getFileInput} />
+                    : <>
+                        <SelectedDocuments
+                            addMore={showFileExplorer}
+                            files={selectedfiles}
+                            url={'https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit'} />
+                        {/* <button onClick={showFileExplorer}>Add More</button> */}
+                    </>
+                }
             </div>
         </section>
     )

@@ -56,6 +56,8 @@ namespace Rainmaker.API
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IFtpHelper,FtpHelper>();
+            services.AddScoped<ISitemapService, SitemapService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       );

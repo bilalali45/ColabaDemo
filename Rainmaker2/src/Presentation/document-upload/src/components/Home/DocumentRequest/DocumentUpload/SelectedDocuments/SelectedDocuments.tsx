@@ -1,26 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Http } from "../../../../../services/http/Http";
-import { FileSelected } from "../DocumentUpload";
+import { Store } from "../../../../../store/store";
+import { Auth } from "../../../../../services/auth/Auth";
+import { Document } from "../../../../../entities/Models/Document";
 
 const httpClient = new Http();
 
 type SelectedDocumentsType = {
-  files: FileSelected[];
+  addMore: Function;
+  files: Document[];
   url: string;
 };
 
-export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
+export const SelectedDocuments = ({
+  files,
+  url,
+  addMore,
+}: SelectedDocumentsType) => {
   const [showingDoc, setShowingDoc] = useState<boolean>(false);
-  const [selectedFiles, setSelectedFiles] = useState<FileSelected[]>(files);
+  const [selectedFiles, setSelectedFiles] = useState<Document[]>(files);
   const [currentDoc, setCurrentDoc] = useState<File | null>(null);
   const [fileType, setFileType] = useState<string>("");
   const [uploadedPercent, setUploadPercent] = useState<number>();
   const [showProgressBar, setShowProgressBar] = useState<boolean>();
 
+  const { state, dispatch } = useContext(Store);
+  const documents: any = state.documents;
+  const currentSelected: any = documents.currentDoc;
+
   useEffect(() => {
+    console.log("in here!!", selectedFiles);
     setSelectedFiles(files);
+    console.log("currentSelected", currentSelected);
   }, [files.length]);
 
   console.log("selectedFiles", selectedFiles);
@@ -38,29 +51,54 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
   };
 
   const uploadFile = async () => {
+    let fields = ["id", "requestId", "docId"];
+    const fileOrder: any[] = [];
     for (const file of files) {
-      data.append("file", file.file, `${file.name}`);
+      if (file.file) {
+        data.append("files", file.file, `${file.clientName}`);
+      }
+
+      for (const field of fields) {
+        const value = currentSelected[field];
+        data.append(field, value);
+      }
+      let counter = 1;
+      for (const file of files) {
+        fileOrder.push({
+          fileName: file?.file?.name,
+          order: counter,
+        });
+        counter++;
+      }
+      data.append("order", JSON.stringify(fileOrder));
+      data.append("tenantId", Auth.getTenantId());
+
+      setShowProgressBar(true);
+      try {
+        let res = await httpClient.fetch(
+          {
+            method: httpClient.methods.POST,
+            url,
+            data,
+            onUploadProgress: (e) => {
+              let p = (e.loaded / e.total) * 100;
+              setUploadPercent(p);
+            },
+          },
+          {
+            Authorization: `Bearer ${Auth.getAuth()}`,
+          }
+        );
+        setShowProgressBar(false);
+      } catch (error) {}
     }
-    setShowProgressBar(true);
-    try {
-      let res = await httpClient.fetch({
-        method: httpClient.methods.POST,
-        url,
-        data,
-        onUploadProgress: (e) => {
-          let p = (e.loaded / e.total) * 100;
-          setUploadPercent(p);
-        },
-      });
-      setShowProgressBar(false);
-    } catch (error) {}
   };
 
-  const changeName = (file: FileSelected, newName: string) => {
-    setSelectedFiles((prevFiles: FileSelected[]) => {
-      return prevFiles.map((f: FileSelected) => {
-        if (f.file.name === file.file.name) {
-          f.name = `${newName}`;
+  const changeName = (file: Document, newName: string) => {
+    setSelectedFiles((prevFiles: Document[]) => {
+      return prevFiles.map((f: Document) => {
+        if (f.file && f.file.name === file?.file?.name) {
+          f.clientName = `${newName}`;
           return f;
         }
         return f;
@@ -85,26 +123,19 @@ export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className="addmoreDoc">Add more files</a>
+            <a className="addmoreDoc" onClick={(e) => addMore(e)}>
+              Add more files
+            </a>
           </div>
         </div>
 
-        {showingDoc ? (
-          <DocumentView
-            docId=""
-            id=""
-            requestId=""
-            fileId=""
-            hideViewer={() => {}}
-          />
-        ) : (
-          ""
-        )}
-        {showProgressBar && (
-          <progress value={uploadedPercent} max="100">
-            {uploadedPercent + "%"}
-          </progress>
-        )}
+        {/* {showingDoc ? <DocumentView
+                    file={currentDoc}
+                    type={fileType}
+                    url={`http://localhost:5000/pdf/${currentDoc?.name}`}
+                    hide={closeDocumentView} />
+                    : ''} */}
+        {/* {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>} */}
       </div>
       <div className="doc-upload-footer">
         <div className="doc-submit-wrap">

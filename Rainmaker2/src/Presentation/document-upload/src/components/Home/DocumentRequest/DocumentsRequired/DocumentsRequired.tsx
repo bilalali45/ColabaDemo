@@ -49,7 +49,7 @@ export const DocumentsRequired = () => {
                         pendingDocs.map((pd: DocumentRequest) => {
                             return (
                                 <li onClick={() => changeCurrentDoc(pd)}>
-                                    <a className={pd.docId === currentDoc?.docId ? 'active' : ''}><span> {pd.docName}</span></a>
+                                    <a className={pd.id === currentDoc?.id ? 'active' : ''}><span> {pd.docName}</span></a>
                                 </li>
                             )
                         })

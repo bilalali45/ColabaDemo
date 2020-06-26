@@ -8,7 +8,7 @@ export class DocumentsEndpoints {
     }
 
     static POST = {
-
+        submitDocuments: () => `/api/Documentmanagement/file/submit`
     }
 
     static PUT = {
