@@ -113,7 +113,11 @@ namespace DocumentManagement.Service
             {
                 { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantId},
-                { "userId", userProfileId}
+                { "userId", userProfileId},
+                { "$or" , new BsonArray() { 
+                    new BsonDocument(){ { "requests.$[request].documents.$[document].status", DocumentStatus.BorrowerTodo } },
+                    new BsonDocument(){ { "requests.$[request].documents.$[document].status", DocumentStatus.Started } }
+                } }
             }, new BsonDocument()
             {
                 { "$push", new BsonDocument()

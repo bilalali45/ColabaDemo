@@ -36,22 +36,22 @@ namespace Identity.Models
         public bool IsSystem { get; set; }
 
         [JsonProperty("modifiedBy")]
-        public long ModifiedBy { get; set; }
+        public long? ModifiedBy { get; set; }
 
         [JsonProperty("modifiedOnUtc")]
-        public DateTimeOffset ModifiedOnUtc { get; set; }
+        public DateTimeOffset? ModifiedOnUtc { get; set; }
 
         [JsonProperty("createdBy")]
-        public long CreatedBy { get; set; }
+        public long? CreatedBy { get; set; }
 
         [JsonProperty("createdOnUtc")]
-        public DateTimeOffset CreatedOnUtc { get; set; }
+        public DateTimeOffset? CreatedOnUtc { get; set; }
 
         [JsonProperty("tpId")]
         public object TpId { get; set; }
 
         [JsonProperty("serviceSettingId")]
-        public long ServiceSettingId { get; set; }
+        public long? ServiceSettingId { get; set; }
 
         [JsonProperty("type")]
         public object Type { get; set; }
