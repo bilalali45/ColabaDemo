@@ -114,10 +114,63 @@ namespace DocumentManagement.Service
                 { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantId},
                 { "userId", userProfileId},
-                { "$or" , new BsonArray() { 
-                    new BsonDocument(){ { "requests.$[request].documents.$[document].status", DocumentStatus.BorrowerTodo } },
-                    new BsonDocument(){ { "requests.$[request].documents.$[document].status", DocumentStatus.Started } }
-                } }
+                { 
+                    "requests" , new BsonDocument()
+                    {
+                        {
+                            "$elemMatch" , new BsonDocument()
+                            {
+                                {
+                                    "$and",new BsonArray()
+                                    {
+                                        new BsonDocument()
+                                        {
+                                            { "id", BsonObjectId.Create(requestId) }
+                                        },
+                                        new BsonDocument()
+                                        {
+                                            {
+                                                "documents",new BsonDocument()
+                                                {
+                                                    { 
+                                                        "$elemMatch", new BsonDocument()
+                                                        {
+                                                            {
+                                                                "$and", new BsonArray()
+                                                                {
+                                                                    new BsonDocument()
+                                                                    {
+                                                                        { "id", BsonObjectId.Create(docId) }
+                                                                    },
+                                                                    new BsonDocument()
+                                                                    {
+                                                                        { 
+                                                                            "$or",new BsonArray()
+                                                                            {
+                                                                                new BsonDocument()
+                                                                                {
+                                                                                    { "status", DocumentStatus.BorrowerTodo}
+                                                                                },
+                                                                                new BsonDocument()
+                                                                                {
+                                                                                    { "status", DocumentStatus.Started}
+                                                                                }
+                                                                            }
+                                                                        }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                }
             }, new BsonDocument()
             {
                 { "$push", new BsonDocument()
