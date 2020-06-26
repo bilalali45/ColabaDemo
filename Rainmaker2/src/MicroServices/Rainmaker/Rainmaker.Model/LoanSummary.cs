@@ -14,6 +14,7 @@ namespace Rainmaker.Model
         public decimal? LoanAmount { get; set; }
         public string CountryName { get; set; }
         public string UnitNumber { get; set; }
+        public string Status { get; set; }
     }
 
     public class LoanOfficer

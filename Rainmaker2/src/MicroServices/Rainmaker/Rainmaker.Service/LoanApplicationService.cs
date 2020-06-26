@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using URF.Core.Abstractions;
 using System.Linq;
 using RainMaker.Common;
+using RainMaker.Common.Extensions;
 
 namespace Rainmaker.Service
 {
@@ -26,6 +27,7 @@ namespace Rainmaker.Service
             return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y=>y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact).First().Customer.UserId==userProfileId && x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
                 .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x=>x.State)
                 .Include(x => x.LoanPurpose)
+                .Include(x => x.StatusList)
                 .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLeadBinders).ThenInclude(x=>x.Customer)
                 .Select(x => new LoanSummary{
                     CityName = x.PropertyInfo.AddressInfo.CityName,
@@ -37,7 +39,8 @@ namespace Rainmaker.Service
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
                     CountryName = x.PropertyInfo.AddressInfo.CountryName,
-                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
+                    Status = x.StatusList.Name
                 }).FirstOrDefaultAsync();
         }
 
