@@ -32,8 +32,10 @@ export const DocumentsStatus = () => {
     const fetchPendingDocs = async () => {
 
         let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+        console.log(';asldkfja;sdkfja;sldkfja;sldkjfasdf', docsPending);
         if (docsPending) {
             dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docsPending });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docsPending[0] });
             // setPendingDocs(docsPending);
         }
     }

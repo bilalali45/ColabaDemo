@@ -35,10 +35,8 @@ export class UserActions {
     });
     console.log(res);
 
-    Auth.removeAuthToken();
-    Auth.removeRefreshToken();
-    // debugger
     if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
+      console.log(localStorage);
       Auth.saveAuth(res.data.data.token);
       Auth.saveRefreshToken(res.data.data.refreshToken);
       let payload = UserActions.decodeJwt(res.data.data.token);
@@ -110,7 +108,7 @@ export class UserActions {
     setTimeout(async () => {
       console.log('in set time out', time);
       await UserActions.refreshToken();
-    }, time);
+    }, time - 120000);
   }
 
 
