@@ -77,8 +77,6 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log(error.response)
-            console.log(error.response.data)
             // debugger
             if (
                 error?.response?.data?.name === 'TokenExpiredError'

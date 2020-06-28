@@ -7,6 +7,7 @@ import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 // import { FileSelected } from "../../components/Home/DocumentRequest/DocumentUpload/DocumentUpload";
 import { Document } from "../../entities/Models/Document";
+import { DocumentsActionType } from "../reducers/documentReducer";
 
 const http = new Http();
 
@@ -36,15 +37,13 @@ export class DocumentActions {
             f.clientName,
             f.fileUploadedOn,
             f.size,
-            f.order
+            f.order,
+            'done'
           );
         });
         return doc;
       });
-      console.log(d);
       return d;
-      console.log(d);
-      // return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +59,6 @@ export class DocumentActions {
       >(
         Endpoints.documents.GET.submittedDocuments(loanApplicationId, tenentId)
       );
-      console.log("getSubmittedDocuments", res);
       return res.data.map((r) => r);
     } catch (error) {
       console.log(error);
@@ -88,5 +86,67 @@ export class DocumentActions {
     }
   }
 
-  static async submitDocuments() {}
+  static async submitDocuments(currentSelected: DocumentRequest, file: Document, dispatchProgress: Function) {
+
+    try {
+      let res = await http.fetch(
+        {
+          method: http.methods.POST,
+          url: http.createUrl(http.baseUrl, Endpoints.documents.POST.submitDocuments()),
+          data: prepareFormData(currentSelected, file),
+          onUploadProgress: (e) => {
+            let p = Math.floor((e.loaded / e.total) * 100);
+            let files : Document[] = currentSelected.files;
+            let updatedFiles = files.map((f: Document) => {
+              if(f.clientName === file.clientName) {
+                f.uploadProgress = p;
+                if(p === 100) {
+                  f.uploadStatus = 'done';
+                }
+                return f;
+              }
+              return f;
+            })
+            dispatchProgress({type: DocumentsActionType.AddFileToDoc, payload: updatedFiles})
+            // dispatchProgress({type: }
+            // setUploadPercent(p);
+          },
+        },
+        {
+          Authorization: `Bearer ${Auth.getAuth()}`,
+        }
+      );
+      console.log(res)
+      // setShowProgressBar(false);
+    } catch (error) { }
+  }
+
+  static async finishDocument(data: {}) {
+    try {
+      await http.put(Endpoints.documents.PUT.finishDocument(), data);
+    } catch (error) {
+      
+    }
+  }
+}
+
+const prepareFormData = (currentSelected: DocumentRequest, file: Document) => {
+
+  const data = new FormData();
+
+  let fields = ["id", "requestId", "docId"];
+
+  if (file.file) {
+    data.append("files", file.file, `${file.clientName}`);
+  }
+
+  for (const field of fields) {
+    const value = currentSelected[field];
+    data.append(field, value);
+  }
+
+  data.append("order", JSON.stringify(file.documentOrder));
+  data.append("tenantId", Auth.getTenantId());
+
+  return data;
 }

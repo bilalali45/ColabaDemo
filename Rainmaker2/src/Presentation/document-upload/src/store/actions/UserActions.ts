@@ -28,20 +28,18 @@ export class UserActions {
   }
 
   static async refreshToken() {
-    console.log('in refresh token called');
     let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
       token: Auth.getAuth(),
       refreshToken: Auth.getRefreshToken()
     });
-    console.log(res);
 
     if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
-      console.log(localStorage);
       Auth.saveAuth(res.data.data.token);
       Auth.saveRefreshToken(res.data.data.refreshToken);
       let payload = UserActions.decodeJwt(res.data.data.token);
       Auth.storeTokenPayload(payload);
       UserActions.addExpiryListener(payload);
+      console.log('token refreshed');
 
       return true;
     }
@@ -96,17 +94,15 @@ export class UserActions {
     let expiryTime = expiry * 1000;
     // debugger
     let time = expiryTime - currentTime;
-    console.log(time, time < 1);
     if (time < 1) {
-      console.log('in here if < 1', time);
       UserActions.refreshToken();
       return;
     }
     // let t = (time * 1000) * 60;
 
-    console.log('time', time);
+    console.log('toke will expire after', time, 'mil sec');
     setTimeout(async () => {
-      console.log('in set time out', time);
+      console.log('refreshing token');
       await UserActions.refreshToken();
     }, time - 120000);
   }
@@ -130,6 +126,11 @@ export class UserActions {
       let decoded = jwt_decode(token);
       return decoded;
     }
+  }
+
+  static getUserName() {
+    let info : any = UserActions.getUserInfo();
+    return ` ${info.FirstName} ${info.LastName} `
   }
 
   static async logout() {

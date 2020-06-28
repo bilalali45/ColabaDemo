@@ -1,31 +1,57 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { DocEditIcon, DocviewIcon } from '../../../../../../shared/Components/Assets/SVG'
 import { Document } from '../../../../../../entities/Models/Document'
+import { UserActions } from '../../../../../../store/actions/UserActions'
 type DocumentItemType = {
     file: Document,
     viewDocument: Function,
     changeName: Function,
+    deleteDoc: Function
 }
-export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemType) => {
+
+
+const removeSpecialChars = (text: string) => {
+    return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+}
+
+const removeDefaultExt = (fileName: string) => {
+    return fileName.split('.')[0]
+}
+
+let nameTest = /^[ A-Za-z0-9-\s]*$/i;
+
+
+export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: DocumentItemType) => {
     // export const DocumentItem = () => {
-    const [filename, setfilename] = useState<string>(file.clientName);
+    const [filename, setfilename] = useState<string>(removeSpecialChars(removeDefaultExt(file.clientName)));
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
-    
-    const Rename = () => {
+
+    const rename = () => {
         seteditable(false)
         changeName(file, filename);
     }
     const EditTitle = () => {
-
-        seteditable(true)
+        changeName(file, filename)
     }
 
-    const DeleteDOChandeler = () => {
+    const deleteDOChandeler = () => {
         setdeleted(true)
     }
-    const CancelDeleteDOC = () => {
+    const cancelDeleteDOC = () => {
         setdeleted(false)
+    }
+
+    const getFileSize = () => {
+        let size = file.size || file.file?.size;
+        if (size) {
+            let inKbs = size / 1000;
+            if (inKbs > 1000) {
+                return `${Math.ceil(inKbs / 1000)}mb(s)`
+            }
+            return `${Math.ceil(inKbs)}kb(s)`;
+        }
+        return `${0}kbs`
     }
 
     return (
@@ -35,48 +61,54 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
             <input type="text" onChange={(e) => changeName(file, e.target.value)}/>
             */}
             {!isdeleted ?
-                <div className={iseditable ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
+                <div className={file.editName ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                     <div className="doc-icon">
                         <i className="far fa-file-image"></i>
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
-                            <input readOnly={iseditable ? false : true} type="text" value={filename} onChange={(e) => {
-                                setfilename(e.target.value);
+                            {file.editName ? <input onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
+                                if (nameTest.test(e.target.value)) {
+                                    setfilename(e.target.value);
+                                    return
+                                }
+                                alert('File names shoul not contain special charaters apart from "-"')
                             }} />
-
-                            {/* <p>{file.name}</p> */}
+                                :
+                                <p>{file.clientName}</p>}
                         </div>
                         <div className="dl-info">
-                            <span className="dl-date">May 28, 2020  17:30</span>
+                            <span className="dl-date">{file.fileUploadedOn || new Date(Date.now()).toString()}</span>
                             <span className="dl-text-by"> by </span>
-                            <span className="dl-text-auther">Hussain</span>
+                            <span className="dl-text-auther">{UserActions.getUserName()}</span>
                             <span className="dl-pipe"> | </span>
-                            <span className="dl-filesize">415 kb</span>
+                            <span className="dl-filesize">{getFileSize()}</span>
                         </div>
                     </div>
                     <div className="doc-list-actions">
-                        {iseditable ?
+                        {file.editName ?
                             <ul className="editable-actions">
                                 <li>
-                                    <button onClick={Rename} className="btn btn-primary doc-rename-btn">Save</button>
+                                    <button onClick={rename} className="btn btn-primary doc-rename-btn">Save</button>
                                 </li>
                             </ul>
                             : <>
 
                                 <ul className="readable-actions">
-                                    <li>
+                                    {file.file && !file.uploadProgress && <li>
                                         <a onClick={EditTitle} title="Rename" tabIndex={-1}>{<DocEditIcon />}</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => viewDocument(file)} title="View Document" tabIndex={-1}>{<DocviewIcon />}</a>
-                                    </li>
-                                    <li>
-                                        <a title="Cancel" onClick={() => DeleteDOChandeler()} tabIndex={-1}><i className="zmdi zmdi-close"></i></a>
-                                    </li>
-                                    <li>
+                                    </li>}
+                                    {(!file.file || file.uploadStatus === 'done')
+                                        && <li>
+                                            <a onClick={() => viewDocument(file)} title="View Document" tabIndex={-1}>{<DocviewIcon />}</a>
+                                        </li>}
+                                    {file.file && file.uploadProgress < 100 && <li>
+                                        <a title="Cancel" onClick={() => deleteDOChandeler()} tabIndex={-1}><i className="zmdi zmdi-close"></i></a>
+                                    </li>}
+                                    {file.uploadStatus === 'done' && <li>
                                         <a title="Uploaded" className="icon-uploaded" tabIndex={-1}><i className="zmdi zmdi-check"></i></a>
-                                    </li>
+                                    </li>}
+                                    {(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <li>{file.uploadProgress}</li> : ''}
                                 </ul>
                             </>
                         }
@@ -96,8 +128,8 @@ export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemTyp
 
                             <div className="col-sm-4">
                                 <div className="dc-actions">
-                                    <button className="btn btn-small btn-secondary" onClick={() => CancelDeleteDOC()} >No</button>
-                                    <button className="btn btn-small btn-primary">Yes</button>
+                                    <button className="btn btn-small btn-secondary" onClick={() => cancelDeleteDOC()} >No</button>
+                                    <button className="btn btn-small btn-primary" onClick={() => deleteDoc(filename)}>Yes</button>
                                 </div>
                             </div>
 

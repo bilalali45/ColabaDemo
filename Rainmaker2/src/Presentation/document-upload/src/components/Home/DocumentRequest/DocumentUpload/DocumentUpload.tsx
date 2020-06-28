@@ -24,9 +24,9 @@ export const DocumentUpload = () => {
 
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc ? currentDoc.docMessage : "";
-  console.log("docTitle and docMessage", docTitle, docMessage);
 
   useEffect(() => {
+    console.log('files ----------------------------', files)
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: files });
   }, [files?.length]);
 
@@ -34,12 +34,24 @@ export const DocumentUpload = () => {
     setFiles(currentDoc?.files);
   }, [currentDoc?.docName]);
 
+  const removeActualFile = (fileName: string) => {
+    // f?.clientName.split('.')[0]
+    setFiles((preFiles) => {
+      return preFiles.filter(f => {
+        if(f?.clientName.split('.')[0] !== fileName) {
+          return f;
+        }
+      })
+    });
+  }
+
   const updateFiles = (files: File[]) => {
     setFiles((previousFiles) => {
       let allSelectedFiles: Document[] = [];
       allSelectedFiles = [...previousFiles];
       for (let f of files) {
-        const selectedFile = new Document("", f.name, "", 0, 0, f);
+        const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
+        selectedFile.editName = true;
         allSelectedFiles.push(selectedFile);
       }
       return allSelectedFiles;
@@ -55,6 +67,9 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = () => {
+    if(fileInput?.value) {
+      fileInput.value = '';
+    }
     fileInput?.click();
     if (fileInput) {
       fileInput.onchange = (e: any) => {
@@ -66,7 +81,6 @@ export const DocumentUpload = () => {
     }
   };
 
-  console.log(state);
   return (
     <section className="Doc-upload">
       <div className="Doc-head-wrap">
@@ -89,6 +103,7 @@ export const DocumentUpload = () => {
           <>
             <SelectedDocuments
               addMore={showFileExplorer}
+              removeActualFile={removeActualFile}
               files={selectedfiles}
               url={
                 "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
