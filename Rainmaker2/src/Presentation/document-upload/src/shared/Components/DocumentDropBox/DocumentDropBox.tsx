@@ -3,7 +3,7 @@ import { Http } from '../../../services/http/Http';
 import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
 
 
-const allowedExtensions = ".doc, .jpg, .jpeg, .png";
+const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 type DocumentDropBoxPropsType = { url: string, setSelectedFiles: Function, setFileInput: Function };
 

@@ -8,6 +8,7 @@ import {
 } from "../../../../store/reducers/documentReducer";
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Document } from "../../../../entities/Models/Document";
+import { getDocLogo } from "../../../../store/actions/DocumentActions";
 
 // export interface FileSelected  {
 //     name: string;
@@ -50,13 +51,15 @@ export const DocumentUpload = () => {
       let allSelectedFiles: Document[] = [];
       allSelectedFiles = [...previousFiles];
       for (let f of files) {
-        const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
+        const selectedFile = new Document("", f.name, "", 0, 0, getDocLogo(f,'slash'),'pending', f);
         selectedFile.editName = true;
         allSelectedFiles.push(selectedFile);
       }
       return allSelectedFiles;
     });
   };
+
+  
 
   const getSelectedFiles = (files: File[]) => {
     //  (files);

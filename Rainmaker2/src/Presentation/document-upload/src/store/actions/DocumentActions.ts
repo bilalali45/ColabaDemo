@@ -38,6 +38,7 @@ export class DocumentActions {
             f.fileUploadedOn,
             f.size,
             f.order,
+            getDocLogo(f,'dot'),
             'done'
           );
         });
@@ -121,6 +122,8 @@ export class DocumentActions {
     } catch (error) { }
   }
 
+  
+
   static async finishDocument(data: {}) {
     try {
       await http.put(Endpoints.documents.PUT.finishDocument(), data);
@@ -149,4 +152,24 @@ const prepareFormData = (currentSelected: DocumentRequest, file: Document) => {
   data.append("tenantId", Auth.getTenantId());
 
   return data;
+}
+
+export const getExtension = (file, splitBy) => {
+  if(splitBy === 'dot'){
+    return file.clientName.split('.')[1]
+  }else{
+    return file?.type.split('/')[1];
+  }
+}
+
+
+export const getDocLogo = (file, splitBy) =>{
+  let ext = getExtension(file, splitBy);
+  if(ext === 'pdf'){
+    return "far fa-file-pdf"
+  } 
+  else{
+    return "far fa-file-image" 
+  }
+     
 }

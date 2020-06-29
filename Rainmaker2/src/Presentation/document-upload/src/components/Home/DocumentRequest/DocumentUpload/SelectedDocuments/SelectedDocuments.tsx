@@ -36,6 +36,8 @@ export const SelectedDocuments = ({
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
 
+    let docTitle = currentSelected ? currentSelected.docName : "";
+
   useEffect(() => {
     setSelectedFiles(files);
     disableSubmitBtn();
@@ -172,7 +174,7 @@ export const SelectedDocuments = ({
           <div className="row">
             <div className="col-sm-8">
               <div className="dc-text">
-                <p>Are you done with this Bank statement?</p>
+                  <p>Are you done with this {docTitle}?</p>
               </div>
             </div>
 
