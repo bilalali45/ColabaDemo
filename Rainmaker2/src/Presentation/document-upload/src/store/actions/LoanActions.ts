@@ -47,10 +47,18 @@ export class LaonActions {
 
   }
 
+  static async getFooter(tenentId: string, businessUnitId: string){
+    try{
+      let res: any = await http.get(Endpoints.loan.GET.getFooter(tenentId, businessUnitId));
+      return res.data;
+    }catch(error){
+      console.log('error.response', error);
+    }
+  }
+
   static async getLoanProgressStatus(loanApplicationId: string, tenentId: string) {
     try {
       let res: AxiosResponse<LoanProgress[]> = await http.get<LoanProgress[]>(Endpoints.loan.GET.loanProgressStatus(loanApplicationId, tenentId));
-      console.log('getLoanProgressStatus',res.data)
       return attachStatus(res.data);
     } catch (error) {
       console.log(error);

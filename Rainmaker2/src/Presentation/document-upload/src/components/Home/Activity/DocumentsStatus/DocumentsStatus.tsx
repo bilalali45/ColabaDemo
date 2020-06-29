@@ -34,6 +34,7 @@ export const DocumentsStatus = () => {
         let docsPending = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
         if (docsPending) {
             dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docsPending });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docsPending[0] });
             // setPendingDocs(docsPending);
         }
     }

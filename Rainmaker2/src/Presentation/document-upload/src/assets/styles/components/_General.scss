@@ -311,11 +311,21 @@ a[href],a[tabindex]{
     text-align: center;
     height: 100%;
     box-shadow: $shadow;
-    background: color("colorWhite");
+    
     padding: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    .bg {
+        background: color("colorWhite");
+    }
+}
+.document-view {
+    .loader {
+        circle {
+            stroke: #000; 
+        }
+    }  
 }
 .no-document {
     min-height: 500px;

@@ -21,5 +21,6 @@ namespace DocumentManagement.Entity
         public int order { get; set; }
         public string contentType { get; set; }
         public string status { get; set; }
+        public string byteProStatus { get; set; }
     }
 }

@@ -25,7 +25,11 @@ namespace DocumentManagement.Model
         public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
         public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
     }
-
+    public static class ByteProStatus
+    {
+        public const string Synchronized = "Synchronized";
+        public const string NotSynchronized = "Not synchronized";
+    }
     public class DashboardQuery
     {
         [BsonId]
