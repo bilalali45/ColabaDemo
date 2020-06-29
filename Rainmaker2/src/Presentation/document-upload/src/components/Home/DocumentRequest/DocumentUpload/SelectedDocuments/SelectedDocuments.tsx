@@ -6,6 +6,8 @@ import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
+import { Auth } from "../../../../../services/auth/Auth";
+import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
 
 interface SelectedDocumentsType {
   removeActualFile: Function;
@@ -101,7 +103,7 @@ export const SelectedDocuments = ({
     }
   };
 
-  const doneDoc = () => {
+  const doneDoc = async () => {
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -109,7 +111,11 @@ export const SelectedDocuments = ({
       for (const field of fields) {
         data[field] = currentSelected[field];
       }
-      // DocumentActions.finishDocument(data);
+      let docs : DocumentRequest[] | undefined = await DocumentActions.finishDocument(Auth.getLoanAppliationId(), Auth.getTenantId(), data);
+      if(docs?.length) {
+        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+      }
       setDoneVisible(false);
     }
   };
@@ -150,6 +156,7 @@ export const SelectedDocuments = ({
                   changeName={changeName}
                   deleteDoc={deleteDoc}
                   key={index}
+
                 />
               );
             })}
