@@ -57,6 +57,7 @@ export const DocumentUpload = () => {
           selectedFile.editName = true;
           allSelectedFiles.push(selectedFile);
         }
+
       }
       return allSelectedFiles;
     });

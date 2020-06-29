@@ -127,6 +127,10 @@ export const SelectedDocuments = ({
   
     console.log('selectedFiles', files)
     let lastItem = files[files.length - 1];
+    if( files.filter(f => f.uploadStatus !== 'done').length === 0) {
+      setDoneVisible(true);
+      return
+    }
     return lastItem.file && lastItem.uploadStatus === 'done' ? setDoneVisible(true) : setDoneVisible(false);
   }
 
