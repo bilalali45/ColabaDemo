@@ -169,7 +169,7 @@ const prepareFormData = (currentSelected: DocumentRequest, file: Document) => {
 export const isFileAllowed = (file) => {
   if (!file) return null;
   const allowedExtensions = "pdf, jpg, jpeg, png";
-  const allowedSize = 70000;
+  const allowedSize = 15000;
   let ext = file.type.split('/')[1]
   if (allowedExtensions.includes(ext) && file.size / 1000 < allowedSize) {
     return true;
