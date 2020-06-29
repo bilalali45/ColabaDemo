@@ -4,6 +4,7 @@ import { UserActions } from '../../../../../../store/actions/UserActions'
 import { formatBytes } from '../../../../../../utils/helpers/FileConversion'
 import { DateFormat } from '../../../../../../utils/helpers/DateFormat'
 import { Document } from '../../../../../../entities/Models/Document'
+import moment from 'moment';
 
 type DocumentItemType = {
     file: Document,
@@ -37,9 +38,7 @@ type DocumentItemType = {
     // const modifiedDate = file ? DateFormat(file.file.lastModified.toString(), true) : '';
     // const fileSize = file ? formatBytes(file.file.size, 0) : '';
    
-    // const getExtension = () => {
-    //     return file.file.type.split('/')[1];
-    // }
+    
 
     // const Rename = () => {
 
@@ -49,17 +48,27 @@ const removeSpecialChars = (text: string) => {
 }
 
 const removeDefaultExt = (fileName: string) => {
-    return fileName.split('.')[0]
+    //return fileName.split('.')[0]
+        let splitData = fileName.split('.');
+        let onlyName = "";
+        for (let i = 0; i < splitData.length - 1; i++) {
+            if (i != splitData.length - 2)
+                onlyName += splitData[i] + '.';
+            else
+                onlyName += splitData[i];
+        }
+        return onlyName != "" ? onlyName : fileName ;
 }
 
 let nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
 
 export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: DocumentItemType) => {
-    // export const DocumentItem = () => {
+    
     const [filename, setfilename] = useState<string>(removeSpecialChars(removeDefaultExt(file.clientName)));
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
+    const todayDate = moment().format('MMM DD, YYYY hh:mm A')
 
     const rename = () => {
         seteditable(false)
@@ -75,13 +84,6 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
     const cancelDeleteDOC = () => {
         setdeleted(false)
     }
-    // const renderFileLogo = () => {
-    //     let ext = getExtension();
-    //     if(ext === 'pdf')
-    //         return <i className="far fa-file-pdf"></i>
-    //     else
-    //         return <i className="far fa-file-image"></i>   
-    // }
 
     const getFileSize = () => {
         let size = file.size || file.file?.size;
@@ -104,7 +106,8 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
             {!isdeleted ?
                 <div className={file.editName ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                     <div className="doc-icon">
-                        <i className="far fa-file-image"></i>
+                        <i className={file.docLogo}></i>
+                        
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
@@ -119,7 +122,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                 <p>{file.clientName}</p>}
                         </div>
                         <div className="dl-info">
-                            <span className="dl-date">{file.fileUploadedOn || new Date(Date.now()).toString()}</span>
+                            <span className="dl-date">{file.fileUploadedOn ? DateFormat(file.fileUploadedOn, true) : todayDate}</span>
                             <span className="dl-text-by"> by </span>
                             <span className="dl-text-auther">{UserActions.getUserName()}</span>
                             <span className="dl-pipe"> | </span>
