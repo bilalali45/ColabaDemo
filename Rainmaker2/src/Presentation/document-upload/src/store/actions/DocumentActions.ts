@@ -25,8 +25,8 @@ export class DocumentActions {
         let { id, requestId, docId, docName, docMessage, files } = d;
         let doc = new DocumentRequest(
           id,
-          docId,
           requestId,
+          docId,
           docName,
           docMessage,
           files

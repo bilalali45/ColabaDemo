@@ -1,40 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
+import { Http } from "../../../../../services/http/Http";
 import { Store } from "../../../../../store/store";
+import { Auth } from "../../../../../services/auth/Auth";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 
-interface SelectedDocumentsType {
-  removeActualFile: Function;
+type SelectedDocumentsType = {
+  removeActualFile: Function
   addMore: Function;
   files: Document[];
   url: string;
-}
-
-interface ViewDocumentType {
-  id: string;
-  requestId: string;
-  docId: string;
-  clientName?: string;
-  fileId?: string;
-}
+};
 
 export const SelectedDocuments = ({
   files,
   url,
   addMore,
-  removeActualFile,
+  removeActualFile
 }: SelectedDocumentsType) => {
+  const [showingDoc, setShowingDoc] = useState<boolean>(false);
   const [selectedFiles, setSelectedFiles] = useState<Document[]>(files);
-  const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
+  const [currentDoc, setCurrentDoc] = useState<File | null>(null);
+  const [fileType, setFileType] = useState<string>("");
   const [uploadedPercent, setUploadPercent] = useState<number>();
   const [showProgressBar, setShowProgressBar] = useState<boolean>();
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
+
 
   const { state, dispatch } = useContext(Store);
   const documents: any = state.documents;
@@ -44,42 +40,42 @@ export const SelectedDocuments = ({
 
   useEffect(() => {
     setSelectedFiles(files);
-
     disableSubmitBtn();
-
     hasSubmitted();
-
-    if (files[files.length - 1].uploadStatus === "done") {
+    if (files[files.length - 1].uploadStatus === 'done') {
       setSubBtnPressed(false);
     }
+    console.log(' in selected docs', files);
+
   }, [files, files.length]);
 
-  const viewDocument = (file) => {
-    const { currentDoc }: any = state.documents;
 
-    setCurrentDoc({
-      id: currentDoc.id,
-      requestId: currentDoc.docId, //this should be requestId but this is how its written in store state, not changing it may break somewhere else
-      docId: currentDoc.requestId, //this should be requestId but this is how its written in store state, not changing it may break somewhere else
-      fileId: file.id,
-      clientName: file.clientName,
-    });
+
+  const viewDocument = (file: File) => {
+    setShowingDoc(true);
+    setFileType(file.type);
+    setCurrentDoc(file);
+  };
+
+  const closeDocumentView = () => {
+    setShowingDoc(false);
   };
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
     for (const file of files) {
-      if (file.file) {
-        await DocumentActions.submitDocuments(currentSelected, file, dispatch);
+      if (file.file && file.uploadStatus !== 'done') {
+        await DocumentActions.submitDocuments(currentSelected, file, dispatch)
       }
     }
-  };
+  }
+
 
   const changeName = (file: Document, newName: string) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (f.file && f.file.name === file?.file?.name) {
-        f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
-        f.editName = !f.editName;
+        f.clientName = `${newName}.${file.file.type.split('/')[1]}`;
+        f.editName = !f.editName
         return f;
       }
       return f;
@@ -89,10 +85,10 @@ export const SelectedDocuments = ({
   };
 
   const deleteDoc = (fileName: string) => {
-    removeActualFile(fileName);
+    removeActualFile(fileName)
     let updatedFiles = selectedFiles.filter((f: Document) => {
-      console.log(f?.clientName.split("/")[0], fileName);
-      if (f?.clientName.split(".")[0] !== fileName) {
+      console.log(f?.clientName.split('/')[0], fileName)
+      if (f?.clientName.split('.')[0] !== fileName) {
         return f;
       }
     });
@@ -101,27 +97,31 @@ export const SelectedDocuments = ({
   };
 
   const disableSubmitBtn = () => {
-    let docFile = files.find((df) => df.file && df.uploadStatus === "pending");
-    let docEdit = files.find((de) => de.editName);
-    console.log(docEdit, docFile);
+
+    let docFile = files.find(df => df.file && df.uploadStatus === 'pending');
+    let docEdit = files.find(de => de.editName);
+    console.log(docEdit, docFile)
     if (!docFile || docEdit) {
       setBtnDisabled(true);
     } else {
       setBtnDisabled(false);
     }
-  };
+  }
 
   const doneDoc = () => {
     let fields = ["id", "requestId", "docId"];
     let data = {};
     if (currentSelected) {
+
       for (const field of fields) {
-        data[field] = currentSelected[field];
+        data[field] = currentSelected[field]
       }
       // DocumentActions.finishDocument(data);
       setDoneVisible(false);
     }
-  };
+  }
+
+  console.log(selectedFiles.find(f => f.editName))
 
   const hasSubmitted = () => {
   
@@ -150,17 +150,16 @@ export const SelectedDocuments = ({
           <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => addMore(e)}>
               Add more files
-            </a>
+          </a>
           </div>
         </div>
 
-        {!!currentDoc && (
-          <DocumentView
-            hideViewer={() => setCurrentDoc(null)}
-            {...currentDoc}
-          />
-        )}
-
+        {/* {showingDoc ? <DocumentView
+                    file={currentDoc}
+                    type={fileType}
+                    url={`http://localhost:5000/pdf/${currentDoc?.name}`}
+                    hide={closeDocumentView} />
+                    : ''} */}
         {/* {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>} */}
       </div>
       <div className="doc-upload-footer">
@@ -172,36 +171,30 @@ export const SelectedDocuments = ({
               <div className="dc-text">
                   <p>Are you done with this {docTitle}?</p>
               </div>
+            </div>
 
-              <div className="col-sm-4">
-                <div className="dc-actions">
-                  <button
-                    className="btn btn-small btn-secondary"
-                    onClick={() => setDoneVisible(false)}
-                  >
-                    No
-                  </button>
-                  <button
-                    className="btn btn-small btn-primary"
-                    onClick={doneDoc}
-                  >
-                    Yes
-                  </button>
-                </div>
+            <div className="col-sm-4">
+              <div className="dc-actions">
+                <button
+                  className="btn btn-small btn-secondary"
+                  onClick={() => setDoneVisible(false)}
+                >
+                  No
+                </button>
+                <button
+                  className="btn btn-small btn-primary"
+                  onClick={doneDoc}
+                >
+                  Yes
+                </button>
               </div>
             </div>
           </div>
-        ) : (
-          <div className="doc-submit-wrap">
-            <button
-              disabled={btnDisabled || subBtnPressed}
-              className="btn btn-primary"
-              onClick={uploadFiles}
-            >
+        </div> : <div className="doc-submit-wrap">
+            <button disabled={btnDisabled || subBtnPressed} className="btn btn-primary" onClick={uploadFiles}>
               Submit
-            </button>
-          </div>
-        )}
+          </button>
+          </div>}
       </div>
     </section>
   );
