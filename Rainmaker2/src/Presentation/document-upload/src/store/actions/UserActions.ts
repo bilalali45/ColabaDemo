@@ -43,6 +43,7 @@ export class UserActions {
 
       return true;
     }
+    Auth.removeAuth();
     return false;
   }
 

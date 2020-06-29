@@ -135,9 +135,15 @@ export class DocumentActions {
 
 
 
-  static async finishDocument(data: {}) {
+  static async finishDocument(loanApplicationId: string, tenentId: string, data: {}) {
     try {
-      await http.put(Endpoints.documents.PUT.finishDocument(), data);
+      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), data);
+      if (doneRes) {
+        let remainingPendingDocs = await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
+        if(remainingPendingDocs) {
+          return remainingPendingDocs;
+        }
+      }
     } catch (error) {
 
     }
