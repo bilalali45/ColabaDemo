@@ -11,7 +11,6 @@ export const DocumentsRequired = () => {
     const { state, dispatch } = useContext(Store);
     const { pendingDocs }: any = state.documents;
     const { currentDoc }: any = state.documents;
-    console.log(pendingDocs);
 
     useEffect(() => {
         if (pendingDocs?.length) {
@@ -40,16 +39,17 @@ export const DocumentsRequired = () => {
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: curDoc })
     }
 
+    
     const renderRequiredDocs = () => {
-
         if (pendingDocs) {
             return (
+                
                 <ul>
                     {
                         pendingDocs.map((pd: DocumentRequest) => {
                             return (
                                 <li onClick={() => changeCurrentDoc(pd)}>
-                                    <a className={pd.docId === currentDoc?.docId ? 'active' : ''}><span> {pd.docName}</span></a>
+                                    <a className={currentDoc && pd.requestId === currentDoc.requestId ? 'active' : ''}><span> {pd.docName}</span></a>
                                 </li>
                             )
                         })

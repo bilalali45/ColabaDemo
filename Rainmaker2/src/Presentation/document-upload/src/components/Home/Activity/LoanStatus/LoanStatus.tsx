@@ -17,14 +17,14 @@ export const LoanStatus = () => {
     const [loanInfo, setLoanInfo] = useState<LoanApplication>()
     const { state, dispatch } = useContext(Store);
 
-    const loan : any = state.loan;
+    const loan: any = state.loan;
     let info = loan.loanInfo;
     useEffect(() => {
         if (!info) {
             fetchLoanStatus();
         }
 
-        if(info) {
+        if (info) {
             setLoanInfo(new LoanApplication().fromJson(info));
         }
     }, [info])
@@ -37,9 +37,13 @@ export const LoanStatus = () => {
         }
     }
 
-   if (!loanInfo) {
-        return <Loader containerHeight={"80px"}  />
-   }
+    if (!loanInfo) {
+        return <Loader containerHeight={"80px"} />
+    }
+
+    const formattedAddress = () => {
+        return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
+    }
 
     return (
         <section className="row">
@@ -54,9 +58,11 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
-                                      
-                                        <p className="LoanStatus--text add-txt">{loanInfo.streetAddress || ''} {loanInfo.unitNumber ? ' # '+loanInfo.unitNumber : '' } <br /> {loanInfo.cityName}, {loanInfo.stateName+' '+loanInfo.zipCode} </p>
-                                      
+
+                                        <p className="LoanStatus--text ">
+                                            <span className="add-txt" title={formattedAddress()}> {formattedAddress()} </span>
+                                            {loanInfo.cityName}, {loanInfo.stateName + ' ' + loanInfo.zipCode} </p>
+
                                     </div>
                                 </div>
                             </li>

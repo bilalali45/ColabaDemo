@@ -10,10 +10,10 @@ namespace Identity.Models
         public long Id { get; set; }
 
         [JsonProperty("contactId")]
-        public long ContactId { get; set; }
+        public long? ContactId { get; set; }
 
         [JsonProperty("userId")]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         [JsonProperty("leadSourceId")]
         public object LeadSourceId { get; set; }
@@ -34,13 +34,13 @@ namespace Identity.Models
         public object ModifiedBy { get; set; }
 
         [JsonProperty("modifiedOnUtc")]
-        public DateTimeOffset ModifiedOnUtc { get; set; }
+        public DateTimeOffset? ModifiedOnUtc { get; set; }
 
         [JsonProperty("createdBy")]
         public object CreatedBy { get; set; }
 
         [JsonProperty("createdOnUtc")]
-        public DateTimeOffset CreatedOnUtc { get; set; }
+        public DateTimeOffset? CreatedOnUtc { get; set; }
 
         [JsonProperty("tpId")]
         public object TpId { get; set; }

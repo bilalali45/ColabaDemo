@@ -1,142 +1,204 @@
-import React, { useState, useEffect } from 'react'
-import { DocumentItem } from './DocumentItem/DocumentItem'
-import { DocumentView } from '../../../../../shared/Components/DocumentView/DocumentView'
-import { Http } from '../../../../../services/http/Http';
-import { FileSelected } from '../DocumentUpload';
-
-const httpClient = new Http();
-
+import React, { useState, useEffect, useContext } from "react";
+import { DocumentItem } from "./DocumentItem/DocumentItem";
+import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
+import { Http } from "../../../../../services/http/Http";
+import { Store } from "../../../../../store/store";
+import { Auth } from "../../../../../services/auth/Auth";
+import { Document } from "../../../../../entities/Models/Document";
+import { DocumentActions } from "../../../../../store/actions/DocumentActions";
+import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 
 type SelectedDocumentsType = {
-    files: FileSelected[],
-    url: string
-}
+  removeActualFile: Function
+  addMore: Function;
+  files: Document[];
+  url: string;
+};
 
-export const SelectedDocuments = ({ files, url }: SelectedDocumentsType) => {
+export const SelectedDocuments = ({
+  files,
+  url,
+  addMore,
+  removeActualFile
+}: SelectedDocumentsType) => {
+  const [showingDoc, setShowingDoc] = useState<boolean>(false);
+  const [selectedFiles, setSelectedFiles] = useState<Document[]>(files);
+  const [currentDoc, setCurrentDoc] = useState<File | null>(null);
+  const [fileType, setFileType] = useState<string>("");
+  const [uploadedPercent, setUploadPercent] = useState<number>();
+  const [showProgressBar, setShowProgressBar] = useState<boolean>();
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+  const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
+  const [doneVisible, setDoneVisible] = useState<boolean>(false);
 
-    const [showingDoc, setShowingDoc] = useState<boolean>(false);
-    const [selectedFiles, setSelectedFiles] = useState<FileSelected[]>(files);
-    const [currentDoc, setCurrentDoc] = useState<File | null>(null);
-    const [fileType, setFileType] = useState<string>('');
-    const [uploadedPercent, setUploadPercent] = useState<number>();
-    const [showProgressBar, setShowProgressBar] = useState<boolean>();
-    
-    useEffect(() => {
-        setSelectedFiles(files);
-    }, [files.length])
 
-    console.log('selectedFiles', selectedFiles);
+  const { state, dispatch } = useContext(Store);
+  const documents: any = state.documents;
+  const currentSelected: any = documents.currentDoc;
 
-    const data = new FormData();
-
-    const viewDocument = (file: File) => {
-        setShowingDoc(true);
-        setFileType(file.type);
-        setCurrentDoc(file);
+  useEffect(() => {
+    setSelectedFiles(files);
+    disableSubmitBtn();
+    hasSubmitted();
+    if (files[files.length - 1].uploadStatus === 'done') {
+      setSubBtnPressed(false);
     }
+    console.log(' in selected docs', files);
+
+  }, [files, files.length]);
 
 
 
-    const closeDocumentView = () => {
-        setShowingDoc(false);
+  const viewDocument = (file: File) => {
+    setShowingDoc(true);
+    setFileType(file.type);
+    setCurrentDoc(file);
+  };
+
+  const closeDocumentView = () => {
+    setShowingDoc(false);
+  };
+
+  const uploadFiles = async () => {
+    setSubBtnPressed(true);
+    for (const file of files) {
+      if (file.file) {
+        await DocumentActions.submitDocuments(currentSelected, file, dispatch)
+      }
     }
+  }
 
-    const uploadFile = async () => {
 
-        for (const file of files) {
-            data.append('file', file.file, `${file.name}`);
-        }
-        setShowProgressBar(true);
-        try {
-            let res = await httpClient.fetch({
-                method: httpClient.methods.POST,
-                url,
-                data,
-                onUploadProgress: e => {
-                    let p = (e.loaded / e.total * 100);
-                    setUploadPercent(p);
-                }
-            });
-            setShowProgressBar(false);
-        } catch (error) {
-        }
+  const changeName = (file: Document, newName: string) => {
+    let updatedFiles = selectedFiles.map((f: Document) => {
+      if (f.file && f.file.name === file?.file?.name) {
+        f.clientName = `${newName}.${file.file.type.split('/')[1]}`;
+        f.editName = !f.editName
+        return f;
+      }
+      return f;
+    });
+
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+  };
+
+  const deleteDoc = (fileName: string) => {
+    removeActualFile(fileName)
+    let updatedFiles = selectedFiles.filter((f: Document) => {
+      console.log(f?.clientName.split('/')[0], fileName)
+      if (f?.clientName.split('.')[0] !== fileName) {
+        return f;
+      }
+    });
+
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+  };
+
+  const disableSubmitBtn = () => {
+
+    let docFile = files.find(df => df.file && df.uploadStatus === 'pending');
+    let docEdit = files.find(de => de.editName);
+    console.log(docEdit, docFile)
+    if (!docFile || docEdit) {
+      setBtnDisabled(true);
+    } else {
+      setBtnDisabled(false);
     }
+  }
 
-    const changeName = (file: FileSelected, newName: string) => {
-        setSelectedFiles((prevFiles: FileSelected[]) => {
-            return prevFiles.map((f: FileSelected) => {
-                if (f.file.name === file.file.name) {
-                    f.name = `${newName}`;
-                    return f;
-                }
-                return f;
-            })
-        })
+  const doneDoc = () => {
+    let fields = ["id", "requestId", "docId"];
+    let data = {};
+    if (currentSelected) {
+
+      for (const field of fields) {
+        data[field] = currentSelected[field]
+      }
+      // DocumentActions.finishDocument(data);
+      setDoneVisible(false);
     }
+  }
 
-    return (
-        <section className="file-drop-box-wrap">
-            <div className="file-drop-box havefooter">
+  console.log(selectedFiles.find(f => f.editName))
 
+  const hasSubmitted = () => {
+    // let uploading = selectedFiles.filter(sf => sf.file)
+    // if (uploading.length) {
+    //   // return uploading.filter(uf => uf.uploadProgress < 100).length > 0 ? false : true;
+    // }
+    // debugger
+    console.log('selectedFiles', files)
+    let lastItem = files[files.length - 1];
+    return lastItem.file && lastItem.uploadStatus === 'done' ? setDoneVisible(true) : setDoneVisible(false);
+    // return setDoneVisible(false);
+  }
 
-                <div className="list-selected-doc">
-                    <ul className="doc-list-ul">
-                        {
-                            selectedFiles.map((f, index) => {                                                                                      
-                                return (
-                                    <DocumentItem
-                                        file={f}
-                                        viewDocument={viewDocument}
-                                        changeName={changeName}                                      
-                                        key={index}
-                                    />
-                                )
-                            })
-                        }
-                    </ul>
-                    <div className="addmore-wrap">
-                        <a className="addmoreDoc">Add more files</a>
-                    </div>
-                </div>
-              
-                {showingDoc ? <DocumentView
-                file={currentDoc}
-                type={fileType}
-                url={`http://localhost:5000/pdf/${currentDoc?.name}`}
-                hide={closeDocumentView} />
-                : ''}
-                {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>}
-           
+  return (
+    <section className="file-drop-box-wrap">
+      <div className="file-drop-box havefooter">
+        <div className="list-selected-doc">
+          <ul className="doc-list-ul">
+            {selectedFiles.map((f, index) => {
+              return (
+                <DocumentItem
+                  file={f}
+                  viewDocument={viewDocument}
+                  changeName={changeName}
+                  deleteDoc={deleteDoc}
+                  key={index}
+                />
+              );
+            })}
+          </ul>
+          <div className="addmore-wrap">
+            <a className="addmoreDoc" onClick={(e) => addMore(e)}>
+              Add more files
+          </a>
+          </div>
+        </div>
 
-           </div>
-           <div className="doc-upload-footer">
-               <div className="doc-submit-wrap">
-               <button className="btn btn-primary" onClick={uploadFile}>Submit</button>
-               </div>
+        {/* {showingDoc ? <DocumentView
+                    file={currentDoc}
+                    type={fileType}
+                    url={`http://localhost:5000/pdf/${currentDoc?.name}`}
+                    hide={closeDocumentView} />
+                    : ''} */}
+        {/* {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>} */}
+      </div>
+      <div className="doc-upload-footer">
+        {/* {!hasSubmitted() && !subBtnPressed &&} */}
 
-               <div className="doc-confirm-wrap d-none">
+        {doneVisible ? <div className="doc-confirm-wrap">
+          <div className="row">
+            <div className="col-sm-8">
+              <div className="dc-text">
+                <p>Are you done with this Bank statement?</p>
+              </div>
+            </div>
 
-                   <div className="row">
-                       <div className="col-sm-8">
-                           <div className="dc-text">
-                           <p>Are you done with this Bank statement?</p>
-
-                           </div>
-                           
-                       </div>
-
-                       <div className="col-sm-4">
-                           <div className="dc-actions">
-                       <button className="btn btn-small btn-secondary" onClick={uploadFile}>No</button>
-                       <button className="btn btn-small btn-primary" onClick={uploadFile}>Yes</button>
-                       </div>
-                       </div>
-
-                   </div>
-              
-               </div>
-           
-           </div>
-        </section>
-    )
-}
+            <div className="col-sm-4">
+              <div className="dc-actions">
+                <button
+                  className="btn btn-small btn-secondary"
+                  onClick={() => setDoneVisible(false)}
+                >
+                  No
+                </button>
+                <button
+                  className="btn btn-small btn-primary"
+                  onClick={doneDoc}
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> : <div className="doc-submit-wrap">
+            <button disabled={btnDisabled || subBtnPressed} className="btn btn-primary" onClick={uploadFiles}>
+              Submit
+          </button>
+          </div>}
+      </div>
+    </section>
+  );
+};

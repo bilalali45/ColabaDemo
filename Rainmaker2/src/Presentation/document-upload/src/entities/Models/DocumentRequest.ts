@@ -1,5 +1,4 @@
 import { Document } from "./Document";
-import { FileSelected } from "../../components/Home/DocumentRequest/DocumentUpload/DocumentUpload";
 
 export class DocumentRequest {
 
@@ -8,7 +7,7 @@ export class DocumentRequest {
     public docId: string;
     public docName: string;
     public docMessage: string;
-    public files: FileSelected[]
+    public files: Document[]
 
     constructor(
         id: string,
@@ -16,7 +15,7 @@ export class DocumentRequest {
         docId: string,
         docName: string,
         docMessage: string,
-        files: FileSelected[]
+        files: Document[]
     ) {
         this.id = id;
         this.docId = docId;

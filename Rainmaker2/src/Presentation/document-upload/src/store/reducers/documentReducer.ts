@@ -1,7 +1,5 @@
 import { Actions, ActionMap } from "./reducers";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
-import { FileSelected } from "../../components/Home/DocumentRequest/DocumentUpload/DocumentUpload";
-import { isArray } from "util";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',
@@ -20,7 +18,7 @@ export type DocumentsType = {
 type DocumentsActionPayload = {
     [DocumentsActionType.FetchPendingDocs]: DocumentRequest[],
     [DocumentsActionType.SetCurrentDoc]: DocumentRequest,
-    [DocumentsActionType.AddFileToDoc]: FileSelected[]
+    [DocumentsActionType.AddFileToDoc]: Document[]
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
@@ -34,6 +32,7 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
             };
 
         case DocumentsActionType.SetCurrentDoc:
+            // debugger;
             return {
                 ...state,
                 currentDoc: payload
@@ -41,7 +40,7 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
 
         case DocumentsActionType.AddFileToDoc:
             const pdocs = state['pendingDocs']?.map((pd: any) => {
-                if (pd?.docName === state['currentDoc']?.docName) {
+                if (pd?.requestId === state['currentDoc']?.requestId) {
                     pd.files = payload;
                     return pd;
                 }

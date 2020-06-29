@@ -86,7 +86,7 @@ export const DocumentDropBox = ({ url, setSelectedFiles, setFileInput }: Documen
                         </div>
                         <div className="chosefileWrap">
                             <label htmlFor="inputFile">
-                                Your don't have any files.
+                                You don't have any files.
                         <br />
                         Drop it here or <span>upload</span>
                             </label>

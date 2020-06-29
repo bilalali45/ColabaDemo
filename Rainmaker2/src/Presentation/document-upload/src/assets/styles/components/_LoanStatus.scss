@@ -41,29 +41,52 @@
             }
 
             &.ls-box-add{
-                flex: 0 0 25%;
-                max-width: 35%;
+                flex: 0 0 30%;
+                max-width: 38%;
+                @include media-breakpoint-down(lg) {
+                flex: 0 0 28%;
+                max-width: 34%;
+                }
+                @include media-breakpoint-down(md) {
+                    flex: 0 0 27%;
+                    max-width: 30%;
+                    }
+                .i-wrap{
+                    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+                
+                .c-wrap {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width:100%;
                 .add-txt {
                     white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: block;
                     @include media-breakpoint-down(md) {
-                        white-space:normal;
+                        // white-space:normal;
                       }
+                    }
                 }
             }
+            }
             &.ls-box-p-type{
-                flex: 0 0 25%;
-                max-width: 25%;
+                flex: 0 0 20%;
+                max-width: 20%;
                 @include media-breakpoint-down(lg) {
                     flex: 0 0 22%;
                     max-width: 22%;
                   }
 
                   @include media-breakpoint-down(md) {
-                    flex: 0 0 25%;
-                    max-width: 25%;
+                    flex: 0 0 23%;
+                    max-width: 23%;
                   }
                 .LoanStatus--text {
-                    padding-right: 30px;
+                    padding-right: 0;
                     @include media-breakpoint-down(lg) {
                         padding-right: 0;
                       }

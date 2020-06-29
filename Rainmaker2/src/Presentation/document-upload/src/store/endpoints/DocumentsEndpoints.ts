@@ -8,14 +8,14 @@ export class DocumentsEndpoints {
     }
 
     static POST = {
-
+        submitDocuments: () => `/api/Documentmanagement/file/submit`
     }
 
     static PUT = {
-
+        finishDocument: () => `/api/Documentmanagement/file/done`
     }
 
     static DELETE = {
 
     }
-}
+}   

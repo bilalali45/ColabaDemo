@@ -15,6 +15,7 @@ using RainMaker.Service;
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Customer")]
     [Route("api/RainMaker/[controller]")]
     public class LoanApplicationController : Controller
     {
@@ -28,7 +29,6 @@ namespace Rainmaker.API.Controllers
             this.ftp = ftp;
         }
         [HttpGet("[action]")]
-        [Authorize]
         public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
@@ -36,7 +36,6 @@ namespace Rainmaker.API.Controllers
             return Ok(loanApplication);
         }
         [HttpGet("[action]")]
-        [Authorize]
         public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
         {   
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
