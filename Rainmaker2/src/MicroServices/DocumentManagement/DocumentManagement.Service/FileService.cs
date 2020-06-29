@@ -211,6 +211,11 @@ namespace DocumentManagement.Service
                             ""$unwind"": ""$requests""
                         }",
                         @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
                             ""$unwind"": ""$requests.documents""
                         }",
                         @"{
@@ -247,7 +252,7 @@ namespace DocumentManagement.Service
 
             IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
 
-            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.Now, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
             await viewLogCollection.InsertOneAsync(viewLog);
 
             return fileViewDTO;

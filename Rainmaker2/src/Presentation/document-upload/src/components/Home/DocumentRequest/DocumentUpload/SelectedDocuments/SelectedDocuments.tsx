@@ -28,10 +28,8 @@ export const SelectedDocuments = ({
   addMore,
   removeActualFile,
 }: SelectedDocumentsType) => {
-  const [showingDoc, setShowingDoc] = useState<boolean>(false);
   const [selectedFiles, setSelectedFiles] = useState<Document[]>(files);
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
-  const [fileType, setFileType] = useState<string>("");
   const [uploadedPercent, setUploadPercent] = useState<number>();
   const [showProgressBar, setShowProgressBar] = useState<boolean>();
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -42,6 +40,8 @@ export const SelectedDocuments = ({
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
 
+    let docTitle = currentSelected ? currentSelected.docName : "";
+
   useEffect(() => {
     setSelectedFiles(files);
 
@@ -49,18 +49,12 @@ export const SelectedDocuments = ({
 
     hasSubmitted();
 
-    console.log("state", state);
-
     if (files[files.length - 1].uploadStatus === "done") {
       setSubBtnPressed(false);
     }
   }, [files, files.length]);
 
   const viewDocument = (file) => {
-    console.log("file on click", file);
-    // setShowingDoc(true);
-    // setFileType(file.type);
-
     const { currentDoc }: any = state.documents;
 
     setCurrentDoc({
@@ -130,18 +124,11 @@ export const SelectedDocuments = ({
   };
 
   const hasSubmitted = () => {
-    // let uploading = selectedFiles.filter(sf => sf.file)
-    // if (uploading.length) {
-    //   // return uploading.filter(uf => uf.uploadProgress < 100).length > 0 ? false : true;
-    // }
-    // debugger
-    console.log("selectedFiles", files);
+  
+    console.log('selectedFiles', files)
     let lastItem = files[files.length - 1];
-    return lastItem.file && lastItem.uploadStatus === "done"
-      ? setDoneVisible(true)
-      : setDoneVisible(false);
-    // return setDoneVisible(false);
-  };
+    return lastItem.file && lastItem.uploadStatus === 'done' ? setDoneVisible(true) : setDoneVisible(false);
+  }
 
   return (
     <section className="file-drop-box-wrap">
@@ -179,13 +166,11 @@ export const SelectedDocuments = ({
       <div className="doc-upload-footer">
         {/* {!hasSubmitted() && !subBtnPressed &&} */}
 
-        {doneVisible ? (
-          <div className="doc-confirm-wrap">
-            <div className="row">
-              <div className="col-sm-8">
-                <div className="dc-text">
-                  <p>Are you done with this Bank statement?</p>
-                </div>
+        {doneVisible ? <div className="doc-confirm-wrap">
+          <div className="row">
+            <div className="col-sm-8">
+              <div className="dc-text">
+                  <p>Are you done with this {docTitle}?</p>
               </div>
 
               <div className="col-sm-4">

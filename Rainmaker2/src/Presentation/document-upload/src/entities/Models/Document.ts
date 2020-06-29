@@ -9,6 +9,7 @@ export class Document {
     public uploadProgress: number = 0;
     public uploadStatus?: string = 'pending'
     public documentOrder: any[] = []
+    public docLogo: string = '';
 
     constructor(
         id: string = '',
@@ -16,8 +17,10 @@ export class Document {
         fileUploadedOn: string = '',
         size: number = 0,
         order: number = 0,
+        docLogo: string,
         uploadStatus?: string,
         file?: File
+        
         ) {
         this.id = id;
         this.clientName = clientName;
@@ -26,7 +29,8 @@ export class Document {
         this.order = order;
         this.file = file;
         this.uploadStatus = uploadStatus;
-        this.documentOrder = [{ fileName: this.clientName, order: 0 }]
+        this.documentOrder = [{ fileName: this.clientName, order: 0 }];
+        this.docLogo = docLogo;
     }
 
 }
