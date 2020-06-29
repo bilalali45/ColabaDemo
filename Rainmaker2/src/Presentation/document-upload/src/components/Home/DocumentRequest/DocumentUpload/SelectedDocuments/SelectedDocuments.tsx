@@ -122,15 +122,10 @@ export const SelectedDocuments = ({
   console.log(selectedFiles.find(f => f.editName))
 
   const hasSubmitted = () => {
-    // let uploading = selectedFiles.filter(sf => sf.file)
-    // if (uploading.length) {
-    //   // return uploading.filter(uf => uf.uploadProgress < 100).length > 0 ? false : true;
-    // }
-    // debugger
+  
     console.log('selectedFiles', files)
     let lastItem = files[files.length - 1];
     return lastItem.file && lastItem.uploadStatus === 'done' ? setDoneVisible(true) : setDoneVisible(false);
-    // return setDoneVisible(false);
   }
 
   return (

@@ -8,6 +8,7 @@ import {
 } from "../../../../store/reducers/documentReducer";
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Document } from "../../../../entities/Models/Document";
+import { isFileAllowed } from "../../../../store/actions/DocumentActions";
 
 // export interface FileSelected  {
 //     name: string;
@@ -38,7 +39,7 @@ export const DocumentUpload = () => {
     // f?.clientName.split('.')[0]
     setFiles((preFiles) => {
       return preFiles.filter(f => {
-        if(f?.clientName.split('.')[0] !== fileName) {
+        if (f?.clientName.split('.')[0] !== fileName) {
           return f;
         }
       })
@@ -50,9 +51,11 @@ export const DocumentUpload = () => {
       let allSelectedFiles: Document[] = [];
       allSelectedFiles = [...previousFiles];
       for (let f of files) {
-        const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
-        selectedFile.editName = true;
-        allSelectedFiles.push(selectedFile);
+        if (isFileAllowed(f)) {
+          const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
+          selectedFile.editName = true;
+          allSelectedFiles.push(selectedFile);
+        }
       }
       return allSelectedFiles;
     });
@@ -67,7 +70,7 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = () => {
-    if(fileInput?.value) {
+    if (fileInput?.value) {
       fileInput.value = '';
     }
     fileInput?.click();
@@ -100,18 +103,18 @@ export const DocumentUpload = () => {
             setFileInput={getFileInput}
           />
         ) : (
-          <>
-            <SelectedDocuments
-              addMore={showFileExplorer}
-              removeActualFile={removeActualFile}
-              files={selectedfiles}
-              url={
-                "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
-              }
-            />
-            {/* <button onClick={showFileExplorer}>Add More</button> */}
-          </>
-        )}
+            <>
+              <SelectedDocuments
+                addMore={showFileExplorer}
+                removeActualFile={removeActualFile}
+                files={selectedfiles}
+                url={
+                  "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
+                }
+              />
+              {/* <button onClick={showFileExplorer}>Add More</button> */}
+            </>
+          )}
       </div>
     </section>
   );
