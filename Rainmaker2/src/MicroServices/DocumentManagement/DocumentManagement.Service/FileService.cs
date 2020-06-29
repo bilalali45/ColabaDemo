@@ -211,6 +211,11 @@ namespace DocumentManagement.Service
                             ""$unwind"": ""$requests""
                         }",
                         @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
                             ""$unwind"": ""$requests.documents""
                         }",
                         @"{
