@@ -45,7 +45,6 @@ export const SelectedDocuments = ({
     if (files[files.length - 1].uploadStatus === 'done') {
       setSubBtnPressed(false);
     }
-    console.log(' in selected docs', files);
 
   }, [files, files.length]);
 
@@ -87,7 +86,6 @@ export const SelectedDocuments = ({
   const deleteDoc = (fileName: string) => {
     removeActualFile(fileName)
     let updatedFiles = selectedFiles.filter((f: Document) => {
-      console.log(f?.clientName.split('/')[0], fileName)
       if (f?.clientName.split('.')[0] !== fileName) {
         return f;
       }
@@ -100,7 +98,6 @@ export const SelectedDocuments = ({
 
     let docFile = files.find(df => df.file && df.uploadStatus === 'pending');
     let docEdit = files.find(de => de.editName);
-    console.log(docEdit, docFile)
     if (!docFile || docEdit) {
       setBtnDisabled(true);
     } else {
@@ -121,11 +118,9 @@ export const SelectedDocuments = ({
     }
   }
 
-  console.log(selectedFiles.find(f => f.editName))
 
   const hasSubmitted = () => {
   
-    console.log('selectedFiles', files)
     let lastItem = files[files.length - 1];
     if( files.filter(f => f.uploadStatus !== 'done').length === 0) {
       setDoneVisible(true);

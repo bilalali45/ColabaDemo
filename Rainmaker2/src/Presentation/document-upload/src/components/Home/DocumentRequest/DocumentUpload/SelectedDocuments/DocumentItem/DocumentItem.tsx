@@ -111,7 +111,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
-                            {file.editName ? <input onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
+                            {file.editName ? <input maxLength={255} onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
                                 if (nameTest.test(e.target.value)) {
                                     setfilename(e.target.value);
                                     return

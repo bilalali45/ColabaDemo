@@ -28,7 +28,6 @@ export const DocumentUpload = () => {
   let docMessage = currentDoc ? currentDoc.docMessage : "";
 
   useEffect(() => {
-    console.log('files ----------------------------', files)
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: files });
   }, [files?.length]);
 
@@ -105,6 +104,7 @@ export const DocumentUpload = () => {
             url={"http://localhost:5000/upload"}
             setSelectedFiles={getSelectedFiles}
             setFileInput={getFileInput}
+            updateFiles={updateFiles}
           />
         ) : (
             <>
