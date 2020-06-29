@@ -38,7 +38,7 @@ export class DocumentActions {
             f.fileUploadedOn,
             f.size,
             f.order,
-            getDocLogo(f,'dot'),
+            getDocLogo(f, 'dot'),
             'done'
           );
         });
@@ -97,18 +97,18 @@ export class DocumentActions {
           data: prepareFormData(currentSelected, file),
           onUploadProgress: (e) => {
             let p = Math.floor((e.loaded / e.total) * 100);
-            let files : Document[] = currentSelected.files;
+            let files: Document[] = currentSelected.files;
             let updatedFiles = files.map((f: Document) => {
-              if(f.clientName === file.clientName) {
+              if (f.clientName === file.clientName) {
                 f.uploadProgress = p;
-                if(p === 100) {
+                if (p === 100) {
                   f.uploadStatus = 'done';
                 }
                 return f;
               }
               return f;
             })
-            dispatchProgress({type: DocumentsActionType.AddFileToDoc, payload: updatedFiles})
+            dispatchProgress({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles })
             // dispatchProgress({type: }
             // setUploadPercent(p);
           },
@@ -122,13 +122,13 @@ export class DocumentActions {
     } catch (error) { }
   }
 
-  
+
 
   static async finishDocument(data: {}) {
     try {
       await http.put(Endpoints.documents.PUT.finishDocument(), data);
     } catch (error) {
-      
+
     }
   }
 }
@@ -154,22 +154,34 @@ const prepareFormData = (currentSelected: DocumentRequest, file: Document) => {
   return data;
 }
 
+
+export const isFileAllowed = (file) => {
+  if (!file) return null;
+  const allowedExtensions = "pdf, jpg, jpeg, png";
+  const allowedSize = 10000;
+  let ext = file.type.split('/')[1]
+  if (allowedExtensions.includes(ext) && file.size / 1000 < allowedSize) {
+    return true;
+  }
+  return false;
+
+}
+
 export const getExtension = (file, splitBy) => {
-  if(splitBy === 'dot'){
+  if (splitBy === 'dot') {
     return file.clientName.split('.')[1]
-  }else{
+  } else {
     return file?.type.split('/')[1];
   }
 }
 
 
-export const getDocLogo = (file, splitBy) =>{
+export const getDocLogo = (file, splitBy) => {
   let ext = getExtension(file, splitBy);
-  if(ext === 'pdf'){
+  if (ext === 'pdf') {
     return "far fa-file-pdf"
-  } 
-  else{
-    return "far fa-file-image" 
   }
-     
+  else {
+    return "far fa-file-image"
+  }
 }
