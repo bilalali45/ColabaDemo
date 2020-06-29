@@ -12,9 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
-using Serilog.Core;
 
 namespace Identity.Controllers
 {
@@ -24,9 +21,9 @@ namespace Identity.Controllers
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<TokenController> _logger;
 
         private readonly ITokenService _tokenService;
-        private readonly ILogger<TokenController> _logger;
 
 
         public TokenController(IHttpClientFactory clientFactory,
@@ -123,6 +120,7 @@ namespace Identity.Controllers
         //    //return Ok(tokenResponse.Json);
         //}
 
+
         [Route(template: "[action]")]
         [HttpPost]
         public async Task<IActionResult> Refresh(RefreshTokenRequest request)
@@ -133,10 +131,10 @@ namespace Identity.Controllers
             var refreshToken = request.RefreshToken;
             var principal = await _tokenService.GetPrincipalFromExpiredToken(token: token);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            var userRefreshToken = TokenService.RefreshTokens[key: username];
+            var tokenPair = TokenService.RefreshTokens[key: username].FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
 
             var user = await GetUser(userName: username);
-            if (user == null || userRefreshToken != refreshToken)
+            if (user == null || tokenPair == null)
             {
                 //return BadRequest();
 
@@ -151,17 +149,20 @@ namespace Identity.Controllers
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: newJwtToken);
 
             //user.RefreshToken = newRefreshToken;
-
-            TokenService.RefreshTokens[username] = newRefreshToken;
-
+            TokenService.RefreshTokens[key: username].Remove(item: tokenPair);
+            TokenService.RefreshTokens[key: username].Add(item: new TokenPair
+                                                                {
+                                                                    JwtToken = tokenString,
+                                                                    RefreshToken = newRefreshToken
+                                                                });
 
             //await _usersDb.SaveChangesAsync();
 
             response.Data = new
-            {
-                token = tokenString,
-                refreshToken = newRefreshToken
-            };
+                            {
+                                token = tokenString,
+                                refreshToken = newRefreshToken
+                            };
             response.Status = ApiResponse.ApiResponseStatus.Success;
 
             return Ok(value: response);
@@ -200,16 +201,14 @@ namespace Identity.Controllers
                                                      string password,
                                                      bool employee)
         {
-
-            
-            var httpClient = _clientFactory.CreateClient("clientWithCorrelationId");
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
 
             var content = new
-            {
-                userName,
-                password,
-                employee
-            };
+                          {
+                              userName,
+                              password,
+                              employee
+                          };
 
             var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/validateUser",
                                                           content: new StringContent(content: content.ToJson(),
@@ -224,13 +223,13 @@ namespace Identity.Controllers
         private async Task<UserProfile> GetUser(string userName,
                                                 bool employee = false)
         {
-            var httpClient = _clientFactory.CreateClient("clientWithCorrelationId");
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
 
             var content = new
-            {
-                userName,
-                employee
-            };
+                          {
+                              userName,
+                              employee
+                          };
 
             var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/GetUser",
                                                           content: new StringContent(content: content.ToJson(),
@@ -241,14 +240,14 @@ namespace Identity.Controllers
             return null;
         }
 
+
         [Route(template: "[action]")]
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
             //_logger.LogInformation(request.ToJson());
-            Request.Headers.TryGetValue("CorrelationId",
-                                                out StringValues value);
-
+            Request.Headers.TryGetValue(key: "CorrelationId",
+                                        value: out var value);
 
             var response = new ApiResponse();
 
@@ -279,7 +278,6 @@ namespace Identity.Controllers
             //add claims
 
             var contact = userProfile.Customers.Any() ? userProfile.Customers.First().Contact : userProfile.Employees.First().Contact;
-            
 
             var usersClaims = new List<Claim>
                               {
@@ -289,9 +287,12 @@ namespace Identity.Controllers
                                             value: userProfile.Id.ToString()),
                                   new Claim(type: "UserName",
                                             value: userProfile.UserName.ToLower()),
-                                  new Claim(ClaimTypes.Name, userProfile.UserName.ToLower()),
-                                  new Claim("FirstName", contact.FirstName),
-                                  new Claim("LastName", contact.LastName)
+                                  new Claim(type: ClaimTypes.Name,
+                                            value: userProfile.UserName.ToLower()),
+                                  new Claim(type: "FirstName",
+                                            value: contact.FirstName),
+                                  new Claim(type: "LastName",
+                                            value: contact.LastName)
                               };
 
             if (userProfile.Employees.FirstOrDefault() != null)
@@ -306,38 +307,57 @@ namespace Identity.Controllers
             //userProfile.RefreshToken = refreshToken;
             //await _usersDb.SaveChangesAsync();
 
-            TokenService.RefreshTokens[userProfile.UserName] = refreshToken;
-
             //return new ObjectResult(value: new
             //                               {
             //                                   token = jwtToken,
             //                                   refreshToken
             //                               });
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
+
+            if (!TokenService.RefreshTokens.ContainsKey(userProfile.UserName))
+            {
+                TokenService.RefreshTokens[key: userProfile.UserName] = new List<TokenPair>();
+            }
+
+            TokenService.RefreshTokens[key: userProfile.UserName].Add(item: new TokenPair
+                                                                            {
+                                                                                JwtToken = tokenString,
+                                                                                RefreshToken = refreshToken
+                                                                            });
+
             response.Status = ApiResponse.ApiResponseStatus.Success;
             response.Data = new
-            {
-                Token = tokenString,
-                refreshToken,
-                UserProfileId = userProfile.Id,
-                userProfile.UserName,
-                //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
-                jwtToken.ValidFrom,
-                jwtToken.ValidTo
-            };
+                            {
+                                Token = tokenString,
+                                refreshToken,
+                                UserProfileId = userProfile.Id,
+                                userProfile.UserName,
+                                //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
+                                jwtToken.ValidFrom,
+                                jwtToken.ValidTo
+                            };
 
             return Ok(value: response);
         }
-
 
 
         [Route(template: "[action]")]
         [HttpPost]
         public IActionResult TestException(GenerateTokenRequest request)
         {
-           throw new Exception("test exception");
+            throw new Exception(message: "test exception");
 
             return Ok(value: "ok");
+        }
+
+
+        [Route(template: "[action]")]
+        [HttpGet]
+        public string RefreshTokensState()
+        {
+
+
+            return TokenService.RefreshTokens.ToJson();
         }
     }
 }
