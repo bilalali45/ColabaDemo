@@ -119,7 +119,9 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                 alert('File names shoul not contain special charaters apart from "-"')
                             }} />
                                 :
-                                <p>{file.clientName}</p>}
+                                <p>{file.clientName}</p>
+                               
+                             }    
                         </div>
                         <div className="dl-info">
                             <span className="dl-date">{file.fileUploadedOn ? DateFormat(file.fileUploadedOn, true) : todayDate}</span>
@@ -152,7 +154,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                     {file.uploadStatus === 'done' && <li>
                                         <a title="Uploaded" className="icon-uploaded" tabIndex={-1}><i className="zmdi zmdi-check"></i></a>
                                     </li>}
-                                    {(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <li>{file.uploadProgress}</li> : ''}
+                                    
                                 </ul>
                             </>
                         }
@@ -182,8 +184,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                 </>
             }
-
-
+{(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <div className="progress-upload" style={{width:file.uploadProgress + "%"}}></div> : ''}
 
 
 
