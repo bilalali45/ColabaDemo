@@ -11,7 +11,7 @@ using MongoDB.Bson;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Customer")]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class DashboardController : Controller

@@ -11,7 +11,7 @@ namespace Rainmaker.API.Controllers
 {
     [ApiController]
     [Route("api/RainMaker/[controller]")]
-    [Authorize]
+    [Authorize(Roles = "MCU")]
     public class AdminDashboardController : Controller
     {
         private readonly ISitemapService sitemapService;

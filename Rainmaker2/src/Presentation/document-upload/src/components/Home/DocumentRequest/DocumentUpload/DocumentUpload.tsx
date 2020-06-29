@@ -9,6 +9,7 @@ import {
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Document } from "../../../../entities/Models/Document";
 import { isFileAllowed } from "../../../../store/actions/DocumentActions";
+import { getDocLogo } from "../../../../store/actions/DocumentActions";
 
 // export interface FileSelected  {
 //     name: string;
@@ -52,7 +53,7 @@ export const DocumentUpload = () => {
       allSelectedFiles = [...previousFiles];
       for (let f of files) {
         if (isFileAllowed(f)) {
-          const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
+          const selectedFile = new Document("", f.name, "", 0, 0, getDocLogo(f,'slash'),'pending', f);
           selectedFile.editName = true;
           allSelectedFiles.push(selectedFile);
         }
@@ -60,6 +61,8 @@ export const DocumentUpload = () => {
       return allSelectedFiles;
     });
   };
+
+  
 
   const getSelectedFiles = (files: File[]) => {
     //  (files);
