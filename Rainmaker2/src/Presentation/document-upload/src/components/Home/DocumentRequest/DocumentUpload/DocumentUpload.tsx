@@ -11,6 +11,8 @@ import { Document } from "../../../../entities/Models/Document";
 import { isFileAllowed } from "../../../../store/actions/DocumentActions";
 import { getDocLogo, removeDefaultExt } from "../../../../store/actions/DocumentActions";
 import { removeSpecialChars } from '../DocumentUpload/SelectedDocuments/DocumentItem/DocumentItem';
+import { DocumentsEndpoints } from "../../../../store/endpoints/DocumentsEndpoints";
+
 // export interface FileSelected  {
 //     name: string;
 //     file: File;
@@ -160,7 +162,7 @@ export const DocumentUpload = () => {
                 removeActualFile={removeActualFile}
                 files={selectedfiles}
                 url={
-                  "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
+                  DocumentsEndpoints.POST.submitDocuments()
                 }
               />
               {/* <button onClick={showFileExplorer}>Add More</button> */}
