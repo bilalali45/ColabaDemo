@@ -206,3 +206,15 @@ export const getDocLogo = (file, splitBy) => {
     return "far fa-file-image"
   }
 }
+
+export const removeDefaultExt = (fileName: string) => {
+  let splitData = fileName.split('.');
+  let onlyName = "";
+  for (let i = 0; i < splitData.length - 1; i++) {
+      if (i != splitData.length - 2)
+          onlyName += splitData[i] + '.';
+      else
+          onlyName += splitData[i];
+  }
+  return onlyName != "" ? onlyName : fileName ;
+}

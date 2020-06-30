@@ -4,6 +4,7 @@ import { UserActions } from '../../../../../../store/actions/UserActions'
 import { formatBytes } from '../../../../../../utils/helpers/FileConversion'
 import { DateFormat } from '../../../../../../utils/helpers/DateFormat'
 import { Document } from '../../../../../../entities/Models/Document'
+import { removeDefaultExt } from '../../../../../../store/actions/DocumentActions'
 import moment from 'moment';
 
 type DocumentItemType = {
@@ -12,56 +13,12 @@ type DocumentItemType = {
     changeName: Function,
     deleteDoc: Function
 }
-// export const DocumentItem = ({ file, viewDocument, changeName }: DocumentItemType) => {
-    
-    // const RemoveExtension = () => {
-    //     if(file == undefined || file.name == undefined)
-    //     return '';
-    //     let splitData = file.name.split('.');
-    //     let onlyName = "";
-    //     for (let i = 0; i < splitData.length - 1; i++) {
-    //         if (i != splitData.length - 2)
-    //             onlyName += splitData[i] + '.';
-    //         else
-    //             onlyName += splitData[i];
-    //     }
-    //     return onlyName != "" ? onlyName : file.name ;
-    // }
 
-    // const [filename, setfilename] = useState<string>(file.name);
-    // const [filenameWithoutExt, setOnlyFilename] = useState<string>(RemoveExtension());
-    // const [iseditable, seteditable] = useState<any>(true)
-    // const [isdeleted, setdeleted] = useState<any>(false)
-    // const tokenData: any = UserActions.getUserInfo();
-
-    // const displayName = tokenData?.FirstName+' '+tokenData?.LastName;
-    // const modifiedDate = file ? DateFormat(file.file.lastModified.toString(), true) : '';
-    // const fileSize = file ? formatBytes(file.file.size, 0) : '';
-   
-    
-
-    // const Rename = () => {
-
-
-const removeSpecialChars = (text: string) => {
+export const removeSpecialChars = (text: string) => {
     return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
 }
 
-const removeDefaultExt = (fileName: string) => {
-    //return fileName.split('.')[0]
-        let splitData = fileName.split('.');
-        let onlyName = "";
-        for (let i = 0; i < splitData.length - 1; i++) {
-            if (i != splitData.length - 2)
-                onlyName += splitData[i] + '.';
-            else
-                onlyName += splitData[i];
-        }
-        return onlyName != "" ? onlyName : fileName ;
-}
-
 let nameTest = /^[ A-Za-z0-9-\s]*$/i;
-
 
 export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: DocumentItemType) => {
     
@@ -99,10 +56,6 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
 
     return (
         <li className="doc-li">
-            {/* <div className="editableview"></div>
-            <button onClick={() => viewDocument(file)}>View</button>
-            <input type="text" onChange={(e) => changeName(file, e.target.value)}/>
-            */}
             {!isdeleted ?
                 <div className={file.editName ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                     <div className="doc-icon">

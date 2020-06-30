@@ -139,7 +139,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             filePath={documentParams.filePath}
           />
         ) : (
-          <Loader height={"100vh"} />
+          <Loader height={"94vh"} />
         )}
       </div>
       <div className="document-view--floating-options">

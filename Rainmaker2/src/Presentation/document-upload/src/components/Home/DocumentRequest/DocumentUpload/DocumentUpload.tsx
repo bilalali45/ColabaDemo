@@ -9,8 +9,8 @@ import {
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Document } from "../../../../entities/Models/Document";
 import { isFileAllowed } from "../../../../store/actions/DocumentActions";
-import { getDocLogo } from "../../../../store/actions/DocumentActions";
-
+import { getDocLogo, removeDefaultExt } from "../../../../store/actions/DocumentActions";
+import { removeSpecialChars } from '../DocumentUpload/SelectedDocuments/DocumentItem/DocumentItem';
 // export interface FileSelected  {
 //     name: string;
 //     file: File;
@@ -46,14 +46,41 @@ export const DocumentUpload = () => {
     });
   }
 
+  // const isNameAlreadyExist = (name: string) => {
+  //   let newName = removeSpecialChars(removeDefaultExt(name))
+  //   let isExist: boolean = false;
+  //   for (let item = 0; item < selectedfiles.length; item++) {
+  //     let itemName = removeDefaultExt(selectedfiles[item].clientName);
+  //     if (newName === itemName) {
+  //       isExist = true;
+  //       break;
+  //     }
+  //   }
+  //   return isExist;
+  // }
+
+  const updateName = (name, type) => {
+    let newName = removeDefaultExt(name);
+    var uniq = 'rsft' + (new Date()).getTime();
+    return newName + uniq + '.' + type.split("/")[1];
+  }
+
   const updateFiles = (files: File[]) => {
     setFiles((previousFiles) => {
       let allSelectedFiles: Document[] = [];
       allSelectedFiles = [...previousFiles];
+
       for (let f of files) {
         if (isFileAllowed(f)) {
-          const selectedFile = new Document("", f.name, "", 0, 0, getDocLogo(f,'slash'),'pending', f);
+          var newName = f.name;
+          var isNameExist = selectedfiles.find(i =>  removeDefaultExt(i.clientName) === removeSpecialChars(removeDefaultExt(f.name)))
+          if (isNameExist) {
+            newName = updateName(f.name, f.type)
+          }
+          const selectedFile = new Document("", newName, "", 0, 0, getDocLogo(f, 'slash'), 'pending', f);
           selectedFile.editName = true;
+        //  allSelectedFiles.unshift(selectedFile)
+       //   console.log('allSelectedFiles',allSelectedFiles)
           allSelectedFiles.push(selectedFile);
         }
 
@@ -62,7 +89,27 @@ export const DocumentUpload = () => {
     });
   };
 
-  
+  // const updateFiles = (files: File[]) => {
+  //   setFiles((previousFiles) => {
+  //     let allSelectedFiles: Document[] = [];
+  //     let newFiles : Document[] = [];
+  //     for (let f of files) {
+  //       if (isFileAllowed(f)) {
+  //         let isNameExist = isNameAlreadyExist(f.name);
+  //         var newName = f.name;
+  //         if(isNameExist) {
+  //             newName = updateName(f.name, f.type)
+  //         }
+  //         const selectedFile = new Document("", newName, "", 0, 0, getDocLogo(f,'slash'),'pending', f);
+  //         selectedFile.editName = true;
+  //         newFiles.push(selectedFile);
+  //         allSelectedFiles = [...newFiles, ...previousFiles];
+  //       }
+
+  //     }
+  //     return allSelectedFiles;
+  //   });
+  // };
 
   const getSelectedFiles = (files: File[]) => {
     //  (files);

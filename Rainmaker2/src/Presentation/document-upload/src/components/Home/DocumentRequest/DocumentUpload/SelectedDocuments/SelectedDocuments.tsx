@@ -4,7 +4,7 @@ import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
-import { DocumentActions } from "../../../../../store/actions/DocumentActions";
+import { DocumentActions, removeDefaultExt } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
@@ -40,7 +40,7 @@ export const SelectedDocuments = ({
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
   const docTitle = currentSelected ? currentSelected.docName : "";
-
+  console.log('selectedFiles apex',selectedFiles)
   const viewDocument = (document: any) => {
     const {
       currentDoc: { id, requestId, docId },
@@ -71,8 +71,14 @@ export const SelectedDocuments = ({
   };
 
   const changeName = (file: Document, newName: string) => {
+    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName) === newName)
+    if (alreadyExist) {
+      alert('Files name must be unique')
+      return;
+    }
+
     let updatedFiles = selectedFiles.map((f: Document) => {
-      if (f.file && f.file.name === file?.file?.name) {
+      if (file.file && f.clientName === file.clientName) {
         f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
         f.editName = !f.editName;
         return f;
@@ -80,8 +86,8 @@ export const SelectedDocuments = ({
 
       return f;
     });
-
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+
   };
 
   const deleteDoc = (fileName: string) => {
