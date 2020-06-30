@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FunctionComponent,
+} from "react";
 import FileViewer from "react-file-viewer";
-import { useHistory } from "react-router-dom";
 
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
 import { Auth as Storage } from "../../../services/auth/Auth";
+import { Loader } from "../Assets/loader";
 
 interface DocumentViewProps {
   id: string;
@@ -15,29 +20,34 @@ interface DocumentViewProps {
   hideViewer: (currentDoc) => void;
 }
 
-export const DocumentView = (props: DocumentViewProps) => {
-  const [documentParams, setDocumentParams] = useState<{
-    filePath: string;
-    fileType: string;
-    blob: Blob;
-  }>({
+interface DocumentParamsType {
+  filePath: string;
+  fileType: string;
+  blob: Blob;
+}
+
+export const DocumentView: FunctionComponent<DocumentViewProps> = ({
+  id,
+  requestId,
+  docId,
+  fileId,
+  clientName,
+  hideViewer,
+}) => {
+  const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: "",
     fileType: "",
   });
-  const history = useHistory();
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
-      const { id, requestId, docId, fileId, clientName } = props;
-
       const response = (await DocumentActions.getSubmittedDocumentForView({
         id,
         requestId,
         docId,
         fileId,
         tenantId: Storage.getTenantId(),
-        clientName,
       })) as any;
 
       const fileType: string = response.headers["content-type"];
@@ -57,7 +67,7 @@ export const DocumentView = (props: DocumentViewProps) => {
     } catch (error) {
       alert("Something went wrong. Please try again later.");
     }
-  }, [props]);
+  }, [docId, fileId, id, requestId]);
 
   const downloadFile = () => {
     let tempLink: any = null;
@@ -70,10 +80,6 @@ export const DocumentView = (props: DocumentViewProps) => {
   useEffect(() => {
     getSubmittedDocumentForView();
   }, [getSubmittedDocumentForView]);
-
-  if (!documentParams.filePath) return <></>;
-
-  const { clientName, hideViewer } = props;
 
   return (
     <div className="document-view" id="screen">
@@ -127,10 +133,14 @@ export const DocumentView = (props: DocumentViewProps) => {
         </div>
       </div>
       <div className="document-view--body">
-        <FileViewer
-          fileType={documentParams.fileType}
-          filePath={documentParams.filePath}
-        />
+        {!!documentParams.filePath ? (
+          <FileViewer
+            fileType={documentParams.fileType}
+            filePath={documentParams.filePath}
+          />
+        ) : (
+          <Loader height={"94vh"} />
+        )}
       </div>
       <div className="document-view--floating-options">
         <ul>

@@ -8,6 +8,8 @@ import {
 } from "../../../../store/reducers/documentReducer";
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Document } from "../../../../entities/Models/Document";
+import { isFileAllowed } from "../../../../store/actions/DocumentActions";
+import { getDocLogo } from "../../../../store/actions/DocumentActions";
 
 // export interface FileSelected  {
 //     name: string;
@@ -26,7 +28,6 @@ export const DocumentUpload = () => {
   let docMessage = currentDoc ? currentDoc.docMessage : "";
 
   useEffect(() => {
-    console.log('files ----------------------------', files)
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: files });
   }, [files?.length]);
 
@@ -38,7 +39,7 @@ export const DocumentUpload = () => {
     // f?.clientName.split('.')[0]
     setFiles((preFiles) => {
       return preFiles.filter(f => {
-        if(f?.clientName.split('.')[0] !== fileName) {
+        if (f?.clientName.split('.')[0] !== fileName) {
           return f;
         }
       })
@@ -50,13 +51,18 @@ export const DocumentUpload = () => {
       let allSelectedFiles: Document[] = [];
       allSelectedFiles = [...previousFiles];
       for (let f of files) {
-        const selectedFile = new Document("", f.name, "", 0, 0, 'pending', f);
-        selectedFile.editName = true;
-        allSelectedFiles.push(selectedFile);
+        if (isFileAllowed(f)) {
+          const selectedFile = new Document("", f.name, "", 0, 0, getDocLogo(f,'slash'),'pending', f);
+          selectedFile.editName = true;
+          allSelectedFiles.push(selectedFile);
+        }
+
       }
       return allSelectedFiles;
     });
   };
+
+  
 
   const getSelectedFiles = (files: File[]) => {
     //  (files);
@@ -67,7 +73,7 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = () => {
-    if(fileInput?.value) {
+    if (fileInput?.value) {
       fileInput.value = '';
     }
     fileInput?.click();
@@ -98,20 +104,21 @@ export const DocumentUpload = () => {
             url={"http://localhost:5000/upload"}
             setSelectedFiles={getSelectedFiles}
             setFileInput={getFileInput}
+            updateFiles={updateFiles}
           />
         ) : (
-          <>
-            <SelectedDocuments
-              addMore={showFileExplorer}
-              removeActualFile={removeActualFile}
-              files={selectedfiles}
-              url={
-                "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
-              }
-            />
-            {/* <button onClick={showFileExplorer}>Add More</button> */}
-          </>
-        )}
+            <>
+              <SelectedDocuments
+                addMore={showFileExplorer}
+                removeActualFile={removeActualFile}
+                files={selectedfiles}
+                url={
+                  "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/file/submit"
+                }
+              />
+              {/* <button onClick={showFileExplorer}>Add More</button> */}
+            </>
+          )}
       </div>
     </section>
   );

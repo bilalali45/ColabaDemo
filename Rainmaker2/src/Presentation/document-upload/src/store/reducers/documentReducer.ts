@@ -40,7 +40,7 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
 
         case DocumentsActionType.AddFileToDoc:
             const pdocs = state['pendingDocs']?.map((pd: any) => {
-                if (pd?.requestId === state['currentDoc']?.requestId) {
+                if (pd?.docId === state['currentDoc']?.docId) {
                     pd.files = payload;
                     return pd;
                 }
