@@ -70,8 +70,25 @@ export const SelectedDocuments = ({
     }
   }
 
-
+ const isNameAlreadyExist = (name: string) => {
+   debugger
+   let isExist: boolean = false;
+  for(let item = 0; item < currentSelected.files.length; item++){
+    let itemName = currentSelected.files[item].clientName.split('.')[0];
+       if(name === itemName){
+        isExist = true;
+        break;
+       }    
+  }
+   return isExist;
+ }
   const changeName = (file: Document, newName: string) => {
+    // var alreadyExist = currentSelected.files.find(f => f.clientName.split('.')[0] === newName)
+    // if(alreadyExist){
+    //   alert('Files name must be unique')
+    //   return;
+    // }
+      
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (f.file && f.file.name === file?.file?.name) {
         f.clientName = `${newName}.${file.file.type.split('/')[1]}`;
@@ -80,8 +97,8 @@ export const SelectedDocuments = ({
       }
       return f;
     });
-
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+    
   };
 
   const deleteDoc = (fileName: string) => {
