@@ -99,7 +99,8 @@ export class DocumentActions {
     }
   }
 
-  static async submitDocuments(currentSelected: DocumentRequest, file: Document, dispatchProgress: Function) {
+  static async submitDocuments(currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string,
+    tenentId: string) {
 
     try {
       let res = await http.fetch(
@@ -129,6 +130,9 @@ export class DocumentActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
+      if(res.status === 200) {
+        return await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
+      }
       // setShowProgressBar(false);
     } catch (error) { }
   }
@@ -137,7 +141,7 @@ export class DocumentActions {
 
   static async finishDocument(loanApplicationId: string, tenentId: string, data: {}) {
     try {
-      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), data);
+      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), {...data, tenantId: +tenentId});
       if (doneRes) {
         let remainingPendingDocs = await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
         if(remainingPendingDocs) {

@@ -61,7 +61,11 @@ export const SelectedDocuments = ({
 
     for (const file of files) {
       if (file.file && file.uploadStatus !== "done") {
-        await DocumentActions.submitDocuments(currentSelected, file, dispatch);
+        let docs: DocumentRequest[] | undefined = await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+        if (docs) {
+          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+        }
       }
     }
   };
