@@ -93,7 +93,15 @@ namespace Identity.Services
         }
 
 
-        public static Dictionary<string, string> RefreshTokens= RefreshTokens = new Dictionary<string, string>();
+        public static Dictionary<string, List<TokenPair>> RefreshTokens= RefreshTokens = new Dictionary<string, List<TokenPair>>();
         private readonly IKeyStoreService _keyStoreService;
     }
+
+    public class TokenPair
+    {
+        public string JwtToken { get; set; }
+        public string RefreshToken { get; set; }
+
+    }
+
 }

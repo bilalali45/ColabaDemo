@@ -20,7 +20,19 @@ export class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
-      let d = res.data.map((d: DocumentRequest) => {
+      let d = res.data.map((d: DocumentRequest, i: number) => {
+        // if (i === 0) {
+        //   let { id, requestId, docId, docName, docMessage, files } = d;
+        //   let doc = new DocumentRequest(
+        //     id,
+        //     requestId,
+        //     docId,
+        //     docName,
+        //     docMessage,
+        //     []
+        //   );
+        //   return doc;
+        // }
         // debugger
         let { id, requestId, docId, docName, docMessage, files } = d;
         let doc = new DocumentRequest(
@@ -117,16 +129,21 @@ export class DocumentActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
-      console.log(res)
       // setShowProgressBar(false);
     } catch (error) { }
   }
 
 
 
-  static async finishDocument(data: {}) {
+  static async finishDocument(loanApplicationId: string, tenentId: string, data: {}) {
     try {
-      await http.put(Endpoints.documents.PUT.finishDocument(), data);
+      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), data);
+      if (doneRes) {
+        let remainingPendingDocs = await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
+        if(remainingPendingDocs) {
+          return remainingPendingDocs;
+        }
+      }
     } catch (error) {
 
     }
@@ -158,7 +175,7 @@ const prepareFormData = (currentSelected: DocumentRequest, file: Document) => {
 export const isFileAllowed = (file) => {
   if (!file) return null;
   const allowedExtensions = "pdf, jpg, jpeg, png";
-  const allowedSize = 10000;
+  const allowedSize = 15000;
   let ext = file.type.split('/')[1]
   if (allowedExtensions.includes(ext) && file.size / 1000 < allowedSize) {
     return true;

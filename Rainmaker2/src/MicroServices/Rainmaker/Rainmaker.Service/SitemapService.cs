@@ -17,7 +17,7 @@ namespace Rainmaker.Service
         {
         }
 
-        public async Task<List<Sitemap>> GetMenu(int userProfileId)
+        public async Task<List<Model.Sitemap>> GetMenu(int userProfileId)
         {
             var permission = await Uow.Repository<UserProfile>().Query(x => x.Id == userProfileId && x.IsActive == true)
                             .Include(x => x.UserInRoles).ThenInclude(x => x.UserRole).ThenInclude(x => x.UserPermissionRoleBinders).ThenInclude(x => x.UserPermission)
@@ -26,18 +26,39 @@ namespace Rainmaker.Service
                             .Select(x => x.Id)
                             .ToListAsync();
 
-
             var menu = from sitemap in Uow.Repository<Sitemap>().Query(s => s.IsParent == true || s.IsPermissive == true || (s.UserPermissionId != null && permission.Contains((int)s.UserPermissionId))).OrderBy(c => c.DisplayOrder)
                        select sitemap;
 
-            return await menu.Where(x => x.IsActive == true && x.IsDeleted == false).Distinct().ToListAsync();
+            return (await menu.Where(x => x.IsActive == true && x.IsDeleted == false).Distinct().ToListAsync()).Select(s => new Model.Sitemap
+            {
+                Id = s.Id,
+                Title = s.Title,
+                Url = s.Url,
+                IsParent = s.IsParent,
+                IsExecutable = s.IsExecutable,
+                ParentId = s.ParentId,
+                IconClass = s.IconClass,
+                DisplayOrder = s.DisplayOrder,
+                IsPermissive = s.IsPermissive
+            }).ToList();
         }
 
-        public async Task<List<Sitemap>> GeSystemAdmintMenu()
+        public async Task<List<Model.Sitemap>> GetSystemAdminMenu()
         {
-            return await Uow.Repository<Sitemap>().Query(ss => ss.IsActive != false
+            return (await Uow.Repository<Sitemap>().Query(ss => ss.IsActive != false
                       && ss.IsDeleted != true
-                      && (ss.UserPermission.IsActive != false && ss.UserPermission.IsDeleted != true)).Include(ss => ss.UserPermission).OrderBy(c => c.DisplayOrder).ToListAsync();
+                      && (ss.UserPermission.IsActive != false && ss.UserPermission.IsDeleted != true)).Include(ss => ss.UserPermission).OrderBy(c => c.DisplayOrder).ToListAsync()).Select(s => new Model.Sitemap
+                      {
+                          Id = s.Id,
+                          Title = s.Title,
+                          Url = s.Url,
+                          IsParent = s.IsParent,
+                          IsExecutable = s.IsExecutable,
+                          ParentId = s.ParentId,
+                          IconClass = s.IconClass,
+                          DisplayOrder = s.DisplayOrder,
+                          IsPermissive = s.IsPermissive
+                      }).ToList();
         }
     }
 }

@@ -65,11 +65,9 @@ export const UploadedDocumentsTable = () => {
       <td>
         {data.map((item: Document) => {
           return (
-            <tr>
               <span className="block-element">
                 {DateFormat(item.fileUploadedOn, true)}
               </span>
-            </tr>
           );
         })}
       </td>

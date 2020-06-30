@@ -111,7 +111,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
-                            {file.editName ? <input onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
+                            {file.editName ? <input maxLength={255} onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
                                 if (nameTest.test(e.target.value)) {
                                     setfilename(e.target.value);
                                     return
@@ -119,7 +119,9 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                 alert('File names shoul not contain special charaters apart from "-"')
                             }} />
                                 :
-                                <p>{file.clientName}</p>}
+                                <p>{file.clientName}</p>
+                               
+                             }    
                         </div>
                         <div className="dl-info">
                             <span className="dl-date">{file.fileUploadedOn ? DateFormat(file.fileUploadedOn, true) : todayDate}</span>
@@ -152,7 +154,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                     {file.uploadStatus === 'done' && <li>
                                         <a title="Uploaded" className="icon-uploaded" tabIndex={-1}><i className="zmdi zmdi-check"></i></a>
                                     </li>}
-                                    {(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <li>{file.uploadProgress}</li> : ''}
+                                    
                                 </ul>
                             </>
                         }
@@ -182,8 +184,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                 </>
             }
-
-
+{(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <div className="progress-upload" style={{width:file.uploadProgress + "%"}}></div> : ''}
 
 
 

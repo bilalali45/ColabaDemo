@@ -8,7 +8,7 @@ namespace Rainmaker.Service
 {
     public interface ISitemapService
     {
-        Task<List<Sitemap>> GetMenu(int userProfileId);
-        Task<List<Sitemap>> GeSystemAdmintMenu();
+        Task<List<Model.Sitemap>> GetMenu(int userProfileId);
+        Task<List<Model.Sitemap>> GetSystemAdminMenu();
     }
 }
