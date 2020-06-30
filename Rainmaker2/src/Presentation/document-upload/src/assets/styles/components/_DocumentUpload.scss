@@ -82,6 +82,10 @@
                         padding: 13px  10px;
                         padding-left: 45px;
                         padding-right: 170px;
+                        @include media-breakpoint-down(md) {
+                            padding-right: 120px;
+                        }
+
                     }
                     .doc-icon {
                         position: absolute;
@@ -136,6 +140,9 @@
                             padding: 0 15px;
                             border-right: 1px solid color("border2");
                             min-height: 24px;
+                            @include media-breakpoint-down(md) {
+                                padding: 0 10px;
+                            }
                             &:last-child {
                                 padding-right: 0;
                                 border-right: 0;
