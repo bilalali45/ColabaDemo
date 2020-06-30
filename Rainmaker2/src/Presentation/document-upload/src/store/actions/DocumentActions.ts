@@ -43,6 +43,10 @@ export class DocumentActions {
           docMessage,
           files
         );
+        // doc.files = null;
+        if(doc.files === null || doc.files === undefined) {
+          doc.files = [];
+        }
         doc.files = doc.files.map((f: Document) => {
           return new Document(
             f.id,
@@ -110,7 +114,7 @@ export class DocumentActions {
           data: prepareFormData(currentSelected, file),
           onUploadProgress: (e) => {
             let p = Math.floor((e.loaded / e.total) * 100);
-            let files: Document[] = currentSelected.files;
+            let files: any = currentSelected.files;
             let updatedFiles = files.map((f: Document) => {
               if (f.clientName === file.clientName) {
                 f.uploadProgress = p;
