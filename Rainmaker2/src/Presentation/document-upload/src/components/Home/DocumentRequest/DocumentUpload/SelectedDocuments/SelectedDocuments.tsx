@@ -61,7 +61,11 @@ export const SelectedDocuments = ({
 
     for (const file of files) {
       if (file.file && file.uploadStatus !== "done") {
-        await DocumentActions.submitDocuments(currentSelected, file, dispatch);
+        let docs: DocumentRequest[] | undefined = await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+        if (docs) {
+          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+        }
       }
     }
   };
@@ -111,8 +115,8 @@ export const SelectedDocuments = ({
       for (const field of fields) {
         data[field] = currentSelected[field];
       }
-      let docs : DocumentRequest[] | undefined = await DocumentActions.finishDocument(Auth.getLoanAppliationId(), Auth.getTenantId(), data);
-      if(docs?.length) {
+      let docs: DocumentRequest[] | undefined = await DocumentActions.finishDocument(Auth.getLoanAppliationId(), Auth.getTenantId(), data);
+      if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
       }
@@ -206,16 +210,16 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            <button
-              disabled={btnDisabled || subBtnPressed}
-              className="btn btn-primary"
-              onClick={uploadFiles}
-            >
-              Submit
+            <div className="doc-submit-wrap">
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
             </button>
-          </div>
-        )}
+            </div>
+          )}
       </div>
     </section>
   );
