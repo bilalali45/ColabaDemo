@@ -138,7 +138,7 @@ export const UploadedDocumentsTable = () => {
     if (!docList?.length) {
       fetchUploadedDocuments();
     }
-  }, [docList]);
+  }, [docList?.length]);
 
   return (
     <React.Fragment>
