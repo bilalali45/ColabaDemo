@@ -22,7 +22,14 @@ $color:(
     fileReaderHeaderBg  :       #2D2D2D,
     disabled            :       #E5E5E5,
     disabled-text       :       #C1C0C0,
-    
+);
+
+$dashboard:(
+    headerBg            :       #375471,
+    headerBg-text       :       #ffffff,
+    sidebarBg           :       #2d323d,
+    sidebarBg-text      :       #cdd0d8,
+
 );
 
 $font:(
