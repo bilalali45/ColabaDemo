@@ -10,9 +10,17 @@ function App() {
   return (
     <div className="App">
       <RainMakerHeader/>
+      <section className="d-layout">
       <RainMakerSidebar/>
-      <RainMakerFooter/>
-      {/* <MCUHome/> */}
+
+      <main className="main-layout">
+      <MCUHome/>
+
+<RainMakerFooter/>
+      </main>
+
+      </section>  
+      
     </div>
   );
 }
