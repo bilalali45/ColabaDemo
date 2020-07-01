@@ -13,5 +13,6 @@ namespace Rainmaker.Service
         Task<LoanSummary> GetLoanSummary(int loanApplicationId, int userProfileId);
         Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId);
         Task<LoanOfficer> GetDbaInfo(int businessUnitId);
+        Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId);
     }
 }

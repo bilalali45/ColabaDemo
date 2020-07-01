@@ -28,23 +28,27 @@ export class UserActions {
   }
 
   static async refreshToken() {
-    let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
-      token: Auth.getAuth(),
-      refreshToken: Auth.getRefreshToken()
-    });
+    try {
+      let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
+        token: Auth.getAuth(),
+        refreshToken: Auth.getRefreshToken()
+      });
 
-    if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
-      Auth.saveAuth(res.data.data.token);
-      Auth.saveRefreshToken(res.data.data.refreshToken);
-      let payload = UserActions.decodeJwt(res.data.data.token);
-      Auth.storeTokenPayload(payload);
-      UserActions.addExpiryListener(payload);
-      console.log('token refreshed');
-
-      return true;
+      if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
+        Auth.saveAuth(res.data.data.token);
+        Auth.saveRefreshToken(res.data.data.refreshToken);
+        let payload = UserActions.decodeJwt(res.data.data.token);
+        Auth.storeTokenPayload(payload);
+        UserActions.addExpiryListener(payload);
+        console.log('token refreshed');
+        return true;
+      }
+      Auth.removeAuth();
+      return false;
+    } catch (error) {
+      Auth.removeAuth();
+      return false;
     }
-    Auth.removeAuth();
-    return false;
   }
 
   static async authorize() {
@@ -130,8 +134,8 @@ export class UserActions {
   }
 
   static getUserName() {
-    let info : any = UserActions.getUserInfo();
-    return ` ${info.FirstName} ${info.LastName} `
+    let info: any = UserActions.getUserInfo();
+    return ` ${info?.FirstName} ${info?.LastName} `
   }
 
   static async logout() {

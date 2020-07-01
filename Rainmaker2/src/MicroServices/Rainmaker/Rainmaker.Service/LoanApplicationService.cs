@@ -39,13 +39,34 @@ namespace Rainmaker.Service
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
                     CountryName = x.PropertyInfo.AddressInfo.CountryName,
-                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
-                    Status = x.StatusList.Name
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo
                 }).FirstOrDefaultAsync();
         }
 
 
-
+        public async Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+                .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x => x.State)
+                .Include(x => x.LoanPurpose)
+                .Include(x => x.StatusList)
+                .Include(x=>x.Borrowers).ThenInclude(x=>x.LoanContact)
+                .Select(x => new AdminLoanSummary
+                {
+                    CityName = x.PropertyInfo.AddressInfo.CityName,
+                    CountyName = x.PropertyInfo.AddressInfo.CountyName,
+                    LoanAmount = x.LoanAmount,
+                    LoanPurpose = x.LoanPurpose.Description,
+                    PropertyType = x.PropertyInfo.PropertyType.Description,
+                    StateName = (x.PropertyInfo.AddressInfo.StateId == null || x.PropertyInfo.AddressInfo.StateId == 0) ? x.PropertyInfo.AddressInfo.StateName : x.PropertyInfo.AddressInfo.State.Abbreviation,
+                    StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
+                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
+                    CountryName = x.PropertyInfo.AddressInfo.CountryName,
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
+                    Status = x.StatusList.Name,
+                    Borrowers = x.Borrowers.OrderBy(y=>y.OwnTypeId).Select(y=>(string.IsNullOrEmpty(y.LoanContact.FirstName)? "" : y.LoanContact.FirstName)+" "+(string.IsNullOrEmpty(y.LoanContact.LastName) ? "" : y.LoanContact.LastName)).ToList()
+                }).FirstOrDefaultAsync();
+        }
 
 
         public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId)
