@@ -8,6 +8,6 @@ namespace DocumentManagement.Service
 {
     public interface ITemplateService
     {
-        Task<List<TemplateModel>> GetTemplates(int? tenantId, int userProfileId);
+        Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId);
     }
 }

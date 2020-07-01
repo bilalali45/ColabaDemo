@@ -17,7 +17,7 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<TemplateModel>> GetTemplates(int? tenantId, int userProfileId)
+        public async Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId)
         {
             IMongoCollection<Template> collection = mongoService.db.GetCollection<Template>("Template");
 

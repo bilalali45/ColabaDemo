@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DocumentManagement.API.Controllers
 {
     [ApiController]
-    [Route("api/TemplateController/[controller]")]
+    [Route("api/DocumentManagement/[controller]")]
     public class TemplateController : Controller
     {
         private readonly ITemplateService templateService;
@@ -18,7 +18,7 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpGet("GetTemplates")]
-        public async Task<IActionResult> GetTemplates(int? tenantId)
+        public async Task<IActionResult> GetTemplates(int tenantId)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var docQuery = await templateService.GetTemplates(tenantId, userProfileId);
