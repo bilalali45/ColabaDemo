@@ -77,6 +77,10 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     tempLink.click();
   };
 
+  const print = () => {
+
+  }
+
   useEffect(() => {
     getSubmittedDocumentForView();
   }, [getSubmittedDocumentForView]);
@@ -87,7 +91,9 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         <div className="document-view--header---options">
           <ul>
             <li>
-              <button className="document-view--button">
+              <button className="document-view--button"
+              onClick={print}
+              >
                 <SVGprint />
               </button>
             </li>
