@@ -5,6 +5,10 @@ import { MCUHome } from './Components/MCUHome/MCUHome';
 import { RainMakerHeader } from './Components/RainMakerHeader/RainMakerHeader';
 import { RainMakerSidebar } from './Components/RainMakerSidebar/RainMakerSidebar';
 import { RainMakerFooter } from './Components/RainMakerFooter/RainMakerFooter';
+declare global {
+  interface Window { envConfig: any; }
+}
+window.envConfig = window.envConfig || {};
 
 function App() {
   return (
