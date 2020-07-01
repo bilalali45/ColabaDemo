@@ -9,6 +9,12 @@ import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 import { Document } from "../../entities/Models/Document";
 import { DocumentsActionType } from "../reducers/documentReducer";
 import { DocumentsEndpoints } from "../endpoints/DocumentsEndpoints";
+import { removeSpecialChars } from "../../components/Home/DocumentRequest/DocumentUpload/SelectedDocuments/DocumentItem/DocumentItem";
+import { DateFormat } from "../../utils/helpers/DateFormat";
+import moment from 'moment';
+
+const todayDate = DateFormat(moment().format('MMM DD, YYYY hh:mm:ss A'), true);
+
 
 const http = new Http();
 
@@ -22,19 +28,6 @@ export class DocumentActions {
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
       let d = res.data.map((d: DocumentRequest, i: number) => {
-        // if (i === 0) {
-        //   let { id, requestId, docId, docName, docMessage, files } = d;
-        //   let doc = new DocumentRequest(
-        //     id,
-        //     requestId,
-        //     docId,
-        //     docName,
-        //     docMessage,
-        //     []
-        //   );
-        //   return doc;
-        // }
-        // debugger
         let { id, requestId, docId, docName, docMessage, files } = d;
         let doc = new DocumentRequest(
           id,
@@ -45,7 +38,7 @@ export class DocumentActions {
           files
         );
         // doc.files = null;
-        if(doc.files === null || doc.files === undefined) {
+        if (doc.files === null || doc.files === undefined) {
           doc.files = [];
         }
         doc.files = doc.files.map((f: Document) => {
@@ -59,6 +52,7 @@ export class DocumentActions {
             'done'
           );
         });
+        // doc.files = [];
         return doc;
       });
       return d;
@@ -138,7 +132,7 @@ export class DocumentActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
-      if(res.status === 200) {
+      if (res.status === 200) {
         return await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
       }
       // setShowProgressBar(false);
@@ -149,10 +143,10 @@ export class DocumentActions {
 
   static async finishDocument(loanApplicationId: string, tenentId: string, data: {}) {
     try {
-      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), {...data, tenantId: +tenentId});
+      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), { ...data, tenantId: +tenentId });
       if (doneRes) {
         let remainingPendingDocs = await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
-        if(remainingPendingDocs) {
+        if (remainingPendingDocs) {
           return remainingPendingDocs;
         }
       }
@@ -219,10 +213,50 @@ export const removeDefaultExt = (fileName: string) => {
   let splitData = fileName.split('.');
   let onlyName = "";
   for (let i = 0; i < splitData.length - 1; i++) {
-      if (i != splitData.length - 2)
-          onlyName += splitData[i] + '.';
-      else
-          onlyName += splitData[i];
+    if (i != splitData.length - 2)
+      onlyName += splitData[i] + '.';
+    else
+      onlyName += splitData[i];
   }
-  return onlyName != "" ? onlyName : fileName ;
+  return onlyName != "" ? onlyName : fileName;
 }
+ 
+export const sortByDate = (array: any[]) => {
+  return array.sort((a, b) => {
+    let first = new Date(a.fileUploadedOn);
+    let second = new Date(b.fileUploadedOn);
+    return first > second ? -1 : first < second ? 1 : 0;
+  })
+}
+
+export const removeActualFile = (fileName: string, prevFiles: Document[], dispatch: Function) => {
+  prevFiles.filter(f => {
+    if (f?.clientName.split('.')[0] !== fileName) {
+      return f;
+    }
+  });
+  dispatch({ type: DocumentsActionType.AddFileToDoc, payload: prevFiles });
+}
+
+export const updateName = (name, type) => {
+  let newName = removeDefaultExt(name);
+  var uniq = 'rsft' + (new Date()).getTime();
+  return newName + uniq + '.' + type.split("/")[1];
+}
+
+export const updateFiles = (files: File[], prevFiles: Document[], dispatch: Function) => {
+  let allSelectedFiles: Document[] = [...prevFiles];
+  for (let f of files) {
+    if (isFileAllowed(f)) {
+      var newName = f.name;
+      var isNameExist = prevFiles.find(i => removeDefaultExt(i.clientName) === removeSpecialChars(removeDefaultExt(f.name)))
+      if (isNameExist) {
+        newName = updateName(f.name, f.type)
+      }
+      const selectedFile = new Document("", newName, todayDate, 0, 0, getDocLogo(f, 'slash'), 'pending', f);
+      selectedFile.editName = true;
+      allSelectedFiles.push(selectedFile);
+    }
+  }
+  dispatch({ type: DocumentsActionType.AddFileToDoc, payload: allSelectedFiles });
+};
