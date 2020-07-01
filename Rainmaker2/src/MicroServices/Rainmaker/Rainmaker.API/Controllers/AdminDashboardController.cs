@@ -16,11 +16,13 @@ namespace Rainmaker.API.Controllers
     {
         private readonly ISitemapService sitemapService;
         private readonly IUserProfileService userProfileService;
+        private readonly ILoanApplicationService loanApplicationService;
 
-        public AdminDashboardController(ISitemapService sitemapService,IUserProfileService userProfileService)
+        public AdminDashboardController(ISitemapService sitemapService,IUserProfileService userProfileService, ILoanApplicationService loanApplicationService)
         {
             this.sitemapService = sitemapService;
             this.userProfileService = userProfileService;
+            this.loanApplicationService = loanApplicationService;
         }
 
         [HttpGet("[action]")]
@@ -33,6 +35,12 @@ namespace Rainmaker.API.Controllers
             if(userProfile.IsSystemAdmin)
                 return Ok(sitemapService.GetSystemAdminMenu());
             return Ok(sitemapService.GetMenu(userProfileId));
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
+        {
+            var loanApplication = await loanApplicationService.GetAdminLoanSummary(loanApplicationId);
+            return Ok(loanApplication);
         }
     }
 }
