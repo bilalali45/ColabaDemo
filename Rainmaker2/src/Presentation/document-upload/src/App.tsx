@@ -14,6 +14,10 @@ import { Auth } from './services/auth/Auth';
 import { Http } from './services/http/Http';
 import { LaonActions } from './store/actions/LoanActions';
 const httpClient = new Http();
+declare global {
+  interface Window { envConfig: any; }
+}
+window.envConfig = window.envConfig || {};
 const App = () => {
 
 
@@ -26,6 +30,7 @@ const App = () => {
 
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
+    alert("App Did mount")
     authenticate();
     getFooterText();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
