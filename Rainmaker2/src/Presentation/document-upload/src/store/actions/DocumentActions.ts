@@ -8,6 +8,7 @@ import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 // import { FileSelected } from "../../components/Home/DocumentRequest/DocumentUpload/DocumentUpload";
 import { Document } from "../../entities/Models/Document";
 import { DocumentsActionType } from "../reducers/documentReducer";
+import { DocumentsEndpoints } from "../endpoints/DocumentsEndpoints";
 
 const http = new Http();
 
@@ -43,6 +44,10 @@ export class DocumentActions {
           docMessage,
           files
         );
+        // doc.files = null;
+        if(doc.files === null || doc.files === undefined) {
+          doc.files = [];
+        }
         doc.files = doc.files.map((f: Document) => {
           return new Document(
             f.id,
@@ -81,11 +86,14 @@ export class DocumentActions {
   static async getSubmittedDocumentForView(params: any) {
     try {
       const accessToken = Auth.getAuth();
-
       const url =
-        "https://Alphamaingateway.rainsoftfn.com/api/documentmanagement/file/view";
+        DocumentsEndpoints.GET.viewDocuments(params.id,
+          params.requestId,
+          params.docId,
+          params.fileId,
+          params.tenantId);
 
-      const response = await axios.get(url, {
+      const response = await axios.get(http.createUrl(http.baseUrl, url), {
         params: { ...params },
         responseType: "arraybuffer", //arraybuffer response type important to get the correct response back from server.
         headers: {
@@ -110,7 +118,7 @@ export class DocumentActions {
           data: prepareFormData(currentSelected, file),
           onUploadProgress: (e) => {
             let p = Math.floor((e.loaded / e.total) * 100);
-            let files: Document[] = currentSelected.files;
+            let files: any = currentSelected.files;
             let updatedFiles = files.map((f: Document) => {
               if (f.clientName === file.clientName) {
                 f.uploadProgress = p;

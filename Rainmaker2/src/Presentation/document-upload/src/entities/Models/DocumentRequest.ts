@@ -7,7 +7,7 @@ export class DocumentRequest {
     public docId: string;
     public docName: string;
     public docMessage: string;
-    public files: Document[]
+    public files: Document[] | null;
 
     constructor(
         id: string,
@@ -15,7 +15,7 @@ export class DocumentRequest {
         docId: string,
         docName: string,
         docMessage: string,
-        files: Document[]
+        files: Document[] | null
     ) {
         this.id = id;
         this.docId = docId;
