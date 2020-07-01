@@ -31,7 +31,6 @@ const App = () => {
 
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
-    alert("App Did mount")
     authenticate();
     getFooterText();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
