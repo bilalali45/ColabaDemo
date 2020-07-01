@@ -3,8 +3,10 @@ import React, {
   useEffect,
   useCallback,
   FunctionComponent,
+  Fragment,
 } from "react";
 import FileViewer from "react-file-viewer";
+import printJS from "print-js";
 
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
@@ -69,12 +71,22 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     }
   }, [docId, fileId, id, requestId]);
 
+  const printDocument = useCallback(() => {
+    const { filePath, fileType } = documentParams;
+    // At the moment we are just allowing images or pdf files to be uplaoded
+    const type = ["jpeg", "jpg", "png"].includes(fileType) ? "image" : "pdf";
+
+    printJS({ printable: filePath, type });
+  }, [documentParams.filePath, documentParams.fileType]);
+
   const downloadFile = () => {
-    let tempLink: any = null;
-    tempLink = document.createElement("a");
-    tempLink.href = documentParams.filePath;
-    tempLink.setAttribute("download", clientName);
-    tempLink.click();
+    let temporaryDownloadLink: HTMLAnchorElement;
+
+    temporaryDownloadLink = document.createElement("a");
+    temporaryDownloadLink.href = documentParams.filePath;
+    temporaryDownloadLink.setAttribute("download", clientName!); // added ! because client name can't be null
+
+    temporaryDownloadLink.click();
   };
 
   const print = () => {
@@ -90,21 +102,26 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       <div className="document-view--header">
         <div className="document-view--header---options">
           <ul>
-            <li>
-              <button className="document-view--button"
-              onClick={print}
-              >
-                <SVGprint />
-              </button>
-            </li>
-            <li>
-              <button
-                className="document-view--button"
-                onClick={() => (clientName ? downloadFile() : {})}
-              >
-                <SVGdownload />
-              </button>
-            </li>
+            {!!documentParams.filePath && (
+              <Fragment>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={printDocument}
+                  >
+                    <SVGprint />
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={downloadFile}
+                  >
+                    <SVGdownload />
+                  </button>
+                </li>
+              </Fragment>
+            )}
             <li>
               <button
                 className="document-view--button"
