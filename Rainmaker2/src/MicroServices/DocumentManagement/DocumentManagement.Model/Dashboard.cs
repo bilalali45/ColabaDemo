@@ -21,7 +21,7 @@ namespace DocumentManagement.Model
         public const string Deleted = "Deleted"; // deleted
     }
     public static class FileStatus
-    {
+    {          
         public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
         public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
     }
@@ -66,7 +66,52 @@ namespace DocumentManagement.Model
         public int size { get; set; }
         public int order { get; set; }
     }
+    public class AdminDashboardQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        public string docName { get; set; }
+        
+        public string typeName { get; set; }
 
+        public string status { get; set; }
+        
+        public List<RequestFile> files { get; set; }
+    }
+    public class AdminDashboardDTO
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+        public string docName { get; set; }
+        public string status { get; set; }
+        public List<AdminFileDTO> files { get; set; }
+    }
+
+    public class AdminFileDTO
+    {
+        public string id { get; set; }
+        public string clientName { get; set; }
+        public DateTime fileUploadedOn { get; set; }
+        public string mcuName { get; set; }
+        public string byteProStatus { get; set; }
+
+        public string status { get; set; }
+    }
+    public class AdminDeleteModel
+    {
+        public string id { get; set; }
+        public string docId { get; set; }
+        public string requestId { get; set; }
+        public int tenantId { get; set; }
+       
+    }
 
     public class FileViewDTO
     {
