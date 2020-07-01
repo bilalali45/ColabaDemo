@@ -39,13 +39,34 @@ namespace Rainmaker.Service
                     StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
                     CountryName = x.PropertyInfo.AddressInfo.CountryName,
-                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
-                    Status = x.StatusList.Name
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo
                 }).FirstOrDefaultAsync();
         }
 
 
-
+        public async Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+                .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x => x.State)
+                .Include(x => x.LoanPurpose)
+                .Include(x => x.StatusList)
+                .Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders).ThenInclude(x => x.Customer).ThenInclude(x=>x.Contact)
+                .Select(x => new AdminLoanSummary
+                {
+                    CityName = x.PropertyInfo.AddressInfo.CityName,
+                    CountyName = x.PropertyInfo.AddressInfo.CountyName,
+                    LoanAmount = x.LoanAmount,
+                    LoanPurpose = x.LoanPurpose.Description,
+                    PropertyType = x.PropertyInfo.PropertyType.Description,
+                    StateName = (x.PropertyInfo.AddressInfo.StateId == null || x.PropertyInfo.AddressInfo.StateId == 0) ? x.PropertyInfo.AddressInfo.StateName : x.PropertyInfo.AddressInfo.State.Abbreviation,
+                    StreetAddress = x.PropertyInfo.AddressInfo.StreetAddress,
+                    ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
+                    CountryName = x.PropertyInfo.AddressInfo.CountryName,
+                    UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
+                    Status = x.StatusList.Name,
+                    Borrowers = x.Opportunity.OpportunityLeadBinders.OrderBy(y=>y.OwnTypeId).Select(y=>(string.IsNullOrEmpty(y.Customer.Contact.FirstName)? "" : y.Customer.Contact.FirstName)+" "+(string.IsNullOrEmpty(y.Customer.Contact.LastName) ? "" : y.Customer.Contact.LastName)).ToList()
+                }).FirstOrDefaultAsync();
+        }
 
 
         public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId)
