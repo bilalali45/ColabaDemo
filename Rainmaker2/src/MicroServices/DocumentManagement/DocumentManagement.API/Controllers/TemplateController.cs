@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static DocumentManagement.Model.Template;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -39,14 +40,13 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> InsertTemplate([FromForm] int tenantId, string name)
+        public async Task<IActionResult> InsertTemplate(TemplateModel templateModel)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
            
-            // insert into mongo
-            //var docQuery = await fileService.Submit(formFile.ContentType, id, requestId, docId, formFile.FileName, Path.GetFileName(filePath), (int)formFile.Length, key, algo, tenantId, userProfileId);
+            var docQuery = await templateService.InsertTemplate(templateModel.tenantId, userProfileId, templateModel.name);
                   
-            return Ok();
+            return Ok(docQuery);
         }
     }
 }

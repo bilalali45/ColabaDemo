@@ -131,11 +131,11 @@ namespace DocumentManagement.Service
 
         }
 
-        public async Task<string> InsertTemplate(int tenantId, int userProfileId, string name)
+        public async Task<string> InsertTemplate(int? tenantId, int userProfileId, string name)
         {
             IMongoCollection<Template> collection = mongoService.db.GetCollection<Template>("Template");
 
-            Template template = new Template() { employeeId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
+            Template template = new Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
             await collection.InsertOneAsync(template);
 
             return template.id;
