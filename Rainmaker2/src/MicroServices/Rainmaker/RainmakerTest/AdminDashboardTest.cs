@@ -29,7 +29,7 @@ namespace Rainmaker.Test
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
             Mock<ISitemapService> mockSitemapService = new Mock<ISitemapService>();
 
-            var adminDashboardController = new AdminDashboardController(mockSitemapService.Object, mockUserProfileService.Object);
+            var adminDashboardController = new AdminDashboardController(mockSitemapService.Object, mockUserProfileService.Object,null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -55,7 +55,7 @@ namespace Rainmaker.Test
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
             Mock<ISitemapService> mockSitemapService = new Mock<ISitemapService>();
 
-            var adminDashboardController = new AdminDashboardController(mockSitemapService.Object, mockUserProfileService.Object);
+            var adminDashboardController = new AdminDashboardController(mockSitemapService.Object, mockUserProfileService.Object,null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
