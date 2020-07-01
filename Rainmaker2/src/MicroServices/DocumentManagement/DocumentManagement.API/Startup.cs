@@ -43,6 +43,8 @@ namespace DocumentManagement.API
             services.AddScoped<ISettingService, SettingService>();
             services.AddHttpClient();
             services.AddScoped<IKeyStoreService, KeyStoreService>();
+            services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+            services.AddScoped<ITemplateService, TemplateService>();
 
             #region HttpClientDependencies
 

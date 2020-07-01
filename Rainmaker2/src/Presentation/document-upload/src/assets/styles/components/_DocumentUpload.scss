@@ -150,6 +150,9 @@
                             a {
                                 cursor: pointer;
                                 display: block;
+                                &.icon-uploaded {
+                                    cursor:default;
+                                }
                             }
                             i {
                                 font-size: fontSize("lg");
@@ -188,7 +191,7 @@
                         right: 0;
                         top: 0;
                         height: 100%;
-                        padding: 15px 10px;
+                        padding: 15px 15px;
                         ul {
                             padding-top: 4px;
                             .doc-rename-btn {
@@ -200,7 +203,7 @@
                     }
 
                     .document-confirm-wrap {
-                        padding: 15px 10px;
+                        padding: 15px 15px;
                         .dc-text {
                             height: 100%;
                             display: flex;
@@ -280,4 +283,8 @@
         }
     }
 }
+}
+
+.drag-enter{
+    border: 2px dashed #ebebeb;
 }
