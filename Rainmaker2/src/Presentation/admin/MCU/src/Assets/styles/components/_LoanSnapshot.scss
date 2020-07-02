@@ -1,3 +1,104 @@
 .loansnapshot{
+    background-color: color('widgetBg');
+    display: -webkit-flex;
+    display: flex;
+    flex-wrap: wrap;
+
+    &--wrap{
+        padding: 15px;
+    }
+   
+    ul{
+        margin: 0;
+        padding: 0;
+        @extend .list-style-none;
+
+        >li{
+            display: inline-block;
+        }        
+    }
     
+    &--left-side{
+        flex:0 0 calc(100% - 300px);
+        ul{
+            >li{
+                width: 16%;
+                box-sizing: border-box;
+                padding: 10px;
+                vertical-align: top;
+            }
+        }
+        .text-wrap{
+            text-transform: uppercase;
+            small{
+                font: 300 #{fontSize('sm')+'/1'} fontFamily('base') ;
+            }
+        }
+    }
+
+    &--right-side{
+        flex: 0 0 300px;
+        border-left: 1px solid color('border');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        .loansnapshot--wrap{
+            display: table;
+            width: 100%;
+            padding: 25px 40px;
+            > *{
+                display: table-cell;
+                vertical-align: middle;
+            }
+            .mcu-label-value{
+                line-height: 1;
+            }
+        }
+
+        .form-group {
+            min-height: 10px;
+            margin-bottom: 22px;
+            &:last-child{
+                margin-bottom: 0px;
+            }
+        }
+
+        &---data{
+            
+        }
+        &---icon{
+
+        }
+
+    }
+}
+
+
+@media (max-width:1300px){
+    .loansnapshot--left-side ul > li{
+        width: 25%;
+        padding: 20px;
+    }
+}
+@media (max-width:1150px){
+    .loansnapshot--left-side ul > li{
+        width: 33.33%;
+        padding: 20px;
+    }
+}
+
+@media (max-width:768px){
+    .loansnapshot--left-side ul > li{
+        width: 50%;
+    }
+}
+@media (max-width:680px){
+    .loansnapshot--left-side ul > li{
+        width: 100%;
+    }
+    .loansnapshot--left-side,
+    .loansnapshot--right-side{
+        flex: 0 0 100%;
+    }
 }

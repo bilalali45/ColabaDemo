@@ -6,7 +6,7 @@ import { isFileAllowed } from '../../../store/actions/DocumentActions';
 
 const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
-type DocumentDropBoxPropsType = {getFiles: Function, setFileInput: Function };
+type DocumentDropBoxPropsType = { getFiles: Function, setFileInput: Function };
 
 export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxPropsType) => {
 
@@ -22,34 +22,34 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
 
     return (
         <section className="empty-uploader">
-                <div className="empty-d-box-wrap">
-                    <div className="f-dropbox-wrap">
-                        <div className="icon-doc-upload">
-                            <img src={DocUploadIcon} alt="" />
-                        </div>
-                        <div className="chosefileWrap">
-                            <label htmlFor="inputFile">
-                                You don't have any files.
+            <div className="empty-d-box-wrap">
+                <div className="f-dropbox-wrap">
+                    <div className="icon-doc-upload">
+                        <img src={DocUploadIcon} alt="" />
+                    </div>
+                    <div className="chosefileWrap">
+                        <label htmlFor="inputFile">
+                            You don't have any files.
                         <br />
                         Drop it here or <span>upload</span>
-                            </label>
-                            <input
-                                ref={inputRef}
-                                type="file"
-                                name="file"
-                                id="inputFile"
-                                onChange={(e) => handleChange(e)}
-                                multiple
-                                accept={allowedExtensions} />
-                        </div>
+                        </label>
+                        <input
+                            ref={inputRef}
+                            type="file"
+                            name="file"
+                            id="inputFile"
+                            onChange={(e) => handleChange(e)}
+                            multiple
+                            accept={allowedExtensions} />
                     </div>
                 </div>
+            </div>
         </section>
     )
 }
 
 
-export class FileDropper extends Component<{getDroppedFiles: Function}> {
+export class FileDropper extends Component<{ getDroppedFiles: Function, parent: HTMLDivElement | null }> {
 
     getDroppedFile(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
@@ -61,13 +61,18 @@ export class FileDropper extends Component<{getDroppedFiles: Function}> {
 
     onDragEnter(e: any) {
         e.preventDefault();
-        e.target.classList.add('drag-enter')
+        // e.target.classList.add('drag-enter')
+        if (this.props.parent) {
+            this.props.parent.style.border = '2px dashed #ebebeb'
+        }
         return false;
     }
 
     onDragLeave(e: any) {
         e.preventDefault();
-        e.target.classList.remove('drag-enter')
+        if (this.props.parent) {
+            this.props.parent.style.border = 'none'
+        }
         return false;
     }
 
@@ -81,6 +86,9 @@ export class FileDropper extends Component<{getDroppedFiles: Function}> {
 
     ondragover(e: any) {
         e.preventDefault();
+        if (this.props.parent) {
+            this.props.parent.style.border = '2px dashed #ebebeb'
+        }
         return false;
     }
 
@@ -89,9 +97,9 @@ export class FileDropper extends Component<{getDroppedFiles: Function}> {
     render() {
         return (
             <div id="file-dropper" className="file-drop-box"
-                onDragEnter={this.onDragEnter}
-                onDragLeave={this.onDragLeave}
-                onDragOver={this.ondragover}
+                onDragEnter={(e) => this.onDragEnter(e)}
+                onDragLeave={(e) => this.onDragLeave(e)}
+                onDragOver={(e) => this.ondragover(e)}
                 onDrop={(e) => this.onDrop(e)}>
                 {this.props.children}
             </div>

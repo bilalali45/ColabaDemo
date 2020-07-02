@@ -23,16 +23,17 @@ $color:(
     disabled            :       #E5E5E5,
     disabled-text       :       #C1C0C0,
     bg                  :       #F2F3F5,
-    sidebarboder        :       #383E4C
-);
-
-$dashboard:(
+    sidebarboder        :       #383E4C,
+    // Dashboard
     headerBg            :       #375471,
     headerBg-text       :       #ffffff,
     sidebarBg           :       #2d323d,
     sidebarBg-text      :       #cdd0d8,
-
+    widgetBg            :       #ffffff,
+    labelColor          :       #7E829E,
+    labelValueColor     :       #4E4E4E
 );
+
 
 $font:(
     base                :      'Rubik'#{', sans-serif'},
