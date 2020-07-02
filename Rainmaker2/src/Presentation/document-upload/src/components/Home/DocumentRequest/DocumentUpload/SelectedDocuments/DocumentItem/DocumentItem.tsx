@@ -117,7 +117,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                 : <>
                     <div className="document-confirm-wrap">
                         <div className="row">
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <div className="dc-text">
                                     <p>Are you sure to delete this file?</p>
 
@@ -125,7 +125,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
 
                             </div>
 
-                            <div className="col-sm-4">
+                            <div className="col-sm-5">
                                 <div className="dc-actions">
                                     <button className="btn btn-small btn-secondary" onClick={() => cancelDeleteDOC()} >No</button>
                                     <button className="btn btn-small btn-primary" onClick={() => {

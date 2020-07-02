@@ -192,13 +192,13 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-sm-8">
+              <div className="col-sm-7">
                 <div className="dc-text">
                   <p>Are you done with this {docTitle}?</p>
                 </div>
               </div>
 
-              <div className="col-sm-4">
+              <div className="col-sm-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
@@ -211,7 +211,7 @@ export const SelectedDocuments = ({
                     onClick={doneDoc}
                   >
                     Yes
-                  </button>
+                  </button> 
                 </div>
               </div>
             </div>

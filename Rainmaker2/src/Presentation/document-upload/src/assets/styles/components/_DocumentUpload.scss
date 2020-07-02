@@ -1,5 +1,8 @@
 .Doc-upload {
     margin-right: -5px;
+    .empty-uploader {
+            height: 425px;
+    }
     .Doc-head-wrap {
         padding-top: 28px;
         h2 {
@@ -25,10 +28,11 @@
         }
     }
     .file-drop-box {
-        height: 415px;
+        min-height: 415px;
         width: 100%;
         &.havefooter {
             height: 345px;
+            min-height: 345px;
         }
         .empty-d-box-wrap {
             display: flex;

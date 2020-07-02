@@ -36,10 +36,7 @@ export const DocumentUpload = () => {
 
   return (
     <section className="Doc-upload">
-      <FileDropper
-        getDroppedFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
-      >
-        <div className="Doc-head-wrap">
+              <div className="Doc-head-wrap">
           <h2> {docTitle}</h2>
           <div className="doc-note">
             <p>
@@ -48,7 +45,9 @@ export const DocumentUpload = () => {
             </p>
           </div>
         </div>
-        <div>
+      <FileDropper
+        getDroppedFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
+      >
           {!selectedfiles?.length ? (
             <DocumentDropBox
               getFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
@@ -61,7 +60,7 @@ export const DocumentUpload = () => {
                 />
               </>
             )}
-        </div>
+
       </FileDropper>
     </section>
   );
