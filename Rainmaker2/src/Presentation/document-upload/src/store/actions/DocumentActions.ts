@@ -132,9 +132,6 @@ export class DocumentActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
-      if (res.status === 200) {
-        return await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
-      }
       // setShowProgressBar(false);
     } catch (error) { }
   }

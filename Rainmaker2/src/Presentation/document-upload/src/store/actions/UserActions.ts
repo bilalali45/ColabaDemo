@@ -29,6 +29,7 @@ export class UserActions {
 
   static async refreshToken() {
     try {
+      console.log("In refresh token and token is", Auth.getRefreshToken() )
       let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken()
@@ -97,7 +98,6 @@ export class UserActions {
     let expiry = payload.exp;
     let currentTime = Date.now();
     let expiryTime = expiry * 1000;
-    // debugger
     let time = expiryTime - currentTime;
     if (time < 1) {
       UserActions.refreshToken();
