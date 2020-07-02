@@ -52,7 +52,7 @@ export const DocumentUpload = () => {
         parent={parentRef.current}
         getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
       >
-          {selectedfiles ? (
+          {!selectedfiles?.length ? (
             <DocumentDropBox
               getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
               setFileInput={getFileInput} />
