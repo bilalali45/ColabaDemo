@@ -139,7 +139,7 @@ namespace DocumentManagement.Model
     {
         public string footerText { get; set; }
     }
-    public class TemplateQuery
+    public class TemplateDocumentQuery
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

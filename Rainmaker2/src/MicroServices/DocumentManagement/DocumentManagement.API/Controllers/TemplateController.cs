@@ -37,25 +37,16 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Rename(string id, int tenantid, string newname)
+        public async Task<IActionResult> RenameTemplate(string id, int tenantid, string newname)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.Rename(id, tenantid, newname, userProfileId);
+            var docQuery = await templateService.RenameTemplate(id, tenantid, newname, userProfileId);
             if (docQuery)
                 return Ok();
             else
                 return NotFound();
         }
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(string id, int tenantid, string documentid)
-        {
-           // int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.Delete(id, tenantid, documentid);
-            if (docQuery)
-                return Ok();
-            else
-                return NotFound();
-        }
+         
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteTemplate(string templateId, int tenantId)

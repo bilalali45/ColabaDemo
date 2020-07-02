@@ -21,11 +21,11 @@ namespace DocumentManagement.Service
         }
         public async Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId)
         {
-            IMongoCollection<Template> collection = mongoService.db.GetCollection<Template>("Template");
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             List<TemplateModel> templateModels = new List<TemplateModel>();
 
             //MCU template
-            using var asyncCursorMCU = collection.Aggregate(PipelineDefinition<Template, BsonDocument>.Create(
+            using var asyncCursorMCU = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
            @"{""$match"": {
                   ""tenantId"": " + tenantId + @",
                   ""userId"": " + userProfileId + @",
@@ -53,7 +53,7 @@ namespace DocumentManagement.Service
             }
 
             //Tenant template
-            using var asyncCursorTenant = collection.Aggregate(PipelineDefinition<Template, BsonDocument>.Create(
+            using var asyncCursorTenant = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
            @"{""$match"": {
                   ""tenantId"": " + tenantId + @",
                   ""userId"": null,
@@ -81,7 +81,7 @@ namespace DocumentManagement.Service
             }
 
             //System template
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Template, BsonDocument>.Create(
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
           @"{""$match"": {
                   ""tenantId"": null,
                   ""userId"": null,
@@ -153,7 +153,7 @@ namespace DocumentManagement.Service
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    TemplateQuery query = BsonSerializer.Deserialize<TemplateQuery>(current);
+                    TemplateDocumentQuery query = BsonSerializer.Deserialize<TemplateDocumentQuery>(current);
                     TemplateDTO dto = new TemplateDTO();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
@@ -162,7 +162,7 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<bool> Rename(string templateid, int tenantid, string newname, int userProfileId)
+        public async Task<bool> RenameTemplate(string templateid, int tenantid, string newname, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
@@ -181,13 +181,14 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> Delete(string id, int tenantid, string documentid)
+        public async Task<bool> DeleteDocument(string id, int tenantid, string documentid, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(id) },
-                { "tenantId", tenantid}
+                { "tenantId", tenantid}  ,
+                { "userId", userProfileId}
             }
              , new BsonDocument()
             {
@@ -195,20 +196,21 @@ namespace DocumentManagement.Service
                 { "$pull", new BsonDocument()
                     {
                           { "documentTypes", new BsonDocument(){
-                              
+
                               { "id",BsonObjectId.Create(documentid)
                               }
-                          } 
+                          }
                        }
                     }
                 }
             });
-             return  result.ModifiedCount == 1;
+            return result.ModifiedCount == 1;
+        }
         public async Task<string> InsertTemplate(int tenantId, int userProfileId, string name)
         {
-            IMongoCollection<Template> collection = mongoService.db.GetCollection<Template>("Template");
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
-            Template template = new Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
+            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
             await collection.InsertOneAsync(template);
 
             return template.id;

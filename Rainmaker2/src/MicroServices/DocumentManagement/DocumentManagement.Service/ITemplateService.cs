@@ -11,8 +11,8 @@ namespace DocumentManagement.Service
     {
         Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId);
         Task<List<TemplateDTO>> GetDocument(string id, int tenantId,int userProfileId);
-        Task<bool> Rename(string  id, int tenantid, string newname,int userProfileId);
-        Task<bool> Delete(string id, int tenantid, string documentid);
+        Task<bool> RenameTemplate(string  id, int tenantid, string newname,int userProfileId);
+        Task<bool> DeleteDocument(string id, int tenantid, string documentid, int userProfileId);
         Task<bool> DeleteTemplate(string templateId,int tenantId, int userProfileId);
         Task<string> InsertTemplate(int tenantId,int userProfileId,string name);
     }
