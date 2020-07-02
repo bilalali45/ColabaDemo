@@ -215,5 +215,37 @@ namespace DocumentManagement.Service
 
             return template.id;
         }
+
+        public async Task<bool> DeleteTemplate(string templateId, int tenantId, int userProfileId)
+        {
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(templateId) },
+                { "tenantId", tenantId},
+                { "userId", userProfileId}
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "isActive", false}
+
+                    }
+                }
+            });
+            return result.ModifiedCount == 1;
+
+        }
+
+        public async Task<string> InsertTemplate(int? tenantId, int userProfileId, string name)
+        {
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
+
+            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
+            await collection.InsertOneAsync(template);
+
+            return template.id;
+        }
+
     }
 }
