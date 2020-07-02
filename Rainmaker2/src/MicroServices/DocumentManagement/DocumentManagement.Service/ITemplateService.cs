@@ -14,6 +14,6 @@ namespace DocumentManagement.Service
         Task<bool> Rename(string  id, int tenantid, string newname,int userProfileId);
         Task<bool> Delete(string id, int tenantid, string documentid);
         Task<bool> DeleteTemplate(string templateId,int tenantId, int userProfileId);
-        Task<string> InsertTemplate(int? tenantId,int userProfileId,string name);
+        Task<string> InsertTemplate(int tenantId,int userProfileId,string name);
     }
 }
