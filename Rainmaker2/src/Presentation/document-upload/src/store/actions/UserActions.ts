@@ -98,7 +98,6 @@ export class UserActions {
     let expiry = payload.exp;
     let currentTime = Date.now();
     let expiryTime = expiry * 1000;
-    // debugger
     let time = expiryTime - currentTime;
     if (time < 1) {
       UserActions.refreshToken();
