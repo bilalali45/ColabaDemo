@@ -57,6 +57,7 @@ export const DocumentUpload = () => {
 
                 <SelectedDocuments
                   addMore={showFileExplorer}
+                  setFileInput={getFileInput}
                 />
               </>
             )}

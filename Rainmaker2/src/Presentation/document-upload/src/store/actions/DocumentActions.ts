@@ -210,6 +210,7 @@ export const getDocLogo = (file, splitBy) => {
 }
 
 export const removeDefaultExt = (fileName: string) => {
+
   let splitData = fileName.split('.');
   let onlyName = "";
   for (let i = 0; i < splitData.length - 1; i++) {
@@ -245,6 +246,7 @@ export const updateName = (name, type) => {
 }
 
 export const updateFiles = (files: File[], prevFiles: Document[], dispatch: Function) => {
+  
   let allSelectedFiles: Document[] = [...prevFiles];
   for (let f of files) {
     if (isFileAllowed(f)) {
