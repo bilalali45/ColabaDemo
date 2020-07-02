@@ -167,7 +167,7 @@ namespace DocumentManagement.Service
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(templateid) },
-                { "tenantId", tenantid} 
+                { "tenantId", tenantid}
                 ,{ "userId", userProfileId}
             }, new BsonDocument()
             {
@@ -277,6 +277,43 @@ namespace DocumentManagement.Service
             });
             return result.ModifiedCount == 1;
 
+        }
+
+        public async Task<bool> AddDocument(string templateId, int tenantId, int userProfileId, string typeId, string docName)
+        {
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
+
+            BsonDocument bsonElements = new BsonDocument();
+            bsonElements.Add("id", ObjectId.GenerateNewId());
+            if (!string.IsNullOrEmpty(typeId))
+            {
+                bsonElements.Add("typeId", BsonObjectId.Create(typeId));
+                bsonElements.Add("docName", BsonNull.Value);
+            }
+            else if (!string.IsNullOrEmpty(docName))
+            {
+                bsonElements.Add("typeId", BsonNull.Value);
+                bsonElements.Add("docName", docName);
+            }
+            else {
+                throw new Exception("typeId and docName both can't be null");
+            }
+
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(templateId) },
+                { "tenantId", tenantId},
+                { "userId", userProfileId}
+            }, new BsonDocument()
+            {
+                { "$push", new BsonDocument()
+                    {
+                        { "documentTypes", bsonElements  }
+                    }
+                },
+            }
+            );
+            return result.ModifiedCount == 1;
         }
     }
 }
