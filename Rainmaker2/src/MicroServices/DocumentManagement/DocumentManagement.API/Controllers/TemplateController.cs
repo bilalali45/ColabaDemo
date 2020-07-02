@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,34 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await templateService.GetTemplates(tenantId, userProfileId);
             return Ok(docQuery);
         }
+        [HttpGet("GetDocuments")]
+        public async Task<IActionResult> GetDocument(string id, int tenantId)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await templateService.GetDocument(id, tenantId, userProfileId);
+            return Ok(docQuery);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RenameTemplate(string id, int tenantid, string newname)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await templateService.RenameTemplate(id, tenantid, newname, userProfileId);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+        }
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteDocument(string id, int tenantid, string documentid)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await templateService.DeleteDocument(id, tenantid, documentid,   userProfileId);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+        }
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteTemplate(string templateId, int tenantId)
@@ -40,11 +69,11 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> InsertTemplate(TemplateModel templateModel)
+        public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
            
-            var docQuery = await templateService.InsertTemplate(templateModel.tenantId, userProfileId, templateModel.name);
+            var docQuery = await templateService.InsertTemplate(insertTemplateModel.tenantId, userProfileId, insertTemplateModel.name);
                   
             return Ok(docQuery);
         }

@@ -139,4 +139,30 @@ namespace DocumentManagement.Model
     {
         public string footerText { get; set; }
     }
+    public class TemplateDocumentQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        public string docName { get; set; }
+
+        public string typeName { get; set; }
+
+        public string status { get; set; }
+
+        public List<RequestFile> files { get; set; }
     }
+    public class TemplateDTO
+    {
+        
+        public string docId { get; set; }
+        public string docName { get; set; }
+ 
+     
+    }
+}
