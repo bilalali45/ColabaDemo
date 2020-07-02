@@ -29,13 +29,13 @@ namespace DocumentManagement.Tests
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
             List<AdminDashboardDTO> list = new List<AdminDashboardDTO>() { { new AdminDashboardDTO() { docId = "1" } } };
 
-            mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
 
             var admindashboardController = new AdminDashboardController(mock.Object);
 
 
             //Act
-            IActionResult result = await admindashboardController.GetDocuments(1, 1);
+            IActionResult result = await admindashboardController.GetDocuments(1, 1 , true);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -188,7 +188,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object);
             //Act
-            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1);
+            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1 ,true);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(6, dto.Count);

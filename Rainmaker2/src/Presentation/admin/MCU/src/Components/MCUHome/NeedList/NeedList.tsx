@@ -7,7 +7,6 @@ import { NeedListView } from './NeedListView/NeedListView'
 export const NeedList = () => {
     return (
         <div>
-            <h1>NeedList</h1>
             <LoanSnapshot/>
             <Navigation/>
             <NeedListHeader/>

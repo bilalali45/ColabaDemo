@@ -10,7 +10,7 @@ import { DocumentsType } from './reducers/documentReducer';
 const httpClient = new Http();
 
 // httpClient.setBaseUrl('http://localhost:5000');
-let baseUrl : any = process.env.REACT_APP_API_BASE_URL;
+let baseUrl : any = window.envConfig.API_BASE_URL; 
 httpClient.setBaseUrl(baseUrl);
 
 export type InitialStateType = {

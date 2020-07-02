@@ -1,5 +1,6 @@
 import { Actions, ActionMap } from "./reducers";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
+import { sortByDate } from "../actions/DocumentActions";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',
@@ -41,7 +42,9 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
         case DocumentsActionType.AddFileToDoc:
             const pdocs = state['pendingDocs']?.map((pd: any) => {
                 if (pd?.docId === state['currentDoc']?.docId) {
-                    pd.files = payload;
+                    if (Array.isArray(payload)) {
+                        pd.files = sortByDate(payload);
+                    }
                     return pd;
                 }
                 return pd;
