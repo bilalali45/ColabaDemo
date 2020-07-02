@@ -41,9 +41,8 @@ export const UploadedDocumentsTable = () => {
           const { clientName, id: fileId } = item;
 
           return (
-            <Link
-              className="block-element"
-              to="#"
+            <span className="block-element">
+            <Link to="#"
               onClick={() => {
                 setCurrentDoc({
                   ...params,
@@ -54,6 +53,7 @@ export const UploadedDocumentsTable = () => {
             >
               {clientName}
             </Link>
+            </span>
           );
         })}
       </td>
@@ -81,7 +81,7 @@ export const UploadedDocumentsTable = () => {
       const { files, docId, requestId, id } = item;
 
       return (
-        <tbody>
+        
           <tr>
             <td>
               <em className="far fa-file"></em> {item.docName}
@@ -89,7 +89,7 @@ export const UploadedDocumentsTable = () => {
             {renderFileNameColumn(files, { id, requestId, docId })}
             {renderAddedColumn(files)}
           </tr>
-        </tbody>
+          
       );
     });
   };
@@ -109,7 +109,9 @@ export const UploadedDocumentsTable = () => {
             <th>Added</th>
           </tr>
         </thead>
+        <tbody>
         {renderUploadedDocs(data)}
+        </tbody>
       </table>
     );
   };
@@ -121,8 +123,8 @@ export const UploadedDocumentsTable = () => {
           <div className="no-document--img">
             <img src={DocUploadIcon} alt="Your don't have any files!" />
           </div>
-          <label htmlFor="inputno-document--text">
-            Your don't have any files.
+          <label className="inputno-document--text">
+          Your don't have any uploaded files.
             <br />
             Go to{" "}
             <a tabIndex={-1} onClick={loanHomeHandler}>
