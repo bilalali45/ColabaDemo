@@ -13,7 +13,12 @@ import HeaderContent from './utils/header_footer_utils/HeaderContent';
 import { Auth } from './services/auth/Auth';
 import { Http } from './services/http/Http';
 import { LaonActions } from './store/actions/LoanActions';
+declare global {
+  interface Window { envConfig: any; }
+}
+window.envConfig = window.envConfig || {};
 const httpClient = new Http();
+
 const App = () => {
 
 

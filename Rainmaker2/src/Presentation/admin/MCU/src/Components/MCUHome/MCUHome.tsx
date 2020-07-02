@@ -3,9 +3,10 @@ import { NeedList } from './NeedList/NeedList'
 
 export const MCUHome = () => {
     return (
-        <div>
+        <section className="home-layout">
+
             <h1>MCUHome</h1>
             <NeedList/>
-        </div>
+        </section>
     )
 }
