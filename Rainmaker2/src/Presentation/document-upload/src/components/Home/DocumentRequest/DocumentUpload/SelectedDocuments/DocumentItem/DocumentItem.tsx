@@ -1,11 +1,8 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { DocEditIcon, DocviewIcon } from '../../../../../../shared/Components/Assets/SVG'
 import { UserActions } from '../../../../../../store/actions/UserActions'
-import { formatBytes } from '../../../../../../utils/helpers/FileConversion'
-import { DateFormat } from '../../../../../../utils/helpers/DateFormat'
 import { Document } from '../../../../../../entities/Models/Document'
-import { removeDefaultExt } from '../../../../../../store/actions/DocumentActions'
-import moment from 'moment';
+import { FileUpload } from '../../../../../../utils/helpers/FileUpload'
 
 type DocumentItemType = {
     file: Document,
@@ -17,24 +14,18 @@ type DocumentItemType = {
     fileAlreadyExists: Function
 }
 
-export const removeSpecialChars = (text: string) => {
-
-    return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
-}
-
-let nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
 export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAlreadyExists, retry }: DocumentItemType) => {
     const [filename, setfilename] = useState<string>('');
     const [iseditable, seteditable] = useState<any>(true)
     const [nameExists, setNameExists] = useState<any>(false)
     const [isdeleted, setdeleted] = useState<any>(false)
-    const todayDate = moment().format('MMM DD, YYYY hh:mm A')
+    
     const txtInput: any = useRef(null);
 
 
     useEffect(() => {
-        setfilename(removeSpecialChars(removeDefaultExt(file.clientName)))
+        setfilename(FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.clientName)))
     }, [file])
 
 
@@ -94,7 +85,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                                         if (fileAlreadyExists(file, e.target.value)) {
                                             setNameExists(true);
                                         }
-                                        if (nameTest.test(e.target.value)) {
+                                        if (FileUpload.nameTest.test(e.target.value)) {
                                             setfilename(e.target.value);
                                             return
                                         }

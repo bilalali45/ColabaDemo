@@ -3,7 +3,7 @@ import { DocumentDropBox, FileDropper } from "../../../../shared/Components/Docu
 import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
 import { Store } from "../../../../store/store";
 import { Document } from "../../../../entities/Models/Document";
-import { isFileAllowed, updateFiles } from "../../../../store/actions/DocumentActions";
+import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
 
 
 export const DocumentUpload = () => {
@@ -31,7 +31,7 @@ export const DocumentUpload = () => {
         let files = e?.target?.files;
         if (files) {
           let updatedFiles = selectedfiles.filter(sf => sf !== fileToRemnove);
-          updateFiles(files, updatedFiles, dispatch);
+          DocumentUploadActions.updateFiles(files, updatedFiles, dispatch);
         }
       };
     }
@@ -50,11 +50,11 @@ export const DocumentUpload = () => {
         </div>
       <FileDropper
         parent={parentRef.current}
-        getDroppedFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
+        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
       >
           {!selectedfiles?.length ? (
             <DocumentDropBox
-              getFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
+              getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
               setFileInput={getFileInput} />
           ) : (
               <>

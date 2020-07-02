@@ -5,6 +5,7 @@ import { isArray } from 'util';
 import { Auth } from '../../../../services/auth/Auth';
 import { DocumentsActionType } from '../../../../store/reducers/documentReducer';
 import { DocumentRequest } from '../../../../entities/Models/DocumentRequest';
+import { Redirect } from 'react-router-dom';
 
 export const DocumentsRequired = () => {
 
@@ -58,6 +59,10 @@ export const DocumentsRequired = () => {
             )
         }
         return '';
+    }
+
+    if(pendingDocs?.length === 0) {
+        return <Redirect to="activity"/>
     }
 
 

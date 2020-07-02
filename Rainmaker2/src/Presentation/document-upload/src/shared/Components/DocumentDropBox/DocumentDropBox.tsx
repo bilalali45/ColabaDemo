@@ -1,7 +1,5 @@
 import React, { useState, ChangeEvent, useRef, useEffect, DragEvent, Component } from 'react';
-import { Http } from '../../../services/http/Http';
 import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
-import { isFileAllowed } from '../../../store/actions/DocumentActions';
 
 
 const allowedExtensions = ".pdf, .jpg, .jpeg, .png";

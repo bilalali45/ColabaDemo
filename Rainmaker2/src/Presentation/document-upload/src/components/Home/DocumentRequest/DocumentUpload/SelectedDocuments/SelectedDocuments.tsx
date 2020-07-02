@@ -4,11 +4,13 @@ import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
-import { DocumentActions, removeDefaultExt, removeActualFile } from "../../../../../store/actions/DocumentActions";
+import { DocumentActions } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
 import { debug } from "console";
+import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
+import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -77,7 +79,7 @@ export const SelectedDocuments = ({
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+        await DocumentUploadActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
       }
     }
     setSubBtnPressed(false);
@@ -96,7 +98,7 @@ export const SelectedDocuments = ({
   };
 
   const fileAlreadyExists = (file, newName) => {
-    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
+    var alreadyExist = selectedFiles.find(f => f !== file && FileUpload.removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
     if (alreadyExist) {
       return true;
     }
@@ -121,7 +123,7 @@ export const SelectedDocuments = ({
   };
 
   const deleteDoc = (fileName: string) => {
-    removeActualFile(fileName, selectedFiles, dispatch);
+    DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch);
     let updatedFiles = selectedFiles.filter((f: Document) => {
       if (f?.clientName !== fileName) {
         return f;
