@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
@@ -11,6 +11,7 @@ import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest"
 
 interface SelectedDocumentsType {
   addMore: Function;
+  setFileInput: Function;
 }
 
 interface ViewDocumentType {
@@ -21,8 +22,10 @@ interface ViewDocumentType {
   fileId?: string;
 }
 
+const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+
 export const SelectedDocuments = ({
-  addMore
+  addMore, setFileInput
 }: SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -36,6 +39,12 @@ export const SelectedDocuments = ({
   const docTitle = currentSelected ? currentSelected.docName : "";
   console.log('selectedFiles apex', selectedFiles)
   
+  const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        setFileInput(inputRef.current)
+    }, []);
+
   
   useEffect(() => {
     hasSubmitted();
@@ -75,7 +84,8 @@ export const SelectedDocuments = ({
   };
 
   const changeName = (file: Document, newName: string) => {
-    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName) === newName)
+    debugger
+    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
     if (alreadyExist) {
       alert('Files name must be unique')
       return;
@@ -90,6 +100,7 @@ export const SelectedDocuments = ({
 
       return f;
     });
+    debugger
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
 
   };
@@ -166,19 +177,25 @@ export const SelectedDocuments = ({
                   viewDocument={viewDocument}
                   changeName={changeName}
                   deleteDoc={deleteDoc}
-                  key={index}
+                  indexKey={index}
 
                 />
               );
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className="addmoreDoc" onClick={(e) => {
+            <a  className="addmoreDoc" onClick={(e) => {
+             
               console.log(e);
               addMore(e)
             }}>
               Add more files
+              <input type='file' 
+              accept={allowedExtensions}
+              id="inputFile"
+              ref={inputRef} multiple style={{display: "none"}} />
             </a>
+
           </div>
         </div>
         {!!currentDoc && (
