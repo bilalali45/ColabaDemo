@@ -16,5 +16,6 @@ namespace DocumentManagement.Service
         Task<bool> DeleteTemplate(string templateId,int tenantId, int userProfileId);
         Task<string> InsertTemplate(int tenantId,int userProfileId,string name);
         Task<List<CategoryDocumentTypeModel>> GetCategoryDocument();
+        Task<bool> AddDocument(string templateId,int tenantId, int userProfileId, string typeId, string docName);
     }
 }

@@ -83,5 +83,18 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await templateService.GetCategoryDocument();
             return Ok(docQuery);
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddDocument(AddDocumentModel addDocumentModel)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+
+            var docQuery = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, userProfileId, addDocumentModel.typeId,addDocumentModel.docName);
+
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+        }
     }
 }
