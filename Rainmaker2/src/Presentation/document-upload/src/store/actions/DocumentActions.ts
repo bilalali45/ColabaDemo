@@ -132,9 +132,6 @@ export class DocumentActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
-      if (res.status === 200) {
-        return await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
-      }
       // setShowProgressBar(false);
     } catch (error) { }
   }
@@ -210,6 +207,7 @@ export const getDocLogo = (file, splitBy) => {
 }
 
 export const removeDefaultExt = (fileName: string) => {
+
   let splitData = fileName.split('.');
   let onlyName = "";
   for (let i = 0; i < splitData.length - 1; i++) {
@@ -245,6 +243,7 @@ export const updateName = (name, type) => {
 }
 
 export const updateFiles = (files: File[], prevFiles: Document[], dispatch: Function) => {
+  
   let allSelectedFiles: Document[] = [...prevFiles];
   for (let f of files) {
     if (isFileAllowed(f)) {
