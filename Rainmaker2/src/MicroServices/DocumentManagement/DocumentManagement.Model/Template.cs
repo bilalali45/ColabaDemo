@@ -17,9 +17,13 @@ namespace DocumentManagement.Model
         public class TemplateModel
         {
             public string id { get; set; }
-            public int? tenantId { get; set; }
-            public int? userId { get; set; }
             public string type { get; set; }
+            public string name { get; set; }
+        }
+
+        public class InsertTemplateModel
+        {
+            public int tenantId { get; set; }
             public string name { get; set; }
         }
 

@@ -40,11 +40,11 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> InsertTemplate(TemplateModel templateModel)
+        public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
            
-            var docQuery = await templateService.InsertTemplate(templateModel.tenantId, userProfileId, templateModel.name);
+            var docQuery = await templateService.InsertTemplate(insertTemplateModel.tenantId, userProfileId, insertTemplateModel.name);
                   
             return Ok(docQuery);
         }

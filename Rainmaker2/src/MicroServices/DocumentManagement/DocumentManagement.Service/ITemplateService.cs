@@ -10,6 +10,6 @@ namespace DocumentManagement.Service
     {
         Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId);
         Task<bool> DeleteTemplate(string templateId,int tenantId, int userProfileId);
-        Task<string> InsertTemplate(int? tenantId,int userProfileId,string name);
+        Task<string> InsertTemplate(int tenantId,int userProfileId,string name);
     }
 }

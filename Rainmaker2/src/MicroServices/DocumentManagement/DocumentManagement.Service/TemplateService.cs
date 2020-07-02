@@ -131,7 +131,7 @@ namespace DocumentManagement.Service
 
         }
 
-        public async Task<string> InsertTemplate(int? tenantId, int userProfileId, string name)
+        public async Task<string> InsertTemplate(int tenantId, int userProfileId, string name)
         {
             IMongoCollection<Template> collection = mongoService.db.GetCollection<Template>("Template");
 
