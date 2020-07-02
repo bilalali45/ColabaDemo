@@ -35,5 +35,24 @@ namespace DocumentManagement.Model
             public string type { get; set; }
             public string name { get; set; }
         }
+
+        public class CategoryDocumentTypeModel
+        {
+            public string catId { get; set; }
+            public string catName { get; set; }
+            public string docTypeId { get; set; }
+            public string docType { get; set; }
+        }
+        public class CategoryDocumentQuery
+        {
+            [BsonId]
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string id { get; set; }
+            public string name { get; set; }
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string docTypeId { get; set; }
+            public string docType { get; set; }
+        }
+
     }
 }

@@ -110,16 +110,14 @@ namespace DocumentManagement.Service
 
             return templateModels;
         }
-        public async Task<List<TemplateDTO>> GetDocument(string Id, int tenantId, int userProfileId)
+        public async Task<List<TemplateDTO>> GetDocument(string Id)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
                 @"{""$match"": {
 
-                  ""_id"": " + new ObjectId(Id).ToJson() + @",
-                  ""tenantId"": " + tenantId + @",
-                  ""userId"": " + userProfileId + @"
+                  ""_id"": " + new ObjectId(Id).ToJson() + @"
                             }
                         }",
                         @"{
@@ -215,6 +213,49 @@ namespace DocumentManagement.Service
             await collection.InsertOneAsync(template);
 
             return template.id;
+        }
+
+        public async Task<List<CategoryDocumentTypeModel>> GetCategoryDocument()
+        {
+            IMongoCollection<Category> collection = mongoService.db.GetCollection<Category>("Category");
+            List<CategoryDocumentTypeModel> CategoryDocumentTypeModel = new List<CategoryDocumentTypeModel>();
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Category, BsonDocument>.Create(
+            @"{""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""_id"",
+                                ""foreignField"": ""categoryId"",
+                                ""as"": ""categoryDocument""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$categoryDocument"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1,
+                                ""name"": 1,
+                                ""docTypeId"": ""$categoryDocument._id"",
+                                ""docType"": ""$categoryDocument.name""
+                            }
+                        }"
+           ));
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
+                    CategoryDocumentTypeModel dto = new CategoryDocumentTypeModel();
+                    dto.catId = query.id;
+                    dto.catName = query.name;
+                    dto.docTypeId = query.docTypeId;
+                    dto.docType = query.docType;
+                    CategoryDocumentTypeModel.Add(dto);
+                }
+            }
+
+            return CategoryDocumentTypeModel;
         }
 
         public async Task<bool> DeleteTemplate(string templateId, int tenantId, int userProfileId)

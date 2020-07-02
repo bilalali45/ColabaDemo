@@ -29,10 +29,9 @@ namespace DocumentManagement.API.Controllers
             return Ok(docQuery);
         }
         [HttpGet("GetDocuments")]
-        public async Task<IActionResult> GetDocument(string id, int tenantId)
+        public async Task<IActionResult> GetDocument(string id)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.GetDocument(id, tenantId, userProfileId);
+            var docQuery = await templateService.GetDocument(id);
             return Ok(docQuery);
         }
 
@@ -75,6 +74,13 @@ namespace DocumentManagement.API.Controllers
            
             var docQuery = await templateService.InsertTemplate(insertTemplateModel.tenantId, userProfileId, insertTemplateModel.name);
                   
+            return Ok(docQuery);
+        }
+
+        [HttpGet("GetCategoryDocument")]
+        public async Task<IActionResult> GetCategoryDocument()
+        {
+            var docQuery = await templateService.GetCategoryDocument();
             return Ok(docQuery);
         }
     }
