@@ -5,14 +5,22 @@ import { MCUHome } from './Components/MCUHome/MCUHome';
 import { RainMakerHeader } from './Components/RainMakerHeader/RainMakerHeader';
 import { RainMakerSidebar } from './Components/RainMakerSidebar/RainMakerSidebar';
 import { RainMakerFooter } from './Components/RainMakerFooter/RainMakerFooter';
+declare global {
+  interface Window { envConfig: any; }
+}
+window.envConfig = window.envConfig || {};
 
 function App() {
   return (
     <div className="App">
       <RainMakerHeader/>
-      <RainMakerSidebar/>
-      <RainMakerFooter/>
-      <MCUHome/>
+      <section className="d-layout">
+        <RainMakerSidebar/>
+        <main className="main-layout">
+          <MCUHome/>
+          <RainMakerFooter/>
+        </main>
+      </section>        
     </div>
   );
 }

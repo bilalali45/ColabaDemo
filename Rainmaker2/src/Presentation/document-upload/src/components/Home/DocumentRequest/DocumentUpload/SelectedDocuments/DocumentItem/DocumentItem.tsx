@@ -21,7 +21,7 @@ export const removeSpecialChars = (text: string) => {
 let nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
 export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: DocumentItemType) => {
-    
+
     const [filename, setfilename] = useState<string>(removeSpecialChars(removeDefaultExt(file.clientName)));
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
@@ -60,7 +60,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                 <div className={file.editName ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                     <div className="doc-icon">
                         <i className={file.docLogo}></i>
-                        
+
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
@@ -73,11 +73,11 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                             }} />
                                 :
                                 <p>{file.clientName}</p>
-                               
-                             }    
+
+                            }
                         </div>
                         <div className="dl-info">
-                            <span className="dl-date">{file.fileUploadedOn ? DateFormat(file.fileUploadedOn, true) : todayDate}</span>
+                            <span className="dl-date">{file.fileUploadedOn}</span>
                             <span className="dl-text-by"> by </span>
                             <span className="dl-text-auther">{UserActions.getUserName()}</span>
                             <span className="dl-pipe"> | </span>
@@ -107,7 +107,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                                     {file.uploadStatus === 'done' && <li>
                                         <a title="Uploaded" className="icon-uploaded" tabIndex={-1}><i className="zmdi zmdi-check"></i></a>
                                     </li>}
-                                    
+
                                 </ul>
                             </>
                         }
@@ -117,7 +117,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                 : <>
                     <div className="document-confirm-wrap">
                         <div className="row">
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <div className="dc-text">
                                     <p>Are you sure to delete this file?</p>
 
@@ -125,10 +125,13 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
 
                             </div>
 
-                            <div className="col-sm-4">
+                            <div className="col-sm-5">
                                 <div className="dc-actions">
                                     <button className="btn btn-small btn-secondary" onClick={() => cancelDeleteDOC()} >No</button>
-                                    <button className="btn btn-small btn-primary" onClick={() => deleteDoc(filename)}>Yes</button>
+                                    <button className="btn btn-small btn-primary" onClick={() => {
+                                        deleteDoc(file.clientName);
+                                        cancelDeleteDOC();
+                                    }}>Yes</button>
                                 </div>
                             </div>
 
@@ -137,7 +140,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                 </>
             }
-{(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <div className="progress-upload" style={{width:file.uploadProgress + "%"}}></div> : ''}
+            {(file.file && file.uploadProgress < 100 && file.uploadProgress > 0) ? <div className="progress-upload" style={{ width: file.uploadProgress + "%" }}></div> : ''}
 
 
 

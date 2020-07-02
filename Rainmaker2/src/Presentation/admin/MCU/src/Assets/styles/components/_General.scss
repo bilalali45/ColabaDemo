@@ -1,5 +1,5 @@
 body {
-    background: color("colorgray");
+    background: color("bg");
 }
 
 h1,
@@ -20,150 +20,38 @@ ul {
     padding: 0;
     margin-bottom: 0;
 }
-
-[class^="heading-"],
-[class*="heading-"] {
-    font-family: fontFamily("heading");
-    font-weight: 400;
+.d-layout {
+    background-color: dColor('sidebarBg');
 }
-
-.heading-h1 {
-    font-size: fontSize("xlg");
-}
-
-.heading-h2 {
-    font-size: fontSize("lg");
-    margin-bottom: 5px;
-    margin-top: 10px;
-}
-
-.heading-h3 {
-    font-size: fontSize("md");
-}
-
-.heading-h4 {
-    font-size: fontSize("nr");
-}
-
-.heading-h5 {
-    font-size: fontSize("sm");
-}
-
-.heading-h6 {
-    font-size: fontSize("xs");
-}
-
-body,
-p {
-    font-family: fontFamily("base");
-    color: color('base');
-}
-
-a {
-    outline: none;
-}
-
-a[href],
-a[tabindex] {
-    cursor: pointer;
-}
-
-.clearfix {
-
-    &::before,
-    &::after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-}
-
-.flex {
-    display: -webkit-flex;
-    display: flex;
-    margin-left: -30px;
-    margin-right: -30px;
-
-    &--side {
-        flex: 1 0 0;
-        padding: 0 30px;
-
-        &+.flex--side {
-            border-left: 1px solid color("border");
-        }
-    }
-}
-
-.sub-header--link .sub-header--link:hover .btn-folk {
-    transform: rotate(75deg);
-}
-
-.btn-folk {
-    width: 35px;
-    height: 35px;
-    padding: 8px;
-    box-sizing: border-box;
-    border-radius: 8px;
-    background-color: #4484f4;
-    color: #fff;
-    display: inline-block;
-    transform: rotate(45deg);
-    transition: 0.3s all ease-in-out;
-
-    &--icon {
-        position: relative;
-        width: 18px;
-        height: 18px;
-        display: block;
-        transform: rotate(-45deg);
-        transition: 0.3s all ease-in-out;
-
-        &::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: #fff;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        &::after {
-            content: "";
-            display: block;
-            width: 2px;
-            height: 100%;
-            background-color: #fff;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    }
-}
-
-#root>.app {
+.sidebar  {
+    background-color: dColor('sidebarBg');
+    color: dColor('sidebarBg-text');
+    width: 48px;
+    min-height: calc(100vh - 60px);
     overflow: hidden;
-    position: relative;
-    min-height: 100vh;
+    position: absolute;
+    z-index: 25;
+    left: 0;
+    .menu-text {display: none;}
+    .sidebar-menu {
+        padding-top: 15px;
+        .sidebar-main-ul {
+            & > li {
+&:first-child { border-top: 1px solid color('sidebarboder'); }
+border-bottom: 1px solid color('sidebarboder');
+& > a {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: block;
+    border-top: 1px solid color('colorBlack');
+    
+    
 }
-
-.page-content {
-    min-height: calc(100vh - 300px);
-    padding-bottom: 40px;
-}
-
-.gutter15 {
-    margin-left: -7.5px;
-    margin-right: -7.5px;
-
-    >[class*="col-"] {
-        padding-right: 7.5px;
-        padding-left: 7.5px;
+&:last-child { & > a{ border-bottom: 1px solid color('colorBlack');} }
+            }
+        a {
+        color: dColor('sidebarBg-text');
     }
-
-    font-size: fontSize("nr") - 4px;
 }
 
 .box-wrap {
@@ -188,9 +76,8 @@ a[tabindex] {
             margin: 0px;
         }
     }
-
-    &--body {
-        padding: 10px 0 0;
+    .nav-collapse {
+        text-align: center;
     }
 }
 
@@ -285,6 +172,10 @@ a[tabindex] {
             position: absolute;
             top: -3px;
             left: 15px;
+    
+    .has-sub {
+        .sub {
+            display: none;
         }
     }
 }
@@ -325,12 +216,14 @@ a[tabindex] {
         background-color: darken(color('colorWhite'), 20%);
     }
 }
+.main-layout {
+    margin-left: 48px;
+    height: 100%;
+    background: color('bg');
+}
 
-.nbox-wrap {
-    background: color("colorWhite");
-    padding-top: 10px;
-    padding-bottom: 10px;
-    box-shadow: $shadow;
+.home-layout {
+    min-height: calc(100vh - 120px);
 }
 
 .block-element {
@@ -386,4 +279,8 @@ a[tabindex] {
         display: block;
         font: 700 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
     }
+}
+
+.main-footer {
+    text-align: center;
 }

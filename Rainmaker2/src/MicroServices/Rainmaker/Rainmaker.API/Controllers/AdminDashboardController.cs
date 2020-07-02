@@ -32,9 +32,18 @@ namespace Rainmaker.API.Controllers
 
             var userProfile = await userProfileService.GetUserProfile(userProfileId);
 
-            if(userProfile.IsSystemAdmin)
-                return Ok(sitemapService.GetSystemAdminMenu());
-            return Ok(sitemapService.GetMenu(userProfileId));
+            if (userProfile.IsSystemAdmin)
+            {
+                var result = await sitemapService.GetSystemAdminMenu();
+                return Ok(result);
+            }
+            else
+            {
+                var result = await sitemapService.GetSystemAdminMenu();
+                return Ok(result);
+            }
+               
+           
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLoanInfo(int loanApplicationId)

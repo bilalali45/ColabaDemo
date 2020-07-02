@@ -4,16 +4,13 @@ import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
-import { DocumentActions, removeDefaultExt } from "../../../../../store/actions/DocumentActions";
+import { DocumentActions, removeDefaultExt, removeActualFile } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
 
 interface SelectedDocumentsType {
-  removeActualFile: Function;
   addMore: Function;
-  files: Document[];
-  url: string;
 }
 
 interface ViewDocumentType {
@@ -25,12 +22,8 @@ interface ViewDocumentType {
 }
 
 export const SelectedDocuments = ({
-  files,
-  url,
-  addMore,
-  removeActualFile,
+  addMore
 }: SelectedDocumentsType) => {
-  const [selectedFiles, setSelectedFiles] = useState<Document[]>(files);
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
@@ -39,8 +32,17 @@ export const SelectedDocuments = ({
 
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
+  const selectedFiles = currentSelected.files || [];
   const docTitle = currentSelected ? currentSelected.docName : "";
-  console.log('selectedFiles apex',selectedFiles)
+  console.log('selectedFiles apex', selectedFiles)
+  
+  
+  useEffect(() => {
+    hasSubmitted();
+    disableSubmitBtn();
+  }, [selectedFiles, selectedFiles.length, currentSelected]);
+ 
+  
   const viewDocument = (document: any) => {
     const {
       currentDoc: { id, requestId, docId },
@@ -59,15 +61,17 @@ export const SelectedDocuments = ({
   const uploadFiles = async () => {
     setSubBtnPressed(true);
 
-    for (const file of files) {
+    for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done") {
         let docs: DocumentRequest[] | undefined = await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
         if (docs) {
           dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+          let doc = docs.find(d => d.docId === currentSelected?.docId);
+          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
         }
       }
     }
+    setSubBtnPressed(false);
   };
 
   const changeName = (file: Document, newName: string) => {
@@ -91,10 +95,9 @@ export const SelectedDocuments = ({
   };
 
   const deleteDoc = (fileName: string) => {
-    removeActualFile(fileName);
-
+    removeActualFile(fileName, selectedFiles, dispatch);
     let updatedFiles = selectedFiles.filter((f: Document) => {
-      if (f?.clientName.split(".")[0] !== fileName) {
+      if (f?.clientName !== fileName) {
         return f;
       }
     });
@@ -103,10 +106,16 @@ export const SelectedDocuments = ({
   };
 
   const disableSubmitBtn = () => {
-    let docFile = files.find((df) => df.file && df.uploadStatus === "pending");
-    let docEdit = files.find((de) => de.editName);
+    // let docFile = selectedFiles.find((df) => df.file && df.uploadStatus === "pending");
+    let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
+    let docEdits = selectedFiles.filter((de) => de.editName);
 
-    if (!docFile || docEdit) {
+    if(docFiles.length > 0) {
+      setBtnDisabled(false);
+    }else {
+      setBtnDisabled(true);
+    }
+    if (docEdits.length > 0) {
       setBtnDisabled(true);
     } else {
       setBtnDisabled(false);
@@ -131,27 +140,19 @@ export const SelectedDocuments = ({
   };
 
   const hasSubmitted = () => {
-    let lastItem = files[files.length - 1];
-    if (files.filter((f) => f.uploadStatus !== "done").length === 0) {
+    let lastItem = selectedFiles[selectedFiles.length - 1];
+    if (selectedFiles.filter((f) => f.uploadStatus !== "done").length === 0) {
       setDoneVisible(true);
       return;
+    }else {
+      setDoneVisible(false);
     }
-    return lastItem.file && lastItem.uploadStatus === "done"
-      ? setDoneVisible(true)
-      : setDoneVisible(false);
+    // return lastItem.file && lastItem.uploadStatus === "done"
+    //   ? setDoneVisible(true)
+    //   : setDoneVisible(false);
   };
 
-  useEffect(() => {
-    setSelectedFiles(files);
-
-    disableSubmitBtn();
-
-    hasSubmitted();
-
-    if (files[files.length - 1].uploadStatus === "done") {
-      setSubBtnPressed(false);
-    }
-  }, [files, files.length]);
+ 
 
   return (
     <section className="file-drop-box-wrap">
@@ -172,7 +173,10 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className="addmoreDoc" onClick={(e) => addMore(e)}>
+            <a className="addmoreDoc" onClick={(e) => {
+              console.log(e);
+              addMore(e)
+            }}>
               Add more files
             </a>
           </div>
@@ -183,21 +187,18 @@ export const SelectedDocuments = ({
             {...currentDoc}
           />
         )}
-        {/* {showProgressBar && <progress value={uploadedPercent} max="100">{uploadedPercent + '%'}</progress>} */}
       </div>
       <div className="doc-upload-footer">
-        {/* {!hasSubmitted() && !subBtnPressed &&} */}
-
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-sm-8">
+              <div className="col-sm-7">
                 <div className="dc-text">
                   <p>Are you done with this {docTitle}?</p>
                 </div>
               </div>
 
-              <div className="col-sm-4">
+              <div className="col-sm-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
@@ -210,7 +211,7 @@ export const SelectedDocuments = ({
                     onClick={doneDoc}
                   >
                     Yes
-                  </button>
+                  </button> 
                 </div>
               </div>
             </div>
