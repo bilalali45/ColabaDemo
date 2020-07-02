@@ -77,7 +77,6 @@ export class Http {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            // debugger
             if (
                 error?.response?.data?.name === 'TokenExpiredError'
                 || error?.response?.data?.name === 'JsonWebTokenError'
@@ -86,14 +85,12 @@ export class Http {
             ) {
 
             }
-            // debugger
             // if (error?.response?.status === 401) {
             //     try {
             //         let res = await axios.post(this.createUrl(this.baseUrl, Endpoints.user.POST.refreshToken()), {
             //             token: Auth.getAuth(),
             //             refreshToken: Auth.getRefreshToken()
             //         });
-            //         // debugger
             //         let { token, refreshToken } = res.data.data;
 
             //         if (token && refreshToken) {

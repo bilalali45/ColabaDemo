@@ -33,7 +33,6 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
             };
 
         case DocumentsActionType.SetCurrentDoc:
-            // debugger;
             return {
                 ...state,
                 currentDoc: payload
@@ -49,7 +48,6 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
                 }
                 return pd;
             });
-            // debugger
             return {
                 ...state,
                 pendingDocs: pdocs

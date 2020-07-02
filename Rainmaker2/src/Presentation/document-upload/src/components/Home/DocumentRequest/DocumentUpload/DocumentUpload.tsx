@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useContext, useEffect } from "react";
+import React, { useState, ChangeEvent, useContext, useEffect, useRef } from "react";
 import { DocumentDropBox, FileDropper } from "../../../../shared/Components/DocumentDropBox/DocumentDropBox";
 import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
 import { Store } from "../../../../store/store";
@@ -14,6 +14,8 @@ export const DocumentUpload = () => {
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc ? currentDoc.docMessage : "";
 
+
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const getFileInput = (fileInputEl: HTMLInputElement) => {
     setFileInput(fileInputEl);
@@ -35,7 +37,7 @@ export const DocumentUpload = () => {
   };
 
   return (
-    <section className="Doc-upload">
+    <section className="Doc-upload" ref={parentRef}>
               <div className="Doc-head-wrap">
           <h2> {docTitle}</h2>
           <div className="doc-note">
@@ -46,6 +48,7 @@ export const DocumentUpload = () => {
           </div>
         </div>
       <FileDropper
+        parent={parentRef.current}
         getDroppedFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
       >
           {!selectedfiles?.length ? (
@@ -54,7 +57,6 @@ export const DocumentUpload = () => {
               setFileInput={getFileInput} />
           ) : (
               <>
-
                 <SelectedDocuments
                   addMore={showFileExplorer}
                   setFileInput={getFileInput}
