@@ -11,7 +11,8 @@ type DocumentItemType = {
     file: Document,
     viewDocument: Function,
     changeName: Function,
-    deleteDoc: Function
+    deleteDoc: Function,
+    indexKey: number
 }
 
 export const removeSpecialChars = (text: string) => {
@@ -20,18 +21,24 @@ export const removeSpecialChars = (text: string) => {
 
 let nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
-export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: DocumentItemType) => {
-    
+export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, indexKey }: DocumentItemType) => {
     const [filename, setfilename] = useState<string>(removeSpecialChars(removeDefaultExt(file.clientName)));
     const [iseditable, seteditable] = useState<any>(true)
     const [isdeleted, setdeleted] = useState<any>(false)
     const todayDate = moment().format('MMM DD, YYYY hh:mm A')
+    const txtInput: any = useRef(null);
+
+    useEffect(()=>{
+        if(txtInput.current){
+            txtInput.current.focus();
+          }
+    },[file.editName=== true])
 
     const rename = () => {
         seteditable(false)
         changeName(file, filename);
     }
-    const EditTitle = () => {
+    const EditTitle = () => {  
         changeName(file, filename)
     }
 
@@ -64,7 +71,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc }: Docu
                     </div>
                     <div className="doc-list-content">
                         <div className="tilte">
-                            {file.editName ? <input maxLength={255} onBlur={rename} type="text" value={filename.split('.')[0]} onChange={(e) => {
+                            {file.editName ? <input ref={txtInput}  maxLength={255}  type="text" value={filename.split('.')[0]} onChange={(e) => {
                                 if (nameTest.test(e.target.value)) {
                                     setfilename(e.target.value);
                                     return

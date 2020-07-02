@@ -81,11 +81,10 @@ export const DocumentUpload = () => {
           }
           const selectedFile = new Document("", newName, "", 0, 0, getDocLogo(f, 'slash'), 'pending', f);
           selectedFile.editName = true;
-        //  allSelectedFiles.unshift(selectedFile)
-       //   console.log('allSelectedFiles',allSelectedFiles)
           allSelectedFiles.push(selectedFile);
+        }else{
+         alert('Please upload pdf and images less than 15mbs only')
         }
-
       }
       return allSelectedFiles;
     });

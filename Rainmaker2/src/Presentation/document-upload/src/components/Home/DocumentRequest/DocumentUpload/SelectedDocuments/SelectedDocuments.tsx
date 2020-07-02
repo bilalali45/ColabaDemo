@@ -165,7 +165,7 @@ export const SelectedDocuments = ({
                   viewDocument={viewDocument}
                   changeName={changeName}
                   deleteDoc={deleteDoc}
-                  key={index}
+                  indexKey={index}
 
                 />
               );

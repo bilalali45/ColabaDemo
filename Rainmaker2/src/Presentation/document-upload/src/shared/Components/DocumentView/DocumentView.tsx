@@ -89,10 +89,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     temporaryDownloadLink.click();
   };
 
-  const print = () => {
-
-  }
-
   useEffect(() => {
     getSubmittedDocumentForView();
   }, [getSubmittedDocumentForView]);
