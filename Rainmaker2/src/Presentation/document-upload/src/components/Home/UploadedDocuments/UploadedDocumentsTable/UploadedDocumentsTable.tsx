@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
 
 import { UploadedDocuments } from "../../../../entities/Models/UploadedDocuments";
@@ -8,6 +8,8 @@ import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
 import { DateFormat } from "../../../../utils/helpers/DateFormat";
 import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
+import { Store } from "../../../../store/store";
+import { DocumentsActionType } from "../../../../store/reducers/documentReducer";
 
 interface ViewDocumentType {
   id: string;
@@ -20,18 +22,24 @@ interface ViewDocumentType {
 export const UploadedDocumentsTable = () => {
   const [docList, setDocList] = useState<UploadedDocuments[] | [] | null>(null);
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType>();
-
   const history = useHistory();
 
-  const fetchUploadedDocuments = async () => {
-    const uploadedDocs = await DocumentActions.getSubmittedDocuments(
-      Auth.getLoanAppliationId(),
-      Auth.getTenantId()
-    );
+  const { state, dispatch } = useContext(Store);
+  const { submittedDocs } : any = state.documents;
 
-    if (uploadedDocs) {
-      setDocList(uploadedDocs);
-    }
+  useEffect(() => {
+      fetchUploadedDocuments();
+  }, []);
+
+  const fetchUploadedDocuments = async () => {
+    if(!submittedDocs){
+     
+      let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(),Auth.getTenantId());
+      if (uploadedDocs) {
+        dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs});
+       // setDocList(uploadedDocs);
+      }
+    }  
   };
 
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
@@ -77,11 +85,8 @@ export const UploadedDocumentsTable = () => {
   const renderUploadedDocs = (data) => {
     return data.map((item: UploadedDocuments) => {
       if (!item.files.length) return;
-
       const { files, docId, requestId, id } = item;
-
-      return (
-        
+      return (   
           <tr>
             <td>
               <em className="far fa-file"></em> {item.docName}
@@ -136,18 +141,16 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
-  useEffect(() => {
-    if (!docList?.length) {
-      fetchUploadedDocuments();
-    }
-  }, [docList?.length]);
+  
 
   return (
     <React.Fragment>
       <div className="UploadedDocumentsTable">
-        {renderTable(docList)}
+        { submittedDocs &&
+        renderTable(submittedDocs)
+        }
 
-        {docList?.length === 0 && renderNoData()}
+        {submittedDocs?.length === 0 && renderNoData()}
       </div>
       {!!currentDoc?.docId && (
         <DocumentView
