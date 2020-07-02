@@ -4,13 +4,15 @@ import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
-import { DocumentActions, removeDefaultExt, removeActualFile } from "../../../../../store/actions/DocumentActions";
+import { DocumentActions } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
 import erroricon from '../../../../../assets/images/warning-icon.svg';
 import refreshIcon from '../../../../../assets/images/refresh.svg';
 import { debug } from "console";
+import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
+import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -25,7 +27,7 @@ interface ViewDocumentType {
   fileId?: string;
 }
 
-const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+// const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
   addMore, setFileInput
@@ -35,6 +37,7 @@ export const SelectedDocuments = ({
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
+  const [sameName, setSameName] = useState<boolean>(false);
 
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
@@ -77,8 +80,8 @@ export const SelectedDocuments = ({
   const uploadFiles = async () => {
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done") {
-          await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+      if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
+        await DocumentUploadActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
       }
     }
     setSubBtnPressed(false);
@@ -96,13 +99,18 @@ export const SelectedDocuments = ({
     }
   };
 
-  const changeName = (file: Document, newName: string) => {
-    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
+  const fileAlreadyExists = (file, newName) => {
+    var alreadyExist = selectedFiles.find(f => f !== file && FileUpload.removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
     if (alreadyExist) {
-      alert('Files name must be unique')
-      return;
+      return true;
     }
+    return false;
+  }
 
+  const changeName = (file: Document, newName: string) => {
+    if (fileAlreadyExists(file, newName)) {
+      return false;
+    }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
@@ -117,7 +125,7 @@ export const SelectedDocuments = ({
   };
 
   const deleteDoc = (fileName: string) => {
-    removeActualFile(fileName, selectedFiles, dispatch);
+    DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch);
     let updatedFiles = selectedFiles.filter((f: Document) => {
       if (f?.clientName !== fileName) {
         return f;
@@ -171,9 +179,6 @@ export const SelectedDocuments = ({
     } else {
       setDoneVisible(true);
     }
-    // return lastItem.file && lastItem.uploadStatus === "done"
-    //   ? setDoneVisible(true)
-    //   : setDoneVisible(false);
   };
 
 
@@ -238,6 +243,8 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  fileAlreadyExists={fileAlreadyExists}
+                  retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
                   viewDocument={viewDocument}
                   changeName={changeName}
@@ -256,7 +263,7 @@ export const SelectedDocuments = ({
             }}>
               Add more files
               <input type='file'
-                accept={allowedExtensions}
+                accept={FileUpload.allowedExtensions}
                 id="inputFile"
                 ref={inputRef} multiple style={{ display: "none" }} />
             </a>

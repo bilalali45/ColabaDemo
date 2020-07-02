@@ -1,7 +1,7 @@
 import { Actions, ActionMap } from "./reducers";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
-import { sortByDate } from "../actions/DocumentActions";
 import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
+import { FileUpload } from "../../utils/helpers/FileUpload";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',
@@ -45,7 +45,7 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
             const pdocs = state['pendingDocs']?.map((pd: any) => {
                 if (pd?.docId === state['currentDoc']?.docId) {
                     if (Array.isArray(payload)) {
-                        pd.files = sortByDate(payload);
+                        pd.files = payload;
                     }
                     return pd;
                 }
@@ -66,19 +66,3 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
             return state;
     }
 }
-
-
-// pendingDocs: state['pendingDocs'].map((p: DocumentRequest) => {
-//     if (p.docName === state['currentDoc'].docName) {
-//         if (Array.isArray(payload)) {
-//             p['files'] = payload;
-//         }
-//         return {
-
-//         }
-//         currentDoc: {
-//             ...state['currentDoc'],
-//     files: payload
-//         }
-// }
-// })

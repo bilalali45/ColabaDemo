@@ -1,10 +1,6 @@
 import React, { useState, ChangeEvent, useRef, useEffect, DragEvent, Component } from 'react';
-import { Http } from '../../../services/http/Http';
 import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
-import { isFileAllowed } from '../../../store/actions/DocumentActions';
-
-
-const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+import { FileUpload } from '../../../utils/helpers/FileUpload';
 
 type DocumentDropBoxPropsType = { getFiles: Function, setFileInput: Function };
 
@@ -40,9 +36,8 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
                             id="inputFile"
                             onChange={(e) => handleChange(e)}
                             multiple
-                            accept={allowedExtensions} />
-
-                            <div className="upload-note">
+                            accept={FileUpload.allowedExtensions} />
+                                                        <div className="upload-note">
                                 <p>
                                 File Type: PDF, JPEG <br />
                                 File Size: 8mb

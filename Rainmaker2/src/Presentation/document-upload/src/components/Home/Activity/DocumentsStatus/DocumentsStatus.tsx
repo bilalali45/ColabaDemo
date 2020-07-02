@@ -12,22 +12,25 @@ import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const DocumentsStatus = () => {
 
-    // const [pendingDocs, setPendingDocs] = useState<DocumentRequest[] | null>(null)
     const { state, dispatch } = useContext(Store);
-    
+
     const history = useHistory();
 
-    const {pendingDocs} : any = state.documents;
+    const { pendingDocs, submittedDocs }: any = state.documents;
 
     useEffect(() => {
 
         if (!pendingDocs?.length) {
             fetchPendingDocs();
         }
+
+        if (!submittedDocs?.length) {
+            fetchSubmittedDocs();
+        }
     }, []);
 
     const getStarted = () => {
-    history.push('/documentsRequest');
+        history.push('/documentsRequest');
     }
 
     const fetchPendingDocs = async () => {
@@ -37,6 +40,13 @@ export const DocumentsStatus = () => {
             dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docsPending });
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docsPending[0] });
             // setPendingDocs(docsPending);
+        }
+    }
+
+    const fetchSubmittedDocs = async () => {
+        let submittedDocs = await DocumentActions.getSubmittedDocuments(Auth?.getLoanAppliationId(), Auth?.getTenantId());
+        if (submittedDocs) {
+            dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: submittedDocs })
         }
     }
 
@@ -80,7 +90,7 @@ export const DocumentsStatus = () => {
                             </div>
                             <div className="eds-txt">
                                 <p>
-                                <span className="text-primary">Great!</span> You have done all the tasks
+                                    <span className="text-primary">Great!</span> You have done all the tasks
                             </p>
 
                             </div>
@@ -93,7 +103,11 @@ export const DocumentsStatus = () => {
     }
 
     if (!pendingDocs) {
-        return <Loader containerHeight={"476px"}  />
+        return <Loader containerHeight={"476px"} />
+    }
+
+    if (submittedDocs?.length && !pendingDocs?.length) {
+        return renderCompletedDocs();
     }
 
     if (pendingDocs.length == 0) {
@@ -109,8 +123,8 @@ export const DocumentsStatus = () => {
             <div className="box-wrap--body clearfix">
                 <ul className="list">
                     {pendingDocs.map((item: any, index: any) => {
-                       if(index < 8)
-                        return <li title={item.docName}  key={index}> {item.docName} </li>
+                        if (index < 8)
+                            return <li title={item.docName} key={index}> {item.docName} </li>
                     })}
                 </ul>
             </div>
