@@ -25,7 +25,7 @@ interface ViewDocumentType {
   fileId?: string;
 }
 
-const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+// const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
   addMore, setFileInput
@@ -107,7 +107,7 @@ export const SelectedDocuments = ({
 
   const changeName = (file: Document, newName: string) => {
     if (fileAlreadyExists(file, newName)) {
-      return;
+      return false;
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
@@ -177,9 +177,6 @@ export const SelectedDocuments = ({
     } else {
       setDoneVisible(true);
     }
-    // return lastItem.file && lastItem.uploadStatus === "done"
-    //   ? setDoneVisible(true)
-    //   : setDoneVisible(false);
   };
 
 
@@ -212,7 +209,7 @@ export const SelectedDocuments = ({
             }}>
               Add more files
               <input type='file'
-                accept={allowedExtensions}
+                accept={FileUpload.allowedExtensions}
                 id="inputFile"
                 ref={inputRef} multiple style={{ display: "none" }} />
             </a>

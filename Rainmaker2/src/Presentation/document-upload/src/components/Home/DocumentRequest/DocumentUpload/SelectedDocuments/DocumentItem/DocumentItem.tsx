@@ -41,7 +41,10 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
             setNameExists(true);
             return;
         }
-        changeName(file, filename);
+        let nameExists = changeName(file, filename);
+        if(nameExists === false) {
+            setNameExists(true);
+        }
     }
 
     const EditTitle = () => {

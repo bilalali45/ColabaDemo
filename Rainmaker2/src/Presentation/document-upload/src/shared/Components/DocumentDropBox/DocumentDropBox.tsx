@@ -1,8 +1,6 @@
 import React, { useState, ChangeEvent, useRef, useEffect, DragEvent, Component } from 'react';
 import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
-
-
-const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+import { FileUpload } from '../../../utils/helpers/FileUpload';
 
 type DocumentDropBoxPropsType = { getFiles: Function, setFileInput: Function };
 
@@ -38,7 +36,7 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
                             id="inputFile"
                             onChange={(e) => handleChange(e)}
                             multiple
-                            accept={allowedExtensions} />
+                            accept={FileUpload.allowedExtensions} />
                     </div>
                 </div>
             </div>
