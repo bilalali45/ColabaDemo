@@ -10,6 +10,7 @@ export class Document {
     public uploadStatus?: string = 'pending'
     public documentOrder: any[] = []
     public docLogo: string = '';
+    public notAllowed: boolean = false;
 
     constructor(
         id: string = '',

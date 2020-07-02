@@ -21,7 +21,7 @@ export const DocumentUpload = () => {
     setFileInput(fileInputEl);
   };
 
-  const showFileExplorer = () => {
+  const showFileExplorer = (fileToRemnove: Document | null = null) => {
     if (fileInput?.value) {
       fileInput.value = '';
     }
@@ -30,7 +30,8 @@ export const DocumentUpload = () => {
       fileInput.onchange = (e: any) => {
         let files = e?.target?.files;
         if (files) {
-          updateFiles(files, selectedfiles, dispatch);
+          let updatedFiles = selectedfiles.filter(sf => sf !== fileToRemnove);
+          updateFiles(files, updatedFiles, dispatch);
         }
       };
     }

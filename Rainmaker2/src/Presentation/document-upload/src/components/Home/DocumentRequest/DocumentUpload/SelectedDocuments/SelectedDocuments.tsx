@@ -33,6 +33,7 @@ export const SelectedDocuments = ({
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
+  const [sameName, setSameName] = useState<boolean>(false);
 
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
@@ -75,8 +76,8 @@ export const SelectedDocuments = ({
   const uploadFiles = async () => {
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done") {
-          await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+      if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
+        await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
       }
     }
     setSubBtnPressed(false);
@@ -94,13 +95,18 @@ export const SelectedDocuments = ({
     }
   };
 
-  const changeName = (file: Document, newName: string) => {
+  const fileAlreadyExists = (file, newName) => {
     var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
     if (alreadyExist) {
-      alert('Files name must be unique')
+      return true;
+    }
+    return false;
+  }
+
+  const changeName = (file: Document, newName: string) => {
+    if (fileAlreadyExists(file, newName)) {
       return;
     }
-
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
@@ -184,6 +190,8 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  fileAlreadyExists={fileAlreadyExists}
+                  retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
                   viewDocument={viewDocument}
                   changeName={changeName}

@@ -218,7 +218,7 @@ export const removeDefaultExt = (fileName: string) => {
   }
   return onlyName != "" ? onlyName : fileName;
 }
- 
+
 export const sortByDate = (array: any[]) => {
   return array.sort((a, b) => {
     let first = new Date(a.fileUploadedOn);
@@ -243,19 +243,22 @@ export const updateName = (name, type) => {
 }
 
 export const updateFiles = (files: File[], prevFiles: Document[], dispatch: Function) => {
-  
+
   let allSelectedFiles: Document[] = [...prevFiles];
   for (let f of files) {
-    if (isFileAllowed(f)) {
-      var newName = f.name;
-      var isNameExist = prevFiles.find(i => removeDefaultExt(i.clientName) === removeSpecialChars(removeDefaultExt(f.name)))
-      if (isNameExist) {
-        newName = updateName(f.name, f.type)
-      }
-      const selectedFile = new Document("", newName, todayDate, 0, 0, getDocLogo(f, 'slash'), 'pending', f);
-      selectedFile.editName = true;
-      allSelectedFiles.push(selectedFile);
+
+    var newName = f.name;
+    var isNameExist = prevFiles.find(i => removeDefaultExt(i.clientName) === removeSpecialChars(removeDefaultExt(f.name)))
+    if (isNameExist) {
+      newName = updateName(f.name, f.type)
     }
+    const selectedFile = new Document("", newName, todayDate, 0, 0, getDocLogo(f, 'slash'), 'pending', f);
+    if (!isFileAllowed(f)) {
+      selectedFile.notAllowed = true;
+    }
+    selectedFile.editName = true;
+    allSelectedFiles.push(selectedFile);
+    // }
   }
   dispatch({ type: DocumentsActionType.AddFileToDoc, payload: allSelectedFiles });
 };
