@@ -8,6 +8,8 @@ import { DocumentActions, removeDefaultExt, removeActualFile } from "../../../..
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
+import erroricon from '../../../../../assets/images/warning-icon.svg';
+import refreshIcon from '../../../../../assets/images/refresh.svg';
 import { debug } from "console";
 
 interface SelectedDocumentsType {
@@ -181,6 +183,58 @@ export const SelectedDocuments = ({
       <div className="file-drop-box havefooter">
         <div className="list-selected-doc">
           <ul className="doc-list-ul">
+          <li className="doc-li item-error">
+<div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                                <p>Bank-statement-Jan-to-Mar-2020-1.pdf</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File size over 8mb limit </span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                            <ul className="editable-actions">
+                                <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                </li>
+                            </ul>
+
+                    </div>
+                </div>
+</li>
+
+<li className="doc-li item-error">
+<div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                                <p>Bank-statement-Jan-to-Mar-2020-1.pdf</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File type is not supported. Allowed types: PDF, JPEG, PNG</span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                            <ul className="editable-actions">
+                                <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                </li>
+                            </ul>
+
+                    </div>
+                </div>
+</li>
+
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
