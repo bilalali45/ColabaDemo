@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DocumentManagement.Model.Template;
@@ -246,12 +247,19 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
-                    CategoryDocumentTypeModel dto = new CategoryDocumentTypeModel();
-                    dto.catId = query.id;
-                    dto.catName = query.name;
-                    dto.docTypeId = query.docTypeId;
-                    dto.docType = query.docType;
-                    CategoryDocumentTypeModel.Add(dto);
+                    var cdtm = CategoryDocumentTypeModel.Where(x => x.catId == query.id).FirstOrDefault();
+                    if(cdtm==null)
+                    {
+                        cdtm = new CategoryDocumentTypeModel();
+                        cdtm.catId = query.id;
+                        cdtm.catName = query.name;
+                        cdtm.documents = new List<DocumentTypeModel>();
+                        CategoryDocumentTypeModel.Add(cdtm);
+                    }
+                    if(!string.IsNullOrEmpty(query.docTypeId))
+                    {
+                        cdtm.documents.Add(new DocumentTypeModel() {docTypeId=query.docTypeId,docType=query.docType });
+                    }
                 }
             }
 
