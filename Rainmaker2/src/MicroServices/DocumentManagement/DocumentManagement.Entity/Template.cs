@@ -15,7 +15,6 @@ namespace DocumentManagement.Entity
         public int? tenantId { get; set; }
         public int? userId { get; set; }
         public DateTime? createdOn { get; set; }
-        public int createdBy { get; set; }
         public bool isActive { get; set; }
         public List<TemplateDocument> documentTypes { get; set; }
     }

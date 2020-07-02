@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DocumentManagement.Model.Template;
@@ -209,7 +210,7 @@ namespace DocumentManagement.Service
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
-            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true };
+            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true,documentTypes=new List<TemplateDocument>() };
             await collection.InsertOneAsync(template);
 
             return template.id;
@@ -246,12 +247,19 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
-                    CategoryDocumentTypeModel dto = new CategoryDocumentTypeModel();
-                    dto.catId = query.id;
-                    dto.catName = query.name;
-                    dto.docTypeId = query.docTypeId;
-                    dto.docType = query.docType;
-                    CategoryDocumentTypeModel.Add(dto);
+                    var cdtm = CategoryDocumentTypeModel.Where(x => x.catId == query.id).FirstOrDefault();
+                    if(cdtm==null)
+                    {
+                        cdtm = new CategoryDocumentTypeModel();
+                        cdtm.catId = query.id;
+                        cdtm.catName = query.name;
+                        cdtm.documents = new List<DocumentTypeModel>();
+                        CategoryDocumentTypeModel.Add(cdtm);
+                    }
+                    if(!string.IsNullOrEmpty(query.docTypeId))
+                    {
+                        cdtm.documents.Add(new DocumentTypeModel() {docTypeId=query.docTypeId,docType=query.docType });
+                    }
                 }
             }
 
