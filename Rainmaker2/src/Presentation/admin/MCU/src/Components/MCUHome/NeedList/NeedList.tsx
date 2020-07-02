@@ -8,9 +8,9 @@ export const NeedList = () => {
     return (
         <div>
             <LoanSnapshot/>
-            <Navigation/>
-            <NeedListHeader/>
-            <NeedListView/>
+            {/* <Navigation/> */}
+            {/* <NeedListHeader/> */}
+            {/* <NeedListView/> */}
         </div>
     )
 }

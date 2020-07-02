@@ -186,9 +186,9 @@ namespace DocumentManagement.Service
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(id) },
-                { "tenantId", tenantid}  ,
-                { "userId", userProfileId}
+                { "_id", BsonObjectId.Create(id) }
+              ,  { "tenantId", tenantid}  
+              , { "userId", userProfileId}
             }
              , new BsonDocument()
             {

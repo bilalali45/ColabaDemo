@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
+import {SVGopenLock} from '../../../../Shared/SVG';
 
 export const LoanSnapshot = () => {
     return (
         <div className="loansnapshot">
-            <div className="row">
-                <div className="col-md-9">
+            <div className="loansnapshot--left-side">
+                <div className="loansnapshot--wrap">
                     <ul>
                         <li>
                             <label className="mcu-label">Loan No.</label>
@@ -24,11 +25,11 @@ export const LoanSnapshot = () => {
                         </li>
                         <li>
                             <label className="mcu-label">Property Value</label>
-                            <span className="mcu-label-value"><sup className="text-primary">$</sup>10,000</span>
+                            <span className="mcu-label-value plus"><sup className="text-primary">$</sup>10,000</span>
                         </li>
                         <li>
                             <label className="mcu-label">Loan Amount</label>
-                            <span className="mcu-label-value"><sup className="text-primary">$</sup>80,000</span>
+                            <span className="mcu-label-value plus"><sup className="text-primary">$</sup>80,000</span>
                         </li>
                         <li>
                             <label className="mcu-label">Primary & co-Borrower</label>
@@ -44,16 +45,38 @@ export const LoanSnapshot = () => {
                         </li>
                         <li>
                             <label className="mcu-label">Rate</label>
-                            <span className="mcu-label-value">2.875<sup className="text-primary">%</sup></span>
+                            <span className="mcu-label-value plus">2.875<sup className="text-primary">%</sup></span>
                         </li>
                         <li>
                             <label className="mcu-label">Loan Program</label>
-                            <span className="mcu-label-value">5 <span className="text-wrap"><small>Year</small><small className="text-primary">ARM</small></span> </span>
+                            <span className="mcu-label-value plus">5 
+                                <span className="text-wrap top inline-block-element">
+                                    <small className="block-element">Year</small>
+                                    <small className="text-primary block-element">ARM</small>
+                                </span> 
+                            </span>
                         </li>
                     </ul>
-                </div>
-                <div className="col-md-3">
-
+                </div>                    
+            </div>
+            <div className="loansnapshot--right-side">
+                <div className="loansnapshot--wrap">
+                    <div className="loansnapshot--right-side---data">
+                        <div className="form-group">
+                            <label className="mcu-label">Lock status</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="mcu-label">Lock Date</label>
+                            <span className="mcu-label-value">05-10-2020</span>
+                        </div>
+                        <div className="form-group">
+                            <label className="mcu-label">Expiration date</label>
+                            <span className="mcu-label-value">05-11-2020</span>
+                        </div>
+                    </div>
+                    <div className="loansnapshot--right-side---icon">
+                        <SVGopenLock />
+                    </div>                
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, Link } from 'react-router-dom';
 import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
+import { Store } from '../../../store/store';
 const ActivityHeader = (props) => {
     const [leftNav, setLeftNav] = useState('');
     const [rightNav, setRightNav] = useState('');
@@ -8,6 +9,8 @@ const ActivityHeader = (props) => {
     const [rightNavUrl, setRightNavUrl] = useState('');
 
     const location = useLocation();
+    const { state, dispatch } = useContext(Store);
+    const { pendingDocs }: any = state.documents;
 
     const setNavigations = (pathname) => {
         if (pathname.includes('activity')) {
@@ -28,8 +31,14 @@ const ActivityHeader = (props) => {
             if (props.location.state == undefined || props.location.state.from == '/activity') {
                 setLeftNav('Home');
                 setLeftNavUrl('/activity');
-                setRightNav('Document Request');
-                setRightNavUrl('/documentsRequest');
+                if (pendingDocs?.length > 0) {
+                    setRightNav('Document Request');
+                    setRightNavUrl('/documentsRequest');
+                } else {
+                    setRightNav('');
+                    setRightNavUrl('');
+                }
+
             } else {
                 setLeftNav('Document Request');
                 setLeftNavUrl('/documentsRequest');
@@ -48,15 +57,15 @@ const ActivityHeader = (props) => {
             return <a tabIndex={-1} onClick={() => {
                 window.open('/Dashboard', '_self');
             }}>
-             <i className="zmdi zmdi-arrow-left"></i>{leftNav}
+                <i className="zmdi zmdi-arrow-left"></i>{leftNav}
             </a>
         }
-        return <Link to={{pathname: leftNavUrl,state: { from: location.pathname }}}> 
-                   <i className="zmdi zmdi-arrow-left"></i>{leftNav}
-               </Link >
+        return <Link to={{ pathname: leftNavUrl, state: { from: location.pathname } }}>
+            <i className="zmdi zmdi-arrow-left"></i>{leftNav}
+        </Link >
 
     }
-    
+
 
     return (
         <div className="activityHeader">
@@ -73,17 +82,17 @@ const ActivityHeader = (props) => {
                                         <li>
                                             {renderLeftNav()}
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                                 <div className="col-6 text-right">
 
                                     <div className="action-doc-upload">
-                                     
-                                         <Link to={{
-                                                pathname: rightNavUrl,
-                                                state: { from: location.pathname }
-                                            }}>{rightNav}</Link> 
+
+                                        <Link to={{
+                                            pathname: rightNavUrl,
+                                            state: { from: location.pathname }
+                                        }}>{rightNav}</Link>
 
                                     </div>
 

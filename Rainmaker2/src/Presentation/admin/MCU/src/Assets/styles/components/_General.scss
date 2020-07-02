@@ -39,6 +39,7 @@ ul {
 
 .sidebar-menu {
     padding-top: 15px;
+    text-align: center;
     .sidebar-main-ul {
         border-bottom: 1px solid color('sidebarboder');
         > li {
@@ -61,6 +62,10 @@ ul {
             color: color('sidebarBg-text');
         }
     }
+}
+
+li.has-sub > .sub {
+    display: none;
 }
 
 .box-wrap {
@@ -242,6 +247,19 @@ ul {
     display: block !important;
 }
 
+.inline-block-element{
+    display: inline-block !important;
+    &.top{
+        vertical-align: top;
+    }
+    &.middle{
+        vertical-align: middle;
+    }
+    &.bottom{
+        vertical-align: bottom;
+    }
+}
+
 .loader {
     text-align: center;
     height: 100%;
@@ -284,14 +302,24 @@ ul {
 
 .mcu-label{
     display: block;
-    font: 500 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
+    font: 400 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
     text-transform: uppercase;
     color:color('labelColor');
 
     &-value{
         display: block;
-        font: 700 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
+        font: 500 #{fontSize('nr')+'/1.4'} fontFamily('base') ;
         color:color('labelValueColor');
+        
+        &.plus{
+            font: 500 #{fontSize('lg')+'/'+fontSize('lg')} fontFamily('base') ;
+        }
+
+        sup {
+            top: -6px;
+            font: 500 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
+            margin: 0 3px;
+        }
     }
 }
 

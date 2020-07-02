@@ -1,6 +1,7 @@
 import { Actions, ActionMap } from "./reducers";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { sortByDate } from "../actions/DocumentActions";
+import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',
@@ -13,13 +14,15 @@ export enum DocumentsActionType {
 export type DocumentsType = {
     pendingDocs: DocumentRequest[] | null,
     currentDoc: DocumentRequest | null,
+    submittedDocs: UploadedDocuments[] | null
 }
 
 
 type DocumentsActionPayload = {
     [DocumentsActionType.FetchPendingDocs]: DocumentRequest[],
     [DocumentsActionType.SetCurrentDoc]: DocumentRequest,
-    [DocumentsActionType.AddFileToDoc]: Document[]
+    [DocumentsActionType.AddFileToDoc]: Document[],
+    [DocumentsActionType.FetchSubmittedDocs]: UploadedDocuments[]
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
@@ -53,11 +56,11 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
                 pendingDocs: pdocs
             }
 
-        // case DocumentsActionType.FetchSubmittedDocs:
-        //     return {
-        //         ...state,
-        //         submittedDocs: {...payload}
-        //     };
+        case DocumentsActionType.FetchSubmittedDocs:
+            return {
+                ...state,
+                submittedDocs: payload
+            };
 
         default:
             return state;
