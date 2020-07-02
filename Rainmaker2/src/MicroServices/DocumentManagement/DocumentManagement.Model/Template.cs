@@ -35,13 +35,16 @@ namespace DocumentManagement.Model
             public string type { get; set; }
             public string name { get; set; }
         }
-
+        public class DocumentTypeModel
+        {
+            public string docTypeId { get; set; }
+            public string docType { get; set; }
+        }
         public class CategoryDocumentTypeModel
         {
             public string catId { get; set; }
             public string catName { get; set; }
-            public string docTypeId { get; set; }
-            public string docType { get; set; }
+            public List<DocumentTypeModel> documents {get;set;}
         }
         public class CategoryDocumentQuery
         {
