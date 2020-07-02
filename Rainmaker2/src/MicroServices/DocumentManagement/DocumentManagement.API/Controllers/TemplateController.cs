@@ -28,7 +28,7 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await templateService.GetTemplates(tenantId, userProfileId);
             return Ok(docQuery);
         }
-        [HttpGet("GetDocument")]
+        [HttpGet("GetDocuments")]
         public async Task<IActionResult> GetDocument(string id, int tenantId)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
