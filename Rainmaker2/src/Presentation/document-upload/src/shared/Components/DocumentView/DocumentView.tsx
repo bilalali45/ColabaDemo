@@ -12,6 +12,7 @@ import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
 import { Auth as Storage } from "../../../services/auth/Auth";
 import { Loader } from "../Assets/loader";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 interface DocumentViewProps {
   id: string;
@@ -151,35 +152,52 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
-      <div className="document-view--body">
-        {!!documentParams.filePath ? (
-          <FileViewer
-            fileType={documentParams.fileType}
-            filePath={documentParams.filePath}
-          />
-        ) : (
-          <Loader height={"94vh"} />
-        )}
-      </div>
-      <div className="document-view--floating-options">
-        <ul>
-          <li>
-            <button className="button-float">
-              <em className="zmdi zmdi-plus"></em>
-            </button>
-          </li>
-          <li>
-            <button className="button-float">
-              <em className="zmdi zmdi-minus"></em>
-            </button>
-          </li>
-          <li>
-            <button className="button-float">
-              <SVGfullScreen />
-            </button>
-          </li>
-        </ul>
-      </div>
+        <div className="document-view--body">
+          {!!documentParams.filePath ? (
+            // <TransformWrapper
+            //   defaultScale={1}
+            //   defaultPositionX={200}
+            //   defaultPositionY={100}
+            // >
+            //   {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+            //     <React.Fragment>
+            //       <div className="tools">
+            //         <button onClick={zoomIn}>+</button>
+            //         <button onClick={zoomOut}>-</button>
+            //         <button onClick={resetTransform}>x</button>
+            //       </div>
+            //       <TransformComponent>
+                    <FileViewer
+                      fileType={documentParams.fileType}
+                      filePath={documentParams.filePath}
+                    />
+            //       </TransformComponent>
+            //     </React.Fragment>
+            //   )}
+            // </TransformWrapper>
+          ) : (
+              <Loader height={"94vh"} />
+            )}
+        </div>
+        <div className="document-view--floating-options">
+          <ul>
+            <li>
+              <button className="button-float">
+                <em className="zmdi zmdi-plus"></em>
+              </button>
+            </li>
+            <li>
+              <button className="button-float">
+                <em className="zmdi zmdi-minus"></em>
+              </button>
+            </li>
+            <li>
+              <button className="button-float">
+                <SVGfullScreen />
+              </button>
+            </li>
+          </ul>
+        </div>
       <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
   );
