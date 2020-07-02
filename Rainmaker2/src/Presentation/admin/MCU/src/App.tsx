@@ -12,7 +12,7 @@ function App() {
       <RainMakerHeader/>
       <RainMakerSidebar/>
       <RainMakerFooter/>
-      {/* <MCUHome/> */}
+      <MCUHome/>
     </div>
   );
 }

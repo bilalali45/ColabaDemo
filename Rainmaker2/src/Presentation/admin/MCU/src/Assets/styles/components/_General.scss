@@ -1,6 +1,7 @@
 body {
     background: color("colorgray");
 }
+
 h1,
 h2,
 h3,
@@ -13,48 +14,62 @@ h6 {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
+
 ul {
     list-style: none;
     padding: 0;
     margin-bottom: 0;
 }
+
 [class^="heading-"],
 [class*="heading-"] {
     font-family: fontFamily("heading");
     font-weight: 400;
 }
+
 .heading-h1 {
     font-size: fontSize("xlg");
 }
+
 .heading-h2 {
     font-size: fontSize("lg");
     margin-bottom: 5px;
     margin-top: 10px;
 }
+
 .heading-h3 {
     font-size: fontSize("md");
 }
+
 .heading-h4 {
     font-size: fontSize("nr");
 }
+
 .heading-h5 {
     font-size: fontSize("sm");
 }
+
 .heading-h6 {
     font-size: fontSize("xs");
 }
+
 body,
 p {
     font-family: fontFamily("base");
     color: color('base');
 }
-a{
+
+a {
     outline: none;
 }
-a[href],a[tabindex]{
-    cursor:pointer;
+
+a[href],
+a[tabindex] {
+    cursor: pointer;
 }
+
 .clearfix {
+
     &::before,
     &::after {
         content: "";
@@ -73,7 +88,7 @@ a[href],a[tabindex]{
         flex: 1 0 0;
         padding: 0 30px;
 
-        & + .flex--side {
+        &+.flex--side {
             border-left: 1px solid color("border");
         }
     }
@@ -127,26 +142,30 @@ a[href],a[tabindex]{
         }
     }
 }
-#root > .app {
+
+#root>.app {
     overflow: hidden;
     position: relative;
     min-height: 100vh;
 }
+
 .page-content {
     min-height: calc(100vh - 300px);
     padding-bottom: 40px;
 }
+
 .gutter15 {
     margin-left: -7.5px;
     margin-right: -7.5px;
 
-    > [class*="col-"] {
+    >[class*="col-"] {
         padding-right: 7.5px;
         padding-left: 7.5px;
     }
 
     font-size: fontSize("nr") - 4px;
 }
+
 .box-wrap {
     box-shadow: $shadow;
     padding: 20px;
@@ -157,12 +176,14 @@ a[href],a[tabindex]{
     &--header {
         display: block;
         margin-bottom: 5px;
+
         h2 {
             font: 500 #{fontSize("md") + "/1.2"} fontFamily("heading");
             text-transform: uppercase;
             color: color("base");
             margin-top: 0;
         }
+
         p {
             margin: 0px;
         }
@@ -171,7 +192,9 @@ a[href],a[tabindex]{
     &--body {
         padding: 10px 0 0;
     }
-} // .box-wrap
+}
+
+// .box-wrap
 .list-style-none {
     list-style: none;
     margin: 0;
@@ -182,10 +205,12 @@ a[href],a[tabindex]{
     @extend .list-style-none;
     margin: 26px 0;
     font:400 #{fontSize("nr") + "/" + fontSize("nr")} fontFamily("base");
+
     @include media-breakpoint-down(md) {
         font-size: fontSize("nr")-1;
     }
-    > li {
+
+    >li {
         margin-bottom: 23px;
         position: relative;
         padding-left: 20px;
@@ -221,19 +246,20 @@ a[href],a[tabindex]{
     padding: 14px 35px 12px;
     text-transform: uppercase;
     letter-spacing: 1.4px;
-    
-    &.disabled,&:disabled{
-        color:color('disabled-text');
+
+    &.disabled,
+    &:disabled {
+        color: color('disabled-text');
         background-color: color('disabled');
         border-color: color('disabled');
-    
-}
 
-&.btn-small {
-    font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
-    padding: 9px 20px 7px;
-}
-    
+    }
+
+    &.btn-small {
+        font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
+        padding: 9px 20px 7px;
+    }
+
 
 }
 
@@ -249,6 +275,7 @@ a[href],a[tabindex]{
     i {
         position: relative;
         padding-left: 30px;
+
         &::after {
             content: "";
             display: inline-block;
@@ -262,7 +289,7 @@ a[href],a[tabindex]{
     }
 }
 
-.button-float{
+.button-float {
     background-color: color('colorWhite');
     color: color('base');
     border: none;
@@ -275,12 +302,14 @@ a[href],a[tabindex]{
     line-height: $float-button-size;
     padding: 0;
     @include transition(all 0.5s ease-out);
-    svg{
+
+    svg {
         height: ceil(35 * $float-button-size / 100); //12px;
         @include transition(all 0.5s ease-out);
-        path{
+
+        path {
             fill: color('base');
-            stroke:color('base');
+            stroke: color('base');
             opacity: 0.8;
             @include transition(all 0.5s ease-out);
         }
@@ -288,11 +317,11 @@ a[href],a[tabindex]{
 
     &:focus,
     &:visited,
-    &:hover{
+    &:hover {
         outline: none;
     }
 
-    &:hover{
+    &:hover {
         background-color: darken(color('colorWhite'), 20%);
     }
 }
@@ -304,29 +333,33 @@ a[href],a[tabindex]{
     box-shadow: $shadow;
 }
 
-.block-element{
+.block-element {
     display: block !important;
 }
+
 .loader {
     text-align: center;
     height: 100%;
     box-shadow: $shadow;
-    
+
     padding: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
+
     .bg {
         background: color("colorWhite");
     }
 }
+
 .document-view {
     .loader {
         circle {
-            stroke: #000; 
+            stroke: #000;
         }
-    }  
+    }
 }
+
 .no-document {
     min-height: 500px;
     display: -webkit-flex;
@@ -335,15 +368,22 @@ a[href],a[tabindex]{
     align-items: center;
     text-align: center;
 
-    &--wrap{
+    &--wrap {}
 
-    }
-
-    &--img{
+    &--img {
         margin-bottom: 10px;
     }
 
-    &--text{
+    &--text {}
+}
 
+.mcu-label{
+    display: block;
+    font: 500 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
+    text-transform: uppercase;
+
+    &-value{
+        display: block;
+        font: 700 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base') ;
     }
 }
