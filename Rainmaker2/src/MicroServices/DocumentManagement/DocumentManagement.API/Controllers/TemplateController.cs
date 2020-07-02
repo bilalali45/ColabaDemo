@@ -31,7 +31,7 @@ namespace DocumentManagement.API.Controllers
         [HttpGet("GetDocument")]
         public async Task<IActionResult> GetDocument(string id, int tenantId)
         {
-            int userProfileId = 1;// int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var docQuery = await templateService.GetDocument(id, tenantId, userProfileId);
             return Ok(docQuery);
         }
