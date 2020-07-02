@@ -47,7 +47,7 @@ namespace DocumentManagement.API.Controllers
                 return NotFound();
         }
         [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(string id, int tenantid, string documentid)
+        public async Task<IActionResult> DeleteDocument(string id, int tenantid, string documentid)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var docQuery = await templateService.DeleteDocument(id, tenantid, documentid,   userProfileId);

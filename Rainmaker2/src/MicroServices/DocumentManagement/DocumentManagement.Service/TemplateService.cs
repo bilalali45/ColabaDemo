@@ -169,7 +169,8 @@ namespace DocumentManagement.Service
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(templateid) },
-                { "tenantId", tenantid} ,{ "userId", userProfileId}
+                { "tenantId", tenantid} 
+                ,{ "userId", userProfileId}
             }, new BsonDocument()
             {
                 { "$set", new BsonDocument()
