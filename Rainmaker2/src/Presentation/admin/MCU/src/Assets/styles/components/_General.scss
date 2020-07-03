@@ -26,7 +26,7 @@ ul {
 .sidebar  {
     background-color: color('sidebarBg');
     color: color('sidebarBg-text');
-    width: 48px;
+    width: 70px;
     min-height: calc(100vh - 60px);
     overflow: hidden;
     position: absolute;
@@ -234,7 +234,7 @@ li.has-sub > .sub {
 }
 
 .main-layout {
-    margin-left: 48px;
+    margin-left: 70px;
     height: 100%;
     background: color('bg');
 }
@@ -326,3 +326,4 @@ li.has-sub > .sub {
 .main-footer {
     text-align: center;
 }
+
