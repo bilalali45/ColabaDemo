@@ -171,7 +171,7 @@ namespace DocumentManagement.Tests
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.DeleteOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<CancellationToken>())).ReturnsAsync(new DeleteResult.Acknowledged(1));
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
@@ -180,7 +180,6 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.True(result);
         }
-
 
         /// <summary>
         /// shehroz
