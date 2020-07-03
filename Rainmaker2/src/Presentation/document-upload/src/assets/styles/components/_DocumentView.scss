@@ -71,6 +71,14 @@
     &--body{
         margin: 0 auto;
         height: calc(100vh - 56px);
+        width: 100%;
+        .pg-viewer-wrapper {
+            img {
+                width: auto !important;
+                max-width: 100%;
+                height: auto !important;
+            }
+        } 
         canvas {
             margin: auto;
             display: table;
@@ -148,5 +156,23 @@
     .pdf-canvas {
         margin-bottom: 30px;
     }
+
+}
+.TransformComponent-module_container__3NwNd {
+    width: 100% !important;
+    height: 100% !important;
+    .TransformComponent-module_content__TZU5O {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        transform-origin: 0% 0%;
+    }
+    // .pg-viewer-wrapper {
+    //     width: 100%;
+    //     overflow-y:hidden;
+    // }
 
 }
