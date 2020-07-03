@@ -101,31 +101,14 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Entity.Template>> mockCollectionMCU = new Mock<IMongoCollection<Entity.Template>>();
-            Mock<IMongoCollection<Entity.Template>> mockCollectionTenant = new Mock<IMongoCollection<Entity.Template>>();
+            Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorMCU = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorTenant = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorSystem = new Mock<IAsyncCursor<BsonDocument>>();
 
-            List<BsonDocument> listMCU = new List<BsonDocument>()
+            List<BsonDocument> list = new List<BsonDocument>()
             { new BsonDocument
                     {
-                        //Cover all empty fields
-                        { "_id" , BsonString.Empty },
-                        { "name" ,"MCU Template1"},
-                        { "type" , BsonString.Empty }
-                    }
-            ,  new BsonDocument
-             {
-                        { "_id" , BsonString.Empty },
-                        { "name" , BsonString.Empty },
-                        { "type" ,  "MCU Template" }
-                    }
-            };
-
-            List<BsonDocument> listTenant = new List<BsonDocument>()
-            { new BsonDocument
-                    {
-                        //Cover all empty fields
                         { "_id" , BsonString.Empty },
                         { "name" ,"MCU Template1"},
                         { "type" , BsonString.Empty }
@@ -139,26 +122,34 @@ namespace DocumentManagement.Tests
             };
 
             mockCursorMCU.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursorMCU.SetupGet(x => x.Current).Returns(listMCU);
+            mockCursorMCU.SetupGet(x => x.Current).Returns(list);
 
-            mockCursorMCU.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursorMCU.SetupGet(x => x.Current).Returns(listTenant);
+            mockCursorTenant.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorTenant.SetupGet(x => x.Current).Returns(list);
 
-            mockCollectionMCU.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Template, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorMCU.Object);
-            mockCollectionTenant.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Template, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorTenant.Object);
+            mockCursorSystem.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorSystem.SetupGet(x => x.Current).Returns(list);
 
-            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionMCU.Object);
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Template, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorMCU.Object).Returns(mockCursorTenant.Object).Returns(mockCursorSystem.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             var service = new TemplateService(mock.Object);
+
             //Act
             List<TemplateModel> dto = await service.GetTemplates(1, 1);
+            
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(2, dto.Count);
-            Assert.Equal("MCU Template1", dto[1].name);
-            Assert.Equal("MCU Template", dto[2].type);
+            Assert.Equal(6, dto.Count);
+            Assert.Equal("MCU Template1", dto[0].name);
+            Assert.Equal("MCU Template", dto[1].type);
+            Assert.Equal("MCU Template1", dto[2].name);
+            Assert.Equal("MCU Template", dto[3].type);
+            Assert.Equal("MCU Template1", dto[4].name);
+            Assert.Equal("MCU Template", dto[5].type);
         }
 
         [Fact]
