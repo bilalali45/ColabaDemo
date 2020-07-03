@@ -547,24 +547,145 @@ namespace DocumentManagement.Tests
             Assert.IsType<OkObjectResult>(result);
         }
 
+
         [Fact]
-        public async Task TestInsertTemplateService()
-        {
+        public async Task TestAddDocumentServiceTrue()
+        {   
+            //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
 
-            mockdb.Setup(x => x.GetCollection<Entity.Template>("Template", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.Template>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            ITemplateService templateService = new TemplateService(mock.Object);
+            AddDocumentModel addDocumentModel = new AddDocumentModel();
+            addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
+            addDocumentModel.tenantId = 1;
+            addDocumentModel.docName = "Credit Report";
+            addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
+            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId,1, addDocumentModel.typeId, addDocumentModel.docName);
+            //Assert
+            Assert.True(result);
+        }
+
+
+        [Fact]
+        public async Task TestAddDocumentServiceFalse()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
+
+            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            ITemplateService templateService = new TemplateService(mock.Object);
+            AddDocumentModel addDocumentModel = new AddDocumentModel();
+            addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
+            addDocumentModel.tenantId = 1;
+            addDocumentModel.docName = "Credit Report";
+            addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
+            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, 1, addDocumentModel.typeId, addDocumentModel.docName);
+            //Assert
+            Assert.False(result);
+        }
+
+
+        [Fact]
+        public async Task TestGetCategoryDocumentServiceIsNotNull()
+        {    
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Category>> mockCollection = new Mock<IMongoCollection<Entity.Category>>();
+             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                
+                new BsonDocument
+                    {
+                        //Cover all empty  fields except _id
+                        { "_id" , "5eba77905561502c495f6333"},
+                        { "name" ,"Assets"},
+                        { "docTypeId" , BsonString.Empty},
+                        { "docType" , BsonString.Empty}
+                    }
+                 ,
+                  
+            };
+
+            List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Category, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.Category>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             var service = new TemplateService(mock.Object);
-
             //Act
-            var templateId = await service.InsertTemplate(1, 1, "Salary Slip");
-            templateId = "5eb25acde519051af2eeb111";
+            List<CategoryDocumentTypeModel> dto = await service.GetCategoryDocument();
             //Assert
-            Assert.NotNull(templateId);
+            Assert.NotNull(dto);
+            Assert.Equal("5eba77905561502c495f6333", dto[0].catId);
+            Assert.Equal("Assets", dto[0].catName);
+            Assert.Equal(new List<DocumentTypeModel>(), dto[0].documents);
+   
+        }
+
+        [Fact]
+        public async Task TestGetCategoryDocumentServiceIsNull()
+        {    
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Category>> mockCollection = new Mock<IMongoCollection<Entity.Category>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty  fields
+                        { "_id" , BsonString.Empty},
+                        { "name" ,BsonString.Empty},
+                        { "docTypeId" , BsonString.Empty},
+                        { "docType" , BsonString.Empty}
+                    }
+                 
+            };
+
+            List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())). ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Category, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.Category>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new TemplateService(mock.Object);
+            //Act
+            List<CategoryDocumentTypeModel> dto = await service.GetCategoryDocument();
+            //Assert
+            Assert.NotNull(dto);
+            
+            Assert.Equal("", dto[0].catId);
+            Assert.Equal("",dto[0].catName);
+            Assert.Equal(new List<DocumentTypeModel>(), dto[0].documents);
         }
     }
 }

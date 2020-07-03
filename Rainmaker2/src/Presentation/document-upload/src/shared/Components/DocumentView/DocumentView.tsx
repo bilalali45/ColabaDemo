@@ -152,42 +152,41 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
+      <TransformWrapper
+              defaultScale={1}
+              wheel={{wheelEnabled:false}}
+              // defaultPositionX={200}
+              // defaultPositionY={100}
+
+            >
+              {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+  
+                  <div>
+                    <TransformComponent>
         <div className="document-view--body">
-          {!!documentParams.filePath ? (
-            // <TransformWrapper
-            //   defaultScale={1}
-            //   defaultPositionX={200}
-            //   defaultPositionY={100}
-            // >
-            //   {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-            //     <React.Fragment>
-            //       <div className="tools">
-            //         <button onClick={zoomIn}>+</button>
-            //         <button onClick={zoomOut}>-</button>
-            //         <button onClick={resetTransform}>x</button>
-            //       </div>
-            //       <TransformComponent>
+          {!!documentParams.filePath ? ( 
+            
                     <FileViewer
                       fileType={documentParams.fileType}
                       filePath={documentParams.filePath}
                     />
-            //       </TransformComponent>
-            //     </React.Fragment>
-            //   )}
-            // </TransformWrapper>
+                    
+          
           ) : (
               <Loader height={"94vh"} />
             )}
         </div>
+        
+        </TransformComponent>
         <div className="document-view--floating-options">
           <ul>
             <li>
-              <button className="button-float">
+              <button className="button-float" onClick={zoomIn}>
                 <em className="zmdi zmdi-plus"></em>
               </button>
             </li>
             <li>
-              <button className="button-float">
+              <button className="button-float" onClick={zoomOut}>
                 <em className="zmdi zmdi-minus"></em>
               </button>
             </li>
@@ -198,7 +197,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             </li>
           </ul>
         </div>
+       
+        </div>    
+              )}
+            </TransformWrapper>
       <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
+
   );
 };

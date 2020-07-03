@@ -4,6 +4,7 @@ import { DateFormat } from './DateFormat';
 export class FileUpload {
 
     static nameTest = /^[ A-Za-z0-9-\s]*$/i;
+    
 
     static todayDate = DateFormat(moment().format('MMM DD, YYYY hh:mm:ss A'), true);
 
@@ -11,7 +12,7 @@ export class FileUpload {
 
     static removeSpecialChars(text: string) {
 
-        return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+        return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '')
     }
 
     static isFileAllowed(file) {
@@ -71,6 +72,18 @@ export class FileUpload {
         return onlyName != "" ? onlyName : fileName;
     }
 
+    static splitDataByType(fileName: string, type: string){
+       let numberTest = /^[0-9\s]*$/i;
+       let splitData  = fileName.split('-');
+       if(splitData.length == 1)
+         return fileName;
+       if(numberTest.test(splitData[1]))
+         return splitData[0];
+        else
+         return  fileName; 
+
+    }
+
     static sortByDate(array: any[]) {
         return array.sort((a, b) => {
             let first = new Date(a.fileUploadedOn);
@@ -78,11 +91,28 @@ export class FileUpload {
             return first > second ? -1 : first < second ? 1 : 0;
         })
     }
-
-    static updateName(name, type) {
-        let newName = FileUpload.removeDefaultExt(name);
-        var uniq = 'rsft' + (new Date()).getTime();
-        return newName + uniq + '.' + type.split("/")[1];
+    
+    static isNameAlreadyExist = (prevFiles, file) =>{
+        let count = 0;
+        let uploadingFileName =  FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name))
+       // prevFiles.find(i => FileUpload.removeDefaultExt(i.clientName) === FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)))
+       for(let i = 0; i < prevFiles.length; i++){       
+            let uploadedFileName = FileUpload.splitDataByType(FileUpload.removeDefaultExt(prevFiles[i].clientName), '-');
+            if(uploadingFileName === uploadedFileName)
+               count++;
+       }
+      return count;
+    }
+    static updateName(name, type, count) {
+        let newName = FileUpload.removeDefaultExt(name);  
+        if(count.toString().length == 1){
+            count++;
+            count = '0'+count;
+        }      
+        else{
+            count++
+        }                       
+        return newName +'-'+count+'.' + type.split("/")[1];
     }
 
 }

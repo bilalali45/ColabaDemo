@@ -28,12 +28,20 @@ const App = () => {
   const tokenData: any = UserActions.getUserInfo();
   const displayName = ' '+tokenData?.FirstName+' '+tokenData?.LastName;
   const history = useHistory();
-
+  
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     getFooterText();
+    addExpiryListener();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
+
+    // component unmount
+    return () => {
+      console.log("Application unmount call");
+      Auth.removeAuth();
+    }
+
   }, [])
 
   const authenticate = async () => {
@@ -46,15 +54,20 @@ const App = () => {
    setFooterText(footerText);
   }
 
+  const addExpiryListener = () => {
+    if (Auth.getUserPayload()) {
+      console.log("addExpiryListener called from APP tsx")
+      UserActions.addExpiryListener(Auth.getUserPayload());
+      // setExpListnerAdded(true);
+    }
+  }
+
   if (!authenticated) {
     return null;
   }
 
-  if (Auth.getUserPayload()) {
-    UserActions.addExpiryListener(Auth.getUserPayload());
-    // setExpListnerAdded(true);
-  }
-
+  
+  
   return (
     <div className="app">
       <StoreProvider>

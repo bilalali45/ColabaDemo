@@ -6,7 +6,6 @@ import { Http } from "../../services/http/Http";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const http = new Http();
-
 export class UserActions {
   static async authenticate() {
 
@@ -29,6 +28,9 @@ export class UserActions {
 
   static async refreshToken() {
     try {
+      if(!Auth.checkAuth()){
+        return
+      }
       console.log("In refresh token and refresh token is", Auth.getRefreshToken(), new Date() )
       console.log("In refresh token and access token is", Auth.getAuth() )
       let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
@@ -41,6 +43,7 @@ export class UserActions {
         Auth.saveRefreshToken(res.data.data.refreshToken);
         let payload = UserActions.decodeJwt(res.data.data.token);
         Auth.storeTokenPayload(payload);
+        console.log("addExpiryListener called from refreshToken")
         UserActions.addExpiryListener(payload);
         console.log('token refreshed');
         return true;
@@ -48,7 +51,11 @@ export class UserActions {
       Auth.removeAuth();
       return false;
     } catch (error) {
-      Auth.removeAuth();
+      //Auth.removeAuth();
+      setTimeout( () => {
+        console.log("Refresh token called from refreshToken in case of API Error")
+        UserActions.refreshToken();
+      }, 1 * 1000)
       return false;
     }
   }
@@ -80,11 +87,16 @@ export class UserActions {
 
       let Rainmaker2Token = cookies.get('Rainmaker2Token');
       let Rainmaker2RefreshToken = cookies.get('Rainmaker2RefreshToken');
-
       if (Rainmaker2Token && Rainmaker2RefreshToken) {
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
-        Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
+        let isAuth = Auth.checkAuth();
+        if(isAuth){
+          Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
+        }else{
+          console.log("Refresh token called from authorize in case of MVC expire token")
+          UserActions.refreshToken();
+        }
         return true;
       } else {
         return false;
@@ -112,7 +124,7 @@ export class UserActions {
     setTimeout(async () => {
       console.log("Refresh token called from addExpiryListener in case of time out meet")
       await UserActions.refreshToken();
-    }, time - 1000);
+    }, time - 2000);
   }
 
 
