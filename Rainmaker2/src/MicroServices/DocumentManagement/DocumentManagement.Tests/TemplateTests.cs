@@ -609,41 +609,17 @@ namespace DocumentManagement.Tests
 
             List<BsonDocument> list = new List<BsonDocument>()
             {
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields
-                //        { "_id" ,  "5eba77905561502c495f6333"},
-                //        { "name" ,BsonString.Empty},
-                //        { "docTypeId" , BsonString.Empty},
-                //        { "docType" , BsonString.Empty}
-                //    }
-                //,
+                
                 new BsonDocument
                     {
-                        //Cover all empty  fields except name
+                        //Cover all empty  fields except _id
                         { "_id" , "5eba77905561502c495f6333"},
                         { "name" ,"Assets"},
                         { "docTypeId" , BsonString.Empty},
                         { "docType" , BsonString.Empty}
                     }
                  ,
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields except docTypeId
-                //        { "_id" , "5eba77905561502c495f6333"},
-                //        { "name" ,BsonString.Empty},
-                //        { "docTypeId" , "5eb257a3e519051af2eeb624"},
-                //        { "docType" , BsonString.Empty}
-                //    }
-                // ,
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields except typeName
-                //        { "_id" , "5eba77905561502c495f6333"},
-                //        { "name" ,BsonString.Empty},
-                //        { "docTypeId" , BsonString.Empty},
-                //        { "docType" , "Salary Slip"}
-                //    }
+                  
             };
 
             List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
@@ -687,33 +663,7 @@ namespace DocumentManagement.Tests
                         { "docTypeId" , BsonString.Empty},
                         { "docType" , BsonString.Empty}
                     }
-                //,
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields except name
-                //        { "_id" , "5eba77905561502c495f6333"},
-                //        { "name" ,"Assets"},
-                //        { "docTypeId" , BsonString.Empty},
-                //        { "docType" , BsonString.Empty}
-                //    }
-                // ,
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields except docTypeId
-                //        { "_id" , "5eba77905561502c495f6333"},
-                //        { "name" ,BsonString.Empty},
-                //        { "docTypeId" , "5eb257a3e519051af2eeb624"},
-                //        { "docType" , BsonString.Empty}
-                //    }
-                // ,
-                //new BsonDocument
-                //    {
-                //        //Cover all empty  fields except typeName
-                //        { "_id" , "5eba77905561502c495f6333"},
-                //        { "name" ,BsonString.Empty},
-                //        { "docTypeId" , BsonString.Empty},
-                //        { "docType" , "Salary Slip"}
-                //    }
+                 
             };
 
             List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
