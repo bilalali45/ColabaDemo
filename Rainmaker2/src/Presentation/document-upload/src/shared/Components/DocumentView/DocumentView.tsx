@@ -191,7 +191,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
               </button>
             </li>
             <li>
-              <button className="button-float">
+              <button className="button-float" onClick={resetTransform}>
                 <SVGfullScreen />
               </button>
             </li>
