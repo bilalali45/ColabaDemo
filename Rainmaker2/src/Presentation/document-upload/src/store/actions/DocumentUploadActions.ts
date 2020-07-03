@@ -63,15 +63,15 @@ export class DocumentUploadActions {
         return data;
     }
 
-    static updateFiles(files: File[], prevFiles: Document[], dispatch: Function) {
+    
 
+    static updateFiles(files: File[], prevFiles: Document[], dispatch: Function) {
         let allSelectedFiles: Document[] = [...prevFiles];
         for (let f of files) {
-
             var newName = f.name;
-            var isNameExist = prevFiles.find(i => FileUpload.removeDefaultExt(i.clientName) === FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(f.name)))
-            if (isNameExist) {
-                newName = FileUpload.updateName(f.name, f.type)
+            var count = FileUpload.isNameAlreadyExist(prevFiles,f);
+            if (count != 0) {
+                newName = FileUpload.updateName(f.name, f.type, count)
             }
             const selectedFile = new Document("", newName, FileUpload.todayDate, 0, 0, FileUpload.getDocLogo(f, 'slash'), 'pending', f);
             if (!FileUpload.isSizeAllowed(f)) {
