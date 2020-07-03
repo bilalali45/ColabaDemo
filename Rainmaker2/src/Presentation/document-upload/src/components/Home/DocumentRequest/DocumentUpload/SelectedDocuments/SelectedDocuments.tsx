@@ -4,10 +4,15 @@ import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
-import { DocumentActions, removeDefaultExt, removeActualFile } from "../../../../../store/actions/DocumentActions";
+import { DocumentActions } from "../../../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../../../store/reducers/documentReducer";
 import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
+import erroricon from '../../../../../assets/images/warning-icon.svg';
+import refreshIcon from '../../../../../assets/images/refresh.svg';
+import { debug } from "console";
+import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
+import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -22,7 +27,7 @@ interface ViewDocumentType {
   fileId?: string;
 }
 
-const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
+// const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
   addMore, setFileInput
@@ -32,26 +37,31 @@ export const SelectedDocuments = ({
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
+  const [sameName, setSameName] = useState<boolean>(false);
 
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
   const selectedFiles = currentSelected.files || [];
   const docTitle = currentSelected ? currentSelected.docName : "";
   console.log('selectedFiles apex', selectedFiles)
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        setFileInput(inputRef.current)
-    }, []);
-
-  
   useEffect(() => {
-    hasSubmitted();
+    setFileInput(inputRef.current)
+  }, []);
+
+
+  useEffect(() => {
+
     disableSubmitBtn();
   }, [selectedFiles, selectedFiles.length, currentSelected]);
- 
-  
+
+  useEffect(() => {
+    hasSubmitted();
+  }, [selectedFiles, selectedFiles.length]);
+
+
   const viewDocument = (document: any) => {
     const {
       currentDoc: { id, requestId, docId },
@@ -69,28 +79,38 @@ export const SelectedDocuments = ({
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
-
     for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done") {
-        let docs: DocumentRequest[] | undefined = await DocumentActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
-        if (docs) {
-          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-          let doc = docs.find(d => d.docId === currentSelected?.docId);
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
-        }
+      if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
+        await DocumentUploadActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
       }
     }
     setSubBtnPressed(false);
+    try {
+      let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+      if (docs) {
+        debugger
+        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+        let doc = docs.find(d => d.docId === currentSelected?.docId);
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
+      }
+
+    } catch (error) {
+
+    }
   };
 
-  const changeName = (file: Document, newName: string) => {
-    debugger
-    var alreadyExist = selectedFiles.find(f => f !== file && removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
+  const fileAlreadyExists = (file, newName) => {
+    var alreadyExist = selectedFiles.find(f => f !== file && FileUpload.removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
     if (alreadyExist) {
-      alert('Files name must be unique')
-      return;
+      return true;
     }
+    return false;
+  }
 
+  const changeName = (file: Document, newName: string) => {
+    if (fileAlreadyExists(file, newName)) {
+      return false;
+    }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
@@ -100,13 +120,12 @@ export const SelectedDocuments = ({
 
       return f;
     });
-    debugger
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
 
   };
 
   const deleteDoc = (fileName: string) => {
-    removeActualFile(fileName, selectedFiles, dispatch);
+    DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch);
     let updatedFiles = selectedFiles.filter((f: Document) => {
       if (f?.clientName !== fileName) {
         return f;
@@ -121,12 +140,14 @@ export const SelectedDocuments = ({
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
 
-    if(docFiles.length > 0) {
+    if (docFiles.length > 0) {
       setBtnDisabled(false);
-    }else {
+    } else {
       setBtnDisabled(true);
     }
     if (docEdits.length > 0) {
+      setBtnDisabled(true);
+    } else if (doneVisible) {
       setBtnDisabled(true);
     } else {
       setBtnDisabled(false);
@@ -151,28 +172,79 @@ export const SelectedDocuments = ({
   };
 
   const hasSubmitted = () => {
-    let lastItem = selectedFiles[selectedFiles.length - 1];
-    if (selectedFiles.filter((f) => f.uploadStatus !== "done").length === 0) {
-      setDoneVisible(true);
-      return;
-    }else {
+    let pending = selectedFiles.filter((f) => f.uploadStatus === "pending");
+    if (pending.length > 0) {
       setDoneVisible(false);
+      return;
+    } else {
+      setDoneVisible(true);
     }
-    // return lastItem.file && lastItem.uploadStatus === "done"
-    //   ? setDoneVisible(true)
-    //   : setDoneVisible(false);
   };
 
- 
+
 
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
         <div className="list-selected-doc">
           <ul className="doc-list-ul">
+          <li className="doc-li item-error">
+<div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                                <p>Bank-statement-Jan-to-Mar-2020-1.pdf</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File size over 8mb limit </span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                            <ul className="editable-actions">
+                                <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                </li>
+                            </ul>
+
+                    </div>
+                </div>
+</li>
+
+<li className="doc-li item-error">
+<div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                                <p>Bank-statement-Jan-to-Mar-2020-1.pdf</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File type is not supported. Allowed types: PDF, JPEG, PNG</span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                            <ul className="editable-actions">
+                                <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                </li>
+                            </ul>
+
+                    </div>
+                </div>
+</li>
+
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  fileAlreadyExists={fileAlreadyExists}
+                  retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
                   viewDocument={viewDocument}
                   changeName={changeName}
@@ -184,16 +256,16 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            <a  className="addmoreDoc" onClick={(e) => {
-             
+            <a className="addmoreDoc" onClick={(e) => {
+
               console.log(e);
               addMore(e)
             }}>
               Add more files
-              <input type='file' 
-              accept={allowedExtensions}
-              id="inputFile"
-              ref={inputRef} multiple style={{display: "none"}} />
+              <input type='file'
+                accept={FileUpload.allowedExtensions}
+                id="inputFile"
+                ref={inputRef} multiple style={{ display: "none" }} />
             </a>
 
           </div>
@@ -219,7 +291,10 @@ export const SelectedDocuments = ({
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
-                    onClick={() => setDoneVisible(false)}
+                    onClick={() => {
+                      setDoneVisible(false);
+                      disableSubmitBtn();
+                    }}
                   >
                     No
                   </button>
@@ -228,7 +303,7 @@ export const SelectedDocuments = ({
                     onClick={doneDoc}
                   >
                     Yes
-                  </button> 
+                  </button>
                 </div>
               </div>
             </div>

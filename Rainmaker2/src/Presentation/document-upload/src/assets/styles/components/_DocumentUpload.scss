@@ -2,6 +2,13 @@
     margin-right: -5px;
     .empty-uploader {
             height: 425px;
+            .upload-note {
+                color: color("light-purple");
+                                font: 500 #{fontSize("xs") + 1 + "/17px"} fontFamily("base");
+                                p{
+                                    margin-bottom: 5px;
+                                }
+            }
     }
     .Doc-head-wrap {
         padding-top: 28px;
@@ -78,6 +85,38 @@
                     position: relative;
                     // padding: 15px 10px;
                     margin-bottom: 10px;
+                    &.item-error {
+                        .doc-icon {
+                            img {
+                                margin-top: 3px;
+                            }
+                        }
+                        .doc-list-content {
+                            .tilte {
+                                color: color("colorred");
+                                p {
+                                    color: color("colorred");
+
+                                }
+                            }
+                            .dl-info {
+                                color: color("colorred");
+                            }
+                        }
+                        .doc-list-actions {
+                            a {
+                                color: color("colorred");
+                                font: 400 #{fontSize("xs") + 1 + "/17px"} fontFamily("base");
+                                .retry-txt {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                }
+                                img {
+                                    margin-left: 8px;
+                                }
+                            }
+                        }
+                    }
                     &:last-child {
                         margin-bottom: 0px;
                     }
@@ -128,6 +167,7 @@
                         }
                         .dl-info {
                             font: 400 #{fontSize("xs") + 1 + "/17px"} fontFamily("base");
+                            margin-left: 1px;
                             color: color("gray2");
                             span {
                                 vertical-align: middle;
@@ -289,6 +329,6 @@
 }
 }
 
-.drag-enter{
-    border: 2px dashed #ebebeb;
-}
+// .drag-enter{
+//     border: 2px dashed #ebebeb;
+// }

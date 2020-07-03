@@ -1,9 +1,9 @@
-import React, { useState, ChangeEvent, useContext, useEffect } from "react";
+import React, { useState, ChangeEvent, useContext, useEffect, useRef } from "react";
 import { DocumentDropBox, FileDropper } from "../../../../shared/Components/DocumentDropBox/DocumentDropBox";
 import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
 import { Store } from "../../../../store/store";
 import { Document } from "../../../../entities/Models/Document";
-import { isFileAllowed, updateFiles } from "../../../../store/actions/DocumentActions";
+import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
 
 
 export const DocumentUpload = () => {
@@ -15,11 +15,13 @@ export const DocumentUpload = () => {
   let docMessage = currentDoc ? currentDoc.docMessage : "";
 
 
+  const parentRef = useRef<HTMLDivElement>(null);
+
   const getFileInput = (fileInputEl: HTMLInputElement) => {
     setFileInput(fileInputEl);
   };
 
-  const showFileExplorer = () => {
+  const showFileExplorer = (fileToRemnove: Document | null = null) => {
     if (fileInput?.value) {
       fileInput.value = '';
     }
@@ -28,14 +30,15 @@ export const DocumentUpload = () => {
       fileInput.onchange = (e: any) => {
         let files = e?.target?.files;
         if (files) {
-          updateFiles(files, selectedfiles, dispatch);
+          let updatedFiles = selectedfiles.filter(sf => sf !== fileToRemnove);
+          DocumentUploadActions.updateFiles(files, updatedFiles, dispatch);
         }
       };
     }
   };
 
   return (
-    <section className="Doc-upload">
+    <section className="Doc-upload" ref={parentRef}>
               <div className="Doc-head-wrap">
           <h2> {docTitle}</h2>
           <div className="doc-note">
@@ -46,15 +49,15 @@ export const DocumentUpload = () => {
           </div>
         </div>
       <FileDropper
-        getDroppedFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
+        parent={parentRef.current}
+        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
       >
           {!selectedfiles?.length ? (
             <DocumentDropBox
-              getFiles={(files) => updateFiles(files, selectedfiles, dispatch)}
+              getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
               setFileInput={getFileInput} />
           ) : (
               <>
-
                 <SelectedDocuments
                   addMore={showFileExplorer}
                   setFileInput={getFileInput}
