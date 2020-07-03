@@ -133,7 +133,6 @@ export const SelectedDocuments = ({
   };
 
   const disableSubmitBtn = () => {
-    // let docFile = selectedFiles.find((df) => df.file && df.uploadStatus === "pending");
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
 
@@ -163,6 +162,8 @@ export const SelectedDocuments = ({
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+      }else if(docs?.length === 0) {
+        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
       setDoneVisible(false);
     }
@@ -188,6 +189,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
@@ -200,7 +202,7 @@ export const SelectedDocuments = ({
               );
             })}
           </ul>
-          <div className="addmore-wrap">
+          {selectedFiles.length <= 10 && <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => {
 
               console.log(e);
@@ -213,7 +215,7 @@ export const SelectedDocuments = ({
                 ref={inputRef} multiple style={{ display: "none" }} />
             </a>
 
-          </div>
+          </div>}
         </div>
         {!!currentDoc && (
           <DocumentView

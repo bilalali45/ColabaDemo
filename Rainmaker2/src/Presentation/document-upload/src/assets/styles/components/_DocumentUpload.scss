@@ -17,7 +17,8 @@
         left: -10px;
         top: 5px;
         display: block;
-        z-index: -8888;;
+        z-index: -8888;
+        pointer-events: none;
     }
     
     .empty-uploader {

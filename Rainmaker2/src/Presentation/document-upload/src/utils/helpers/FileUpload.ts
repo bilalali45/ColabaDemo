@@ -3,15 +3,29 @@ import { DateFormat } from './DateFormat';
 
 export class FileUpload {
 
+    static allowedExtensions = "pdf, jpg, jpeg, png";
+    static allowedSize = 15; //in mbs
+    
     static nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
     static todayDate = DateFormat(moment().format('MMM DD, YYYY hh:mm:ss A'), true);
 
-    static allowedExtensions = "pdf, jpg, jpeg, png";
 
     static removeSpecialChars(text: string) {
 
         return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+    }
+
+    static getFileSize(file) {
+        let size = file.size || file.file?.size;
+        if (size) {
+            let inKbs = size / 1000;
+            if (inKbs > 1000) {
+                return `${Math.ceil(inKbs / 1000)}mb(s)`
+            }
+            return `${Math.ceil(inKbs)}kb(s)`;
+        }
+        return `${0}kbs`
     }
 
     static isFileAllowed(file) {
@@ -32,8 +46,8 @@ export class FileUpload {
     static isSizeAllowed(file) {
         if (!file) return null;
 
-        const allowedSize = 8000;
-        if (file.size / 1000 < allowedSize) {
+        
+        if (file.size / 1000 / 1000 < this.allowedSize) {
             return true;
         }
         return false;

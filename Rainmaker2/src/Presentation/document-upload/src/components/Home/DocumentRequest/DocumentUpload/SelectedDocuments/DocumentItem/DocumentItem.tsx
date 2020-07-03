@@ -7,6 +7,7 @@ import erroricon from '../../../../../../assets/images/warning-icon.svg'
 import refreshIcon from '../../../../../../assets/images/refresh.svg'
 
 type DocumentItemType = {
+    disableSubmitButton: Function
     file: Document,
     viewDocument: Function,
     changeName: Function,
@@ -16,8 +17,7 @@ type DocumentItemType = {
     fileAlreadyExists: Function
 }
 
-
-export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAlreadyExists, retry }: DocumentItemType) => {
+export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAlreadyExists, retry, disableSubmitButton }: DocumentItemType) => {
     const [filename, setfilename] = useState<string>('');
     const [iseditable, seteditable] = useState<any>(true)
     const [nameExists, setNameExists] = useState<any>(false)
@@ -29,7 +29,6 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
     useEffect(() => {
         setfilename(FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.clientName)))
     }, [file])
-
 
     useEffect(() => {
         if (txtInput.current) {
@@ -50,27 +49,17 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
     }
 
     const EditTitle = () => {
-        setNameExists(false);
         changeName(file, filename)
     }
 
     const deleteDOChandeler = () => {
+        disableSubmitButton(true)
+        setNameExists(false);
         setdeleted(true)
     }
     const cancelDeleteDOC = () => {
+        disableSubmitButton(false)
         setdeleted(false)
-    }
-
-    const getFileSize = () => {
-        let size = file.size || file.file?.size;
-        if (size) {
-            let inKbs = size / 1000;
-            if (inKbs > 1000) {
-                return `${Math.ceil(inKbs / 1000)}mb(s)`
-            }
-            return `${Math.ceil(inKbs)}kb(s)`;
-        }
-        return `${0}kbs`
     }
 
     const renderAllowedFile = () => {
@@ -81,7 +70,6 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                         <div className={file.editName ? "editableview doc-liWrap" : "noneditable doc-liWrap"}>
                             <div className="doc-icon">
                                 <i className={file.docLogo}></i>
-
                             </div>
                             <div className="doc-list-content">
                                 <div className="tilte">
@@ -111,7 +99,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                                     <span className="dl-text-by"> by </span>
                                     <span className="dl-text-auther">{UserActions.getUserName()}</span>
                                     <span className="dl-pipe"> | </span>
-                                    <span className="dl-filesize">{getFileSize()}</span>
+                                    <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
                                 </div>
                             </div>
                             <div className="doc-list-actions">
@@ -190,16 +178,16 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                             <p>{file.clientName}</p>
                         </div>
                         <div className="dl-info">
-                            <span className="dl-text"> File size over 8mb limit </span>
+                            <span className="dl-text"> File size over {FileUpload.allowedSize}mb limit </span>
 
                         </div>
                     </div>
                     <div className="doc-list-actions">
                         <ul className="editable-actions">
-                            <li>
-                                <a title="Retry" className="icon-retry" tabIndex={-1}><span onClick={() => {
+                            <li onClick={() => {
                                     retry(file)
-                                }} className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                }}>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
                             </li>
                         </ul>
 
@@ -228,10 +216,10 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                     </div>
                     <div className="doc-list-actions">
                         <ul className="editable-actions">
-                            <li>
-                                <a title="Retry" className="icon-retry" tabIndex={-1}><span onClick={() => {
-                                    retry(file)
-                                }} className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                            <li onClick={() => {
+                                retry(file)
+                            }}>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
                             </li>
                         </ul>
 
@@ -248,17 +236,8 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
         } else if (file.notAllowedReason === 'FileType') {
             return renderTypeIsNotAllowed();
         }
-
         return null;
 
-        // return (
-        //     <li className="doc-li">
-        //         this file is not allowed
-        //         <button onClick={() => {
-        //             retry(file)
-        //         }}>retry</button>
-        //     </li>
-        // )
     }
 
     if (file.notAllowed) {

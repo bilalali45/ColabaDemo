@@ -29,8 +29,6 @@ export class UserActions {
 
   static async refreshToken() {
     try {
-      console.log("In refresh token and refresh token is", Auth.getRefreshToken(), new Date() )
-      console.log("In refresh token and access token is", Auth.getAuth() )
       let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken()
