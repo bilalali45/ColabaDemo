@@ -555,5 +555,25 @@ namespace DocumentManagement.Tests
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public async Task TestInsertTemplateService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
+
+            mockdb.Setup(x => x.GetCollection<Entity.Template>("Template", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.Template>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new TemplateService(mock.Object);
+
+            //Act
+            var templateId = await service.InsertTemplate(1, 1, "Salary Slip");
+            templateId = "5eb25acde519051af2eeb111";
+            //Assert
+            Assert.NotNull(templateId);
+        }
     }
 }
