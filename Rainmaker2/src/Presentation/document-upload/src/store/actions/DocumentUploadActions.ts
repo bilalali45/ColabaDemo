@@ -74,9 +74,16 @@ export class DocumentUploadActions {
                 newName = FileUpload.updateName(f.name, f.type)
             }
             const selectedFile = new Document("", newName, FileUpload.todayDate, 0, 0, FileUpload.getDocLogo(f, 'slash'), 'pending', f);
-            if (!FileUpload.isFileAllowed(f)) {
+            if (!FileUpload.isSizeAllowed(f)) {
+                selectedFile.notAllowedReason = 'FileSize';
                 selectedFile.notAllowed = true;
             }
+
+            if (!FileUpload.isTypeAllowed(f)) {
+                selectedFile.notAllowedReason = 'FileType';
+                selectedFile.notAllowed = true;
+            }
+
             selectedFile.editName = true;
             allSelectedFiles.push(selectedFile);
             // }
