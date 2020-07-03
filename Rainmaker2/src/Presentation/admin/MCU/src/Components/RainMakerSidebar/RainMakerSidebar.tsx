@@ -7,7 +7,9 @@ export const RainMakerSidebar = () => {
                 <ul className="sidebar-main-ul">
                     <li>
                         <a href="/Admin/dashboard">
-                            <i className="fas fa-file-alt"></i> <span className="menu-text">Dashboard</span>
+                            <i className="fas fa-file-alt"></i>
+                            {/* <em className="icon-file"></em> */}
+                             <span className="menu-text">Dashboard</span>
                         </a>
                     </li>
                     <li className="has-sub">
@@ -908,7 +910,7 @@ export const RainMakerSidebar = () => {
                     </li>
                     <li className="has-sub">
                         <a href="javascript:;" className="">
-                            <i className="fa fa-file-text"></i> <span className="menu-text">Manage Fees</span>
+                            <i className="fas fa-file-alt"></i> <span className="menu-text">Manage Fees</span>
                             <span className="arrow"></span>
                         </a>
                         <ul className="sub">
@@ -948,7 +950,7 @@ export const RainMakerSidebar = () => {
                     </li>
                     <li className="has-sub active">
                         <a href="javascript:;" className="">
-                            <i className="fa fa-check-square-o"></i> <span className="menu-text">Review</span>
+                            <i className="icon-tick"></i> <span className="menu-text">Review</span>
                             <span className="arrow"></span>
                         </a>
                         <ul className="sub">
@@ -970,7 +972,7 @@ export const RainMakerSidebar = () => {
                     </li>
                     <li className="has-sub">
                         <a href="javascript:;" className="">
-                            <i className="fa fa-money"></i> <span className="menu-text">Loan Application</span>
+                            <i className="icon-money"></i> <span className="menu-text">Loan Application</span>
                             <span className="arrow"></span>
                         </a>
                         <ul className="sub">
@@ -983,6 +985,12 @@ export const RainMakerSidebar = () => {
 
 
                         </ul>
+                    </li>
+                    <li className="has-sub">
+                        <a href="javascript:;" className="">
+                            <i className="icon-20"></i> <span className="menu-text">Marketing</span>
+                            <span className="arrow"></span>
+                        </a>
                     </li>
                     <li className="has-sub">
                         <a href="javascript:;" className="">
