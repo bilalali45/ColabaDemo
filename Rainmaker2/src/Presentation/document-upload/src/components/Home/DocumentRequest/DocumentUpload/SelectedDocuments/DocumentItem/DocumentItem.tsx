@@ -3,6 +3,8 @@ import { DocEditIcon, DocviewIcon } from '../../../../../../shared/Components/As
 import { UserActions } from '../../../../../../store/actions/UserActions'
 import { Document } from '../../../../../../entities/Models/Document'
 import { FileUpload } from '../../../../../../utils/helpers/FileUpload'
+import erroricon from '../../../../../../assets/images/warning-icon.svg'
+import refreshIcon from '../../../../../../assets/images/warning-icon.svg'
 
 type DocumentItemType = {
     file: Document,
@@ -20,7 +22,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
     const [iseditable, seteditable] = useState<any>(true)
     const [nameExists, setNameExists] = useState<any>(false)
     const [isdeleted, setdeleted] = useState<any>(false)
-    
+
     const txtInput: any = useRef(null);
 
 
@@ -42,7 +44,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
             return;
         }
         let nameExists = changeName(file, filename);
-        if(nameExists === false) {
+        if (nameExists === false) {
             setNameExists(true);
         }
     }
@@ -95,7 +97,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                                         setTimeout(() => {
                                             setNameExists(false);
                                         }, 3000);
-                                       
+
                                         setNameExists(true);
                                         // alert('File names shoul not contain special charaters apart from "-"')
                                     }} />
@@ -175,15 +177,88 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
         )
     }
 
-    const renderNotAllowedFile = () => {
+    const renderSizeNotAllowed = () => {
         return (
-            <li className="doc-li">
-                this file is not allowed
-                <button onClick={() => {
-                    retry(file)
-                }}>retry</button>
+            <li className="doc-li item-error">
+                <div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                            <p>{file.clientName}</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File size over 8mb limit </span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                        <ul className="editable-actions">
+                            <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span onClick={() => {
+                                    retry(file)
+                                }} className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
             </li>
         )
+    }
+
+    const renderTypeIsNotAllowed = () => {
+        return (
+            <li className="doc-li item-error">
+                <div className="noneditable doc-liWrap">
+                    <div className="doc-icon">
+                        <img src={erroricon} alt="" />
+
+                    </div>
+                    <div className="doc-list-content">
+                        <div className="tilte">
+                            <p>{file.clientName}</p>
+                        </div>
+                        <div className="dl-info">
+                            <span className="dl-text"> File type is not supported. Allowed types: PDF, JPEG, PNG</span>
+
+                        </div>
+                    </div>
+                    <div className="doc-list-actions">
+                        <ul className="editable-actions">
+                            <li>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span onClick={() => {
+                                    retry(file)
+                                }} className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </li>
+        )
+    }
+
+    const renderNotAllowedFile = () => {
+
+        if (file.notAllowedReason === 'FileSize') {
+            return renderSizeNotAllowed();
+        } else if (file.notAllowedReason === 'FileType') {
+            return renderTypeIsNotAllowed();
+        }
+
+        return null;
+
+        // return (
+        //     <li className="doc-li">
+        //         this file is not allowed
+        //         <button onClick={() => {
+        //             retry(file)
+        //         }}>retry</button>
+        //     </li>
+        // )
     }
 
     if (file.notAllowed) {
