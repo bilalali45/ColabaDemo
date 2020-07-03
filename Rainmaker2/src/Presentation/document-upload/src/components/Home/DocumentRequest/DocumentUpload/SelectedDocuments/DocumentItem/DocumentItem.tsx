@@ -108,7 +108,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                                 </div>
                                 <div className="dl-info"> 
                                     {nameExists?
-                                    <span className="dl-errorrename">Name already exist!</span>
+                                    <span className="dl-errorrename">Please rename the file!</span>
                                     : <>
                                                                         <span className="dl-date">{file.fileUploadedOn}</span>
                                     <span className="dl-text-by"> by </span>
