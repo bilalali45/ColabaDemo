@@ -223,7 +223,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
             Mock<IMongoCollection<Entity.Template>> mockCollectionTenant = new Mock<IMongoCollection<Entity.Template>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
-            
+
             List<BsonDocument> list = new List<BsonDocument>()
             {
                 new BsonDocument
@@ -386,20 +386,20 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
 
-           mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
 
             ITemplateService templateService = new TemplateService(mock.Object);
-            bool result = await templateService.RenameTemplate("5eb25acde519051af2eeb111", 1, "ABC", 1); 
-            
+            bool result = await templateService.RenameTemplate("5eb25acde519051af2eeb111", 1, "ABC", 1);
+
             //Assert
             Assert.True(result);
         }
 
-     
+
         [Fact]
         public async Task TestDeleteDocumentServiceTrue()
         {
@@ -415,7 +415,7 @@ namespace DocumentManagement.Tests
             //Act
 
             ITemplateService templateService = new TemplateService(mock.Object);
-            bool result = await templateService.DeleteDocument("5eb25acde519051af2eeb111", 1, "5eb257a3e519051af2eeb477",1);
+            bool result = await templateService.DeleteDocument("5eb25acde519051af2eeb111", 1, "5eb257a3e519051af2eeb477", 1);
             //Assert
             Assert.True(result);
         }
@@ -428,18 +428,16 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
 
-             mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
             ITemplateService templateService = new TemplateService(mock.Object);
-             bool result = await templateService.DeleteDocument("6eb25acde519051af2eeb111", 1, "6eb257a3e519051af2eeb477", 1);
+            bool result = await templateService.DeleteDocument("6eb25acde519051af2eeb111", 1, "6eb257a3e519051af2eeb477", 1);
             //Assert
             Assert.False(result);
         }
-
-
 
         [Fact]
         public async Task TestRenameTemplateServiceFalse()
@@ -455,10 +453,108 @@ namespace DocumentManagement.Tests
 
             //Act
             ITemplateService templateService = new TemplateService(mock.Object);
-             bool result = await templateService.RenameTemplate("6eb25acde519051af2eeb111", 1, "salary", 1);
+            bool result = await templateService.RenameTemplate("6eb25acde519051af2eeb111", 1, "salary", 1);
             //Assert
             Assert.False(result);
         }
 
+        [Fact]
+        public async Task TestAddDocumentControllerTrue()
+        {
+            Mock<ITemplateService> mock = new Mock<ITemplateService>();
+
+            mock.Setup(x => x.AddDocument(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+            var controller = new TemplateController(mock.Object);
+            controller.ControllerContext = context;
+
+            //Act
+
+            AddDocumentModel addDocumentModel = new AddDocumentModel();
+            addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
+            addDocumentModel.tenantId = 1;
+            addDocumentModel.docName = "Credit Report";
+            addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
+            IActionResult result = await controller.AddDocument(addDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestAddDocumentControllerFalse()
+        {
+            Mock<ITemplateService> mock = new Mock<ITemplateService>();
+
+            mock.Setup(x => x.AddDocument(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+            var controller = new TemplateController(mock.Object);
+            controller.ControllerContext = context;
+
+            //Act
+
+            AddDocumentModel addDocumentModel = new AddDocumentModel();
+            addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
+            addDocumentModel.tenantId = 1;
+            addDocumentModel.docName = "Credit Report";
+            addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
+            IActionResult result = await controller.AddDocument(addDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestGetCategoryDocumentController()
+        {
+            //Arrange
+            Mock<ITemplateService> mock = new Mock<ITemplateService>();
+            List<CategoryDocumentTypeModel> list = new List<CategoryDocumentTypeModel>() { { new CategoryDocumentTypeModel() { catId = "5ebabbfb3845be1cf1edce50" } } };
+
+            mock.Setup(x => x.GetCategoryDocument()).ReturnsAsync(list);
+
+            var templateController = new TemplateController(mock.Object);
+
+            //Act
+            IActionResult result = await templateController.GetCategoryDocument();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<CategoryDocumentTypeModel>;
+            Assert.Single(content);
+            Assert.Equal("5ebabbfb3845be1cf1edce50", content[0].catId);
+        }
+        [Fact]
+        public async Task TestInsertTemplateController()
+        {
+            Mock<ITemplateService> mock = new Mock<ITemplateService>();
+
+            mock.Setup(x => x.InsertTemplate(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync("5eb25acde519051af2eeb111");
+            var controller = new TemplateController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            InsertTemplateModel insertTemplateModel = new InsertTemplateModel();
+            insertTemplateModel.name = "Salary Slip";
+            insertTemplateModel.tenantId = 1;
+            IActionResult result = await controller.InsertTemplate(insertTemplateModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }
