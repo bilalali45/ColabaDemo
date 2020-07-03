@@ -1,5 +1,25 @@
 .Doc-upload {
     margin-right: -5px;
+    position: relative;
+    &.drag-enter{
+        // border: 2px dashed #ebebeb;
+        &:after {
+            display: block;
+            border: 2px dashed #ebebeb;
+            z-index: 11;
+        }
+    }
+    &:after {
+        content: "";
+        position: absolute;
+        height: calc(100% - 10px);
+        width: calc(100% + 20px);
+        left: -10px;
+        top: 5px;
+        display: block;
+        z-index: -8888;;
+    }
+    
     .empty-uploader {
             height: 425px;
             .upload-note {
@@ -329,6 +349,3 @@
 }
 }
 
-// .drag-enter{
-//     border: 2px dashed #ebebeb;
-// }

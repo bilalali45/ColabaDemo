@@ -63,17 +63,20 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
 
     onDragEnter(e: any) {
         e.preventDefault();
-        // e.target.classList.add('drag-enter')
+         //e.target.classList.add('drag-enter')
         if (this.props.parent) {
-            this.props.parent.style.border = '2px dashed #ebebeb'
+          //  this.props.parent.style.border = '2px dashed #ebebeb'
+          this.props.parent.classList.add('drag-enter')
         }
         return false;
     }
 
     onDragLeave(e: any) {
         e.preventDefault();
+       // e.target.classList.remove('drag-enter')
         if (this.props.parent) {
-            this.props.parent.style.border = 'none'
+            //this.props.parent.style.border = 'none'
+            this.props.parent.classList.remove('drag-enter')
         }
         return false;
     }
@@ -89,7 +92,8 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
     ondragover(e: any) {
         e.preventDefault();
         if (this.props.parent) {
-            this.props.parent.style.border = '2px dashed #ebebeb'
+            //this.props.parent.style.border = '2px dashed #ebebeb'
+            this.props.parent.classList.add('drag-enter')
         }
         return false;
     }
