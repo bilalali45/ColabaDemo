@@ -39,7 +39,7 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
                             accept={FileUpload.allowedExtensions} />
                         <div className="upload-note">
                             <p>
-                                File Type: PDF, JPEG <br />
+                                File Type: PDF, JPEG, PNG <br />
                                 File Size: {FileUpload.allowedSize}mb
                                 </p>
                         </div>

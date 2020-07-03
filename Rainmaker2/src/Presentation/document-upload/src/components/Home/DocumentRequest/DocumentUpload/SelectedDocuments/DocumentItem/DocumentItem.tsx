@@ -73,33 +73,40 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                             </div>
                             <div className="doc-list-content">
                                 <div className="tilte">
-                                    {file.editName ? <input onMouseOut={() => setNameExists(false)} style={{ border: nameExists ? '1px solid red' : 'none' }} ref={txtInput} maxLength={255} type="text" value={filename.split('.')[0]} onChange={(e) => {
-                                        setNameExists(false);
-                                        if (fileAlreadyExists(file, e.target.value)) {
-                                            setNameExists(true);
-                                        }
-                                        if (FileUpload.nameTest.test(e.target.value)) {
-                                            setfilename(e.target.value);
-                                            return
-                                        }
-                                        setTimeout(() => {
+                                    {file.editName ? <input
+                                        //onMouseOut={() => setNameExists(false)} 
+                                        style={{ border: nameExists ? '1px solid #D7373F' : 'none' }} ref={txtInput} maxLength={255} type="text" value={filename.split('.')[0]} onChange={(e) => {
                                             setNameExists(false);
-                                        }, 3000);
+                                            if (fileAlreadyExists(file, e.target.value)) {
+                                                setNameExists(true);
+                                            }
+                                            if (FileUpload.nameTest.test(e.target.value)) {
+                                                setfilename(e.target.value);
+                                                return
+                                            }
+                                            // setTimeout(() => {
+                                            //     setNameExists(false);
+                                            // }, 3000); 
 
-                                        setNameExists(true);
-                                        // alert('File names shoul not contain special charaters apart from "-"')
-                                    }} />
+                                            setNameExists(true);
+                                            // alert('File names shoul not contain special charaters apart from "-"')
+                                        }} />
                                         :
                                         <p>{file.clientName}</p>
 
                                     }
                                 </div>
                                 <div className="dl-info">
-                                    <span className="dl-date">{file.fileUploadedOn}</span>
-                                    <span className="dl-text-by"> by </span>
-                                    <span className="dl-text-auther">{UserActions.getUserName()}</span>
-                                    <span className="dl-pipe"> | </span>
-                                    <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
+                                    {nameExists ?
+                                        <span className="dl-errorrename">File name must be unique.</span>
+                                        : <>
+                                            <span className="dl-date">{file.fileUploadedOn}</span>
+                                            <span className="dl-text-by"> by </span>
+                                            <span className="dl-text-auther">{UserActions.getUserName()}</span>
+                                            <span className="dl-pipe"> | </span>
+                                            <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
+                                        </>
+                                    }
                                 </div>
                             </div>
                             <div className="doc-list-actions">
@@ -185,8 +192,8 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                     <div className="doc-list-actions">
                         <ul className="editable-actions">
                             <li onClick={() => {
-                                    retry(file)
-                                }}>
+                                retry(file)
+                            }}>
                                 <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
                             </li>
                         </ul>

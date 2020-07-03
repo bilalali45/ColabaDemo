@@ -85,7 +85,6 @@ export const SelectedDocuments = ({
     try {
       let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
       if (docs) {
-        debugger
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         let doc = docs.find(d => d.docId === currentSelected?.docId);
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
