@@ -11,6 +11,7 @@ export class Document {
     public documentOrder: any[] = []
     public docLogo: string = '';
     public notAllowed: boolean = false;
+    public notAllowedReason: string = '';
 
     constructor(
         id: string = '',

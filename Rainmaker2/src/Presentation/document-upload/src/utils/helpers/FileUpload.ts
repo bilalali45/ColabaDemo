@@ -2,28 +2,41 @@ import moment from 'moment';
 import { DateFormat } from './DateFormat';
 
 export class FileUpload {
-    
+
     static nameTest = /^[ A-Za-z0-9-\s]*$/i;
-    
+
     static todayDate = DateFormat(moment().format('MMM DD, YYYY hh:mm:ss A'), true);
-    
+
     static allowedExtensions = "pdf, jpg, jpeg, png";
 
     static removeSpecialChars(text: string) {
 
         return text.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
     }
-    
+
     static isFileAllowed(file) {
+        return FileUpload.isTypeAllowed(file) && FileUpload.isSizeAllowed(file)
+    }
+
+    static isTypeAllowed(file) {
+
         if (!file) return null;
 
-        const allowedSize = 15000;
         let ext = file.type.split('/')[1]
-        if (FileUpload.allowedExtensions.includes(ext) && file.size / 1000 < allowedSize) {
+        if (FileUpload.allowedExtensions.includes(ext)) {
             return true;
         }
         return false;
+    }
 
+    static isSizeAllowed(file) {
+        if (!file) return null;
+
+        const allowedSize = 8000;
+        if (file.size / 1000 < allowedSize) {
+            return true;
+        }
+        return false;
     }
 
 
