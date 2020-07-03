@@ -85,7 +85,7 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
                             </div>
                             <div className="doc-list-content">
                                 <div className="tilte">
-                                    {file.editName ? <input onMouseOut={() => setNameExists(false)} style={{ border: nameExists ? '1px solid red' : 'none' }} ref={txtInput} maxLength={255} type="text" value={filename.split('.')[0]} onChange={(e) => {
+                                    {file.editName ? <input onMouseOut={() => setNameExists(false)} style={{ border: nameExists ? '1px solid #D7373F' : 'none' }} ref={txtInput} maxLength={255} type="text" value={filename.split('.')[0]} onChange={(e) => {
                                         setNameExists(false);
                                         if (fileAlreadyExists(file, e.target.value)) {
                                             setNameExists(true);
@@ -106,12 +106,18 @@ export const DocumentItem = ({ file, viewDocument, changeName, deleteDoc, fileAl
 
                                     }
                                 </div>
-                                <div className="dl-info">
-                                    <span className="dl-date">{file.fileUploadedOn}</span>
+                                <div className="dl-info"> 
+                                    {nameExists?
+                                    <span className="dl-errorrename">Name already exist!</span>
+                                    : <>
+                                                                        <span className="dl-date">{file.fileUploadedOn}</span>
                                     <span className="dl-text-by"> by </span>
                                     <span className="dl-text-auther">{UserActions.getUserName()}</span>
                                     <span className="dl-pipe"> | </span>
                                     <span className="dl-filesize">{getFileSize()}</span>
+                                    </>
+                                }
+
                                 </div>
                             </div>
                             <div className="doc-list-actions">

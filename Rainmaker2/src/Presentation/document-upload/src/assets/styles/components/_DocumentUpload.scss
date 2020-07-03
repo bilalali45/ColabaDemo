@@ -121,6 +121,7 @@
                             }
                             .dl-info {
                                 color: color("colorred");
+ 
                             }
                         }
                         .doc-list-actions {
@@ -192,6 +193,9 @@
                             span {
                                 vertical-align: middle;
                                 // padding-right: 3px;
+                            }
+                            .dl-errorrename {
+                                color: color("colorred");
                             }
                         }
                     }
