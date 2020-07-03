@@ -4,7 +4,7 @@ import { UserActions } from '../../../../../../store/actions/UserActions'
 import { Document } from '../../../../../../entities/Models/Document'
 import { FileUpload } from '../../../../../../utils/helpers/FileUpload'
 import erroricon from '../../../../../../assets/images/warning-icon.svg'
-import refreshIcon from '../../../../../../assets/images/warning-icon.svg'
+import refreshIcon from '../../../../../../assets/images/refresh.svg'
 
 type DocumentItemType = {
     file: Document,
