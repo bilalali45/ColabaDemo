@@ -29,7 +29,8 @@ export class UserActions {
 
   static async refreshToken() {
     try {
-      console.log("In refresh token and token is", Auth.getRefreshToken() )
+      console.log("In refresh token and refresh token is", Auth.getRefreshToken(), new Date() )
+      console.log("In refresh token and access token is", Auth.getAuth() )
       let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken()
@@ -55,6 +56,7 @@ export class UserActions {
   static async authorize() {
     let isAuth = Auth.checkAuth();
     if (isAuth === 'token expired') {
+      console.log("Refresh token called from authorize")
       let res: any = await UserActions.refreshToken();
       if (res) {
         return true;
@@ -100,6 +102,7 @@ export class UserActions {
     let expiryTime = expiry * 1000;
     let time = expiryTime - currentTime;
     if (time < 1) {
+      console.log("Refresh token called from addExpiryListener in case of < 1")
       UserActions.refreshToken();
       return;
     }
@@ -107,9 +110,9 @@ export class UserActions {
 
     console.log('toke will expire after', time, 'mil sec');
     setTimeout(async () => {
-      console.log('refreshing token');
+      console.log("Refresh token called from addExpiryListener in case of time out meet")
       await UserActions.refreshToken();
-    }, time - 120000);
+    }, time - 1000);
   }
 
 
