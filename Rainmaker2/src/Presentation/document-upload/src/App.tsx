@@ -38,7 +38,6 @@ const App = () => {
 
     // component unmount
     return () => {
-      console.log("Application unmount call");
       Auth.removeAuth();
     }
 

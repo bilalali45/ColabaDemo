@@ -31,8 +31,6 @@ export class UserActions {
       if(!Auth.checkAuth()){
         return
       }
-      console.log("In refresh token and refresh token is", Auth.getRefreshToken(), new Date() )
-      console.log("In refresh token and access token is", Auth.getAuth() )
       let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken()
@@ -43,17 +41,13 @@ export class UserActions {
         Auth.saveRefreshToken(res.data.data.refreshToken);
         let payload = UserActions.decodeJwt(res.data.data.token);
         Auth.storeTokenPayload(payload);
-        console.log("addExpiryListener called from refreshToken")
         UserActions.addExpiryListener(payload);
-        console.log('token refreshed');
         return true;
       }
       Auth.removeAuth();
       return false;
     } catch (error) {
-      //Auth.removeAuth();
       setTimeout( () => {
-        console.log("Refresh token called from refreshToken in case of API Error")
         UserActions.refreshToken();
       }, 1 * 1000)
       return false;
