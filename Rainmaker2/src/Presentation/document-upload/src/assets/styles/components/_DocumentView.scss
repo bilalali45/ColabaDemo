@@ -131,6 +131,7 @@
         position: fixed;
         right: 30px;
         bottom: 80px;
+        z-index: 8888;
         >ul{
             @extend .list-style-none;
             >li{
@@ -139,6 +140,12 @@
                     .button-float{
 
                     }
+                }
+
+                .button-float{
+                    box-shadow: 0 0 3px rgba(color(colorBlack),0.5); 
+
+
                 }
             }
         }

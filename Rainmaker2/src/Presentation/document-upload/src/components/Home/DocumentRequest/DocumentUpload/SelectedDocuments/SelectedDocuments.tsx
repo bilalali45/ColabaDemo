@@ -34,13 +34,12 @@ export const SelectedDocuments = ({
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-  const [sameName, setSameName] = useState<boolean>(false);
+  const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(false);
 
   const documents: any = state.documents;
   const currentSelected: any = documents.currentDoc;
   const selectedFiles = currentSelected.files || [];
   const docTitle = currentSelected ? currentSelected.docName : "";
-  console.log('selectedFiles apex', selectedFiles)
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +54,12 @@ export const SelectedDocuments = ({
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
+    if(selectedFiles?.length === 10 && !filesLimitErrorVisible) {
+      setFilesLimitErrorVisible(true);
+      setTimeout(() => {
+        setFilesLimitErrorVisible(false);
+      }, 5000);
+    }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
 
@@ -132,7 +137,6 @@ export const SelectedDocuments = ({
   };
 
   const disableSubmitBtn = () => {
-    // let docFile = selectedFiles.find((df) => df.file && df.uploadStatus === "pending");
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
 
@@ -162,6 +166,8 @@ export const SelectedDocuments = ({
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+      } else if (docs?.length === 0) {
+        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
       setDoneVisible(false);
     }
@@ -177,16 +183,16 @@ export const SelectedDocuments = ({
     }
   };
 
-
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
         <div className="list-selected-doc">
           <ul className="doc-list-ul">
-           
+
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
@@ -201,8 +207,6 @@ export const SelectedDocuments = ({
           </ul>
           <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => {
-
-              console.log(e);
               addMore(e)
             }}>
               Add more files
@@ -252,8 +256,8 @@ export const SelectedDocuments = ({
               </div>
             </div>
           </div>
-        ) : (
-            <div className="doc-submit-wrap">
+        ) : filesLimitErrorVisible ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => setDoneVisible(true)} className="zmdi zmdi-close"></i></p>
+            : (<div className="doc-submit-wrap">
               <button
                 disabled={btnDisabled || subBtnPressed}
                 className="btn btn-primary"
@@ -262,7 +266,7 @@ export const SelectedDocuments = ({
                 Submit
             </button>
             </div>
-          )}
+            )}
       </div>
     </section>
   );

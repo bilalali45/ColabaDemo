@@ -37,12 +37,12 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
                             onChange={(e) => handleChange(e)}
                             multiple
                             accept={FileUpload.allowedExtensions} />
-                                                        <div className="upload-note">
-                                <p>
-                                File Type: PDF, JPEG <br />
-                                File Size: 8mb
+                        <div className="upload-note">
+                            <p>
+                                File Type: PDF, JPEG, PNG <br />
+                                File Size: {FileUpload.allowedSize}mb
                                 </p>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,19 +63,15 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
 
     onDragEnter(e: any) {
         e.preventDefault();
-         //e.target.classList.add('drag-enter')
         if (this.props.parent) {
-          //  this.props.parent.style.border = '2px dashed #ebebeb'
-          this.props.parent.classList.add('drag-enter')
+            this.props.parent.classList.add('drag-enter')
         }
         return false;
     }
 
     onDragLeave(e: any) {
         e.preventDefault();
-       // e.target.classList.remove('drag-enter')
         if (this.props.parent) {
-            //this.props.parent.style.border = 'none'
             this.props.parent.classList.remove('drag-enter')
         }
         return false;
@@ -84,21 +80,20 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
     onDrop(e: any) {
 
         e.preventDefault();
-        e.target.classList.remove('drag-enter')
-        this.getDroppedFile(e);
+        if (this.props.parent) {
+            this.props.parent.classList.remove('drag-enter')
+            this.getDroppedFile(e);
+        }
         return false;
     }
 
     ondragover(e: any) {
         e.preventDefault();
         if (this.props.parent) {
-            //this.props.parent.style.border = '2px dashed #ebebeb'
             this.props.parent.classList.add('drag-enter')
         }
         return false;
     }
-
-    // #4484F4
 
     render() {
         return (

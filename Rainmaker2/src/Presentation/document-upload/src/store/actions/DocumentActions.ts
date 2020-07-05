@@ -20,6 +20,17 @@ export class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
+      // res.data = [
+      //   new DocumentRequest(
+      //     '1',
+      //     '2',
+      //     '3',
+      //     'testing',
+      //     '',
+      //     []
+      //   )
+      // ]
+      
       let d = res.data.map((d: DocumentRequest, i: number) => {
         let { id, requestId, docId, docName, docMessage, files } = d;
         let doc = new DocumentRequest(
