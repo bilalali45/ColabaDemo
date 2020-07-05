@@ -45,7 +45,7 @@ export class FileUpload {
         FileUpload.PDF.type
     ];
 
-    static allowedExtensions = FileUpload.allowedFileTypes.map(t => t.split('/')[1]).join(',');
+    static allowedExtensions = FileUpload.allowedFileTypes.join(',');
 
     static getMimetype(signature) {
         switch (signature) {
