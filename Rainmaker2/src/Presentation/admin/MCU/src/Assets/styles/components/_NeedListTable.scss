@@ -1,0 +1,47 @@
+.need-list-table{
+    
+    thead{
+        border: none;
+        th,td{
+            font-weight:  500;
+            font-size: fontSize("nr") - 1px; 
+            line-height: 1.2;
+            font-family: fontFamily("base");
+            border: none;
+            text-transform: uppercase;
+            color: color('heading');
+            a{
+                color: color('heading');
+            }
+        }
+    }
+    
+    tbody{
+        th,td{
+            font:  400 #{fontSize("sm") + "/1.2"} fontFamily("base");
+            border: none;
+        }
+        >tr{
+            box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.2);
+        }
+    }
+
+    .f-normal{
+        font-size: fontSize("nr");
+    }
+
+    .block-element{
+        margin-bottom: 10px;
+    }
+
+    .icon-refresh{
+        font-size: fontSize('md');
+        display: inline-block;
+        margin: 5px;
+        vertical-align: middle;
+    }
+
+    .table-th-arrow{
+        color: lighten($color: color('primary'), $amount: 6%);
+    }
+}

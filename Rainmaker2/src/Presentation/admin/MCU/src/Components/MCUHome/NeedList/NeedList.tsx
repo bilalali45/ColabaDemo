@@ -9,8 +9,13 @@ export const NeedList = () => {
         <div>
             <LoanSnapshot/>
             {/* <Navigation/> */}
-            {/* <NeedListHeader/> */}
-            {/* <NeedListView/> */}
+            <NeedListHeader/>
+
+            <div className="container-mcu">
+                <div className="block padding">                    
+                    <NeedListView/>
+                </div>                
+            </div>            
         </div>
     )
 }
