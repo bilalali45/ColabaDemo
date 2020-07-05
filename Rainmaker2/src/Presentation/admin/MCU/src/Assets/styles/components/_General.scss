@@ -20,9 +20,7 @@ ul {
     padding: 0;
     margin-bottom: 0;
 }
-.d-layout {
-    background-color: color('sidebarBg');
-}
+
 .sidebar  {
     background-color: color('sidebarBg');
     color: color('sidebarBg-text');
@@ -32,6 +30,10 @@ ul {
     position: absolute;
     z-index: 25;
     left: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    height: 100%;
     .menu-text {
         display: none;
     }
@@ -145,7 +147,7 @@ li.has-sub > .sub {
     border-radius: 0px;
     font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
     padding: 14px 35px 12px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 1.4px;
 
     &.disabled,
@@ -156,12 +158,64 @@ li.has-sub > .sub {
 
     }
 
-    &.btn-small {
-        font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
-        padding: 9px 20px 7px;
+    &-default{
+        background-color: color('default');
+    }
+
+    &-back{
+
+    }
+
+    &-secondry{
+       @include button-variant(color('secondry'), color('secondry'), $hover-background: darken(color('secondry'), 7.5%), $hover-border: darken(color('secondry'), 10%), $active-background: darken(color('secondry'), 10%), $active-border: darken(color('secondry'), 12.5%));
+    }
+
+    &-sm, &-group-sm > & {
+        padding:6px 15px;
+        font:  400 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        line-height: 1.5;
+        border-radius: 0;
+    }
+
+    &-delete{
+        color: $danger;
     }
 
 
+}//.btn
+
+.icon-refresh{
+    &.failed{
+        &::before{
+            color: $danger;
+        }
+    }
+    &.success{
+        &::before{
+            color: $success;
+        }
+    }
+}
+
+.status-bullet{
+    background-color: color('default');
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+
+    &.pending{
+        background-color: color('pending');
+    }
+    &.started{
+        background-color: color('started');
+    }
+    &.borrower{
+        background-color: color('borrower');
+    }
+    &.completed{
+        background-color: color('completed');
+    }
 }
 
 
@@ -182,7 +236,7 @@ li.has-sub > .sub {
             display: inline-block;
             width: 1px;
             height: 20px;
-            background-color: rgba(color('colorBlack'), 0.2);
+            background-color: rgba(#000000, 0.2);
             position: absolute;
             top: -3px;
             left: 15px;
@@ -200,7 +254,7 @@ li.has-sub > .sub {
     background-color: color('colorWhite');
     color: color('base');
     border: none;
-    box-shadow: 0 0 5px rgba(color('colorBlack'), 0.2);
+    box-shadow: 0 0 5px rgba(#000000, 0.2);
     margin: 5px;
     width: $float-button-size;
     height: $float-button-size;
@@ -229,7 +283,7 @@ li.has-sub > .sub {
     }
 
     &:hover {
-        background-color: darken(color('colorWhite'), 20%);
+        background-color: darken(#ffffff, 20%);
     }
 }
 
@@ -323,7 +377,27 @@ li.has-sub > .sub {
     }
 }
 
+.block{
+    background-color: color('widgetBg');
+    margin-bottom: $widget-space;
+    &.padding{
+        padding: 30px;
+    }
+}
+
 .main-footer {
     text-align: center;
 }
 
+.container-mcu{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+// Dashboard
+.d-layout{
+    display: flex;
+    position: relative;
+
+
+}// .d-layout

@@ -1,29 +1,14 @@
 $color:(
     primary             :       #4484F4,
     primary-text        :       #ffffff,
-    secondry            :       #00AD46,
+    secondry            :       #103B5C,
     secondry-text       :       #ffffff,
     border              :       #EBEBEB, 
     base                :       #4E4E4E, 
-    heading             :       #4E4E4E,   
-    colordarkblue       :       #04202e,
-    colorBlack          :       #000000,
-    colorWhite          :       #ffffff,
-    statusCompleted     :       #32B93B,
-    statusCurrent       :       #4484F4,
-    statusUpcomming     :       #8A8A8A,
-    colorgray           :       #F8F8F8,
-    light-purple        :       #7E829E,
-    colorlightGray      :       #CCCCCC,
-    listhover           :       #F6F6F6,
-    scroll              :       #DBDBDB,
-    gray2               :       #919191,
-    border2             :       #D9D9D9,
-    fileReaderHeaderBg  :       #2D2D2D,
-    disabled            :       #E5E5E5,
-    disabled-text       :       #C1C0C0,
+    heading             :       #263238,
     bg                  :       #F2F3F5,
-    sidebarboder        :       #383E4C,
+    default             :       #F2F3F5,
+    
     // Dashboard
     headerBg            :       #375471,
     headerBg-text       :       #ffffff,
@@ -31,7 +16,13 @@ $color:(
     sidebarBg-text      :       #cdd0d8,
     widgetBg            :       #ffffff,
     labelColor          :       #7E829E,
-    labelValueColor     :       #4E4E4E
+    labelValueColor     :       #4E4E4E,
+
+    //Status
+    pending             :       #2C9EF5,
+    started             :       #FFC640,
+    borrower            :       #FF5652,
+    completed           :       #00AD46
 );
 
 
@@ -66,3 +57,6 @@ $burger-resolution     :        18px;
 $grid-gutter-width:           30px !default;
 $primary:       #4484F4 !default;
 $secondary:     #7E829E !default;
+
+// Private
+$widget-space: $grid-gutter-width !default;
