@@ -49,19 +49,20 @@ export const SelectedDocuments = ({
 
 
   useEffect(() => {
-
     disableSubmitBtn();
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
-    if(selectedFiles?.length === 10 && !filesLimitErrorVisible) {
-      setFilesLimitErrorVisible(true);
-      setTimeout(() => {
-        setFilesLimitErrorVisible(false);
-      }, 5000);
-    }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
+
+  useEffect(() => {
+    if (selectedFiles.length === 10) {
+      setFilesLimitErrorVisible(true);
+    } else {
+      setFilesLimitErrorVisible(false);
+    }
+  }, [selectedFiles.length]);
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -162,9 +163,9 @@ export const SelectedDocuments = ({
       setBtnDisabled(true);
     } else if (doneVisible) {
       setBtnDisabled(true);
-    } else if(docDelete.length > 0) {
+    } else if (docDelete.length > 0) {
       setBtnDisabled(true);
-    }else {
+    } else {
       setBtnDisabled(false);
     }
   };
@@ -221,7 +222,7 @@ export const SelectedDocuments = ({
               );
             })}
           </ul>
-          <div className="addmore-wrap">
+          {selectedFiles.length !== 10 && <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => {
               addMore(e)
             }}>
@@ -232,7 +233,7 @@ export const SelectedDocuments = ({
                 ref={inputRef} multiple style={{ display: "none" }} />
             </a>
 
-          </div>
+          </div>}
         </div>
         {!!currentDoc && (
           <DocumentView
@@ -272,7 +273,9 @@ export const SelectedDocuments = ({
               </div>
             </div>
           </div>
-        ) : filesLimitErrorVisible ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => setDoneVisible(true)} className="zmdi zmdi-close"></i></p>
+        ) : filesLimitErrorVisible && selectedFiles.filter(f => f.file).length ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => {
+          setFilesLimitErrorVisible(false);
+        }} className="zmdi zmdi-close"></i></p>
             : (<div className="doc-submit-wrap">
               <button
                 disabled={btnDisabled || subBtnPressed}
