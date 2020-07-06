@@ -169,6 +169,14 @@ export const SelectedDocuments = ({
     }
   };
 
+
+const fetchUploadedDocuments = async () => {
+      let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(),Auth.getTenantId());
+      if (uploadedDocs) {
+        dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs});
+      }
+  };
+
   const doneDoc = async () => {
     let fields = ["id", "requestId", "docId"];
     let data = {};
@@ -185,6 +193,7 @@ export const SelectedDocuments = ({
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
       setDoneVisible(false);
+      fetchUploadedDocuments();
     }
   };
 
