@@ -89,6 +89,7 @@ export const DocumentItem = ({
                             <div className="dc-actions">
                                 <button className="btn btn-small btn-secondary" onClick={() => cancelDeleteDOC()} >No</button>
                                 <button className="btn btn-small btn-primary" onClick={() => {
+                                    file.uploadReqCancelToken.cancel();
                                     deleteDoc(file.clientName);
                                 }}>Yes</button>
                             </div>

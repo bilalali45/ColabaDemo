@@ -13,6 +13,9 @@ import HeaderContent from './utils/header_footer_utils/HeaderContent';
 import { Auth } from './services/auth/Auth';
 import { Http } from './services/http/Http';
 import { LaonActions } from './store/actions/LoanActions';
+
+const mvcDashBoardUrl = 'http://qatx.rainsoftfn.com/Dashboard';
+
 declare global {
   interface Window { envConfig: any; }
 }
@@ -20,7 +23,6 @@ window.envConfig = window.envConfig || {};
 const httpClient = new Http();
 
 const App = () => {
-
 
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [expListnerAdded, setExpListnerAdded] = useState(false);
@@ -30,6 +32,10 @@ const App = () => {
   const history = useHistory();
   
   useEffect(() => {
+    // if(document.referrer === 'mvcDashBoardUrl') {
+    //   Auth.removeAuth();
+    // }
+    console.log(document.referrer);
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     getFooterText();
