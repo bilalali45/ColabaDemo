@@ -8,6 +8,7 @@ import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadA
 
 export const DocumentUpload = () => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
+  const [fileLimitError, setFileLimitError] = useState({value: false});
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
@@ -31,18 +32,19 @@ export const DocumentUpload = () => {
         let files = e?.target?.files;
         if (files) {
           let updatedFiles = selectedfiles.filter(sf => sf !== fileToRemnove);
-          DocumentUploadActions.updateFiles(files, updatedFiles, dispatch);
+          DocumentUploadActions.updateFiles(files, updatedFiles, dispatch, setFileLimitError);
         }
       };
     }
   };
-
+  console.log(fileLimitError)
+  // debugger
   return (
     <section className="Doc-upload" ref={parentRef}>
 
       <FileDropper
         parent={parentRef.current}
-        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
+        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch, setFileLimitError)}
       >
         {currentDoc && <div className="Doc-head-wrap">
           <h2> {docTitle}</h2>
@@ -58,11 +60,13 @@ export const DocumentUpload = () => {
           currentDoc && <Fragment>
             {!selectedfiles?.length ? (
               <DocumentDropBox
-                getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
+                getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch, setFileLimitError)}
                 setFileInput={getFileInput} />
             ) : (
                 <>
                   <SelectedDocuments
+                    fileLimitError={fileLimitError}
+                    setFileLimitError={setFileLimitError}
                     addMore={showFileExplorer}
                     setFileInput={getFileInput}
                   />

@@ -14,6 +14,8 @@ import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 interface SelectedDocumentsType {
   addMore: Function;
   setFileInput: Function;
+  setFileLimitError: Function;
+  fileLimitError: { value: boolean }
 }
 
 interface ViewDocumentType {
@@ -27,7 +29,7 @@ interface ViewDocumentType {
 // const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
-  addMore, setFileInput
+  addMore, setFileInput, fileLimitError, setFileLimitError
 }: SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -45,32 +47,15 @@ export const SelectedDocuments = ({
 
   useEffect(() => {
     setFileInput(inputRef.current)
-  }, []);
-
-
-  useEffect(() => {
     disableSubmitBtn();
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
+    if (selectedFiles.length < 10) {
+      setFileLimitError({value: false});
+    }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
-
-  useEffect(() => {
-    if (selectedFiles.length === 10) {
-      setFilesLimitErrorVisible(true);
-    } else {
-      setFilesLimitErrorVisible(false);
-    }
-  }, [selectedFiles.length]);
-
-  useEffect(() => {
-    if (selectedFiles.length === 10) {
-      setFilesLimitErrorVisible(true);
-    } else {
-      setFilesLimitErrorVisible(false);
-    }
-  }, [selectedFiles.length > 10]);
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -230,18 +215,18 @@ export const SelectedDocuments = ({
               );
             })}
           </ul>
-          {selectedFiles.length < 10 && <div className="addmore-wrap">
+          <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => {
               addMore(e)
             }}>
-              Add more files
+              {selectedFiles.length < 10 && 'Add more files'}
               <input type='file'
                 accept={FileUpload.allowedExtensions}
                 id="inputFile"
                 ref={inputRef} multiple style={{ display: "none" }} />
             </a>
 
-          </div>}
+          </div>
         </div>
         {!!currentDoc && (
           <DocumentView
@@ -281,8 +266,8 @@ export const SelectedDocuments = ({
               </div>
             </div>
           </div>
-        ) : filesLimitErrorVisible && selectedFiles.filter(f => f.file).length ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => {
-          setFilesLimitErrorVisible(false);
+        ) : fileLimitError.value ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => {
+          setFileLimitError({ value: false });
         }} className="zmdi zmdi-close"></i></p>
             : (<div className="doc-submit-wrap">
               <button
@@ -298,3 +283,5 @@ export const SelectedDocuments = ({
     </section>
   );
 };
+
+// filesLimitErrorVisible && selectedFiles.filter(f => f.file).length
