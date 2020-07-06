@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useContext, useEffect, useRef } from "react";
+import React, { useState, ChangeEvent, useContext, useEffect, useRef, Fragment } from "react";
 import { DocumentDropBox, FileDropper } from "../../../../shared/Components/DocumentDropBox/DocumentDropBox";
 import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
 import { Store } from "../../../../store/store";
@@ -10,7 +10,7 @@ export const DocumentUpload = () => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
-  const selectedfiles: Document[] = currentDoc?.files || [];
+  const selectedfiles: Document[] = currentDoc?.files || null;
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc ? currentDoc.docMessage : "";
 
@@ -39,7 +39,12 @@ export const DocumentUpload = () => {
 
   return (
     <section className="Doc-upload" ref={parentRef}>
-              <div className="Doc-head-wrap">
+
+      <FileDropper
+        parent={parentRef.current}
+        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
+      >
+        {currentDoc && <div className="Doc-head-wrap">
           <h2> {docTitle}</h2>
           <div className="doc-note">
             <p>
@@ -47,23 +52,24 @@ export const DocumentUpload = () => {
               {docMessage}
             </p>
           </div>
-        </div>
-      <FileDropper
-        parent={parentRef.current}
-        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
-      >
-          {!selectedfiles?.length ? (
-            <DocumentDropBox
-              getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
-              setFileInput={getFileInput} />
-          ) : (
-              <>
-                <SelectedDocuments
-                  addMore={showFileExplorer}
-                  setFileInput={getFileInput}
-                />
-              </>
-            )}
+        </div>}
+
+        {
+          currentDoc && <Fragment>
+            {!selectedfiles?.length ? (
+              <DocumentDropBox
+                getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch)}
+                setFileInput={getFileInput} />
+            ) : (
+                <>
+                  <SelectedDocuments
+                    addMore={showFileExplorer}
+                    setFileInput={getFileInput}
+                  />
+                </>
+              )}
+          </Fragment>
+        }
 
       </FileDropper>
     </section>

@@ -12,6 +12,7 @@ export class Document {
     public docLogo: string = '';
     public notAllowed: boolean = false;
     public notAllowedReason: string = '';
+    public deleteBoxVisible: boolean = false;
 
     constructor(
         id: string = '',
