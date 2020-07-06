@@ -14,14 +14,13 @@ import { Auth } from './services/auth/Auth';
 import { Http } from './services/http/Http';
 import { LaonActions } from './store/actions/LoanActions';
 
-const mvcDashBoardUrlHttp = 'http://qatx.rainsoftfn.com/Dashboard';
-const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
+const mvcDashBoardUrl = `${window.envConfig.API_BASE_URL}/Dashboard`;
+// const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
 
 declare global {
   interface Window { envConfig: any; }
 }
 window.envConfig = window.envConfig || {};
-const httpClient = new Http();
 
 const App = () => {
 
@@ -33,10 +32,10 @@ const App = () => {
   const history = useHistory();
   
   useEffect(() => {
-    if(document.referrer === mvcDashBoardUrlHttp || document.referrer === mvcDashBoardUrlHttps) {
+    console.log('document.referrer', document.referrer);
+    if(document.referrer === mvcDashBoardUrl) {
       Auth.removeAuth();
     }
-    console.log(document.referrer);
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     getFooterText();

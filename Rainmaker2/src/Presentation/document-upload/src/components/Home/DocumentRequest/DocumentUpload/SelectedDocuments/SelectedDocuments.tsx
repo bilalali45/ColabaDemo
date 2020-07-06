@@ -39,6 +39,7 @@ export const SelectedDocuments = ({
   const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(false);
 
   const documents: any = state.documents;
+  const pendingDocs: any = documents.pendingDocs;
   const currentSelected: any = documents.currentDoc;
   const selectedFiles = currentSelected.files || [];
   const docTitle = currentSelected ? currentSelected.docName : "";
@@ -52,7 +53,7 @@ export const SelectedDocuments = ({
 
   useEffect(() => {
     if (selectedFiles.length < 10) {
-      setFileLimitError({value: false});
+      setFileLimitError({ value: false });
     }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
@@ -96,9 +97,19 @@ export const SelectedDocuments = ({
     try {
       let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
       if (docs) {
-        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-        let doc = docs.find(d => d.docId === currentSelected?.docId);
-        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
+        if (pendingDocs.length) {
+          let updatedDocs = pendingDocs.map(p => {
+            let filesAdded = p.files.filter(f => f.file && f.uploadStatus === 'pending');
+            let docToUpdate = docs?.find(d => d.docId === p.docId);
+            if (docToUpdate && docToUpdate.files) {
+              docToUpdate.files = [...docToUpdate?.files, ...filesAdded];
+            }
+            return docToUpdate;
+          })
+          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: updatedDocs });
+          let doc = docs.find(d => d.docId === currentSelected?.docId);
+          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
+        }
       }
 
     } catch (error) {
@@ -146,7 +157,7 @@ export const SelectedDocuments = ({
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
     let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
-
+  
     if (docFiles.length > 0) {
       setBtnDisabled(false);
     } else {
@@ -164,11 +175,11 @@ export const SelectedDocuments = ({
   };
 
 
-const fetchUploadedDocuments = async () => {
-      let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(),Auth.getTenantId());
-      if (uploadedDocs) {
-        dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs});
-      }
+  const fetchUploadedDocuments = async () => {
+    let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+    if (uploadedDocs) {
+      dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs });
+    }
   };
 
   const doneDoc = async () => {
