@@ -74,6 +74,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   const printDocument = useCallback(() => {
     const { filePath, fileType } = documentParams;
+
     // At the moment we are just allowing images or pdf files to be uplaoded
     const type = ["jpeg", "jpg", "png"].includes(fileType) ? "image" : "pdf";
 
@@ -90,9 +91,27 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     temporaryDownloadLink.click();
   };
 
+  const onEscapeKeyPressed = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        hideViewer({});
+      }
+    },
+    [hideViewer]
+  );
+
   useEffect(() => {
     getSubmittedDocumentForView();
   }, [getSubmittedDocumentForView]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", onEscapeKeyPressed, false);
+
+    //this will remove listener on unmount
+    return () => {
+      window.removeEventListener("keydown", onEscapeKeyPressed, false);
+    };
+  }, [onEscapeKeyPressed]);
 
   return (
     <div className="document-view" id="screen">
@@ -153,56 +172,48 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         </div>
       </div>
       <TransformWrapper
-              defaultScale={1}
-              wheel={{wheelEnabled:false}}
-              // defaultPositionX={200}
-              // defaultPositionY={100}
-
-            >
-              {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-  
-                  <div>
-                    <TransformComponent>
-        <div className="document-view--body">
-          {!!documentParams.filePath ? ( 
-            
-                    <FileViewer
-                      fileType={documentParams.fileType}
-                      filePath={documentParams.filePath}
-                    />
-                    
-          
-          ) : (
-              <Loader height={"94vh"} />
-            )}
-        </div>
-        
-        </TransformComponent>
-        <div className="document-view--floating-options">
-          <ul>
-            <li>
-              <button className="button-float" onClick={zoomIn}>
-                <em className="zmdi zmdi-plus"></em>
-              </button>
-            </li>
-            <li>
-              <button className="button-float" onClick={zoomOut}>
-                <em className="zmdi zmdi-minus"></em>
-              </button>
-            </li>
-            <li>
-              <button className="button-float" onClick={resetTransform}>
-                <SVGfullScreen />
-              </button>
-            </li>
-          </ul>
-        </div>
-       
-        </div>    
-              )}
-            </TransformWrapper>
+        defaultScale={1}
+        wheel={{ wheelEnabled: false }}
+        // defaultPositionX={200}
+        // defaultPositionY={100}
+      >
+        {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+          <div>
+            <TransformComponent>
+              <div className="document-view--body">
+                {!!documentParams.filePath ? (
+                  <FileViewer
+                    fileType={documentParams.fileType}
+                    filePath={documentParams.filePath}
+                  />
+                ) : (
+                  <Loader height={"94vh"} />
+                )}
+              </div>
+            </TransformComponent>
+            <div className="document-view--floating-options">
+              <ul>
+                <li>
+                  <button className="button-float" onClick={zoomIn}>
+                    <em className="zmdi zmdi-plus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={zoomOut}>
+                    <em className="zmdi zmdi-minus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={resetTransform}>
+                    <SVGfullScreen />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+      </TransformWrapper>
       <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
-
   );
 };
