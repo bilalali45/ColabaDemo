@@ -4,6 +4,7 @@ import { Endpoints } from "../endpoints/Endpoints";
 import jwt_decode from "jwt-decode";
 import { Http } from "../../services/http/Http";
 import Cookies from "universal-cookie";
+import axios from 'axios';
 const cookies = new Cookies();
 const http = new Http();
 export class UserActions {
@@ -57,7 +58,7 @@ export class UserActions {
   static async refreshParentApp() {
     try {
       console.log("In refreshParentApp")
-      let res: any = await http.get(window.envConfig.APP_BASE_URL + "Account/KeepAlive" );
+      axios.get(window.envConfig.APP_BASE_URL + "Account/KeepAlive")
       return true;
     } catch (error) {
       console.log("In refreshParentApp Error")
