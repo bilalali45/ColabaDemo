@@ -4,7 +4,7 @@ import { NeedListTable } from './NeedListTable/NeedListTable'
 
 export const NeedListView = () => {
     return (
-        <div>
+        <div className="need-list-view">
             <NeedListViewHeader/>
             <NeedListTable/>
         </div>
