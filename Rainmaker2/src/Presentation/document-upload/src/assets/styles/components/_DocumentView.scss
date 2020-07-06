@@ -72,6 +72,7 @@
         margin: 0 auto;
         height: calc(100vh - 56px);
         width: 100%;
+        z-index: 11;
         .pg-viewer-wrapper {
             img {
                 width: auto !important;
@@ -168,6 +169,7 @@
 .TransformComponent-module_container__3NwNd {
     width: 100% !important;
     height: 100% !important;
+    z-index: 22;
     .TransformComponent-module_content__TZU5O {
         display: flex;
         flex-wrap: wrap;

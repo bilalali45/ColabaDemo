@@ -63,6 +63,18 @@ export const SelectedDocuments = ({
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
 
+  const handleDeleteAction = (file) => {
+    let updatedFiles = selectedFiles.map((f: Document) => {
+      if (file.file && f.clientName === file.clientName) {
+        f.deleteBoxVisible = !f.deleteBoxVisible;
+        return f;
+      }
+
+      return f;
+    });
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+  }
+
 
   const viewDocument = (document: any) => {
     const {
@@ -139,6 +151,7 @@ export const SelectedDocuments = ({
   const disableSubmitBtn = () => {
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
+    let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
 
     if (docFiles.length > 0) {
       setBtnDisabled(false);
@@ -149,7 +162,9 @@ export const SelectedDocuments = ({
       setBtnDisabled(true);
     } else if (doneVisible) {
       setBtnDisabled(true);
-    } else {
+    } else if(docDelete.length > 0) {
+      setBtnDisabled(true);
+    }else {
       setBtnDisabled(false);
     }
   };
@@ -192,6 +207,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  handleDelete={handleDeleteAction}
                   disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
