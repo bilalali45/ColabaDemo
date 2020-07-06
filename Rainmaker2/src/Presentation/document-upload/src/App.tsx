@@ -72,7 +72,7 @@ const App = () => {
     if (process.env.NODE_ENV === 'production'){
       setInterval( () => {
         UserActions.refreshParentApp();
-      }, 10 * 1000)
+      }, 60 * 1000)
     }
   }
 
