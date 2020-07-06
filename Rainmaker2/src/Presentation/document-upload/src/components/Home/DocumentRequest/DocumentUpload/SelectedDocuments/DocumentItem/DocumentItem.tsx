@@ -64,11 +64,11 @@ export const DocumentItem = ({
 
     const deleteDOChandeler = () => {
         handleDelete(file)
-        disableSubmitButton(true)
+        // disableSubmitButton(true)
         setNameExists(false)
     }
     const cancelDeleteDOC = () => {
-        disableSubmitButton(false)
+        // disableSubmitButton(false)
         handleDelete(file)
     }
 
