@@ -54,6 +54,17 @@ export class UserActions {
     }
   }
 
+  static async refreshParentApp() {
+    try {
+      console.log("In refreshParentApp")
+      let res: any = await http.get(window.envConfig.APP_BASE_URL + "Account/KeepAlive" );
+      return true;
+    } catch (error) {
+      console.log("In refreshParentApp Error")
+      return false;
+    }
+  }
+
   static async authorize() {
     let isAuth = Auth.checkAuth();
     if (isAuth === 'token expired') {
