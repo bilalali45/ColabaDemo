@@ -66,10 +66,11 @@ export class DocumentUploadActions {
 
 
 
-    static async updateFiles(files: File[], prevFiles: Document[], dispatch: Function) {
+    static async updateFiles(files: File[], prevFiles: Document[], dispatch: Function, setFileLimitError: Function) {
         let allSelectedFiles: Document[] = [...prevFiles];
         for (let f of files) {
             if (allSelectedFiles.length >= 10) {
+                setFileLimitError({value: true});
                 break;
             }
             var newName = f.name;

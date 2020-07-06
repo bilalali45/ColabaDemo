@@ -40,6 +40,7 @@ const App = () => {
     authenticate();
     getFooterText();
     addExpiryListener();
+    keepAliveParentApp();
     ParamsService.storeParams(['loanApplicationId', 'tenantId', 'businessUnitId']);
 
     // component unmount
@@ -64,6 +65,14 @@ const App = () => {
       console.log("addExpiryListener called from APP tsx")
       UserActions.addExpiryListener(Auth.getUserPayload());
       // setExpListnerAdded(true);
+    }
+  }
+
+  const keepAliveParentApp = () => {
+    if (process.env.NODE_ENV === 'production'){
+      setInterval( () => {
+        UserActions.refreshParentApp();
+      }, 10 * 1000)
     }
   }
 

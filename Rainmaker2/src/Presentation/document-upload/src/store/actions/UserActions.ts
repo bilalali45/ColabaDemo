@@ -4,6 +4,7 @@ import { Endpoints } from "../endpoints/Endpoints";
 import jwt_decode from "jwt-decode";
 import { Http } from "../../services/http/Http";
 import Cookies from "universal-cookie";
+import axios from 'axios';
 const cookies = new Cookies();
 const http = new Http();
 export class UserActions {
@@ -50,6 +51,17 @@ export class UserActions {
       setTimeout( () => {
         UserActions.refreshToken();
       }, 1 * 1000)
+      return false;
+    }
+  }
+
+  static async refreshParentApp() {
+    try {
+      console.log("In refreshParentApp")
+      axios.get(window.envConfig.APP_BASE_URL + "Account/KeepAlive")
+      return true;
+    } catch (error) {
+      console.log("In refreshParentApp Error")
       return false;
     }
   }

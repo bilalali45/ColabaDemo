@@ -13,8 +13,6 @@ export class FileUpload {
 
     static todayDate = DateFormat(moment().format('MMM DD, YYYY hh:mm:ss A'), true);
 
-
-
     static PNG = {
         hex: '89504E47',
         type: 'image/png'
@@ -28,7 +26,13 @@ export class FileUpload {
         type: 'application/pdf'
     };
     static JPEG = {
-        hex: ['FFD8FFDB', 'FFD8FFE0'],
+        hex: [
+            'FFD8FFDB',
+            'FFD8FFE0',
+            'FFD8FFE1',
+            'FFD8FFE2',
+            'FFD8FFE3',
+            'FFD8FFE8'],
         type: 'image/jpeg'
     };
     static ZIP = {
@@ -57,6 +61,10 @@ export class FileUpload {
                 return this.PDF.type
             case this.JPEG.hex[0]:
             case this.JPEG.hex[1]:
+            case this.JPEG.hex[2]:
+            case this.JPEG.hex[3]:
+            case this.JPEG.hex[4]:
+            case this.JPEG.hex[5]:
                 return this.JPEG.type
             case this.ZIP.hex:
                 return this.ZIP.type
@@ -66,7 +74,6 @@ export class FileUpload {
     }
 
     static removeSpecialChars(text: string) {
-
         return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '')
     }
 
