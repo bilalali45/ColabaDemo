@@ -54,7 +54,7 @@ export const SelectedDocuments = ({
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
-    if(selectedFiles?.length === 10 && !filesLimitErrorVisible) {
+    if (selectedFiles?.length > 10 && !filesLimitErrorVisible) {
       setFilesLimitErrorVisible(true);
       setTimeout(() => {
         setFilesLimitErrorVisible(false);
@@ -62,6 +62,18 @@ export const SelectedDocuments = ({
     }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
+
+  const handleDeleteAction = (file) => {
+    let updatedFiles = selectedFiles.map((f: Document) => {
+      if (file.file && f.clientName === file.clientName) {
+        f.deleteBoxVisible = !f.deleteBoxVisible;
+        return f;
+      }
+
+      return f;
+    });
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+  }
 
 
   const viewDocument = (document: any) => {
@@ -139,6 +151,7 @@ export const SelectedDocuments = ({
   const disableSubmitBtn = () => {
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
+    let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
 
     if (docFiles.length > 0) {
       setBtnDisabled(false);
@@ -148,6 +161,8 @@ export const SelectedDocuments = ({
     if (docEdits.length > 0) {
       setBtnDisabled(true);
     } else if (doneVisible) {
+      setBtnDisabled(true);
+    } else if (docDelete.length > 0) {
       setBtnDisabled(true);
     } else {
       setBtnDisabled(false);
@@ -192,6 +207,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  handleDelete={handleDeleteAction}
                   disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
@@ -205,18 +221,20 @@ export const SelectedDocuments = ({
               );
             })}
           </ul>
-          <div className="addmore-wrap">
-            <a className="addmoreDoc" onClick={(e) => {
-              addMore(e)
-            }}>
-              Add more files
+          {selectedFiles.length < 10 && (
+            <div className="addmore-wrap">
+              <a className="addmoreDoc" onClick={(e) => {
+                addMore(e)
+              }}>
+                Add more files
               <input type='file'
-                accept={FileUpload.allowedExtensions}
-                id="inputFile"
-                ref={inputRef} multiple style={{ display: "none" }} />
-            </a>
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef} multiple style={{ display: "none" }} />
+              </a>
 
-          </div>
+            </div>
+          )}
         </div>
         {!!currentDoc && (
           <DocumentView

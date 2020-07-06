@@ -17,6 +17,7 @@ export class DocumentUploadActions {
                 {
                     method: http.methods.POST,
                     url: http.createUrl(http.baseUrl, Endpoints.documents.POST.submitDocuments()),
+                    cancelToken: file.uploadReqCancelToken.token,
                     data: DocumentUploadActions.prepareFormData(currentSelected, file),
                     onUploadProgress: (e) => {
                         let p = Math.floor((e.loaded / e.total) * 100);

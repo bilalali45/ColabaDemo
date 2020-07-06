@@ -22,6 +22,7 @@ export const DocumentsRequired = () => {
 
     const setCurrentDoc = (doc) => {
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
+
     }
 
     const fetchPendingDocs = async () => {
@@ -37,14 +38,19 @@ export const DocumentsRequired = () => {
 
 
     const changeCurrentDoc = (curDoc: DocumentRequest) => {
-        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: curDoc })
+        let uploadInProgress = currentDoc?.files?.find(f => f.uploadProgress > 0 && f.uploadStatus !== 'done')
+        if (!uploadInProgress) {
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: curDoc })
+        } else {
+            alert('please wait for the files to finish before nevavigating!');
+        }
     }
 
-    
+
     const renderRequiredDocs = () => {
         if (pendingDocs) {
             return (
-                
+
                 <ul>
                     {
                         pendingDocs.map((pd: DocumentRequest) => {
@@ -61,8 +67,8 @@ export const DocumentsRequired = () => {
         return '';
     }
 
-    if(pendingDocs?.length === 0) {
-        return <Redirect to="activity"/>
+    if (pendingDocs?.length === 0) {
+        return <Redirect to="activity" />
     }
 
 

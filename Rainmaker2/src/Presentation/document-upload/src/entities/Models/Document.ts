@@ -1,3 +1,5 @@
+import axios, { CancelToken } from "axios";
+
 export class Document {
     public id: string;
     public clientName: string;
@@ -12,6 +14,8 @@ export class Document {
     public docLogo: string = '';
     public notAllowed: boolean = false;
     public notAllowedReason: string = '';
+    public deleteBoxVisible: boolean = false;
+    public uploadReqCancelToken = axios.CancelToken.source();
 
     constructor(
         id: string = '',
