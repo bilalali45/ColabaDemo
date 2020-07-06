@@ -64,6 +64,14 @@ export const SelectedDocuments = ({
     }
   }, [selectedFiles.length]);
 
+  useEffect(() => {
+    if (selectedFiles.length === 10) {
+      setFilesLimitErrorVisible(true);
+    } else {
+      setFilesLimitErrorVisible(false);
+    }
+  }, [selectedFiles.length > 10]);
+
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
@@ -222,7 +230,7 @@ export const SelectedDocuments = ({
               );
             })}
           </ul>
-          {selectedFiles.length !== 10 && <div className="addmore-wrap">
+          {selectedFiles.length < 10 && <div className="addmore-wrap">
             <a className="addmoreDoc" onClick={(e) => {
               addMore(e)
             }}>
