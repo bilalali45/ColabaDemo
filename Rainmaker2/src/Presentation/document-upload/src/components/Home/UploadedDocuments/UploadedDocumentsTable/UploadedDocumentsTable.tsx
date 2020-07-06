@@ -32,12 +32,10 @@ export const UploadedDocumentsTable = () => {
   }, []);
 
   const fetchUploadedDocuments = async () => {
-    if(!submittedDocs){
-     
+    if(!submittedDocs){  
       let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(),Auth.getTenantId());
       if (uploadedDocs) {
         dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs});
-       // setDocList(uploadedDocs);
       }
     }  
   };
