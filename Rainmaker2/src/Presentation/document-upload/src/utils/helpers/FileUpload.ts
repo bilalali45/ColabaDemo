@@ -1,15 +1,11 @@
 import moment from "moment";
-import { DateFormat } from "./DateFormat";
 
 export class FileUpload {
   static allowedSize = 15; //in mbs
 
   static nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
-  static todayDate = DateFormat(
-    moment().format("MMM DD, YYYY hh:mm:ss A"),
-    true
-  );
+  static todayDate = (): string => moment().format("MMM DD, YYYY HH:mm");
 
   static PNG = {
     hex: "89504E47",
@@ -168,14 +164,11 @@ export class FileUpload {
 
   static splitDataByType(fileName: string, type: string) {
     let numberTest = /^[0-9\s]*$/i;
-    let splitData = fileName.split('-');
-    if (splitData.length == 1)
-        return fileName;
-    if (numberTest.test(splitData[1]))
-        return splitData[0]+','+splitData[1];
-    else
-        return fileName;
-}
+    let splitData = fileName.split("-");
+    if (splitData.length == 1) return fileName;
+    if (numberTest.test(splitData[1])) return splitData[0] + "," + splitData[1];
+    else return fileName;
+  }
 
   static sortByDate(array: any[]) {
     return array.sort((a, b) => {
@@ -189,10 +182,13 @@ export class FileUpload {
     let count = 0;
     let numberCount: any = [];
     let countDetail: any = [];
-    let uploadingFileName = FileUpload.splitDataByType(FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),'-')
-        if(uploadingFileName.includes(',')){
-            uploadingFileName = uploadingFileName.split(',')[0];            
-        }
+    let uploadingFileName = FileUpload.splitDataByType(
+      FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),
+      "-"
+    );
+    if (uploadingFileName.includes(",")) {
+      uploadingFileName = uploadingFileName.split(",")[0];
+    }
 
     // prevFiles.find(i => this.removeDefaultExt(i.clientName) === this.removeSpecialChars(this.removeDefaultExt(file.name)))
     for (let i = 0; i < prevFiles.length; i++) {
@@ -200,32 +196,32 @@ export class FileUpload {
         FileUpload.removeDefaultExt(prevFiles[i].clientName),
         "-"
       );
-      if(uploadedFileName.includes(',')){
-        numberCount.push(Number(uploadedFileName.split(',')[1]))
-        uploadedFileName = uploadedFileName.split(',')[0];            
-    }
+      if (uploadedFileName.includes(",")) {
+        numberCount.push(Number(uploadedFileName.split(",")[1]));
+        uploadedFileName = uploadedFileName.split(",")[0];
+      }
       if (uploadingFileName === uploadedFileName) count++;
     }
 
-        countDetail.push(count)
-        countDetail.push(numberCount.sort())
-        return countDetail;
+    countDetail.push(count);
+    countDetail.push(numberCount.sort());
+    return countDetail;
   };
-  
+
   static updateName(name, type, countDetail) {
-    let newName = FileUpload.splitDataByType(this.removeDefaultExt(name),'-');
-    if(newName.includes(',')){
-        newName = newName.split(',')[0];            
+    let newName = FileUpload.splitDataByType(this.removeDefaultExt(name), "-");
+    if (newName.includes(",")) {
+      newName = newName.split(",")[0];
     }
     let count = countDetail[0];
     let copyNumber = countDetail[1];
-    if(copyNumber.length > 0){
-       let lastCopy = copyNumber[copyNumber.length - 1];
-        lastCopy++
-        return newName + '-0' + lastCopy + '.' + type.split("/")[1];
-    }else{
-        count++
-        return newName + '-0' + count + '.' + type.split("/")[1];
-    }   
-}
+    if (copyNumber.length > 0) {
+      let lastCopy = copyNumber[copyNumber.length - 1];
+      lastCopy++;
+      return newName + "-0" + lastCopy + "." + type.split("/")[1];
+    } else {
+      count++;
+      return newName + "-0" + count + "." + name.split(".")[0];
+    }
+  }
 }
