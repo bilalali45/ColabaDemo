@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
+import _ from "lodash";
 
 import { UploadedDocuments } from "../../../../entities/Models/UploadedDocuments";
 import { DocumentActions } from "../../../../store/actions/DocumentActions";
@@ -88,16 +89,26 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderUploadedDocs = (data) => {
-    return data.map((item: UploadedDocuments) => {
+    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, [
+      "asc",
+    ]);
+
+    return sortedUploadedDocuments.map((item: UploadedDocuments) => {
       if (!item.files.length) return;
       const { files, docId, requestId, id } = item;
+      const sortedFiles = _.orderBy(
+        files,
+        (file) => DateFormatWithMoment(file.fileUploadedOn),
+        ["desc"]
+      );
+
       return (
         <tr>
           <td>
             <em className="far fa-file"></em> {item.docName}
           </td>
-          {renderFileNameColumn(files, { id, requestId, docId })}
-          {renderAddedColumn(files)}
+          {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
+          {renderAddedColumn(sortedFiles)}
         </tr>
       );
     });
