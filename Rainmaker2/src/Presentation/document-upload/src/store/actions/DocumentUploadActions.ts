@@ -78,7 +78,6 @@ export class DocumentUploadActions {
     dispatch: Function,
     setFileLimitError: Function
   ) {
-    debugger;
     let allSelectedFiles: Document[] = [...prevFiles];
     for (let f of files) {
       if (allSelectedFiles.length >= 10) {
