@@ -205,6 +205,6 @@ export class FileUpload {
     } else {
       count++;
     }
-    return newName + "-" + count + "." + type.split("/")[1];
+    return newName + "-" + count + "." + name.split(".")[1];
   }
 }
