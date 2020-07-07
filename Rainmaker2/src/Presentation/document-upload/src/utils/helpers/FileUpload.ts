@@ -180,7 +180,7 @@ export class FileUpload {
         if (splitData.length == 1)
             return fileName;
         if (numberTest.test(splitData[1]))
-            return splitData[0];
+            return splitData[0]+','+splitData[1];
         else
             return fileName;
 
@@ -195,26 +195,51 @@ export class FileUpload {
     }
 
     static checkName = (prevFiles, file) => {
+        debugger
         let count = 0;
-        let uploadingFileName = FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name))
+        let numberCount: any = [];
+        let countDetail: any = [];
+       // let uploadingFileName = FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name))
+        let uploadingFileName = FileUpload.splitDataByType(FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),'-')
+        if(uploadingFileName.includes(',')){
+            uploadingFileName = uploadingFileName.split(',')[0];            
+        }
         // prevFiles.find(i => this.removeDefaultExt(i.clientName) === this.removeSpecialChars(this.removeDefaultExt(file.name)))
         for (let i = 0; i < prevFiles.length; i++) {
             let uploadedFileName = FileUpload.splitDataByType(FileUpload.removeDefaultExt(prevFiles[i].clientName), '-');
+            if(uploadedFileName.includes(',')){
+                numberCount.push(Number(uploadedFileName.split(',')[1]))
+                uploadedFileName = uploadedFileName.split(',')[0];            
+            }
             if (uploadingFileName === uploadedFileName)
                 count++;
         }
-        return count;
+        countDetail.push(count)
+        countDetail.push(numberCount.sort())
+        return countDetail;
     }
-    static updateName(name, type, count) {
-        let newName = this.removeDefaultExt(name);
-        if (count.toString().length == 1) {
-            count++;
-            count = '0' + count;
+    static updateName(name, type, countDetail) {
+        let newName = FileUpload.splitDataByType(this.removeDefaultExt(name),'-');
+        if(newName.includes(',')){
+            newName = newName.split(',')[0];            
         }
-        else {
+        let count = countDetail[0];
+        let copyNumber = countDetail[1];
+        if(copyNumber.length > 0){
+           let lastCopy = copyNumber[copyNumber.length - 1];
+            lastCopy++
+            return newName + '-0' + lastCopy + '.' + type.split("/")[1];
+        }else{
             count++
-        }
-        return newName + '-' + count + '.' + type.split("/")[1];
+            // if (count.toString().length == 1) {
+            //     count++;
+            //     count = '0' + count;
+            // }
+            // else {
+            //     count++
+            // }
+            return newName + '-0' + count + '.' + type.split("/")[1];
+        }   
     }
 
 }

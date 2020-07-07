@@ -67,6 +67,7 @@ export class DocumentUploadActions {
 
 
     static async updateFiles(files: File[], prevFiles: Document[], dispatch: Function, setFileLimitError: Function) {
+        debugger
         let allSelectedFiles: Document[] = [...prevFiles];
         for (let f of files) {
             if (allSelectedFiles.length >= 10) {
@@ -74,9 +75,9 @@ export class DocumentUploadActions {
                 break;
             }
             var newName = f.name;
-            var count = FileUpload.checkName(prevFiles, f);
-            if (count != 0) {
-                newName = FileUpload.updateName(f.name, f.type, count)
+            var countArray = FileUpload.checkName(prevFiles, f);
+            if (countArray[0] != 0) {
+                newName = FileUpload.updateName(f.name, f.type, countArray)
             }
 
             const selectedFile = new Document("", newName, FileUpload.todayDate, 0, 0, FileUpload.getDocLogo(f, 'slash'), 'pending', f);
