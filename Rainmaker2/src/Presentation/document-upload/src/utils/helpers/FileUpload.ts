@@ -221,7 +221,7 @@ export class FileUpload {
       return newName + "-0" + lastCopy + "." + type.split("/")[1];
     } else {
       count++;
-      return newName + "-0" + count + "." + name.split(".")[0];
+      return newName + "-0" + count + "." + name.split(".")[1];
     }
   }
 }
