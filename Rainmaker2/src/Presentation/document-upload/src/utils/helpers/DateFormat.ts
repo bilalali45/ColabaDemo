@@ -1,11 +1,5 @@
-import moment from 'moment';
-import * as momentDate from 'moment';
+import moment from "moment";
 
-
-export function DateFormat(date: string, isTime: boolean){
- if(isTime){
-   return moment(new Date(date)).format('MMM DD, YYYY hh:mm A')
- }else{
-  return  moment(new Date(date)).format('MMM DD, YYYY')
- }
-}
+export const DateFormatWithMoment = (date: string): string => {
+  return moment(date).format("MMM DD, YYYY HH:mm");
+};

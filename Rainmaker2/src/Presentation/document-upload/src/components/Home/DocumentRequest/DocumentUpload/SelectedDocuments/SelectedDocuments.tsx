@@ -15,7 +15,7 @@ interface SelectedDocumentsType {
   addMore: Function;
   setFileInput: Function;
   setFileLimitError: Function;
-  fileLimitError: { value: boolean }
+  fileLimitError: { value: boolean };
 }
 
 interface ViewDocumentType {
@@ -29,14 +29,19 @@ interface ViewDocumentType {
 // const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
-  addMore, setFileInput, fileLimitError, setFileLimitError
+  addMore,
+  setFileInput,
+  fileLimitError,
+  setFileLimitError,
 }: SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-  const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(false);
+  const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(
+    false
+  );
 
   const documents: any = state.documents;
   const pendingDocs: any = documents.pendingDocs;
@@ -47,7 +52,7 @@ export const SelectedDocuments = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setFileInput(inputRef.current)
+    setFileInput(inputRef.current);
     disableSubmitBtn();
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
@@ -68,8 +73,7 @@ export const SelectedDocuments = ({
       return f;
     });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
-  }
-
+  };
 
   const viewDocument = (document: any) => {
     const {
@@ -90,40 +94,56 @@ export const SelectedDocuments = ({
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        await DocumentUploadActions.submitDocuments(currentSelected, file, dispatch, Auth.getLoanAppliationId(), Auth.getTenantId());
+        await DocumentUploadActions.submitDocuments(
+          currentSelected,
+          file,
+          dispatch,
+          Auth.getLoanAppliationId(),
+          Auth.getTenantId()
+        );
       }
     }
     setSubBtnPressed(false);
     try {
-      let docs = await DocumentActions.getPendingDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+      let docs = await DocumentActions.getPendingDocuments(
+        Auth.getLoanAppliationId(),
+        Auth.getTenantId()
+      );
       if (docs) {
         if (pendingDocs.length) {
-          let updatedDocs = pendingDocs.map(p => {
-            let filesAdded = p.files.filter(f => f.file && f.uploadStatus === 'pending');
-            let docToUpdate = docs?.find(d => d.docId === p.docId);
+          let updatedDocs = pendingDocs.map((p) => {
+            let filesAdded = p.files.filter(
+              (f) => f.file && f.uploadStatus === "pending"
+            );
+            let docToUpdate = docs?.find((d) => d.docId === p.docId);
             if (docToUpdate && docToUpdate.files) {
               docToUpdate.files = [...docToUpdate?.files, ...filesAdded];
             }
             return docToUpdate;
-          })
-          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: updatedDocs });
-          let doc = docs.find(d => d.docId === currentSelected?.docId);
+          });
+          dispatch({
+            type: DocumentsActionType.FetchPendingDocs,
+            payload: updatedDocs,
+          });
+          let doc = docs.find((d) => d.docId === currentSelected?.docId);
           dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
         }
       }
-
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const fileAlreadyExists = (file, newName) => {
-    var alreadyExist = selectedFiles.find(f => f !== file && FileUpload.removeDefaultExt(f.clientName).toLowerCase() === newName.toLowerCase())
+    var alreadyExist = selectedFiles.find(
+      (f) =>
+        f !== file &&
+        FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
+          newName.toLowerCase()
+    );
     if (alreadyExist) {
       return true;
     }
     return false;
-  }
+  };
 
   const changeName = (file: Document, newName: string) => {
     if (fileAlreadyExists(file, newName)) {
@@ -131,7 +151,7 @@ export const SelectedDocuments = ({
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
-        f.clientName = `${newName}.${file.file.type.split("/")[1]}`;
+        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
         f.editName = !f.editName;
         return f;
       }
@@ -139,7 +159,6 @@ export const SelectedDocuments = ({
       return f;
     });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
-
   };
 
   const deleteDoc = (fileName: string) => {
@@ -157,7 +176,7 @@ export const SelectedDocuments = ({
     let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
     let docEdits = selectedFiles.filter((de) => de.editName);
     let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
-  
+
     if (docFiles.length > 0) {
       setBtnDisabled(false);
     } else {
@@ -174,11 +193,16 @@ export const SelectedDocuments = ({
     }
   };
 
-
   const fetchUploadedDocuments = async () => {
-    let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(), Auth.getTenantId());
+    let uploadedDocs = await DocumentActions.getSubmittedDocuments(
+      Auth.getLoanAppliationId(),
+      Auth.getTenantId()
+    );
     if (uploadedDocs) {
-      dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs });
+      dispatch({
+        type: DocumentsActionType.FetchSubmittedDocs,
+        payload: uploadedDocs,
+      });
     }
   };
 
@@ -190,7 +214,13 @@ export const SelectedDocuments = ({
       for (const field of fields) {
         data[field] = currentSelected[field];
       }
-      let docs: DocumentRequest[] | undefined = await DocumentActions.finishDocument(Auth.getLoanAppliationId(), Auth.getTenantId(), data);
+      let docs:
+        | DocumentRequest[]
+        | undefined = await DocumentActions.finishDocument(
+        Auth.getLoanAppliationId(),
+        Auth.getTenantId(),
+        data
+      );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -217,7 +247,6 @@ export const SelectedDocuments = ({
       <div className="file-drop-box havefooter">
         <div className="list-selected-doc">
           <ul className="doc-list-ul">
-
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
@@ -230,22 +259,27 @@ export const SelectedDocuments = ({
                   changeName={changeName}
                   deleteDoc={deleteDoc}
                   indexKey={index}
-
                 />
               );
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className="addmoreDoc" onClick={(e) => {
-              addMore(e)
-            }}>
-              {selectedFiles.length < 10 && 'Add more files'}
-              <input type='file'
+            <a
+              className="addmoreDoc"
+              onClick={(e) => {
+                addMore(e);
+              }}
+            >
+              {selectedFiles.length < 10 && "Add more files"}
+              <input
+                type="file"
                 accept={FileUpload.allowedExtensions}
                 id="inputFile"
-                ref={inputRef} multiple style={{ display: "none" }} />
+                ref={inputRef}
+                multiple
+                style={{ display: "none" }}
+              />
             </a>
-
           </div>
         </div>
         {!!currentDoc && (
@@ -286,19 +320,27 @@ export const SelectedDocuments = ({
               </div>
             </div>
           </div>
-        ) : fileLimitError.value ? <p className="text-danger">Only 10 files can be uploaded per document. <i onClick={() => {
-          setFileLimitError({ value: false });
-        }} className="zmdi zmdi-close"></i></p>
-            : (<div className="doc-submit-wrap">
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
+        ) : fileLimitError.value ? (
+          <p className="text-danger">
+            Only 10 files can be uploaded per document.{" "}
+            <i
+              onClick={() => {
+                setFileLimitError({ value: false });
+              }}
+              className="zmdi zmdi-close"
+            ></i>
+          </p>
+        ) : (
+          <div className="doc-submit-wrap">
+            <button
+              disabled={btnDisabled || subBtnPressed}
+              className="btn btn-primary"
+              onClick={uploadFiles}
+            >
+              Submit
             </button>
-            </div>
-            )}
+          </div>
+        )}
       </div>
     </section>
   );
