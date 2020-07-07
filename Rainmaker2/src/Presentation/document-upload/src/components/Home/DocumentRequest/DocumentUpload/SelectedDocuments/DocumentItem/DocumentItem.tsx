@@ -222,7 +222,10 @@ export const DocumentItem = ({
                             <li onClick={() => {
                                 retry(file)
                             }}>
-                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span> <img src={refreshIcon} alt="" /></a>
+                            </li>
+                            <li>
+                                <a title="Remove"><i className="zmdi zmdi-close"></i></a>
                             </li>
                         </ul>
 
@@ -254,7 +257,10 @@ export const DocumentItem = ({
                             <li onClick={() => {
                                 retry(file)
                             }}>
-                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span>  <img src={refreshIcon} alt="" /></a>
+                                <a title="Retry" className="icon-retry" tabIndex={-1}><span className="retry-txt">Retry</span> <img src={refreshIcon} alt="" /></a>
+                            </li>
+                            <li>
+                                <a title="Remove"><i className="zmdi zmdi-close"></i></a>
                             </li>
                         </ul>
 
