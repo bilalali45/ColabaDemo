@@ -1,12 +1,11 @@
-import moment from "moment";
+import { DateFormatWithMoment } from "./DateFormat";
 
 export class FileUpload {
   static allowedSize = 15; //in mbs
 
   static nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
-  static todayDate = (): string => moment().format("MMM DD, YYYY HH:mm");
-
+  static todayDate = (): string => DateFormatWithMoment(new Date().toString());
   static PNG = {
     hex: "89504E47",
     type: "image/png",
