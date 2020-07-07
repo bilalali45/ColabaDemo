@@ -1,12 +1,11 @@
-import moment from "moment";
+import { DateFormatWithMoment } from "./DateFormat";
 
 export class FileUpload {
   static allowedSize = 15; //in mbs
 
   static nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
-  static todayDate = (): string => moment().format("MMM DD, YYYY HH:mm");
-
+  static todayDate = (): string => DateFormatWithMoment(new Date().toString());
   static PNG = {
     hex: "89504E47",
     type: "image/png",
@@ -192,15 +191,19 @@ export class FileUpload {
 
     // prevFiles.find(i => this.removeDefaultExt(i.clientName) === this.removeSpecialChars(this.removeDefaultExt(file.name)))
     for (let i = 0; i < prevFiles.length; i++) {
+      let dataCount;
       let uploadedFileName = FileUpload.splitDataByType(
         FileUpload.removeDefaultExt(prevFiles[i].clientName),
         "-"
       );
       if (uploadedFileName.includes(",")) {
-        numberCount.push(Number(uploadedFileName.split(",")[1]));
+        dataCount = Number(uploadedFileName.split(",")[1]); 
         uploadedFileName = uploadedFileName.split(",")[0];
       }
-      if (uploadingFileName === uploadedFileName) count++;
+      if (uploadingFileName === uploadedFileName) {
+        if(dataCount) numberCount.push(dataCount);
+        count++;
+      }
     }
 
     countDetail.push(count);
