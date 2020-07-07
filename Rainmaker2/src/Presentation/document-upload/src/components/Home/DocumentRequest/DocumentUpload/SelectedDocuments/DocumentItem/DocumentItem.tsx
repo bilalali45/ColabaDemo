@@ -289,6 +289,9 @@ export const DocumentItem = ({
                   <img src={refreshIcon} alt="" />
                 </a>
               </li>
+	      <li>
+                                <a title="Remove"><i className="zmdi zmdi-close"></i></a>
+                            </li>
             </ul>
           </div>
         </div>
@@ -326,6 +329,9 @@ export const DocumentItem = ({
                   <img src={refreshIcon} alt="" />
                 </a>
               </li>
+	      <li>
+                                <a title="Remove"><i className="zmdi zmdi-close"></i></a>
+                            </li>
             </ul>
           </div>
         </div>

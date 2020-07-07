@@ -136,6 +136,22 @@
                                 img {
                                     margin-left: 8px;
                                 }
+                                i,em{
+                                    font-size: fontSize('lg');
+                                    vertical-align: middle;
+                                }
+                            }
+                            .editable-actions{
+                                @extend .list-style-none;
+                                >li{
+                                    display: inline-block;
+                                    & + li{
+                                        margin-left: 10px;
+                                    }
+                                    a{
+                                        cursor: pointer;
+                                    }
+                                }
                             }
                         }
                     }
@@ -316,6 +332,7 @@
             }
         }
     }
+
     .doc-upload-footer {
         min-height: 70px;
         border-top: 1px solid color("border");
@@ -340,17 +357,27 @@
                 }
             }
 
-        .dc-actions {
-            text-align: right;
-            button {
-                margin-right:5px;
-                &:last-child{
-                    margin-right: 0;
+            .dc-actions {
+                text-align: right;
+                button {
+                    margin-right:5px;
+                    &:last-child{
+                        margin-right: 0;
+                    }
                 }
+                
             }
-            
         }
-    }
-}
+
+        .text-danger{
+            padding: 15px 5px;
+            margin: 0;
+            i{
+                margin-left: 15px;
+                cursor: pointer;
+            }
+        }
+
+    }// .doc-upload-footer
 }
 
