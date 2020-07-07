@@ -19,7 +19,7 @@ import { Auth } from "./services/auth/Auth";
 import { Http } from "./services/http/Http";
 import { LaonActions } from "./store/actions/LoanActions";
 
-const mvcDashBoardUrl = `${window.envConfig.API_BASE_URL}/Dashboard`;
+const mvcDashBoardUrl = `Dashboard`;
 // const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
 
 declare global {
@@ -39,7 +39,11 @@ const App = () => {
 
   useEffect(() => {
     console.log("document.referrer", document.referrer);
-    if (document.referrer === mvcDashBoardUrl) {
+    if (
+      document.referrer.split("/").length > 3 &&
+      document.referrer.split("/")[3] === mvcDashBoardUrl
+    ) {
+      console.log("Remove Auth, when user comes from MVC dashboard.");
       Auth.removeAuth();
     }
     console.log("Document Management App Version", "0.1.3");
