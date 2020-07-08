@@ -12,3 +12,5 @@ __createBinding(exports, helpers_1, "MaskPhone");
 __createBinding(exports, helpers_1, "UnMaskPhone");
 __createBinding(exports, helpers_1, "FormatAmountByCountry");
 __createBinding(exports, helpers_1, "toTitleCase");
+var httpService_1 = require("./httpService");
+__createBinding(exports, httpService_1, "Http");

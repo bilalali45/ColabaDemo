@@ -1,11 +1,16 @@
 {
   "name": "rainsoft-js",
-  "version": "1.0.12",
+  "version": "1.0.15",
   "description": "Rainsoft reuseable js files",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rainsoft",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.39",
+    "axios": "^0.19.2"
+  }
 }
