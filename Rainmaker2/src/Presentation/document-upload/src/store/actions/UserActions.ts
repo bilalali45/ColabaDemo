@@ -103,7 +103,7 @@ export class UserActions {
         console.log("Cache token values exist");
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
-        let isAuth = Auth.checkAuth();
+        let isAuth = true; //Auth.checkAuth();
         if (isAuth) {
           console.log("Cache token is valid");
           Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));

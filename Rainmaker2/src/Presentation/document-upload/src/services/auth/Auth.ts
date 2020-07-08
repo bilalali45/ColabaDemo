@@ -24,11 +24,13 @@ export class Auth {
   }
 
   public static checkAuth(): boolean | string {
-    const rainmaker2Token = cookies.get("Rainmaker2Token");
+    const rainmaker2Token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsIlVzZXJQcm9maWxlSWQiOiI1NzE2IiwiVXNlck5hbWUiOiJwa2R1bm5qckBkdW5uaGVhdC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoicGtkdW5uanJAZHVubmhlYXQuY29tIiwiRmlyc3ROYW1lIjoiUGV0ZXIiLCJMYXN0TmFtZSI6IkR1bm4iLCJleHAiOjE1OTQyMjYxMzQsImlzcyI6InJhaW5zb2Z0Zm4iLCJhdWQiOiJyZWFkZXJzIn0.55hLZyjlHroHMuDamgpOqgru2WaOEXg6VPt4mgzLT6k Rainmaker2RefreshToken TKmrSs+rdORazpOzkAXksJATEtdWTntpWmbsvVtkj8k="; //cookies.get("Rainmaker2Token");
     const auth = localStorage.getItem("auth");
     if (!auth) {
       return false;
     }
+    debugger;
     if (rainmaker2Token) {
       const decodeCacheToken: any = jwt_decode(rainmaker2Token);
       const decodeAuth: any = jwt_decode(auth);
@@ -38,7 +40,8 @@ export class Auth {
       if (decodeCacheToken?.exp) {
         console.log("Cache token check expiry");
         const isValidToken = Auth.checkExpiry(decodeCacheToken?.exp);
-        if (isValidToken) {
+        if (isValidToken == "token expired") {
+        } else {
           console.log("Cache token is not expire");
           return false;
         }
