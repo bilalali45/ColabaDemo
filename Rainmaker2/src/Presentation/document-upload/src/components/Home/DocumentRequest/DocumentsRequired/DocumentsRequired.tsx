@@ -9,7 +9,8 @@ import { Redirect } from 'react-router-dom';
 import { AlertBox } from '../../../../shared/Components/AlertBox/AlertBox';
 
 export const DocumentsRequired = () => {
-    const [showAlert, setshowAlert] = useState<boolean>(false)
+    const [showAlert, setshowAlert] = useState<boolean>(false);
+    const [triedSelected, setTriedSelected] = useState();
     const { state, dispatch } = useContext(Store);
     const { pendingDocs }: any = state.documents;
     const { currentDoc }: any = state.documents;
@@ -25,7 +26,7 @@ export const DocumentsRequired = () => {
         fetchPendingDocs();
     }, []);
 
-   
+
     useEffect(() => {
         let files = selectedFiles.filter(f => f.uploadStatus === 'pending').length > 0;
         if (sideBarNav.current) {
@@ -74,15 +75,18 @@ export const DocumentsRequired = () => {
 
                 <ul>
                     {
-                        pendingDocs.map((pd: DocumentRequest) => {
+                        pendingDocs.map((pd: any) => {
                             return (
                                 <li onClick={() => {
                                     if (showAlert) {
+                                        if(pd) {
+                                            setTriedSelected(pd);
+                                        }
                                         return;
                                     }
                                     changeCurrentDoc(pd);
                                 }}>
-                                    <a className={currentDoc && pd.docId === currentDoc.docId ? 'active' : ''}><span> {pd.docName}</span></a>
+                                    <a className={currentDoc && pd?.docId === currentDoc?.docId ? 'active' : ''}><span> {pd.docName}</span></a>
                                 </li>
                             )
                         })
@@ -106,6 +110,7 @@ export const DocumentsRequired = () => {
                 }
             </nav>
             {showAlert && <AlertBox
+                triedSelected={triedSelected}
                 hideAlert={() => setshowAlert(false)} />}
         </div>
     )

@@ -1,22 +1,35 @@
 import React, { useState, useContext } from 'react'
 import { Store } from '../../../store/store';
+import { DocumentsActionType } from '../../../store/reducers/documentReducer';
+import { DocumentRequest } from '../../../entities/Models/DocumentRequest';
+import { update } from 'lodash';
 
 
 type AlertBoxType = {
-    hideAlert: Function
+    hideAlert: Function,
+    triedSelected?: any
 }
 
-export const AlertBox = ({ hideAlert }: AlertBoxType) => {
+export const AlertBox = ({ hideAlert, triedSelected }: AlertBoxType) => {
 
     const { state, dispatch } = useContext(Store);
     const { pendingDocs, currentDoc }: any = state.documents;
 
-    // const yesHandler = () => {
+    const yesHandler = () => {
+        try {
+            let updatedFiles = currentDoc.files.filter(f => f.uploadStatus !== 'pending');
+            dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
 
-    // }
-    // const noHandler = () => {
+            hideAlert();
 
-    // }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const noHandler = () => {
+        hideAlert();
+    }
 
 
     return (
@@ -30,11 +43,12 @@ export const AlertBox = ({ hideAlert }: AlertBoxType) => {
                 <section className="alert-box--modal-body">
                     <p>Some files are still in progess, please complete them before navigating away!</p>
                     {/* <p>Some files are still in progess, please complete them before proceeding to the next Document</p> */}
-                    {/* <p>If you select yes, all selected files will be lost!</p> */}
+                    <p>If you select yes, all selected files will be lost!</p>
                 </section>
                 {/* <footer className="alert-box--modal-footer">
                     <p className="text-center">
-                        <button className="btn btn-primary btn-small">Yes</button> <button className="btn btn-default btn-small">No</button>
+                        <button onClick={yesHandler} className="btn btn-primary btn-small">Yes</button>
+                        <button onClick={noHandler} className="btn btn-default btn-small">No</button>
                     </p>
                 </footer> */}
             </div>

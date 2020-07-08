@@ -24,7 +24,7 @@ export const DocumentUpload = () => {
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc?.docMessage
     ? currentDoc.docMessage
-    : "Please upload the following message.";
+    : "Please upload the following documents.";
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ export const DocumentUpload = () => {
     }
     fileInput?.click();
     if (fileInput) {
-      fileInput.onchange = (e: any) => {
+      fileInput.onchange = async (e: any) => {
         let files = e?.target?.files;
         if (files) {
           let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
@@ -53,7 +53,6 @@ export const DocumentUpload = () => {
     }
   };
   console.log(fileLimitError);
-  // debugger
   return (
     <section className="Doc-upload" ref={parentRef}>
       <FileDropper

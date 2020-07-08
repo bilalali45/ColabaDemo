@@ -14,5 +14,7 @@ namespace DocumentManagement.Service
         Task<List<EmailLogDTO>> GetEmailLog(string id, string requestId, string docId);
 
         Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName);
+        Task<bool> AcceptDocument(string id, string requestId, string docId);
+        Task<bool> RejectDocument(string id, string requestId, string docId,string message);
     }
 }
