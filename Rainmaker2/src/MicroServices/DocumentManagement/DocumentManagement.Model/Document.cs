@@ -70,6 +70,13 @@ namespace DocumentManagement.Model
         public List<Message> messages { get; set; }
         public string docName { get; set; }
     }
+
+    public class AcceptDocumentModel
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+    }
 }
 
 

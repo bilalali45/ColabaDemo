@@ -202,5 +202,31 @@ namespace DocumentManagement.Service
             return result.GroupBy(x => new { x.docId, x.docName }).Select(x => x.First()).ToList();
         }
 
+        public async Task<bool> AcceptDocument(string id, string requestId, string docId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Completed}
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                }
+
+            });
+            return result.ModifiedCount == 1;
+        }
+
     }
 }
