@@ -227,14 +227,16 @@ a[href],a[tabindex]{
         background-color: color('disabled');
         border-color: color('disabled');
     
-}
+    }
 
-&.btn-small {
-    font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
-    padding: 9px 20px 7px;
-}
-    
-
+    &.btn-small {
+        font: 500 #{fontSize("xs") + "/1.2"} fontFamily("base");
+        padding: 9px 20px 7px;
+    }
+        
+    &-default{
+        background-color: color('default');
+    }
 }
 
 

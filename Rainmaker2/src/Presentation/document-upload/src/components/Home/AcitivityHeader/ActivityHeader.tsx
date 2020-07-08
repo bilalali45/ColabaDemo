@@ -1,16 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useLocation, Link } from 'react-router-dom';
 import { LoanStatus } from '../Activity/LoanStatus/LoanStatus'
 import { Store } from '../../../store/store';
+import { AlertBox } from '../../../shared/Components/AlertBox/AlertBox';
 const ActivityHeader = (props) => {
     const [leftNav, setLeftNav] = useState('');
+    const [showAlert, setshowAlert] = useState<boolean>(false)
     const [rightNav, setRightNav] = useState('');
     const [leftNavUrl, setLeftNavUrl] = useState('');
     const [rightNavUrl, setRightNavUrl] = useState('');
 
     const location = useLocation();
     const { state, dispatch } = useContext(Store);
-    const { pendingDocs }: any = state.documents;
+    const { pendingDocs, currentDoc }: any = state.documents;
+
+    const selectedFiles = currentDoc?.files || [];
+
+    const activityHeadeRef = useRef<HTMLDivElement>(null);
 
     const setNavigations = (pathname) => {
         if (pathname.includes('activity')) {
@@ -52,15 +58,33 @@ const ActivityHeader = (props) => {
         setNavigations(location.pathname);
     }, [location.pathname]);
 
+    useEffect(() => {
+        let files = selectedFiles.filter(f => f.uploadStatus === 'pending').length > 0;
+        if (activityHeadeRef.current) {
+            if (files) {
+                activityHeadeRef.current.onclick = showAlertPopup;
+            } else {
+                activityHeadeRef.current.onclick = null;
+            }
+        }
+    }, [selectedFiles]);
+
+    const showAlertPopup = () => {
+        setshowAlert(true);
+    };
+
     const renderLeftNav = () => {
         if (leftNav === 'Dashboard') {
             return <a tabIndex={-1} onClick={() => {
+                if (showAlert) {
+                    return;
+                }
                 window.open('/Dashboard', '_self');
             }}>
                 <i className="zmdi zmdi-arrow-left"></i>{leftNav}
             </a>
         }
-        return <Link to={{ pathname: leftNavUrl, state: { from: location.pathname } }}>
+        return <Link to={{ pathname: showAlert ? location.pathname : leftNavUrl, state: { from: location.pathname } }}>
             <i className="zmdi zmdi-arrow-left"></i>{leftNav}
         </Link >
 
@@ -72,7 +96,7 @@ const ActivityHeader = (props) => {
             <section className="compo-loan-status">
                 <LoanStatus />
             </section>
-            <section className="row-subheader">
+            <section ref={activityHeadeRef} className="row-subheader">
                 <div className="row">
                     <div className="container">
                         <div className="sub-header-wrap">
@@ -90,7 +114,7 @@ const ActivityHeader = (props) => {
                                     <div className="action-doc-upload">
 
                                         <Link to={{
-                                            pathname: rightNavUrl,
+                                            pathname: showAlert ? location.pathname : rightNavUrl,
                                             state: { from: location.pathname }
                                         }}>{rightNav}</Link>
 
@@ -102,7 +126,8 @@ const ActivityHeader = (props) => {
                     </div>
                 </div>
             </section>
-
+            {showAlert && <AlertBox
+                hideAlert={() => setshowAlert(false)} />}
         </div>
     )
 }
