@@ -24,8 +24,8 @@ export class Auth {
   }
 
   public static checkAuth(): boolean | string {
-    const rainmaker2Token = cookies.get("Rainmaker2Token");
-    const auth = localStorage.getItem("auth");
+    let rainmaker2Token = cookies.get("Rainmaker2Token");
+    let auth = localStorage.getItem("auth");
     if (!auth) {
       return false;
     }
@@ -35,27 +35,11 @@ export class Auth {
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;
       }
-      if (decodeCacheToken?.exp) {
-        console.log("Cache token check expiry");
-        const isValidToken = Auth.checkExpiry(decodeCacheToken?.exp);
-        if (isValidToken == "token expired") {
-        } else {
-          console.log("Cache token is not expire");
-          return false;
-        }
-      }
     }
 
     let payload = this.getUserPayload();
     if (payload) {
-      return Auth.checkExpiry(payload.exp);
-    }
-    return true;
-  }
-
-  static checkExpiry = (interval) => {
-    if (interval) {
-      let expiry = new Date(interval * 1000);
+      let expiry = new Date(payload.exp * 1000);
       let currentDate = new Date(Date.now());
       if (currentDate < expiry) {
         return true;
@@ -65,8 +49,8 @@ export class Auth {
         // Auth.removeAuth();
       }
     }
-    return false;
-  };
+    return true;
+  }
 
   static storeTokenPayload(payload) {
     if (!payload) return;

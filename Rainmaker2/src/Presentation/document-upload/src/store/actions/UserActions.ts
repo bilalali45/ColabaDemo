@@ -51,7 +51,7 @@ export class UserActions {
     } catch (error) {
       setTimeout(() => {
         UserActions.refreshToken();
-      }, 1 * 1000);
+      }, 10 * 1000);
       return false;
     }
   }
@@ -103,7 +103,7 @@ export class UserActions {
         console.log("Cache token values exist");
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
-        let isAuth = true; //Auth.checkAuth();
+        let isAuth = Auth.checkAuth();
         if (isAuth) {
           console.log("Cache token is valid");
           Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
