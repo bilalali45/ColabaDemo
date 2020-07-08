@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { DocumentsRequired } from './DocumentsRequired/DocumentsRequired'
 import { DocumentUpload } from './DocumentUpload/DocumentUpload'
 import { Store } from '../../../store/store';
+import { AlertBox } from '../../../shared/Components/AlertBox/AlertBox';
 
 export const DocumentRequest = () => {
     const { state, dispatch } = useContext(Store);
@@ -34,6 +35,7 @@ export const DocumentRequest = () => {
                     </div>
 
                 </section>
+                <AlertBox/>
         </main>
     )
 }
