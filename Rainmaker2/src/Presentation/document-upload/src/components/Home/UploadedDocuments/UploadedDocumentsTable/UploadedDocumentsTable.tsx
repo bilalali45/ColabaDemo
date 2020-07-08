@@ -80,7 +80,7 @@ export const UploadedDocumentsTable = () => {
         {data.map((item: Document) => {
           return (
             <span className="block-element">
-              {DateFormatWithMoment(item.fileUploadedOn)}
+              {DateFormatWithMoment(item.fileUploadedOn, true)}
             </span>
           );
         })}
@@ -98,7 +98,7 @@ export const UploadedDocumentsTable = () => {
       const { files, docId, requestId, id } = item;
       const sortedFiles = _.orderBy(
         files,
-        (file) => DateFormatWithMoment(file.fileUploadedOn),
+        (file) => new Date(file.fileUploadedOn),
         ["desc"]
       );
 
