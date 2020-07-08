@@ -21,12 +21,13 @@ interface DocumentViewProps {
   fileId?: string;
   clientName?: string;
   hideViewer: (currentDoc) => void;
+  file?: any;
 }
 
 interface DocumentParamsType {
   filePath: string;
   fileType: string;
-  blob: Blob;
+  blob: any;
 }
 
 export const DocumentView: FunctionComponent<DocumentViewProps> = ({
@@ -36,12 +37,25 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   fileId,
   clientName,
   hideViewer,
+  file,
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: "",
     fileType: "",
   });
+
+  const getDocumentForViewBeforeUpload = useCallback(() => {
+    const fileBlob = new Blob([file], { type: "image/png" });
+    const filePath = URL.createObjectURL(fileBlob);
+
+    file &&
+      setDocumentParams({
+        blob: file,
+        filePath,
+        fileType: file.type.replace("image/", "").replace("application/", ""),
+      });
+  }, [file]);
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -69,6 +83,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       });
     } catch (error) {
       alert("Something went wrong. Please try again later.");
+      hideViewer({});
     }
   }, [docId, fileId, id, requestId]);
 
@@ -101,8 +116,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   );
 
   useEffect(() => {
-    getSubmittedDocumentForView();
-  }, [getSubmittedDocumentForView]);
+    if (file) {
+      getDocumentForViewBeforeUpload();
+    } else {
+      getSubmittedDocumentForView();
+    }
+  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, file]);
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
@@ -213,7 +232,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </div>
         )}
       </TransformWrapper>
-      <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
   );
 };

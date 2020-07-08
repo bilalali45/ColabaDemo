@@ -24,6 +24,7 @@ interface ViewDocumentType {
   docId: string;
   clientName?: string;
   fileId?: string;
+  file?: any;
 }
 
 export const SelectedDocuments = ({
@@ -61,7 +62,6 @@ export const SelectedDocuments = ({
     }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
-  
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -87,6 +87,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
       clientName,
+      file: document.file,
     });
   };
 
@@ -110,24 +111,10 @@ export const SelectedDocuments = ({
         Auth.getTenantId()
       );
       if (docs) {
-        if (pendingDocs.length) {
-          let updatedDocs = pendingDocs.map((p) => {
-            let filesAdded = p.files.filter(
-              (f) => f.file && f.uploadStatus === "pending"
-            );
-            let docToUpdate = docs?.find((d) => d.docId === p.docId);
-            if (docToUpdate && docToUpdate.files) {
-              docToUpdate.files = [...docToUpdate?.files, ...filesAdded];
-            }
-            return docToUpdate;
-          });
-          dispatch({
-            type: DocumentsActionType.FetchPendingDocs,
-            payload: updatedDocs,
-          });
-          let doc = docs.find((d) => d.docId === currentSelected?.docId);
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
-        }
+          if(docs?.length) {
+            dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+          }
       }
     } catch (error) {}
   };
@@ -334,17 +321,18 @@ export const SelectedDocuments = ({
           </p>
         ) : (
           <div className="doc-submit-wrap">
-            {!doneHit && <button
-              disabled={btnDisabled || subBtnPressed}
-              className="btn btn-primary"
-              onClick={uploadFiles}
-            >
-              Submit
-            </button>}
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
           </div>
         )}
       </div>
     </section>
   );
 };
-
