@@ -36,8 +36,10 @@ export class Auth {
         return false;
       }
       if (decodeCacheToken?.exp) {
+        console.log("Cache token check expiry");
         const isValidToken = Auth.checkExpiry(decodeCacheToken?.exp);
         if (isValidToken) {
+          console.log("Cache token is not expire");
           return false;
         }
       }
