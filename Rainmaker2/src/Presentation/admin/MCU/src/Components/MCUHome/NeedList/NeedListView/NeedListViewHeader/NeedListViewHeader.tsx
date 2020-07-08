@@ -17,12 +17,14 @@ export const NeedListViewHeader = () => {
                 </div>
             </div>
             <div className="need-list-view-header--right">
-                 All
+                <label><strong>All</strong></label>
+                &nbsp;&nbsp;&nbsp;
                 <label className="switch">
                     <input type="checkbox" id="toggle" />
                     <span className="slider round"></span>
                 </label>
-                Pending
+                &nbsp;&nbsp;&nbsp;
+                <label><strong>Pending</strong></label>
             </div>            
         </div>
     )
