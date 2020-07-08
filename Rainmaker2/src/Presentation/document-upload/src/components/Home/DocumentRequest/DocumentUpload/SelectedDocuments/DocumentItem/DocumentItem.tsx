@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from "react";
+
 import {
   DocEditIcon,
   DocviewIcon,
@@ -130,47 +131,47 @@ export const DocumentItem = ({
             </li>
           </ul>
         ) : (
-            <>
-              <ul className="readable-actions">
-                {file.file && !file.uploadProgress && (
-                  <li>
-                    <a onClick={EditTitle} title="Rename" tabIndex={-1}>
-                      {<DocEditIcon />}
-                    </a>
-                  </li>
-                )}
-                {(!file.file || file.uploadStatus === "done") && (
-                  <li>
-                    <a
-                      onClick={() => viewDocument(file)}
-                      title="View Document"
-                      tabIndex={-1}
-                    >
-                      {<DocviewIcon />}
-                    </a>
-                  </li>
-                )}
-                {file.file && file.uploadProgress < 100 && (
-                  <li>
-                    <a
-                      title="Cancel"
-                      onClick={() => deleteDOChandeler()}
-                      tabIndex={-1}
-                    >
-                      <i className="zmdi zmdi-close"></i>
-                    </a>
-                  </li>
-                )}
-                {file.uploadStatus === "done" && (
-                  <li>
-                    <a title="Uploaded" className="icon-uploaded" tabIndex={-1}>
-                      <i className="zmdi zmdi-check"></i>
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </>
-          )}
+          <>
+            <ul className="readable-actions">
+              {file.file && !file.uploadProgress && (
+                <li>
+                  <a onClick={EditTitle} title="Rename" tabIndex={-1}>
+                    {<DocEditIcon />}
+                  </a>
+                </li>
+              )}
+
+              <li>
+                <a
+                  onClick={() => viewDocument(file)}
+                  title="View Document"
+                  tabIndex={-1}
+                >
+                  {<DocviewIcon />}
+                </a>
+              </li>
+
+              {file.file && file.uploadProgress < 100 && (
+                <li>
+                  <a
+                    title="Cancel"
+                    onClick={() => deleteDOChandeler()}
+                    tabIndex={-1}
+                  >
+                    <i className="zmdi zmdi-close"></i>
+                  </a>
+                </li>
+              )}
+              {file.uploadStatus === "done" && (
+                <li>
+                  <a title="Uploaded" className="icon-uploaded" tabIndex={-1}>
+                    <i className="zmdi zmdi-check"></i>
+                  </a>
+                </li>
+              )}
+            </ul>
+          </>
+        )}
       </div>
     );
   };
@@ -198,8 +199,8 @@ export const DocumentItem = ({
             }}
           />
         ) : (
-            <p>{file.clientName}</p>
-          )}
+          <p>{file.clientName}</p>
+        )}
       </div>
     );
   };
@@ -210,16 +211,16 @@ export const DocumentItem = ({
         {nameExists ? (
           <span className="dl-errorrename">File name must be unique.</span>
         ) : (
-            <>
-              <span className="dl-date">
-                {DateFormatWithMoment(file.fileUploadedOn)}
-              </span>
-              <span className="dl-text-by"> by </span>
-              <span className="dl-text-auther">{UserActions.getUserName()}</span>
-              <span className="dl-pipe"> | </span>
-              <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
-            </>
-          )}
+          <>
+            <span className="dl-date">
+              {DateFormatWithMoment(file.fileUploadedOn)}
+            </span>
+            <span className="dl-text-by"> by </span>
+            <span className="dl-text-auther">{UserActions.getUserName()}</span>
+            <span className="dl-pipe"> | </span>
+            <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
+          </>
+        )}
       </div>
     );
   };
@@ -245,16 +246,16 @@ export const DocumentItem = ({
             {renderDocListActions()}
           </div>
         ) : (
-            renderDeleteBox()
-          )}
+          renderDeleteBox()
+        )}
         {file.file && file.uploadProgress < 100 && file.uploadProgress > 0 ? (
           <div
             className="progress-upload"
             style={{ width: file.uploadProgress + "%" }}
           ></div>
         ) : (
-            ""
-          )}
+          ""
+        )}
       </li>
     );
   };
@@ -290,10 +291,15 @@ export const DocumentItem = ({
                 </a>
               </li>
               <li>
-                <a onClick={() => {
-                  deleteDoc(file.clientName);
-                }}
-                  tabIndex={-1} title="Remove"><i className="zmdi zmdi-close"></i></a>
+                <a
+                  onClick={() => {
+                    deleteDoc(file.clientName);
+                  }}
+                  tabIndex={-1}
+                  title="Remove"
+                >
+                  <i className="zmdi zmdi-close"></i>
+                </a>
               </li>
             </ul>
           </div>
@@ -333,8 +339,13 @@ export const DocumentItem = ({
                 </a>
               </li>
               <li>
-                <a onClick={() => deleteDoc(file.clientName)}
-                  tabIndex={-1} title="Remove"><i className="zmdi zmdi-close"></i></a>
+                <a
+                  onClick={() => deleteDoc(file.clientName)}
+                  tabIndex={-1}
+                  title="Remove"
+                >
+                  <i className="zmdi zmdi-close"></i>
+                </a>
               </li>
             </ul>
           </div>

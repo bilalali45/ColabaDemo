@@ -1,12 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentManagement.Entity;
+﻿using DocumentManagement.Entity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-
+using System;
+using System.Collections.Generic;
 namespace DocumentManagement.Model
 {
+
+
+    public class DocumentDetailQuery
+    {
+        
+
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        public string docName { get; set; }
+        public string typeName { get; set; }
+        public List<RequestFile> files { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId;
+    }
+
+
+  
+    public class DocumendDTO
+    {
+       
+
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public string docId { get; set; }
+        public string docName { get; set; }
+       
+        public string requestId { get; set; }
+        public  List<DocumentFileDTO> files { get; set; }
+       
+    }
+
+    public class DocumentFileDTO
+    {
+        public string fileId { get; set; }
+        public string clientName { get; set; }
+        public string mcuName { get; set; }
+        public DateTime fileUploadedOn { get; set; }
+
+    }
     public class TemplateIdModel
     {
         public List<string> id { get; set; }
@@ -28,4 +70,24 @@ namespace DocumentManagement.Model
         public List<Message> messages { get; set; }
         public string docName { get; set; }
     }
+
+    public class AcceptDocumentModel
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+    }
+
+    public class RejectDocumentModel
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+        public string message { get; set; }
+    }
 }
+
+
+ 
+   
+ 

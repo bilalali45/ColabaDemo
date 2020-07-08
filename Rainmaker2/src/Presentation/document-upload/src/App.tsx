@@ -38,14 +38,14 @@ const App = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("document.referrer", document.referrer);
-    if (
-      document.referrer.split("/").length > 3 &&
-      document.referrer.split("/")[3] === mvcDashBoardUrl
-    ) {
-      console.log("Remove Auth, when user comes from MVC dashboard.");
-      Auth.removeAuth();
-    }
+    // console.log("document.referrer", document.referrer);
+    // if (
+    //   document.referrer.split("/").length > 3 &&
+    //   document.referrer.split("/")[3] === mvcDashBoardUrl
+    // ) {
+    //   console.log("Remove Auth, when user comes from MVC dashboard.");
+    //   Auth.removeAuth();
+    // }
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     ParamsService.storeParams([
@@ -53,9 +53,6 @@ const App = () => {
       "tenantId",
       "businessUnitId",
     ]);
-    getFooterText();
-    addExpiryListener();
-    keepAliveParentApp();
     // component unmount
     return () => {
       Auth.removeAuth();
@@ -65,13 +62,21 @@ const App = () => {
   const authenticate = async () => {
     let isAuth = await UserActions.authorize();
     setAuthenticated(Boolean(isAuth));
+    getFooterText();
+    addExpiryListener();
+    keepAliveParentApp();
   };
 
   const getFooterText = async () => {
-    let footerText = await LaonActions.getFooter(
-      Auth.getTenantId(),
-      Auth.getBusinessUnitId()
+    const tenantId = Auth.getTenantId();
+    const businessUnitId = Auth.getBusinessUnitId();
+    console.log(
+      "getFooterText TenantID",
+      tenantId,
+      "Business Unit id",
+      businessUnitId
     );
+    let footerText = await LaonActions.getFooter(tenantId, businessUnitId);
     setFooterText(footerText);
   };
 

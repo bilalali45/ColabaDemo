@@ -24,9 +24,8 @@ interface ViewDocumentType {
   docId: string;
   clientName?: string;
   fileId?: string;
+  file?: any;
 }
-
-// const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
 
 export const SelectedDocuments = ({
   addMore,
@@ -38,6 +37,7 @@ export const SelectedDocuments = ({
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
+  const [doneHit, setDoneHit] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
   const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(
     false
@@ -87,6 +87,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
       clientName,
+      file: document.file,
     });
   };
 
@@ -110,24 +111,10 @@ export const SelectedDocuments = ({
         Auth.getTenantId()
       );
       if (docs) {
-        if (pendingDocs.length) {
-          let updatedDocs = pendingDocs.map((p) => {
-            let filesAdded = p.files.filter(
-              (f) => f.file && f.uploadStatus === "pending"
-            );
-            let docToUpdate = docs?.find((d) => d.docId === p.docId);
-            if (docToUpdate && docToUpdate.files) {
-              docToUpdate.files = [...docToUpdate?.files, ...filesAdded];
-            }
-            return docToUpdate;
-          });
-          dispatch({
-            type: DocumentsActionType.FetchPendingDocs,
-            payload: updatedDocs,
-          });
-          let doc = docs.find((d) => d.docId === currentSelected?.docId);
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
-        }
+          if(docs?.length) {
+            dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+          }
       }
     } catch (error) {}
   };
@@ -207,6 +194,8 @@ export const SelectedDocuments = ({
   };
 
   const doneDoc = async () => {
+    setDoneVisible(false);
+    setDoneHit(true);
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -332,18 +321,18 @@ export const SelectedDocuments = ({
           </p>
         ) : (
           <div className="doc-submit-wrap">
-            <button
-              disabled={btnDisabled || subBtnPressed}
-              className="btn btn-primary"
-              onClick={uploadFiles}
-            >
-              Submit
-            </button>
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
           </div>
         )}
       </div>
     </section>
   );
 };
-
-// filesLimitErrorVisible && selectedFiles.filter(f => f.file).length
