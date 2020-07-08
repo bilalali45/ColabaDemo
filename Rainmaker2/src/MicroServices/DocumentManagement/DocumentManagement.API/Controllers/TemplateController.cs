@@ -78,9 +78,9 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpGet("GetCategoryDocument")]
-        public async Task<IActionResult> GetCategoryDocument()
+        public async Task<IActionResult> GetCategoryDocument(int tenantId)
         {
-            var docQuery = await templateService.GetCategoryDocument();
+            var docQuery = await templateService.GetCategoryDocument(tenantId);
             return Ok(docQuery);
         }
 

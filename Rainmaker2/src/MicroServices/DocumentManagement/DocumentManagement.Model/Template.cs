@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using DocumentManagement.Entity;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace DocumentManagement.Model
         {
             public string docTypeId { get; set; }
             public string docType { get; set; }
+            public string docMessage { get; set; }
         }
         public class CategoryDocumentTypeModel
         {
@@ -55,6 +57,8 @@ namespace DocumentManagement.Model
             [BsonRepresentation(BsonType.ObjectId)]
             public string docTypeId { get; set; }
             public string docType { get; set; }
+            public string docMessage { get; set; }
+            public List<Message> messages { get; set; }
         }
         public class AddDocumentModel
         {

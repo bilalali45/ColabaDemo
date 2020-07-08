@@ -509,12 +509,12 @@ namespace DocumentManagement.Tests
             Mock<ITemplateService> mock = new Mock<ITemplateService>();
             List<CategoryDocumentTypeModel> list = new List<CategoryDocumentTypeModel>() { { new CategoryDocumentTypeModel() { catId = "5ebabbfb3845be1cf1edce50" } } };
 
-            mock.Setup(x => x.GetCategoryDocument()).ReturnsAsync(list);
+            mock.Setup(x => x.GetCategoryDocument(It.IsAny<int>())).ReturnsAsync(list);
 
             var templateController = new TemplateController(mock.Object);
 
             //Act
-            IActionResult result = await templateController.GetCategoryDocument();
+            IActionResult result = await templateController.GetCategoryDocument(It.IsAny<int>());
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -599,54 +599,8 @@ namespace DocumentManagement.Tests
 
 
         [Fact]
-        public async Task TestGetCategoryDocumentServiceIsNotNull()
-        {    
-            //Arrange
-            Mock<IMongoService> mock = new Mock<IMongoService>();
-            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Entity.Category>> mockCollection = new Mock<IMongoCollection<Entity.Category>>();
-             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
-
-            List<BsonDocument> list = new List<BsonDocument>()
-            {
-                
-                new BsonDocument
-                    {
-                        //Cover all empty  fields except _id
-                        { "_id" , "5eba77905561502c495f6333"},
-                        { "name" ,"Assets"},
-                        { "docTypeId" , BsonString.Empty},
-                        { "docType" , BsonString.Empty}
-                    }
-                 ,
-                  
-            };
-
-            List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
-            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursor.SetupGet(x => x.Current).Returns(list);
-
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Category, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
-
-
-            mockdb.Setup(x => x.GetCollection<Entity.Category>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-
-            mock.SetupGet(x => x.db).Returns(mockdb.Object);
-
-            var service = new TemplateService(mock.Object);
-            //Act
-            List<CategoryDocumentTypeModel> dto = await service.GetCategoryDocument();
-            //Assert
-            Assert.NotNull(dto);
-            Assert.Equal("5eba77905561502c495f6333", dto[0].catId);
-            Assert.Equal("Assets", dto[0].catName);
-            Assert.Equal(new List<DocumentTypeModel>(), dto[0].documents);
-   
-        }
-
-        [Fact]
-        public async Task TestGetCategoryDocumentServiceIsNull()
-        {    
+        public async Task TestGetCategoryDocumentService()
+        {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
@@ -657,21 +611,79 @@ namespace DocumentManagement.Tests
             {
                 new BsonDocument
                     {
-                        //Cover all empty  fields
-                        { "_id" , BsonString.Empty},
-                        { "name" ,BsonString.Empty},
+                        { "_id" , "5ebabbfb3845be1cf1edce50" },
+                        { "name" ,BsonString.Empty },
                         { "docTypeId" , BsonString.Empty},
-                        { "docType" , BsonString.Empty}
+                        { "docType" , BsonString.Empty},
+                        { "docMessage" , BsonString.Empty},
+                        { "messages" , BsonArray.Create(new Message[]{ })}
                     }
-                 
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , "5ebabbfb3845be1cf1edce50"},
+                     { "name" ,"Assets"},
+                     { "docTypeId" , BsonString.Empty},
+                     { "docType" , BsonString.Empty},
+                     { "docMessage" , BsonString.Empty},
+                     { "messages" , BsonArray.Create(new Message[]{ })}
+                 }
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , BsonString.Empty},
+                     { "name" ,BsonString.Empty},
+                     { "docTypeId" , "5ebc18cba5d847268075ad4f"},
+                     { "docType" , BsonString.Empty},
+                     { "docMessage" , BsonString.Empty},
+                     { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })}
+                 }
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , BsonString.Empty},
+                     { "name" ,BsonString.Empty},
+                     { "docTypeId" , "5ebc18cba5d847268075ad4f"},
+                     { "docType" , "Credit Report"},
+                     { "docMessage" , "Credit report has been uploaded"},
+                     { "messages" , BsonArray.Create(new Message[]{ })}
+                 }
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , BsonString.Empty},
+                     { "name" ,BsonString.Empty},
+                     { "docTypeId" , "5ebc18cba5d847268075ad4f"},
+                     { "docType" , BsonString.Empty},
+                     { "docMessage" , BsonString.Empty},
+                     { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 2 } , { "message", BsonString.Empty } } })}
+                 }
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , BsonString.Empty},
+                     { "name" ,BsonString.Empty},
+                     { "docTypeId" , "5ebc18cba5d847268075ad4f"},
+                     { "docType" , BsonString.Empty},
+                     { "docMessage" , BsonString.Empty},
+                     { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", BsonString.Empty } } })}
+                 }
+                 ,
+                 new BsonDocument
+                 {
+                     { "_id" , BsonString.Empty},
+                     { "name" ,BsonString.Empty},
+                     { "docTypeId" , "5ebc18cba5d847268075ad4f"},
+                     { "docType" , BsonString.Empty},
+                     { "docMessage" , BsonString.Empty},
+                     { "messages" , BsonNull.Value}
+                 }
             };
 
-            List<CategoryDocumentTypeModel> categorylist = new List<CategoryDocumentTypeModel>();
-            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())). ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
             mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Category, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
-
 
             mockdb.Setup(x => x.GetCollection<Entity.Category>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
@@ -679,13 +691,12 @@ namespace DocumentManagement.Tests
 
             var service = new TemplateService(mock.Object);
             //Act
-            List<CategoryDocumentTypeModel> dto = await service.GetCategoryDocument();
+            List<CategoryDocumentTypeModel> dto = await service.GetCategoryDocument(1);
             //Assert
             Assert.NotNull(dto);
-            
-            Assert.Equal("", dto[0].catId);
-            Assert.Equal("",dto[0].catName);
-            Assert.Equal(new List<DocumentTypeModel>(), dto[0].documents);
+            Assert.Equal(2, dto.Count);
+            Assert.Equal("5ebabbfb3845be1cf1edce50", dto[0].catId);
+            Assert.Equal("Credit report has been uploaded", dto[1].documents[0].docMessage);
         }
     }
 }

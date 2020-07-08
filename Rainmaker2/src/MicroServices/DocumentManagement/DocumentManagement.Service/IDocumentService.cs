@@ -8,6 +8,8 @@ namespace DocumentManagement.Service
 {
     public  interface IDocumentService
     {
-        Task<List<Document>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel);
+        Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId);
+        Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId);
+        Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel);
     }
 }
