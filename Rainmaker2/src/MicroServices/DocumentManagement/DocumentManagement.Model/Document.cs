@@ -77,6 +77,14 @@ namespace DocumentManagement.Model
         public string requestId { get; set; }
         public string docId { get; set; }
     }
+
+    public class RejectDocumentModel
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+        public string message { get; set; }
+    }
 }
 
 

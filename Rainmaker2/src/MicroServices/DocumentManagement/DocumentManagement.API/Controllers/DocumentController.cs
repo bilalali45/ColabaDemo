@@ -46,5 +46,15 @@ namespace DocumentManagement.API.Controllers
             else
                 return NotFound();
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RejectDocument(RejectDocumentModel rejectDocumentModel)
+        {
+            var docQuery = await documentService.RejectDocument(rejectDocumentModel.id, rejectDocumentModel.requestId, rejectDocumentModel.docId, rejectDocumentModel.message);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+        }
     }
 }
