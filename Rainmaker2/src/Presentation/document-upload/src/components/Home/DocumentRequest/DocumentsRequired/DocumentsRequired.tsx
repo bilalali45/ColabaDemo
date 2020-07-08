@@ -30,15 +30,14 @@ export const DocumentsRequired = () => {
         let files = selectedFiles.filter(f => f.uploadStatus === 'pending').length > 0;
         if (sideBarNav.current) {
             if (files) {
-                sideBarNav.current.addEventListener('click', showAlertPopup, false);
+                sideBarNav.current.onclick = showAlertPopup;
             } else {
-                sideBarNav.current.removeEventListener('click', showAlertPopup, false);
+                sideBarNav.current.onclick = null;
             }
         }
     }, [selectedFiles]);
 
     const showAlertPopup = () => {
-        // alert('in here!!1');
         setshowAlert(true);
     };
 
