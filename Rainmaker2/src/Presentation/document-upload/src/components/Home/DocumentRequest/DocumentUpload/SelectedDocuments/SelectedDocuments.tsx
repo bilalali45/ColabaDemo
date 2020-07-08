@@ -110,24 +110,10 @@ export const SelectedDocuments = ({
         Auth.getTenantId()
       );
       if (docs) {
-        if (pendingDocs.length) {
-          let updatedDocs = pendingDocs.map((p) => {
-            let filesAdded = p.files.filter(
-              (f) => f.file && f.uploadStatus === "pending"
-            );
-            let docToUpdate = docs?.find((d) => d.docId === p.docId);
-            if (docToUpdate && docToUpdate.files) {
-              docToUpdate.files = [...docToUpdate?.files, ...filesAdded];
-            }
-            return docToUpdate;
-          });
-          dispatch({
-            type: DocumentsActionType.FetchPendingDocs,
-            payload: updatedDocs,
-          });
-          let doc = docs.find((d) => d.docId === currentSelected?.docId);
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: doc });
-        }
+          if(docs?.length) {
+            dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+          }
       }
     } catch (error) {}
   };
