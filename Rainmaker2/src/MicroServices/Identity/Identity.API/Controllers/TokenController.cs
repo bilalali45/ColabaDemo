@@ -131,7 +131,7 @@ namespace Identity.Controllers
             var refreshToken = request.RefreshToken;
             var principal = await _tokenService.GetPrincipalFromExpiredToken(token: token);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            var tokenPair = TokenService.RefreshTokens[key: username].FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
+            var tokenPair = TokenService.RefreshTokens[key: username]?.FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
 
             var user = await GetUser(userName: username);
             if (user == null || tokenPair == null)
@@ -340,23 +340,10 @@ namespace Identity.Controllers
             return Ok(value: response);
         }
 
-
-        [Route(template: "[action]")]
-        [HttpPost]
-        public IActionResult TestException(GenerateTokenRequest request)
-        {
-            throw new Exception(message: "test exception");
-
-            return Ok(value: "ok");
-        }
-
-
         [Route(template: "[action]")]
         [HttpGet]
         public string RefreshTokensState()
         {
-
-
             return TokenService.RefreshTokens.ToJson();
         }
     }

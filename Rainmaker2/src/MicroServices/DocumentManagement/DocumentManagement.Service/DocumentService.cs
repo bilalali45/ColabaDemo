@@ -29,7 +29,9 @@ namespace DocumentManagement.Service
                 @"{""$match"": { ""_id"": { ""$in"": " + new BsonArray(templateIdsModel.id.Select(x => new ObjectId(x))).ToJson() + @"
                               }}
                         }", @"{
-                            ""$unwind"": ""$documentTypes""
+                            ""$unwind"":{ ""path"": ""$documentTypes"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
                         }", @"{
                             ""$lookup"": {
                                 ""from"": ""DocumentType"",
@@ -38,7 +40,10 @@ namespace DocumentManagement.Service
                                 ""as"": ""documents""
                             }
                         }", @"{
-                            ""$unwind"": ""$documents""
+                            ""$unwind"": {
+                                ""path"": ""$documents"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
                         }", @"{
                             ""$project"": {
                                 ""_id"": 0,
@@ -71,9 +76,7 @@ namespace DocumentManagement.Service
                     result.Add(dto);
                 }
             }
-            return result.GroupBy(x=>x.docId).Select(x=>x.First()).ToList();
+            return result.GroupBy(x=>new { x.docId, x.docName }).Select(x=>x.First()).ToList();
         }
-
-       
     }
 }

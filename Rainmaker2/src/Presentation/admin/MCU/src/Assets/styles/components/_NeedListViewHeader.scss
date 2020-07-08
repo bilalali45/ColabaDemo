@@ -1,4 +1,6 @@
 .need-list-view-header{
+    display: flex;
+    justify-content: space-between;
 
     .h2{
         font: 500 21px/1.2 fontFamily("base");
