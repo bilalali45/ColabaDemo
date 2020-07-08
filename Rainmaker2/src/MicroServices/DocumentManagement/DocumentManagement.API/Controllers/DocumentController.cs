@@ -1,10 +1,12 @@
 ﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
+    [Authorize(Roles = "MCU")]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class DocumentController : Controller
