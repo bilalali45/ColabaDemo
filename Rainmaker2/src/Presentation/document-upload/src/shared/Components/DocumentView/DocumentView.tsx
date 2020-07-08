@@ -21,12 +21,13 @@ interface DocumentViewProps {
   fileId?: string;
   clientName?: string;
   hideViewer: (currentDoc) => void;
+  blob?: any;
 }
 
 interface DocumentParamsType {
   filePath: string;
   fileType: string;
-  blob: Blob;
+  blob: any;
 }
 
 export const DocumentView: FunctionComponent<DocumentViewProps> = ({
@@ -36,12 +37,27 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   fileId,
   clientName,
   hideViewer,
+  blob,
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: "",
     fileType: "",
   });
+
+  const getDocumentForViewBeforeUpload = useCallback(() => {
+    const fileBlob = new Blob([blob], { type: "image/png" });
+    const fileType: string = "png";
+    console.log("blob", blob);
+    const filePath = URL.createObjectURL(fileBlob);
+
+    blob &&
+      setDocumentParams({
+        blob,
+        filePath,
+        fileType: blob.type.replace("image/", "").replace("application/", ""),
+      });
+  }, [blob]);
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -101,8 +117,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   );
 
   useEffect(() => {
-    getSubmittedDocumentForView();
-  }, [getSubmittedDocumentForView]);
+    if (blob) {
+      getDocumentForViewBeforeUpload();
+    } else {
+      getSubmittedDocumentForView();
+    }
+  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, blob]);
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
@@ -213,7 +233,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </div>
         )}
       </TransformWrapper>
-      <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
   );
 };
