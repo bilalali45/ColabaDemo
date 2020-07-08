@@ -11,5 +11,7 @@ namespace DocumentManagement.Service
         Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId);
         Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId);
         Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel);
+        Task<bool> AcceptDocument(string id, string requestId, string docId);
+        Task<bool> RejectDocument(string id, string requestId, string docId,string message);
     }
 }
