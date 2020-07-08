@@ -24,6 +24,7 @@ interface ViewDocumentType {
   docId: string;
   clientName?: string;
   fileId?: string;
+  file?: any;
 }
 
 export const SelectedDocuments = ({
@@ -61,7 +62,6 @@ export const SelectedDocuments = ({
     }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
-  
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -87,6 +87,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
       clientName,
+      file: document.file,
     });
   };
 
@@ -320,17 +321,18 @@ export const SelectedDocuments = ({
           </p>
         ) : (
           <div className="doc-submit-wrap">
-            {!doneHit && <button
-              disabled={btnDisabled || subBtnPressed}
-              className="btn btn-primary"
-              onClick={uploadFiles}
-            >
-              Submit
-            </button>}
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
           </div>
         )}
       </div>
     </section>
   );
 };
-

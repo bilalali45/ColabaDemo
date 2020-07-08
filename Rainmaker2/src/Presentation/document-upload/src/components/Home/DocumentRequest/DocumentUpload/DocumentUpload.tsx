@@ -38,7 +38,7 @@ export const DocumentUpload = () => {
     }
     fileInput?.click();
     if (fileInput) {
-      fileInput.onchange = (e: any) => {
+      fileInput.onchange = async (e: any) => {
         let files = e?.target?.files;
         if (files) {
           let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
