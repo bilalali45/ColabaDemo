@@ -52,7 +52,7 @@ namespace Identity.Models
         public object BranchId { get; set; }
 
         [JsonProperty("nmlsNo")]
-        public object NmlsNo { get; set; }
+        public string NmlsNo { get; set; }
 
         [JsonProperty("maxLeadQuota")]
         public object MaxLeadQuota { get; set; }
