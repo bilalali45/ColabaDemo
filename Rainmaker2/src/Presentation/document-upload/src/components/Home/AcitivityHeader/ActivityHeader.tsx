@@ -92,11 +92,11 @@ const ActivityHeader = (props) => {
 
 
     return (
-        <div ref={activityHeadeRef} className="activityHeader">
+        <div className="activityHeader">
             <section className="compo-loan-status">
                 <LoanStatus />
             </section>
-            <section className="row-subheader">
+            <section ref={activityHeadeRef} className="row-subheader">
                 <div className="row">
                     <div className="container">
                         <div className="sub-header-wrap">
