@@ -3,12 +3,11 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-
 namespace DocumentManagement.Model
 {
 
 
-    public class DocumentQuery
+    public class DocumentDetailQuery
     {
         
 
@@ -50,16 +49,6 @@ namespace DocumentManagement.Model
         public DateTime fileUploadedOn { get; set; }
 
     }
-}
-using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentManagement.Entity;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace DocumentManagement.Model
-{
     public class TemplateIdModel
     {
         public List<string> id { get; set; }
@@ -82,3 +71,8 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
     }
 }
+
+
+ 
+   
+ 
