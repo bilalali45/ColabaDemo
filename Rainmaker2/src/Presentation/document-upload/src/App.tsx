@@ -68,6 +68,12 @@ const App = () => {
   };
 
   const getFooterText = async () => {
+    console.log(
+      "getFooterText TenentID",
+      Auth.getTenantId(),
+      "Business Unit id",
+      Auth.getBusinessUnitId()
+    );
     let footerText = await LaonActions.getFooter(
       Auth.getTenantId(),
       Auth.getBusinessUnitId()
