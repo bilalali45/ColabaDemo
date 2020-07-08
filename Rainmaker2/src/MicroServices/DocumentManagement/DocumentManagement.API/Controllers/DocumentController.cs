@@ -1,10 +1,12 @@
 ﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
+    [Authorize(Roles = "MCU")]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class DocumentController : Controller
@@ -35,6 +37,43 @@ namespace DocumentManagement.API.Controllers
      
         {
             return Ok(await documentService.GetActivityLog(id, requestId, docId));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetEmailLog(string id, string requestId, string docId)
+
+        {
+            return Ok(await documentService.GetEmailLog(id, requestId, docId));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+
+        {
+            var docQuery = await documentService.mcuRename(id, requestId, docId, fileId, newName);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+            
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AcceptDocument(AcceptDocumentModel acceptDocumentModel)
+        {
+            var docQuery = await documentService.AcceptDocument(acceptDocumentModel.id, acceptDocumentModel.requestId, acceptDocumentModel.docId);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RejectDocument(RejectDocumentModel rejectDocumentModel)
+        {
+            var docQuery = await documentService.RejectDocument(rejectDocumentModel.id, rejectDocumentModel.requestId, rejectDocumentModel.docId, rejectDocumentModel.message);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
         }
     }
 }

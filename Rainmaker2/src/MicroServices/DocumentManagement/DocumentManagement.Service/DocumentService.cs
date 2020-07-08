@@ -93,7 +93,7 @@ namespace DocumentManagement.Service
             return result;
         }
 
-       
+
         public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
@@ -131,18 +131,18 @@ namespace DocumentManagement.Service
                     ActivityLogQuery query = BsonSerializer.Deserialize<ActivityLogQuery>(current);
                     dto.userId = query.userId;
                     dto.userName = query.userName;
-                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc) ; 
+                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
                     dto.id = query.id;
                     dto.requestId = query.requestId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;
-                    
+
                     result.Add(dto);
                 }
             }
 
-            return result.OrderByDescending(x=>x.dateTime).ToList();
+            return result.OrderByDescending(x => x.dateTime).ToList();
         }
         public async Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
         {
@@ -200,6 +200,134 @@ namespace DocumentManagement.Service
                 }
             }
             return result.GroupBy(x => new { x.docId, x.docName }).Select(x => x.First()).ToList();
+        }
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id, string requestId, string docId)
+        {
+            IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("ActivityLog");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
+                ""requestId"": " + new ObjectId(requestId).ToJson() + @",
+                  ""docId"": " + new ObjectId(docId).ToJson() + @"
+                            }
+                        }"
+                        , @"{
+                            ""$project"": {
+                                ""userId"": 1,                               
+                                ""userName"":1,
+                                ""dateTime"": 1,
+                                ""_id"": 1 ,
+                                ""requestId"": 1 ,
+                                ""docId"": 1 ,
+                                ""emailText"": 1, 
+                                ""loanId"": 1  
+                            }
+                             } "
+
+                ));
+
+
+            List<EmailLogDTO> result = new List<EmailLogDTO>();
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    EmailLogDTO dto = new EmailLogDTO();
+                    EmailLogQuery query = BsonSerializer.Deserialize<EmailLogQuery>(current);
+                    dto.userId = query.userId;
+                    dto.userName = query.userName;
+                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
+                    dto.emailText = query.emailText;
+                    dto.id = query.id;
+                    dto.requestId = query.requestId;
+                    dto.docId = query.docId;
+                    dto.loanId = query.loanId;
+
+                    result.Add(dto);
+                }
+            }
+
+            return result;
+        }
+        public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].files.$[file].mcuName", newName}
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId( requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId( docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
+                }
+            });
+
+            return result.ModifiedCount == 1;
+        }
+        public async Task<bool> AcceptDocument(string id, string requestId, string docId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Completed}
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                }
+
+            });
+            return result.ModifiedCount == 1;
+        }
+
+        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started},
+                        { "requests.$[request].documents.$[document].message", message}
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                }
+
+            });
+            return result.ModifiedCount == 1;
         }
 
     }

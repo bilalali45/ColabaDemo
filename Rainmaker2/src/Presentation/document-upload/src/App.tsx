@@ -71,7 +71,7 @@ const App = () => {
     const tenantId = Auth.getTenantId();
     const businessUnitId = Auth.getBusinessUnitId();
     console.log(
-      "getFooterText TenentID",
+      "getFooterText TenantID",
       tenantId,
       "Business Unit id",
       businessUnitId
