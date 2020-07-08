@@ -24,7 +24,7 @@ interface ViewDocumentType {
   docId: string;
   clientName?: string;
   fileId?: string;
-  blob?: Blob;
+  file?: any;
 }
 
 export const SelectedDocuments = ({
@@ -87,7 +87,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
       clientName,
-      blob: document.file,
+      file: document.file,
     });
   };
 

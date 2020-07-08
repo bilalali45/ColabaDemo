@@ -21,7 +21,7 @@ interface DocumentViewProps {
   fileId?: string;
   clientName?: string;
   hideViewer: (currentDoc) => void;
-  blob?: any;
+  file?: any;
 }
 
 interface DocumentParamsType {
@@ -37,7 +37,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   fileId,
   clientName,
   hideViewer,
-  blob,
+  file,
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -46,18 +46,16 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   });
 
   const getDocumentForViewBeforeUpload = useCallback(() => {
-    const fileBlob = new Blob([blob], { type: "image/png" });
-    const fileType: string = "png";
-    console.log("blob", blob);
+    const fileBlob = new Blob([file], { type: "image/png" });
     const filePath = URL.createObjectURL(fileBlob);
 
-    blob &&
+    file &&
       setDocumentParams({
-        blob,
+        blob: file,
         filePath,
-        fileType: blob.type.replace("image/", "").replace("application/", ""),
+        fileType: file.type.replace("image/", "").replace("application/", ""),
       });
-  }, [blob]);
+  }, [file]);
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -85,6 +83,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       });
     } catch (error) {
       alert("Something went wrong. Please try again later.");
+      hideViewer({});
     }
   }, [docId, fileId, id, requestId]);
 
@@ -117,12 +116,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   );
 
   useEffect(() => {
-    if (blob) {
+    if (file) {
       getDocumentForViewBeforeUpload();
     } else {
       getSubmittedDocumentForView();
     }
-  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, blob]);
+  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, file]);
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
