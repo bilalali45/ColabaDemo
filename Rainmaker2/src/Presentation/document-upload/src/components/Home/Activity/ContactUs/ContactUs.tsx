@@ -45,7 +45,7 @@ export const ContactUs = ({ }) => {
     if (!loanOfficer) {
         return <Loader containerHeight={"153px"}  />
     }
-    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${LOImage.src}`} />
+    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${LOImage?.src}`} />
     
     return (
         <div className="ContactUs box-wrap">

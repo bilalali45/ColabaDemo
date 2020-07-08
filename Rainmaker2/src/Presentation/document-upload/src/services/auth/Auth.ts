@@ -1,3 +1,7 @@
+import jwt_decode from "jwt-decode";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
 export class Auth {
   public static saveAuth(token: string) {
     localStorage.setItem("auth", token);
@@ -20,10 +24,19 @@ export class Auth {
   }
 
   public static checkAuth(): boolean | string {
+    let rainmaker2Token = cookies.get("Rainmaker2Token");
     let auth = localStorage.getItem("auth");
     if (!auth) {
       return false;
     }
+    if (rainmaker2Token) {
+      const decodeCacheToken: any = jwt_decode(rainmaker2Token);
+      const decodeAuth: any = jwt_decode(auth);
+      if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
+        return false;
+      }
+    }
+
     let payload = this.getUserPayload();
     if (payload) {
       let expiry = new Date(payload.exp * 1000);

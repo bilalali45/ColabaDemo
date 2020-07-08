@@ -1,0 +1,53 @@
+.alert-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+    //background-color: rgba(#000000,0.6);
+    overflow-y: auto;
+
+    &--modal{
+        background-color: #fff;
+        padding: 20px 25px;
+        max-width: 460px;
+        max-height: 60vh;
+        top: 5%;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+
+
+        &-close{
+            border: none;
+            background-color: transparent;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: fontSize('lg');
+            
+            &:focus{
+                outline: none;
+                border: none;
+            }
+        }
+
+        &-header{
+            margin-bottom: 30px;
+            h1,h2{
+                font: 500 #{fontSize("md") + "/1.2"} fontFamily("heading");
+            }
+        }
+
+        &-body{
+            min-height: 60px;
+            font: 400 #{fontSize("nr") + "/1.5"} fontFamily("heading");
+        }
+
+        &-footer{
+
+        }
+    }
+}
