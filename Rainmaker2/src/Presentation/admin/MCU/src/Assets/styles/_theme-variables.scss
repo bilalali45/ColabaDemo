@@ -1,0 +1,64 @@
+$color:(
+    primary             :       #4484F4,
+    primary-text        :       #ffffff,
+    secondry            :       #103B5C,
+    secondry-text       :       #ffffff,
+    border              :       #EBEBEB, 
+    base                :       #4E4E4E, 
+    heading             :       #263238,
+    bg                  :       #F2F3F5,
+    default             :       #F2F3F5,
+    
+    // Dashboard
+    headerBg            :       #375471,
+    headerBg-text       :       #ffffff,
+    sidebarBg           :       #2d323d,
+    sidebarBg-text      :       #cdd0d8,
+    widgetBg            :       #ffffff,
+    labelColor          :       #7E829E,
+    labelValueColor     :       #4E4E4E,
+    sidebarboder        :       rgba(0,0,0,0.2),
+    toggleDefaultKnob   :       #cccccc,
+
+    //Status
+    pending             :       #2C9EF5,
+    started             :       #FFC640,
+    borrower            :       #FF5652,
+    completed           :       #00AD46
+);
+
+
+$font:(
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 10px,
+    sm: 12px,
+    nr: 14px,
+    md: 15px,
+    xmd:16px,
+    lg: 24px,
+    xlg: 34px,
+    
+
+    h1:34px,
+    h2:24px,
+    h3:16px,
+    h4:14px,
+    h5:12px,
+    h6:10
+);
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+$float-button-size     :        35px;
+$burger-resolution     :        18px;
+
+// Bootstrap Variables
+$grid-gutter-width:           30px !default;
+$primary:       #4484F4 !default;
+$secondary:     #7E829E !default;
+
+// Private
+$widget-space: $grid-gutter-width !default;

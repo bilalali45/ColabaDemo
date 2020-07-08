@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Rainmaker.Model
 {
@@ -12,8 +13,25 @@ namespace Rainmaker.Model
         public string StreetAddress { get; set; }
         public string ZipCode { get; set; }
         public decimal? LoanAmount { get; set; }
+        public string CountryName { get; set; }
+        public string UnitNumber { get; set; }
     }
 
+    public class AdminLoanSummary
+    {
+        public string LoanPurpose { get; set; }
+        public string PropertyType { get; set; }
+        public string StateName { get; set; }
+        public string CountyName { get; set; }
+        public string CityName { get; set; }
+        public string StreetAddress { get; set; }
+        public string ZipCode { get; set; }
+        public decimal? LoanAmount { get; set; }
+        public string CountryName { get; set; }
+        public string UnitNumber { get; set; }
+        public string Status { get; set; }
+        public List<string> Borrowers { get; set; }
+    }
     public class LoanOfficer
     {
         public string FirstName { get; set; }

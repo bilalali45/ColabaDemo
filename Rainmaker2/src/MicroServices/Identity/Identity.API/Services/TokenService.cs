@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,15 +14,22 @@ namespace Identity.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration,
+                            IHttpClientFactory clientFactory,
+                            IKeyStoreService keyStoreService)
         {
             _configuration = configuration;
+            this._clientFactory = clientFactory;
+            _keyStoreService = keyStoreService;
         }
-        public JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims)
+        public async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims)
         {
+           
+
             //security key
-            var securityKey = _configuration[key: "JWT:SecurityKey"];
+            var securityKey = await _keyStoreService.GetJwtSecurityKeyAsync();
             //symmetric security key
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -33,7 +42,7 @@ namespace Identity.Services
             var token = new JwtSecurityToken(
                                              issuer: "rainsoftfn",
                                              audience: "readers",
-                                             expires: DateTime.Now.AddHours(value: 1),
+                                             expires: DateTime.Now.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
                                              signingCredentials: signingCredentials,
                                              claims: claims
                                             );
@@ -51,11 +60,11 @@ namespace Identity.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public async Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token)
         {
 
             //security key
-            var securityKey = _configuration[key: "JWT:SecurityKey"];
+            var securityKey = await _keyStoreService.GetJwtSecurityKeyAsync();
             //symmetric security key
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -84,6 +93,15 @@ namespace Identity.Services
         }
 
 
-        public static Dictionary<string, string> RefreshTokens= RefreshTokens = new Dictionary<string, string>();
+        public static Dictionary<string, List<TokenPair>> RefreshTokens= RefreshTokens = new Dictionary<string, List<TokenPair>>();
+        private readonly IKeyStoreService _keyStoreService;
     }
+
+    public class TokenPair
+    {
+        public string JwtToken { get; set; }
+        public string RefreshToken { get; set; }
+
+    }
+
 }

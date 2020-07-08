@@ -1,69 +1,81 @@
-import React, { useState, ChangeEvent } from 'react'
-import { DocumentDropBox } from '../../../../shared/Components/DocumentDropBox/DocumentDropBox'
-import { SelectedDocuments } from './SelectedDocuments/SelectedDocuments'
+import React, { useState, ChangeEvent, useContext, useEffect, useRef, Fragment } from "react";
+import { DocumentDropBox, FileDropper } from "../../../../shared/Components/DocumentDropBox/DocumentDropBox";
+import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
+import { Store } from "../../../../store/store";
+import { Document } from "../../../../entities/Models/Document";
+import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
 
-export type FileSelected = {
-    name: string;
-    file: File;
-}
 
 export const DocumentUpload = () => {
-    const [files, setFiles] = useState<FileSelected[]>([]);
-    const [fileInput, setFileInput] = useState<HTMLInputElement>();
+  const [fileInput, setFileInput] = useState<HTMLInputElement>();
+  const [fileLimitError, setFileLimitError] = useState({value: false});
+  const { state, dispatch } = useContext(Store);
+  const { currentDoc }: any = state.documents;
+  const selectedfiles: Document[] = currentDoc?.files || null;
+  let docTitle = currentDoc ? currentDoc.docName : "";
+  let docMessage = currentDoc ? currentDoc.docMessage : "";
 
 
+  const parentRef = useRef<HTMLDivElement>(null);
 
-    const updateFiles = (files: File[]) => {
-        setFiles((previousFiles) => {
-            let allSelectedFiles: FileSelected[] = [];
-            allSelectedFiles = [...previousFiles];
-            for (let f of files) {
-                let selectedFile = {
-                    name: f.name,
-                    file: f
-                }
-                allSelectedFiles.push(selectedFile);
-            }
-            return allSelectedFiles;
-        });
+  const getFileInput = (fileInputEl: HTMLInputElement) => {
+    setFileInput(fileInputEl);
+  };
+
+  const showFileExplorer = (fileToRemnove: Document | null = null) => {
+    if (fileInput?.value) {
+      fileInput.value = '';
     }
-
-
-    const getSelectedFiles = (files: File[]) => {
-        updateFiles(files);
-    }
-
-    const getFileInput = (fileInputEl: HTMLInputElement) => {
-        setFileInput(fileInputEl);
-    }
-
-    const showFileExplorer = () => {
-        fileInput?.click();
-        if (fileInput) {
-            fileInput.onchange = (e: any) => {
-                let files = e?.target?.files;
-                if (files) {
-                    updateFiles(files);
-                }
-            };
+    fileInput?.click();
+    if (fileInput) {
+      fileInput.onchange = (e: any) => {
+        let files = e?.target?.files;
+        if (files) {
+          let updatedFiles = selectedfiles.filter(sf => sf !== fileToRemnove);
+          DocumentUploadActions.updateFiles(files, updatedFiles, dispatch, setFileLimitError);
         }
+      };
     }
+  };
+  console.log(fileLimitError)
+  // debugger
+  return (
+    <section className="Doc-upload" ref={parentRef}>
 
-    return (
-        <div>
-            <p>Document Upload</p>
-            {!files.length ?
-                <DocumentDropBox
-                    url={'http://localhost:5000/upload'}
-                    setSelectedFiles={getSelectedFiles}
-                    setFileInput={getFileInput} />
-                : <>
-                    <SelectedDocuments
-                        files={files}
-                        url={'http://localhost:5000/upload'} />
-                    <button onClick={showFileExplorer}>Add More</button>
+      <FileDropper
+        parent={parentRef.current}
+        getDroppedFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch, setFileLimitError)}
+      >
+        {currentDoc && <div className="Doc-head-wrap">
+          <h2> {docTitle}</h2>
+          <div className="doc-note">
+            <p>
+              <i className="fas fa-info-circle"></i>
+              {docMessage}
+            </p>
+          </div>
+        </div>}
+
+        {
+          currentDoc && <Fragment>
+            {!selectedfiles?.length ? (
+              <DocumentDropBox
+                getFiles={(files) => DocumentUploadActions.updateFiles(files, selectedfiles, dispatch, setFileLimitError)}
+                setFileInput={getFileInput} />
+            ) : (
+                <>
+                  <SelectedDocuments
+                    fileLimitError={fileLimitError}
+                    setFileLimitError={setFileLimitError}
+                    addMore={showFileExplorer}
+                    setFileInput={getFileInput}
+                  />
                 </>
-            }
-        </div>
-    )
-}
+              )}
+          </Fragment>
+        }
+
+      </FileDropper>
+    </section>
+  );
+};

@@ -16,7 +16,7 @@ namespace Identity.Models
         public long ContactId { get; set; }
 
         [JsonProperty("userId")]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         [JsonProperty("displayOrder")]
         public long DisplayOrder { get; set; }
@@ -28,16 +28,16 @@ namespace Identity.Models
         public bool IsSystem { get; set; }
 
         [JsonProperty("modifiedBy")]
-        public long ModifiedBy { get; set; }
+        public long? ModifiedBy { get; set; }
 
         [JsonProperty("modifiedOnUtc")]
-        public DateTimeOffset ModifiedOnUtc { get; set; }
+        public DateTimeOffset? ModifiedOnUtc { get; set; }
 
         [JsonProperty("createdBy")]
-        public long CreatedBy { get; set; }
+        public long? CreatedBy { get; set; }
 
         [JsonProperty("createdOnUtc")]
-        public DateTimeOffset CreatedOnUtc { get; set; }
+        public DateTimeOffset? CreatedOnUtc { get; set; }
 
         [JsonProperty("tpId")]
         public object TpId { get; set; }
@@ -64,10 +64,10 @@ namespace Identity.Models
         public object AutoLeadReassignMins { get; set; }
 
         [JsonProperty("autoLeadAssignAllowed")]
-        public bool AutoLeadAssignAllowed { get; set; }
+        public bool? AutoLeadAssignAllowed { get; set; }
 
         [JsonProperty("autoLeadReassignAllowed")]
-        public bool AutoLeadReassignAllowed { get; set; }
+        public bool? AutoLeadReassignAllowed { get; set; }
 
         [JsonProperty("emailAccountId")]
         public object EmailAccountId { get; set; }
@@ -79,19 +79,19 @@ namespace Identity.Models
         public object PhoneExtensionNo { get; set; }
 
         [JsonProperty("checkPerformanceBeforeAssigningLead")]
-        public bool CheckPerformanceBeforeAssigningLead { get; set; }
+        public bool? CheckPerformanceBeforeAssigningLead { get; set; }
 
         [JsonProperty("checkLoginBeforeAssigningLead")]
-        public bool CheckLoginBeforeAssigningLead { get; set; }
+        public bool? CheckLoginBeforeAssigningLead { get; set; }
 
         [JsonProperty("checkStateLicenseBeforeAssigningLead")]
-        public bool CheckStateLicenseBeforeAssigningLead { get; set; }
+        public bool? CheckStateLicenseBeforeAssigningLead { get; set; }
 
         [JsonProperty("leadAssignmentPriority")]
         public object LeadAssignmentPriority { get; set; }
 
         [JsonProperty("hireDateUtc")]
-        public DateTimeOffset HireDateUtc { get; set; }
+        public DateTimeOffset? HireDateUtc { get; set; }
 
         [JsonProperty("leaveDateUtc")]
         public object LeaveDateUtc { get; set; }
@@ -175,7 +175,7 @@ namespace Identity.Models
         public object Branch { get; set; }
 
         [JsonProperty("contact")]
-        public object Contact { get; set; }
+        public Contact Contact { get; set; }
 
         [JsonProperty("emailAccount")]
         public object EmailAccount { get; set; }

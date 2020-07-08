@@ -23,6 +23,7 @@
         'mixins/transform-style',
         'mixins/transform-origin',
         'mixins/backface-visibility',
+        'mixins/scrollbar',
         
         // MEDIA QUERIES
         'mixins/mediaquery-desktop',
@@ -38,6 +39,7 @@
         './components/ContactUs',
         './components/DocumentItem',
         './components/DocumentStatus',
+        './components/DocumentsRequest',
         './components/DocumentsRequired',
         './components/DocumentUpload',
         './components/LoanProgress',
@@ -47,4 +49,5 @@
         './components/UploadedDocumentsTable',
         
         './components/MyLoanWidget',
-        './components/ProgressStatus';
+        './components/ProgressStatus',
+        './components/DocumentView';

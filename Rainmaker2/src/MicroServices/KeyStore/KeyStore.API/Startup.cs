@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using KeyStore.API.Helpers;
 using KeyStore.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,10 @@ namespace KeyStore.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
             //app.UseHttpsRedirection();
 
             app.UseRouting();

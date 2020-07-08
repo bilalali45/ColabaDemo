@@ -10,7 +10,9 @@ namespace Rainmaker.Service
 {
     public interface ILoanApplicationService : IServiceBase<LoanApplication>
     {
-        Task<LoanSummary> GetLoanSummary(int loanApplicationId);
-        Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId);
+        Task<LoanSummary> GetLoanSummary(int loanApplicationId, int userProfileId);
+        Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId);
+        Task<LoanOfficer> GetDbaInfo(int businessUnitId);
+        Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId);
     }
 }

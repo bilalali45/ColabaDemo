@@ -7,47 +7,46 @@ import { LoanActionsType } from '../../../../store/reducers/loanReducer';
 import { ContactUs as ContactUsModal } from '../../../../entities/Models/ContactU';
 import { SVGtel, SVGmail, SVGinternet } from '../../../../shared/Components/Assets/SVG';
 import { MaskPhone } from 'rainsoft-js';
+import { Auth } from '../../../../services/auth/Auth';
+import { Loader } from '../../../../shared/Components/Assets/loader';
 
 export const ContactUs = ({ }) => {
 
     const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
     const [lOPhotoSrc, setLOPhotoSrc] = useState<string>();
+    const { state, dispatch } = useContext(Store);
 
+    const laon: any = state.loan;
+    const LO = laon.loanOfficer;
+    const LOImage = laon.loImage;
     const LOphotoRef: any = useRef();
 
     useEffect(() => {
-        if (!loanOfficer) {
+        if (!LO) {
             fetchLoanOfficer();
         }
-    });
+
+        if (LO) {
+            setLoanOfficer(new ContactUsModal().fromJson(LO));
+        }
+
+    }, [LO]);
 
     const fetchLoanOfficer = async () => {
-        let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer('1', '2');
+        let loanOfficer: ContactUsModal | undefined = await LaonActions.getLoanOfficer(Auth.getLoanAppliationId(), Auth.getBusinessUnitId());
         if (loanOfficer) {
-            console.log(loanOfficer);
-            let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, '2');
-            // src = `data:image/jpeg;base64,${src}}`;
-            setLOPhotoSrc(src);
-            if (LOphotoRef.current) {
-                LOphotoRef.current.src = src
-            }
-            setLOPhotoSrc(src);
-            setLoanOfficer(loanOfficer);
-        }
-    }
-
-    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${lOPhotoSrc}`} />
-
-    const getFormattedPhone = () => {
-        if (loanOfficer && loanOfficer.phone) {
-            let phone: any = Number(loanOfficer.phone) | 0;
-            return MaskPhone(+phone)
+            let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, Auth.getBusinessUnitId());
+            dispatch({ type: LoanActionsType.FetchLoanOfficer, payload: loanOfficer });
+            dispatch({type: LoanActionsType.FetchLOImage, payload: {src}});
+            // setLOPhotoSrc(src);
         }
     }
 
     if (!loanOfficer) {
-        return <div>...loading...</div>
+        return <Loader containerHeight={"153px"}  />
     }
+    const ContactAvatar = () => <img src={`data:image/jpeg;base64,${LOImage.src}`} />
+    
     return (
         <div className="ContactUs box-wrap">
             <div className="box-wrap--header">
@@ -58,22 +57,16 @@ export const ContactUs = ({ }) => {
                 <div className="row">
 
                     <div className="col-md-12 col-lg-6 ContactUs--left">
-                        {/* <div className="row ContactUs--user">
-                                <div className="col-4 ContactUs--user---img">
-                                    <div className="ContactUs--user-image"><img src={ props.userImg } alt="Williams Jack" /></div>
-                                </div>
-    
-                                <div className="col-8 ContactUs--user---detail">
-                                    <h2><a href="">{props.userName}</a> <span className="ContactUs--user-id">ID#{props.userId}</span></h2>
-                                </div>
-                            </div> */}
                         <div className="ContactUs--user">
                             <div className="ContactUs--user---img">
-                                <div className="ContactUs--user-image"><ContactAvatar/></div>
+                                <div className="ContactUs--user-image"><ContactAvatar /></div>
                             </div>
 
                             <div className="ContactUs--user---detail">
-                                <h2><a href="">{loanOfficer.completeName()}</a> <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span></h2>
+                                <h2><a title={loanOfficer.webUrl} target="_blank" href={loanOfficer.webUrl}>{loanOfficer.completeName()}</a>
+                                    {loanOfficer.nmls && <span className="ContactUs--user-id">ID#{loanOfficer.nmls}</span>
+                                    }
+                                </h2>
                             </div>
                         </div>
 
@@ -85,7 +78,7 @@ export const ContactUs = ({ }) => {
                                 <a title={loanOfficer.phone} href={`tel:${loanOfficer.phone}`}>
                                     <span>
                                         <i className="zmdi zmdi-phone"></i>
-                                        <span>{getFormattedPhone()}</span>
+                                        <span>{MaskPhone(Number(loanOfficer.phone))}</span>
                                     </span>
                                 </a></li>
                             <li>
@@ -98,10 +91,10 @@ export const ContactUs = ({ }) => {
                                 </a>
                             </li>
                             <li>
-                                <a title={loanOfficer.webUrl} href={loanOfficer.webUrl} target="_blank">
+                                <a title={loanOfficer.webUrl?.split('/')[2]} href={'http://' + loanOfficer.webUrl?.split('/')[2]} target="_blank">
                                     <span>
                                         <i className="zmdi zmdi-globe-alt"></i>
-                                        <span>{loanOfficer.webUrl}</span>
+                                        <span>{loanOfficer.webUrl?.split('/')[2].toLocaleLowerCase()}</span>
                                     </span>
 
                                 </a>

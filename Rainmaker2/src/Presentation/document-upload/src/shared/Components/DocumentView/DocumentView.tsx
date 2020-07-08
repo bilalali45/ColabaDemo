@@ -1,117 +1,219 @@
-import React, { useState } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FunctionComponent,
+  Fragment,
+} from "react";
+import FileViewer from "react-file-viewer";
+import printJS from "print-js";
 
-import { Document, Page, pdfjs } from 'react-pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
+import { DocumentActions } from "../../../store/actions/DocumentActions";
+import { Auth as Storage } from "../../../services/auth/Auth";
+import { Loader } from "../Assets/loader";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-type DocumentViewPropsType = { type: string, url: string, file: File | null, hide: Function }
+interface DocumentViewProps {
+  id: string;
+  requestId: string;
+  docId: string;
+  fileId?: string;
+  clientName?: string;
+  hideViewer: (currentDoc) => void;
+}
 
-export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [imageSrc, setImageSrc] = useState<string>('');
+interface DocumentParamsType {
+  filePath: string;
+  fileType: string;
+  blob: Blob;
+}
 
-  const onDocumentLoadSuccess = ({ numPages }: any) => {
-    console.log('numPages', numPages);
-    setNumPages(numPages);
-  }
+export const DocumentView: FunctionComponent<DocumentViewProps> = ({
+  id,
+  requestId,
+  docId,
+  fileId,
+  clientName,
+  hideViewer,
+}) => {
+  const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
+    blob: new Blob(),
+    filePath: "",
+    fileType: "",
+  });
 
-  const readLocalFile = (file: any) => {
-    const reader = new FileReader();
+  const getSubmittedDocumentForView = useCallback(async () => {
+    try {
+      const response = (await DocumentActions.getSubmittedDocumentForView({
+        id,
+        requestId,
+        docId,
+        fileId,
+        tenantId: Storage.getTenantId(),
+      })) as any;
 
-    reader.addEventListener('loadstart', () => console.log('Read file...'));
+      const fileType: string = response.headers["content-type"];
 
-    reader.addEventListener('load', (e: any) => {
-      const fileContent = e.target.result;
-      setImageSrc(fileContent);
-    });
+      const documentBlob = new Blob([response.data], {
+        type: fileType,
+      });
 
-    reader.addEventListener('error', (e) => console.log(e));
+      // URL required to view the document
+      const filePath = URL.createObjectURL(documentBlob);
 
-    reader.addEventListener('progress', (e: any) => {
-      if (e.lengthComputable) {
-        const percentRead = e.loaded;
-        console.log(percentRead);
-      }
-    });
-
-    reader.readAsDataURL(file);
-  }
-
-  const handlePage = (e: any) => {
-    if (e.target.id === 'next') {
-      if (numPages && pageNumber < numPages) {
-        setPageNumber(pageNumber + 1);
-      }
-    } else {
-      if (pageNumber > 1) {
-        setPageNumber(pageNumber - 1);
-      }
+      setDocumentParams({
+        blob: documentBlob,
+        filePath,
+        fileType: fileType.replace("image/", "").replace("application/", ""),
+      });
+    } catch (error) {
+      alert("Something went wrong. Please try again later.");
     }
-  }
+  }, [docId, fileId, id, requestId]);
 
-  const renderPdfView = () => {
-    console.log('----------------', file);
-    return (
-      <>
-        <div className="modal-content">
-          <Document
+  const printDocument = useCallback(() => {
+    const { filePath, fileType } = documentParams;
 
-            file={file}
-            onLoadSuccess={onDocumentLoadSuccess}
-          >
-            <Page pageNumber={pageNumber} />
-          </Document>
-          <p>Page {pageNumber} of {numPages}</p>
-        </div>
-        <div className="page-controls">
-          <button id="previous" onClick={handlePage}>Previous</button>
-          <h1>{pageNumber}</h1>
-          <button id="next" onClick={handlePage}>Next</button>
-        </div>
-      </>
-    )
-  }
+    // At the moment we are just allowing images or pdf files to be uplaoded
+    const type = ["jpeg", "jpg", "png"].includes(fileType) ? "image" : "pdf";
 
-  const renderTextView = () => {
-    return (
-      <iframe src="https://docs.google.com/viewerng/viewer?url=http://localhost:5000/pdf/file-sample_100kB.doc"></iframe>
-    )
-  }
+    printJS({ printable: filePath, type });
+  }, [documentParams.filePath, documentParams.fileType]);
 
-  const renderPlanTextView = () => {
-    // return <div className={'text-file-viewer'}>{imageSrc}</div>
-  }
+  const downloadFile = () => {
+    let temporaryDownloadLink: HTMLAnchorElement;
 
-  const renderImageView = () => {
-    if(imageSrc) {
-      return <img style={{ width: "50%", height: "50%" }} src={imageSrc} alt="" />
-    }
-    return '';
-  }
+    temporaryDownloadLink = document.createElement("a");
+    temporaryDownloadLink.href = documentParams.filePath;
+    temporaryDownloadLink.setAttribute("download", clientName!); // added ! because client name can't be null
 
-  const renderView = () => {
-    switch (type) {
-      case 'application/pdf':
-        return renderPdfView();
-      case 'application/msword':
-         return renderTextView();
-      case 'image/jpeg':
-      case 'image/png':
-      case 'image/jpg':
-      case 'image/gif':
-        readLocalFile(file);
-        return renderImageView();
+    temporaryDownloadLink.click();
+  };
 
-      default:
-        break;
-    }
-  }
+  const onEscapeKeyPressed = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        hideViewer({});
+      }
+    },
+    [hideViewer]
+  );
+
+  useEffect(() => {
+    getSubmittedDocumentForView();
+  }, [getSubmittedDocumentForView]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", onEscapeKeyPressed, false);
+
+    //this will remove listener on unmount
+    return () => {
+      window.removeEventListener("keydown", onEscapeKeyPressed, false);
+    };
+  }, [onEscapeKeyPressed]);
 
   return (
-    <div className="modal-container">
-      <button onClick={() => hide()}>X</button>
-      {renderView()}
-      <div className="overlay"></div>
+    <div className="document-view" id="screen">
+      <div className="document-view--header">
+        <div className="document-view--header---options">
+          <ul>
+            {!!documentParams.filePath && (
+              <Fragment>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={printDocument}
+                  >
+                    <SVGprint />
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={downloadFile}
+                  >
+                    <SVGdownload />
+                  </button>
+                </li>
+              </Fragment>
+            )}
+            <li>
+              <button
+                className="document-view--button"
+                onClick={() => hideViewer({})}
+              >
+                <SVGclose />
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <span className="document-view--header---title">{clientName}</span>
+
+        <div className="document-view--header---controls">
+          <ul>
+            <li>
+              <button className="document-view--arrow-button">
+                <em className="zmdi "></em>
+              </button>
+            </li>
+            <li>
+              <span className="document-view--counts">
+                <input type="text" size={4} value="" />
+              </span>
+            </li>
+            <li>
+              <button className="document-view--arrow-button">
+                <em className="zmdi "></em>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <TransformWrapper
+        defaultScale={1}
+        wheel={{ wheelEnabled: false }}
+        // defaultPositionX={200}
+        // defaultPositionY={100}
+      >
+        {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+          <div>
+            <TransformComponent>
+              <div className="document-view--body">
+                {!!documentParams.filePath ? (
+                  <FileViewer
+                    fileType={documentParams.fileType}
+                    filePath={documentParams.filePath}
+                  />
+                ) : (
+                  <Loader height={"94vh"} />
+                )}
+              </div>
+            </TransformComponent>
+            <div className="document-view--floating-options">
+              <ul>
+                <li>
+                  <button className="button-float" onClick={zoomIn}>
+                    <em className="zmdi zmdi-plus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={zoomOut}>
+                    <em className="zmdi zmdi-minus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={resetTransform}>
+                    <SVGfullScreen />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+      </TransformWrapper>
+      <iframe id="receipt" style={{ display: "none" }} title="Receipt" />
     </div>
   );
-}
+};

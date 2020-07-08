@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Auth } from '../auth/Auth';
 import { OutgoingHttpHeaders } from 'http';
+import { Endpoints } from '../../store/endpoints/Endpoints';
+import { stringify } from 'querystring';
+import { debug } from 'console';
 
 type HTTPMethod = AxiosRequestConfig['method'];
 
@@ -68,18 +71,42 @@ export class Http {
         return `${baseUrl}${url}`
     }
 
-    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R) : Promise<AxiosResponse<T>> {
+    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R): Promise<AxiosResponse<T>> {
 
         try {
             let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
             return res;
         } catch (error) {
-            console.log(error?.response?.data);
-            if (error?.response?.data?.name === 'TokenExpiredError' || error?.response?.data?.name === 'JsonWebTokenError' || error?.response?.data === 'Could not login') {
-                
-                window.open('http://localhost:5000/app', '_self');
-                Auth.removeAuth();
+            if (
+                error?.response?.data?.name === 'TokenExpiredError'
+                || error?.response?.data?.name === 'JsonWebTokenError'
+                || error?.response?.data === 'Could not login'
+                || error?.response?.status === 401
+            ) {
+
             }
+            // if (error?.response?.status === 401) {
+            //     try {
+            //         let res = await axios.post(this.createUrl(this.baseUrl, Endpoints.user.POST.refreshToken()), {
+            //             token: Auth.getAuth(),
+            //             refreshToken: Auth.getRefreshToken()
+            //         });
+            //         let { token, refreshToken } = res.data.data;
+
+            //         if (token && refreshToken) {
+            //             Auth.removeAuth();
+            //             Auth.removeRefreshToken();
+            //             Auth.saveAuth(token);
+            //             Auth.saveRefreshToken(refreshToken)
+            //             return this.createRequest(reqType, url, data);
+            //         }
+            //     } catch (error) {
+            //         return new Promise((_, reject) => {
+            //             reject(error);
+            //         });
+            //         // alert('token could not be refreshed!!!');
+            //     }
+            // }
 
             return new Promise((_, reject) => {
                 reject(error);
@@ -91,7 +118,7 @@ export class Http {
         let completeUrl = this.createUrl(this.baseUrl, url);
 
         let headers: OutgoingHttpHeaders = {}
-        let auth = Auth.checkAuth();
+        let auth = Auth.getAuth();
         if (auth && (!url.includes('login') || !url.includes('authorize'))) {
             headers['Authorization'] = `Bearer ${auth}`;
         }
@@ -106,7 +133,6 @@ export class Http {
         if (data) {
             config.data = data;
         }
-        console.log(data);
         return config;
     }
 

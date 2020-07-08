@@ -1,14 +1,6 @@
 
 @import './assets/styles/style.scss';
-.file-drop-box{
-    height: 500px;
-    width: 800px;
-    border: 1px solid grey;
-}
 
-.drag-enter{
-    background-color: lightcoral;
-}
 
 .modal-container{
     height: 100vh;
@@ -44,4 +36,7 @@
         height: 90%;
         margin: auto;
     }
+
+
 }
+

@@ -43,10 +43,6 @@
         "Period": "1s",
         "PeriodTimespan": 1,
         "Limit": 100
-      },
-      "FileCacheOptions": {
-        "TtlSeconds": 15,
-        "Region": "documentcaching"
       }
     },
 
@@ -72,12 +68,11 @@
         "Period": "1s",
         "PeriodTimespan": 1,
         "Limit": 100
-      },
-      "FileCacheOptions": {
-        "TtlSeconds": 15,
-        "Region": "rainmaker2caching"
       }
     }
   ],
-  "GlobalConfiguration": {}
+  "GlobalConfiguration": {
+    "RequestIdKey": "CorrelationId"
+
+  }
 }

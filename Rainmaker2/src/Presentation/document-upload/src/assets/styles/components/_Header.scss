@@ -1,18 +1,18 @@
 .header-main{
     font-size: fontSize('lg');
     border-top: none;
-    box-shadow: $shadow;
-    min-height: 80px;
+    box-shadow: $headershadow;
+    min-height: 60px;
     padding: 0;
     background: color('colorWhite');
     position: relative;
     .navbar {
         margin: 0;
-        padding: 16px 0;
+        padding: 13px 0 12px;
     }
     .h-logo {
-        max-width: 131px;
-        margin-left:40px;
+        max-width: 123px;
+        margin-left:5px;
         img {
             max-width: 100%;
             height: auto;
@@ -21,8 +21,8 @@
     .s-account{
         color: #4e4e4e;
         text-align: right;
-        padding-top: 16px;
-        margin-right: 40px;
+        padding-top: 5px;
+        margin-right: 5px;
     .userdropdown {
         float: right;
         margin: -8px 0 0 0;
@@ -50,6 +50,46 @@
            }
          
         }
+        &.show {
+            .hd-shorname {
+                &:after {
+     
+                    border-top: 0px solid;
+                    border-right: 4px solid transparent;
+                    border-left: 4px solid transparent;
+                    border-bottom: 4px solid;
+                    position: relative;
+                    top: -1px;
+                   }
+            }
+
+        }
+        .dropdown-menu {
+
+        border-radius: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+        border: none;
+        box-shadow: $shadow;
+        .dropdown-item {
+            border-bottom: 1px solid color('border');
+            font: 400 #{fontSize("md")+"/1.3"} fontFamily("base");
+            color: color('base');
+            padding-top: 10px;
+            padding-bottom: 10px;
+            &:hover,&:active,&.active{
+                background-color: color('listhover') ;
+                color: color('base');
+            }
+            &:first-child{
+                padding-top: 10px;
+            }
+            &:last-child{
+                border-bottom: 0px solid color('border'); 
+            }
+           
+        }
+    }
     }
 }
     .d-name {
@@ -57,7 +97,7 @@
         font: 400 #{fontSize("nr")+"/30px"} fontFamily("heading");
         margin-right: 10px;
         position: relative;
-        cursor: default;
+        cursor: pointer;
         float: left;
         &:hover {
             text-decoration: none;

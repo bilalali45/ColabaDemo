@@ -68,7 +68,7 @@ namespace DocumentManagement.Service
                 /* Get the FTP Server's Response Stream */
                 _ftpStream = _ftpResponse.GetResponseStream();
                 /* Open a File Stream to Write the Downloaded File */
-                var localFileStream = new FileStream(localFile, FileMode.Create);
+                using var localFileStream = new FileStream(localFile, FileMode.Create);
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 if (_ftpStream != null)
@@ -83,18 +83,20 @@ namespace DocumentManagement.Service
                             bytesRead = await _ftpStream.ReadAsync(byteBuffer, 0, BufferSize);
                         }
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-                    _ftpStream.Close();
+                    finally
+                    {
+                        _ftpStream.Close();
+                    }
                 }
                 else
-                    Console.WriteLine("Ftp Stream is null");
-
+                    throw new Exception("Ftp Stream is null");
+            }
+            finally
+            { 
                 /* Resource Cleanup */
-                localFileStream.Close();
-                _ftpResponse.Close();
+                if(_ftpResponse!=null) _ftpResponse.Close();
                 _ftpRequest = null;
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
         }
 
@@ -183,26 +185,23 @@ namespace DocumentManagement.Service
                 /* Establish Return Communication with the FTP Server */
                 _ftpStream = _ftpRequest.GetRequestStream();
                 /* Open a File Stream to Read the File for Upload */
-                var localFileStream = new FileStream(localFile, FileMode.Open);
+                using var localFileStream = new FileStream(localFile, FileMode.Open);
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 int bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);
                 /* Upload the File by Sending the Buffered Data Until the Transfer is Complete */
-                try
+                while (bytesSent != 0)
                 {
-                    while (bytesSent != 0)
-                    {
-                        await _ftpStream.WriteAsync(byteBuffer, 0, bytesSent);
-                        bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);
-                    }
+                    await _ftpStream.WriteAsync(byteBuffer, 0, bytesSent);
+                    bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);
                 }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            }
+            finally
+            { 
                 /* Resource Cleanup */
-                localFileStream.Close();
-                _ftpStream.Close();
+                if(_ftpStream!=null) _ftpStream.Close();
                 _ftpRequest = null;
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
         }
 
         /* Upload File */

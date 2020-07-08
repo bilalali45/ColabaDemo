@@ -15,3 +15,6 @@ package-lock.json
 node_modules
 /Rainmaker2/src/MicroServices/Rainmaker/TestResults
 /Rainmaker2/src/Presentation/document-upload/build/*
+/build
+/dist
+Rainmaker2/src/Presentation/document-upload/yarn.lock

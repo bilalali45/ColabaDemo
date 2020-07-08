@@ -1,0 +1,53 @@
+.dr-list-wrap{
+    nav {
+        ul {
+            margin-left: -20px;
+            max-height: 440px;
+    overflow: auto;
+    @include scrollbar;
+            li {
+                a { 
+                min-height: 39px;
+                margin-bottom: 1px;
+                cursor: pointer;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                padding-left: 45px;
+                font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
+                position: relative;
+                &::before {
+                    content: "\f15b";
+                    font-family: "Font Awesome 5 Free";
+                    -moz-osx-font-smoothing: grayscale;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    font-style: normal;
+                    font-variant: normal;
+                    text-rendering: auto;
+                    line-height: 1;
+                    position: absolute;
+                    left: 20px;
+                    color:color('light-purple')
+                }
+                &.active {
+                    &::before {
+                        color:color('primary')
+                    }
+                }
+                span {
+                    padding-top: 3px;
+                    display: block;
+                }
+                i,img {
+                    font-size:fontSize("md") ;
+margin-right: 15px; display: none;
+                }
+                &:hover,&.active {
+background-color: color('listhover');
+                }
+            }
+            }
+        }
+    }
+}

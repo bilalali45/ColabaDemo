@@ -20,5 +20,7 @@ namespace DocumentManagement.Entity
         public string encryptionAlgorithm { get; set; }
         public int order { get; set; }
         public string contentType { get; set; }
+        public string status { get; set; }
+        public string byteProStatus { get; set; }
     }
 }

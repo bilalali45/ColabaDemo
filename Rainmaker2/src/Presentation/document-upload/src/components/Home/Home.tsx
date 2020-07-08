@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie';
+import React, { useEffect, useState, Component } from 'react'
 import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom'
 import { Activity } from './Activity/Activity'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
@@ -10,60 +9,34 @@ import ActivityHeader from './AcitivityHeader/ActivityHeader'
 import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'
 import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc';
-import { DocumentStatus } from './Activity/DocumentStatus/DocumentStatus'
+import { DocumentsStatus } from './Activity/DocumentsStatus/DocumentsStatus'
 import { DocumentRequest } from './DocumentRequest/DocumentRequest'
 import ImageAssets from '../../utils/image_assets/ImageAssets';
 import { PageNotFound } from '../../shared/Errors/PageNotFound';
+import { debug } from 'console';
+import { Authorized } from '../../shared/Components/Authorized/Authorized';
 
 const httpClient = new Http();
 
-export const Home = () => {
-    const location = useLocation();
-    const history = useHistory();
-    const [authenticated, setAuthenticated] = useState<boolean>(false);
-    const [cookies, setCookie] = useCookies(['Rainmaker2Token']);
-    const authenticate = async () => {
-        console.log('in authenticate');
-        try {
-            console.log("cookies", cookies)
-            if (cookies != undefined && cookies.Rainmaker2Token != undefined) {
-                localStorage.setItem('auth', cookies.Rainmaker2Token);
-            }
-            let res = UserActions.authenticate();
 
-        } catch (error) {
-            if (!Auth.checkAuth()) {
-                history.push('/error');
-            }
-        }
+export class Home extends Component {
+    render() {
+        return (
+            <div>
+                {!window.location.pathname.includes('404') && <ActivityHeader {...this.props}/>}
+                <main className="page-content">
+                    <div className="container">
+                        <Switch>
+                            <Redirect exact from={"/"} to={"/activity"} />
+                            <Authorized path="/activity" component={Activity} />
+                            <Authorized path="/documentsRequest" component={DocumentRequest} />
+                            <Authorized path="/uploadedDocuments" component={UploadedDocuments} />
+                            <Route path="/404" component={PageNotFound} />
+                            <Redirect exact from={"*"} to={"/404"} />
+                        </Switch>
+                    </div>
+                </main>
+            </div>
+        )
     }
-
-    if (!Auth.checkAuth()) {
-        authenticate();
-    }
-
-
-    useEffect(() => {
-        // if (Auth.checkAuth()) {
-        //     if (location.pathname === '/') {
-        //         history.push('/activity');
-        //     }
-        // } else {
-        //     history.push('/error');
-        // }
-    }, []);
-
-    return (
-        <div>
-            {!location.pathname.includes('404') && <ActivityHeader />}
-            <Switch>
-                <Redirect exact from={"/"} to={"/activity"} />
-                <Route path="/activity" component={Activity} />
-                <Route path="/documentsRequest" component={DocumentRequest} />
-                <Route path="/uploadedDocuments" component={UploadedDocuments} />
-                <Route path="/404" component={PageNotFound} />
-                <Redirect exact from={"*"} to={"/404"} />
-            </Switch>
-        </div>
-    )
 }

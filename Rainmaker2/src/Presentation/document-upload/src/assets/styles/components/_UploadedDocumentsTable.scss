@@ -1,0 +1,35 @@
+.UploadedDocumentsTable{
+    .block-element{
+        margin-bottom: 10px;
+    }
+
+    .table{
+        margin-bottom: 40px;
+
+        thead > tr > th, 
+        tbody > tr > td {
+            padding-left: 20px !important;
+        }
+
+        thead{
+            font-weight: 500;
+            th{
+                font-weight: 500;
+            }
+        }
+        tbody{
+            font-weight: 400;
+        }
+
+        td,th{
+            border-top: 0px;
+        }
+        th{
+            border-bottom: 1px solid color('border');
+        }
+
+        .fa-file{
+            margin-right: 10px;
+        }
+    } 
+}

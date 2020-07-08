@@ -19,13 +19,15 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<bool> Rename(FileRenameModel model)
+        public async Task<bool> Rename(FileRenameModel model,int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(model.id) }
+                { "_id", BsonObjectId.Create(model.id) },
+                { "tenantId", model.tenantId},
+                { "userId", userProfileId}
             }, new BsonDocument()
             {
                 { "$set", new BsonDocument()
@@ -45,17 +47,19 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> Done(DoneModel model)
+        public async Task<bool> Done(DoneModel model, int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(model.id) }
+                { "_id", BsonObjectId.Create(model.id) },
+                { "tenantId", model.tenantId},
+                { "userId", userProfileId}
             }, new BsonDocument()
             {
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].status", Status.Submitted}
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.PendingReview}
 
                     }
                 }
@@ -71,7 +75,7 @@ namespace DocumentManagement.Service
 
         }
 
-        public async Task Order(FileOrderModel model)
+        public async Task Order(FileOrderModel model, int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -79,7 +83,9 @@ namespace DocumentManagement.Service
             {
                 UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
                 {
-                    { "_id", BsonObjectId.Create(model.id) }
+                    { "_id", BsonObjectId.Create(model.id) },
+                    { "tenantId", model.tenantId},
+                    { "userId", userProfileId}
                 }, new BsonDocument()
                 {
                     { "$set", new BsonDocument()
@@ -99,18 +105,83 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm)
+        public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(id) }
+                { "_id", BsonObjectId.Create(id) },
+                { "tenantId", tenantId},
+                { "userId", userProfileId},
+                { 
+                    "requests" , new BsonDocument()
+                    {
+                        {
+                            "$elemMatch" , new BsonDocument()
+                            {
+                                {
+                                    "$and",new BsonArray()
+                                    {
+                                        new BsonDocument()
+                                        {
+                                            { "id", BsonObjectId.Create(requestId) }
+                                        },
+                                        new BsonDocument()
+                                        {
+                                            {
+                                                "documents",new BsonDocument()
+                                                {
+                                                    { 
+                                                        "$elemMatch", new BsonDocument()
+                                                        {
+                                                            {
+                                                                "$and", new BsonArray()
+                                                                {
+                                                                    new BsonDocument()
+                                                                    {
+                                                                        { "id", BsonObjectId.Create(docId) }
+                                                                    },
+                                                                    new BsonDocument()
+                                                                    {
+                                                                        { 
+                                                                            "$or",new BsonArray()
+                                                                            {
+                                                                                new BsonDocument()
+                                                                                {
+                                                                                    { "status", DocumentStatus.BorrowerTodo}
+                                                                                },
+                                                                                new BsonDocument()
+                                                                                {
+                                                                                    { "status", DocumentStatus.Started}
+                                                                                }
+                                                                            }
+                                                                        }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                }
             }, new BsonDocument()
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized} }   }
+                    }
+                },
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started}
+
                     }
                 }
             }, new UpdateOptions()
@@ -124,18 +195,25 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<FileViewDTO> View(FileViewModel model)
+        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
               @"{""$match"": {
 
-                  ""_id"": " + new ObjectId(model.id).ToJson() + @" 
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + model.tenantId + @",
+                  ""userId"": " + userProfileId + @"
                             }
                         }",
                         @"{
                             ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
                         }",
                         @"{
                             ""$unwind"": ""$requests.documents""
@@ -171,6 +249,12 @@ namespace DocumentManagement.Service
 
             await asyncCursor.MoveNextAsync();
             FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+
+            IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+            await viewLogCollection.InsertOneAsync(viewLog);
+
             return fileViewDTO;
         }
 
