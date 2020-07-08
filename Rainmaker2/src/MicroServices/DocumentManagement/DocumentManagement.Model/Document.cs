@@ -12,7 +12,7 @@ namespace DocumentManagement.Model
         public List<string> id { get; set; }
         public int tenantId { get; set; }
     }
-    public class Document
+    public class DocumentModel
     {
         public string docId { get; set; }
         public string docName { get; set; }

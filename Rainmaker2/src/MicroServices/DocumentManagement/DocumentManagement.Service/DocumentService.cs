@@ -20,9 +20,8 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<Document>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
         {
-
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
@@ -56,13 +55,13 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            List<Document> result = new List<Document>();
+            List<DocumentModel> result = new List<DocumentModel>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                     DocumentQuery query = BsonSerializer.Deserialize<DocumentQuery>(current);
-                    Document dto = new Document();
+                    DocumentModel dto = new DocumentModel();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (query.messages?.Any(x => x.tenantId == templateIdsModel.tenantId) == true)
