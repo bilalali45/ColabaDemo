@@ -6,21 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DocumentManagement.Model
 {
-    public class ActivityLog
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
-        public int userId { get; set; }
-        public DateTime createdOn { get; set; }
-        public string username { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string requestId { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string docId { get; set; }
-    }
-
-    public class ActivityLogDTO
+     public class ActivityLogDTO
     {
         public string id { get; set; }
         public int userId { get; set; }

@@ -36,5 +36,22 @@ namespace DocumentManagement.API.Controllers
         {
             return Ok(await documentService.GetActivityLog(id, requestId, docId));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetEmailLog(string id, string requestId, string docId)
+
+        {
+            return Ok(await documentService.GetEmailLog(id, requestId, docId));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+
+        {
+            var docQuery = await documentService.mcuRename(id, requestId, docId, fileId, newName);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+            
+        }
     }
 }

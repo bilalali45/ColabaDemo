@@ -208,7 +208,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<ActivityLog>> mockCollection = new Mock<IMongoCollection<ActivityLog>>();
+            Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()
@@ -330,10 +330,10 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
 
-            mockdb.Setup(x => x.GetCollection<ActivityLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.ActivityLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -437,6 +437,261 @@ namespace DocumentManagement.Tests
             Assert.Equal(2, dto.Count);
             Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].docId);
             Assert.Equal("Credit report has been uploaded", dto[1].docMessage);
+        }
+
+        [Fact]
+        public async Task TestGetEmailLogController()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            List<EmailLogDTO> list = new List<EmailLogDTO>() { { new EmailLogDTO()
+            {
+                id="5f046210f50dc78d7b0c059c",
+                userId=3842,
+                userName = "abc",
+                requestId = "abc15d1fe456051af2eeb768",
+                docId = "aaa25d1fe456051af2eeb72d",
+                emailText = "abc",
+                dateTime = Convert.ToDateTime("2020-06-25T07:39:57.233Z"),
+                loanId = "5eb25d1fe519051af2eeb72d"
+            } } };
+
+            mock.Setup(x => x.GetEmailLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
+
+            var documentController = new DocumentController(mock.Object);
+            //Act
+            IActionResult result = await documentController.GetEmailLog("1", "1", "1");
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<EmailLogDTO>;
+            Assert.Single(content);
+            Assert.Equal("5f046210f50dc78d7b0c059c", content[0].id);
+            Assert.Equal("abc15d1fe456051af2eeb768", content[0].requestId);
+            Assert.Equal("aaa25d1fe456051af2eeb72d", content[0].docId);
+            Assert.Equal("abc", content[0].userName);
+            Assert.Equal("abc", content[0].emailText);
+            Assert.Equal(Convert.ToDateTime("2020-06-25T07:39:57.233Z"), content[0].dateTime);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", content[0].loanId);
+
+        }
+
+        [Fact]
+        public async Task TestGetEmailLogService() 
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty  fields  
+                        { "userId" ,  3842},
+                        { "userName" ,BsonString.Empty},
+                        { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                        { "_id" , BsonString.Empty},
+                        { "requestId" , BsonString.Empty},
+                        { "docId" , BsonString.Empty},
+                        { "emailText" , BsonString.Empty},
+                        { "loanId" , BsonString.Empty}
+                    }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except userId
+                    { "userId" , 3842 },
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields  except userName
+                    { "userId" , 3842},
+                    { "userName" , "abc"},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except dateTime
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except id
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" ,  "5f046210f50dc78d7b0c059c"},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except requestId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" ,  "abc15d1fe456051af2eeb768"},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except docId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" ,"aaa25d1fe456051af2eeb72d" },
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except activity
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "emailText" , "abc" },
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except loanId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docId" ,BsonString.Empty },
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , "5eb25d1fe519051af2eeb72d" }
+                }
+            };
+
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.EmailLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(9, dto.Count);
+            Assert.Equal(3842, dto[1].userId);
+            Assert.Equal("abc", dto[2].userName);
+            Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
+            Assert.Equal("abc15d1fe456051af2eeb768", dto[5].requestId);
+            Assert.Equal("aaa25d1fe456051af2eeb72d", dto[6].docId);
+            Assert.Equal("abc", dto[7].emailText);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
+
+        }
+        [Fact]
+        public async Task TestmcuRenameControllerTrue()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            IActionResult result = await controller.mcuRename( "1","1","1","1","abc");
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestmcuRenameControllerFalse()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            IActionResult result = await controller.mcuRename("1", "1", "1", "1", "abc");
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestmcuRenameServiceTrue()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+
+             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IDocumentService service = new DocumentService(mock.Object);
+            bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
+
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task TestmcuRenameServiceFalse()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+
+            IDocumentService service = new DocumentService(mock.Object);
+            bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
+
+            //Assert
+            Assert.False(result);
         }
     }
 }
