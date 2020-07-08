@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
+import _ from "lodash";
 
 import { UploadedDocuments } from "../../../../entities/Models/UploadedDocuments";
 import { DocumentActions } from "../../../../store/actions/DocumentActions";
 import { Auth } from "../../../../services/auth/Auth";
 import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
-import { DateFormat } from "../../../../utils/helpers/DateFormat";
+import { DateFormatWithMoment } from "../../../../utils/helpers/DateFormat";
 import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
 import { Store } from "../../../../store/store";
 import { DocumentsActionType } from "../../../../store/reducers/documentReducer";
@@ -25,19 +26,25 @@ export const UploadedDocumentsTable = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Store);
-  const { submittedDocs } : any = state.documents;
+  const { submittedDocs }: any = state.documents;
 
   useEffect(() => {
-      fetchUploadedDocuments();
+    fetchUploadedDocuments();
   }, []);
 
   const fetchUploadedDocuments = async () => {
-    if(!submittedDocs){  
-      let uploadedDocs = await DocumentActions.getSubmittedDocuments(Auth.getLoanAppliationId(),Auth.getTenantId());
+    if (!submittedDocs) {
+      let uploadedDocs = await DocumentActions.getSubmittedDocuments(
+        Auth.getLoanAppliationId(),
+        Auth.getTenantId()
+      );
       if (uploadedDocs) {
-        dispatch({ type: DocumentsActionType.FetchSubmittedDocs, payload: uploadedDocs});
+        dispatch({
+          type: DocumentsActionType.FetchSubmittedDocs,
+          payload: uploadedDocs,
+        });
       }
-    }  
+    }
   };
 
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
@@ -48,17 +55,18 @@ export const UploadedDocumentsTable = () => {
 
           return (
             <span className="block-element">
-            <Link to="#"
-              onClick={() => {
-                setCurrentDoc({
-                  ...params,
-                  fileId,
-                  clientName,
-                });
-              }}
-            >
-              {clientName}
-            </Link>
+              <Link
+                to="#"
+                onClick={() => {
+                  setCurrentDoc({
+                    ...params,
+                    fileId,
+                    clientName,
+                  });
+                }}
+              >
+                {clientName}
+              </Link>
             </span>
           );
         })}
@@ -71,9 +79,9 @@ export const UploadedDocumentsTable = () => {
       <td>
         {data.map((item: Document) => {
           return (
-              <span className="block-element">
-                {DateFormat(item.fileUploadedOn, true)}
-              </span>
+            <span className="block-element">
+              {DateFormatWithMoment(item.fileUploadedOn, true)}
+            </span>
           );
         })}
       </td>
@@ -81,18 +89,27 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderUploadedDocs = (data) => {
-    return data.map((item: UploadedDocuments) => {
+    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, [
+      "asc",
+    ]);
+
+    return sortedUploadedDocuments.map((item: UploadedDocuments) => {
       if (!item.files.length) return;
       const { files, docId, requestId, id } = item;
-      return (   
-          <tr>
-            <td>
-              <em className="far fa-file"></em> {item.docName}
-            </td>
-            {renderFileNameColumn(files, { id, requestId, docId })}
-            {renderAddedColumn(files)}
-          </tr>
-          
+      const sortedFiles = _.orderBy(
+        files,
+        (file) => new Date(file.fileUploadedOn),
+        ["desc"]
+      );
+
+      return (
+        <tr>
+          <td>
+            <em className="far fa-file"></em> {item.docName}
+          </td>
+          {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
+          {renderAddedColumn(sortedFiles)}
+        </tr>
       );
     });
   };
@@ -112,9 +129,7 @@ export const UploadedDocumentsTable = () => {
             <th>Added</th>
           </tr>
         </thead>
-        <tbody>
-        {renderUploadedDocs(data)}
-        </tbody>
+        <tbody>{renderUploadedDocs(data)}</tbody>
       </table>
     );
   };
@@ -127,7 +142,7 @@ export const UploadedDocumentsTable = () => {
             <img src={DocUploadIcon} alt="Your don't have any files!" />
           </div>
           <label className="inputno-document--text">
-          Your don't have any uploaded files.
+            Your don't have any uploaded files.
             <br />
             Go to{" "}
             <a tabIndex={-1} onClick={loanHomeHandler}>
@@ -139,14 +154,10 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
-  
-
   return (
     <React.Fragment>
       <div className="UploadedDocumentsTable">
-        { submittedDocs &&
-        renderTable(submittedDocs)
-        }
+        {submittedDocs && renderTable(submittedDocs)}
 
         {submittedDocs?.length === 0 && renderNoData()}
       </div>

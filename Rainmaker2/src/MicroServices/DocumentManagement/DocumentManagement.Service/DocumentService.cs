@@ -1,4 +1,5 @@
-﻿using DocumentManagement.Entity;
+﻿using DocumentManagement.Model;
+using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -6,7 +7,15 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Threading.Tasks;
+using DocumentManagement.Entity;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace DocumentManagement.Service
 {

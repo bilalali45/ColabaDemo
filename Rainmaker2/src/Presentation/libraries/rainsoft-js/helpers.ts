@@ -1,3 +1,24 @@
+
+const addAmountSeperator = (amount: string, currency: string) => {
+    let counter = 0;
+
+    return amount.split('').reverse().map((n, i) => {
+        if (counter === 2 && i !== amount.length - 1) {
+            counter = 0;
+            switch (currency) {
+                case 'US':
+                    return `,${n}`
+                case 'BRL':
+                    return `.${n}`
+
+                default:
+                    break;
+            }
+        }
+        counter++;
+        return n;
+    }).reverse().join('');
+}
 export const MaskPhone = (number: number) => {
     return String(number).split('').map((n, i) => {
         if (i === 0) {
@@ -23,28 +44,7 @@ export const UnMaskPhone = (formattedNumber: string) => {
     }).join('');
 }
 
-const addAmountSeperator = (amount: string, currency: string) => {
-    let counter = 0;
-
-    return amount.split('').reverse().map((n, i) => {
-        if (counter === 2 && i !== amount.length - 1) {
-            counter = 0;
-            switch (currency) {
-                case 'US':
-                    return `,${n}`
-                case 'BRL':
-                    return `.${n}`
-
-                default:
-                    break;
-            }
-        }
-        counter++;
-        return n;
-    }).reverse().join('');
-}
-
-export const FormatAmountByCountry = (amount: number) => {
+export const FormatAmountByCountry = (amount: number) =>                                                       {
     let strAmount = String(amount);
     let amountSplitByPoint = strAmount.split('.');
     if (amountSplitByPoint.length > 2) {
@@ -60,5 +60,20 @@ export const FormatAmountByCountry = (amount: number) => {
             return `$${seperatorAdded}`
         })();
 }
+
+export const toTitleCase = (str: string | undefined) => {
+  
+    if (str) {
+      let sentence = str?.toLowerCase().split(" ");
+      for (var i = 0; i < sentence.length; i++) {
+        sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
+      }
+      return sentence.join(" ");
+    }else {
+      console.log(str);
+    }
+    return "";
+  }
+  
 
 
