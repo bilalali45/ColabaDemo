@@ -26,8 +26,6 @@ interface ViewDocumentType {
   fileId?: string;
 }
 
-// const allowedExtensions = ".pdf, .jpg, .jpeg, .png";
-
 export const SelectedDocuments = ({
   addMore,
   setFileInput,
@@ -38,6 +36,7 @@ export const SelectedDocuments = ({
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
+  const [doneHit, setDoneHit] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
   const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(
     false
@@ -62,6 +61,7 @@ export const SelectedDocuments = ({
     }
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
+  
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -207,6 +207,8 @@ export const SelectedDocuments = ({
   };
 
   const doneDoc = async () => {
+    setDoneVisible(false);
+    setDoneHit(true);
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -332,13 +334,13 @@ export const SelectedDocuments = ({
           </p>
         ) : (
           <div className="doc-submit-wrap">
-            <button
+            {!doneHit && <button
               disabled={btnDisabled || subBtnPressed}
               className="btn btn-primary"
               onClick={uploadFiles}
             >
               Submit
-            </button>
+            </button>}
           </div>
         )}
       </div>
@@ -346,4 +348,3 @@ export const SelectedDocuments = ({
   );
 };
 
-// filesLimitErrorVisible && selectedFiles.filter(f => f.file).length
