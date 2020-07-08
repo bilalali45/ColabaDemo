@@ -9383,10 +9383,10 @@ raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
-rainsoft-js@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.11.tgz#f5de915b8eeca155a29871596fb679b3b1af80df"
-  integrity sha512-H1yZ4wUAWMkj/BBSzIe2d1RAbdKv6/2Tc83QY3+momYd5klefUjK/qL/Q9tS3gHzf1Zwlw9qSyP1li9yoBLxYw==
+rainsoft-js@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.12.tgz#3fa568179993b42eaaba2814c195ae1ea639541e"
+  integrity sha512-skRMdU/GK1GFl/OwP8rTVULGR+4UikZmX8Wh783RXlryZP8EWF2Nxkd5c5InlifpDwyNekABMpOv3qSyk1rj6Q==
 
 rainsoft-rc@^1.0.6:
   version "1.0.6"

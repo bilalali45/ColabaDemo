@@ -1,4 +1,4 @@
-import { toTitleCase } from "../../utils/helpers/Functions";
+import { toTitleCase } from 'rainsoft-js'
 
 export class LoanApplication {
   public loanPurpose?: string;

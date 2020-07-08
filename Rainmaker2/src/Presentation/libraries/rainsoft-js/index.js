@@ -11,3 +11,4 @@ var helpers_1 = require("./helpers");
 __createBinding(exports, helpers_1, "MaskPhone");
 __createBinding(exports, helpers_1, "UnMaskPhone");
 __createBinding(exports, helpers_1, "FormatAmountByCountry");
+__createBinding(exports, helpers_1, "toTitleCase");

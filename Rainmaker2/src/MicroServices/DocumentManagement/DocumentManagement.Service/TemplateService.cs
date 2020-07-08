@@ -216,7 +216,7 @@ namespace DocumentManagement.Service
             return template.id;
         }
 
-        public async Task<List<CategoryDocumentTypeModel>> GetCategoryDocument()
+        public async Task<List<CategoryDocumentTypeModel>> GetCategoryDocument(int tenantId)
         {
             IMongoCollection<Category> collection = mongoService.db.GetCollection<Category>("Category");
             List<CategoryDocumentTypeModel> CategoryDocumentTypeModel = new List<CategoryDocumentTypeModel>();
@@ -238,7 +238,9 @@ namespace DocumentManagement.Service
                                 ""_id"": 1,
                                 ""name"": 1,
                                 ""docTypeId"": ""$categoryDocument._id"",
-                                ""docType"": ""$categoryDocument.name""
+                                ""docType"": ""$categoryDocument.name"",
+                                ""docMessage"": ""$categoryDocument.message"",
+                                ""messages"": ""$categoryDocument.messages""
                             }
                         }"
            ));
@@ -256,10 +258,23 @@ namespace DocumentManagement.Service
                         cdtm.documents = new List<DocumentTypeModel>();
                         CategoryDocumentTypeModel.Add(cdtm);
                     }
-                    if(!string.IsNullOrEmpty(query.docTypeId))
+
+                    if (!string.IsNullOrEmpty(query.docTypeId))
                     {
-                        cdtm.documents.Add(new DocumentTypeModel() {docTypeId=query.docTypeId,docType=query.docType });
+                        string docMessage = String.Empty;
+                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                        {
+                            docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                        }
+                        else
+                        {
+                            docMessage = query.docMessage;
+                        }
+
+                        cdtm.documents.Add(new DocumentTypeModel()
+                            {docTypeId = query.docTypeId, docType = query.docType,docMessage = docMessage });
                     }
+                   
                 }
             }
 

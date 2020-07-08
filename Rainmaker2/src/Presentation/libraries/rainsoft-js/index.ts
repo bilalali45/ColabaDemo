@@ -1,2 +1,2 @@
 
- export {MaskPhone, UnMaskPhone, FormatAmountByCountry} from './helpers'
+ export {MaskPhone, UnMaskPhone, FormatAmountByCountry, toTitleCase} from './helpers'
