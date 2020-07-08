@@ -5,6 +5,8 @@ import { MCUHome } from './Components/MCUHome/MCUHome';
 import { RainMakerHeader } from './Components/RainMakerHeader/RainMakerHeader';
 import { RainMakerSidebar } from './Components/RainMakerSidebar/RainMakerSidebar';
 import { RainMakerFooter } from './Components/RainMakerFooter/RainMakerFooter';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 declare global {
   interface Window { envConfig: any; }
 }
@@ -13,14 +15,16 @@ window.envConfig = window.envConfig || {};
 function App() {
   return (
     <div className="App">
-      <RainMakerHeader/>
+      <RainMakerHeader />
       <section className="d-layout">
-        <RainMakerSidebar/>
+        <RainMakerSidebar />
         <main className="main-layout">
-          <MCUHome/>
-          <RainMakerFooter/>
+          <Router>
+            <Route path="/" component={MCUHome} />
+            <RainMakerFooter />
+          </Router>
         </main>
-      </section>        
+      </section>
     </div>
   );
 }
