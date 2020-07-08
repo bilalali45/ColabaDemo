@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export const AlertBox = () => {
+
+    const [show, setShow] = useState(false);
+
+    const modalClose = () => {
+        setShow(false);        
+    }
+
     return (
         <div className="alert-box" id="AlertBox" data-component="AlertBox">
             {/* <div className="backdrop"></div> */}
             <div className="alert-box--modal">
-                <button className="alert-box--modal-close"><em className="zmdi zmdi-close"></em></button>
+                <button className="alert-box--modal-close" onClick={()=>{modalClose()}} ><em className="zmdi zmdi-close"></em></button>
                 <header className="alert-box--modal-header">
                     <h1 className="text-center">Helo world</h1>
                 </header>
