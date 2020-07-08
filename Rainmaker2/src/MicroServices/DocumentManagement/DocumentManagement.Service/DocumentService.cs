@@ -76,9 +76,7 @@ namespace DocumentManagement.Service
                     result.Add(dto);
                 }
             }
-            return result.GroupBy(x=>x.docId).Select(x=>x.First()).ToList();
+            return result.GroupBy(x=>new { x.docId, x.docName }).Select(x=>x.First()).ToList();
         }
-
-       
     }
 }
