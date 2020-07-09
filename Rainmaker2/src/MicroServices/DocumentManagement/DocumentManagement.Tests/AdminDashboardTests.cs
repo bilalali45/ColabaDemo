@@ -2,21 +2,15 @@ using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
-using Moq.Protected;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.AspNetCore.Routing;
 
 namespace DocumentManagement.Tests
 {
@@ -155,7 +149,15 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , BsonString.Empty },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 }
+                       // { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 }
+                          { "files" , BsonArray.Create(new BsonDocument[]
+                          {
+                              new BsonDocument()
+                              {
+                                  { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "id", "5ef454cd86c96583744140d9" },{ "mcuName", "abc12" }
+
+                            //  }})}
+
                            // , { "status", "Submitted to MCU" }
                         } })}
 
@@ -200,52 +202,7 @@ namespace DocumentManagement.Tests
             
         }
 
-        //[Fact]
-        //public async Task TestGetDocumentsService1()
-        //{
-        //    //Arrange
-        //    Mock<IMongoService> mock = new Mock<IMongoService>();
-        //    Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-        //    Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
-        //    Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
-
-        //    List<BsonDocument> list = new List<BsonDocument>()
-        //    {
-                
-        //           new BsonDocument
-        //            {
-        //                //Cover all empty fields except files
-        //                  { "_id" , BsonString.Empty },
-        //                { "requestId" , BsonString.Empty  },
-        //                { "docId" , BsonString.Empty },
-        //                { "docName" , BsonString.Empty },
-        //                { "typeName" , BsonString.Empty },
-        //                { "status" , BsonString.Empty },
-        //                { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 }
-        //                  , { "status", "Submitted to MCU" }
-        //                } })}
-
-        //         }
-        //    };
-
-        //    mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-        //    mockCursor.SetupGet(x => x.Current).Returns(list);
-
-        //    mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
-
-        //    mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-
-        //    mock.SetupGet(x => x.db).Returns(mockdb.Object);
-
-        //    var service = new AdminDashboardService(mock.Object);
-        //    //Act
-        //    List<AdminDashboardDTO> dto = await service.GetDocument(1, 1);
-        //    //Assert
-        //    Assert.NotNull(dto);
-        //   // Assert.Equal(2, dto.Count);
-        //   // Assert.Equal("asd", dto[0].files[0].clientName);
-        //    Assert.Equal("Submitted to MCU", dto[0].files[0].status);
-        //}
+       
         [Fact]
         public async Task TestDeleteServiceTrue()
         {

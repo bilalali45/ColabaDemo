@@ -96,5 +96,13 @@ namespace DocumentManagement.API.Controllers
             else
                 return NotFound();
         }
+
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SaveTemplate(AddTemplateModel  model)
+        {
+            return Ok(await templateService.SaveTemplate(model));
+           
+        }
     }
 }
