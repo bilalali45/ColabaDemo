@@ -1,4 +1,3 @@
-//import { Http } from "../../services/http/Http";
 import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 

@@ -3,8 +3,6 @@ import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-d
 import { Activity } from './Activity/Activity'
 import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
 import { Http } from '../../services/http/Http'
-import { Auth } from '../../services/auth/Auth'
-import { Store } from '../../store/store'
 import ActivityHeader from './AcitivityHeader/ActivityHeader'
 import { LoanApplication } from '../../entities/Models/LoanApplication'
 import { UserActions } from '../../store/actions/UserActions'

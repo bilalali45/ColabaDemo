@@ -288,5 +288,67 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public async Task TestIsDocumentDraftController()
+        {
+            //Arrange
+            Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
+            
+            mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync("abc15d1fe456051af2eeb768");
+
+            var adminDashboardController = new AdminDashboardController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            adminDashboardController.ControllerContext = context;
+
+            //Act
+            IActionResult result = await adminDashboardController.IsDocumentDraft("5eb25d1fe519051af2eeb72d");
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task TestIsDocumentDraftService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , BsonString.Empty }
+                    }
+            ,
+                    new BsonDocument
+                    {
+                        { "_id" , "abc15d1fe456051af2eeb768" }
+                    }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new AdminDashboardService(mock.Object);
+            //Act
+            var dto = await service.IsDocumentDraft("5eb25d1fe519051af2eeb72d", 3842);
+            //Assert
+            Assert.NotNull(dto);
+        }
     }
 }

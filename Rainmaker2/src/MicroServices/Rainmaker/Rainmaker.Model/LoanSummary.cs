@@ -31,6 +31,14 @@ namespace Rainmaker.Model
         public string UnitNumber { get; set; }
         public string Status { get; set; }
         public List<string> Borrowers { get; set; }
+        public string LoanNumber { get; set; }
+        public DateTime? ExpectedClosingDate { get; set; }
+        public decimal? PopertyValue { get; set; }
+        public decimal? Rate { get; set; }
+        public string LoanProgram { get; set; }
+        public string LockStatus { get; set; }
+        public DateTime? LockDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
     }
     public class LoanOfficer
     {

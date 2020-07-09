@@ -46,22 +46,22 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType
 
     return (
         <div className="alert-box" id="AlertBox" data-component="AlertBox">
-            {/* <div className="backdrop"></div> */}
             <div className="alert-box--modal">
-                <button className="alert-box--modal-close" onClick={() => { hideAlert() }} ><em className="zmdi zmdi-close"></em></button>
-                <header className="alert-box--modal-header">
+                {/* <button className="alert-box--modal-close" onClick={() => { hideAlert() }} ><em className="zmdi zmdi-close"></em></button> */}
+                {/* <header className="alert-box--modal-header">
                     <h2 className="text-center">Are you sure, you want to proceed!</h2>
-                </header>
+                </header> */}
                 <section className="alert-box--modal-body">
+                    <div className="alert-box--modal-body-content">
                     <p>Some files are still in progess, please complete them before navigating away!</p>
-                    {/* <p>Some files are still in progess, please complete them before proceeding to the next Document</p> */}
                     <p>If you select yes, all selected files will be lost!</p>
+                    </div>
                 </section>
                 <footer className="alert-box--modal-footer">
-                    <p className="text-center">
-                        <button onClick={yesHandler} className="btn btn-primary btn-small">Yes</button>
-                        <button onClick={noHandler} className="btn btn-default btn-small">No</button>
-                    </p>
+                    <div className="text-center">
+                        <button onClick={yesHandler} className="btn btn-secondary ">Yes</button>
+                        <button onClick={noHandler} className="btn btn-primary">No</button>
+                    </div>
                 </footer>
             </div>
         </div>

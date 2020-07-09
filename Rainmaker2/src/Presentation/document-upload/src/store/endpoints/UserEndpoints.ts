@@ -1,4 +1,3 @@
-// import { HttpMethods } from "./HttpMethods";
 
 export class UserEndpoints {
     static GET = {

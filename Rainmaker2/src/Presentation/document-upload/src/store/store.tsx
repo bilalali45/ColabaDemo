@@ -2,7 +2,6 @@ import React, { createContext, useReducer, ReactFragment } from 'react'
 import { authReducer } from './reducers/aauthReducer';
 import { userReducer } from './reducers/userReducer';
 import { mainReducer } from './reducers/reducers';
-//import { Http } from '../services/http/Http';
 import { Http } from 'rainsoft-js';
 import { ContactUs } from '../entities/Models/ContactU';
 import { LoanType } from './reducers/loanReducer';
@@ -10,8 +9,6 @@ import { DocumentsType } from './reducers/documentReducer';
 import { Auth } from '../services/auth/Auth';
 
 const httpClient = new Http();
-
-// httpClient.setBaseUrl('http://localhost:5000');
 let baseUrl : any = window.envConfig.API_BASE_URL; 
 let auth = Auth.getAuth();
 

@@ -1,4 +1,3 @@
-//import { Http } from "../../services/http/Http";
 import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
@@ -8,7 +7,6 @@ import { LoanApplication } from "../../entities/Models/LoanApplication";
 import { isFunction } from "util";
 import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
-
 
 const http = new Http();
 
