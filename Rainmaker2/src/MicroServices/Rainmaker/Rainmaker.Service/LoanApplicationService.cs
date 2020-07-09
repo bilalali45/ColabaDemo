@@ -46,11 +46,14 @@ namespace Rainmaker.Service
 
         public async Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId)
         {
-            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+            return await Repository.Query(x => x.Id == loanApplicationId)
+                .Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
                 .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x => x.State)
                 .Include(x => x.LoanPurpose)
                 .Include(x => x.StatusList)
                 .Include(x=>x.Borrowers).ThenInclude(x=>x.LoanContact)
+                .Include(x=>x.Product)
+                .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLockStatusLogs).ThenInclude(x=>x.LockStatusList)
                 .Select(x => new AdminLoanSummary
                 {
                     CityName = x.PropertyInfo.AddressInfo.CityName,
@@ -64,7 +67,15 @@ namespace Rainmaker.Service
                     CountryName = x.PropertyInfo.AddressInfo.CountryName,
                     UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
                     Status = x.StatusList.Name,
-                    Borrowers = x.Borrowers.OrderBy(y=>y.OwnTypeId).Select(y=>(string.IsNullOrEmpty(y.LoanContact.FirstName)? "" : y.LoanContact.FirstName)+" "+(string.IsNullOrEmpty(y.LoanContact.LastName) ? "" : y.LoanContact.LastName)).ToList()
+                    Borrowers = x.Borrowers.OrderBy(y=>y.OwnTypeId).Select(y=>(string.IsNullOrEmpty(y.LoanContact.FirstName)? "" : y.LoanContact.FirstName)+" "+(string.IsNullOrEmpty(y.LoanContact.LastName) ? "" : y.LoanContact.LastName)).ToList(),
+                    LoanNumber = x.LoanNumber,
+                    ExpectedClosingDate = x.ExpectedClosingDate,
+                    PopertyValue = x.PropertyInfo.PropertyValue,
+                    LoanProgram = x.Product.AliasName,
+                    Rate = null,
+                    LockStatus=x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y=>y.Id).First().LockStatusList.Name,
+                    LockDate= x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y => y.Id).First().CreatedOnUtc.SpecifyKind(DateTimeKind.Utc),
+                    ExpirationDate=null
                 }).FirstOrDefaultAsync();
         }
 

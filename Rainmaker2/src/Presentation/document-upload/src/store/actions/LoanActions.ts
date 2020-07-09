@@ -1,5 +1,5 @@
-//import { Http } from "../../services/http/Http";
-import { Http } from 'rainsoft-js';
+import { Http } from "../../services/http/Http";
+// import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { ContactUs } from "../../entities/Models/ContactU";
@@ -10,7 +10,8 @@ import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
 
 const auth: string | null = Auth.getAuth();
-const http = new Http(auth);
+// const http = new Http(auth);
+const http = new Http();
 
 export const statusText = {
   COMPLETED: 'COMPLETED',
