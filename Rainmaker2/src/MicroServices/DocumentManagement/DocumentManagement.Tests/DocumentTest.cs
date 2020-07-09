@@ -203,7 +203,7 @@ namespace DocumentManagement.Tests
         }
 
         [Fact]
-        public async Task TestGetActivityLogService()
+        public async Task TestGetActivityLogServiceTypeIdNotNull()
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
@@ -220,7 +220,7 @@ namespace DocumentManagement.Tests
                         { "userName" ,BsonString.Empty},
                         { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                         { "_id" , BsonString.Empty},
-                        { "requestId" , BsonString.Empty},
+                        { "typeId" , BsonString.Empty},
                         { "docId" , BsonString.Empty},
                         { "activity" , BsonString.Empty},
                         { "loanId" , BsonString.Empty}
@@ -232,7 +232,7 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" , BsonString.Empty},
                     { "activity" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
@@ -244,21 +244,7 @@ namespace DocumentManagement.Tests
                     { "userName" , "abc"},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
-                    { "activity" , BsonString.Empty},
-                    { "loanId" , BsonString.Empty}
-                }
-
-
-                ,new BsonDocument
-                {
-                    //Cover all empty  fields except dateTime
-                    { "userId" ,  3842},
-                    { "userName" ,BsonString.Empty},
-                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
-                    { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" , BsonString.Empty},
                     { "activity" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
@@ -271,19 +257,19 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" ,  "5f046210f50dc78d7b0c059c"},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" , BsonString.Empty},
                     { "activity" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
                 ,new BsonDocument
                 {
-                    //Cover all empty  fields except requestId
+                    //Cover all empty  fields except typeId
                     { "userId" ,  3842},
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" ,  "abc15d1fe456051af2eeb768"},
+                    { "typeId" ,  "abc15d1fe456051af2eeb768"},
                     { "docId" , BsonString.Empty},
                     { "activity" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
@@ -295,7 +281,7 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" ,"aaa25d1fe456051af2eeb72d" },
                     { "activity" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
@@ -307,7 +293,7 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" , BsonString.Empty},
                     { "activity" , "abc" },
                     { "loanId" , BsonString.Empty}
@@ -319,7 +305,7 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
                     { "docId" ,BsonString.Empty },
                     { "activity" , BsonString.Empty},
                     { "loanId" , "5eb25d1fe519051af2eeb72d" }
@@ -339,18 +325,153 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object);
             //Act
-            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "");
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(9, dto.Count);
+            Assert.Equal(8, dto.Count);
             Assert.Equal(3842, dto[1].userId);
             Assert.Equal("abc", dto[2].userName);
-            Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
-            Assert.Equal("abc15d1fe456051af2eeb768", dto[5].typeId);
-            Assert.Equal("aaa25d1fe456051af2eeb72d", dto[6].docId);
-            Assert.Equal("abc", dto[7].activity);
-            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
+            Assert.Equal("5f046210f50dc78d7b0c059c", dto[3].id);
+            Assert.Equal("abc15d1fe456051af2eeb768", dto[4].typeId);
+            Assert.Equal("aaa25d1fe456051af2eeb72d", dto[5].docId);
+            Assert.Equal("abc", dto[6].activity);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[7].loanId);
+        }
 
+        [Fact]
+        public async Task TestGetActivityLogServiceTypeIdNull()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty  fields  
+                        { "userId" ,  3842},
+                        { "userName" ,BsonString.Empty},
+                        { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                        { "_id" , BsonString.Empty},
+                        { "typeId" , BsonString.Empty},
+                        { "docId" , BsonString.Empty},
+                        { "activity" , BsonString.Empty},
+                        { "loanId" , BsonString.Empty}
+                    }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except userId
+                    { "userId" , 3842 },
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields  except userName
+                    { "userId" , 3842},
+                    { "userName" , "abc"},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except id
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" ,  "5f046210f50dc78d7b0c059c"},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except typeId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" ,  "abc15d1fe456051af2eeb768"},
+                    { "docId" , BsonString.Empty},
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except docId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" ,"aaa25d1fe456051af2eeb72d" },
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except activity
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "activity" , "abc" },
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except loanId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" ,BsonString.Empty },
+                    { "activity" , BsonString.Empty},
+                    { "loanId" , "5eb25d1fe519051af2eeb72d" }
+                }
+            };
+
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.ActivityLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "", "aaa25d1fe456051af2eeb72d");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(8, dto.Count);
+            Assert.Equal(3842, dto[1].userId);
+            Assert.Equal("abc", dto[2].userName);
+            Assert.Equal("5f046210f50dc78d7b0c059c", dto[3].id);
+            Assert.Equal("abc15d1fe456051af2eeb768", dto[4].typeId);
+            Assert.Equal("aaa25d1fe456051af2eeb72d", dto[5].docId);
+            Assert.Equal("abc", dto[6].activity);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[7].loanId);
         }
 
         [Fact]
