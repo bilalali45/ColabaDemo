@@ -1,6 +1,6 @@
 {
   "name": "rainsoft-js",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "Rainsoft reuseable js files",
   "main": "index.js",
   "scripts": {

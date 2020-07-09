@@ -50,15 +50,15 @@ exports.__esModule = true;
 exports.Http = void 0;
 var axios_1 = require("axios");
 var Http = /** @class */ (function () {
-    function Http(auth) {
+    function Http() {
         this.baseUrl = '';
+        this.auth = '';
         this.methods = {
             GET: 'GET',
             POST: 'POST',
             PUT: 'PUT',
             DELETE: 'DELETE'
         };
-        this.auth = auth;
         if (!Http.instance) {
             Http.instance = this;
         }
@@ -103,6 +103,9 @@ var Http = /** @class */ (function () {
     };
     Http.prototype.setBaseUrl = function (baseUrl) {
         this.baseUrl = baseUrl;
+    };
+    Http.prototype.setAuth = function (auth) {
+        this.auth = auth;
     };
     Http.prototype.createUrl = function (baseUrl, url) {
         return "" + baseUrl + url;
