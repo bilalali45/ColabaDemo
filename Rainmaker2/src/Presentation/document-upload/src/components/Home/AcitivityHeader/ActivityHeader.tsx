@@ -69,9 +69,11 @@ const ActivityHeader = (props) => {
             }
         }
     }, [selectedFiles]);
-
-    const showAlertPopup = () => {
-        setshowAlert(true);
+    
+    const showAlertPopup = (e) => {
+        if(e.target.tagName === 'A') {
+            setshowAlert(true);
+        }
     };
 
     const renderLeftNav = () => {
