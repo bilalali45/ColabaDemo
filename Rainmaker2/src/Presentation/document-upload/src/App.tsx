@@ -16,7 +16,6 @@ import { Authorized } from "./shared/Components/Authorized/Authorized";
 import { FooterContents } from "./utils/header_footer_utils/FooterContent";
 import HeaderContent from "./utils/header_footer_utils/HeaderContent";
 import { Auth } from "./services/auth/Auth";
-import { Http } from "./services/http/Http";
 import { LaonActions } from "./store/actions/LoanActions";
 
 const mvcDashBoardUrl = `Dashboard`;
