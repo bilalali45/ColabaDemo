@@ -30,12 +30,12 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
 
-            mock.Setup(x => x.GetDocumemntsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
 
             var documentController = new DocumentController(mock.Object);
 
             //Act
-            IActionResult result = await documentController.GetDocumemntsByTemplateIds(It.IsAny<TemplateIdModel>());
+            IActionResult result = await documentController.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>());
 
             //Assert
             Assert.NotNull(result);
@@ -430,7 +430,7 @@ namespace DocumentManagement.Tests
 
             templateIdModel.id = listIds;
             //Act
-            List<DocumentModel> dto = await service.GetDocumemntsByTemplateIds(templateIdModel);
+            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(templateIdModel);
 
             //Assert
             Assert.NotNull(dto);

@@ -144,7 +144,7 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 

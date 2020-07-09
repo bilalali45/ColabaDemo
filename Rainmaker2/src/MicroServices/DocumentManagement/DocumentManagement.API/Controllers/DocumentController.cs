@@ -18,9 +18,9 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<IActionResult> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
         {
-            var docQuery = await documentService.GetDocumemntsByTemplateIds(templateIdsModel);
+            var docQuery = await documentService.GetDocumentsByTemplateIds(templateIdsModel);
 
             return Ok(docQuery);
         }
