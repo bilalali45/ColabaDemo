@@ -1,3 +1,5 @@
+//import   moment from "moment";
+
 
 const addAmountSeperator = (amount: string, currency: string) => {
     let counter = 0;
@@ -74,6 +76,14 @@ export const toTitleCase = (str: string | undefined) => {
     }
     return "";
   }
+  
+// export const DateFormatWithMoment = (date: string,shortFormat: boolean = false) => {
+//     const formatString = shortFormat
+//       ? "MMM DD, YYYY hh:mm A"
+//       : "MMMM DD, YYYY hh:mm A";
+  
+//     return moment(date).format(formatString);
+// };
   
 
 

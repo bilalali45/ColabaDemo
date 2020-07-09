@@ -1,6 +1,6 @@
 {
   "name": "rainsoft-js",
-  "version": "1.0.15",
+  "version": "1.0.18",
   "description": "Rainsoft reuseable js files",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,9 @@
   "dependencies": {
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.39",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "from": "^0.1.7",
+    "import": "^0.0.6",
+    "moment": "^2.27.0"
   }
 }
