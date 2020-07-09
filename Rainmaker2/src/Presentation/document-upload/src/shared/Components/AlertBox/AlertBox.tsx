@@ -21,7 +21,13 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType
 
     const yesHandler = () => {
         try {
-            let updatedFiles = currentDoc.files.filter(f => f.uploadStatus !== 'pending');
+            let updatedFiles = currentDoc.files.filter(f => {
+                if (f.uploadStatus !== 'pending') {
+                    return f;
+                } else {
+                    f.uploadReqCancelToken.cancel();
+                }
+            });
             dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
             if (navigateUrl) {
