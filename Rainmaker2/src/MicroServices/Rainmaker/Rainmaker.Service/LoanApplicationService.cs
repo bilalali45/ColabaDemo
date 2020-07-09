@@ -46,12 +46,14 @@ namespace Rainmaker.Service
 
         public async Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId)
         {
-            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+            return await Repository.Query(x => x.Id == loanApplicationId)
+                .Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
                 .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x => x.State)
                 .Include(x => x.LoanPurpose)
                 .Include(x => x.StatusList)
                 .Include(x=>x.Borrowers).ThenInclude(x=>x.LoanContact)
                 .Include(x=>x.Product)
+                .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLockStatusLogs).ThenInclude(x=>x.LockStatusList)
                 .Select(x => new AdminLoanSummary
                 {
                     CityName = x.PropertyInfo.AddressInfo.CityName,
