@@ -637,8 +637,6 @@ namespace DocumentManagement.Tests
                         { "userName" ,BsonString.Empty},
                         { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                         { "_id" , BsonString.Empty},
-                        { "requestId" , BsonString.Empty},
-                        { "docId" , BsonString.Empty},
                         { "emailText" , BsonString.Empty},
                         { "loanId" , BsonString.Empty}
                     }
@@ -649,8 +647,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -661,8 +657,6 @@ namespace DocumentManagement.Tests
                     { "userName" , "abc"},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -675,8 +669,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -688,8 +680,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" ,  "5f046210f50dc78d7b0c059c"},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -700,8 +690,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" ,  "abc15d1fe456051af2eeb768"},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -712,8 +700,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" ,"aaa25d1fe456051af2eeb72d" },
                     { "emailText" , BsonString.Empty},
                     { "loanId" , BsonString.Empty}
                 }
@@ -724,8 +710,6 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" , BsonString.Empty},
                     { "emailText" , "abc" },
                     { "loanId" , BsonString.Empty}
                 }
@@ -736,11 +720,10 @@ namespace DocumentManagement.Tests
                     { "userName" ,BsonString.Empty},
                     { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
                     { "_id" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty},
-                    { "docId" ,BsonString.Empty },
                     { "emailText" , BsonString.Empty},
                     { "loanId" , "5eb25d1fe519051af2eeb72d" }
                 }
+             
             };
 
 
@@ -765,7 +748,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
             Assert.Equal("abc", dto[7].emailText);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
-
+  
         }
         [Fact]
         public async Task TestmcuRenameControllerTrue()
