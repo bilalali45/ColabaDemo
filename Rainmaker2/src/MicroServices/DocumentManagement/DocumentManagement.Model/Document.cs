@@ -9,8 +9,6 @@ namespace DocumentManagement.Model
 
     public class DocumentDetailQuery
     {
-        
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
@@ -24,6 +22,7 @@ namespace DocumentManagement.Model
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId;
+        public string userName { get; set; }
     }
 
 
@@ -40,7 +39,8 @@ namespace DocumentManagement.Model
         public string typeId { get; set; }
         public string requestId { get; set; }
         public  List<DocumentFileDTO> files { get; set; }
-       
+        public string userName { get; set; }
+
     }
 
     public class DocumentFileDTO

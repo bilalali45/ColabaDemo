@@ -58,7 +58,8 @@ namespace DocumentManagement.Service
                                 ""docId"": ""$requests.documents.id"",
                                 ""typeId"": ""$requests.documents.typeId"",
                                 ""docName"": ""$requests.documents.displayName"",
-                                ""files"": ""$requests.documents.files"" 
+                                ""files"": ""$requests.documents.files"",
+                                ""userName"": 1,
                             }
                              } "
 
@@ -80,6 +81,7 @@ namespace DocumentManagement.Service
                     dto.typeId = query.typeId;
                     dto.docName = query.docName;
                     dto.requestId = query.requestId;
+                    dto.userName = query.userName;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.files = query.files?.Select(x => new DocumentFileDTO()
                     {
@@ -220,7 +222,7 @@ namespace DocumentManagement.Service
         }
         public async Task<List<EmailLogDTO>> GetEmailLog(string id)
         {
-            IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("ActivityLog");
+            IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
               @"{""$match"": {
