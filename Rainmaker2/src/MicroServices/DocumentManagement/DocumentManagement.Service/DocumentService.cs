@@ -56,6 +56,7 @@ namespace DocumentManagement.Service
                                 ""_id"": 1,   
                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
+                                ""typeId"": ""$requests.documents.typeId"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""files"": ""$requests.documents.files"" 
                             }
@@ -76,6 +77,7 @@ namespace DocumentManagement.Service
                     dto.files = new List<DocumentFileDTO>();
                     dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.typeId = query.typeId;
                     dto.docName = query.docName;
                     dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;

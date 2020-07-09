@@ -16,6 +16,8 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
         public string docName { get; set; }
         public string typeName { get; set; }
         public List<RequestFile> files { get; set; }
@@ -35,7 +37,7 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         public string docId { get; set; }
         public string docName { get; set; }
-       
+        public string typeId { get; set; }
         public string requestId { get; set; }
         public  List<DocumentFileDTO> files { get; set; }
        
