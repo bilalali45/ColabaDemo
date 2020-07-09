@@ -1,5 +1,5 @@
 "use strict";
-//import   moment from "moment";
+//import * as moment from 'moment';
 exports.__esModule = true;
 exports.toTitleCase = exports.FormatAmountByCountry = exports.UnMaskPhone = exports.MaskPhone = void 0;
 var addAmountSeperator = function (amount, currency) {
