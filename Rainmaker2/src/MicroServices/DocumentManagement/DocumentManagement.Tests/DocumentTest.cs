@@ -693,5 +693,119 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public async Task TestAcceptDocumentControllerTrue()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
+            acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
+            acceptDocumentModel.requestId = "abc15d1fe456051af2eeb768";
+            acceptDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
+            IActionResult result = await controller.AcceptDocument(acceptDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestAcceptDocumentControllerFalse()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
+            acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
+            acceptDocumentModel.requestId = "abc15d1fe456051af2eeb768";
+            acceptDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
+            IActionResult result = await controller.AcceptDocument(acceptDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestRejectDocumentControllerTrue()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
+            rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
+            rejectDocumentModel.requestId = "abc15d1fe456051af2eeb768";
+            rejectDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
+            rejectDocumentModel.message = "document rejected";
+            IActionResult result = await controller.RejectDocument(rejectDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestRejectDocumentControllerFalse()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            var controller = new DocumentController(mock.Object);
+            //Act
+            RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
+            rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
+            rejectDocumentModel.requestId = "abc15d1fe456051af2eeb768";
+            rejectDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
+            rejectDocumentModel.message = "document rejected";
+            IActionResult result = await controller.RejectDocument(rejectDocumentModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestAcceptDocumentService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IDocumentService service = new DocumentService(mock.Object);
+            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task TestRejectDocumentService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IDocumentService service = new DocumentService(mock.Object);
+            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected");
+
+            //Assert
+            Assert.True(result);
+        }
     }
 }
