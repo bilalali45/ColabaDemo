@@ -129,7 +129,8 @@ namespace DocumentManagement.Tests
                         { "docId" ,BsonString.Empty},
                         { "docName" , BsonString.Empty},
                         { "typeName" , BsonString.Empty},
-                        { "requestId" , BsonString.Empty}
+                        { "requestId" , BsonString.Empty},
+                        { "files" , BsonArray.Create(new RequestFile[]{ })}
                     }
                 ,new BsonDocument
                 {
@@ -138,7 +139,8 @@ namespace DocumentManagement.Tests
                     { "docId" ,BsonString.Empty},
                     { "docName" , BsonString.Empty},
                     { "typeName" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty}
+                    { "requestId" , BsonString.Empty},
+                    { "files" , BsonArray.Create(new RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -147,7 +149,8 @@ namespace DocumentManagement.Tests
                     { "docId" ,"aaa25d1fe456051af2eeb72d"},
                     { "docName" , BsonString.Empty},
                     { "typeName" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty}
+                    { "requestId" , BsonString.Empty},
+                    { "files" , BsonArray.Create(new RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -156,7 +159,8 @@ namespace DocumentManagement.Tests
                     { "docId" ,BsonString.Empty},
                     { "docName" , "W2 2016"},
                     { "typeName" , BsonString.Empty},
-                    { "requestId" , BsonString.Empty}
+                    { "requestId" , BsonString.Empty},
+                    { "files" , BsonArray.Create(new RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -165,7 +169,8 @@ namespace DocumentManagement.Tests
                     { "docId" ,BsonString.Empty},
                     { "docName" , BsonString.Empty},
                     { "typeName" ,"W2 2016"},
-                    { "requestId" , BsonString.Empty}
+                    { "requestId" , BsonString.Empty},
+                    { "files" , BsonArray.Create(new RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -174,16 +179,35 @@ namespace DocumentManagement.Tests
                     { "docId" ,BsonString.Empty},
                     { "docName" , BsonString.Empty},
                     { "typeName" ,BsonString.Empty},
-                    { "requestId" ,"abc15d1fe456051af2eeb768"}
+                    { "requestId" ,"abc15d1fe456051af2eeb768"},
+                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except requestId
+                    { "_id" ,  BsonString.Empty},
+                    { "docId" ,BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "typeName" ,BsonString.Empty},
+                    { "requestId" ,"abc15d1fe456051af2eeb768"},
+                    { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "id", "5ef454cd86c96583744140d9" },{ "mcuName", "abc12" } } })}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except requestId
+                    { "_id" ,  BsonString.Empty},
+                    { "docId" ,BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "typeName" ,BsonString.Empty},
+                    { "requestId" ,"abc15d1fe456051af2eeb768"},
+                    { "files" , BsonNull.Value}
                 }
             };
-
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
             mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
-
 
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
@@ -194,12 +218,14 @@ namespace DocumentManagement.Tests
             List<DocumendDTO> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(6, dto.Count);
+            Assert.Equal(8, dto.Count);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[1].id);
             Assert.Equal("aaa25d1fe456051af2eeb72d", dto[2].docId);
             Assert.Equal("W2 2016", dto[3].docName);
             Assert.Equal("W2 2016", dto[4].docName);
             Assert.Equal("abc15d1fe456051af2eeb768", dto[5].requestId);
+            Assert.Equal("asd", dto[6].files[0].clientName);
+            Assert.Equal("abc15d1fe456051af2eeb768", dto[7].requestId);
         }
 
         [Fact]
