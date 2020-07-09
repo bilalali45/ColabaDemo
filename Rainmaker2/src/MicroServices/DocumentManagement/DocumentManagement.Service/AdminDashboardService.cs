@@ -171,6 +171,46 @@ namespace DocumentManagement.Service
             });
             return result.ModifiedCount == 1;
         }
+
+        public async Task<string> IsDocumentDraft(string id, int userId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            string requestId = String.Empty;
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""_id"": " + new ObjectId(id).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": {
+                                ""path"": ""$requests"",
+                                ""preserveNullAndEmptyArrays"": true}
+                        }", @"{""$match"": {
+                                ""requests.userId"": " + userId + @",
+                                ""requests.status"": " + DocumentStatus.Draft.ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""requests.id"": 1
+                            }
+                        }", @"{
+                            ""$group"": {
+                                ""_id"": ""$requests.id""
+                        }
+                        }"
+            ));
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                    requestId = query._id;
+                }
+            }
+
+            return requestId;
+        }
     }
 
 }

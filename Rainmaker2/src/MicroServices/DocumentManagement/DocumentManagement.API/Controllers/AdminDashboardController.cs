@@ -35,5 +35,16 @@ namespace DocumentManagement.API.Controllers
                 return NotFound();
         }
 
+        [HttpGet("IsDocumentDraft")]
+        public async Task<IActionResult> IsDocumentDraft(string id)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+
+            var docQuery = await admindashboardService.IsDocumentDraft(id, userProfileId);
+
+            return Ok(docQuery);
+        }
+
+
     }
 }

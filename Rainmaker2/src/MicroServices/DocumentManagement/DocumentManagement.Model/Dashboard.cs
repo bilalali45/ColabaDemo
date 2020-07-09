@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 namespace DocumentManagement.Model
-{ 
+{
     public static class RequestStatus
     {
         public const string Active = "Active"; // mcu submit
@@ -21,7 +21,7 @@ namespace DocumentManagement.Model
         public const string Deleted = "Deleted"; // deleted
     }
     public static class FileStatus
-    {          
+    {
         public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
         public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
     }
@@ -71,17 +71,17 @@ namespace DocumentManagement.Model
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
-        
+
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
         public string docName { get; set; }
-        
+
         public string typeName { get; set; }
 
         public string status { get; set; }
-        
+
         public List<RequestFile> files { get; set; }
     }
     public class AdminDashboardDTO
@@ -110,7 +110,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string requestId { get; set; }
         public int tenantId { get; set; }
-       
+
     }
 
     public class FileViewDTO
@@ -159,10 +159,17 @@ namespace DocumentManagement.Model
     }
     public class TemplateDTO
     {
-        
+
         public string docId { get; set; }
         public string docName { get; set; }
- 
-     
+
+
+    }
+
+    public class RequestIdQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string _id { get; set; }
     }
 }
