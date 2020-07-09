@@ -6,7 +6,9 @@ import { Http } from 'rainsoft-js';
 import Cookies from "universal-cookie";
 import axios from "axios";
 const cookies = new Cookies();
-const http = new Http(Auth.getAuth());
+const http = new Http();
+
+
 export class UserActions {
   static async authenticate() {
     const credentials = {
@@ -30,6 +32,7 @@ export class UserActions {
   }
 
   static async refreshToken() {
+    
     try {
       if (!Auth.checkAuth()) {
         return;
@@ -45,6 +48,7 @@ export class UserActions {
         let payload = UserActions.decodeJwt(res.data.data.token);
         Auth.storeTokenPayload(payload);
         UserActions.addExpiryListener(payload);
+        http.setAuth(res.data.data.token)
         return true;
       }
       Auth.removeAuth();
@@ -87,6 +91,7 @@ export class UserActions {
         if (tokens.token) {
           Auth.saveAuth(tokens.token);
           Auth.saveRefreshToken(tokens.refreshToken);
+          http.setAuth(tokens.token)
           return true;
         } else {
           return false;
@@ -105,6 +110,7 @@ export class UserActions {
         console.log("Cache token values exist");
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
+        http.setAuth(Rainmaker2Token)
         let isAuth = Auth.checkAuth();
         if (isAuth) {
           console.log("Cache token is valid");

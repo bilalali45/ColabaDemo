@@ -9,8 +9,8 @@ import { isFunction } from "util";
 import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
 
-const auth: string | null = Auth.getAuth();
-const http = new Http(auth);
+
+const http = new Http();
 
 export const statusText = {
   COMPLETED: 'COMPLETED',
@@ -21,7 +21,7 @@ export class LaonActions {
 
   static async getLoanOfficer(loanApplicationId: string, businessUnitId: string) {
     try {
-  
+  debugger
       let res: AxiosResponse<ContactUs> = await http.get<ContactUs>(Endpoints.loan.GET.officer(loanApplicationId, businessUnitId));
       return new ContactUs().fromJson(res.data);
     } catch (error) {

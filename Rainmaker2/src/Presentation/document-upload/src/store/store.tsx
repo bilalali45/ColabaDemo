@@ -9,11 +9,14 @@ import { LoanType } from './reducers/loanReducer';
 import { DocumentsType } from './reducers/documentReducer';
 import { Auth } from '../services/auth/Auth';
 
-const httpClient = new Http(Auth.getAuth());
+const httpClient = new Http();
 
 // httpClient.setBaseUrl('http://localhost:5000');
 let baseUrl : any = window.envConfig.API_BASE_URL; 
+let auth = Auth.getAuth();
+
 httpClient.setBaseUrl(baseUrl);
+if(auth) httpClient.setAuth(auth)
 
 export type InitialStateType = {
     loan: LoanType | {}

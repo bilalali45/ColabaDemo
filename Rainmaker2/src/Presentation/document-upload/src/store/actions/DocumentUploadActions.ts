@@ -8,7 +8,7 @@ import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 
 //const http = new Http();
-const http = new Http(Auth.getAuth());
+const http = new Http();
 
 export class DocumentUploadActions {
   static async submitDocuments(

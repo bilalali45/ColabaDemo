@@ -2,7 +2,7 @@
 import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 
-const httpClient = new Http(Auth.getAuth())
+const httpClient = new Http()
 
 export class AuthActions {
 

@@ -11,7 +11,7 @@ import { DocumentsEndpoints } from "../endpoints/DocumentsEndpoints";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 
 //const http = new Http();
-const http = new Http(Auth.getAuth());
+const http = new Http();
 
 export class DocumentActions {
   static async getPendingDocuments(
