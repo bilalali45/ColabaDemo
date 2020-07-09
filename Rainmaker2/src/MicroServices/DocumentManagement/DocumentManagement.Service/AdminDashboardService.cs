@@ -187,7 +187,7 @@ namespace DocumentManagement.Service
                                 ""preserveNullAndEmptyArrays"": true}
                         }", @"{""$match"": {
                                 ""requests.userId"": " + userId + @",
-                                ""requests.status"": " + DocumentStatus.Draft.ToJson() + @"
+                                ""requests.status"": " + DocumentStatus.Draft + @"
                             }
                         }", @"{
                             ""$project"": {
