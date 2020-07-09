@@ -14,10 +14,12 @@ import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
 import { Store } from "../../../../store/store";
 import { Document } from "../../../../entities/Models/Document";
 import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
+import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
 
 export const DocumentUpload = () => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [fileLimitError, setFileLimitError] = useState({ value: false });
+  const [showAlert, setshowAlert] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
@@ -33,6 +35,15 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
+    
+    
+    let files = selectedfiles.filter(f => f.uploadProgress > 0 && f.uploadStatus === 'pending').length > 0;
+
+    if(files) {
+      setshowAlert(true);
+      return;
+    }
+    
     if (fileInput?.value) {
       fileInput.value = "";
     }
@@ -93,18 +104,20 @@ export const DocumentUpload = () => {
                 setFileInput={getFileInput}
               />
             ) : (
-              <>
-                <SelectedDocuments
-                  fileLimitError={fileLimitError}
-                  setFileLimitError={setFileLimitError}
-                  addMore={showFileExplorer}
-                  setFileInput={getFileInput}
-                />
-              </>
-            )}
+                <>
+                  <SelectedDocuments
+                    fileLimitError={fileLimitError}
+                    setFileLimitError={setFileLimitError}
+                    addMore={showFileExplorer}
+                    setFileInput={getFileInput}
+                  />
+                </>
+              )}
           </Fragment>
         )}
       </FileDropper>
+      {showAlert && <AlertBox
+        hideAlert={() => setshowAlert(false)} />}
     </section>
   );
 };

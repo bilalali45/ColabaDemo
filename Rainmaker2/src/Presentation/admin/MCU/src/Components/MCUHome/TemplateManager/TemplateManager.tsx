@@ -4,10 +4,9 @@ import { TemplateHome } from './TemplateHome/TemplateHome'
 
 export const TemplateManager = () => {
     return (
-        <div>
-            <h1>TemplateManager</h1>
+        <main>
             <TemplateHeader/>
             <TemplateHome/>
-        </div>
+        </main>
     )
 }

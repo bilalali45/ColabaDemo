@@ -3,24 +3,36 @@ import { Store } from '../../../store/store';
 import { DocumentsActionType } from '../../../store/reducers/documentReducer';
 import { DocumentRequest } from '../../../entities/Models/DocumentRequest';
 import { update } from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 
 type AlertBoxType = {
     hideAlert: Function,
-    triedSelected?: any
+    triedSelected?: any,
+    navigateUrl?: string
 }
 
-export const AlertBox = ({ hideAlert, triedSelected }: AlertBoxType) => {
+export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType) => {
+
+    const history = useHistory();
 
     const { state, dispatch } = useContext(Store);
     const { pendingDocs, currentDoc }: any = state.documents;
 
     const yesHandler = () => {
         try {
-            let updatedFiles = currentDoc.files.filter(f => f.uploadStatus !== 'pending');
+            let updatedFiles = currentDoc.files.filter(f => {
+                if (f.uploadStatus !== 'pending') {
+                    return f;
+                } else {
+                    f.uploadReqCancelToken.cancel();
+                }
+            });
             dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
-
+            if (navigateUrl) {
+                history.push(navigateUrl)
+            }
             hideAlert();
 
         } catch (error) {
@@ -45,12 +57,12 @@ export const AlertBox = ({ hideAlert, triedSelected }: AlertBoxType) => {
                     {/* <p>Some files are still in progess, please complete them before proceeding to the next Document</p> */}
                     <p>If you select yes, all selected files will be lost!</p>
                 </section>
-                {/* <footer className="alert-box--modal-footer">
+                <footer className="alert-box--modal-footer">
                     <p className="text-center">
                         <button onClick={yesHandler} className="btn btn-primary btn-small">Yes</button>
                         <button onClick={noHandler} className="btn btn-default btn-small">No</button>
                     </p>
-                </footer> */}
+                </footer>
             </div>
         </div>
     )

@@ -1,10 +1,12 @@
 ﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
+    [Authorize(Roles = "MCU")]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class DocumentController : Controller
@@ -16,9 +18,9 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<IActionResult> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
         {
-            var docQuery = await documentService.GetDocumemntsByTemplateIds(templateIdsModel);
+            var docQuery = await documentService.GetDocumentsByTemplateIds(templateIdsModel);
 
             return Ok(docQuery);
         }
@@ -31,10 +33,27 @@ namespace DocumentManagement.API.Controllers
         }
        
         [HttpPost("[action]")]
-        public async Task<IActionResult> GetActivityLog(string id, string requestId, string docId)
+        public async Task<IActionResult> GetActivityLog(string id, string typeId, string docId)
      
         {
-            return Ok(await documentService.GetActivityLog(id, requestId, docId));
+            return Ok(await documentService.GetActivityLog(id, typeId, docId));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetEmailLog(string id)
+
+        {
+            return Ok(await documentService.GetEmailLog(id));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+
+        {
+            var docQuery = await documentService.mcuRename(id, requestId, docId, fileId, newName);
+            if (docQuery)
+                return Ok();
+            else
+                return NotFound();
+            
         }
 
         [HttpPost("[action]")]

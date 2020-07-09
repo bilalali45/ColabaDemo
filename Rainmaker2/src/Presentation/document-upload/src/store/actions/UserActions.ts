@@ -48,11 +48,12 @@ export class UserActions {
         return true;
       }
       Auth.removeAuth();
+      window.open("/Account/LogOff", "_self");
       return false;
     } catch (error) {
       setTimeout(() => {
         UserActions.refreshToken();
-      }, 1 * 1000);
+      }, 10 * 1000);
       return false;
     }
   }

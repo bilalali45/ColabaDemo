@@ -111,10 +111,17 @@ export const SelectedDocuments = ({
         Auth.getTenantId()
       );
       if (docs) {
-          if(docs?.length) {
-            dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
-          }
+        if (docs?.length) {
+          dispatch({
+            type: DocumentsActionType.FetchPendingDocs,
+            payload: docs,
+          });
+          let currentDoc = docs.find((d) => d.docId === currentSelected.docId);
+          dispatch({
+            type: DocumentsActionType.SetCurrentDoc,
+            payload: currentDoc,
+          });
+        }
       }
     } catch (error) {}
   };
@@ -217,6 +224,7 @@ export const SelectedDocuments = ({
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
       setDoneVisible(false);
+      setDoneHit(false);
       fetchUploadedDocuments();
     }
   };

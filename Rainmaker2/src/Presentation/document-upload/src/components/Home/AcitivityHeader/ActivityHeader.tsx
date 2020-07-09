@@ -9,6 +9,7 @@ const ActivityHeader = (props) => {
     const [rightNav, setRightNav] = useState('');
     const [leftNavUrl, setLeftNavUrl] = useState('');
     const [rightNavUrl, setRightNavUrl] = useState('');
+    const [currentUrl, setCurrentUrl] = useState('');
 
     const location = useLocation();
     const { state, dispatch } = useContext(Store);
@@ -84,7 +85,7 @@ const ActivityHeader = (props) => {
                 <i className="zmdi zmdi-arrow-left"></i>{leftNav}
             </a>
         }
-        return <Link to={{ pathname: showAlert ? location.pathname : leftNavUrl, state: { from: location.pathname } }}>
+        return <Link onClick={() => setCurrentUrl(leftNavUrl)} to={{ pathname: showAlert ? location.pathname : leftNavUrl, state: { from: location.pathname } }}>
             <i className="zmdi zmdi-arrow-left"></i>{leftNav}
         </Link >
 
@@ -113,7 +114,7 @@ const ActivityHeader = (props) => {
 
                                     <div className="action-doc-upload">
 
-                                        <Link to={{
+                                        <Link onClick={() => setCurrentUrl(rightNavUrl)} to={{
                                             pathname: showAlert ? location.pathname : rightNavUrl,
                                             state: { from: location.pathname }
                                         }}>{rightNav}</Link>
@@ -127,6 +128,7 @@ const ActivityHeader = (props) => {
                 </div>
             </section>
             {showAlert && <AlertBox
+                navigateUrl={currentUrl}
                 hideAlert={() => setshowAlert(false)} />}
         </div>
     )

@@ -56,8 +56,10 @@ namespace DocumentManagement.Service
                                 ""_id"": 1,   
                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
+                                ""typeId"": ""$requests.documents.typeId"",
                                 ""docName"": ""$requests.documents.displayName"",
-                                ""files"": ""$requests.documents.files"" 
+                                ""files"": ""$requests.documents.files"",
+                                ""userName"": 1,
                             }
                              } "
 
@@ -76,8 +78,10 @@ namespace DocumentManagement.Service
                     dto.files = new List<DocumentFileDTO>();
                     dto.id = query.id;
                     dto.docId = query.docId;
+                    dto.typeId = query.typeId;
                     dto.docName = query.docName;
                     dto.requestId = query.requestId;
+                    dto.userName = query.userName;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.files = query.files?.Select(x => new DocumentFileDTO()
                     {
@@ -93,29 +97,43 @@ namespace DocumentManagement.Service
             return result;
         }
 
-       
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId)
+
+        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
-
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.ActivityLog, BsonDocument>.Create(
-              @"{""$match"": {
+            string match = "";
+            if(!string.IsNullOrEmpty(typeId))
+            {
+                match = @"{""$match"": {
 
                   ""loanId"": " + new ObjectId(id).ToJson() + @" 
-                ""requestId"": " + new ObjectId(requestId).ToJson() + @",
+                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
+                            }
+                        }";
+            }
+            else
+            {
+                match = @"{""$match"": {
+
+                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
                   ""docId"": " + new ObjectId(docId).ToJson() + @"
                             }
-                        }"
+                        }";
+            }
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.ActivityLog, BsonDocument>.Create(
+              match
                         , @"{
                             ""$project"": {
                                 ""userId"": 1,                               
                                 ""userName"":1,
                                 ""dateTime"": 1,
                                 ""_id"": 1 ,
-                                ""requestId"": 1 ,
+                                ""typeId"": 1 ,
                                 ""docId"": 1 ,
                                 ""activity"": 1, 
-                                ""loanId"": 1  
+                                ""loanId"": 1,
+                                ""message"":1,
+                                ""log"":1
                             }
                              } "
 
@@ -131,20 +149,21 @@ namespace DocumentManagement.Service
                     ActivityLogQuery query = BsonSerializer.Deserialize<ActivityLogQuery>(current);
                     dto.userId = query.userId;
                     dto.userName = query.userName;
-                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc) ; 
+                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
                     dto.id = query.id;
-                    dto.requestId = query.requestId;
+                    dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;
-                    
+                    dto.message = query.message;
+                    dto.log = query.log;
                     result.Add(dto);
                 }
             }
 
-            return result.OrderByDescending(x=>x.dateTime).ToList();
+            return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<List<DocumentModel>> GetDocumemntsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
@@ -201,7 +220,76 @@ namespace DocumentManagement.Service
             }
             return result.GroupBy(x => new { x.docId, x.docName }).Select(x => x.First()).ToList();
         }
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id)
+        {
+            IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""loanId"": " + new ObjectId(id).ToJson() + @"
+                            }
+                        }"
+                        , @"{
+                            ""$project"": {
+                                ""userId"": 1,                               
+                                ""userName"":1,
+                                ""dateTime"": 1,
+                                ""_id"": 1 ,
+                                ""emailText"": 1, 
+                                ""loanId"": 1  
+                            }
+                             } "
+
+                ));
+
+
+            List<EmailLogDTO> result = new List<EmailLogDTO>();
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    EmailLogDTO dto = new EmailLogDTO();
+                    EmailLogQuery query = BsonSerializer.Deserialize<EmailLogQuery>(current);
+                    dto.userId = query.userId;
+                    dto.userName = query.userName;
+                    dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
+                    dto.emailText = query.emailText;
+                    dto.id = query.id;
+                    dto.loanId = query.loanId;
+
+                    result.Add(dto);
+                }
+            }
+
+            return result.OrderByDescending(x=>x.dateTime).ToList();
+        }
+        public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].files.$[file].mcuName", newName}
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId( requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId( docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
+                }
+            });
+
+            return result.ModifiedCount == 1;
+        }
         public async Task<bool> AcceptDocument(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");

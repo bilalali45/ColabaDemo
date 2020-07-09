@@ -5,11 +5,10 @@ import { NewTemplate } from '../NewTemplate/NewTemplate'
 
 export const TemplateHome = () => {
     return (
-        <div>
-            <h1>TemplateHome</h1>
+        <section>
             <TemplateListContainer/>
             <TemplatesCheckList/>
             <NewTemplate/>
-        </div>
+        </section>
     )
 }
