@@ -71,7 +71,7 @@ namespace Rainmaker.Service
                     PopertyValue = x.PropertyInfo.PropertyValue,
                     LoanProgram = x.Product.AliasName,
                     Rate = null,
-                    LockStatus=x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y=>y.Id).First().LockStatusList.EmployeeDisplay,
+                    LockStatus=x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y=>y.Id).First().LockStatusList.Name,
                     LockDate= x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y => y.Id).First().CreatedOnUtc.SpecifyKind(DateTimeKind.Utc),
                     ExpirationDate=null
                 }).FirstOrDefaultAsync();
