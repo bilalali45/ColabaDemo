@@ -24,6 +24,7 @@ interface ViewDocumentType {
   docId: string;
   clientName?: string;
   fileId?: string;
+  file?: any;
 }
 
 export const SelectedDocuments = ({
@@ -62,7 +63,6 @@ export const SelectedDocuments = ({
     hasSubmitted();
   }, [selectedFiles, selectedFiles.length]);
 
-
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
@@ -87,6 +87,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
       clientName,
+      file: document.file,
     });
   };
 
@@ -111,12 +112,18 @@ export const SelectedDocuments = ({
       );
       if (docs) {
         if (docs?.length) {
-          dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-          let currentDoc = docs.find(d => d.docId === currentSelected.docId);
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: currentDoc });
+          dispatch({
+            type: DocumentsActionType.FetchPendingDocs,
+            payload: docs,
+          });
+          let currentDoc = docs.find((d) => d.docId === currentSelected.docId);
+          dispatch({
+            type: DocumentsActionType.SetCurrentDoc,
+            payload: currentDoc,
+          });
         }
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -124,7 +131,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-        newName.toLowerCase()
+          newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -206,10 +213,10 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-          Auth.getLoanAppliationId(),
-          Auth.getTenantId(),
-          data
-        );
+        Auth.getLoanAppliationId(),
+        Auth.getTenantId(),
+        data
+      );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -321,18 +328,19 @@ export const SelectedDocuments = ({
             ></i>
           </p>
         ) : (
-              <div className="doc-submit-wrap">
-                {!doneHit && <button
-                  disabled={btnDisabled || subBtnPressed}
-                  className="btn btn-primary"
-                  onClick={uploadFiles}
-                >
-                  Submit
-            </button>}
-              </div>
+          <div className="doc-submit-wrap">
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
             )}
+          </div>
+        )}
       </div>
     </section>
   );
 };
-
