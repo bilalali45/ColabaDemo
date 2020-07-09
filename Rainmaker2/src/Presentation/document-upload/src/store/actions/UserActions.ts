@@ -47,6 +47,7 @@ export class UserActions {
         return true;
       }
       Auth.removeAuth();
+      window.open("/Account/LogOff", "_self");
       return false;
     } catch (error) {
       setTimeout(() => {
