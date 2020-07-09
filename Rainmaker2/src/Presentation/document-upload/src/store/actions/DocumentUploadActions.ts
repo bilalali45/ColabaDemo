@@ -1,4 +1,5 @@
-import { Http } from "../../services/http/Http";
+//import { Http } from "../../services/http/Http";
+import { Http } from 'rainsoft-js';
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { Document } from "../../entities/Models/Document";
 import { DocumentsActionType } from "../reducers/documentReducer";
@@ -6,7 +7,8 @@ import { FileUpload } from "../../utils/helpers/FileUpload";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 
-const http = new Http();
+//const http = new Http();
+const http = new Http(Auth.getAuth());
 
 export class DocumentUploadActions {
   static async submitDocuments(

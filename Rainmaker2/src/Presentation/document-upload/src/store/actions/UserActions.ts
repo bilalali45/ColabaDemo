@@ -1,11 +1,12 @@
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import jwt_decode from "jwt-decode";
-import { Http } from "../../services/http/Http";
+//import { Http } from "../../services/http/Http";
+import { Http } from 'rainsoft-js';
 import Cookies from "universal-cookie";
 import axios from "axios";
 const cookies = new Cookies();
-const http = new Http();
+const http = new Http(Auth.getAuth());
 export class UserActions {
   static async authenticate() {
     const credentials = {
