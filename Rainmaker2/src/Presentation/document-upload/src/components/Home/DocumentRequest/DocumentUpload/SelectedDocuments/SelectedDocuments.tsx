@@ -224,7 +224,7 @@ export const SelectedDocuments = ({
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
       setDoneVisible(false);
-      setDoneHit(true);
+      setDoneHit(false);
       fetchUploadedDocuments();
     }
   };
