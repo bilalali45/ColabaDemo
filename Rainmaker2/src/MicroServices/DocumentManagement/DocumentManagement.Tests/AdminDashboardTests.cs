@@ -8,8 +8,11 @@ using MongoDB.Driver;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Xunit;
 
 namespace DocumentManagement.Tests
