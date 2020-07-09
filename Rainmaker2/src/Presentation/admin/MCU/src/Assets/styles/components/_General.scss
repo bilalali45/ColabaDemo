@@ -74,7 +74,7 @@ ul {
                 padding-top: 8px;
                 padding-bottom: 8px;
                 display: block;
-                font-size: fontSize('lg');
+                font-size: fontSize('xmd');
                 //border-top: 1px solid color('colorBlack');
             }
         }
@@ -309,6 +309,7 @@ li.has-sub > .sub {
     margin-left: 70px;
     height: 100%;
     background: color('bg');
+    width: calc(100% - 75px);
 }
 
 .home-layout {
@@ -500,3 +501,17 @@ li.has-sub > .sub {
         }
     }
 }//   .switch
+
+
+.innerheader {
+    min-height:60px;
+    background: color('colorWhite');
+    border-bottom: 1px solid color('border');
+    padding-top: 17px;
+    padding-bottom: 18px;
+    padding-left: 28px;
+    padding-right: 28px;
+    h2 {
+        font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base') ;
+    }
+}
