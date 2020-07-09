@@ -11,11 +11,13 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         public int userId { get; set; }
         public string userName { get; set; }
-        public string requestId { get; set; }
+        public string typeId { get; set; }
         public string docId { get; set; }
         public string activity { get; set; }
         public DateTime dateTime { get; set; }
         public string loanId { get; set; }
+        public string message { get; set; }
+        public List<ActivityDetailLog> log { get; set; }
     }
 
     public class ActivityLogQuery
@@ -26,12 +28,22 @@ namespace DocumentManagement.Model
         public string userName { get; set; }
         public DateTime dateTime { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
-        public string requestId { get; set; }
+        public string typeId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
         public string activity { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string loanId { get; set; }
-        
+        public string message { get; set; }
+        public List<ActivityDetailLog> log { get; set; }
+    }
+
+    [BsonNoId]
+    public class ActivityDetailLog
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public DateTime dateTime { get; set; }
+        public string activity { get; set; }
     }
 }

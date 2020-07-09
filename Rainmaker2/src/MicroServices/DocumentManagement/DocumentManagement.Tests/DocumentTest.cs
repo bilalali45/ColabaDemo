@@ -84,7 +84,7 @@ namespace DocumentManagement.Tests
                 id="5f046210f50dc78d7b0c059c",
                 userId=3842,
                 userName = "abc",
-                requestId = "abc15d1fe456051af2eeb768",
+                typeId = "abc15d1fe456051af2eeb768",
                 docId = "aaa25d1fe456051af2eeb72d",
                 activity = "abc",
                 dateTime = Convert.ToDateTime("2020-06-25T07:39:57.233Z"),
@@ -102,7 +102,7 @@ namespace DocumentManagement.Tests
             var content = (result as OkObjectResult).Value as List<ActivityLogDTO>;
             Assert.Single(content);
             Assert.Equal("5f046210f50dc78d7b0c059c", content[0].id);
-            Assert.Equal("abc15d1fe456051af2eeb768", content[0].requestId);
+            Assert.Equal("abc15d1fe456051af2eeb768", content[0].typeId);
             Assert.Equal("aaa25d1fe456051af2eeb72d", content[0].docId);
             Assert.Equal("abc", content[0].userName);
             Assert.Equal("abc", content[0].activity);
@@ -346,7 +346,7 @@ namespace DocumentManagement.Tests
             Assert.Equal(3842, dto[1].userId);
             Assert.Equal("abc", dto[2].userName);
             Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
-            Assert.Equal("abc15d1fe456051af2eeb768", dto[5].requestId);
+            Assert.Equal("abc15d1fe456051af2eeb768", dto[5].typeId);
             Assert.Equal("aaa25d1fe456051af2eeb72d", dto[6].docId);
             Assert.Equal("abc", dto[7].activity);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
@@ -449,26 +449,22 @@ namespace DocumentManagement.Tests
                 id="5f046210f50dc78d7b0c059c",
                 userId=3842,
                 userName = "abc",
-                requestId = "abc15d1fe456051af2eeb768",
-                docId = "aaa25d1fe456051af2eeb72d",
                 emailText = "abc",
                 dateTime = Convert.ToDateTime("2020-06-25T07:39:57.233Z"),
                 loanId = "5eb25d1fe519051af2eeb72d"
             } } };
 
-            mock.Setup(x => x.GetEmailLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
 
             var documentController = new DocumentController(mock.Object);
             //Act
-            IActionResult result = await documentController.GetEmailLog("1", "1", "1");
+            IActionResult result = await documentController.GetEmailLog("1");
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var content = (result as OkObjectResult).Value as List<EmailLogDTO>;
             Assert.Single(content);
             Assert.Equal("5f046210f50dc78d7b0c059c", content[0].id);
-            Assert.Equal("abc15d1fe456051af2eeb768", content[0].requestId);
-            Assert.Equal("aaa25d1fe456051af2eeb72d", content[0].docId);
             Assert.Equal("abc", content[0].userName);
             Assert.Equal("abc", content[0].emailText);
             Assert.Equal(Convert.ToDateTime("2020-06-25T07:39:57.233Z"), content[0].dateTime);
@@ -613,15 +609,13 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
             Assert.Equal(3842, dto[1].userId);
             Assert.Equal("abc", dto[2].userName);
             Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
-            Assert.Equal("abc15d1fe456051af2eeb768", dto[5].requestId);
-            Assert.Equal("aaa25d1fe456051af2eeb72d", dto[6].docId);
             Assert.Equal("abc", dto[7].emailText);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
 

@@ -33,16 +33,16 @@ namespace DocumentManagement.API.Controllers
         }
        
         [HttpPost("[action]")]
-        public async Task<IActionResult> GetActivityLog(string id, string requestId, string docId)
+        public async Task<IActionResult> GetActivityLog(string id, string typeId, string docId)
      
         {
-            return Ok(await documentService.GetActivityLog(id, requestId, docId));
+            return Ok(await documentService.GetActivityLog(id, typeId, docId));
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> GetEmailLog(string id, string requestId, string docId)
+        public async Task<IActionResult> GetEmailLog(string id)
 
         {
-            return Ok(await documentService.GetEmailLog(id, requestId, docId));
+            return Ok(await documentService.GetEmailLog(id));
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> mcuRename(string id, string requestId, string docId, string fileId, string newName)

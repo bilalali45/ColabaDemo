@@ -94,28 +94,42 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId)
+        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
-
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.ActivityLog, BsonDocument>.Create(
-              @"{""$match"": {
+            string match = "";
+            if(!string.IsNullOrEmpty(typeId))
+            {
+                match = @"{""$match"": {
 
                   ""loanId"": " + new ObjectId(id).ToJson() + @" 
-                ""requestId"": " + new ObjectId(requestId).ToJson() + @",
+                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
+                            }
+                        }";
+            }
+            else
+            {
+                match = @"{""$match"": {
+
+                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
                   ""docId"": " + new ObjectId(docId).ToJson() + @"
                             }
-                        }"
+                        }";
+            }
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.ActivityLog, BsonDocument>.Create(
+              match
                         , @"{
                             ""$project"": {
                                 ""userId"": 1,                               
                                 ""userName"":1,
                                 ""dateTime"": 1,
                                 ""_id"": 1 ,
-                                ""requestId"": 1 ,
+                                ""typeId"": 1 ,
                                 ""docId"": 1 ,
                                 ""activity"": 1, 
-                                ""loanId"": 1  
+                                ""loanId"": 1,
+                                ""message"":1,
+                                ""log"":1
                             }
                              } "
 
@@ -134,10 +148,11 @@ namespace DocumentManagement.Service
                     dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
                     dto.id = query.id;
-                    dto.requestId = query.requestId;
+                    dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;
-
+                    dto.message = query.message;
+                    dto.log = query.log;
                     result.Add(dto);
                 }
             }
@@ -201,16 +216,14 @@ namespace DocumentManagement.Service
             }
             return result.GroupBy(x => new { x.docId, x.docName }).Select(x => x.First()).ToList();
         }
-        public async Task<List<EmailLogDTO>> GetEmailLog(string id, string requestId, string docId)
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("ActivityLog");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
               @"{""$match"": {
 
-                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
-                ""requestId"": " + new ObjectId(requestId).ToJson() + @",
-                  ""docId"": " + new ObjectId(docId).ToJson() + @"
+                  ""loanId"": " + new ObjectId(id).ToJson() + @"
                             }
                         }"
                         , @"{
@@ -219,8 +232,6 @@ namespace DocumentManagement.Service
                                 ""userName"":1,
                                 ""dateTime"": 1,
                                 ""_id"": 1 ,
-                                ""requestId"": 1 ,
-                                ""docId"": 1 ,
                                 ""emailText"": 1, 
                                 ""loanId"": 1  
                             }
@@ -241,15 +252,13 @@ namespace DocumentManagement.Service
                     dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.emailText = query.emailText;
                     dto.id = query.id;
-                    dto.requestId = query.requestId;
-                    dto.docId = query.docId;
                     dto.loanId = query.loanId;
 
                     result.Add(dto);
                 }
             }
 
-            return result;
+            return result.OrderByDescending(x=>x.dateTime).ToList();
         }
         public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
         {
