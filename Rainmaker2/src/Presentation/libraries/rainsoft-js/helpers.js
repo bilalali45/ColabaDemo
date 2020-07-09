@@ -1,4 +1,5 @@
 "use strict";
+//import   moment from "moment";
 exports.__esModule = true;
 exports.toTitleCase = exports.FormatAmountByCountry = exports.UnMaskPhone = exports.MaskPhone = void 0;
 var addAmountSeperator = function (amount, currency) {
@@ -68,3 +69,9 @@ exports.toTitleCase = function (str) {
     }
     return "";
 };
+// export const DateFormatWithMoment = (date: string,shortFormat: boolean = false) => {
+//     const formatString = shortFormat
+//       ? "MMM DD, YYYY hh:mm A"
+//       : "MMMM DD, YYYY hh:mm A";
+//     return moment(date).format(formatString);
+// };
