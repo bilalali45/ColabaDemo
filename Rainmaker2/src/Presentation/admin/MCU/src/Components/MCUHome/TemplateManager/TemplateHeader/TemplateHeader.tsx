@@ -2,8 +2,8 @@ import React from 'react'
 
 export const TemplateHeader = () => {
     return (
-        <div>
-            <h1>TemplateHeader</h1>
-        </div>
+        <section className="innerheader">
+            <h2>TemplateHeader</h2>
+        </section>
     )
 }
