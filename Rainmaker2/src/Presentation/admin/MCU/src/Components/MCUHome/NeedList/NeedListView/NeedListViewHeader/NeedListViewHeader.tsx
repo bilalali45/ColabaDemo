@@ -1,18 +1,25 @@
-import React from 'react'
+import React from 'react';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { Toggler } from '../../../../../Shared/Toggler';
 
 export const NeedListViewHeader = () => {
 
     let dropdown = {
-        //display:"block"
+       // display:"none"
     }
 
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
                 <span className="h2">Needs List</span> 
-                <div className="btn-group">
-                    <button className="btn btn-primary btn-sm mcu-dropdown-toggle no-caret">Add <span className="btn-icon-right"><span className="rotate-plus"></span></span></button>
-                    <div className="dropdown-menu padding" style={dropdown} >
+                <div className="btn-group">                
+                    <Dropdown>
+                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+                        Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className="padding">
                         <h2>Select a need list Template</h2>
                         <h3>My Templates</h3>
                         <ul className="checklist">
@@ -36,16 +43,18 @@ export const NeedListViewHeader = () => {
                         <div className="external-link">
                             <a href="">Start from new list</a>
                         </div>
-                    </div> 
+                    </Dropdown.Menu>
+                </Dropdown>
                 </div>
             </div>
             <div className="need-list-view-header--right">
                 <label><strong>All</strong></label>
                 &nbsp;&nbsp;&nbsp;
-                <label className="switch">
-                    <input type="checkbox" id="toggle" />
+                <Toggler />
+                {/* <label className="switch">
+                    <input type="checkbox" id="toggle" checked />
                     <span className="slider round"></span>
-                </label>
+                </label> */}
                 &nbsp;&nbsp;&nbsp;
                 <label><strong>Pending</strong></label>
             </div>            
