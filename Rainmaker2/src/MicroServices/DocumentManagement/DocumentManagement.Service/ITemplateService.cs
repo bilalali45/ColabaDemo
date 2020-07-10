@@ -17,6 +17,6 @@ namespace DocumentManagement.Service
         Task<string> InsertTemplate(int tenantId,int userProfileId,string name);
         Task<List<CategoryDocumentTypeModel>> GetCategoryDocument(int tenantId);
         Task<bool> AddDocument(string templateId,int tenantId, int userProfileId, string typeId, string docName);
-        Task<string> SaveTemplate(AddTemplateModel model);
+        Task<string> SaveTemplate(AddTemplateModel model, int userProfileId);
     }
 }

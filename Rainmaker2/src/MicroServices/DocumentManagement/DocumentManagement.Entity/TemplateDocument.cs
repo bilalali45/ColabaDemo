@@ -8,7 +8,6 @@ namespace DocumentManagement.Entity
 {
     public class TemplateDocument
     {
-        [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
 
