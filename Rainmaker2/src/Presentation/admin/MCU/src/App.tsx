@@ -18,11 +18,12 @@ function App() {
       <RainMakerHeader />
       <section className="d-layout">
         <RainMakerSidebar />
-        <main className="main-layout">
+        <main className="main-layout hascollapssidebar">
           <Router>
             <Route path="/" component={MCUHome} />
-            <RainMakerFooter />
           </Router>
+          
+          <RainMakerFooter />
         </main>
       </section>
     </div>
