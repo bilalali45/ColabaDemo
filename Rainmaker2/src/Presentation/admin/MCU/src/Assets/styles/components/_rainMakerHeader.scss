@@ -55,3 +55,35 @@
 .mcu-icon-burger{
     position: relative;
 }
+.logo {
+    display: inline-block;
+    vertical-align: middle;
+}
+.header-options{
+    >ul{
+        @extend .list-style-none;
+        margin: 0;
+        padding: 0;
+        >li{
+            display: inline-block;
+            a,
+            .header-options--icon{
+                display: block;
+                position: relative;
+                padding: 0px 10px;
+                color: color('primary-text');
+                font-size: fontSize('lg') - 2px;
+                .header-options--counts{
+                    position: absolute;
+                    top: -2px;
+                    right: -5px;
+                    background-color: color('notificationCountBg');
+                    color: color('notificationCountText');
+                    font: 500 #{fontSize('xs')+'/1'} fontFamily('base');
+                    padding: 3px 4px;
+                    border-radius: 35px;
+                }
+            }
+        }
+    }
+}// header-options
