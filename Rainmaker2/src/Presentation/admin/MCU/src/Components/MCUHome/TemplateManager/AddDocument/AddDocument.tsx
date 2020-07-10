@@ -1,6 +1,6 @@
 import React from 'react'
 import { DocumentTypes } from './DocumentTypes/DocumentTypes'
-import { CommonDocuments } from './CommonDocuments/CommonDocuments'
+import { CommonDocuments } from './SelectedDocumentType/CommonDocuments/CommonDocuments'
 
 export const AddDocument = () => {
     return (
