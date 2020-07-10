@@ -73,8 +73,6 @@ namespace DocumentManagement.Tests
 
             var controller = new AdminDashboardController(mock.Object);
 
-
-
             //Act
             IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
             //Assert
@@ -145,41 +143,27 @@ namespace DocumentManagement.Tests
                     ,
                  new BsonDocument
                     {
-                        //Cover all empty fields except files
+                        //Cover all empty fields except status and set files null
                           { "_id" , BsonString.Empty },
                         { "requestId" , BsonString.Empty  },
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
-                        { "status" , BsonString.Empty },
-                       // { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 }
-                          { "files" , BsonArray.Create(new BsonDocument[]
-                          {
-                              new BsonDocument()
-                              {
-                                  { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "id", "5ef454cd86c96583744140d9" },{ "mcuName", "abc12" }
-
-                            //  }})}
-
-                           // , { "status", "Submitted to MCU" }
-                        } })}
-
-                 }
+                        { "status" , "Started"  },
+                        { "files" ,BsonNull.Value}
+                    }
                   ,
                  new BsonDocument
                     {
-                        //Cover all empty fields except files
-                          { "_id" , BsonString.Empty },
+                        //Cover all empty fields except status and files
+                        { "_id" , BsonString.Empty },
                         { "requestId" , BsonString.Empty  },
                         { "docId" , BsonString.Empty },
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
-                        { "status" , BsonString.Empty },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 }
-                          , { "status", "Submitted to MCU" }
-                        } })}
-
-                 }
+                        { "status" , "Started" },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" }} })}
+                    }
             };
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
@@ -200,9 +184,8 @@ namespace DocumentManagement.Tests
             Assert.Equal("House Document", dto[1].docName);
             Assert.Equal("Property", dto[2].docName);
             Assert.Equal("Started", dto[3].status);
-
-            Assert.Equal("asd", dto[4].files[0].clientName);
-            
+            Assert.Equal("Started", dto[4].status);
+            Assert.Equal("asd", dto[5].files[0].clientName);
         }
 
        
@@ -286,12 +269,12 @@ namespace DocumentManagement.Tests
             {
                 new BsonDocument
                     {
-                        { "_id" , BsonString.Empty }
+                        { "requestId" , BsonString.Empty }
                     }
             ,
                     new BsonDocument
                     {
-                        { "_id" , "abc15d1fe456051af2eeb768" }
+                        { "requestId" , "abc15d1fe456051af2eeb768" }
                     }
             };
 
