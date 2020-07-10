@@ -776,11 +776,18 @@ namespace DocumentManagement.Tests
             Mock<ITemplateService> mock = new Mock<ITemplateService>();
             AddTemplateModel addTemplateModel= new AddTemplateModel();
 
-            mock.Setup(x => x.SaveTemplate(It.IsAny<AddTemplateModel>())).ReturnsAsync("5eb25acde519051af2eeb111");
+            mock.Setup(x => x.SaveTemplate(It.IsAny<AddTemplateModel>(),It.IsAny<int>())).ReturnsAsync("5eb25acde519051af2eeb111");
 
             var controller = new TemplateController(mock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
             //Act
-            
+
             IActionResult result = await controller.SaveTemplate(addTemplateModel);
             //Assert
             Assert.NotNull(result);
@@ -803,20 +810,18 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddTemplateModel addTemplateModel = new AddTemplateModel();
             TemplateDocument templateDocument= new TemplateDocument();
-            addTemplateModel.id = "5f0701bdc4577f7180cd9dc4";
             addTemplateModel.tenantId =1;
-            addTemplateModel.userProfileId = 3872;
-            addTemplateModel.name = "Insert Tenant Template6";
+            addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<TemplateDocument>();
 
             templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.docName = "abcbbc";
             addTemplateModel.documentTypes.Add(templateDocument);
-            string result = await templateService.SaveTemplate(addTemplateModel);
+            string result = await templateService.SaveTemplate(addTemplateModel, 3872);
             //Assert
             Assert.NotNull(result);
-            Assert.Equal("Insert Tenant Template6", result);
         }
+
         [Fact]
         public async Task TestSaveTemplateServiceIsTypeIdNotNull()
         {
@@ -833,19 +838,16 @@ namespace DocumentManagement.Tests
             //Act
             ITemplateService templateService = new TemplateService(mock.Object);
             AddTemplateModel addTemplateModel = new AddTemplateModel();
-            addTemplateModel.id = "5f0701bdc4577f7180cd9dc4"; 
             addTemplateModel.tenantId = 1;
-            addTemplateModel.userProfileId = 3872;
-            addTemplateModel.name = "Insert Tenant Template6";
+            addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<TemplateDocument>();
             TemplateDocument templateDocument = new TemplateDocument();
             templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.typeId = "5ebc18cba5d847268075ad22";
             addTemplateModel.documentTypes.Add(templateDocument);
-            string result = await templateService.SaveTemplate(addTemplateModel);
+            string result = await templateService.SaveTemplate(addTemplateModel, 3872);
             //Assert
             Assert.NotNull(result);
-            Assert.Equal("Insert Tenant Template6", result);
         }
 
 
