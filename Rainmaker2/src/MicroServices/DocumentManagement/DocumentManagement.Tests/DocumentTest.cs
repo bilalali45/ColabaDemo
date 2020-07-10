@@ -1,23 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using DocumentManagement.API.Controllers;
+﻿using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Xunit;
-using MongoDB.Driver;
-using MongoDB.Bson;
+using Moq;
+using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace DocumentManagement.Tests
 {

@@ -68,5 +68,13 @@ namespace DocumentManagement.Model
             public string docName { get; set; }
         }
 
+
+        public class AddTemplateModel
+        {
+            public int tenantId { get; set; }
+            public string name { get; set; }
+            public  List<TemplateDocument> documentTypes { get; set; }
+        }
+
     }
 }

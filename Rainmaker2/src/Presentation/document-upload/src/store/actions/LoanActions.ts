@@ -1,5 +1,4 @@
-import { Http } from "../../services/http/Http";
-// import { Http } from 'rainsoft-js';
+import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { ContactUs } from "../../entities/Models/ContactU";
@@ -9,8 +8,6 @@ import { isFunction } from "util";
 import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
 
-const auth: string | null = Auth.getAuth();
-// const http = new Http(auth);
 const http = new Http();
 
 export const statusText = {
@@ -22,7 +19,7 @@ export class LaonActions {
 
   static async getLoanOfficer(loanApplicationId: string, businessUnitId: string) {
     try {
-  
+  debugger
       let res: AxiosResponse<ContactUs> = await http.get<ContactUs>(Endpoints.loan.GET.officer(loanApplicationId, businessUnitId));
       return new ContactUs().fromJson(res.data);
     } catch (error) {

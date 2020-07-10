@@ -22,7 +22,7 @@ type ReqConfig<T> = {
 export class Http {
     private static instance: Http | null = null;
     public baseUrl: string = '';
-    public auth: string  | null;
+    public auth: string  = '';
 
     public methods: CommonHTTPMethods<HTTPMethod> = {
         GET: 'GET',
@@ -31,8 +31,7 @@ export class Http {
         DELETE: 'DELETE'
     }
 
-    constructor(auth: string | null) {
-        this.auth = auth;
+    constructor() { 
         if (!Http.instance) {
             Http.instance = this;
         } else {
@@ -67,6 +66,9 @@ export class Http {
         this.baseUrl = baseUrl;
     }
 
+    setAuth(auth: string){
+        this.auth = auth;
+    }
     createUrl(baseUrl: string, url: string) {
         return `${baseUrl}${url}`
     }

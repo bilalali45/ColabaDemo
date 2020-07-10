@@ -24,7 +24,9 @@ $color:(
     pending             :       #2C9EF5,
     started             :       #FFC640,
     borrower            :       #FF5652,
-    completed           :       #00AD46
+    completed           :       #00AD46,
+    notificationCountBg :       #FF5652,
+    notificationCountText   :   #ffffff
 );
 
 
@@ -53,7 +55,8 @@ $font-size:(
 $shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
 $headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
 $float-button-size     :        35px;
-$burger-resolution     :        18px;
+$burger-resolution     :        16px;
+$rotate-plus-resolution:        10px;
 
 // Bootstrap Variables
 $grid-gutter-width:           30px !default;

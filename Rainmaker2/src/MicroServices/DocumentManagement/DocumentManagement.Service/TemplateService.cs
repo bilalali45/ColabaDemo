@@ -213,7 +213,7 @@ namespace DocumentManagement.Service
             Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true,documentTypes=new List<TemplateDocument>() };
             await collection.InsertOneAsync(template);
 
-            return template.id;
+            return template.name;
         }
 
         public async Task<List<CategoryDocumentTypeModel>> GetCategoryDocument(int tenantId)
@@ -337,6 +337,22 @@ namespace DocumentManagement.Service
             }
             );
             return result.ModifiedCount == 1;
+        }
+
+
+
+        public async Task<string> SaveTemplate(AddTemplateModel model, int userProfileId)
+        {
+            IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
+            foreach (var item in model.documentTypes)
+            {
+                item.id = ObjectId.GenerateNewId().ToString();
+
+            }
+            Entity.Template template = new Entity.Template() {id= ObjectId.GenerateNewId().ToString(),userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = model.tenantId, name = model.name, isActive = true, documentTypes = model.documentTypes };
+            await collection.InsertOneAsync(template);
+
+            return template.id;
         }
     }
 }

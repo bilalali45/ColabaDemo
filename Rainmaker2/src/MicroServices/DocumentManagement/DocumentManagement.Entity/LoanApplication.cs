@@ -11,12 +11,12 @@ namespace DocumentManagement.Entity
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
-        public int customerId { get; set; }
-        public int tenantId { get; set; }
         public int loanApplicationId { get; set; }
-        public List<Request> requests { get; set; }
+        public int tenantId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string status { get; set; }
-        public string userId { get; set; }
+        public int userId { get; set; }
+        public string userName { get; set; }
+        public List<Request> requests { get; set; }
     }
 }

@@ -59,26 +59,29 @@ export const LoanSnapshot = () => {
                     </ul>
                 </div>                    
             </div>
+            
             <div className="loansnapshot--right-side">
                 <div className="loansnapshot--wrap">
-                    <div className="loansnapshot--right-side---data">
-                        <div className="form-group">
-                            <label className="mcu-label">Lock status</label>
-                        </div>
-                        <div className="form-group">
+                    
+                    <div className="form-group">
+                        <label className="mcu-label">Lock status</label>
+                        <SVGopenLock />
+                    </div>
+
+                    <div className="form-group row">
+                        <div className="col-md-6">                        
                             <label className="mcu-label">Lock Date</label>
-                            <span className="mcu-label-value">05-10-2020</span>
+                            <span className="mcu-label-value">05-10-2020</span>                        
                         </div>
-                        <div className="form-group">
+                        <div className="col-md-6">
                             <label className="mcu-label">Expiration date</label>
                             <span className="mcu-label-value">05-11-2020</span>
                         </div>
-                    </div>
-                    <div className="loansnapshot--right-side---icon">
-                        <SVGopenLock />
-                    </div>                
+                    </div>  
+
                 </div>
             </div>
+
         </div>
     )
 }

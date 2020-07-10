@@ -1,20 +1,20 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  C:\Program Files\nodejs\node.exe C:\Users\Jehangir\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
 
 PATH: 
-  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Zohaib\bin;C:\Users\Zohaib\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Zohaib\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Program Files\Git\cmd;C:\Users\Zohaib\AppData\Local\Microsoft\WindowsApps;C:\Users\Zohaib\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Zohaib\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Jehangir\bin;C:\Python27;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Users\Jehangir\AppData\Local\Microsoft\WindowsApps;C:\Users\Jehangir\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Jehangir\AppData\Roaming\npm;C:\Users\Jehangir\AppData\Local\Programs\Fiddler;C:\Users\Jehangir\AppData\Local\Programs\Microsoft VS Code Insiders\bin
 
 Yarn version: 
   1.22.4
 
 Node version: 
-  13.9.0
+  12.16.1
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'G:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\node_modules\node-sass\vendor\win32-x64-79\binding.node'
+  Error: EPERM: operation not permitted, unlink 'D:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\node_modules\rainsoft-js\node_modules\.bin'
 
 npm manifest: 
   {
@@ -34,10 +34,11 @@ npm manifest:
       "bootstrap": "^4.5.0",
       "global": "^4.4.0",
       "jwt-decode": "^2.2.0",
+      "lodash": "^4.17.15",
       "moment": "^2.27.0",
       "node-sass": "^4.14.1",
       "print-js": "^1.0.63",
-      "rainsoft-js": "^1.0.11",
+      "rainsoft-js": "^1.0.18",
       "rainsoft-rc": "^1.0.6",
       "react": "^16.13.1",
       "react-bootstrap": "^1.0.1",
@@ -45,6 +46,7 @@ npm manifest:
       "react-file-viewer": "^1.2.1",
       "react-router-dom": "^5.2.0",
       "react-scripts": "3.4.1",
+      "react-zoom-pan-pinch": "^1.6.1",
       "serve": "^11.3.2",
       "typescript": "^3.1.1",
       "universal-cookie": "^4.0.3"
@@ -74,6 +76,7 @@ npm manifest:
     "devDependencies": {
       "@types/axios": "^0.14.0",
       "@types/jwt-decode": "^2.2.1",
+      "@types/lodash": "^4.14.157",
       "@types/react-router-dom": "^5.1.5",
       "@types/universal-cookie": "^2.2.0"
     }
@@ -1693,6 +1696,11 @@ Lockfile:
     version "2.2.1"
     resolved "https://registry.yarnpkg.com/@types/jwt-decode/-/jwt-decode-2.2.1.tgz#afdf5c527fcfccbd4009b5fd02d1e18241f2d2f2"
     integrity sha512-aWw2YTtAdT7CskFyxEX2K21/zSDStuf/ikI3yBqmwpwJF0pS+/IX5DWv+1UFffZIbruP6cnT9/LAJV1gFwAT1A==
+  
+  "@types/lodash@^4.14.157":
+    version "4.14.157"
+    resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
+    integrity sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
   
   "@types/minimatch@*":
     version "3.0.3"
@@ -5225,6 +5233,11 @@ Lockfile:
       inherits "^2.0.1"
       readable-stream "^2.0.0"
   
+  from@^0.1.7:
+    version "0.1.7"
+    resolved "https://registry.yarnpkg.com/from/-/from-0.1.7.tgz#83c60afc58b9c56997007ed1a768b3ab303a44fe"
+    integrity sha1-g8YK/Fi5xWmXAH7Rp2izqzA6RP4=
+  
   fs-extra@^4.0.2:
     version "4.0.3"
     resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
@@ -5886,6 +5899,13 @@ Lockfile:
     dependencies:
       pkg-dir "^3.0.0"
       resolve-cwd "^2.0.0"
+  
+  import@^0.0.6:
+    version "0.0.6"
+    resolved "https://registry.yarnpkg.com/import/-/import-0.0.6.tgz#d0eb79df86aa2677c6db61578a5212b3031e6042"
+    integrity sha1-0Ot534aqJnfG22FXilISswMeYEI=
+    dependencies:
+      optimist "0.3.x"
   
   imurmurhash@^0.1.4:
     version "0.1.4"
@@ -8090,6 +8110,13 @@ Lockfile:
     dependencies:
       is-wsl "^1.1.0"
   
+  optimist@0.3.x:
+    version "0.3.7"
+    resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.3.7.tgz#c90941ad59e4273328923074d2cf2e7cbc6ec0d9"
+    integrity sha1-yQlBrVnkJzMokjB00s8ufLxuwNk=
+    dependencies:
+      wordwrap "~0.0.2"
+  
   optimize-css-assets-webpack-plugin@5.0.3:
     version "5.0.3"
     resolved "https://registry.yarnpkg.com/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-5.0.3.tgz#e2f1d4d94ad8c0af8967ebd7cf138dcb1ef14572"
@@ -9463,10 +9490,17 @@ Lockfile:
     dependencies:
       performance-now "^2.1.0"
   
-  rainsoft-js@^1.0.11:
-    version "1.0.11"
-    resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.11.tgz#f5de915b8eeca155a29871596fb679b3b1af80df"
-    integrity sha512-H1yZ4wUAWMkj/BBSzIe2d1RAbdKv6/2Tc83QY3+momYd5klefUjK/qL/Q9tS3gHzf1Zwlw9qSyP1li9yoBLxYw==
+  rainsoft-js@^1.0.17:
+    version "1.0.17"
+    resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.17.tgz#e21cb234f8a01c94ff8123b2026bc3490af43ae1"
+    integrity sha512-lBRLKLLR4GnhVJOCfEQGlyFAzq8XZW+WAzS4MVxa44C1HGXYUVx1+rx2gDTZl1a3/WsvZQ+Kb42S4Uu8k6SvGA==
+    dependencies:
+      "@types/jest" "^24.9.1"
+      "@types/node" "^12.12.39"
+      axios "^0.19.2"
+      from "^0.1.7"
+      import "^0.0.6"
+      moment "^2.27.0"
   
   rainsoft-rc@^1.0.6:
     version "1.0.6"
@@ -9745,6 +9779,11 @@ Lockfile:
     integrity sha512-cTUHqIK+zDYpeK19rzW6zF9YfT4486TIgizZW53wEZ+/GPBbK7cNS0EHyJVyHYacwFEvvHLEKfgJndbemWhB/w==
     dependencies:
       prop-types "^15.7.2"
+  
+  react-zoom-pan-pinch@^1.6.1:
+    version "1.6.1"
+    resolved "https://registry.yarnpkg.com/react-zoom-pan-pinch/-/react-zoom-pan-pinch-1.6.1.tgz#da16267c258ab37e8ebcdc7c252794a9633e91ec"
+    integrity sha512-J2eM0gZ04XiUWvmKZrOhSAB2zjyoK7kw2POIeN1X0yTTlmp6HPGV0zYfjnlkhgt8nQwpvXAbsF/oAnkuiwk1kA==
   
   react@^16.13.1:
     version "16.13.1"
@@ -11961,6 +12000,11 @@ Lockfile:
     version "1.2.3"
     resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
     integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+  
+  wordwrap@~0.0.2:
+    version "0.0.3"
+    resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
+    integrity sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
   
   workbox-background-sync@^4.3.1:
     version "4.3.1"

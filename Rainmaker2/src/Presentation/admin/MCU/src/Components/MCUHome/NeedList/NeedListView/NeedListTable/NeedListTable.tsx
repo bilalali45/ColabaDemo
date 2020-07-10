@@ -62,7 +62,7 @@ export const NeedListTable = () => {
                         </div>
                         <div className="td">
                             <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
+                            <a href="" className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@ export const NeedListTable = () => {
                         </div>
                         <div className="td">
                             <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
+                            <a href="" className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@ export const NeedListTable = () => {
                         </div>
                         <div className="td">
                             <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
+                            <a href="" className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
                         </div>
                     </div>
 
@@ -110,7 +110,7 @@ export const NeedListTable = () => {
                         </div>
                         <div className="td">
                             <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
+                            <a href="" className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
                         </div>
                     </div>
                     

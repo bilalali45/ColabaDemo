@@ -1,7 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-
-import { Http } from "../../services/http/Http";
-// import { Http } from 'rainsoft-js';
+import { Http } from 'rainsoft-js';
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
@@ -10,9 +8,7 @@ import { Document } from "../../entities/Models/Document";
 import { DocumentsEndpoints } from "../endpoints/DocumentsEndpoints";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 
-//const http = new Http();
 const http = new Http();
-// const http = new Http(Auth.getAuth());
 
 export class DocumentActions {
   static async getPendingDocuments(

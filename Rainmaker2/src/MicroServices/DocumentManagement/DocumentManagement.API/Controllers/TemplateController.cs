@@ -96,5 +96,14 @@ namespace DocumentManagement.API.Controllers
             else
                 return NotFound();
         }
+
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SaveTemplate(AddTemplateModel  model)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            return Ok(await templateService.SaveTemplate(model,userProfileId));
+           
+        }
     }
 }

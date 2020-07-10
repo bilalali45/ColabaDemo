@@ -63,7 +63,7 @@ export const DocumentUpload = () => {
       };
     }
   };
-  console.log(fileLimitError);
+  
   return (
     <section className="Doc-upload" ref={parentRef}>
       <FileDropper

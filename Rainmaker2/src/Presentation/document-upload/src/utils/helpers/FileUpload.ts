@@ -1,5 +1,5 @@
 import { DateFormatWithMoment } from "./DateFormat";
-
+import {GetActualMimeType, RemoveSpecialChars, GetFileSize, IsSizeAllowed, RemoveDefaultExt, SortByDate} from 'rainsoft-js'
 export class FileUpload {
   static allowedSize = 15; //in mbs
 
@@ -68,19 +68,21 @@ export class FileUpload {
   }
 
   static removeSpecialChars(text: string) {
-    return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+    return RemoveSpecialChars(text);
+  //  return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {
-    let size = file.size || file.file?.size;
-    if (size) {
-      let inKbs = size / 1000;
-      if (inKbs > 1000) {
-        return `${(inKbs / 1000).toFixed(2)}mb(s)`;
-      }
-      return `${inKbs.toFixed(2)}kb(s)`;
-    }
-    return `${0}kbs`;
+   return GetFileSize(file);
+    // let size = file.size || file.file?.size;
+    // if (size) {
+    //   let inKbs = size / 1000;
+    //   if (inKbs > 1000) {
+    //     return `${(inKbs / 1000).toFixed(2)}mb(s)`;
+    //   }
+    //   return `${inKbs.toFixed(2)}kb(s)`;
+    // }
+    // return `${0}kbs`;
   }
 
   static getActualMimeType(file): Promise<string> {
@@ -118,20 +120,23 @@ export class FileUpload {
   }
 
   static async isTypeAllowed(file) {
+    debugger
     const result = this.allowedFileTypes.includes(
-      await this.getActualMimeType(file)
+     // await this.getActualMimeType(file)
+      await GetActualMimeType(file)
     );
-
+debugger
     return result;
   }
 
   static isSizeAllowed(file) {
-    if (!file) return null;
+    return IsSizeAllowed(file,this.allowedSize);
+    // if (!file) return null;
 
-    if (file.size / 1000 / 1000 < this.allowedSize) {
-      return true;
-    }
-    return false;
+    // if (file.size / 1000 / 1000 < this.allowedSize) {
+    //   return true;
+    // }
+    // return false;
   }
 
   static getExtension(file, splitBy) {
@@ -152,13 +157,14 @@ export class FileUpload {
   }
 
   static removeDefaultExt(fileName: string) {
-    let splitData = fileName.split(".");
-    let onlyName = "";
-    for (let i = 0; i < splitData.length - 1; i++) {
-      if (i != splitData.length - 2) onlyName += splitData[i] + ".";
-      else onlyName += splitData[i];
-    }
-    return onlyName != "" ? onlyName : fileName;
+    return RemoveDefaultExt(fileName)
+    // let splitData = fileName.split(".");
+    // let onlyName = "";
+    // for (let i = 0; i < splitData.length - 1; i++) {
+    //   if (i != splitData.length - 2) onlyName += splitData[i] + ".";
+    //   else onlyName += splitData[i];
+    // }
+    // return onlyName != "" ? onlyName : fileName;
   }
 
   static splitDataByType(fileName: string, type: string) {
@@ -170,11 +176,13 @@ export class FileUpload {
   }
 
   static sortByDate(array: any[]) {
-    return array.sort((a, b) => {
-      let first = new Date(a.fileUploadedOn);
-      let second = new Date(b.fileUploadedOn);
-      return first > second ? -1 : first < second ? 1 : 0;
-    });
+    return SortByDate(array, 'fileUploadedOn')
+    // return array.sort((a, b) => {
+    //   let first = new Date(a.fileUploadedOn);
+    //   let second = new Date(b.fileUploadedOn);
+    //   return first > second ? -1 : first < second ? 1 : 0;
+    //});
+    
   }
 
   static checkName = (prevFiles, file) => {

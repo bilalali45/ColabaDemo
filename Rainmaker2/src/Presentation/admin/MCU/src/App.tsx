@@ -19,6 +19,7 @@ function App() {
       <RainMakerHeader />
       <section className="d-layout">
         <RainMakerSidebar />
+<<<<<<< HEAD
         <main className="main-layout">
           <StoreProvider>
             <Router>
@@ -26,6 +27,14 @@ function App() {
               <RainMakerFooter />
             </Router>
           </StoreProvider>
+=======
+        <main className="main-layout hascollapssidebar">
+          <Router>
+            <Route path="/" component={MCUHome} />
+          </Router>
+          
+          <RainMakerFooter />
+>>>>>>> 058ceaeb7881a2ad32b1b5140d7e18000074b228
         </main>
       </section>
     </div>
