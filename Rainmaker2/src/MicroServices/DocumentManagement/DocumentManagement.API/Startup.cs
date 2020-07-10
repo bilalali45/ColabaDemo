@@ -46,6 +46,7 @@ namespace DocumentManagement.API
             services.AddScoped<IAdminDashboardService, AdminDashboardService>();
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IRequestService, RequestService>();
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();
