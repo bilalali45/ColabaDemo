@@ -1,0 +1,30 @@
+.DocumentStatus .btn {
+    border-radius: 0px;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 13px 20px;
+    // min-width: 86px;
+    text-transform: uppercase;
+
+    em,
+    i {
+        position: relative;
+        padding-left: 30px;
+
+        &::after {
+            content: "";
+            display: inline-block;
+            width: 1px;
+            height: 20px;
+            background-color: rgba(#000000, 0.2);
+            position: absolute;
+            top: -3px;
+            left: 15px;
+        }
+    }
+    
+    .has-sub {
+        .sub {
+            display: none;
+        }
+    }
+}

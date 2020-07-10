@@ -1,11 +1,20 @@
 .rainmaker-header{
     background-color: color('headerBg');
     color: color('headerBg-text');
-    padding: 15px 0;
+    padding: 2px 0;
     .logo{
+        display: inline-block;
+        vertical-align: middle;
         img{
-            min-height: 40px;
+            min-height: 35px;
         }
+    }
+    > .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .header-options {
+        text-align: right;
     }
 }
 
@@ -13,11 +22,12 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    padding: 15px 17px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    padding: 10px 11px;
     border-top: 1px solid rgba(225,225,225,0.2);
     border-bottom: 2px solid rgba(0,0,0,0.3);
+    margin-left: -5px;
     cursor: pointer;
     & + .logo{
         margin-left: 15px;
@@ -37,10 +47,10 @@
     position: absolute;
 }
 .mcu-icon-burger::before{
-    top: -6px;
+    top: -5px;
 }
 .mcu-icon-burger::after{
-    bottom: -6px;
+    bottom: -5px;
 }
 .mcu-icon-burger{
     position: relative;
@@ -49,3 +59,31 @@
     display: inline-block;
     vertical-align: middle;
 }
+.header-options{
+    >ul{
+        @extend .list-style-none;
+        margin: 0;
+        padding: 0;
+        >li{
+            display: inline-block;
+            a,
+            .header-options--icon{
+                display: block;
+                position: relative;
+                padding: 0px 10px;
+                color: color('primary-text');
+                font-size: fontSize('lg') - 2px;
+                .header-options--counts{
+                    position: absolute;
+                    top: -2px;
+                    right: -5px;
+                    background-color: color('notificationCountBg');
+                    color: color('notificationCountText');
+                    font: 500 #{fontSize('xs')+'/1'} fontFamily('base');
+                    padding: 3px 4px;
+                    border-radius: 35px;
+                }
+            }
+        }
+    }
+}// header-options
