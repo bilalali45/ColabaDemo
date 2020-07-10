@@ -168,8 +168,7 @@ namespace DocumentManagement.Model
 
     public class RequestIdQuery
     {
-        [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string _id { get; set; }
+        public string requestId { get; set; }
     }
 }

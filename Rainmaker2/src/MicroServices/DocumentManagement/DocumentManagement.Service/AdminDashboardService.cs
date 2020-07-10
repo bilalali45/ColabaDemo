@@ -187,17 +187,13 @@ namespace DocumentManagement.Service
                                 ""preserveNullAndEmptyArrays"": true}
                         }", @"{""$match"": {
                                 ""requests.userId"": " + userId + @",
-                                ""requests.status"": " + DocumentStatus.Draft + @"
+                                ""requests.status"": """ + DocumentStatus.Draft + @"""
                             }
                         }", @"{
                             ""$project"": {
                                 ""_id"": 0,
-                                ""requests.id"": 1
+                                ""requestId"": ""$requests.id""
                             }
-                        }", @"{
-                            ""$group"": {
-                                ""_id"": ""$requests.id""
-                        }
                         }"
             ));
             while (await asyncCursor.MoveNextAsync())
@@ -205,7 +201,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
-                    requestId = query._id;
+                    requestId = query.requestId;
                 }
             }
 
