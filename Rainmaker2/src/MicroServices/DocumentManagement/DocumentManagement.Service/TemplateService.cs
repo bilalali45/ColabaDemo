@@ -341,7 +341,7 @@ namespace DocumentManagement.Service
 
 
 
-        public async Task<string> SaveTemplate(AddTemplateModel model)
+        public async Task<string> SaveTemplate(AddTemplateModel model, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             foreach (var item in model.documentTypes)
@@ -349,10 +349,10 @@ namespace DocumentManagement.Service
                 item.id = ObjectId.GenerateNewId().ToString();
 
             }
-            Entity.Template template = new Entity.Template() {id= ObjectId.GenerateNewId().ToString(),userId = model.userProfileId, createdOn = DateTime.UtcNow, tenantId = model.tenantId, name = model.name, isActive = true, documentTypes = model.documentTypes };
+            Entity.Template template = new Entity.Template() {id= ObjectId.GenerateNewId().ToString(),userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = model.tenantId, name = model.name, isActive = true, documentTypes = model.documentTypes };
             await collection.InsertOneAsync(template);
 
-            return template.name;
+            return template.id;
         }
     }
 }

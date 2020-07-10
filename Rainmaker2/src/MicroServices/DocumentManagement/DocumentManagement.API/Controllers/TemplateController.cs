@@ -101,7 +101,8 @@ namespace DocumentManagement.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SaveTemplate(AddTemplateModel  model)
         {
-            return Ok(await templateService.SaveTemplate(model));
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            return Ok(await templateService.SaveTemplate(model,userProfileId));
            
         }
     }
