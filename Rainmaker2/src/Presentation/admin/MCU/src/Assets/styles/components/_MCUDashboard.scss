@@ -1,0 +1,17 @@
+.main-layout {
+    margin-left: 70px;
+    height: 100%;
+    background: color('bg');
+    width: calc(100% - 75px);
+}
+
+.home-layout {
+    min-height: calc(100vh - 120px);
+}
+
+// Dashboard
+.d-layout{
+    display: flex;
+    position: relative;
+
+}// .d-layout

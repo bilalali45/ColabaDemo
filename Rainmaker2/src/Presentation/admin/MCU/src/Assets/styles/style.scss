@@ -34,9 +34,13 @@
 // Components
 @import './components/General',
         './components/RainMakerHeader',
+        './components/RainMakerFooter',
+        './components/MCUDashboard',
         './components/LoanSnapshot',
         './components/NeedListHeader',
         './components/Navigation',
         './components/NeedListTable',
         './components/NeedListViewHeader',
-        './components/ManageTemplates';
+        './components/ManageTemplates',
+        './components/SidebarMenu',
+        './components/DocumentStatus';
