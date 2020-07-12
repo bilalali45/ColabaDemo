@@ -1,5 +1,3 @@
-//import * as moment from 'moment';
-
 
 const addAmountSeperator = (amount: string, currency: string) => {
     let counter = 0;
@@ -57,9 +55,9 @@ export const FormatAmountByCountry = (amount: number) =>                        
 
     return (() => {
             if (amountSplitByPoint[1]) {
-                return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+                return `${seperatorAdded}.${amountSplitByPoint[1]}`
             }
-            return `$${seperatorAdded}`
+            return `${seperatorAdded}`
         })();
 }
 
@@ -77,13 +75,6 @@ export const toTitleCase = (str: string | undefined) => {
     return "";
   }
   
-// export const DateFormatWithMoment = (date: string,shortFormat: boolean = false) => {
-//     const formatString = shortFormat
-//       ? "MMM DD, YYYY hh:mm A"
-//       : "MMMM DD, YYYY hh:mm A";
-  
-//     return moment(date).format(formatString);
-// };
-  
+
 
 

@@ -99,14 +99,11 @@ export class LoanApplication {
       "US"
     );
 
-    return {
-      US: () => {
-        if (amountSplitByPoint[1]) {
-          return `${seperatorAdded}.${amountSplitByPoint[1]}`;
-        }
-        return `${seperatorAdded}`;
-      },
-      BRL: () => `R$${this.addAmountSeperator(strAmount, "BRL")}`,
-    };
+    return (() => {
+      if (amountSplitByPoint[1]) {
+          return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+      }
+      return `$${seperatorAdded}`
+  })();
   }
 }
