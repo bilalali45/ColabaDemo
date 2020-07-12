@@ -1,6 +1,6 @@
-import { Template } from "../../Entities/Modals/Template";
-import { CategoryDocument } from "../../Entities/Modals/CategoryDocument";
-import { TemplateDocument } from "../../Entities/Modals/TemplateDocument";
+import { Template } from "../../Entities/Models/Template";
+import { CategoryDocument } from "../../Entities/Models/CategoryDocument";
+import { TemplateDocument } from "../../Entities/Models/TemplateDocument";
 import { UserActionPayload } from "./UserReducer";
 import { ActionMap, Actions } from "./reducers"
 import { start } from "repl";

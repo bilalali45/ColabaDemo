@@ -1,7 +1,7 @@
 export class NeedListEndpoints {
     static GET = {
         loan: {
-            info: (loanApplicationId: string) => `/api/rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`
+            info: (loanApplicationId: string) => `/api/Rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`
         },
         documents: {
             submitted: (loanApplicationId: string, tenentId: string) => `/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=${loanApplicationId}&tenantId=${tenentId}&pending=false`
