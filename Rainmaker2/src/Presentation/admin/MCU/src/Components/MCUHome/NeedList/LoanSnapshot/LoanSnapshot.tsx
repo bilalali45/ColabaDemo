@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {SVGopenLock} from '../../../../Shared/SVG';
+import { LoanAction } from '../../../../Store/actions/LoanAction';
+import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
+
+
 
 export const LoanSnapshot = () => {
+  
+  const [loanInfo, setLoanInfo] = useState<LoanApplication | null>();
+
+  useEffect(()=>{
+      if(!loanInfo){
+        fetchLoanApplicationDetail()
+      }
+  },[loanInfo])
+
+  const fetchLoanApplicationDetail = async ()=> {
+   let res: LoanApplication | undefined = await LoanAction.getLoanApplicationDetail('5976')
+   if(res){
+    setLoanInfo(res)
+   }
+   console.log('res',res)
+  }
+  console.log('loaninfo',loanInfo)
+  if (!loanInfo) {
+    return <></>;
+}
+  const formattedAddress = () => {
+    return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
+}
+  
     return (
         <div className="loansnapshot">
             <div className="loansnapshot--left-side">
@@ -9,51 +37,54 @@ export const LoanSnapshot = () => {
                     <ul>
                         <li>
                             <label className="mcu-label">Loan No.</label>
-                            <span className="mcu-label-value">293893033989</span>
+                            <span className="mcu-label-value">{loanInfo.loanNumber}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Property Address</label>
-                            <span className="mcu-label-value">727 Ashleigh LN # 222 Dallas, TX 76099</span>
+                            <span className="mcu-label-value">{}</span>
+                            <p className="LoanStatus--text ">
+                            <span className="mcu-label-value" title={formattedAddress()}> {formattedAddress()} </span>
+                            <span className="mcu-label-value"> {loanInfo.cityName}, {loanInfo.stateName + ' ' + loanInfo.zipCode} </span> </p>
                         </li>
                         <li>
                             <label className="mcu-label">Est. Closing Date</label>
-                            <span className="mcu-label-value">05-10-2020</span>
+                          <span className="mcu-label-value">{loanInfo.expectedClosingDate}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Loan Purpose</label>
-                            <span className="mcu-label-value">Refinance</span>
+    <span className="mcu-label-value">{loanInfo.loanPurpose}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Property Value</label>
-                            <span className="mcu-label-value plus"><sup className="text-primary">$</sup>10,000</span>
+    <span className="mcu-label-value plus"><sup className="text-primary">$</sup>{loanInfo.getPropertyValue}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Loan Amount</label>
-                            <span className="mcu-label-value plus"><sup className="text-primary">$</sup>80,000</span>
+    <span className="mcu-label-value plus"><sup className="text-primary">$</sup>{loanInfo.getLoanAmount}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Primary & co-Borrower</label>
-                            <span className="mcu-label-value">Richard Glenn Randall, Maria Randall</span>
+    <span className="mcu-label-value">{loanInfo.borrowersName}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Milestone/Status</label>
-                            <span className="mcu-label-value">Review By Team</span>
+    <span className="mcu-label-value">{loanInfo.status}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Property type</label>
-                            <span className="mcu-label-value">Single Family Detached</span>
+    <span className="mcu-label-value">{loanInfo.propertyType}</span>
                         </li>
                         <li>
                             <label className="mcu-label">Rate</label>
-                            <span className="mcu-label-value plus">2.875<sup className="text-primary">%</sup></span>
+                            <span className="mcu-label-value plus">{loanInfo.rate}<sup className="text-primary">%</sup></span>
                         </li>
                         <li>
                             <label className="mcu-label">Loan Program</label>
-                            <span className="mcu-label-value plus">5 
-                                <span className="text-wrap top inline-block-element">
+                            <span className="mcu-label-value plus">{loanInfo.loanProgram}
+                                {/* <span className="text-wrap top inline-block-element">
                                     <small className="block-element">Year</small>
                                     <small className="text-primary block-element">ARM</small>
-                                </span> 
+                                </span>  */}
                             </span>
                         </li>
                     </ul>
@@ -75,7 +106,7 @@ export const LoanSnapshot = () => {
                         </div>
                         <div className="col-md-6">
                             <label className="mcu-label">Expiration date</label>
-                            <span className="mcu-label-value">05-11-2020</span>
+                            <span className="mcu-label-value">{loanInfo.expirationDate}</span>
                         </div>
                     </div>  
 
