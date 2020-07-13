@@ -168,6 +168,7 @@
         }
 
 .MT-rightbar{
+    height: 100%;
     .T-head {
         padding-top: 20px;
         min-height: 60px;
@@ -179,11 +180,36 @@
             padding-right: 25px;
             display: inline-block;
             position: relative;
+
+            .editable-TemplateTitle {
+                min-width: 230px;
+                border: 1px solid color('primary');
+                border-radius: none;
+                outline: none;
+                padding: 4px 5px 3px;
+                padding-right: 30px;
+                &:active , &:focus {
+                    outline: none;  
+                }
+            }
             .editicon {
                 position: absolute;
                 right: 0;
                 top: -2px;
                 cursor: pointer;
+            }
+
+            .editsaveicon {
+                position: absolute;
+                right: 7px;
+                top: 5px;
+                cursor: pointer;
+                color: color('sucsess');
+                font-size: 14px;
+
+            }
+            &.editable {
+                padding-right: 0;
             }
         }
     }
@@ -228,13 +254,41 @@
 
         .add-doc-link-wrap {
             padding-top: 10px;
-            .add-doc-link {
-                font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
-                color: color('primary');  
-                cursor: pointer;
+        }
+    }
+
+    .add-doc-link-wrap {
+        .add-doc-link {
+            font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
+            color: color('primary');  
+            cursor: pointer;
+        }
+    }
+
+    .add-newTemp-wrap {
+        height: 100%;
+        .empty-wrap {
+            text-align: center;
+            height: calc(100% - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .content {
+        p {
+            margin-bottom: 0;
+            padding: 10px 0 5px 0;
+            font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+            color: color('base');  
+            b {
+                font: 500 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+                color: color('colorBlack');  
             }
         }
     }
+        }
+    }
+
 }
 
     }
