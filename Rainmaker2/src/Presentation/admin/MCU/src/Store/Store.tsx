@@ -1,19 +1,25 @@
 import React, { createContext, useReducer } from 'react'
 import { mainReducer } from './reducers/reducers'
 import { TemplateType } from './reducers/TemplatesReducer'
+import {Http} from 'rainsoft-js'
+import { LocalDB } from '../Utils/LocalDB';
+
+const http = new Http();
+http.setBaseUrl('https://alphamaingateway.rainsoftfn.com');
+http.setAuth(LocalDB.getAuthToken());
 
 export type InitialStateType = {
     user: {
         userInfo: {}
     },
-    templates: TemplateType | {},
+    templateManager: TemplateType | {},
 }
 
 export const InitialState = {
     user: {
         userInfo: {}
     },
-    templates: {},
+    templateManager: {},
 }
 
 const Store = createContext<{

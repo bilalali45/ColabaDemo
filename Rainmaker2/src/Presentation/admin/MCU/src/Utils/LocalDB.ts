@@ -15,6 +15,6 @@ export class LocalDB {
     }
 
     static getAuthToken() {
-       return localStorage.getItem('token');
+       return localStorage.getItem('token') || '';
     }
 }

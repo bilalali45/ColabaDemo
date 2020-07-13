@@ -1,6 +1,33 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import { Store, InitialStateType } from '../../../../../Store/Store'
+import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
+import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+
+const MyTemplate = "MCU Template";
+const TenantTemplate = "Tenant Template";
+const SystemTemplate = "System Template";
 
 export const TemplateListContainer = () => {
+
+    const {state, dispatch} = useContext(Store);
+
+    const templateManager : any = state.templateManager;
+    const templates = templateManager?.templates;
+    
+
+    useEffect(() => {   
+        if(!templates) {
+            fetchTemplatesList();
+        }
+    }, []);
+
+    const fetchTemplatesList = async () => {
+        let newTemplates = await TemplateActions.fetchTemplates('1');
+        if(newTemplates) {
+            dispatch({type: TemplateActionsType.FetchTemplates, payload: newTemplates});
+        }
+    }
+
     return (
         <div className="TL-container">
 
