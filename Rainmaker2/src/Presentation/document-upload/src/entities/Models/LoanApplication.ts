@@ -43,7 +43,7 @@ export class LoanApplication {
     if (!this.loanAmount) {
       return undefined;
     }
-    return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`;
+    return `${LoanApplication.formatAmountByCountry(this.loanAmount)}`;
   }
 
   public fromJson(json: LoanApplication) {
