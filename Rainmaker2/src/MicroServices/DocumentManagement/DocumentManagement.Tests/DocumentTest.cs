@@ -1,13 +1,20 @@
-﻿using DocumentManagement.API.Controllers;
+﻿using Castle.Core.Configuration;
+using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,7 +32,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object,null, null, null, null);
+            var documentController = new DocumentController(mock.Object, null, null, null, null);
 
             //Act
             IActionResult result = await documentController.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>());
@@ -547,7 +554,7 @@ namespace DocumentManagement.Tests
                      { "docMessage" ,BsonString.Empty},
                      { "messages" , BsonNull.Value},
                      { "docName" , BsonString.Empty}
-                    
+
                  }
             };
 
@@ -613,7 +620,7 @@ namespace DocumentManagement.Tests
         }
 
         [Fact]
-        public async Task TestGetEmailLogService() 
+        public async Task TestGetEmailLogService()
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
@@ -716,7 +723,7 @@ namespace DocumentManagement.Tests
                     { "emailText" , BsonString.Empty},
                     { "loanId" , "5eb25d1fe519051af2eeb72d" }
                 }
-             
+
             };
 
 
@@ -741,7 +748,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
             Assert.Equal("abc", dto[7].emailText);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
-  
+
         }
         [Fact]
         public async Task TestmcuRenameControllerTrue()
@@ -778,7 +785,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
-             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -923,6 +930,123 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.True(result);
+        }
+
+
+        [Fact]
+        public async Task TestViewController()
+        {
+            
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
+           // Mock<IFileService> mockFileService = new Mock<IFileService>();
+            Mock<IFtpClient> mockFtpClient = new Mock<IFtpClient>();
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
+
+            var mockFileEcryptor = new Mock<IFileEncryptor>();
+            Mock<IFileEncryptionFactory> mockFileEncryptorFacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
+        
+            FileViewDTO fileViewDTO = new FileViewDTO();
+            fileViewDTO.serverName = "a69ad17f-7505-492d-a92e-f32967cecff8.enc";
+            fileViewDTO.encryptionKey = "FileKey";
+            fileViewDTO.encryptionAlgorithm = "AES";
+            fileViewDTO.clientName = "NET Unit Testing.docx";
+            fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.docId = "aaa25d1fe456051af2eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ef454cd86c96583744140d9";
+            fileViewModel.tenantId = 1;
+
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+
+            mock.Setup(x => x.View(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(fileViewDTO);
+            mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
+            mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
+            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
+
+            mockFileEncryptorFacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockFileEcryptor.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            // also check the 'http' call was like we expected it
+            // Act  
+            DocumentController controller = new DocumentController(mock.Object, mockFileEncryptorFacotry.Object, mockFtpClient.Object, mockSettingService.Object, mockKeyStoreService.Object);
+            controller.ControllerContext = context;
+            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<FileStreamResult>(result);
+        }
+
+        [Fact]
+        public async Task TestViewService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , "5ef050534f7d102f9c68a95e" },
+                        { "serverName" ,  "fa8a95e8-2a94-41f0-9f91-c7cf0e0525b0.enc" },
+                        { "encryptionKey" , "FileKey" },
+                        { "encryptionAlgorithm" , "AES" },
+                        { "clientName" , "Recruitment & Selection Survey - Rainsoft Financials Pvt Ltd. (2).docx" },
+                        { "contentType" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+                    }
+            };
+
+            var viewLog = new ViewLog
+            {
+                id = "5ef050534f7d102f9c68a95e",
+                userProfileId = 1,
+                createdOn = DateTime.Now,
+                ipAddress = "127.0.0.1",
+                loanApplicationId = "5eb25d1fe519051af2eeb72d",
+                requestId = "abc15d1fe456051af2eeb768",
+                documentId = "ddd25d1fe456057652eeb72d",
+                fileId = "5ef049d896f9f41cec4b358f"
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
+            mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            var dto = await service.View(fileViewModel, 1, "127.0.0.1");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
         }
     }
 }
