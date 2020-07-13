@@ -14,7 +14,7 @@ namespace DocumentManagement.API.Controllers
         [Route("[action]")]
         public string Index()
         {
-            return "Document Management microservice is running";
+            return "Document Management micro service is running";
         }
     }
 }

@@ -11,9 +11,9 @@ import { TemplateActionsType } from '../../../Store/reducers/TemplatesReducer'
 export const TemplateManager = () => {
 
     return (
-        <main>
-            <TemplateHeader />
-            <TemplateHome />
+        <main className="ManageTemplate-Wrap">
+            <TemplateHeader/>
+            <TemplateHome/>
         </main>
     )
 }

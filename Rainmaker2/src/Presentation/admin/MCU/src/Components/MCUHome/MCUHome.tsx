@@ -6,6 +6,8 @@ import { UserActions } from '../../Store/actions/UserActions';
 import { Store } from '../../Store/Store';
 import { UserActionsType } from '../../Store/reducers/UserReducer';
 
+import {ReviewDocument} from './ReviewDocument/ReviewDocument';
+
 export const MCUHome = () => {
 
     const {state, dispatch} = useContext(Store)
@@ -27,6 +29,7 @@ export const MCUHome = () => {
                 <Redirect exact from="/" to="/needList"/>
                 <Route path="/needList" component={NeedList} />
                 <Route path="/templateManager" component={TemplateManager} />
+                <Route path="/ReviewDocument" component={ReviewDocument} />
             </Switch>
         </section>
     )
