@@ -26,7 +26,7 @@ const PNG = {
     type: "Unknown filetype",
   };
 
-  const getMimetype = (signature) => {
+  const getMimetype = (signature: any) => {
     switch (signature) {
       case PNG.hex:
         return PNG.type;
@@ -50,7 +50,7 @@ const PNG = {
     }
   }
 
- export const GetActualMimeType = (file): Promise<string> => {
+ export const GetActualMimeType = (file: any): Promise<string> => {
     return new Promise((resolve, reject) => {
       const filereader = new FileReader();
       let mimeType = "";
@@ -96,7 +96,7 @@ const PNG = {
     return `${0}kbs`;
   }
 
-  export const IsSizeAllowed = (file, allowedSize) =>{
+  export const IsSizeAllowed = (file: any, allowedSize: number) =>{
     if (!file) return null;
 
     if (file.size / 1000 / 1000 < allowedSize) {
@@ -115,7 +115,7 @@ const PNG = {
     return onlyName != "" ? onlyName : fileName;
   }
 
-  export const SortByDate =(array: any[], dateFieldName) => {
+  export const SortByDate =(array: any[], dateFieldName: string) => {
     return array.sort((a, b) => {
       let first = new Date(a[dateFieldName]);
       let second = new Date(b[dateFieldName]);

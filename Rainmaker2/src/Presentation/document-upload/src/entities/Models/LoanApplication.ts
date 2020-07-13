@@ -43,7 +43,7 @@ export class LoanApplication {
     if (!this.loanAmount) {
       return undefined;
     }
-    return `${LoanApplication.formatAmountByCountry(this.loanAmount)?.US()}`;
+    return `${LoanApplication.formatAmountByCountry(this.loanAmount)}`;
   }
 
   public fromJson(json: LoanApplication) {
@@ -99,14 +99,11 @@ export class LoanApplication {
       "US"
     );
 
-    return {
-      US: () => {
-        if (amountSplitByPoint[1]) {
-          return `${seperatorAdded}.${amountSplitByPoint[1]}`;
-        }
-        return `${seperatorAdded}`;
-      },
-      BRL: () => `R$${this.addAmountSeperator(strAmount, "BRL")}`,
-    };
+    return (() => {
+      if (amountSplitByPoint[1]) {
+          return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+      }
+      return `$${seperatorAdded}`
+  })();
   }
 }

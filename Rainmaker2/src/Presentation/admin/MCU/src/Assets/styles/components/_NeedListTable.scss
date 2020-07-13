@@ -24,6 +24,11 @@
         .td:first-child{
             width: 40%;
         }
+
+        >.th:last-child,
+        >.td:last-child{
+            width: 150px;
+        }
     }
 
     .th,.td{

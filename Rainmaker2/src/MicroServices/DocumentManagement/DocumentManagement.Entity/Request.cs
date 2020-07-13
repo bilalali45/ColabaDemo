@@ -10,7 +10,8 @@ namespace DocumentManagement.Entity
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
-        public int employeeId { get; set; }
+        public int userId { get; set; }
+        public string userName { get; set; }
         public DateTime createdOn { get; set; }
         public string status { get; set; }
         public string message { get; set; }

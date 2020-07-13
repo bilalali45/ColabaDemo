@@ -44,13 +44,9 @@
         align-items: center;
     
         .loansnapshot--wrap{
-            display: table;
             width: 100%;
-            padding: 25px 40px;
-            > *{
-                display: table-cell;
-                vertical-align: middle;
-            }
+            padding: 25px 35px;
+            
             .mcu-label-value{
                 line-height: 1;
             }
@@ -71,6 +67,11 @@
 
         }
 
+    }
+
+    .mcu-label{
+        margin-bottom: 2px;
+        font-size: fontSize('sm') - 1px;
     }
 }
 

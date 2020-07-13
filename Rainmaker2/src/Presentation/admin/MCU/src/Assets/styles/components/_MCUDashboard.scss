@@ -3,6 +3,7 @@
     height: 100%;
     background: color('bg');
     width: 100%;
+    overflow: hidden;
     &.hascollapssidebar{
         margin-left: 49px;
         width: calc(100% - 49px);

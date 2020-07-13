@@ -2004,7 +2004,9 @@ namespace RainMaker.Common
         [Description("Application Started")]
         ApplicationStarted = 12,
         [Description("Application Submitted")]
-        ApplicationSubmitted = 13
+        ApplicationSubmitted = 13,
+        [Description("Document Upload")]
+        DocumentUpload = 50
     }
     public enum Months
     {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { TemplateListContainer } from './TemplateListContainer/TemplateListContainer'
-import { TemplatesCheckList } from './TemplatesCheckList/TemplatesCheckList'
+import { SelectedTemplate } from './SelectedTempate/SelectedTemplate'
 import { NewTemplate } from '../NewTemplate/NewTemplate'
 
 export const TemplateHome = () => {
@@ -16,19 +16,12 @@ export const TemplateHome = () => {
                 </div>
                 <div className="col-sm-8">
                     <div className="MT-rightbar">
-                    <TemplatesCheckList/>
+                    <SelectedTemplate/>
+                    <NewTemplate/>
                     </div>
                 </div>
             </div>
-            </div>
-
-
-
-            
-
-
-            {/* <TemplatesCheckList/>
-            <NewTemplate/> */}
+            </div>  
         </section>
     )
 }
