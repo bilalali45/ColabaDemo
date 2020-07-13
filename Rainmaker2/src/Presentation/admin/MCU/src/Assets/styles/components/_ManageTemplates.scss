@@ -102,7 +102,7 @@
                                 font-size: fontSize('xmd')+3;
 
                             }
-                            &:hover{
+                            &:hover,&.active{
                                 background: rgba(color('primary'), 0.08);
                                 .BTNclose {
                                     display: block;

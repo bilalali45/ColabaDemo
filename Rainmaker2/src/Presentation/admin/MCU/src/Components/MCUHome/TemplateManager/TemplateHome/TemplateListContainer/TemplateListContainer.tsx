@@ -15,7 +15,7 @@ export const TemplateListContainer = () => {
                                 Income Template
                         <span className="BTNclose"><i className="zmdi zmdi-close"></i></span>
                             </li>
-                            <li>My standard checklist <span className="BTNclose"><i className="zmdi zmdi-close"></i></span></li>
+                            <li  className="active">My standard checklist <span className="BTNclose"><i className="zmdi zmdi-close"></i></span></li>
                             <li>Assets Template <span className="BTNclose"><i className="zmdi zmdi-close"></i></span></li>
                         </ul>
                     </div>
