@@ -25,55 +25,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-letter:before {
+  content: "\e912";
+  color: #2c9ef5;
+}
 .icon-record:before {
   content: "\e90f";
+  color: #666;
 }
 .icon-edit:before {
   content: "\e910";
+  color: #888;
 }
 .icon-users:before {
   content: "\e900";
+  color: #cdd0d8;
 }
 .icon-ad:before {
   content: "\e901";
+  color: #cdd0d8;
 }
 .icon-refresh:before {
   content: "\e902";
-  color: #CCCCCC;
+  color: #00ad46;
 }
 .icon-file:before {
   content: "\e903";
+  color: #cdd0d8;
 }
 .icon-gears:before {
   content: "\e904";
+  color: #cdd0d8;
 }
 .icon-open-lock:before {
   content: "\e905";
+  color: #cdd0d8;
 }
 .icon-gear:before {
   content: "\e906";
+  color: #cdd0d8;
 }
 .icon-speak:before {
   content: "\e907";
+  color: #cdd0d8;
 }
 .icon-cross-pointer:before {
   content: "\e908";
+  color: #cdd0d8;
 }
 .icon-building:before {
   content: "\e909";
+  color: #cdd0d8;
 }
 .icon-order:before {
   content: "\e90a";
+  color: #cdd0d8;
 }
 .icon-tick:before {
   content: "\e90b";
+  color: #cdd0d8;
 }
 .icon-money:before {
   content: "\e90c";
+  color: #cdd0d8;
 }
 .icon-20:before {
   content: "\e90d";
+  color: #cdd0d8;
 }
 .icon-phone-alt:before {
   content: "\e90e";
+  color: #cdd0d8;
 }

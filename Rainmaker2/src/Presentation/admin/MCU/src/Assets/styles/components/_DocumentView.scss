@@ -1,0 +1,190 @@
+.document-view {    
+    background-color: rgba(#000000,0.5);
+
+    &.zoom{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+    }
+
+    &--header{
+        background-color: color('fileReaderHeaderBg');
+        color: color('fileReaderHeaderText');
+        padding: 10px 15px;
+        font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
+        // display: flex;
+        // display: -webkit-flex;
+        // justify-content: space-between;
+        // align-items: center;
+
+        ul{
+            @extend .list-style-none;
+            text-align: center;
+            >li{
+                display: inline-block;
+            }
+        }
+
+        &---title{
+            float: left;
+            padding: 10px 0;
+        }
+
+        &---controls{
+            width: 40%;
+            margin: auto;
+            ul{
+                >li{
+                    
+                }   
+            }
+        }
+
+        &---title,
+        &---options{
+            width: 30%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        &---options{
+            float: right;
+            ul{
+                text-align: right;
+                >li{
+                    svg{
+                        height: 25px;
+                    }
+                    &:last-child{
+                        svg{
+                            path{
+                                stroke:transparent;
+                            }
+                        }
+                    }
+                }   
+            }
+        }
+    }// header
+
+    &--body{
+        margin: 0 auto;
+        height: calc(100vh - 56px);
+        width: 100%;
+        z-index: 11;
+        .pg-viewer-wrapper {
+            img {
+                width: auto !important;
+                max-width: 100%;
+                height: auto !important;
+            }
+        } 
+        canvas {
+            margin: auto;
+            display: table;
+        }
+    }
+
+    &--button{
+        background-color: transparent;
+        border: none;
+        padding: 5px 15px;
+        svg{
+            path{
+                fill:color('fileReaderHeaderText');
+                stroke:color('fileReaderHeaderText');
+            }
+        }
+
+    }
+
+    &--arrow-button{
+        background-color: transparent;
+        color: color('fileReaderHeaderText');
+        border: none;
+        padding: 5px 10px;
+        display: inline-block;
+        margin: 0 5px;
+        font-size: fontSize('lg');
+        vertical-align: middle;
+    
+        svg{
+            path{
+                fill:color('fileReaderHeaderText');
+            }
+        }
+    }
+
+    &--counts{
+        min-width: 50px;
+        display: inline-block;
+        input{
+            text-align: center;
+            background-color: transparent;
+            color: color('fileReaderHeaderText');
+            border: none;
+        }
+    }
+
+
+    &--floating-options{
+        position: fixed;
+        right: 30px;
+        bottom: 80px;
+        z-index: 8888;
+        >ul{
+            @extend .list-style-none;
+            >li{
+                &:last-child{
+                    margin-top: 15px;
+                    .button-float{
+
+                    }
+                }
+
+                .button-float{
+                    box-shadow: 0 0 3px rgba(#000000,0.5); 
+
+
+                }
+            }
+        }
+    }
+    
+
+    .pg-viewer{
+        margin: 30px auto;
+        &-wrapper {
+            overflow-y: auto;
+            margin: 0px auto;
+        }
+    }
+
+    .pdf-canvas {
+        margin-bottom: 30px;
+    }
+
+}
+.TransformComponent-module_container__3NwNd {
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 22;
+    .TransformComponent-module_content__TZU5O {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        transform-origin: 0% 0%;
+    }
+    // .pg-viewer-wrapper {
+    //     width: 100%;
+    //     overflow-y:hidden;
+    // }
+
+}
