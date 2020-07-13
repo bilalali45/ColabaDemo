@@ -31,9 +31,19 @@ $color:(
     ReviewDocumentHeaderBg  :       #ffffff,
     ReviewDocumentHeaderText:       #263238,
     ReviewDocumentSidebarBg :       #ffffff,
-    ReviewDocumentSidebarText:      #263238,
-    
+    ReviewDocumentSidebarText:      #263238,    
 
+    //Document Snipet
+    docSnipetBg             :       #F9F9F9,
+    docSnipetBorder         :       #DDDDDD,
+    docSnipetText           :       #A7A7A7,
+    docSnipetBgActive       :       #EEF7FF,
+    docSnipetBorderActive   :       #AAD7FF,
+    docSnipetSuccess        :       #00AD46,
+    docSnipetFailed         :       #FF5652,
+
+
+    // File Viewer
     fileReaderHeaderBg      :       #2D2D2D,
     fileReaderHeaderText    :       #ffffff
 );
@@ -59,7 +69,8 @@ $font-size:(
     h3:16px,
     h4:14px,
     h5:12px,
-    h6:10
+    h6:10px,
+
 );
 $shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
 $headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);

@@ -25,6 +25,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-edit2:before {
+  content: "\e911";
+  color: #103b5c;
+}
 .icon-letter:before {
   content: "\e912";
   color: #2c9ef5;

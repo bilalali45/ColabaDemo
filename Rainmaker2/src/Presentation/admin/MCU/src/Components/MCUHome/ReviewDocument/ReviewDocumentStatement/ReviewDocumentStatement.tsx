@@ -10,13 +10,13 @@ export const ReviewDocumentStatement = () => {
             <section className="document-statement--body">
                 <h3>Documents</h3>
                 
-                <DocumentSnipet />
+                <DocumentSnipet status="active" />
                 <DocumentSnipet />
 
                 <hr/>
 
                 <div className="clearfix">
-                    <span className="float-right"><em className="icon-letter"></em></span>
+                    <span className="float-right activity-logs-icon"><em className="icon-letter"></em></span>
                     <h3>Activity Logs</h3>
                 </div>
 
