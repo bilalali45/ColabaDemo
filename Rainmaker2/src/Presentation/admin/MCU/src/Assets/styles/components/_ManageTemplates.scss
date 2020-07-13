@@ -86,13 +86,26 @@
                             li {
                                 font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
                                 color: color('heading');
-                                padding: 10px 30px;
-                                display: flex;
-                                min-height: 40px;
-                                align-items: center;
                                 position: relative;
-                                cursor: pointer;
-
+                                    .l-wrap {
+                                        display: block;
+                                        width: 100%;
+                                        .c-list {
+                                            padding: 10px 30px;
+                                            min-height: 40px;
+                                            display: flex;
+                                            align-items: center;
+                                            cursor: pointer;
+                                            position: relative;
+                                            &:hover,
+                                            &.active {
+                                                background: rgba(color('primary'), 0.08);
+                                                color: color('primary');
+                                                .BTNclose {
+                                                    display: block;
+                                                }
+                                            }
+                                            
                                 .BTNclose {
                                     position: absolute;
                                     display: none;
@@ -103,15 +116,25 @@
                                     font-size: fontSize('xmd')+3;
 
                                 }
-
-                                &:hover,
-                                &.active {
-                                    background: rgba(color('primary'), 0.08);
-                                    color: color('primary');
-                                    .BTNclose {
-                                        display: block;
+                                        }
+                                        .alert-cancel {
+                                            padding: 10px 30px;
+                                            min-height: 40px;
+                                            display: flex;
+                                            align-items: center;
+                                            background: color('listalertbg');
+                                            color: color('listalert');
+                                            font: 500 #{fontSize('md')+'/'+"1"} fontFamily('base');
+                                            padding-right: 130px;
+                                            .l-remove-actions {
+                                                position: absolute;
+                                                right: 15px;
+                                            }
+                                        }
                                     }
-                                }
+
+
+
                             }
                         }
                     }
@@ -145,24 +168,50 @@
         }
     }
     .ST-content-Wrap {
+        padding-top: 15px;
         ul {
-            display: inline-block;
+            display: block;
             li {
-                font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
+                font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
                 color: color('base');  
                 position: relative;
-                display: block;
-                padding: 10px 40px 10px 0;
+                display: flex;
+                align-items: center;
+                p {
+                    padding: 13px 0 12px 0;
+                    margin-bottom: 0;
+                    display: inline-block;
+                    position: relative;
+                    padding-right: 30px;
+                    cursor: pointer;
+                    &:hover {
+                        .BTNclose {
+                            display: block;
+                        }
+
+                    }
+                }
                 .BTNclose {
                     position: absolute;
-                    display: block;
+                    display: none;
                     width: 16px;
                     height: 20px;
-                    right: 15px;
+                    right: 0;
                     color: color('colorRed');
                     font-size: fontSize('xmd')+3;
+                    top: 50%;
+    margin-top: -10px;
 
                 }
+            }
+        }
+
+        .add-doc-link-wrap {
+            padding-top: 10px;
+            .add-doc-link {
+                font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
+                color: color('primary');  
+                cursor: pointer;
             }
         }
     }

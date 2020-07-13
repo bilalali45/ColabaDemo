@@ -1,35 +1,92 @@
-import React from 'react'
+import React, { useState } from 'react'
 export const TemplateListContainer = () => {
+    const [removeTemplate, setremoveTemplate] = useState<any>(false);
+
+    const remove = () => {
+        setremoveTemplate(true)
+    }
+    const undo = () => {
+        setremoveTemplate(false)
+    }
     const MyTemplates = () => {
         return (
-          <>
-<div className="m-template">
-                <div className="MT-groupList">
-                    <div className="title-wrap">
-                        <h4>My Templates</h4>
-                    </div>
+            <>
+                <div className="m-template">
+                    <div className="MT-groupList">
+                        <div className="title-wrap">
+                            <h4>My Templates</h4>
+                        </div>
 
-                    <div className="list-wrap my-temp-list">
-                        <ul>
-                            <li>
-                                Income Template
-                        <span className="BTNclose"><i className="zmdi zmdi-close"></i></span>
-                            </li>
-                            <li  className="active">My standard checklist <span className="BTNclose"><i className="zmdi zmdi-close"></i></span></li>
-                            <li>Assets Template <span className="BTNclose"><i className="zmdi zmdi-close"></i></span></li>
-                        </ul>
+                        <div className="list-wrap my-temp-list">
+                            <ul>
+                                <li>
+                                    <div className="l-wrap">
+                                        {!removeTemplate ?
+                                            <div className="c-list">
+                                                Income Template
+                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
+                                            </div>
+                                            : <>
+                                                <div className="alert-cancel">
+                                                    <span>Remove this template?</span>
+                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
+                                                </div>
+                                            </>
+                                        }
+
+
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="l-wrap">
+                                        {!removeTemplate ?
+                                            <div className="c-list">
+                                                My standard checklist
+                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
+                                            </div>
+                                            : <>
+                                                <div className="alert-cancel">
+                                                    <span>Remove this template?</span>
+                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
+                                                </div>
+                                            </>
+                                        }
+
+
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div className="l-wrap">
+                                        {!removeTemplate ?
+                                            <div className="c-list">
+                                                Assets Template
+                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
+                                            </div>
+                                            : <>
+                                                <div className="alert-cancel">
+                                                    <span>Remove this template?</span>
+                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
+                                                </div>
+                                            </>
+                                        }
+
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                </div>
-          </>
+            </>
         );
-      };
+    };
 
 
-      const TemplatesByTenant = () => {
+    const TemplatesByTenant = () => {
         return (
-          <>
-         <div className="template-by-tenant">
+            <>
+                <div className="template-by-tenant">
                     <div className="MT-groupList">
                         <div className="title-wrap">
                             <h4>Templates by Tenant</h4>
@@ -37,19 +94,59 @@ export const TemplateListContainer = () => {
 
                         <div className="list-wrap my-temp-list">
                             <ul>
-                                <li>FHA Full Doc Refinance - W2</li>
-                                <li>VA Cash Out - W-2</li>
-                                <li>FHA Full Doc Refinance</li>
-                                <li>Conventional Refinance - SE</li>
-                                <li>VA Purchase - W-2</li>
-                                <li>Additional Questions</li>
+                                <li>
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            FHA Full Doc Refinance - W2
+                                    </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            VA Cash Out - W-2
+                                    </div>
+                                    </div>
+
+                                </li>
+                                <li>
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            FHA Full Doc Refinance
+                                    </div>
+                                    </div>
+                                </li>
+                                <li>
+
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            Conventional Refinance - SE
+                                    </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            VA Purchase - W-2
+                                    </div>
+                                    </div>
+
+                                </li>
+                                <li>
+                                    <div className="l-wrap">
+                                        <div className="c-list">
+                                            Additional Questions
+                                    </div>
+                                    </div>
+
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-          </>
+            </>
         );
-      };
+    };
 
     return (
         <div className="TL-container">
@@ -74,15 +171,15 @@ export const TemplateListContainer = () => {
 
 
             <div className="listWrap-templates">
-{/* My Templates */}
-{MyTemplates()}
+                {/* My Templates */}
+                {MyTemplates()}
 
-       {TemplatesByTenant()}
-           
-           
+                {TemplatesByTenant()}
+
+
             </div>
-       
-       
+
+
         </div>
     )
 }
