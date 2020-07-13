@@ -231,7 +231,6 @@ namespace DocumentManagement.Service
                     requestId = query.requestId;
                 }
             }
-
             return requestId;
         }
     }

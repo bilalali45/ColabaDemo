@@ -678,7 +678,6 @@ namespace RainmakerTest
 
             //Act
             PostModel res = await loanService.PostLoanApplication(4, true,1, mock.Object);
-
             // Assert
             Assert.NotNull(res);
             Assert.Equal(1, res.userId);
