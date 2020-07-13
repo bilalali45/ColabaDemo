@@ -4,14 +4,16 @@
     background: color('bg');
     width: 100%;
     &.hascollapssidebar{
-        margin-left: 50px;
-        width: calc(100% - 50px);
+        margin-left: 49px;
+        width: calc(100% - 49px);
+        .home-layout {
+    
+            min-height:calc(100vh - 103px);
+        }
     }
 }
 
-.home-layout {
-    min-height: calc(100vh - 120px);
-}
+
 
 // Dashboard
 .d-layout{

@@ -4,7 +4,7 @@ import { TemplateHome } from './TemplateHome/TemplateHome'
 
 export const TemplateManager = () => {
     return (
-        <main>
+        <main className="ManageTemplate-Wrap">
             <TemplateHeader/>
             <TemplateHome/>
         </main>

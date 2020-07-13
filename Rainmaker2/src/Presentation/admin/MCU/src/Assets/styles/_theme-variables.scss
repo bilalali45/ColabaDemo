@@ -3,11 +3,14 @@ $color:(
     primary-text        :       #ffffff,
     secondry            :       #103B5C,
     secondry-text       :       #ffffff,
-    border              :       #EBEBEB, 
+    border              :       #DDDDDD, 
     base                :       #4E4E4E, 
     heading             :       #263238,
     bg                  :       #F2F3F5,
     default             :       #F2F3F5,
+    colorWhite          :       #ffffff,
+    colorBlack          :       #000000,
+    colorRed            :       #FF5652,
     
     // Dashboard
     headerBg            :       #375471,
@@ -61,6 +64,7 @@ $burger-resolution     :        16px;
 $grid-gutter-width:           30px !default;
 $primary:       #2C9EF5 !default;
 $secondary:     #7E829E !default;
+$danger:        #FF5652 !default;
 
 // Private
 $widget-space: $grid-gutter-width !default;

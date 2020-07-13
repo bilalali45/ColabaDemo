@@ -273,6 +273,11 @@ ul {
 
 .main-footer {
     text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    p {
+        margin-bottom: 0;
+    }
 }
 
 .container-mcu {
@@ -371,16 +376,3 @@ ul {
 }//   .switch
 
 
-.innerheader {
-    min-height: 60px;
-    background: color('colorWhite');
-    border-bottom: 1px solid color('border');
-    padding-top: 17px;
-    padding-bottom: 18px;
-    padding-left: 28px;
-    padding-right: 28px;
-
-    h2 {
-        font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base');
-    }
-}
