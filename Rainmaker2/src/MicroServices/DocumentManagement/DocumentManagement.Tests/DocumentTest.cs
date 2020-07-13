@@ -25,7 +25,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object);
+            var documentController = new DocumentController(mock.Object,null, null, null, null);
 
             //Act
             IActionResult result = await documentController.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>());
@@ -52,7 +52,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object);
+            var documentController = new DocumentController(mock.Object, null, null, null, null);
             //Act
             IActionResult result = await documentController.GetFiles("1", "1", "1");
             //Assert
@@ -86,7 +86,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetActivityLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object);
+            var documentController = new DocumentController(mock.Object, null, null, null, null);
             //Act
             IActionResult result = await documentController.GetActivityLog("1", "1", "1");
             //Assert
@@ -596,7 +596,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object);
+            var documentController = new DocumentController(mock.Object, null, null, null, null);
             //Act
             IActionResult result = await documentController.GetEmailLog("1");
             //Assert
@@ -749,7 +749,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             IActionResult result = await controller.mcuRename( "1","1","1","1","abc");
             //Assert
@@ -762,7 +762,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             IActionResult result = await controller.mcuRename("1", "1", "1", "1", "abc");
             //Assert
@@ -817,7 +817,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
             acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
@@ -835,7 +835,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
             acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
@@ -853,7 +853,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
             rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
@@ -872,7 +872,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
+            var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
             rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
