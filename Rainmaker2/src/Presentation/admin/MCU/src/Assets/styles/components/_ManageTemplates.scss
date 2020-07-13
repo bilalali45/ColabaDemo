@@ -129,6 +129,26 @@
                                             .l-remove-actions {
                                                 position: absolute;
                                                 right: 15px;
+                                                .lbtn {
+                                                    font: 400 #{fontSize('sm')+'/'+"1"} fontFamily('base');
+                                                    color: color('colorWhite');
+                                                    width: 42px;
+                                                    height: 24px;
+                                                    text-align: center;
+                                                    border:none;
+                                                    border-radius: 0;
+                                                    &:active,&:hover {
+                                                        outline: none;
+                                                        opacity: 0.9;
+                                                    }
+                                                }
+                                                .btn-no {
+                                                    background: color('secondry');
+                                                }
+                                                .btn-yes {
+                                                    background: color('primary');
+                                                    margin-left: 5px;
+                                                }
                                             }
                                         }
                                     }

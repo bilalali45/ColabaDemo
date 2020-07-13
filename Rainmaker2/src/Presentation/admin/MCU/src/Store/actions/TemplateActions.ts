@@ -21,7 +21,7 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.GET.categoryDocuments();
 
         try {
-           
+
         } catch (error) {
             console.log(error);
 
@@ -32,9 +32,9 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.GET.templateDocuments(id);
 
         try {
-           let res = await http.get(url);
-           console.log(res);
-           return res.data;
+            let res = await http.get(url);
+            console.log(res);
+            return res.data;
         } catch (error) {
             console.log(error);
         }
@@ -42,23 +42,37 @@ export class TemplateActions {
 
     static async insertTemplate() {
         try {
-            
+
         } catch (error) {
             console.log(error)
         }
     }
-    
+
     static async renameTemplate() {
         try {
-            
+
         } catch (error) {
             console.log(error)
         }
     }
-   
-    static async deleteTemplate() {
+
+    static async deleteTemplate(tenantId: string, templateId: string) {
+
+        let url = Endpoints.TemplateManager.DELETE.templateById(tenantId, templateId);
         try {
-            
+            let res = await http.delete(url);
+            return res.data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    static async deleteTemplateDocument(tenantId: string, templateId: string, documentId: string) {
+
+        let url = Endpoints.TemplateManager.DELETE.deleteTemplateDocument(tenantId, templateId, documentId);
+        try {
+            let res = await http.delete(url);
+            return res.data;
         } catch (error) {
             console.log(error)
         }
