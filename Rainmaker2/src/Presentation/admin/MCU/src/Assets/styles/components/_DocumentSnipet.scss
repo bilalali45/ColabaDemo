@@ -1,0 +1,61 @@
+.document-snipet{
+    background-color: color('docSnipetBg');
+    color: color('docSnipetText');
+    border: 1px solid color('docSnipetBorder');
+    margin-bottom: 15px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    &--left{
+        flex: 3 0 0;
+    }
+
+    &--right{
+
+    }
+
+    &--input-group{
+        line-height: 1;
+        input{
+            border: none;
+            color: color('heading');
+        }
+    }
+
+    &--detail{
+
+    }
+
+    [class^="document-snipet-btn"],
+    [class*="document-snipet-btn"]{
+        border: none;
+        padding: 0 6px;
+        height: 20px;
+        font-size: fontSize('lg');
+        background-color: transparent;
+    }
+
+    &-btn-ok{
+        color: color('docSnipetSuccess');
+    }
+
+    &-btn-cancel{
+        color: color('docSnipetFailed');
+    }
+
+    &-btn-edit{
+        color: color('heading');
+        i,em{
+            &::before{
+                color: color('heading');
+            }
+        }
+    }
+
+    .focus{
+        background-color: color('docSnipetBgActive');
+        border-color: color('docSnipetBorderActive');
+    }
+}
