@@ -35,7 +35,7 @@ namespace RainmakerTest
 
             mock.Setup(x => x.GetLoanSummary(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null,null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -191,7 +191,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -218,7 +218,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null,null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -246,7 +246,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -454,7 +454,7 @@ namespace RainmakerTest
             mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId, default)).ReturnsAsync(string.Empty);
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
 
-            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
+            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object,null);
 
             //Act
             string result = await controller.GetPhoto(SystemSettingKeys.FtpEmployeePhotoFolder, (int)businessUnitId);
@@ -477,7 +477,7 @@ namespace RainmakerTest
             //  mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).Throws(new Exception(""));
 
-            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object);
+            LoanApplicationController controller = new LoanApplicationController(null, mockcommonservice.Object, mockftpservice.Object, null);
 
             //Act
             string result = await controller.GetPhoto(It.IsAny<string>()
