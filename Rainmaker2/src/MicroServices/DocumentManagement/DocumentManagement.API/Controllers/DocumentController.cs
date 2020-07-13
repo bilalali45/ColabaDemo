@@ -14,13 +14,17 @@ namespace DocumentManagement.API.Controllers
     {
         #region Constructors
 
-        public DocumentController(IDocumentService documentService)
+        public DocumentController(IDocumentService documentService,
+            IFileEncryptionFactory fileEncryptionFactory,
+            IFtpClient ftpClient,
+            ISettingService settingService,
+            IKeyStoreService keyStoreService)
         {
             this.documentService = documentService;
-            fileEncryptionFactory = fileEncryptionFactory;
-            ftpClient = ftpClient;
-            settingService = settingService;
-            keyStoreService = keyStoreService;
+            this.fileEncryptionFactory = fileEncryptionFactory;
+            this.ftpClient = ftpClient;
+            this.settingService = settingService;
+            this.keyStoreService = keyStoreService;
         }
 
         #endregion

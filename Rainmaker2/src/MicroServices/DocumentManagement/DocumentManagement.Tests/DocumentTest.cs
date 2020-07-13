@@ -751,7 +751,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
-            IActionResult result = await controller.mcuRename( "1","1","1","1","abc");
+            IActionResult result = await controller.McuRename( "1","1","1","1","abc");
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -764,7 +764,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             var controller = new DocumentController(mock.Object, null, null, null, null);
             //Act
-            IActionResult result = await controller.mcuRename("1", "1", "1", "1", "abc");
+            IActionResult result = await controller.McuRename("1", "1", "1", "1", "abc");
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
