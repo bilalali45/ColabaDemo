@@ -7,17 +7,19 @@ export const ReviewDocument = () => {
     return (
         <div id="ReviewDocument" data-component="ReviewDocument" className="review-document">
             <ReviewDocumentHeader />
-            
-            <div className="review-document-body row">
 
-                <div className="review-document-body--content col-md-8">                    
-                    <DocumentView />
-                </div>{/* review-document-body--content */}
+            <div className="review-document-body">
+                <div className="row">
 
-                <aside className="review-document-body--aside col-md-4">
-                    <ReviewDocumentStatement />
-                </aside>{/* review-document-body--aside */}
+                    <div className="review-document-body--content col-md-8">                    
+                        <DocumentView />
+                    </div>{/* review-document-body--content */}
 
+                    <aside className="review-document-body--aside col-md-4">
+                        <ReviewDocumentStatement />
+                    </aside>{/* review-document-body--aside */}
+                    
+                </div>
             </div>{/* review-document-body */}
         </div>
     )

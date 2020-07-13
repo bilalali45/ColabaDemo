@@ -17,11 +17,16 @@
     }
 
     &-body{
+        > .row{
+            margin: 0;
+        }
         &--content{
-
+            padding: 0;
         }
         &--aside{
-
+            background-color: color('ReviewDocumentSidebarBg');
+            color: color('ReviewDocumentSidebarText');
+            padding: 0;
         }
     }
 

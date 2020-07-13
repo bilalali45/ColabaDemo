@@ -8,6 +8,10 @@
         right: 0;
         bottom: 0;
         z-index: 9999;
+
+        .document-view--floating-options{
+            position: fixed;
+        }
     }
 
     &--header{
@@ -132,7 +136,7 @@
 
 
     &--floating-options{
-        position: fixed;
+        position: absolute;
         right: 30px;
         bottom: 80px;
         z-index: 8888;
@@ -148,8 +152,7 @@
 
                 .button-float{
                     box-shadow: 0 0 3px rgba(#000000,0.5); 
-
-
+                    line-height: 0.5;
                 }
             }
         }
