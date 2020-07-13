@@ -14,7 +14,7 @@ export type ActionMap<M extends { [index: string]: any }> = {
 }
 export type Actions = UserActions | TemplateActions
 
-export const mainReducer = ({user, templates} : InitialStateType, action: Actions) => ({
+export const mainReducer = ({user, templateManager} : InitialStateType, action: Actions) => ({
     user: userReducer(user, action),
-    templates: templateReducer(templates, action)
+    templateManager: templateReducer(templateManager, action)
 });

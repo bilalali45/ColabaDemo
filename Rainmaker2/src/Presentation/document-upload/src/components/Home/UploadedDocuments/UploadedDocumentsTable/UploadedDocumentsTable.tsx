@@ -8,9 +8,11 @@ import { Auth } from "../../../../services/auth/Auth";
 import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
 import { DateFormatWithMoment } from "../../../../utils/helpers/DateFormat";
-import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
+//import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
+import {DocumentView} from 'rainsoft-rc';
 import { Store } from "../../../../store/store";
 import { DocumentsActionType } from "../../../../store/reducers/documentReducer";
+import { clear } from "console";
 
 interface ViewDocumentType {
   id: string;
@@ -23,6 +25,8 @@ interface ViewDocumentType {
 export const UploadedDocumentsTable = () => {
   const [docList, setDocList] = useState<UploadedDocuments[] | [] | null>(null);
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType>();
+  const [blobData, setBlobData] = useState<any | null>();
+
   const history = useHistory();
 
   const { state, dispatch } = useContext(Store);
@@ -154,6 +158,14 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
+  const getSubmittedDocumentForView = async (id, requestId, docId, fileId, tenantId) => {
+    const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId})) as any;
+   setBlobData(response);
+  }
+ const clearBlob = () => {
+   debugger
+  setBlobData(null);
+ }
   return (
     <React.Fragment>
       <div className="UploadedDocumentsTable">
@@ -161,11 +173,20 @@ export const UploadedDocumentsTable = () => {
 
         {submittedDocs?.length === 0 && renderNoData()}
       </div>
-      {!!currentDoc?.docId && (
+      {currentDoc?.docId && (
         <DocumentView
-          hideViewer={setCurrentDoc}
+          hideViewer={(value: boolean) => {
+            clearBlob();
+            if(value === false) {
+              let abc: any = {}
+              setCurrentDoc(abc);
+            }
+          }}
           {...currentDoc}
           fileId={currentDoc.fileId}
+          tenantId = {Auth.getTenantId()}
+          blobData = {blobData}
+          submittedDocumentCallBack = {getSubmittedDocumentForView}
         />
       )}
     </React.Fragment>

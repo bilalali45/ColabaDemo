@@ -15,6 +15,7 @@ export class TemplateManagerEndpoints {
     }
 
     static DELETE = {
-        templateById: (tenantId: string, templateId: string) => `/api/documentmanagement/template/deletetemplate?tenantId=${tenantId}&templateId=${templateId}`
+        templateById: (tenantId: string, templateId: string) => `/api/documentmanagement/template/deletetemplate?tenantId=${tenantId}&templateId=${templateId}`,
+        deleteTemplateDocument: (tenantId: string, templateId: string, documentId: string) => `/api/documentmanagement/template/deletetemplate?tenantId=${tenantId}&templateId=${templateId}&documentId=${documentId}`
     }
 }

@@ -13,13 +13,17 @@ export const MCUHome = () => {
 
   useEffect(() => {}, []);
 
-  return (
-    <section className="home-layout">
-      <Switch>
-        <Route path="/needList" component={NeedList} />
-        <Route path="/templateManager" component={TemplateManager} />
-        <Route path="/ReviewDocument" component={ReviewDocument} />
-      </Switch>
-    </section>
-  );
-};
+    useEffect(() => {
+    }, []);
+  
+    return (
+        <section className="home-layout">
+            <Switch>
+                <Redirect exact from="/" to="/needList"/>
+                <Route path="/needList" component={NeedList} />
+                <Route path="/templateManager" component={TemplateManager} />
+                <Route path="/ReviewDocument" component={ReviewDocument} />
+            </Switch>
+        </section>
+    )
+}

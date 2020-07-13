@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
-import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
+import {DocumentView} from 'rainsoft-rc';
+
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -10,6 +11,8 @@ import { Auth } from "../../../../../services/auth/Auth";
 import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest";
 import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
+//import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
+
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -48,7 +51,7 @@ export const SelectedDocuments = ({
   const currentSelected: any = documents.currentDoc;
   const selectedFiles = currentSelected.files || [];
   const docTitle = currentSelected ? currentSelected.docName : "";
-
+  const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -76,9 +79,9 @@ export const SelectedDocuments = ({
   };
 
   const viewDocument = (document: any) => {
-    const {
-      currentDoc: { id, requestId, docId },
-    }: any = state.documents;
+    clearBlob();
+    debugger
+    const {currentDoc: { id, requestId, docId },}: any = state.documents;
     const { id: fileId, clientName } = document;
 
     setCurrentDoc({
@@ -90,6 +93,14 @@ export const SelectedDocuments = ({
       file: document.file,
     });
   };
+
+  const getSubmittedDocumentForView = async (id, requestId, docId, fileId, tenantId) => {
+    const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId})) as any;
+   setBlobData(response);
+  }
+ const clearBlob = () => {
+  setBlobData(null);
+ }
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
@@ -283,6 +294,10 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => setCurrentDoc(null)}
             {...currentDoc}
+            tenantId = {Auth.getTenantId()}
+            blobData = {blobData}
+            submittedDocumentCallBack = {getSubmittedDocumentForView}
+           
           />
         )}
       </div>

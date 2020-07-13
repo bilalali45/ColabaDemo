@@ -9,5 +9,6 @@ namespace DocumentManagement.Service
     public interface IRequestService
     {
         Task<bool> SaveDraft(LoanApplication loanApplication);
+        Task InsertLog(string activityId, string activity);
     }
 }

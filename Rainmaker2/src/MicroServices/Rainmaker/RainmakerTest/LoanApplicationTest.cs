@@ -486,7 +486,6 @@ namespace RainmakerTest
 
             //Assert
             Assert.NotNull(result);
-
             Assert.IsType<string>(result);
 
 
@@ -582,6 +581,188 @@ namespace RainmakerTest
             Assert.Equal("https://entityframeworkcore.com//lo/Shehroz", res.WebUrl);
         }
 
+        [Fact]
+        public async Task TestPostLoanApplicationController()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+            LoanApplicationController loanApplicationController = new LoanApplicationController(mock.Object, null, null, null);
+
+            loanApplicationController.ControllerContext = context;
+
+            //Act
+            var res = await loanApplicationController.PostLoanApplication(1, true);
+
+            //Assert
+            Assert.NotNull(res);
+            Assert.IsType<OkObjectResult>(res);
+
+        }
+
+
+        [Fact]
+        public async Task TestPostLoanApplicationServiceTrue()
+        {
+            //Arrange
+            
+            Mock<IOpportunityService> mock = new Mock<IOpportunityService>();
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication app = new LoanApplication()
+            {
+                Id = 4,
+                LoanAmount = 1000,
+                LoanPurposeId = 1,
+                EntityTypeId = 1,
+                SubjectPropertyDetailId = 1,
+                OpportunityId = 4
+            };
+            dataContext.Set<LoanApplication>().Add(app);
+
+            Opportunity opportunity = new Opportunity
+            {
+                Id = 4,
+                IsActive = true,
+                EntityTypeId = 1,
+                IsDeleted = false,
+                NoRuleMatched = false,
+                IsAutoAssigned = true,
+                IsPickedByOwner = true,
+                IsDuplicate = false,
+                BusinessUnitId = 1,
+                OwnerId = 1
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            OpportunityLeadBinder opportunityLeadBinder = new OpportunityLeadBinder
+            {
+                Id = 4,
+                OpportunityId = 4,
+                CustomerId = 4,
+                OwnTypeId = 1
+            };
+            dataContext.Set<OpportunityLeadBinder>().Add(opportunityLeadBinder);
+
+            Customer customer = new Customer()
+            {
+                Id = 4,
+                UserId = 1,
+                EntityTypeId = 1,
+                DisplayOrder = 1,
+                IsActive = true,
+                IsSystem = true,
+                IsDeleted = false,
+                ContactId = 4
+            };
+            dataContext.Set<Customer>().Add(customer);
+
+            Contact contact = new Contact() 
+            {
+                Id = 4,
+                EntityTypeId = 1,
+                IsDeleted = false
+            };
+            dataContext.Set<Contact>().Add(contact);
+            dataContext.SaveChanges();
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            PostModel res = await loanService.PostLoanApplication(4, true,1, mock.Object);
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(1, res.userId);
+            Assert.Equal(" ", res.userName);
+        }
+
+        [Fact]
+        public async Task TestPostLoanApplicationServiceFalse()
+        {
+            //Arrange
+
+            Mock<IOpportunityService> mock = new Mock<IOpportunityService>();
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication app = new LoanApplication()
+            {
+                Id = 3,
+                LoanAmount = 1000,
+                LoanPurposeId = 1,
+                EntityTypeId = 1,
+                SubjectPropertyDetailId = 1,
+                OpportunityId = 3
+            };
+            dataContext.Set<LoanApplication>().Add(app);
+
+            Opportunity opportunity = new Opportunity
+            {
+                Id = 3,
+                IsActive = true,
+                EntityTypeId = 1,
+                IsDeleted = false,
+                NoRuleMatched = false,
+                IsAutoAssigned = true,
+                IsPickedByOwner = true,
+                IsDuplicate = false,
+                BusinessUnitId = 1,
+                OwnerId = 1
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            OpportunityLeadBinder opportunityLeadBinder = new OpportunityLeadBinder
+            {
+                Id = 3,
+                OpportunityId = 3,
+                CustomerId = 3,
+                OwnTypeId = 1
+            };
+            dataContext.Set<OpportunityLeadBinder>().Add(opportunityLeadBinder);
+
+            Customer customer = new Customer()
+            {
+                Id = 3,
+                UserId = 1,
+                EntityTypeId = 1,
+                DisplayOrder = 1,
+                IsActive = true,
+                IsSystem = true,
+                IsDeleted = false,
+                ContactId = 2
+            };
+            dataContext.Set<Customer>().Add(customer);
+
+            Contact contact = new Contact()
+            {
+                Id = 3,
+                EntityTypeId = 1,
+                IsDeleted = false
+            };
+            dataContext.Set<Contact>().Add(contact);
+            dataContext.SaveChanges();
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            PostModel res = await loanService.PostLoanApplication(3, false, 1, mock.Object);
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(1, res.userId);
+            Assert.Equal(" ", res.userName);
+        }
     }
 }

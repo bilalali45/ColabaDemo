@@ -36,8 +36,8 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
                 templates: payload
             }
 
-        case TemplateActionsType.FetchCategoryDocuments:
-
+        case TemplateActionsType.FetchCategoryDocuments:    
+            debugger
             return {
                 ...state,
                 categoryDocuments: payload
