@@ -23,6 +23,14 @@ export class Auth {
     return localStorage.getItem("auth");
   }
 
+  public static getLoginUserName() {
+    return localStorage.getItem("devusername");
+  }
+
+  public static getLoginPassword() {
+    return localStorage.getItem("devuserpassword");
+  }
+
   public static checkAuth(): boolean | string {
     let rainmaker2Token = cookies.get("Rainmaker2Token");
     let auth = localStorage.getItem("auth");
