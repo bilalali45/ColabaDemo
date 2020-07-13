@@ -10,29 +10,10 @@ import { TemplateActionsType } from '../../../Store/reducers/TemplatesReducer'
 
 export const TemplateManager = () => {
 
-    const { state, dispatch } = useContext(Store)
-
-    useEffect(() => {
-        fetchTemplates();
-    }, [])
-
-    const fetchTemplates = async () => {
-        try {
-            let res: any = await TemplateActions.fetchTemplates('1');
-            dispatch({ type: TemplateActionsType.FetchTemplates, payload: res });
-            //    if(res.data) {
-
-            //    }
-            console.log(res);
-        } catch (error) {
-            dispatch({ type: TemplateActionsType.FetchTemplates, payload: error });
-        }
-    }
-
     return (
-        <main>
-            <TemplateHeader />
-            <TemplateHome />
+        <main className="ManageTemplate-Wrap">
+            <TemplateHeader/>
+            <TemplateHome/>
         </main>
     )
 }

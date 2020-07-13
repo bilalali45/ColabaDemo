@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { LocalDB } from '../../Utils/LocalDB';
+import { Http } from 'rainsoft-js';
+
+const http = new Http();
 
 export class UserActions {
     static async authorizeOnlyForDev() {
         try {
-            let res : any = await axios.post(`https://alphamaingateway.rainsoftfn.com/api/Identity/token/authorize`, LocalDB.getCredentials());
+            let res : any = await http.post(`/api/Identity/token/authorize`, LocalDB.getCredentials());
             let {token, refreshToken} = res.data.data;
             LocalDB.storeAuthTokens(token, refreshToken);
             return res.data.data;

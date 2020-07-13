@@ -5,10 +5,23 @@ import { NewTemplate } from '../NewTemplate/NewTemplate'
 
 export const TemplateHome = () => {
     return (
-        <section>
-            <TemplateListContainer/>
-            <SelectedTemplate/>
-            <NewTemplate/>
+        <section className="MT-CWrap">
+<div className="container-mcu">
+            <div className="row">
+                <div className="col-sm-4">
+                    <div className="MT-leftbar">
+                    <TemplateListContainer />
+
+                    </div>
+                </div>
+                <div className="col-sm-8">
+                    <div className="MT-rightbar">
+                    <SelectedTemplate/>
+                    {/* <NewTemplate/> */}
+                    </div>
+                </div>
+            </div>
+            </div>  
         </section>
     )
 }

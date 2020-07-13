@@ -1,34 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
 using Newtonsoft.Json;
-using System.Web;
 
 namespace DocumentManagement.API.Controllers
 {
     [Authorize(Roles = "Customer")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class FileController : Controller
     {
-        private readonly IFileService fileService;
-        private readonly IFileEncryptionFactory fileEncryptionFactory;
-        private readonly IFtpClient ftpClient;
-        private readonly ISettingService settingService;
-        private readonly IKeyStoreService keyStoreService;
-        private readonly IConfiguration config;
-        public FileController(IFileService fileService, IFileEncryptionFactory fileEncryptionFactory,IFtpClient ftpClient,ISettingService settingService, IKeyStoreService keyStoreService, IConfiguration config)
+        #region Constructors
+
+        public FileController(IFileService fileService,
+                              IFileEncryptionFactory fileEncryptionFactory,
+                              IFtpClient ftpClient,
+                              ISettingService settingService,
+                              IKeyStoreService keyStoreService,
+                              IConfiguration config)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -38,88 +34,160 @@ namespace DocumentManagement.API.Controllers
             this.config = config;
         }
 
+        #endregion
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Submit([FromForm]string id, [FromForm] string requestId, [FromForm] string docId, [FromForm] string order,[FromForm] int tenantId, List<IFormFile> files)
+        #region Private Variables
+
+        private readonly IFileService fileService;
+        private readonly IFileEncryptionFactory fileEncryptionFactory;
+        private readonly IFtpClient ftpClient;
+        private readonly ISettingService settingService;
+        private readonly IKeyStoreService keyStoreService;
+        private readonly IConfiguration config;
+
+        #endregion
+
+        #region Action Methods
+
+        #region Post Actions
+
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> Submit([FromForm] string id,
+                                                [FromForm] string requestId,
+                                                [FromForm] string docId,
+                                                [FromForm] string order,
+                                                [FromForm] int tenantId,
+                                                List<IFormFile> files)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var algo = config["File:Algo"];
-            var key = config["File:Key"];
-            Setting setting = await settingService.GetSetting();
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var algo = config[key: "File:Algo"];
+            var key = config[key: "File:Key"];
+            var setting = await settingService.GetSetting();
 
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await keyStoreService.GetFtpKey()));
+            ftpClient.Setup(hostIp: setting.ftpServer,
+                            userName: setting.ftpUser,
+                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                                                              key: await keyStoreService.GetFtpKey()));
             // save
             foreach (var formFile in files)
-            {
                 if (formFile.Length > 0)
                 {
-
                     if (formFile.Length > setting.maxFileSize)
-                        throw new Exception("File size exceeded limit");
-                    var filePath = fileEncryptionFactory.GetEncryptor(algo).EncryptFile(formFile.OpenReadStream(),await keyStoreService.GetFileKey());
+                        throw new Exception(message: "File size exceeded limit");
+                    var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
+                                                                                              password: await keyStoreService.GetFileKey());
                     // upload to ftp
-                    await ftpClient.UploadAsync(Path.GetFileName(filePath),filePath);
+                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                localFile: filePath);
                     // insert into mongo
-                    var docQuery = await fileService.Submit(formFile.ContentType,id, requestId, docId,formFile.FileName,Path.GetFileName(filePath),(int)formFile.Length,key,algo,tenantId,userProfileId);
-                    System.IO.File.Delete(filePath);
+                    var docQuery = await fileService.Submit(contentType: formFile.ContentType,
+                                                            id: id,
+                                                            requestId: requestId,
+                                                            docId: docId,
+                                                            clientName: formFile.FileName,
+                                                            serverName: Path.GetFileName(path: filePath),
+                                                            size: (int) formFile.Length,
+                                                            encryptionKey: key,
+                                                            encryptionAlgorithm: algo,
+                                                            tenantId: tenantId,
+                                                            userProfileId: userProfileId);
+                    System.IO.File.Delete(path: filePath);
                 }
-            }
+
             // set order
-            FileOrderModel model = new FileOrderModel
-            {
-                id = id,
-                docId = docId,
-                requestId = requestId,
-                files = JsonConvert.DeserializeObject<List<FileNameModel>>(order),
-                tenantId=tenantId
-            };
-            await fileService.Order(model,userProfileId);
+            var model = new FileOrderModel
+                        {
+                            id = id,
+                            docId = docId,
+                            requestId = requestId,
+                            files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
+                            tenantId = tenantId
+                        };
+            await fileService.Order(model: model,
+                                    userProfileId: userProfileId);
             return Ok();
         }
 
-        [HttpPut("[action]")]
+        #endregion
+
+        #region Put Actions
+
+        [HttpPut(template: "[action]")]
         public async Task<IActionResult> Done(DoneModel model)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await fileService.Done(model,userProfileId);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await fileService.Done(model: model,
+                                                  userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
 
-        [HttpPut("[action]")]
+
+        [HttpPut(template: "[action]")]
         public async Task<IActionResult> Rename(FileRenameModel model)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await fileService.Rename(model,userProfileId);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await fileService.Rename(model: model,
+                                                    userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
-        [HttpPut("[action]")]
+
+
+        [HttpPut(template: "[action]")]
         public async Task<IActionResult> Order(FileOrderModel model)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            await fileService.Order(model,userProfileId);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            await fileService.Order(model: model,
+                                    userProfileId: userProfileId);
             return Ok();
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> View(string id, string requestId, string docId, string fileId, int tenantId)
+
+        #endregion
+
+        #region Get Actions
+
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> View(string id,
+                                              string requestId,
+                                              string docId,
+                                              string fileId,
+                                              int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId,tenantId=tenantId };
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var model = new FileViewModel
+                        {
+                            docId = docId,
+                            fileId = fileId,
+                            id = id,
+                            requestId = requestId,
+                            tenantId = tenantId
+                        };
 
-            var fileviewdto = await fileService.View(model,userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
-            Setting setting = await settingService.GetSetting();
-            
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword,await keyStoreService.GetFtpKey()));
+            var fileviewdto = await fileService.View(model: model,
+                                                     userProfileId: userProfileId,
+                                                     ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
+            var setting = await settingService.GetSetting();
+
+            ftpClient.Setup(hostIp: setting.ftpServer,
+                            userName: setting.ftpUser,
+                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                                                              key: await keyStoreService.GetFtpKey()));
             var filepath = Path.GetTempFileName();
-            await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
+            await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
+                                          localFile: filepath);
 
-            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, await keyStoreService.GetFileKey(), fileviewdto.clientName), fileviewdto.contentType, fileviewdto.clientName);
-
+            return File(fileStream: fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
+                                                                                                                          password: await keyStoreService.GetFileKey(),
+                                                                                                                          originalFileName: fileviewdto.clientName),
+                        contentType: fileviewdto.contentType,
+                        fileDownloadName: fileviewdto.clientName);
         }
+
+        #endregion
+
+        #endregion
     }
 }
