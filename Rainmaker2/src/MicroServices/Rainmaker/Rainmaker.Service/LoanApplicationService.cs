@@ -130,5 +130,86 @@ namespace Rainmaker.Service
                 WebUrl = businessUnit.WebUrl
             };
         }
+
+        public async Task<PostModel> PostLoanApplication(int loanApplicationId, bool isDraft, int userProfileId, IOpportunityService opportunityService)
+        {
+            var postModel = await Uow.Repository<LoanApplication>().Query(x => x.Id == loanApplicationId)
+                .Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders).ThenInclude(x => x.Customer)
+                .ThenInclude(x => x.Contact)
+                .Select(x => new PostModel()
+                {
+                    userId = x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).First().Customer.UserId,
+                    userName = x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).First().Customer.Contact.FirstName + " " + x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).First().Customer.Contact.LastName
+                }).FirstOrDefaultAsync();
+            if (!isDraft)
+            {
+                await ChangeStatus(loanApplicationId,userProfileId,opportunityService);
+            }
+            return postModel;
+        }
+
+        private async Task ChangeStatus(int loanApplicationId, int userProfileId, IOpportunityService _opportunityservice)
+        {
+            var loanApplication = await Uow.Repository<LoanApplication>().Query(x => x.Id == loanApplicationId).FirstOrDefaultAsync();
+
+            int lockStatusId = EnumLockStatusList.Float.ToInt();
+            int statusId = StatusListEnum.DocumentUpload.ToInt();
+
+            var opportunity = await _opportunityservice.GetByIdAsync(loanApplication.OpportunityId.Value);
+            OpportunityStatusLog statuslog = null;
+            OpportunityLockStatusLog lockStatusLog = null;
+
+            if (opportunity != null)
+            {
+                //status log
+                if (statusId != opportunity.StatusId)
+                {
+                    statuslog = new OpportunityStatusLog
+                    {
+                        StatusId = statusId,
+                        DatetimeUtc = DateTime.UtcNow,
+                        OpportunityId = opportunity.Id,
+                        IsActive = true,
+                        StatusCauseId = null,
+                        ModifiedBy = userProfileId,
+                        ModifiedOnUtc = DateTime.UtcNow,
+                        CreatedBy = userProfileId,
+                        CreatedOnUtc = DateTime.UtcNow,
+                        EntityTypeId = Constants.GetEntityType(typeof(OpportunityStatusLog))
+                    };
+                    _opportunityservice.InsertOpportunityStatusLog(statuslog);
+                }
+
+                //Lock Status Log
+                if (lockStatusId != opportunity.LockStatusId)
+                {
+                    lockStatusLog = new OpportunityLockStatusLog
+                    {
+                        LockStatusId = lockStatusId,
+                        LockCauseId = null,
+                        DatetimeUtc = DateTime.UtcNow,
+                        OpportunityId = opportunity.Id,
+                        IsActive = true,
+                        ModifiedBy = userProfileId,
+                        ModifiedOnUtc = DateTime.UtcNow,
+                        CreatedBy = userProfileId,
+                        CreatedOnUtc = DateTime.UtcNow,
+                        EntityTypeId = Constants.GetEntityType(typeof(OpportunityLockStatusLog))
+
+                    };
+                    _opportunityservice.InsertOpportunityLockStatusLog(lockStatusLog);
+                }
+
+                opportunity.StatusId = statusId;
+                opportunity.StatusCauseId = null;
+                opportunity.LockStatusId = lockStatusId;
+                opportunity.LockCauseId = null;
+                opportunity.ModifiedBy = CurrentUserId;
+                opportunity.ModifiedOnUtc = DateTime.UtcNow;
+                opportunity.TpId = null;
+                _opportunityservice.Update(opportunity);
+                await _opportunityservice.SaveChangesAsync();
+            }
+        }
     }
 }

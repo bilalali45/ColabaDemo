@@ -50,4 +50,10 @@ namespace Rainmaker.Model
         public string NMLS { get; set; }
         public string Photo { get; set; }
     }
+
+    public class PostModel
+    {
+        public int? userId { get; set; }
+        public string userName { get; set; }
+    }
 }
