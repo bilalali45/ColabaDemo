@@ -1,6 +1,7 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext,useState } from 'react'
 import { TemplateItemsList } from './TemplateItemsList/TemplateItemsList'
 import { AddDocument } from '../../AddDocument/AddDocument'
+import checkicon from '../../../../../Assets/images/checkicon.svg'
 import EditIcon from '../../../../../Assets/images/editicon.svg'
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer'
@@ -9,6 +10,13 @@ import { Store } from '../../../../../Store/Store'
 export const SelectedTemplate = () => {
 
     const { state, dispatch } = useContext(Store);
+    const [editTitleview, seteditTitleview] = useState<boolean>(false);
+    const RenameTitle = () => {
+        seteditTitleview(true)
+    }
+    const VeiwableTitle = () => {
+        seteditTitleview(false)
+    }
 
     const templateManager: any = state.templateManager;
     const templateDocuments = templateManager?.templateDocuments;
@@ -23,7 +31,14 @@ export const SelectedTemplate = () => {
     return (
         <section>
             <div className="T-head">
-                <p> My standard checklist <span className="editicon"><img src={EditIcon} alt="" /></span></p>
+                {editTitleview?
+                <p className="editable"> <input value="My standard checklist" className="editable-TemplateTitle" /> 
+                <span className="editsaveicon" onClick={VeiwableTitle}><img src={checkicon} alt="" /></span></p>
+                : <>
+<p> My standard checklist <span className="editicon" onClick={RenameTitle}><img src={EditIcon} alt="" /></span></p>
+                </>
+                }
+                
             </div>
 
             <div className="ST-content-Wrap">
