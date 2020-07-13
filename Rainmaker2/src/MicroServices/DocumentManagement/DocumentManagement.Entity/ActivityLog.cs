@@ -11,11 +11,18 @@ namespace DocumentManagement.Entity
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
-
-        public string userId { get; set; }
-        public DateTime createdOn { get; set; }
-        public string username { get; set; }
-        public string requestId { get; set; }
+        public int userId { get; set; }
+        public string userName { get; set; }
+        public DateTime dateTime { get; set; }
+        public string activity { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        public string docName { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string loanId { get; set; }
+        public string message { get; set; }
+        public List<Log> log { get; set; }
     }
 }
