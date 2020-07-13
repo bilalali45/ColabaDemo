@@ -1,0 +1,28 @@
+.review-document{
+
+    &-header{
+        background-color: color('ReviewDocumentHeaderBg');
+        color: color('ReviewDocumentHeaderText');
+        padding: 15px;
+
+        &--left{
+
+        }
+        &--center{
+
+        }
+        &--right{
+            text-align: end;
+        }
+    }
+
+    &-body{
+        &--content{
+
+        }
+        &--aside{
+
+        }
+    }
+
+}

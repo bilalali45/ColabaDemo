@@ -2,7 +2,7 @@ import React from 'react';
 
 export const ReviewDocumentStatement = () => {
     return (
-        <div id="" data-component="ReviewDocumentStatement">
+        <div id="ReviewDocumentStatement" data-component="ReviewDocumentStatement">
 
         </div>
     )
