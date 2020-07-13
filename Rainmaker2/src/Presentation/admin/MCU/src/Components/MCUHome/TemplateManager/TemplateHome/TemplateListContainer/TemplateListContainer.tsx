@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 export const TemplateListContainer = () => {
     const [removeTemplate, setremoveTemplate] = useState<any>(false);
-
+    const [removeTemplate1, setremoveTemplate1] = useState<any>(false);
     const remove = () => {
         setremoveTemplate(true)
     }
     const undo = () => {
         setremoveTemplate(false)
+    }
+
+    const remove1 = () => {
+        setremoveTemplate1(true)
+    }
+    const undo1 = () => {
+        setremoveTemplate1(false)
     }
     const MyTemplates = () => {
         return (
@@ -39,15 +46,17 @@ export const TemplateListContainer = () => {
                                 </li>
                                 <li>
                                     <div className="l-wrap">
-                                        {!removeTemplate ?
+                                        {!removeTemplate1 ?
                                             <div className="c-list">
                                                 My standard checklist
-                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
+                                <span className="BTNclose" onClick={remove1}><i className="zmdi zmdi-close"></i></span>
                                             </div>
                                             : <>
                                                 <div className="alert-cancel">
                                                     <span>Remove this template?</span>
-                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
+                                                    <div className="l-remove-actions">
+                                                        <button className="lbtn btn-no" onClick={undo1}> No</button> 
+                                                        <button className="lbtn btn-yes" >Yes</button></div>
                                                 </div>
                                             </>
                                         }
