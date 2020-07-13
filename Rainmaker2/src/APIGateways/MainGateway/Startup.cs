@@ -39,7 +39,14 @@ namespace MainGateway
             services.AddTransient<IKeyStoreService, KeyStoreService>();
             
             services.AddControllers();
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                                         builder =>
+                                         {
+                                             builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                         });
+            });
 
 
 

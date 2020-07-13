@@ -1,51 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DocumentManagement.Entity;
-using DocumentManagement.Model;
+﻿using System.Threading.Tasks;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    [Authorize(Roles = "Customer")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class DashboardController : Controller
     {
+        #region Private Variables
+
         private readonly IDashboardService dashboardService;
+
+        #endregion
+
+        #region Constructors
+
         public DashboardController(IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
         }
-        [HttpGet("GetPendingDocuments")]
-        public async Task<IActionResult> GetPendingDocuments(int loanApplicationId, int tenantId)
+
+        #endregion
+
+        #region Action Methods
+
+        #region GetMethods
+
+        [HttpGet(template: "GetPendingDocuments")]
+        public async Task<IActionResult> GetPendingDocuments(int loanApplicationId,
+                                                             int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId,tenantId, userProfileId);
-            return Ok(docQuery);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId: loanApplicationId,
+                                                                      tenantId: tenantId,
+                                                                      userProfileId: userProfileId);
+            return Ok(value: docQuery);
         }
-        [HttpGet("GetSubmittedDocuments")]
-        public async Task<IActionResult> GetSubmittedDocuments(int loanApplicationId, int tenantId)
+
+
+        [HttpGet(template: "GetSubmittedDocuments")]
+        public async Task<IActionResult> GetSubmittedDocuments(int loanApplicationId,
+                                                               int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId, tenantId, userProfileId);
-            return Ok(docQuery);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId: loanApplicationId,
+                                                                        tenantId: tenantId,
+                                                                        userProfileId: userProfileId);
+            return Ok(value: docQuery);
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetDashboardStatus(int loanApplicationId, int tenantId)
+
+
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> GetDashboardStatus(int loanApplicationId,
+                                                            int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            return Ok(await dashboardService.GetDashboardStatus(loanApplicationId,tenantId,userProfileId));
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            return Ok(value: await dashboardService.GetDashboardStatus(loanApplicationId: loanApplicationId,
+                                                                       tenantId: tenantId,
+                                                                       userProfileId: userProfileId));
         }
-        [HttpGet("GetFooterText")]
-        public async Task<IActionResult> GetFooterText(int tenantId,int businessUnitId)
+
+
+        [HttpGet(template: "GetFooterText")]
+        public async Task<IActionResult> GetFooterText(int tenantId,
+                                                       int businessUnitId)
         {
-            var docQuery = await dashboardService.GetFooterText(tenantId,businessUnitId);
-            return Ok(docQuery);
+            var docQuery = await dashboardService.GetFooterText(tenantId: tenantId,
+                                                                businessUnitId: businessUnitId);
+            return Ok(value: docQuery);
         }
+
+        #endregion
+
+        #endregion
     }
 }

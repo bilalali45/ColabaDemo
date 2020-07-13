@@ -1,24 +1,24 @@
-﻿using DocumentManagement.Entity;
+﻿using System.IO;
+using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
     [Authorize(Roles = "MCU")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class DocumentController : Controller
     {
-        private readonly IDocumentService documentService;
-        private readonly IFileEncryptionFactory fileEncryptionFactory;
-        private readonly IFtpClient ftpClient;
-        private readonly ISettingService settingService;
-        private readonly IKeyStoreService keyStoreService;
-        public DocumentController(IDocumentService documentService, IFileEncryptionFactory fileEncryptionFactory, IFtpClient ftpClient, ISettingService settingService, IKeyStoreService keyStoreService)
+        #region Constructors
+
+        public DocumentController(IDocumentService documentService,
+            IFileEncryptionFactory fileEncryptionFactory,
+            IFtpClient ftpClient,
+            ISettingService settingService,
+            IKeyStoreService keyStoreService)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -27,79 +27,146 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
         }
 
-        [HttpPost("[action]")]
+        #endregion
+
+        #region Private Variables
+
+        private readonly IDocumentService documentService;
+        private readonly IFileEncryptionFactory fileEncryptionFactory;
+        private readonly IFtpClient ftpClient;
+        private readonly ISettingService settingService;
+        private readonly IKeyStoreService keyStoreService;
+
+        #endregion
+
+        #region Action Methods
+
+        //Todo Validations: Get actions should have httpGet attribute
+        [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
         {
-            var docQuery = await documentService.GetDocumentsByTemplateIds(templateIdsModel);
+            var docQuery = await documentService.GetDocumentsByTemplateIds(templateIdsModel: templateIdsModel);
 
-            return Ok(docQuery);
+            return Ok(value: docQuery);
         }
-     
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> GetFiles(string id, string requestId, string docId)
+
+        //Todo Validations: Get actions should have httpGet attribute
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> GetFiles(string id,
+                                                  string requestId,
+                                                  string docId)
         {
-            return Ok(await documentService.GetFiles(id, requestId, docId));
+            return Ok(value: await documentService.GetFiles(id: id,
+                                                            requestId: requestId,
+                                                            docId: docId));
         }
-       
-        [HttpPost("[action]")]
-        public async Task<IActionResult> GetActivityLog(string id, string typeId, string docId)
-     
+
+
+        //Todo Validations: Get actions should have httpGet attribute
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> GetActivityLog(string id,
+                                                        string typeId,
+                                                        string docId)
+
         {
-            return Ok(await documentService.GetActivityLog(id, typeId, docId));
+            return Ok(value: await documentService.GetActivityLog(id: id,
+                                                                  typeId: typeId,
+                                                                  docId: docId));
         }
-        [HttpPost("[action]")]
+
+
+        //Todo Validations: Get actions should have httpGet attribute
+        [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetEmailLog(string id)
 
         {
-            return Ok(await documentService.GetEmailLog(id));
+            return Ok(value: await documentService.GetEmailLog(id: id));
         }
-        [HttpPost("[action]")]
-        public async Task<IActionResult> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+
+
+        //Todo Validations: Post actions should receive data in view models, so that its easy to apply validations
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> McuRename(string id,
+                                                   string requestId,
+                                                   string docId,
+                                                   string fileId,
+                                                   string newName)
 
         {
-            var docQuery = await documentService.mcuRename(id, requestId, docId, fileId, newName);
+            var docQuery = await documentService.mcuRename(id: id,
+                                                           requestId: requestId,
+                                                           docId: docId,
+                                                           fileId: fileId,
+                                                           newName: newName);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
-            
+            return NotFound();
         }
 
-        [HttpPost("[action]")]
+
+        [HttpPost(template: "[action]")]
         public async Task<IActionResult> AcceptDocument(AcceptDocumentModel acceptDocumentModel)
         {
-            var docQuery = await documentService.AcceptDocument(acceptDocumentModel.id, acceptDocumentModel.requestId, acceptDocumentModel.docId);
+            var docQuery = await documentService.AcceptDocument(id: acceptDocumentModel.id,
+                                                                requestId: acceptDocumentModel.requestId,
+                                                                docId: acceptDocumentModel.docId);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
 
-        [HttpPost("[action]")]
+
+        [HttpPost(template: "[action]")]
         public async Task<IActionResult> RejectDocument(RejectDocumentModel rejectDocumentModel)
         {
-            var docQuery = await documentService.RejectDocument(rejectDocumentModel.id, rejectDocumentModel.requestId, rejectDocumentModel.docId, rejectDocumentModel.message);
+            var docQuery = await documentService.RejectDocument(id: rejectDocumentModel.id,
+                                                                requestId: rejectDocumentModel.requestId,
+                                                                docId: rejectDocumentModel.docId,
+                                                                message: rejectDocumentModel.message);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> View(string id, string requestId, string docId, string fileId, int tenantId)
+
+
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> View(string id,
+                                              string requestId,
+                                              string docId,
+                                              string fileId,
+                                              int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            FileViewModel model = new FileViewModel { docId = docId, fileId = fileId, id = id, requestId = requestId, tenantId = tenantId };
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var model = new FileViewModel
+                        {
+                            docId = docId,
+                            fileId = fileId,
+                            id = id,
+                            requestId = requestId,
+                            tenantId = tenantId
+                        };
 
-            var fileviewdto = await documentService.View(model, userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
-            Setting setting = await settingService.GetSetting();
+            var fileviewdto = await documentService.View(model,
+                                                         userProfileId,
+                                                         HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
+            var setting = await settingService.GetSetting();
 
-            ftpClient.Setup(setting.ftpServer, setting.ftpUser, AESCryptography.Decrypt(setting.ftpPassword, await keyStoreService.GetFtpKey()));
+            ftpClient.Setup(hostIp: setting.ftpServer,
+                            userName: setting.ftpUser,
+                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                                                              key: await keyStoreService.GetFtpKey()));
             var filepath = Path.GetTempFileName();
-            await ftpClient.DownloadAsync(fileviewdto.serverName, filepath);
+            await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
+                                          localFile: filepath);
 
-            return File(fileEncryptionFactory.GetEncryptor(fileviewdto.encryptionAlgorithm).DecrypeFile(filepath, await keyStoreService.GetFileKey(), fileviewdto.clientName), fileviewdto.contentType, fileviewdto.clientName);
-
+            return File(fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
+                                                                                                              password: await keyStoreService.GetFileKey(),
+                                                                                                              originalFileName: fileviewdto.clientName),
+                        fileviewdto.contentType,
+                        fileviewdto.clientName);
         }
+
+        #endregion
     }
 }
