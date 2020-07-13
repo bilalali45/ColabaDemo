@@ -62,62 +62,111 @@
                 }
 
             }
-
-
             .listWrap-templates {
                 padding: 20px 30px;
                 margin-left: -30px;
-           
-            .MT-groupList {
-                .title-wrap {
-                    margin-bottom: 10px;
-                    h4 {
-                        font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
-                        color: color('colorBlack');
-                        margin-bottom: 0;
-                        text-transform: uppercase;
+
+                .MT-groupList {
+                    .title-wrap {
+                        margin-bottom: 10px;
+
+                        h4 {
+                            font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
+                            color: color('colorBlack');
+                            margin-bottom: 0;
+                            text-transform: uppercase;
+                        }
                     }
-                }
 
-                .list-wrap {
-                    margin-left: -30px;
-                    margin-right: -30px;
+                    .list-wrap {
+                        margin-left: -30px;
+                        margin-right: -30px;
 
-                    ul {
-                        li {
-                            font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
-                            padding: 10px 30px;
-                            display: flex;
-                            min-height: 40px;
-                            align-items: center;
-                            position: relative;
-                            cursor: pointer;
-                            .BTNclose {
-                                position: absolute;
-                                display: none;
-                                width: 16px;
-                                height: 20px;
-                                right: 15px;
-                                color: color('colorRed');
-                                font-size: fontSize('xmd')+3;
+                        ul {
+                            li {
+                                font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
+                                color: color('heading');
+                                padding: 10px 30px;
+                                display: flex;
+                                min-height: 40px;
+                                align-items: center;
+                                position: relative;
+                                cursor: pointer;
 
-                            }
-                            &:hover,&.active{
-                                background: rgba(color('primary'), 0.08);
                                 .BTNclose {
-                                    display: block;
+                                    position: absolute;
+                                    display: none;
+                                    width: 16px;
+                                    height: 20px;
+                                    right: 15px;
+                                    color: color('colorRed');
+                                    font-size: fontSize('xmd')+3;
+
                                 }
+
+                                &:hover,
+                                &.active {
+                                    background: rgba(color('primary'), 0.08);
+                                    color: color('primary');
+                                    .BTNclose {
+                                        display: block;
+                                    }
                                 }
+                            }
                         }
                     }
                 }
-            }
 
-            .template-by-tenant {
+                .template-by-tenant {
 
-                padding-top: 50px;
+                    padding-top: 50px;
+                }
             }
         }
+
+.MT-rightbar{
+    .T-head {
+        padding-top: 20px;
+        min-height: 60px;
+        p {
+            font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
+            color: color('colorBlack');
+            margin-bottom: 0;
+            text-transform: uppercase;
+            padding-right: 25px;
+            display: inline-block;
+            position: relative;
+            .editicon {
+                position: absolute;
+                right: 0;
+                top: -2px;
+                cursor: pointer;
+            }
         }
+    }
+    .ST-content-Wrap {
+        ul {
+            display: inline-block;
+            li {
+                font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
+                color: color('base');  
+                position: relative;
+                display: block;
+                padding: 10px 40px 10px 0;
+                .BTNclose {
+                    position: absolute;
+                    display: block;
+                    width: 16px;
+                    height: 20px;
+                    right: 15px;
+                    color: color('colorRed');
+                    font-size: fontSize('xmd')+3;
+
+                }
+            }
+        }
+    }
+}
+
     }
 }

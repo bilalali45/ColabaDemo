@@ -17,7 +17,7 @@ export const TemplateHome = () => {
                 <div className="col-sm-8">
                     <div className="MT-rightbar">
                     <SelectedTemplate/>
-                    <NewTemplate/>
+                    {/* <NewTemplate/> */}
                     </div>
                 </div>
             </div>
