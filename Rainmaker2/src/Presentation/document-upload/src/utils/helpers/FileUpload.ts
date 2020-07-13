@@ -1,5 +1,12 @@
 import { DateFormatWithMoment } from "./DateFormat";
-import {GetActualMimeType, RemoveSpecialChars, GetFileSize, IsSizeAllowed, RemoveDefaultExt, SortByDate} from 'rainsoft-js'
+import {
+  GetActualMimeType,
+  RemoveSpecialChars,
+  GetFileSize,
+  IsSizeAllowed,
+  RemoveDefaultExt,
+  SortByDate,
+} from "rainsoft-js";
 export class FileUpload {
   static allowedSize = 15; //in mbs
 
@@ -69,11 +76,11 @@ export class FileUpload {
 
   static removeSpecialChars(text: string) {
     return RemoveSpecialChars(text);
-  //  return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+    //  return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {
-   return GetFileSize(file);
+    return GetFileSize(file);
     // let size = file.size || file.file?.size;
     // if (size) {
     //   let inKbs = size / 1000;
@@ -120,17 +127,15 @@ export class FileUpload {
   }
 
   static async isTypeAllowed(file) {
-    debugger
     const result = this.allowedFileTypes.includes(
-     // await this.getActualMimeType(file)
+      // await this.getActualMimeType(file)
       await GetActualMimeType(file)
     );
-debugger
     return result;
   }
 
   static isSizeAllowed(file) {
-    return IsSizeAllowed(file,this.allowedSize);
+    return IsSizeAllowed(file, this.allowedSize);
     // if (!file) return null;
 
     // if (file.size / 1000 / 1000 < this.allowedSize) {
@@ -157,7 +162,7 @@ debugger
   }
 
   static removeDefaultExt(fileName: string) {
-    return RemoveDefaultExt(fileName)
+    return RemoveDefaultExt(fileName);
     // let splitData = fileName.split(".");
     // let onlyName = "";
     // for (let i = 0; i < splitData.length - 1; i++) {
@@ -176,13 +181,12 @@ debugger
   }
 
   static sortByDate(array: any[]) {
-    return SortByDate(array, 'fileUploadedOn')
+    return SortByDate(array, "fileUploadedOn");
     // return array.sort((a, b) => {
     //   let first = new Date(a.fileUploadedOn);
     //   let second = new Date(b.fileUploadedOn);
     //   return first > second ? -1 : first < second ? 1 : 0;
     //});
-    
   }
 
   static checkName = (prevFiles, file) => {
@@ -205,11 +209,11 @@ debugger
         "-"
       );
       if (uploadedFileName.includes(",")) {
-        dataCount = Number(uploadedFileName.split(",")[1]); 
+        dataCount = Number(uploadedFileName.split(",")[1]);
         uploadedFileName = uploadedFileName.split(",")[0];
       }
       if (uploadingFileName === uploadedFileName) {
-        if(dataCount) numberCount.push(dataCount);
+        if (dataCount) numberCount.push(dataCount);
         count++;
       }
     }
