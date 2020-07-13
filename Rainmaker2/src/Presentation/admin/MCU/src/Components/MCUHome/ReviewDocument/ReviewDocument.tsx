@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReviewDocumentHeader} from './ReviewDocumentHeader/ReviewDocumentHeader';
+import {ReviewDocumentStatement} from './ReviewDocumentStatement/ReviewDocumentStatement';
 
 export const ReviewDocument = () => {
     return (
@@ -14,7 +15,7 @@ export const ReviewDocument = () => {
                 </div>{/* review-document-body--content */}
 
                 <aside className="review-document-body--aside">
-
+                    <ReviewDocumentStatement />
                 </aside>{/* review-document-body--aside */}
 
             </div>{/* review-document-body */}
