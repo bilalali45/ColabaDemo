@@ -105,6 +105,7 @@ namespace DocumentManagement.API.Controllers
             await fileService.Order(model,userProfileId);
             return Ok();
         }
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> View(string id, string requestId, string docId, string fileId, int tenantId)
         {
