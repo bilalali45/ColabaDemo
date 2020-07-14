@@ -48,7 +48,7 @@ const App = () => {
         <RainMakerSidebar />
         <main className="main-layout hascollapssidebar">
           <StoreProvider>
-            <Router>
+            <Router basename="/DocumentManagement">
               <Route path="/" component={MCUHome} />
               <RainMakerFooter />
             </Router>
