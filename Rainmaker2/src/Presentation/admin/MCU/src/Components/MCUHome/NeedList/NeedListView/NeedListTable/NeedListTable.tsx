@@ -4,11 +4,11 @@ import { useHistory } from "react-router-dom";
 
 import { NeedListItem } from "../NeedListItem/NeedListItem";
 import { NeedListDocumentType } from "../../../../../Entities/Types/Types";
+import { Http } from "rainsoft-js";
 
 export const NeedListTable = () => {
   const [documentList, setDocumentList] = useState<NeedListDocumentType[]>([]);
   const history = useHistory();
-  const needListItemRef = useRef();
 
   const toDocumentReview = useCallback(
     (index: number) => {
@@ -27,29 +27,14 @@ export const NeedListTable = () => {
   );
 
   const getDocumentList = useCallback(async () => {
-    const { data } = await axios.get<NeedListDocumentType[]>(
-      "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false",
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiMSIsIlVzZXJOYW1lIjoicmFpbnNvZnQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoicmFpbnNvZnQiLCJGaXJzdE5hbWUiOiJTeXN0ZW0iLCJMYXN0TmFtZSI6IkFkbWluaXN0cmF0b3IiLCJFbXBsb3llZUlkIjoiMSIsImV4cCI6MTU5NDcyNDQ3NCwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.9lfp9MZkGcqrIGSQgS9uOByF2TTGArlv32l-62Ozy08`,
-        },
-      }
+    const http = new Http();
+
+    const { data } = await http.get<NeedListDocumentType[]>(
+      "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false"
     );
 
     setDocumentList(data);
   }, [setDocumentList]);
-
-  const nextDocument = useCallback((currentIndex: number) => {
-    if (currentIndex === documentList.length - 1) return;
-
-    // setCurrentDocument(() => documentList.length + 1);
-  }, []);
-
-  const previousDocument = useCallback((currentIndex: number) => {
-    if (currentIndex === 0) return;
-
-    //  setCurrentDocument(() => documentList.length - 1);
-  }, []);
 
   useEffect(() => {
     getDocumentList();
