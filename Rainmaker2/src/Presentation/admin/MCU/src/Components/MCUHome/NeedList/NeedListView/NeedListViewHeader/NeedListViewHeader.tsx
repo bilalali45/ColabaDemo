@@ -3,11 +3,13 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
 
-export const NeedListViewHeader = () => {
+type headerProps = {
+    toggleCallBack: Function
+}
 
-    let dropdown = {
-       // display:"none"
-    }
+export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
+
+   
 
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
@@ -51,10 +53,6 @@ export const NeedListViewHeader = () => {
                 <label><strong>All</strong></label>
                 &nbsp;&nbsp;&nbsp;
                 <Toggler />
-                {/* <label className="switch">
-                    <input type="checkbox" id="toggle" checked />
-                    <span className="slider round"></span>
-                </label> */}
                 &nbsp;&nbsp;&nbsp;
                 <label><strong>Pending</strong></label>
             </div>            

@@ -2,6 +2,7 @@
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -13,14 +14,16 @@ namespace DocumentManagement.API.Controllers
         #region Private Variables
 
         private readonly IDashboardService dashboardService;
+        private readonly ILogger<DashboardController> logger;
 
         #endregion
 
         #region Constructors
 
-        public DashboardController(IDashboardService dashboardService)
+        public DashboardController(IDashboardService dashboardService, ILogger<DashboardController> logger)
         {
             this.dashboardService = dashboardService;
+            this.logger = logger;
         }
 
         #endregion
@@ -34,6 +37,8 @@ namespace DocumentManagement.API.Controllers
                                                              int tenantId)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            logger.LogInformation($"GetPendingDocument requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
+
             var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId: loanApplicationId,
                                                                       tenantId: tenantId,
                                                                       userProfileId: userProfileId);
@@ -46,6 +51,7 @@ namespace DocumentManagement.API.Controllers
                                                                int tenantId)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            logger.LogInformation($"GetSubmittedDocuments requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
             var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId: loanApplicationId,
                                                                         tenantId: tenantId,
                                                                         userProfileId: userProfileId);
@@ -58,6 +64,7 @@ namespace DocumentManagement.API.Controllers
                                                             int tenantId)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            logger.LogInformation($"GetDashboardStatus requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
             return Ok(value: await dashboardService.GetDashboardStatus(loanApplicationId: loanApplicationId,
                                                                        tenantId: tenantId,
                                                                        userProfileId: userProfileId));
