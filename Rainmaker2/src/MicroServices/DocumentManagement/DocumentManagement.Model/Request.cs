@@ -8,10 +8,10 @@ namespace DocumentManagement.Model
 {
     public static class ActivityStatus
     {
-        public const string RequestedBy = "Requested By";
-        public const string RerequestedBy = "Re-requested By";
-        public const string AcceptedBy = "Accepted By"; 
-        public const string StatusChanged = "Status Changed";
+        public const string RequestedBy = "Requested By {0}";
+        public const string RerequestedBy = "Re-requested By {0}";
+        public const string AcceptedBy = "Accepted By {0}"; 
+        public const string StatusChanged = "Status Changed: {0}";
     }
     public class StatusNameQuery
     {
@@ -30,5 +30,11 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
+    }
+
+    public class User
+    {
+        public int userId { get; set; }
+        public string userName { get; set; }
     }
 }
