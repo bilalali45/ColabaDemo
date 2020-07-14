@@ -4,7 +4,7 @@ import { TemplateManagerEndpoints } from "./TemplateManagerEndpoints";
 import { UserEndpoints } from "./UserEndpoints";
 
 export class Endpoints {
-  static NeedList = NeedListEndpoints;
+  static NeedListManager = NeedListEndpoints;
   static TemplateManager = TemplateManagerEndpoints;
   static DocumentManager = DocumentManagerEndpoints;
   static User = UserEndpoints;
