@@ -22,11 +22,11 @@ export class LocalDB {
     return localStorage.getItem("refreshToken");
   }
 
-  static getLoginUserName() {
+  static getLoginDevUserName() {
     return localStorage.getItem("devusername");
   }
 
-static getLoginPassword() {
+  static getLoginDevPassword() {
     return localStorage.getItem("devuserpassword");
   }
 
