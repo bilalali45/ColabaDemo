@@ -1,9 +1,22 @@
 import React from 'react'
+import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocument'
 
-export const DocumentTypes = () => {
+type DocumentTypesType = {
+    documentTypeList: CategoryDocument[]
+}
+
+export const DocumentTypes = ({documentTypeList} : DocumentTypesType) => {
     return (
         <div>
-            <h1>DocumentTypes</h1>
+            <ul>
+                {
+                    documentTypeList?.map(dt => {
+                        return (
+                        <li>{dt.catName}</li>
+                        )
+                    })
+                }
+            </ul>
         </div>
     )
 }
