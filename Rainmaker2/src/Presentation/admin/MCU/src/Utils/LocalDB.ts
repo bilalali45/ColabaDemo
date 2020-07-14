@@ -5,8 +5,8 @@ const cookies = new Cookies();
 export class LocalDB {
   static getCredentials() {
     const credentials = {
-      userName: LocalDB.getLoginUserName(),
-      password: LocalDB.getLoginPassword(),
+      userName: LocalDB.getLoginDevUserName(),
+      password: LocalDB.getLoginDevPassword(),
       employee: true,
     };
 
