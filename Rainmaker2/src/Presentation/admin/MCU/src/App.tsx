@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { StoreProvider } from "./Store/Store";
 import { UserActions } from "./Store/actions/UserActions";
 import { LocalDB } from "./Utils/LocalDB";
+import { ParamsService } from "./Utils/helpers/ParamService";
+
 declare global {
   interface Window {
     envConfig: any;
@@ -21,11 +23,11 @@ const App = () => {
   useEffect(() => {
     console.log("MCU App Version", "0.0.1");
     authenticate();
-    // ParamsService.storeParams([
-    //   "loanApplicationId",
-    //   "tenantId",
-    //   "businessUnitId",
-    // ]);
+    ParamsService.storeParams([
+      "loanApplicationId",
+      "tenantId",
+      "businessUnitId",
+    ]);
     // component unmount
     return () => {
       LocalDB.removeAuth();
