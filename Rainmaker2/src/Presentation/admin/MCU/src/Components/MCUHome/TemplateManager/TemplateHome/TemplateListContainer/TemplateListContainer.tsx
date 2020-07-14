@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+import { Template } from '../../../../../Entities/Models/Template';
 
 const MyTemplate = "MCU Template";
 const TenantTemplate = "Tenant Template";
@@ -14,7 +15,8 @@ export const TemplateListContainer = () => {
     const { state, dispatch } = useContext(Store);
 
     const templateManager: any = state.templateManager;
-    const templates = templateManager?.templates;
+    const templates : Template[] = templateManager?.templates;
+    const currentTemplate : Template = templateManager?.currentTemplate;
 
 
     useEffect(() => {
@@ -23,10 +25,21 @@ export const TemplateListContainer = () => {
         }
     }, []);
 
+    
+    const changeCurrentTemplate = async (template: Template) => {
+        
+        if(currentTemplate?.id === template.id) {
+            return;
+        }
+
+        dispatch({type: TemplateActionsType.SetCurrentTemplate, payload: template});
+    }
+
+
     const fetchTemplatesList = async () => {
         let newTemplates = await TemplateActions.fetchTemplates('1');
         if (newTemplates) {
-            dispatch({ type: TemplateActionsType.FetchTemplates, payload: newTemplates });
+            dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
         }
     }
 
@@ -54,7 +67,7 @@ export const TemplateListContainer = () => {
 
     const MyTemplateListItem = (t: any) => {
         return (
-            <li onClick={() => changeCurrentTemplate(t.id)}>
+            <li onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     {!toRemoveTemplate1 ?
                         <div className="c-list">
@@ -77,16 +90,9 @@ export const TemplateListContainer = () => {
         )
     }
 
-    const changeCurrentTemplate = async (id: any) => {
-        const templateDocs = await TemplateActions.fetchTemplateDocuments(id);
-        if(templateDocs) {
-            dispatch({type: TemplateActionsType.FetchTemplateDocuments, payload: templateDocs})
-        }
-    }
-
     const TenantListItem = (t: any) => {
         return (
-            <li onClick={() => changeCurrentTemplate(t.id)}>
+            <li onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     <div className="c-list">
                         {t.name}

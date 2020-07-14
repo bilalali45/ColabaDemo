@@ -21,7 +21,7 @@ export const TemplateItemsList = () => {
     const fetchSelectedTemplete = async () => {
         let templateDocs = await TemplateActions.fetchTemplateDocuments('1');
         if(templateDocs) {
-            dispatch({type: TemplateActionsType.FetchTemplateDocuments, payload: templateDocs});
+            dispatch({type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs});
         }
     }
 
