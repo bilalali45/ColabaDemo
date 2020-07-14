@@ -10,31 +10,36 @@ export const NeedListView = () => {
 
 useEffect(()=> {
     if(!needList){
-        fetchNeedList()
+        fetchNeedList(false)
     }
 },[needList])
 
-const fetchNeedList = async ()=> {
+const fetchNeedList = async (status: boolean)=> {
     let applicationId = '5976';
     let tenentId = '1';
-    let status = false;
     let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
     if(res){
         setNeedList(res) 
     } 
 }
 
-const togglerHandler = () => {
-    
+const togglerHandler = (pending: boolean) => {
+    fetchNeedList(!pending)
 }
 
-console.log('needList', needList)
+const deleteClickHandler = (id: string, docId: string) => {
+    console.log('Click on delete Id&docId:', id, docId)
+}
+
     return (
         <div className="need-list-view">
             <NeedListViewHeader
             toggleCallBack = {togglerHandler}
             />
-            <NeedListTable/>
+            <NeedListTable
+            needList = {needList}
+            deleteDocument = {deleteClickHandler}
+            />
         </div>
     )
 }
