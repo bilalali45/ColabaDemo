@@ -1,10 +1,9 @@
 import React, { useEffect, useCallback, useState, useRef } from "react";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { Http } from "rainsoft-js";
 
 import { NeedListItem } from "../NeedListItem/NeedListItem";
 import { NeedListDocumentType } from "../../../../../Entities/Types/Types";
-import { Http } from "rainsoft-js";
 
 export const NeedListTable = () => {
   const [documentList, setDocumentList] = useState<NeedListDocumentType[]>([]);
@@ -30,7 +29,7 @@ export const NeedListTable = () => {
     const http = new Http();
 
     const { data } = await http.get<NeedListDocumentType[]>(
-      "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false"
+      "/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false"
     );
 
     setDocumentList(data);
