@@ -120,45 +120,7 @@ const detailClickHandler = (id: string) => {
                     </div>
                     { needList &&
                     renderNeedList(needList)
-                    }
-                    {/* <div className="tr row-shadow">
-                        <div className="td"><span className="f-normal"><strong>Bank Statement</strong></span></div>
-                        <div className="td"><span className="status-bullet pending"></span> Pending</div>
-                        <div className="td">
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-1.jpg</span>
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-2.jpg</span>
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-3.jpg</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                            <span className="block-element"><a href=""><em className="icon-refresh failed"></em></a></span>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-secondry btn-sm">Review</a>
-                        </div>
-                    </div> */}
-
-                   
-                 
-                    {/* <div className="tr row-shadow">
-                        <div className="td"><span className="f-normal">Bank Deposit Slip</span></div>
-                        <div className="td"><span className="status-bullet completed"></span> Completed</div>
-                        <div className="td">
-                            <span className="block-element">
-                                Verification Slip.jpg <br/>
-                                <small>Screenshot 2020-06-11 at 8.32.14 PM.pdf</small>
-                            </span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
-                        </div>
-                    </div> */}
-                    
+                    }                 
                 </div>
 
             
