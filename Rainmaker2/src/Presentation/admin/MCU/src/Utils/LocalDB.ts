@@ -90,6 +90,10 @@ export class LocalDB {
     }
     return true;
   }
+
+  public static storeItem(name: string, data: string) {
+    localStorage.setItem(name, data);
+  }
   //#endregion
 
   //#region Remove Auth
