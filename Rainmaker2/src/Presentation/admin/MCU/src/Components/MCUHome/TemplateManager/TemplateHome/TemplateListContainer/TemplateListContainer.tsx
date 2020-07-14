@@ -1,13 +1,107 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { Store } from '../../../../../Store/Store';
+import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
+import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+import { Template } from '../../../../../Entities/Models/Template';
+
+const MyTemplate = "MCU Template";
+const TenantTemplate = "Tenant Template";
+const SystemTemplate = "System Template";
+
 export const TemplateListContainer = () => {
-    const [removeTemplate, setremoveTemplate] = useState<any>(false);
+    const [toRemoveTemplate, setToRemoveTemplate] = useState<any>(false);
+    const [toRemoveTemplate1, setToRemoveTemplate1] = useState<any>(false);
+
+    const { state, dispatch } = useContext(Store);
+
+    const templateManager: any = state.templateManager;
+    const templates : Template[] = templateManager?.templates;
+    const currentTemplate : Template = templateManager?.currentTemplate;
+
+
+    useEffect(() => {
+        if (!templates) {
+            fetchTemplatesList();
+        }
+    }, []);
+
+    
+    const changeCurrentTemplate = async (template: Template) => {
+        
+        if(currentTemplate?.id === template.id) {
+            return;
+        }
+
+        dispatch({type: TemplateActionsType.SetCurrentTemplate, payload: template});
+    }
+
+
+    const fetchTemplatesList = async () => {
+        let newTemplates = await TemplateActions.fetchTemplates('1');
+        if (newTemplates) {
+            dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
+        }
+    }
+
+    const removeTemplate = async (templateId: string) => {
+        let isDeleted = await TemplateActions.deleteTemplate(templateId, '1');
+        if(isDeleted) {
+            
+        }
+    }
+
 
     const remove = () => {
-        setremoveTemplate(true)
+        setToRemoveTemplate(true)
     }
     const undo = () => {
-        setremoveTemplate(false)
+        setToRemoveTemplate(false)
     }
+
+    const remove1 = () => {
+        setToRemoveTemplate(true)
+    }
+    const undo1 = () => {
+        setToRemoveTemplate(false)
+    }
+
+    const MyTemplateListItem = (t: any) => {
+        return (
+            <li onClick={() => changeCurrentTemplate(t)}>
+                <div className="l-wrap">
+                    {!toRemoveTemplate1 ?
+                        <div className="c-list">
+                            {t.name}
+                                <span className="BTNclose" onClick={remove1}><i className="zmdi zmdi-close"></i></span>
+                        </div>
+                        : <>
+                            <div className="alert-cancel">
+                                <span>Remove this template?</span>
+                                <div className="l-remove-actions">
+                                    <button className="lbtn btn-no" onClick={undo1}> No</button>
+                                    <button className="lbtn btn-yes" onClick={() => removeTemplate(t.id)}>Yes</button></div>
+                            </div>
+                        </>
+                    }
+
+
+                </div>
+            </li>
+        )
+    }
+
+    const TenantListItem = (t: any) => {
+        return (
+            <li onClick={() => changeCurrentTemplate(t)}>
+                <div className="l-wrap">
+                    <div className="c-list">
+                        {t.name}
+                    </div>
+                </div>
+            </li>
+        )
+    }
+
     const MyTemplates = () => {
         return (
             <>
@@ -19,61 +113,13 @@ export const TemplateListContainer = () => {
 
                         <div className="list-wrap my-temp-list">
                             <ul>
-                                <li>
-                                    <div className="l-wrap">
-                                        {!removeTemplate ?
-                                            <div className="c-list">
-                                                Income Template
-                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
-                                            </div>
-                                            : <>
-                                                <div className="alert-cancel">
-                                                    <span>Remove this template?</span>
-                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
-                                                </div>
-                                            </>
+                                {
+                                    templates?.map((t: any) => {
+                                        if (t?.type === MyTemplate) {
+                                            return MyTemplateListItem(t)
                                         }
-
-
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="l-wrap">
-                                        {!removeTemplate ?
-                                            <div className="c-list">
-                                                My standard checklist
-                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
-                                            </div>
-                                            : <>
-                                                <div className="alert-cancel">
-                                                    <span>Remove this template?</span>
-                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
-                                                </div>
-                                            </>
-                                        }
-
-
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div className="l-wrap">
-                                        {!removeTemplate ?
-                                            <div className="c-list">
-                                                Assets Template
-                                <span className="BTNclose" onClick={remove}><i className="zmdi zmdi-close"></i></span>
-                                            </div>
-                                            : <>
-                                                <div className="alert-cancel">
-                                                    <span>Remove this template?</span>
-                                                    <div className="l-remove-actions"><button onClick={undo}> No</button> <button>Yes</button></div>
-                                                </div>
-                                            </>
-                                        }
-
-
-                                    </div>
-                                </li>
+                                    })
+                                }
                             </ul>
                         </div>
                     </div>
@@ -93,53 +139,15 @@ export const TemplateListContainer = () => {
                         </div>
 
                         <div className="list-wrap my-temp-list">
+
                             <ul>
-                                <li>
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            FHA Full Doc Refinance - W2
-                                    </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            VA Cash Out - W-2
-                                    </div>
-                                    </div>
-
-                                </li>
-                                <li>
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            FHA Full Doc Refinance
-                                    </div>
-                                    </div>
-                                </li>
-                                <li>
-
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            Conventional Refinance - SE
-                                    </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            VA Purchase - W-2
-                                    </div>
-                                    </div>
-
-                                </li>
-                                <li>
-                                    <div className="l-wrap">
-                                        <div className="c-list">
-                                            Additional Questions
-                                    </div>
-                                    </div>
-
-                                </li>
+                                {
+                                    templates?.map((t: any) => {
+                                        if (t?.type === TenantTemplate) {
+                                            return TenantListItem(t)
+                                        }
+                                    })
+                                }
                             </ul>
                         </div>
                     </div>

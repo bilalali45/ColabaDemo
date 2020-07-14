@@ -1,19 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 //import logo from './logo.svg';
-import './App.scss';
-import { MCUHome } from './Components/MCUHome/MCUHome';
-import { RainMakerHeader } from './Components/RainMakerHeader/RainMakerHeader';
-import { RainMakerSidebar } from './Components/RainMakerSidebar/RainMakerSidebar';
-import { RainMakerFooter } from './Components/RainMakerFooter/RainMakerFooter';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { StoreProvider } from './Store/Store';
-
+import "./App.scss";
+import { MCUHome } from "./Components/MCUHome/MCUHome";
+import { RainMakerHeader } from "./Components/RainMakerHeader/RainMakerHeader";
+import { RainMakerSidebar } from "./Components/RainMakerSidebar/RainMakerSidebar";
+import { RainMakerFooter } from "./Components/RainMakerFooter/RainMakerFooter";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { StoreProvider } from "./Store/Store";
+import { UserActions } from "./Store/actions/UserActions";
+import { LocalDB } from "./Utils/LocalDB";
 declare global {
-  interface Window { envConfig: any; }
+  interface Window {
+    envConfig: any;
+  }
 }
 window.envConfig = window.envConfig || {};
 
-function App() {
+const App = () => {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  useEffect(() => {
+    console.log("MCU App Version", "0.0.1");
+    authenticate();
+    // ParamsService.storeParams([
+    //   "loanApplicationId",
+    //   "tenantId",
+    //   "businessUnitId",
+    // ]);
+    // component unmount
+    return () => {
+      LocalDB.removeAuth();
+    };
+  }, []);
+
+  const authenticate = async () => {
+    let isAuth = await UserActions.authorize();
+    setAuthenticated(Boolean(isAuth));
+    UserActions.addExpiryListener();
+    UserActions.keepAliveParentApp();
+  };
+
   return (
     <div className="App">
       <RainMakerHeader />
@@ -30,6 +55,6 @@ function App() {
       </section>
     </div>
   );
-}
+};
 
 export default App;

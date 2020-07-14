@@ -1,14 +1,13 @@
 import { Template } from "../../Entities/Models/Template";
 import { CategoryDocument } from "../../Entities/Models/CategoryDocument";
 import { TemplateDocument } from "../../Entities/Models/TemplateDocument";
-import { UserActionPayload } from "./UserReducer";
 import { ActionMap, Actions } from "./reducers"
-import { start } from "repl";
 
 export enum TemplateActionsType {
-    FetchTemplates = "FETCH_TEMPLATES",
-    FetchCategoryDocuments = "FETCH_CATEGORY_DOCUMENTS",
-    FetchTemplateDocuments = "FETCH_TEMPLATE_DOCUMENTS",
+    SetTemplates = "SET_TEMPLATES",
+    SetCategoryDocuments = "SET_CATEGORY_DOCUMENTS",
+    SetTemplateDocuments = "SET_TEMPLATE_DOCUMENTS",
+    SetCurrentTemplate = "SET_CURRENT_TEMPLATE",
     InsertTemplate = "INSERT_TEMPLATE",
     RenameTemplate = "RENAME_TEMPLATE",
     DeleteTemplate = "DELETE_TEMPLATE"
@@ -16,34 +15,41 @@ export enum TemplateActionsType {
 
 export type TemplateType = {
     templates: Template[],
+    currentTemplate: Template,
     categoryDocuments: CategoryDocument[],
     templateDocuments: TemplateDocument[],
 }
 
 export type TemplateActionPayload = {
-    [TemplateActionsType.FetchTemplates]: Template[],
-    [TemplateActionsType.FetchCategoryDocuments]: CategoryDocument[],
-    [TemplateActionsType.FetchTemplateDocuments]: TemplateDocument[]
+    [TemplateActionsType.SetTemplates]: Template[],
+    [TemplateActionsType.SetCategoryDocuments]: CategoryDocument[],
+    [TemplateActionsType.SetTemplateDocuments]: TemplateDocument[],
+    [TemplateActionsType.SetCurrentTemplate]: Template,
 }
 
 export type TemplateActions = ActionMap<TemplateActionPayload>[keyof ActionMap<TemplateActionPayload>];
 
 export const templateReducer = (state: TemplateType | {}, { type, payload }: Actions) => {
     switch (type) {
-        case TemplateActionsType.FetchTemplates:
+        case TemplateActionsType.SetTemplates:
             return {
                 ...state,
                 templates: payload
             }
 
-        case TemplateActionsType.FetchCategoryDocuments:
+        case TemplateActionsType.SetCurrentTemplate:
+            return {
+                ...state,
+                currentTemplate: payload
+            }
 
+        case TemplateActionsType.SetCategoryDocuments:
             return {
                 ...state,
                 categoryDocuments: payload
             }
 
-        case TemplateActionsType.FetchTemplateDocuments:
+        case TemplateActionsType.SetTemplateDocuments:
 
             return {
                 ...state,

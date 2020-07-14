@@ -1,17 +1,10 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  FunctionComponent,
-  Fragment,
-} from "react";
+import React, { useState, useEffect, useCallback, FunctionComponent, Fragment} from "react";
+//@ts-ignore
 import FileViewer from "react-file-viewer";
 import printJS from "print-js";
-
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
-import { DocumentActions } from "../../../store/actions/DocumentActions";
-//import { Auth as Storage } from "../../../services/auth/Auth";
 import { Loader } from "../Assets/loader";
+ //@ts-ignore
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 interface DocumentViewProps {
@@ -23,9 +16,8 @@ interface DocumentViewProps {
   submittedDocumentCallBack?: Function;
   fileId?: string;
   clientName?: string;
-  hideViewer: (currentDoc) => void;
+  hideViewer: (currentDoc: any) => void;
   file?: any;
-  clearBlob?: Function;
 }
 
 interface DocumentParamsType {
@@ -44,8 +36,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   file,
   tenantId,
   blobData,
-  submittedDocumentCallBack,
-  clearBlob
+  submittedDocumentCallBack
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -210,7 +201,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       // defaultPositionX={200}
       // defaultPositionY={100}
       >
-        {({ zoomIn, zoomOut, resetTransform }) => (
+       
+{({ zoomIn, zoomOut, resetTransform }:{zoomIn: any, zoomOut: any, resetTransform:any}) => (
           <div>
             <TransformComponent>
               <div className="document-view--body">

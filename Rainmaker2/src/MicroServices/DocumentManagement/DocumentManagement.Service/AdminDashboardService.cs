@@ -207,6 +207,32 @@ namespace DocumentManagement.Service
 
             return requestId;
         }
+
+        public async Task<object> GetStatusList(string id, int userId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            string requestId = String.Empty;
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""_id"": " + new ObjectId(id).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""requestId"": ""$requests.id""
+                            }
+                        }"
+            ));
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                    requestId = query.requestId;
+                }
+            }
+            return requestId;
+        }
     }
 
 }

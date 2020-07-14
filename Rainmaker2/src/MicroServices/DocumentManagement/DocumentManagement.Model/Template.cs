@@ -76,5 +76,22 @@ namespace DocumentManagement.Model
             public  List<TemplateDocument> documentTypes { get; set; }
         }
 
+        public class RenameTemplateModel
+        {
+         public   string id { get; set; }
+         public int tenantId { get; set; }
+            public string name { get; set; }
+
+        }
+
+        public class DeleteTemplateModel
+        {
+            public string templateId { get; set; }
+            public int tenantId { get; set; }
+    
+
+        }
+
+
     }
 }

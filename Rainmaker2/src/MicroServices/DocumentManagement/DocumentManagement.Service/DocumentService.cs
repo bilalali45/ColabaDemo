@@ -98,7 +98,7 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docId)
+        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
             string match = "";
@@ -116,7 +116,7 @@ namespace DocumentManagement.Service
                 match = @"{""$match"": {
 
                   ""loanId"": " + new ObjectId(id).ToJson() + @" 
-                  ""docId"": " + new ObjectId(docId).ToJson() + @"
+                  ""docName"": """ + docName.Replace("\"","\\\"") + @"""
                             }
                         }";
             }
@@ -163,12 +163,11 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(  List<string> id , int tenantId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
-
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
-                @"{""$match"": { ""_id"": { ""$in"": " + new BsonArray(templateIdsModel.id.Select(x => new ObjectId(x))).ToJson() + @"
+                @"{""$match"": { ""_id"": { ""$in"": " + new BsonArray(id.Select(x => new ObjectId(x))).ToJson() + @"
                               }}
                         }", @"{
                             ""$unwind"":{ ""path"": ""$documentTypes"",
@@ -207,9 +206,9 @@ namespace DocumentManagement.Service
                     DocumentModel dto = new DocumentModel();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (query.messages?.Any(x => x.tenantId == templateIdsModel.tenantId) == true)
+                    if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                     {
-                        dto.docMessage = query.messages.Where(x => x.tenantId == templateIdsModel.tenantId).First().message;
+                        dto.docMessage = query.messages.Where(x => x.tenantId ==tenantId).First().message;
                     }
                     else
                     {

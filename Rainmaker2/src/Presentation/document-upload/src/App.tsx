@@ -37,14 +37,6 @@ const App = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // console.log("document.referrer", document.referrer);
-    // if (
-    //   document.referrer.split("/").length > 3 &&
-    //   document.referrer.split("/")[3] === mvcDashBoardUrl
-    // ) {
-    //   console.log("Remove Auth, when user comes from MVC dashboard.");
-    //   Auth.removeAuth();
-    // }
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     ParamsService.storeParams([

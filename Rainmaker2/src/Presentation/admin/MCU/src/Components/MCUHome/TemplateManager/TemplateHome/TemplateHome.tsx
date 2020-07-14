@@ -6,22 +6,22 @@ import { NewTemplate } from '../NewTemplate/NewTemplate'
 export const TemplateHome = () => {
     return (
         <section className="MT-CWrap">
-<div className="container-mcu">
-            <div className="row">
-                <div className="col-sm-4">
-                    <div className="MT-leftbar">
-                    <TemplateListContainer />
+            <div className="container-mcu">
+                <div className="row">
+                    <div className="col-sm-4">
+                        <div className="MT-leftbar">
+                            <TemplateListContainer />
 
+                        </div>
                     </div>
-                </div>
-                <div className="col-sm-8">
-                    <div className="MT-rightbar">
-                    <SelectedTemplate/>
-                    {/* <NewTemplate/> */}
+                    <div className="col-sm-8">
+                        <div className="MT-rightbar">
+                            <SelectedTemplate />
+                            {/* <NewTemplate/> */}
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>  
         </section>
     )
 }

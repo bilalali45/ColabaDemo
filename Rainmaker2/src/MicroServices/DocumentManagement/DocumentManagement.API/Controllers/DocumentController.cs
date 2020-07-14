@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
@@ -41,18 +43,17 @@ namespace DocumentManagement.API.Controllers
 
         #region Action Methods
 
-        //Todo Validations: Get actions should have httpGet attribute
-        [HttpPost(template: "[action]")]
-        public async Task<IActionResult> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
+       
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> GetDocumentsByTemplateIds([FromQuery(Name = "id")]string[] id, int tenantId)
         {
-            var docQuery = await documentService.GetDocumentsByTemplateIds(templateIdsModel: templateIdsModel);
-
+            var docQuery = await documentService.GetDocumentsByTemplateIds(id.ToList(), tenantId);
             return Ok(value: docQuery);
         }
 
 
-        //Todo Validations: Get actions should have httpGet attribute
-        [HttpPost(template: "[action]")]
+        
+        [HttpGet(template: "[action]")]
         public async Task<IActionResult> GetFiles(string id,
                                                   string requestId,
                                                   string docId)
@@ -63,21 +64,21 @@ namespace DocumentManagement.API.Controllers
         }
 
 
-        //Todo Validations: Get actions should have httpGet attribute
-        [HttpPost(template: "[action]")]
+         
+        [HttpGet(template: "[action]")]
         public async Task<IActionResult> GetActivityLog(string id,
                                                         string typeId,
-                                                        string docId)
+                                                        string docName)
 
         {
             return Ok(value: await documentService.GetActivityLog(id: id,
                                                                   typeId: typeId,
-                                                                  docId: docId));
+                                                                  docName: docName));
         }
 
 
-        //Todo Validations: Get actions should have httpGet attribute
-        [HttpPost(template: "[action]")]
+         
+        [HttpGet(template: "[action]")]
         public async Task<IActionResult> GetEmailLog(string id)
 
         {
@@ -85,20 +86,16 @@ namespace DocumentManagement.API.Controllers
         }
 
 
-        //Todo Validations: Post actions should receive data in view models, so that its easy to apply validations
+        
         [HttpPost(template: "[action]")]
-        public async Task<IActionResult> McuRename(string id,
-                                                   string requestId,
-                                                   string docId,
-                                                   string fileId,
-                                                   string newName)
+        public async Task<IActionResult> McuRename(mcuRenameModel mcuRenameModel)
 
         {
-            var docQuery = await documentService.mcuRename(id: id,
-                                                           requestId: requestId,
-                                                           docId: docId,
-                                                           fileId: fileId,
-                                                           newName: newName);
+            var docQuery = await documentService.mcuRename(id: mcuRenameModel.id,
+                                                           requestId: mcuRenameModel.requestId,
+                                                           docId: mcuRenameModel.docId,
+                                                           fileId: mcuRenameModel.fileId,
+                                                           newName: mcuRenameModel.newName);
             if (docQuery)
                 return Ok();
             return NotFound();

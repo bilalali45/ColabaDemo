@@ -9399,13 +9399,16 @@ rainsoft-js@^1.0.24:
     from "^0.1.7"
     moment "^2.27.0"
 
-rainsoft-rc@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.6.tgz#019bbeed546ba471b632ca86571b8b7a62bcf534"
-  integrity sha512-rp77Wp4PGSdcOEGeyqQYCo6P8Ui8t7GQH5/EjYzImfXepVcV+y8mBJaq414SGFypsW047Mt47Y0vLtL0fLHJyA==
+rainsoft-rc@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.8.tgz#b7c9601fd8a1df47cb0922f76237b33936a1b796"
+  integrity sha512-0qap6SKxzG5nwdhEywGqSCvhgFBXByiTHtG20Zd2B69L/x3Rq60frGUg538Zz5BEdBB1Bu29QYMpeLb8V3XU9A==
   dependencies:
     node-sass "^4.14.1"
+    print-js "^1.0.63"
     react-bootstrap "^1.0.1"
+    react-file-viewer "^1.2.1"
+    react-zoom-pan-pinch "^1.6.1"
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
