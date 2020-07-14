@@ -71,11 +71,11 @@ namespace RainMaker.Entity.Models
         /// <summary>
         /// Parent (One-to-One) Opportunity pointed by [DenormOpportunityContact].[Id] (FK_DenormOpportunityContact_Opportunity)
         /// </summary>
-        public virtual DenormOpportunityContact DenormOpportunityContact { get; set; } // DenormOpportunityContact.FK_DenormOpportunityContact_Opportunity
+        //public virtual DenormOpportunityContact DenormOpportunityContact { get; set; } // DenormOpportunityContact.FK_DenormOpportunityContact_Opportunity
         /// <summary>
         /// Parent (One-to-One) Opportunity pointed by [Five9LeadPosting].[Id] (FK_Five9LeadPosting_Opportunity)
         /// </summary>
-        public virtual Five9LeadPosting Five9LeadPosting { get; set; } // Five9LeadPosting.FK_Five9LeadPosting_Opportunity
+        //public virtual Five9LeadPosting Five9LeadPosting { get; set; } // Five9LeadPosting.FK_Five9LeadPosting_Opportunity
         /// <summary>
         /// Child FollowUps where [FollowUp].[OpportunityId] point to this entity (FK_FollowUp_Opportunity)
         /// </summary>

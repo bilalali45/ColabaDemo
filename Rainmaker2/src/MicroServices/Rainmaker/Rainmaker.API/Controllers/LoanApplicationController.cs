@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Rainmaker.Model;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Common;
@@ -15,7 +16,6 @@ using RainMaker.Service;
 namespace Rainmaker.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Customer")]
     [Route("api/RainMaker/[controller]")]
     public class LoanApplicationController : Controller
     {
@@ -30,6 +30,7 @@ namespace Rainmaker.API.Controllers
             this.ftp = ftp;
             this.opportunityService = opportunityService;
         }
+        [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
         {
@@ -37,6 +38,7 @@ namespace Rainmaker.API.Controllers
             var loanApplication = await loanApplicationService.GetLoanSummary(loanApplicationId, userProfileId);
             return Ok(loanApplication);
         }
+        [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
         {   
@@ -48,6 +50,7 @@ namespace Rainmaker.API.Controllers
             }
             return Ok(lo);
         }
+        [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<string> GetPhoto(string photo, int businessUnitId)
         {
@@ -72,11 +75,11 @@ namespace Rainmaker.API.Controllers
         }
 
         [Authorize(Roles = "MCU")]
-        [HttpPost]
-        public async Task<IActionResult> PostLoanApplication(int loanApplicationId, bool isDraft)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> PostLoanApplication([FromBody]PostLoanApplicationModel model)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            return Ok(await loanApplicationService.PostLoanApplication(loanApplicationId,isDraft,userProfileId,opportunityService));
+            return Ok(await loanApplicationService.PostLoanApplication(model.loanApplicationId, model.isDraft, userProfileId,opportunityService));
         }
     }
 }

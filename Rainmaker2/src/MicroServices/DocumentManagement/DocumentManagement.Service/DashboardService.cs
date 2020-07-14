@@ -217,12 +217,12 @@ namespace DocumentManagement.Service
                     }
                 }
             }
-            IMongoCollection<LoanApplication> collection1 = mongoService.db.GetCollection<LoanApplication>("Request");
+            IMongoCollection<Entity.LoanApplication> collection1 = mongoService.db.GetCollection<Entity.LoanApplication>("Request");
             using var asyncCursor1 = await collection1.FindAsync(new BsonDocument() {
                 {"loanApplicationId",loanApplicationId },
                 {"tenantId",tenantId },
                 {"userId",userProfileId }
-            }, new FindOptions<LoanApplication, BsonDocument>()
+            }, new FindOptions<Entity.LoanApplication, BsonDocument>()
             {
                 Projection = new BsonDocument() { {"status", 1 }
             }

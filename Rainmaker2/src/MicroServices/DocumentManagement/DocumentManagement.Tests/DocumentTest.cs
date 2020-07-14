@@ -30,12 +30,12 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
 
-            mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<List<string>>(), It.IsAny<int>())).ReturnsAsync(list);
 
             var documentController = new DocumentController(mock.Object, null, null, null, null);
-
+            string[] arr = new string[] { "5eb25acde519051af2eeb111", "5eb25acde519051af2eeb111" };
             //Act
-            IActionResult result = await documentController.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>());
+            IActionResult result = await documentController.GetDocumentsByTemplateIds(arr, It.IsAny<int>());
 
             //Assert
             Assert.NotNull(result);
@@ -569,15 +569,12 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object);
 
-            TemplateIdModel templateIdModel = new TemplateIdModel();
-            templateIdModel.tenantId = 1;
             List<string> listIds = new List<string>();
             listIds.Add("5eb25acde519051af2eeb111");
             listIds.Add("5eb25acde519051af2eeb211");
-
-            templateIdModel.id = listIds;
+ 
             //Act
-            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(templateIdModel);
+            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
 
             //Assert
             Assert.NotNull(dto);
@@ -757,8 +754,15 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             var controller = new DocumentController(mock.Object, null, null, null, null);
+
+            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            mcuRenameModel.id = "1";
+            mcuRenameModel.requestId = "1";
+            mcuRenameModel.docId = "1";
+            mcuRenameModel.fileId = "1";
+            mcuRenameModel.newName = "abc";
             //Act
-            IActionResult result = await controller.McuRename( "1","1","1","1","abc");
+            IActionResult result = await controller.McuRename(mcuRenameModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -770,8 +774,14 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             var controller = new DocumentController(mock.Object, null, null, null, null);
+            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            mcuRenameModel.id = "1";
+            mcuRenameModel.requestId = "1";
+            mcuRenameModel.docId = "1";
+            mcuRenameModel.fileId = "1";
+            mcuRenameModel.newName = "abc";
             //Act
-            IActionResult result = await controller.McuRename("1", "1", "1", "1", "abc");
+            IActionResult result = await controller.McuRename(mcuRenameModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
