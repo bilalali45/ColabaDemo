@@ -5,9 +5,9 @@ const cookies = new Cookies();
 export class LocalDB {
   static getCredentials() {
     const credentials = {
-      userName: LocalDB.getLoginUserName(),
-      password: LocalDB.getLoginPassword(),
-      employee: false,
+      userName: LocalDB.getLoginDevUserName(),
+      password: LocalDB.getLoginDevPassword(),
+      employee: true,
     };
 
     return credentials;
@@ -22,11 +22,11 @@ export class LocalDB {
     return localStorage.getItem("refreshToken");
   }
 
-  static getLoginUserName() {
+  static getLoginDevUserName() {
     return localStorage.getItem("devusername");
   }
 
-  static getLoginPassword() {
+  static getLoginDevPassword() {
     return localStorage.getItem("devuserpassword");
   }
 

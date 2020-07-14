@@ -10,9 +10,9 @@ const cookies = new Cookies();
 export class UserActions {
   static async authenticate() {
     const credentials = {
-      userName: LocalDB.getLoginUserName(),
-      password: LocalDB.getLoginPassword(),
-      employee: false,
+      userName: LocalDB.getLoginDevUserName(),
+      password: LocalDB.getLoginDevPassword(),
+      employee: true,
     };
 
     let res: any = await http.post(

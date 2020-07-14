@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace DocumentManagement.Tests
@@ -28,7 +29,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object,Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -219,7 +220,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -410,7 +411,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -438,7 +439,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<StatusList>> mockCursor = new Mock<IAsyncCursor<StatusList>>();
-            Mock<IMongoCollection<LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<LoanApplication>>();
+            Mock<IMongoCollection<Entity.LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor1 = new Mock<IAsyncCursor<BsonDocument>>();
             
             List<StatusList> list = new List<StatusList>()
@@ -520,12 +521,12 @@ namespace DocumentManagement.Tests
             mockCursor1.SetupGet(x => x.Current).Returns(listLoanApplication);
 
             mockCollectionStatusList.Setup(x => x.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty, It.IsAny<FindOptions<StatusList, StatusList>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor.Object);
-            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
+            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<Entity.LoanApplication>>(), It.IsAny<FindOptions<Entity.LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
 
             mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(true);
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
            
@@ -547,7 +548,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<StatusList>> mockCursor = new Mock<IAsyncCursor<StatusList>>();
-            Mock<IMongoCollection<LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<LoanApplication>>();
+            Mock<IMongoCollection<Entity.LoanApplication>> mockCollectionLoanApplication = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor1 = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor2 = new Mock<IAsyncCursor<BsonDocument>>();
 
@@ -630,13 +631,13 @@ namespace DocumentManagement.Tests
             mockCursor1.SetupGet(x => x.Current).Returns(listLoanApplication);
 
             mockCollectionStatusList.Setup(x => x.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty, It.IsAny<FindOptions<StatusList, StatusList>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor.Object);
-            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
-            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<LoanApplication>>(), It.IsAny<FindOptions<LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor2.Object);
+            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<Entity.LoanApplication>>(), It.IsAny<FindOptions<Entity.LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor1.Object);
+            mockCollectionLoanApplication.Setup(x => x.FindAsync<BsonDocument>(It.IsAny<FilterDefinition<Entity.LoanApplication>>(), It.IsAny<FindOptions<Entity.LoanApplication, BsonDocument>>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockCursor2.Object);
 
             mockCursor1.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false);
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionLoanApplication.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -658,7 +659,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetFooterText(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("document footer text");
 
-            DashboardController controller = new DashboardController(mock.Object);
+            DashboardController controller = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
             //dashboardController.ControllerContext = context;
          
             //Act
