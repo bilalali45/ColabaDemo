@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,7 @@ namespace DocumentManagement.API.Controllers
         [HttpGet(template: "GetDocuments")]
         public async Task<IActionResult> GetDocument(string id)
         {
-            //todo Validations User Profile id | tenant id missing plz verify
+           
             var docQuery = await templateService.GetDocument(id: id);
             return Ok(value: docQuery);
         }
@@ -60,16 +61,14 @@ namespace DocumentManagement.API.Controllers
 
         #region Post
 
-        //todo Validations post actions shud receive information in ViewModels and validated
+     
         [HttpPost(template: "[action]")]
-        public async Task<IActionResult> RenameTemplate(string id,
-                                                        int tenantId,
-                                                        string name)
+        public async Task<IActionResult> RenameTemplate(RenameTemplateModel renameTemplateModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            var docQuery = await templateService.RenameTemplate(id: id,
-                                                                tenantid: tenantId,
-                                                                newname: name,
+            var docQuery = await templateService.RenameTemplate(id: renameTemplateModel.id,
+                                                                tenantid: renameTemplateModel.tenantId,
+                                                                newname: renameTemplateModel.name,
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
@@ -119,16 +118,14 @@ namespace DocumentManagement.API.Controllers
 
         #region Delete
 
-        //todo Validations delete actions shud receive information in ViewModels and validated
+         
         [HttpDelete(template: "[action]")]
-        public async Task<IActionResult> DeleteDocument(string id,
-                                                        int tenantId,
-                                                        string documentId)
+        public async Task<IActionResult> DeleteDocument(DeleteDocumentModel deleteDocumentModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            var docQuery = await templateService.DeleteDocument(id: id,
-                                                                tenantid: tenantId,
-                                                                documentid: documentId,
+            var docQuery = await templateService.DeleteDocument(id: deleteDocumentModel.id,
+                                                                tenantid: deleteDocumentModel.tenantId,
+                                                                documentid: deleteDocumentModel.documentId,
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
@@ -136,14 +133,13 @@ namespace DocumentManagement.API.Controllers
         }
 
 
-        //todo Validations delete actions shud receive information in ViewModels and validated
+         
         [HttpDelete(template: "[action]")]
-        public async Task<IActionResult> DeleteTemplate(string templateId,
-                                                        int tenantId)
+        public async Task<IActionResult> DeleteTemplate(DeleteTemplateModel deleteTemplateModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            var docQuery = await templateService.DeleteTemplate(templateId: templateId,
-                                                                tenantId: tenantId,
+            var docQuery = await templateService.DeleteTemplate(templateId: deleteTemplateModel.templateId,
+                                                                tenantId: deleteTemplateModel.tenantId,
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();

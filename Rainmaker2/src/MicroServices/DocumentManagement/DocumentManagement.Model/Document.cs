@@ -87,6 +87,13 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string message { get; set; }
     }
+    public class DeleteDocumentModel
+    {
+        public string id { get; set; }
+        public int tenantId { get; set; }
+        public string documentId { get; set; } 
+    }
+    
 }
 
 
