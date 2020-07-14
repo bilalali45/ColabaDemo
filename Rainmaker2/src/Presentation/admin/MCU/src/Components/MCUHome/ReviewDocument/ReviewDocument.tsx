@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
@@ -9,6 +8,8 @@ import {
   NeedListDocumentType,
   DocumentParamsType,
 } from "../../../Entities/Types/Types";
+import { Http } from "rainsoft-js";
+import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<
@@ -18,6 +19,7 @@ export const ReviewDocument = () => {
     []
   );
   const [navigationIndex, setNavigationIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
   const location = useLocation();
@@ -34,36 +36,29 @@ export const ReviewDocument = () => {
   });
 
   const getDocumentForView = useCallback(
-    async (
-      documentList: NeedListDocumentType[],
-      currentDocumentIndex: number
-    ) => {
-      setCurrentDocument(() => documentList[currentDocumentIndex]);
-      setDocumentList1(() => documentList);
-
-      const document = documentList[currentDocumentIndex];
-      const { id, requestId, docId, files } = document;
-
+    async (id, requestId, docId, fileId, tenantId) => {
       const params = {
         id,
         requestId,
         docId,
-        fileId: files[0].id,
-        tenantId: 1,
+        fileId,
+        tenantId,
       };
 
       try {
-        const response = await axios.get(
-          "https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view",
-          {
-            responseType: "arraybuffer",
-            params: { ...params },
-            headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiMSIsIlVzZXJOYW1lIjoicmFpbnNvZnQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoicmFpbnNvZnQiLCJGaXJzdE5hbWUiOiJTeXN0ZW0iLCJMYXN0TmFtZSI6IkFkbWluaXN0cmF0b3IiLCJFbXBsb3llZUlkIjoiMSIsImV4cCI6MTU5NDcyNDQ3NCwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.9lfp9MZkGcqrIGSQgS9uOByF2TTGArlv32l-62Ozy08",
-            },
-          }
-        );
+        setLoading(true);
+
+        const http = new Http();
+
+        const response = (await http.get(
+          NeedListEndpoints.GET.documents.view(
+            id,
+            requestId,
+            docId,
+            fileId,
+            tenantId
+          )
+        )) as any;
 
         const fileType: string = response.headers["content-type"];
 
@@ -79,7 +74,11 @@ export const ReviewDocument = () => {
           filePath,
           fileType: fileType.replace("image/", "").replace("application/", ""),
         });
-      } catch (error) {}
+      } catch (error) {
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
     },
     [setDocumentParams]
   );
@@ -87,25 +86,38 @@ export const ReviewDocument = () => {
   const nextDocument = useCallback(() => {
     if (navigationIndex === documentList1.length - 1) return;
 
+    const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
-  }, [navigationIndex]);
+    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
+  }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
     if (navigationIndex === 0) return;
 
+    const doc: NeedListDocumentType = documentList1[navigationIndex - 1];
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
-  }, [navigationIndex]);
+    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
+  }, [navigationIndex, documentList1, getDocumentForView]);
 
   useEffect(() => {
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex } = state as any;
+        const doc: NeedListDocumentType = documentList[currentDocumentIndex];
 
         if (!!documentList && documentList.length) {
           setNavigationIndex(currentDocumentIndex);
-          getDocumentForView(documentList, currentDocumentIndex);
+          setDocumentList1(() => documentList);
+          setCurrentDocument(() => documentList[currentDocumentIndex]);
+          getDocumentForView(
+            doc.id,
+            doc.requestId,
+            doc.docId,
+            doc.files[0].id,
+            1
+          );
         }
       } catch (error) {
         console.log("error", error);
@@ -130,7 +142,7 @@ export const ReviewDocument = () => {
         <div className="row">
           <div className="review-document-body--content col-md-8">
             <DocumentView
-              loading={!documentParams.filePath}
+              loading={loading}
               filePath={documentParams.filePath}
               fileType={documentParams.fileType}
             />
