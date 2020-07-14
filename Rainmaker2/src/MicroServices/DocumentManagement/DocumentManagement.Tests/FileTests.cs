@@ -83,6 +83,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -93,7 +94,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             bool result = await fileService.Done(doneModel, 1);
             //Assert
             Assert.True(result);
@@ -104,6 +105,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -114,7 +116,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             bool result = await fileService.Done(doneModel, 1);
             //Assert
             Assert.False(result);
@@ -173,6 +175,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -183,7 +186,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             bool result = await fileService.Rename(fileRenameModel, 1);
 
             //Assert
@@ -195,6 +198,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -205,7 +209,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             bool result = await fileService.Rename(fileRenameModel, 1);
 
             //Assert
@@ -242,6 +246,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -252,7 +257,7 @@ namespace DocumentManagement.Tests
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).Verifiable();
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             //Act
             await fileService.Order(fileOrderModel, 1);
             //Assert
@@ -321,6 +326,7 @@ namespace DocumentManagement.Tests
         public async Task TestViewService()
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
@@ -366,7 +372,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new FileService(mock.Object);
+            var service = new FileService(mock.Object, mockActivityLogService.Object);
             //Act
             var dto = await service.View(fileViewModel, 1,"127.0.0.1");
             //Assert
@@ -563,6 +569,7 @@ namespace DocumentManagement.Tests
             Mock<UpdateResult> mockUpdateResult = new Mock<UpdateResult>();
          
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -574,7 +581,7 @@ namespace DocumentManagement.Tests
             mockUpdateResult.Setup(_ => _.IsAcknowledged).Returns(true);
             mockUpdateResult.Setup(_ => _.ModifiedCount).Returns(1);
 
-            IFileService fileService = new FileService(mock.Object);
+            IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
             //Act
 
             string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; 

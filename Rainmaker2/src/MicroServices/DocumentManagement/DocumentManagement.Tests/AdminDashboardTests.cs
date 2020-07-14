@@ -91,6 +91,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -179,7 +180,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object);
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
             //Act
             List<AdminDashboardDTO> dto = await service.GetDocument(1, 1 ,true);
             //Assert
@@ -198,6 +199,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -208,7 +210,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             bool result = await adminDashboardService.Delete(adminDeleteModel);
 
             //Assert
@@ -220,6 +222,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -230,7 +233,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             bool result = await adminDashboardService.Delete(adminDeleteModel);
             //Assert
             Assert.False(result);
@@ -266,6 +269,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -292,7 +296,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object);
+            var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             //Act
             var dto = await service.IsDocumentDraft("5eb25d1fe519051af2eeb72d", 3842);
             //Assert

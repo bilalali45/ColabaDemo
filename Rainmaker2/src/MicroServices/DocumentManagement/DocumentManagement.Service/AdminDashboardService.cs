@@ -14,11 +14,13 @@ namespace DocumentManagement.Service
     public class AdminDashboardService : IAdminDashboardService
     {
         private readonly IMongoService mongoService;
-        public AdminDashboardService(IMongoService mongoService)
+        private readonly IActivityLogService activityLogService;
+        public AdminDashboardService(IMongoService mongoService, IActivityLogService activityLogService)
         {
             this.mongoService = mongoService;
+            this.activityLogService = activityLogService;
         }
-        public async Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId,bool pending)
+        public async Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
@@ -81,14 +83,14 @@ namespace DocumentManagement.Service
                         id = x.id,
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
-                        mcuName =x.mcuName,
+                        mcuName = x.mcuName,
                         byteProStatus = String.IsNullOrEmpty(x.byteProStatus) ? ByteProStatus.NotSynchronized : x.byteProStatus
                     }).ToList();
                     result.Add(dto);
 
                 }
             }
-            if(pending)
+            if (pending)
             {
                 result = result.Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
                     .OrderBy(x => x.order).Select(x => x.x).ToList();
@@ -169,6 +171,14 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
                 }
             });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(model.id, model.requestId, model.docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Deleted));
+            }
+
             return result.ModifiedCount == 1;
         }
 

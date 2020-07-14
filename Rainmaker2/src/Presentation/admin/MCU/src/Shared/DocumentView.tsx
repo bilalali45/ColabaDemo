@@ -1,8 +1,18 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
+//@ts-ignore
+import FileViewer from "react-file-viewer";
 
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "./SVG";
 
-export const DocumentView: FunctionComponent = () => {
+export const DocumentView = ({
+  loading,
+  filePath,
+  fileType,
+}: {
+  loading: boolean;
+  filePath: string;
+  fileType: string;
+}) => {
   return (
     <div className="document-view" id="screen">
       <div className="document-view--header">
@@ -50,8 +60,13 @@ export const DocumentView: FunctionComponent = () => {
       </div>
 
       <div>
-        <div className="document-view--body"></div>
-
+        <div className="document-view--body">
+          {!!loading ? (
+            <h1>Loading</h1>
+          ) : (
+            <FileViewer filePath={filePath} fileType={fileType} />
+          )}
+        </div>
         <div className="document-view--floating-options">
           <ul>
             <li>
