@@ -12,7 +12,7 @@ export class UserActions {
     const credentials = {
       userName: LocalDB.getLoginUserName(),
       password: LocalDB.getLoginPassword(),
-      employee: true,
+      employee: false,
     };
 
     let res: any = await http.post(

@@ -7,7 +7,7 @@ export class LocalDB {
     const credentials = {
       userName: LocalDB.getLoginUserName(),
       password: LocalDB.getLoginPassword(),
-      employee: true,
+      employee: false,
     };
 
     return credentials;
@@ -26,7 +26,7 @@ export class LocalDB {
     return localStorage.getItem("devusername");
   }
 
-static getLoginPassword() {
+  static getLoginPassword() {
     return localStorage.getItem("devuserpassword");
   }
 
