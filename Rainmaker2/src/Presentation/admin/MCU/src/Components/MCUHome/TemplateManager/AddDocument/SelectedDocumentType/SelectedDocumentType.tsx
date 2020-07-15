@@ -8,7 +8,7 @@ import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocumen
 
 type SelectedTypeType = {
     selectedCatDocs: CategoryDocument,
-    addNewDoc: Function,
+    addNewDoc: Function
 }
 
 export const SelectedType = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) => {
@@ -21,13 +21,19 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) =
                 addNewDoc={addNewDoc} />
 
         } else if (selectedCatDocs.catId === 'other') {
-            return <CustomDocuments />
+            return <CustomDocuments 
+            addDocToTemplate={addNewDoc}/>
 
         } else {
-            return <SelectedDocumentTypeList
-                documentList={selectedCatDocs?.documents}
-                addNewDoc={addNewDoc}
-            />
+            return (
+                <>
+                    <div className="b-title"><h4>{selectedCatDocs.catName}</h4></div>
+                    <SelectedDocumentTypeList
+                        documentList={selectedCatDocs?.documents}
+                        addNewDoc={addNewDoc}
+                    />
+                </>
+            )
         }
     }
 

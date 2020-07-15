@@ -43,9 +43,11 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
 
 
     const fetchTemplatesList = async () => {
-        let newTemplates = await TemplateActions.fetchTemplates('1');
+        let newTemplates : any = await TemplateActions.fetchTemplates('1');
         if (newTemplates) {
             dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
+            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0]});
+
         }
     }
 
@@ -75,7 +77,7 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
         return (
             <li onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    {!toRemoveTemplate1 ?
+                    {!toRemoveTemplate ?
                         <div className="c-list">
                             {t.name}
                                 <span className="BTNclose" onClick={remove1}><i className="zmdi zmdi-close"></i></span>
