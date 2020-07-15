@@ -576,13 +576,9 @@ namespace DocumentManagement.Tests
 
             List<BsonDocument> list = new List<BsonDocument>()
             {
-                new BsonDocument
+                 new BsonDocument
                 {
-                    { "_id" , BsonString.Empty}
-                }
-                ,  new BsonDocument
-                {
-                    { "_id" ,new BsonObjectId("5f0e8d014e72f52edcff3885")}
+                    { "_id" ,"5f0e8d014e72f52edcff3885"}
                 }
             };
 
@@ -591,9 +587,8 @@ namespace DocumentManagement.Tests
 
             mockcollectionRequst.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
-            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockcollectionRequst.Object);
+            mockdb.SetupSequence(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockcollectionRequst.Object).Returns(mockCollection.Object);
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
