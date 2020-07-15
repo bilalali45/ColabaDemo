@@ -4,6 +4,7 @@ import { SelectedDocumentTypeList } from '../SelectedDocumentTypeList/SelectedDo
 import { Document } from '../../../../../../Entities/Models/Document'
 import { Template } from '../../../../../../Entities/Models/Template'
 import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocument'
+import SearchIcon from '../../../../../../Assets/images/search-icon.svg'
 
 type SelectedTypeType = {
     selectedCatDocs: CategoryDocument,
@@ -32,8 +33,10 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc }: SelectedTypeType
         <div>
             <div className="s-wrap">
                 <input onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
+                <div className="s-icon"><img src={SearchIcon} alt="" /></div>
             </div>
-            <div className="b-title"><h4>{selectedCachedDoc.catName}</h4></div>
+
+            <div className="b-title"><h4>{selectedCatDocs.catName}</h4></div>
             <SelectedDocumentTypeList
                 documentList={selectedCachedDoc?.documents}
                 addNewDoc={addNewDoc}

@@ -15,7 +15,8 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTy
     }
 
     return (
-        <div>
+
+            <div className="active-docs"> 
             <ul>
                 {documentList &&
                     documentList?.map(dl => {
@@ -25,6 +26,6 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTy
                     })
                 }
             </ul>
-        </div>
+            </div>
     )
 }

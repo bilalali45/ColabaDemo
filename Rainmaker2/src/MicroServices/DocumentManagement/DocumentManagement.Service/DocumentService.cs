@@ -150,7 +150,7 @@ namespace DocumentManagement.Service
                     dto.userName = query.userName;
                     dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
-                    dto.id = query._id;
+                    dto.id = query.id;
                     dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;

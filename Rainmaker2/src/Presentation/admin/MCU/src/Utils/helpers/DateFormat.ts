@@ -18,6 +18,5 @@ export const DateFormat = (
     const formatString = shortFormat
       ? "MMM DD, YYYY "
       : "MMMM DD, YYYY ";
-  
-    return moment(date).format(formatString);
+    return moment(date).format("MMM DD, YYYY");
   };

@@ -75,10 +75,10 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
 
     const MyTemplateListItem = (t: any) => {
         return (
-            <li onClick={() => changeCurrentTemplate(t)}>
-                <div className="l-wrap">
+            <li  onClick={() => changeCurrentTemplate(t)}>
+                <div className="l-wrap ">
                     {!toRemoveTemplate ?
-                        <div className="c-list">
+                        <div className={`c-list ${ currentTemplate?.name === t.name? 'active' : ''}`}>
                             {t.name}
                                 <span className="BTNclose" onClick={remove1}><i className="zmdi zmdi-close"></i></span>
                         </div>

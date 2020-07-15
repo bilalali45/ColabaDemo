@@ -48,6 +48,7 @@ export class UserActions {
         http.setAuth(res.data.data.token);
         return true;
       }
+      console.log("Account log off from refresh token.");
       Auth.removeAuth();
       window.open("/Account/LogOff", "_self");
       return false;
