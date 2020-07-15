@@ -1,9 +1,13 @@
 import React from 'react'
+import { CommonDocumentSearchResults } from '../CommonDocumentSearchResults/CommonDocumentSearchResults'
 
 export const CommonDocumentSearch = () => {
     return (
         <div>
-            <h1>CommonDocumentSearch</h1>
+            <div className="s-wrap">
+                <input type="name" placeholder="Enter follow up name..." />
+            </div>
+            <CommonDocumentSearchResults />
         </div>
     )
 }

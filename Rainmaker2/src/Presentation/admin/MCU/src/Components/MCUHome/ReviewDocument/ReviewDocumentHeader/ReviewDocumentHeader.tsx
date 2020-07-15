@@ -33,8 +33,8 @@ export const ReviewDocumentHeader = ({
         </div>
 
         <div className="review-document-header--right col-md-4">
-          <button className="btn">
-            <em className="zmdi zmdi-close" onClick={onClose}></em>
+          <button className="btn" onClick={onClose}>
+            <em className="zmdi zmdi-close"></em>
           </button>
         </div>
       </div>
