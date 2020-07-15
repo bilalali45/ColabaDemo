@@ -4,6 +4,10 @@
     display: flex;
     flex-wrap: wrap;
 
+    &.loader{
+        min-height: 210px;
+    }
+
     &--wrap{
         padding: 15px;
     }
@@ -26,6 +30,7 @@
                 box-sizing: border-box;
                 padding: 10px;
                 vertical-align: top;
+                min-height: 90px;
             }
         }
         .text-wrap{
@@ -42,10 +47,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        
     
         .loansnapshot--wrap{
             width: 100%;
             padding: 25px 35px;
+            height: 100%;
             
             .mcu-label-value{
                 line-height: 1;
@@ -57,6 +65,9 @@
             margin-bottom: 22px;
             &:last-child{
                 margin-bottom: 0px;
+            }
+            &.lock-status{
+                min-height: 68px;
             }
         }
 

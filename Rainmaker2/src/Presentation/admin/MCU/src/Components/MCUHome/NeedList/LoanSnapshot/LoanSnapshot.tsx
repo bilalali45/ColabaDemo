@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SVGopenLock } from '../../../../Shared/SVG';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
 import { NeedListActions } from '../../../../Store/actions/NeedListActions';
-
+import Spinner from 'react-bootstrap/Spinner';
 
 
 export const LoanSnapshot = () => {
@@ -24,7 +24,11 @@ export const LoanSnapshot = () => {
     }
     console.log('loaninfo', loanInfo)
     if (!loanInfo) {
-        return <></>;
+        return (<div className="loader loansnapshot">
+            <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+        </div>)
     }
     const formattedAddress = () => {
         return `${loanInfo.streetAddress || ''}   ${loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : ''}`
@@ -94,7 +98,7 @@ export const LoanSnapshot = () => {
             <div className="loansnapshot--right-side">
                 <div className="loansnapshot--wrap">
 
-                    <div className="form-group">
+                    <div className="form-group lock-status">
                         <label className="mcu-label">Lock status</label>
                         <SVGopenLock />
                     </div>
