@@ -7,7 +7,7 @@ export class TemplateManagerEndpoints {
     }
 
     static POST = {
-        insertTemplate: () => `api/documentmanagement/template/inserttemplate`,
+        insertTemplate: () => `/api/documentmanagement/template/inserttemplate`,
         renameTemplate: () => `/api/documentmanagement/template/RenameTemplate`,
         addDocument: () => `/api/documentmanagement/template/adddocument`
     }
@@ -16,7 +16,7 @@ export class TemplateManagerEndpoints {
     }
 
     static DELETE = {
-        templateById: (tenantId: string, templateId: string) => `/api/documentmanagement/template/deletetemplate?tenantId=${tenantId}&templateId=${templateId}`,
-        deleteTemplateDocument: (tenantId: string, templateId: string, documentId: string) => `/api/documentmanagement/template/deletedocument?tenantId=${tenantId}&templateId=${templateId}&documentId=${documentId}`
+        template: () => `/api/documentmanagement/template/deletetemplate`,
+        deleteTemplateDocument: () => `/api/documentmanagement/template/deletedocument`
     }
 }

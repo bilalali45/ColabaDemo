@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocument'
 
 type DocumentTypesType = {
+    currentCategoryDocuments: CategoryDocument
     changeCurrentDocType: Function
     documentTypeList: CategoryDocument[]
 }
 
-export const DocumentTypes = ({ documentTypeList, changeCurrentDocType }: DocumentTypesType) => {
+export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentCategoryDocuments }: DocumentTypesType) => {
 
     // const [showingAll, setshowingAll] = useState<boolean>(false);
 
@@ -20,7 +21,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType }: Docume
                 {
                     documentTypeList?.map((p: CategoryDocument) => {
                         return (
-                            <li onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
+                            <li className={currentCategoryDocuments?.catId === p?.catId? 'active' : ''} onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
                         )
                     })
                 }

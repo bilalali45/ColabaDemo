@@ -109,7 +109,7 @@ export const UploadedDocumentsTable = () => {
       return (
         <tr>
           <td>
-            <em className="far fa-file"></em> {item.docName}
+            <span className="doc-name"><em className="far fa-file"></em> {item.docName}</span>
           </td>
           {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
           {renderAddedColumn(sortedFiles)}
