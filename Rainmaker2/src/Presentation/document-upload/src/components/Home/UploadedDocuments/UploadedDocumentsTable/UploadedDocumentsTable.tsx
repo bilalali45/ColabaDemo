@@ -9,7 +9,7 @@ import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
 import { DateFormatWithMoment } from "../../../../utils/helpers/DateFormat";
 //import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
-import {DocumentView} from 'rainsoft-rc';
+import { DocumentView } from "rainsoft-rc";
 import { Store } from "../../../../store/store";
 import { DocumentsActionType } from "../../../../store/reducers/documentReducer";
 import { clear } from "console";
@@ -158,14 +158,26 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
-  const getSubmittedDocumentForView = async (id, requestId, docId, fileId, tenantId) => {
-    const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId})) as any;
-   setBlobData(response);
-  }
- const clearBlob = () => {
-   debugger
-  setBlobData(null);
- }
+  const getSubmittedDocumentForView = async (
+    id,
+    requestId,
+    docId,
+    fileId,
+    tenantId
+  ) => {
+    const response = (await DocumentActions.getSubmittedDocumentForView({
+      id,
+      requestId,
+      docId,
+      fileId,
+      tenantId,
+    })) as any;
+    setBlobData(response);
+  };
+  const clearBlob = () => {
+    DocumentActions.documentViewCancelToken.cancel();
+    setBlobData(null);
+  };
   return (
     <React.Fragment>
       <div className="UploadedDocumentsTable">
@@ -177,16 +189,16 @@ export const UploadedDocumentsTable = () => {
         <DocumentView
           hideViewer={(value: boolean) => {
             clearBlob();
-            if(value === false) {
-              let abc: any = {}
+            if (value === false) {
+              let abc: any = {};
               setCurrentDoc(abc);
             }
           }}
           {...currentDoc}
           fileId={currentDoc.fileId}
-          tenantId = {Auth.getTenantId()}
-          blobData = {blobData}
-          submittedDocumentCallBack = {getSubmittedDocumentForView}
+          tenantId={Auth.getTenantId()}
+          blobData={blobData}
+          submittedDocumentCallBack={getSubmittedDocumentForView}
         />
       )}
     </React.Fragment>
