@@ -48,7 +48,7 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
         return <div className="td"><span className={cssClass}></span> {status}</div>
     }
     const renderButton = (data: NeedList, index: number) => {
-        let count = data.files.length;
+        let count = data.files != null ? data.files.length : data.files;
         if (data.status === 'Pending review') {
             return (
                 <div className="td">
@@ -59,7 +59,7 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
             return (
                 <div className="td">
                     <button onClick={() => detailClickHandler(data.docId)} className="btn btn-default btn-sm">Details</button>
-                    {count === 0
+                    {count === 0 || count === null
                         ?
                         <button onClick={() => deleteDocument(data.id, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></button>
                         :
@@ -70,8 +70,8 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
         }
     }
 
-    const renderFile = (data: NeedListDocuments[]) => {
-        if (data.length === 0) {
+    const renderFile = (data: NeedListDocuments[] | null) => {
+        if (data === null || data.length === 0) {
             return (
                 <div className="td">
                     <span className="block-element">No file submitted yet</span>
@@ -91,14 +91,21 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
     }
 
     const renderSyncToLos = (data: NeedListDocuments[]) => {
-        return (
-            <div className="td">
-                {data.map((item: NeedListDocuments) => {
-                    return <span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span>
-                })
-                }
-            </div>
-        )
+        if (data === null || data.length === 0) {
+            return(
+                <div className="td"><span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span> </div>
+            )
+
+        }else{
+            return (
+                <div className="td">
+                    {data.map((item: NeedListDocuments) => {
+                        return <span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span>
+                    })
+                    }
+                </div>
+            )
+        }    
     }
     const reviewClickHandler = (index: number) => {
         history.push('/ReviewDocument', {

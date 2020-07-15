@@ -26,6 +26,20 @@ export const LoanSnapshot = () => {
        }
    } 
   }
+
+  const renderLoanProgram = (data: string | undefined) => {
+      if(data){
+        let splitData = data.split(' ');
+        return (
+      <span className="mcu-label-value plus">{splitData[0]}
+      <span className="text-wrap top inline-block-element">
+          <small className="block-element">{splitData[1]}</small>
+    <small className="text-primary block-element">{splitData[2]}</small>
+      </span> 
+     </span>
+         )
+      }  
+  }
   
   if (!loanInfo) {
     return <></>;
@@ -77,12 +91,8 @@ export const LoanSnapshot = () => {
                         </li>
                         <li>
                             <label className="mcu-label">Loan Program</label>
-                            <span className="mcu-label-value plus">{loanInfo.loanProgram}
-                                {/* <span className="text-wrap top inline-block-element">
-                                    <small className="block-element">Year</small>
-                                    <small className="text-primary block-element">ARM</small>
-                                </span>  */}
-                            </span>
+                            {renderLoanProgram(loanInfo.loanProgram)}
+                           
                         </li>
                         <li>
                             <label className="mcu-label">Property Address</label>
