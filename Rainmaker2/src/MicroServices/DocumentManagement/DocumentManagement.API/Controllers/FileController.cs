@@ -78,7 +78,9 @@ namespace DocumentManagement.API.Controllers
                 {
                     if (formFile.Length > setting.maxFileSize)
                         throw new Exception(message: "File size exceeded limit");
-                    logger.LogInformation($"uploading file {formFile.Name}");
+                    if (formFile.FileName.Length > setting.maxFileNameSize)
+                        throw new Exception(message: "File Name size exceeded limit");
+                    logger.LogInformation($"uploading file {formFile.FileName}");
                     var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
                     // upload to ftp
@@ -134,6 +136,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Rename(FileRenameModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var setting = await settingService.GetSetting();
+            if (model.fileName.Length > setting.maxFileNameSize)
+                throw new Exception(message: "File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
                                                     userProfileId: userProfileId);
             if (docQuery)

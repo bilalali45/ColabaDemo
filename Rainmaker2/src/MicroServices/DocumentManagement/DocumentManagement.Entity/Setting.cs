@@ -14,5 +14,6 @@ namespace DocumentManagement.Entity
         public string ftpUser { get; set; }
         public string ftpPassword { get; set; }
         public int maxFileSize { get; set; }
+        public int maxFileNameSize { get; set; }
     }
 }
