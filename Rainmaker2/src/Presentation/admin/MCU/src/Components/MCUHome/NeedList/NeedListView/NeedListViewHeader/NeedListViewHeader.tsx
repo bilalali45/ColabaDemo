@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
 
-export const NeedListViewHeader = () => {
+type headerProps = {
+    toggleCallBack: Function
+}
 
-    let dropdown = {
-       // display:"none"
-    }
+export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
+    const [toggle, setToggle] = useState(false);
+    
+    const callBack = () => {
+        toggleCallBack(toggle)
+        setToggle(!toggle)
+       
+      }
 
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
@@ -15,7 +22,7 @@ export const NeedListViewHeader = () => {
                 <span className="h2">Needs List</span> 
                 <div className="btn-group">                
                     <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" style={{pointerEvents:'none'}} >
                         Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
                     </Dropdown.Toggle>
 
@@ -50,11 +57,11 @@ export const NeedListViewHeader = () => {
             <div className="need-list-view-header--right">
                 <label><strong>All</strong></label>
                 &nbsp;&nbsp;&nbsp;
-                <Toggler />
-                {/* <label className="switch">
-                    <input type="checkbox" id="toggle" checked />
-                    <span className="slider round"></span>
-                </label> */}
+                {/* <Toggler /> */}
+                <label className="switch" >
+                <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} />
+                <span className="slider round"></span>
+                </label>
                 &nbsp;&nbsp;&nbsp;
                 <label><strong>Pending</strong></label>
             </div>            

@@ -8,7 +8,8 @@ export class TemplateManagerEndpoints {
 
     static POST = {
         insertTemplate: () => `api/documentmanagement/template/inserttemplate`,
-        renameTemplate: (tenantId: string, id: string, name: string) => `/api/documentmanagement/template/RenameTemplate?tenantId=${tenantId}&id=${id}&name=${name}`
+        renameTemplate: () => `/api/documentmanagement/template/RenameTemplate`,
+        addDocument: () => `/api/documentmanagement/template/adddocument`
     }
 
     static PUT = {

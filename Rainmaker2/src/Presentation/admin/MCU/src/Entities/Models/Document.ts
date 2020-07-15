@@ -7,6 +7,5 @@ export class Document {
         this.docTypeId = docTypeId;
         this.docType = docType;
         this.docMessage = docMessage;
-
     }
 }

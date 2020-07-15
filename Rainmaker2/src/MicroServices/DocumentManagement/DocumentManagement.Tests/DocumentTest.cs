@@ -133,6 +133,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -230,7 +231,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<DocumendDTO> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -250,6 +251,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -366,7 +368,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "");
             //Assert
@@ -386,6 +388,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -502,7 +505,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -522,6 +525,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -584,7 +588,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
 
             List<string> listIds = new List<string>();
             listIds.Add("5eb25acde519051af2eeb111");
@@ -643,6 +647,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.EmailLog>> mockCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -756,7 +761,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
             //Assert
@@ -879,6 +884,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -887,7 +893,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
             bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
 
             //Assert
@@ -899,6 +905,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -908,7 +915,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IDocumentService service = new DocumentService(mock.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
             bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
 
             //Assert
@@ -920,9 +927,11 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -944,9 +953,11 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -968,9 +979,11 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -993,10 +1006,12 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -1019,6 +1034,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -1027,8 +1043,8 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
-            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d","Danish Faiz");
 
             //Assert
             Assert.True(result);
@@ -1039,6 +1055,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -1047,8 +1064,8 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
-            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected","Danish Faiz");
 
             //Assert
             Assert.True(result);
@@ -1118,6 +1135,7 @@ namespace DocumentManagement.Tests
         public async Task TestViewService()
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
@@ -1163,7 +1181,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object);
             //Act
             var dto = await service.View(fileViewModel, 1, "127.0.0.1");
             //Assert

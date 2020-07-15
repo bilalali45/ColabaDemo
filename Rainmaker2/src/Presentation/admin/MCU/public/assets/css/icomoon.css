@@ -35,11 +35,9 @@
 }
 .icon-record:before {
   content: "\e90f";
-  color: #666;
 }
 .icon-edit:before {
   content: "\e910";
-  color: #888;
 }
 .icon-users:before {
   content: "\e900";

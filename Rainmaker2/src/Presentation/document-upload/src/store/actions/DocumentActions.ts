@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Http } from 'rainsoft-js';
+import { Http } from "rainsoft-js";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
@@ -29,7 +29,7 @@ export class DocumentActions {
       //     []
       //   )
       // ]
-      
+
       let d = res.data.map((d: DocumentRequest, i: number) => {
         let { id, requestId, docId, docName, docMessage, files } = d;
         let doc = new DocumentRequest(
@@ -51,8 +51,8 @@ export class DocumentActions {
             f.fileUploadedOn,
             f.size,
             f.order,
-            FileUpload.getDocLogo(f, 'dot'),
-            'done'
+            FileUpload.getDocLogo(f, "dot"),
+            "done"
           );
         });
         // doc.files = [];
@@ -80,17 +80,22 @@ export class DocumentActions {
     }
   }
 
+  static documentViewCancelToken: any = axios.CancelToken.source();
   static async getSubmittedDocumentForView(params: any) {
+    DocumentActions.documentViewCancelToken.cancel();
+    DocumentActions.documentViewCancelToken = axios.CancelToken.source();
     try {
       const accessToken = Auth.getAuth();
-      const url =
-        DocumentsEndpoints.GET.viewDocuments(params.id,
-          params.requestId,
-          params.docId,
-          params.fileId,
-          params.tenantId);
+      const url = DocumentsEndpoints.GET.viewDocuments(
+        params.id,
+        params.requestId,
+        params.docId,
+        params.fileId,
+        params.tenantId
+      );
 
       const response = await axios.get(http.createUrl(http.baseUrl, url), {
+        cancelToken: DocumentActions.documentViewCancelToken.token,
         params: { ...params },
         responseType: "arraybuffer", //arraybuffer response type important to get the correct response back from server.
         headers: {
@@ -104,17 +109,25 @@ export class DocumentActions {
     }
   }
 
-  static async finishDocument(loanApplicationId: string, tenentId: string, data: {}) {
+  static async finishDocument(
+    loanApplicationId: string,
+    tenentId: string,
+    data: {}
+  ) {
     try {
-      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), { ...data, tenantId: +tenentId });
+      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), {
+        ...data,
+        tenantId: +tenentId,
+      });
       if (doneRes) {
-        let remainingPendingDocs = await DocumentActions.getPendingDocuments(loanApplicationId, tenentId);
+        let remainingPendingDocs = await DocumentActions.getPendingDocuments(
+          loanApplicationId,
+          tenentId
+        );
         if (remainingPendingDocs) {
           return remainingPendingDocs;
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 }

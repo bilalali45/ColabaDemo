@@ -124,10 +124,12 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> AcceptDocument(AcceptDocumentModel acceptDocumentModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             logger.LogInformation($"document {acceptDocumentModel.docId} is accepted by {userProfileId}");
             var docQuery = await documentService.AcceptDocument(id: acceptDocumentModel.id,
                                                                 requestId: acceptDocumentModel.requestId,
-                                                                docId: acceptDocumentModel.docId);
+                                                                docId: acceptDocumentModel.docId,
+                                                                userName: userName);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -138,11 +140,13 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> RejectDocument(RejectDocumentModel rejectDocumentModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             logger.LogInformation($"document {rejectDocumentModel.docId} is rejected by {userProfileId}");
             var docQuery = await documentService.RejectDocument(id: rejectDocumentModel.id,
                                                                 requestId: rejectDocumentModel.requestId,
                                                                 docId: rejectDocumentModel.docId,
-                                                                message: rejectDocumentModel.message);
+                                                                message: rejectDocumentModel.message,
+                                                                userName: userName);
             if (docQuery)
                 return Ok();
             return NotFound();
