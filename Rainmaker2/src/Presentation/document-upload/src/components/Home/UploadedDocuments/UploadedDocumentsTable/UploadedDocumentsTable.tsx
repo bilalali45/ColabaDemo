@@ -98,7 +98,7 @@ export const UploadedDocumentsTable = () => {
     ]);
 
     return sortedUploadedDocuments.map((item: UploadedDocuments) => {
-      if (!item.files.length) return;
+      if (!item?.files?.length) return;
       const { files, docId, requestId, id } = item;
       const sortedFiles = _.orderBy(
         files,
@@ -109,7 +109,7 @@ export const UploadedDocumentsTable = () => {
       return (
         <tr>
           <td>
-            <em className="far fa-file"></em> {item.docName}
+            <span className="doc-name"><em className="far fa-file"></em> {item.docName}</span>
           </td>
           {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
           {renderAddedColumn(sortedFiles)}
@@ -123,7 +123,7 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderTable = (data) => {
-    if (!data || data.length === 0) return;
+    if (!data || data?.length === 0) return;
     return (
       <table className="table  table-striped">
         <thead>
