@@ -44,7 +44,7 @@ export const LoanSnapshot = () => {
   
   if (!loanInfo) {
     return (
-    <div className="loader loansnapshot">
+    <div className="loader-widget loansnapshot">
         <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
         </Spinner>
