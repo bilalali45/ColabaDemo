@@ -113,10 +113,10 @@ namespace DocumentManagement.Service
                 item.activityId = ObjectId.GenerateNewId().ToString();
                 item.status = DocumentStatus.BorrowerTodo;
 
-                bsonDocument.Add("id", item.id);
-                bsonDocument.Add("activityId", item.activityId);
+                bsonDocument.Add("id", new ObjectId(item.id));
+                bsonDocument.Add("activityId", new ObjectId(item.activityId));
                 bsonDocument.Add("status", item.status);
-                bsonDocument.Add("typeId", item.typeId);
+                bsonDocument.Add("typeId", new ObjectId(item.typeId));
                 bsonDocument.Add("displayName", item.displayName);
                 bsonDocument.Add("message", item.message);
                 bsonDocument.Add("files", new BsonArray());
