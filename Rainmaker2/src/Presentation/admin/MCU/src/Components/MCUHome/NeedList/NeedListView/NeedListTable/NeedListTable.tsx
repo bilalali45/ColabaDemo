@@ -1,298 +1,130 @@
-import React, { useEffect, useCallback, useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
-import { Http } from "rainsoft-js";
+import React from 'react'
+import { NeedListItem } from '../NeedListItem/NeedListItem'
+import { NeedList } from '../../../../../Entities/Models/NeedList'
+import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments'
 
-import { NeedListItem } from "../NeedListItem/NeedListItem";
-import { NeedListDocumentType } from "../../../../../Entities/Types/Types";
+type needListProps = {
+    needList: NeedList | null | undefined;
+    deleteDocument: Function;
+}
+export const NeedListTable = ({needList, deleteDocument}: needListProps) => {
+console.log('needList',needList)
 
-export const NeedListTable = () => {
-  const [documentList, setDocumentList] = useState<NeedListDocumentType[]>([]);
-  const history = useHistory();
-
-  const toDocumentReview = useCallback(
-    (index: number) => {
-      if (documentList && documentList.length) {
-        history.push("/ReviewDocument", {
-          documentList: documentList.filter(
-            (document) => document.status === "Pending review"
-          ),
-          currentDocumentIndex: index,
-        });
-      } else {
-        alert("No data found");
-      }
-    },
-    [documentList]
-  );
-
-  const getDocumentList = useCallback(async () => {
-    const http = new Http();
-
-    const { data } = await http.get<NeedListDocumentType[]>(
-      "/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false"
-    );
-
-    setDocumentList(data);
-  }, [setDocumentList]);
-
-  useEffect(() => {
-    getDocumentList();
-  }, [getDocumentList]);
-
-  return (
-    <div className="need-list-table" id="NeedListTable">
-      <div className="table-responsive">
-        <div className="need-list-table table">
-          <div className="tr">
-            <div className="th">
-              <a href="javascript:;">
-                Document{" "}
-                <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em>
-              </a>
-            </div>
-            <div className="th">
-              <a href="javascript:;">
-                Status{" "}
-                <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em>
-              </a>
-            </div>
-            <div className="th">File Name</div>
-            <div className="th">
-              <a href="">
-                <em className="icon-refresh"></em>
-              </a>{" "}
-              sync to LOS
-            </div>
-            <div className="th">&nbsp;</div>
-          </div>
-          {!!documentList.length &&
-            documentList.map((document, index) => (
-              <NeedListItem
-                toDocumentReview={toDocumentReview}
-                index={index}
-                key={document.id}
-                {...document}
-              />
-            ))}
-
-          <div className="tr row-shadow">
-            <div className="td">
-              <span className="f-normal">Personal Tax Returns</span>
-            </div>
-            <div className="td">
-              <span className="status-bullet started"></span> Started
-            </div>
-            <div className="td">
-              <span className="block-element">
-                2020-06-11 at 8.32.14 PM.pdf
-              </span>
-            </div>
-            <div className="td">
-              <span className="block-element">
-                <a href="">
-                  <em className="icon-refresh success"></em>
-                </a>
-              </span>
-            </div>
-            <div className="td">
-              <a href="" className="btn btn-default btn-sm">
-                Details
-              </a>
-              <a href="" className="btn btn-delete btn-sm">
-                <em className="zmdi zmdi-close"></em>
-              </a>
-            </div>
-          </div>
-
-          <div className="tr row-shadow">
-            <div className="td">
-              <span className="f-normal">Tax divanscripts</span>
-            </div>
-            <div className="td">
-              <span className="status-bullet borrower"></span> Borrower to do
-            </div>
-            <div className="td">
-              <span className="block-element">No file submitted yet</span>
-            </div>
-            <div className="td">
-              <span className="block-element">
-                <a href="">
-                  <em className="icon-refresh"></em>
-                </a>
-              </span>
-            </div>
-            <div className="td">
-              <a href="" className="btn btn-default btn-sm">
-                Details
-              </a>
-              <a href="" className="btn btn-delete btn-sm">
-                <em className="zmdi zmdi-close"></em>
-              </a>
-            </div>
-          </div>
-
-          <div className="tr row-shadow">
-            <div className="td">
-              <span className="f-normal">Tax divanscripts</span>
-            </div>
-            <div className="td">
-              <span className="status-bullet borrower"></span> Borrower to do
-            </div>
-            <div className="td">
-              <span className="block-element">No file submitted yet</span>
-            </div>
-            <div className="td">
-              <span className="block-element">
-                <a href="">
-                  <em className="icon-refresh"></em>
-                </a>
-              </span>
-            </div>
-            <div className="td">
-              <a href="" className="btn btn-default btn-sm">
-                Details
-              </a>
-              <a href="" className="btn btn-delete btn-sm">
-                <em className="zmdi zmdi-close"></em>
-              </a>
-            </div>
-          </div>
-
-          <div className="tr row-shadow">
-            <div className="td">
-              <span className="f-normal">Bank Deposit Slip</span>
-            </div>
-            <div className="td">
-              <span className="status-bullet completed"></span> Completed
-            </div>
-            <div className="td">
-              <span className="block-element">
-                Verification Slip.jpg <br />
-                <small>Screenshot 2020-06-11 at 8.32.14 PM.pdf</small>
-              </span>
-            </div>
-            <div className="td">
-              <span className="block-element">
-                <a href="">
-                  <em className="icon-refresh"></em>
-                </a>
-              </span>
-            </div>
-            <div className="td">
-              <a href="" className="btn btn-default btn-sm">
-                Details
-              </a>
-              <a href="" className="btn btn-delete btn-sm">
-                <em className="zmdi zmdi-close"></em>
-              </a>
-            </div>
-          </div>
+const renderNeedList = (data: any) => {
+    return data.map((item:NeedList)=> {
+        return (
+        <div className="tr row-shadow">
+            <div className="td"><span className="f-normal"><strong>{item.docName}</strong></span></div>
+                 {renderStatus(item.status)}
+                 {renderFile(item.files)}
+                 {renderSyncToLos(item.files)}
+                 {renderButton(item)}
         </div>
-
-        {/* <table className="need-list-table table">
-                <thead>
-                    <tr>
-                        <th><a href="javascript:;">Document <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></th>
-                        <th><a href="javascript:;">Status <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></th>
-                        <th>File Name</th>
-                        <th><a href=""><em className="icon-refresh"></em></a> sync to LOS</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <NeedListItem/>
-                    <tr>
-                        <td><span className="f-normal"><strong>Bank Statement</strong></span></td>
-                        <td><span className="status-bullet pending"></span> Pending</td>
-                        <td>
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-1.jpg</span>
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-2.jpg</span>
-                            <span className="block-element">Bank-statement-Jan-to-Mar-2020-3.jpg</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                            <span className="block-element"><a href=""><em className="icon-refresh failed"></em></a></span>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-secondry btn-sm">Review</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span className="f-normal"><strong>W-2s</strong></span></td>
-                        <td><span className="status-bullet pending"></span> Pending</td>
-                        <td>
-                            <span className="block-element">2020-06-11 at 8.32.14 PM.pdf</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-secondry btn-sm">Review</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span className="f-normal">Personal Tax Returns</span></td>
-                        <td><span className="status-bullet started"></span> Pending</td>
-                        <td>
-                            <span className="block-element">2020-06-11 at 8.32.14 PM.pdf</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh success"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span className="f-normal">Tax Transcripts</span></td>
-                        <td><span className="status-bullet borrower"></span> Borrower to do</td>
-                        <td>
-                            <span className="block-element">No file submitted yet</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span className="f-normal">Tax Transcripts</span></td>
-                        <td><span className="status-bullet borrower"></span> Borrower to do</td>
-                        <td>
-                            <span className="block-element">No file submitted yet</span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span className="f-normal">Bank Deposit Slip</span></td>
-                        <td><span className="status-bullet completed"></span> Completed</td>
-                        <td>
-                            <span className="block-element">
-                                Verification Slip.jpg <br/>
-                                <small>Screenshot 2020-06-11 at 8.32.14 PM.pdf</small>
-                            </span>
-                        </td>
-                        <td>
-                            <span className="block-element"><a href=""><em className="icon-refresh"></em></a></span>
-                        </td>
-                        <td>
-                            <a href="" className="btn btn-default btn-sm">Details</a>
-                            <a href="" className="btn btn-delete"><em className="zmdi zmdi-close"></em></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> */}
-      </div>
-    </div>
-  );
+        )
+        
+       
+    })
 };
+const renderStatus = (status: string) => {
+    let cssClass =''
+    switch(status){
+        case 'Pending review':
+         cssClass = 'status-bullet pending'
+         break;
+        case 'Started':
+         cssClass = 'status-bullet started'
+         break;
+        case 'Borrower to do':
+         cssClass = 'status-bullet borrower'
+         break;
+        case 'Completed':
+         cssClass = 'status-bullet completed'
+         break;
+        default:
+         cssClass = 'status-bullet pending'
+    }
+    return <div className="td"><span className={cssClass}></span> {status}</div>
+}
+const renderButton = (data: NeedList) => {
+    let count = data.files.length;
+    if(data.status === 'Pending review'){
+        return (
+              <div className="td">
+                <a onClick={() =>reviewClickHandler(data.docId)} className="btn btn-secondry btn-sm">Review</a>
+              </div>
+              )         
+    }else{
+        return (
+                <div className="td">
+                 <a  onClick={()=>detailClickHandler(data.docId)} className="btn btn-default btn-sm">Details</a>
+                   {count === 0 
+                   ? 
+                   <a  onClick={()=>deleteDocument(data.id, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
+                   :
+                   ''
+                }         
+                </div>
+        )                       
+    }
+}
+
+const renderFile = (data: NeedListDocuments[]) => {
+    if(data.length === 0){
+      return(
+        <div className="td">
+            <span className="block-element">No file submitted yet</span> 
+        </div>
+      )
+    }else{
+        return(
+            <div className="td">
+                {
+                    data.map((item:NeedListDocuments) => {
+                    return <span className="block-element">{item.clientName}</span>  
+                                                         })
+                }  
+            </div>
+            )}
+   }
+
+const renderSyncToLos = (data: NeedListDocuments[]) => {
+    return (
+<div className="td">
+    {data.map((item:NeedListDocuments) => {
+              return <span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span>})
+    }
+</div>
+    )}
+const reviewClickHandler = (id: string) => {
+console.log('Click on review Id:', id)
+} 
+
+const detailClickHandler = (id: string) => {
+    console.log('Click on detail Id:', id)
+} 
+
+
+    return (
+        <div className="need-list-table" id="NeedListTable">
+            
+            <div className="table-responsive">
+                
+                <div className="need-list-table table">
+
+                    <div className="tr">
+                        <div className="th"><a href="javascript:;">Document <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
+                        <div className="th"><a href="javascript:;">Status <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
+                        <div className="th">File Name</div>
+                        <div className="th"><a href=""><em className="icon-refresh"></em></a> sync to LOS</div>
+                        <div className="th">&nbsp;</div>
+                    </div>
+                    { needList &&
+                    renderNeedList(needList)
+                    }                 
+                </div>
+
+            
+            </div>
+        </div>
+    )
+}
