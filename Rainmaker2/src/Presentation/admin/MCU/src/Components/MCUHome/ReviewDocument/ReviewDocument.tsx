@@ -11,6 +11,7 @@ import {
   DocumentParamsType,
 } from "../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
+import { LocalDB } from "../../../Utils/LocalDB";
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<
@@ -21,6 +22,9 @@ export const ReviewDocument = () => {
   );
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [currentFileIndex, setCurrentFileIndex] = useState(0)
+
+  const tenantId = LocalDB.getTenantId()
 
   const history = useHistory();
   const location = useLocation();
@@ -49,17 +53,25 @@ export const ReviewDocument = () => {
       try {
         setLoading(true);
 
-        const http = new Http();
+        // const http = new Http();
 
-        const response = (await http.get(
-          NeedListEndpoints.GET.documents.view(
-            id,
-            requestId,
-            docId,
-            fileId,
-            tenantId
-          )
-        )) as any;
+        // const response = (await http.get(
+        //   NeedListEndpoints.GET.documents.view(
+        //     id,
+        //     requestId,
+        //     docId,
+        //     fileId,
+        //     tenantId
+        //   )
+        // )) as any;
+
+        const response = await Axios.get('https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view', {
+          params,
+          responseType: 'arraybuffer',
+          headers: {
+            Authorization: `Bearer ${LocalDB.getAuthToken()}`
+          }
+        })
 
         const fileType: string = response.headers["content-type"];
 
@@ -97,10 +109,24 @@ export const ReviewDocument = () => {
     if (navigationIndex === 0) return;
 
     const doc: NeedListDocumentType = documentList1[navigationIndex - 1];
+
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
-    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
+
+    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, tenantId);
   }, [navigationIndex, documentList1, getDocumentForView]);
+
+  const moveNextFile = (index: number) => {
+    if (index === currentFileIndex) return
+
+    if (currentDocument) {
+      const { id, requestId, docId, files } = currentDocument
+
+      setCurrentFileIndex(index)
+
+      getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+    }
+  }
 
   useEffect(() => {
     if (!!location.state) {
@@ -112,12 +138,13 @@ export const ReviewDocument = () => {
           setNavigationIndex(currentDocumentIndex);
           setDocumentList1(() => documentList);
           setCurrentDocument(() => documentList[currentDocumentIndex]);
+
           getDocumentForView(
             doc.id,
             doc.requestId,
             doc.docId,
             doc.files[0].id,
-            1
+            tenantId
           );
         }
       } catch (error) {
@@ -135,6 +162,7 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        buttonsEnabled={!loading}
         onClose={goBack}
         nextDocument={nextDocument}
         previousDocument={previousDocument}
@@ -146,12 +174,14 @@ export const ReviewDocument = () => {
               loading={loading}
               filePath={documentParams.filePath}
               fileType={documentParams.fileType}
+              clientName={!!currentDocument ? currentDocument.files[currentFileIndex].clientName : ""}
             />
           </div>
           {/* review-document-body--content */}
           <aside className="review-document-body--aside col-md-4">
             <ReviewDocumentStatement
-              documentName={!!currentDocument ? currentDocument.docName : ""}
+              moveNextFile={moveNextFile}
+              currentDocument={!!currentDocument ? currentDocument : null}
               files={
                 !!currentDocument && currentDocument.files.length
                   ? currentDocument.files

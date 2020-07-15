@@ -1,10 +1,12 @@
 import React from "react";
 
 export const ReviewDocumentHeader = ({
+  buttonsEnabled,
   onClose,
   nextDocument,
   previousDocument,
 }: {
+  buttonsEnabled: boolean
   onClose: () => void;
   nextDocument: () => void;
   previousDocument: () => void;
@@ -22,11 +24,11 @@ export const ReviewDocumentHeader = ({
 
         <div className="review-document-header--center col-md-4">
           <div className="btn-group">
-            <button className="btn btn-default" onClick={previousDocument}>
+            <button className="btn btn-default" onClick={buttonsEnabled ? previousDocument : () => { }}>
               <em className="zmdi zmdi-arrow-left"></em> Review Previous
               Document
             </button>
-            <button className="btn btn-default" onClick={nextDocument}>
+            <button className="btn btn-default" onClick={buttonsEnabled ? nextDocument : () => { }}>
               Review Next Document <em className="zmdi zmdi-arrow-right"></em>
             </button>
           </div>

@@ -19,10 +19,20 @@ export class NeedListEndpoints {
         tenantId: string
       ) =>
         `/api/documentmanagement/document/view?id=${id}&requestId=${requestId}&docId=${docId}&fileId=${fileId}&tenantId=${tenantId}`,
+      files: (
+        id: string,
+        requestId: string,
+        docId: string
+      ) =>
+        `/api/documentmanagement/document/getfiles?id=${id}&requestId=${requestId}&docId=${docId}`
     },
   };
 
-  static POST = {};
+  static POST = {
+    documents: {
+      renameMCU: () => '/api/documentmanagement/document/mcurename'
+    }
+  };
 
   static PUT = {};
 
