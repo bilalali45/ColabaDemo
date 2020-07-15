@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SVGopenLock } from '../../../../Shared/SVG';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
 import { NeedListActions } from '../../../../Store/actions/NeedListActions';
+import { LocalDB } from '../../../../Utils/LocalDB';
 
 
 
@@ -15,21 +16,24 @@ export const LoanSnapshot = () => {
         }
     }, [loanInfo])
 
-    const fetchLoanApplicationDetail = async () => {
-        let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail('5976')
-        if (res) {
-            setLoanInfo(res)
-        }
-        console.log('res', res)
-    }
-    console.log('loaninfo', loanInfo)
-    if (!loanInfo) {
-        return <></>;
-    }
-    const formattedAddress = () => {
-        return `${loanInfo.streetAddress || ''}   ${loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : ''}`
-    }
-
+    
+  const fetchLoanApplicationDetail = async ()=> {
+   let applicationId = LocalDB.getLoanAppliationId();
+   if(applicationId){
+    let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail(applicationId)
+    if(res){
+        setLoanInfo(res)
+       }
+   } 
+  }
+  
+  if (!loanInfo) {
+    return <></>;
+}
+  const formattedAddress = () => {
+    return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
+}
+  
     return (
         <div className="loansnapshot">
             <div className="loansnapshot--left-side">
@@ -102,7 +106,7 @@ export const LoanSnapshot = () => {
                     <div className="form-group row">
                         <div className="col-md-6">
                             <label className="mcu-label">Lock Date</label>
-                            <span className="mcu-label-value">05-10-2020</span>
+                            <span className="mcu-label-value">{loanInfo.lockDate}</span>                        
                         </div>
                         <div className="col-md-6">
                             <label className="mcu-label">Expiration date</label>
