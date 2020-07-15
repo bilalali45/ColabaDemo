@@ -13,7 +13,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType }: Docume
 
     return (
         <div className="list-doc-cat">
-            <div className="listAll" onClick={() => changeCurrentDocType('all')}>
+            <div className="listAll active" onClick={() => changeCurrentDocType('all')}>
                 All
             </div>
             <ul>

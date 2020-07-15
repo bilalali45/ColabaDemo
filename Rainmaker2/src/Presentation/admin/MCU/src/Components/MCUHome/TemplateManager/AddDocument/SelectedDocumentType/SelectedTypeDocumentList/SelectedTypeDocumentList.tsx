@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react'
-import { CommonDocumentSearch } from './CommonDocumentSearch/CommonDocumentSearch'
 import { SelectedDocumentTypeList } from '../SelectedDocumentTypeList/SelectedDocumentTypeList'
 import { Document } from '../../../../../../Entities/Models/Document'
 import { Template } from '../../../../../../Entities/Models/Template'
@@ -7,11 +6,12 @@ import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocu
 import SearchIcon from '../../../../../../Assets/images/search-icon.svg'
 
 type SelectedTypeType = {
+    documentList: Document[],
     selectedCatDocs: CategoryDocument,
-    addNewDoc: Function,
+    addNewDoc: Function
 }
 
-export const CommonDocuments = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) => {
+export const SelectedTypeDocumentList = ({ documentList,selectedCatDocs, addNewDoc}: SelectedTypeType) => {
     
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         
@@ -20,13 +20,10 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc }: SelectedTypeType
     return (
         <div>
             <div className="s-wrap">
-                <input onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
-                <div className="s-icon"><img src={SearchIcon} alt="" /></div>
+            <h4>{selectedCatDocs?.catName}</h4>
             </div>
-
-            <div className="b-title"><h4>{selectedCatDocs.catName}</h4></div>
             <SelectedDocumentTypeList
-                documentList={selectedCatDocs?.documents}
+                documentList={documentList}
                 addNewDoc={addNewDoc}
             />
         </div>

@@ -70,19 +70,19 @@ export const AddDocument = () => {
     }
 
     const showpopover = () => {
-        setshow(true)
+        setshow(!popshow)
     }
 
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
-                <div className="row">
-                    <div className="col-sm-4">
+                <div className="popup-add-doc-row row">
+                    <div className="col-sm-4 popup-add-doc-row--left">
                         <DocumentTypes
                             documentTypeList={categoryDocuments} 
                             changeCurrentDocType={changeCurrentDocType}/>
                     </div>
-                    <div className="col-sm-8">
+                    <div className="col-sm-8 popup-add-doc-row--right">
 
                         <SelectedType
                             selectedCatDocs={currentCategoryDocuments}

@@ -11,7 +11,8 @@ type SelectedTypeType = {
 export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTypeType) => {
 
     return (
-        <div>
+
+            <div className="active-docs"> 
             <ul>
                 {documentList &&
                     documentList?.map(dl => {
@@ -21,6 +22,6 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTy
                     })
                 }
             </ul>
-        </div>
+            </div>
     )
 }
