@@ -3,6 +3,8 @@ import { SVGopenLock } from '../../../../Shared/SVG';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
 import { NeedListActions } from '../../../../Store/actions/NeedListActions';
 import Spinner from 'react-bootstrap/Spinner';
+import { LocalDB } from '../../../../Utils/LocalDB';
+
 
 
 export const LoanSnapshot = () => {
@@ -15,25 +17,44 @@ export const LoanSnapshot = () => {
         }
     }, [loanInfo])
 
-    const fetchLoanApplicationDetail = async () => {
-        let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail('5976')
-        if (res) {
-            setLoanInfo(res)
-        }
-        console.log('res', res)
-    }
-    console.log('loaninfo', loanInfo)
-    if (!loanInfo) {
-        return (<div className="loader loansnapshot">
-            <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-        </div>)
-    }
-    const formattedAddress = () => {
-        return `${loanInfo.streetAddress || ''}   ${loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : ''}`
-    }
+    
+  const fetchLoanApplicationDetail = async ()=> {
+   let applicationId = LocalDB.getLoanAppliationId();
+   if(applicationId){
+    let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail(applicationId)
+    if(res){
+        setLoanInfo(res)
+       }
+   } 
+  }
 
+  const renderLoanProgram = (data: string | undefined) => {
+      if(data){
+        let splitData = data.split(' ');
+        return (
+      <span className="mcu-label-value plus">{splitData[0]}
+      <span className="text-wrap top inline-block-element">
+          <small className="block-element">{splitData[1]}</small>
+    <small className="text-primary block-element">{splitData[2]}</small>
+      </span> 
+     </span>
+         )
+      }  
+  }
+  
+  if (!loanInfo) {
+    return (
+    <div className="loader loansnapshot">
+        <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+        </Spinner>
+    </div>
+    )
+}
+  const formattedAddress = () => {
+    return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
+}
+  
     return (
         <div className="loansnapshot">
             <div className="loansnapshot--left-side">
@@ -77,12 +98,8 @@ export const LoanSnapshot = () => {
                         </li>
                         <li>
                             <label className="mcu-label">Loan Program</label>
-                            <span className="mcu-label-value plus">{loanInfo.loanProgram}
-                                {/* <span className="text-wrap top inline-block-element">
-                                    <small className="block-element">Year</small>
-                                    <small className="text-primary block-element">ARM</small>
-                                </span>  */}
-                            </span>
+                            {renderLoanProgram(loanInfo.loanProgram)}
+                           
                         </li>
                         <li>
                             <label className="mcu-label">Property Address</label>
@@ -106,7 +123,7 @@ export const LoanSnapshot = () => {
                     <div className="form-group row">
                         <div className="col-md-6">
                             <label className="mcu-label">Lock Date</label>
-                            <span className="mcu-label-value">05-10-2020</span>
+                            <span className="mcu-label-value">{loanInfo.lockDate}</span>                        
                         </div>
                         <div className="col-md-6">
                             <label className="mcu-label">Expiration date</label>

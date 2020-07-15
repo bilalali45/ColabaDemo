@@ -3,6 +3,7 @@ import { NeedListViewHeader } from './NeedListViewHeader/NeedListViewHeader'
 import { NeedListTable } from './NeedListTable/NeedListTable'
 import { NeedList } from '../../../../Entities/Models/NeedList'
 import { NeedListActions } from '../../../../Store/actions/NeedListActions'
+import { LocalDB } from '../../../../Utils/LocalDB'
 
 export const NeedListView = () => {
 
@@ -15,12 +16,14 @@ useEffect(()=> {
 },[needList])
 
 const fetchNeedList = async (status: boolean)=> {
-    let applicationId = '5976';
-    let tenentId = '1';
-    let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
-    if(res){
-        setNeedList(res) 
-    } 
+    let applicationId = LocalDB.getLoanAppliationId();
+    let tenentId = LocalDB.getTenantId();
+    if(applicationId && tenentId){
+        let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
+        if(res){
+            setNeedList(res) 
+        } 
+    }  
 }
 
 const togglerHandler = (pending: boolean) => {
@@ -30,6 +33,7 @@ const togglerHandler = (pending: boolean) => {
 const deleteClickHandler = (id: string, docId: string) => {
     console.log('Click on delete Id&docId:', id, docId)
 }
+
 
     return (
         <div className="need-list-view">
