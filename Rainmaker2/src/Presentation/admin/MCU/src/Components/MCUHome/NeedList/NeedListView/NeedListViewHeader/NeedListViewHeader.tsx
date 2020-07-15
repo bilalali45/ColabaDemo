@@ -22,7 +22,7 @@ export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
                 <span className="h2">Needs List</span> 
                 <div className="btn-group">                
                     <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" style={{pointerEvents:'none'}} >
                         Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
                     </Dropdown.Toggle>
 
