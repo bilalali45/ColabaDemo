@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0377e113-4156-4957-ae0b-6a2b6b05bd1a",
+		"_postman_id": "98fba80f-2674-4bd4-9c00-5e3ecf2fbdf3",
 		"name": "RainmakerSprint3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -36,6 +36,54 @@
 			"response": []
 		},
 		{
+			"name": "GetDocumentsByTemplateIds ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/admindashboard/getmenu?id=5eb25acde519051af2eeb211&id=5eb25acde519051af2eeb111&id=5eb25acde519051af2eeb221&tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"admindashboard",
+						"getmenu"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb211"
+						},
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb111"
+						},
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb221"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GetLoanInfo",
 			"request": {
 				"auth": {
@@ -65,6 +113,42 @@
 						{
 							"key": "loanApplicationId",
 							"value": "5005"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailLog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/DocumentManagement/Document/GetEmailLog?id=abc15d1fe456051af2eeb768",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"DocumentManagement",
+						"Document",
+						"GetEmailLog"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "abc15d1fe456051af2eeb768"
 						}
 					]
 				}
@@ -109,6 +193,51 @@
 						{
 							"key": "pending",
 							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetActivityLog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/Document/GetActivityLog?id=5eb25d1fe519051af2eeb72d&docName=Salary Slip",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"Document",
+						"GetActivityLog"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25d1fe519051af2eeb72d"
+						},
+						{
+							"key": "typeId",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "docName",
+							"value": "Salary Slip"
 						}
 					]
 				}
@@ -185,6 +314,97 @@
 							"key": "tenantId",
 							"value": "1"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/view?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=a2225d1fe456051af2eeb72d&fileId=5f02cf6efd0d322e6c103b11&tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"view"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25d1fe519051af2eeb72d"
+						},
+						{
+							"key": "requestId",
+							"value": "abc15d1fe456051af2eeb768"
+						},
+						{
+							"key": "docId",
+							"value": "a2225d1fe456051af2eeb72d"
+						},
+						{
+							"key": "fileId",
+							"value": "5f02cf6efd0d322e6c103b11"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mcuRename",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n     \"docId\":\"a2225d1fe456051af2eeb72d\",\r\n      \"fileId\":\"5f02cf6efd0d322e6c103b11\",\r\n       \"newName\":\"mcudownload.jpeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/mcurename",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"mcurename"
 					]
 				}
 			},
@@ -271,6 +491,45 @@
 			"response": []
 		},
 		{
+			"name": "AddDocument",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"templateId\":\"5eb25acde519051af2eeb111\",\r\n      \"tenantId\":1,\r\n      \"docName\":\"Credit Report\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/adddocument",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"adddocument"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GetCategoryDocument",
 			"request": {
 				"auth": {
@@ -301,6 +560,50 @@
 			"response": []
 		},
 		{
+			"name": "GetFiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/getfiles?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=aaa25d1fe456051af2eeb72d",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"getfiles"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25d1fe519051af2eeb72d"
+						},
+						{
+							"key": "requestId",
+							"value": "abc15d1fe456051af2eeb768"
+						},
+						{
+							"key": "docId",
+							"value": "aaa25d1fe456051af2eeb72d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "RenameTemplate",
 			"request": {
 				"auth": {
@@ -315,8 +618,17 @@
 				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"id\":\"5eb25acde519051af2eeb111\",\r\n     \"name\":\"Salary Slip\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/api/documentmanagement/template/RenameTemplate?tenantId=1&id=5eb25acde519051af2eeb111&name=mubashir1",
+					"raw": "{{baseUrl}}/api/documentmanagement/template/RenameTemplate",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -325,20 +637,6 @@
 						"documentmanagement",
 						"template",
 						"RenameTemplate"
-					],
-					"query": [
-						{
-							"key": "tenantId",
-							"value": "1"
-						},
-						{
-							"key": "id",
-							"value": "5eb25acde519051af2eeb111"
-						},
-						{
-							"key": "name",
-							"value": "mubashir1"
-						}
 					]
 				}
 			},
@@ -359,8 +657,17 @@
 				},
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"id\":\"5eb25acde519051af2eeb111\",\r\n     \"documentId\":\"5ebc18cba5d847268075ad11\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/api/documentmanagement/template/deletedocument?id=5eb25acde519051af2eeb111&tenantId=1&documentId=5ebc18cba5d847268075ad11",
+					"raw": "{{baseUrl}}/api/documentmanagement/template/deletedocument",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -369,20 +676,6 @@
 						"documentmanagement",
 						"template",
 						"deletedocument"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "5eb25acde519051af2eeb111"
-						},
-						{
-							"key": "tenantId",
-							"value": "1"
-						},
-						{
-							"key": "documentId",
-							"value": "5ebc18cba5d847268075ad11"
-						}
 					]
 				}
 			},
@@ -403,8 +696,17 @@
 				},
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n     \"templateId\":\"5eb25acde519051af2eeb111\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/api/documentmanagement/template/deletetemplate?tenantId=1&templateId=5eb25acde519051af2eeb111",
+					"raw": "{{baseUrl}}/api/documentmanagement/template/deletetemplate",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -413,16 +715,6 @@
 						"documentmanagement",
 						"template",
 						"deletetemplate"
-					],
-					"query": [
-						{
-							"key": "tenantId",
-							"value": "1"
-						},
-						{
-							"key": "templateId",
-							"value": "5eb25acde519051af2eeb111"
-						}
 					]
 				}
 			},

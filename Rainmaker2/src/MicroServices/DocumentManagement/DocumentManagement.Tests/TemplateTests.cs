@@ -62,9 +62,11 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            DeleteTemplateModel deleteTemaplateModel = new DeleteTemplateModel();
+            deleteTemaplateModel.templateId = "5eba77905561502c495f6777";
+            deleteTemaplateModel.tenantId = 1;
             //Act
-            IActionResult result = await controller.DeleteTemplate("5eba77905561502c495f6777", 1);
+            IActionResult result = await controller.DeleteTemplate(deleteTemaplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -85,9 +87,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            DeleteTemplateModel deleteTemplateModel = new DeleteTemplateModel();
+            deleteTemplateModel.templateId = "5eba77905561502c495f6777";
+            deleteTemplateModel.tenantId = 1;
+        
             //Act
-            IActionResult result = await controller.DeleteTemplate("5eba77905561502c495f6777", 1);
+            IActionResult result = await controller.DeleteTemplate(deleteTemplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -287,9 +292,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            DeleteDocumentModel deleteDocumentModel = new DeleteDocumentModel();
+            deleteDocumentModel.id = "5eba77905561502c495f6333";
+            deleteDocumentModel.tenantId = 1;
+            deleteDocumentModel.documentId = "5eb257a3e519051af2eeb477";
             //Act
-            IActionResult result = await controller.DeleteDocument("5eba77905561502c495f6333", 1, "5eb257a3e519051af2eeb477");
+            IActionResult result = await controller.DeleteDocument(deleteDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -310,9 +318,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            DeleteDocumentModel deleteDocumentModel = new DeleteDocumentModel();
+            deleteDocumentModel.id = "5eb25acde519051af2eeb111";
+            deleteDocumentModel.tenantId = 1;
+            deleteDocumentModel.documentId = "5eb257a3e519051af2eeb477";
             //Act
-            IActionResult result = await controller.DeleteDocument("5eb25acde519051af2eeb111", 1, "5eb257a3e519051af2eeb477");
+            IActionResult result = await controller.DeleteDocument(deleteDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -336,9 +347,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            RenameTemplateModel renameTemplateModel = new RenameTemplateModel();
+            renameTemplateModel.id = "5eb25acde519051af2eeb111";
+            renameTemplateModel.tenantId = 1;
+            renameTemplateModel.name = "salary";
             //Act
-            IActionResult result = await controller.RenameTemplate("5eb25acde519051af2eeb111", 1, "salary");
+            IActionResult result = await controller.RenameTemplate(renameTemplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -359,9 +373,12 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
+            RenameTemplateModel renameTemplateModel = new RenameTemplateModel();
+            renameTemplateModel.id = "5eb25acde519051af2eeb111";
+            renameTemplateModel.tenantId = 1;
+            renameTemplateModel.name = "salary";
             //Act
-            IActionResult result = await controller.RenameTemplate("5eb25acde519051af2eeb6ac", 1, "abc");
+            IActionResult result = await controller.RenameTemplate(renameTemplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);

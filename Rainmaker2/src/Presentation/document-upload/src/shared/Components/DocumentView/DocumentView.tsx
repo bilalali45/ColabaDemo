@@ -10,7 +10,7 @@ import printJS from "print-js";
 
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
-import { Auth as Storage } from "../../../services/auth/Auth";
+//import { Auth as Storage } from "../../../services/auth/Auth";
 import { Loader } from "../Assets/loader";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -18,10 +18,14 @@ interface DocumentViewProps {
   id: string;
   requestId: string;
   docId: string;
+  tenantId?: string;
+  blobData?: any | null;
+  submittedDocumentCallBack?: Function;
   fileId?: string;
   clientName?: string;
   hideViewer: (currentDoc) => void;
   file?: any;
+  clearBlob?: Function;
 }
 
 interface DocumentParamsType {
@@ -38,6 +42,10 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   clientName,
   hideViewer,
   file,
+  tenantId,
+  blobData,
+  submittedDocumentCallBack,
+  clearBlob
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -59,29 +67,19 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
-      const response = (await DocumentActions.getSubmittedDocumentForView({
-        id,
-        requestId,
-        docId,
-        fileId,
-        tenantId: Storage.getTenantId(),
-      })) as any;
+      if (submittedDocumentCallBack) {
+        submittedDocumentCallBack(id, requestId, docId, fileId, tenantId);
+      }
 
-      const fileType: string = response.headers["content-type"];
 
-      const documentBlob = new Blob([response.data], {
-        type: fileType,
-      });
+      //const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId: tenantId,})) as any;
+
+
 
       // URL required to view the document
-      const filePath = URL.createObjectURL(documentBlob);
 
-      setDocumentParams({
-        blob: documentBlob,
-        filePath,
-        fileType: fileType.replace("image/", "").replace("application/", ""),
-      });
     } catch (error) {
+      console.log(error)
       alert("Something went wrong. Please try again later.");
       hideViewer({});
     }
@@ -119,18 +117,34 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     if (file) {
       getDocumentForViewBeforeUpload();
     } else {
-      getSubmittedDocumentForView();
+      if (!blobData) {
+        getSubmittedDocumentForView();
+      } else {
+        const fileType: string = blobData.headers["content-type"];
+        const documentBlob = new Blob([blobData.data], { type: fileType, });
+        const filePath = URL.createObjectURL(documentBlob);
+        setDocumentParams({ blob: documentBlob, filePath, fileType: fileType.replace("image/", "").replace("application/", ""), });
+      }
     }
-  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, file]);
+  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, file, blobData]);
+
+ 
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
 
     //this will remove listener on unmount
     return () => {
+     
+      
       window.removeEventListener("keydown", onEscapeKeyPressed, false);
-    };
+    }
   }, [onEscapeKeyPressed]);
+
+ 
+
+  console.log('-------------------------------------------------------------', blobData)
+
 
   return (
     <div className="document-view" id="screen">
@@ -160,7 +174,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             <li>
               <button
                 className="document-view--button"
-                onClick={() => hideViewer({})}
+                onClick={() => hideViewer(false)}
               >
                 <SVGclose />
               </button>
@@ -193,10 +207,10 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       <TransformWrapper
         defaultScale={1}
         wheel={{ wheelEnabled: false }}
-        // defaultPositionX={200}
-        // defaultPositionY={100}
+      // defaultPositionX={200}
+      // defaultPositionY={100}
       >
-        {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+        {({ zoomIn, zoomOut, resetTransform }) => (
           <div>
             <TransformComponent>
               <div className="document-view--body">
@@ -206,8 +220,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                     filePath={documentParams.filePath}
                   />
                 ) : (
-                  <Loader height={"94vh"} />
-                )}
+                    <Loader height={"94vh"} />
+                  )}
               </div>
             </TransformComponent>
             <div className="document-view--floating-options">

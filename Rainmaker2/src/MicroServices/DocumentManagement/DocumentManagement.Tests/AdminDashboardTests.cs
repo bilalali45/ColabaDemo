@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Xunit;
+using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.Tests
 {
@@ -28,7 +30,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
 
-            var admindashboardController = new AdminDashboardController(mock.Object);
+            var admindashboardController = new AdminDashboardController(mock.Object,Mock.Of<ILogger<AdminDashboardController>>());
 
 
             //Act
@@ -50,7 +52,8 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(true);
 
-            var controller = new AdminDashboardController(mock.Object);
+            var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
+            );
 
 
 
@@ -71,7 +74,8 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(false);
 
-            var controller = new AdminDashboardController(mock.Object);
+            var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
+            );
 
             //Act
             IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
@@ -87,6 +91,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -175,7 +180,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object);
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
             //Act
             List<AdminDashboardDTO> dto = await service.GetDocument(1, 1 ,true);
             //Assert
@@ -194,6 +199,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -204,7 +210,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             bool result = await adminDashboardService.Delete(adminDeleteModel);
 
             //Assert
@@ -216,6 +222,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -226,7 +233,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             bool result = await adminDashboardService.Delete(adminDeleteModel);
             //Assert
             Assert.False(result);
@@ -240,7 +247,8 @@ namespace DocumentManagement.Tests
             
             mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync("abc15d1fe456051af2eeb768");
 
-            var adminDashboardController = new AdminDashboardController(mock.Object);
+            var adminDashboardController = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
+            );
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -261,6 +269,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -287,7 +296,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object);
+            var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             //Act
             var dto = await service.IsDocumentDraft("5eb25d1fe519051af2eeb72d", 3842);
             //Assert

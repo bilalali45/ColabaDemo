@@ -13,10 +13,11 @@ namespace DocumentManagement.Service
     public class DocumentService : IDocumentService
     {
         private readonly IMongoService mongoService;
-
-        public DocumentService(IMongoService mongoService)
+        private readonly IActivityLogService activityLogService;
+        public DocumentService(IMongoService mongoService, IActivityLogService activityLogService)
         {
             this.mongoService = mongoService;
+            this.activityLogService = activityLogService;
         }
         public async Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId)
         {
@@ -98,15 +99,14 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docId)
+        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
             string match = "";
-            if(!string.IsNullOrEmpty(typeId))
+            if (!string.IsNullOrEmpty(typeId))
             {
                 match = @"{""$match"": {
-
-                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
+                  ""loanId"": " + new ObjectId(id).ToJson() + @", 
                   ""typeId"": " + new ObjectId(typeId).ToJson() + @"
                             }
                         }";
@@ -114,9 +114,8 @@ namespace DocumentManagement.Service
             else
             {
                 match = @"{""$match"": {
-
-                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
-                  ""docId"": " + new ObjectId(docId).ToJson() + @"
+                  ""loanId"": " + new ObjectId(id).ToJson() + @",
+                  ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
                             }
                         }";
             }
@@ -151,7 +150,7 @@ namespace DocumentManagement.Service
                     dto.userName = query.userName;
                     dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
-                    dto.id = query.id;
+                    dto.id = query._id;
                     dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;
@@ -163,12 +162,11 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel)
+        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
-
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
-                @"{""$match"": { ""_id"": { ""$in"": " + new BsonArray(templateIdsModel.id.Select(x => new ObjectId(x))).ToJson() + @"
+                @"{""$match"": { ""_id"": { ""$in"": " + new BsonArray(id.Select(x => new ObjectId(x))).ToJson() + @"
                               }}
                         }", @"{
                             ""$unwind"":{ ""path"": ""$documentTypes"",
@@ -207,9 +205,9 @@ namespace DocumentManagement.Service
                     DocumentModel dto = new DocumentModel();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (query.messages?.Any(x => x.tenantId == templateIdsModel.tenantId) == true)
+                    if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                     {
-                        dto.docMessage = query.messages.Where(x => x.tenantId == templateIdsModel.tenantId).First().message;
+                        dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
                     }
                     else
                     {
@@ -262,7 +260,7 @@ namespace DocumentManagement.Service
                 }
             }
 
-            return result.OrderByDescending(x=>x.dateTime).ToList();
+            return result.OrderByDescending(x => x.dateTime).ToList();
         }
         public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
         {
@@ -290,7 +288,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> AcceptDocument(string id, string requestId, string docId)
+        public async Task<bool> AcceptDocument(string id, string requestId, string docId, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -313,10 +311,20 @@ namespace DocumentManagement.Service
                 }
 
             });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.AcceptedBy, userName));
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Completed));
+            }
+
             return result.ModifiedCount == 1;
         }
 
-        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message)
+        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -340,8 +348,78 @@ namespace DocumentManagement.Service
                 }
 
             });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
+            }
+
             return result.ModifiedCount == 1;
         }
+        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + model.tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.files.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""serverName"": ""$requests.documents.files.serverName"",
+                                ""encryptionKey"": ""$requests.documents.files.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
+                                ""clientName"": ""$requests.documents.files.clientName"",
+                                ""contentType"": ""$requests.documents.files.contentType""
+                            }
+                             } "
+
+                ));
+
+
+            await asyncCursor.MoveNextAsync();
+            FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+
+            IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+            await viewLogCollection.InsertOneAsync(viewLog);
+
+            return fileViewDTO;
+        }
     }
 }

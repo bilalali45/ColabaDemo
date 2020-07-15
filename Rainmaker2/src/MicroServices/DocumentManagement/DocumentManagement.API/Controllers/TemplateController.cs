@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -10,100 +7,147 @@ using static DocumentManagement.Model.Template;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles="MCU")]
+    [Authorize(Roles = "MCU")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class TemplateController : Controller
     {
+        #region Private Variables
+
         private readonly ITemplateService templateService;
+
+        #endregion
+
+        #region Constructors
+
         public TemplateController(ITemplateService templateService)
         {
             this.templateService = templateService;
         }
 
-        [HttpGet("GetTemplates")]
+        #endregion
+
+        #region Action Methods
+
+        #region Get
+
+        [HttpGet(template: "GetTemplates")]
         public async Task<IActionResult> GetTemplates(int tenantId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.GetTemplates(tenantId, userProfileId);
-            return Ok(docQuery);
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await templateService.GetTemplates(tenantId: tenantId,
+                                                              userProfileId: userProfileId);
+            return Ok(value: docQuery);
         }
-        [HttpGet("GetDocuments")]
+
+
+        [HttpGet(template: "GetDocuments")]
         public async Task<IActionResult> GetDocument(string id)
         {
-            var docQuery = await templateService.GetDocument(id);
-            return Ok(docQuery);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> RenameTemplate(string id, int tenantId, string name)
-        {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.RenameTemplate(id, tenantId, name, userProfileId);
-            if (docQuery)
-                return Ok();
-            else
-                return NotFound();
-        }
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteDocument(string id, int tenantId, string documentId)
-        {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.DeleteDocument(id, tenantId, documentId,   userProfileId);
-            if (docQuery)
-                return Ok();
-            else
-                return NotFound();
-        }
-
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteTemplate(string templateId, int tenantId)
-        {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await templateService.DeleteTemplate(templateId, tenantId, userProfileId);
-            if (docQuery)
-                return Ok();
-            else
-                return NotFound();
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
-        {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
            
-            var docQuery = await templateService.InsertTemplate(insertTemplateModel.tenantId, userProfileId, insertTemplateModel.name);
-                  
-            return Ok(docQuery);
+            var docQuery = await templateService.GetDocument(id: id);
+            return Ok(value: docQuery);
         }
 
-        [HttpGet("GetCategoryDocument")]
+
+        [HttpGet(template: "GetCategoryDocument")]
         public async Task<IActionResult> GetCategoryDocument(int tenantId)
         {
-            var docQuery = await templateService.GetCategoryDocument(tenantId);
-            return Ok(docQuery);
+            var docQuery = await templateService.GetCategoryDocument(tenantId: tenantId);
+            return Ok(value: docQuery);
         }
 
-        [HttpPost("[action]")]
+        #endregion
+
+        #region Post
+
+     
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> RenameTemplate(RenameTemplateModel renameTemplateModel)
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await templateService.RenameTemplate(id: renameTemplateModel.id,
+                                                                tenantid: renameTemplateModel.tenantId,
+                                                                newname: renameTemplateModel.name,
+                                                                userProfileId: userProfileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
+
+
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+
+            var docQuery = await templateService.InsertTemplate(tenantId: insertTemplateModel.tenantId,
+                                                                userProfileId: userProfileId,
+                                                                name: insertTemplateModel.name);
+
+            return Ok(value: docQuery);
+        }
+
+
+        [HttpPost(template: "[action]")]
         public async Task<IActionResult> AddDocument(AddDocumentModel addDocumentModel)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
 
-            var docQuery = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, userProfileId, addDocumentModel.typeId,addDocumentModel.docName);
+            var docQuery = await templateService.AddDocument(templateId: addDocumentModel.templateId,
+                                                             tenantId: addDocumentModel.tenantId,
+                                                             userProfileId: userProfileId,
+                                                             typeId: addDocumentModel.typeId,
+                                                             docName: addDocumentModel.docName);
 
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
 
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> SaveTemplate(AddTemplateModel  model)
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> SaveTemplate(AddTemplateModel model)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            return Ok(await templateService.SaveTemplate(model,userProfileId));
-           
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            return Ok(value: await templateService.SaveTemplate(model: model,
+                                                                userProfileId: userProfileId));
         }
+
+        #endregion
+
+        #region Delete
+
+         
+        [HttpDelete(template: "[action]")]
+        public async Task<IActionResult> DeleteDocument(DeleteDocumentModel deleteDocumentModel)
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await templateService.DeleteDocument(id: deleteDocumentModel.id,
+                                                                tenantid: deleteDocumentModel.tenantId,
+                                                                documentid: deleteDocumentModel.documentId,
+                                                                userProfileId: userProfileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
+
+
+         
+        [HttpDelete(template: "[action]")]
+        public async Task<IActionResult> DeleteTemplate(DeleteTemplateModel deleteTemplateModel)
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var docQuery = await templateService.DeleteTemplate(templateId: deleteTemplateModel.templateId,
+                                                                tenantId: deleteTemplateModel.tenantId,
+                                                                userProfileId: userProfileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

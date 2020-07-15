@@ -1,15 +1,23 @@
-﻿using DocumentManagement.API.Controllers;
+﻿using Castle.Core.Configuration;
+using DocumentManagement.API.Controllers;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace DocumentManagement.Tests
@@ -23,12 +31,18 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
 
-            mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<List<string>>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var documentController = new DocumentController(mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context; 
+            string[] arr = new string[] { "5eb25acde519051af2eeb111", "5eb25acde519051af2eeb111" };
             //Act
-            IActionResult result = await documentController.GetDocumentsByTemplateIds(It.IsAny<TemplateIdModel>());
+            IActionResult result = await controller.GetDocumentsByTemplateIds(arr, It.IsAny<int>());
 
             //Assert
             Assert.NotNull(result);
@@ -51,9 +65,14 @@ namespace DocumentManagement.Tests
             } } };
 
             mock.Setup(x => x.GetFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object);
-            //Act
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
+             //Act
             IActionResult result = await documentController.GetFiles("1", "1", "1");
             //Assert
             Assert.NotNull(result);
@@ -85,10 +104,15 @@ namespace DocumentManagement.Tests
             } } };
 
             mock.Setup(x => x.GetActivityLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object);
-            //Act
-            IActionResult result = await documentController.GetActivityLog("1", "1", "1");
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context;
+             //Act
+            IActionResult result = await controller.GetActivityLog("1", "1", "1");
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -109,6 +133,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -206,7 +231,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<DocumendDTO> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -226,6 +251,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -342,7 +368,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "");
             //Assert
@@ -362,6 +388,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.ActivityLog>> mockCollection = new Mock<IMongoCollection<Entity.ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -478,7 +505,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -498,6 +525,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -547,7 +575,7 @@ namespace DocumentManagement.Tests
                      { "docMessage" ,BsonString.Empty},
                      { "messages" , BsonNull.Value},
                      { "docName" , BsonString.Empty}
-                    
+
                  }
             };
 
@@ -560,17 +588,14 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
 
-            TemplateIdModel templateIdModel = new TemplateIdModel();
-            templateIdModel.tenantId = 1;
             List<string> listIds = new List<string>();
             listIds.Add("5eb25acde519051af2eeb111");
             listIds.Add("5eb25acde519051af2eeb211");
-
-            templateIdModel.id = listIds;
+ 
             //Act
-            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(templateIdModel);
+            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
 
             //Assert
             Assert.NotNull(dto);
@@ -595,10 +620,15 @@ namespace DocumentManagement.Tests
             } } };
 
             mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object);
-            //Act
-            IActionResult result = await documentController.GetEmailLog("1");
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context;
+             //Act
+            IActionResult result = await controller.GetEmailLog("1");
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -613,10 +643,11 @@ namespace DocumentManagement.Tests
         }
 
         [Fact]
-        public async Task TestGetEmailLogService() 
+        public async Task TestGetEmailLogService()
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.EmailLog>> mockCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
@@ -716,7 +747,7 @@ namespace DocumentManagement.Tests
                     { "emailText" , BsonString.Empty},
                     { "loanId" , "5eb25d1fe519051af2eeb72d" }
                 }
-             
+
             };
 
 
@@ -730,7 +761,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
             List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
             //Assert
@@ -741,7 +772,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
             Assert.Equal("abc", dto[7].emailText);
             Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
-  
+
         }
         [Fact]
         public async Task TestmcuRenameControllerTrue()
@@ -749,9 +780,21 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
+            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            mcuRenameModel.id = "1";
+            mcuRenameModel.requestId = "1";
+            mcuRenameModel.docId = "1";
+            mcuRenameModel.fileId = "1";
+            mcuRenameModel.newName = "abc";
             //Act
-            IActionResult result = await controller.mcuRename( "1","1","1","1","abc");
+            IActionResult result = await documentController.McuRename(mcuRenameModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -762,9 +805,21 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
+            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            mcuRenameModel.id = "1";
+            mcuRenameModel.requestId = "1";
+            mcuRenameModel.docId = "1";
+            mcuRenameModel.fileId = "1";
+            mcuRenameModel.newName = "abc";
             //Act
-            IActionResult result = await controller.mcuRename("1", "1", "1", "1", "abc");
+            IActionResult result = await documentController.McuRename(mcuRenameModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -775,15 +830,16 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
-             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
             bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
 
             //Assert
@@ -795,6 +851,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -804,7 +861,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IDocumentService service = new DocumentService(mock.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
             bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc");
 
             //Assert
@@ -816,8 +873,14 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context;
             //Act
             AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
             acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
@@ -834,10 +897,16 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
-            //Act
-            AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context;
+              //Act
+              AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
             acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
             acceptDocumentModel.requestId = "abc15d1fe456051af2eeb768";
             acceptDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
@@ -852,15 +921,21 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new DocumentController(mock.Object);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
             rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
             rejectDocumentModel.requestId = "abc15d1fe456051af2eeb768";
             rejectDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
             rejectDocumentModel.message = "document rejected";
-            IActionResult result = await controller.RejectDocument(rejectDocumentModel);
+            IActionResult result = await documentController.RejectDocument(rejectDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -871,15 +946,22 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            var controller = new DocumentController(mock.Object);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
             rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
             rejectDocumentModel.requestId = "abc15d1fe456051af2eeb768";
             rejectDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
             rejectDocumentModel.message = "document rejected";
-            IActionResult result = await controller.RejectDocument(rejectDocumentModel);
+            IActionResult result = await documentController.RejectDocument(rejectDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -890,6 +972,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -898,8 +981,8 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
-            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d","Danish Faiz");
 
             //Assert
             Assert.True(result);
@@ -910,6 +993,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
 
@@ -918,11 +1002,130 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object);
-            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected","Danish Faiz");
 
             //Assert
             Assert.True(result);
+        }
+
+
+        [Fact]
+        public async Task TestViewController()
+        {
+            
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
+           // Mock<IFileService> mockFileService = new Mock<IFileService>();
+            Mock<IFtpClient> mockFtpClient = new Mock<IFtpClient>();
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
+
+            var mockFileEcryptor = new Mock<IFileEncryptor>();
+            Mock<IFileEncryptionFactory> mockFileEncryptorFacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
+        
+            FileViewDTO fileViewDTO = new FileViewDTO();
+            fileViewDTO.serverName = "a69ad17f-7505-492d-a92e-f32967cecff8.enc";
+            fileViewDTO.encryptionKey = "FileKey";
+            fileViewDTO.encryptionAlgorithm = "AES";
+            fileViewDTO.clientName = "NET Unit Testing.docx";
+            fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.docId = "aaa25d1fe456051af2eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ef454cd86c96583744140d9";
+            fileViewModel.tenantId = 1;
+
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+
+            mock.Setup(x => x.View(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(fileViewDTO);
+            mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
+            mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
+            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
+
+            mockFileEncryptorFacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockFileEcryptor.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            // also check the 'http' call was like we expected it
+            // Act  
+            DocumentController controller = new DocumentController(mock.Object, mockFileEncryptorFacotry.Object, mockFtpClient.Object, mockSettingService.Object, mockKeyStoreService.Object, Mock.Of<ILogger<DocumentController>>());
+            controller.ControllerContext = context;
+            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<FileStreamResult>(result);
+        }
+
+        [Fact]
+        public async Task TestViewService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            fileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , "5ef050534f7d102f9c68a95e" },
+                        { "serverName" ,  "fa8a95e8-2a94-41f0-9f91-c7cf0e0525b0.enc" },
+                        { "encryptionKey" , "FileKey" },
+                        { "encryptionAlgorithm" , "AES" },
+                        { "clientName" , "Recruitment & Selection Survey - Rainsoft Financials Pvt Ltd. (2).docx" },
+                        { "contentType" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+                    }
+            };
+
+            var viewLog = new ViewLog
+            {
+                id = "5ef050534f7d102f9c68a95e",
+                userProfileId = 1,
+                createdOn = DateTime.Now,
+                ipAddress = "127.0.0.1",
+                loanApplicationId = "5eb25d1fe519051af2eeb72d",
+                requestId = "abc15d1fe456051af2eeb768",
+                documentId = "ddd25d1fe456057652eeb72d",
+                fileId = "5ef049d896f9f41cec4b358f"
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
+            mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object);
+            //Act
+            var dto = await service.View(fileViewModel, 1, "127.0.0.1");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
+
         }
     }
 }

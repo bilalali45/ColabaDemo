@@ -1,5 +1,4 @@
 "use strict";
-//import * as moment from 'moment';
 exports.__esModule = true;
 exports.toTitleCase = exports.FormatAmountByCountry = exports.UnMaskPhone = exports.MaskPhone = void 0;
 var addAmountSeperator = function (amount, currency) {
@@ -50,9 +49,9 @@ exports.FormatAmountByCountry = function (amount) {
     var seperatorAdded = addAmountSeperator(amountSplitByPoint[0].toString(), 'US');
     return (function () {
         if (amountSplitByPoint[1]) {
-            return "$" + seperatorAdded + "." + amountSplitByPoint[1];
+            return seperatorAdded + "." + amountSplitByPoint[1];
         }
-        return "$" + seperatorAdded;
+        return "" + seperatorAdded;
     })();
 };
 exports.toTitleCase = function (str) {
@@ -69,9 +68,3 @@ exports.toTitleCase = function (str) {
     }
     return "";
 };
-// export const DateFormatWithMoment = (date: string,shortFormat: boolean = false) => {
-//     const formatString = shortFormat
-//       ? "MMM DD, YYYY hh:mm A"
-//       : "MMMM DD, YYYY hh:mm A";
-//     return moment(date).format(formatString);
-// };

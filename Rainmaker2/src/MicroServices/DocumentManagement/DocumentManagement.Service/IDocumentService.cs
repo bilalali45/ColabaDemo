@@ -9,12 +9,13 @@ namespace DocumentManagement.Service
     public  interface IDocumentService
     {
         Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId);
-        Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docId);
-        Task<List<DocumentModel>> GetDocumentsByTemplateIds(TemplateIdModel templateIdsModel);
+        Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName);
+        Task<List<DocumentModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId);
         Task<List<EmailLogDTO>> GetEmailLog(string id);
 
         Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName);
-        Task<bool> AcceptDocument(string id, string requestId, string docId);
-        Task<bool> RejectDocument(string id, string requestId, string docId,string message);
+        Task<bool> AcceptDocument(string id, string requestId, string docId, string userName);
+        Task<bool> RejectDocument(string id, string requestId, string docId,string message, string userName);
+        Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress);
     }
 }
