@@ -21,7 +21,8 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.GET.categoryDocuments();
 
         try {
-
+            let res = await http.get(url);
+            return res.data;
         } catch (error) {
             console.log(error);
 
@@ -40,17 +41,27 @@ export class TemplateActions {
         }
     }
 
-    static async insertTemplate() {
+    static async insertTemplate(tenantId: string, name: string) {
+        let url = Endpoints.TemplateManager.POST.insertTemplate();
+        let template = {
+            tenantId: Number(tenantId),
+            name
+        }
         try {
-
+            let res = await http.post(url, template);
+            return res.data;
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async renameTemplate() {
+    static async renameTemplate(tenantId: string, templateId: string, name: string) {
+        let url = Endpoints.TemplateManager.POST.renameTemplate();
         try {
-
+            let res = await http.post(url, {
+                tenantId, templateId, name
+            });
+            return res.data;
         } catch (error) {
             console.log(error)
         }
@@ -62,6 +73,22 @@ export class TemplateActions {
         try {
             let res = await http.delete(url);
             return res.data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
+    static async addDocument(tenantId: string, templateId: string, docTypeOrName: string, type: string) {
+
+        let url = Endpoints.TemplateManager.POST.addDocument();
+        let document = {
+            templateId, tenantId: Number(tenantId), [type]: docTypeOrName
+        }
+        // console.log(document);
+        try {
+            let res = await http.post(url, document);
+            return null;
         } catch (error) {
             console.log(error)
         }

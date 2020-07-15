@@ -4,11 +4,17 @@ import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { Template } from '../../../../../Entities/Models/Template';
 
+type SelectedTemplateType = {
+    setAddingNew: Function;
+    addingNew: boolean;
+}
+
+
 const MyTemplate = "MCU Template";
 const TenantTemplate = "Tenant Template";
 const SystemTemplate = "System Template";
 
-export const TemplateListContainer = () => {
+export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTemplateType) => {
     const [toRemoveTemplate, setToRemoveTemplate] = useState<any>(false);
     const [toRemoveTemplate1, setToRemoveTemplate1] = useState<any>(false);
 
@@ -27,7 +33,7 @@ export const TemplateListContainer = () => {
 
     
     const changeCurrentTemplate = async (template: Template) => {
-        
+
         if(currentTemplate?.id === template.id) {
             return;
         }
@@ -163,7 +169,7 @@ export const TemplateListContainer = () => {
 
                 <h4>Templates</h4>
 
-                <div className="btn-add-new-Temp">
+                <div className="btn-add-new-Temp" onClick={() => setAddingNew(!addingNew)}>
                     <button className="btn btn-primary addnewTemplate-btn">
                         <span className="btn-text">Add new template</span>
                         <span className="btn-icon">
