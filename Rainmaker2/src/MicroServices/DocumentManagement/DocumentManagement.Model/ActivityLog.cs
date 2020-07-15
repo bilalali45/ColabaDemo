@@ -23,7 +23,7 @@ namespace DocumentManagement.Model
     public class ActivityLogQuery
     {
         [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
+        public string _id { get; set; }
         public int userId { get; set; }
         public string userName { get; set; }
         public DateTime dateTime { get; set; }
@@ -42,7 +42,7 @@ namespace DocumentManagement.Model
     public class ActivityDetailLog
     {
         [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
+        public string _id { get; set; }
         public DateTime dateTime { get; set; }
         public string activity { get; set; }
     }

@@ -106,8 +106,7 @@ namespace DocumentManagement.Service
             if (!string.IsNullOrEmpty(typeId))
             {
                 match = @"{""$match"": {
-
-                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
+                  ""loanId"": " + new ObjectId(id).ToJson() + @", 
                   ""typeId"": " + new ObjectId(typeId).ToJson() + @"
                             }
                         }";
@@ -115,8 +114,7 @@ namespace DocumentManagement.Service
             else
             {
                 match = @"{""$match"": {
-
-                  ""loanId"": " + new ObjectId(id).ToJson() + @" 
+                  ""loanId"": " + new ObjectId(id).ToJson() + @",
                   ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
                             }
                         }";
@@ -152,7 +150,7 @@ namespace DocumentManagement.Service
                     dto.userName = query.userName;
                     dto.dateTime = DateTime.SpecifyKind(query.dateTime, DateTimeKind.Utc);
                     dto.activity = query.activity;
-                    dto.id = query.id;
+                    dto.id = query._id;
                     dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.loanId = query.loanId;
