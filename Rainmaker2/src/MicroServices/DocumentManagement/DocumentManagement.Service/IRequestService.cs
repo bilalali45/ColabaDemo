@@ -9,6 +9,5 @@ namespace DocumentManagement.Service
     public interface IRequestService
     {
         Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft);
-        Task InsertLog(string activityId, string activity);
     }
 }

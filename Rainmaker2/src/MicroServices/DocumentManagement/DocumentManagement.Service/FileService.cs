@@ -14,10 +14,12 @@ namespace DocumentManagement.Service
     public class FileService : IFileService
     {
         private readonly IMongoService mongoService;
+        private readonly IActivityLogService activityLogService;
 
-        public FileService(IMongoService mongoService)
+        public FileService(IMongoService mongoService, IActivityLogService activityLogService)
         {
             this.mongoService = mongoService;
+            this.activityLogService = activityLogService;
         }
         public async Task<bool> Rename(FileRenameModel model,int userProfileId)
         {
@@ -71,8 +73,15 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
                 }
             });
-            return result.ModifiedCount == 1;
 
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(model.id, model.requestId, model.docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
+            }
+
+            return result.ModifiedCount == 1;
         }
 
         public async Task Order(FileOrderModel model, int userProfileId)
@@ -107,6 +116,46 @@ namespace DocumentManagement.Service
 
         public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
         {
+            bool isStarted = false;
+
+            IMongoCollection<Request> collectionRequst = mongoService.db.GetCollection<Request>("Request");
+
+            using var asyncCursor = collectionRequst.Aggregate(
+                PipelineDefinition<Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                    ""_id"": " + new ObjectId(id).ToJson() + @"
+                            }
+                        }",
+                    @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(requestId).ToJson() + @"
+                            }
+                        }",
+                    @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                    @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(docId).ToJson() + @",
+                                ""requests.documents.status"": """ + DocumentStatus.Started + @""",
+                            }
+                        }", @"{
+                            ""$project"": {
+                                 ""_id"": 1
+                            }
+                        }"
+                ));
+
+            if (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    isStarted = true;
+                }
+            }
+
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -192,6 +241,14 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
                 }
             });
+
+            if (result.ModifiedCount == 1 && isStarted == false)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
+            }
+
             return result.ModifiedCount == 1;
         }
 

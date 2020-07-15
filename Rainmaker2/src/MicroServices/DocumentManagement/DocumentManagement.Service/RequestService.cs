@@ -15,9 +15,11 @@ namespace DocumentManagement.Service
     public class RequestService : IRequestService
     {
         private readonly IMongoService mongoService;
-        public RequestService(IMongoService mongoService)
+        private readonly IActivityLogService activityLogService;
+        public RequestService(IMongoService mongoService, IActivityLogService activityLogService)
         {
             this.mongoService = mongoService;
+            this.activityLogService = activityLogService;
         }
 
         public async Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft)
@@ -111,10 +113,10 @@ namespace DocumentManagement.Service
                 item.activityId = ObjectId.GenerateNewId().ToString();
                 item.status = DocumentStatus.BorrowerTodo;
 
-                bsonDocument.Add("id", item.id);
-                bsonDocument.Add("activityId", item.activityId);
+                bsonDocument.Add("id", new ObjectId(item.id));
+                bsonDocument.Add("activityId", new ObjectId(item.activityId));
                 bsonDocument.Add("status", item.status);
-                bsonDocument.Add("typeId", item.typeId);
+                bsonDocument.Add("typeId", new ObjectId(item.typeId));
                 bsonDocument.Add("displayName", item.displayName);
                 bsonDocument.Add("message", item.message);
                 bsonDocument.Add("files", new BsonArray());
@@ -203,7 +205,7 @@ namespace DocumentManagement.Service
                     };
                     await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
-                    InsertLog(item.activityId, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
+                    activityLogService.InsertLog(item.activityId, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
                 }
             }
 
@@ -256,29 +258,6 @@ namespace DocumentManagement.Service
             );
 
             return true;
-        }
-
-        public async Task InsertLog(string activityId,string activity)
-        {
-            IMongoCollection<ActivityLog> collection = mongoService.db.GetCollection<ActivityLog>("ActivityLog");
-
-            BsonDocument bsonElements = new BsonDocument();
-            bsonElements.Add("_id", ObjectId.GenerateNewId());
-            bsonElements.Add("dateTime", DateTime.UtcNow);
-            bsonElements.Add("activity", activity);
-
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
-                {
-                    { "_id", new ObjectId(activityId)}
-                }, new BsonDocument()
-                {
-                    { "$push", new BsonDocument()
-                        {
-                            { "log", bsonElements  }
-                        }
-                    },
-                }
-            );
         }
     }
 }

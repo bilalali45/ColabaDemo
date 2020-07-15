@@ -45,7 +45,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   tenantId,
   blobData,
   submittedDocumentCallBack,
-  clearBlob
+  clearBlob,
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -56,7 +56,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   const getDocumentForViewBeforeUpload = useCallback(() => {
     const fileBlob = new Blob([file], { type: "image/png" });
     const filePath = URL.createObjectURL(fileBlob);
-
     file &&
       setDocumentParams({
         blob: file,
@@ -71,15 +70,11 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         submittedDocumentCallBack(id, requestId, docId, fileId, tenantId);
       }
 
-
       //const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId: tenantId,})) as any;
 
-
-
       // URL required to view the document
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
       alert("Something went wrong. Please try again later.");
       hideViewer({});
     }
@@ -121,30 +116,35 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         getSubmittedDocumentForView();
       } else {
         const fileType: string = blobData.headers["content-type"];
-        const documentBlob = new Blob([blobData.data], { type: fileType, });
+        const documentBlob = new Blob([blobData.data], { type: fileType });
         const filePath = URL.createObjectURL(documentBlob);
-        setDocumentParams({ blob: documentBlob, filePath, fileType: fileType.replace("image/", "").replace("application/", ""), });
+        setDocumentParams({
+          blob: documentBlob,
+          filePath,
+          fileType: fileType.replace("image/", "").replace("application/", ""),
+        });
       }
     }
-  }, [getSubmittedDocumentForView, getDocumentForViewBeforeUpload, file, blobData]);
-
- 
+  }, [
+    getSubmittedDocumentForView,
+    getDocumentForViewBeforeUpload,
+    file,
+    blobData,
+  ]);
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
 
     //this will remove listener on unmount
     return () => {
-     
-      
       window.removeEventListener("keydown", onEscapeKeyPressed, false);
-    }
+    };
   }, [onEscapeKeyPressed]);
 
- 
-
-  console.log('-------------------------------------------------------------', blobData)
-
+  console.log(
+    "-------------------------------------------------------------",
+    blobData
+  );
 
   return (
     <div className="document-view" id="screen">
@@ -207,8 +207,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       <TransformWrapper
         defaultScale={1}
         wheel={{ wheelEnabled: false }}
-      // defaultPositionX={200}
-      // defaultPositionY={100}
+        // defaultPositionX={200}
+        // defaultPositionY={100}
       >
         {({ zoomIn, zoomOut, resetTransform }) => (
           <div>
@@ -220,8 +220,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                     filePath={documentParams.filePath}
                   />
                 ) : (
-                    <Loader height={"94vh"} />
-                  )}
+                  <Loader height={"94vh"} />
+                )}
               </div>
             </TransformComponent>
             <div className="document-view--floating-options">

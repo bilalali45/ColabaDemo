@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
-import {DocumentView} from 'rainsoft-rc';
+import { DocumentView } from "rainsoft-rc";
 
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
@@ -12,7 +12,6 @@ import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest"
 import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 //import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
-
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -80,8 +79,9 @@ export const SelectedDocuments = ({
 
   const viewDocument = (document: any) => {
     clearBlob();
-    debugger
-    const {currentDoc: { id, requestId, docId },}: any = state.documents;
+    const {
+      currentDoc: { id, requestId, docId },
+    }: any = state.documents;
     const { id: fileId, clientName } = document;
 
     setCurrentDoc({
@@ -94,13 +94,26 @@ export const SelectedDocuments = ({
     });
   };
 
-  const getSubmittedDocumentForView = async (id, requestId, docId, fileId, tenantId) => {
-    const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId})) as any;
-   setBlobData(response);
-  }
- const clearBlob = () => {
-  setBlobData(null);
- }
+  const getSubmittedDocumentForView = async (
+    id,
+    requestId,
+    docId,
+    fileId,
+    tenantId
+  ) => {
+    const response = (await DocumentActions.getSubmittedDocumentForView({
+      id,
+      requestId,
+      docId,
+      fileId,
+      tenantId,
+    })) as any;
+    setBlobData(response);
+  };
+  const clearBlob = () => {
+    DocumentActions.documentViewCancelToken.cancel();
+    setBlobData(null);
+  };
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
@@ -294,10 +307,9 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => setCurrentDoc(null)}
             {...currentDoc}
-            tenantId = {Auth.getTenantId()}
-            blobData = {blobData}
-            submittedDocumentCallBack = {getSubmittedDocumentForView}
-           
+            tenantId={Auth.getTenantId()}
+            blobData={blobData}
+            submittedDocumentCallBack={getSubmittedDocumentForView}
           />
         )}
       </div>
