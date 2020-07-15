@@ -24,7 +24,11 @@ export class NeedListEndpoints {
 
   static POST = {};
 
-  static PUT = {};
+  static PUT = {
+    documents: {
+      deleteDoc: () => `/api/documentmanagement/admindashboard/delete`
+    }
+  };
 
   static DELETE = {
     documents: (id: string, tenantId: string, documentId: string) =>
