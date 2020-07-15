@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,6 +105,9 @@ namespace DocumentManagement.API.Controllers
 
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var setting = await settingService.GetSetting();
+            if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
+                throw new Exception(message: "File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
             var docQuery = await documentService.mcuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,

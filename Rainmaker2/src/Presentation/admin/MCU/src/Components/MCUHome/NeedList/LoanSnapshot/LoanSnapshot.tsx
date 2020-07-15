@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SVGopenLock } from '../../../../Shared/SVG';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
 import { NeedListActions } from '../../../../Store/actions/NeedListActions';
+import Spinner from 'react-bootstrap/Spinner';
 import { LocalDB } from '../../../../Utils/LocalDB';
 
 
@@ -26,9 +27,29 @@ export const LoanSnapshot = () => {
        }
    } 
   }
+
+  const renderLoanProgram = (data: string | undefined) => {
+      if(data){
+        let splitData = data.split(' ');
+        return (
+      <span className="mcu-label-value plus">{splitData[0]}
+      <span className="text-wrap top inline-block-element">
+          <small className="block-element">{splitData[1]}</small>
+    <small className="text-primary block-element">{splitData[2]}</small>
+      </span> 
+     </span>
+         )
+      }  
+  }
   
   if (!loanInfo) {
-    return <></>;
+    return (
+    <div className="loader-widget loansnapshot">
+        <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+        </Spinner>
+    </div>
+    )
 }
   const formattedAddress = () => {
     return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
@@ -77,12 +98,8 @@ export const LoanSnapshot = () => {
                         </li>
                         <li>
                             <label className="mcu-label">Loan Program</label>
-                            <span className="mcu-label-value plus">{loanInfo.loanProgram}
-                                {/* <span className="text-wrap top inline-block-element">
-                                    <small className="block-element">Year</small>
-                                    <small className="text-primary block-element">ARM</small>
-                                </span>  */}
-                            </span>
+                            {renderLoanProgram(loanInfo.loanProgram)}
+                           
                         </li>
                         <li>
                             <label className="mcu-label">Property Address</label>
@@ -98,7 +115,7 @@ export const LoanSnapshot = () => {
             <div className="loansnapshot--right-side">
                 <div className="loansnapshot--wrap">
 
-                    <div className="form-group">
+                    <div className="form-group lock-status">
                         <label className="mcu-label">Lock status</label>
                         <SVGopenLock />
                     </div>
