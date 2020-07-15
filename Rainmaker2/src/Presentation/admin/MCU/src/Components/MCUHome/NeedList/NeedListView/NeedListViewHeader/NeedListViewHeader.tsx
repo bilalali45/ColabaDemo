@@ -5,10 +5,6 @@ import { Toggler } from '../../../../../Shared/Toggler';
 
 export const NeedListViewHeader = () => {
 
-    let dropdown = {
-       // display:"none"
-    }
-
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
