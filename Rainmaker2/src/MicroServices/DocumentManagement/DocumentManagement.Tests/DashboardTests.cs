@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace DocumentManagement.Tests
@@ -28,7 +29,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object,Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -219,7 +220,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -410,7 +411,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object);
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -658,7 +659,7 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetFooterText(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("document footer text");
 
-            DashboardController controller = new DashboardController(mock.Object);
+            DashboardController controller = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
             //dashboardController.ControllerContext = context;
          
             //Act

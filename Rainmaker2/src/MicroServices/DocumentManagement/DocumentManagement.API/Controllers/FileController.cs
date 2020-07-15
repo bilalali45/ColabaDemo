@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
@@ -24,7 +25,8 @@ namespace DocumentManagement.API.Controllers
                               IFtpClient ftpClient,
                               ISettingService settingService,
                               IKeyStoreService keyStoreService,
-                              IConfiguration config)
+                              IConfiguration config,
+                              ILogger<FileController> logger)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -32,6 +34,7 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.config = config;
+            this.logger = logger;
         }
 
         #endregion
@@ -44,6 +47,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
+        private readonly ILogger<FileController> logger;
 
         #endregion
 
@@ -74,6 +78,7 @@ namespace DocumentManagement.API.Controllers
                 {
                     if (formFile.Length > setting.maxFileSize)
                         throw new Exception(message: "File size exceeded limit");
+                    logger.LogInformation($"uploading file {formFile.Name}");
                     var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
                     // upload to ftp
@@ -116,6 +121,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Done(DoneModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
                                                   userProfileId: userProfileId);
             if (docQuery)
@@ -165,7 +171,7 @@ namespace DocumentManagement.API.Controllers
                             requestId = requestId,
                             tenantId = tenantId
                         };
-
+            logger.LogInformation($"document {docId} is viewed by {userProfileId}");
             var fileviewdto = await fileService.View(model: model,
                                                      userProfileId: userProfileId,
                                                      ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());

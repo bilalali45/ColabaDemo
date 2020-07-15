@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {SVGopenLock} from '../../../../Shared/SVG';
-import { LoanAction } from '../../../../Store/actions/LoanAction';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
+import { NeedListActions } from '../../../../Store/actions/NeedListActions';
 
 
 
@@ -16,7 +16,7 @@ export const LoanSnapshot = () => {
   },[loanInfo])
 
   const fetchLoanApplicationDetail = async ()=> {
-   let res: LoanApplication | undefined = await LoanAction.getLoanApplicationDetail('5976')
+   let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail('5976')
    if(res){
     setLoanInfo(res)
    }

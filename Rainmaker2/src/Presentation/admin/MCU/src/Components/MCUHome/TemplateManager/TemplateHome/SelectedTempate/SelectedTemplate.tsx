@@ -95,17 +95,16 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
 
                 </ul>
 
-                <div className="add-doc-link-wrap">
+                {/* <div className="add-doc-link-wrap">
                     <a className="add-doc-link">
                         Add Document <i className="zmdi zmdi-plus"></i>
                     </a>
-                </div>
-
+                </div> */}
+                <AddDocument/> 
             </div>
 
 
             {/* <TemplateItemsList/> */}
-            <AddDocument />
         </section>
     )
 }

@@ -1,22 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocument'
 
 type DocumentTypesType = {
+    changeCurrentDocType: Function
     documentTypeList: CategoryDocument[]
 }
 
-export const DocumentTypes = ({documentTypeList} : DocumentTypesType) => {
+export const DocumentTypes = ({ documentTypeList, changeCurrentDocType }: DocumentTypesType) => {
+
+    // const [showingAll, setshowingAll] = useState<boolean>(false);
+
+
     return (
-        <div>
+        <div className="list-doc-cat">
+            <div className="listAll" onClick={() => changeCurrentDocType('all')}>
+                All
+            </div>
             <ul>
                 {
-                    documentTypeList?.map(dt => {
+                    documentTypeList?.map((p: CategoryDocument) => {
                         return (
-                        <li>{dt.catName}</li>
+                            <li onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
                         )
                     })
                 }
             </ul>
+            <div className="listOther" onClick={() => changeCurrentDocType('other')}>
+                Other
+            </div>
         </div>
     )
 }
