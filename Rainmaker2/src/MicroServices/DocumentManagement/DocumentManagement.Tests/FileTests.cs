@@ -567,13 +567,32 @@ namespace DocumentManagement.Tests
         public async Task TestSubmitService()
         {
             Mock<UpdateResult> mockUpdateResult = new Mock<UpdateResult>();
-         
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Request>> mockcollectionRequst = new Mock<IMongoCollection<Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
-             
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , BsonString.Empty}
+                }
+                ,  new BsonDocument
+                {
+                    { "_id" ,new BsonObjectId("5f0e8d014e72f52edcff3885")}
+                }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockcollectionRequst.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockcollectionRequst.Object);
+
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
 
@@ -582,15 +601,21 @@ namespace DocumentManagement.Tests
             mockUpdateResult.Setup(_ => _.ModifiedCount).Returns(1);
 
             IFileService fileService = new FileService(mock.Object,mockActivityLogService.Object);
-            //Act
 
+            //Act
             string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; 
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768"; 
             string docId = "ddd25d1fe456057652eeb72d"; 
-            string clientName = "NET Unit Testing.docx"; string serverName = "99e80b3c-2c09-483c-b85b-bf5d54ad45a0.enc"; int size = 84989; string encryptionKey = "FileKey";
-            string encryptionAlgorithm = ""; int tenantId = 1; int userProfileId = 1;
+            string clientName = "NET Unit Testing.docx"; 
+            string serverName = "99e80b3c-2c09-483c-b85b-bf5d54ad45a0.enc"; 
+            int size = 84989; 
+            string encryptionKey = "FileKey";
+            string encryptionAlgorithm = ""; 
+            int tenantId = 1; 
+            int userProfileId = 1;
             await fileService.Submit( contentType,  id,  requestId,  docId,  clientName,  serverName,  size,  encryptionKey,  encryptionAlgorithm,  tenantId,  userProfileId);
+
             //Assert
             mockCollection.VerifyAll();
 

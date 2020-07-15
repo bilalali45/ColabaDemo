@@ -260,7 +260,7 @@ namespace DocumentManagement.Service
               @"{""$match"": {
 
                   ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
-                  ""tenantId"": " + DocumentStatus.Started + @",
+                  ""tenantId"": " + model.tenantId + @",
                   ""userId"": " + userProfileId + @"
                             }
                         }",
