@@ -1,5 +1,6 @@
 .document-view {    
     background-color: rgba(#000000,0.5);
+    position: relative;
 
     &.zoom{
         position: fixed;
@@ -77,7 +78,7 @@
 
     &--body{
         margin: 0 auto;
-        height: calc(100vh - 56px);
+        height: calc(100vh - 168px);
         width: 100%;
         z-index: 11;
         .pg-viewer-wrapper {

@@ -15,6 +15,12 @@ h6 {
     -webkit-font-smoothing: antialiased;
 }
 
+a,button{
+    &:focus{
+        outline: none;
+    }
+}
+
 ul {
     list-style: none;
     padding: 0;
@@ -152,6 +158,9 @@ ul {
 }//.btn
 
 .icon-refresh {
+    &::before{
+        color: color('statusDefault');
+    }
     &.failed {
         &::before {
             color: $danger;

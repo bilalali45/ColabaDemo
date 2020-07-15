@@ -52,16 +52,16 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
         if (data.status === 'Pending review') {
             return (
                 <div className="td">
-                    <a onClick={() => reviewClickHandler(index)} className="btn btn-secondry btn-sm">Review</a>
+                    <button onClick={() => reviewClickHandler(index)} className="btn btn-secondry btn-sm">Review</button>
                 </div>
             )
         } else {
             return (
                 <div className="td">
-                    <a onClick={() => detailClickHandler(data.docId)} className="btn btn-default btn-sm">Details</a>
+                    <button onClick={() => detailClickHandler(data.docId)} className="btn btn-default btn-sm">Details</button>
                     {count === 0
                         ?
-                        <a onClick={() => deleteDocument(data.id, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></a>
+                        <button onClick={() => deleteDocument(data.id, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></button>
                         :
                         ''
                     }
