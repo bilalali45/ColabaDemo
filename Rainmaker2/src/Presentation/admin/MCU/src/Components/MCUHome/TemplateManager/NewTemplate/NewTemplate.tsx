@@ -5,6 +5,7 @@ import { Store } from '../../../../Store/Store'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
 import { Template } from '../../../../Entities/Models/Template'
+import { AddDocument } from '../AddDocument/AddDocument'
 export const NewTemplate = () => {
 
     const {state, dispatch} = useContext(Store);
@@ -45,11 +46,7 @@ export const NewTemplate = () => {
                     <div className="content">
                         <p><b>Nothing</b>
                             <br />Your template is empty</p>
-                        <div className="add-doc-link-wrap">
-                            <a className="add-doc-link">
-                                Add Document <i className="zmdi zmdi-plus"></i>
-                            </a>
-                        </div>
+                            <AddDocument/> 
                     </div>
                 </div>
 

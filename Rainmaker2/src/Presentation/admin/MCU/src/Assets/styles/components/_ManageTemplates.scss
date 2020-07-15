@@ -1,6 +1,8 @@
 .ManageTemplate-Wrap {
     background: color('colorWhite');
     border-bottom: 1px solid color('border');
+    
+
 
     .addnewTemplate-btn {
         padding: 3px 10px 3px;
@@ -30,13 +32,24 @@
         min-height: 60px;
         background: color('colorWhite');
         border-bottom: 1px solid color('border');
-        padding-top: 17px;
-        padding-bottom: 18px;
+        padding-top: 15px;
+        padding-bottom: 15px;
         padding-left: 30px;
-        padding-right: 30px;
+        padding-right: 55px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        .close-ManageTemplate {
+            font-size:fontSize('lg');
+            color: color('secondry');
+            position: absolute;
+            right: 30px;
+            cursor: pointer;
+        }
 
         h2 {
             font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base');
+            margin-bottom: 0;
         }
     }
 
