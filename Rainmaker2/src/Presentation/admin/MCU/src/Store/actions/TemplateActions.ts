@@ -1,5 +1,5 @@
 import { Endpoints } from '../endpoints/Endpoints';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { LocalDB } from '../../Utils/LocalDB';
 import { Http } from 'rainsoft-js';
 
@@ -69,16 +69,26 @@ export class TemplateActions {
 
     static async deleteTemplate(tenantId: string, templateId: string) {
 
-        let url = Endpoints.TemplateManager.DELETE.templateById(tenantId, templateId);
+        let url = Endpoints.TemplateManager.DELETE.template();
         try {
-            let res = await http.delete(url);
-            return res.data;
+            let res: any = http.fetch({
+                url: http.createUrl(http.baseUrl, url),
+                method: 'DELETE',
+                data: {
+                    tenantId: Number(tenantId), id: templateId
+                }
+            }, {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${http.auth}`,
+            })
+            return true;
+
         } catch (error) {
             console.log(error)
         }
     }
 
-    
+
     static async addDocument(tenantId: string, templateId: string, docTypeOrName: string, type: string) {
 
         let url = Endpoints.TemplateManager.POST.addDocument();
@@ -88,7 +98,8 @@ export class TemplateActions {
         // console.log(document);
         try {
             let res = await http.post(url, document);
-            return null;
+            console.log(res);
+            return true;
         } catch (error) {
             console.log(error)
         }
@@ -96,10 +107,21 @@ export class TemplateActions {
 
     static async deleteTemplateDocument(tenantId: string, templateId: string, documentId: string) {
 
-        let url = Endpoints.TemplateManager.DELETE.deleteTemplateDocument(tenantId, templateId, documentId);
+        let url = Endpoints.TemplateManager.DELETE.deleteTemplateDocument();
         try {
-            let res = await http.delete(url);
-            return res.data;
+
+            let res: any = http.fetch({
+                url: http.createUrl(http.baseUrl, url),
+                method: 'DELETE',
+                data: {
+                    tenantId: Number(tenantId), id: templateId, documentId
+                }
+            }, {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${http.auth}`,
+            })
+
+            return true;
         } catch (error) {
             console.log(error)
         }

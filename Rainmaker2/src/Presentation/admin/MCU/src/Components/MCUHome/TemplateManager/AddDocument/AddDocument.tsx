@@ -17,6 +17,7 @@ export const AddDocument = () => {
 
     const templateManager: any = state?.templateManager;
 
+    const currentTemplate = templateManager?.currentTemplate;
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
 
@@ -34,31 +35,31 @@ export const AddDocument = () => {
         }
     }
 
-    const setCurrentDocType = (curDoc : CategoryDocument) => {
+    const setCurrentDocType = (curDoc: CategoryDocument) => {
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: curDoc });
 
     }
 
     const changeCurrentDocType = (curDocType: string) => {
-        
-        if(curDocType === 'all') {
+
+        if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
-        }else if(curDocType === 'other') {
+        } else if (curDocType === 'other') {
             let currentDoc = {
                 catId: 'other',
                 catName: 'Other',
                 documents: []
             };
             setCurrentDocType(currentDoc);
-        }else {
-            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType );
+        } else {
+            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
             setCurrentDocType(currentDoc);
         }
     }
 
     const extractAllDocs = () => {
-        let allDocs : Document[] = [];
-        
+        let allDocs: Document[] = [];
+
         for (const doc of categoryDocuments) {
             allDocs = [...allDocs, ...doc.documents];
         }
@@ -70,23 +71,36 @@ export const AddDocument = () => {
     }
 
     const showpopover = () => {
-        setshow(true)
+        setshow(!popshow)
+    }
+
+    const addDocToTemplate = async (docName: string, type: string) => {
+        try {
+            let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
+            if(success) {
+               let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
+               dispatch({type: TemplateActionsType.SetTemplateDocuments, payload: docs});
+            }
+        } catch (error) {
+            
+        }
     }
 
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
-                <div className="row">
-                    <div className="col-sm-4">
+                <div className="popup-add-doc-row row">
+                    <div className="col-sm-4 popup-add-doc-row--left">
                         <DocumentTypes
-                            documentTypeList={categoryDocuments} 
-                            changeCurrentDocType={changeCurrentDocType}/>
+                            currentCategoryDocuments={currentCategoryDocuments}
+                            documentTypeList={categoryDocuments}
+                            changeCurrentDocType={changeCurrentDocType} />
                     </div>
-                    <div className="col-sm-8">
+                    <div className="col-sm-8 popup-add-doc-row--right">
 
                         <SelectedType
                             selectedCatDocs={currentCategoryDocuments}
-                            addNewDoc={() => { }} />
+                            addNewDoc={addDocToTemplate} />
                     </div>
                 </div>
             </div>

@@ -745,9 +745,7 @@ namespace DocumentManagement.Tests
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
             setting.maxFileSize = 1000000;
             setting.maxFileNameSize = 255;
-            string FileName = "tmpECEBbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-            +"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"+
-            "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.tmp";
+            string FileName = new string('a',500);
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
