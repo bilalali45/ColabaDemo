@@ -10,17 +10,22 @@ type SelectedTypeType = {
 
 export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTypeType) => {
 
+    if (!documentList) {
+        return null;
+    }
+
     return (
-        <div>
+
+            <div className="active-docs"> 
             <ul>
                 {documentList &&
                     documentList?.map(dl => {
                         return (
-                            <li onClick={() => addNewDoc(dl.docTypeId)}>{dl?.docType}</li>
+                            <li onClick={() => addNewDoc(dl.docTypeId, 'typeId')}>{dl?.docType}</li>
                         )
                     })
                 }
             </ul>
-        </div>
+            </div>
     )
 }

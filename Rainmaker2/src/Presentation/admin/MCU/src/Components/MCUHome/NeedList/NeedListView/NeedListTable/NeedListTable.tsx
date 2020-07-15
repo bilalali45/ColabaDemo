@@ -122,7 +122,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
 
     if (!needList) {
         return (
-        <div className="loader">
+        <div className="loader-widget">
             <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>

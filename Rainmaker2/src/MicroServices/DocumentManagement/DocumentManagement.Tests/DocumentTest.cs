@@ -778,14 +778,24 @@ namespace DocumentManagement.Tests
         public async Task TestmcuRenameControllerTrue()
         {
             //Arrange
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
+
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+            setting.maxFileSize = 1000000;
+            setting.maxFileNameSize = 255;
+
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting); 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
             documentController.ControllerContext = context;
             mcuRenameModel mcuRenameModel = new mcuRenameModel();
             mcuRenameModel.id = "1";
@@ -799,18 +809,30 @@ namespace DocumentManagement.Tests
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
+
+     
         [Fact]
         public async Task TestmcuRenameControllerFalse()
         {
             //Arrange
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
+
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+            setting.maxFileSize = 1000000;
+            setting.maxFileNameSize = 255;
+
             mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting); 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
             documentController.ControllerContext = context;
             mcuRenameModel mcuRenameModel = new mcuRenameModel();
             mcuRenameModel.id = "1";
@@ -824,7 +846,39 @@ namespace DocumentManagement.Tests
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
         }
+        [Fact]
+        public async Task TestmcuRenameFileNameSizeExceptionController()
+        {
+            //Arrange
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+            setting.maxFileSize = 1000000;
+            setting.maxFileNameSize = 255;
 
+            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
+            documentController.ControllerContext = context;
+            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            mcuRenameModel.id = "1";
+            mcuRenameModel.requestId = "1";
+            mcuRenameModel.docId = "1";
+            mcuRenameModel.fileId = "1";
+            mcuRenameModel.newName = new string('a', 256); ;
+
+            //Assert
+            Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
+
+        }
         [Fact]
         public async Task TestmcuRenameServiceTrue()
         {

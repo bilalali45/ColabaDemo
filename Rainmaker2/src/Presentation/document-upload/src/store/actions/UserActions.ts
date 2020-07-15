@@ -31,25 +31,23 @@ export class UserActions {
 
   static async refreshToken() {
     try {
-      // if (!Auth.checkAuth()) {
-      //   return;
-      // }
-      // let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
-      //   token: Auth.getAuth(),
-      //   refreshToken: Auth.getRefreshToken(),
-      // });
+      if (!Auth.checkAuth()) {
+        return;
+      }
+      let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
+        token: Auth.getAuth(),
+        refreshToken: Auth.getRefreshToken(),
+      });
 
-      // if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
-      //   Auth.saveAuth(res.data.data.token);
-      //   Auth.saveRefreshToken(res.data.data.refreshToken);
-      //   let payload = UserActions.decodeJwt(res.data.data.token);
-      //   Auth.storeTokenPayload(payload);
-      //   UserActions.addExpiryListener(payload);
-      //   http.setAuth(res.data.data.token);
-      //   return true;
-      // }
-
-      // * Temporary Code commented
+      if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
+        Auth.saveAuth(res.data.data.token);
+        Auth.saveRefreshToken(res.data.data.refreshToken);
+        let payload = UserActions.decodeJwt(res.data.data.token);
+        Auth.storeTokenPayload(payload);
+        UserActions.addExpiryListener(payload);
+        http.setAuth(res.data.data.token);
+        return true;
+      }
       console.log("Account log off from refresh token.");
       Auth.removeAuth();
       window.open("/Account/LogOff", "_self");

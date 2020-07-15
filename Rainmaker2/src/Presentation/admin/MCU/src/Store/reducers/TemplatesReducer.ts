@@ -12,8 +12,7 @@ export enum TemplateActionsType {
     SetCurrentCategoryDocuments = "SET_CURRENT_CATEGORY_DOCUMENT",
     InsertTemplate = "INSERT_TEMPLATE",
     RenameTemplate = "RENAME_TEMPLATE",
-    DeleteTemplate = "DELETE_TEMPLATE",
-    SearchDocs = "SEARCH_DOCS",
+    DeleteTemplate = "DELETE_TEMPLATE"
 }
 
 export type TemplateType = {
@@ -67,13 +66,6 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
                 ...state,
                 currentCategoryDocuments: payload
             }
-
-        // case TemplateActionsType.SearchDocs:
-
-        //     return {
-        //         ...state,
-        //         currentCategoryDocuments: payload
-        //     }
 
         default:
             return state;

@@ -28,8 +28,18 @@
             border-bottom: 1px solid color('border');
         }
 
-        .fa-file{
-            margin-right: 10px;
+        
+        
+        .doc-name{
+            padding-left: 25px;
+            position: relative;
+            display: block;
+
+            .fa-file{
+                position: absolute;
+                top: 0px;
+                left: 5px;
+            }
         }
     } 
 }
