@@ -23,7 +23,7 @@
     &--header{
         border-bottom: 1px solid color('border');
         padding: 15px;
-        min-height: 52px;
+        min-height: 53px;
 
         &.flex{
             display: -webkit-flex;
@@ -46,7 +46,7 @@
             border: none;
             background-color: transparent;
             em,i{
-                font-weight: 500;
+                font-weight: 900;
             }
         }
     }// header
