@@ -100,8 +100,10 @@ export const ReviewDocument = () => {
     if (navigationIndex === documentList1.length - 1) return;
 
     const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
+
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
+
     getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
   }, [navigationIndex, documentList1, getDocumentForView]);
 
@@ -110,13 +112,16 @@ export const ReviewDocument = () => {
 
     const doc: NeedListDocumentType = documentList1[navigationIndex - 1];
 
+    const { id, requestId, docId, files } = doc
+
+    setCurrentFileIndex(() => 0)
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
 
-    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, tenantId);
-  }, [navigationIndex, documentList1, getDocumentForView]);
+    getDocumentForView(id, requestId, docId, files[0].id, tenantId);
+  }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
 
-  const moveNextFile = (index: number) => {
+  const moveNextFile = useCallback(async (index: number) => {
     if (index === currentFileIndex) return
 
     if (currentDocument) {
@@ -126,7 +131,7 @@ export const ReviewDocument = () => {
 
       getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
-  }
+  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
 
   useEffect(() => {
     if (!!location.state) {
@@ -139,11 +144,13 @@ export const ReviewDocument = () => {
           setDocumentList1(() => documentList);
           setCurrentDocument(() => documentList[currentDocumentIndex]);
 
+          const { id, requestId, docId, files } = doc
+
           getDocumentForView(
-            doc.id,
-            doc.requestId,
-            doc.docId,
-            doc.files[0].id,
+            id,
+            requestId,
+            docId,
+            files[0].id,
             tenantId
           );
         }
@@ -153,7 +160,7 @@ export const ReviewDocument = () => {
         alert("Something went wrong. Please try again.");
       }
     }
-  }, [state, getDocumentForView, location.state]);
+  }, [state, getDocumentForView, location.state, tenantId]);
 
   return (
     <div
@@ -170,12 +177,14 @@ export const ReviewDocument = () => {
       <div className="review-document-body">
         <div className="row">
           <div className="review-document-body--content col-md-8">
-            <DocumentView
-              loading={loading}
-              filePath={documentParams.filePath}
-              fileType={documentParams.fileType}
-              clientName={!!currentDocument ? currentDocument.files[currentFileIndex].clientName : ""}
-            />
+            {!!currentDocument && currentDocument.files.length && (
+              <DocumentView
+                loading={loading}
+                filePath={documentParams.filePath}
+                fileType={documentParams.fileType}
+                clientName={currentDocument.files[currentFileIndex || 0].clientName}
+              />
+            )}
           </div>
           {/* review-document-body--content */}
           <aside className="review-document-body--aside col-md-4">
