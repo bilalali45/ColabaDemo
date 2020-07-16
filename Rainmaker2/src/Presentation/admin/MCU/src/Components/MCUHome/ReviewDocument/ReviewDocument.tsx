@@ -101,11 +101,12 @@ export const ReviewDocument = () => {
     if (navigationIndex === documentList1.length - 1) return;
 
     const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
+    const { id, requestId, docId, files } = doc
 
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
 
-    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
+    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, 1);
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
@@ -119,7 +120,7 @@ export const ReviewDocument = () => {
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
 
-    getDocumentForView(id, requestId, docId, files[0].id, tenantId);
+    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, tenantId);
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number) => {
@@ -195,11 +196,6 @@ export const ReviewDocument = () => {
             <ReviewDocumentStatement
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
-              files={
-                !!currentDocument && currentDocument.files && currentDocument.files.length
-                  ? currentDocument.files
-                  : []
-              }
             />
           </aside>
           {/* review-document-body--aside */}
