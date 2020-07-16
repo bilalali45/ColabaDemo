@@ -177,6 +177,7 @@ export const ReviewDocument = () => {
         nextDocument={nextDocument}
         previousDocument={previousDocument}
       />
+      
       <div className="review-document-body">
         <div className="row">
           <div className="review-document-body--content col-md-8">
