@@ -23,6 +23,7 @@ export const ReviewDocument = () => {
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [currentFileIndex, setCurrentFileIndex] = useState(0)
+  const [documentDetail, setDocumentDetail] = useState(false)
 
   const tenantId = LocalDB.getTenantId()
 
@@ -136,17 +137,18 @@ export const ReviewDocument = () => {
   useEffect(() => {
     if (!!location.state) {
       try {
-        const { documentList, currentDocumentIndex } = state as any;
+        const { documentList, currentDocumentIndex, documentDetail } = state as any;
         const doc: NeedListDocumentType = documentList[currentDocumentIndex];
 
         if (!!documentList && documentList.length) {
           setNavigationIndex(currentDocumentIndex);
           setDocumentList1(() => documentList);
           setCurrentDocument(() => documentList[currentDocumentIndex]);
+          setDocumentDetail(() => documentDetail)
 
           const { id, requestId, docId, files } = doc
 
-          getDocumentForView(
+          !!files && !!files.length && files.length > 0 && getDocumentForView(
             id,
             requestId,
             docId,
@@ -169,6 +171,7 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        documentDetail={documentDetail}
         buttonsEnabled={!loading}
         onClose={goBack}
         nextDocument={nextDocument}
@@ -177,7 +180,7 @@ export const ReviewDocument = () => {
       <div className="review-document-body">
         <div className="row">
           <div className="review-document-body--content col-md-8">
-            {!!currentDocument && currentDocument.files.length && (
+            {!!currentDocument && currentDocument.files && currentDocument.files.length && (
               <DocumentView
                 loading={loading}
                 filePath={documentParams.filePath}
@@ -192,7 +195,7 @@ export const ReviewDocument = () => {
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
               files={
-                !!currentDocument && currentDocument.files.length
+                !!currentDocument && currentDocument.files && currentDocument.files.length
                   ? currentDocument.files
                   : []
               }

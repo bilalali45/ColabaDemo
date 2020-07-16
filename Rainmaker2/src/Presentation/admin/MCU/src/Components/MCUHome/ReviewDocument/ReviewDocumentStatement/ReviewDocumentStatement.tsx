@@ -17,20 +17,20 @@ export const ReviewDocumentStatement = ({
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
+      if (files.length === 0) return
+
       const { id, requestId, docId } = currentDocument
 
       const http = new Http()
 
       const { data } = await http.get<DocumentFileType[]>(NeedListEndpoints.GET.documents.files(id, requestId, docId))
 
-      console.log('data files', data[0].files)
-
       setDocumentFiles(data[0].files)
     } catch (error) {
       console.log(error)
       alert('Something went wrong while getting files for document. Please try again.')
     }
-  }, [])
+  }, [files.length])
 
   useEffect(() => {
     if (currentDocument) {
@@ -49,7 +49,7 @@ export const ReviewDocumentStatement = ({
       </header>
       <section className="document-statement--body">
         <h3>Documents</h3>
-
+        {files.length === 0 && (<span>No file submitted yet</span>)}
         {/* <DocumentSnipet status="active" /> */}
         {!!documentFiles.length &&
           documentFiles.map((file, index) => <DocumentSnipet
