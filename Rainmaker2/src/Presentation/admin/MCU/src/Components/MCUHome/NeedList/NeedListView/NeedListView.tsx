@@ -24,8 +24,11 @@ const fetchNeedList = async (status: boolean, sortBy: string)=> {
     if(applicationId && tenentId){
         let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
         if(res){
-            let sortedList = sortNeedList(res, sortBy);
-            setNeedList(sortedList) 
+            if(sortBy){
+                let sortedList = sortNeedList(res, sortBy);
+                setNeedList(sortedList)
+            }
+            setNeedList(res)
         } 
     }  
 }
@@ -36,19 +39,24 @@ const deleteNeedListDoc = async (id: string, requestId: string, docId: string)=>
       let res = await NeedListActions.deleteNeedListDocument(id, requestId, docId, parseInt(tenentId))
       if(res === 200){
         fetchNeedList(toggle, sortArrow)
+        setSortArrow(sortArrow) 
       }
-      console.log(res)
     }
 }
 
 const togglerHandler = (pending: boolean) => {
-    debugger
-    fetchNeedList(!pending, sortArrow)
+   if(!pending){
+    fetchNeedList(!pending, '')
     setToggle(!toggle)
+    setSortArrow('desc') 
+   }else{
+    fetchNeedList(!pending, 'asc')
+    setToggle(!toggle)
+    setSortArrow('asc') 
+   }  
 }
 
 const deleteClickHandler = (id: string, requestId: string, docId: string) => {
-    console.log('Click on delete Id,requestId,docId:', id, docId,requestId)
     deleteNeedListDoc(id, requestId, docId);
 }
 

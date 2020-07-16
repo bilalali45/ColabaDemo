@@ -146,6 +146,7 @@ namespace DocumentManagement.API.Controllers
                                                                 requestId: rejectDocumentModel.requestId,
                                                                 docId: rejectDocumentModel.docId,
                                                                 message: rejectDocumentModel.message,
+                                                                userId:userProfileId,
                                                                 userName: userName);
             if (docQuery)
                 return Ok();
