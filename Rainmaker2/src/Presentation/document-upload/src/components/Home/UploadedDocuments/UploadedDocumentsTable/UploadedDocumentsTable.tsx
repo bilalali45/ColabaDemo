@@ -52,12 +52,12 @@ export const UploadedDocumentsTable = () => {
   };
 
   const checkFreezBody = async () => {
-    if(document.body.style.overflow == "hidden"){
-      document.body.removeAttribute('style');
-    }else{
+    if (document.body.style.overflow == "hidden") {
+      document.body.removeAttribute("style");
+    } else {
       document.body.style.overflow = "hidden";
     }
-  }
+  };
 
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
     return (
@@ -119,7 +119,9 @@ export const UploadedDocumentsTable = () => {
       return (
         <tr>
           <td>
-            <span className="doc-name"><em className="far fa-file"></em> {item.docName}</span>
+            <span className="doc-name">
+              <em className="far fa-file"></em> {item.docName}
+            </span>
           </td>
           {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
           {renderAddedColumn(sortedFiles)}
@@ -198,8 +200,8 @@ export const UploadedDocumentsTable = () => {
       {currentDoc?.docId && (
         <DocumentView
           hideViewer={(value: boolean) => {
-            document.body.style.overflow="visible";
-            document.body.removeAttribute('style');
+            document.body.style.overflow = "visible";
+            document.body.removeAttribute("style");
             clearBlob();
             if (value === false) {
               let abc: any = {};

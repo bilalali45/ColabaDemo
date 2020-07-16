@@ -142,14 +142,15 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
     //document.querySelector('.document-view--button').addEventListener("click", ()=>{  document.body.removeAttribute('style');  })
 
-    
-
     //this will remove listener on unmount
     return () => {
       window.removeEventListener("keydown", onEscapeKeyPressed, false);
-      
-      document.getElementById('closeDocumentView')?.addEventListener('click',()=>{ document.body.removeAttribute('style'); })
 
+      document
+        .getElementById("closeDocumentView")
+        ?.addEventListener("click", () => {
+          document.body.removeAttribute("style");
+        });
     };
   }, [onEscapeKeyPressed]);
 
@@ -158,10 +159,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     blobData
   );
   const removeOverflow = () => {
-    document.body.removeAttribute('style');
-  }
- 
-  
+    document.body.removeAttribute("style");
+  };
 
   return (
     <div className="document-view" id="screen">
@@ -189,9 +188,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
               </Fragment>
             )}
             <li>
-              <button id={'closeDocumentView'} 
+              <button
+                id={"closeDocumentView"}
                 className="document-view--button"
-                onClick={() => {hideViewer(false); }}
+                onClick={() => {
+                  hideViewer(false);
+                }}
               >
                 <SVGclose />
               </button>
@@ -221,48 +223,50 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
-      <TransformWrapper
-        defaultScale={1}
-        wheel={{ wheelEnabled: false }}
-        // defaultPositionX={200}
-        // defaultPositionY={100}
-      >
-        {({ zoomIn, zoomOut, resetTransform }) => (
-          <div>
-            <TransformComponent>
-              <div className="document-view--body">
-                {!!documentParams.filePath ? (
-                  <FileViewer
-                    fileType={documentParams.fileType}
-                    filePath={documentParams.filePath}
-                  />
-                ) : (
-                  <Loader height={"94vh"} />
-                )}
+      <div className="zoomview-wraper">
+        <TransformWrapper
+          defaultScale={1}
+          wheel={{ wheelEnabled: false }}
+          // defaultPositionX={200}
+          // defaultPositionY={100}
+        >
+          {({ zoomIn, zoomOut, resetTransform }) => (
+            <div>
+              <TransformComponent>
+                <div className="document-view--body">
+                  {!!documentParams.filePath ? (
+                    <FileViewer
+                      fileType={documentParams.fileType}
+                      filePath={documentParams.filePath}
+                    />
+                  ) : (
+                    <Loader height={"94vh"} />
+                  )}
+                </div>
+              </TransformComponent>
+              <div className="document-view--floating-options">
+                <ul>
+                  <li>
+                    <button className="button-float" onClick={zoomIn}>
+                      <em className="zmdi zmdi-plus"></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="button-float" onClick={zoomOut}>
+                      <em className="zmdi zmdi-minus"></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="button-float" onClick={resetTransform}>
+                      <SVGfullScreen />
+                    </button>
+                  </li>
+                </ul>
               </div>
-            </TransformComponent>
-            <div className="document-view--floating-options">
-              <ul>
-                <li>
-                  <button className="button-float" onClick={zoomIn}>
-                    <em className="zmdi zmdi-plus"></em>
-                  </button>
-                </li>
-                <li>
-                  <button className="button-float" onClick={zoomOut}>
-                    <em className="zmdi zmdi-minus"></em>
-                  </button>
-                </li>
-                <li>
-                  <button className="button-float" onClick={resetTransform}>
-                    <SVGfullScreen />
-                  </button>
-                </li>
-              </ul>
             </div>
-          </div>
-        )}
-      </TransformWrapper>
+          )}
+        </TransformWrapper>
+      </div>
     </div>
   );
 };
