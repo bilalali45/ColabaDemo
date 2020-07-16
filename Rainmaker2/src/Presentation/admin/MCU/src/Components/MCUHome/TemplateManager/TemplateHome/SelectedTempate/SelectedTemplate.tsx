@@ -9,6 +9,8 @@ import { Store } from '../../../../../Store/Store'
 import { NewTemplate } from '../../NewTemplate/NewTemplate'
 import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBox'
 import { Template } from '../../../../../Entities/Models/Template'
+import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
+import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
 
 
 export const SelectedTemplate = () => {
@@ -27,6 +29,9 @@ export const SelectedTemplate = () => {
     }, [editTitleview])
 
     useEffect(() => {
+        if (currentTemplate) {
+            seteditTitleview(false);
+        }
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
@@ -82,7 +87,8 @@ export const SelectedTemplate = () => {
 
     const removeDoc = async (templateId: string, documentId: string) => {
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
-        if (isDeleted) {
+        // debugger
+        if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }
     }
@@ -104,7 +110,7 @@ export const SelectedTemplate = () => {
                             className="editable-TemplateTitle" />
                         <span className="editsaveicon" onClick={toggleRename}><img src={checkicon} alt="" /></span></p>
                     : <>
-                        <p> {currentTemplate?.name} <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span></p>
+                        <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>
                 }
                 {/* 
@@ -119,12 +125,15 @@ export const SelectedTemplate = () => {
             {templateDocuments?.length ? <div className="ST-content-Wrap">
                 <ul>
                     {
-                        templateDocuments?.map((td: any) => {
+                        templateDocuments?.map((td: TemplateDocument) => {
                             return (
                                 <li>
                                     <p>{td.docName}
                                         <span className="BTNclose">
-                                            <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td.docId)}></i>
+                                            {
+                                                currentTemplate.type === MyTemplate &&
+                                                <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td.docId)}></i>
+                                            }
                                         </span>
                                     </p>
                                 </li>
@@ -133,7 +142,9 @@ export const SelectedTemplate = () => {
                     }
 
                 </ul>
-                <AddDocument popoverplacement="right" />
+                {currentTemplate.type === MyTemplate &&
+                    <AddDocument popoverplacement="right" />
+                }
             </div> :
                 <NewTemplate />
             }

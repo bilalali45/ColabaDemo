@@ -5,7 +5,7 @@ import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesRedu
 import { Template } from '../../../../../Entities/Models/Template';
 import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
 
-const MyTemplate = "MCU Template";
+export const MyTemplate = "MCU Template";
 const TenantTemplate = "Tenant Template";
 const SystemTemplate = "System Template";
 

@@ -71,7 +71,7 @@ export class TemplateActions {
 
         let url = Endpoints.TemplateManager.DELETE.template();
         try {
-            let res: any = http.fetch({
+            let res: any = await http.fetch({
                 url: http.createUrl(http.baseUrl, url),
                 method: 'DELETE',
                 data: {
@@ -110,7 +110,7 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.DELETE.deleteTemplateDocument();
         try {
 
-            let res: any = http.fetch({
+            let res: any = await http.fetch({
                 url: http.createUrl(http.baseUrl, url),
                 method: 'DELETE',
                 data: {
@@ -120,8 +120,8 @@ export class TemplateActions {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${http.auth}`,
             })
-            console.log(res);
-            return true;
+            console.log(res.status);
+            return res?.status;
         } catch (error) {
             console.log(error)
         }
