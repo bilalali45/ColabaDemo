@@ -979,7 +979,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1006,7 +1006,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(false);
             
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -1065,7 +1065,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
-            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected","Danish Faiz");
+            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected",3842,"Danish Faiz");
 
             //Assert
             Assert.True(result);
