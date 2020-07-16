@@ -17,7 +17,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
             <div  className={`listAll ${currentCategoryDocuments?.catId === 'all'? 'active' : ''} `} onClick={() => changeCurrentDocType('all')}>
                 All
             </div>
-            <ul>
+            <ul className="ul-list-doc-cat">
                 {
                     documentTypeList?.map((p: CategoryDocument) => {
                         return (
@@ -25,10 +25,11 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
                         )
                     })
                 }
-            </ul>
-            <div className={`listOther ${currentCategoryDocuments?.catId === 'other'? 'active' : ''} `} onClick={() => changeCurrentDocType('other')}>
+                            <li className={`listOther ${currentCategoryDocuments?.catId === 'other'? 'active' : ''} `} onClick={() => changeCurrentDocType('other')}>
                 Other
-            </div>
+            </li>
+            </ul>
+
         </div>
     )
 }
