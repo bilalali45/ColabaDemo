@@ -89,6 +89,7 @@ export const ReviewDocument = () => {
 
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
+    setCurrentFileIndex(0)
 
     !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, 1);
   }, [navigationIndex, documentList1, getDocumentForView]);
@@ -100,9 +101,9 @@ export const ReviewDocument = () => {
 
     const { id, requestId, docId, files } = doc
 
-    setCurrentFileIndex(() => 0)
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
+    setCurrentFileIndex(() => 0)
 
     !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, tenantId);
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
