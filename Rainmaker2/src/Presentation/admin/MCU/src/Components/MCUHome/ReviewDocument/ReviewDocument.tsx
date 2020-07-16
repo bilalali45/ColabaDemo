@@ -39,7 +39,6 @@ export const ReviewDocument = () => {
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId, tenantId) => {
-
       const params = {
         id,
         requestId,
@@ -50,19 +49,18 @@ export const ReviewDocument = () => {
 
       try {
         setLoading(true)
-        // const http = new Http();
 
-        // const response = (await http.get(
-        //   NeedListEndpoints.GET.documents.view(
-        //     id,
-        //     requestId,
-        //     docId,
-        //     fileId,
-        //     tenantId
-        //   )
-        // )) as any;
+        const http = new Http();
 
-        const response = await Axios.get('https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view', {
+        const url = NeedListEndpoints.GET.documents.view(
+          id,
+          requestId,
+          docId,
+          fileId,
+          tenantId
+        )
+
+        const response = await Axios.get(http.createUrl(http.baseUrl, url), {
           params,
           responseType: 'arraybuffer',
           headers: {
