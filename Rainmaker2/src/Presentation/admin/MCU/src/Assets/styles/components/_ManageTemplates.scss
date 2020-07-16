@@ -56,7 +56,7 @@
     .MT-CWrap {
         .MT-leftbar {
             border-right: 1px solid color('border');
-            min-height: 75vh;
+            min-height: 81vh;
 
             .head-TLC {
                 min-height: 60px;
@@ -275,6 +275,11 @@
             font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
             color: color('primary');  
             cursor: pointer;
+            position: relative;
+            .add-fake {
+                position: absolute;
+                width: 100%;
+            }
         }
     }
 
@@ -421,6 +426,15 @@
                             background: rgba(color('primary'), 0.08);
                             color: color('primary');
                         }  
+                       }
+                   }
+
+                   .doc-notfound {
+                       p {
+                        font: 400 #{fontSize('nr')+'/'+"1.3"} fontFamily('base');  
+                        color: color('heading');
+                           margin-bottom: 0;
+                           padding: 8px 15px;
                        }
                    }
                }

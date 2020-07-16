@@ -25,7 +25,9 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTy
                         )
                     })
                 }
+                
             </ul>
+            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “Page 5 0f 5 Case checking  account”</p></div>}
             </div>
     )
 }

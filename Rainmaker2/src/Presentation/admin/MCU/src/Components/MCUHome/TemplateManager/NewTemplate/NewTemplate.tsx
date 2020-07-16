@@ -46,7 +46,7 @@ export const NewTemplate = () => {
                     <div className="content">
                         <p><b>Nothing</b>
                             <br />Your template is empty</p>
-                            <AddDocument/> 
+                            <AddDocument popoverplacement="left"/> 
                     </div>
                 </div>
 
