@@ -117,11 +117,12 @@ export const ReviewDocument = () => {
       setCurrentFileIndex(index)
       setBlobData(null)
 
-      getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+      !loading && getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
-  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
+  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
 
   useEffect(() => {
+
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -135,7 +136,7 @@ export const ReviewDocument = () => {
 
           const { id, requestId, docId, files } = doc
 
-          !!files && !!files.length && files.length > 0 && getDocumentForView(
+          !loading && !!files && !!files.length && files.length > 0 && getDocumentForView(
             id,
             requestId,
             docId,
@@ -149,7 +150,7 @@ export const ReviewDocument = () => {
         alert("Something went wrong. Please try again.");
       }
     }
-  }, [state, getDocumentForView, location.state, tenantId]);
+  }, [getDocumentForView, state, location.state, tenantId]);
 
   return (
     <div
