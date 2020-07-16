@@ -17,6 +17,7 @@ import { FooterContents } from "./utils/header_footer_utils/FooterContent";
 import HeaderContent from "./utils/header_footer_utils/HeaderContent";
 import { Auth } from "./services/auth/Auth";
 import { LaonActions } from "./store/actions/LoanActions";
+import IdleTimer from "react-idle-timer";
 
 const mvcDashBoardUrl = `Dashboard`;
 // const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
@@ -87,6 +88,12 @@ const App = () => {
     }
   };
 
+  const onIdle = (e) => {
+    console.log("Idle time meet");
+    Auth.removeAuth();
+    window.open("/Account/LogOff", "_self");
+  };
+
   if (!authenticated) {
     return null;
   }
@@ -94,6 +101,12 @@ const App = () => {
   return (
     <div className="app">
       <StoreProvider>
+        <IdleTimer
+          element={document}
+          onIdle={onIdle}
+          debounce={250}
+          timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
+        />
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
           displayName={UserActions.getUserName()}

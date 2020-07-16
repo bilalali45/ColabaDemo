@@ -4,15 +4,43 @@
         background-color: color('ReviewDocumentHeaderBg');
         color: color('ReviewDocumentHeaderText');
         padding: 15px;
+        
+        h2{
+            font-family: fontFamily('base'); 
+            font-size: fontSize('lg') - 3px; 
+            font-weight: 500;     
+            margin: 0;
+            padding: 10px 0;  
+        }
+
+        .dropdown{
+            display: inline-block;
+            .dropdown-menu{
+                right: 0px !important;
+                transform: none !important;
+                top: calc(100% + 15px) !important;
+                left: auto !important;
+                width: 1000px;
+                padding: 0;
+            }
+        }
 
         &--left{
-
+            
         }
         &--center{
-
+            .btn{
+                border: 1px solid color('border');
+            }
         }
         &--right{
             text-align: end;
+            .btn-close{
+                font-size: fontSize('lg');
+                padding: 10px 20px;
+                line-height: 1;
+                height: 44px;
+            }
         }
     }
 

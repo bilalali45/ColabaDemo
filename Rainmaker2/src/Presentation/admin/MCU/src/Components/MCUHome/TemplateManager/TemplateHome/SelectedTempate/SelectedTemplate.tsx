@@ -133,14 +133,14 @@ export const SelectedTemplate = () => {
                     }
 
                 </ul>
-
+                <AddDocument popoverplacement="right" />
             </div> :
                 <NewTemplate />
             }
 
 
             {/* <TemplateItemsList/> */}
-            <AddDocument />
+
         </section>
     )
 }

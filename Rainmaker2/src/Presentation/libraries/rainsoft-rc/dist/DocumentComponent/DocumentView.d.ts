@@ -10,6 +10,7 @@ interface DocumentViewProps {
     clientName?: string;
     hideViewer: (currentDoc: any) => void;
     file?: any;
+    loading?: boolean;
 }
 export declare const DocumentView: FunctionComponent<DocumentViewProps>;
 export {};

@@ -17,7 +17,21 @@ export interface NeedListDocumentType {
 }
 
 export interface DocumentParamsType {
-  filePath: string;
-  fileType: string;
   blob: any;
+}
+
+export interface FileType {
+  fileId: string
+  clientName: string
+  mcuName: string
+  fileUploadedOn: string
+}
+
+export interface DocumentFileType {
+  id: string
+  docId: string
+  docName: string
+  typeId: string
+  files: FileType[]
+  username: string
 }

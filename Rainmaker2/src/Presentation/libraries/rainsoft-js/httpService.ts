@@ -51,8 +51,8 @@ export class Http {
         return this.createRequest<T>(this.methods.PUT, url, data);
     }
 
-    async delete<T>(url: string) {
-        return this.createRequest<T>(this.methods.DELETE, url);
+    async delete<T, R>(url: string, data?: R) {
+        return this.createRequest<T>(this.methods.DELETE, url, data);
     }
 
     async fetch(config: AxiosRequestConfig, headers?: OutgoingHttpHeaders) {

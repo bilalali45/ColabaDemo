@@ -25,6 +25,7 @@
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-file-viewer": "^1.2.1",
+    "react-idle-timer": "^4.2.12",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-zoom-pan-pinch": "^1.6.1",
