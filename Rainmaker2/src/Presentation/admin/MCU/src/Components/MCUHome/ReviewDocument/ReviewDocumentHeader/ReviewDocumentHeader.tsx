@@ -50,13 +50,13 @@ export const ReviewDocumentHeader = ({
 
           {/* <button className="btn btn-primary">Activity Log</button> */}
           <Dropdown>
-                    <Dropdown.Toggle size="lg" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
-                    Activity Log
+            <Dropdown.Toggle size="lg" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+              Activity Log
                     </Dropdown.Toggle>
-                    <Dropdown.Menu show>
-                        <ReviewDocumentActivityLog />
-                    </Dropdown.Menu>
-                </Dropdown>
+            <Dropdown.Menu>
+              <ReviewDocumentActivityLog />
+            </Dropdown.Menu>
+          </Dropdown>
 
           <button className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>

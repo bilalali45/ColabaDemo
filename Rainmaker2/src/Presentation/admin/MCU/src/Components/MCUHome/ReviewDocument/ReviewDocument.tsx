@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
-import { DocumentView } from 'rainsoft-rc'
+import { DocumentView } from 'rainsoft-rc';
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
