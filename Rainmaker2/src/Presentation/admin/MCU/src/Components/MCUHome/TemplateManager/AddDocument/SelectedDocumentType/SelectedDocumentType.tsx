@@ -1,5 +1,6 @@
 import React from 'react'
 import { CommonDocuments } from './CommonDocuments/CommonDocuments'
+import { SelectedTypeDocumentList } from './SelectedTypeDocumentList/SelectedTypeDocumentList'
 import { SelectedDocumentTypeList } from './SelectedDocumentTypeList/SelectedDocumentTypeList'
 import { CustomDocuments } from './CustomDocuments/CustomDocuments'
 import { Document } from '../../../../../Entities/Models/Document'
@@ -8,26 +9,33 @@ import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocumen
 
 type SelectedTypeType = {
     selectedCatDocs: CategoryDocument,
-    addNewDoc: Function,
+    addNewDoc: Function
 }
 
 export const SelectedType = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) => {
 
     const renderCurrentlySelected = () => {
 
-        if (selectedCatDocs.catId === 'all') {
+        if (selectedCatDocs?.catId === 'all') {
             return <CommonDocuments
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc} />
 
-        } else if (selectedCatDocs.catId === 'other') {
-            return <CustomDocuments />
+        } else if (selectedCatDocs?.catId === 'other') {
+            return <CustomDocuments 
+            addDocToTemplate={addNewDoc} />
 
         } else {
-            return <SelectedDocumentTypeList
-                documentList={selectedCatDocs?.documents}
+
+            return  <SelectedTypeDocumentList 
+            documentList={selectedCatDocs?.documents}
+            selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc}
             />
+            // return <SelectedDocumentTypeList
+            //     documentList={selectedCatDocs?.documents}
+            //     addNewDoc={addNewDoc}
+            // />
         }
     }
 

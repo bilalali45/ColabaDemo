@@ -13,6 +13,7 @@ namespace DocumentManagement.Model
         public const string AcceptedBy = "Accepted By : {0}"; 
         public const string StatusChanged = "Status Changed : {0}";
         public const string RejectedBy = "Rejected By : {0}";
+        public const string FileSubmitted = "File submitted : {0}";
     }
     public class StatusNameQuery
     {
@@ -31,6 +32,20 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
+    }
+
+    public class ExistingActivityLog
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        public string docName { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string loanId { get; set; }
+        public string message { get; set; }
     }
 
     public class User

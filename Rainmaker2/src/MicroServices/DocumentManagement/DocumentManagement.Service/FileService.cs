@@ -242,6 +242,12 @@ namespace DocumentManagement.Service
                 }
             });
 
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.FileSubmitted, clientName));
+            }
             if (result.ModifiedCount == 1 && isStarted == false)
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);

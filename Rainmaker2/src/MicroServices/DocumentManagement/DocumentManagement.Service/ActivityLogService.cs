@@ -56,6 +56,12 @@ namespace DocumentManagement.Service
                     ""docId"": " + new ObjectId(docId).ToJson() + @"
                             }
                         }", @"{
+                            ""$sort"": {
+                                 ""dateTime"": -1
+                            }
+                        }", @"{
+                            ""$limit"":1
+                        }", @"{
                             ""$project"": {
                                  ""_id"": 1
                             }

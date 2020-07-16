@@ -8,10 +8,12 @@ export const DocumentView = ({
   loading,
   filePath,
   fileType,
+  clientName
 }: {
   loading: boolean;
   filePath: string;
   fileType: string;
+  clientName: string
 }) => {
   return (
     <div className="document-view" id="screen">
@@ -36,7 +38,7 @@ export const DocumentView = ({
           </ul>
         </div>
 
-        <span className="document-view--header---title">Client Name</span>
+        <span className="document-view--header---title">{clientName}</span>
 
         <div className="document-view--header---controls">
           <ul>
@@ -64,8 +66,8 @@ export const DocumentView = ({
           {!!loading ? (
             <h1>Loading</h1>
           ) : (
-            <FileViewer filePath={filePath} fileType={fileType} />
-          )}
+              <FileViewer filePath={filePath} fileType={fileType} />
+            )}
         </div>
         <div className="document-view--floating-options">
           <ul>

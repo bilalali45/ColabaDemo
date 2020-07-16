@@ -324,9 +324,12 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message, string userName)
+        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message,int userId, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            string newActivityLogId = ObjectId.GenerateNewId().ToString();
+
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(id) }
@@ -336,7 +339,6 @@ namespace DocumentManagement.Service
                     {
                         { "requests.$[request].documents.$[document].status", DocumentStatus.Started},
                         { "requests.$[request].documents.$[document].message", message}
-
                     }
                 }
             }, new UpdateOptions()
@@ -355,7 +357,82 @@ namespace DocumentManagement.Service
 
                 activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
+                //set new activityId
+
+                IMongoCollection<Entity.Request> collectionUpdateActivityId = mongoService.db.GetCollection<Entity.Request>("Request");
+
+                UpdateResult resultUpdateActivityId = await collectionUpdateActivityId.UpdateOneAsync(new BsonDocument()
+                {
+                    { "_id", BsonObjectId.Create(id) }
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                            { "requests.$[request].documents.$[document].activityId", new ObjectId(newActivityLogId)}
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                    }
+
+                });
+
+
+                //get existing activity log detail
+
+                ActivityLog activityLog = new ActivityLog();
+
+                IMongoCollection<ActivityLog> collectionActivityLog =
+                    mongoService.db.GetCollection<ActivityLog>("ActivityLog");
+
+                using var asyncCursorActivityLog = collectionActivityLog.Aggregate(
+                    PipelineDefinition<ActivityLog, BsonDocument>.Create(
+                        @"{""$match"": {
+                                        ""_id"": " + new ObjectId(activityLogId).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                               ""_id"": 0,
+                               ""typeId"": 1,
+                               ""docId"": 1,
+                               ""requestId"": 1,
+                               ""docName"": 1,
+                               ""loanId"": 1,
+                               ""message"": 1
+                            }
+                        }"
+                    ));
+
+                if (await asyncCursorActivityLog.MoveNextAsync())
+                {
+                    foreach (var current in asyncCursorActivityLog.Current)
+                    {
+                        ExistingActivityLog query = BsonSerializer.Deserialize<ExistingActivityLog>(current);
+                        activityLog.id = newActivityLogId;
+                        activityLog.typeId = query.typeId;
+                        activityLog.docId = query.docId;
+                        activityLog.requestId = query.requestId;
+                        activityLog.docName = query.docName;
+                        activityLog.loanId = query.loanId;
+                        activityLog.message = query.message;
+                        activityLog.userId = userId;
+                        activityLog.userName = userName;
+                        activityLog.dateTime = DateTime.UtcNow;
+                        activityLog.activity = string.Format(ActivityStatus.RerequestedBy, userName);
+                        activityLog.log = new List<Log>() { };
+                    }
+                }
+
+                //create new activity log
+
+                IMongoCollection<ActivityLog> collectionInsertActivityLog = mongoService.db.GetCollection<ActivityLog>("ActivityLog");
+                await collectionInsertActivityLog.InsertOneAsync(activityLog);
+
+                activityLogService.InsertLog(newActivityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
             }
 
             return result.ModifiedCount == 1;
