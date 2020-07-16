@@ -10,6 +10,7 @@ import { StoreProvider } from "./Store/Store";
 import { UserActions } from "./Store/actions/UserActions";
 import { LocalDB } from "./Utils/LocalDB";
 import { ParamsService } from "./Utils/helpers/ParamService";
+import IdleTimer from "react-idle-timer";
 
 declare global {
   interface Window {
@@ -41,8 +42,24 @@ const App = () => {
     UserActions.keepAliveParentApp();
   };
 
+  const onIdle = (e: any) => {
+    console.log("Idle time meet");
+    LocalDB.removeAuth();
+    window.open("/Account/LogOff", "_self");
+  };
+
+  if (!authenticated) {
+    return null;
+  }
+
   return (
     <div className="App">
+      <IdleTimer
+        element={document}
+        onIdle={onIdle}
+        debounce={250}
+        timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
+      />
       <RainMakerHeader />
       <section className="d-layout">
         <RainMakerSidebar />
