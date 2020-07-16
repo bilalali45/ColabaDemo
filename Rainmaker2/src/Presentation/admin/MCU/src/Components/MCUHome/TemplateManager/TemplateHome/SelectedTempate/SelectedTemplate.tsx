@@ -94,7 +94,7 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
 
                 </ul>
 
-                <AddDocument/> 
+                <AddDocument popoverplacement="right"/> 
             </div>
 
 

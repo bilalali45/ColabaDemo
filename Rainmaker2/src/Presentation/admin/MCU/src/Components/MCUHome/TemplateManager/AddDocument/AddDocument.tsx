@@ -10,8 +10,10 @@ import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer
 import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
-
-export const AddDocument = () => {
+type AddDocumentType = {
+    popoverplacement?:any,
+}
+export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
     const [popshow, setshow] = useState(true);
     const [show, setShow] = useState(false);
     const [target, setTarget] = useState(null);
@@ -95,6 +97,8 @@ export const AddDocument = () => {
         }
     }
 
+    
+
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
@@ -118,7 +122,7 @@ export const AddDocument = () => {
 
     const renderPopOver = () => {
         return (
-            <Popover id="popover-basic">
+            <Popover id="popover-add-document">
                 <Popover.Content>
                     {renderPopOverContent()}
                 </Popover.Content>
@@ -132,14 +136,14 @@ export const AddDocument = () => {
 
             <div className="add-doc-link-wrap">
                 {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                <a className="add-doc-link" onClick={handleClick} >
+                <a className="add-doc-link" onClick={(e)=>{handleClick(e)}} >
                     Add Document <i className="zmdi zmdi-plus"></i>
                 </a>
                 {/* </OverlayTrigger> */}
             </div>
             <Overlay show={show}
                 target={target}
-                placement="right"
+                placement={popoverplacement}
                 container={ref.current}
                 onHide={handleClick}
                 rootClose={true}

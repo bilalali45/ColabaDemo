@@ -17,8 +17,6 @@ export interface NeedListDocumentType {
 }
 
 export interface DocumentParamsType {
-  filePath: string;
-  fileType: string;
   blob: any;
 }
 
