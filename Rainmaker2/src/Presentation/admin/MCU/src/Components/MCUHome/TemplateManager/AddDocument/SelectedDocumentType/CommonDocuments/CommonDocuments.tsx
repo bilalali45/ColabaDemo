@@ -7,11 +7,12 @@ import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocu
 import SearchIcon from '../../../../../../Assets/images/search-icon.svg'
 
 type SelectedTypeType = {
+    setVisible: Function,
     selectedCatDocs: CategoryDocument,
     addNewDoc: Function
 }
 
-export const CommonDocuments = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) => {
+export const CommonDocuments = ({ selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
     const [selectedCachedDoc, setSelectedCachedDoc] = useState<CategoryDocument>(selectedCatDocs);
     const [isSearched, setSearched] = useState<boolean>(false);
     const handleSearch = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +48,7 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc }: SelectedTypeType
 
             </h4></div>
             <SelectedDocumentTypeList
+                setVisible={setVisible}
                 documentList={selectedCachedDoc?.documents}
                 addNewDoc={addNewDoc}
             />

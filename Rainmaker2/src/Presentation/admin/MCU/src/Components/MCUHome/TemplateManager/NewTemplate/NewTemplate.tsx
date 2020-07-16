@@ -8,35 +8,51 @@ import { Template } from '../../../../Entities/Models/Template'
 import { AddDocument } from '../AddDocument/AddDocument'
 export const NewTemplate = () => {
 
-    const {state, dispatch} = useContext(Store);
+    const { state, dispatch } = useContext(Store);
     const [templateName, setTemplateName] = useState('');
+    const [saved, setSaved] = useState<boolean>(false);
 
-    const templateManager : any = state?.templateManager;
+    const templateManager: any = state?.templateManager;
 
-    const addNewTemplate = async (name: string) => {
+    // const addNewTemplate = async (name: string) => {
 
-        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
-        
-        if(insertedTemplate) {
-            
-            let updatedTemplates : any = await TemplateActions.fetchTemplates('1');
-            dispatch({type: TemplateActionsType.SetTemplates, payload: updatedTemplates});
+    //     let insertedTemplate = await TemplateActions.insertTemplate('1', name);
 
-            let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
-            dispatch({type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate});
-        }
-    }
+    //     if (insertedTemplate) {
+
+    //         let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+    //         dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
+
+    //         let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
+    //         dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
+    //     }
+    // }
 
     return (
         <section className="add-newTemp-wrap">
-            <div className="T-head">
-                <p className="editable"> <input value={templateName} onChange={(e) => {
-                    setTemplateName(e.target.value);
-                }} onBlur={(e) => {
-                    addNewTemplate(e.target.value);
-                } } className="editable-TemplateTitle" />
-                    <span className="editsaveicon"><img src={checkicon} alt="" /></span></p>
-            </div>
+            {/* <div className="T-head">
+                <p className="editable">
+                    {!saved ?
+                        <input value={templateName}
+                            onChange={(e) => {
+                                setTemplateName(e.target.value);
+                            }}
+                            onKeyDown={(e: any) => {
+                                if (e.keyCode === 13) {
+                                    addNewTemplate(e.target.value);
+                                    setSaved(!saved);
+                                }
+                            }}
+                            onBlur={(e) => {
+                                addNewTemplate(e.target.value);
+                                setSaved(!saved);
+                            }} className="editable-TemplateTitle" />
+
+                        :
+                        <span className="editsaveicon">{}<img src={checkicon} alt="" />{templateName}</span>
+                    }
+                </p>
+            </div> */}
             <div className="empty-wrap">
 
                 <div className="c-wrap">

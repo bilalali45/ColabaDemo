@@ -112,6 +112,7 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
                     <div className="col-sm-8 popup-add-doc-row--right">
 
                         <SelectedType
+                            setVisible={setShow}
                             selectedCatDocs={currentCategoryDocuments}
                             addNewDoc={addDocToTemplate} />
                     </div>
