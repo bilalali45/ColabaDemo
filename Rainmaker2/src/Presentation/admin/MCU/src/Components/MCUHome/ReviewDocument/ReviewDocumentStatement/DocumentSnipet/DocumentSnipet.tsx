@@ -114,7 +114,8 @@ export const DocumentSnipet = ({
                 onChange={(e) => setRenameMCUName(e.target.value)}
                 type="text"
                 size={38}
-                value={renameMCUName || mcuName || clientName}
+                value={renameMCUName}
+                onClick={event => event.stopPropagation()}
               />
               <button className="document-snipet-btn-ok" id="rename" onClick={eventBubblingHandler}>
                 <em className="zmdi zmdi-check"></em>
