@@ -12,17 +12,13 @@ export const TemplateHome = () => {
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="MT-leftbar">
-                            <TemplateListContainer 
-                                setAddingNew={setAddingNew}
-                                addingNew={addingNew}
-                                />
+                            <TemplateListContainer />
 
                         </div>
                     </div>
                     <div className="col-sm-8">
                         <div className="MT-rightbar">
-                            <SelectedTemplate 
-                                addingNew={addingNew}/>
+                            <SelectedTemplate />
                         </div>
                     </div>
                 </div>

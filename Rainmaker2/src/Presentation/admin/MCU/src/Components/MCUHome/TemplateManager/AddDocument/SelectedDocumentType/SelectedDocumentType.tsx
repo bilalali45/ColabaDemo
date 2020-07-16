@@ -9,27 +9,31 @@ import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocumen
 
 type SelectedTypeType = {
     selectedCatDocs: CategoryDocument,
-    addNewDoc: Function
+    addNewDoc: Function,
+    setVisible: Function
 }
 
-export const SelectedType = ({ selectedCatDocs, addNewDoc }: SelectedTypeType) => {
+export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
 
     const renderCurrentlySelected = () => {
 
         if (selectedCatDocs?.catId === 'all') {
             return <CommonDocuments
+                setVisible={setVisible}
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc} />
 
         } else if (selectedCatDocs?.catId === 'other') {
-            return <CustomDocuments 
-            addDocToTemplate={addNewDoc} />
+            return <CustomDocuments
+                setVisible={setVisible}
+                addDocToTemplate={addNewDoc} />
 
         } else {
 
-            return  <SelectedTypeDocumentList 
-            documentList={selectedCatDocs?.documents}
-            selectedCatDocs={selectedCatDocs}
+            return <SelectedTypeDocumentList
+                setVisible={setVisible}
+                documentList={selectedCatDocs?.documents}
+                selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc}
             />
             // return <SelectedDocumentTypeList
