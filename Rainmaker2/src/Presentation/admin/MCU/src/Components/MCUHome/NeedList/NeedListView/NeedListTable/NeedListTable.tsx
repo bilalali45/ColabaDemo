@@ -95,14 +95,14 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     const renderSyncToLos = (data: NeedListDocuments[]) => {
         if (data === null || data.length === 0) {
             return (
-                <div className="td"><span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span> </div>
+                <div className="td"><span className="block-element"><a href="javascript:;"><em className="icon-refresh default"></em></a></span> </div>
             )
 
         } else {
             return (
                 <div className="td">
                     {data.map((item: NeedListDocuments) => {
-                        return <span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span>
+                        return <span className="block-element"><a href="javascript:;"><em className="icon-refresh default"></em></a></span>
                     })
                     }
                 </div>
@@ -146,7 +146,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                         <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
                         <div className="th"><a href="javascript:;">Status <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
                         <div className="th">File Name</div>
-                        <div className="th"><a href=""><em className="icon-refresh"></em></a> sync to LOS</div>
+                        <div className="th"><a href="javascript:;"><em className="icon-refresh"></em></a> sync to LOS</div>
                         <div className="th">&nbsp;</div>
                     </div>
                     {needList &&

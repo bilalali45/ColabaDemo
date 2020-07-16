@@ -2,10 +2,10 @@ import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
+import { DocumentView } from 'rainsoft-rc'
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
-import { DocumentView } from "./../../../Shared/DocumentView";
 import {
   NeedListDocumentType,
   DocumentParamsType,
@@ -35,14 +35,11 @@ export const ReviewDocument = () => {
     history.push("/needlist");
   };
 
-  const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
-    blob: new Blob(),
-    filePath: "",
-    fileType: "",
-  });
+  const [blobData, setBlobData] = useState<any>();
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId, tenantId) => {
+
       const params = {
         id,
         requestId,
@@ -52,8 +49,7 @@ export const ReviewDocument = () => {
       };
 
       try {
-        setLoading(true);
-
+        setLoading(true)
         // const http = new Http();
 
         // const response = (await http.get(
@@ -74,38 +70,28 @@ export const ReviewDocument = () => {
           }
         })
 
-        const fileType: string = response.headers["content-type"];
-
-        const documentBlob = new Blob([response.data], {
-          type: fileType,
-        });
-
-        // URL required to view the document
-        const filePath = URL.createObjectURL(documentBlob);
-
-        setDocumentParams({
-          blob: documentBlob,
-          filePath,
-          fileType: fileType.replace("image/", "").replace("application/", ""),
-        });
+        setBlobData(response)
+        setLoading(false)
       } catch (error) {
-        setLoading(false);
-      } finally {
-        setLoading(false);
+        alert('Something went wrong while fetching document/file from server.')
+
+        setLoading(false)
       }
     },
-    [setDocumentParams]
+    [setBlobData]
   );
 
   const nextDocument = useCallback(() => {
     if (navigationIndex === documentList1.length - 1) return;
 
     const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
+    const { id, requestId, docId, files } = doc
 
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
+    setCurrentFileIndex(0)
 
-    getDocumentForView(doc.id, doc.requestId, doc.docId, doc.files[0].id, 1);
+    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, 1);
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
@@ -115,11 +101,11 @@ export const ReviewDocument = () => {
 
     const { id, requestId, docId, files } = doc
 
-    setCurrentFileIndex(() => 0)
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
+    setCurrentFileIndex(() => 0)
 
-    getDocumentForView(id, requestId, docId, files[0].id, tenantId);
+    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, tenantId);
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number) => {
@@ -129,6 +115,7 @@ export const ReviewDocument = () => {
       const { id, requestId, docId, files } = currentDocument
 
       setCurrentFileIndex(index)
+      setBlobData(null)
 
       getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
@@ -177,29 +164,33 @@ export const ReviewDocument = () => {
         nextDocument={nextDocument}
         previousDocument={previousDocument}
       />
+
       <div className="review-document-body">
         <div className="row">
           <div className="review-document-body--content col-md-8">
-            {!!currentDocument && currentDocument.files && currentDocument.files.length && (
+            {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
               <DocumentView
                 loading={loading}
-                filePath={documentParams.filePath}
-                fileType={documentParams.fileType}
+                id={currentDocument.id}
+                requestId={currentDocument.requestId}
+                docId={currentDocument.docId}
+                fileId={currentDocument.files[currentFileIndex || 0].id}
+                submittedDocumentCallBack={getDocumentForView}
+                tenantId={tenantId}
                 clientName={currentDocument.files[currentFileIndex || 0].clientName}
+                blobData={blobData}
+                hideViewer={() => { }}
               />
-            )}
-            <h3>No preview available</h3>
+            ) : (
+                <h3>No preview available</h3>
+              )}
+
           </div>
           {/* review-document-body--content */}
           <aside className="review-document-body--aside col-md-4">
             <ReviewDocumentStatement
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
-              files={
-                !!currentDocument && currentDocument.files && currentDocument.files.length
-                  ? currentDocument.files
-                  : []
-              }
             />
           </aside>
           {/* review-document-body--aside */}

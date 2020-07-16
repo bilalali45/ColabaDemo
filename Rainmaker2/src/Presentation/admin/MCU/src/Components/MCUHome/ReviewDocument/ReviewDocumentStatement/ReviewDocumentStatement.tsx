@@ -7,18 +7,14 @@ import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints
 export const ReviewDocumentStatement = ({
   moveNextFile,
   currentDocument,
-  files,
 }: {
   moveNextFile: (index: number) => void
-  files: NeedListDocumentFileType[];
   currentDocument: NeedListDocumentType | null;
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
-      if (files.length === 0) return
-
       const { id, requestId, docId } = currentDocument
 
       const http = new Http()
@@ -30,7 +26,7 @@ export const ReviewDocumentStatement = ({
       console.log(error)
       alert('Something went wrong while getting files for document. Please try again.')
     }
-  }, [files.length])
+  }, [setDocumentFiles])
 
   useEffect(() => {
     if (currentDocument) {
@@ -49,9 +45,8 @@ export const ReviewDocumentStatement = ({
       </header>
       <section className="document-statement--body">
         <h3>Documents</h3>
-        {files.length === 0 && (<span>No file submitted yet</span>)}
         {/* <DocumentSnipet status="active" /> */}
-        {!!documentFiles.length &&
+        {!!documentFiles && documentFiles.length ?
           documentFiles.map((file, index) => <DocumentSnipet
             index={index}
             moveNextFile={moveNextFile}
@@ -61,7 +56,9 @@ export const ReviewDocumentStatement = ({
             fileId={file.fileId}
             mcuName={file.mcuName}
             clientName={file.clientName}
-          />)}
+          />) : (
+            <span>No file submitted yet</span>
+          )}
 
         <hr />
 
