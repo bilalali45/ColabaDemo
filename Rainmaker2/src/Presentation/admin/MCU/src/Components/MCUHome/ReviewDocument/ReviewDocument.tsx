@@ -188,6 +188,7 @@ export const ReviewDocument = () => {
                 clientName={currentDocument.files[currentFileIndex || 0].clientName}
               />
             )}
+            <h3>No preview available</h3>
           </div>
           {/* review-document-body--content */}
           <aside className="review-document-body--aside col-md-4">
