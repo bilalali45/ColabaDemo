@@ -28,4 +28,17 @@ export class NeedListActions {
             console.log(error);
         }
     }
+
+    static async deleteNeedListDocument(id: string, requestId: string, docId: string, tenantId: number){
+        let url = Endpoints.NeedListManager.PUT.documents.deleteDoc();
+        try {
+            let res = await http.put(url, {
+                id, requestId, docId, tenantId
+            })
+            console.log('res deleteDocument', res)
+            return res.status;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
