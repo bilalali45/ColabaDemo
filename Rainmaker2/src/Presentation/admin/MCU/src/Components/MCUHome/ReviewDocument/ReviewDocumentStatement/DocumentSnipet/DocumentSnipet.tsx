@@ -26,33 +26,33 @@ export const DocumentSnipet = ({
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
 
-  const getFileNameOrExtension = (returnType?: string) => {
-    const variableTobeUsed = mcuName || clientName
+  const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
 
-    if (returnType === 'extension') {
-      const extensionOfFile = variableTobeUsed.substring(variableTobeUsed.lastIndexOf('.'))
-      return extensionOfFile
-    }
-
-    const fileNameWithoutExtension = variableTobeUsed.substring(0, variableTobeUsed.lastIndexOf("."))
-
-    return fileNameWithoutExtension
-  }
+  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
 
   const setInputValue = (event: any) => {
     event.stopPropagation()
 
     setEditingModeEnabled(() => true);
 
-    const fileNameWithoutExtension = getFileNameOrExtension()
+    const filenameWithoutExtension = getFileNameWithoutExtension(renameMCUName) || getFileNameWithoutExtension(mcuName || clientName)
 
-    setRenameMCUName(fileNameWithoutExtension);
+    setRenameMCUName(filenameWithoutExtension);
   };
 
-  const cancelEdit = (event: any) => {
-    event.stopPropagation()
+  const cancelEdit = (event?: any) => {
+    if (event) {
+      event.stopPropagation()
+    }
 
-    setRenameMCUName("")
+    if (renameMCUName !== "") {
+      const fileExtension = getFileExtension(mcuName || clientName)
+
+      setRenameMCUName(`${renameMCUName}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
+    } else {
+      setRenameMCUName("") //This will bring either mcuName or clientName with file extension
+    }
+
     setEditingModeEnabled(false)
   }
 
@@ -60,16 +60,18 @@ export const DocumentSnipet = ({
     try {
       event.stopPropagation()
 
-      if (renameMCUName === "") return
+      //this condition will cancel API call if field is empty or name is unchanged or equal to mcuname or client name
+      //if true this condtion will cancel edit.
+      if (renameMCUName == "" || renameMCUName === getFileNameWithoutExtension(mcuName || clientName)) {
+        return cancelEdit()
+      }
 
-      const fileExtension = getFileNameOrExtension('extension')
-
-      const http = new Http()
-
+      const fileExtension = getFileExtension(mcuName || clientName)
       const newName = `${renameMCUName}${fileExtension}`
 
       const data = { id, requestId, docId, fileId, newName }
 
+      const http = new Http()
       await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
         ...data
       })

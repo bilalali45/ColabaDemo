@@ -187,7 +187,9 @@ var DocumentView = function DocumentView(_ref) {
       file = _ref.file,
       tenantId = _ref.tenantId,
       blobData = _ref.blobData,
-      submittedDocumentCallBack = _ref.submittedDocumentCallBack;
+      submittedDocumentCallBack = _ref.submittedDocumentCallBack,
+      _ref$loading = _ref.loading,
+      loading = _ref$loading === void 0 ? false : _ref$loading;
 
   var _useState = React.useState({
     blob: new Blob(),
@@ -274,7 +276,6 @@ var DocumentView = function DocumentView(_ref) {
       window.removeEventListener("keydown", onEscapeKeyPressed, false);
     };
   }, [onEscapeKeyPressed]);
-  console.log('-------------------------------------------------------------', blobData);
   return React__default.createElement("div", {
     className: "document-view",
     id: "screen"
@@ -322,7 +323,7 @@ var DocumentView = function DocumentView(_ref) {
         resetTransform = _ref2.resetTransform;
     return React__default.createElement("div", null, React__default.createElement(reactZoomPanPinch.TransformComponent, null, React__default.createElement("div", {
       className: "document-view--body"
-    }, !!documentParams.filePath ? React__default.createElement(FileViewer, {
+    }, !!documentParams.filePath && !loading ? React__default.createElement(FileViewer, {
       fileType: documentParams.fileType,
       filePath: documentParams.filePath
     }) : React__default.createElement(Loader, {
