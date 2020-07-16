@@ -498,6 +498,33 @@ ul {
         }
     }
 }//   .switch
+.btn {
+    &:focus,&:active{
+        box-shadow:none;
+    }
+}
+.btn-sm, .btn-group-sm > .btn, .btn-group-sm > .btn {
+    padding: 5px 10px;
+    font: 400 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
+    border-radius: 0;
+    letter-spacing: normal;
+}
+
+@mixin placeholder($color: color('input')) {
+    &::-webkit-input-placeholder { 
+        color: $color
+      }
+      &::-moz-placeholder { 
+        color: $color;
+      }
+      &:-ms-input-placeholder { 
+        color: $color;
+      }
+      &:-moz-placeholder { 
+        color: $color;
+      }
+
+  }
 
 .loader-widget{
     padding: 30px;

@@ -135,9 +135,21 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
 
+    /*var elements = document.getElementsByClassName("classname");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('click', ()=>{ document.body.removeAttribute('style'); }, false);
+    }*/
+
+    //document.querySelector('.document-view--button').addEventListener("click", ()=>{  document.body.removeAttribute('style');  })
+
+    
+
     //this will remove listener on unmount
     return () => {
       window.removeEventListener("keydown", onEscapeKeyPressed, false);
+      
+      document.getElementById('closeDocumentView')?.addEventListener('click',()=>{ document.body.removeAttribute('style'); })
+
     };
   }, [onEscapeKeyPressed]);
 
@@ -145,6 +157,11 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     "-------------------------------------------------------------",
     blobData
   );
+  const removeOverflow = () => {
+    document.body.removeAttribute('style');
+  }
+ 
+  
 
   return (
     <div className="document-view" id="screen">
@@ -172,9 +189,9 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
               </Fragment>
             )}
             <li>
-              <button
+              <button id={'closeDocumentView'} 
                 className="document-view--button"
-                onClick={() => hideViewer(false)}
+                onClick={() => {hideViewer(false); }}
               >
                 <SVGclose />
               </button>

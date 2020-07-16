@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import Popover from 'react-bootstrap/Popover'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import { DocumentTypes } from './DocumentTypes/DocumentTypes'
@@ -9,14 +9,24 @@ import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
 import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
+import Overlay from 'react-bootstrap/Overlay'
 
 export const AddDocument = () => {
-    const [popshow, setshow] = useState(false);
+    const [popshow, setshow] = useState(true);
+    const [show, setShow] = useState(false);
+    const [target, setTarget] = useState(null);
+    const ref = useRef(null);
+
+    const handleClick = (event: any) => {
+        setShow(!show);
+        setTarget(event.target);
+    };
 
     const { state, dispatch } = useContext(Store);
 
     const templateManager: any = state?.templateManager;
 
+    const currentTemplate = templateManager?.currentTemplate;
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
 
@@ -34,31 +44,31 @@ export const AddDocument = () => {
         }
     }
 
-    const setCurrentDocType = (curDoc : CategoryDocument) => {
+    const setCurrentDocType = (curDoc: CategoryDocument) => {
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: curDoc });
 
     }
 
     const changeCurrentDocType = (curDocType: string) => {
-        
-        if(curDocType === 'all') {
+
+        if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
-        }else if(curDocType === 'other') {
+        } else if (curDocType === 'other') {
             let currentDoc = {
                 catId: 'other',
                 catName: 'Other',
                 documents: []
             };
             setCurrentDocType(currentDoc);
-        }else {
-            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType );
+        } else {
+            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
             setCurrentDocType(currentDoc);
         }
     }
 
     const extractAllDocs = () => {
-        let allDocs : Document[] = [];
-        
+        let allDocs: Document[] = [];
+
         for (const doc of categoryDocuments) {
             allDocs = [...allDocs, ...doc.documents];
         }
@@ -70,23 +80,36 @@ export const AddDocument = () => {
     }
 
     const showpopover = () => {
-        setshow(true)
+        setshow(!popshow)
+    }
+
+    const addDocToTemplate = async (docName: string, type: string) => {
+        try {
+            let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
+            if (success) {
+                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
+                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
+            }
+        } catch (error) {
+
+        }
     }
 
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
-                <div className="row">
-                    <div className="col-sm-4">
+                <div className="popup-add-doc-row row">
+                    <div className="col-sm-4 popup-add-doc-row--left">
                         <DocumentTypes
-                            documentTypeList={categoryDocuments} 
-                            changeCurrentDocType={changeCurrentDocType}/>
+                            currentCategoryDocuments={currentCategoryDocuments}
+                            documentTypeList={categoryDocuments}
+                            changeCurrentDocType={changeCurrentDocType} />
                     </div>
-                    <div className="col-sm-8">
+                    <div className="col-sm-8 popup-add-doc-row--right">
 
                         <SelectedType
                             selectedCatDocs={currentCategoryDocuments}
-                            addNewDoc={() => { }} />
+                            addNewDoc={addDocToTemplate} />
                     </div>
                 </div>
             </div>
@@ -105,15 +128,26 @@ export const AddDocument = () => {
 
 
     return (
-        <div className="Compo-add-document">
+        <div className="Compo-add-document" ref={ref}>
 
             <div className="add-doc-link-wrap">
-                <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()} >
-                    <a className="add-doc-link">
-                        Add Document <i className="zmdi zmdi-plus"></i>
-                    </a>
-                </OverlayTrigger>
+                {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
+                <a className="add-doc-link" onClick={handleClick} >
+                    Add Document <i className="zmdi zmdi-plus"></i>
+                </a>
+                {/* </OverlayTrigger> */}
             </div>
+            <Overlay show={show}
+                target={target}
+                placement="right"
+                container={ref.current}
+                onHide={handleClick}
+                rootClose={true}
+                rootCloseEvent={'click'}
+                transition={false}
+            >
+                {renderPopOver()}
+            </Overlay>
         </div>
     )
 }

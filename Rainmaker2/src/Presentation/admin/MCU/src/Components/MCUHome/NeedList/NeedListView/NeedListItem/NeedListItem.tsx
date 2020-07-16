@@ -71,15 +71,15 @@ export const NeedListItem: FunctionComponent<
             Review
           </a>
         ) : (
-          <React.Fragment>
-            <a href="" className="btn btn-default btn-sm">
-              Details
+            <React.Fragment>
+              <a href="" className="btn btn-default btn-sm">
+                Details
             </a>
-            <a href="" className="btn btn-delete btn-sm">
-              <em className="zmdi zmdi-close"></em>
-            </a>
-          </React.Fragment>
-        )}
+              <a href="" className="btn btn-delete btn-sm">
+                <em className="zmdi zmdi-close"></em>
+              </a>
+            </React.Fragment>
+          )}
       </div>
     </div>
   );

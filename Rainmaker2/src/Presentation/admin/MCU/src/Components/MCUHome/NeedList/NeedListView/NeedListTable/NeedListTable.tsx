@@ -7,8 +7,11 @@ import Spinner from 'react-bootstrap/Spinner';
 type NeedListProps = {
     needList: NeedList | null | undefined;
     deleteDocument: Function;
+    sortDocumentTitle: Function;
+    documentTitleArrow: string;
 }
-export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
+
+export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow }: NeedListProps) => {
     const history = useHistory()
 
     const renderNeedList = (data: any) => {
@@ -57,10 +60,10 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
         } else {
             return (
                 <div className="td">
-                    <button onClick={() => detailClickHandler(data.docId)} className="btn btn-default btn-sm">Details</button>
+                    <button onClick={() => detailClickHandler(index)} className="btn btn-default btn-sm">Details</button>
                     {count === 0 || count === null
                         ?
-                        <button onClick={() => deleteDocument(data.id, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></button>
+                        <button onClick={() => deleteDocument(data.id, data.requestId, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></button>
                         :
                         ''
                     }
@@ -91,11 +94,11 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
 
     const renderSyncToLos = (data: NeedListDocuments[]) => {
         if (data === null || data.length === 0) {
-            return(
+            return (
                 <div className="td"><span className="block-element"><a href=""><em className="icon-refresh default"></em></a></span> </div>
             )
 
-        }else{
+        } else {
             return (
                 <div className="td">
                     {data.map((item: NeedListDocuments) => {
@@ -104,26 +107,31 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
                     }
                 </div>
             )
-        }    
+        }
     }
     const reviewClickHandler = (index: number) => {
         history.push('/ReviewDocument', {
             documentList: needList,
-            currentDocumentIndex: index
+            currentDocumentIndex: index,
+            documentDetail: false
         })
     }
 
-    const detailClickHandler = (id: string) => {
-        console.log('Click on detail Id:', id)
+    const detailClickHandler = (index: number) => {
+        history.push('/ReviewDocument', {
+            documentList: needList,
+            currentDocumentIndex: index,
+            documentDetail: true
+        })
     }
 
     if (!needList) {
         return (
-        <div className="loader-widget">
-            <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-        </div>
+            <div className="loader-widget">
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
         )
     }
 
@@ -135,7 +143,7 @@ export const NeedListTable = ({ needList, deleteDocument }: NeedListProps) => {
                 <div className="need-list-table table">
 
                     <div className="tr">
-                        <div className="th"><a href="javascript:;">Document <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
+                        <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
                         <div className="th"><a href="javascript:;">Status <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
                         <div className="th">File Name</div>
                         <div className="th"><a href=""><em className="icon-refresh"></em></a> sync to LOS</div>

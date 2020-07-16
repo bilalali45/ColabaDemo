@@ -29,14 +29,13 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
     }, [editTitleview])
 
     useEffect(() => {
-        setCurrentTemplate(currentTemplate)
+        setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
-    const setCurrentTemplate = async (template: any) => {
+    const setCurrentTemplateDocs = async (template: any) => {
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
         if (templateDocs) {
             dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
-            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: template });
         }
     }
 
@@ -55,7 +54,7 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
     const removeDoc = async (templateId: string, documentId: string) => {
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
         if (isDeleted) {
-            setCurrentTemplate(currentTemplate);
+            setCurrentTemplateDocs(currentTemplate);
         }
     }
 
@@ -95,11 +94,6 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
 
                 </ul>
 
-                {/* <div className="add-doc-link-wrap">
-                    <a className="add-doc-link">
-                        Add Document <i className="zmdi zmdi-plus"></i>
-                    </a>
-                </div> */}
                 <AddDocument/> 
             </div>
 
