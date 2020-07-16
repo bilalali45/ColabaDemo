@@ -59,9 +59,9 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.POST.renameTemplate();
         try {
             let res = await http.post(url, {
-                tenantId, templateId, name
+                tenantId: Number(tenantId), id: templateId, name
             });
-            return res.data;
+            return true;
         } catch (error) {
             console.log(error)
         }
@@ -75,7 +75,7 @@ export class TemplateActions {
                 url: http.createUrl(http.baseUrl, url),
                 method: 'DELETE',
                 data: {
-                    tenantId: Number(tenantId), id: templateId
+                    tenantId: Number(tenantId), templateId
                 }
             }, {
                 'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export class TemplateActions {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${http.auth}`,
             })
-
+            console.log(res);
             return true;
         } catch (error) {
             console.log(error)

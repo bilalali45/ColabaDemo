@@ -7,18 +7,16 @@ import { TemplateActions } from '../../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer'
 import { Store } from '../../../../../Store/Store'
 import { NewTemplate } from '../../NewTemplate/NewTemplate'
+import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBox'
+import { Template } from '../../../../../Entities/Models/Template'
 
 
-type SelectedTemplateType = {
-    addingNew: boolean;
-}
-
-export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
+export const SelectedTemplate = () => {
 
     const { state, dispatch } = useContext(Store);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [newNameText, setNewNameText] = useState<string>('');
-
+    const [addingNew, setAddingNew] = useState<boolean>(false);
 
     const templateManager: any = state.templateManager;
     const currentTemplate = templateManager?.currentTemplate;
@@ -32,51 +30,93 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
+    console.log(currentTemplate);
+
     const setCurrentTemplateDocs = async (template: any) => {
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
         if (templateDocs) {
+            console.log(templateDocuments?.length);
             dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
         }
     }
 
+    const addNewTemplate = async (name: string) => {
+
+        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
+
+        if (insertedTemplate) {
+
+            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
+
+            let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
+            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
+        }
+    }
+
     const renameTemplate = async ({ target: { value } }: any) => {
+
+        if (!currentTemplate) {
+            await addNewTemplate(value);
+            toggleRename();
+
+            return;
+        }
+
         const renamed = await TemplateActions.renameTemplate('1', currentTemplate?.id, value);
         if (renamed) {
-            //fetch tempaltes again, for reflecting the chagned name;
+            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            if (updatedTemplates) {
+                dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
+                dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((up: Template) => up.id === currentTemplate.id) });
+
+            }
         }
         toggleRename();
     }
 
     const toggleRename = () => {
-        seteditTitleview(!editTitleview)
+        seteditTitleview(!editTitleview);
+        setAddingNew(false);
     }
 
     const removeDoc = async (templateId: string, documentId: string) => {
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
         if (isDeleted) {
-            setCurrentTemplateDocs(currentTemplate);
+            await setCurrentTemplateDocs(currentTemplate);
         }
     }
-
-    if (addingNew) {
-        return <NewTemplate />
-    }
-
 
     return (
         <section>
             <div className="T-head">
-                {editTitleview ?
-                    <p className="editable"> <input value={newNameText} onChange={(e) => setNewNameText(e.target.value)} onBlur={renameTemplate} className="editable-TemplateTitle" />
+                {editTitleview || currentTemplate === null ?
+                    <p className="editable">
+                        <input
+                            value={newNameText}
+                            onChange={(e) => setNewNameText(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.keyCode === 13) {
+                                    renameTemplate(e);
+                                }
+                            }}
+                            // onBlur={renameTemplate}
+                            className="editable-TemplateTitle" />
                         <span className="editsaveicon" onClick={toggleRename}><img src={checkicon} alt="" /></span></p>
                     : <>
                         <p> {currentTemplate?.name} <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span></p>
                     </>
                 }
+                {/* 
+                <TemplateEditBox
+                   templateName={currentTemplate?.name} 
+                   renameTemplate={renameTemplate}
+                   checkIcon={checkicon}
+                   editIcon={EditIcon}/> */}
 
             </div>
 
-            <div className="ST-content-Wrap">
+            {templateDocuments?.length ? <div className="ST-content-Wrap">
                 <ul>
                     {
                         templateDocuments?.map((td: any) => {
@@ -94,11 +134,13 @@ export const SelectedTemplate = ({ addingNew }: SelectedTemplateType) => {
 
                 </ul>
 
-                <AddDocument/> 
-            </div>
+            </div> :
+                <NewTemplate />
+            }
 
 
             {/* <TemplateItemsList/> */}
+            <AddDocument />
         </section>
     )
 }
