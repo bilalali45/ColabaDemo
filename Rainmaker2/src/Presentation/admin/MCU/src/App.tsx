@@ -42,7 +42,7 @@ const App = () => {
     UserActions.keepAliveParentApp();
   };
 
-  const onIdle = (e) => {
+  const onIdle = (e: any) => {
     console.log("Idle time meet");
     LocalDB.removeAuth();
     window.open("/Account/LogOff", "_self");
