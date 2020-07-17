@@ -4,14 +4,15 @@
     background: color('bg');
     width: 100%;
     overflow: hidden;
-    &.hascollapssidebar{
-        margin-left: 48px;
-        width: calc(100% - 49px);
-        .home-layout {
+    .home-layout {
     
-            min-height:calc(100vh - 110px);
-        }
+        min-height:calc(100vh - 110px);
     }
+}
+
+#sidebar + .main-layout {
+    margin-left: 48px;
+    width: calc(100% - 49px);
 }
 
 
