@@ -20,6 +20,18 @@
     }
 
     .tr{
+        .td{
+            padding: 10px; 
+            &:last-child{
+                padding: 10px;
+            }
+            .block-element{
+                &:last-child{
+                   height: auto;
+                }
+            }
+        }
+
         .th:first-child,
         .td:first-child{
             width: 40%;
@@ -29,6 +41,7 @@
         >.td:last-child{
             width: 150px;
         }
+        
     }
 
     .th,.td{
@@ -84,16 +97,20 @@
 
     .f-normal{
         font-size: fontSize("nr");
+        strong{
+            font-weight: 500;
+        }
     }
 
     .block-element{
-        margin-bottom: 10px;
+        //margin-bottom: 10px;
+        height: 26px;
+        overflow: hidden;
     }
 
     .icon-refresh{
         font-size: fontSize('md');
         display: inline-block;
-        margin: 5px;
         vertical-align: middle;
     }
 

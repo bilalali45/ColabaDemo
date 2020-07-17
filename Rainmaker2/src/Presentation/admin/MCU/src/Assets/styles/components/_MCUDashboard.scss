@@ -4,9 +4,11 @@
     background: color('bg');
     width: 100%;
     overflow: hidden;
-    .home-layout {
-    
+    .home-layout {    
         min-height:calc(100vh - 110px);
+        .block{
+            margin-bottom: 0;
+        }
     }
 }
 

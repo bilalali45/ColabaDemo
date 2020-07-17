@@ -268,7 +268,9 @@ ul {
 
 .mcu-label {
     display: block;
-    font: 400 #{fontSize('sm')+'/'+fontSize('sm')} fontFamily('base');
+    font-weight: 400; 
+    font-family: fontFamily('base');
+    font-size: 11px;
     text-transform: uppercase;
     color: color('labelColor');
 
@@ -433,8 +435,8 @@ ul {
 .switch {
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 15px;
+    width: 30px;
+    height: 16px;
     vertical-align: middle;
 
     input {
@@ -454,9 +456,9 @@ ul {
         }
 
         &:checked+.slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
+            -webkit-transform: translateX(24px);
+            -ms-transform: translateX(24px);
+            transform: translateX(24px);
             background-color: color('primary');
         }
     }
@@ -475,10 +477,10 @@ ul {
         &::before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
-            left: 0;
-            top: -4px;
+            height: 20px;
+            width: 20px;
+            left: -8px;
+            top: -3px;
             transition: .4s;
             box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
             background-color: color('toggleDefaultKnob');
@@ -545,7 +547,7 @@ ul {
 .btn-sm, 
 .btn-group-sm > .btn, .btn-group-sm > .btn, 
 .btn-group-sm > .btn {
-    padding: 8px 20px;
+    padding: 7px 20px;
 }
 
 .no-preview {
