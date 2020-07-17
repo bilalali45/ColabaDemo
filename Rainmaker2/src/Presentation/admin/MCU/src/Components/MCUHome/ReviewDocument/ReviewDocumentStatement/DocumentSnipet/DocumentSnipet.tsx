@@ -11,7 +11,8 @@ export const DocumentSnipet = ({
   id,
   requestId,
   docId,
-  fileId
+  fileId,
+  currentFileIndex
 }: {
   index: number,
   moveNextFile: (index: number) => void
@@ -22,6 +23,7 @@ export const DocumentSnipet = ({
   fileId: string
   mcuName: string
   active?: string;
+  currentFileIndex: number
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
@@ -108,7 +110,7 @@ export const DocumentSnipet = ({
   }, [setRenameMCUName, mcuName, clientName])
 
   return (
-    <div className={`document-snipet ${!!active ? "active" : ""}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
+    <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
         <div className="document-snipet--input-group">
           {!!editingModeEnabled ? (

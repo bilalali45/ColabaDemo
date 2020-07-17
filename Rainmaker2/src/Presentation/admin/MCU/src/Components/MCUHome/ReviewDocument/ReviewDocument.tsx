@@ -193,18 +193,18 @@ export const ReviewDocument = () => {
           <div className="review-document-body--content col-md-8">
             {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
               <div className="doc-view-mcu">
-              <DocumentView
-                loading={loading}
-                id={currentDocument.id}
-                requestId={currentDocument.requestId}
-                docId={currentDocument.docId}
-                fileId={currentDocument.files[currentFileIndex || 0].id}
-                submittedDocumentCallBack={getDocumentForView}
-                tenantId={tenantId}
-                clientName={currentDocument.files[currentFileIndex || 0].clientName}
-                blobData={blobData}
-                hideViewer={() => { }}
-              />
+                <DocumentView
+                  loading={loading}
+                  id={currentDocument.id}
+                  requestId={currentDocument.requestId}
+                  docId={currentDocument.docId}
+                  fileId={currentDocument.files[currentFileIndex || 0].id}
+                  submittedDocumentCallBack={getDocumentForView}
+                  tenantId={tenantId}
+                  clientName={currentDocument.files[currentFileIndex || 0].clientName}
+                  blobData={blobData}
+                  hideViewer={() => { }}
+                />
               </div>
 
             ) : (
@@ -218,6 +218,7 @@ export const ReviewDocument = () => {
               typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
+              currentFileIndex={currentFileIndex}
             />
           </aside>
           {/* review-document-body--aside */}
