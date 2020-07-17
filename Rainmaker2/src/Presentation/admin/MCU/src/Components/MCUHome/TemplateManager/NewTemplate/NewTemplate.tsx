@@ -13,57 +13,23 @@ export const NewTemplate = () => {
     const [saved, setSaved] = useState<boolean>(false);
 
     const templateManager: any = state?.templateManager;
-
-    // const addNewTemplate = async (name: string) => {
-
-    //     let insertedTemplate = await TemplateActions.insertTemplate('1', name);
-
-    //     if (insertedTemplate) {
-
-    //         let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
-    //         dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
-
-    //         let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
-    //         dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-    //     }
-    // }
+    const currentTemplate: any = templateManager?.currentTemplate;
 
     return (
         <section className="add-newTemp-wrap">
-            {/* <div className="T-head">
-                <p className="editable">
-                    {!saved ?
-                        <input value={templateName}
-                            onChange={(e) => {
-                                setTemplateName(e.target.value);
-                            }}
-                            onKeyDown={(e: any) => {
-                                if (e.keyCode === 13) {
-                                    addNewTemplate(e.target.value);
-                                    setSaved(!saved);
-                                }
-                            }}
-                            onBlur={(e) => {
-                                addNewTemplate(e.target.value);
-                                setSaved(!saved);
-                            }} className="editable-TemplateTitle" />
-
-                        :
-                        <span className="editsaveicon">{}<img src={checkicon} alt="" />{templateName}</span>
-                    }
-                </p>
-            </div> */}
+            
             <div className="empty-wrap">
 
                 <div className="c-wrap">
                     <div className="icon-wrap">
                         <img src={emptyIcon} alt="" />
                     </div>
-                    <div className="content">
+                    {currentTemplate ? <div className="content">
                         <p><b>Nothing</b>
                             <br />Your template is empty</p>
                             <AddDocument popoverplacement="left"/> 
-                    </div>
+                    </div> : 
+                   <p>Add documents after template is created </p> }
                 </div>
 
             </div>

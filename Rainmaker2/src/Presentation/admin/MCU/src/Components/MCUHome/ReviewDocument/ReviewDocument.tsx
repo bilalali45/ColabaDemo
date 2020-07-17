@@ -192,6 +192,7 @@ export const ReviewDocument = () => {
         <div className="row">
           <div className="review-document-body--content col-md-8">
             {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+              <div className="doc-view-mcu">
               <DocumentView
                 loading={loading}
                 id={currentDocument.id}
@@ -204,6 +205,8 @@ export const ReviewDocument = () => {
                 blobData={blobData}
                 hideViewer={() => { }}
               />
+              </div>
+
             ) : (
                 <h3>No preview available</h3>
               )}

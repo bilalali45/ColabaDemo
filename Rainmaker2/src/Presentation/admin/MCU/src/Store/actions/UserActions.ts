@@ -152,7 +152,7 @@ export class UserActions {
   static async refreshParentApp() {
     try {
       console.log("In refreshParentApp");
-      axios.get(window.envConfig.APP_BASE_URL + "Account/KeepAlive");
+      axios.get(window.location.origin + "/Login/KeepAlive");
       return true;
     } catch (error) {
       console.log("In refreshParentApp Error");

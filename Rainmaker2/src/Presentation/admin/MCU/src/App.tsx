@@ -60,10 +60,10 @@ const App = () => {
         debounce={250}
         timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
       />
-      <RainMakerHeader />
+      {/* <RainMakerHeader /> */}
       <section className="d-layout">
-        <RainMakerSidebar />
-        <main className="main-layout hascollapssidebar">
+        {/* <RainMakerSidebar /> */}
+        <main className="main-layout">
           <StoreProvider>
             <Router basename="/DocumentManagement">
               <Route path="/" component={MCUHome} />

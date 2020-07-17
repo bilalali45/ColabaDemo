@@ -11,6 +11,7 @@ import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBo
 import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
+import { debug } from 'console'
 
 
 export const SelectedTemplate = () => {
@@ -43,6 +44,7 @@ export const SelectedTemplate = () => {
 
 
     const setCurrentTemplateDocs = async (template: any) => {
+        if(!currentTemplate) return '';
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
         if (templateDocs) {
             dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
@@ -63,8 +65,10 @@ export const SelectedTemplate = () => {
         }
     }
 
-    const renameTemplate = async ({ target: { value } }: any) => {
-
+    const renameTemplate = async ( value : string) => {
+        if(!value?.length || value?.length > 255) {
+            return;
+        }
         if (!currentTemplate) {
             await addNewTemplate(value);
             toggleRename();
@@ -91,7 +95,6 @@ export const SelectedTemplate = () => {
 
     const removeDoc = async (templateId: string, documentId: string) => {
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
-        // debugger
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }
@@ -103,16 +106,17 @@ export const SelectedTemplate = () => {
                 {editTitleview || currentTemplate === null ?
                     <p className="editable">
                         <input
+                            autoFocus
                             value={newNameText}
                             onChange={(e) => setNewNameText(e.target.value)}
-                            onKeyDown={(e) => {
+                            onKeyDown={(e: any) => {
                                 if (e.keyCode === 13) {
-                                    renameTemplate(e);
+                                    renameTemplate(e.target.value);
                                 }
                             }}
-                            // onBlur={renameTemplate}
+                            onBlur={() => renameTemplate(newNameText)}
                             className="editable-TemplateTitle" />
-                        <span className="editsaveicon" onClick={toggleRename}><img src={checkicon} alt="" /></span></p>
+                        <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span></p>
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>
@@ -131,7 +135,7 @@ export const SelectedTemplate = () => {
                     {
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
-                                <li>
+                                <li key={td.docId}>
                                     <p>{td.docName}
                                         <span className="BTNclose">
                                             {

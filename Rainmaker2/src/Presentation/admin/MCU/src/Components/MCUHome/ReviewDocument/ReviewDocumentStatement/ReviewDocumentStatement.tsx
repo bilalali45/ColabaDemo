@@ -68,12 +68,12 @@ export const ReviewDocumentStatement = ({
 
         <hr />
 
-        <div className="clearfix">
+        {/* <div className="clearfix">
           <span className="float-right activity-logs-icon">
             <em className="icon-letter"></em>
           </span>
           <h3>Activity Logs</h3>
-        </div>
+        </div> */}
       </section>
     </div>
   );
