@@ -9,18 +9,14 @@ export const NeedListHeader = () => {
   };
 
   const redirectToMVC = () => {
-    window.open("/Admin/Loanapplication", "_self");
+    //window.open("/Admin/Loanapplication", "_self");
+    window.top.location.href = "/Admin/Loanapplication";
   };
 
   return (
     <div className="need-list-header">
       <div className="need-list-header--left">
-        <a
-          href="#"
-          className="btn btn-back"
-          onClick={redirectToMVC}
-          target="_top"
-        >
+        <a href="#" className="btn btn-back" onClick={redirectToMVC}>
           <em className="zmdi zmdi-arrow-left"></em> Back
         </a>
       </div>

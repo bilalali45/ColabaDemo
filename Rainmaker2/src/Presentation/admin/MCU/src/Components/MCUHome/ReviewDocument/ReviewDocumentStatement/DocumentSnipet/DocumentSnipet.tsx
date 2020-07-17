@@ -80,6 +80,7 @@ export const DocumentSnipet = ({
       setEditingModeEnabled(() => false)
     } catch (error) {
       console.log('error', error)
+      setRenameMCUName(mcuName || clientName)
       setEditingModeEnabled(false)
     }
   }
@@ -113,7 +114,7 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
-                onChange={(e) => setRenameMCUName(e.target.value)}
+                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
                 type="text"
                 size={38}
                 value={renameMCUName}
