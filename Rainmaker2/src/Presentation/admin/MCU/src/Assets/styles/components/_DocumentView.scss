@@ -20,6 +20,12 @@
         color: color('fileReaderHeaderText');
         padding: 10px 15px;
         font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
+        + div {
+            padding: 5px 5px;
+            overflow: hidden !important;
+            display: block;
+            width: 100%;
+        }
         // display: flex;
         // display: -webkit-flex;
         // justify-content: space-between;
@@ -81,7 +87,13 @@
         height: calc(100vh - 168px);
         width: 100%;
         z-index: 11;
+
         .pg-viewer-wrapper {
+            &::-webkit-scrollbar {
+                display: none;
+              }
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
             img {
                 width: auto !important;
                 max-width: 100%;
@@ -161,7 +173,7 @@
     
 
     .pg-viewer{
-        margin: 30px auto;
+        margin: 0 auto;
         &-wrapper {
             overflow-y: auto;
             margin: 0px auto;
@@ -192,3 +204,4 @@
     // }
 
 }
+
