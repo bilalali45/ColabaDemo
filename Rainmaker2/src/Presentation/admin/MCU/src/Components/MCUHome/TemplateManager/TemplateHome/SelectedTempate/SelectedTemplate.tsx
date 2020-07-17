@@ -66,7 +66,9 @@ export const SelectedTemplate = () => {
     }
 
     const renameTemplate = async ( value : string) => {
-
+        if(!value?.length || value?.length > 255) {
+            return;
+        }
         if (!currentTemplate) {
             await addNewTemplate(value);
             toggleRename();
@@ -112,7 +114,7 @@ export const SelectedTemplate = () => {
                                     renameTemplate(e.target.value);
                                 }
                             }}
-                            // onBlur={renameTemplate}
+                            onBlur={() => renameTemplate(newNameText)}
                             className="editable-TemplateTitle" />
                         <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span></p>
                     : <>
