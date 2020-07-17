@@ -6,7 +6,7 @@ type CustomDocumentsType = {
 }
 
 export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
-
+    
     const [docName, setDocName] = useState<String>();
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {

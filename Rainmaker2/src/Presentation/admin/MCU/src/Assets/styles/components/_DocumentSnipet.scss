@@ -6,7 +6,7 @@
     display: -webkit-flex;
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 15px 10px;
 
     &--left{
         flex: 3 0 0;
@@ -21,11 +21,12 @@
         input{
             border: none;
             color: color('heading');
+            vertical-align: middle;
         }
     }
 
     &--detail{
-
+        display: block;
     }
 
     [class^="document-snipet-btn"],
@@ -35,6 +36,7 @@
         height: 20px;
         font-size: fontSize('lg');
         background-color: transparent;
+        vertical-align: middle;
     }
 
     &-btn-ok{
@@ -54,8 +56,14 @@
         }
     }
 
-    .focus{
+    &.focus{
         background-color: color('docSnipetBgActive');
         border-color: color('docSnipetBorderActive');
+        .document-snipet--input-group{
+            background-color: color('docSnipetBg');
+            border:1px solid color('docSnipetBorderActive');
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
 }
