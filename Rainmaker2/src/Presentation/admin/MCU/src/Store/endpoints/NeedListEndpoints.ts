@@ -24,7 +24,9 @@ export class NeedListEndpoints {
         requestId: string,
         docId: string
       ) =>
-        `/api/documentmanagement/document/getfiles?id=${id}&requestId=${requestId}&docId=${docId}`
+        `/api/documentmanagement/document/getfiles?id=${id}&requestId=${requestId}&docId=${docId}`,
+      activityLogs: (id: string, typeIdOrDocName: string) =>
+        `/api/Documentmanagement/Document/GetActivityLog?id=${id}&typeId=${typeIdOrDocName}`
     },
   };
 

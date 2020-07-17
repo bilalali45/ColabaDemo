@@ -142,7 +142,7 @@ namespace DocumentManagement.Service
                                 ""docId"": ""$documentTypes.id"",
                                 ""docName"": ""$documentTypes.docName"",
                                 ""typeName"": ""$documentObjects.name"",
-                               
+                               ""typeId"": ""$documentTypes.typeId""
                             }
                         }"
                 ));
@@ -156,6 +156,7 @@ namespace DocumentManagement.Service
                     TemplateDTO dto = new TemplateDTO();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    dto.typeId = query.typeId;
                     result.Add(dto);
                 }
             }

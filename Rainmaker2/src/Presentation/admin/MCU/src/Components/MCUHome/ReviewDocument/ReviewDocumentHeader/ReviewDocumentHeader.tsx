@@ -9,12 +9,16 @@ import { ReviewDocumentActivityLog } from "../ReviewDocumentActivityLog/ReviewDo
 
 
 export const ReviewDocumentHeader = ({
+  id,
+  typeId,
   documentDetail,
   buttonsEnabled,
   onClose,
   nextDocument,
   previousDocument,
 }: {
+  id: string | null
+  typeId: string | null
   documentDetail: boolean
   buttonsEnabled: boolean
   onClose: () => void;
@@ -54,7 +58,7 @@ export const ReviewDocumentHeader = ({
               Activity Log
                     </Dropdown.Toggle>
             <Dropdown.Menu>
-              <ReviewDocumentActivityLog />
+              <ReviewDocumentActivityLog id={id} typeId={typeId} />
             </Dropdown.Menu>
           </Dropdown>
 

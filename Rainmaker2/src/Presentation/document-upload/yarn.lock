@@ -9399,10 +9399,10 @@ rainsoft-js@^1.0.24:
     from "^0.1.7"
     moment "^2.27.0"
 
-rainsoft-rc@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.8.tgz#b7c9601fd8a1df47cb0922f76237b33936a1b796"
-  integrity sha512-0qap6SKxzG5nwdhEywGqSCvhgFBXByiTHtG20Zd2B69L/x3Rq60frGUg538Zz5BEdBB1Bu29QYMpeLb8V3XU9A==
+rainsoft-rc@^1.0.9:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.10.tgz#4d3b0a363c5c7e93961bb049d61ddadd6ed9bb43"
+  integrity sha512-wbOIP/lrWV3lWX53Xl+7C2kQstitlu0kZbky1qAuV2Zeld8u0c9HMo+/Ulmw/9B45PmYxsyTHi8GseoVcjg2Vw==
   dependencies:
     node-sass "^4.14.1"
     print-js "^1.0.63"
@@ -9549,6 +9549,11 @@ react-file-viewer@^1.2.1:
     react-visibility-sensor "^5.0.2"
     three "0.85.2"
     xlsx "^0.10.1"
+
+react-idle-timer@^4.2.12:
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.2.12.tgz#3756e3256cd225f319ed093b3d5ebe0d98fcc498"
+  integrity sha512-YD/2Oe4PU5uRv/TH6zTxykKMHpRHWHPEWCUohda81o/jzsrlgyUrklfy46fd8WjgYhlNkJKsiX/GXJAQQC1hcQ==
 
 react-is@^16.12.0, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"
