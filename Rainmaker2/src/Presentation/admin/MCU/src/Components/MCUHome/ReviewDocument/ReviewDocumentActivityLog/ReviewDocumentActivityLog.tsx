@@ -56,7 +56,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                 </tr>
             )
         })
-    }, [logIndex])
+    }, [])
 
     const renderActivityLog = useCallback((activityLogs: ActivityLogType[]) => {
         return activityLogs.map((activityLog: ActivityLogType, index: number) => {
@@ -73,6 +73,8 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
     }, [logIndex])
 
     useEffect(() => {
+        if (id === null || typeId === null) return
+
         getActivityLogs(id, typeId)
     }, [getActivityLogs, id, typeId])
 
