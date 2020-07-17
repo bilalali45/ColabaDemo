@@ -1597,6 +1597,11 @@
   resolved "https://registry.yarnpkg.com/@types/jwt-decode/-/jwt-decode-2.2.1.tgz#afdf5c527fcfccbd4009b5fd02d1e18241f2d2f2"
   integrity sha512-aWw2YTtAdT7CskFyxEX2K21/zSDStuf/ikI3yBqmwpwJF0pS+/IX5DWv+1UFffZIbruP6cnT9/LAJV1gFwAT1A==
 
+"@types/lodash@^4.14.157":
+  version "4.14.157"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
+  integrity sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -7709,6 +7714,11 @@ lodash@^3.5.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
+lodash@^4.17.19:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+
 loglevel@^1.6.6:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.7.tgz#b3e034233188c68b889f5b862415306f565e2c56"
@@ -10362,10 +10372,10 @@ rainsoft-js@^1.0.28:
     from "^0.1.7"
     moment "^2.27.0"
 
-rainsoft-rc@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.9.tgz#281af6b207f596772e6b58915f49c593f3c55b47"
-  integrity sha512-DFMy5x7i5IR4CJACCxUIu+fOx/L3wGm4oxthlZdJ/W6lpn2cXaI5LodQaZVWob1dFzIcrMmCzLKXUZAs4/sIaQ==
+rainsoft-rc@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.10.tgz#4d3b0a363c5c7e93961bb049d61ddadd6ed9bb43"
+  integrity sha512-wbOIP/lrWV3lWX53Xl+7C2kQstitlu0kZbky1qAuV2Zeld8u0c9HMo+/Ulmw/9B45PmYxsyTHi8GseoVcjg2Vw==
   dependencies:
     node-sass "^4.14.1"
     print-js "^1.0.63"

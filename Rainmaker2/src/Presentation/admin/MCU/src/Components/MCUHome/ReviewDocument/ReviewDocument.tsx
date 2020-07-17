@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
 import { DocumentView } from 'rainsoft-rc';
+import _, { indexOf } from 'lodash'
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
@@ -84,13 +85,17 @@ export const ReviewDocument = () => {
   );
 
   const nextDocument = useCallback(() => {
-    if (navigationIndex === documentList1.length - 1) return;
+    const indexes = _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
 
-    const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
+    const indexOfReivew = indexes.findIndex(value => Number(value) > navigationIndex)
+
+    if (indexOfReivew === -1) return //No review document found
+
+    const doc: NeedListDocumentType = documentList1[indexOfReivew];
     const { id, requestId, docId, files } = doc
 
-    setCurrentDocument(() => documentList1[navigationIndex + 1]);
-    setNavigationIndex(() => navigationIndex + 1);
+    setCurrentDocument(() => documentList1[indexOfReivew]);
+    setNavigationIndex(() => indexOfReivew);
     setCurrentFileIndex(0)
     setTypeIdId({ id: null, typeId: null })
 
@@ -98,14 +103,20 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
-    if (navigationIndex === 0) return;
+    const indexes = _.reverse(_.keys(_.pickBy(documentList1, { status: 'Pending review' })))
 
-    const doc: NeedListDocumentType = documentList1[navigationIndex - 1];
+    console.log('navIndex', navigationIndex)
+
+    const indexOfReivew = navigationIndex === 1 ? 0 : indexes.findIndex(value => Number(value) < navigationIndex)
+
+    if (indexOfReivew === -1) return //No review document found
+
+    const doc: NeedListDocumentType = documentList1[indexOfReivew];
 
     const { id, requestId, docId, files } = doc
 
-    setCurrentDocument(() => documentList1[navigationIndex - 1]);
-    setNavigationIndex(() => navigationIndex - 1);
+    setCurrentDocument(() => documentList1[indexOfReivew]);
+    setNavigationIndex(() => indexOfReivew);
     setCurrentFileIndex(() => 0)
     setTypeIdId({ id: null, typeId: null })
 
