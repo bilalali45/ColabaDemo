@@ -10,7 +10,6 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.GET.templates(tenantId);
         try {
             let res = await http.get(url);
-            console.log(res);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -34,7 +33,6 @@ export class TemplateActions {
 
         try {
             let res = await http.get(url);
-            console.log(res);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -95,10 +93,8 @@ export class TemplateActions {
         let document = {
             templateId, tenantId: Number(tenantId), [type]: docTypeOrName
         }
-        // console.log(document);
         try {
             let res = await http.post(url, document);
-            console.log(res);
             return true;
         } catch (error) {
             console.log(error)
@@ -120,7 +116,6 @@ export class TemplateActions {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${http.auth}`,
             })
-            console.log(res.status);
             return res?.status;
         } catch (error) {
             console.log(error)

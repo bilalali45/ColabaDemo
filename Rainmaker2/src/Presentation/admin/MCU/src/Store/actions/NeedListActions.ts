@@ -22,7 +22,6 @@ export class NeedListActions {
         let url = Endpoints.NeedListManager.GET.documents.submitted(loanApplicationId, tenantId, status);
         try {
             let res : AxiosResponse<NeedList> = await http.get<NeedList>(url);
-            console.log('getNeedList',res);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -35,7 +34,6 @@ export class NeedListActions {
             let res = await http.put(url, {
                 id, requestId, docId, tenantId
             })
-            console.log('res deleteDocument', res)
             return res.status;
         } catch (error) {
             console.log(error);
