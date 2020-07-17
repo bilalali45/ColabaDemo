@@ -8,10 +8,12 @@ export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
+  currentFileIndex
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
   moveNextFile: (index: number) => void
   currentDocument: NeedListDocumentType | null;
+  currentFileIndex: number
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
 
@@ -62,6 +64,7 @@ export const ReviewDocumentStatement = ({
             fileId={file.fileId}
             mcuName={file.mcuName}
             clientName={file.clientName}
+            currentFileIndex={currentFileIndex}
           />) : (
             <span>No file submitted yet</span>
           )}
