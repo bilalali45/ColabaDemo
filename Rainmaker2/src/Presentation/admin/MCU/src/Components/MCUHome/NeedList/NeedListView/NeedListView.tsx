@@ -15,37 +15,40 @@ export const NeedListView = () => {
 
 useEffect(()=> {
     if(!needList){
-        fetchNeedList(true, '','')
+        fetchNeedList(true).then((data)=> {
+            setNeedList(data)
+        })
     }
 },[needList])
 
-const fetchNeedList = async (status: boolean, sortBy: string, fieldName: string)=> {
-    let applicationId = LocalDB.getLoanAppliationId();
-    let tenentId = LocalDB.getTenantId();
-    if(applicationId && tenentId){
-        let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
+const fetchNeedList = async (status: boolean)=> {
+    if(LocalDB.getLoanAppliationId() && LocalDB.getTenantId()){
+        let res: NeedList | undefined = await NeedListActions.getNeedList(LocalDB.getLoanAppliationId(), LocalDB.getTenantId(), status) 
         if(res){
-            if(sortBy){
-                let sortedList = sortNeedList(res, sortBy,fieldName);
-                setNeedList(sortedList)
-            }
-            setNeedList(res)
+            return res
         } 
     }  
 }
 
-const deleteNeedListDoc = async (id: string, requestId: string, docId: string)=>{
+const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
     let tenentId = LocalDB.getTenantId();
     if(id && requestId && docId && tenentId){
       let res = await NeedListActions.deleteNeedListDocument(id, requestId, docId, parseInt(tenentId))
       if(res === 200){
-          debugger
           if(lastFilter === 1){
-            fetchNeedList(toggle, sortArrow, 'docName') 
+            fetchNeedList(toggle).then((data) => {
+                let sortedList = sortNeedList(data, sortArrow, 'docName');
+                setNeedList(sortedList)
+            }) 
           }else if(lastFilter === 2){
-            fetchNeedList(toggle, sortStatusArrow, 'status') 
+            fetchNeedList(toggle).then((data) => {
+                let sortedList = sortNeedList(data, sortStatusArrow, 'status'); 
+                setNeedList(sortedList)
+            })  
           }else{
-            fetchNeedList(toggle, '','')
+            fetchNeedList(toggle).then((data) => {
+                setNeedList(data)
+            }) 
           }      
       }
     }
@@ -53,15 +56,19 @@ const deleteNeedListDoc = async (id: string, requestId: string, docId: string)=>
 
 const togglerHandler = (pending: boolean) => {
    if(!pending){
-    fetchNeedList(!pending, '','')
-    setToggle(!toggle)
-    setSortArrow('desc') 
-    setStatusSortArrow('desc')
+    fetchNeedList(!pending).then((data) => {
+        setNeedList(data)
+        setToggle(!toggle)
+        setSortArrow('desc') 
+        setStatusSortArrow('desc')
+    })  
    }else{
-    fetchNeedList(!pending, '','')
-    setToggle(!toggle)
-    setSortArrow('desc') 
-    setStatusSortArrow('desc')
+    fetchNeedList(!pending).then((data) => {
+        setNeedList(data)
+        setToggle(!toggle)
+        setSortArrow('desc') 
+        setStatusSortArrow('desc')
+    })
    }  
 }
 
