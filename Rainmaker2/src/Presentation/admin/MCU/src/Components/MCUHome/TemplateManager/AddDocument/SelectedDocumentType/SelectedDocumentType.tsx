@@ -14,7 +14,6 @@ type SelectedTypeType = {
 }
 
 export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
-
     const renderCurrentlySelected = () => {
 
         if (selectedCatDocs?.catId === 'all') {

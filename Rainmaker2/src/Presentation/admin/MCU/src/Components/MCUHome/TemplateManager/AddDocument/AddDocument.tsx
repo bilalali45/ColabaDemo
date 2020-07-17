@@ -97,8 +97,6 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
         }
     }
 
-    
-
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
