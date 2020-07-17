@@ -8,7 +8,7 @@ type headerProps = {
 }
 
 export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(true);
     
     const callBack = () => {
         toggleCallBack(toggle)

@@ -9,9 +9,11 @@ type NeedListProps = {
     deleteDocument: Function;
     sortDocumentTitle: Function;
     documentTitleArrow: string;
+    statusTitleArrow: string;
+    sortStatusTitle: Function;
 }
 
-export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow }: NeedListProps) => {
+export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow,statusTitleArrow, sortStatusTitle }: NeedListProps) => {
     const history = useHistory()
 
     const renderNeedList = (data: any) => {
@@ -144,7 +146,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
 
                     <div className="tr">
                         <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
-                        <div className="th"><a href="javascript:;">Status <em className="zmdi zmdi-long-arrow-down table-th-arrow"></em></a></div>
+                        <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
                         <div className="th">File Name</div>
                         <div className="th"><a href="javascript:;"><em className="icon-refresh"></em></a> sync to LOS</div>
                         <div className="th">&nbsp;</div>

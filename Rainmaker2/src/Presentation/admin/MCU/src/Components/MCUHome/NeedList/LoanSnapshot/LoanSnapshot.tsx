@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SVGopenLock } from '../../../../Shared/SVG';
 import { LoanApplication } from '../../../../Entities/Models/LoanApplication';
 import { NeedListActions } from '../../../../Store/actions/NeedListActions';
 import Spinner from 'react-bootstrap/Spinner';
 import { LocalDB } from '../../../../Utils/LocalDB';
+import { Store } from '../../../../Store/Store';
 
 
 
 export const LoanSnapshot = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication | null>();
-
+    //const { state, dispatch } = useContext(Store);
     useEffect(() => {
         if (!loanInfo) {
             fetchLoanApplicationDetail()
