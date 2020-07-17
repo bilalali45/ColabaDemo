@@ -22,6 +22,7 @@
     text-align: center;
 
     .sidebar-main-ul {
+        @extend .list-style-none;
         >li {
             border-bottom: 1px solid color('sidebarboder');
             position: relative;

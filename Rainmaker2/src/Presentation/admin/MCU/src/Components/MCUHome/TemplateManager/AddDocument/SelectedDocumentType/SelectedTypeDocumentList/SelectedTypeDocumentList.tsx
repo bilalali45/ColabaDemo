@@ -6,12 +6,13 @@ import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocu
 import SearchIcon from '../../../../../../Assets/images/search-icon.svg'
 
 type SelectedTypeType = {
+    setVisible: Function,
     documentList: Document[],
     selectedCatDocs: CategoryDocument,
     addNewDoc: Function
 }
 
-export const SelectedTypeDocumentList = ({ documentList,selectedCatDocs, addNewDoc}: SelectedTypeType) => {
+export const SelectedTypeDocumentList = ({ documentList,selectedCatDocs, addNewDoc, setVisible}: SelectedTypeType) => {
     
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         
@@ -23,6 +24,7 @@ export const SelectedTypeDocumentList = ({ documentList,selectedCatDocs, addNewD
             <h4>{selectedCatDocs?.catName}</h4>
             </div>
             <SelectedDocumentTypeList
+                setVisible={setVisible}
                 documentList={documentList}
                 addNewDoc={addNewDoc}
             />

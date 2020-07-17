@@ -4,11 +4,12 @@ import { TemplateActions } from '../../../../../../Store/actions/TemplateActions
 
 
 type SelectedTypeType = {
+    setVisible: Function,
     documentList: Document[],
     addNewDoc: Function
 }
 
-export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTypeType) => {
+export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }: SelectedTypeType) => {
 
     if (!documentList) {
         return null;
@@ -21,7 +22,10 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc }: SelectedTy
                 {documentList &&
                     documentList?.map(dl => {
                         return (
-                            <li onClick={() => addNewDoc(dl.docTypeId, 'typeId')}>{dl?.docType}</li>
+                            <li onClick={() => {
+                                addNewDoc(dl.docTypeId, 'typeId');
+                                setVisible(false);
+                            }}>{dl?.docType}</li>
                         )
                     })
                 }

@@ -1,10 +1,11 @@
 import React, { useState, ChangeEvent } from 'react'
 
 type CustomDocumentsType = {
+    setVisible: Function,
     addDocToTemplate: Function
 }
 
-export const CustomDocuments = ({ addDocToTemplate }: CustomDocumentsType) => {
+export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
 
     const [docName, setDocName] = useState<String>();
 
@@ -13,7 +14,8 @@ export const CustomDocuments = ({ addDocToTemplate }: CustomDocumentsType) => {
     }
 
     const addDoc = () => {
-        addDocToTemplate(docName, 'docName')
+        addDocToTemplate(docName, 'docName');
+        setVisible(false)        
     }
 
     return (
@@ -38,18 +40,17 @@ export const CustomDocuments = ({ addDocToTemplate }: CustomDocumentsType) => {
                 </div>
             </div>
             <div className="others-doc-input-wrap">
-            <div className="title-wrap"><h3>Add Custom Document</h3></div>
-            <div className="input-wrap">
-               
-                <input  onChange={hanldeChange} type="name" placeholder="Type document name" />
-                
-                <div className="input-btn-wrap">
-                <button className="btn btn-secondary btn-sm">Cancel</button>
-                <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
-                </div>
-            </div>
+                <div className="title-wrap"><h3>Add Custom Document</h3></div>
+                <div className="input-wrap">
 
-</div>
+                    <input onChange={hanldeChange} type="name" placeholder="Type document name" />
+
+                    <div className="input-btn-wrap">
+                        <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     )
 }

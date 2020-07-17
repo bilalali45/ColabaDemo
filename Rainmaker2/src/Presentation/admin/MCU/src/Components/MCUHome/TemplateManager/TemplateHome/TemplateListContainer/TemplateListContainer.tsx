@@ -3,26 +3,19 @@ import { Store } from '../../../../../Store/Store';
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { Template } from '../../../../../Entities/Models/Template';
+import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
 
-type SelectedTemplateType = {
-    setAddingNew: Function;
-    addingNew: boolean;
-}
-
-
-const MyTemplate = "MCU Template";
+export const MyTemplate = "MCU Template";
 const TenantTemplate = "Tenant Template";
 const SystemTemplate = "System Template";
 
-export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTemplateType) => {
-    const [toRemoveTemplate, setToRemoveTemplate] = useState<any>(false);
-    const [toRemoveTemplate1, setToRemoveTemplate1] = useState<any>(false);
+export const TemplateListContainer = () => {
 
     const { state, dispatch } = useContext(Store);
 
     const templateManager: any = state.templateManager;
-    const templates : Template[] = templateManager?.templates;
-    const currentTemplate : Template = templateManager?.currentTemplate;
+    const templates: Template[] = templateManager?.templates;
+    const currentTemplate: Template = templateManager?.currentTemplate;
 
 
     useEffect(() => {
@@ -31,71 +24,31 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
         }
     }, []);
 
-    
+
     const changeCurrentTemplate = async (template: Template) => {
 
-        if(currentTemplate?.id === template.id) {
+        if (currentTemplate?.id === template.id) {
             return;
         }
 
-        dispatch({type: TemplateActionsType.SetCurrentTemplate, payload: template});
+        dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: template });
     }
 
 
     const fetchTemplatesList = async () => {
-        let newTemplates : any = await TemplateActions.fetchTemplates('1');
+        let newTemplates: any = await TemplateActions.fetchTemplates('1');
         if (newTemplates) {
             dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
-            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0]});
+            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0] });
 
         }
     }
 
     const removeTemplate = async (templateId: string) => {
-        let isDeleted = await TemplateActions.deleteTemplate(templateId, '1');
-        if(isDeleted) {
-            
+        let isDeleted = await TemplateActions.deleteTemplate('1', templateId);
+        if (isDeleted) {
+            fetchTemplatesList();
         }
-    }
-
-
-    const remove = () => {
-        setToRemoveTemplate(true)
-    }
-    const undo = () => {
-        setToRemoveTemplate(false)
-    }
-
-    const remove1 = () => {
-        setToRemoveTemplate(true)
-    }
-    const undo1 = () => {
-        setToRemoveTemplate(false)
-    }
-
-    const MyTemplateListItem = (t: any) => {
-        return (
-            <li  onClick={() => changeCurrentTemplate(t)}>
-                <div className="l-wrap ">
-                    {!toRemoveTemplate ?
-                        <div className={`c-list ${ currentTemplate?.name === t.name? 'active' : ''}`}>
-                            {t.name}
-                                <span className="BTNclose" onClick={remove1}><i className="zmdi zmdi-close"></i></span>
-                        </div>
-                        : <>
-                            <div className="alert-cancel">
-                                <span>Remove this template?</span>
-                                <div className="l-remove-actions">
-                                    <button className="lbtn btn-no" onClick={undo1}> No</button>
-                                    <button className="lbtn btn-yes" onClick={() => removeTemplate(t.id)}>Yes</button></div>
-                            </div>
-                        </>
-                    }
-
-
-                </div>
-            </li>
-        )
     }
 
     const TenantListItem = (t: any) => {
@@ -124,7 +77,11 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
                                 {
                                     templates?.map((t: any) => {
                                         if (t?.type === MyTemplate) {
-                                            return MyTemplateListItem(t)
+                                            return <TemplateItem
+                                                template={t}
+                                                isSelected={currentTemplate?.name === t.name}
+                                                changeTemplate={changeCurrentTemplate}
+                                                removeTemlate={removeTemplate} />
                                         }
                                     })
                                 }
@@ -146,7 +103,7 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
                             <h4>Templates by Tenant</h4>
                         </div>
 
-                        <div className="list-wrap my-temp-list">
+                        <div className="list-wrap tenant-temp-list">
 
                             <ul>
                                 {
@@ -171,7 +128,11 @@ export const TemplateListContainer = ({ setAddingNew, addingNew }: SelectedTempl
 
                 <h4>Templates</h4>
 
-                <div className="btn-add-new-Temp" onClick={() => setAddingNew(!addingNew)}>
+                <div className="btn-add-new-Temp" onClick={() => {
+                    dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: null });
+                    dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
+
+                }}>
                     <button className="btn btn-primary addnewTemplate-btn">
                         <span className="btn-text">Add new template</span>
                         <span className="btn-icon">

@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
-import { DocumentView } from 'rainsoft-rc'
+import { DocumentView } from 'rainsoft-rc';
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
@@ -39,7 +39,6 @@ export const ReviewDocument = () => {
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId, tenantId) => {
-
       const params = {
         id,
         requestId,
@@ -50,19 +49,18 @@ export const ReviewDocument = () => {
 
       try {
         setLoading(true)
-        // const http = new Http();
 
-        // const response = (await http.get(
-        //   NeedListEndpoints.GET.documents.view(
-        //     id,
-        //     requestId,
-        //     docId,
-        //     fileId,
-        //     tenantId
-        //   )
-        // )) as any;
+        const http = new Http();
 
-        const response = await Axios.get('https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view', {
+        const url = NeedListEndpoints.GET.documents.view(
+          id,
+          requestId,
+          docId,
+          fileId,
+          tenantId
+        )
+
+        const response = await Axios.get(http.createUrl(http.baseUrl, url), {
           params,
           responseType: 'arraybuffer',
           headers: {
@@ -117,11 +115,12 @@ export const ReviewDocument = () => {
       setCurrentFileIndex(index)
       setBlobData(null)
 
-      getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+      !loading && getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
-  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
+  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
 
   useEffect(() => {
+
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -135,7 +134,7 @@ export const ReviewDocument = () => {
 
           const { id, requestId, docId, files } = doc
 
-          !!files && !!files.length && files.length > 0 && getDocumentForView(
+          !loading && !!files && !!files.length && files.length > 0 && getDocumentForView(
             id,
             requestId,
             docId,
@@ -149,7 +148,7 @@ export const ReviewDocument = () => {
         alert("Something went wrong. Please try again.");
       }
     }
-  }, [state, getDocumentForView, location.state, tenantId]);
+  }, [getDocumentForView, state, location.state, tenantId]);
 
   return (
     <div

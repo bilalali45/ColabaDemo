@@ -21,12 +21,6 @@ a,button{
     }
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 0;
-}
-
 .box-wrap {
     box-shadow: $shadow;
     padding: 20px;
@@ -60,6 +54,9 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+ul {
+    @extend .list-style-none; 
 }
 
 .list {
@@ -345,7 +342,7 @@ ul {
             padding: 20px;
         }
 
-        h2 {
+        > h2 {
             font-family: fontFamily('heading');
             font-size: fontSize('nr') - 1px ;
             font-weight: 500;
@@ -353,7 +350,7 @@ ul {
             margin-bottom: 22px;
 
         }
-        h3 {
+        > h3 {
             font-family: fontFamily('heading');
             font-size: fontSize('sm') - 1px ;
             font-weight: 500;
@@ -530,4 +527,17 @@ ul {
     padding: 30px;
     text-align: center;
     justify-content: center;
+}
+
+.table{
+    &-noborder{
+        th{
+            border: none;
+        }
+        thead{
+            th{
+                border: none;
+            }
+        }
+    }
 }
