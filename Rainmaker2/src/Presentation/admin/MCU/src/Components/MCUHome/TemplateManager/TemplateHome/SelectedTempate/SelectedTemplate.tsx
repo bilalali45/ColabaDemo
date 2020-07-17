@@ -32,15 +32,19 @@ export const SelectedTemplate = () => {
         if (currentTemplate) {
             seteditTitleview(false);
         }
+
+        if(!currentTemplate) {
+            seteditTitleview(false);
+            setNewNameText('');
+        }
+
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
-    console.log(currentTemplate);
 
     const setCurrentTemplateDocs = async (template: any) => {
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
         if (templateDocs) {
-            console.log(templateDocuments?.length);
             dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
         }
     }
@@ -131,7 +135,7 @@ export const SelectedTemplate = () => {
                                     <p>{td.docName}
                                         <span className="BTNclose">
                                             {
-                                                currentTemplate.type === MyTemplate &&
+                                                currentTemplate?.type === MyTemplate &&
                                                 <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td.docId)}></i>
                                             }
                                         </span>
@@ -142,7 +146,7 @@ export const SelectedTemplate = () => {
                     }
 
                 </ul>
-                {currentTemplate.type === MyTemplate &&
+                {currentTemplate?.type === MyTemplate &&
                     <AddDocument popoverplacement="right" />
                 }
             </div> :
