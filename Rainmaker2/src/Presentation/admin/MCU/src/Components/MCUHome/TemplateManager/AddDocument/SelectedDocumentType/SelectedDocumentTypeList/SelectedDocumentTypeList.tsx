@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Document } from '../../../../../../Entities/Models/Document'
 import { TemplateActions } from '../../../../../../Store/actions/TemplateActions'
+import { Store } from '../../../../../../Store/Store'
+import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument'
 
 
 type SelectedTypeType = {
@@ -11,6 +13,15 @@ type SelectedTypeType = {
 
 export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }: SelectedTypeType) => {
 
+    const {state, dispatch} = useContext(Store);
+
+    const templateManager : any = state?.templateManager;
+    const templateDocuments: any = templateManager?.templateDocuments;
+
+    const filterUsedDocs = (templateDocs: Document[]) => {
+        return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => td?.docName === cd?.docType));
+    }
+
     if (!documentList) {
         return null;
     }
@@ -20,7 +31,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }
             <div className="active-docs"> 
             <ul>
                 {documentList &&
-                    documentList?.map(dl => {
+                    filterUsedDocs(templateDocuments)?.map(dl => {
                         return (
                             <li onClick={() => {
                                 addNewDoc(dl.docTypeId, 'typeId');

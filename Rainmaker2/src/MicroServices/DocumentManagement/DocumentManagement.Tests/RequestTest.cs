@@ -293,105 +293,103 @@ namespace DocumentManagement.Tests
 
         }
 
-        //[Fact]
-        //public async Task TestSaveServiceTypeIdNull()
-        //{
-        //    Mock<IMongoService> mock = new Mock<IMongoService>();
-        //    Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-        //    Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
-        //    Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-        //    Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
-        //    Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-        //    Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
-        //    Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
-        //    Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
-        //    Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
-        //    Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+        [Fact]
+        public async Task TestSaveServiceTypeIdNull()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
+            Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
 
-        //    List<BsonDocument> statusList = new List<BsonDocument>()
-        //    {
-        //        new BsonDocument
-        //        {
-        //            { "_id" , "5ee86503305e33a11c51ebbc"}
-        //        }
-        //    };
+            List<BsonDocument> statusList = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5ee86503305e33a11c51ebbc"}
+                }
+            };
 
-        //    List<BsonDocument> listRequest = new List<BsonDocument>()
-        //    {
-        //        new BsonDocument
-        //        {
-        //            { "_id" , "5f0ede3cce9c4b62509d0dbf"},
-        //            { "loanApplicationId" , 14}
-        //        }
-        //    };
+            List<BsonDocument> listRequest = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "loanApplicationId" , 14}
+                }
+            };
 
-        //    List<BsonDocument> listActivityLog = new List<BsonDocument>()
-        //    {
-        //        new BsonDocument
-        //        {
-        //            { "_id" , "5f0ffa5cba6f754a10129586"}
-        //        }
-        //    };
+            List<BsonDocument> listActivityLog = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ffa5cba6f754a10129586"}
+                }
+            };
 
-        //    mockCursorStatusList.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-        //    mockCursorStatusList.SetupGet(x => x.Current).Returns(statusList);
+            mockCursorStatusList.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorStatusList.SetupGet(x => x.Current).Returns(statusList);
 
-        //    mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
+            mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
 
-        //    mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-        //    mockCursorRequest.SetupGet(x => x.Current).Returns(listRequest);
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.SetupGet(x => x.Current).Returns(listRequest);
 
-        //    mockCollectionRequest.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object);
+            mockCollectionRequest.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object);
 
-        //    mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+            mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 
-        //    mockCursorActivityLog.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-        //    mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
+            mockCursorActivityLog.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
 
-        //    mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
+            mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
 
-        //    mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-        //    mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
-        //    mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("LoanApplication", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
-        //    mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
+            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("LoanApplication", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
-        //    mock.Setup(x => x.db).Returns(mockdb.Object);
+            mock.Setup(x => x.db).Returns(mockdb.Object);
 
-        //    //Act
-        //    IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            //Act
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
 
-        //    Model.LoanApplication loanApplication = new Model.LoanApplication();
-        //    loanApplication.userId = 59;
-        //    loanApplication.userName = "Melissa Merritt";
-        //    loanApplication.loanApplicationId = 14;
-        //    loanApplication.tenantId = 1;
-        //    loanApplication.status = "5ee86503305e33a11c51ebbc";
-        //    loanApplication.requests = new List<Request>() { };
+            Model.LoanApplication loanApplication = new Model.LoanApplication();
+            loanApplication.userId = 59;
+            loanApplication.userName = "Melissa Merritt";
+            loanApplication.loanApplicationId = 14;
+            loanApplication.tenantId = 1;
+            loanApplication.status = "5ee86503305e33a11c51ebbc";
+            loanApplication.requests = new List<Request>() { };
 
-        //    Request request = new Request();
-        //    request.userId = 3842;
-        //    request.userName = "Danish Faiz";
-        //    request.message = "Hi Mark";
-        //    request.documents = new List<RequestDocument>() { };
+            Request request = new Request();
+            request.userId = 3842;
+            request.userName = "Danish Faiz";
+            request.message = "Hi Mark";
+            request.documents = new List<RequestDocument>() { };
 
-        //    RequestDocument requestDocument = new RequestDocument();
-        //    requestDocument.status = "Started";
-        //    requestDocument.displayName = "W2 2020";
-        //    requestDocument.typeId = "";
-        //    requestDocument.message = "document rejected";
-        //    requestDocument.files = new List<RequestFile>() { };
+            RequestDocument requestDocument = new RequestDocument();
+            requestDocument.status = "Started";
+            requestDocument.displayName = "W2 2020";
+            requestDocument.message = "document rejected";
+            requestDocument.files = new List<RequestFile>() { };
 
-        //    request.documents.Add(requestDocument);
+            request.documents.Add(requestDocument);
 
-        //    loanApplication.requests.Add(request);
+            loanApplication.requests.Add(request);
 
-        //    bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false);
 
-        //    //Assert
-        //    Assert.True(result);
-
-        //}
+            //Assert
+            Assert.True(result);
+        }
 
         [Fact]
         public async Task TestSaveService()

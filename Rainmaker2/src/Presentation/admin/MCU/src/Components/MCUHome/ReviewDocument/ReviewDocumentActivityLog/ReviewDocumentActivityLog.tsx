@@ -27,8 +27,6 @@ export const ReviewDocumentActivityLog = () => {
         width: totalWidth
     }
 
-    console.log('allSections',allSections)
-
     return (
         <section ref={sectionRef} className="vertical-tabs" id="verticalTab">
             <div className="vertical-tabs--data" style={ tabDataStyle }>
