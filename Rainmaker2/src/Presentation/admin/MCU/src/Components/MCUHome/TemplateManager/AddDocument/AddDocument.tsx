@@ -29,6 +29,7 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
     const templateManager: any = state?.templateManager;
 
     const currentTemplate = templateManager?.currentTemplate;
+    const templateDocuments = templateManager?.templateDocuments;
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
 
@@ -86,6 +87,9 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
     }
 
     const addDocToTemplate = async (docName: string, type: string) => {
+        if(templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
+            return;
+        }
         try {
             let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
             if (success) {
@@ -97,19 +101,17 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
         }
     }
 
-    
-
     const renderPopOverContent = () => {
         return (
             <div className="popup-add-doc">
                 <div className="popup-add-doc-row row">
-                    <div className="col-sm-4 popup-add-doc-row--left">
+                    <div className="col-sm-5 col-md-5  col-lg-4 popup-add-doc-row--left">
                         <DocumentTypes
                             currentCategoryDocuments={currentCategoryDocuments}
                             documentTypeList={categoryDocuments}
                             changeCurrentDocType={changeCurrentDocType} />
                     </div>
-                    <div className="col-sm-8 popup-add-doc-row--right">
+                    <div className="col-sm-7 col-md-7 col-lg-8 popup-add-doc-row--right">
 
                         <SelectedType
                             setVisible={setShow}

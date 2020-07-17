@@ -11,6 +11,7 @@ import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBo
 import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
+import { debug } from 'console'
 
 
 export const SelectedTemplate = () => {
@@ -32,15 +33,20 @@ export const SelectedTemplate = () => {
         if (currentTemplate) {
             seteditTitleview(false);
         }
+
+        if(!currentTemplate) {
+            seteditTitleview(false);
+            setNewNameText('');
+        }
+
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
-    console.log(currentTemplate);
 
     const setCurrentTemplateDocs = async (template: any) => {
+        if(!currentTemplate) return '';
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
         if (templateDocs) {
-            console.log(templateDocuments?.length);
             dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
         }
     }
@@ -59,7 +65,7 @@ export const SelectedTemplate = () => {
         }
     }
 
-    const renameTemplate = async ({ target: { value } }: any) => {
+    const renameTemplate = async ( value : string) => {
 
         if (!currentTemplate) {
             await addNewTemplate(value);
@@ -87,28 +93,28 @@ export const SelectedTemplate = () => {
 
     const removeDoc = async (templateId: string, documentId: string) => {
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
-        // debugger
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }
     }
 
     return (
-        <section>
+        <section className="veiw-SelectedTemplate">
             <div className="T-head">
                 {editTitleview || currentTemplate === null ?
                     <p className="editable">
                         <input
+                            autoFocus
                             value={newNameText}
                             onChange={(e) => setNewNameText(e.target.value)}
-                            onKeyDown={(e) => {
+                            onKeyDown={(e: any) => {
                                 if (e.keyCode === 13) {
-                                    renameTemplate(e);
+                                    renameTemplate(e.target.value);
                                 }
                             }}
                             // onBlur={renameTemplate}
                             className="editable-TemplateTitle" />
-                        <span className="editsaveicon" onClick={toggleRename}><img src={checkicon} alt="" /></span></p>
+                        <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span></p>
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>
@@ -127,11 +133,11 @@ export const SelectedTemplate = () => {
                     {
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
-                                <li>
+                                <li key={td.docId}>
                                     <p>{td.docName}
                                         <span className="BTNclose">
                                             {
-                                                currentTemplate.type === MyTemplate &&
+                                                currentTemplate?.type === MyTemplate &&
                                                 <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td.docId)}></i>
                                             }
                                         </span>
@@ -142,7 +148,7 @@ export const SelectedTemplate = () => {
                     }
 
                 </ul>
-                {currentTemplate.type === MyTemplate &&
+                {currentTemplate?.type === MyTemplate &&
                     <AddDocument popoverplacement="right" />
                 }
             </div> :

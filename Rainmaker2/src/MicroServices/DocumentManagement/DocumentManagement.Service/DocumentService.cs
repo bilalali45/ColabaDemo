@@ -316,9 +316,9 @@ namespace DocumentManagement.Service
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.AcceptedBy, userName));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.AcceptedBy, userName));
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Completed));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Completed));
             }
 
             return result.ModifiedCount == 1;
@@ -355,7 +355,7 @@ namespace DocumentManagement.Service
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
 
                 //set new activityId
 
@@ -432,7 +432,7 @@ namespace DocumentManagement.Service
                 IMongoCollection<ActivityLog> collectionInsertActivityLog = mongoService.db.GetCollection<ActivityLog>("ActivityLog");
                 await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
-                activityLogService.InsertLog(newActivityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
+                await activityLogService.InsertLog(newActivityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
             }
 
             return result.ModifiedCount == 1;

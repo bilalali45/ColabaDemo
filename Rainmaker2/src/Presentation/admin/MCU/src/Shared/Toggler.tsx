@@ -6,7 +6,6 @@ export const Toggler = () => {
   
   const callBack = () => {
     setToggle(!toggle)
-    console.log('toggle',toggle)
   }
     return (
         <label className="switch" onClick={() => callBack()}>

@@ -24,13 +24,18 @@ export const TemplateListContainer = () => {
         }
     }, []);
 
+    const clearOld = () => {
+        dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: null });
+        dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
+    }
+
 
     const changeCurrentTemplate = async (template: Template) => {
 
         if (currentTemplate?.id === template.id) {
             return;
         }
-
+        clearOld();
         dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: template });
     }
 
@@ -53,7 +58,7 @@ export const TemplateListContainer = () => {
 
     const TenantListItem = (t: any) => {
         return (
-            <li onClick={() => changeCurrentTemplate(t)}>
+            <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     <div className="c-list">
                         {t.name}
@@ -78,6 +83,7 @@ export const TemplateListContainer = () => {
                                     templates?.map((t: any) => {
                                         if (t?.type === MyTemplate) {
                                             return <TemplateItem
+                                                key={t.name}
                                                 template={t}
                                                 isSelected={currentTemplate?.name === t.name}
                                                 changeTemplate={changeCurrentTemplate}
@@ -103,7 +109,7 @@ export const TemplateListContainer = () => {
                             <h4>Templates by Tenant</h4>
                         </div>
 
-                        <div className="list-wrap my-temp-list">
+                        <div className="list-wrap tenant-temp-list">
 
                             <ul>
                                 {
@@ -129,8 +135,7 @@ export const TemplateListContainer = () => {
                 <h4>Templates</h4>
 
                 <div className="btn-add-new-Temp" onClick={() => {
-                    dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: null });
-                    dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
+                   clearOld();
 
                 }}>
                     <button className="btn btn-primary addnewTemplate-btn">

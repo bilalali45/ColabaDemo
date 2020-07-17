@@ -176,7 +176,7 @@ namespace DocumentManagement.Service
             {
                 string activityLogId = await activityLogService.GetActivityLogId(model.id, model.requestId, model.docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Deleted));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Deleted));
             }
 
             return result.ModifiedCount == 1;

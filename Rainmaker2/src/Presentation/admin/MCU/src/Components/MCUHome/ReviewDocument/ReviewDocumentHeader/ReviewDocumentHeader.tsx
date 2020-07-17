@@ -1,20 +1,20 @@
-import React from "react";
+import React from "react"
 import Dropdown from 'react-bootstrap/Dropdown';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
-import TabContainer from 'react-bootstrap/TabContainer';
-import TabContent from 'react-bootstrap/TabContent';
-import TabPane from 'react-bootstrap/TabPane';
+
 import { ReviewDocumentActivityLog } from "../ReviewDocumentActivityLog/ReviewDocumentActivityLog";
 
 
 export const ReviewDocumentHeader = ({
+  id,
+  typeId,
   documentDetail,
   buttonsEnabled,
   onClose,
   nextDocument,
   previousDocument,
 }: {
+  id: string | null
+  typeId: string | null
   documentDetail: boolean
   buttonsEnabled: boolean
   onClose: () => void;
@@ -52,9 +52,9 @@ export const ReviewDocumentHeader = ({
           <Dropdown>
             <Dropdown.Toggle size="lg" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
               Activity Log
-                    </Dropdown.Toggle>
+          </Dropdown.Toggle>
             <Dropdown.Menu>
-              <ReviewDocumentActivityLog />
+              {id !== null && typeId !== null && (<ReviewDocumentActivityLog id={id} typeId={typeId} />)}
             </Dropdown.Menu>
           </Dropdown>
 
