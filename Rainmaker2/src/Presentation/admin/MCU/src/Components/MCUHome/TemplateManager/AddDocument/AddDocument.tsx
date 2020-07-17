@@ -11,9 +11,9 @@ import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
 type AddDocumentType = {
-    popoverplacement?:any,
+    popoverplacement?: any,
 }
-export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
+export const AddDocument = ({ popoverplacement = "bottom" }: AddDocumentType) => {
     const [popshow, setshow] = useState(true);
     const [show, setShow] = useState(false);
     const [target, setTarget] = useState(null);
@@ -87,7 +87,11 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
     }
 
     const addDocToTemplate = async (docName: string, type: string) => {
-        if(templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
+        if (!docName?.length || docName?.length > 255) {
+            return;
+        }
+
+        if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
             return;
         }
         try {
@@ -139,7 +143,7 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
 
             <div className="add-doc-link-wrap">
                 {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                <a className="add-doc-link" onClick={(e)=>{handleClick(e)}} >
+                <a className="add-doc-link" onClick={(e) => { handleClick(e) }} >
                     Add Document <i className="zmdi zmdi-plus"></i>
                 </a>
                 {/* </OverlayTrigger> */}

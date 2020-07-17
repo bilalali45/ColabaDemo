@@ -35,7 +35,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }
                         return (
                             <li onClick={() => {
                                 addNewDoc(dl.docTypeId, 'typeId');
-                                setVisible(false);
+                                // setVisible(false);
                             }}>{dl?.docType}</li>
                         )
                     })
