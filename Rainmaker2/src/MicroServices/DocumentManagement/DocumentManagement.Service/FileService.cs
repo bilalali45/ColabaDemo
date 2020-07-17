@@ -78,7 +78,7 @@ namespace DocumentManagement.Service
             {
                 string activityLogId = await activityLogService.GetActivityLogId(model.id, model.requestId, model.docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
             }
 
             return result.ModifiedCount == 1;
@@ -246,13 +246,13 @@ namespace DocumentManagement.Service
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.FileSubmitted, clientName));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.FileSubmitted, clientName));
             }
             if (result.ModifiedCount == 1 && isStarted == false)
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
 
-                activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
             }
 
             return result.ModifiedCount == 1;

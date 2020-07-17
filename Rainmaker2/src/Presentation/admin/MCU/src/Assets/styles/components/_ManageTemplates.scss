@@ -9,9 +9,26 @@
         font: 400 #{fontSize('nr')-1+'/'+1} fontFamily('base');
         text-transform: none;
 
+        @include media-breakpoint-down(lg) {
+            padding: 3px 3px 3px;
+            font: 400 #{fontSize('sm')-1+'/'+1} fontFamily('base');
+        }
+
+
         .btn-text {
             display: inline-block;
             padding: 4px 10px 4px 0;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            @include media-breakpoint-down(md) {
+                padding: 4px 10px 4px 0;
+                max-width: 80px;
+            }
+
+            
 
         }
 
@@ -19,6 +36,7 @@
             padding: 3px 0 4px 10px;
             display: inline-block;
             border-left: 1px solid #1580D1;
+            vertical-align: middle;
 
             i {
                 font-size: fontSize('md');
@@ -70,6 +88,9 @@
 
                 h4 {
                     font: 500 #{fontSize('xmd')+'/'+fontSize('xmd')} fontFamily('base');
+                    @include media-breakpoint-down(md) {
+                        font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('base');
+                    }
                     color: color('colorBlack');
                     margin-bottom: 0;
                 }
@@ -90,14 +111,29 @@
                             text-transform: uppercase;
                         }
                     }
+                    .my-temp-list {
+                        max-height: 300px;
+                        overflow: auto;
+                        @include scrollbar(6,6);
+                    }
+                    .tenant-temp-list {
+                        max-height: 290px;
+                        overflow: auto;
+                        @include scrollbar(6,6);
+                    }
 
                     .list-wrap {
                         margin-left: -30px;
                         margin-right: -30px;
+                    
+
 
                         ul {
                             li {
                                 font: 400 #{fontSize('nr')+'/'+"1"} fontFamily('base');
+                                @include media-breakpoint-down(md) {
+                                    font: 400 #{fontSize('sm')+'/'+"1"} fontFamily('base');
+                                }
                                 color: color('heading');
                                 position: relative;
                                     .l-wrap {
@@ -182,6 +218,9 @@
 
 .MT-rightbar{
     height: 100%;
+    .veiw-SelectedTemplate {
+        height: 100%;
+    }
     .T-head {
         padding-top: 20px;
         min-height: 60px;
@@ -228,7 +267,7 @@
     }
     .ST-content-Wrap {
         padding-top: 15px;
-        ul {
+        > ul {
             display: block;
             li {
                 font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
@@ -284,7 +323,7 @@
     }
 
     .add-newTemp-wrap {
-        height: 100%;
+        height: calc(100% - 60px);
         .empty-wrap {
             text-align: center;
             height: calc(100% - 60px);
@@ -320,6 +359,13 @@
 }
 .popup-add-doc {
     width: 590px;
+
+    @include media-breakpoint-down(lg) {
+        width: 450px;
+    }
+    @include media-breakpoint-down(md) {
+        width: 340px;
+    }
     .popup-add-doc-row {
         min-height: 390px;
     &--left {
@@ -328,6 +374,9 @@
             margin-right: -15px;
             .listAll {
                 font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
+                @include media-breakpoint-down(md) {
+                    font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                } 
                 color: color('heading');
                 text-transform: uppercase;
                 padding: 12px 15px;
@@ -338,9 +387,18 @@
                 }
             }
             ul {
-                padding-top: 15px;
+                margin-top: 15px;
+                &.ul-list-doc-cat{
+                    max-height: 351px;
+                    overflow: auto;
+                    @include scrollbar(6,6)
+                }
+                
                 li {
-                    font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
+                    font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+                    @include media-breakpoint-down(md) {
+                        font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                    } 
                     color: color('heading');
                     text-transform: capitalize;
                     padding: 8px 15px;
@@ -353,6 +411,9 @@
             }
             .listOther {
                 font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
+                @include media-breakpoint-down(md) {
+                    font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                } 
                     color: color('heading');
                     text-transform: capitalize;
                     padding:8px 15px;
@@ -377,6 +438,9 @@
                    align-items: center;
                    h4{
                     font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
+                    @include media-breakpoint-down(md) {
+                        font: 500 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                    }
                     color: color('colorBlack'); 
                     text-transform: uppercase;
                     margin-bottom: 0;
@@ -403,6 +467,9 @@
                 padding-bottom: 0;
                    h4{
                     font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
+                    @include media-breakpoint-down(md) {
+                        font: 500 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
+                    }
                     color: color('colorBlack'); 
                     text-transform: uppercase;
                     margin-bottom: 0;
@@ -415,9 +482,12 @@
                    ul {
                        max-height: 330px;
                        overflow: auto;
-                       @include scrollbar;
+                       @include scrollbar(6,6);
                        li {
                         font: 400 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base');  
+                        @include media-breakpoint-down(md) {
+                            font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                        }
                         color: color('heading');
                         text-transform: capitalize;
                         padding: 8px 15px;
@@ -432,6 +502,9 @@
                    .doc-notfound {
                        p {
                         font: 400 #{fontSize('nr')+'/'+"1.3"} fontFamily('base');  
+                        @include media-breakpoint-down(md) {
+                            font: 400 #{fontSize('sm')+'/'+"1.3"} fontFamily('base'); 
+                        }
                         color: color('heading');
                            margin-bottom: 0;
                            padding: 8px 15px;
@@ -454,6 +527,9 @@
                 .title-wrap {
                     h3 {
                         font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
+                        @include media-breakpoint-down(md) {
+                            font: 400 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
+                        }
                         color: color('primary');
 
                     }
@@ -463,13 +539,16 @@
                     position: relative;
                     display: flex;
                     align-items: center;
-                    padding-right: 115px;
+                    padding-right: 50px;
                     input{
                         width: 100%;
                         border-radius: 0;
                         height: 30px;
                         border: 1px solid color('border');
                         font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+                        @include media-breakpoint-down(md) {
+                            font: 400 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
+                        }
                         @include placeholder;
                         padding: 5px 10px;
                         &:active,&:focus {

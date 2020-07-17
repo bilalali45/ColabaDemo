@@ -98,7 +98,7 @@ export const SelectedTemplate = () => {
     }
 
     return (
-        <section>
+        <section className="veiw-SelectedTemplate">
             <div className="T-head">
                 {editTitleview || currentTemplate === null ?
                     <p className="editable">

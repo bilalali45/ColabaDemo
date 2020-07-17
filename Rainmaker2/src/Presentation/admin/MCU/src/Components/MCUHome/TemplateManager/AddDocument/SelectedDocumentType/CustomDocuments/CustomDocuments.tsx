@@ -46,7 +46,6 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <input onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
-                        <button className="btn btn-secondary btn-sm">Cancel</button>
                         <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
                     </div>
                 </div>

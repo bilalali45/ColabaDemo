@@ -103,7 +103,7 @@ export const TemplateListContainer = () => {
                             <h4>Templates by Tenant</h4>
                         </div>
 
-                        <div className="list-wrap my-temp-list">
+                        <div className="list-wrap tenant-temp-list">
 
                             <ul>
                                 {
