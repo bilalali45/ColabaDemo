@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ActivityLogType, LogType } from "../../../../Entities/Types/Types";
 import { Http } from "rainsoft-js";
+import { DateTimeFormat } from "../../../../Utils/helpers/DateFormat";
 
 export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, typeId: string | null }) => {
     const [tab, setTab] = useState(1);
@@ -52,7 +53,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
             return (
                 <tr key={log._id}>
                     <td>{log.activity}</td>
-                    <td>{log.datetime}</td>
+                    <td>{DateTimeFormat(log.datetime, true)}</td>
                 </tr>
             )
         })
@@ -65,7 +66,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                     <a href="#" onClick={() => setLogIndex(index)}>
                         <h6>Requested By</h6>
                         <h2>{activityLog.userName}</h2>
-                        <time className="vertical-tabs--list-time">{activityLog.dateTime}</time>
+                        <time className="vertical-tabs--list-time">{DateTimeFormat(activityLog.dateTime, true)}</time>
                     </a>
                 </li>
             )
