@@ -10,23 +10,33 @@
 
     &--left{
         flex: 3 0 0;
+        line-height: 1;
     }
 
     &--right{
-
+        svg,i,em {
+            overflow: hidden;
+            vertical-align: top;
+        }
     }
 
     &--input-group{
         line-height: 1;
+        color: color('base');
         input{
             border: none;
             color: color('heading');
             vertical-align: middle;
+            &:focus{
+                border-color: color('docSnipetBorderActive');
+                outline: 1px solid color('docSnipetBorderActive');
+            }
         }
     }
 
     &--detail{
         display: block;
+        padding-top: 5px;
     }
 
     [class^="document-snipet-btn"],
@@ -60,8 +70,8 @@
         background-color: color('docSnipetBgActive');
         border-color: color('docSnipetBorderActive');
         .document-snipet--input-group{
-            background-color: color('docSnipetBg');
-            border:1px solid color('docSnipetBorderActive');
+            //background-color: color('docSnipetBg');
+            //border:1px solid color('docSnipetBorderActive');
             display: inline-block;
             vertical-align: middle;
         }
