@@ -24,6 +24,10 @@ export const ReviewDocument = () => {
   const [loading, setLoading] = useState(true);
   const [currentFileIndex, setCurrentFileIndex] = useState(0)
   const [documentDetail, setDocumentDetail] = useState(false)
+  const [typeIdId, setTypeIdId] = useState<{ id: string | null, typeId: string | null }>({
+    id: null,
+    typeId: null
+  })
 
   const tenantId = LocalDB.getTenantId()
 
@@ -71,12 +75,12 @@ export const ReviewDocument = () => {
         setBlobData(response)
         setLoading(false)
       } catch (error) {
-        alert('Something went wrong while fetching document/file from server.')
-
         setLoading(false)
+
+        alert('Something went wrong while fetching document/file from server.')
       }
     },
-    [setBlobData]
+    []
   );
 
   const nextDocument = useCallback(() => {
@@ -88,6 +92,7 @@ export const ReviewDocument = () => {
     setCurrentDocument(() => documentList1[navigationIndex + 1]);
     setNavigationIndex(() => navigationIndex + 1);
     setCurrentFileIndex(0)
+    setTypeIdId({ id: null, typeId: null })
 
     !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, 1);
   }, [navigationIndex, documentList1, getDocumentForView]);
@@ -102,6 +107,7 @@ export const ReviewDocument = () => {
     setCurrentDocument(() => documentList1[navigationIndex - 1]);
     setNavigationIndex(() => navigationIndex - 1);
     setCurrentFileIndex(() => 0)
+    setTypeIdId({ id: null, typeId: null })
 
     !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, tenantId);
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
@@ -112,15 +118,20 @@ export const ReviewDocument = () => {
     if (currentDocument) {
       const { id, requestId, docId, files } = currentDocument
 
-      setCurrentFileIndex(index)
-      setBlobData(null)
+      const tenantId = LocalDB.getTenantId()
 
-      !loading && getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+      setCurrentFileIndex(() => index)
+      setBlobData(() => null)
+
+      !loading && currentFileIndex > 0 && await getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
-  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, tenantId])
+  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
+
+  const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
+    setTypeIdId({ id, typeId: typeIdOrDocName })
+  }, [])
 
   useEffect(() => {
-
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -157,6 +168,8 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        id={typeIdId.id}
+        typeId={typeIdId.typeId}
         documentDetail={documentDetail}
         buttonsEnabled={!loading}
         onClose={goBack}
@@ -188,6 +201,7 @@ export const ReviewDocument = () => {
           {/* review-document-body--content */}
           <aside className="review-document-body--aside col-md-4">
             <ReviewDocumentStatement
+              typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
             />

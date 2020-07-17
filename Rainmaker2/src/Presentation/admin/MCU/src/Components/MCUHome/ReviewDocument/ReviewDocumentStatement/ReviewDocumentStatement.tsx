@@ -5,9 +5,11 @@ import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 
 export const ReviewDocumentStatement = ({
+  typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
 }: {
+  typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
   moveNextFile: (index: number) => void
   currentDocument: NeedListDocumentType | null;
 }) => {
@@ -21,7 +23,11 @@ export const ReviewDocumentStatement = ({
 
       const { data } = await http.get<DocumentFileType[]>(NeedListEndpoints.GET.documents.files(id, requestId, docId))
 
-      setDocumentFiles(data[0].files)
+      const { typeId, docName, files } = data[0]
+
+      typeIdAndIdForActivityLogs(id, typeId || docName)
+
+      setDocumentFiles(files)
     } catch (error) {
       console.log(error)
       alert('Something went wrong while getting files for document. Please try again.')

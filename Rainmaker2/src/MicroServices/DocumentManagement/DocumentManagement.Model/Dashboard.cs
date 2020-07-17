@@ -149,6 +149,8 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
         public string docName { get; set; }
 
         public string typeName { get; set; }
@@ -163,7 +165,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string docName { get; set; }
 
-
+        public string typeId { get; set; }
     }
 
     public class RequestIdQuery

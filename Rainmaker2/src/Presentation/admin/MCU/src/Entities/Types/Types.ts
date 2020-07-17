@@ -35,3 +35,22 @@ export interface DocumentFileType {
   files: FileType[]
   username: string
 }
+
+export interface LogType {
+  _id: string
+  datetime: string
+  activity: string
+}
+
+export interface ActivityLogType {
+  id: string
+  userId: number
+  userName: string
+  typeId: string
+  docId: string
+  activity: string
+  dateTime: string
+  loanId: string
+  message: string
+  log: LogType[]
+}
