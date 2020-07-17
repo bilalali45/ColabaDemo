@@ -9,23 +9,24 @@ export const NeedListView = () => {
 
     const[needList, setNeedList] = useState<NeedList | null>();
     const [toggle, setToggle] = useState(false);
-    const [sortArrow, setSortArrow] = useState('asc')
-    
+    const [sortArrow, setSortArrow] = useState('desc')
+    const [sortStatusArrow, setStatusSortArrow] = useState('desc')
+    const [lastFilter, setLastFilter] = useState(0);
 
 useEffect(()=> {
     if(!needList){
-        fetchNeedList(false, 'asc')
+        fetchNeedList(true, '','')
     }
 },[needList])
 
-const fetchNeedList = async (status: boolean, sortBy: string)=> {
+const fetchNeedList = async (status: boolean, sortBy: string, fieldName: string)=> {
     let applicationId = LocalDB.getLoanAppliationId();
     let tenentId = LocalDB.getTenantId();
     if(applicationId && tenentId){
         let res: NeedList | undefined = await NeedListActions.getNeedList(applicationId, tenentId, status) 
         if(res){
             if(sortBy){
-                let sortedList = sortNeedList(res, sortBy);
+                let sortedList = sortNeedList(res, sortBy,fieldName);
                 setNeedList(sortedList)
             }
             setNeedList(res)
@@ -38,21 +39,29 @@ const deleteNeedListDoc = async (id: string, requestId: string, docId: string)=>
     if(id && requestId && docId && tenentId){
       let res = await NeedListActions.deleteNeedListDocument(id, requestId, docId, parseInt(tenentId))
       if(res === 200){
-        fetchNeedList(toggle, sortArrow)
-        setSortArrow(sortArrow) 
+          debugger
+          if(lastFilter === 1){
+            fetchNeedList(toggle, sortArrow, 'docName') 
+          }else if(lastFilter === 2){
+            fetchNeedList(toggle, sortStatusArrow, 'status') 
+          }else{
+            fetchNeedList(toggle, '','')
+          }      
       }
     }
 }
 
 const togglerHandler = (pending: boolean) => {
    if(!pending){
-    fetchNeedList(!pending, '')
+    fetchNeedList(!pending, '','')
     setToggle(!toggle)
     setSortArrow('desc') 
+    setStatusSortArrow('desc')
    }else{
-    fetchNeedList(!pending, 'asc')
+    fetchNeedList(!pending, '','')
     setToggle(!toggle)
-    setSortArrow('asc') 
+    setSortArrow('desc') 
+    setStatusSortArrow('desc')
    }  
 }
 
@@ -62,27 +71,41 @@ const deleteClickHandler = (id: string, requestId: string, docId: string) => {
 
 const sortDocumentTitleHandler = () => {
   if(sortArrow === 'asc'){
-    let sortedList = sortNeedList(needList, 'desc');
+    let sortedList = sortNeedList(needList, 'desc', 'docName');
     setNeedList(sortedList) 
     setSortArrow('desc') 
   }else{
     setSortArrow('asc')
-    let sortedList = sortNeedList(needList, 'asc');
+    let sortedList = sortNeedList(needList, 'asc', 'docName');
     setNeedList(sortedList) 
   }
+  setLastFilter(1);
 }
 
-const sortNeedList = (list: any, sortBy: string) => {
+const sortStatusTitleHandler = () => {
+    if(sortStatusArrow === 'asc'){
+        let sortedList = sortNeedList(needList, 'desc', 'status');
+        setNeedList(sortedList) 
+        setStatusSortArrow('desc') 
+      }else{
+        setStatusSortArrow('asc')
+        let sortedList = sortNeedList(needList, 'asc', 'status');
+        setNeedList(sortedList) 
+      }
+      setLastFilter(2);
+}
+
+const sortNeedList = (list: any, sortBy: string, fieldName: string) => {
     if(sortBy === 'asc'){
         return list.sort(function(a: any, b: any){
-            if(a.docName < b.docName) { return -1; }
-            if(a.docName > b.docName) { return 1; }
+            if(a[fieldName] < b[fieldName]) { return -1; }
+            if(a[fieldName] > b[fieldName]) { return 1; }
             return 0;
           })
     }else{
         return list.sort(function(a: any, b: any){
-            if(a.docName < b.docName) { return 1; }
-            if(a.docName > b.docName) { return -1; }
+            if(a[fieldName] < b[fieldName]) { return 1; }
+            if(a[fieldName] > b[fieldName]) { return -1; }
             return 0;
           })
     }  
@@ -98,6 +121,8 @@ const sortNeedList = (list: any, sortBy: string) => {
             deleteDocument = {deleteClickHandler}
             sortDocumentTitle ={sortDocumentTitleHandler}
             documentTitleArrow = {sortArrow}
+            sortStatusTitle = {sortStatusTitleHandler}
+            statusTitleArrow = {sortStatusArrow}
             />
         </div>
     )
