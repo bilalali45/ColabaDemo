@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ActivityLogType, LogType } from "../../../../Entities/Types/Types";
 import { Http } from "rainsoft-js";
 import { DateTimeFormat } from "../../../../Utils/helpers/DateFormat";
+import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 
 export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, typeId: string | null }) => {
     const [tab, setTab] = useState(1);
@@ -36,9 +37,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
         try {
             const http = new Http()
 
-            const url = `/api/Documentmanagement/Document/GetActivityLog?id=${id}&typeId=${typeId}`
-
-            const { data } = await http.get<ActivityLogType[]>(url)
+            const { data } = await http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, typeId))
 
             setActivityLogs(data)
         } catch (error) {
