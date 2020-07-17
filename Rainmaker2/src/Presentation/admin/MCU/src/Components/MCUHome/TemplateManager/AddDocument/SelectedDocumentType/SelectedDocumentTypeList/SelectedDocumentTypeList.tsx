@@ -19,7 +19,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }
     const templateDocuments: any = templateManager?.templateDocuments;
 
     const filterUsedDocs = (templateDocs: Document[]) => {
-        return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => td?.docName === cd?.docType));
+        return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => td?.typeId === cd?.docTypeId));
     }
 
     if (!documentList) {
