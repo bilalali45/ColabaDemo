@@ -15,6 +15,13 @@
         }
     }
 
+    .zoomview-wraper {
+        padding: 5px 5px;
+        overflow: hidden ;
+        display: block;
+        width: 100%;
+    }
+
     &--header{
         background-color: color('fileReaderHeaderBg');
         color: color('fileReaderHeaderText');
@@ -81,7 +88,13 @@
         height: calc(100vh - 168px);
         width: 100%;
         z-index: 11;
+
         .pg-viewer-wrapper {
+            &::-webkit-scrollbar {
+                display: none;
+              }
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
             img {
                 width: auto !important;
                 max-width: 100%;
@@ -140,7 +153,7 @@
         position: absolute;
         right: 30px;
         bottom: 80px;
-        z-index: 5;
+        z-index: 9999;
         >ul{
             @extend .list-style-none;
             >li{
@@ -161,7 +174,7 @@
     
 
     .pg-viewer{
-        margin: 30px auto;
+        margin: 0 auto;
         &-wrapper {
             overflow-y: auto;
             margin: 0px auto;
@@ -192,3 +205,4 @@
     // }
 
 }
+
