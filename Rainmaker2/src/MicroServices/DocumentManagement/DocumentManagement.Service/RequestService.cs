@@ -116,7 +116,7 @@ namespace DocumentManagement.Service
                 bsonDocument.Add("id", new ObjectId(item.id));
                 bsonDocument.Add("activityId", new ObjectId(item.activityId));
                 bsonDocument.Add("status", item.status);
-                bsonDocument.Add("typeId", new ObjectId(item.typeId));
+                bsonDocument.Add("typeId", item.typeId == null ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
                 bsonDocument.Add("displayName", item.displayName);
                 bsonDocument.Add("message", item.message);
                 bsonDocument.Add("files", new BsonArray());
@@ -164,7 +164,7 @@ namespace DocumentManagement.Service
                             PipelineDefinition<ActivityLog, BsonDocument>.Create(
                                 @"{""$match"": {
                                         ""loanId"": " + new ObjectId(loanApplication.id).ToJson() + @",
-                                        ""docName"": " + item.displayName.Replace("\"", "\\\"") + @"
+                                        ""docName"": """ + item.displayName.Replace("\"", "\\\"") + @"""
                             }
                         }", @"{
                             ""$project"": {
@@ -205,7 +205,7 @@ namespace DocumentManagement.Service
                     };
                     await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
-                    activityLogService.InsertLog(item.activityId, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
+                    await activityLogService.InsertLog(item.activityId, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
                 }
             }
 
