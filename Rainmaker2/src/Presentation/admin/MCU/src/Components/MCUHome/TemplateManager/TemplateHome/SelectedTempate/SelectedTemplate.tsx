@@ -38,7 +38,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
             seteditTitleview(false);
         }
 
-        if (!currentTemplate) {
+    if (!currentTemplate) {
             seteditTitleview(false);
             setNewNameText('');
         }
@@ -171,7 +171,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
             {renderTitleInputText()}
 
-            {templateDocuments?.length === 0 &&
+            {(!currentTemplate || templateDocuments?.length === 0)  &&
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
