@@ -5,14 +5,24 @@
     .h2{
         font: 500 21px/1.2 fontFamily("base");
         padding-right: 40px;
+        vertical-align: middle;
     }
 
     &--left{
-
+        .btn-sm{
+            padding: 7px 15px;
+        }
     }
 
     &--right{
-
+        label{
+            font: 500 13px/1.2 fontFamily("base");
+            vertical-align: middle;
+            margin-bottom: 0;
+            strong{
+                font-weight: 500;
+            }
+        }
     }
 
 }// need-list-view-header

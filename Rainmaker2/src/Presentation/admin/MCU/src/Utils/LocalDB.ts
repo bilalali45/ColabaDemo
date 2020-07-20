@@ -64,7 +64,7 @@ export class LocalDB {
 
   public static checkAuth(): boolean | string {
     let rainmaker2Token = cookies.get("Rainmaker2Token");
-    let auth = localStorage.getItem("auth");
+    let auth = localStorage.getItem("token");
     if (!auth) {
       return false;
     }

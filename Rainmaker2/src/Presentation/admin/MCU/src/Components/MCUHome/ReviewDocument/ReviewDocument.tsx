@@ -190,7 +190,7 @@ export const ReviewDocument = () => {
               </div>
 
             ) : (
-                <h3>No preview available</h3>
+                <div className="no-preview"><h3>No preview available</h3></div>
               )}
 
           </div>

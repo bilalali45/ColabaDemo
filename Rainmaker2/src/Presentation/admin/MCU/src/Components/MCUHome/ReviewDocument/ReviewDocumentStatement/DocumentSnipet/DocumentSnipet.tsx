@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
+import { SVGeditFile } from "../../../../../Shared/SVG";
+
 
 export const DocumentSnipet = ({
   index,
@@ -146,7 +148,7 @@ export const DocumentSnipet = ({
         )}
         {!editingModeEnabled && (
           <button className="document-snipet-btn-edit" id="enableMode" onClick={eventBubblingHandler}>
-            <em className="icon-edit2"></em>
+            <SVGeditFile />
           </button>
         )}
       </div>
