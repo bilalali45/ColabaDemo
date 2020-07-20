@@ -56,6 +56,7 @@ export const ReviewDocumentStatement = ({
         {/* <DocumentSnipet status="active" /> */}
         {!!documentFiles && documentFiles.length ?
           documentFiles.map((file, index) => <DocumentSnipet
+            key={index}
             index={index}
             moveNextFile={moveNextFile}
             id={currentDocument?.id!}
