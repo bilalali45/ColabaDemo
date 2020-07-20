@@ -10,8 +10,7 @@ import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumen
 import { NeedListDocumentType, DocumentParamsType } from "../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
 import { LocalDB } from "../../../Utils/LocalDB";
-import emptyIcon from '../../../../Assets/images/empty-icon.svg';
-
+import emptyIcon from '../../../Assets/images/empty-icon.svg';
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<
     NeedListDocumentType
@@ -205,8 +204,13 @@ export const ReviewDocument = () => {
             </div>
             ) : (
                 <div className="no-preview">
-                  <img src={emptyIcon} alt="No preview available" />
-                  <h3>No preview available</h3>
+                  <div className="no-preview--wrap">
+                    <div className="clearfix">
+                    <img src={emptyIcon} alt="No preview available" />
+                    </div>
+                    <h2>Nothing In Bank Statement</h2>
+                    <p>No file submitted yet</p>
+                  </div>
                 </div>
               )}
 

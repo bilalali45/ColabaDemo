@@ -556,4 +556,14 @@ ul {
     width: 100%;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    font: 400 #{fontSize('sm')+'/1.2'} fontFamily('base'); 
+
+    h2{
+        font: 500 #{fontSize('nr')+'/1.2'} fontFamily('heading'); 
+        margin: 10px 0 5px;
+    }
+    p{
+        margin: 0;
+    }
 }
