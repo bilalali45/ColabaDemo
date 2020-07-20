@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
-import Axios from "axios";
+import Axios, { CancelTokenStatic, CancelTokenSource } from "axios";
 import { DocumentView } from 'rainsoft-rc';
 import _ from 'lodash'
 
@@ -122,7 +122,7 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number) => {
-    if (index === currentFileIndex) return
+    if (index === currentFileIndex || loading === true) return
 
     if (currentDocument) {
       const { id, requestId, docId, files } = currentDocument
