@@ -24,10 +24,7 @@ const App = () => {
   useEffect(() => {
     console.log("MCU App Version", "0.0.1");
     authenticate();
-    ParamsService.storeParams([
-      "loanApplicationId",
-      "tenantId"
-    ]);
+    ParamsService.storeParams(["loanApplicationId", "tenantId"]);
     // component unmount
     return () => {
       LocalDB.removeAuth();
@@ -44,7 +41,8 @@ const App = () => {
   const onIdle = (e: any) => {
     console.log("Idle time meet");
     LocalDB.removeAuth();
-    window.open("/Account/LogOff", "_self");
+    //window.open("/Login/LogOff", "_self");
+    window.top.location.href = "/Login/LogOff";
   };
 
   if (!authenticated) {

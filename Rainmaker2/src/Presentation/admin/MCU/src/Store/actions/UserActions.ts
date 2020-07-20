@@ -51,7 +51,9 @@ export class UserActions {
         return true;
       }
       LocalDB.removeAuth();
-      window.open("/Account/LogOff", "_self");
+      //window.open("/Login/LogOff", "_self");
+      window.top.location.href = "/Login/LogOff";
+
       return false;
     } catch (error) {
       setTimeout(() => {
@@ -143,8 +145,10 @@ export class UserActions {
         await UserActions.refreshToken();
       }, time - 2000);
     } else {
-      console.log("Refresh token called in case when payload is empty");
-      UserActions.refreshToken();
+      console.log("Logout called in case when payload is empty");
+      LocalDB.removeAuth();
+      //window.open("/Login/LogOff", "_self");
+      window.top.location.href = "/Login/LogOff";
     }
   }
 
