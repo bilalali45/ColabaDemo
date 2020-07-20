@@ -3,7 +3,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { ReviewDocumentActivityLog } from "../ReviewDocumentActivityLog/ReviewDocumentActivityLog";
 
-
 export const ReviewDocumentHeader = ({
   id,
   typeId,
@@ -53,11 +52,12 @@ export const ReviewDocumentHeader = ({
             <Dropdown.Toggle size="lg" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
               Activity Log
           </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {id !== null && typeId !== null && (<ReviewDocumentActivityLog id={id} typeId={typeId} />)}
-            </Dropdown.Menu>
+            {id !== null && typeId !== null && (
+              <Dropdown.Menu>
+                <ReviewDocumentActivityLog id={id} typeId={typeId} />
+              </Dropdown.Menu>
+            )}
           </Dropdown>
-
           <button className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>
           </button>
