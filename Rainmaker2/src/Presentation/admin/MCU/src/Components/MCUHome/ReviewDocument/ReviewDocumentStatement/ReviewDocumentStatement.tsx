@@ -4,14 +4,18 @@ import { NeedListDocumentType, NeedListDocumentFileType, DocumentFileType, FileT
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 
+
+
 export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
+  currentFileIndex
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
   moveNextFile: (index: number) => void
   currentDocument: NeedListDocumentType | null;
+  currentFileIndex: number
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
 
@@ -54,6 +58,7 @@ export const ReviewDocumentStatement = ({
         {/* <DocumentSnipet status="active" /> */}
         {!!documentFiles && documentFiles.length ?
           documentFiles.map((file, index) => <DocumentSnipet
+            key={index}
             index={index}
             moveNextFile={moveNextFile}
             id={currentDocument?.id!}
@@ -62,6 +67,7 @@ export const ReviewDocumentStatement = ({
             fileId={file.fileId}
             mcuName={file.mcuName}
             clientName={file.clientName}
+            currentFileIndex={currentFileIndex}
           />) : (
             <span>No file submitted yet</span>
           )}

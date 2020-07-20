@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -10,47 +7,57 @@ using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles ="MCU")]
+    [Authorize(Roles = "MCU")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class AdminDashboardController : Controller
     {
-        private readonly IAdminDashboardService admindashboardService;
+        private readonly IAdminDashboardService adminDashboardService;
         private readonly ILogger<AdminDashboardController> logger;
-        public AdminDashboardController(IAdminDashboardService admindashboardService, ILogger<AdminDashboardController> logger)
+
+
+        public AdminDashboardController(IAdminDashboardService adminDashboardService,
+                                        ILogger<AdminDashboardController> logger)
         {
-            this.admindashboardService = admindashboardService;
+            this.adminDashboardService = adminDashboardService;
             this.logger = logger;
         }
-        [HttpGet("GetDocuments")]
-        public async Task<IActionResult> GetDocuments(int loanApplicationId, int tenantId,bool pending)
+
+
+        [HttpGet(template: "GetDocuments")]
+        public async Task<IActionResult> GetDocuments(int loanApplicationId,
+                                                      int tenantId,
+                                                      bool pending)
         {
-            logger.LogInformation($"GetDocuments requested for {loanApplicationId} from tenantId {tenantId} and value of pending is {pending}");
-            var docQuery = await admindashboardService.GetDocument(loanApplicationId, tenantId, pending);
-            return Ok(docQuery);
+            logger.LogInformation(message: $"GetDocuments requested for {loanApplicationId} from tenantId {tenantId} and value of pending is {pending}");
+            var docQuery = await adminDashboardService.GetDocument(loanApplicationId: loanApplicationId,
+                                                                   tenantId: tenantId,
+                                                                   pending: pending);
+            return Ok(value: docQuery);
         }
-        [HttpPut("[action]")]
-        public async Task<IActionResult>  Delete(AdminDeleteModel model)
+
+
+        [HttpPut(template: "[action]")]
+        public async Task<IActionResult> Delete(AdminDeleteModel model)
         {
-            logger.LogInformation($"document {model.docId} is being deleted as borrower to do");
-            var docQuery = await admindashboardService.Delete(model);
+            logger.LogInformation(message: $"document {model.docId} is being deleted as borrower to do");
+            var docQuery = await adminDashboardService.Delete(model: model);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
 
-        [HttpGet("IsDocumentDraft")]
+
+        [HttpGet(template: "IsDocumentDraft")]
         public async Task<IActionResult> IsDocumentDraft(string id)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
 
-            var docQuery = await admindashboardService.IsDocumentDraft(id, userProfileId);
-            if(!string.IsNullOrEmpty(docQuery))
-                logger.LogInformation($"Draft exists for user {userProfileId}, loan application {id}");
-            return Ok(docQuery);
+            var docQuery = await adminDashboardService.IsDocumentDraft(id: id,
+                                                                       userId: userProfileId);
+            if (!string.IsNullOrEmpty(value: docQuery))
+                logger.LogInformation(message: $"Draft exists for user {userProfileId}, loan application {id}");
+            return Ok(value: docQuery);
         }
-
-
     }
 }

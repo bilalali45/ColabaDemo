@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
+import { SVGeditFile } from "../../../../../Shared/SVG";
+
 
 export const DocumentSnipet = ({
   index,
@@ -11,7 +13,8 @@ export const DocumentSnipet = ({
   id,
   requestId,
   docId,
-  fileId
+  fileId,
+  currentFileIndex
 }: {
   index: number,
   moveNextFile: (index: number) => void
@@ -22,6 +25,7 @@ export const DocumentSnipet = ({
   fileId: string
   mcuName: string
   active?: string;
+  currentFileIndex: number
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
@@ -108,7 +112,7 @@ export const DocumentSnipet = ({
   }, [setRenameMCUName, mcuName, clientName])
 
   return (
-    <div className={`document-snipet ${!!active ? "active" : ""}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
+    <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
         <div className="document-snipet--input-group">
           {!!editingModeEnabled ? (
@@ -144,7 +148,7 @@ export const DocumentSnipet = ({
         )}
         {!editingModeEnabled && (
           <button className="document-snipet-btn-edit" id="enableMode" onClick={eventBubblingHandler}>
-            <em className="icon-edit2"></em>
+            <SVGeditFile />
           </button>
         )}
       </div>

@@ -1,7 +1,11 @@
 .document-view {    
     background-color: rgba(#000000,0.5);
     position: relative;
-
+.loader {
+    circle {
+        stroke: #fff;
+    }
+}
     &.zoom{
         position: fixed;
         top: 0;
