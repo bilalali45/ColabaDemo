@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles ="MCU")]
+    [Authorize(Roles = "MCU")]
     [ApiController]
     [Route("api/DocumentManagement/[controller]")]
     public class AdminDashboardController : Controller
@@ -23,10 +24,10 @@ namespace DocumentManagement.API.Controllers
             this.logger = logger;
         }
         [HttpGet("GetDocuments")]
-        public async Task<IActionResult> GetDocuments(int loanApplicationId, int tenantId,bool pending)
+        public async Task<IActionResult> GetDocuments([FromQuery]  GetDocuments moGetDocuments)
         {
-            logger.LogInformation($"GetDocuments requested for {loanApplicationId} from tenantId {tenantId} and value of pending is {pending}");
-            var docQuery = await admindashboardService.GetDocument(loanApplicationId, tenantId, pending);
+            logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {moGetDocuments.tenantId} and value of pending is {moGetDocuments.pending}");
+            var docQuery = await admindashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
             return Ok(docQuery);
         }
         [HttpPut("[action]")]
@@ -41,13 +42,12 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpGet("IsDocumentDraft")]
-        public async Task<IActionResult> IsDocumentDraft(string id)
+        public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft )
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-
-            var docQuery = await admindashboardService.IsDocumentDraft(id, userProfileId);
+            var docQuery = await admindashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
             if(!string.IsNullOrEmpty(docQuery))
-                logger.LogInformation($"Draft exists for user {userProfileId}, loan application {id}");
+                logger.LogInformation($"Draft exists for user {userProfileId}, loan application {moIsDocumentDraft.id}");
             return Ok(docQuery);
         }
 

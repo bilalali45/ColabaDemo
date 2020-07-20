@@ -1,8 +1,10 @@
 ﻿using DocumentManagement.Entity;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
@@ -173,4 +175,57 @@ namespace DocumentManagement.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
     }
+
+    public class GetDocuments
+    {
+        [FromQuery(Name = "loanApplicationId")]
+
+        public int loanApplicationId { get; set; }
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+        [FromQuery(Name = "pending")]
+        public bool pending { get; set; }
+
+    }
+    public class IsDocumentDraft
+    {
+        [FromQuery(Name = "id")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$",ErrorMessage = "Validation Failed")]
+        public string id { get; set; }
+        
+
+    }
+    public class GetPendingDocuments
+    {
+        [FromQuery(Name = "loanApplicationId")]
+        public int loanApplicationId { get; set; }
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+
+    }
+    public class GetSubmittedDocuments
+    {
+        [FromQuery(Name = "loanApplicationId")]
+        public int loanApplicationId { get; set; }
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+
+    }
+    public class GetDashboardStatus
+    {
+        [FromQuery(Name = "loanApplicationId")]
+        public int loanApplicationId { get; set; }
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+
+    }
+    public class GetFooterText
+    {
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+        [FromQuery(Name = "businessUnitId")]
+        public int businessUnitId { get; set; }
+
+    }
+    
 }

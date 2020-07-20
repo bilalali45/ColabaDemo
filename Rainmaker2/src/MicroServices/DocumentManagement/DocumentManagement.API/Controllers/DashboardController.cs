@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles = "Customer")]
+    //[Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class DashboardController : Controller
@@ -33,50 +34,46 @@ namespace DocumentManagement.API.Controllers
         #region GetMethods
 
         [HttpGet(template: "GetPendingDocuments")]
-        public async Task<IActionResult> GetPendingDocuments(int loanApplicationId,
-                                                             int tenantId)
+        public async Task<IActionResult> GetPendingDocuments([FromQuery] GetPendingDocuments moGetPendingDocuments )
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"GetPendingDocument requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
+            logger.LogInformation($"GetPendingDocument requested for {moGetPendingDocuments.loanApplicationId} tenantId {moGetPendingDocuments.tenantId} userId {userProfileId}");
 
-            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId: loanApplicationId,
-                                                                      tenantId: tenantId,
+            var docQuery = await dashboardService.GetPendingDocuments(loanApplicationId: moGetPendingDocuments.loanApplicationId,
+                                                                      tenantId: moGetPendingDocuments.tenantId,
                                                                       userProfileId: userProfileId);
             return Ok(value: docQuery);
         }
 
 
         [HttpGet(template: "GetSubmittedDocuments")]
-        public async Task<IActionResult> GetSubmittedDocuments(int loanApplicationId,
-                                                               int tenantId)
+        public async Task<IActionResult> GetSubmittedDocuments([FromQuery] GetSubmittedDocuments moGetSubmittedDocuments)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"GetSubmittedDocuments requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
-            var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId: loanApplicationId,
-                                                                        tenantId: tenantId,
+            logger.LogInformation($"GetSubmittedDocuments requested for {moGetSubmittedDocuments.loanApplicationId} tenantId {moGetSubmittedDocuments.tenantId} userId {userProfileId}");
+            var docQuery = await dashboardService.GetSubmittedDocuments(loanApplicationId: moGetSubmittedDocuments.loanApplicationId,
+                                                                        tenantId: moGetSubmittedDocuments.tenantId,
                                                                         userProfileId: userProfileId);
             return Ok(value: docQuery);
         }
 
 
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> GetDashboardStatus(int loanApplicationId,
-                                                            int tenantId)
+        public async Task<IActionResult> GetDashboardStatus([FromQuery] GetDashboardStatus moGetDashboardStatus)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"GetDashboardStatus requested for {loanApplicationId} tenantId {tenantId} userId {userProfileId}");
-            return Ok(value: await dashboardService.GetDashboardStatus(loanApplicationId: loanApplicationId,
-                                                                       tenantId: tenantId,
+            logger.LogInformation($"GetDashboardStatus requested for {moGetDashboardStatus.loanApplicationId} tenantId {moGetDashboardStatus.tenantId} userId {userProfileId}");
+            return Ok(value: await dashboardService.GetDashboardStatus(loanApplicationId: moGetDashboardStatus.loanApplicationId,
+                                                                       tenantId: moGetDashboardStatus.tenantId,
                                                                        userProfileId: userProfileId));
         }
 
 
         [HttpGet(template: "GetFooterText")]
-        public async Task<IActionResult> GetFooterText(int tenantId,
-                                                       int businessUnitId)
+        public async Task<IActionResult> GetFooterText([FromQuery] GetFooterText moGetFooterText)
         {
-            var docQuery = await dashboardService.GetFooterText(tenantId: tenantId,
-                                                                businessUnitId: businessUnitId);
+            var docQuery = await dashboardService.GetFooterText(tenantId: moGetFooterText.tenantId,
+                                                                businessUnitId: moGetFooterText. businessUnitId);
             return Ok(value: docQuery);
         }
 

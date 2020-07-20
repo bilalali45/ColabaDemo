@@ -4,7 +4,9 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentManagement.Model
 {
@@ -49,5 +51,25 @@ namespace DocumentManagement.Model
         public int tenantId { get; set; }
     }
 
-   
+    public class View
+    {
+        [FromQuery(Name = "id")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string id { get; set; }
+
+        [FromQuery(Name = "requestId")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string requestId { get; set; }
+
+        [FromQuery(Name = "docId")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string docId { get; set; }
+
+        [FromQuery(Name = "fileId")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string fileId { get; set; }
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+    }
+
 }
