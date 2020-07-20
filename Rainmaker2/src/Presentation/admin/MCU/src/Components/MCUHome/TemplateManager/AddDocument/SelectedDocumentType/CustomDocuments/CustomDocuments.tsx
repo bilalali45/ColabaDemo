@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
+import { nameTest } from '../../../TemplateHome/TemplateHome';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -7,9 +8,12 @@ type CustomDocumentsType = {
 
 export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
     
-    const [docName, setDocName] = useState<String>();
+    const [docName, setDocName] = useState('');
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+        if(!nameTest.test(value)) {
+            return;
+        }
         setDocName(value);
     }
 
@@ -43,7 +47,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    <input value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
                         <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
