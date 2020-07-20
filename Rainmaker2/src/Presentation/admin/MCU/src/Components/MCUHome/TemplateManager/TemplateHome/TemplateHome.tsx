@@ -4,7 +4,7 @@ import { SelectedTemplate } from './SelectedTempate/SelectedTemplate'
 
 export const TemplateHome = () => {
 
-    const [addingNew, setAddingNew] = useState<boolean>(false);
+    const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
     return (
         <section className="MT-CWrap">
@@ -12,13 +12,17 @@ export const TemplateHome = () => {
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="MT-leftbar">
-                            <TemplateListContainer />
+                            <TemplateListContainer 
+                                setLoaderVisible={setLoaderVisible}/>
 
                         </div>
                     </div>
                     <div className="col-sm-8">
                         <div className="MT-rightbar">
-                            <SelectedTemplate />
+                            <SelectedTemplate 
+                            setLoaderVisible={setLoaderVisible}
+                            loaderVisible={loaderVisible}
+                            />
                         </div>
                     </div>
                 </div>

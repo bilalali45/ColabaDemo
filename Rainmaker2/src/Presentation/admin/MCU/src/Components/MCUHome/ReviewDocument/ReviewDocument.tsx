@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
 import { DocumentView } from 'rainsoft-rc';
+import _ from 'lodash'
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
@@ -21,7 +22,7 @@ export const ReviewDocument = () => {
     []
   );
   const [navigationIndex, setNavigationIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(0)
   const [documentDetail, setDocumentDetail] = useState(false)
   const [typeIdId, setTypeIdId] = useState<{ id: string | null, typeId: string | null }>({
@@ -84,13 +85,17 @@ export const ReviewDocument = () => {
   );
 
   const nextDocument = useCallback(() => {
-    if (navigationIndex === documentList1.length - 1) return;
+    const indexes = _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
 
-    const doc: NeedListDocumentType = documentList1[navigationIndex + 1];
+    const indexOfReivew = indexes.findIndex(value => Number(value) > navigationIndex)
+
+    if (indexOfReivew === -1) return //No review document found
+
+    const doc: NeedListDocumentType = documentList1[indexOfReivew];
     const { id, requestId, docId, files } = doc
 
-    setCurrentDocument(() => documentList1[navigationIndex + 1]);
-    setNavigationIndex(() => navigationIndex + 1);
+    setCurrentDocument(() => documentList1[indexOfReivew]);
+    setNavigationIndex(() => indexOfReivew);
     setCurrentFileIndex(0)
     setTypeIdId({ id: null, typeId: null })
 
@@ -98,14 +103,18 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
-    if (navigationIndex === 0) return;
+    const indexes = _.reverse(_.keys(_.pickBy(documentList1, { status: 'Pending review' })))
 
-    const doc: NeedListDocumentType = documentList1[navigationIndex - 1];
+    const indexOfReivew = navigationIndex === 1 ? 0 : indexes.findIndex(value => Number(value) < navigationIndex)
+
+    if (indexOfReivew === -1) return //No review document found
+
+    const doc: NeedListDocumentType = documentList1[indexOfReivew];
 
     const { id, requestId, docId, files } = doc
 
-    setCurrentDocument(() => documentList1[navigationIndex - 1]);
-    setNavigationIndex(() => navigationIndex - 1);
+    setCurrentDocument(() => documentList1[indexOfReivew]);
+    setNavigationIndex(() => indexOfReivew);
     setCurrentFileIndex(() => 0)
     setTypeIdId({ id: null, typeId: null })
 
@@ -123,7 +132,7 @@ export const ReviewDocument = () => {
       setCurrentFileIndex(() => index)
       setBlobData(() => null)
 
-      !loading && currentFileIndex > 0 && await getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+      !loading && getDocumentForView(id, requestId, docId, files[index].id, tenantId)
     }
   }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
 
@@ -182,19 +191,17 @@ export const ReviewDocument = () => {
           <div className="review-document-body--content col-md-8">
             {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
               <div className="doc-view-mcu">
-              <DocumentView
-                loading={loading}
-                id={currentDocument.id}
-                requestId={currentDocument.requestId}
-                docId={currentDocument.docId}
-                fileId={currentDocument.files[currentFileIndex || 0].id}
-                submittedDocumentCallBack={getDocumentForView}
-                tenantId={tenantId}
-                clientName={currentDocument.files[currentFileIndex || 0].clientName}
-                blobData={blobData}
-                hideViewer={() => { }}
-                showCloseBtn = {false}
-              />
+                <DocumentView
+                  loading={loading}
+                  id={currentDocument.id}
+                  requestId={currentDocument.requestId}
+                  docId={currentDocument.docId}
+                  fileId={currentDocument.files[currentFileIndex || 0].id}
+                  tenantId={tenantId}
+                  clientName={currentDocument.files[currentFileIndex || 0].clientName}
+                  blobData={blobData}
+                  hideViewer={() => { }}
+                />
               </div>
 
             ) : (
@@ -208,6 +215,7 @@ export const ReviewDocument = () => {
               typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
               moveNextFile={moveNextFile}
               currentDocument={!!currentDocument ? currentDocument : null}
+              currentFileIndex={currentFileIndex}
             />
           </aside>
           {/* review-document-body--aside */}

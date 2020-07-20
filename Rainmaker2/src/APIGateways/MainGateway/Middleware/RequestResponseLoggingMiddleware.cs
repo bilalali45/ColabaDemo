@@ -68,8 +68,9 @@ namespace MainGateway.Middleware
                 leaveOpen: true);
             var body = await reader.ReadToEndAsync();
             // Do some processing with body…
-
-            var formattedRequest = $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {body}";
+            if (request.Path.ToString().ToLower().Contains("api/identity/token/authorize"))
+                body = "";
+            var formattedRequest = $"{request.Scheme}://{request.Host}{request.Path}?{request.QueryString} {body}";
 
             // Reset the request body stream position so the next middleware can read it
             request.Body.Position = 0;

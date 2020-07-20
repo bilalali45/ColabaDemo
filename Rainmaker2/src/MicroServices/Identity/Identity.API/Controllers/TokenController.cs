@@ -18,12 +18,7 @@ namespace Identity.Controllers
     [ApiController]
     public class TokenController : Controller
     {
-        private readonly IHttpClientFactory _clientFactory;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<TokenController> _logger;
-
-        private readonly ITokenService _tokenService;
-
+        #region Constructors
 
         public TokenController(IHttpClientFactory clientFactory,
                                IConfiguration configuration,
@@ -36,6 +31,32 @@ namespace Identity.Controllers
             _logger = logger;
         }
 
+        #endregion
+
+        #region Private Variables
+
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<TokenController> _logger;
+
+        private readonly ITokenService _tokenService;
+
+        #endregion
+
+        #region Action Methods
+
+        #region Get
+
+        //[Route(template: "[action]")]
+        //[HttpGet]
+        //public string RefreshTokensState()
+        //{
+        //    return TokenService.RefreshTokens.ToJson();
+        //}
+
+        #endregion
+
+        #region Post
 
         [Route(template: "[action]")]
         [HttpPost]
@@ -66,7 +87,7 @@ namespace Identity.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: newJwtToken);
 
-            //user.RefreshToken = newRefreshToken;
+            
             TokenService.RefreshTokens[key: username].Remove(item: tokenPair);
             TokenService.RefreshTokens[key: username].Add(item: new TokenPair
                                                                 {
@@ -74,8 +95,7 @@ namespace Identity.Controllers
                                                                     RefreshToken = newRefreshToken
                                                                 });
 
-            //await _usersDb.SaveChangesAsync();
-
+            
             response.Data = new
                             {
                                 token = tokenString,
@@ -115,57 +135,13 @@ namespace Identity.Controllers
         }
 
 
-        private async Task<UserProfile> ValidateUser(string userName,
-                                                     string password,
-                                                     bool employee)
-        {
-            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-
-            var content = new
-                          {
-                              userName,
-                              password,
-                              employee
-                          };
-
-            var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/validateUser",
-                                                          content: new StringContent(content: content.ToJson(),
-                                                                                     encoding: Encoding.UTF8,
-                                                                                     mediaType: "application/json"));
-            if (callResponse.IsSuccessStatusCode)
-                return await callResponse.Content.ReadAsAsync<UserProfile>();
-            return null;
-        }
-
-
-        private async Task<UserProfile> GetUser(string userName,
-                                                bool employee = false)
-        {
-            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-
-            var content = new
-                          {
-                              userName,
-                              employee
-                          };
-
-            var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/GetUser",
-                                                          content: new StringContent(content: content.ToJson(),
-                                                                                     encoding: Encoding.UTF8,
-                                                                                     mediaType: "application/json"));
-            if (callResponse.IsSuccessStatusCode)
-                return await callResponse.Content.ReadAsAsync<UserProfile>();
-            return null;
-        }
-
-
         [Route(template: "[action]")]
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
             //_logger.LogInformation(request.ToJson());
-            Request.Headers.TryGetValue(key: "CorrelationId",
-                                        value: out var value);
+            //Request.Headers.TryGetValue(key: "CorrelationId",
+            //                            value: out var value);
 
             var response = new ApiResponse();
 
@@ -255,12 +231,57 @@ namespace Identity.Controllers
             return Ok(value: response);
         }
 
+        #endregion
 
-        [Route(template: "[action]")]
-        [HttpGet]
-        public string RefreshTokensState()
+        #endregion
+
+        #region Helper Methods
+
+        [NonAction]
+        private async Task<UserProfile> ValidateUser(string userName,
+                                                     string password,
+                                                     bool employee)
         {
-            return TokenService.RefreshTokens.ToJson();
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
+
+            var content = new
+                          {
+                              userName,
+                              password,
+                              employee
+                          };
+
+            var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/validateUser",
+                                                          content: new StringContent(content: content.ToJson(),
+                                                                                     encoding: Encoding.UTF8,
+                                                                                     mediaType: "application/json"));
+            if (callResponse.IsSuccessStatusCode)
+                return await callResponse.Content.ReadAsAsync<UserProfile>();
+            return null;
         }
+
+
+        [NonAction]
+        private async Task<UserProfile> GetUser(string userName,
+                                                bool employee = false)
+        {
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
+
+            var content = new
+                          {
+                              userName,
+                              employee
+                          };
+
+            var callResponse = await httpClient.PostAsync(requestUri: $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/membership/GetUser",
+                                                          content: new StringContent(content: content.ToJson(),
+                                                                                     encoding: Encoding.UTF8,
+                                                                                     mediaType: "application/json"));
+            if (callResponse.IsSuccessStatusCode)
+                return await callResponse.Content.ReadAsAsync<UserProfile>();
+            return null;
+        }
+
+        #endregion
     }
 }

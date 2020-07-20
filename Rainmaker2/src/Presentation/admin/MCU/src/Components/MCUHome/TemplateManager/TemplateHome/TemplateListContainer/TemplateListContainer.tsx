@@ -4,12 +4,17 @@ import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { Template } from '../../../../../Entities/Models/Template';
 import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
+import { clear } from 'console';
 
 export const MyTemplate = "MCU Template";
-const TenantTemplate = "Tenant Template";
-const SystemTemplate = "System Template";
+export const TenantTemplate = "Tenant Template";
+export const SystemTemplate = "System Template";
 
-export const TemplateListContainer = () => {
+type TemplateListContainerType = {
+    setLoaderVisible: Function
+}
+
+export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainerType) => {
 
     const { state, dispatch } = useContext(Store);
 
@@ -20,6 +25,9 @@ export const TemplateListContainer = () => {
 
     useEffect(() => {
         if (!templates) {
+            fetchTemplatesList();
+        }
+        return () => {
             fetchTemplatesList();
         }
     }, []);
@@ -41,26 +49,29 @@ export const TemplateListContainer = () => {
 
 
     const fetchTemplatesList = async () => {
+        setLoaderVisible(true);
         let newTemplates: any = await TemplateActions.fetchTemplates('1');
         if (newTemplates) {
             dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0] });
-
         }
+        setLoaderVisible(false);
     }
 
     const removeTemplate = async (templateId: string) => {
+        setLoaderVisible(true);
         let isDeleted = await TemplateActions.deleteTemplate('1', templateId);
         if (isDeleted) {
             fetchTemplatesList();
         }
+        setLoaderVisible(false);
     }
 
     const TenantListItem = (t: any) => {
         return (
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    <div className="c-list">
+                    <div className={`c-list ${currentTemplate?.name === t.name ? 'active' : ''}`}>
                         {t.name}
                     </div>
                 </div>

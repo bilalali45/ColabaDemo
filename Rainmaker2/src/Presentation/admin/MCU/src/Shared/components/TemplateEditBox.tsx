@@ -27,6 +27,7 @@ export const TemplateEditBox = ({renameTemplate, templateName, checkIcon, editIc
             {editTitleview ?
                 <p className="editable">
                     <input
+                        autoFocus
                         value={newNameText}
                         onChange={(e) => setNewNameText(e.target.value)}
                         onKeyDown={(e) => {

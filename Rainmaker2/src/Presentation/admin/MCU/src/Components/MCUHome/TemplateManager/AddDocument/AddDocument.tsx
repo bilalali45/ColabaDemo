@@ -10,11 +10,13 @@ import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer
 import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
+
 type AddDocumentType = {
-    popoverplacement?:any,
+    popoverplacement?: any;
+    setLoaderVisible: Function;
+
 }
-export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
-    const [popshow, setshow] = useState(true);
+export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
     const [show, setShow] = useState(false);
     const [target, setTarget] = useState(null);
     const ref = useRef(null);
@@ -82,12 +84,12 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
         };
     }
 
-    const showpopover = () => {
-        setshow(!popshow)
-    }
-
     const addDocToTemplate = async (docName: string, type: string) => {
-        if(templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
+        if (!docName?.length || docName?.length > 255) {
+            return;
+        }
+        setLoaderVisible(true);
+        if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
             return;
         }
         try {
@@ -99,6 +101,7 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
         } catch (error) {
 
         }
+        setLoaderVisible(false);
     }
 
     const renderPopOverContent = () => {
@@ -139,7 +142,7 @@ export const AddDocument = ({ popoverplacement="bottom" }: AddDocumentType) => {
 
             <div className="add-doc-link-wrap">
                 {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                <a className="add-doc-link" onClick={(e)=>{handleClick(e)}} >
+                <a className="add-doc-link" onClick={(e) => { handleClick(e) }} >
                     Add Document <i className="zmdi zmdi-plus"></i>
                 </a>
                 {/* </OverlayTrigger> */}

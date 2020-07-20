@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
+import { SVGeditFile } from "../../../../../Shared/SVG";
 
 export const DocumentSnipet = ({
   index,
@@ -11,7 +12,8 @@ export const DocumentSnipet = ({
   id,
   requestId,
   docId,
-  fileId
+  fileId,
+  currentFileIndex
 }: {
   index: number,
   moveNextFile: (index: number) => void
@@ -22,15 +24,18 @@ export const DocumentSnipet = ({
   fileId: string
   mcuName: string
   active?: string;
+  currentFileIndex: number
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
 
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
 
   const setInputValue = (event: any) => {
+
     event.stopPropagation()
 
     setEditingModeEnabled(() => true);
@@ -56,9 +61,13 @@ export const DocumentSnipet = ({
     setEditingModeEnabled(false)
   }
 
-  const renameDocumentMCU = async (event: any) => {
+  const renameDocumentMCU = async (event?: any) => {
+    let newName: string
+
     try {
-      event.stopPropagation()
+      if (event) {
+        event.stopPropagation()
+      }
 
       //this condition will cancel API call if field is empty or name is unchanged or equal to mcuname or client name
       //if true this condtion will cancel edit.
@@ -67,11 +76,13 @@ export const DocumentSnipet = ({
       }
 
       const fileExtension = getFileExtension(mcuName || clientName)
-      const newName = `${renameMCUName}${fileExtension}`
+
+      newName = `${renameMCUName}${fileExtension}`
 
       const data = { id, requestId, docId, fileId, newName }
 
       const http = new Http()
+
       await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
         ...data
       })
@@ -80,7 +91,8 @@ export const DocumentSnipet = ({
       setEditingModeEnabled(() => false)
     } catch (error) {
       console.log('error', error)
-      setRenameMCUName(mcuName || clientName)
+
+      setRenameMCUName(() => newName)
       setEditingModeEnabled(false)
     }
   }
@@ -103,12 +115,24 @@ export const DocumentSnipet = ({
     }
   }
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      renameDocumentMCU()
+    }
+  }
+
   useEffect(() => {
     setRenameMCUName(mcuName || clientName)
   }, [setRenameMCUName, mcuName, clientName])
 
+  useEffect(() => {
+    if (editingModeEnabled) {
+      inputRef.current?.focus()
+    }
+  }, [editingModeEnabled])
+
   return (
-    <div className={`document-snipet ${!!active ? "active" : ""}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
+    <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
         <div className="document-snipet--input-group">
           {!!editingModeEnabled ? (
@@ -119,10 +143,10 @@ export const DocumentSnipet = ({
                 size={38}
                 value={renameMCUName}
                 onClick={event => event.stopPropagation()}
+                onBlur={() => renameDocumentMCU()}
+                onKeyDown={onKeyDown}
+                ref={inputRef}
               />
-              <button className="document-snipet-btn-ok" id="rename" onClick={eventBubblingHandler}>
-                <em className="zmdi zmdi-check"></em>
-              </button>
             </React.Fragment>
           ) : (
               renameMCUName || mcuName || clientName
@@ -144,7 +168,7 @@ export const DocumentSnipet = ({
         )}
         {!editingModeEnabled && (
           <button className="document-snipet-btn-edit" id="enableMode" onClick={eventBubblingHandler}>
-            <em className="icon-edit2"></em>
+            <SVGeditFile />
           </button>
         )}
       </div>
