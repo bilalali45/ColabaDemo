@@ -193,6 +193,7 @@ export const ReviewDocument = () => {
                 clientName={currentDocument.files[currentFileIndex || 0].clientName}
                 blobData={blobData}
                 hideViewer={() => { }}
+                showCloseBtn = {false}
               />
               </div>
 
