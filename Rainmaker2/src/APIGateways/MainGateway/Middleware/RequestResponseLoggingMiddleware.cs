@@ -37,11 +37,12 @@ namespace MainGateway.Middleware
             using var responseBody = new MemoryStream();
             //...and use that for the temporary response body
             context.Response.Body = responseBody;
-
+            _logger.LogInformation(builder.ToString());
             //Continue down the Middleware pipeline, eventually returning to this class
             await _next(context);
 
             //Format the response from the server
+            builder = new StringBuilder();
             var response = await FormatResponse(context.Response);
             builder.Append("Response: ").AppendLine(response);
             builder.AppendLine("Response headers: ");
