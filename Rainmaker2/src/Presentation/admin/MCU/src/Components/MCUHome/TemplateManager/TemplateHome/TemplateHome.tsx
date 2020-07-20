@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { TemplateListContainer } from './TemplateListContainer/TemplateListContainer'
-import { SelectedTemplate } from './SelectedTempate/SelectedTemplate'
+import { SelectedTemplate } from './SelectedTempate/SelectedTemplate';
+
+export const nameTest = /^[ A-Za-z0-9-\s]*$/i;
 
 export const TemplateHome = () => {
 
