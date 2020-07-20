@@ -15,9 +15,8 @@ namespace DocumentManagement.Service
     {
         public IMongoDatabase db { get; set; }
         public IMongoClient client { get; set; }
-        public MongoService(IConfiguration config, ILogger<MongoService> logger, IHttpClientFactory clientFactory)
+        public MongoService(IConfiguration config, ILogger<MongoService> logger, HttpClient httpClient)
         {
-            var httpClient = clientFactory.CreateClient();
             var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key=DocumentManagementCS").Result;
             if (!csResponse.IsSuccessStatusCode)
             {

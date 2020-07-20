@@ -9,16 +9,15 @@ namespace DocumentManagement.Service
 {
     public class KeyStoreService : IKeyStoreService
     {
-        private readonly IHttpClientFactory clientFactory;
+        private readonly HttpClient httpClient;
         private readonly IConfiguration config;
-        public KeyStoreService(IHttpClientFactory clientFactory, IConfiguration config)
+        public KeyStoreService(HttpClient httpClient, IConfiguration config)
         {
-            this.clientFactory = clientFactory;
+            this.httpClient = httpClient;
             this.config = config;
         }
         public async Task<string> GetFtpKey()
         {
-            var httpClient = clientFactory.CreateClient();
             var ftpKey = config["File:FtpKey"];
             var ftpKeyResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}");
             if (!ftpKeyResponse.IsSuccessStatusCode)
@@ -29,7 +28,6 @@ namespace DocumentManagement.Service
         }
         public async Task<string> GetFileKey()
         {
-            var httpClient = clientFactory.CreateClient();
             var key = config["File:Key"];
             var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}");
             if (!csResponse.IsSuccessStatusCode)
