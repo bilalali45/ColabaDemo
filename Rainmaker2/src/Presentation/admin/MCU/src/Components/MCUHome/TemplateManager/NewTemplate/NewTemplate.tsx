@@ -6,7 +6,12 @@ import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
 import { Template } from '../../../../Entities/Models/Template'
 import { AddDocument } from '../AddDocument/AddDocument'
-export const NewTemplate = () => {
+
+type NewTemplateType = {
+    setLoaderVisible: Function
+}
+
+export const NewTemplate = ({ setLoaderVisible }: NewTemplateType) => {
 
     const { state, dispatch } = useContext(Store);
     const [templateName, setTemplateName] = useState('');
@@ -17,7 +22,7 @@ export const NewTemplate = () => {
 
     return (
         <section className="add-newTemp-wrap">
-            
+
             <div className="empty-wrap">
 
                 <div className="c-wrap">
@@ -27,9 +32,11 @@ export const NewTemplate = () => {
                     {currentTemplate ? <div className="content">
                         <p><b>Nothing</b>
                             <br />Your template is empty</p>
-                            <AddDocument popoverplacement="left"/> 
-                    </div> : 
-                   <p>Add documents after template is created </p> }
+                        <AddDocument
+                            setLoaderVisible={setLoaderVisible}
+                            popoverplacement="left" />
+                    </div> :
+                        <p>Add documents after template is created </p>}
                 </div>
 
             </div>

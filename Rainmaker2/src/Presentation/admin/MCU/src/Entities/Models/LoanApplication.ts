@@ -108,6 +108,7 @@ export class LoanApplication {
     this.expirationDate = json.expirationDate ? DateFormat(json.expirationDate, true) : '';
     this.popertyValue = json.popertyValue;
     this.borrowersName = LoanApplication.GetBorrowerName(json.borrowers)
+    this.borrowers = json.borrowers;
     return this;
   }
 
