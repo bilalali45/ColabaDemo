@@ -51,7 +51,9 @@ export class UserActions {
         return true;
       }
       LocalDB.removeAuth();
-      window.open("/Account/LogOff", "_self");
+      //window.open("/Login/LogOff", "_self");
+      window.top.location.href = "/Login/LogOff";
+
       return false;
     } catch (error) {
       setTimeout(() => {
@@ -121,24 +123,33 @@ export class UserActions {
   static addExpiryListener() {
     const payload = LocalDB.getUserPayload();
     console.log("in listener added");
-    let expiry = payload.exp;
-    let currentTime = Date.now();
-    let expiryTime = expiry * 1000;
-    let time = expiryTime - currentTime;
-    if (time < 1) {
-      console.log("Refresh token called from addExpiryListener in case of < 1");
-      UserActions.refreshToken();
-      return;
-    }
-    // let t = (time * 1000) * 60;
+    if (payload != undefined) {
+      let expiry = payload.exp;
+      let currentTime = Date.now();
+      let expiryTime = expiry * 1000;
+      let time = expiryTime - currentTime;
+      if (time < 1) {
+        console.log(
+          "Refresh token called from addExpiryListener in case of < 1"
+        );
+        UserActions.refreshToken();
+        return;
+      }
+      // let t = (time * 1000) * 60;
 
-    console.log("toke will expire after", time, "mil sec");
-    setTimeout(async () => {
-      console.log(
-        "Refresh token called from addExpiryListener in case of time out meet"
-      );
-      await UserActions.refreshToken();
-    }, time - 2000);
+      console.log("toke will expire after", time, "mil sec");
+      setTimeout(async () => {
+        console.log(
+          "Refresh token called from addExpiryListener in case of time out meet"
+        );
+        await UserActions.refreshToken();
+      }, time - 2000);
+    } else {
+      console.log("Logout called in case when payload is empty");
+      LocalDB.removeAuth();
+      //window.open("/Login/LogOff", "_self");
+      window.top.location.href = "/Login/LogOff";
+    }
   }
 
   static keepAliveParentApp = () => {

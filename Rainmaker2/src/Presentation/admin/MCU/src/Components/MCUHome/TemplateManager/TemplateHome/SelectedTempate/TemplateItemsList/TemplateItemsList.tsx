@@ -12,18 +12,18 @@ export const TemplateItemsList = () => {
     const templates = templateManager?.templates;
     
 
-    useEffect(() => {   
-        if(!templates) {
-            fetchSelectedTemplete();
-        }
-    }, []);
+    // useEffect(() => {   
+    //     if(!templates) {
+    //         fetchSelectedTemplete();
+    //     }
+    // }, []);
 
-    const fetchSelectedTemplete = async () => {
-        let templateDocs = await TemplateActions.fetchTemplateDocuments('1');
-        if(templateDocs) {
-            dispatch({type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs});
-        }
-    }
+    // const fetchSelectedTemplete = async () => {
+    //     let templateDocs = await TemplateActions.fetchTemplateDocuments('1');
+    //     if(templateDocs) {
+    //         dispatch({type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs});
+    //     }
+    // }
 
 
     return (
