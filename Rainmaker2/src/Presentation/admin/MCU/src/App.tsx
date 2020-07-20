@@ -26,8 +26,7 @@ const App = () => {
     authenticate();
     ParamsService.storeParams([
       "loanApplicationId",
-      "tenantId",
-      "businessUnitId",
+      "tenantId"
     ]);
     // component unmount
     return () => {

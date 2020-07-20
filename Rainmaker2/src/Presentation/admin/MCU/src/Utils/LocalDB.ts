@@ -45,10 +45,6 @@ export class LocalDB {
     return localStorage.getItem("tenantId") || "";
   }
 
-  static getBusinessUnitId() {
-    return localStorage.getItem("businessUnitId") || "";
-  }
-
   //#endregion
 
   //#region Local DB Post Methods
