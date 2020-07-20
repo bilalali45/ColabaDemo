@@ -5,18 +5,28 @@ import { NeedListActions } from '../../../../Store/actions/NeedListActions';
 import Spinner from 'react-bootstrap/Spinner';
 import { LocalDB } from '../../../../Utils/LocalDB';
 import { Store } from '../../../../Store/Store';
+import { stat } from 'fs';
+import { NeedListActionsType } from '../../../../Store/reducers/NeedListReducer';
 
 
 
 export const LoanSnapshot = () => {
 
     const [loanInfo, setLoanInfo] = useState<LoanApplication | null>();
-    //const { state, dispatch } = useContext(Store);
+    const { state, dispatch } = useContext(Store);
+
+    const needListManager: any = state?.needListManager;
+    const loanData = needListManager?.loanInfo;
     useEffect(() => {
-        if (!loanInfo) {
+        if (!loanData) {
             fetchLoanApplicationDetail()
         }
-    }, [loanInfo])
+       
+        if(loanData){
+            setLoanInfo(new LoanApplication().fromJson(loanData))
+        }
+
+    }, [loanData])
 
     
   const fetchLoanApplicationDetail = async ()=> {
@@ -24,7 +34,8 @@ export const LoanSnapshot = () => {
    if(applicationId){
     let res: LoanApplication | undefined = await NeedListActions.getLoanApplicationDetail(applicationId)
     if(res){
-        setLoanInfo(res)
+        dispatch({type: NeedListActionsType.SetLoanInfo, payload: res})
+       // setLoanInfo(res)
        }
    } 
   }
