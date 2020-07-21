@@ -38,9 +38,12 @@ namespace DocumentManagement.Tests
 
             dashboardController.ControllerContext = context;
 
-            //DashboardController controller = new DashboardController(mock.Object);
-            //Act
-            IActionResult result = await dashboardController.GetPendingDocuments(1, 1);
+           
+            GetPendingDocuments moGetPendingDocuments= new GetPendingDocuments();
+            moGetPendingDocuments.tenantId = 1;
+            moGetPendingDocuments.loanApplicationId = 1;
+       
+            IActionResult result = await dashboardController.GetPendingDocuments(moGetPendingDocuments);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -228,10 +231,11 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             dashboardController.ControllerContext = context;
-
-            //DashboardController controller = new DashboardController(mock.Object);
+            GetSubmittedDocuments moGetSubmittedDocuments= new GetSubmittedDocuments();
+            moGetSubmittedDocuments.loanApplicationId = 1;
+            moGetSubmittedDocuments.tenantId = 1;
             //Act
-            IActionResult result = await dashboardController.GetSubmittedDocuments(1, 1);
+            IActionResult result = await dashboardController.GetSubmittedDocuments(moGetSubmittedDocuments);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -419,10 +423,11 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             dashboardController.ControllerContext = context;
-
-            //DashboardController controller = new DashboardController(mock.Object);
-            //Act
-            IActionResult result = await dashboardController.GetDashboardStatus(1, 1);
+            GetDashboardStatus moGetDashboardStatus= new GetDashboardStatus();
+            moGetDashboardStatus.tenantId = 1;
+            moGetDashboardStatus.loanApplicationId = 1;
+           //Act
+           IActionResult result = await dashboardController.GetDashboardStatus(moGetDashboardStatus);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -660,10 +665,12 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.GetFooterText(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("document footer text");
 
             DashboardController controller = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
-            //dashboardController.ControllerContext = context;
-         
-            //Act
-            IActionResult result = await controller.GetFooterText(1, 1);
+           
+            GetFooterText moGetFooterText= new GetFooterText();
+            moGetFooterText.tenantId = 1;
+            moGetFooterText.businessUnitId = 1;
+               //Act
+               IActionResult result = await controller.GetFooterText(moGetFooterText);
             //Assert
             Assert.NotNull(result);
             

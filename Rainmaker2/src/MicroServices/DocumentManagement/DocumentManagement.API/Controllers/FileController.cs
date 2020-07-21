@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
-   //[Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class FileController : Controller
@@ -93,7 +93,7 @@ namespace DocumentManagement.API.Controllers
                                                             docId: docId,
                                                             clientName: formFile.FileName,
                                                             serverName: Path.GetFileName(path: filePath),
-                                                            size: (int) formFile.Length,
+                                                            size: (int)formFile.Length,
                                                             encryptionKey: key,
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
@@ -103,13 +103,13 @@ namespace DocumentManagement.API.Controllers
 
             // set order
             var model = new FileOrderModel
-                        {
-                            id = id,
-                            docId = docId,
-                            requestId = requestId,
-                            files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
-                            tenantId = tenantId
-                        };
+            {
+                id = id,
+                docId = docId,
+                requestId = requestId,
+                files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
+                tenantId = tenantId
+            };
             await fileService.Order(model: model,
                                     userProfileId: userProfileId);
             return Ok();
@@ -161,17 +161,17 @@ namespace DocumentManagement.API.Controllers
         #region Get Actions
 
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> View(View moView)
+        public async Task<IActionResult> View([FromQuery] FileViewModel moView)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var model = new FileViewModel
-                        {
-                            docId = moView.docId,
-                            fileId = moView.fileId,
-                            id = moView.id,
-                            requestId = moView.requestId,
-                            tenantId = moView.tenantId
-                        };
+            {
+                docId = moView.docId,
+                fileId = moView.fileId,
+                id = moView.id,
+                requestId = moView.requestId,
+                tenantId = moView.tenantId
+            };
             logger.LogInformation($"document { moView.docId} is viewed by {userProfileId}");
             var fileviewdto = await fileService.View(model: model,
                                                      userProfileId: userProfileId,

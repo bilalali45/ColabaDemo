@@ -27,10 +27,10 @@ namespace DocumentManagement.API.Controllers
             this.logger = logger;
         }
         [HttpGet("GetDocuments")]
-        public async Task<IActionResult> GetDocuments([FromQuery]  GetDocuments moGetDocuments)
+        public async Task<IActionResult> GetDocuments([FromQuery] GetDocuments moGetDocuments)
         {
             logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {moGetDocuments.tenantId} and value of pending is {moGetDocuments.pending}");
-            var docQuery = await admindashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
+            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
             return Ok(docQuery);
         }
 
@@ -46,11 +46,11 @@ namespace DocumentManagement.API.Controllers
         }
 
         [HttpGet("IsDocumentDraft")]
-        public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft )
+        public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await admindashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
-            if(!string.IsNullOrEmpty(docQuery))
+            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
+            if (!string.IsNullOrEmpty(docQuery))
                 logger.LogInformation($"Draft exists for user {userProfileId}, loan application {moIsDocumentDraft.id}");
             return Ok(docQuery);
         }

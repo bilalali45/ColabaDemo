@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DocumentManagement.API.Controllers
 {
-    //[Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class DashboardController : Controller
@@ -34,7 +34,7 @@ namespace DocumentManagement.API.Controllers
         #region GetMethods
 
         [HttpGet(template: "GetPendingDocuments")]
-        public async Task<IActionResult> GetPendingDocuments([FromQuery] GetPendingDocuments moGetPendingDocuments )
+        public async Task<IActionResult> GetPendingDocuments([FromQuery] GetPendingDocuments moGetPendingDocuments)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetPendingDocument requested for {moGetPendingDocuments.loanApplicationId} tenantId {moGetPendingDocuments.tenantId} userId {userProfileId}");
@@ -73,7 +73,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> GetFooterText([FromQuery] GetFooterText moGetFooterText)
         {
             var docQuery = await dashboardService.GetFooterText(tenantId: moGetFooterText.tenantId,
-                                                                businessUnitId: moGetFooterText. businessUnitId);
+                                                                businessUnitId: moGetFooterText.businessUnitId);
             return Ok(value: docQuery);
         }
 
