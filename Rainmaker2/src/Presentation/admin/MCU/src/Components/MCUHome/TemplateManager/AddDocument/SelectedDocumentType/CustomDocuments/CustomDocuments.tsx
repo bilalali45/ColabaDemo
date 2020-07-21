@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from 'react'
 import { nameTest } from '../../../TemplateHome/TemplateHome';
+import Spinner from 'react-bootstrap/Spinner';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -7,19 +8,22 @@ type CustomDocumentsType = {
 }
 
 export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
-    
+
     const [docName, setDocName] = useState('');
+    const [requestSent, setRequestSent] = useState<boolean>(false);
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-        if(!nameTest.test(value)) {
+        if (!nameTest.test(value)) {
             return;
         }
         setDocName(value);
     }
 
-    const addDoc = () => {
+    const addDoc = async () => {
+        setRequestSent(true);
         setDocName('');
-        addDocToTemplate(docName, 'docName');
+        await addDocToTemplate(docName, 'docName');
+        setRequestSent(false);
         // setVisible()        
     }
 
@@ -51,7 +55,12 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <input value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
-                        <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
+                        {requestSent ? <span>
+                            <Spinner size="sm" animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </span> :
+                            <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
                     </div>
                 </div>
 
