@@ -178,7 +178,7 @@ export const ReviewDocument = () => {
       <ReviewDocumentHeader
         id={typeIdId.id}
         typeId={typeIdId.typeId}
-        documentDetail={documentDetail || documentsForReviewArrayIndexes().length === 0}
+        documentDetail={documentDetail || documentsForReviewArrayIndexes().length === 1}
         buttonsEnabled={!loading}
         onClose={goBack}
         nextDocument={nextDocument}
