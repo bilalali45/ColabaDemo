@@ -33,7 +33,7 @@ export interface DocumentFileType {
   docName: string
   typeId: string
   files: FileType[]
-  username: string
+  userName: string
 }
 
 export interface LogType {

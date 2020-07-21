@@ -1,33 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Http } from "rainsoft-js";
+
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
 import { SVGeditFile } from "../../../../../Shared/SVG";
+import { DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
 
 export const DocumentSnipet = ({
   index,
   moveNextFile,
   clientName,
-  active,
   mcuName,
   id,
   requestId,
   docId,
   fileId,
-  currentFileIndex
+  currentFileIndex,
+  uploadedOn,
+  username,
+  allowFileRenameMCU
 }: {
   index: number,
-  moveNextFile: (index: number) => void
+  moveNextFile: (index: number, fileId: string, clientName: string) => void
   clientName: string;
   id: string
   requestId: string
   docId: string
   fileId: string
   mcuName: string
-  active?: string;
   currentFileIndex: number
+  uploadedOn: string
+  username: string
+  allowFileRenameMCU: (filename: string, fileId: string) => boolean
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
+  const [filenameUnique, setFilenameUnique] = useState(true)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
@@ -35,7 +42,6 @@ export const DocumentSnipet = ({
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
 
   const setInputValue = (event: any) => {
-
     event.stopPropagation()
 
     setEditingModeEnabled(() => true);
@@ -50,10 +56,12 @@ export const DocumentSnipet = ({
       event.stopPropagation()
     }
 
+    if (!filenameUnique) return
+
     if (renameMCUName !== "") {
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      setRenameMCUName(`${renameMCUName}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
+      setRenameMCUName(`${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
     } else {
       setRenameMCUName("") //This will bring either mcuName or clientName with file extension
     }
@@ -77,7 +85,17 @@ export const DocumentSnipet = ({
 
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      newName = `${renameMCUName}${fileExtension}`
+      newName = `${renameMCUName.trim()}${fileExtension}`
+
+      if (allowFileRenameMCU(renameMCUName.trim(), fileId) === false) { //this condition is false if filename already assigned to some other file
+        inputRef.current?.focus()
+
+        !!setFilenameUnique && setFilenameUnique(false)
+
+        return
+      }
+
+      !filenameUnique && setFilenameUnique(true)
 
       const data = { id, requestId, docId, fileId, newName }
 
@@ -87,19 +105,23 @@ export const DocumentSnipet = ({
         ...data
       })
 
+      setFilenameUnique(true)
       setRenameMCUName(() => newName)
       setEditingModeEnabled(() => false)
     } catch (error) {
       console.log('error', error)
 
-      setRenameMCUName(() => newName)
+      alert('Something went wrong. Please try again.')
+
+      setRenameMCUName(() => mcuName || clientName)
       setEditingModeEnabled(false)
     }
   }
 
   const moveNext = (event: any) => {
     event.stopPropagation()
-    moveNextFile(index)
+
+    moveNextFile(index, fileId, clientName)
   }
 
   const eventBubblingHandler = (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
@@ -138,7 +160,7 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
-                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
+                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9- ]/g, ''))}
                 type="text"
                 size={38}
                 value={renameMCUName}
@@ -153,8 +175,9 @@ export const DocumentSnipet = ({
             )}
         </div>
         <small className="document-snipet--detail">
-          By Richard Glenn Randall on Apr 17, 2020 at 4:31 AM
+          {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
+        {!filenameUnique && (<span className="label label-default">Filename must be unique</span>)}
       </div>
       <div className="document-snipet--right">
         {!!editingModeEnabled && (
