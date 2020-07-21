@@ -75,7 +75,7 @@
         .MT-leftbar {
             border-right: 1px solid color('border');
             min-height: 81vh;
-
+            height: 100%;
             .head-TLC {
                 min-height: 60px;
                 border-bottom: 1px solid color('border');
@@ -267,6 +267,7 @@
     }
     .ST-content-Wrap {
         padding-top: 15px;
+        height: calc(100% - 60px);
         > ul {
             display: block;
             li {
@@ -302,6 +303,11 @@
 
                 }
             }
+        }
+        .ul-ST-content {
+            max-height: calc(100vh - 310px);
+            overflow: auto;
+    @include scrollbar(6,6)
         }
 
         .add-doc-link-wrap {
