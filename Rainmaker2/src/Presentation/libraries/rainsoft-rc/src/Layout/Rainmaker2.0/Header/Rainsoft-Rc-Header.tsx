@@ -26,12 +26,13 @@ export const RainsoftRcHeader = ({ logoSrc, displayName, displayNameOnClick, opt
 
                             <div className="s-account pull-right">
 
-                                <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
+                                {/* <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
                                     Hello,
                                     {displayName}
-                                </a>
+                                </a> */}
                                 <HeaderMenu
                                     options={options}
+                                    name={displayName}
                                 />
                             </div>
                         </nav>
