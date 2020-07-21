@@ -6,7 +6,7 @@ import { ReviewDocumentActivityLog } from "../ReviewDocumentActivityLog/ReviewDo
 export const ReviewDocumentHeader = ({
   id,
   typeId,
-  documentDetail,
+  hideNextPreviousNavigation,
   buttonsEnabled,
   onClose,
   nextDocument,
@@ -14,7 +14,7 @@ export const ReviewDocumentHeader = ({
 }: {
   id: string | null
   typeId: string | null
-  documentDetail: boolean
+  hideNextPreviousNavigation: boolean
   buttonsEnabled: boolean
   onClose: () => void;
   nextDocument: () => void;
@@ -27,11 +27,11 @@ export const ReviewDocumentHeader = ({
       className="review-document-header"
     >
       <div className="row">
-        {!documentDetail && (
+        <div className="review-document-header--left col-md-4">
+          <h2>Review Document</h2>
+        </div>
+        {!hideNextPreviousNavigation && (
           <React.Fragment>
-            <div className="review-document-header--left col-md-4">
-              <h2>Review Document</h2>
-            </div>
             <div className="review-document-header--center col-md-4">
               <div className="btn-group">
                 <button className="btn btn-default" onClick={buttonsEnabled ? previousDocument : () => { }}>
@@ -45,7 +45,7 @@ export const ReviewDocumentHeader = ({
             </div>
           </React.Fragment>
         )}
-        <div className={`review-document-header--right col-md-${!documentDetail ? 4 : 12}`}>
+        <div className={`review-document-header--right col-md-${!hideNextPreviousNavigation ? 4 : 8}`}>
 
           {/* <button className="btn btn-primary">Activity Log</button> */}
           <Dropdown>

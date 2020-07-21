@@ -1,19 +1,16 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
-import Axios, { CancelTokenStatic, CancelTokenSource } from "axios";
+import Axios from "axios";
 import { DocumentView } from 'rainsoft-rc';
 import _ from 'lodash'
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
-import {
-  NeedListDocumentType,
-  DocumentParamsType,
-} from "../../../Entities/Types/Types";
+import { NeedListDocumentType } from "../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
 import { LocalDB } from "../../../Utils/LocalDB";
-
+import emptyIcon from '../../../Assets/images/empty-icon.svg';
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<
     NeedListDocumentType
@@ -29,6 +26,7 @@ export const ReviewDocument = () => {
     id: null,
     typeId: null
   })
+  const [clientName, setClientName] = useState('')
 
   const tenantId = LocalDB.getTenantId()
 
@@ -41,6 +39,8 @@ export const ReviewDocument = () => {
   };
 
   const [blobData, setBlobData] = useState<any>();
+
+  const documentsForReviewArrayIndexes = () => _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId, tenantId) => {
@@ -85,7 +85,7 @@ export const ReviewDocument = () => {
   );
 
   const nextDocument = useCallback(() => {
-    const indexes = _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
+    const indexes = documentsForReviewArrayIndexes()
 
     const indexOfReivew = indexes.findIndex(value => Number(value) > navigationIndex)
 
@@ -99,11 +99,15 @@ export const ReviewDocument = () => {
     setCurrentFileIndex(0)
     setTypeIdId({ id: null, typeId: null })
 
-    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, 1);
+    if (!!files && files.length > 0) {
+      setClientName(files[0].clientName)
+
+      getDocumentForView(id, requestId, docId, files[0].id, 1);
+    }
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
-    const indexes = _.reverse(_.keys(_.pickBy(documentList1, { status: 'Pending review' })))
+    const indexes = _.reverse(documentsForReviewArrayIndexes())
 
     const indexOfReivew = navigationIndex === 1 ? 0 : indexes.findIndex(value => Number(value) < navigationIndex)
 
@@ -118,21 +122,26 @@ export const ReviewDocument = () => {
     setCurrentFileIndex(() => 0)
     setTypeIdId({ id: null, typeId: null })
 
-    !!files && files.length > 0 && getDocumentForView(id, requestId, docId, files[0].id, tenantId);
+    if (!!files && files.length > 0) {
+      setClientName(files[0].clientName)
+
+      getDocumentForView(id, requestId, docId, files[0].id, tenantId);
+    }
   }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
 
-  const moveNextFile = useCallback(async (index: number) => {
+  const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string) => {
     if (index === currentFileIndex || loading === true) return
 
     if (currentDocument) {
-      const { id, requestId, docId, files } = currentDocument
+      const { id, requestId, docId } = currentDocument
 
       const tenantId = LocalDB.getTenantId()
 
       setCurrentFileIndex(() => index)
       setBlobData(() => null)
+      setClientName(clientName)
 
-      !loading && getDocumentForView(id, requestId, docId, files[index].id, tenantId)
+      !loading && getDocumentForView(id, requestId, docId, fileId, tenantId)
     }
   }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
 
@@ -154,13 +163,17 @@ export const ReviewDocument = () => {
 
           const { id, requestId, docId, files } = doc
 
-          !loading && !!files && !!files.length && files.length > 0 && getDocumentForView(
-            id,
-            requestId,
-            docId,
-            files[0].id,
-            tenantId
-          );
+          if (!loading && !!files && !!files.length && files.length > 0) {
+            setClientName(files[0].clientName)
+
+            getDocumentForView(
+              id,
+              requestId,
+              docId,
+              files[0].id,
+              tenantId
+            );
+          }
         }
       } catch (error) {
         console.log("error", error);
@@ -179,45 +192,51 @@ export const ReviewDocument = () => {
       <ReviewDocumentHeader
         id={typeIdId.id}
         typeId={typeIdId.typeId}
-        documentDetail={documentDetail}
+        hideNextPreviousNavigation={documentDetail || documentsForReviewArrayIndexes().length === 1}
         buttonsEnabled={!loading}
         onClose={goBack}
         nextDocument={nextDocument}
         previousDocument={previousDocument}
       />
-
       <div className="review-document-body">
         <div className="row">
-          <div className="review-document-body--content col-md-8">
-            {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+          {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+            <div className="review-document-body--content col-md-8">
               <div className="doc-view-mcu">
                 <DocumentView
                   loading={loading}
                   id={currentDocument.id}
                   requestId={currentDocument.requestId}
                   docId={currentDocument.docId}
-                  fileId={currentDocument.files[currentFileIndex || 0].id}
                   tenantId={tenantId}
-                  clientName={currentDocument.files[currentFileIndex || 0].clientName}
+                  clientName={clientName}
                   blobData={blobData}
                   hideViewer={() => { }}
                 />
               </div>
-
-            ) : (
-                <h3>No preview available</h3>
-              )}
-
-          </div>
+            </div>
+          ) : (
+              <div className="no-preview">
+                <div className="no-preview--wrap">
+                  <div className="clearfix">
+                    <img src={emptyIcon} alt="No preview available" />
+                  </div>
+                  <h2>Nothing In Bank Statement</h2>
+                  <p>No file submitted yet</p>
+                </div>
+              </div>
+            )}
           {/* review-document-body--content */}
-          <aside className="review-document-body--aside col-md-4">
-            <ReviewDocumentStatement
-              typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
-              moveNextFile={moveNextFile}
-              currentDocument={!!currentDocument ? currentDocument : null}
-              currentFileIndex={currentFileIndex}
-            />
-          </aside>
+          {!!currentDocument && currentDocument.files && currentDocument.files.length && (
+            <aside className="review-document-body--aside col-md-4">
+              <ReviewDocumentStatement
+                typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
+                moveNextFile={moveNextFile}
+                currentDocument={!!currentDocument ? currentDocument : null}
+                currentFileIndex={currentFileIndex}
+              />
+            </aside>
+          )}
           {/* review-document-body--aside */}
         </div>
       </div>
