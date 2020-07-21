@@ -39,6 +39,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
 
 
     const changeCurrentTemplate = async (template: Template) => {
+        dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
 
         if (currentTemplate?.id === template.id) {
             return;
@@ -137,6 +138,8 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
             </>
         );
     };
+
+    if(!templates) return <p>...loading...</p>
 
     return (
         <div className="TL-container">

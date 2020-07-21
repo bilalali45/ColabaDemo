@@ -18,8 +18,9 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     }
 
     const addDoc = () => {
+        setDocName('');
         addDocToTemplate(docName, 'docName');
-        setVisible(false)        
+        // setVisible()        
     }
 
     return (

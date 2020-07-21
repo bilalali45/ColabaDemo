@@ -18,7 +18,9 @@ export const NewTemplate = ({ setLoaderVisible }: NewTemplateType) => {
     const [saved, setSaved] = useState<boolean>(false);
 
     const templateManager: any = state?.templateManager;
+    const templates: any = templateManager?.templates;
     const currentTemplate: any = templateManager?.currentTemplate;
+
 
     return (
         <section className="add-newTemp-wrap">
