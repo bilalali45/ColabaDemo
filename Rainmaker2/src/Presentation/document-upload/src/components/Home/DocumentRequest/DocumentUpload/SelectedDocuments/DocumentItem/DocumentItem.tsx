@@ -178,7 +178,7 @@ export const DocumentItem = ({
 
   const renderFileTitle = () => {
     return (
-      <div className="tilte">
+      <div className="title">
         {file.editName ? (
           <input
             style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
@@ -264,7 +264,7 @@ export const DocumentItem = ({
             <img src={erroricon} alt="" />
           </div>
           <div className="doc-list-content">
-            <div className="tilte">
+            <div className="title">
               <p>{file.clientName}</p>
             </div>
             <div className="dl-info">
@@ -312,7 +312,7 @@ export const DocumentItem = ({
             <img src={erroricon} alt="" />
           </div>
           <div className="doc-list-content">
-            <div className="tilte">
+            <div className="title">
               <p>{file.clientName}</p>
             </div>
             <div className="dl-info">
