@@ -254,12 +254,19 @@ ul {
         vertical-align: bottom;
     }
 }
+.spinner-border {
+    &.spinner-border-sm {
+        border-width: 1px;
 
+    }
+}
+
+.loader-row {
+    height: 100%;
+}
 .loader {
     text-align: center;
     height: 100%;
-    box-shadow: $shadow;
-
     padding: 10px 0;
     display: flex;
     justify-content: center;

@@ -5,7 +5,7 @@ import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesRedu
 import { Template } from '../../../../../Entities/Models/Template';
 import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
 import { clear } from 'console';
-
+import { Loader } from "../../../../../Shared/components/loader";
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
@@ -139,7 +139,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
         );
     };
 
-    if(!templates) return <p>...loading...</p>
+    if(!templates) return  <Loader containerHeight={"100%"} />;
 
     return (
         <div className="TL-container">
