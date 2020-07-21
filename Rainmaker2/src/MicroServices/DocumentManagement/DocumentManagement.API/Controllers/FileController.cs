@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
@@ -72,14 +73,19 @@ namespace DocumentManagement.API.Controllers
                             userName: setting.ftpUser,
                             password: AESCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
+            foreach (var file in files)
+            {
+                if (file.Length > setting.maxFileSize)
+                    throw new Exception(message: "File size exceeded limit");
+                if (file.FileName.Length > setting.maxFileNameSize)
+                    throw new Exception(message: "File Name size exceeded limit");
+                if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
+                    throw new Exception(message: "This file type is not allowed for uploading");
+            }
             // save
             foreach (var formFile in files)
                 if (formFile.Length > 0)
                 {
-                    if (formFile.Length > setting.maxFileSize)
-                        throw new Exception(message: "File size exceeded limit");
-                    if (formFile.FileName.Length > setting.maxFileNameSize)
-                        throw new Exception(message: "File Name size exceeded limit");
                     logger.LogInformation($"uploading file {formFile.FileName}");
                     var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
