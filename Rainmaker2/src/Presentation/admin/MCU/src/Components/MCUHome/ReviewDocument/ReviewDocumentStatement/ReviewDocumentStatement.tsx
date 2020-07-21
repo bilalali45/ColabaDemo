@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { DocumentSnipet } from "./DocumentSnipet/DocumentSnipet";
-import { NeedListDocumentType, NeedListDocumentFileType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
+import { NeedListDocumentType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 import Spinner from "react-bootstrap/Spinner";
@@ -18,9 +18,9 @@ export const ReviewDocumentStatement = ({
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
   const [loading, setLoading] = useState(false)
+  const [username, setUsername] = useState('')
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
-    console.log('getting files')
     try {
       setLoading(true)
 
@@ -30,11 +30,12 @@ export const ReviewDocumentStatement = ({
 
       const { data } = await http.get<DocumentFileType[]>(NeedListEndpoints.GET.documents.files(id, requestId, docId))
 
-      const { typeId, docName, files } = data[0]
+      const { typeId, docName, files, userName } = data[0]
 
       typeIdAndIdForActivityLogs(id, typeId || docName)
 
       setDocumentFiles(files)
+      setUsername(userName)
       setLoading(false)
     } catch (error) {
       console.log(error)
@@ -81,6 +82,8 @@ export const ReviewDocumentStatement = ({
                 mcuName={file.mcuName}
                 clientName={file.clientName}
                 currentFileIndex={currentFileIndex}
+                uploadedOn={file.fileUploadedOn}
+                username={username}
               />) : (
                 <span>No file submitted yet</span>
               )}

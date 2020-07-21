@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
 import { SVGeditFile } from "../../../../../Shared/SVG";
+import { DateFormat, DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
 
 export const DocumentSnipet = ({
   index,
@@ -13,7 +14,9 @@ export const DocumentSnipet = ({
   requestId,
   docId,
   fileId,
-  currentFileIndex
+  currentFileIndex,
+  uploadedOn,
+  username
 }: {
   index: number,
   moveNextFile: (index: number) => void
@@ -25,6 +28,8 @@ export const DocumentSnipet = ({
   mcuName: string
   active?: string;
   currentFileIndex: number
+  uploadedOn: string
+  username: string
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
@@ -35,7 +40,6 @@ export const DocumentSnipet = ({
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
 
   const setInputValue = (event: any) => {
-
     event.stopPropagation()
 
     setEditingModeEnabled(() => true);
@@ -99,6 +103,7 @@ export const DocumentSnipet = ({
 
   const moveNext = (event: any) => {
     event.stopPropagation()
+
     moveNextFile(index)
   }
 
@@ -153,7 +158,7 @@ export const DocumentSnipet = ({
             )}
         </div>
         <small className="document-snipet--detail">
-          By Richard Glenn Randall on Apr 17, 2020 at 4:31 AM
+          {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
       </div>
       <div className="document-snipet--right">
