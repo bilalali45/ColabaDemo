@@ -285,7 +285,7 @@ console.log('fileLimitError.value',fileLimitError.value)
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "disbale-text"} onClick={(e) => {addMore(e);}}> Add more files
+            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "addmoreDoc disabled"} onClick={(e) => {addMore(e);}}> Add more files
               <input
                 type="file"
                 accept={FileUpload.allowedExtensions}
@@ -321,7 +321,8 @@ console.log('fileLimitError.value',fileLimitError.value)
             <div className="row">
               <div className="col-sm-7">
                 <div className="dc-text">
-                  <p>Are you done with this {docTitle}?</p>
+                {/* {docTitle} */}
+                  <p>Have you submitted all files for this document?<br />Please note you will not be able to return.</p>
                 </div>
               </div>
 

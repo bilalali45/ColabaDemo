@@ -12,6 +12,8 @@ import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
 import { nameTest } from '../TemplateHome';
+import Spinner from 'react-bootstrap/Spinner'
+import { Loader } from "../../../../../Shared/components/loader";
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -25,6 +27,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const [newNameText, setNewNameText] = useState<string>('');
     const [nameExistsError, setNameExistsError] = useState<string>()
     const [addRequestSent, setAddRequestSent] = useState<boolean>(false);
+    const [removeDocName, setRemoveDocName] = useState<string>();
+
 
     const templateManager: any = state.templateManager;
     const currentTemplate = templateManager?.currentTemplate;
@@ -114,6 +118,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const removeDoc = async (templateId: string, documentId: string) => {
         setAddRequestSent(true);
         setLoaderVisible(true);
+        setRemoveDocName(documentId);
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
@@ -132,10 +137,15 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 <li key={td.docId}>
                                     <p>{td.docName}
                                         {
-                                            ((currentTemplate?.type === MyTemplate) && !addRequestSent) &&
-                                            <span className="BTNclose">
-                                                <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
-                                            </span>
+                                            ((currentTemplate?.type === MyTemplate)) &&
+                                                addRequestSent && td.docId === removeDocName ?
+                                                <span className="BTNloader"> 
+                                                    <Spinner size="sm" animation="border" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </Spinner>
+                                                </span> : <span className="BTNclose">
+                                                    <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
+                                                </span>
                                         }
                                     </p>
                                 </li>
@@ -144,13 +154,14 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     }
 
                 </ul>
-                {currentTemplate?.type === MyTemplate &&
+                {
+                    currentTemplate?.type === MyTemplate &&
                     <AddDocument
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right"
                     />
                 }
-            </div>
+            </div >
         )
     }
 
@@ -193,7 +204,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         )
     }
 
-    if(!templates) return <p>...loading...</p>
+    if (!templates) return <Loader containerHeight={"100%"} />;
 
     return (
         <section className="veiw-SelectedTemplate">
@@ -204,10 +215,10 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
-            {templateDocuments?.length ? renderDocumentList() : ''}
+            {templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
 
-            {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''}
+            {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
         </section>
     )
 }

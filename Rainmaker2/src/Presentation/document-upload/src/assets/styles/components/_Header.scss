@@ -94,13 +94,23 @@
 }
     .d-name {
         color: color('light-purple');  
-        font: 400 #{fontSize("nr")+"/30px"} fontFamily("heading");
-        margin-right: 10px;
+        font: 400 #{fontSize("nr")+"/1"} fontFamily("heading");
+        padding-right: 10px;
         position: relative;
         cursor: pointer;
-        float: left;
+        margin-top: 5px;
+    display: inline-block !important;
+    vertical-align: middle;
+    -webkit-user-select: none;        
+-moz-user-select: none; 
+-ms-user-select: none; 
+-o-user-select: none;
+user-select: none;
         &:hover {
             text-decoration: none;
+        }
+        &::after {
+display: none;
         }
     }
 

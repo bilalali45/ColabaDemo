@@ -100,7 +100,7 @@ export const ReviewDocumentStatement = ({
         </div>
       ) : (
           <section className="document-statement--body">
-            <h3>Documents</h3>
+            {/* <h3>Documents</h3> */}
             {!!documentFiles && documentFiles.length ?
               documentFiles.map((file, index) => <DocumentSnipet
                 key={index}
@@ -119,7 +119,6 @@ export const ReviewDocumentStatement = ({
               />) : (
                 <span>No file submitted yet</span>
               )}
-            <hr />
           </section>
         )}
     </div>

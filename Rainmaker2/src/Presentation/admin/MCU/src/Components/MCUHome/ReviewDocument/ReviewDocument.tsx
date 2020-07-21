@@ -150,6 +150,11 @@ export const ReviewDocument = () => {
   }, [])
 
   useEffect(() => {
+
+    //onload Goto Top
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
