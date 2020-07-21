@@ -13,14 +13,17 @@ namespace DocumentManagement.API.Controllers
 {
     [Authorize(Roles = "MCU")]
     [ApiController]
-    [Route("api/DocumentManagement/[controller]")]
+    [Route(template: "api/DocumentManagement/[controller]")]
     public class AdminDashboardController : Controller
     {
-        private readonly IAdminDashboardService admindashboardService;
+        private readonly IAdminDashboardService adminDashboardService;
         private readonly ILogger<AdminDashboardController> logger;
-        public AdminDashboardController(IAdminDashboardService admindashboardService, ILogger<AdminDashboardController> logger)
+
+
+        public AdminDashboardController(IAdminDashboardService adminDashboardService,
+                                        ILogger<AdminDashboardController> logger)
         {
-            this.admindashboardService = admindashboardService;
+            this.adminDashboardService = adminDashboardService;
             this.logger = logger;
         }
         [HttpGet("GetDocuments")]
@@ -30,15 +33,16 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await admindashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
             return Ok(docQuery);
         }
-        [HttpPut("[action]")]
-        public async Task<IActionResult>  Delete(AdminDeleteModel model)
+
+
+        [HttpPut(template: "[action]")]
+        public async Task<IActionResult> Delete(AdminDeleteModel model)
         {
-            logger.LogInformation($"document {model.docId} is being deleted as borrower to do");
-            var docQuery = await admindashboardService.Delete(model);
+            logger.LogInformation(message: $"document {model.docId} is being deleted as borrower to do");
+            var docQuery = await adminDashboardService.Delete(model: model);
             if (docQuery)
                 return Ok();
-            else
-                return NotFound();
+            return NotFound();
         }
 
         [HttpGet("IsDocumentDraft")]
@@ -50,7 +54,5 @@ namespace DocumentManagement.API.Controllers
                 logger.LogInformation($"Draft exists for user {userProfileId}, loan application {moIsDocumentDraft.id}");
             return Ok(docQuery);
         }
-
-
     }
 }

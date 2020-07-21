@@ -70,9 +70,5 @@
         "Limit": 100
       }
     }
-  ],
-  "GlobalConfiguration": {
-    "RequestIdKey": "CorrelationId"
-
-  }
+  ]
 }

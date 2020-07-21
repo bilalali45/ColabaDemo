@@ -37,11 +37,12 @@ namespace MainGateway.Middleware
             using var responseBody = new MemoryStream();
             //...and use that for the temporary response body
             context.Response.Body = responseBody;
-
+            _logger.LogInformation(builder.ToString());
             //Continue down the Middleware pipeline, eventually returning to this class
             await _next(context);
 
             //Format the response from the server
+            builder = new StringBuilder();
             var response = await FormatResponse(context.Response);
             builder.Append("Response: ").AppendLine(response);
             builder.AppendLine("Response headers: ");
@@ -68,8 +69,9 @@ namespace MainGateway.Middleware
                 leaveOpen: true);
             var body = await reader.ReadToEndAsync();
             // Do some processing with body…
-
-            var formattedRequest = $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {body}";
+            if (request.Path.ToString().ToLower().Contains("api/identity/token/authorize"))
+                body = "";
+            var formattedRequest = $"{request.Scheme}://{request.Host}{request.Path}?{request.QueryString} {body}";
 
             // Reset the request body stream position so the next middleware can read it
             request.Body.Position = 0;
