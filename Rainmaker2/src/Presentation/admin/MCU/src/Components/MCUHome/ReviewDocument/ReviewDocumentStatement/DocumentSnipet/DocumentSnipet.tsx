@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Http } from "rainsoft-js";
+
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
 import { SVGeditFile } from "../../../../../Shared/SVG";
-import { DateFormat, DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
+import { DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
 
 export const DocumentSnipet = ({
   index,
   moveNextFile,
   clientName,
-  active,
   mcuName,
   id,
   requestId,
@@ -19,14 +19,13 @@ export const DocumentSnipet = ({
   username
 }: {
   index: number,
-  moveNextFile: (index: number) => void
+  moveNextFile: (index: number, fileId: string, clientName: string) => void
   clientName: string;
   id: string
   requestId: string
   docId: string
   fileId: string
   mcuName: string
-  active?: string;
   currentFileIndex: number
   uploadedOn: string
   username: string
@@ -104,7 +103,7 @@ export const DocumentSnipet = ({
   const moveNext = (event: any) => {
     event.stopPropagation()
 
-    moveNextFile(index)
+    moveNextFile(index, fileId, clientName)
   }
 
   const eventBubblingHandler = (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {

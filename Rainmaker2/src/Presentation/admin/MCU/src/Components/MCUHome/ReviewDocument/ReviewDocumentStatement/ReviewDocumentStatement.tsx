@@ -12,7 +12,7 @@ export const ReviewDocumentStatement = ({
   currentFileIndex
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
-  moveNextFile: (index: number) => void
+  moveNextFile: (index: number, fileId: string, clientName: string) => void
   currentDocument: NeedListDocumentType | null;
   currentFileIndex: number
 }) => {
