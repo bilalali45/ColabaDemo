@@ -319,7 +319,8 @@ export const SelectedDocuments = ({
             <div className="row">
               <div className="col-sm-7">
                 <div className="dc-text">
-                  <p>Are you done with this {docTitle}?</p>
+                {/* {docTitle} */}
+                  <p>Have you submitted all files for this document?<br />Please note you will not be able to return.</p>
                 </div>
               </div>
 
