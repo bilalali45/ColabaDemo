@@ -593,9 +593,12 @@ namespace RainmakerTest
             LoanApplicationController loanApplicationController = new LoanApplicationController(mock.Object, null, null, null);
 
             loanApplicationController.ControllerContext = context;
-
+            PostLoanApplicationModel model = new PostLoanApplicationModel()
+            {
+                loanApplicationId = 1, isDraft = true
+            };
             //Act
-            var res = await loanApplicationController.PostLoanApplication(1, true);
+            var res = await loanApplicationController.PostLoanApplication(model);
 
             //Assert
             Assert.NotNull(res);

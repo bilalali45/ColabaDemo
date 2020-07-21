@@ -39,10 +39,13 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
-            controller.ControllerContext = context; 
+            controller.ControllerContext = context;
+            GetDocumentsByTemplateIds getDocumentsByTemplateIds = new GetDocumentsByTemplateIds();
             string[] arr = new string[] { "5eb25acde519051af2eeb111", "5eb25acde519051af2eeb111" };
-            //Act
-            IActionResult result = await controller.GetDocumentsByTemplateIds(arr, It.IsAny<int>());
+            getDocumentsByTemplateIds.id = arr;
+            getDocumentsByTemplateIds.tenantId = 1;
+           //Act
+           IActionResult result = await controller.GetDocumentsByTemplateIds(getDocumentsByTemplateIds);
 
             //Assert
             Assert.NotNull(result);
@@ -72,8 +75,12 @@ namespace DocumentManagement.Tests
 
             var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
             documentController.ControllerContext = context;
-             //Act
-            IActionResult result = await documentController.GetFiles("1", "1", "1");
+            GetFiles getFiles = new GetFiles();
+            getFiles.id = "5eb25d1fe519051af2eeb72d";
+            getFiles.docId = "abc15d1fe456051af2eeb768";
+            getFiles.requestId = "aaa25d1fe456051af2eeb72d";
+            //Act
+            IActionResult result = await documentController.GetFiles(getFiles);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -111,8 +118,12 @@ namespace DocumentManagement.Tests
 
             var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
             controller.ControllerContext = context;
-             //Act
-            IActionResult result = await controller.GetActivityLog("1", "1", "1");
+            GetActivityLog getActivityLog = new GetActivityLog();
+            getActivityLog.id = "5f0d668fcc9ce539845d7f99";
+            getActivityLog.typeId = "5eb257a3e519051af2eeb624";
+            getActivityLog.docName = "W2 2020";
+            //Act
+            IActionResult result = await controller.GetActivityLog(getActivityLog);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -627,8 +638,10 @@ namespace DocumentManagement.Tests
 
             var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
             controller.ControllerContext = context;
+            GetEmailLog emailLog = new GetEmailLog();
+            emailLog.id = "abc15d1fe456051af2eeb768";
              //Act
-            IActionResult result = await controller.GetEmailLog("1");
+            IActionResult result = await controller.GetEmailLog(emailLog);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -1148,7 +1161,13 @@ namespace DocumentManagement.Tests
             // Act  
             DocumentController controller = new DocumentController(mock.Object, mockFileEncryptorFacotry.Object, mockFtpClient.Object, mockSettingService.Object, mockKeyStoreService.Object, Mock.Of<ILogger<DocumentController>>());
             controller.ControllerContext = context;
-            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
+            View view = new View();
+            view.id = "5eb25d1fe519051af2eeb72d";
+            view.requestId = "abc15d1fe456051af2eeb768";
+            view.docId = "ddd25d1fe456057652eeb72d";
+            view.fileId = "5eeb19874db574137c1fabde";
+            view.tenantId = 1;
+            IActionResult result = await controller.View(view);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<FileStreamResult>(result);
