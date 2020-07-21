@@ -29,6 +29,14 @@ declare global {
 }
 window.envConfig = window.envConfig || {};
 
+export class ApplicationEnv {
+  static MaxDocumentCount: string = "10";
+  static MaxFileSize: string = "9"; // In Mbs
+  static loanApplicationId: string;
+  static tenantId: string;
+  static businessUnitId: string;
+}
+
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [expListnerAdded, setExpListnerAdded] = useState(false);
