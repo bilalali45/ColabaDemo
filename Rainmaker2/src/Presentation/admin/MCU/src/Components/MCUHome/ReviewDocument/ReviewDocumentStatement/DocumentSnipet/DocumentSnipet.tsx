@@ -53,7 +53,7 @@ export const DocumentSnipet = ({
     if (renameMCUName !== "") {
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      setRenameMCUName(`${renameMCUName}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
+      setRenameMCUName(`${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
     } else {
       setRenameMCUName("") //This will bring either mcuName or clientName with file extension
     }
@@ -77,7 +77,7 @@ export const DocumentSnipet = ({
 
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      newName = `${renameMCUName}${fileExtension}`
+      newName = `${renameMCUName.trim()}${fileExtension}`
 
       const data = { id, requestId, docId, fileId, newName }
 
@@ -138,7 +138,7 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
-                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
+                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9- ]/g, ''))}
                 type="text"
                 size={38}
                 value={renameMCUName}
