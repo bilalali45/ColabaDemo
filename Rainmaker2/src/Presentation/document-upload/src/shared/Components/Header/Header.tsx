@@ -38,7 +38,7 @@ const Header = () => {
                             <div className="s-account pull-right">
                        
                                 <Dropdown className="userdropdown">
-                                <Dropdown.Toggle id="nma"  className="d-name d-none d-sm-block" as="a">
+                                <Dropdown.Toggle id="dname"  className="d-name d-none d-sm-block" as="a">
                                     Hello,
                                     Muhammad Usman
                                     </Dropdown.Toggle>
