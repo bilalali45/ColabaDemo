@@ -17,10 +17,13 @@ export const ReviewDocumentStatement = ({
   currentFileIndex: number
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
+    console.log('getting files')
     try {
+      setLoading(true)
+
       const { id, requestId, docId } = currentDocument
 
       const http = new Http()
@@ -48,14 +51,6 @@ export const ReviewDocumentStatement = ({
     }
   }, [getDocumentFiles, currentDocument])
 
-  if (loading) return (
-    <div className="loader-widget">
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
-    </div>
-  )
-
   return (
     <div
       id="ReviewDocumentStatement"
@@ -65,25 +60,33 @@ export const ReviewDocumentStatement = ({
       <header className="document-statement--header">
         <h2>{currentDocument?.docName}</h2>
       </header>
-      <section className="document-statement--body">
-        <h3>Documents</h3>
-        {!!documentFiles && documentFiles.length ?
-          documentFiles.map((file, index) => <DocumentSnipet
-            key={index}
-            index={index}
-            moveNextFile={moveNextFile}
-            id={currentDocument?.id!}
-            requestId={currentDocument?.requestId!}
-            docId={currentDocument?.docId!}
-            fileId={file.fileId}
-            mcuName={file.mcuName}
-            clientName={file.clientName}
-            currentFileIndex={currentFileIndex}
-          />) : (
-            <span>No file submitted yet</span>
-          )}
-        <hr />
-      </section>
+      {!!loading ? (
+        <div className="loader-widget" style={{ height: '100vh', justifyContent: 'center', alignItems: 'flex-start', display: 'flex' }}>
+          <Spinner animation="grow" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
+          <section className="document-statement--body">
+            <h3>Documents</h3>
+            {!!documentFiles && documentFiles.length ?
+              documentFiles.map((file, index) => <DocumentSnipet
+                key={index}
+                index={index}
+                moveNextFile={moveNextFile}
+                id={currentDocument?.id!}
+                requestId={currentDocument?.requestId!}
+                docId={currentDocument?.docId!}
+                fileId={file.fileId}
+                mcuName={file.mcuName}
+                clientName={file.clientName}
+                currentFileIndex={currentFileIndex}
+              />) : (
+                <span>No file submitted yet</span>
+              )}
+            <hr />
+          </section>
+        )}
     </div>
   );
 };
