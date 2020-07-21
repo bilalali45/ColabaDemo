@@ -71,7 +71,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
         return (
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    <div className={`c-list ${currentTemplate?.name === t.name ? 'active' : ''}`}>
+                    <div className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
                         {t.name}
                     </div>
                 </div>
@@ -96,7 +96,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
                                             return <TemplateItem
                                                 key={t.name}
                                                 template={t}
-                                                isSelected={currentTemplate?.name === t.name}
+                                                isSelected={currentTemplate?.id === t.id}
                                                 changeTemplate={changeCurrentTemplate}
                                                 removeTemlate={removeTemplate} />
                                         }

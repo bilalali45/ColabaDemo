@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, ChangeEvent, Fragment } from 'react'
+import React, { useEffect, useContext, useState, ChangeEvent, Fragment, KeyboardEvent } from 'react'
 import { TemplateItemsList } from './TemplateItemsList/TemplateItemsList'
 import { AddDocument } from '../../AddDocument/AddDocument'
 import checkicon from '../../../../../Assets/images/checkicon.svg'
@@ -72,7 +72,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     }
 
     const renameTemplate = async (value: string) => {
-        if (!value?.length || value?.length > 255) {
+        if (!value?.length || value?.length > 255 || !value.trim().length) {
             return;
         }
         setLoaderVisible(true);
@@ -150,21 +150,22 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                         <input
                             autoFocus
                             value={newNameText}
-                            onChange={(e) => {
+                            onChange={({target: {value}} : ChangeEvent<HTMLInputElement>) => {
                                 // console.log(letterNumber.test(e.target.value));
-                                if(!nameTest.test(e.target.value)) {
+                                if(!nameTest.test(value)) {
                                     return;
                                 }
-                                setNewNameText(e.target.value)
+                                setNewNameText(value)
                             }}
-                            onKeyDown={(e: any) => {
+                            onKeyDown={(e :any) => {
                                 if (e.keyCode === 13) {
                                     renameTemplate(e.target.value);
                                 }
                             }}
                             onBlur={() => renameTemplate(newNameText)}
                             className="editable-TemplateTitle" />
-                        <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span></p>
+                        {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
+                        </p>
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>}
