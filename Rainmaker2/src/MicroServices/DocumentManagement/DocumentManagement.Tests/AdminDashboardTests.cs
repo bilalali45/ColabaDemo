@@ -32,9 +32,12 @@ namespace DocumentManagement.Tests
 
             var admindashboardController = new AdminDashboardController(mock.Object,Mock.Of<ILogger<AdminDashboardController>>());
 
-
+            GetDocuments moGetDocuments = new GetDocuments();
+            moGetDocuments.tenantId = 1;
+            moGetDocuments.loanApplicationId = 1;
+            moGetDocuments.pending = true;
             //Act
-            IActionResult result = await admindashboardController.GetDocuments(1, 1 , true);
+            IActionResult result = await admindashboardController.GetDocuments(moGetDocuments);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -256,9 +259,10 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             adminDashboardController.ControllerContext = context;
-
+            IsDocumentDraft moIsDocumentDraft= new IsDocumentDraft();
+            moIsDocumentDraft.id = "5eb25d1fe519051af2eeb72d";
             //Act
-            IActionResult result = await adminDashboardController.IsDocumentDraft("5eb25d1fe519051af2eeb72d");
+            IActionResult result = await adminDashboardController.IsDocumentDraft(moIsDocumentDraft);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);

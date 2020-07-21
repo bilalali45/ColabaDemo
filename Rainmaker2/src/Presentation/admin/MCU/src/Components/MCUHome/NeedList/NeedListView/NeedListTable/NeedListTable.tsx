@@ -20,7 +20,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         return data.map((item: NeedList, index: number) => {
             return (
                 <div className="tr row-shadow">
-                    <div className="td"><span className="f-normal"><strong>{item.docName}</strong></span></div>
+                    {renderDocName(item.docName, item.status)}
                     {renderStatus(item.status)}
                     {renderFile(item.files)}
                     {renderSyncToLos(item.files)}
@@ -31,6 +31,12 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
 
         })
     };
+    const renderDocName = (name: string, status: string) => {
+        if(status === 'Pending review')
+        return  <div className="td"><span className="f-normal"><strong>{name}</strong></span></div>
+        else 
+        return <div className="td"><span className="f-normal">{name}</span></div>
+    }
     const renderStatus = (status: string) => {
         let cssClass = ''
         switch (status) {

@@ -32,28 +32,28 @@ namespace DocumentManagement.API.Controllers
         #region Get
 
         [HttpGet(template: "GetTemplates")]
-        public async Task<IActionResult> GetTemplates(int tenantId)
+        public async Task<IActionResult> GetTemplates([FromQuery] GetTemplates moGetTemplates)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            var docQuery = await templateService.GetTemplates(tenantId: tenantId,
+            var docQuery = await templateService.GetTemplates(tenantId: moGetTemplates.tenantId,
                                                               userProfileId: userProfileId);
             return Ok(value: docQuery);
         }
 
 
         [HttpGet(template: "GetDocuments")]
-        public async Task<IActionResult> GetDocument(string id)
+        public async Task<IActionResult> GetDocument([FromQuery] GetTemplateDocuments moGetTemplateDocuments)
         {
            
-            var docQuery = await templateService.GetDocument(id: id);
+            var docQuery = await templateService.GetDocument(id: moGetTemplateDocuments.id);
             return Ok(value: docQuery);
         }
 
 
         [HttpGet(template: "GetCategoryDocument")]
-        public async Task<IActionResult> GetCategoryDocument(int tenantId)
+        public async Task<IActionResult> GetCategoryDocument([FromQuery] GetCategoryDocument moGetCategoryDocument)
         {
-            var docQuery = await templateService.GetCategoryDocument(tenantId: tenantId);
+            var docQuery = await templateService.GetCategoryDocument(tenantId: moGetCategoryDocument.tenantId);
             return Ok(value: docQuery);
         }
 

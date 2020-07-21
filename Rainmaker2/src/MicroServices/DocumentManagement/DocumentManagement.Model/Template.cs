@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DocumentManagement.Model
@@ -92,6 +93,25 @@ namespace DocumentManagement.Model
 
         }
 
+        public class GetTemplates
+        {
+            [Required(ErrorMessage = "Field Can't be empty")]
+            public int tenantId { get; set; }
 
+        }
+        public class GetTemplateDocuments
+        {
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+            [Required(ErrorMessage = "Field Can't be empty")]
+            public string id { get; set; }
+
+        }
+
+        public class GetCategoryDocument
+        {
+            [Required(ErrorMessage = "Field Can't be empty")]
+            public int tenantId { get; set; }
+
+        }
     }
 }

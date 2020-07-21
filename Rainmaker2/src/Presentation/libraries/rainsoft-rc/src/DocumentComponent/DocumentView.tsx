@@ -25,6 +25,7 @@ interface DocumentViewProps {
   hideViewer: (currentDoc: any) => void
   file?: any
   loading?: boolean
+  showCloseBtn?: boolean
 }
 
 interface DocumentParamsType {
@@ -44,7 +45,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   tenantId,
   blobData,
   submittedDocumentCallBack,
-  loading = false
+  loading = false,
+  showCloseBtn = true
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -162,14 +164,19 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                 </li>
               </Fragment>
             )}
-            <li>
-              <button
+           
+              { showCloseBtn &&
+                 <li>
+                <button
                 className='document-view--button'
                 onClick={() => hideViewer(false)}
               >
                 <SVGclose />
               </button>
-            </li>
+              </li>
+              }
+              
+            
           </ul>
         </div>
 
@@ -206,7 +213,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             zoomOut: any
             resetTransform: any
           }) => (
-            <div>
+            <div className='wrap-zoom-view'>
               <TransformComponent>
                 <div className='document-view--body'>
                   {!!documentParams.filePath && !loading ? (

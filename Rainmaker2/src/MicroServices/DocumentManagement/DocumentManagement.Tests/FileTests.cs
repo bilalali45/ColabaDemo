@@ -359,12 +359,12 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
-
+           
             // also check the 'http' call was like we expected it
             // Act  
             FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>());
             controller.ControllerContext = context;
-            IActionResult result = await controller.View(fileViewModel.id, fileViewModel.requestId, fileViewModel.docId, fileViewModel.fileId, fileViewModel.tenantId);
+            IActionResult result = await controller.View(fileViewModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<FileStreamResult>(result);

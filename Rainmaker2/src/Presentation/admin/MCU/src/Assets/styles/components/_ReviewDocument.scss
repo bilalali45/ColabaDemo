@@ -4,6 +4,7 @@
         background-color: color('ReviewDocumentHeaderBg');
         color: color('ReviewDocumentHeaderText');
         padding: 15px;
+        border-bottom:1px solid color('border');
         
         h2{
             font-family: fontFamily('base'); 
@@ -92,6 +93,11 @@
             padding: 0;
         }
         
+    }
+
+    .no-preview{
+        min-height: calc(100vh - 180px);
+        background-color: color('widgetBg');
     }
 
 }

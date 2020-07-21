@@ -26,7 +26,7 @@ namespace Identity.Services
 
         public async Task<string> GetJwtSecurityKeyAsync()
         {
-            var httpClient = _clientFactory.CreateClient();
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
             var jwtKeyResponse = await httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT");
             if (!jwtKeyResponse.IsSuccessStatusCode)
             {
@@ -37,7 +37,7 @@ namespace Identity.Services
 
         public  string GetJwtSecurityKey()
         {
-            var httpClient = _clientFactory.CreateClient();
+            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
             var jwtKeyResponse = AsyncHelper.RunSync(() =>  httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
 
             if (!jwtKeyResponse.IsSuccessStatusCode)

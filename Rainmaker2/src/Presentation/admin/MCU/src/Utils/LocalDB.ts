@@ -45,10 +45,6 @@ export class LocalDB {
     return localStorage.getItem("tenantId") || "";
   }
 
-  static getBusinessUnitId() {
-    return localStorage.getItem("businessUnitId") || "";
-  }
-
   //#endregion
 
   //#region Local DB Post Methods
@@ -98,7 +94,7 @@ export class LocalDB {
 
   //#region Remove Auth
   static removeAuth() {
-    let items = ["auth", "payload", "refreshToken"];
+    let items = ["token", "payload", "refreshToken"];
     for (const item of items) {
       localStorage.removeItem(item);
     }

@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Http } from "rainsoft-js";
+
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
 import { SVGeditFile } from "../../../../../Shared/SVG";
-
+import { DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
 
 export const DocumentSnipet = ({
   index,
   moveNextFile,
   clientName,
-  active,
   mcuName,
   id,
   requestId,
   docId,
   fileId,
-  currentFileIndex
+  currentFileIndex,
+  uploadedOn,
+  username
 }: {
   index: number,
-  moveNextFile: (index: number) => void
+  moveNextFile: (index: number, fileId: string, clientName: string) => void
   clientName: string;
   id: string
   requestId: string
   docId: string
   fileId: string
   mcuName: string
-  active?: string;
   currentFileIndex: number
+  uploadedOn: string
+  username: string
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
 
@@ -52,7 +56,7 @@ export const DocumentSnipet = ({
     if (renameMCUName !== "") {
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      setRenameMCUName(`${renameMCUName}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
+      setRenameMCUName(`${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
     } else {
       setRenameMCUName("") //This will bring either mcuName or clientName with file extension
     }
@@ -60,9 +64,13 @@ export const DocumentSnipet = ({
     setEditingModeEnabled(false)
   }
 
-  const renameDocumentMCU = async (event: any) => {
+  const renameDocumentMCU = async (event?: any) => {
+    let newName: string
+
     try {
-      event.stopPropagation()
+      if (event) {
+        event.stopPropagation()
+      }
 
       //this condition will cancel API call if field is empty or name is unchanged or equal to mcuname or client name
       //if true this condtion will cancel edit.
@@ -71,11 +79,13 @@ export const DocumentSnipet = ({
       }
 
       const fileExtension = getFileExtension(mcuName || clientName)
-      const newName = `${renameMCUName}${fileExtension}`
+
+      newName = `${renameMCUName.trim()}${fileExtension}`
 
       const data = { id, requestId, docId, fileId, newName }
 
       const http = new Http()
+
       await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
         ...data
       })
@@ -84,14 +94,16 @@ export const DocumentSnipet = ({
       setEditingModeEnabled(() => false)
     } catch (error) {
       console.log('error', error)
-      setRenameMCUName(mcuName || clientName)
+
+      setRenameMCUName(() => newName)
       setEditingModeEnabled(false)
     }
   }
 
   const moveNext = (event: any) => {
     event.stopPropagation()
-    moveNextFile(index)
+
+    moveNextFile(index, fileId, clientName)
   }
 
   const eventBubblingHandler = (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
@@ -107,9 +119,21 @@ export const DocumentSnipet = ({
     }
   }
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      renameDocumentMCU()
+    }
+  }
+
   useEffect(() => {
     setRenameMCUName(mcuName || clientName)
   }, [setRenameMCUName, mcuName, clientName])
+
+  useEffect(() => {
+    if (editingModeEnabled) {
+      inputRef.current?.focus()
+    }
+  }, [editingModeEnabled])
 
   return (
     <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
@@ -118,22 +142,22 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
-                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
+                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9- ]/g, ''))}
                 type="text"
                 size={38}
                 value={renameMCUName}
                 onClick={event => event.stopPropagation()}
+                onBlur={() => renameDocumentMCU()}
+                onKeyDown={onKeyDown}
+                ref={inputRef}
               />
-              <button className="document-snipet-btn-ok" id="rename" onClick={eventBubblingHandler}>
-                <em className="zmdi zmdi-check"></em>
-              </button>
             </React.Fragment>
           ) : (
               renameMCUName || mcuName || clientName
             )}
         </div>
         <small className="document-snipet--detail">
-          By Richard Glenn Randall on Apr 17, 2020 at 4:31 AM
+          {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
       </div>
       <div className="document-snipet--right">
