@@ -3,8 +3,7 @@ import { DocumentSnipet } from "./DocumentSnipet/DocumentSnipet";
 import { NeedListDocumentType, NeedListDocumentFileType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
 import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
-
-
+import Spinner from "react-bootstrap/Spinner";
 
 export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
@@ -18,6 +17,7 @@ export const ReviewDocumentStatement = ({
   currentFileIndex: number
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
+  const [loading, setLoading] = useState(true)
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
@@ -32,8 +32,12 @@ export const ReviewDocumentStatement = ({
       typeIdAndIdForActivityLogs(id, typeId || docName)
 
       setDocumentFiles(files)
+      setLoading(false)
     } catch (error) {
       console.log(error)
+
+      setLoading(false)
+
       alert('Something went wrong while getting files for document. Please try again.')
     }
   }, [setDocumentFiles])
@@ -43,6 +47,14 @@ export const ReviewDocumentStatement = ({
       getDocumentFiles(currentDocument)
     }
   }, [getDocumentFiles, currentDocument])
+
+  if (loading) return (
+    <div className="loader-widget">
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    </div>
+  )
 
   return (
     <div
@@ -55,7 +67,6 @@ export const ReviewDocumentStatement = ({
       </header>
       <section className="document-statement--body">
         <h3>Documents</h3>
-        {/* <DocumentSnipet status="active" /> */}
         {!!documentFiles && documentFiles.length ?
           documentFiles.map((file, index) => <DocumentSnipet
             key={index}
@@ -71,15 +82,7 @@ export const ReviewDocumentStatement = ({
           />) : (
             <span>No file submitted yet</span>
           )}
-
         <hr />
-
-        {/* <div className="clearfix">
-          <span className="float-right activity-logs-icon">
-            <em className="icon-letter"></em>
-          </span>
-          <h3>Activity Logs</h3>
-        </div> */}
       </section>
     </div>
   );
