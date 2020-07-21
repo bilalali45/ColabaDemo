@@ -7,13 +7,10 @@ import _ from 'lodash'
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
-import {
-  NeedListDocumentType,
-  DocumentParamsType,
-} from "../../../Entities/Types/Types";
+import { NeedListDocumentType, DocumentParamsType } from "../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
 import { LocalDB } from "../../../Utils/LocalDB";
-
+import emptyIcon from '../../../Assets/images/empty-icon.svg';
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<
     NeedListDocumentType
@@ -188,8 +185,9 @@ export const ReviewDocument = () => {
 
       <div className="review-document-body">
         <div className="row">
-          <div className="review-document-body--content col-md-8">
+          
             {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+              <div className="review-document-body--content col-md-8">
               <div className="doc-view-mcu">
                 <DocumentView
                   loading={loading}
@@ -203,13 +201,22 @@ export const ReviewDocument = () => {
                   hideViewer={() => { }}
                 />
               </div>
-
+            </div>
             ) : (
-                <h3>No preview available</h3>
+                <div className="no-preview">
+                  <div className="no-preview--wrap">
+                    <div className="clearfix">
+                    <img src={emptyIcon} alt="No preview available" />
+                    </div>
+                    <h2>Nothing In Bank Statement</h2>
+                    <p>No file submitted yet</p>
+                  </div>
+                </div>
               )}
 
-          </div>
+          
           {/* review-document-body--content */}
+          {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
           <aside className="review-document-body--aside col-md-4">
             <ReviewDocumentStatement
               typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
@@ -218,6 +225,8 @@ export const ReviewDocument = () => {
               currentFileIndex={currentFileIndex}
             />
           </aside>
+          ) : (" ")}
+          
           {/* review-document-body--aside */}
         </div>
       </div>

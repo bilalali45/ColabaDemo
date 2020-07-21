@@ -11,7 +11,7 @@ import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBo
 import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
-import { debug } from 'console'
+import { nameTest } from '../TemplateHome';
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -113,7 +113,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const renderDocumentList = () => {
         return (
             <div className="ST-content-Wrap">
-                <ul>
+                <ul className="ul-ST-content">
                     {
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
@@ -150,7 +150,13 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                         <input
                             autoFocus
                             value={newNameText}
-                            onChange={(e) => setNewNameText(e.target.value)}
+                            onChange={(e) => {
+                                // console.log(letterNumber.test(e.target.value));
+                                if(!nameTest.test(e.target.value)) {
+                                    return;
+                                }
+                                setNewNameText(e.target.value)
+                            }}
                             onKeyDown={(e: any) => {
                                 if (e.keyCode === 13) {
                                     renameTemplate(e.target.value);
@@ -179,7 +185,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
-
         </section>
     )
 }
