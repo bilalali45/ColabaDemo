@@ -144,12 +144,13 @@ export class UserActions {
         );
         await UserActions.refreshToken();
       }, time - 2000);
-    } else {
-      console.log("Logout called in case when payload is empty");
-      LocalDB.removeAuth();
-      //window.open("/Login/LogOff", "_self");
-      window.top.location.href = "/Login/LogOff";
     }
+    // else {
+    //   console.log("Logout called in case when payload is empty");
+    //   LocalDB.removeAuth();
+    //   //window.open("/Login/LogOff", "_self");
+    //   window.top.location.href = "/Login/LogOff";
+    // }
   }
 
   static keepAliveParentApp = () => {

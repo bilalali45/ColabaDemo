@@ -113,7 +113,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const renderDocumentList = () => {
         return (
             <div className="ST-content-Wrap">
-                <ul>
+                <ul className="ul-ST-content">
                     {
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
@@ -186,7 +186,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
-
         </section>
     )
 }
