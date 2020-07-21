@@ -94,8 +94,8 @@
 }
     .d-name {
         color: color('light-purple');  
-        font: 400 #{fontSize("nr")+"/30px"} fontFamily("heading");
-        margin-right: 10px;
+        font: 400 #{fontSize("nr")+"/1"} fontFamily("heading");
+        padding-right: 10px;
         position: relative;
         cursor: pointer;
         margin-top: 5px;
