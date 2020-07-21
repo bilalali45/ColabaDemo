@@ -295,6 +295,13 @@ console.log('fileLimitError.value',fileLimitError.value)
                 style={{ display: "none" }}
               />
             </a>
+            {fileLimitError.value ? 
+            <p className="text-danger">
+            Only 10 files can be uploaded per document. Please contact us if you'd like to upload more files.
+            </p>
+            :
+            ""
+            }
           </div>
         </div>
         {!!currentDoc && (
