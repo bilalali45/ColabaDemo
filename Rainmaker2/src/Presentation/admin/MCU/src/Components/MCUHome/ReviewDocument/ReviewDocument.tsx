@@ -39,6 +39,8 @@ export const ReviewDocument = () => {
 
   const [blobData, setBlobData] = useState<any>();
 
+  const documentsForReviewArrayIndexes = () => _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
+
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId, tenantId) => {
       const params = {
@@ -82,7 +84,7 @@ export const ReviewDocument = () => {
   );
 
   const nextDocument = useCallback(() => {
-    const indexes = _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
+    const indexes = documentsForReviewArrayIndexes()
 
     const indexOfReivew = indexes.findIndex(value => Number(value) > navigationIndex)
 
@@ -100,7 +102,7 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
-    const indexes = _.reverse(_.keys(_.pickBy(documentList1, { status: 'Pending review' })))
+    const indexes = _.reverse(documentsForReviewArrayIndexes())
 
     const indexOfReivew = navigationIndex === 1 ? 0 : indexes.findIndex(value => Number(value) < navigationIndex)
 
@@ -176,18 +178,16 @@ export const ReviewDocument = () => {
       <ReviewDocumentHeader
         id={typeIdId.id}
         typeId={typeIdId.typeId}
-        documentDetail={documentDetail}
+        documentDetail={documentDetail || documentsForReviewArrayIndexes().length === 0}
         buttonsEnabled={!loading}
         onClose={goBack}
         nextDocument={nextDocument}
         previousDocument={previousDocument}
       />
-
       <div className="review-document-body">
         <div className="row">
-          
-            {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
-              <div className="review-document-body--content col-md-8">
+          {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+            <div className="review-document-body--content col-md-8">
               <div className="doc-view-mcu">
                 <DocumentView
                   loading={loading}
@@ -202,31 +202,28 @@ export const ReviewDocument = () => {
                 />
               </div>
             </div>
-            ) : (
-                <div className="no-preview">
-                  <div className="no-preview--wrap">
-                    <div className="clearfix">
+          ) : (
+              <div className="no-preview">
+                <div className="no-preview--wrap">
+                  <div className="clearfix">
                     <img src={emptyIcon} alt="No preview available" />
-                    </div>
-                    <h2>Nothing In Bank Statement</h2>
-                    <p>No file submitted yet</p>
                   </div>
+                  <h2>Nothing In Bank Statement</h2>
+                  <p>No file submitted yet</p>
                 </div>
-              )}
-
-          
+              </div>
+            )}
           {/* review-document-body--content */}
-          {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
-          <aside className="review-document-body--aside col-md-4">
-            <ReviewDocumentStatement
-              typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
-              moveNextFile={moveNextFile}
-              currentDocument={!!currentDocument ? currentDocument : null}
-              currentFileIndex={currentFileIndex}
-            />
-          </aside>
-          ) : (" ")}
-          
+          {!!currentDocument && currentDocument.files && currentDocument.files.length && (
+            <aside className="review-document-body--aside col-md-4">
+              <ReviewDocumentStatement
+                typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
+                moveNextFile={moveNextFile}
+                currentDocument={!!currentDocument ? currentDocument : null}
+                currentFileIndex={currentFileIndex}
+              />
+            </aside>
+          )}
           {/* review-document-body--aside */}
         </div>
       </div>

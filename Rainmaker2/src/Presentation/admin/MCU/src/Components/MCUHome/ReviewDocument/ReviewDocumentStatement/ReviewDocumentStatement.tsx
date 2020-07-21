@@ -62,7 +62,7 @@ export const ReviewDocumentStatement = ({
       </header>
       {!!loading ? (
         <div className="loader-widget" style={{ height: '100vh', justifyContent: 'center', alignItems: 'flex-start', display: 'flex' }}>
-          <Spinner animation="grow" role="status">
+          <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         </div>
