@@ -241,7 +241,7 @@ export const DocumentItem = ({
             </div>
             <div className="doc-list-content">
               {renderFileTitle()}
-              {renderFileContent()}
+              {/* {renderFileContent()} */}
             </div>
             {renderDocListActions()}
           </div>
