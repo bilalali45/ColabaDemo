@@ -54,6 +54,7 @@ namespace Rainmaker.Service
                 .Include(x=>x.Borrowers).ThenInclude(x=>x.LoanContact)
                 .Include(x=>x.Product)
                 .Include(x=>x.Opportunity).ThenInclude(x=>x.OpportunityLockStatusLogs).ThenInclude(x=>x.LockStatusList)
+                .Include(x=>x.Opportunity).ThenInclude(x=>x.StatusList)
                 .Select(x => new AdminLoanSummary
                 {
                     CityName = x.PropertyInfo.AddressInfo.CityName,
@@ -66,7 +67,7 @@ namespace Rainmaker.Service
                     ZipCode = x.PropertyInfo.AddressInfo.ZipCode,
                     CountryName = x.PropertyInfo.AddressInfo.CountryName,
                     UnitNumber = x.PropertyInfo.AddressInfo.UnitNo,
-                    Status = x.StatusList.Name,
+                    Status = x.Opportunity.StatusList.Name,
                     Borrowers = x.Borrowers.OrderBy(y=>y.OwnTypeId).Select(y=>(string.IsNullOrEmpty(y.LoanContact.FirstName)? "" : y.LoanContact.FirstName)+" "+(string.IsNullOrEmpty(y.LoanContact.LastName) ? "" : y.LoanContact.LastName)).ToList(),
                     LoanNumber = x.LoanNumber,
                     ExpectedClosingDate = x.ExpectedClosingDate,
