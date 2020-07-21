@@ -329,6 +329,15 @@
                 cursor: pointer;
                 font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
                 color: color("primary");
+                &.disabled {
+                    pointer-events: none;
+                    color: color('disabled'); 
+                    -webkit-user-select: none;     
+                    -moz-user-select: none; 
+                    -ms-user-select: none; 
+                    -o-user-select: none;
+                    user-select: none;
+                }
             }
         }
     }

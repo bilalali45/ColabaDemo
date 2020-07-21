@@ -285,7 +285,7 @@ console.log('fileLimitError.value',fileLimitError.value)
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "disbale-addmoreDoc"} onClick={(e) => {addMore(e);}}> Add more files
+            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "addmoreDoc disabled"} onClick={(e) => {addMore(e);}}> Add more files
               <input
                 type="file"
                 accept={FileUpload.allowedExtensions}
