@@ -108,14 +108,12 @@ const App = () => {
           debounce={250}
           timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
         />
-        {/* <RainsoftRcHeader
+        <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
           displayName={UserActions.getUserName()}
           displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
-        /> */}
-        <Header />
-
+        />
         <Router basename="/DocumentManagement">
           <Switch>
             <Authorized path="/" component={Home} />
