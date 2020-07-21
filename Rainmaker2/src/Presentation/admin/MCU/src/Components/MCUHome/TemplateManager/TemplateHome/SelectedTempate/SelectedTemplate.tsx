@@ -13,6 +13,7 @@ import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocumen
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
+import { Loader } from "../../../../../Shared/components/loader";
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -138,7 +139,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
-                                                <span>
+                                                <span className="BTNloader"> 
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
@@ -203,7 +204,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         )
     }
 
-    if (!templates) return <p>...loading...</p>
+    if (!templates) return <Loader containerHeight={"100%"} />;
 
     return (
         <section className="veiw-SelectedTemplate">
@@ -214,7 +215,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
-            {templateDocuments?.length ? renderDocumentList() : ''}
+            {templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}

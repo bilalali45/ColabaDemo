@@ -34,8 +34,9 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
             </div>
 
             <div className="others-doc-list">
-                <div className="active-docs"><ul>
-                    {/* <li>Bank Statement</li>
+                <div className="active-docs">
+                    <ul className="ul-others-doc">
+                        {/* <li>Bank Statement</li>
                     <li>W-2s 2017</li>
                     <li>W-2s 2018</li>
                     <li>Personal Tax Returns</li>
@@ -45,7 +46,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <li>Alimony Income Verification</li>
                     <li>Bank  statement</li>
                     <li>Pay slip</li> */}
-                </ul>
+                    </ul>
                 </div>
             </div>
             <div className="others-doc-input-wrap">
@@ -55,11 +56,11 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <input value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
-                        {requestSent ? <span>
+                        {requestSent ? <button className="btn btn-primary btn-sm">
                             <Spinner size="sm" animation="border" role="status">
-                                <span className="sr-only">Loading...</span>
+                            <span className="sr-only">Loading...</span>
                             </Spinner>
-                        </span> :
+                        </button> :
                             <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
                     </div>
                 </div>
