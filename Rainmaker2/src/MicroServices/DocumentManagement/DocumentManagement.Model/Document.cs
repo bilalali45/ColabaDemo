@@ -1,12 +1,13 @@
 ﻿using DocumentManagement.Entity;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace DocumentManagement.Model
 {
-
-
     public class DocumentDetailQuery
     {
         [BsonId]
@@ -19,18 +20,13 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string typeName { get; set; }
         public List<RequestFile> files { get; set; }
-
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId;
         public string userName { get; set; }
     }
 
-
-  
     public class DocumendDTO
     {
-       
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
@@ -40,7 +36,6 @@ namespace DocumentManagement.Model
         public string requestId { get; set; }
         public  List<DocumentFileDTO> files { get; set; }
         public string userName { get; set; }
-
     }
 
     public class DocumentFileDTO
@@ -49,7 +44,6 @@ namespace DocumentManagement.Model
         public string clientName { get; set; }
         public string mcuName { get; set; }
         public DateTime fileUploadedOn { get; set; }
-
     }
     public class TemplateIdModel
     {
@@ -75,16 +69,29 @@ namespace DocumentManagement.Model
 
     public class AcceptDocumentModel
     {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string docId { get; set; }
     }
 
     public class RejectDocumentModel
     {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string docId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string message { get; set; }
     }
     public class DeleteDocumentModel
@@ -93,7 +100,74 @@ namespace DocumentManagement.Model
         public int tenantId { get; set; }
         public string documentId { get; set; } 
     }
-    
+
+    public class GetFiles
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$",ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "id")]
+        public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
+    }
+
+    public class GetActivityLog
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "id")]
+        public string id { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "typeId")]
+        public string typeId { get; set; }
+        [RegularExpression(@"^[A-Za-z0-9\s-]{255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docName")]
+        public string docName { get; set; }
+    }
+
+    public class GetEmailLog
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "id")]
+        public string id { get; set; }
+    }
+    public class View
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "id")]
+        public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$",ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "fileId")]
+        public string fileId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+    }
+    public class GetDocumentsByTemplateIds
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public  string[] id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        public int tenantId { get; set; }
+    }
 }
 
 

@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -22,18 +26,12 @@ namespace DocumentManagement.API.Controllers
             this.adminDashboardService = adminDashboardService;
             this.logger = logger;
         }
-
-
-        [HttpGet(template: "GetDocuments")]
-        public async Task<IActionResult> GetDocuments(int loanApplicationId,
-                                                      int tenantId,
-                                                      bool pending)
+        [HttpGet("GetDocuments")]
+        public async Task<IActionResult> GetDocuments([FromQuery] GetDocuments moGetDocuments)
         {
-            logger.LogInformation(message: $"GetDocuments requested for {loanApplicationId} from tenantId {tenantId} and value of pending is {pending}");
-            var docQuery = await adminDashboardService.GetDocument(loanApplicationId: loanApplicationId,
-                                                                   tenantId: tenantId,
-                                                                   pending: pending);
-            return Ok(value: docQuery);
+            logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {moGetDocuments.tenantId} and value of pending is {moGetDocuments.pending}");
+            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
+            return Ok(docQuery);
         }
 
 
@@ -47,17 +45,14 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
-
-        [HttpGet(template: "IsDocumentDraft")]
-        public async Task<IActionResult> IsDocumentDraft(string id)
+        [HttpGet("IsDocumentDraft")]
+        public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft)
         {
-            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-
-            var docQuery = await adminDashboardService.IsDocumentDraft(id: id,
-                                                                       userId: userProfileId);
-            if (!string.IsNullOrEmpty(value: docQuery))
-                logger.LogInformation(message: $"Draft exists for user {userProfileId}, loan application {id}");
-            return Ok(value: docQuery);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
+            if (!string.IsNullOrEmpty(docQuery))
+                logger.LogInformation($"Draft exists for user {userProfileId}, loan application {moIsDocumentDraft.id}");
+            return Ok(docQuery);
         }
     }
 }
