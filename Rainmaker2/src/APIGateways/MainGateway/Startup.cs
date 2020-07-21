@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using IdentityServer4.AccessTokenValidation;
@@ -44,7 +45,9 @@ namespace MainGateway
                 options.AddDefaultPolicy(
                                          builder =>
                                          {
-                                             builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                             builder.AllowAnyHeader().AllowAnyMethod();
+                                             var itemArray = Configuration.GetSection("AllowedOrigins").GetChildren().Select(c => c.Value).ToArray();
+                                             builder.WithOrigins(itemArray);
                                          });
             });
 
