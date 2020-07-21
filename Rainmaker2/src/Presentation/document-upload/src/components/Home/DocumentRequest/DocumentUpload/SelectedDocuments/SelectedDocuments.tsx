@@ -285,7 +285,7 @@ console.log('fileLimitError.value',fileLimitError.value)
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "disbale-addmoreDoc"} onClick={(e) => {addMore(e);}}> Add more files
+            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "disbale-text"} onClick={(e) => {addMore(e);}}> Add more files
               <input
                 type="file"
                 accept={FileUpload.allowedExtensions}
@@ -295,6 +295,13 @@ console.log('fileLimitError.value',fileLimitError.value)
                 style={{ display: "none" }}
               />
             </a>
+            {fileLimitError.value ? 
+            <p className="text-danger">
+            Only 10 files can be uploaded per document. Please contact us if you'd like to upload more files.
+            </p>
+            :
+            ""
+            }
           </div>
         </div>
         {!!currentDoc && (
