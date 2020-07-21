@@ -1,11 +1,10 @@
 import React, {
   useState,
-  ChangeEvent,
   useContext,
-  useEffect,
   useRef,
   Fragment,
 } from "react";
+
 import {
   DocumentDropBox,
   FileDropper,
@@ -35,15 +34,14 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
-    
-    
+
     let files = selectedfiles.filter(f => f.uploadProgress > 0 && f.uploadStatus === 'pending').length > 0;
 
-    if(files) {
+    if (files) {
       setshowAlert(true);
       return;
     }
-    
+
     if (fileInput?.value) {
       fileInput.value = "";
     }
@@ -63,7 +61,7 @@ export const DocumentUpload = () => {
       };
     }
   };
-  
+
   return (
     <section className="Doc-upload" ref={parentRef}>
       <FileDropper

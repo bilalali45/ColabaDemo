@@ -262,7 +262,7 @@ export const SelectedDocuments = ({
       setDoneVisible(true);
     }
   };
-
+console.log('fileLimitError.value',fileLimitError.value)
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -285,13 +285,7 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            <a
-              className="addmoreDoc"
-              onClick={(e) => {
-                addMore(e);
-              }}
-            >
-              {selectedFiles.length < 10 && "Add more files"}
+            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "disbale-addmoreDoc"} onClick={(e) => {addMore(e);}}> Add more files
               <input
                 type="file"
                 accept={FileUpload.allowedExtensions}
@@ -314,7 +308,8 @@ export const SelectedDocuments = ({
         )}
       </div>
       <div className="doc-upload-footer">
-        {doneVisible ? (
+        {doneVisible ? 
+        (
           <div className="doc-confirm-wrap">
             <div className="row">
               <div className="col-sm-7">
@@ -345,17 +340,7 @@ export const SelectedDocuments = ({
               </div>
             </div>
           </div>
-        ) : fileLimitError.value ? (
-          <p className="text-danger">
-            Only 10 files can be uploaded per document.{" "}
-            <i
-              onClick={() => {
-                setFileLimitError({ value: false });
-              }}
-              className="zmdi zmdi-close"
-            ></i>
-          </p>
-        ) : (
+        )  : (
           <div className="doc-submit-wrap">
             {!doneHit && (
               <button

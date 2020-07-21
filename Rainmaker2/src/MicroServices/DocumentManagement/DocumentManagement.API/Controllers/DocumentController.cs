@@ -49,53 +49,50 @@ namespace DocumentManagement.API.Controllers
         #region Action Methods
 
        
-        [HttpGet(template: "[action]")]
-        public async Task<IActionResult> GetDocumentsByTemplateIds([FromQuery(Name = "id")]string[] id, int tenantId)
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetDocumentsByTemplateIds requested by {userProfileId}");
-            var docQuery = await documentService.GetDocumentsByTemplateIds(id.ToList(), tenantId);
+            var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), getDocumentsByTemplateIds.tenantId);
             return Ok(value: docQuery);
         }
 
 
         
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> GetFiles(string id,
-                                                  string requestId,
-                                                  string docId)
+        public async Task<IActionResult> GetFiles([FromQuery] GetFiles getFiles)
+
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetFiles requested by {userProfileId}");
-            return Ok(value: await documentService.GetFiles(id: id,
-                                                            requestId: requestId,
-                                                            docId: docId));
+            return Ok(value: await documentService.GetFiles(id: getFiles.id,
+                                                            requestId: getFiles.requestId,
+                                                            docId: getFiles.docId));
         }
 
 
          
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> GetActivityLog(string id,
-                                                        string typeId,
-                                                        string docName)
+        public async Task<IActionResult> GetActivityLog([FromQuery] GetActivityLog getActivityLog)
 
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetActivityLog requested by {userProfileId}");
-            return Ok(value: await documentService.GetActivityLog(id: id,
-                                                                  typeId: typeId,
-                                                                  docName: docName));
+            return Ok(value: await documentService.GetActivityLog(id: getActivityLog.id,
+                                                                  typeId: getActivityLog.typeId,
+                                                                  docName: getActivityLog.docName));
         }
 
 
          
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> GetEmailLog(string id)
+        public async Task<IActionResult> GetEmailLog([FromQuery] GetEmailLog getEmailLog)
 
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetEmailLog requested by {userProfileId}");
-            return Ok(value: await documentService.GetEmailLog(id: id));
+            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id));
         }
 
 
@@ -155,22 +152,18 @@ namespace DocumentManagement.API.Controllers
 
 
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> View(string id,
-                                              string requestId,
-                                              string docId,
-                                              string fileId,
-                                              int tenantId)
+        public async Task<IActionResult> View([FromQuery] View view)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"document {docId} is viewed by {userProfileId}");
+            logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
             var model = new FileViewModel
                         {
-                            docId = docId,
-                            fileId = fileId,
-                            id = id,
-                            requestId = requestId,
-                            tenantId = tenantId
-                        };
+                            docId = view.docId,
+                            fileId = view.fileId,
+                            id = view.id,
+                            requestId = view.requestId,
+                            tenantId = view.tenantId
+            };
 
             var fileviewdto = await documentService.View(model,
                                                          userProfileId,
