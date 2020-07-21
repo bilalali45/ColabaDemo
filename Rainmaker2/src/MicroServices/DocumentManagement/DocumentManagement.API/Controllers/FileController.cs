@@ -93,7 +93,7 @@ namespace DocumentManagement.API.Controllers
                                                             docId: docId,
                                                             clientName: formFile.FileName,
                                                             serverName: Path.GetFileName(path: filePath),
-                                                            size: (int) formFile.Length,
+                                                            size: (int)formFile.Length,
                                                             encryptionKey: key,
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
@@ -103,13 +103,13 @@ namespace DocumentManagement.API.Controllers
 
             // set order
             var model = new FileOrderModel
-                        {
-                            id = id,
-                            docId = docId,
-                            requestId = requestId,
-                            files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
-                            tenantId = tenantId
-                        };
+            {
+                id = id,
+                docId = docId,
+                requestId = requestId,
+                files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
+                tenantId = tenantId
+            };
             await fileService.Order(model: model,
                                     userProfileId: userProfileId);
             return Ok();
@@ -161,22 +161,18 @@ namespace DocumentManagement.API.Controllers
         #region Get Actions
 
         [HttpGet(template: "[action]")]
-        public async Task<IActionResult> View(string id,
-                                              string requestId,
-                                              string docId,
-                                              string fileId,
-                                              int tenantId)
+        public async Task<IActionResult> View([FromQuery] FileViewModel moView)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var model = new FileViewModel
-                        {
-                            docId = docId,
-                            fileId = fileId,
-                            id = id,
-                            requestId = requestId,
-                            tenantId = tenantId
-                        };
-            logger.LogInformation($"document {docId} is viewed by {userProfileId}");
+            {
+                docId = moView.docId,
+                fileId = moView.fileId,
+                id = moView.id,
+                requestId = moView.requestId,
+                tenantId = moView.tenantId
+            };
+            logger.LogInformation($"document { moView.docId} is viewed by {userProfileId}");
             var fileviewdto = await fileService.View(model: model,
                                                      userProfileId: userProfileId,
                                                      ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());

@@ -37,9 +37,10 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             templateController.ControllerContext = context;
-
+            GetTemplates moGetTemplates= new GetTemplates();
+            moGetTemplates.tenantId = 1;
             //Act
-            IActionResult result = await templateController.GetTemplates(1);
+            IActionResult result = await templateController.GetTemplates(moGetTemplates);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -197,9 +198,10 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             templateController.ControllerContext = context;
-
+            GetTemplateDocuments moGetTemplateDocuments=new GetTemplateDocuments();
+            moGetTemplateDocuments.id = "5eb25acde519051af2eeb111";
             //Act
-            IActionResult result = await templateController.GetDocument("5eba77905561502c495f6444");
+            IActionResult result = await templateController.GetDocument(moGetTemplateDocuments);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -269,8 +271,10 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             var service = new TemplateService(mock.Object);
+            GetTemplateDocuments moGetTemplateDocuments = new GetTemplateDocuments();
+            moGetTemplateDocuments.id = "5eb25acde519051af2eeb111";
             //Act
-            List<TemplateDTO> dto = await service.GetDocument("5eba77905561502c495f6333");
+            List<TemplateDTO> dto = await service.GetDocument(Id:moGetTemplateDocuments.id);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(4, dto.Count);
@@ -528,9 +532,10 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.GetCategoryDocument(It.IsAny<int>())).ReturnsAsync(list);
 
             var templateController = new TemplateController(mock.Object);
-
+            GetCategoryDocument moGetCategoryDocument= new GetCategoryDocument();
+            moGetCategoryDocument.tenantId = 1;
             //Act
-            IActionResult result = await templateController.GetCategoryDocument(It.IsAny<int>());
+            IActionResult result = await templateController.GetCategoryDocument(moGetCategoryDocument);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
