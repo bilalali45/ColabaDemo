@@ -21,9 +21,9 @@ namespace DocumentManagement.Service
         }
         public async Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
               @"{""$match"": {
 
                   ""_id"": " + new ObjectId(id).ToJson() + @" 
@@ -264,7 +264,7 @@ namespace DocumentManagement.Service
         }
         public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
@@ -280,9 +280,9 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId( requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId( docId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId( requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId( docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
                 }
             });
 
@@ -306,8 +306,8 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
                 }
 
             });
@@ -345,8 +345,8 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
                 }
 
             });
@@ -375,8 +375,8 @@ namespace DocumentManagement.Service
                 {
                     ArrayFilters = new List<ArrayFilterDefinition>()
                     {
-                        new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-                        new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
                     }
 
                 });
@@ -439,9 +439,9 @@ namespace DocumentManagement.Service
         }
         public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
               @"{""$match"": {
 
                   ""_id"": " + new ObjectId(model.id).ToJson() + @" ,

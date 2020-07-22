@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,10 +58,17 @@ namespace DocumentManagement.API.Controllers
         #region Post Actions
 
         [HttpPost(template: "[action]")]
-        public async Task<IActionResult> Submit([FromForm] string id,
+        public async Task<IActionResult> Submit([Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+                                                [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+                                                [FromForm] string id,
+                                                [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+                                                [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] string requestId,
+                                                [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+                                                [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] string docId,
                                                 [FromForm] string order,
+                                                [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] int tenantId,
                                                 List<IFormFile> files)
         {

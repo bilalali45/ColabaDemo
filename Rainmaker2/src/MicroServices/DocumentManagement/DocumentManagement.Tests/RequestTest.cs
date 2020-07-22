@@ -64,27 +64,27 @@ namespace DocumentManagement.Tests
             loanApplication.tenantId = 1;
             loanApplication.userId = 59;
             loanApplication.userName = "Melissa Merritt";
-            loanApplication.requests = new List<Request>();
+            loanApplication.requests = new List<Model.Request>();
 
-            Request requestModel = new Request();
+            Model.Request requestModel = new Model.Request();
             requestModel.id = "5f0ede3cce9c4b62509d0dc0";
             requestModel.userId = 3842;
             requestModel.userName = "Danish Faiz";
             requestModel.message = "Hi Mark";
             requestModel.createdOn = DateTime.UtcNow;
             requestModel.status = DocumentStatus.BorrowerTodo;
-            requestModel.documents = new List<RequestDocument>();
+            requestModel.documents = new List<Model.RequestDocument>();
 
-            RequestDocument document = new RequestDocument();
+            Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
             document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";
             document.message = "please upload salary slip";
-            document.files = new List<RequestFile>();
+            document.files = new List<Model.RequestFile>();
 
-            RequestFile requestFile = new RequestFile();
+            Model.RequestFile requestFile = new Model.RequestFile();
             requestFile.id = "abc15d1fe456051af2eeb768";
             requestFile.clientName = "3e06ed7f-0620-42f2-b6f5-e7b8ee1f2778.pdf";
             requestFile.serverName = "0c550bb7-7e4b-4384-98eb-5264d9411737.enc";
@@ -146,27 +146,27 @@ namespace DocumentManagement.Tests
             loanApplication.tenantId = 1;
             loanApplication.userId = 59;
             loanApplication.userName = "Melissa Merritt";
-            loanApplication.requests = new List<Request>();
+            loanApplication.requests = new List<Model.Request>();
 
-            Request requestModel = new Request();
+            Model.Request requestModel = new Model.Request();
             requestModel.id = "5f0ede3cce9c4b62509d0dc0";
             requestModel.userId = 3842;
             requestModel.userName = "Danish Faiz";
             requestModel.message = "Hi Mark";
             requestModel.createdOn = DateTime.UtcNow;
             requestModel.status = DocumentStatus.BorrowerTodo;
-            requestModel.documents = new List<RequestDocument>();
+            requestModel.documents = new List<Model.RequestDocument>();
 
-            RequestDocument document = new RequestDocument();
+            Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
             document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";
             document.message = "please upload salary slip";
-            document.files = new List<RequestFile>();
+            document.files = new List<Model.RequestFile>();
 
-            RequestFile requestFile = new RequestFile();
+            Model.RequestFile requestFile = new Model.RequestFile();
             requestFile.id = "abc15d1fe456051af2eeb768";
             requestFile.clientName = "3e06ed7f-0620-42f2-b6f5-e7b8ee1f2778.pdf";
             requestFile.serverName = "0c550bb7-7e4b-4384-98eb-5264d9411737.enc";
@@ -202,7 +202,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
@@ -252,7 +252,7 @@ namespace DocumentManagement.Tests
 
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
@@ -267,20 +267,20 @@ namespace DocumentManagement.Tests
             loanApplication.loanApplicationId = 14;
             loanApplication.tenantId = 1;
             loanApplication.status = "5ee86503305e33a11c51ebbc";
-            loanApplication.requests = new List<Request>() { };
+            loanApplication.requests = new List<Model.Request>() { };
 
-            Request request = new Request();
+            Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
             request.message = "Hi Mark";
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Model.RequestDocument>() { };
 
-            RequestDocument requestDocument = new RequestDocument();
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
             requestDocument.displayName = "W2 2020";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
-            requestDocument.files = new List<RequestFile>() { };
+            requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
             
@@ -302,7 +302,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
@@ -352,7 +352,7 @@ namespace DocumentManagement.Tests
 
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("LoanApplication", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
@@ -367,19 +367,19 @@ namespace DocumentManagement.Tests
             loanApplication.loanApplicationId = 14;
             loanApplication.tenantId = 1;
             loanApplication.status = "5ee86503305e33a11c51ebbc";
-            loanApplication.requests = new List<Request>() { };
+            loanApplication.requests = new List<Model.Request>() { };
 
-            Request request = new Request();
+            Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
             request.message = "Hi Mark";
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Model.RequestDocument>() { };
 
-            RequestDocument requestDocument = new RequestDocument();
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
             requestDocument.displayName = "W2 2020";
             requestDocument.message = "document rejected";
-            requestDocument.files = new List<RequestFile>() { };
+            requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
 
@@ -400,7 +400,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
@@ -450,7 +450,7 @@ namespace DocumentManagement.Tests
 
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
@@ -465,20 +465,20 @@ namespace DocumentManagement.Tests
             loanApplication.loanApplicationId = 1;
             loanApplication.tenantId = 1;
             loanApplication.status = "5ee86503305e33a11c51ebbc";
-            loanApplication.requests = new List<Request>() { };
+            loanApplication.requests = new List<Model.Request>() { };
 
-            Request request = new Request();
+            Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
             request.message = "Hi Mark";
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Model.RequestDocument>() { };
 
-            RequestDocument requestDocument = new RequestDocument();
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
-            requestDocument.files = new List<RequestFile>() { };
+            requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
 
@@ -500,7 +500,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
@@ -550,7 +550,7 @@ namespace DocumentManagement.Tests
 
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
@@ -565,20 +565,20 @@ namespace DocumentManagement.Tests
             loanApplication.loanApplicationId = 1;
             loanApplication.tenantId = 1;
             loanApplication.status = "5ee86503305e33a11c51ebbc";
-            loanApplication.requests = new List<Request>() { };
+            loanApplication.requests = new List<Model.Request>() { };
 
-            Request request = new Request();
+            Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
             request.message = "Hi Mark";
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Model.RequestDocument>() { };
 
-            RequestDocument requestDocument = new RequestDocument();
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
-            requestDocument.files = new List<RequestFile>() { };
+            requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
 
@@ -600,7 +600,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
-            Mock<IMongoCollection<Request>> mockCollectionRequest = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
@@ -650,7 +650,7 @@ namespace DocumentManagement.Tests
 
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
 
@@ -665,20 +665,20 @@ namespace DocumentManagement.Tests
             loanApplication.loanApplicationId = 1;
             loanApplication.tenantId = 1;
             loanApplication.status = "5ee86503305e33a11c51ebbc";
-            loanApplication.requests = new List<Request>() { };
+            loanApplication.requests = new List<Model.Request>() { };
 
-            Request request = new Request();
+            Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
             request.message = "Hi Mark";
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Model.RequestDocument>() { };
 
-            RequestDocument requestDocument = new RequestDocument();
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
-            requestDocument.files = new List<RequestFile>() { };
+            requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
 
