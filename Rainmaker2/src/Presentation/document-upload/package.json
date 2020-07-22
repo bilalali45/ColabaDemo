@@ -19,7 +19,7 @@
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "print-js": "^1.0.63",
-    "rainsoft-js": "^1.0.24",
+    "rainsoft-js": "^1.0.28",
     "rainsoft-rc": "^1.0.12",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
