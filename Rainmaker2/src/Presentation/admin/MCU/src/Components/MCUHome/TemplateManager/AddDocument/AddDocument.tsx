@@ -20,6 +20,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
     const mainContainerRef = useRef(null);
     const aRef = useRef(null);
 
@@ -42,7 +43,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         // } else {
         //     dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
         // }
-        // setShow(!show);
+        setShow(!show);
 
         setTarget(event.target);
     };
@@ -84,13 +85,14 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
         if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
-        } else if (curDocType === 'other') {
-            let currentDoc = {
-                catId: 'other',
-                catName: 'Other',
-                documents: []
-            };
-            setCurrentDocType(currentDoc);
+        // }
+        //  else if (curDocType === 'other') {
+        //     let currentDoc = {
+        //         catId: 'other',
+        //         catName: 'Other',
+        //         documents: []
+        //     };
+        //     setCurrentDocType(currentDoc);
         } else {
             let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
             setCurrentDocType(currentDoc);
@@ -180,7 +182,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
                 </a>
                 {/* </OverlayTrigger> */}
             </div>
-            <Overlay show={addDocumentBoxVisible?.value}
+            <Overlay show={show}
                 target={target}
                 placement={popoverplacement}
                 container={mainContainerRef.current || aRef.current}

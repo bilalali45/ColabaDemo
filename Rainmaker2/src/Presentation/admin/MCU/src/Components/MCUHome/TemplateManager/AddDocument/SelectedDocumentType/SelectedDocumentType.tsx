@@ -22,10 +22,12 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: Selecte
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc} />
 
-        } else if (selectedCatDocs?.catId === 'other') {
-            return <CustomDocuments
-                setVisible={setVisible}
-                addDocToTemplate={addNewDoc} />
+        // } 
+        // else if (selectedCatDocs?.catName === 'other') {
+        //     return <CustomDocuments
+        //         setVisible={setVisible}
+        //         documentList={selectedCatDocs}
+        //         addDocToTemplate={addNewDoc} />
 
         } else {
 
