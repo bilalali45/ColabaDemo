@@ -451,6 +451,7 @@ namespace DocumentManagement.Tests
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
             setting.maxFileSize = 15000000;
             setting.maxFileNameSize = 255;
+            setting.allowedExtensions = new string[] { ".tmp" };
             mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
             mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
             mockconfiguration.Setup(x => x["File:Algo"]).Returns("Algo");
@@ -859,6 +860,97 @@ namespace DocumentManagement.Tests
             //Assert
             mockCollection.VerifyAll();
 
+        }
+
+        [Fact]
+        public async Task TestSubmitControllerExceptionFileExtension()
+        {
+            Mock<ISettingService> mocksettingservice = new Mock<ISettingService>();
+            Mock<IFileService> mockfileservice = new Mock<IFileService>();
+            Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
+            Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
+            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+            Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
+            Mock<IFileEncryptor> mockfileencryptor = new Mock<IFileEncryptor>();
+            Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
+            Mock<IFileSystem> mockfilesystem = new Mock<IFileSystem>();
+            var formFile = new Mock<IFormFile>();
+
+            mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
+            mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
+            mockconfiguration.Setup(x => x["File:Algo"]).Returns("Algo");
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var handlerMock1 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var handlerMock2 = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            string filePath = Path.GetTempFileName();
+            Setting setting = new Setting();
+            setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
+            setting.ftpUser = "ftpuser";
+            setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
+            setting.maxFileSize = 15000000;
+            setting.maxFileNameSize = 255;
+            setting.allowedExtensions = new string[] { ".doc" };
+            mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
+            mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
+            mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
+            mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+
+            mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+
+            mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+
+            FileOrderModel model = new FileOrderModel
+            {
+                id = "1",
+                docId = "1",
+                requestId = "1",
+                files = new List<FileNameModel>(),
+                tenantId = 1
+            };
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            //Assert
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>());
+            controller.ControllerContext = context;
+            string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
+            string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
+            int tenantId = 1;
+
+            string path = Path.GetTempFileName();
+
+            //Create the file.
+            using (FileStream fs = File.Create(path))
+            {
+                AddText(fs, "This is some text");
+                AddText(fs, "This is some more text,");
+                AddText(fs, "\r\nand this is on a new line");
+                AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
+            }
+            List<IFormFile> files = new List<IFormFile>();
+            //Open the stream and read it back.
+
+            using (FileStream fs = File.OpenRead(path))
+            {
+                var stream = File.OpenRead(path);
+                FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = "application/docx"
+                };
+
+                files.Add(_formFile);
+            }
+
+            formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
+            mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>())).Verifiable();
+            order = @"[{ 'fileName': null,'order': 0}]";
+            Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, tenantId, files); });
         }
 
         private static void AddText(FileStream fs, string value)

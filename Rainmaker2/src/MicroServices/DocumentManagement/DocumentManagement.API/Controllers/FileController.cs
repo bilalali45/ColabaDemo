@@ -67,6 +67,7 @@ namespace DocumentManagement.API.Controllers
                                                 [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] string docId,
+                                                [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] string order,
                                                 [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] int tenantId,
