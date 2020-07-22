@@ -63,7 +63,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
             // if loan application does not exists create loan application
-            Request request = new Request();
+            Entity.Request request = new Entity.Request();
             if (await asyncCursorRequest.MoveNextAsync())
             {
                 int loanApplicationId = 0;
@@ -86,7 +86,7 @@ namespace DocumentManagement.Service
                         status = loanApplication.status,
                         userId = loanApplication.userId,
                         userName = loanApplication.userName,
-                        requests = new List<Request>() { }
+                        requests = new List<Entity.Request>() { }
                     };
                     loanApplication.id = loanApplicationModel.id;
                     await collectionLoanApplication.InsertOneAsync(loanApplicationModel);
@@ -99,9 +99,9 @@ namespace DocumentManagement.Service
             request.createdOn = DateTime.UtcNow;
             request.status = isDraft ? RequestStatus.Draft:RequestStatus.Active;
             request.message = loanApplication.requests[0].message;
-            request.documents = new List<RequestDocument>() { };
+            request.documents = new List<Entity.RequestDocument>() { };
 
-            IMongoCollection<Request> collectionInsertRequest = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collectionInsertRequest = mongoService.db.GetCollection<Entity.Request>("Request");
 
             BsonArray documentBsonArray = new BsonArray();
 
@@ -209,7 +209,7 @@ namespace DocumentManagement.Service
                 }
             }
 
-            IMongoCollection<Request> collectionDeleteDraftRequest = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collectionDeleteDraftRequest = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult resultDeleteDraftRequest = await collectionDeleteDraftRequest.UpdateOneAsync(new BsonDocument()
             {

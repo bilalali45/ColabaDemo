@@ -126,7 +126,7 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "typeId")]
         public string typeId { get; set; }
-        [RegularExpression(@"^[A-Za-z0-9\s-]{255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        //[RegularExpression(@"^[A-Za-z0-9\s-]{0,255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "docName")]
         public string docName { get; set; }
     }
