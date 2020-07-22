@@ -53,7 +53,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    <input autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
                         {requestSent ? <button className="btn btn-primary btn-sm">

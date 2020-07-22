@@ -158,7 +158,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     currentTemplate?.type === MyTemplate &&
                     <AddDocument
                         setLoaderVisible={setLoaderVisible}
-                        popoverplacement="right"
+                        popoverplacement="bottom-end"
                     />
                 }
             </div >
@@ -192,9 +192,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 }}
                                 onBlur={() => renameTemplate(newNameText)}
                                 className="editable-TemplateTitle" />
-                            <br />
                             {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                            {nameExistsError && <p className={"text-danger"}>{nameExistsError}</p>}
+                            {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
                         </p>
                     </>
                     : <>

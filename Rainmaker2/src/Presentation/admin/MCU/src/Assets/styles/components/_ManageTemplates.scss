@@ -112,7 +112,7 @@
                         }
                     }
                     .my-temp-list {
-                        max-height: 300px;
+                        max-height: 320px;
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
@@ -262,6 +262,14 @@
             }
             &.editable {
                 padding-right: 0;
+                .error-name {
+    display: block;
+    font-size: 11px;
+    padding-top: 4px;
+    padding-right: 0;
+    text-transform: capitalize;
+    color: color('colorRed');
+                }
             }
         }
     }

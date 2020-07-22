@@ -38,7 +38,7 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc, setVisible }: Sele
     return (
         <div>
             <div className="s-wrap">
-                <input onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
+                <input autoFocus={true} onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
                 <div className="s-icon"><img src={SearchIcon} alt="" /></div>
             </div>
 
