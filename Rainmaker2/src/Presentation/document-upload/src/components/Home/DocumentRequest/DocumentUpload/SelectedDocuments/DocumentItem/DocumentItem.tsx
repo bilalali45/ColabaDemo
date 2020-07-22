@@ -175,8 +175,13 @@ export const DocumentItem = ({
       </div>
     );
   };
-
+ const doubleClickHandler = (isUploaded: string | undefined) => {
+   if(isUploaded === 'done')
+    return;
+    changeName(file, filename);
+ }
   const renderFileTitle = () => {
+
     return (
       <div className="title">
         {file.editName ? (
@@ -197,9 +202,17 @@ export const DocumentItem = ({
               }
               setNameExists(true);
             }}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                rename();
+              }
+          }}
+          onBlur={(e) => {
+            rename();
+        }}
           />
         ) : (
-            <p>{file.clientName}</p>
+            <p  onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)}> {file.clientName}</p>
           )}
       </div>
     );

@@ -147,7 +147,7 @@ export const SelectedDocuments = ({
           });
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -155,7 +155,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -237,10 +237,10 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        Auth.getTenantId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          Auth.getTenantId(),
+          data
+        );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -262,7 +262,6 @@ export const SelectedDocuments = ({
       setDoneVisible(true);
     }
   };
-console.log('fileLimitError.value',fileLimitError.value)
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -285,22 +284,34 @@ console.log('fileLimitError.value',fileLimitError.value)
             })}
           </ul>
           <div className="addmore-wrap">
-            <a className={selectedFiles.length < 10 ? "addmoreDoc" : "addmoreDoc disabled"} onClick={(e) => {addMore(e);}}> Add more files
-              <input
-                type="file"
-                accept={FileUpload.allowedExtensions}
-                id="inputFile"
-                ref={inputRef}
-                multiple
-                style={{ display: "none" }}
-              />
-            </a>
-            {fileLimitError.value ? 
-            <p className="text-danger">
-            Only 10 files can be uploaded per document. Please contact us if you'd like to upload more files.
+            {!fileLimitError.value ?
+              <a className="addmoreDoc" onClick={(e) => { addMore(e) }}> Add more files
+ <input
+                  type="file"
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef}
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </a> :
+              <a className="addmoreDoc disabled"> Add more files
+ <input
+                  type="file"
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef}
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </a>}
+
+            {fileLimitError.value ?
+              <p className="text-danger">
+                Only 10 files can be uploaded per document. Please contact us if you'd like to upload more files.
             </p>
-            :
-            ""
+              :
+              ""
             }
           </div>
         </div>
@@ -315,51 +326,51 @@ console.log('fileLimitError.value',fileLimitError.value)
         )}
       </div>
       <div className="doc-upload-footer">
-        {doneVisible ? 
-        (
-          <div className="doc-confirm-wrap">
-            <div className="row">
-              <div className="col-sm-7">
-                <div className="dc-text">
-                {/* {docTitle} */}
-                  <p>Have you submitted all files for this document?<br />Please note you will not be able to return.</p>
+        {doneVisible ?
+          (
+            <div className="doc-confirm-wrap">
+              <div className="row">
+                <div className="col-sm-7">
+                  <div className="dc-text">
+                    {/* {docTitle} */}
+                    <p>Have you submitted all files for this document?<br />Please note you will not be able to return.</p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-sm-5">
-                <div className="dc-actions">
-                  <button
-                    className="btn btn-small btn-secondary"
-                    onClick={() => {
-                      setDoneVisible(false);
-                      disableSubmitBtn();
-                    }}
-                  >
-                    No
+                <div className="col-sm-5">
+                  <div className="dc-actions">
+                    <button
+                      className="btn btn-small btn-secondary"
+                      onClick={() => {
+                        setDoneVisible(false);
+                        disableSubmitBtn();
+                      }}
+                    >
+                      No
                   </button>
-                  <button
-                    className="btn btn-small btn-primary"
-                    onClick={doneDoc}
-                  >
-                    Yes
+                    <button
+                      className="btn btn-small btn-primary"
+                      onClick={doneDoc}
+                    >
+                      Yes
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )  : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+          ) : (
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );

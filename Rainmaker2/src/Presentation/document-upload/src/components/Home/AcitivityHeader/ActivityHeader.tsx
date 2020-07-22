@@ -29,7 +29,7 @@ const ActivityHeader = (props) => {
 
         if (pathname.includes('documentsRequest')) {
             setLeftNav('Home');
-            setRightNav('Uploaded Document');
+            setRightNav('Documents');
             setLeftNavUrl('/activity');
             setRightNavUrl('/uploadedDocuments');
         }
@@ -39,7 +39,7 @@ const ActivityHeader = (props) => {
                 setLeftNav('Home');
                 setLeftNavUrl('/activity');
                 if (pendingDocs?.length > 0) {
-                    setRightNav('Document Request');
+                    setRightNav('Documents');
                     setRightNavUrl('/documentsRequest');
                 } else {
                     setRightNav('');
@@ -47,7 +47,7 @@ const ActivityHeader = (props) => {
                 }
 
             } else {
-                setLeftNav('Document Request');
+                setLeftNav('Documents');
                 setLeftNavUrl('/documentsRequest');
                 setRightNav('');
                 setRightNavUrl('');
