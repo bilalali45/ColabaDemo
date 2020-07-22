@@ -107,9 +107,13 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const previousDocument = useCallback(() => {
-    const indexes = _.reverse(documentsForReviewArrayIndexes())
+    const indexes = documentsForReviewArrayIndexes()
 
-    const indexOfReivew = navigationIndex === 1 ? 0 : indexes.findIndex(value => Number(value) < navigationIndex)
+    const indexOfReivew = Number(indexes[navigationIndex - 1])
+
+    if (isNaN(indexOfReivew)) {
+      return
+    }
 
     if (indexOfReivew === -1) return //No review document found
 
@@ -150,18 +154,30 @@ export const ReviewDocument = () => {
   }, [])
 
   useEffect(() => {
-
     //onload Goto Top
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  }, [])
 
+  useEffect(() => {
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
         const doc: NeedListDocumentType = documentList[currentDocumentIndex];
 
         if (!!documentList && documentList.length) {
-          setNavigationIndex(currentDocumentIndex);
+          if (!documentDetail) {
+            const pendingReviewDocuments: NeedListDocumentType[] = documentList.filter((document: NeedListDocumentType) => document.status === 'Pending review')
+
+            if (pendingReviewDocuments.length > 0) {
+              const index = pendingReviewDocuments.findIndex((document: NeedListDocumentType) => document.docId === doc.docId)
+
+              setNavigationIndex(index);
+            }
+          } else {
+            setNavigationIndex(currentDocumentIndex);
+          }
+
           setDocumentList1(() => documentList);
           setCurrentDocument(() => documentList[currentDocumentIndex]);
           setDocumentDetail(() => documentDetail)

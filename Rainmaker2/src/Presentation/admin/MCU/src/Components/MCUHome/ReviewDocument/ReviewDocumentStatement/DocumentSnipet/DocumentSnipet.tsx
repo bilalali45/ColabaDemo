@@ -79,7 +79,7 @@ export const DocumentSnipet = ({
 
       //this condition will cancel API call if field is empty or name is unchanged or equal to mcuname or client name
       //if true this condtion will cancel edit.
-      if (renameMCUName == "" || renameMCUName === getFileNameWithoutExtension(mcuName || clientName)) {
+      if (renameMCUName.trim() == "" || renameMCUName.trim() === getFileNameWithoutExtension(mcuName.trim() || clientName.trim())) {
         return cancelEdit()
       }
 
@@ -152,10 +152,6 @@ export const DocumentSnipet = ({
       inputRef.current?.focus()
     }
   }, [editingModeEnabled])
-
-  const errorClass = () => {
-    return !filenameUnique && 'error';
-  }
 
   return (
     <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
