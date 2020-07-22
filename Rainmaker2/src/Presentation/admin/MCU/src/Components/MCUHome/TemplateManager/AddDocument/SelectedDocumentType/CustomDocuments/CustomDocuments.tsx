@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react'
 import { nameTest } from '../../../TemplateHome/TemplateHome';
 import Spinner from 'react-bootstrap/Spinner';
+import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocument';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -21,34 +22,15 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     const addDoc = async () => {
         setRequestSent(true);
-        setDocName('');
         await addDocToTemplate(docName, 'docName');
+        setDocName('');
         setRequestSent(false);
         // setVisible()        
     }
 
     return (
         <div className="add-custom-doc">
-            <div className="s-wrap">
-                <h4>Other</h4>
-            </div>
 
-            <div className="others-doc-list">
-                <div className="active-docs">
-                    <ul className="ul-others-doc">
-                        {/* <li>Bank Statement</li>
-                    <li>W-2s 2017</li>
-                    <li>W-2s 2018</li>
-                    <li>Personal Tax Returns</li>
-                    <li>Tax Transcripts</li>
-                    <li>Home Insurance</li>
-                    <li>Bank Deposit Slip</li>
-                    <li>Alimony Income Verification</li>
-                    <li>Bank  statement</li>
-                    <li>Pay slip</li> */}
-                    </ul>
-                </div>
-            </div>
             <div className="others-doc-input-wrap">
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">

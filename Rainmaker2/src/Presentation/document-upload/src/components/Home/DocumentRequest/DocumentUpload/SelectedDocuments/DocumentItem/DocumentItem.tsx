@@ -212,7 +212,7 @@ export const DocumentItem = ({
         }}
           />
         ) : (
-            <p  onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)}> {file.clientName}</p>
+            <p> {file.clientName}</p>
           )}
       </div>
     );
@@ -252,7 +252,7 @@ export const DocumentItem = ({
             <div className="doc-icon">
               <i className={file.docLogo}></i>
             </div>
-            <div className="doc-list-content">
+            <div onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
               {/* {renderFileContent()} */}
             </div>
