@@ -153,13 +153,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     }
 
                 </ul>
-                {
-                    currentTemplate?.type === MyTemplate &&
-                    <AddDocument
-                        setLoaderVisible={setLoaderVisible}
-                        popoverplacement="bottom-end"
-                    />
-                }
+            
             </div >
         )
     }
@@ -167,6 +161,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const renderTitleInputText = () => {
         return (
             <div className="T-head">
+                <div className="T-head-flex">
+                <div>
                 {editTitleview || currentTemplate === null ?
                     <>
                         <p className="editable">
@@ -207,6 +203,17 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>}
+                    </div>
+                    <div>
+                    {
+                    currentTemplate?.type === MyTemplate &&
+                    <AddDocument
+                        setLoaderVisible={setLoaderVisible}
+                        popoverplacement="bottom-start"
+                    />
+                }
+                </div>
+            </div>
             </div>
         )
     }
