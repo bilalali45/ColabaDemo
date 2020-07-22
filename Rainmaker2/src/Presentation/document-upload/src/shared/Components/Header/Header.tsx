@@ -36,15 +36,13 @@ const Header = () => {
                             </div>
 
                             <div className="s-account pull-right">
-
-                                <a className="d-name d-none d-sm-block" href="/Dashboard">
+                       
+                                <Dropdown className="userdropdown">
+                                <Dropdown.Toggle id="dname"  className="d-name d-none d-sm-block" as="a">
                                     Hello,
                                     Muhammad Usman
-                    </a>
-                                <Dropdown className="userdropdown">
-                                    <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="a">
                                     </Dropdown.Toggle>
-
+                                    <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="span"></Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item href="/Dashboard">Dashboard</Dropdown.Item>
                                         <Dropdown.Item href="/Account/ManagePassword">Change Password</Dropdown.Item>

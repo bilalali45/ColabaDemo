@@ -53,8 +53,8 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType
                 </header> */}
                 <section className="alert-box--modal-body">
                     <div className="alert-box--modal-body-content">
-                    <p>Some files are still in progess, please complete them before navigating away!</p>
-                    <p>If you select yes, all selected files will be lost!</p>
+                    <p>Are you sure you want to leave?</p>
+                    <p>The files that have not been submitted will be lost.</p>
                     </div>
                 </section>
                 <footer className="alert-box--modal-footer">

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, ChangeEvent, Fragment } from 'react'
+import React, { useEffect, useContext, useState, ChangeEvent, Fragment, KeyboardEvent } from 'react'
 import { TemplateItemsList } from './TemplateItemsList/TemplateItemsList'
 import { AddDocument } from '../../AddDocument/AddDocument'
 import checkicon from '../../../../../Assets/images/checkicon.svg'
@@ -12,6 +12,8 @@ import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
 import { nameTest } from '../TemplateHome';
+import Spinner from 'react-bootstrap/Spinner'
+import { Loader } from "../../../../../Shared/components/loader";
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -23,10 +25,14 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const { state, dispatch } = useContext(Store);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [newNameText, setNewNameText] = useState<string>('');
+    const [nameExistsError, setNameExistsError] = useState<string>()
+    const [addRequestSent, setAddRequestSent] = useState<boolean>(false);
+    const [removeDocName, setRemoveDocName] = useState<string>();
 
 
     const templateManager: any = state.templateManager;
     const currentTemplate = templateManager?.currentTemplate;
+    const templates = templateManager?.templates;
     const templateDocuments = templateManager?.templateDocuments;
 
     useEffect(() => {
@@ -38,7 +44,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
             seteditTitleview(false);
         }
 
-    if (!currentTemplate) {
+        if (!currentTemplate) {
             seteditTitleview(false);
             setNewNameText('');
         }
@@ -58,8 +64,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     }
 
     const addNewTemplate = async (name: string) => {
-        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
 
+        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
         if (insertedTemplate) {
 
             let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
@@ -68,19 +74,25 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
         }
-
     }
 
     const renameTemplate = async (value: string) => {
-        if (!value?.length || value?.length > 255) {
+        if (addRequestSent) return;
+        setAddRequestSent(true);
+        if (!value?.length || value?.length > 255 || !value.trim().length) {
             return;
         }
+        if (templates.find((t: Template) => t.name === value && t.id !== currentTemplate?.id)) {
+            setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
+            return;
+        };
         setLoaderVisible(true);
 
         if (!currentTemplate) {
             await addNewTemplate(value);
             toggleRename();
             setLoaderVisible(false);
+            setAddRequestSent(false);
             return;
         }
 
@@ -95,6 +107,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         }
         toggleRename();
         setLoaderVisible(false);
+        setAddRequestSent(false);
+
     }
 
     const toggleRename = () => {
@@ -102,12 +116,15 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     }
 
     const removeDoc = async (templateId: string, documentId: string) => {
+        setAddRequestSent(true);
         setLoaderVisible(true);
+        setRemoveDocName(documentId);
         let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }
         setLoaderVisible(false);
+        setAddRequestSent(false);
     }
 
     const renderDocumentList = () => {
@@ -119,12 +136,17 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                             return (
                                 <li key={td.docId}>
                                     <p>{td.docName}
-                                        <span className="BTNclose">
-                                            {
-                                                currentTemplate?.type === MyTemplate &&
-                                                <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td.docId)}></i>
-                                            }
-                                        </span>
+                                        {
+                                            ((currentTemplate?.type === MyTemplate)) &&
+                                                addRequestSent && td.docId === removeDocName ?
+                                                <span className="BTNloader"> 
+                                                    <Spinner size="sm" animation="border" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </Spinner>
+                                                </span> : <span className="BTNclose">
+                                                    <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
+                                                </span>
+                                        }
                                     </p>
                                 </li>
                             )
@@ -132,13 +154,14 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     }
 
                 </ul>
-                {currentTemplate?.type === MyTemplate &&
+                {
+                    currentTemplate?.type === MyTemplate &&
                     <AddDocument
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right"
                     />
                 }
-            </div>
+            </div >
         )
     }
 
@@ -146,25 +169,34 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         return (
             <div className="T-head">
                 {editTitleview || currentTemplate === null ?
-                    <p className="editable">
-                        <input
-                            autoFocus
-                            value={newNameText}
-                            onChange={(e) => {
-                                // console.log(letterNumber.test(e.target.value));
-                                if(!nameTest.test(e.target.value)) {
-                                    return;
-                                }
-                                setNewNameText(e.target.value)
-                            }}
-                            onKeyDown={(e: any) => {
-                                if (e.keyCode === 13) {
-                                    renameTemplate(e.target.value);
-                                }
-                            }}
-                            onBlur={() => renameTemplate(newNameText)}
-                            className="editable-TemplateTitle" />
-                        <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span></p>
+                    <>
+                        <p className="editable">
+                            <input
+                                style={{ border: nameExistsError ? '1px solid red' : '' }}
+                                autoFocus
+                                value={newNameText}
+                                onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                                    // console.log(letterNumber.test(e.target.value));
+                                    if (!nameTest.test(value)) {
+                                        return;
+                                    }
+                                    setAddRequestSent(false);
+                                    setLoaderVisible(false);
+                                    setNameExistsError('');
+                                    setNewNameText(value)
+                                }}
+                                onKeyDown={(e: any) => {
+                                    if (e.keyCode === 13) {
+                                        renameTemplate(e.target.value);
+                                    }
+                                }}
+                                onBlur={() => renameTemplate(newNameText)}
+                                className="editable-TemplateTitle" />
+                            <br />
+                            {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
+                            {nameExistsError && <p className={"text-danger"}>{nameExistsError}</p>}
+                        </p>
+                    </>
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>}
@@ -172,16 +204,18 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         )
     }
 
+    if (!templates) return <Loader containerHeight={"100%"} />;
+
     return (
         <section className="veiw-SelectedTemplate">
 
             {renderTitleInputText()}
 
-            {(!currentTemplate || templateDocuments?.length === 0)  &&
+            {(templates && !currentTemplate || templateDocuments?.length === 0) &&
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
-            {templateDocuments?.length ? renderDocumentList() : ''}
+            {templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}

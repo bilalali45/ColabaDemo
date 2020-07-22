@@ -153,6 +153,10 @@ export const DocumentSnipet = ({
     }
   }, [editingModeEnabled])
 
+  const errorClass = () => {
+    return !filenameUnique && 'error';
+  }
+
   return (
     <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
@@ -168,6 +172,7 @@ export const DocumentSnipet = ({
                 onBlur={() => renameDocumentMCU()}
                 onKeyDown={onKeyDown}
                 ref={inputRef}
+                className={`${!filenameUnique && 'error'}`}
               />
             </React.Fragment>
           ) : (
@@ -177,7 +182,7 @@ export const DocumentSnipet = ({
         <small className="document-snipet--detail">
           {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
-        {!filenameUnique && (<span className="label label-default">Filename must be unique</span>)}
+        {!filenameUnique && (<small className="document-snipet--detail error">Filename must be unique</small>)}
       </div>
       <div className="document-snipet--right">
         {!!editingModeEnabled && (

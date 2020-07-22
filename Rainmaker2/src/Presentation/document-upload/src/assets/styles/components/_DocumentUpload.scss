@@ -99,6 +99,9 @@
                 max-height: calc(100% - 50px);
                 overflow: auto;
                 margin-top: 10px;
+                @include media-breakpoint-down(md) {
+                    max-height: calc(100% - 60px);
+                }
                 & > li {
                     min-height: 62px;
                     background: color("listhover");
@@ -113,7 +116,8 @@
                             }
                         }
                         .doc-list-content {
-                            .tilte {
+                            .title {
+                                padding-top: 0;
                                 color: color("colorred");
                                 p {
                                     color: color("colorred");
@@ -181,9 +185,11 @@
                         }
                     }
                     .doc-list-content {
-                        .tilte {
+                        .title {
                             font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
                             color: color("colorBlack");
+                            padding-top: 10px;
+
                             input,p {
                                 display: block;
                                 font-family: inherit;
@@ -254,7 +260,7 @@
                     }
                     .editableview {
                         .doc-list-content {
-                            .tilte {
+                            .title {
                                 input {
                                     display: block;
                                     font-family: inherit;
@@ -325,10 +331,28 @@
             text-align: left;
             padding-top: 10px;
     padding-bottom: 5px;
+    display: flex;
+    align-items: center;
             .addmoreDoc {
                 cursor: pointer;
                 font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
                 color: color("primary");
+                min-width: 110px;
+                &.disabled {
+                    pointer-events: none;
+                    color: color('disabled-text'); 
+                    -webkit-user-select: none;     
+                    -moz-user-select: none; 
+                    -ms-user-select: none; 
+                    -o-user-select: none;
+                    user-select: none;
+                }
+            }
+            p {
+                font: 400 #{fontSize("sm") + "/17px"} fontFamily("base"); 
+                padding-left: 10px;
+                margin-bottom: 0;
+                border-left: 1px solid #E4E6E6;
             }
         }
     }

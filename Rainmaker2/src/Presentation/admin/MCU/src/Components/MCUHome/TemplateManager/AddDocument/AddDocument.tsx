@@ -17,14 +17,11 @@ type AddDocumentType = {
 
 }
 export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
-    const [show, setShow] = useState(false);
-    const [target, setTarget] = useState(null);
-    const ref = useRef(null);
 
-    const handleClick = (event: any) => {
-        setShow(!show);
-        setTarget(event.target);
-    };
+    const [target, setTarget] = useState(null);
+    const [requestSent, setRequestSent] = useState<boolean>(false);
+    const mainContainerRef = useRef(null);
+    const aRef = useRef(null);
 
     const { state, dispatch } = useContext(Store);
 
@@ -34,12 +31,41 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     const templateDocuments = templateManager?.templateDocuments;
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
+    const addDocumentBoxVisible = templateManager?.addDocumentBoxVisible;
+
+
+    const handleClick = (event: any) => {
+        let tag = event.target.tagName;
+        console.log(tag);
+        dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: !addDocumentBoxVisible?.value } })
+        // if (tag === 'A') {
+        // } else {
+        //     dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
+        // }
+        // setShow(!show);
+
+        setTarget(event.target);
+    };
+
+    // console.log(mainContainerRef?.current);
+    // console.log(aRef?.current);
+    console.log(target);
 
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
         }
-    }, []);
+        if (mainContainerRef?.current) {
+            setTarget(null);
+        }
+        if (aRef?.current) {
+            setTarget(aRef?.current)
+        }
+    }, [aRef?.current, mainContainerRef?.current]);
+
+    useEffect(() => {
+        // setShow(addDocumentBoxVisible?.value)
+    }, [addDocumentBoxVisible])
 
     const fetchCurrentCatDocs = async () => {
         let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
@@ -88,10 +114,12 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         if (!docName?.length || docName?.length > 255) {
             return;
         }
+        if(requestSent) return;
+        setRequestSent(true);
         setLoaderVisible(true);
-        if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
-            return;
-        }
+        // if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
+        //     return;
+        // }
         try {
             let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
             if (success) {
@@ -101,7 +129,12 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         } catch (error) {
 
         }
+        setRequestSent(false);
         setLoaderVisible(false);
+    }
+
+    const hidePopup = () => {
+        dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
     }
 
     const renderPopOverContent = () => {
@@ -117,7 +150,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
                     <div className="col-sm-7 col-md-7 col-lg-8 popup-add-doc-row--right">
 
                         <SelectedType
-                            setVisible={setShow}
+                            setVisible={hidePopup}
                             selectedCatDocs={currentCategoryDocuments}
                             addNewDoc={addDocToTemplate} />
                     </div>
@@ -136,21 +169,21 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         )
     }
 
-
+    console.log(addDocumentBoxVisible, 'in renderingjasdfk');
     return (
-        <div className="Compo-add-document" ref={ref}>
+        <div className="Compo-add-document" ref={mainContainerRef}>
 
             <div className="add-doc-link-wrap">
                 {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                <a className="add-doc-link" onClick={(e) => { handleClick(e) }} >
+                <a ref={aRef} className="add-doc-link" onClick={(e) => { handleClick(e) }} >
                     Add Document <i className="zmdi zmdi-plus"></i>
                 </a>
                 {/* </OverlayTrigger> */}
             </div>
-            <Overlay show={show}
+            <Overlay show={addDocumentBoxVisible?.value}
                 target={target}
                 placement={popoverplacement}
-                container={ref.current}
+                container={mainContainerRef.current || aRef.current}
                 onHide={handleClick}
                 rootClose={true}
                 rootCloseEvent={'click'}

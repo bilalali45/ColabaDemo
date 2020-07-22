@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
+
 import { DocumentActions } from "../../../../store/actions/DocumentActions";
 import { Store } from "../../../../store/store";
 import { isArray } from "util";
@@ -19,6 +20,20 @@ export const DocumentsRequired = () => {
 
   const sideBarNav = useRef<HTMLDivElement>(null);
 
+  const stopBrowerTabFromClosing = () => {
+    window.onbeforeunload = confirmExit;
+    function confirmExit() {
+      return "show message";
+    }
+  }
+
+  const allowBrowserClosing = () => {
+    window.onbeforeunload = confirmExit;
+    function confirmExit() {
+      return null;
+    }
+  }
+
   useEffect(() => {
     if (pendingDocs?.length) {
       setCurrentDoc(pendingDocs[0]);
@@ -27,12 +42,15 @@ export const DocumentsRequired = () => {
   }, []);
 
   useEffect(() => {
-    let files =
+    const files =
       selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
+
     if (sideBarNav.current) {
       if (files) {
+        stopBrowerTabFromClosing()
         sideBarNav.current.onclick = showAlertPopup;
       } else {
+        allowBrowserClosing()
         sideBarNav.current.onclick = null;
       }
     }

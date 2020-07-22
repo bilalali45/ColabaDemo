@@ -282,7 +282,6 @@
                     display: inline-block;
                     position: relative;
                     padding-right: 30px;
-                    cursor: pointer;
                     &:hover {
                         .BTNclose {
                             display: block;
@@ -296,11 +295,22 @@
                     width: 16px;
                     height: 20px;
                     right: 0;
+                    cursor: pointer;
                     color: color('colorRed');
                     font-size: fontSize('xmd')+3;
                     top: 50%;
     margin-top: -10px;
 
+                }
+
+                .BTNloader {
+                    position: absolute;
+                    width: 16px;
+                    height: 20px;
+                    right: 0;
+                    display: block;
+                    top: 50%;
+                    margin-top: -8px;
                 }
             }
         }
@@ -501,7 +511,11 @@
                         &.active,&:hover {
                             background: rgba(color('primary'), 0.08);
                             color: color('primary');
-                        }  
+                        } 
+                        
+                        .spinner-border {
+                            margin-left: 5px;
+                        }
                        }
                    }
 
@@ -522,6 +536,7 @@
                 .active-docs {
                     ul {
                         max-height: 245px;
+                        min-height: 245px;
                     }
                 }
 
@@ -568,6 +583,13 @@
                     .input-btn-wrap {
                         position: absolute;
                         right:0 ;
+                        .btn {
+                            padding: 6px 20px 6px;  
+                            .spinner-border-sm {
+                                width: 14px;
+                                height: 14px;
+                            } 
+                        }
                         .btn + .btn {
                             margin-left: 5px;
                         }

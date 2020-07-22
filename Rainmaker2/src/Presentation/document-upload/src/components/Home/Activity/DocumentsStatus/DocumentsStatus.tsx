@@ -54,7 +54,7 @@ export const DocumentsStatus = () => {
         return (
             <div className="DocumentStatus box-wrap empty">
                 <div className="box-wrap--header clearfix">
-                    <h2 className="heading-h2"> Document Request</h2>
+                    <h2 className="heading-h2"> Task List</h2>
                 </div>
                 <div className="box-wrap--body clearfix">
                     <div className="edc-flex">
@@ -64,7 +64,7 @@ export const DocumentsStatus = () => {
                             </div>
                             <div className="eds-txt">
                                 <p>
-                                    You have 0 task to complete
+                                    You have 0 tasks to complete.
                             </p>
 
                             </div>
@@ -80,7 +80,7 @@ export const DocumentsStatus = () => {
         return (
             <div className="DocumentStatus box-wrap empty">
                 <div className="box-wrap--header clearfix">
-                    <h2 className="heading-h2"> Document Request</h2>
+                    <h2 className="heading-h2">Task List</h2>
                 </div>
                 <div className="box-wrap--body clearfix">
                     <div className="edc-flex">
@@ -90,7 +90,7 @@ export const DocumentsStatus = () => {
                             </div>
                             <div className="eds-txt">
                                 <p>
-                                    <span className="text-primary">Great!</span> You have done all the tasks
+                                You’ve completed all tasks for now!<br />We’ll let you know if we need anything else.
                             </p>
 
                             </div>
@@ -111,13 +111,14 @@ export const DocumentsStatus = () => {
     }
 
     if (pendingDocs.length == 0) {
-        return renderNoPendingDocs();
+         return renderNoPendingDocs();
     }
 
     return (
         <div className="DocumentStatus hasData box-wrap">
+            <div className="overlay-DocumentStatus"> 
             <div className="box-wrap--header clearfix">
-                <h2 className="heading-h2"> Document Request</h2>
+                <h2 className="heading-h2"> Task List</h2>
                 <p>You have <span className="DocumentStatus--count">{pendingDocs.length}</span> items to complete</p>
             </div>
             <div className="box-wrap--body clearfix">
@@ -130,7 +131,8 @@ export const DocumentsStatus = () => {
             </div>
             <div className="box-wrap--footer clearfix">
                 {/* <button className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
-                <button onClick={getStarted} className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button>
+                <button onClick={getStarted} className="btn btn-primary float-right">Get Started <em className="zmdi zmdi-arrow-right"></em></button>
+            </div>
             </div>
         </div>
     )

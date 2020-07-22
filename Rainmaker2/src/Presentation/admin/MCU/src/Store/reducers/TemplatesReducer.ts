@@ -4,6 +4,10 @@ import { TemplateDocument } from "../../Entities/Models/TemplateDocument";
 import { ActionMap, Actions } from "./reducers"
 import { Document } from "../../Entities/Models/Document";
 
+type AddDocumentBoxVisibleType = {
+    value: boolean
+}
+
 export enum TemplateActionsType {
     SetTemplates = "SET_TEMPLATES",
     SetCategoryDocuments = "SET_CATEGORY_DOCUMENTS",
@@ -12,7 +16,9 @@ export enum TemplateActionsType {
     SetCurrentCategoryDocuments = "SET_CURRENT_CATEGORY_DOCUMENT",
     InsertTemplate = "INSERT_TEMPLATE",
     RenameTemplate = "RENAME_TEMPLATE",
-    DeleteTemplate = "DELETE_TEMPLATE"
+    DeleteTemplate = "DELETE_TEMPLATE",
+    ToggleAddDocumentBox = "TOGGLE_ADD_DOCUMENT_BOX",
+
 }
 
 export type TemplateType = {
@@ -21,6 +27,7 @@ export type TemplateType = {
     categoryDocuments: CategoryDocument[],
     currentCategoryDocuments: CategoryDocument,
     templateDocuments: TemplateDocument[],
+    addDocumentBoxVisible: AddDocumentBoxVisibleType,
 }
 
 export type TemplateActionPayload = {
@@ -29,6 +36,7 @@ export type TemplateActionPayload = {
     [TemplateActionsType.SetTemplateDocuments]: TemplateDocument[],
     [TemplateActionsType.SetCategoryDocuments]: CategoryDocument[],
     [TemplateActionsType.SetCurrentCategoryDocuments]: CategoryDocument,
+    [TemplateActionsType.ToggleAddDocumentBox]: AddDocumentBoxVisibleType,
 }
 
 export type TemplateActions = ActionMap<TemplateActionPayload>[keyof ActionMap<TemplateActionPayload>];
@@ -65,6 +73,13 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
             return {
                 ...state,
                 currentCategoryDocuments: payload
+            }
+
+        case TemplateActionsType.ToggleAddDocumentBox:
+
+            return {
+                ...state,
+                addDocumentBoxVisible: payload
             }
 
         default:
