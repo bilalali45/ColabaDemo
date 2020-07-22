@@ -20,7 +20,7 @@
     "node-sass": "^4.14.1",
     "print-js": "^1.0.63",
     "rainsoft-js": "^1.0.28",
-    "rainsoft-rc": "^1.0.12",
+    "rainsoft-rc": "^1.0.14",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",

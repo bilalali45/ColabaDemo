@@ -43,12 +43,16 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }
                                 await addNewDoc(dl.docTypeId, 'typeId');
                                 setRequestSent(false)
                                 // setVisible(false);
-                            }}>{dl?.docType}{
-                                    (requestSent && removeDocName === dl.docTypeId) ? <span>
+                            }}>{dl?.docType}
+                            {
+                                    (requestSent && removeDocName === dl.docTypeId) ?
+                                     <span>
                                         <Spinner size="sm" animation="border" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </Spinner>
-                                    </span> : ''}
+                                    </span>
+                                    
+                                    : ''}
                             </li>
                         )
                     })
