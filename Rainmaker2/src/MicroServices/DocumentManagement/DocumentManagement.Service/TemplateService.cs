@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DocumentManagement.Model.Template;
+using TemplateDocument = DocumentManagement.Entity.TemplateDocument;
 
 namespace DocumentManagement.Service
 {
@@ -211,7 +212,7 @@ namespace DocumentManagement.Service
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
-            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true,documentTypes=new List<TemplateDocument>() };
+            Entity.Template template = new Entity.Template() { userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = tenantId, name = name, isActive = true,documentTypes=new List<Entity.TemplateDocument>() };
             await collection.InsertOneAsync(template);
 
             return template.name;
@@ -345,12 +346,18 @@ namespace DocumentManagement.Service
         public async Task<string> SaveTemplate(AddTemplateModel model, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
+            List<Entity.TemplateDocument> mTemplateDocumentsList= new List<TemplateDocument>();
+           
             foreach (var item in model.documentTypes)
             {
-                item.id = ObjectId.GenerateNewId().ToString();
-
+                Entity.TemplateDocument mTemplateDocuments = new TemplateDocument();
+                mTemplateDocuments.id = ObjectId.GenerateNewId().ToString();
+                mTemplateDocuments.typeId = item.typeId;
+                mTemplateDocuments.docName = item.docName;
+                mTemplateDocumentsList.Add(mTemplateDocuments);
             }
-            Entity.Template template = new Entity.Template() {id= ObjectId.GenerateNewId().ToString(),userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = model.tenantId, name = model.name, isActive = true, documentTypes = model.documentTypes };
+            Entity.Template template = new Entity.Template() {id= ObjectId.GenerateNewId().ToString(),
+                userId = userProfileId, createdOn = DateTime.UtcNow, tenantId = model.tenantId, name = model.name, isActive = true, documentTypes = mTemplateDocumentsList};
             await collection.InsertOneAsync(template);
 
             return template.id;

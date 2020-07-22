@@ -41,6 +41,8 @@ namespace DocumentManagement.API.Controllers
 
         #region Action Methods
 
+        #region Post Actions
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Save(Model.LoanApplication loanApplication, bool isDraft)
         {
@@ -64,6 +66,8 @@ namespace DocumentManagement.API.Controllers
             else
                 return NotFound();
         }
+
+        #endregion
 
         #endregion
     }

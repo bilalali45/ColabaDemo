@@ -108,9 +108,19 @@ namespace DocumentManagement.Model
     }
     public class AdminDeleteModel
     {
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        [Required(ErrorMessage = "Field Can't be empty")]
         public string id { get; set; }
+
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        [Required(ErrorMessage = "Field Can't be empty")]
         public string docId { get; set; }
+
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        [Required(ErrorMessage = "Field Can't be empty")]
         public string requestId { get; set; }
+
+        [Required(ErrorMessage = "Field Can't be empty")]
         public int tenantId { get; set; }
 
     }

@@ -5,12 +5,12 @@ import { MenuOptionType } from '../../../Types/MenuOptionsPropsType';
 type HeaderPropsType = {
     logoSrc: string;
     displayName: string;
-    displayNameOnClick: Function;
+   // displayNameOnClick: Function;
     options: MenuOptionType[];
 
 }
 
-export const RainsoftRcHeader = ({ logoSrc, displayName, displayNameOnClick, options }: HeaderPropsType) => {
+export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsType) => {
     return (
         <header className="header-main">
             <div className="container-fluid">

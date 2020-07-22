@@ -20,9 +20,9 @@ namespace DocumentManagement.Service
         }
         public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",
@@ -110,8 +110,8 @@ namespace DocumentManagement.Service
 
         public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",

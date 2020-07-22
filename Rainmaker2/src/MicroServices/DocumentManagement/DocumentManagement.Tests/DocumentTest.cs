@@ -146,7 +146,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()
@@ -159,7 +159,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty},
                         { "typeName" , BsonString.Empty},
                         { "requestId" , BsonString.Empty},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                 ,new BsonDocument
                 {
@@ -169,7 +169,7 @@ namespace DocumentManagement.Tests
                     { "docName" , BsonString.Empty},
                     { "typeName" , BsonString.Empty},
                     { "requestId" , BsonString.Empty},
-                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -179,7 +179,7 @@ namespace DocumentManagement.Tests
                     { "docName" , BsonString.Empty},
                     { "typeName" , BsonString.Empty},
                     { "requestId" , BsonString.Empty},
-                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -189,7 +189,7 @@ namespace DocumentManagement.Tests
                     { "docName" , "W2 2016"},
                     { "typeName" , BsonString.Empty},
                     { "requestId" , BsonString.Empty},
-                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -199,7 +199,7 @@ namespace DocumentManagement.Tests
                     { "docName" , BsonString.Empty},
                     { "typeName" ,"W2 2016"},
                     { "requestId" , BsonString.Empty},
-                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -209,7 +209,7 @@ namespace DocumentManagement.Tests
                     { "docName" , BsonString.Empty},
                     { "typeName" ,BsonString.Empty},
                     { "requestId" ,"abc15d1fe456051af2eeb768"},
-                    { "files" , BsonArray.Create(new RequestFile[]{ })}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
                 ,new BsonDocument
                 {
@@ -236,9 +236,9 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -899,10 +899,10 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
@@ -920,10 +920,10 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
@@ -1049,10 +1049,10 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
@@ -1070,7 +1070,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
@@ -1093,9 +1093,9 @@ namespace DocumentManagement.Tests
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
           
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mockActivityLogService.Setup(x => x.GetActivityLogId(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync("5f0ffa5cba6f754a10129586");
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
@@ -1179,7 +1179,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
             FileViewModel fileViewModel = new FileViewModel();
@@ -1216,8 +1216,8 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
-            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
             mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 

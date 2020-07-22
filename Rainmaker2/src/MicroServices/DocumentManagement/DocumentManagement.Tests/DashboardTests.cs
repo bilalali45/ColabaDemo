@@ -58,7 +58,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()    
@@ -73,7 +73,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
                     new BsonDocument
@@ -87,7 +87,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
                     new BsonDocument
@@ -101,7 +101,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
                 new BsonDocument
@@ -115,7 +115,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                 ,
                  new BsonDocument
@@ -129,7 +129,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty  },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                  ,
                  new BsonDocument
@@ -143,7 +143,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
                  new BsonDocument
@@ -157,7 +157,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
                  new BsonDocument
@@ -192,9 +192,9 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -250,7 +250,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()
@@ -265,7 +265,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
                     new BsonDocument
@@ -279,7 +279,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
                     new BsonDocument
@@ -293,7 +293,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
                 new BsonDocument
@@ -307,7 +307,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                 ,
                  new BsonDocument
@@ -321,7 +321,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty  },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                  ,
                  new BsonDocument
@@ -335,7 +335,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
                  new BsonDocument
@@ -349,7 +349,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
-                        { "files" , BsonArray.Create(new RequestFile[]{ })}
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
                  new BsonDocument
@@ -384,9 +384,9 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
 
-            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
@@ -513,7 +513,7 @@ namespace DocumentManagement.Tests
                         { "customerId" , BsonString.Empty},
                         { "tenantId" ,  BsonString.Empty },
                         { "loanApplicationId" , BsonString.Empty },
-                        { "requests" , BsonArray.Create(new Request[]{ }) },
+                        { "requests" , BsonArray.Create(new Entity.Request[]{ }) },
                         { "status" ,  BsonString.Empty}
 
                  }
@@ -623,7 +623,7 @@ namespace DocumentManagement.Tests
                         { "customerId" , BsonString.Empty},
                         { "tenantId" ,  BsonString.Empty },
                         { "loanApplicationId" , BsonString.Empty },
-                        { "requests" , BsonArray.Create(new Request[]{ }) },
+                        { "requests" , BsonArray.Create(new Entity.Request[]{ }) },
                         { "status" ,  BsonString.Empty}
 
                  }
