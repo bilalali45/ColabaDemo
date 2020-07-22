@@ -831,12 +831,12 @@ namespace DocumentManagement.Tests
             //Act
             ITemplateService templateService = new TemplateService(mock.Object);
             AddTemplateModel addTemplateModel = new AddTemplateModel();
-            TemplateDocument templateDocument= new TemplateDocument();
+            DocumentManagement.Model.Template.TemplateDocument templateDocument = new DocumentManagement.Model.Template.TemplateDocument();
             addTemplateModel.tenantId =1;
             addTemplateModel.name = "Insert Tenant Template";
-            addTemplateModel.documentTypes = new List<TemplateDocument>();
+            addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
 
-            templateDocument.id = "5f0701b8c4577f7180cd9dc3";
+           // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.docName = "abcbbc";
             addTemplateModel.documentTypes.Add(templateDocument);
             string result = await templateService.SaveTemplate(addTemplateModel, 3872);
@@ -862,9 +862,9 @@ namespace DocumentManagement.Tests
             AddTemplateModel addTemplateModel = new AddTemplateModel();
             addTemplateModel.tenantId = 1;
             addTemplateModel.name = "Insert Tenant Template";
-            addTemplateModel.documentTypes = new List<TemplateDocument>();
-            TemplateDocument templateDocument = new TemplateDocument();
-            templateDocument.id = "5f0701b8c4577f7180cd9dc3";
+            addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
+            DocumentManagement.Model.Template.TemplateDocument templateDocument = new DocumentManagement.Model.Template.TemplateDocument();
+           // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.typeId = "5ebc18cba5d847268075ad22";
             addTemplateModel.documentTypes.Add(templateDocument);
             string result = await templateService.SaveTemplate(addTemplateModel, 3872);
