@@ -175,8 +175,13 @@ export const DocumentItem = ({
       </div>
     );
   };
-
+ const doubleClickHandler = (isUploaded: string | undefined) => {
+   if(isUploaded === 'done')
+    return;
+    changeName(file, filename);
+ }
   const renderFileTitle = () => {
+
     return (
       <div className="title">
         {file.editName ? (
@@ -199,7 +204,7 @@ export const DocumentItem = ({
             }}
           />
         ) : (
-            <p>{file.clientName}</p>
+            <p  onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)}> {file.clientName}</p>
           )}
       </div>
     );
