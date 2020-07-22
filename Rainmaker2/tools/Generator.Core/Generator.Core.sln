@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainMaker.Data", "Rainmaker
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainMaker.Entity", "RainMaker.Entity\RainMaker.Entity.csproj", "{FEF50C14-79D4-412F-990B-1CC27DC776BF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "URF.Core.EF", "..\..\src\Library\URF\URF.Core.EF\URF.Core.EF.csproj", "{94ED7B9D-EE84-4C54-9A13-BA132E6AE731}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FEF50C14-79D4-412F-990B-1CC27DC776BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEF50C14-79D4-412F-990B-1CC27DC776BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEF50C14-79D4-412F-990B-1CC27DC776BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94ED7B9D-EE84-4C54-9A13-BA132E6AE731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94ED7B9D-EE84-4C54-9A13-BA132E6AE731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94ED7B9D-EE84-4C54-9A13-BA132E6AE731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94ED7B9D-EE84-4C54-9A13-BA132E6AE731}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
