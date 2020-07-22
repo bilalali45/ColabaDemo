@@ -202,6 +202,14 @@ export const DocumentItem = ({
               }
               setNameExists(true);
             }}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                rename();
+              }
+          }}
+          onBlur={(e) => {
+            rename();
+        }}
           />
         ) : (
             <p  onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)}> {file.clientName}</p>
