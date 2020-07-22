@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\..\..\src\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
   </ItemGroup>
 
   <ItemGroup>
