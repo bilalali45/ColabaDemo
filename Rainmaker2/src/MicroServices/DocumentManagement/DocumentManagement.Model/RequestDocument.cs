@@ -14,7 +14,7 @@ namespace DocumentManagement.Model
         [BsonRepresentation(BsonType.ObjectId)]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string typeId { get; set; }
-        [RegularExpression(@"^[A-Za-z0-9\s-].{1,254}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Za-z0-9\s-]{0,255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string displayName { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string message { get; set; }
