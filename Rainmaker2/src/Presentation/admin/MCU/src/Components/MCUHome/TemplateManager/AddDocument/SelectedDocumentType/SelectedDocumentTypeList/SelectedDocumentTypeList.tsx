@@ -9,10 +9,11 @@ import Spinner from 'react-bootstrap/Spinner'
 type SelectedTypeType = {
     setVisible: Function,
     documentList: Document[],
-    addNewDoc: Function
+    addNewDoc: Function,
+    term?: string
 }
 
-export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }: SelectedTypeType) => {
+export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, term }: SelectedTypeType) => {
 
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [removeDocName, setRemoveDocName] = useState<string>();
@@ -59,7 +60,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible }
                 }
 
             </ul>
-            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “Page 5 0f 5 Case checking  account”</p></div>}
+            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term}”</p></div>}
         </div>
     )
 }
