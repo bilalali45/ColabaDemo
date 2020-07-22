@@ -194,9 +194,12 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 }}
                                 onBlur={() => renameTemplate(newNameText)}
                                 className="editable-TemplateTitle" />
-                            {addRequestSent ? <Spinner size="sm" animation="border" role="status">
+                            {addRequestSent ? 
+                            <div className="rename-spinner">
+                            <Spinner size="sm" animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
-                            </Spinner> : ''}
+                            </Spinner> 
+                            </div>: ''} 
                             {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
                             {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
                         </p>

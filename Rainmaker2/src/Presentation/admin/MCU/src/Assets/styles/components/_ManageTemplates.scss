@@ -262,6 +262,12 @@
             }
             &.editable {
                 padding-right: 0;
+                .rename-spinner {
+                    position: absolute;
+                    right: 5px;
+                    top: 4px;
+                    color: color('docSnipetText');
+                }
                 .error-name {
     display: block;
     font-size: 11px;
