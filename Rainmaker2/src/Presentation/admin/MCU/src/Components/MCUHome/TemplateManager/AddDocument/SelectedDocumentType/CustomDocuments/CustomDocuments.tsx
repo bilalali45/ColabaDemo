@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from 'react'
 import { nameTest } from '../../../TemplateHome/TemplateHome';
+import Spinner from 'react-bootstrap/Spinner';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -7,19 +8,23 @@ type CustomDocumentsType = {
 }
 
 export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
-    
+
     const [docName, setDocName] = useState('');
+    const [requestSent, setRequestSent] = useState<boolean>(false);
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-        if(!nameTest.test(value)) {
+        if (!nameTest.test(value)) {
             return;
         }
         setDocName(value);
     }
 
-    const addDoc = () => {
-        addDocToTemplate(docName, 'docName');
-        setVisible(false)        
+    const addDoc = async () => {
+        setRequestSent(true);
+        setDocName('');
+        await addDocToTemplate(docName, 'docName');
+        setRequestSent(false);
+        // setVisible()        
     }
 
     return (
@@ -29,8 +34,9 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
             </div>
 
             <div className="others-doc-list">
-                <div className="active-docs"><ul>
-                    {/* <li>Bank Statement</li>
+                <div className="active-docs">
+                    <ul className="ul-others-doc">
+                        {/* <li>Bank Statement</li>
                     <li>W-2s 2017</li>
                     <li>W-2s 2018</li>
                     <li>Personal Tax Returns</li>
@@ -40,7 +46,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <li>Alimony Income Verification</li>
                     <li>Bank  statement</li>
                     <li>Pay slip</li> */}
-                </ul>
+                    </ul>
                 </div>
             </div>
             <div className="others-doc-input-wrap">
@@ -50,7 +56,12 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                     <input value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
                     <div className="input-btn-wrap">
-                        <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>
+                        {requestSent ? <button className="btn btn-primary btn-sm">
+                            <Spinner size="sm" animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </button> :
+                            <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
                     </div>
                 </div>
 

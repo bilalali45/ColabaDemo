@@ -37,12 +37,12 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
                             onChange={(e) => handleChange(e)}
                             multiple
                             accept={FileUpload.allowedExtensions} />
-                        <div className="upload-note">
+                        {/* <div className="upload-note">
                             <p>
                                 File Type: PDF, JPEG, PNG <br />
                                 File Size: {FileUpload.allowedSize}mb
                                 </p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

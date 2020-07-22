@@ -18,6 +18,7 @@ import HeaderContent from "./utils/header_footer_utils/HeaderContent";
 import { Auth } from "./services/auth/Auth";
 import { LaonActions } from "./store/actions/LoanActions";
 import IdleTimer from "react-idle-timer";
+// import Header from "./shared/Components/Header/Header";
 
 const mvcDashBoardUrl = `Dashboard`;
 // const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
@@ -28,6 +29,14 @@ declare global {
   }
 }
 window.envConfig = window.envConfig || {};
+
+export class ApplicationEnv {
+  static MaxDocumentCount: string = "10";
+  static MaxFileSize: string = "9"; // In Mbs
+  static loanApplicationId: string;
+  static tenantId: string;
+  static businessUnitId: string;
+}
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -110,10 +119,9 @@ const App = () => {
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
           displayName={UserActions.getUserName()}
-          displayNameOnClick={HeaderContent.gotoDashboardHandler}
+          // displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
         />
-
         <Router basename="/DocumentManagement">
           <Switch>
             <Authorized path="/" component={Home} />

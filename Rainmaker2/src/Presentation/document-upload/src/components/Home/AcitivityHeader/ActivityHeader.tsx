@@ -22,7 +22,7 @@ const ActivityHeader = (props) => {
     const setNavigations = (pathname) => {
         if (pathname.includes('activity')) {
             setLeftNav('Dashboard');
-            setRightNav('Uploaded Document');
+            setRightNav('Documents');
             setLeftNavUrl('/DashBoard');
             setRightNavUrl('/uploadedDocuments');
         }

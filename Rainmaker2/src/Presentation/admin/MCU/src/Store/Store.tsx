@@ -9,14 +9,15 @@ let baseUrl : any = window.envConfig.API_BASE_URL;
 let auth = LocalDB.getAuthToken();
 
 httpClient.setBaseUrl(baseUrl);
-if(auth) httpClient.setAuth(auth)
+if(auth) httpClient.setAuth(auth);
+
 
 export type InitialStateType = {
     user: {
         userInfo: {}
     },
     needListManager: NeedListType | {},
-    templateManager: TemplateType | {},
+    templateManager: TemplateType | {}
 }
 
 export const InitialState = {
@@ -24,7 +25,7 @@ export const InitialState = {
         userInfo: {}
     },
     needListManager: {},
-    templateManager: {},
+    templateManager: {}
 }
 
 const Store = createContext<{

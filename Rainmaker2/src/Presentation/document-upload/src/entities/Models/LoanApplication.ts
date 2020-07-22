@@ -1,4 +1,4 @@
-import { toTitleCase } from 'rainsoft-js'
+import { toTitleCase, FormatAmountByCountry  } from 'rainsoft-js'
 
 export class LoanApplication {
   public loanPurpose?: string;
@@ -43,7 +43,7 @@ export class LoanApplication {
     if (!this.loanAmount) {
       return undefined;
     }
-    return `${LoanApplication.formatAmountByCountry(this.loanAmount)}`;
+    return `${FormatAmountByCountry(this.loanAmount)}`;
   }
 
   public fromJson(json: LoanApplication) {
@@ -61,49 +61,49 @@ export class LoanApplication {
     return this;
   }
 
-  static addAmountSeperator(amount: string, currency: string) {
-    let counter = 0;
+  // static addAmountSeperator(amount: string, currency: string) {
+  //   let counter = 0;
 
-    return amount
-      .split("")
-      .reverse()
-      .map((n, i) => {
-        if (counter === 2 && i !== amount.length - 1) {
-          counter = 0;
-          switch (currency) {
-            case "US":
-              return `,${n}`;
-            case "BRL":
-              return `.${n}`;
+  //   return amount
+  //     .split("")
+  //     .reverse()
+  //     .map((n, i) => {
+  //       if (counter === 2 && i !== amount.length - 1) {
+  //         counter = 0;
+  //         switch (currency) {
+  //           case "US":
+  //             return `,${n}`;
+  //           case "BRL":
+  //             return `.${n}`;
 
-            default:
-              break;
-          }
-        }
-        counter++;
-        return n;
-      })
-      .reverse()
-      .join("");
-  }
+  //           default:
+  //             break;
+  //         }
+  //       }
+  //       counter++;
+  //       return n;
+  //     })
+  //     .reverse()
+  //     .join("");
+  // }
 
-  static formatAmountByCountry(amount?: number) {
-    let strAmount = String(amount);
-    let amountSplitByPoint = strAmount.split(".");
-    if (amountSplitByPoint.length > 2) {
-      return;
-    }
+  // static formatAmountByCountry(amount?: number) {
+  //   let strAmount = String(amount);
+  //   let amountSplitByPoint = strAmount.split(".");
+  //   if (amountSplitByPoint.length > 2) {
+  //     return;
+  //   }
 
-    let seperatorAdded = this.addAmountSeperator(
-      amountSplitByPoint[0].toString(),
-      "US"
-    );
+  //   let seperatorAdded = this.addAmountSeperator(
+  //     amountSplitByPoint[0].toString(),
+  //     "US"
+  //   );
 
-    return (() => {
-      if (amountSplitByPoint[1]) {
-          return `$${seperatorAdded}.${amountSplitByPoint[1]}`
-      }
-      return `$${seperatorAdded}`
-  })();
-  }
+  //   return (() => {
+  //     if (amountSplitByPoint[1]) {
+  //         return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+  //     }
+  //     return `$${seperatorAdded}`
+  // })();
+  // }
 }

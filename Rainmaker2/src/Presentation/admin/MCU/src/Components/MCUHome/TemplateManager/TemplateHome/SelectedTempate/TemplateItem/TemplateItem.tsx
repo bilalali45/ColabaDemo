@@ -27,7 +27,7 @@ export const TemplateItem = ({
                         {template.name}
                         <span className="BTNclose" onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                     </div>
-                    : <>
+                    : isSelected && <>
                         <div className="alert-cancel">
                             <span>Remove this template?</span>
                             <div className="l-remove-actions">

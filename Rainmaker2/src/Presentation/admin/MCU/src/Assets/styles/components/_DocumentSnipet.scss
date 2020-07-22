@@ -31,12 +31,20 @@
                 border-color: color('docSnipetBorderActive');
                 outline: 1px solid color('docSnipetBorderActive');
             }
+            &.error{
+                border: 1px solid $danger;
+                outline: none;
+            }
         }
     }
 
     &--detail{
         display: block;
         padding-top: 5px;
+
+        &.error{
+            color: $danger;
+        }
     }
 
     [class^="document-snipet-btn"],

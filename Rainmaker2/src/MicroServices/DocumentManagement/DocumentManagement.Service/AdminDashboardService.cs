@@ -22,9 +22,9 @@ namespace DocumentManagement.Service
         }
         public async Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
 
                   ""loanApplicationId"": " + loanApplicationId + @",
@@ -101,7 +101,7 @@ namespace DocumentManagement.Service
 
         public async Task<bool> Delete(AdminDeleteModel model)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
@@ -167,8 +167,8 @@ namespace DocumentManagement.Service
             {
                 ArrayFilters = new List<ArrayFilterDefinition>()
                 {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
                 }
             });
 

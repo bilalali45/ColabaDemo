@@ -62,13 +62,15 @@ export const UploadedDocumentsTable = () => {
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
     return (
       <td>
-        {data.map((item: Document) => {
+        {data.map((item: Document,index:number) => {
           const { clientName, id: fileId } = item;
 
           return (
-            <span className="block-element">
+            <span className="block-element" key={index}>
               <Link
                 to="#"
+                className="link-filename"
+                title={clientName}
                 onClick={() => {
                   setCurrentDoc({
                     ...params,
@@ -91,9 +93,9 @@ export const UploadedDocumentsTable = () => {
   const renderAddedColumn = (data) => {
     return (
       <td>
-        {data.map((item: Document) => {
+        {data.map((item: Document,index:number) => {
           return (
-            <span className="block-element">
+            <span className="block-element" key={index}>
               {DateFormatWithMoment(item.fileUploadedOn, true)}
             </span>
           );
@@ -107,7 +109,7 @@ export const UploadedDocumentsTable = () => {
       "asc",
     ]);
 
-    return sortedUploadedDocuments.map((item: UploadedDocuments) => {
+    return sortedUploadedDocuments.map((item: UploadedDocuments,index:number) => {
       if (!item?.files?.length) return;
       const { files, docId, requestId, id } = item;
       const sortedFiles = _.orderBy(
@@ -117,7 +119,7 @@ export const UploadedDocumentsTable = () => {
       );
 
       return (
-        <tr>
+        <tr key={index}>
           <td>
             <span className="doc-name">
               <em className="far fa-file"></em> {item.docName}

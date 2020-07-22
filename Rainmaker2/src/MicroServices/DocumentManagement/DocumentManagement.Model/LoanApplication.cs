@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using DocumentManagement.Entity;
 using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
@@ -12,7 +13,9 @@ namespace DocumentManagement.Model
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int loanApplicationId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int tenantId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string status { get; set; }

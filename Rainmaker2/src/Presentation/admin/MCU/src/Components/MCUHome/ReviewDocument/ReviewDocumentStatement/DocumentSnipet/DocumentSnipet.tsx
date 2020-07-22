@@ -16,7 +16,8 @@ export const DocumentSnipet = ({
   fileId,
   currentFileIndex,
   uploadedOn,
-  username
+  username,
+  allowFileRenameMCU
 }: {
   index: number,
   moveNextFile: (index: number, fileId: string, clientName: string) => void
@@ -29,9 +30,11 @@ export const DocumentSnipet = ({
   currentFileIndex: number
   uploadedOn: string
   username: string
+  allowFileRenameMCU: (filename: string, fileId: string) => boolean
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
+  const [filenameUnique, setFilenameUnique] = useState(true)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
@@ -52,6 +55,8 @@ export const DocumentSnipet = ({
     if (event) {
       event.stopPropagation()
     }
+
+    if (!filenameUnique) return
 
     if (renameMCUName !== "") {
       const fileExtension = getFileExtension(mcuName || clientName)
@@ -82,6 +87,16 @@ export const DocumentSnipet = ({
 
       newName = `${renameMCUName.trim()}${fileExtension}`
 
+      if (allowFileRenameMCU(renameMCUName.trim(), fileId) === false) { //this condition is false if filename already assigned to some other file
+        inputRef.current?.focus()
+
+        !!setFilenameUnique && setFilenameUnique(false)
+
+        return
+      }
+
+      !filenameUnique && setFilenameUnique(true)
+
       const data = { id, requestId, docId, fileId, newName }
 
       const http = new Http()
@@ -90,12 +105,15 @@ export const DocumentSnipet = ({
         ...data
       })
 
+      setFilenameUnique(true)
       setRenameMCUName(() => newName)
       setEditingModeEnabled(() => false)
     } catch (error) {
       console.log('error', error)
 
-      setRenameMCUName(() => newName)
+      alert('Something went wrong. Please try again.')
+
+      setRenameMCUName(() => mcuName || clientName)
       setEditingModeEnabled(false)
     }
   }
@@ -135,6 +153,10 @@ export const DocumentSnipet = ({
     }
   }, [editingModeEnabled])
 
+  const errorClass = () => {
+    return !filenameUnique && 'error';
+  }
+
   return (
     <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
@@ -150,6 +172,7 @@ export const DocumentSnipet = ({
                 onBlur={() => renameDocumentMCU()}
                 onKeyDown={onKeyDown}
                 ref={inputRef}
+                className={`${!filenameUnique && 'error'}`}
               />
             </React.Fragment>
           ) : (
@@ -159,6 +182,7 @@ export const DocumentSnipet = ({
         <small className="document-snipet--detail">
           {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
+        {!filenameUnique && (<small className="document-snipet--detail error">Filename must be unique</small>)}
       </div>
       <div className="document-snipet--right">
         {!!editingModeEnabled && (

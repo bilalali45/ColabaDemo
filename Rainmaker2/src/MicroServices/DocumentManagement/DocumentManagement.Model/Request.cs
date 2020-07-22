@@ -3,9 +3,22 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
+    public class Request
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public int userId { get; set; }
+        public string userName { get; set; }
+        public DateTime createdOn { get; set; }
+        public string status { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string message { get; set; }
+        public List<RequestDocument> documents { get; set; }
+    }
     public static class ActivityStatus
     {
         public const string RequestedBy = "Requested By : {0}";

@@ -1,9 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
+import { Http } from "rainsoft-js";
+import Spinner from "react-bootstrap/Spinner";
+
 import { DocumentSnipet } from "./DocumentSnipet/DocumentSnipet";
 import { NeedListDocumentType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
-import { Http } from "rainsoft-js";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
-import Spinner from "react-bootstrap/Spinner";
 
 export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
@@ -19,6 +20,9 @@ export const ReviewDocumentStatement = ({
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
   const [loading, setLoading] = useState(false)
   const [username, setUsername] = useState('')
+  const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([])
+
+  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
@@ -34,8 +38,16 @@ export const ReviewDocumentStatement = ({
 
       typeIdAndIdForActivityLogs(id, typeId || docName)
 
+
       setDocumentFiles(files)
       setUsername(userName)
+      setMcuNamesUpdated(files.map(file => {
+        return {
+          fileId: file.fileId,
+          mcuName: file.mcuName === "" ? getFileNameWithoutExtension(file.clientName) : getFileNameWithoutExtension(file.mcuName)
+        }
+      }))
+
       setLoading(false)
     } catch (error) {
       console.log(error)
@@ -45,6 +57,25 @@ export const ReviewDocumentStatement = ({
       alert('Something went wrong while getting files for document. Please try again.')
     }
   }, [setDocumentFiles])
+
+  const allowFileRenameMCU = (filename: string, fileId: string): boolean => {
+    const clonedArray = [...mcuNamesUpdated]
+
+    const mcuNameAlreadyInList = clonedArray.some(file => {
+      return file.mcuName.trim() === filename.trim()
+    })
+
+    if (mcuNameAlreadyInList) return false
+
+    const documentFile = clonedArray.find(file => file.fileId === fileId)
+
+    if (documentFile) {
+      documentFile.mcuName = filename
+    }
+
+    setMcuNamesUpdated(clonedArray)
+    return true
+  }
 
   useEffect(() => {
     if (currentDocument) {
@@ -69,7 +100,7 @@ export const ReviewDocumentStatement = ({
         </div>
       ) : (
           <section className="document-statement--body">
-            <h3>Documents</h3>
+            {/* <h3>Documents</h3> */}
             {!!documentFiles && documentFiles.length ?
               documentFiles.map((file, index) => <DocumentSnipet
                 key={index}
@@ -84,10 +115,10 @@ export const ReviewDocumentStatement = ({
                 currentFileIndex={currentFileIndex}
                 uploadedOn={file.fileUploadedOn}
                 username={username}
+                allowFileRenameMCU={allowFileRenameMCU}
               />) : (
                 <span>No file submitted yet</span>
               )}
-            <hr />
           </section>
         )}
     </div>
