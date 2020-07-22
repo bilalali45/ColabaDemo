@@ -15,7 +15,7 @@ export const DocumentRequest = () => {
                 <div className="row">
                     <article className="col-sm-12">
                         <div className="dr-head">
-                            <h2 className="heading-h2"> Document Request</h2>
+                            <h2 className="heading-h2">Task List</h2>
                             {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> items to complete</p> : ''}
                         </div>
                     </article>
