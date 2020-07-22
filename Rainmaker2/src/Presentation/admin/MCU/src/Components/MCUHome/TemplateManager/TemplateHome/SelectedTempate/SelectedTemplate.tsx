@@ -175,6 +175,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 autoFocus
                                 value={newNameText}
                                 onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                                    if (!value?.length || value?.length > 255) {
+                                        return;
+                                    }
                                     // console.log(letterNumber.test(e.target.value));
                                     if (!nameTest.test(value)) {
                                         return;
@@ -218,7 +221,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
-            {templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
+            {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}

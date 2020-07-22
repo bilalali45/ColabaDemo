@@ -62,7 +62,6 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
             }
 
         case TemplateActionsType.SetTemplateDocuments:
-
             return {
                 ...state,
                 templateDocuments: payload
