@@ -6,6 +6,7 @@ using System.Text;
 
 namespace DocumentManagement.Entity
 {
+    [BsonNoId]
     public class TemplateDocument
     {
         [BsonRepresentation(BsonType.ObjectId)]

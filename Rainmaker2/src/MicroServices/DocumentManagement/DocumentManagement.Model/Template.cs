@@ -25,7 +25,11 @@ namespace DocumentManagement.Model
 
         public class InsertTemplateModel
         {
+            [Required(ErrorMessage = "Field Can't be empty")]
             public int tenantId { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
+            //[RegularExpression(@"^[A-Za-z0-9\s-].{1,254}$", ErrorMessage = "Validation Failed")]
             public string name { get; set; }
         }
 
@@ -63,48 +67,69 @@ namespace DocumentManagement.Model
         }
         public class AddDocumentModel
         {
+            [Required(ErrorMessage = "Field Can't be empty")]
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
             public string templateId { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
             public int tenantId { get; set; }
+
+         
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
             public string typeId { get; set; }
+
+           
+          //  [RegularExpression(@"^[A-Za-z0-9\s-].{1,254}$", ErrorMessage = "Validation Failed")]
             public string docName { get; set; }
         }
 
 
         public class AddTemplateModel
         {
+            [Required(ErrorMessage = "Field Can't be empty")]
             public int tenantId { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
             public string name { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
             public  List<TemplateDocument> documentTypes { get; set; }
         }
 
         public class RenameTemplateModel
         {
-         public   string id { get; set; }
-         public int tenantId { get; set; }
+            [Required(ErrorMessage = "Field Can't be empty")]
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+            public   string id { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
+            public int tenantId { get; set; }
+
+            [Required(ErrorMessage = "Field Can't be empty")]
             public string name { get; set; }
 
         }
 
         public class DeleteTemplateModel
         {
+            [Required(ErrorMessage = "Field Can't be empty")]
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
             public string templateId { get; set; }
-            public int tenantId { get; set; }
-    
 
+            [Required(ErrorMessage = "Field Can't be empty")]
+            public int tenantId { get; set; }
         }
 
         public class GetTemplates
         {
             [Required(ErrorMessage = "Field Can't be empty")]
             public int tenantId { get; set; }
-
         }
         public class GetTemplateDocuments
         {
             [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
             [Required(ErrorMessage = "Field Can't be empty")]
             public string id { get; set; }
-
         }
 
         public class GetCategoryDocument
@@ -112,6 +137,18 @@ namespace DocumentManagement.Model
             [Required(ErrorMessage = "Field Can't be empty")]
             public int tenantId { get; set; }
 
+        }
+
+        public class TemplateDocument
+        {
+            
+             
+            [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+            public string typeId { get; set; }
+
+          
+           // [RegularExpression(@"^[A-Za-z0-9\s-].{1,254}$", ErrorMessage = "Validation Failed")]
+            public string docName { get; set; }
         }
     }
 }

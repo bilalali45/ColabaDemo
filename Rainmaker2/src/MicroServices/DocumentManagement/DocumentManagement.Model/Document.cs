@@ -3,6 +3,8 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace DocumentManagement.Model
 {
 
@@ -89,8 +91,15 @@ namespace DocumentManagement.Model
     }
     public class DeleteDocumentModel
     {
+        [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string id { get; set; }
+
+        [Required(ErrorMessage = "Field Can't be empty")]
         public int tenantId { get; set; }
+
+        [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string documentId { get; set; } 
     }
     
