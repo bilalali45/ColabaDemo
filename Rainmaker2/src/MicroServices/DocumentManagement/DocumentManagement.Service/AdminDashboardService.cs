@@ -60,7 +60,8 @@ namespace DocumentManagement.Service
                                 ""docName"": ""$requests.documents.displayName"",
                                  ""typeName"": ""$documentObjects.name"",
                                 ""status"": ""$requests.documents.status"",
-                                ""files"": ""$requests.documents.files""
+                                ""files"": ""$requests.documents.files"",
+                                ""createdOn"": ""$requests.createdOn""
                             }
                         }"
                 ));
@@ -77,7 +78,7 @@ namespace DocumentManagement.Service
                     dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.status = query.status;
-
+                    dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value,DateTimeKind.Utc) : null;
                     dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu).Select(x => new AdminFileDTO()
                     {
                         id = x.id,
@@ -93,7 +94,11 @@ namespace DocumentManagement.Service
             if (pending)
             {
                 result = result.Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
-                    .OrderBy(x => x.order).Select(x => x.x).ToList();
+                    .OrderBy(x => x.order).ThenByDescending(x=>x.x.createdOn).Select(x => x.x).ToList();
+            }
+            else
+            {
+                result = result.OrderByDescending(x => x.createdOn).ToList();
             }
             return result;
         }
