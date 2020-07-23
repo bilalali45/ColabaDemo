@@ -33,7 +33,7 @@ export class Home extends Component {
           <div className="container">
             <Switch>
               <Redirect exact from={"/"} to={"/activity"} />
-              <Authorized path="" component={Activity} />
+              <Authorized path="/activity" component={Activity} />
               <Authorized
                 path="/documentsRequest"
                 component={DocumentRequest}
