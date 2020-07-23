@@ -61,7 +61,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                 }
 
             </ul>
-            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term}”</p></div>}
+            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term?.toLowerCase()}”</p></div>}
         </div>
     )
 }

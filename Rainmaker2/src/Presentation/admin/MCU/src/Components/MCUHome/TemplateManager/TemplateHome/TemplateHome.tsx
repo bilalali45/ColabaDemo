@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { TemplateListContainer } from './TemplateListContainer/TemplateListContainer'
 import { SelectedTemplate } from './SelectedTempate/SelectedTemplate';
 
@@ -8,22 +8,31 @@ export const TemplateHome = () => {
 
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
+    const templateListContainerRef = useRef<HTMLDivElement>(null);
+
+
+    // const setListContainerElement = (el: HTMLDivElement) => {
+    //     templateListContainerRef = el;
+    // }
+
     return (
         <section className="MT-CWrap">
             <div className="container-mcu">
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="MT-leftbar">
-                            <TemplateListContainer 
-                                setLoaderVisible={setLoaderVisible}/>
+                            <TemplateListContainer
+                                listContainerElRef={templateListContainerRef}
+                                setLoaderVisible={setLoaderVisible} />
 
                         </div>
                     </div>
                     <div className="col-sm-8">
                         <div className="MT-rightbar">
-                            <SelectedTemplate 
-                            setLoaderVisible={setLoaderVisible}
-                            loaderVisible={loaderVisible}
+                            <SelectedTemplate
+                                listContainerElRef={templateListContainerRef}
+                                setLoaderVisible={setLoaderVisible}
+                                loaderVisible={loaderVisible}
                             />
                         </div>
                     </div>
