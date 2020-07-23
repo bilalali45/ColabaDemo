@@ -171,7 +171,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         return (
             <div className="T-head">
                 <div className="T-head-flex">
-                    <div>
+                    <div className="titleWrap">
                         {editTitleview || currentTemplate === null ?
                             <>
                                 <p className="editable">
@@ -212,7 +212,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                 </p>
                             </>
                             : <>
-                                <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
+                                <p className="title"> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                             </>}
                     </div>
                     <div>
