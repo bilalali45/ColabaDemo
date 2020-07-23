@@ -99,7 +99,7 @@
                 max-height: calc(100% - 50px);
                 overflow: auto;
                 margin-top: 10px;
-                @include media-breakpoint-down(md) {
+                @include media-breakpoint-down(lg) {
                     max-height: calc(100% - 60px);
                 }
                 & > li {

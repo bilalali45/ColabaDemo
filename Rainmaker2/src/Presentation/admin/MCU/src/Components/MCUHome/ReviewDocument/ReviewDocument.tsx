@@ -27,6 +27,8 @@ export const ReviewDocument = () => {
     typeId: null
   })
   const [clientName, setClientName] = useState('')
+  const [perviousDocumentButtonDisabled, setPerviousDocumentButtonDisabled] = useState(true)
+  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(false)
 
   const tenantId = LocalDB.getTenantId()
 
@@ -84,10 +86,22 @@ export const ReviewDocument = () => {
     []
   );
 
-  const nextDocument = useCallback(() => {
+  const onNextDocument = useCallback(() => {
     const indexes = documentsForReviewArrayIndexes()
 
-    const indexOfReivew = indexes.findIndex(value => Number(value) > navigationIndex)
+    const indexOfReivew = Number(indexes[navigationIndex + 1])
+
+    if (isNaN(Number(indexes[navigationIndex + 2])) && !nextDocumentButtonDisabled) {
+      setNextDocumentButtonDisabled(true)
+    }
+
+    if (perviousDocumentButtonDisabled === true) {
+      setPerviousDocumentButtonDisabled(false)
+    }
+
+    if (isNaN(indexOfReivew)) {
+      return
+    }
 
     if (indexOfReivew === -1) return //No review document found
 
@@ -106,10 +120,16 @@ export const ReviewDocument = () => {
     }
   }, [navigationIndex, documentList1, getDocumentForView]);
 
-  const previousDocument = useCallback(() => {
+  const onPreviousDocument = useCallback(() => {
     const indexes = documentsForReviewArrayIndexes()
 
     const indexOfReivew = Number(indexes[navigationIndex - 1])
+
+    if (isNaN(Number(indexes[navigationIndex - 2]))) {
+      setPerviousDocumentButtonDisabled(true)
+    } else if (nextDocumentButtonDisabled == true) {
+      setNextDocumentButtonDisabled(false)
+    }
 
     if (isNaN(indexOfReivew)) {
       return
@@ -172,6 +192,16 @@ export const ReviewDocument = () => {
             if (pendingReviewDocuments.length > 0) {
               const index = pendingReviewDocuments.findIndex((document: NeedListDocumentType) => document.docId === doc.docId)
 
+              const indexes = _.keys(_.pickBy(documentList, { status: 'Pending review' }))
+
+              if (!pendingReviewDocuments[index + 1]) {
+                setNextDocumentButtonDisabled(true)
+              }
+
+              if (pendingReviewDocuments[index - 1] && perviousDocumentButtonDisabled === true) {
+                setPerviousDocumentButtonDisabled(false)
+              }
+
               setNavigationIndex(index);
             }
           } else {
@@ -216,8 +246,10 @@ export const ReviewDocument = () => {
         hideNextPreviousNavigation={documentDetail || documentsForReviewArrayIndexes().length === 1}
         buttonsEnabled={!loading}
         onClose={goBack}
-        nextDocument={nextDocument}
-        previousDocument={previousDocument}
+        nextDocument={onNextDocument}
+        previousDocument={onPreviousDocument}
+        perviousDocumentButtonDisabled={perviousDocumentButtonDisabled}
+        nextDocumentButtonDisabled={nextDocumentButtonDisabled}
       />
       <div className="review-document-body">
         <div className="row">
@@ -232,7 +264,7 @@ export const ReviewDocument = () => {
                   tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={() => { }}
+                  hideViewer={goBack}
                 />
               </div>
             </div>

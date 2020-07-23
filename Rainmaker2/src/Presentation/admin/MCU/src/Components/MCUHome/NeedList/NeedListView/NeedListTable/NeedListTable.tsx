@@ -19,7 +19,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     const renderNeedList = (data: any) => {
         return data.map((item: NeedList, index: number) => {
             return (
-                <div className="tr row-shadow">
+                <div key={index} className="tr row-shadow">
                     {renderDocName(item.docName, item.status)}
                     {renderStatus(item.status)}
                     {renderFile(item.files)}
@@ -92,7 +92,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                 <div className="td">
                     {
                         data.map((item: NeedListDocuments) => {
-                            return <span className="block-element">{item.clientName}</span>
+                            return <span key={item.id} className="block-element">{item.clientName}</span>
                         })
                     }
                 </div>
@@ -103,14 +103,14 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     const renderSyncToLos = (data: NeedListDocuments[]) => {
         if (data === null || data.length === 0) {
             return (
-                <div className="td"><span className="block-element"><a href="javascript:;"><em className="icon-refresh default"></em></a></span> </div>
+                <div className="td"><span className="block-element"><a><em className="icon-refresh default"></em></a></span> </div>
             )
 
         } else {
             return (
                 <div className="td">
                     {data.map((item: NeedListDocuments) => {
-                        return <span className="block-element"><a href="javascript:;"><em className="icon-refresh default"></em></a></span>
+                        return <span key={item.id} className="block-element"><a ><em className="icon-refresh default"></em></a></span>
                     })
                     }
                 </div>
