@@ -25,10 +25,10 @@ export const TemplateItem = ({
         <li onClick={() => changeTemplate(template)}>
             <div className="l-wrap ">
                 {!deleteBoxVisible ?
-                    <div className={`c-list ${isSelected ? 'active' : ''}`}>
-                        {template.name}
+                    <div title={template.name} className={`c-list ${isSelected ? 'active' : ''}`}>
+                        <p >{template.name}</p>
                         {!deleteRequestSent ?
-                            <span className="BTNclose" onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
+                            <span className="BTNclose" title={"Remove"} onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
                             <span className="btnloader">
                                 <Spinner size="sm" animation="border" role="status">

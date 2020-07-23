@@ -141,11 +141,19 @@
                                         width: 100%;
                                         .c-list {
                                             padding: 10px 30px;
+                                            padding-right: 35px;
                                             min-height: 40px;
                                             display: flex;
                                             align-items: center;
                                             cursor: pointer;
                                             position: relative;
+                                            p{
+                                                white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+                                                margin-bottom: 0;
+                                            }
                                             &:hover,
                                             &.active {
                                                 background: rgba(color('primary'), 0.08);
