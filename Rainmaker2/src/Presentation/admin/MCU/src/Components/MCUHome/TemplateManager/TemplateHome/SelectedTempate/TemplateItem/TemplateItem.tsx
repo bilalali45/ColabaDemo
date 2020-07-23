@@ -21,9 +21,9 @@ export const TemplateItem = ({
 
     const toggleDeleteBox = () => setDeleteBoxVisible(!deleteBoxVisible);
 
-    useEffect(() => {
-        setDeleteBoxVisible(false);
-    }, [!isSelected])
+    // useEffect(() => {
+    //     setDeleteBoxVisible(false);
+    // }, [!isSelected])
 
     return (
         <li onClick={() => changeTemplate(template)}>
