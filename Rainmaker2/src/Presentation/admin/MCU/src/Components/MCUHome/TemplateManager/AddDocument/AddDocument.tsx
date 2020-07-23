@@ -17,7 +17,7 @@ type AddDocumentType = {
 
 }
 export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
-
+    const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
@@ -47,6 +47,11 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
         setTarget(event.target);
     };
+
+    const handleOnEntered = (event:any) => {
+        setpopovershowClass(event);
+    };
+    
 
     // console.log(mainContainerRef?.current);
     // console.log(aRef?.current);
@@ -163,7 +168,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const renderPopOver = () => {
         return (
-            <Popover id="popover-add-document">
+            <Popover id="popover-add-document" className={PopoverShowClass}> 
                 <Popover.Content>
                     {renderPopOverContent()}
                 </Popover.Content>
@@ -200,6 +205,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
                 rootClose={true}
                 rootCloseEvent={'click'}
                 transition={false}
+                
             >
                 {renderPopOver()}
             </Overlay>

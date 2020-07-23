@@ -30,7 +30,7 @@ export const TemplateItem = ({
                         {!deleteRequestSent ?
                             <span className="BTNclose" onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
-                            <span className="BTNclose">
+                            <span className="btnloader">
                                 <Spinner size="sm" animation="border" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </Spinner>

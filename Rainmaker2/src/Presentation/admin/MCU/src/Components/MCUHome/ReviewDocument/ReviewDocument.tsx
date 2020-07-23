@@ -192,8 +192,6 @@ export const ReviewDocument = () => {
             if (pendingReviewDocuments.length > 0) {
               const index = pendingReviewDocuments.findIndex((document: NeedListDocumentType) => document.docId === doc.docId)
 
-              const indexes = _.keys(_.pickBy(documentList, { status: 'Pending review' }))
-
               if (!pendingReviewDocuments[index + 1]) {
                 setNextDocumentButtonDisabled(true)
               }
@@ -250,6 +248,7 @@ export const ReviewDocument = () => {
         previousDocument={onPreviousDocument}
         perviousDocumentButtonDisabled={perviousDocumentButtonDisabled}
         nextDocumentButtonDisabled={nextDocumentButtonDisabled}
+        documentDetail={documentDetail}
       />
       <div className="review-document-body">
         <div className="row">
