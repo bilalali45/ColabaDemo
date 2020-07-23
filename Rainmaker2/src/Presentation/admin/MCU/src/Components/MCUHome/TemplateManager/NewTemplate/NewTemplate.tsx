@@ -34,9 +34,9 @@ export const NewTemplate = ({ setLoaderVisible }: NewTemplateType) => {
                     {currentTemplate ? <div className="content">
                         <p><b>Nothing</b>
                             <br />Your template is empty</p>
-                        <AddDocument
+                        {/* <AddDocument
                             setLoaderVisible={setLoaderVisible}
-                            popoverplacement="left" />
+                            popoverplacement="left" /> */}
                     </div> :
                         <p>Add documents after template is created </p>}
                 </div>
