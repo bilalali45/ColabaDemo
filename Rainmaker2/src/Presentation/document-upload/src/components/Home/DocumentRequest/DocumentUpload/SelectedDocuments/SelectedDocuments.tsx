@@ -327,7 +327,7 @@ export const SelectedDocuments = ({
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
-                Only 10 files can be uploaded per document. Please contact us if
+                Only {ApplicationEnv.MaxDocumentCount} files can be uploaded per document. Please contact us if
                 you'd like to upload more files.
               </p>
             ) : (
