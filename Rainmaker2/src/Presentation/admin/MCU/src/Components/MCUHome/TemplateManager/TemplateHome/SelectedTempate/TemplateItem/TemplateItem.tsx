@@ -21,9 +21,9 @@ export const TemplateItem = ({
 
     const toggleDeleteBox = () => setDeleteBoxVisible(!deleteBoxVisible);
 
-    // useEffect(() => {
-    //     setDeleteBoxVisible(false);
-    // }, [!isSelected])
+    useEffect(() => {
+        setDeleteBoxVisible(false);
+    }, [!isSelected])
 
     return (
         <li onClick={() => changeTemplate(template)}>
@@ -44,7 +44,7 @@ export const TemplateItem = ({
                     <div title={template.name}  className={`c-list ${isSelected ? 'active' : ''}`}>
                         <p >{template.name}</p>
                         {!deleteRequestSent ?
-                            <span className="BTNclose" title={"Remove"} onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
+                            isSelected && <span className="BTNclose" title={"Remove"} onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
                             <span className="btnloader">
                                 <Spinner size="sm" animation="border" role="status">

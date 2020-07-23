@@ -240,9 +240,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} /> : currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
-            {/* {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />} */}
-
-
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
         </section>
     )
