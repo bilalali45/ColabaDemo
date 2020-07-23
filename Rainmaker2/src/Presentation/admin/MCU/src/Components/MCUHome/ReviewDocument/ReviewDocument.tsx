@@ -232,7 +232,7 @@ export const ReviewDocument = () => {
                   tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={() => { }}
+                  hideViewer={goBack}
                 />
               </div>
             </div>
