@@ -17,7 +17,7 @@ type AddDocumentType = {
 
 }
 export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
-
+    const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
@@ -37,7 +37,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const handleClick = (event: any) => {
         let tag = event.target.tagName;
-        console.log(tag);
+
         dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: !addDocumentBoxVisible?.value } })
         // if (tag === 'A') {
         // } else {
@@ -48,10 +48,10 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         setTarget(event.target);
     };
 
-    // console.log(mainContainerRef?.current);
-    // console.log(aRef?.current);
-    console.log(target);
-
+    const handleOnEntered = (event:any) => {
+        setpopovershowClass(event);
+    };
+    
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
@@ -163,7 +163,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const renderPopOver = () => {
         return (
-            <Popover id="popover-add-document">
+            <Popover id="popover-add-document" className={PopoverShowClass}> 
                 <Popover.Content>
                     {renderPopOverContent()}
                 </Popover.Content>
@@ -171,7 +171,6 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         )
     }
 
-    console.log(addDocumentBoxVisible, 'in renderingjasdfk');
     return (
         <div className="Compo-add-document" >
 
@@ -200,6 +199,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
                 rootClose={true}
                 rootCloseEvent={'click'}
                 transition={false}
+                
             >
                 {renderPopOver()}
             </Overlay>

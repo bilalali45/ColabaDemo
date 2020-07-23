@@ -110,6 +110,8 @@ export const NeedListView = () => {
                 documentTitleArrow={sortArrow}
                 sortStatusTitle={sortStatusTitleHandler}
                 statusTitleArrow={sortStatusArrow}
+                documentSortClick = {docSort}
+                statusSortClick = {statusSort}
             />
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Template } from '../../../../../../Entities/Models/Template'
 import { TemplateActionsType } from '../../../../../../Store/reducers/TemplatesReducer'
 import Spinner from 'react-bootstrap/Spinner'
@@ -21,16 +21,32 @@ export const TemplateItem = ({
 
     const toggleDeleteBox = () => setDeleteBoxVisible(!deleteBoxVisible);
 
+    useEffect(() => {
+        setDeleteBoxVisible(false);
+    }, [!isSelected])
+
     return (
         <li onClick={() => changeTemplate(template)}>
             <div className="l-wrap ">
-                {!deleteBoxVisible ?
+                {deleteBoxVisible && isSelected ?
+                    <div className="alert-cancel">
+                        <span>Remove this template?</span>
+                        <div className="l-remove-actions">
+                            <button className="lbtn btn-no" onClick={toggleDeleteBox}> No</button>
+                            <button className="lbtn btn-yes" onClick={async () => {
+                                setDeleteRequestSent(true)
+                                toggleDeleteBox();
+                                await removeTemlate(template?.id);
+                                // setDeleteRequestSent(false)
+                            }}>Yes</button></div>
+                    </div>
+                    :
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
                         {template.name}
                         {!deleteRequestSent ?
                             <span className="BTNclose" onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
-                            <span className="BTNclose">
+                            <span className="btnloader">
                                 <Spinner size="sm" animation="border" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </Spinner>
@@ -38,19 +54,6 @@ export const TemplateItem = ({
                         }
 
                     </div>
-                    : isSelected && <>
-                        <div className="alert-cancel">
-                            <span>Remove this template?</span>
-                            <div className="l-remove-actions">
-                                <button className="lbtn btn-no" onClick={toggleDeleteBox}> No</button>
-                                <button className="lbtn btn-yes" onClick={async () => {
-                                    setDeleteRequestSent(true)
-                                    toggleDeleteBox();
-                                    await removeTemlate(template?.id);
-                                    // setDeleteRequestSent(false)
-                                }}>Yes</button></div>
-                        </div>
-                    </>
                 }
             </div>
         </li>
