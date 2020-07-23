@@ -15,5 +15,6 @@ namespace Rainmaker.Service
         Task<LoanOfficer> GetDbaInfo(int businessUnitId);
         Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId);
         Task<PostModel> PostLoanApplication(int loanApplicationId, bool isDraft, int userProfileId, IOpportunityService opportunityService);
+        Task<LoanApplicationModel> GetByLoanApplicationId(int loanId);
     }
 }

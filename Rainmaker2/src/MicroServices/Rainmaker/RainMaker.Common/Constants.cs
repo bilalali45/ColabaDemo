@@ -1530,7 +1530,9 @@ namespace RainMaker.Common
         LoanApplicationStart = 15,
         LoanApplicationSubmitted = 16,
         EmailLoOnLoanApplicationStart = 17,
-        EmailLoOnLoanApplicationSubmitted = 18
+        EmailLoOnLoanApplicationSubmitted = 18,
+        LoanApplicationDocumentRequestActivity = 19,
+        LoanApplicationDocumentRejectActivity = 20
     }
 
 
