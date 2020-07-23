@@ -37,7 +37,11 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
     useEffect(() => {
         setNewNameText(currentTemplate?.name)
-    }, [editTitleview])
+    }, [editTitleview]);
+
+    useEffect(() => {
+        setNameExistsError('');
+    }, [currentTemplate?.name]);
 
     useEffect(() => {
         if (currentTemplate) {
@@ -153,7 +157,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     }
 
                 </ul>
-            
+
             </div >
         )
     }
@@ -162,58 +166,60 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         return (
             <div className="T-head">
                 <div className="T-head-flex">
-                <div>
-                {editTitleview || currentTemplate === null ?
-                    <>
-                        <p className="editable">
-                            <input
-                                style={{ border: nameExistsError ? '1px solid red' : '' }}
-                                autoFocus
-                                value={newNameText}
-                                onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-                                    if (!value?.length || value?.length > 255) {
-                                        return;
-                                    }
-                                    // console.log(letterNumber.test(e.target.value));
-                                    if (!nameTest.test(value)) {
-                                        return;
-                                    }
-                                    setAddRequestSent(false);
-                                    setLoaderVisible(false);
-                                    setNameExistsError('');
-                                    setNewNameText(value)
-                                }}
-                                onKeyDown={(e: any) => {
-                                    if (e.keyCode === 13) {
-                                        renameTemplate(e.target.value);
-                                    }
-                                }}
-                                onBlur={() => renameTemplate(newNameText)}
-                                className="editable-TemplateTitle" />
-                            {addRequestSent ? 
-                            <div className="rename-spinner">
-                            <Spinner size="sm" animation="border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </Spinner> 
-                            </div>: ''} 
-                            {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                            {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
-                        </p>
-                    </>
-                    : <>
-                        <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
-                    </>}
+                    <div>
+                        {editTitleview || currentTemplate === null ?
+                            <>
+                                <p className="editable">
+                                    <input
+                                        style={{ border: nameExistsError ? '1px solid red' : '' }}
+                                        autoFocus
+                                        value={newNameText}
+                                        onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                                            setNewNameText(value);
+                                            
+                                            if (!value?.length || value?.length > 255) {
+                                                return;
+                                            }
+                                            // console.log(letterNumber.test(e.target.value));
+                                            if (!nameTest.test(value)) {
+                                                return;
+                                            }
+                                            setAddRequestSent(false);
+                                            setLoaderVisible(false);
+                                            setNameExistsError('');
+                                            setNewNameText(value);
+                                        }}
+                                        onKeyDown={(e: any) => {
+                                            if (e.keyCode === 13) {
+                                                renameTemplate(e.target.value);
+                                            }
+                                        }}
+                                        onBlur={() => renameTemplate(newNameText)}
+                                        className="editable-TemplateTitle" />
+                                    {addRequestSent ?
+                                        <div className="rename-spinner">
+                                            <Spinner size="sm" animation="border" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </Spinner>
+                                        </div> : ''}
+                                    {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
+                                    {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
+                                </p>
+                            </>
+                            : <>
+                                <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
+                            </>}
                     </div>
                     <div>
-                    {
-                    currentTemplate?.type === MyTemplate &&
-                    <AddDocument
-                        setLoaderVisible={setLoaderVisible}
-                        popoverplacement="bottom-start"
-                    />
-                }
+                        {
+                            currentTemplate?.type === MyTemplate &&
+                            <AddDocument
+                                setLoaderVisible={setLoaderVisible}
+                                popoverplacement="bottom-start"
+                            />
+                        }
+                    </div>
                 </div>
-            </div>
             </div>
         )
     }

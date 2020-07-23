@@ -212,5 +212,16 @@ namespace Rainmaker.Service
                 await _opportunityservice.SaveChangesAsync();
             }
         }
+
+        public async Task<LoanApplicationModel> GetByLoanApplicationId(int loanId)
+        {
+            return await Repository.Query(x => x.Id == loanId).Include(x => x.Opportunity)
+                .Select(x => new LoanApplicationModel
+                {
+                    OpportunityId = x.OpportunityId,
+                    LoanRequestId = x.Opportunity.LoanRequestId,
+                    BusinessUnitId = x.Opportunity.BusinessUnitId
+                }).FirstOrDefaultAsync();
+        }
     }
 }
