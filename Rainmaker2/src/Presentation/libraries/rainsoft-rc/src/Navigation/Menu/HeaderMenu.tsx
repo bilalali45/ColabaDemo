@@ -16,7 +16,7 @@ export const HeaderMenu = ({ options, name }: HeaderMenuPropsType) => {
     return (
         <Dropdown className="userdropdown">
             <Dropdown.Toggle id="dname" className="d-name d-none d-sm-block" as="a">
-                {name}
+            Hello, {name}
             </Dropdown.Toggle>
             <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="span">
             </Dropdown.Toggle>
