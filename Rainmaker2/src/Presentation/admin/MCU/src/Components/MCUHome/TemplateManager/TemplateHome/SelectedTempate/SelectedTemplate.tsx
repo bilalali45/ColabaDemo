@@ -77,7 +77,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-            
+
             if (listContainerElRef?.current) {
                 console.log(listContainerElRef?.current, listContainerElRef.current?.clientHeight);
                 listContainerElRef.current.scrollTo(0, listContainerElRef.current?.clientHeight + 40);
@@ -236,11 +236,11 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             {renderTitleInputText()}
 
-            {(templates && !currentTemplate || templateDocuments?.length === 0) &&
+            {(templates && !currentTemplate || templateDocuments?.length === 0) ?
                 <NewTemplate
-                    setLoaderVisible={setLoaderVisible} />}
+                    setLoaderVisible={setLoaderVisible} /> : currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
-            {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
+            {/* {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />} */}
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
