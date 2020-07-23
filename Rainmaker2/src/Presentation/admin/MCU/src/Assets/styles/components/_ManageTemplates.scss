@@ -112,7 +112,7 @@
                         }
                     }
                     .my-temp-list {
-                        max-height: 300px;
+                        max-height: 320px;
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
@@ -224,6 +224,11 @@
     .T-head {
         padding-top: 20px;
         min-height: 60px;
+        .T-head-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
         p {
             font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
             color: color('colorBlack');
@@ -262,6 +267,20 @@
             }
             &.editable {
                 padding-right: 0;
+                .rename-spinner {
+                    position: absolute;
+                    right: 5px;
+                    top: 4px;
+                    color: color('docSnipetText');
+                }
+                .error-name {
+    display: block;
+    font-size: 11px;
+    padding-top: 4px;
+    padding-right: 0;
+    text-transform: capitalize;
+    color: color('colorRed');
+                }
             }
         }
     }
@@ -324,6 +343,29 @@
             padding-top: 10px;
         }
     }
+    .Compo-add-document {
+        .popover {
+            margin-top: 5px !important;
+            margin-left: -25px !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
+            border: none;
+        }
+
+        .addnewTemplate-btn {
+            padding: 3px 10px 3px;
+            @include media-breakpoint-down(lg) {
+                padding: 3px 10px 3px;
+            }
+           
+
+           .btn-text {
+                @include media-breakpoint-down(md) {
+                    padding: 4px 10px 4px 0;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
 
     .add-doc-link-wrap {
         .add-doc-link {
@@ -380,7 +422,7 @@
         width: 450px;
     }
     @include media-breakpoint-down(md) {
-        width: 340px;
+        width: 450px;
     }
     .popup-add-doc-row {
         min-height: 390px;

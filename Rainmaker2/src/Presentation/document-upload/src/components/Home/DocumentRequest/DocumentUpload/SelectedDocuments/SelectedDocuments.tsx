@@ -284,7 +284,7 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            {!fileLimitError.value ?
+            {selectedFiles.length < 10 ?
               <a className="addmoreDoc" onClick={(e) => { addMore(e) }}> Add more files
  <input
                   type="file"
@@ -306,7 +306,7 @@ export const SelectedDocuments = ({
                 />
               </a>}
 
-            {fileLimitError.value ?
+            {!(selectedFiles.length < 10) ?
               <p className="text-danger">
                 Only 10 files can be uploaded per document. Please contact us if you'd like to upload more files.
             </p>

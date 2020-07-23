@@ -78,7 +78,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
     const renameTemplate = async (value: string) => {
         if (addRequestSent) return;
-        setAddRequestSent(true);
         if (!value?.length || value?.length > 255 || !value.trim().length) {
             return;
         }
@@ -86,6 +85,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
             setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
             return;
         };
+        setAddRequestSent(true);
         setLoaderVisible(true);
 
         if (!currentTemplate) {
@@ -108,7 +108,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
         toggleRename();
         setLoaderVisible(false);
         setAddRequestSent(false);
-
     }
 
     const toggleRename = () => {
@@ -139,7 +138,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
-                                                <span className="BTNloader"> 
+                                                <span className="BTNloader">
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
@@ -154,13 +153,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                     }
 
                 </ul>
-                {
-                    currentTemplate?.type === MyTemplate &&
-                    <AddDocument
-                        setLoaderVisible={setLoaderVisible}
-                        popoverplacement="right"
-                    />
-                }
+            
             </div >
         )
     }
@@ -168,6 +161,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     const renderTitleInputText = () => {
         return (
             <div className="T-head">
+                <div className="T-head-flex">
+                <div>
                 {editTitleview || currentTemplate === null ?
                     <>
                         <p className="editable">
@@ -176,6 +171,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 autoFocus
                                 value={newNameText}
                                 onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                                    if (!value?.length || value?.length > 255) {
+                                        return;
+                                    }
                                     // console.log(letterNumber.test(e.target.value));
                                     if (!nameTest.test(value)) {
                                         return;
@@ -192,14 +190,30 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                 }}
                                 onBlur={() => renameTemplate(newNameText)}
                                 className="editable-TemplateTitle" />
-                            <br />
+                            {addRequestSent ? 
+                            <div className="rename-spinner">
+                            <Spinner size="sm" animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner> 
+                            </div>: ''} 
                             {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                            {nameExistsError && <p className={"text-danger"}>{nameExistsError}</p>}
+                            {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
                         </p>
                     </>
                     : <>
                         <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                     </>}
+                    </div>
+                    <div>
+                    {
+                    currentTemplate?.type === MyTemplate &&
+                    <AddDocument
+                        setLoaderVisible={setLoaderVisible}
+                        popoverplacement="bottom-start"
+                    />
+                }
+                </div>
+            </div>
             </div>
         )
     }
@@ -215,7 +229,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} />}
 
-            {templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
+            {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}

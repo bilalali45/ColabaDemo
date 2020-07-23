@@ -20,6 +20,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
     const mainContainerRef = useRef(null);
     const aRef = useRef(null);
 
@@ -42,7 +43,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         // } else {
         //     dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
         // }
-        // setShow(!show);
+        setShow(!show);
 
         setTarget(event.target);
     };
@@ -84,13 +85,14 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
         if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
-        } else if (curDocType === 'other') {
-            let currentDoc = {
-                catId: 'other',
-                catName: 'Other',
-                documents: []
-            };
-            setCurrentDocType(currentDoc);
+        // }
+        //  else if (curDocType === 'other') {
+        //     let currentDoc = {
+        //         catId: 'other',
+        //         catName: 'Other',
+        //         documents: []
+        //     };
+        //     setCurrentDocType(currentDoc);
         } else {
             let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
             setCurrentDocType(currentDoc);
@@ -171,16 +173,26 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     console.log(addDocumentBoxVisible, 'in renderingjasdfk');
     return (
-        <div className="Compo-add-document" ref={mainContainerRef}>
+        <div className="Compo-add-document" >
 
-            <div className="add-doc-link-wrap">
+            <div className="add-doc-link-wrap" ref={mainContainerRef} >
                 {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                <a ref={aRef} className="add-doc-link" onClick={(e) => { handleClick(e) }} >
+                {/* <a ref={aRef} className="add-doc-link" onClick={(e) => { handleClick(e) }} >
                     Add Document <i className="zmdi zmdi-plus"></i>
-                </a>
+                </a> */}
+
+                <div ref={aRef}  className="btn-add-new-Temp"  onClick={(e) => { handleClick(e) }} >
+                    <button className="btn btn-primary addnewTemplate-btn">
+                        <span className="btn-text">Add Document</span>
+                        <span className="btn-icon">
+                            <i className="zmdi zmdi-plus"></i>
+                        </span>
+
+                    </button>
+                </div>
                 {/* </OverlayTrigger> */}
             </div>
-            <Overlay show={addDocumentBoxVisible?.value}
+            <Overlay show={show}
                 target={target}
                 placement={popoverplacement}
                 container={mainContainerRef.current || aRef.current}

@@ -11,6 +11,8 @@ export const ReviewDocumentHeader = ({
   onClose,
   nextDocument,
   previousDocument,
+  perviousDocumentButtonDisabled,
+  nextDocumentButtonDisabled
 }: {
   id: string | null
   typeId: string | null
@@ -19,6 +21,8 @@ export const ReviewDocumentHeader = ({
   onClose: () => void;
   nextDocument: () => void;
   previousDocument: () => void;
+  perviousDocumentButtonDisabled: boolean
+  nextDocumentButtonDisabled: boolean
 }) => {
   return (
     <div
@@ -34,11 +38,11 @@ export const ReviewDocumentHeader = ({
           <React.Fragment>
             <div className="review-document-header--center col-md-4">
               <div className="btn-group">
-                <button className="btn btn-default" onClick={buttonsEnabled ? previousDocument : () => { }}>
+                <button className="btn btn-default" disabled={perviousDocumentButtonDisabled} onClick={buttonsEnabled ? previousDocument : () => { }}>
                   <em className="zmdi zmdi-arrow-left"></em> Review Previous
               Document
             </button>
-                <button className="btn btn-default" onClick={buttonsEnabled ? nextDocument : () => { }}>
+                <button className="btn btn-default" disabled={nextDocumentButtonDisabled} onClick={buttonsEnabled ? nextDocument : () => { }}>
                   Review Next Document <em className="zmdi zmdi-arrow-right"></em>
                 </button>
               </div>

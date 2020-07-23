@@ -13,10 +13,13 @@ type SelectedTypeType = {
 }
 
 export const CommonDocuments = ({ selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
+
     const [selectedCachedDoc, setSelectedCachedDoc] = useState<CategoryDocument>(selectedCatDocs);
     const [isSearched, setSearched] = useState<boolean>(false);
+    const [term, setTerm] = useState<string>();
+    
     const handleSearch = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-
+        setTerm(value);
         setSelectedCachedDoc((pre: CategoryDocument) => {
             let results = selectedCatDocs?.documents?.filter((cd: Document) => {
                 if (cd.docType.toLowerCase().includes(value.toLowerCase())) {
@@ -38,7 +41,7 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc, setVisible }: Sele
     return (
         <div>
             <div className="s-wrap">
-                <input onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
+                <input autoFocus={true} onChange={handleSearch} type="name" placeholder="Enter follow up name..." />
                 <div className="s-icon"><img src={SearchIcon} alt="" /></div>
             </div>
 
@@ -47,7 +50,9 @@ export const CommonDocuments = ({ selectedCatDocs, addNewDoc, setVisible }: Sele
                 {isSearched?"Search Result":selectedCatDocs.catName}
 
             </h4></div>
+            
             <SelectedDocumentTypeList
+                term={term}
                 setVisible={setVisible}
                 documentList={selectedCachedDoc?.documents}
                 addNewDoc={addNewDoc}
