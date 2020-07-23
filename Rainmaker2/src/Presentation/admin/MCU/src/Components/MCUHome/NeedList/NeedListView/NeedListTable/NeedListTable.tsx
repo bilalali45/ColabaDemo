@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { NeedList } from '../../../../../Entities/Models/NeedList'
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments'
 import Spinner from 'react-bootstrap/Spinner';
+import { truncate } from '../../../../../Utils/helpers/TruncateString';
+
 
 type NeedListProps = {
     needList: NeedList | null | undefined;
@@ -92,7 +94,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                 <div className="td">
                     {
                         data.map((item: NeedListDocuments) => {
-                            return <span key={item.id} className="block-element">{item.clientName}</span>
+                            return <span title={item.clientName} key={item.id} className="block-element">{truncate(item.clientName, 47)}</span>
                         })
                     }
                 </div>
@@ -133,6 +135,14 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         })
     }
 
+    const renderDocumentTitle = () => {
+        return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+    }
+    const renderStatusTitle = () => {
+        return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+    }
+   
+
     if (!needList) {
         return (
             <div className="loader-widget">
@@ -151,8 +161,8 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                 <div className="need-list-table table">
 
                     <div className="tr">
-                        <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
-                        <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+                        {renderDocumentTitle()}
+                        {renderStatusTitle()}
                         <div className="th">File Name</div>
                         <div className="th"><a href="javascript:;"><em className="icon-refresh"></em></a> sync to LOS</div>
                         <div className="th">&nbsp;</div>
