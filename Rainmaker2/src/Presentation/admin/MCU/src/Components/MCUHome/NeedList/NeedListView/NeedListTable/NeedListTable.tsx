@@ -96,7 +96,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                 <div className="td">
                     {
                         data.map((item: NeedListDocuments) => {
-                            return <span title={item.clientName} key={item.id} className="block-element">{truncate(item.clientName, 47)}</span>
+                            return <span title={item.clientName} key={item.id} className="block-element td-filename">{truncate(item.clientName, 47)}</span>
                         })
                     }
                 </div>
