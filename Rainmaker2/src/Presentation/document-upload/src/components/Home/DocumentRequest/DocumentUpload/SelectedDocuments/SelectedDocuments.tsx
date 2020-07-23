@@ -263,6 +263,12 @@ export const SelectedDocuments = ({
       setDoneVisible(true);
     }
   };
+
+  const checkFocus = (f: Document, index: number) => {
+   let foundIndx = selectedFiles.filter((f: Document) => f.uploadStatus === 'done' || f.editName === false).length;
+    return foundIndx === index;
+  }
+
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -280,6 +286,7 @@ export const SelectedDocuments = ({
                   changeName={changeName}
                   deleteDoc={deleteDoc}
                   indexKey={index}
+                  shouldFocus={checkFocus(f, index)}
                 />
               );
             })}
