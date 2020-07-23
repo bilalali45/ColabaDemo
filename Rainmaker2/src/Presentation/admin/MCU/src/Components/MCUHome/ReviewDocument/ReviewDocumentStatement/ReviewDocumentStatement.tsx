@@ -38,7 +38,6 @@ export const ReviewDocumentStatement = ({
 
       typeIdAndIdForActivityLogs(id, typeId || docName)
 
-
       setDocumentFiles(files)
       setUsername(userName)
       setMcuNamesUpdated(files.map(file => {

@@ -38,7 +38,7 @@ export interface DocumentFileType {
 
 export interface LogType {
   _id: string
-  datetime: string
+  dateTime: string
   activity: string
 }
 
