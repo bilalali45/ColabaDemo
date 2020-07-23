@@ -48,7 +48,11 @@ export const DocumentSnipet = ({
 
     const filenameWithoutExtension = getFileNameWithoutExtension(renameMCUName) || getFileNameWithoutExtension(mcuName || clientName)
 
-    setRenameMCUName(filenameWithoutExtension);
+    if (renameMCUName !== "") {
+      setRenameMCUName(getFileNameWithoutExtension(renameMCUName));
+    } else {
+      setRenameMCUName(filenameWithoutExtension)
+    }
   };
 
   const cancelEdit = (event?: any) => {
@@ -56,65 +60,71 @@ export const DocumentSnipet = ({
       event.stopPropagation()
     }
 
-    if (!filenameUnique) return
+    // if (!filenameUnique) return
 
     if (renameMCUName !== "") {
       const fileExtension = getFileExtension(mcuName || clientName)
 
-      setRenameMCUName(`${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
+      setRenameMCUName(() => `${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
     } else {
-      setRenameMCUName("") //This will bring either mcuName or clientName with file extension
+      setRenameMCUName(() => "") //This will bring either mcuName or clientName with file extension
+    }
+
+    if (!filenameUnique) {
+      setRenameMCUName(mcuName || clientName)
+
+      setFilenameUnique(true)
     }
 
     setEditingModeEnabled(false)
   }
 
-  const renameDocumentMCU = async (event?: any) => {
-    let newName: string
+  const renameDocumentMCU = async (newName: string, event?: any, onBlur: boolean = false) => {
+    if (event) {
+      event.stopPropagation()
+      event.preventDefault()
+    }
 
-    try {
-      if (event) {
-        event.stopPropagation()
-      }
+    if (newName) {
+      //lets check if new filename without extension is not equal to other files in this document
+      const filenameAllowed = allowFileRenameMCU(newName, fileId)
 
-      //this condition will cancel API call if field is empty or name is unchanged or equal to mcuname or client name
-      //if true this condtion will cancel edit.
-      if (renameMCUName.trim() == "" || renameMCUName.trim() === getFileNameWithoutExtension(mcuName.trim() || clientName.trim())) {
-        return cancelEdit()
-      }
+      if (filenameAllowed) {
+        setFilenameUnique(() => true)
+        setEditingModeEnabled(() => false)
 
-      const fileExtension = getFileExtension(mcuName || clientName)
+        const fileExtension = getFileExtension(mcuName || clientName)
 
-      newName = `${renameMCUName.trim()}${fileExtension}`
+        const newNameWithFileExtension = `${newName}${fileExtension}`
 
-      if (allowFileRenameMCU(renameMCUName.trim(), fileId) === false) { //this condition is false if filename already assigned to some other file
+        setRenameMCUName(() => newNameWithFileExtension)
+
+        try {
+          const data = { id, requestId, docId, fileId, newName: newNameWithFileExtension }
+
+          const http = new Http()
+
+          await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
+            ...data
+          })
+        } catch (error) {
+          //swallod error because it shold not update
+
+          // alert('something went wrong while updating file name')
+        }
+
+      } else {
+        // 1. We need to check if renaming being triggered by onBlur event
+        // 2. We will simply cancel edit and will bring back values from mcuName or ClientName
+        // 3. We will only fallback here if there is filename conflict else we will save filename on Blur
+        if (onBlur) {
+          setFilenameUnique(() => true)
+          setEditingModeEnabled(() => false)
+          setRenameMCUName(() => "")
+        } else
+          setFilenameUnique(() => false)
         inputRef.current?.focus()
-
-        !!setFilenameUnique && setFilenameUnique(false)
-
-        return
       }
-
-      !filenameUnique && setFilenameUnique(true)
-
-      const data = { id, requestId, docId, fileId, newName }
-
-      const http = new Http()
-
-      await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
-        ...data
-      })
-
-      setFilenameUnique(true)
-      setRenameMCUName(() => newName)
-      setEditingModeEnabled(() => false)
-    } catch (error) {
-      console.log('error', error)
-
-      alert('Something went wrong. Please try again.')
-
-      setRenameMCUName(() => mcuName || clientName)
-      setEditingModeEnabled(false)
     }
   }
 
@@ -124,12 +134,18 @@ export const DocumentSnipet = ({
     moveNextFile(index, fileId, clientName)
   }
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, newValue: string) => {
+    if (event.key === 'Enter') {
+      renameDocumentMCU(newValue)
+    }
+  }
+
   const eventBubblingHandler = (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
     switch (event.currentTarget.id) {
       case 'moveNext':
         return moveNext(event)
       case 'rename':
-        return renameDocumentMCU(event)
+        return renameDocumentMCU(renameMCUName.trim(), event)
       case 'enableMode':
         return setInputValue(event)
       case 'cancel':
@@ -137,15 +153,13 @@ export const DocumentSnipet = ({
     }
   }
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      renameDocumentMCU()
-    }
+  const onBlur = (newValue: string, event: any) => {
+    renameDocumentMCU(newValue, event, true)
   }
 
-  useEffect(() => {
-    setRenameMCUName(mcuName || clientName)
-  }, [setRenameMCUName, mcuName, clientName])
+  const onDoubleClick = (event: any) => {
+    setInputValue(event)
+  }
 
   useEffect(() => {
     if (editingModeEnabled) {
@@ -154,7 +168,7 @@ export const DocumentSnipet = ({
   }, [editingModeEnabled])
 
   return (
-    <div className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
+    <div onDoubleClick={(event) => onDoubleClick(event)} className={`document-snipet ${index === currentFileIndex && 'focus'} ${editingModeEnabled && 'edit'}`} style={{ cursor: 'pointer' }} id="moveNext" onClick={eventBubblingHandler}>
       <div className="document-snipet--left">
         <div className="document-snipet--input-group">
           {!!editingModeEnabled ? (
@@ -165,9 +179,10 @@ export const DocumentSnipet = ({
                 size={38}
                 value={renameMCUName}
                 onClick={event => event.stopPropagation()}
-                onBlur={() => renameDocumentMCU()}
-                onKeyDown={onKeyDown}
+                onBlur={(event) => onBlur(renameMCUName.trim(), event)}
+                onKeyDown={(event) => onKeyDown(event, renameMCUName.trim())}
                 ref={inputRef}
+                maxLength={255}
                 className={`${!filenameUnique && 'error'}`}
               />
             </React.Fragment>

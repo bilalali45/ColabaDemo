@@ -12,7 +12,8 @@ export const ReviewDocumentHeader = ({
   nextDocument,
   previousDocument,
   perviousDocumentButtonDisabled,
-  nextDocumentButtonDisabled
+  nextDocumentButtonDisabled,
+  documentDetail
 }: {
   id: string | null
   typeId: string | null
@@ -23,6 +24,7 @@ export const ReviewDocumentHeader = ({
   previousDocument: () => void;
   perviousDocumentButtonDisabled: boolean
   nextDocumentButtonDisabled: boolean
+  documentDetail: boolean
 }) => {
   return (
     <div
@@ -32,7 +34,7 @@ export const ReviewDocumentHeader = ({
     >
       <div className="row">
         <div className="review-document-header--left col-md-4">
-          <h2>Review Document</h2>
+          <h2>{!!documentDetail ? 'Document Details' : 'Review Document'}</h2>
         </div>
         {!hideNextPreviousNavigation && (
           <React.Fragment>
