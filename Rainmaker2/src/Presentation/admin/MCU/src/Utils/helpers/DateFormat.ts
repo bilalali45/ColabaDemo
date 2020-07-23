@@ -12,11 +12,11 @@ export const DateTimeFormat = (
 };
 
 export const DateFormat = (
-    date: string,
-    shortFormat: boolean = false
-  ): string => {
-    const formatString = shortFormat
-      ? "MMM DD, YYYY "
-      : "MMMM DD, YYYY ";
-    return moment(date).format("MMM DD, YYYY");
-  };
+  date: string,
+  shortFormat: boolean = false
+): string => {
+  const formatString = shortFormat
+    ? "MMM DD, YYYY "
+    : "MMMM DD, YYYY ";
+  return moment(date).format("MMM DD, YYYY");
+};

@@ -6,6 +6,7 @@ import { DocumentsActionType } from "../reducers/documentReducer";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
+import { ApplicationEnv } from '../../utils/helpers/AppEnv';
 
 //const http = new Http();
 const http = new Http();
@@ -82,7 +83,7 @@ export class DocumentUploadActions {
   ) {
     let allSelectedFiles: Document[] = [...prevFiles];
     for (let f of files) {
-      if (allSelectedFiles.length >= 10) {
+      if (allSelectedFiles.length >= ApplicationEnv.MaxDocumentCount) {
         setFileLimitError({ value: true });
         break;
       }

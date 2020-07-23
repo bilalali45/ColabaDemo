@@ -1,18 +1,20 @@
 import jwt_decode from "jwt-decode";
 import Cookies from "universal-cookie";
+import { ApplicationEnv } from "../../utils/helpers/AppEnv";
+import { debug } from "console";
 const cookies = new Cookies();
 
 export class Auth {
   public static saveAuth(token: string) {
-    localStorage.setItem("auth", token);
+    localStorage.setItem("auth", this.encodeString(token));
   }
 
   public static saveRefreshToken(refToken: string) {
-    localStorage.setItem("refreshToken", refToken);
+    localStorage.setItem("refreshToken", this.encodeString(refToken));
   }
 
   public static getRefreshToken() {
-    return localStorage.getItem("refreshToken");
+    return this.decodeString(localStorage.getItem("refreshToken"));
   }
 
   public static removeRefreshToken() {
@@ -20,7 +22,7 @@ export class Auth {
   }
 
   public static getAuth() {
-    return localStorage.getItem("auth");
+    return this.decodeString(localStorage.getItem("auth"));
   }
 
   public static getLoginUserName() {
@@ -33,7 +35,7 @@ export class Auth {
 
   public static checkAuth(): boolean | string {
     let rainmaker2Token = cookies.get("Rainmaker2Token");
-    let auth = localStorage.getItem("auth");
+    let auth = this.getAuth();
     if (!auth) {
       return false;
     }
@@ -62,11 +64,11 @@ export class Auth {
 
   static storeTokenPayload(payload) {
     if (!payload) return;
-    localStorage.setItem("payload", JSON.stringify(payload));
+    localStorage.setItem("payload", this.encodeString(JSON.stringify(payload)));
   }
 
   static getUserPayload() {
-    let payload = localStorage.getItem("payload");
+    let payload = this.decodeString(localStorage.getItem("payload"));
     if (payload) {
       return JSON.parse(payload);
     }
@@ -91,34 +93,53 @@ export class Auth {
   }
 
   public static getLoanAppliationId() {
-    return localStorage.getItem("loanApplicationId") || "";
+    return this.decodeString(localStorage.getItem("loanApplicationId")) || "";
   }
 
   public static getTenantId() {
-    return localStorage.getItem("tenantId") || "";
+    return this.decodeString(localStorage.getItem("tenantId")) || "";
   }
 
   public static getBusinessUnitId() {
-    return localStorage.getItem("businessUnitId") || "";
+    return this.decodeString(localStorage.getItem("businessUnitId")) || "";
   }
 
   public static setLoanAppliationId(loanApplicationId: string) {
-    localStorage.setItem("loanApplicationId", loanApplicationId);
+    localStorage.setItem(
+      "loanApplicationId",
+      this.encodeString(loanApplicationId)
+    );
   }
 
   public static setTenantId(tenantId: string) {
-    localStorage.setItem("tenantId", tenantId);
+    localStorage.setItem("tenantId", this.encodeString(tenantId));
   }
 
   public static setBusinessUnitId(businessUnitId: string) {
-    localStorage.setItem("businessUnitId", businessUnitId);
+    localStorage.setItem("businessUnitId", this.encodeString(businessUnitId));
   }
 
   public static storeItem(name: string, data: string) {
-    localStorage.setItem(name, data);
+    localStorage.setItem(name, this.encodeString(data));
   }
 
   public static removeItem(name: string) {
     localStorage.removeItem(name);
+  }
+
+  public static encodeString(value: string) {
+    // Encode the String
+    //const currentDate = Date.toString();
+    const string = value + "|" + ApplicationEnv.Encode_Key;
+    return btoa(string);
+  }
+
+  public static decodeString(value?: string | null) {
+    // Decode the String
+    if (!value) {
+      return "";
+    }
+    const decodedString = atob(value);
+    return decodedString.split("|")[0];
   }
 }
