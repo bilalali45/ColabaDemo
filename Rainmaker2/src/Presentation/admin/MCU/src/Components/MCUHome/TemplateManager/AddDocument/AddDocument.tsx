@@ -37,7 +37,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const handleClick = (event: any) => {
         let tag = event.target.tagName;
-        console.log(tag);
+
         dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: !addDocumentBoxVisible?.value } })
         // if (tag === 'A') {
         // } else {
@@ -52,11 +52,6 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         setpopovershowClass(event);
     };
     
-
-    // console.log(mainContainerRef?.current);
-    // console.log(aRef?.current);
-    console.log(target);
-
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
@@ -176,7 +171,6 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         )
     }
 
-    console.log(addDocumentBoxVisible, 'in renderingjasdfk');
     return (
         <div className="Compo-add-document" >
 

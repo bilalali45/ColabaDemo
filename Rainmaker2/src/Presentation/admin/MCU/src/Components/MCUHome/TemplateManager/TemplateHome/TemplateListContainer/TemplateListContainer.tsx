@@ -11,10 +11,11 @@ export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
 
 type TemplateListContainerType = {
-    setLoaderVisible: Function
+    setLoaderVisible: Function,
+    listContainerElRef: React.Ref<HTMLDivElement>
 }
 
-export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainerType) => {
+export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : TemplateListContainerType) => {
 
     const { state, dispatch } = useContext(Store);
 
@@ -89,12 +90,12 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
                             <h4>My Templates</h4>
                         </div>
 
-                        <div className="list-wrap my-temp-list">
+                        <div ref={listContainerElRef} className="list-wrap my-temp-list">
                             <ul>
                                 {
                                     templates?.map((t: any) => {
                                         if (t?.type === MyTemplate) {
-                                            return <TemplateItem
+                                            return <TemplateItem    
                                                 key={t.name}
                                                 template={t}
                                                 isSelected={currentTemplate?.id === t.id}

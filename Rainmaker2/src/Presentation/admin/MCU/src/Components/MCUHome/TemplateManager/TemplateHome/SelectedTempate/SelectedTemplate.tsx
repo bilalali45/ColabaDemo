@@ -10,7 +10,7 @@ import { NewTemplate } from '../../NewTemplate/NewTemplate'
 import { TemplateEditBox } from '../../../../../Shared/components/TemplateEditBox'
 import { Template } from '../../../../../Entities/Models/Template'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
-import { MyTemplate } from '../TemplateListContainer/TemplateListContainer'
+import { MyTemplate, TemplateListContainer } from '../TemplateListContainer/TemplateListContainer'
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
@@ -18,9 +18,10 @@ import { Loader } from "../../../../../Shared/components/loader";
 type SelectedTemplateType = {
     loaderVisible: boolean;
     setLoaderVisible: Function;
+    listContainerElRef: any
 }
 
-export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTemplateType) => {
+export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContainerElRef }: SelectedTemplateType) => {
 
     const { state, dispatch } = useContext(Store);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
@@ -52,7 +53,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
             seteditTitleview(false);
             setNewNameText('');
         }
-
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
 
@@ -68,7 +68,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
     }
 
     const addNewTemplate = async (name: string) => {
-
+        dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
         let insertedTemplate = await TemplateActions.insertTemplate('1', name);
         if (insertedTemplate) {
 
@@ -77,6 +77,11 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
+            
+            if (listContainerElRef?.current) {
+                console.log(listContainerElRef?.current, listContainerElRef.current?.clientHeight);
+                listContainerElRef.current.scrollTo(0, listContainerElRef.current?.clientHeight + 40);
+            }
         }
     }
 
@@ -176,7 +181,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible }: SelectedTe
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
                                             setNewNameText(value);
-                                            
+
                                             if (!value?.length || value?.length > 255) {
                                                 return;
                                             }
