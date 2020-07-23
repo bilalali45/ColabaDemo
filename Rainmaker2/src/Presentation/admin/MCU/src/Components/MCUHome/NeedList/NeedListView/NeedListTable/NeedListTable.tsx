@@ -13,9 +13,11 @@ type NeedListProps = {
     documentTitleArrow: string;
     statusTitleArrow: string;
     sortStatusTitle: Function;
+    documentSortClick: boolean;
+    statusSortClick: boolean;
 }
 
-export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow,statusTitleArrow, sortStatusTitle }: NeedListProps) => {
+export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow,statusTitleArrow, sortStatusTitle,documentSortClick, statusSortClick }: NeedListProps) => {
     const history = useHistory()
 
     const renderNeedList = (data: any) => {
@@ -136,10 +138,16 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     }
 
     const renderDocumentTitle = () => {
-        return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        if(documentSortClick)
+         return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        else
+         return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document</a></div>
     }
     const renderStatusTitle = () => {
-        return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        if(statusSortClick)
+         return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        else
+         return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status </a></div>
     }
    
 
