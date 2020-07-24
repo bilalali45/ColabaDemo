@@ -148,7 +148,8 @@ export class FileUpload {
 
   static getExtension(file, splitBy) {
     if (splitBy === "dot") {
-      return file.clientName.split(".")[1];
+      let splitData = file.clientName.split(".");  
+      return splitData[splitData.length-1];
     } else {
       return file?.type.split("/")[1];
     }
