@@ -4,6 +4,7 @@ import { NeedList } from '../../../../../Entities/Models/NeedList'
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments'
 import Spinner from 'react-bootstrap/Spinner';
 import { truncate } from '../../../../../Utils/helpers/TruncateString';
+import { toTitleCase } from 'rainsoft-js';
 
 
 type NeedListProps = {
@@ -37,9 +38,9 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     };
     const renderDocName = (name: string, status: string) => {
         if (status === 'Pending review')
-            return <div className="td"><span className="f-normal"><strong>{name}</strong></span></div>
+            return <div className="td"><span className="f-normal"><strong>{toTitleCase(name)}</strong></span></div>
         else
-            return <div className="td"><span className="f-normal">{name}</span></div>
+            return <div className="td"><span className="f-normal">{toTitleCase(name)}</span></div>
     }
     const renderStatus = (status: string) => {
         let cssClass = ''
@@ -59,7 +60,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             default:
                 cssClass = 'status-bullet pending'
         }
-        return <div className="td"><span className={cssClass}></span> {status}</div>
+        return <div className="td"><span className={cssClass}></span> {toTitleCase(status)}</div>
     }
     const renderButton = (data: NeedList, index: number) => {
         let count = data.files != null ? data.files.length : data.files;
@@ -82,16 +83,6 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                 </div>
             )
         }
-    }
-
-    const getStyles = (item: any) => {
-        if (item?.mcuName) {
-            return {
-                fontSize: '9px',
-                color: 'lightgrey'
-            }
-        }
-        return {}
     }
 
     const renderFile = (data: NeedListDocuments[] | null) => {

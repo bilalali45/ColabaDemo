@@ -41,6 +41,7 @@ export const DocumentItem = ({
   const [nameExists, setNameExists] = useState<any>(false);
   const [isdeleted, setdeleted] = useState<any>(false);
   const [showInput, setShowInput] = useState<boolean>(false);
+  const [validFilename, setValidFilename] = useState(true)
 
   const txtInput: any = useRef(null);
 
@@ -205,6 +206,7 @@ export const DocumentItem = ({
             type="text"
             value={filename.split(".")[0]}
             onChange={(e) => {
+              !validFilename && setValidFilename(true)
               setNameExists(false);
               if (fileAlreadyExists(file, e.target.value)) {
                 setNameExists(true);
@@ -212,7 +214,10 @@ export const DocumentItem = ({
               if (FileUpload.nameTest.test(e.target.value)) {
                 setfilename(e.target.value);
                 return;
+              } else {
+                !!validFilename && setValidFilename(false)
               }
+
               setNameExists(true);
             }}
             onKeyDown={(e) => {
@@ -265,6 +270,7 @@ export const DocumentItem = ({
             </div>
             <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
+              {!validFilename && (<span className='text-danger'>File name cannot contain any special characters</span>)}
               {/* {renderFileContent()} */}
             </div>
             {renderDocListActions()}
