@@ -12,10 +12,10 @@ export const SystemTemplate = "System Template";
 
 type TemplateListContainerType = {
     setLoaderVisible: Function,
-    listContainerElRef: React.Ref<HTMLDivElement>
+    listContainerElRef: any
 }
 
-export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : TemplateListContainerType) => {
+export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: TemplateListContainerType) => {
 
     const { state, dispatch } = useContext(Store);
 
@@ -58,6 +58,9 @@ export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : T
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0] });
         }
         setLoaderVisible(false);
+        if (listContainerElRef?.current) {
+            listContainerElRef.current.scrollTo(0, 0);
+        }
     }
 
     const removeTemplate = async (templateId: string) => {
@@ -95,7 +98,7 @@ export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : T
                                 {
                                     templates?.map((t: any) => {
                                         if (t?.type === MyTemplate) {
-                                            return <TemplateItem    
+                                            return <TemplateItem
                                                 key={t.name}
                                                 template={t}
                                                 isSelected={currentTemplate?.id === t.id}
@@ -140,7 +143,7 @@ export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : T
         );
     };
 
-    if(!templates) return  <Loader containerHeight={"100%"} />;
+    if (!templates) return <Loader containerHeight={"100%"} />;
 
     return (
         <div className="TL-container">
@@ -150,7 +153,7 @@ export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : T
                 <h4>Templates</h4>
 
                 <div className="btn-add-new-Temp" onClick={() => {
-                   clearOld();
+                    clearOld();
 
                 }}>
                     <button className="btn btn-primary addnewTemplate-btn">
