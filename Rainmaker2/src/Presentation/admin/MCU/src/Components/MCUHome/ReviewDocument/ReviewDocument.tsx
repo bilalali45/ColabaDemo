@@ -128,6 +128,10 @@ export const ReviewDocument = () => {
       setPerviousDocumentButtonDisabled(true)
     }
 
+    if (nextDocumentButtonDisabled === true) {
+      setNextDocumentButtonDisabled(false)
+    }
+
     if (!currentDocument) return
 
     const { id, requestId, docId, files } = currentDocument
