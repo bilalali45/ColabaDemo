@@ -108,18 +108,18 @@ export class UserActions {
         console.log("Cache token values exist");
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
+        Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
         http.setAuth(Rainmaker2Token);
         let isAuth = Auth.checkAuth();
-        if (isAuth) {
-          console.log("Cache token is valid");
-          Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        } else {
+        console.log("Cache token check Auth", isAuth);
+        if (isAuth === "token expired" || !isAuth) {
           console.log("Cache token is not valid");
           console.log(
             "Refresh token called from authorize in case of MVC expire token"
           );
           UserActions.refreshToken();
         }
+        console.log("Cache token is valid");
         return true;
       } else {
         console.log("Cache token not found");
