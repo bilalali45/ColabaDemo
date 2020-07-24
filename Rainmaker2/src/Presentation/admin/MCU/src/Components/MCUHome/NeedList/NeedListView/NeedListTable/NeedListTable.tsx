@@ -17,7 +17,7 @@ type NeedListProps = {
     statusSortClick: boolean;
 }
 
-export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow,statusTitleArrow, sortStatusTitle,documentSortClick, statusSortClick }: NeedListProps) => {
+export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow, statusTitleArrow, sortStatusTitle, documentSortClick, statusSortClick }: NeedListProps) => {
     const history = useHistory()
 
     const renderNeedList = (data: any) => {
@@ -36,10 +36,10 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         })
     };
     const renderDocName = (name: string, status: string) => {
-        if(status === 'Pending review')
-        return  <div className="td"><span className="f-normal"><strong>{name}</strong></span></div>
-        else 
-        return <div className="td"><span className="f-normal">{name}</span></div>
+        if (status === 'Pending review')
+            return <div className="td"><span className="f-normal"><strong>{name}</strong></span></div>
+        else
+            return <div className="td"><span className="f-normal">{name}</span></div>
     }
     const renderStatus = (status: string) => {
         let cssClass = ''
@@ -84,6 +84,16 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         }
     }
 
+    const getStyles = (item: any) => {
+        if (item?.mcuName) {
+            return {
+                fontSize: '9px',
+                color: 'lightgrey'
+            }
+        }
+        return {}
+    }
+
     const renderFile = (data: NeedListDocuments[] | null) => {
         if (data === null || data.length === 0) {
             return (
@@ -94,11 +104,20 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         } else {
             return (
                 <div className="td">
-                    {
-                        data.map((item: NeedListDocuments) => {
-                            return <span title={item.clientName} key={item.id} className="block-element td-filename">{truncate(item.clientName, 47)}</span>
-                        })
-                    }
+                    {data.map((item: NeedListDocuments) => {
+                        return (
+                            <span className="block-element">
+                                {item.mcuName ?
+                                    <React.Fragment>
+                                        <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.mcuName, 47)}</span>
+                                        <small title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</small>
+                                    </React.Fragment>
+                                    :
+                                    <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</span>
+                                }
+                            </span>
+                        )
+                    })}
                 </div>
             )
         }
@@ -138,18 +157,18 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     }
 
     const renderDocumentTitle = () => {
-        if(documentSortClick)
-         return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        if (documentSortClick)
+            return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document <em className={documentTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
         else
-         return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document</a></div>
+            return <div className="th"><a onClick={() => sortDocumentTitle()} href="javascript:;">Document</a></div>
     }
     const renderStatusTitle = () => {
-        if(statusSortClick)
-         return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
+        if (statusSortClick)
+            return <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status <em className={statusTitleArrow === 'asc' ? 'zmdi zmdi-long-arrow-down table-th-arrow' : 'zmdi zmdi-long-arrow-up table-th-arrow'}></em></a></div>
         else
-         return  <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status </a></div>
+            return <div className="th"><a onClick={() => sortStatusTitle()} href="javascript:;">Status </a></div>
     }
-   
+
 
     if (!needList) {
         return (

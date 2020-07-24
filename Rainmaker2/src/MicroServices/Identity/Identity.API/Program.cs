@@ -14,7 +14,8 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
-            ServicePointManager.DefaultConnectionLimit = 1000;
+            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12;
             ConfigureLogging();
             CreateHost(args: args);
         }
