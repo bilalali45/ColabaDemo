@@ -128,6 +128,10 @@ export const ReviewDocument = () => {
       setPerviousDocumentButtonDisabled(true)
     }
 
+    if (nextDocumentButtonDisabled === true) {
+      setNextDocumentButtonDisabled(false)
+    }
+
     if (!currentDocument) return
 
     const { id, requestId, docId, files } = currentDocument
@@ -171,6 +175,18 @@ export const ReviewDocument = () => {
   }, [])
 
   useEffect(() => {
+    const onKeyDown = (event: any) => {
+      if (event.key === 'Escape') {
+        goBack()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => window.removeEventListener('keydown', onKeyDown) //clear up event
+  }, [])
+
+  useEffect(() => {
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -201,7 +217,7 @@ export const ReviewDocument = () => {
           setCurrentDocument(() => documentList[currentDocumentIndex]);
           setDocumentDetail(() => documentDetail)
 
-          const { id, requestId, docId, files } = doc
+          const { id, requestId, docId, files, typeId, docName } = doc
 
           if (!loading && !!files && !!files.length && files.length > 0) {
             setClientName(files[0].clientName)
@@ -213,6 +229,8 @@ export const ReviewDocument = () => {
               files[0].id,
               tenantId
             );
+          } else {
+            setTypeIdId({ id, typeId: !!typeId ? typeId : docName })
           }
         }
       } catch (error) {
@@ -254,7 +272,7 @@ export const ReviewDocument = () => {
                   tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={goBack}
+                  hideViewer={() => { }}
                 />
               </div>
             </div>
@@ -264,7 +282,7 @@ export const ReviewDocument = () => {
                   <div className="clearfix">
                     <img src={emptyIcon} alt="No preview available" />
                   </div>
-                  <h2>Nothing In Bank Statement</h2>
+                  <h2>Nothing In {currentDocument?.docName}</h2>
                   <p>No file submitted yet</p>
                 </div>
               </div>
