@@ -143,6 +143,7 @@ export class Auth {
       const decodedString = atob(value);
       return decodedString.split("|")[0];
     } catch {
+      Auth.removeAuth();
       return null;
     }
   }
