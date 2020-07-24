@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocument'
+import { toTitleCase } from 'rainsoft-js'
 
 type DocumentTypesType = {
     currentCategoryDocuments: CategoryDocument
@@ -21,7 +22,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
                 {
                     documentTypeList?.map((p: CategoryDocument) => {
                         return (
-                            <li key={p.catId} className={currentCategoryDocuments?.catId === p?.catId ? 'active' : ''} onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
+                            <li key={p.catId} className={currentCategoryDocuments?.catId === p?.catId ? 'active' : ''} onClick={() => changeCurrentDocType(p?.catId)}>{toTitleCase(p?.catName)}</li>
                         )
                     })
                 }

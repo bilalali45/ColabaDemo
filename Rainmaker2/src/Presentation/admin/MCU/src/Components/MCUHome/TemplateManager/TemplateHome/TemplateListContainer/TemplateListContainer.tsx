@@ -1,3 +1,4 @@
+import { toTitleCase } from 'rainsoft-js'
 import React, { useState, useContext, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
@@ -9,6 +10,7 @@ import { Loader } from "../../../../../Shared/components/loader";
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
+
 
 type TemplateListContainerType = {
     setLoaderVisible: Function,
@@ -77,7 +79,7 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
-                        <p>{t.name}</p>
+                        {toTitleCase(t.name)}
                     </div>
                 </div>
             </li>
