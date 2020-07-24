@@ -33,8 +33,10 @@ const App = () => {
   }, []);
 
   const authenticate = async () => {
+    console.log("Before Authorize");
     let isAuth = await UserActions.authorize();
     setAuthenticated(Boolean(isAuth));
+    console.log("After Authorize");
     UserActions.addExpiryListener();
     UserActions.keepAliveParentApp();
   };
@@ -46,7 +48,7 @@ const App = () => {
     window.top.location.href = "/Login/LogOff";
   };
 
-  console.log("User is authenticated", authenticated);
+  console.log("Authorize User is authenticated", authenticated);
   if (!authenticated) {
     return null;
   }
