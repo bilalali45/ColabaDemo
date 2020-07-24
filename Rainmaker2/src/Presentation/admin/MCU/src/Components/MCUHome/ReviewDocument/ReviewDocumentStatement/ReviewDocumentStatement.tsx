@@ -10,12 +10,14 @@ export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
-  currentFileIndex
+  currentFileIndex,
+  loadingFile
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
-  moveNextFile: (index: number, fileId: string, clientName: string) => void
+  moveNextFile: (index: number, fileId: string, clientName: string, loading?: boolean) => void
   currentDocument: NeedListDocumentType | null;
-  currentFileIndex: number
+  currentFileIndex: number,
+  loadingFile: boolean
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
   const [loading, setLoading] = useState(false)
