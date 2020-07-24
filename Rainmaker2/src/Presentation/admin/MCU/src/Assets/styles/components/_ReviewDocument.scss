@@ -54,9 +54,24 @@
             
         }
         &--center{
+            text-align: center;
             .btn{
+                font: 400 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
                 border: 1px solid color('border');
+                min-width: 202px;
+                text-align: center;
+                padding: 14px 15px 12px;
+                color: color('ReviewDocumentHeaderText');
                 background-color: #F9F9F9;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+                @include media-breakpoint-down(lg) {
+                    font: 400 #{fontSize('sm')-1+'/'+"1"} fontFamily('base');
+                    min-width: 150px;
+                }
                 &:focus{
                     background-color: #E6E6E6;
                 }

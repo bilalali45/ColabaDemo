@@ -78,11 +78,11 @@
       &::-webkit-scrollbar {
         display: none;
       }
-      img {
-        width: auto !important;
-        max-width: 100%;
-        height: auto !important;
-      }
+      // img {
+      //   width: auto !important;
+      //   max-width: 100%;
+      //   height: auto !important;
+      // }
     }
     canvas {
       margin: auto;
@@ -121,7 +121,7 @@
 
   &--counts {
     min-width: 50px;
-    display: inline-block;
+    display: none;
     input {
       text-align: center;
       background-color: transparent;

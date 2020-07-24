@@ -136,6 +136,13 @@
         vertical-align: middle;
     }
 
+    .btn-default {
+        &:hover {
+            background-color:darken(color('default'), 7.5%);
+        }
+        
+    }
+
     .table-th-arrow{
         color: lighten($color: color('primary'), $amount: 6%);
     }
