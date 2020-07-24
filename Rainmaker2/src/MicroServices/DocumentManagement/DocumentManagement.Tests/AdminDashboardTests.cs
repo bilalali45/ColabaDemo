@@ -67,7 +67,6 @@ namespace DocumentManagement.Tests
             Assert.IsType<OkResult>(result);
         }
 
-
         [Fact]
         public async Task TestDeleteControllerFalse()
         {
@@ -87,10 +86,8 @@ namespace DocumentManagement.Tests
             Assert.IsType<NotFoundResult>(result);
         }
 
-
-
         [Fact]
-        public async Task TestGetDocumentsService()
+        public async Task TestGetDocumentsServicePending()
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
@@ -110,6 +107,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
@@ -119,9 +117,10 @@ namespace DocumentManagement.Tests
                           { "_id" , BsonString.Empty },
                         { "requestId" , BsonString.Empty  },
                         { "docId" , BsonString.Empty },
-                         { "docName" , "House Document" },
+                        { "docName" , "House Document" },
                         { "typeName" , BsonString.Empty },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -134,6 +133,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" ,  "Property" },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -146,6 +146,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty},
                         { "status" ,"Started" },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -158,6 +159,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started"  },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" ,BsonNull.Value}
                     }
                   ,
@@ -170,7 +172,8 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started" },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" }} })}
+                        { "createdOn" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
                     }
             };
 
@@ -196,7 +199,119 @@ namespace DocumentManagement.Tests
             Assert.Equal("asd", dto[5].files[0].clientName);
         }
 
-       
+        [Fact]
+        public async Task TestGetDocumentsService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty fields
+                        { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+            ,
+                    new BsonDocument
+                    {
+                        //Cover all empty fields except docName
+                          { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , "House Document" },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                    new BsonDocument
+                    {
+                        //Cover all empty fields except typeName
+                         { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" ,  "Property" },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                  new BsonDocument
+                    {
+                        //Cover all empty fields except status
+                         { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty},
+                        { "status" ,"Started" },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except status and set files null
+                          { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , "Started"  },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" ,BsonNull.Value}
+                    }
+                  ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except status and files
+                        { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , "Started" },
+                        { "createdOn" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
+                    }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
+            //Act
+            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1, false);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(6, dto.Count);
+            Assert.Equal("House Document", dto[1].docName);
+            Assert.Equal("Property", dto[2].docName);
+            Assert.Equal("Started", dto[3].status);
+            Assert.Equal("Started", dto[4].status);
+            Assert.Equal("asd", dto[5].files[0].clientName);
+        }
+
         [Fact]
         public async Task TestDeleteServiceTrue()
         {

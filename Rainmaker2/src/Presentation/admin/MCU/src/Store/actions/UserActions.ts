@@ -98,18 +98,18 @@ export class UserActions {
       if (Rainmaker2Token && Rainmaker2RefreshToken) {
         console.log("Cache token values exist");
         LocalDB.storeAuthTokens(Rainmaker2Token, Rainmaker2RefreshToken);
+        LocalDB.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
         http.setAuth(Rainmaker2Token);
         let isAuth = LocalDB.checkAuth();
-        if (isAuth) {
-          console.log("Cache token is valid");
-          LocalDB.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        } else {
+        console.log("Cache token check Auth", isAuth);
+        if (isAuth === "token expired" || !isAuth) {
           console.log("Cache token is not valid");
           console.log(
             "Refresh token called from authorize in case of MVC expire token"
           );
-          UserActions.refreshToken();
+          await UserActions.refreshToken();
         }
+        console.log("Cache token is valid");
         return true;
       } else {
         console.log("Cache token not found");
@@ -132,7 +132,9 @@ export class UserActions {
         console.log(
           "Refresh token called from addExpiryListener in case of < 1"
         );
-        UserActions.refreshToken();
+        const resp = async () => {
+          await UserActions.refreshToken();
+        };
         return;
       }
       // let t = (time * 1000) * 60;

@@ -6,7 +6,7 @@ export const TemplateHeader = () => {
         <section className="MTheader">
             <h2>Manage Templates</h2>
 
-            <Link to={'/needList'} className="close-ManageTemplate"><i className="zmdi zmdi-close"></i></Link>
+            <Link title="Close" to={'/needList'} className="close-ManageTemplate"><i className="zmdi zmdi-close"></i></Link>
         </section>
     )
 }

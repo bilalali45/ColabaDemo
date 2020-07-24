@@ -1,4 +1,4 @@
-import { toTitleCase} from 'rainsoft-js'
+import { toTitleCase } from 'rainsoft-js'
 import React, { useState, useContext, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
@@ -78,7 +78,7 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
         return (
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    <div className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
+                    <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
                         {toTitleCase(t.name)}
                     </div>
                 </div>
