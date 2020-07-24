@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
+using System.Security.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +16,9 @@ namespace MainGateway
     {
         public static void Main(string[] args)
         {
+            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+
             //configure logging first
             ConfigureLogging();
 
@@ -31,7 +36,16 @@ namespace MainGateway
                            config.AddJsonFile(path: Path.Combine(path1: "configuration",
                                                                  path2: "configuration.json"));
                        })
-                       .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); }).UseSerilog();
+                       .ConfigureWebHostDefaults(configure: webBuilder =>
+                       {
+                           webBuilder.ConfigureKestrel(options =>
+                           {
+                               options.ConfigureHttpsDefaults(httpsOptions =>
+                               {
+                                   httpsOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
+                               });
+                           }).UseStartup<Startup>();
+                       }).UseSerilog();
         }
 
 

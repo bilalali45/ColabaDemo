@@ -1,4 +1,4 @@
-.ManageTemplate-Wrap {
+.NeedListAddDoc-wrap{
     background: color('colorWhite');
     border-bottom: 1px solid color('border');
     
@@ -244,23 +244,10 @@
     .T-head {
         padding-top: 20px;
         min-height: 60px;
-        .titleWrap {
-            max-width: 60%;
-         
-            .title {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                vertical-align: middle;
-                line-height: 18px;
-                width:100%
-            }
-        }
         .T-head-flex {
             display: flex;
             align-items: center;
             justify-content: space-between;
-
         }
         p {
             font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
@@ -377,15 +364,7 @@
         }
     }
     .Compo-add-document {
-        .popover {
-            margin-top: 56px!important;
-            margin-left: 0px!important;
-            box-shadow: 0 0 10px rgba(0,0,0,.16);
-            border: none;
-            right: 15px!important;
-            left: auto !important;
-            transform: translate(0, 0) !important;
-        }
+
 
         .addnewTemplate-btn {
             padding: 3px 10px 3px;
@@ -447,6 +426,12 @@
 .popover {
     max-width: 100%;
     border-radius: 0;
+}
+.popover {
+    margin-top: 69px !important;
+    margin-left: 20px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
+    border: none;
 }
 .popover-body {
     padding: 0;

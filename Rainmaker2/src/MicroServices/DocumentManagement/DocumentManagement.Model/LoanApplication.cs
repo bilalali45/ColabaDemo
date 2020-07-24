@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
+    public enum ActivityForType
+    {
+        LoanApplicationDocumentRequestActivity = 19,
+        LoanApplicationDocumentRejectActivity = 20
+    }
     public class LoanApplication
     {
         [BsonId]

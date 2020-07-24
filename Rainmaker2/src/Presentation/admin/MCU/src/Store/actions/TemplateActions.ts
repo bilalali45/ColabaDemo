@@ -5,6 +5,8 @@ import { Http } from 'rainsoft-js';
 
 const http = new Http();
 
+let fetchTemplateDocumentCancelToken = axios.CancelToken.source();
+
 export class TemplateActions {
     static async fetchTemplates(tenantId: string) {
         let url = Endpoints.TemplateManager.GET.templates(tenantId);
@@ -29,10 +31,17 @@ export class TemplateActions {
     }
 
     static async fetchTemplateDocuments(id: string) {
+        fetchTemplateDocumentCancelToken.cancel();
+        fetchTemplateDocumentCancelToken = axios.CancelToken.source();
         let url = Endpoints.TemplateManager.GET.templateDocuments(id);
 
         try {
-            let res = await http.get(url);
+            let res = await http.fetch({
+                url: http.createUrl(http.baseUrl, url),
+                cancelToken: fetchTemplateDocumentCancelToken.token
+            }, {
+                Authorization: `Bearer ${LocalDB.getAuthToken()}`
+            });
             return res.data;
         } catch (error) {
             console.log(error);
