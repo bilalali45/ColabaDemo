@@ -129,6 +129,21 @@
         vertical-align: middle;
         width: 100%;
     }
+    .c-filename + .c-filename {
+        margin-top: 5px;
+    }
+    .filename-by-mcu {
+        color:#707070;
+        font-size: fontSize("sm");
+        &.filename-p {
+            font-weight: 500;
+        }
+    }
+    .filename-by-b {
+        color:#A8A6A6;
+        font-size: fontSize("xs")-1;
+    }
+
 
     .icon-refresh{
         font-size: fontSize('md');
