@@ -61,6 +61,8 @@ namespace DocumentManagement.Service
                                  ""typeName"": ""$documentObjects.name"",
                                 ""status"": ""$requests.documents.status"",
                                 ""files"": ""$requests.documents.files"",
+                                ""typeId"": ""$requests.documents.typeId"",
+                                ""userName"": 1,
                                 ""createdOn"": ""$requests.createdOn""
                             }
                         }"
@@ -76,6 +78,8 @@ namespace DocumentManagement.Service
                     dto.id = query.id;
                     dto.docId = query.docId;
                     dto.requestId = query.requestId;
+                    dto.userName = query.userName;
+                    dto.typeId = query.typeId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.status = query.status;
                     dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value,DateTimeKind.Utc) : null;

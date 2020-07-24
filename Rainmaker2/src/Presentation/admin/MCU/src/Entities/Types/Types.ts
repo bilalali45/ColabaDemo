@@ -14,6 +14,8 @@ export interface NeedListDocumentType {
   requestId: string;
   status: string;
   files: NeedListDocumentFileType[];
+  typeId: string
+  userName: string
 }
 
 export interface DocumentParamsType {

@@ -51,10 +51,23 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
         if (!currentTemplate) {
             seteditTitleview(false);
-            setNewNameText('');
+            // setNewNameText('');
         }
         setCurrentTemplateDocs(currentTemplate)
     }, [templateDocuments?.length, currentTemplate?.id]);
+
+    useEffect(() => {
+        let nameUsed = templates?.filter((t: Template) => t.name.toLowerCase().includes('new template') && !isNaN(parseInt(t.name.split(' ')[2])))?.length;
+      
+        let name = `New Template ${nameUsed === 0? '' : nameUsed}`.trimEnd();
+
+        if(templates?.find((t: Template) => t?.name === name)) {
+            setNewNameText(`New Template ${nameUsed+1}`.trimEnd())
+            return;
+        }
+
+        setNewNameText(name);
+    }, [!currentTemplate])
 
 
     const setCurrentTemplateDocs = async (template: any) => {
@@ -77,23 +90,34 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-
+            console.log(listContainerElRef.current?.clientHeight);
             if (listContainerElRef?.current) {
-                console.log(listContainerElRef?.current, listContainerElRef.current?.clientHeight);
-                listContainerElRef.current.scrollTo(0, listContainerElRef.current?.clientHeight + 40);
+                console.log(listContainerElRef.current?.children[0]?.clientHeight);
+                listContainerElRef.current.scrollTo(0, listContainerElRef.current?.children[0]?.clientHeight + 40);
             }
         }
     }
 
     const renameTemplate = async (value: string) => {
-        if (addRequestSent) return;
+
+        if(value === currentTemplate?.name) {
+            toggleRename();
+            return;
+        }
+        
+        if (addRequestSent) {
+            return;
+        }
+       
         if (!value?.length || value?.length > 255 || !value.trim().length) {
             return;
         }
+       
         if (templates.find((t: Template) => t.name === value && t.id !== currentTemplate?.id)) {
             setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
             return;
         };
+       
         setAddRequestSent(true);
         setLoaderVisible(true);
 
@@ -151,7 +175,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
-                                                </span> : <span title="Remove" className="BTNclose">
+                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove"  className="BTNclose">
                                                     <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
                                                 </span>
                                         }
@@ -197,6 +221,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                         onKeyDown={(e: any) => {
                                             if (e.keyCode === 13) {
                                                 renameTemplate(e.target.value);
+                                                setNewNameText(e.target.value);
                                             }
                                         }}
                                         onBlur={() => renameTemplate(newNameText)}
