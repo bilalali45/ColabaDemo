@@ -20,7 +20,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
-        if (docName?.length > 254) {
+        if (docName?.length > 256) {
             setIsValid(false);
         }
 
@@ -33,7 +33,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     const addDoc = async () => {
         setRequestSent(true);
         await addDocToTemplate(docName, 'docName');
-        setDocName('');
+        // setDocName('');
         setRequestSent(false);
         // setVisible()        
     }
