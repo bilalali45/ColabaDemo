@@ -2,9 +2,9 @@
     background-color: rgba(#000000,0.5);
     position: relative;
 
-    *{
-        max-width: 100%;
-    }
+    // *{
+    //      max-width: 100%;
+    // }
 
     .loader {
         circle {
@@ -105,9 +105,9 @@
             -ms-overflow-style: none;  
             scrollbar-width: none;  
             img {
-                width: auto !important;
-                max-width: 100%;
-                height: auto !important;
+                // width: auto !important;
+                // max-width: 100%;
+                // height: auto !important;
             }
         } 
         canvas {
@@ -148,7 +148,7 @@
 
     &--counts{
         min-width: 50px;
-        display: inline-block;
+        display: none;
         input{
             text-align: center;
             background-color: transparent;

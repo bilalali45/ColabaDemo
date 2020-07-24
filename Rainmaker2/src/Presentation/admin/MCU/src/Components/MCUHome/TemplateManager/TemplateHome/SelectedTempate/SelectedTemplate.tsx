@@ -168,7 +168,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
                                 <li key={td.docId}>
-                                    <p>{toTitleCase(td.docName)}
+                                    <p title={td.docName}>{toTitleCase(td.docName)}
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
