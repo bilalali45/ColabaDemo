@@ -14,7 +14,8 @@ namespace Rainmaker.API
     {
         public static void Main(string[] args)
         {
-            ServicePointManager.DefaultConnectionLimit = 1000;
+            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             ConfigureLogging();
             CreateHost(args: args);
         }

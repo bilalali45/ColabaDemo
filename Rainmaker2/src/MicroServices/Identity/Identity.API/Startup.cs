@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Security.Authentication;
 using Identity.CorrelationHandlersAndMiddleware;
 using Identity.Services;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,11 @@ namespace Identity
 
             services.AddTransient<RequestHandler>();
             services.AddHttpClient(name: "clientWithCorrelationId")
+                    .ConfigurePrimaryHttpMessageHandler(()=>new HttpClientHandler()
+                    {
+                        SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                        MaxConnectionsPerServer = int.MaxValue
+                    })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
             services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
