@@ -49,6 +49,7 @@ export class TemplateActions {
     }
 
     static async insertTemplate(tenantId: string, name: string) {
+        fetchTemplateDocumentCancelToken.cancel();
         let url = Endpoints.TemplateManager.POST.insertTemplate();
         let template = {
             tenantId: Number(tenantId),
