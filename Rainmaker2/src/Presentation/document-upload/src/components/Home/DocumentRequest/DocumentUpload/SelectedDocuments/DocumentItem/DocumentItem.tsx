@@ -193,7 +193,7 @@ export const DocumentItem = ({
     changeName(file, filename);
   }
   const renderFileTitle = () => {
-    // console.log('indexKey',indexKey, totalItems)
+     console.log('filename',filename, filename.split(".")[0])
 
     return (
       <div className="title">
