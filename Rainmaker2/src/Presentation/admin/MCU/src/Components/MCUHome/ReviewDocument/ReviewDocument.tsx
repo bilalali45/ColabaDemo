@@ -217,7 +217,7 @@ export const ReviewDocument = () => {
           setCurrentDocument(() => documentList[currentDocumentIndex]);
           setDocumentDetail(() => documentDetail)
 
-          const { id, requestId, docId, files } = doc
+          const { id, requestId, docId, files, typeId, docName } = doc
 
           if (!loading && !!files && !!files.length && files.length > 0) {
             setClientName(files[0].clientName)
@@ -229,6 +229,8 @@ export const ReviewDocument = () => {
               files[0].id,
               tenantId
             );
+          } else {
+            setTypeIdId({ id, typeId: !!typeId ? typeId : docName })
           }
         }
       } catch (error) {
