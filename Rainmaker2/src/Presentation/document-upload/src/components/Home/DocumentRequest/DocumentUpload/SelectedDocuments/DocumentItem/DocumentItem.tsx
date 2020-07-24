@@ -270,7 +270,7 @@ export const DocumentItem = ({
             </div>
             <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
-              {!validFilename && (<div className='error'>File name cannot contain any special characters</div>)}
+              {!validFilename && (<span className='text-danger'>File name cannot contain any special characters</span>)}
               {/* {renderFileContent()} */}
             </div>
             {renderDocListActions()}
