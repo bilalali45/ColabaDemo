@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { ActivityLogType, LogType } from "../../../../Entities/Types/Types";
 import { Http } from "rainsoft-js";
+import _ from 'lodash'
+
+import { ActivityLogType, LogType } from "../../../../Entities/Types/Types";
 import { DateTimeFormat } from "../../../../Utils/helpers/DateFormat";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 
@@ -8,11 +10,13 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
     const [tab, setTab] = useState(1);
     const sectionRef = useRef<HTMLElement>(null);
     const allSections: any = sectionRef?.current?.children[0]?.children.length;
-    let getWidthSection: any = sectionRef?.current?.offsetWidth;
-    let totalWidth: any = allSections * getWidthSection;
+    const getWidthSection: any = sectionRef?.current?.offsetWidth;
+    const totalWidth: any = allSections * getWidthSection;
 
     const [activityLogs, setActivityLogs] = useState<ActivityLogType[]>([])
     const [logIndex, setLogIndex] = useState(0)
+    const [sortByEventName, setSortByEventName] = useState<boolean | null>(null)
+    const [sortByEventDateTime, setSortByEventDateTime] = useState<boolean | null>(true)
 
     const checkActiveTab = (step: any) => {
         if (step == tab) {
@@ -62,7 +66,11 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
         return activityLogs.map((activityLog: ActivityLogType, index: number) => {
             return (
                 <li className={`${index === logIndex && 'active'}`} key={activityLog.dateTime}>
-                    <a href="#" onClick={() => setLogIndex(index)}>
+                    <a href="#" onClick={() => {
+                        setSortByEventDateTime(null)
+                        setSortByEventName(null)
+                        setLogIndex(index)
+                    }}>
                         <h6>Requested By</h6>
                         <h2>{activityLog.userName}</h2>
                         <time className="vertical-tabs--list-time">{DateTimeFormat(activityLog.dateTime, true)}</time>
@@ -71,6 +79,49 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
             )
         })
     }, [logIndex])
+
+
+    const sortEventNames = () => {
+        sortByEventDateTime !== null && setSortByEventDateTime(null)
+
+        const clonedActivityLogs = _.cloneDeep(activityLogs)
+
+        const currentLog = clonedActivityLogs[logIndex]
+
+        const sortedActivityLogs = _.orderBy(currentLog.log, ['activity'], [sortByEventName === false || sortByEventName === null ? 'asc' : 'desc'])
+
+        clonedActivityLogs[logIndex].log = sortedActivityLogs
+
+        setActivityLogs(() => clonedActivityLogs)
+        setSortByEventName(() => sortByEventName === false || sortByEventName === null ? true : false)
+    }
+
+    const sortEventDates = () => {
+        sortByEventName !== null && setSortByEventName(() => null)
+
+        const clonedActivityLogs = _.cloneDeep(activityLogs)
+
+        const currentLog = clonedActivityLogs[logIndex]
+
+        const sortedActivityLogs = _.orderBy(currentLog.log, ['dateTime'], [
+            sortByEventDateTime === false || sortByEventDateTime === null ? 'asc' : 'desc'
+        ])
+
+        clonedActivityLogs[logIndex].log = sortedActivityLogs
+
+        setActivityLogs(() => clonedActivityLogs)
+        setSortByEventDateTime(() => sortByEventDateTime === false || sortByEventDateTime === null ? true : false)
+    }
+
+    const getSortIconClassName = (sortState: boolean | null) => {
+        if (sortState === null) {
+            return ''
+        } else if (sortState === false) {
+            return 'zmdi zmdi-long-arrow-down table-th-arrow'
+        } else if (sortState === true) {
+            return 'zmdi zmdi-long-arrow-up table-th-arrow'
+        }
+    }
 
     useEffect(() => {
         if (id === null || typeId === null) return
@@ -109,8 +160,11 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                             <table className="table table-noborder">
                                 <thead>
                                     <tr>
-                                        <th>Events</th>
-                                        <th>Date & Time</th>
+                                        <th>
+                                            <a href="#" onClick={sortEventNames}>Events <em className={getSortIconClassName(sortByEventName)}></em>
+                                            </a>
+                                        </th>
+                                        <th><a href="#" onClick={sortEventDates}>Date & Time <em className={getSortIconClassName(sortByEventDateTime)}></em></a></th>
                                     </tr>
                                 </thead>
                             </table>

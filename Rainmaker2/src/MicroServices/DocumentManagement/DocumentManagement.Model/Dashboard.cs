@@ -85,6 +85,9 @@ namespace DocumentManagement.Model
         public string status { get; set; }
         public DateTime? createdOn { get; set; }
         public List<RequestFile> files { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
+        public string userName { get; set; }
     }
     public class AdminDashboardDTO
     {
@@ -95,6 +98,8 @@ namespace DocumentManagement.Model
         public string status { get; set; }
         public DateTime? createdOn { get; set; }
         public List<AdminFileDTO> files { get; set; }
+        public string typeId { get; set; }
+        public string userName { get; set; }
     }
 
     public class AdminFileDTO

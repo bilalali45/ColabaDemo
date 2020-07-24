@@ -32,6 +32,7 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
+            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -149,7 +150,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userName: userName);
             if (docQuery)
             {
-                await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 
