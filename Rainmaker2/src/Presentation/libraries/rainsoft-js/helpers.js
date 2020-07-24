@@ -57,11 +57,18 @@ exports.FormatAmountByCountry = function (amount) {
 exports.toTitleCase = function (str) {
     var _a, _b;
     if (str) {
-        var sentence = str === null || str === void 0 ? void 0 : str.toLowerCase().split(" ");
+        var sentence = str === null || str === void 0 ? void 0 : str.trim().toLowerCase().split(" ");
         for (var i = 0; i < sentence.length; i++) {
-            sentence[i] = ((_a = sentence[i][0]) === null || _a === void 0 ? void 0 : _a.toUpperCase()) + ((_b = sentence[i]) === null || _b === void 0 ? void 0 : _b.slice(1));
+            if (sentence[i] != undefined && sentence[i] != "") {
+                sentence[i] = ((_a = sentence[i][0]) === null || _a === void 0 ? void 0 : _a.toUpperCase()) + ((_b = sentence[i]) === null || _b === void 0 ? void 0 : _b.slice(1));
+            }
+            else {
+                sentence.splice(i, 1);
+            }
         }
-        return sentence.join(" ");
+        var sen = sentence.join(" ");
+        console.log('sen', sen);
+        return sen;
     }
     else {
         console.log(str);

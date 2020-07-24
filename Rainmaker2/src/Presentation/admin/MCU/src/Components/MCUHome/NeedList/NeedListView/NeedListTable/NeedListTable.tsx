@@ -20,14 +20,13 @@ type NeedListProps = {
 
 export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, documentTitleArrow, statusTitleArrow, sortStatusTitle, documentSortClick, statusSortClick }: NeedListProps) => {
     const history = useHistory()
-
     const renderNeedList = (data: any) => {
         return data.map((item: NeedList, index: number) => {
             return (
                 <div key={index} className="tr row-shadow">
                     {renderDocName(item.docName, item.status)}
                     {renderStatus(item.status)}
-                    {renderFile(item.files)}
+                    {renderFile(item.files, item.status)}
                     {renderSyncToLos(item.files)}
                     {renderButton(item, index)}
                 </div>
@@ -60,7 +59,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             default:
                 cssClass = 'status-bullet pending'
         }
-        return <div className="td"><span className={cssClass}></span> {toTitleCase(status)}</div>
+        return <div className="td"><span className={cssClass}></span> {status}</div>
     }
     const renderButton = (data: NeedList, index: number) => {
         let count = data.files != null ? data.files.length : data.files;
@@ -85,7 +84,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         }
     }
 
-    const renderFile = (data: NeedListDocuments[] | null) => {
+    const renderFile = (data: NeedListDocuments[] | null, status: string) => {
         if (data === null || data.length === 0) {
             return (
                 <div className="td">
@@ -100,8 +99,8 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                             <span className="block-element">
                                 {item.mcuName ?
                                     <React.Fragment>
-                                        <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.mcuName, 47)}</span>
-                                        <small title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</small>
+                                        <span title={item.clientName} key={item.id} className={status === 'Pending review' ? "block-element-child filename-p" : "block-element-child"}>{truncate(item.mcuName, 47)}</span>
+                                        <small title={item.clientName} key={item.id} className={status === 'Pending review' ? "block-element-child filename-p" : "block-element-child"}>{truncate(item.clientName, 47)}</small>
                                     </React.Fragment>
                                     :
                                     <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</span>
