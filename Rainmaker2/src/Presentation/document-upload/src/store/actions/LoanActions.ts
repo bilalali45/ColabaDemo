@@ -27,7 +27,8 @@ export class LaonActions {
       return new ContactUs().fromJson(res.data);
     } catch (error) {
       if (error?.response?.data?.errors?.loanApplicationId?.length) {
-        alert("The Loan Application ID provided does not exist");
+        Auth.removeAuth();
+        //alert("The Loan Application ID provided does not exist");
       }
     }
   }
