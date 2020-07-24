@@ -59,6 +59,8 @@ export const ReviewDocument = () => {
 
         const http = new Http();
 
+        const authToken = LocalDB.getAuthToken()
+
         const url = NeedListEndpoints.GET.documents.view(
           id,
           requestId,
@@ -71,7 +73,7 @@ export const ReviewDocument = () => {
           params,
           responseType: 'arraybuffer',
           headers: {
-            Authorization: `Bearer ${LocalDB.getAuthToken()}`
+            Authorization: `Bearer ${authToken}`
           }
         })
 
@@ -81,6 +83,8 @@ export const ReviewDocument = () => {
         setLoading(false)
 
         alert('Something went wrong while fetching document/file from server.')
+      } finally {
+        setLoading(false)
       }
     },
     []
@@ -115,7 +119,7 @@ export const ReviewDocument = () => {
 
       getDocumentForView(id, requestId, docId, files[0].id, 1);
     }
-  }, [navigationIndex, documentList1, getDocumentForView]);
+  }, [nextDocumentButtonDisabled, perviousDocumentButtonDisabled, navigationIndex, documentList1, getDocumentForView]);
 
   const onPreviousDocument = useCallback(() => {
     const pendingReviewDocuments: NeedListDocumentType[] = documentList1.filter((document: NeedListDocumentType) => document.status === 'Pending review')
@@ -146,10 +150,11 @@ export const ReviewDocument = () => {
 
       getDocumentForView(id, requestId, docId, files[0].id, tenantId);
     }
-  }, [documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
+  }, [nextDocumentButtonDisabled, perviousDocumentButtonDisabled, documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
 
-  const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string) => {
-    if (index === currentFileIndex || loading === true) return
+  const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string, loadingFile?: boolean) => {
+
+    if (index === currentFileIndex || loadingFile) return
 
     if (currentDocument) {
       const { id, requestId, docId } = currentDocument
@@ -160,9 +165,9 @@ export const ReviewDocument = () => {
       setBlobData(() => null)
       setClientName(clientName)
 
-      !loading && getDocumentForView(id, requestId, docId, fileId, tenantId)
+      !loadingFile && getDocumentForView(id, requestId, docId, fileId, tenantId)
     }
-  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
+  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
 
   const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
     setTypeIdId({ id, typeId: typeIdOrDocName })
@@ -184,9 +189,11 @@ export const ReviewDocument = () => {
     window.addEventListener('keydown', onKeyDown)
 
     return () => window.removeEventListener('keydown', onKeyDown) //clear up event
-  }, [])
+  }, [goBack])
 
   useEffect(() => {
+    if (loading) return
+
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -239,7 +246,58 @@ export const ReviewDocument = () => {
         alert("Something went wrong. Please try again.");
       }
     }
-  }, [getDocumentForView, state, location.state, tenantId]);
+  }, [getDocumentForView, perviousDocumentButtonDisabled, state, location.state, tenantId]);
+
+  const getNextFileIndex = () => {
+    if (currentDocument?.files[currentFileIndex + 1]) {
+      return currentFileIndex + 1
+    }
+
+    return -1
+  }
+
+  const getPreviousFileIndex = () => {
+    if (currentDocument?.files[currentFileIndex - 1]) {
+      return currentFileIndex - 1
+    }
+
+    return -1
+  }
+
+  const onMoveArrowKeys = (event: KeyboardEvent) => {
+    if (loading) return
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault()
+
+      if (currentDocument) {
+
+        if (event.key === 'ArrowDown') { // move forward
+          const fileIndex = getNextFileIndex()
+
+          if (fileIndex !== -1) {
+            const currentFile = currentDocument.files[fileIndex]
+
+            moveNextFile(fileIndex, currentFile.id, currentFile.clientName, loading)
+          }
+        } else if (event.key === 'ArrowUp') { // move back
+          const fileIndex = getPreviousFileIndex()
+
+          if (fileIndex !== -1) {
+            const currentFile = currentDocument.files[fileIndex]
+
+            moveNextFile(fileIndex, currentFile.id, currentFile.clientName, loading)
+          }
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', onMoveArrowKeys)
+
+    return () => { window.removeEventListener('keydown', onMoveArrowKeys) }
+  }, [currentDocument, loading, currentFileIndex])
 
   return (
     <div
@@ -288,11 +346,12 @@ export const ReviewDocument = () => {
               </div>
             )}
           {/* review-document-body--content */}
-          {!!currentDocument && currentDocument.files && currentDocument.files.length && (
+          {!!currentDocument && currentDocument.files && currentDocument.files.length > 0 && (
             <aside className="review-document-body--aside col-md-4">
               <ReviewDocumentStatement
                 typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
                 moveNextFile={moveNextFile}
+                loadingFile={!!loading ? true : false}
                 currentDocument={!!currentDocument ? currentDocument : null}
                 currentFileIndex={currentFileIndex}
               />
