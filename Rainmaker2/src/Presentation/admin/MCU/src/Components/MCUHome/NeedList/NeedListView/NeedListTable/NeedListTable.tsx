@@ -4,6 +4,7 @@ import { NeedList } from '../../../../../Entities/Models/NeedList'
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments'
 import Spinner from 'react-bootstrap/Spinner';
 import { truncate } from '../../../../../Utils/helpers/TruncateString';
+import { toTitleCase } from 'rainsoft-js';
 
 
 type NeedListProps = {
@@ -37,9 +38,9 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
     };
     const renderDocName = (name: string, status: string) => {
         if (status === 'Pending review')
-            return <div className="td"><span className="f-normal"><strong>{name}</strong></span></div>
+            return <div className="td"><span className="f-normal"><strong>{toTitleCase(name)}</strong></span></div>
         else
-            return <div className="td"><span className="f-normal">{name}</span></div>
+            return <div className="td"><span className="f-normal">{toTitleCase(name)}</span></div>
     }
     const renderStatus = (status: string) => {
         let cssClass = ''
@@ -59,7 +60,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             default:
                 cssClass = 'status-bullet pending'
         }
-        return <div className="td"><span className={cssClass}></span> {status}</div>
+        return <div className="td"><span className={cssClass}></span> {toTitleCase(status)}</div>
     }
     const renderButton = (data: NeedList, index: number) => {
         let count = data.files != null ? data.files.length : data.files;
@@ -84,16 +85,6 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         }
     }
 
-    const getStyles = (item: any) => {
-        if (item?.mcuName) {
-            return {
-                fontSize: '9px',
-                color: 'lightgrey'
-            }
-        }
-        return {}
-    }
-
     const renderFile = (data: NeedListDocuments[] | null) => {
         if (data === null || data.length === 0) {
             return (
@@ -103,17 +94,17 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             )
         } else {
             return (
-                <div className="td">
+                <div className="td ">
                     {data.map((item: NeedListDocuments) => {
                         return (
-                            <span className="block-element">
+                            <span className="block-element c-filename">
                                 {item.mcuName ?
                                     <React.Fragment>
-                                        <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.mcuName, 47)}</span>
-                                        <small title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</small>
+                                        <span title={item.clientName} key={item.id} className="block-element-child td-filename filename-by-mcu">{truncate(item.mcuName, 47)}</span>
+                                        <small title={item.clientName} key={item.id} className="block-element-child td-filename filename-by-b">{truncate(item.clientName, 47)}</small>
                                     </React.Fragment>
                                     :
-                                    <span title={item.clientName} key={item.id} className="block-element-child">{truncate(item.clientName, 47)}</span>
+                                    <span title={item.clientName} key={item.id} className="block-element-child td-filename filename-by-mcu">{truncate(item.clientName, 47)}</span>
                                 }
                             </span>
                         )

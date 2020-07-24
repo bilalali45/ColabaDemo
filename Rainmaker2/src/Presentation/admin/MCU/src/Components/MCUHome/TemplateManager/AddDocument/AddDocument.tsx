@@ -113,7 +113,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     }
 
     const addDocToTemplate = async (docName: string, type: string) => {
-        if (!docName?.length || docName?.length > 255) {
+        if (!docName?.length || docName?.length > 254) {
             return;
         }
         if(requestSent) return;

@@ -11,6 +11,7 @@
     &--left{
         flex: 3 0 0;
         line-height: 1;
+        max-width: 90%;
     }
 
     &--right{
@@ -80,8 +81,18 @@
         .document-snipet--input-group{
             //background-color: color('docSnipetBg');
             //border:1px solid color('docSnipetBorderActive');
-            display: inline-block;
-            vertical-align: middle;
+            display: block;
+            // vertical-align: middle;
         }
+    }
+
+    .document-snipet--input-group{
+      p{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        margin-bottom: 0;
+      }
     }
 }

@@ -346,12 +346,18 @@
                 position: relative;
                 display: flex;
                 align-items: center;
+                max-width: 60%;
                 p {
                     padding: 13px 0 12px 0;
                     margin-bottom: 0;
                     display: inline-block;
                     position: relative;
                     padding-right: 30px;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    vertical-align: middle;
                     &:hover {
                         .BTNclose {
                             display: block;
