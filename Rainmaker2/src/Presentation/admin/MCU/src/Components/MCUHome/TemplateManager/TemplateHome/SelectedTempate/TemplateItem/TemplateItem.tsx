@@ -41,10 +41,10 @@ export const TemplateItem = ({
                             }}>Yes</button></div>
                     </div>
                     :
-                    <div className={`c-list ${isSelected ? 'active' : ''}`}>
-                        {template.name}
+                    <div title={template.name}  className={`c-list ${isSelected ? 'active' : ''}`}>
+                        <p >{template.name}</p>
                         {!deleteRequestSent ?
-                            <span className="BTNclose" onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
+                            isSelected && <span className="BTNclose" title={"Remove"} onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
                             <span className="btnloader">
                                 <Spinner size="sm" animation="border" role="status">

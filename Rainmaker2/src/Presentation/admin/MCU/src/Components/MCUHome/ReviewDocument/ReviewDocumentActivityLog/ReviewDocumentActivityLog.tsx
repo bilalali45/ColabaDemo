@@ -52,7 +52,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
             return (
                 <tr key={log._id}>
                     <td>{log.activity}</td>
-                    <td>{DateTimeFormat(log.datetime, true)}</td>
+                    <td>{DateTimeFormat(log.dateTime, true)}</td>
                 </tr>
             )
         })

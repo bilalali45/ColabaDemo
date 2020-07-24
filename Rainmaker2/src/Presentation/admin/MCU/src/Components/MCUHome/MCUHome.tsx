@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 
 import { NeedList } from "./NeedList/NeedList";
+import { AddNeedList } from "./NeedList/Add/AddNeedList";
 import { TemplateManager } from "./TemplateManager/TemplateManager";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Store } from "../../Store/Store";
@@ -19,6 +20,7 @@ export const MCUHome = () => {
       <Switch>
         <Redirect exact from="/" to="/needList" />
         <Authorized path="/needList" component={NeedList} />
+        <Authorized path="/add-needList" component={AddNeedList} />
         <Authorized path="/templateManager" component={TemplateManager} />
         <Authorized path="/ReviewDocument" component={ReviewDocument} />
       </Switch>

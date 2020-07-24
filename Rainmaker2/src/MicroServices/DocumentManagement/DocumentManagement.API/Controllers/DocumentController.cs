@@ -23,7 +23,8 @@ namespace DocumentManagement.API.Controllers
             IFtpClient ftpClient,
             ISettingService settingService,
             IKeyStoreService keyStoreService,
-            ILogger<DocumentController> logger)
+            ILogger<DocumentController> logger,
+            IRainmakerService rainmakerService)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -43,6 +44,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
+        private readonly IRainmakerService rainmakerService;
 
         #endregion
 
@@ -146,7 +148,11 @@ namespace DocumentManagement.API.Controllers
                                                                 userId:userProfileId,
                                                                 userName: userName);
             if (docQuery)
+            {
+                await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
+            }
+
             return NotFound();
         }
 

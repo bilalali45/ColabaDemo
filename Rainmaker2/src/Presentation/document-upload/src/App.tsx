@@ -114,7 +114,7 @@ const App = () => {
           // displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
         />
-        <Router basename="/DocumentManagement">
+        <Router basename="/LoanPortal">
           <Switch>
             <Authorized path="/" component={Home} />
           </Switch>

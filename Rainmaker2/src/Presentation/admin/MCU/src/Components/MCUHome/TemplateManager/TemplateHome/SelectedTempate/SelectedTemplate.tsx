@@ -77,7 +77,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-            
+
             if (listContainerElRef?.current) {
                 console.log(listContainerElRef?.current, listContainerElRef.current?.clientHeight);
                 listContainerElRef.current.scrollTo(0, listContainerElRef.current?.clientHeight + 40);
@@ -171,7 +171,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         return (
             <div className="T-head">
                 <div className="T-head-flex">
-                    <div>
+                    <div className="titleWrap">
                         {editTitleview || currentTemplate === null ?
                             <>
                                 <p className="editable">
@@ -212,7 +212,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                 </p>
                             </>
                             : <>
-                                <p> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
+                                <p className="title"> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                             </>}
                     </div>
                     <div>
@@ -236,12 +236,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             {renderTitleInputText()}
 
-            {(templates && !currentTemplate || templateDocuments?.length === 0) &&
+            {(templates && !currentTemplate || templateDocuments?.length === 0) ?
                 <NewTemplate
-                    setLoaderVisible={setLoaderVisible} />}
-
-            {currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
-
+                    setLoaderVisible={setLoaderVisible} /> : currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
 
             {/* {loaderVisible ? <h2>...your request is in process please wait...</h2> : ''} */}
         </section>
