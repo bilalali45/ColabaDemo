@@ -14,6 +14,7 @@ import { MyTemplate, TemplateListContainer } from '../TemplateListContainer/Temp
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
+import { toTitleCase } from 'rainsoft-js'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -58,11 +59,11 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     useEffect(() => {
         let nameUsed = templates?.filter((t: Template) => t.name.toLowerCase().includes('new template') && !isNaN(parseInt(t.name.split(' ')[2])))?.length;
-      
-        let name = `New Template ${nameUsed === 0? '' : nameUsed}`.trimEnd();
 
-        if(templates?.find((t: Template) => t?.name === name)) {
-            setNewNameText(`New Template ${nameUsed+1}`.trimEnd())
+        let name = `New Template ${nameUsed === 0 ? '' : nameUsed}`.trimEnd();
+
+        if (templates?.find((t: Template) => t?.name === name)) {
+            setNewNameText(`New Template ${nameUsed + 1}`.trimEnd())
             return;
         }
 
@@ -100,24 +101,24 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const renameTemplate = async (value: string) => {
 
-        if(value === currentTemplate?.name) {
+        if (value === currentTemplate?.name) {
             toggleRename();
             return;
         }
-        
+
         if (addRequestSent) {
             return;
         }
-       
-        if (!value?.length || value?.length > 255 || !value.trim().length) {
+
+        if (!value?.length || value?.length > 254 || !value.trim().length) {
             return;
         }
-       
+
         if (templates.find((t: Template) => t.name === value && t.id !== currentTemplate?.id)) {
             setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
             return;
         };
-       
+
         setAddRequestSent(true);
         setLoaderVisible(true);
 
@@ -167,7 +168,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
                                 <li key={td.docId}>
-                                    <p>{td.docName}
+                                    <p>{toTitleCase(td.docName)}
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
@@ -200,13 +201,16 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
+                                        onFocus={(e: any) => {
+                                            e.target.select();
+                                        }}
                                         style={{ border: nameExistsError ? '1px solid red' : '' }}
                                         autoFocus
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
                                             setNewNameText(value);
 
-                                            if (!value?.length || value?.length > 255) {
+                                            if (!value?.length || value?.length > 254) {
                                                 return;
                                             }
                                             // console.log(letterNumber.test(e.target.value));
