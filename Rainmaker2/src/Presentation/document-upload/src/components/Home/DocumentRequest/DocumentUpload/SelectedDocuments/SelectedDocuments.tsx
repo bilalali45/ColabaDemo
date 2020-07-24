@@ -353,9 +353,7 @@ export const SelectedDocuments = ({
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
-                    Have you submitted all files for this document?
-                    <br />
-                    Please note you will not be able to return.
+                    Have you submitted all required files for this document?
                   </p>
                 </div>
               </div>
