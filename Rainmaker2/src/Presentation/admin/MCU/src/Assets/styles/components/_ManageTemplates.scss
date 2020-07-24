@@ -68,6 +68,7 @@
         h2 {
             font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base');
             margin-bottom: 0;
+            color: color('colorBlack');
         }
     }
 
@@ -117,7 +118,7 @@
                         @include scrollbar(6,6);
                     }
                     .tenant-temp-list {
-                        max-height: 290px;
+                        max-height: 270px;
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
@@ -209,14 +210,31 @@
                                                     &:active,&:hover {
                                                         outline: none;
                                                         opacity: 0.9;
+                                                        
                                                     }
                                                 }
                                                 .btn-no {
                                                     background: color('secondry');
+                                                    border:1px solid color('secondry');
+                                                    &:hover  {
+                                                        background: darken(color('secondry'), 7.5%);
+                                                        border:1px solid  darken(color('secondry'), 10%)
+                                                    }
+                                                    &:active  {
+                                                        background: darken(color('secondry'), 10%)
+                                                    }
                                                 }
                                                 .btn-yes {
                                                     background: color('primary');
                                                     margin-left: 5px;
+                                                    border:1px solid color('primary');
+                                                    &:hover  {
+                                                        background: darken(color('primary'), 7.5%);
+                                                        border:1px solid  darken(color('primary'), 10%)
+                                                    }
+                                                    &:active  {
+                                                        background: darken(color('primary'), 10%)
+                                                    }
                                                 }
                                             }
                                         }
@@ -367,7 +385,7 @@
             }
         }
         .ul-ST-content {
-            max-height: calc(100vh - 310px);
+            max-height: calc(100vh - 270px);
             overflow: auto;
     @include scrollbar(6,6)
         }
@@ -597,6 +615,7 @@
                         
                         .spinner-border {
                             margin-left: 5px;
+                            color: color('docSnipetText');
                         }
                        }
                    }

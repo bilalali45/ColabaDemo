@@ -73,8 +73,8 @@ export const TemplateListContainer = ({setLoaderVisible, listContainerElRef} : T
         return (
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    <div className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
-                        {t.name}
+                    <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
+                        <p>{t.name}</p>
                     </div>
                 </div>
             </li>
