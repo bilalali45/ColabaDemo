@@ -175,7 +175,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
-                                                </span> : currentTemplate?.type === MyTemplate && <span className="BTNclose">
+                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove"  className="BTNclose">
                                                     <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
                                                 </span>
                                         }
@@ -237,7 +237,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                 </p>
                             </>
                             : <>
-                                <p className="title"> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
+                                <p className="title"> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span title="Rename" className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                             </>}
                     </div>
                     <div>
