@@ -175,6 +175,18 @@ export const ReviewDocument = () => {
   }, [])
 
   useEffect(() => {
+    const onKeyDown = (event: any) => {
+      if (event.key === 'Escape') {
+        goBack()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => window.removeEventListener('keydown', onKeyDown) //clear up event
+  }, [])
+
+  useEffect(() => {
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -258,7 +270,7 @@ export const ReviewDocument = () => {
                   tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={goBack}
+                  hideViewer={() => { }}
                 />
               </div>
             </div>
