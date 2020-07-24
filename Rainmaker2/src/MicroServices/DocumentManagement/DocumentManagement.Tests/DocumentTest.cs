@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xunit;
+using Microsoft.Extensions.Primitives;
 
 namespace DocumentManagement.Tests
 {
@@ -38,7 +39,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
             GetDocumentsByTemplateIds getDocumentsByTemplateIds = new GetDocumentsByTemplateIds();
             string[] arr = new string[] { "5eb25acde519051af2eeb111", "5eb25acde519051af2eeb111" };
@@ -73,7 +74,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             documentController.ControllerContext = context;
             GetFiles getFiles = new GetFiles();
             getFiles.id = "5eb25d1fe519051af2eeb72d";
@@ -116,7 +117,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
             GetActivityLog getActivityLog = new GetActivityLog();
             getActivityLog.id = "5f0d668fcc9ce539845d7f99";
@@ -636,7 +637,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
             GetEmailLog emailLog = new GetEmailLog();
             emailLog.id = "abc15d1fe456051af2eeb768";
@@ -808,7 +809,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(),null);
             documentController.ControllerContext = context;
             mcuRenameModel mcuRenameModel = new mcuRenameModel();
             mcuRenameModel.id = "1";
@@ -845,7 +846,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(),null);
             documentController.ControllerContext = context;
             mcuRenameModel mcuRenameModel = new mcuRenameModel();
             mcuRenameModel.id = "1";
@@ -879,7 +880,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(),null);
             documentController.ControllerContext = context;
             mcuRenameModel mcuRenameModel = new mcuRenameModel();
             mcuRenameModel.id = "1";
@@ -948,7 +949,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
             //Act
             AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
@@ -974,7 +975,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
               //Act
               AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
@@ -992,7 +993,9 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(true);
+            mockRainMakerService.Setup(x=>x.SendBorrowerEmail(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1000,10 +1003,19 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(), mockRainMakerService.Object);
             documentController.ControllerContext = context;
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
+            rejectDocumentModel.loanApplicationId = 14;
             rejectDocumentModel.id = "5eb25d1fe519051af2eeb72d";
             rejectDocumentModel.requestId = "abc15d1fe456051af2eeb768";
             rejectDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
@@ -1019,6 +1031,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(false);
             
             var httpContext = new Mock<HttpContext>();
@@ -1028,7 +1041,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>());
+            var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),mockRainMakerService.Object);
             documentController.ControllerContext = context;
             //Act
             RejectDocumentModel rejectDocumentModel = new RejectDocumentModel();
@@ -1159,7 +1172,7 @@ namespace DocumentManagement.Tests
 
             // also check the 'http' call was like we expected it
             // Act  
-            DocumentController controller = new DocumentController(mock.Object, mockFileEncryptorFacotry.Object, mockFtpClient.Object, mockSettingService.Object, mockKeyStoreService.Object, Mock.Of<ILogger<DocumentController>>());
+            DocumentController controller = new DocumentController(mock.Object, mockFileEncryptorFacotry.Object, mockFtpClient.Object, mockSettingService.Object, mockKeyStoreService.Object, Mock.Of<ILogger<DocumentController>>(),null);
             controller.ControllerContext = context;
             View view = new View();
             view.id = "5eb25d1fe519051af2eeb72d";
