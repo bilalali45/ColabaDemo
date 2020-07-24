@@ -118,7 +118,7 @@
                         @include scrollbar(6,6);
                     }
                     .tenant-temp-list {
-                        max-height: 270px;
+                        max-height: 270px;  
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
