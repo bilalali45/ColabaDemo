@@ -14,6 +14,8 @@ export interface NeedListDocumentType {
   requestId: string;
   status: string;
   files: NeedListDocumentFileType[];
+  typeId: string
+  userName: string
 }
 
 export interface DocumentParamsType {
@@ -38,7 +40,7 @@ export interface DocumentFileType {
 
 export interface LogType {
   _id: string
-  datetime: string
+  dateTime: string
   activity: string
 }
 

@@ -68,6 +68,7 @@
         h2 {
             font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base');
             margin-bottom: 0;
+            color: color('colorBlack');
         }
     }
 
@@ -117,7 +118,7 @@
                         @include scrollbar(6,6);
                     }
                     .tenant-temp-list {
-                        max-height: 290px;
+                        max-height: 270px;  
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
@@ -141,11 +142,19 @@
                                         width: 100%;
                                         .c-list {
                                             padding: 10px 30px;
+                                            padding-right: 35px;
                                             min-height: 40px;
                                             display: flex;
                                             align-items: center;
                                             cursor: pointer;
                                             position: relative;
+                                            p{
+                                                white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+                                                margin-bottom: 0;
+                                            }
                                             &:hover,
                                             &.active {
                                                 background: rgba(color('primary'), 0.08);
@@ -163,6 +172,18 @@
                                     right: 15px;
                                     color: color('colorRed');
                                     font-size: fontSize('xmd')+3;
+
+                                }
+                                .btnloader {
+                                    position: absolute;
+                                    width: 16px;
+                                    height: 16px;
+                                    right: 15px;
+                                    color: color('docSnipetText');
+                                    font-size: fontSize('xmd')+3;
+                                    .spinner-border {
+                                        vertical-align: top;
+                                    }
 
                                 }
                                         }
@@ -189,14 +210,31 @@
                                                     &:active,&:hover {
                                                         outline: none;
                                                         opacity: 0.9;
+                                                        
                                                     }
                                                 }
                                                 .btn-no {
                                                     background: color('secondry');
+                                                    border:1px solid color('secondry');
+                                                    &:hover  {
+                                                        background: darken(color('secondry'), 7.5%);
+                                                        border:1px solid  darken(color('secondry'), 10%)
+                                                    }
+                                                    &:active  {
+                                                        background: darken(color('secondry'), 10%)
+                                                    }
                                                 }
                                                 .btn-yes {
                                                     background: color('primary');
                                                     margin-left: 5px;
+                                                    border:1px solid color('primary');
+                                                    &:hover  {
+                                                        background: darken(color('primary'), 7.5%);
+                                                        border:1px solid  darken(color('primary'), 10%)
+                                                    }
+                                                    &:active  {
+                                                        background: darken(color('primary'), 10%)
+                                                    }
                                                 }
                                             }
                                         }
@@ -224,10 +262,23 @@
     .T-head {
         padding-top: 20px;
         min-height: 60px;
+        .titleWrap {
+            max-width: 60%;
+         
+            .title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+                line-height: 18px;
+                width:100%
+            }
+        }
         .T-head-flex {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
         }
         p {
             font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
@@ -334,7 +385,7 @@
             }
         }
         .ul-ST-content {
-            max-height: calc(100vh - 310px);
+            max-height: calc(100vh - 270px);
             overflow: auto;
     @include scrollbar(6,6)
         }
@@ -345,10 +396,13 @@
     }
     .Compo-add-document {
         .popover {
-            margin-top: 5px !important;
-            margin-left: -25px !important;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
+            margin-top: 56px!important;
+            margin-left: 0px!important;
+            box-shadow: 0 0 10px rgba(0,0,0,.16);
             border: none;
+            right: 15px!important;
+            left: auto !important;
+            transform: translate(0, 0) !important;
         }
 
         .addnewTemplate-btn {
@@ -541,6 +595,10 @@
                        max-height: 330px;
                        overflow: auto;
                        @include scrollbar(6,6);
+                       &.other-ul {
+                        max-height: 235px; 
+                        min-height: 235px;
+                       }
                        li {
                         font: 400 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base');  
                         @include media-breakpoint-down(md) {
@@ -557,6 +615,7 @@
                         
                         .spinner-border {
                             margin-left: 5px;
+                            color: color('docSnipetText');
                         }
                        }
                    }
@@ -570,6 +629,8 @@
                         color: color('heading');
                            margin-bottom: 0;
                            padding: 8px 15px;
+                           text-transform: initial;
+    display: block;
                        }
                    }
                }

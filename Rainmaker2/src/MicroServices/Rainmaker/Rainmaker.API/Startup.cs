@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Identity.CorrelationHandlersAndMiddleware;
@@ -59,6 +60,8 @@ namespace Rainmaker.API
             services.AddScoped<IFtpHelper,FtpHelper>();
             services.AddScoped<ISitemapService, SitemapService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IWorkQueueService, WorkQueueService>();
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       );
@@ -91,6 +94,11 @@ namespace Rainmaker.API
 
             services.AddTransient<RequestHandler>();
             services.AddHttpClient("clientWithCorrelationId")
+                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+                    {
+                        SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                        MaxConnectionsPerServer = int.MaxValue
+                    })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
             services.AddHttpContextAccessor();  //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();

@@ -38,7 +38,6 @@ export const ReviewDocumentStatement = ({
 
       typeIdAndIdForActivityLogs(id, typeId || docName)
 
-
       setDocumentFiles(files)
       setUsername(userName)
       setMcuNamesUpdated(files.map(file => {
@@ -61,7 +60,8 @@ export const ReviewDocumentStatement = ({
   const allowFileRenameMCU = (filename: string, fileId: string): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
-    const mcuNameAlreadyInList = clonedArray.some(file => {
+    // Why filter? because we don't want to check filename of current file being renamed
+    const mcuNameAlreadyInList = clonedArray.filter(file => file.fileId !== fileId).some(file => {
       return file.mcuName.trim() === filename.trim()
     })
 
@@ -73,7 +73,7 @@ export const ReviewDocumentStatement = ({
       documentFile.mcuName = filename
     }
 
-    setMcuNamesUpdated(clonedArray)
+    setMcuNamesUpdated(() => clonedArray)
     return true
   }
 

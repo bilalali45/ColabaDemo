@@ -22,6 +22,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
 
     const templateManager: any = state?.templateManager;
     const templateDocuments: any = templateManager?.templateDocuments;
+    const currentCategoryDocuments: any = templateManager?.currentCategoryDocuments;
 
     const filterUsedDocs = (templateDocs: Document[]) => {
         return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => td?.typeId === cd?.docTypeId));
@@ -34,7 +35,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
     return (
 
         <div className="active-docs">
-            <ul>
+            <ul className={currentCategoryDocuments?.catName == 'Other'? 'other-ul' : ''}>
                 {documentList &&
                     filterUsedDocs(templateDocuments)?.map(dl => {
                         return (
@@ -60,7 +61,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                 }
 
             </ul>
-            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term}”</p></div>}
+            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term?.toLowerCase()}”</p></div>}
         </div>
     )
 }

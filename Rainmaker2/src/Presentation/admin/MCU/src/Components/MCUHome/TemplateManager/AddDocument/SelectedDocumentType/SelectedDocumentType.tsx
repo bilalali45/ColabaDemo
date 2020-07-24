@@ -21,14 +21,6 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: Selecte
                 setVisible={setVisible}
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc} />
-
-        // } 
-        // else if (selectedCatDocs?.catName === 'other') {
-        //     return <CustomDocuments
-        //         setVisible={setVisible}
-        //         documentList={selectedCatDocs}
-        //         addDocToTemplate={addNewDoc} />
-
         } else {
 
             return <SelectedTypeDocumentList
@@ -37,10 +29,6 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: Selecte
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc}
             />
-            // return <SelectedDocumentTypeList
-            //     documentList={selectedCatDocs?.documents}
-            //     addNewDoc={addNewDoc}
-            // />
         }
     }
 
@@ -54,15 +42,4 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: Selecte
         </div>
     )
 
-
-
-    // return (
-    //     <div>
-    //         {/* <CommonDocuments/>
-    //         <CustomDocuments/> */}
-    //         <SelectedDocumentTypeList
-    //            documentList={documentList}
-    //            addNewDoc={addNewDoc} />
-    //     </div>
-    // )
 }

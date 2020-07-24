@@ -87,11 +87,13 @@ export const ReviewDocument = () => {
   );
 
   const onNextDocument = useCallback(() => {
-    const indexes = documentsForReviewArrayIndexes()
+    const pendingReviewDocuments: NeedListDocumentType[] = documentList1.filter((document: NeedListDocumentType) => document.status === 'Pending review')
 
-    const indexOfReivew = Number(indexes[navigationIndex + 1])
+    const indexOfReview = navigationIndex + 1
 
-    if (isNaN(Number(indexes[navigationIndex + 2])) && !nextDocumentButtonDisabled) {
+    const currentDocument = pendingReviewDocuments[indexOfReview]
+
+    if (!pendingReviewDocuments[navigationIndex + 2] && !nextDocumentButtonDisabled) {
       setNextDocumentButtonDisabled(true)
     }
 
@@ -99,17 +101,12 @@ export const ReviewDocument = () => {
       setPerviousDocumentButtonDisabled(false)
     }
 
-    if (isNaN(indexOfReivew)) {
-      return
-    }
+    if (!currentDocument) return
 
-    if (indexOfReivew === -1) return //No review document found
+    const { id, requestId, docId, files } = currentDocument
 
-    const doc: NeedListDocumentType = documentList1[indexOfReivew];
-    const { id, requestId, docId, files } = doc
-
-    setCurrentDocument(() => documentList1[indexOfReivew]);
-    setNavigationIndex(() => indexOfReivew);
+    setCurrentDocument(() => currentDocument);
+    setNavigationIndex(() => indexOfReview);
     setCurrentFileIndex(0)
     setTypeIdId({ id: null, typeId: null })
 
@@ -121,28 +118,26 @@ export const ReviewDocument = () => {
   }, [navigationIndex, documentList1, getDocumentForView]);
 
   const onPreviousDocument = useCallback(() => {
-    const indexes = documentsForReviewArrayIndexes()
+    const pendingReviewDocuments: NeedListDocumentType[] = documentList1.filter((document: NeedListDocumentType) => document.status === 'Pending review')
 
-    const indexOfReivew = Number(indexes[navigationIndex - 1])
+    const indexOfReview = navigationIndex - 1
 
-    if (isNaN(Number(indexes[navigationIndex - 2]))) {
+    const currentDocument = pendingReviewDocuments[indexOfReview]
+
+    if (!pendingReviewDocuments[navigationIndex - 2] && !perviousDocumentButtonDisabled) {
       setPerviousDocumentButtonDisabled(true)
-    } else if (nextDocumentButtonDisabled == true) {
+    }
+
+    if (nextDocumentButtonDisabled === true) {
       setNextDocumentButtonDisabled(false)
     }
 
-    if (isNaN(indexOfReivew)) {
-      return
-    }
+    if (!currentDocument) return
 
-    if (indexOfReivew === -1) return //No review document found
+    const { id, requestId, docId, files } = currentDocument
 
-    const doc: NeedListDocumentType = documentList1[indexOfReivew];
-
-    const { id, requestId, docId, files } = doc
-
-    setCurrentDocument(() => documentList1[indexOfReivew]);
-    setNavigationIndex(() => indexOfReivew);
+    setCurrentDocument(() => currentDocument);
+    setNavigationIndex(() => indexOfReview);
     setCurrentFileIndex(() => 0)
     setTypeIdId({ id: null, typeId: null })
 
@@ -151,7 +146,7 @@ export const ReviewDocument = () => {
 
       getDocumentForView(id, requestId, docId, files[0].id, tenantId);
     }
-  }, [navigationIndex, documentList1, getDocumentForView, tenantId]);
+  }, [documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string) => {
     if (index === currentFileIndex || loading === true) return
@@ -180,6 +175,18 @@ export const ReviewDocument = () => {
   }, [])
 
   useEffect(() => {
+    const onKeyDown = (event: any) => {
+      if (event.key === 'Escape') {
+        goBack()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => window.removeEventListener('keydown', onKeyDown) //clear up event
+  }, [])
+
+  useEffect(() => {
     if (!!location.state) {
       try {
         const { documentList, currentDocumentIndex, documentDetail } = state as any;
@@ -192,14 +199,12 @@ export const ReviewDocument = () => {
             if (pendingReviewDocuments.length > 0) {
               const index = pendingReviewDocuments.findIndex((document: NeedListDocumentType) => document.docId === doc.docId)
 
-              const indexes = _.keys(_.pickBy(documentList, { status: 'Pending review' }))
-
               if (!pendingReviewDocuments[index + 1]) {
-                setNextDocumentButtonDisabled(true)
+                setNextDocumentButtonDisabled(() => true)
               }
 
               if (pendingReviewDocuments[index - 1] && perviousDocumentButtonDisabled === true) {
-                setPerviousDocumentButtonDisabled(false)
+                setPerviousDocumentButtonDisabled(() => false)
               }
 
               setNavigationIndex(index);
@@ -212,7 +217,7 @@ export const ReviewDocument = () => {
           setCurrentDocument(() => documentList[currentDocumentIndex]);
           setDocumentDetail(() => documentDetail)
 
-          const { id, requestId, docId, files } = doc
+          const { id, requestId, docId, files, typeId, docName } = doc
 
           if (!loading && !!files && !!files.length && files.length > 0) {
             setClientName(files[0].clientName)
@@ -224,6 +229,8 @@ export const ReviewDocument = () => {
               files[0].id,
               tenantId
             );
+          } else {
+            setTypeIdId({ id, typeId: !!typeId ? typeId : docName })
           }
         }
       } catch (error) {
@@ -250,6 +257,7 @@ export const ReviewDocument = () => {
         previousDocument={onPreviousDocument}
         perviousDocumentButtonDisabled={perviousDocumentButtonDisabled}
         nextDocumentButtonDisabled={nextDocumentButtonDisabled}
+        documentDetail={documentDetail}
       />
       <div className="review-document-body">
         <div className="row">
@@ -264,7 +272,7 @@ export const ReviewDocument = () => {
                   tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={goBack}
+                  hideViewer={() => { }}
                 />
               </div>
             </div>
@@ -274,7 +282,7 @@ export const ReviewDocument = () => {
                   <div className="clearfix">
                     <img src={emptyIcon} alt="No preview available" />
                   </div>
-                  <h2>Nothing In Bank Statement</h2>
+                  <h2>{currentDocument?.docName}</h2>
                   <p>No file submitted yet</p>
                 </div>
               </div>

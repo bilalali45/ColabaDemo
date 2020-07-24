@@ -11,10 +11,11 @@ export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
 
 type TemplateListContainerType = {
-    setLoaderVisible: Function
+    setLoaderVisible: Function,
+    listContainerElRef: any
 }
 
-export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainerType) => {
+export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: TemplateListContainerType) => {
 
     const { state, dispatch } = useContext(Store);
 
@@ -57,6 +58,9 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0] });
         }
         setLoaderVisible(false);
+        if (listContainerElRef?.current) {
+            listContainerElRef.current.scrollTo(0, 0);
+        }
     }
 
     const removeTemplate = async (templateId: string) => {
@@ -72,8 +76,8 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
         return (
             <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
-                    <div className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
-                        {t.name}
+                    <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
+                        <p>{t.name}</p>
                     </div>
                 </div>
             </li>
@@ -89,7 +93,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
                             <h4>My Templates</h4>
                         </div>
 
-                        <div className="list-wrap my-temp-list">
+                        <div ref={listContainerElRef} className="list-wrap my-temp-list">
                             <ul>
                                 {
                                     templates?.map((t: any) => {
@@ -139,7 +143,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
         );
     };
 
-    if(!templates) return  <Loader containerHeight={"100%"} />;
+    if (!templates) return <Loader containerHeight={"100%"} />;
 
     return (
         <div className="TL-container">
@@ -149,7 +153,7 @@ export const TemplateListContainer = ({setLoaderVisible} : TemplateListContainer
                 <h4>Templates</h4>
 
                 <div className="btn-add-new-Temp" onClick={() => {
-                   clearOld();
+                    clearOld();
 
                 }}>
                     <button className="btn btn-primary addnewTemplate-btn">

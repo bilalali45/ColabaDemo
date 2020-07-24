@@ -7,8 +7,10 @@ import {
   RemoveDefaultExt,
   SortByDate,
 } from "rainsoft-js";
+import { ApplicationEnv } from "./AppEnv";
+import { parse } from "path";
 export class FileUpload {
-  static allowedSize = 15; //in mbs
+  static allowedSize = ApplicationEnv.MaxFileSize; //in mbs
 
   static nameTest = /^[ A-Za-z0-9-\s]*$/i;
 

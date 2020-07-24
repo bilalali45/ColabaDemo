@@ -117,6 +117,17 @@
         //margin-bottom: 10px;
         height: 26px;
         overflow: hidden;
+        &-child{
+            display: block;
+        }
+    }
+
+    .td-filename {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        width: 100%;
     }
 
     .icon-refresh{

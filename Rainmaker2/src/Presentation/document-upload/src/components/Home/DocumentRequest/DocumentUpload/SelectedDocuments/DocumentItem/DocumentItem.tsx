@@ -21,6 +21,7 @@ type DocumentItemType = {
   retry: Function;
   fileAlreadyExists: Function;
   handleDelete: Function;
+  shouldFocus: boolean
 };
 
 export const DocumentItem = ({
@@ -30,13 +31,17 @@ export const DocumentItem = ({
   deleteDoc,
   fileAlreadyExists,
   retry,
+  indexKey,
   disableSubmitButton,
   handleDelete,
+  shouldFocus
 }: DocumentItemType) => {
   const [filename, setfilename] = useState<string>("");
   const [iseditable, seteditable] = useState<any>(true);
   const [nameExists, setNameExists] = useState<any>(false);
   const [isdeleted, setdeleted] = useState<any>(false);
+  const [showInput, setShowInput] = useState<boolean>(false);
+  const [validFilename, setValidFilename] = useState(true)
 
   const txtInput: any = useRef(null);
 
@@ -49,12 +54,10 @@ export const DocumentItem = ({
   }, [file]);
 
   useEffect(() => {
-    if (txtInput.current) {
-      txtInput.current.focus();
-    }
-  }, [file.editName === true]);
 
-  const rename = () => {
+  }, [file.editName === true && showInput]);
+
+  const rename = (e) => {
     seteditable(false);
     if (filename === "") {
       setNameExists(true);
@@ -68,6 +71,12 @@ export const DocumentItem = ({
 
   const EditTitle = () => {
     changeName(file, filename);
+    setShowInput(true);
+    if (showInput) {
+      if (txtInput.current) {
+        txtInput.current.focus();
+      }
+    }
   };
 
   const deleteDOChandeler = () => {
@@ -123,7 +132,10 @@ export const DocumentItem = ({
           <ul className="editable-actions">
             <li>
               <button
-                onClick={rename}
+                onClick={(e) => {
+                  setShowInput(false);
+                  rename(e);
+                }}
                 className="btn btn-primary doc-rename-btn"
               >
                 Save
@@ -175,23 +187,26 @@ export const DocumentItem = ({
       </div>
     );
   };
- const doubleClickHandler = (isUploaded: string | undefined) => {
-   if(isUploaded === 'done')
-    return;
+  const doubleClickHandler = (isUploaded: string | undefined) => {
+    if (isUploaded === 'done')
+      return;
     changeName(file, filename);
- }
+  }
   const renderFileTitle = () => {
+    // console.log('indexKey',indexKey, totalItems)
 
     return (
       <div className="title">
-        {file.editName ? (
+        {file.editName || showInput ? (
           <input
+            autoFocus={shouldFocus}
             style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
             ref={txtInput}
             maxLength={255}
             type="text"
             value={filename.split(".")[0]}
             onChange={(e) => {
+              !validFilename && setValidFilename(true)
               setNameExists(false);
               if (fileAlreadyExists(file, e.target.value)) {
                 setNameExists(true);
@@ -199,17 +214,18 @@ export const DocumentItem = ({
               if (FileUpload.nameTest.test(e.target.value)) {
                 setfilename(e.target.value);
                 return;
+              } else {
+                !!validFilename && setValidFilename(false)
               }
+
               setNameExists(true);
             }}
             onKeyDown={(e) => {
               if (e.keyCode === 13) {
-                rename();
+                rename(e);
               }
-          }}
-          onBlur={(e) => {
-            rename();
-        }}
+            }}
+            onBlur={(e) => rename(e)}
           />
         ) : (
             <p> {file.clientName}</p>
@@ -252,8 +268,9 @@ export const DocumentItem = ({
             <div className="doc-icon">
               <i className={file.docLogo}></i>
             </div>
-            <div onDoubleClick ={(e) =>doubleClickHandler(file.uploadStatus)} className="doc-list-content">
+            <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
+              {!validFilename && (<span className='text-danger'>File name cannot contain any special characters</span>)}
               {/* {renderFileContent()} */}
             </div>
             {renderDocListActions()}

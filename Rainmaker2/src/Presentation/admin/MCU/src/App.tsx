@@ -11,6 +11,7 @@ import { UserActions } from "./Store/actions/UserActions";
 import { LocalDB } from "./Utils/LocalDB";
 import { ParamsService } from "./Utils/helpers/ParamService";
 import IdleTimer from "react-idle-timer";
+import { Authorized } from "./Components/Authorized/Authorized";
 
 declare global {
   interface Window {
@@ -32,8 +33,10 @@ const App = () => {
   }, []);
 
   const authenticate = async () => {
+    console.log("Before Authorize");
     let isAuth = await UserActions.authorize();
     setAuthenticated(Boolean(isAuth));
+    console.log("After Authorize");
     UserActions.addExpiryListener();
     UserActions.keepAliveParentApp();
   };
@@ -45,6 +48,7 @@ const App = () => {
     window.top.location.href = "/Login/LogOff";
   };
 
+  console.log("Authorize User is authenticated", authenticated);
   if (!authenticated) {
     return null;
   }
@@ -63,7 +67,7 @@ const App = () => {
         <main className="main-layout">
           <StoreProvider>
             <Router basename="/DocumentManagement">
-              <Route path="/" component={MCUHome} />
+              <Authorized path="/" component={MCUHome} />
               <RainMakerFooter />
             </Router>
           </StoreProvider>
