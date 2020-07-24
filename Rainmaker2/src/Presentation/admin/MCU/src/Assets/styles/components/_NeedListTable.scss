@@ -117,6 +117,9 @@
         //margin-bottom: 10px;
         height: 26px;
         overflow: hidden;
+        &-child{
+            display: block;
+        }
     }
 
     .icon-refresh{
