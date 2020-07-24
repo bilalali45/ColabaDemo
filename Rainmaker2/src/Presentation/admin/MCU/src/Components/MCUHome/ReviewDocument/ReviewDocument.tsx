@@ -264,7 +264,7 @@ export const ReviewDocument = () => {
                   <div className="clearfix">
                     <img src={emptyIcon} alt="No preview available" />
                   </div>
-                  <h2>Nothing In Bank Statement</h2>
+                  <h2>{currentDocument?.docName}</h2>
                   <p>No file submitted yet</p>
                 </div>
               </div>
