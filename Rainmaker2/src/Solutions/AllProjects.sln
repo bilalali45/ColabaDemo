@@ -49,6 +49,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rainmaker.Service", "..\Mic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rainmaker.Test", "..\MicroServices\Rainmaker\RainmakerTest\Rainmaker.Test.csproj", "{A7F035EA-99AC-4897-9779-DFDF512A71D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ByteWebConnector", "ByteWebConnector", "{72A77178-843D-45F0-BCA5-50B97D4EDE30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.API", "..\MicroServices\ByteWebConnector\ByteWebConnector.API\ByteWebConnector.API.csproj", "{AA3DC286-712F-4983-A08C-85B4860B1A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,10 @@ Global
 		{A7F035EA-99AC-4897-9779-DFDF512A71D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F035EA-99AC-4897-9779-DFDF512A71D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F035EA-99AC-4897-9779-DFDF512A71D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +157,8 @@ Global
 		{3B067396-AAEC-44CE-80C8-9B5D5B7E856D} = {60455E47-E82D-44BE-A52D-96D6E9C1331C}
 		{3D4CDA9B-2BCF-4C1D-AFCE-EFF1F4EC3A04} = {60455E47-E82D-44BE-A52D-96D6E9C1331C}
 		{A7F035EA-99AC-4897-9779-DFDF512A71D6} = {60455E47-E82D-44BE-A52D-96D6E9C1331C}
+		{72A77178-843D-45F0-BCA5-50B97D4EDE30} = {E0FB9C7C-9C8F-4C2E-95DD-E025A45C520F}
+		{AA3DC286-712F-4983-A08C-85B4860B1A34} = {72A77178-843D-45F0-BCA5-50B97D4EDE30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E56FE89-36B5-422C-B211-A1E23C5F0D3E}
