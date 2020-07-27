@@ -63,8 +63,9 @@ export const FormatAmountByCountry = (amount: number) =>                        
 
 export const toTitleCase = (str: string | undefined) => {  
     if (str) {
-        let sentence = str?.trim().toLowerCase().split(" ");
-        for (var i = 0; i < sentence.length; i++) {
+        str = str.replace(/\s+/g,' ').trim();
+        let sentence = str?.toLowerCase().split(" ");
+        for (var i = 0; i <= sentence.length; i++) {
           if(sentence[i] != undefined && sentence[i] != ""){
             sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
           }else{
