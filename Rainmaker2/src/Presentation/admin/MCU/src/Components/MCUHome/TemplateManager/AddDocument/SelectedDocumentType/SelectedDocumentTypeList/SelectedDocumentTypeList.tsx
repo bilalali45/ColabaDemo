@@ -39,7 +39,9 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                 {documentList &&
                     filterUsedDocs(templateDocuments)?.map(dl => {
                         return (
-                            <li onClick={async () => {
+                            <li 
+                                key={dl.docTypeId}
+                                onClick={async () => {
                                 setRemoveDocName(dl?.docTypeId);
                                 setRequestSent(true)
                                 await addNewDoc(dl.docTypeId, 'typeId');
@@ -61,7 +63,8 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                 }
 
             </ul>
-            {!documentList.length && <div className="doc-notfound"><p>No Results Found for “{term?.toLowerCase()}”</p></div>}
+            {!documentList.length && term && <div className="doc-notfound"><p>No Results Found for “{term?.toLowerCase()}”</p></div>}
+            {!documentList.length && !term && <div className="doc-notfound"><p>The list is empty.</p></div>}
         </div>
     )
 }

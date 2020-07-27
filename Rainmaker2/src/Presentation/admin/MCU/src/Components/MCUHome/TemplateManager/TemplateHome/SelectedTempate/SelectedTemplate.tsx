@@ -91,9 +91,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-            console.log(listContainerElRef.current?.clientHeight);
             if (listContainerElRef?.current) {
-                console.log(listContainerElRef.current?.children[0]?.clientHeight);
                 listContainerElRef.current.scrollTo(0, listContainerElRef.current?.children[0]?.clientHeight + 40);
             }
         }
@@ -110,7 +108,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (!value?.length || value?.length > 254 || !value.trim().length) {
+        if (!value?.length || value?.length > 255 || !value.trim().length) {
             return;
         }
 
@@ -176,7 +174,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
-                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove"  className="BTNclose">
+                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove" className="BTNclose">
                                                     <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
                                                 </span>
                                         }
@@ -201,19 +199,21 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
+                                        autoFocus
                                         onFocus={(e: any) => {
-                                            e.target.select();
+                                            let target = e.target;
+                                            setTimeout(() => {
+                                                target?.select();
+                                            }, 0);
                                         }}
                                         style={{ border: nameExistsError ? '1px solid red' : '' }}
-                                        autoFocus
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
                                             setNewNameText(value);
 
-                                            if (!value?.length || value?.length > 254) {
+                                            if (!value?.length || value?.length > 255) {
                                                 return;
                                             }
-                                            // console.log(letterNumber.test(e.target.value));
                                             if (!nameTest.test(value)) {
                                                 return;
                                             }
