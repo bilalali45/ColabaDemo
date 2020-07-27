@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DocumentManagement.Model
 {
@@ -172,11 +173,35 @@ namespace DocumentManagement.Model
     public class GetDocumentsByTemplateIds
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        //[RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [ArrayRegularExpression(@"^[A-Fa-f\d]{24}$")]
         public  string[] id { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int tenantId { get; set; }
     }
+
+    public class ArrayRegularExpressionAttribute : ValidationAttribute
+    {
+        private string regex;
+
+        public ArrayRegularExpressionAttribute(string regex)
+        {
+            this.regex = regex;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            string[] array = value as string[];
+            if(array==null || array.Length<=0)
+                return new ValidationResult(ValidationMessages.ValidationFailed);
+            foreach (var item in array)
+            {
+                if(!Regex.IsMatch(item,this.regex))
+                    return new ValidationResult(ValidationMessages.ValidationFailed);
+            }
+            return ValidationResult.Success;
+        }
+    }
+
 }
 
 
