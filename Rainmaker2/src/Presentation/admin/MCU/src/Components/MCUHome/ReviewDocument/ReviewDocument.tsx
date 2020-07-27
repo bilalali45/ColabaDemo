@@ -153,7 +153,6 @@ export const ReviewDocument = () => {
   }, [nextDocumentButtonDisabled, perviousDocumentButtonDisabled, documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string, loadingFile?: boolean) => {
-
     if (index === currentFileIndex || loadingFile) return
 
     if (currentDocument) {
