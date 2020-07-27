@@ -172,7 +172,7 @@ namespace DocumentManagement.Model
     public class GetDocumentsByTemplateIds
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        //[RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public  string[] id { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int tenantId { get; set; }
