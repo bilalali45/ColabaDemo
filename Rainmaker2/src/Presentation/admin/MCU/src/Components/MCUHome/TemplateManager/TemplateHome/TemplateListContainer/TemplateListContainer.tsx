@@ -1,11 +1,9 @@
-import { toTitleCase } from 'rainsoft-js'
 import React, { useState, useContext, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateActions } from '../../../../../Store/actions/TemplateActions';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { Template } from '../../../../../Entities/Models/Template';
 import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
-import { clear } from 'console';
 import { Loader } from "../../../../../Shared/components/loader";
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -79,7 +77,7 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
             <li key={t.id} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
-                        <p>{toTitleCase(t.name)}</p>
+                        <p>{t.name}</p>
                     </div>
                 </div>
             </li>
@@ -165,10 +163,6 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
                     </button>
                 </div>
             </div>
-
-
-
-
 
             <div className="listWrap-templates">
                 {/* My Templates */}

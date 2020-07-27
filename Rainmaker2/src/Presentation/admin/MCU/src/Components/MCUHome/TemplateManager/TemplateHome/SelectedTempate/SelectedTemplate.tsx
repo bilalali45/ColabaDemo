@@ -14,7 +14,7 @@ import { MyTemplate, TemplateListContainer } from '../TemplateListContainer/Temp
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
-import { toTitleCase } from 'rainsoft-js'
+import { trim } from 'lodash'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -108,7 +108,13 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (!value?.length || value?.length > 255 || !value.trim().length) {
+        if (!value?.trim()?.length) {
+            setNameExistsError('Name cannot be empty');
+            return;
+        }
+        
+        if(value?.length > 255) {
+            setNameExistsError('Name must be less than 256 chars');
             return;
         }
 
@@ -166,7 +172,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
                                 <li key={td.docId}>
-                                    <p title={td.docName}>{toTitleCase(td.docName)}
+                                    <p title={td.docName}>{td?.docName}
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
