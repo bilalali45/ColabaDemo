@@ -14,6 +14,7 @@ import { MyTemplate, TemplateListContainer } from '../TemplateListContainer/Temp
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
+import { trim } from 'lodash'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -107,7 +108,13 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (!value?.length || value?.length > 255 || !value.trim().length) {
+        if (!value?.trim()?.length) {
+            setNameExistsError('Name cannot be empty');
+            return;
+        }
+        
+        if(value?.length > 255) {
+            setNameExistsError('Name must be less than 256 chars');
             return;
         }
 
