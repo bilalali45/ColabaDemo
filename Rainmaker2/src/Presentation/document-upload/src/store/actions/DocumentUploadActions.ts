@@ -82,6 +82,7 @@ export class DocumentUploadActions {
     setFileLimitError: Function
   ) {
     let allSelectedFiles: Document[] = [...prevFiles];
+    let counter = 0;
     for (let f of files) {
       if (allSelectedFiles.length >= ApplicationEnv.MaxDocumentCount) {
         setFileLimitError({ value: true });
@@ -116,6 +117,13 @@ export class DocumentUploadActions {
       selectedFile.editName = true;
       allSelectedFiles.push(selectedFile);
       // }
+
+      if(counter === 0) {
+        selectedFile.focused = true;
+      }else {
+        selectedFile.focused = false;
+      }
+      counter++;
     }
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
