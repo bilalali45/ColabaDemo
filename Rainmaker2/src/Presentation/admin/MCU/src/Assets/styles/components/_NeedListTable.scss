@@ -120,6 +120,9 @@
         &-child{
             display: block;
         }
+        &.c-filename{
+            min-height: 26px;
+        }
     }
 
     .td-filename {

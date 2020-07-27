@@ -3,7 +3,7 @@
     border-bottom: 1px solid color('border');
     
 .btn-add-new-Temp {
-cursor: pointer;
+    cursor: pointer;
     .addnewTemplate-btn {
         
         padding: 3px 10px 3px;
@@ -692,7 +692,6 @@ cursor: pointer;
                     position: relative;
                     display: flex;
                     align-items: center;
-                    padding-right: 50px;
                     input{
                         width: 100%;
                         border-radius: 0;
@@ -713,8 +712,7 @@ cursor: pointer;
 
                     }
                     .input-btn-wrap {
-                        position: absolute;
-                        right:0 ;
+                        margin-left: 6px;
                         .btn {
                             padding: 6px 20px 6px;  
                             .spinner-border-sm {

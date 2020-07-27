@@ -21,7 +21,8 @@ type DocumentItemType = {
   retry: Function;
   fileAlreadyExists: Function;
   handleDelete: Function;
-  shouldFocus: boolean
+  shouldFocus: boolean;
+  toggleFocus: Function;
 };
 
 export const DocumentItem = ({
@@ -34,7 +35,8 @@ export const DocumentItem = ({
   indexKey,
   disableSubmitButton,
   handleDelete,
-  shouldFocus
+  shouldFocus,
+  toggleFocus
 }: DocumentItemType) => {
   const [filename, setfilename] = useState<string>("");
   const [iseditable, seteditable] = useState<any>(true);
@@ -57,7 +59,16 @@ export const DocumentItem = ({
 
   }, [file.editName === true && showInput]);
 
+
+
+  useEffect(() => {
+    if (!file.editName) {
+      setShowInput(false);
+    }
+  }, [file.editName])
+
   const rename = (e) => {
+    toggleFocus(file, false, true)
     seteditable(false);
     if (filename === "") {
       setNameExists(true);
@@ -71,6 +82,7 @@ export const DocumentItem = ({
 
   const EditTitle = () => {
     changeName(file, filename);
+    toggleFocus(file, true)
     setShowInput(true);
     if (showInput) {
       if (txtInput.current) {
@@ -188,18 +200,21 @@ export const DocumentItem = ({
     );
   };
   const doubleClickHandler = (isUploaded: string | undefined) => {
-    if (isUploaded === 'done')
+    if (isUploaded === 'done') {
       return;
+
+    }
+    toggleFocus(file, true)
     changeName(file, filename);
   }
   const renderFileTitle = () => {
-     console.log('filename',filename, filename.split(".")[0])
+    console.log('filename', filename, filename.split(".")[0])
 
     return (
       <div className="title">
-        {file.editName || showInput ? (
+        {file.editName ? (
           <input
-            autoFocus={shouldFocus}
+            autoFocus={file.focused}
             style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
             ref={txtInput}
             maxLength={255}

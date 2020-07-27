@@ -192,7 +192,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                         </header>
                         <section className="vertical-tabs--body">
                             <ul className="vertical-tabs--list">
-                                <li className="active">
+                                {/* <li className="active">
                                     <a href="">
                                         <div className="row">
                                             <div className="col-md-5"><h2>Zohaib</h2></div>
@@ -215,7 +215,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                                             <div className="col-md-6 offset-md-1"><time className="vertical-tabs--list-time">Jan, 19 at 11:00 PM</time></div>
                                         </div>
                                     </a>
-                                </li>
+                                </li> */}
                             </ul>
                         </section>
                     </div>
@@ -230,7 +230,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                         </div>
                         </header>
                         <section className="vertical-tabs--body padding">
-                            <h6>Hi Zohaib Siddiqui!</h6>
+                            {/* <h6>Hi Zohaib Siddiqui!</h6>
                             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non nam dignissimos et, earum debitis ducimus tenetur dicta quo. Ad, nobis! Dolor voluptatum quas neque laborum tempora eveniet delectus magnam omnis?</p>
 
                             <ul>
@@ -240,7 +240,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                                 <li>Eum sed quam aliquid nihil sequi reprehenderit reiciendis?</li>
                             </ul>
 
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium soluta possimus, in ex labore rerum necessitatibus a maxime ea recusandae quo? Qui doloribus explicabo eum, optio quod sequi iure iste?</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium soluta possimus, in ex labore rerum necessitatibus a maxime ea recusandae quo? Qui doloribus explicabo eum, optio quod sequi iure iste?</p> */}
 
                         </section>
                     </div>
