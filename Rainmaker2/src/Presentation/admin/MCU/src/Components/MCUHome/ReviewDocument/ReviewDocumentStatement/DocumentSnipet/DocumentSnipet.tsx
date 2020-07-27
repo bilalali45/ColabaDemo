@@ -164,6 +164,8 @@ export const DocumentSnipet = ({
   }
 
   const onDoubleClick = (event: any) => {
+    if (editingModeEnabled) return
+
     setInputValue(event)
   }
 
