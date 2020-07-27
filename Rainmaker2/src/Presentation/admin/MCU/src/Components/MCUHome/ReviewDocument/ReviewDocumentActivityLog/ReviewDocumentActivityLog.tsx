@@ -178,7 +178,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
 
                         </section>
                         <footer className="vertical-tabs--footer">
-                            <h2><span>Message</span></h2>
+                            <h2><span>Message to borrower</span></h2>
                             {activityLogs.length > 0 && activityLogs[logIndex].message}
                         </footer>
                     </div>
