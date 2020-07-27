@@ -440,5 +440,17 @@ namespace RainMaker.Common.Extensions
 
             return name;
         }
+
+        public static bool HasValue(this string input)
+        {
+            return (!input.IsNullOrEmpty());
+        }
+
+        public static bool IsNullOrEmpty(this string input)
+        {
+            return (string.IsNullOrEmpty(input));
+        }
+
+
     }
 }

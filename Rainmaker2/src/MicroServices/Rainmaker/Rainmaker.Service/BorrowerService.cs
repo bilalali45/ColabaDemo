@@ -17,48 +17,51 @@ namespace Rainmaker.Service
         {
             LoanContact = 1 << 0,
             LoanContact_Ethnicity = 1 << 1,
+            LoanApplication = 1 << 2,
         }
 
 
         public BorrowerService(IUnitOfWork<RainMakerContext> previousUow,
-                               IServiceProvider services) : base(previousUow: previousUow,
-                                                                 services: services)
+            IServiceProvider services) : base(previousUow,
+            services)
         {
         }
 
 
         public List<Borrower> GetBorrowerWithDetails(
-                                                     string firstName = "",
-                                                     string lastName = "",
-                                                     string email = "",
-                                                     int? loanApplicationId = null,
-                                                     string encompassId = "",
-                                                     RelatedEntity? includes = null)
+            string firstName = null,
+            string lastName = null,
+            string email = "",
+            int? loanApplicationId = null,
+            string encompassId = "",
+            RelatedEntity? includes = null)
         {
             var borrowers = Repository.Query().AsQueryable();
-
-            if (firstName.HasValue()) borrowers = borrowers.Where(predicate: b => b.LoanContact.FirstName == firstName);
-            if (lastName.HasValue()) borrowers = borrowers.Where(predicate: b => b.LoanContact.LastName == lastName);
-            if (email.HasValue()) borrowers = borrowers.Where(predicate: b => b.LoanContact.EmailAddress == email);
-            if (loanApplicationId.HasValue()) borrowers = borrowers.Where(predicate: b => b.LoanApplicationId == loanApplicationId);
-            if (encompassId.HasValue()) borrowers = borrowers.Where(predicate: b => b.LoanApplication.EncompassId== encompassId);
+            // ReSharper disable formatting
+            if (firstName.HasValue())                       borrowers = borrowers.Where(b => b.LoanContact.FirstName == firstName);
+            if (lastName.HasValue())                        borrowers = borrowers.Where(b => b.LoanContact.LastName == lastName);
+            if (email.HasValue())                           borrowers = borrowers.Where(b => b.LoanContact.EmailAddress == email);
+            if (loanApplicationId.HasValue())               borrowers = borrowers.Where(b => b.LoanApplicationId == loanApplicationId);
+            if (encompassId.HasValue())                     borrowers = borrowers.Where(b => b.LoanApplication.EncompassNumber == encompassId);
+            // ReSharper enable formatting
 
             if (includes.HasValue)
-                ProcessIncludes(query: borrowers,
-                                includes: includes.Value);
+                borrowers = ProcessIncludes(borrowers,
+                    includes.Value);
 
             return borrowers.ToList();
         }
 
 
-        private void ProcessIncludes(IQueryable<Borrower> query,
-                                     RelatedEntity includes)
+        private IQueryable<Borrower> ProcessIncludes(IQueryable<Borrower> query,
+            RelatedEntity includes)
         {
-            if (includes.HasFlag(flag: RelatedEntity.LoanContact))
-                query = query.Include(navigationPropertyPath: b => b.LoanContact);
-            if (includes.HasFlag(flag: RelatedEntity.LoanContact_Ethnicity))
-                query = query.Include(navigationPropertyPath: b =>
-                                          b.LoanContact.LoanContactEthnicityBinders.Select(d => d.Ethnicity));
+            // ReSharper disable formatting
+            if (includes.HasFlag(RelatedEntity.LoanContact))                query = query.Include(borrower => borrower.LoanContact);
+            if (includes.HasFlag(RelatedEntity.LoanContact_Ethnicity))      query = query.Include(borrower => borrower.LoanContact).ThenInclude(loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(ethnicityBinder => ethnicityBinder.Ethnicity);
+            if (includes.HasFlag(RelatedEntity.LoanApplication))            query = query.Include(borrower => borrower.LoanApplication);
+            // ReSharper enable formatting
+            return query;
         }
     }
 }

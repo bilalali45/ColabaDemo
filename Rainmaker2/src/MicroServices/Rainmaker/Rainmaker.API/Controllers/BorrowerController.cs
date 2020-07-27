@@ -8,8 +8,9 @@ using Rainmaker.Service;
 
 namespace Rainmaker.API.Controllers
 {
-    [Route(template: "api/[controller]")]
+ 
     [ApiController]
+    [Route(template: "/api/rainmaker/[controller]")]
     public class BorrowerController : ControllerBase
     {
         private readonly IBorrowerService _borrowerService;
@@ -42,13 +43,14 @@ namespace Rainmaker.API.Controllers
 
 
         // POST api/<BorrowerController>
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult AddOrUpdate(RainmakerBorrower rainmakerBorrowerModel,bool addIfNotExists = false)
         {
             var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId:rainmakerBorrowerModel.FileDataId,
                                                                          firstName: rainmakerBorrowerModel.FirstName,
                                                                                     email: rainmakerBorrowerModel.EmailAddress,
-                                                                                     includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity).SingleOrDefault();
+                                                                                     includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity | 
+                                                                                               BorrowerService.RelatedEntity.LoanApplication).SingleOrDefault();
 
             if (borrowerEntity == null)
             {
@@ -61,6 +63,7 @@ namespace Rainmaker.API.Controllers
             rainmakerBorrowerModel.PopulateEntity(borrowerEntity);
 
             _borrowerService.Update(item: borrowerEntity);
+
             _borrowerService.SaveChangesAsync();
             return Ok();
         }

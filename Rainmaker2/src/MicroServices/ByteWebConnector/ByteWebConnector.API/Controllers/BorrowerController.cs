@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ByteWebConnector.API.Controllers
 {
-    [Route(template: "api/[controller]")]
+    [Route(template: "api/ByteWebConnector/[controller]")]
     [ApiController]
     public class BorrowerController : ControllerBase
     {
@@ -56,6 +56,7 @@ namespace ByteWebConnector.API.Controllers
         #region Post
 
         // POST api/<BorrowerController>
+        [Route(template: "update")]
         [HttpPost]
         public async Task<IActionResult> PostAsync(ByteBorrower byteBorrower)
         {
@@ -68,7 +69,7 @@ namespace ByteWebConnector.API.Controllers
 
             var callResponse =
                 await httpClient.PostAsync(requestUri:
-                                           $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/borrower/Update",
+                                           $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/borrower/AddOrUpdate",
                                            content: new StringContent(content: content,
                                                                       encoding: Encoding.UTF8,
                                                                       mediaType: "application/json"));

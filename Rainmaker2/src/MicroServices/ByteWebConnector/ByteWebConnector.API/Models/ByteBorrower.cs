@@ -33,7 +33,7 @@ namespace ByteWebConnector.API.Models
         [DataMember]
         public DateTime? DOB { get; set; }
         [DataMember]
-        public int Ethnicity { get; set; }
+        public string Ethnicity { get; set; }
         [DataMember]
         public bool GovDoNotWishToFurnish { get; set; }
         [DataMember]
@@ -223,7 +223,7 @@ namespace ByteWebConnector.API.Models
         [DataMember]
         public int Race2 { get; set; }
         [DataMember]
-        public int Ethnicity2 { get; set; }
+        public string Ethnicity2 { get; set; }
         [DataMember]
         public int Gender2 { get; set; }
         [DataMember]
@@ -286,7 +286,8 @@ namespace ByteWebConnector.API.Models
         public BorrowerEntity GetRainmakerBorrower()
         {
             var borrowerEntity = new ClientModels.BorrowerEntity();
-
+            borrowerEntity.BorrowerId = this.BorrowerID;
+            borrowerEntity.FileDataId = this.FileDataID;
             borrowerEntity.CellPhone = this.MobilePhone;
             borrowerEntity.FirstName = this.FirstName;
             borrowerEntity.LastName = this.LastName;
@@ -315,8 +316,8 @@ namespace ByteWebConnector.API.Models
             borrowerEntity.PriorPropertyUsageType = this.PropertyType.ToString();
             borrowerEntity.PriorPropertyTitleType = this.TitleHeld.ToString();
 
-            borrowerEntity.EthnicityId = GetEthnicityId(this.Ethnicity);
-            borrowerEntity.EthnicityDetailId = GetEthnicityDetailId(this.Ethnicity2);
+            borrowerEntity.EthnicityId = GetEthnicityId(this.Ethnicity2);
+            //borrowerEntity.EthnicityDetailId = GetEthnicityDetailId(this.Ethnicity2);
             if (this.RaceAmericanIndian)
             {
                 borrowerEntity.RaceId = (int)RaceEnum.AmericanIndianOrAlaskaNative;
@@ -337,7 +338,7 @@ namespace ByteWebConnector.API.Models
             {
                 borrowerEntity.RaceId = (int)RaceEnum.White;
             }
-            else
+            else if(this.GovDoNotWishToFurnish)
             {
                 borrowerEntity.RaceId = (int)RaceEnum.DoNotWishToProvideThisInformation;
             }
@@ -436,21 +437,22 @@ namespace ByteWebConnector.API.Models
         }
 
 
-        private int GetEthnicityId(int ethnicity)
+        private int GetEthnicityId(string ethnicity)
         {
+
             switch (ethnicity)
             {
-                case 1:
+                case "HispanicOrLatino":
                 {
                     const int hispanicOrLatino = (int)EthnicityEnum.HispanicOrLatino;
                     return hispanicOrLatino;
                 }
-                case 2:
+                case "OtherHispanicOrLatino":
                 {
                     const int notHispanicOrLatino = (int)EthnicityEnum.NotHispanicOrLatino;
                     return notHispanicOrLatino;
                 }
-                case 3:
+                case "":
                 {
                     const int doNotWishToProvideThisInformation = (int)EthnicityEnum.DoNotWishToProvideThisInformation;
                     return doNotWishToProvideThisInformation;
@@ -461,33 +463,56 @@ namespace ByteWebConnector.API.Models
         }
 
 
-        private int GetEthnicityDetailId(int ethnicity2)
-        {
-            switch (ethnicity2)
-            {
-                case 8:
-                {
-                    const int mexican = (int)EthnicityDetailEnum.Mexican;
-                    return mexican;
-                }
-                case 16:
-                {
-                    const int puertoRican = (int)EthnicityDetailEnum.PuertoRican;
-                    return puertoRican;
-                }
-                case 32:
-                {
-                    const int puertoRican = (int)EthnicityDetailEnum.PuertoRican;
-                    return puertoRican;
-                }
-                case 64:
-                {
-                    const int puertoRican = (int)EthnicityDetailEnum.PuertoRican;
-                    return puertoRican;
-                }
-            }
+        //private int GetEthnicityDetailId(string ethnicity2)
+        //{
+        //    string[] ethnicity = ethnicity2.Split(",");
 
-            return 0;
-        }
+        //    switch (ethnicity2)
+        //    {
+        //        case 0:
+        //            {
+
+        //                return 0;//None
+        //            }
+        //        case 1:
+        //            {
+        //                const int mexican = (int)EthnicityDetailEnum.Mexican;
+        //                return mexican;
+        //            }
+        //        case 2:
+        //            {
+        //                const int mexican = (int)EthnicityDetailEnum.Mexican;
+        //                return mexican;
+        //            }
+        //        case 4:
+        //            {
+        //                const int mexican = (int)EthnicityDetailEnum.Mexican;
+        //                return mexican;
+        //            }
+
+        //        case 8:
+        //            {
+        //                const int mexican = (int)EthnicityDetailEnum.Mexican;
+        //                return mexican;
+        //            }
+        //        case 16:
+        //            {
+        //                const int puertoRican = (int)EthnicityDetailEnum.PuertoRican;
+        //                return puertoRican;
+        //            }
+        //        case 32:
+        //            {
+        //                const int cuban = (int)EthnicityDetailEnum.Cuban;
+        //                return cuban;
+        //            }
+        //        case 64:
+        //            {
+        //                const int otherHispanicOrLatino = (int)EthnicityDetailEnum.OtherHispanicOrLatino;
+        //                return otherHispanicOrLatino;
+        //            }
+        //    }
+
+        //    return 0;
+        //}
     }
 }

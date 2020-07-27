@@ -2,6 +2,8 @@
 {
     public class BorrowerEntity
     {
+        public int? BorrowerId;
+        public long FileDataId;
         public string CellPhone { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
