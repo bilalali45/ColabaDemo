@@ -262,7 +262,7 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName)
+        public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -285,6 +285,13 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
                 }
             });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RenamedBy, userName, newName));
+            }
 
             return result.ModifiedCount == 1;
         }
