@@ -124,4 +124,6 @@ export class LoanApplication {
    return names;
   }
 
+  
+
 }

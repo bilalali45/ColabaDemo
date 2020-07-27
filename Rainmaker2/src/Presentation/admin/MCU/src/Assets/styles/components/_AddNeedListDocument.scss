@@ -2,9 +2,10 @@
     background: color('colorWhite');
     border-bottom: 1px solid color('border');
     
-
-
+.btn-add-new-Temp {
+cursor: pointer;
     .addnewTemplate-btn {
+        
         padding: 3px 10px 3px;
         font: 400 #{fontSize('nr')-1+'/'+1} fontFamily('base');
         text-transform: none;
@@ -18,7 +19,7 @@
         .btn-text {
             display: inline-block;
             padding: 4px 10px 4px 0;
-            
+            pointer-events: none;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -37,6 +38,7 @@
             display: inline-block;
             border-left: 1px solid #1580D1;
             vertical-align: middle;
+            pointer-events: none;
 
             i {
                 font-size: fontSize('md');
@@ -45,7 +47,7 @@
             }
         }
     }
-
+}
     .MTheader {
         min-height: 60px;
         background: color('colorWhite');
@@ -57,6 +59,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         .close-ManageTemplate {
             font-size:fontSize('lg');
             color: color('secondry');
@@ -65,9 +68,8 @@
             cursor: pointer;
         }
 
-        h2 {
-            font: 500 #{fontSize('h2')+'/'+fontSize('h2')} fontFamily('base');
-            margin-bottom: 0;
+        .btn + .btn {
+            margin-left:5px;
         }
     }
 
@@ -76,6 +78,7 @@
             border-right: 1px solid color('border');
             min-height: 81vh;
             height: 100%;
+            padding-bottom: 70px;
             .head-TLC {
                 min-height: 60px;
                 border-bottom: 1px solid color('border');
@@ -112,7 +115,7 @@
                         }
                     }
                     .my-temp-list {
-                        max-height: 320px;
+                        max-height: calc(81vh - 160px);
                         overflow: auto;
                         @include scrollbar(6,6);
                     }
@@ -233,6 +236,30 @@
 
                     padding-top: 50px;
                 }
+            }
+
+            .left-footer {
+                position: absolute;
+                bottom: 0px;
+                height: 60px;
+                border-top: 1px solid color('border');
+                width: 100%;
+                margin-left: -30px;
+                padding-left: 30px;
+                padding-right: 30px;
+                .btn-wrap{
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    justify-content: space-between;
+                .btn-link {
+                    cursor: pointer;
+                    font: 400 #{fontSize('nr')+'/'+1} fontFamily('base');
+                    &.link-primary {
+                        color: color('primary');
+                    }
+                }
+            }
             }
         }
 
@@ -363,6 +390,42 @@
             padding-top: 10px;
         }
     }
+    .mainbody {
+        .editer-wrap {
+           .editer {
+               min-height: 320px;
+               width: 100%;
+               border: 1px solid color('border');
+               &:focus {
+                   outline: none;
+                   border: 1px solid color('border');
+               }
+           } 
+        }
+    }
+    .right-footer {
+        position: absolute;
+        bottom: 0px;
+        height: 60px;
+        border-top: 1px solid color('border');
+        width: 100%;
+        margin-left: -30px;
+        padding-left: 30px;
+        padding-right: 30px;
+        .btn-wrap{
+            display: flex;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        .btn-link {
+            cursor: pointer;
+            font: 400 #{fontSize('nr')+'/'+1} fontFamily('base');
+            &.link-primary {
+                color: color('primary');
+            }
+        }
+    }
+    }
     .Compo-add-document {
 
 
@@ -428,8 +491,8 @@
     border-radius: 0;
 }
 .popover {
-    margin-top: 69px !important;
-    margin-left: 20px !important;
+    margin-top: 71px !important;
+    margin-left: 3px !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
     border: none;
 }

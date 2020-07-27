@@ -172,15 +172,10 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     }
 
     return (
-        <div className="Compo-add-document" >
+        <div className="Compo-add-document" ref={mainContainerRef}  >
 
-            <div className="add-doc-link-wrap" ref={mainContainerRef} >
-                {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                {/* <a ref={aRef} className="add-doc-link" onClick={(e) => { handleClick(e) }} >
-                    Add Document <i className="zmdi zmdi-plus"></i>
-                </a> */}
-
-                <div ref={aRef}  className="btn-add-new-Temp"  onClick={(e) => { handleClick(e) }} >
+            <div className="add-doc-link-wrap" >
+                <div  ref={aRef}  className="btn-add-new-Temp"  onClick={(e) => { handleClick(e) }} >
                     <button className="btn btn-primary addnewTemplate-btn">
                         <span className="btn-text">Add Document</span>
                         <span className="btn-icon">

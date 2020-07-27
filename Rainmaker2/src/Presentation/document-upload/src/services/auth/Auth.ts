@@ -139,7 +139,11 @@ export class Auth {
     if (!value) {
       return "";
     }
-    const decodedString = atob(value);
-    return decodedString.split("|")[0];
+    try {
+      const decodedString = atob(value);
+      return decodedString.split("|")[0];
+    } catch {
+      return null;
+    }
   }
 }

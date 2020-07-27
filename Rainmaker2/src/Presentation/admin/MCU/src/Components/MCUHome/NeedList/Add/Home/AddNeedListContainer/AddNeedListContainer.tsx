@@ -13,12 +13,12 @@ type AddNeedListContainerType = {
 
 
 export const AddNeedListContainer = ({ loaderVisible, setLoaderVisible }: AddNeedListContainerType) => {
-const Itemslist =[0,1,3]
+    const Itemslist = [0, 1, 3]
 
 
     useEffect(() => {
-        setLoaderVisible(false); 
-    }, []); 
+        setLoaderVisible(false);
+    }, []);
 
 
 
@@ -34,12 +34,12 @@ const Itemslist =[0,1,3]
                             <ul>
                                 {
                                     Itemslist.map((index: any) => {
-                                      
-                                            return <Items
-                                                key={index}
-                                      
-                                                 />
-                                       
+
+                                        return <Items
+                                            key={index}
+
+                                        />
+
                                     })
                                 }
                             </ul>
@@ -64,10 +64,10 @@ const Itemslist =[0,1,3]
 
                 <div className="btn-add-new-Temp">
 
-                <AddDocument
-                                setLoaderVisible={setLoaderVisible}
-                                popoverplacement="right-end"
-                            />
+                    <AddDocument
+                        setLoaderVisible={setLoaderVisible}
+                        popoverplacement="right-end"
+                    />
 
                     {/* <button className="btn btn-primary addnewTemplate-btn">
                         <span className="btn-text">Add document</span>
@@ -87,12 +87,14 @@ const Itemslist =[0,1,3]
                 {/* My Templates */}
                 {MyTemplates()}
 
-             
-
-
             </div>
 
-
+            <div className="left-footer">
+                <div className="btn-wrap">
+                    <a className="btn-link link-primary">Add from template</a>
+                    <a className="btn-link link-primary">Save as template</a>
+                </div>
+            </div>
         </div>
     )
 }
