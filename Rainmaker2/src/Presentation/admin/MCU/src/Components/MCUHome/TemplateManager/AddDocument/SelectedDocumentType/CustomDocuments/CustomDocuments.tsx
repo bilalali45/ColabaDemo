@@ -31,6 +31,10 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     }
 
     const addDoc = async () => {
+        if(!docName.trim()?.length) {
+            setIsValid(false);
+            return;
+        }
         if (isValid) {
             setRequestSent(true);
             await addDocToTemplate(docName, 'docName');
@@ -61,7 +65,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 </div>
 
-                {!isValid && <span className={'text-danger'}>Chars length must be less than 255.</span>}
+                {!isValid && <span className={'text-danger'}>Name cannot be empty and must be less than 256 chars.</span>}
             </div>
         </div>
     )

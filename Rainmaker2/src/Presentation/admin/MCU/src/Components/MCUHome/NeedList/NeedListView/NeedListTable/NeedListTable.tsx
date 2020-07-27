@@ -59,7 +59,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             default:
                 cssClass = 'status-bullet pending'
         }
-        return <div className="td"><span className={cssClass}></span> {status}</div>
+        return <div className="td"><span className={cssClass}></span> {toTitleCase(status)}</div>
     }
     const renderButton = (data: NeedList, index: number) => {
         let count = data.files != null ? data.files.length : data.files;
@@ -73,7 +73,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             return (
                 <div className="td">
                     <button onClick={() => detailClickHandler(index)} className="btn btn-default btn-sm">Details</button>
-                    {count === 0 || count === null
+                    {data.status === 'Borrower to do'
                         ?
                         <button onClick={() => deleteDocument(data.id, data.requestId, data.docId)} className="btn btn-delete btn-sm"><em className="zmdi zmdi-close"></em></button>
                         :

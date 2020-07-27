@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Template } from '../../../../../../Entities/Models/Template'
-import { TemplateActionsType } from '../../../../../../Store/reducers/TemplatesReducer'
 import Spinner from 'react-bootstrap/Spinner'
-import { toTitleCase} from 'rainsoft-js'
 
 type TemplateItemType = {
     template: Template,
@@ -43,7 +41,7 @@ export const TemplateItem = ({
                     </div>
                     :
                     <div title={template.name}  className={`c-list ${isSelected ? 'active' : ''}`}>
-                        <p >{toTitleCase(template.name)}</p>
+                        <p >{template?.name}</p>
                         {!deleteRequestSent ?
                             isSelected && <span className="BTNclose" title={"Remove"} onClick={toggleDeleteBox}><i className="zmdi zmdi-close"></i></span>
                             :
