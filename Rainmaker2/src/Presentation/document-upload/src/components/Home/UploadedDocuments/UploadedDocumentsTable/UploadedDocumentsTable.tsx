@@ -23,8 +23,7 @@ interface ViewDocumentType {
 }
 
 export const UploadedDocumentsTable = () => {
-  const [docList, setDocList] = useState<UploadedDocuments[] | [] | null>(null);
-  const [currentDoc, setCurrentDoc] = useState<ViewDocumentType>();
+  const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>();
   const [blobData, setBlobData] = useState<any | null>();
 
   const history = useHistory();
@@ -62,7 +61,7 @@ export const UploadedDocumentsTable = () => {
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
     return (
       <td>
-        {data.map((item: Document,index:number) => {
+        {data.map((item: Document, index: number) => {
           const { clientName, id: fileId } = item;
 
           return (
@@ -93,7 +92,7 @@ export const UploadedDocumentsTable = () => {
   const renderAddedColumn = (data) => {
     return (
       <td>
-        {data.map((item: Document,index:number) => {
+        {data.map((item: Document, index: number) => {
           return (
             <span className="block-element" key={index}>
               {DateFormatWithMoment(item.fileUploadedOn, true)}
@@ -109,7 +108,7 @@ export const UploadedDocumentsTable = () => {
       "asc",
     ]);
 
-    return sortedUploadedDocuments.map((item: UploadedDocuments,index:number) => {
+    return sortedUploadedDocuments.map((item: UploadedDocuments, index: number) => {
       if (!item?.files?.length) return;
       const { files, docId, requestId, id } = item;
       const sortedFiles = _.orderBy(
@@ -188,10 +187,19 @@ export const UploadedDocumentsTable = () => {
     })) as any;
     setBlobData(response);
   };
+
   const clearBlob = () => {
     DocumentActions.documentViewCancelToken.cancel();
     setBlobData(null);
   };
+
+  const hdieViewer = () => {
+    document.body.style.overflow = "visible";
+    document.body.removeAttribute("style");
+    clearBlob();
+    setCurrentDoc(null);
+  }
+
   return (
     <React.Fragment>
       <div className="UploadedDocumentsTable">
@@ -199,17 +207,9 @@ export const UploadedDocumentsTable = () => {
 
         {submittedDocs?.length === 0 && renderNoData()}
       </div>
-      {currentDoc?.docId && (
+      {!!currentDoc && currentDoc?.docId && (
         <DocumentView
-          hideViewer={(value: boolean) => {
-            document.body.style.overflow = "visible";
-            document.body.removeAttribute("style");
-            clearBlob();
-            if (value === false) {
-              let abc: any = {};
-              setCurrentDoc(abc);
-            }
-          }}
+          hideViewer={hdieViewer}
           {...currentDoc}
           fileId={currentDoc.fileId}
           tenantId={Auth.getTenantId()}

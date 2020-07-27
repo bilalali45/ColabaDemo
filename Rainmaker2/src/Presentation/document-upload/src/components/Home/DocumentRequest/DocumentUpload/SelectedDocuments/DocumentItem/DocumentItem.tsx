@@ -193,7 +193,6 @@ export const DocumentItem = ({
     changeName(file, filename);
   }
   const renderFileTitle = () => {
-     console.log('filename',filename, filename.split(".")[0])
 
     return (
       <div className="title">
@@ -206,7 +205,7 @@ export const DocumentItem = ({
             type="text"
             value={filename.split(".")[0]}
             onChange={(e) => {
-              !validFilename && setValidFilename(true)
+              !validFilename && setValidFilename(() => true)
               setNameExists(false);
               if (fileAlreadyExists(file, e.target.value)) {
                 setNameExists(true);
@@ -215,7 +214,7 @@ export const DocumentItem = ({
                 setfilename(e.target.value);
                 return;
               } else {
-                !!validFilename && setValidFilename(false)
+                setValidFilename(() => false)
               }
 
               setNameExists(true);
