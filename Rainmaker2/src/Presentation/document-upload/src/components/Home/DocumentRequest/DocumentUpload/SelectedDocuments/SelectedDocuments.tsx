@@ -12,6 +12,7 @@ import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest"
 import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
+import { update } from "lodash";
 //import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 
 interface SelectedDocumentsType {
@@ -148,7 +149,7 @@ export const SelectedDocuments = ({
           });
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -156,7 +157,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -174,11 +175,47 @@ export const SelectedDocuments = ({
         f.editName = !f.editName;
         return f;
       }
-
       return f;
     });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
+
+
+  const toggleFocus = (file: Document, focus: boolean, shouldMoveFocus?: boolean) => {
+
+    let nextInd = 0;
+    let updatedFiles = selectedFiles.map((f: Document, i: number) => {
+      if (file.file && f.clientName === file.clientName) {
+        f.focused = focus;
+        nextInd = i + 1;
+        // if (shouldMoveFocus) {
+        //   // debugger
+        //   selectedFiles[i + 1].focused = true;
+        //   console.log('dsskdjflksjdflksjfd');
+        //   console.log(selectedFiles[i + 1]);
+        //   console.log('dsskdjflksjdflksjfd');
+        // }
+        return f;
+      }
+      // debugger
+      return f;
+    });
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+    // moveFocus(updatedFiles, selectedFiles[nextInd])
+  }
+
+  const moveFocus = (previousFiles: Document[], fileToFocus: Document) => {
+
+    let updatedFiles = previousFiles.map((f: Document) => {
+      if (f.clientName === fileToFocus.clientName) {
+        f.focused = true;
+        return fileToFocus;
+      }
+      return f;
+    });
+    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+
+  }
 
   const deleteDoc = (fileName: string) => {
     DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch);
@@ -238,10 +275,10 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        Auth.getTenantId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          Auth.getTenantId(),
+          data
+        );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -265,7 +302,7 @@ export const SelectedDocuments = ({
   };
 
   const checkFocus = (f: Document, index: number) => {
-   let foundIndx = selectedFiles.filter((f: Document) => f.uploadStatus === 'done' || f.editName === false).length;
+    let foundIndx = selectedFiles.filter((f: Document) => f.uploadStatus === 'done' || f.editName === false).length;
     return foundIndx === index;
   }
 
@@ -277,6 +314,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
@@ -311,19 +349,19 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -331,8 +369,8 @@ export const SelectedDocuments = ({
                 you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
         {!!currentDoc && (
@@ -380,18 +418,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );

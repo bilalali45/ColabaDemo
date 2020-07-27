@@ -60,7 +60,8 @@ namespace DocumentManagement.API.Controllers
                 loanApplication.requests[0].userName = userName;
 
                 var docQuery = await requestService.Save(loanApplication,isDraft);
-                await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId,loanApplication.requests[0].message,(int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                if(!isDraft)
+                    await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId,loanApplication.requests[0].message,(int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
             else
