@@ -37,6 +37,14 @@
                 outline: none;
             }
         }
+        p{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            margin-bottom: 0;
+            height: 23px;
+        }
     }
 
     &--detail{
@@ -86,13 +94,4 @@
         }
     }
 
-    .document-snipet--input-group{
-      p{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        margin-bottom: 0;
-      }
-    }
 }

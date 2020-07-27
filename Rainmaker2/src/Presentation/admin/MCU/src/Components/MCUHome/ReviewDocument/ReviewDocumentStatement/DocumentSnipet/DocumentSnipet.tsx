@@ -104,6 +104,12 @@ export const DocumentSnipet = ({
 
           const http = new Http()
 
+          // 1. This will prevent API call
+          // 2. This will not make unnecessary Rename Logs in BE
+          if (mcuName === data.newName || clientName === data.newName) {
+            return
+          }
+
           await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
             ...data
           })
@@ -187,7 +193,7 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-             <p>{renameMCUName || mcuName || clientName}</p> 
+              <p title={renameMCUName || mcuName || clientName}>{renameMCUName || mcuName || clientName}</p>
             )}
         </div>
         <small className="document-snipet--detail">

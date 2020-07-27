@@ -123,7 +123,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
             return (
                 <div className="td">
                     {data.map((item: NeedListDocuments) => {
-                        return <span key={item.id} className="block-element"><a ><em className="icon-refresh default"></em></a></span>
+                        return <span key={item.id} className="block-element c-filename"><a ><em className="icon-refresh default"></em></a></span>
                     })
                     }
                 </div>
