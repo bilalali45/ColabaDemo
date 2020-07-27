@@ -187,7 +187,7 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-             <p>{renameMCUName || mcuName || clientName}</p> 
+             <p title={renameMCUName || mcuName || clientName}>{renameMCUName || mcuName || clientName}</p> 
             )}
         </div>
         <small className="document-snipet--detail">
