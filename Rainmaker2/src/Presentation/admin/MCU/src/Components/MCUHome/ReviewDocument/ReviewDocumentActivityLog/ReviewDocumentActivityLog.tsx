@@ -71,9 +71,13 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                         setSortByEventName(null)
                         setLogIndex(index)
                     }}>
-                        <h6>Requested By</h6>
+                        <div className="d-flex justify-content-between">
+                            <h6>Requested By</h6>
+                            <time className="vertical-tabs--list-time">{DateTimeFormat(activityLog.dateTime, true)}</time>
+                        </div>
+                        
                         <h2>{activityLog.userName}</h2>
-                        <time className="vertical-tabs--list-time">{DateTimeFormat(activityLog.dateTime, true)}</time>
+                        
                     </a>
                 </li>
             )
@@ -161,10 +165,10 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
                                 <thead>
                                     <tr>
                                         <th>
-                                            <a href="#" onClick={sortEventNames}>Events <em className={getSortIconClassName(sortByEventName)}></em>
-                                            </a>
+                                            <button onClick={sortEventNames}>Events <em className={getSortIconClassName(sortByEventName)}></em>
+                                            </button>
                                         </th>
-                                        <th><a href="#" onClick={sortEventDates}>Date & Time <em className={getSortIconClassName(sortByEventDateTime)}></em></a></th>
+                                        <th><button onClick={sortEventDates}>Date & Time <em className={getSortIconClassName(sortByEventDateTime)}></em></button></th>
                                     </tr>
                                 </thead>
                             </table>
