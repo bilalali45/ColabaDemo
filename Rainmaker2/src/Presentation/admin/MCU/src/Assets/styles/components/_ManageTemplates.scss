@@ -486,7 +486,7 @@
     }
     .popup-add-doc-row {
         min-height: 390px;
-    &--left {
+        &--left {
         border-right: 1px solid color("border");
         .list-doc-cat {
             margin-right: -15px;
@@ -632,11 +632,11 @@
                         @include media-breakpoint-down(md) {
                             font: 400 #{fontSize('sm')+'/'+"1.3"} fontFamily('base'); 
                         }
-                        color: color('heading');
+                           color: color('heading');
                            margin-bottom: 0;
                            padding: 8px 15px;
                            text-transform: initial;
-    display: block;
+                           display: block;
                        }
                    }
                }
@@ -658,7 +658,7 @@
                     h3 {
                         font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
                         @include media-breakpoint-down(md) {
-                            font: 400 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
+                        font: 400 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
                         }
                         color: color('primary');
 
@@ -669,7 +669,7 @@
                     position: relative;
                     display: flex;
                     align-items: center;
-                    padding-right: 50px;
+
                     input{
                         width: 100%;
                         border-radius: 0;
@@ -684,14 +684,12 @@
                         &:active,&:focus {
                             border-radius: 0;
                             border: 1px solid color('border');
-                            outline: none;
-                            
+                            outline: none;                            
                         }
 
                     }
                     .input-btn-wrap {
-                        position: absolute;
-                        right:0 ;
+                        margin-left: 6px;
                         .btn {
                             padding: 6px 20px 6px;  
                             .spinner-border-sm {
