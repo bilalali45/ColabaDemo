@@ -74,9 +74,9 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
         setLoaderVisible(false);
     }
 
-    const TenantListItem = (t: any) => {
+    const TenantListItem = (t: Template) => {
         return (
-            <li key={t.name} onClick={() => changeCurrentTemplate(t)}>
+            <li key={t.id} onClick={() => changeCurrentTemplate(t)}>
                 <div className="l-wrap">
                     <div title={t.name} className={`c-list ${currentTemplate?.id === t.id ? 'active' : ''}`}>
                         <p>{toTitleCase(t.name)}</p>
@@ -98,10 +98,10 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
                         <div ref={listContainerElRef} className="list-wrap my-temp-list">
                             <ul>
                                 {
-                                    templates?.map((t: any) => {
+                                    templates?.map((t: Template) => {
                                         if (t?.type === MyTemplate) {
                                             return <TemplateItem
-                                                key={t.name}
+                                                key={t.id}
                                                 template={t}
                                                 isSelected={currentTemplate?.id === t.id}
                                                 changeTemplate={changeCurrentTemplate}
@@ -132,7 +132,6 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
                             <ul>
                                 {
                                     templates?.filter((t: any) => t?.type === TenantTemplate).map((t: any) => {
-                                        console.log(templates?.filter((t: any) => t?.type === TenantTemplate).length);
                                         return TenantListItem(t)
                                     })
                                 }

@@ -2,6 +2,8 @@ import { Endpoints } from '../endpoints/Endpoints';
 import axios, { AxiosResponse } from 'axios';
 import { LocalDB } from '../../Utils/LocalDB';
 import { Http } from 'rainsoft-js';
+import { Template } from '../../Entities/Models/Template';
+import { CategoryDocument } from '../../Entities/Models/CategoryDocument';
 
 const http = new Http();
 
@@ -11,7 +13,7 @@ export class TemplateActions {
     static async fetchTemplates(tenantId: string) {
         let url = Endpoints.TemplateManager.GET.templates(tenantId);
         try {
-            let res = await http.get(url);
+            let res : AxiosResponse<Template[]> = await http.get<Template[]>(url);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -22,7 +24,7 @@ export class TemplateActions {
         let url = Endpoints.TemplateManager.GET.categoryDocuments();
 
         try {
-            let res = await http.get(url);
+            let res : AxiosResponse<CategoryDocument[]> = await http.get<CategoryDocument[]>(url);
             return res.data;
         } catch (error) {
             console.log(error);

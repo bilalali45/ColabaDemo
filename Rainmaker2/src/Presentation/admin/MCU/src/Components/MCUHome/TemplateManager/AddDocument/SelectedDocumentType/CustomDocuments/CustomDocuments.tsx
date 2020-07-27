@@ -20,7 +20,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
-        if (docName?.length > 256) {
+        if (value?.length > 255) {
             setIsValid(false);
         }
 
@@ -31,10 +31,12 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     }
 
     const addDoc = async () => {
-        setRequestSent(true);
-        await addDocToTemplate(docName, 'docName');
-        // setDocName('');
-        setRequestSent(false);
+        if (isValid) {
+            setRequestSent(true);
+            await addDocToTemplate(docName, 'docName');
+            setDocName('');
+            setRequestSent(false);
+        }
         // setVisible()        
     }
 
@@ -45,7 +47,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input style={{ border: (isValid ? '' : '1px solid red')}} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    <input style={{ border: (isValid ? '' : '1px solid red') }} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
 
                     <div className="input-btn-wrap">
@@ -59,7 +61,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 </div>
 
-              { !isValid && <span className={'text-danger'}>Chars length must be less than 255.</span>}
+                {!isValid && <span className={'text-danger'}>Chars length must be less than 255.</span>}
             </div>
         </div>
     )
