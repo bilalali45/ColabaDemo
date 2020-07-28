@@ -246,7 +246,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 target?.select();
                                             }, 0);
                                         }}
-                                        
+                                        placeholder="New Template"
                                         className={`editable-TemplateTitle ${nameError ? 'error' : ''}`} 
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
