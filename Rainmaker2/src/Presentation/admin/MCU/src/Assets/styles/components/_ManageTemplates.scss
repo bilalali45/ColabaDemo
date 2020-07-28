@@ -261,7 +261,7 @@
     }
     .T-head {
         padding-top: 20px;
-        min-height: 60px;
+        min-height: 70px;
         .titleWrap {
             max-width: 60%;
          
@@ -276,7 +276,7 @@
         }
         .T-head-flex {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
 
         }
@@ -325,12 +325,12 @@
                     color: color('docSnipetText');
                 }
                 .error-name {
-    display: block;
-    font-size: 11px;
-    padding-top: 4px;
-    padding-right: 0;
-    text-transform: capitalize;
-    color: color('colorRed');
+                    display: block;
+                    font-size: 11px;
+                    padding-top: 4px;
+                    padding-right: 0;
+                    text-transform: capitalize;
+                    color: color('colorRed');
                 }
             }
         }
@@ -413,6 +413,7 @@
 
         .addnewTemplate-btn {
             padding: 3px 10px 3px;
+            vertical-align: top;
             @include media-breakpoint-down(lg) {
                 padding: 3px 10px 3px;
             }

@@ -55,7 +55,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                         if(e.keyCode === 13) {
                             addDoc();
                         }
-                    }} style={{ border: (isValid ? '' : '1px solid red') }} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    }} className={ isValid ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
 
                     <div className="input-btn-wrap">
@@ -64,12 +64,12 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
                         </button> :
-                            <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
+                        <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
                     </div>
 
                 </div>
 
-                {!isValid && <span className={'text-danger'}>Name cannot be empty and must be less than 256 chars.</span>}
+                {!isValid && <label className={'error'}>Name cannot be empty and must be less than 256 chars.</label>}
             </div>
         </div>
     )
