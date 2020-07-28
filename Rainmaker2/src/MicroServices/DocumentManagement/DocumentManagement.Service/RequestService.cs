@@ -219,17 +219,8 @@ namespace DocumentManagement.Service
                 {
                 { "$pull", new BsonDocument()
                     {
-                        { "requests", new BsonDocument(){
-                            new BsonDocument()
-                                {
-                                    {
-                                        "$and", new BsonArray(){
-                                            new BsonDocument(){{ "status",DocumentStatus.Draft}},
-                                            new BsonDocument(){{ "userId",request.userId}}
-                                        }
-                                    }
-                                }
-                            }
+                        { "requests", 
+                           new BsonDocument(){{ "status", RequestStatus.Draft}}
                         }
                     }
                 }

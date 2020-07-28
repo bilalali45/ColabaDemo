@@ -19,12 +19,13 @@ export const ReviewDocumentStatement = ({
   currentFileIndex: number,
   loadingFile: boolean
 }) => {
-  const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
-  const [loading, setLoading] = useState(false)
-  const [username, setUsername] = useState('')
-  const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([])
+  const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([]);
+  const [rejectPopup, setRejectPopup] = useState(false);
 
-  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
+  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
@@ -128,17 +129,42 @@ export const ReviewDocumentStatement = ({
                 />) : (
                   <span>No file submitted yet</span>
                 )}
+
+              {rejectPopup &&
+                <div className="dialogbox">
+                  <div className="dialogbox-backdrop"></div>
+                  <div className="dialogbox-slideup">
+                    <h2 className="h2">Request this document again.</h2>
+                    <p>Let the borrower know what you need to mark it as complete</p>
+                    <textarea className="form-control" rows={6}>Hi James, please submit the bank state again</textarea>
+                  </div>
+                </div>}
+
             </section>
 
             <footer className="document-statement--footer">
-              <div className="row">
-                <div className="col-md-6">
-                  <button className="btn btn-secondry btn-block">Reject Document</button>
+              {rejectPopup &&
+                <div className="row">
+                  <div className="col-md-6">
+                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
+                  </div>
+                  <div className="col-md-6">
+                    <button className="btn btn-primary btn-block">Add to Draft</button>
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <button className="btn btn-primary btn-block">Accept Document</button>
+              }
+
+              {!rejectPopup &&
+                <div className="row">
+                  <div className="col-md-6">
+                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
+                  </div>
+                  <div className="col-md-6">
+                    <button className="btn btn-primary btn-block">Accept Document</button>
+                  </div>
                 </div>
-              </div>
+              }
+
             </footer>
           </div>
         )}

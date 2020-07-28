@@ -7,6 +7,9 @@ import { LocalDB } from '../../../../Utils/LocalDB'
 import { Store } from '../../../../Store/Store'
 import { NeedListActionsType } from '../../../../Store/reducers/NeedListReducer';
 import { sortList } from '../../../../Utils/helpers/Sort'
+import { Template } from '../../../../Entities/Models/Template'
+import { TemplateActions } from '../../../../Store/actions/TemplateActions'
+import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
 
 export const NeedListView = () => {
 
@@ -20,9 +23,14 @@ export const NeedListView = () => {
 
     const needListManager: any = state?.needListManager;
     const needListData = needListManager?.needList;
+    const templateManager: any = state.templateManager;
+    const templates: Template[] = templateManager?.templates;
 
     useEffect(() => {
         fetchNeedList(true, true);
+        if (!templates) {
+            fetchTemplatesList();
+        }
     }, [])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
@@ -34,6 +42,13 @@ export const NeedListView = () => {
                     return res
                 }
             }
+        }
+    }
+
+    const fetchTemplatesList = async () => {
+        let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
+        if (newTemplates) {
+            dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
         }
     }
 
@@ -102,6 +117,7 @@ export const NeedListView = () => {
         <div className="need-list-view">
             <NeedListViewHeader
                 toggleCallBack={togglerHandler}
+                templateList = {templates}
             />
             <NeedListTable
                 needList={needListData}
