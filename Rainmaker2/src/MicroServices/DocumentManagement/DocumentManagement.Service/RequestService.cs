@@ -110,11 +110,9 @@ namespace DocumentManagement.Service
                 BsonDocument bsonDocument = new BsonDocument();
 
                 item.id = ObjectId.GenerateNewId().ToString();
-                item.activityId = ObjectId.GenerateNewId().ToString();
                 item.status = DocumentStatus.BorrowerTodo;
 
                 bsonDocument.Add("id", new ObjectId(item.id));
-                bsonDocument.Add("activityId", new ObjectId(item.activityId));
                 bsonDocument.Add("status", item.status);
                 bsonDocument.Add("typeId", item.typeId == null ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
                 bsonDocument.Add("displayName", item.displayName);
@@ -188,7 +186,7 @@ namespace DocumentManagement.Service
 
                     ActivityLog activityLog = new ActivityLog()
                     {
-                        id = item.activityId,
+                        id = ObjectId.GenerateNewId().ToString(),
                         requestId = request.id,
                         userId = request.userId,
                         userName = request.userName,
@@ -205,7 +203,7 @@ namespace DocumentManagement.Service
                     };
                     await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
-                    await activityLogService.InsertLog(item.activityId, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
+                    await activityLogService.InsertLog(activityLog.id, string.Format(ActivityStatus.StatusChanged , DocumentStatus.BorrowerTodo));
                 }
             }
 
