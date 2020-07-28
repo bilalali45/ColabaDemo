@@ -27,25 +27,31 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     const { state, dispatch } = useContext(Store);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [newNameText, setNewNameText] = useState<string>('');
-    const [nameExistsError, setNameExistsError] = useState<string>()
+    const [nameError, setNameError] = useState<string>()
     const [addRequestSent, setAddRequestSent] = useState<boolean>(false);
     const [removeDocName, setRemoveDocName] = useState<string>();
+    // const [showSpecialCharsError, setShowSpecialCharsError] = useState<boolean>(error);
 
 
     const templateManager: any = state.templateManager;
     const currentTemplate = templateManager?.currentTemplate;
     const templates = templateManager?.templates;
     const templateDocuments = templateManager?.templateDocuments;
+    const categoryDocuments = templateManager?.categoryDocuments;
 
     useEffect(() => {
         setNewNameText(currentTemplate?.name)
     }, [editTitleview]);
 
     useEffect(() => {
-        setNameExistsError('');
+        setNameError('');
     }, [currentTemplate?.name]);
 
     useEffect(() => {
+        if (!categoryDocuments) {
+            fetchCurrentCatDocs();
+        }
+
         if (currentTemplate) {
             seteditTitleview(false);
         }
@@ -62,13 +68,35 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
         let name = `New Template ${nameUsed === 0 ? '' : nameUsed}`.trimEnd();
 
-        if (templates?.find((t: Template) => t?.name === name)) {
+        if (templates?.find((t: Template) => t?.name?.trim() === name?.trim())) {
             setNewNameText(`New Template ${nameUsed + 1}`.trimEnd())
             return;
         }
 
         setNewNameText(name);
-    }, [!currentTemplate])
+    }, [!currentTemplate]);
+
+
+    useEffect(() => {
+        if (!nameTest.test(newNameText)) {
+            console.log('in here you know where ...');
+            setNameError('Template name cannot contain any special characters');
+        }
+
+        if (!newNameText?.trim()?.length) {
+            setNameError('');
+        }
+    }, [newNameText]);
+
+    const fetchCurrentCatDocs = async () => {
+        let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
+        if (currentCatDocs) {
+            dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
+
+            // setCurrentDocType(currentCatDocs[0]);
+        }
+    }
+
 
 
     const setCurrentTemplateDocs = async (template: any) => {
@@ -99,6 +127,10 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const renameTemplate = async (value: string) => {
 
+        if (!nameTest.test(value.trim())) {
+            return;
+        }
+
         if (value === currentTemplate?.name) {
             toggleRename();
             return;
@@ -109,32 +141,32 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         }
 
         if (!value?.trim()?.length) {
-            setNameExistsError('Name cannot be empty');
-            return;
-        }
-        
-        if(value?.length > 255) {
-            setNameExistsError('Name must be less than 256 chars');
+            setNameError('Name cannot be empty');
             return;
         }
 
-        if (templates.find((t: Template) => t.name === value && t.id !== currentTemplate?.id)) {
-            setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
+        if (value?.length > 255) {
+            setNameError('Name must be less than 256 chars');
+            return;
+        }
+
+        if (templates.find((t: Template) => t.name.trim() === value.trim() && t.id !== currentTemplate?.id)) {
+            setNameError(`Template name must be unique`);
             return;
         };
 
         setAddRequestSent(true);
         setLoaderVisible(true);
-
+        console.log(value.trim().length);
         if (!currentTemplate) {
-            await addNewTemplate(value);
+            await addNewTemplate(value.trim());
             toggleRename();
             setLoaderVisible(false);
             setAddRequestSent(false);
             return;
         }
 
-        const renamed = await TemplateActions.renameTemplate('1', currentTemplate?.id, value);
+        const renamed = await TemplateActions.renameTemplate('1', currentTemplate?.id, value?.trim());
         if (renamed) {
             let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
             if (updatedTemplates) {
@@ -205,6 +237,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
+                                        maxLength={255}
                                         autoFocus
                                         onFocus={(e: any) => {
                                             let target = e.target;
@@ -212,20 +245,19 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 target?.select();
                                             }, 0);
                                         }}
-                                        style={{ border: nameExistsError ? '1px solid red' : '' }}
+                                        style={{ border: nameError ? '1px solid red' : '' }}
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-                                            setNewNameText(value);
 
+                                            setNewNameText(value);
                                             if (!value?.length || value?.length > 255) {
                                                 return;
                                             }
-                                            if (!nameTest.test(value)) {
-                                                return;
-                                            }
+
                                             setAddRequestSent(false);
                                             setLoaderVisible(false);
-                                            setNameExistsError('');
+                                            setNameError('');
+
                                             setNewNameText(value);
                                         }}
                                         onKeyDown={(e: any) => {
@@ -243,7 +275,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                             </Spinner>
                                         </div> : ''}
                                     {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                                    {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
+                                    {nameError && <span className={"error-name"}>{nameError}</span>}
                                 </p>
                             </>
                             : <>
