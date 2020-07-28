@@ -11,12 +11,27 @@ type CustomDocumentsType = {
 export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocumentsType) => {
 
     const [docName, setDocName] = useState('');
+    const [docNameError, setDocNameError] = useState('');
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(true);
 
+
     useEffect(() => {
         setIsValid(true);
-    }, [docName === ''])
+    }, [docName === '']);
+
+    useEffect(() => {
+        if (!nameTest.test(docName)) {
+            console.log('in here you know where ...');
+            setDocNameError('Document name cannot contain any special characters');
+        }else {
+            setDocNameError('');
+        }
+
+        if (!docName?.trim()?.length) {
+            setDocNameError('');
+        }
+    }, [docName]);
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
@@ -24,14 +39,16 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
             setIsValid(false);
         }
 
-        if (!nameTest.test(value)) {
-            return;
-        }
         setDocName(value);
     }
 
     const addDoc = async () => {
-        if(!docName.trim()?.length) {
+        if (!nameTest.test(docName)) {
+            return;
+        }
+
+        if (!docName.trim()?.length) {
+            setDocNameError('Document name cannot be empty');
             setIsValid(false);
             return;
         }
@@ -51,8 +68,8 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input onKeyDown={(e: any) => {
-                        if(e.keyCode === 13) {
+                    <input maxLength={255} onKeyDown={(e: any) => {
+                        if (e.keyCode === 13) {
                             addDoc();
                         }
                     }} className={ isValid ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
@@ -70,6 +87,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 </div>
 
                 {!isValid && <label className={'error'}>Name cannot be empty and must be less than 256 chars.</label>}
+                {docNameError && <label className={'error'}>{docNameError}</label>}
             </div>
         </div>
     )

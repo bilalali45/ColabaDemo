@@ -60,7 +60,7 @@ export const ReviewDocumentStatement = ({
     }
   }, [setDocumentFiles])
 
-  const allowFileRenameMCU = (filename: string, fileId: string): boolean => {
+  const allowFileRenameMCU = (filename: string, fileId: string, addToList: boolean = true): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
     // Why filter? because we don't want to check filename of current file being renamed
@@ -68,7 +68,13 @@ export const ReviewDocumentStatement = ({
       return file.mcuName.trim() === filename.trim()
     })
 
-    if (mcuNameAlreadyInList) return false
+    // This condition will make sure we are not saving each value in string
+    // addToList === false, means we don't want to save it in List setMcuNamesUpdated
+    if (addToList === false) {
+      return mcuNameAlreadyInList
+    } else if (mcuNameAlreadyInList) {
+      return false
+    }
 
     const documentFile = clonedArray.find(file => file.fileId === fileId)
 
@@ -102,31 +108,31 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
-        <div className="document-statement--body-footer">
-          <section className="document-statement--body">
-            {/* <h3>Documents</h3> */}
-            {!!documentFiles && documentFiles.length ?
-              documentFiles.map((file, index) => <DocumentSnipet
-                key={index}
-                index={index}
-                moveNextFile={moveNextFile}
-                id={currentDocument?.id!}
-                requestId={currentDocument?.requestId!}
-                docId={currentDocument?.docId!}
-                fileId={file.fileId}
-                mcuName={file.mcuName}
-                clientName={file.clientName}
-                currentFileIndex={currentFileIndex}
-                uploadedOn={file.fileUploadedOn}
-                username={username}
-                allowFileRenameMCU={allowFileRenameMCU}
-              />) : (
-                <span>No file submitted yet</span>
-              )}
+          <div className="document-statement--body-footer">
+            <section className="document-statement--body">
+              {/* <h3>Documents</h3> */}
+              {!!documentFiles && documentFiles.length ?
+                documentFiles.map((file, index) => <DocumentSnipet
+                  key={index}
+                  index={index}
+                  moveNextFile={moveNextFile}
+                  id={currentDocument?.id!}
+                  requestId={currentDocument?.requestId!}
+                  docId={currentDocument?.docId!}
+                  fileId={file.fileId}
+                  mcuName={file.mcuName}
+                  clientName={file.clientName}
+                  currentFileIndex={currentFileIndex}
+                  uploadedOn={file.fileUploadedOn}
+                  username={username}
+                  allowFileRenameMCU={allowFileRenameMCU}
+                />) : (
+                  <span>No file submitted yet</span>
+                )}
 
-              {rejectPopup && 
+              {rejectPopup &&
                 <div className="dialogbox">
-                  <div className="dialogbox-backdrop"></div>  
+                  <div className="dialogbox-backdrop"></div>
                   <div className="dialogbox-slideup">
                     <h2 className="h2">Request this document again.</h2>
                     <p>Let the borrower know what you need to mark it as complete</p>
@@ -134,33 +140,33 @@ export const ReviewDocumentStatement = ({
                   </div>
                 </div>}
 
-          </section>
+            </section>
 
-          <footer className="document-statement--footer">
-            {rejectPopup &&
-            <div className="row">
-              <div className="col-md-6">
-                <button className="btn btn-secondry btn-block" onClick={ ()=>{ setRejectPopup(false) }}>Cancel</button>
-              </div>
-              <div className="col-md-6">
-                <button className="btn btn-primary btn-block">Add to Draft</button>
-              </div>
-            </div>
-            }
+            <footer className="document-statement--footer">
+              {rejectPopup &&
+                <div className="row">
+                  <div className="col-md-6">
+                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
+                  </div>
+                  <div className="col-md-6">
+                    <button className="btn btn-primary btn-block">Add to Draft</button>
+                  </div>
+                </div>
+              }
 
-            {!rejectPopup &&
-            <div className="row">
-              <div className="col-md-6">
-                <button className="btn btn-secondry btn-block" onClick={ ()=>{ setRejectPopup(true) }}>Reject Document</button>
-              </div>
-              <div className="col-md-6">
-                <button className="btn btn-primary btn-block">Accept Document</button>
-              </div>
-            </div>
-            }
+              {!rejectPopup &&
+                <div className="row">
+                  <div className="col-md-6">
+                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
+                  </div>
+                  <div className="col-md-6">
+                    <button className="btn btn-primary btn-block">Accept Document</button>
+                  </div>
+                </div>
+              }
 
-          </footer>
-        </div>
+            </footer>
+          </div>
         )}
     </div>
   );
