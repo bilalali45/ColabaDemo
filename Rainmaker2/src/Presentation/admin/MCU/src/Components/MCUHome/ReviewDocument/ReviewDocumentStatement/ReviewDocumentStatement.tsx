@@ -101,6 +101,7 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
+        <div className="document-statement--body-footer">
           <section className="document-statement--body">
             {/* <h3>Documents</h3> */}
             {!!documentFiles && documentFiles.length ?
@@ -122,6 +123,18 @@ export const ReviewDocumentStatement = ({
                 <span>No file submitted yet</span>
               )}
           </section>
+
+          <footer className="document-statement--footer">
+            <div className="row">
+              <div className="col-md-6">
+                <button className="btn btn-secondry btn-block">Reject Document</button>
+              </div>
+              <div className="col-md-6">
+                <button className="btn btn-primary btn-block">Accept Document</button>
+              </div>
+            </div>
+          </footer>
+        </div>
         )}
     </div>
   );
