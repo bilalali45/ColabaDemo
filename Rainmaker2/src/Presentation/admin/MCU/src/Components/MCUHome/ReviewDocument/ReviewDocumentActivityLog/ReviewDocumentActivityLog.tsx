@@ -3,7 +3,7 @@ import { Http } from "rainsoft-js";
 import _ from 'lodash'
 
 import { ActivityLogType, LogType } from "../../../../Entities/Types/Types";
-import { DateTimeFormat } from "../../../../Utils/helpers/DateFormat";
+import { ActivityLogFormat } from "../../../../Utils/helpers/DateFormat";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
 
 export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, typeId: string | null }) => {
@@ -52,21 +52,31 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
 	}, [])
 
 	const renderActivity = useCallback((logs: LogType[]) => {
-		return logs.map(log => {
+		return logs.map((log, index) => {
 			// Why split? because from BE we are getting \n for new line
 			// For rename file activity we need to display filename at next line with <Br />
 			const splitLogs = log.activity.split("\n")
 
+			const isFileSubmittedLog = splitLogs[0].search('File submitted')
+
+			let trimmedLog: string
+
+			if (isFileSubmittedLog !== -1) {
+				trimmedLog = splitLogs[0].length > 38 ? `${splitLogs[0].substring(0, 38)}...` : splitLogs[0]
+			} else {
+				trimmedLog = splitLogs[0]
+			}
+
 			return (
-				<tr key={log._id}>
-					<td>
-						{splitLogs[0]}
+				<tr key={index}>
+					<td title={isFileSubmittedLog !== -1 ? splitLogs[0] : splitLogs[1]}>
+						{trimmedLog}
 						{!!splitLogs[1] && (
 							<br />
 						)}
-						{splitLogs[1]}
+						{!!splitLogs && !!splitLogs[1] && splitLogs[1].length > 38 ? `${splitLogs[1].substring(0, 38)}...` : splitLogs[1]}
 					</td>
-					<td>{DateTimeFormat(log.dateTime, true)}</td>
+					<td>{ActivityLogFormat(log.dateTime)}</td>
 				</tr>
 			)
 		})
@@ -83,7 +93,7 @@ export const ReviewDocumentActivityLog = ({ id, typeId }: { id: string | null, t
 					}}>
 						<div className="d-flex justify-content-between">
 							<h6>Requested By</h6>
-							<time className="vertical-tabs--list-time">{DateTimeFormat(activityLog.dateTime, true)}</time>
+							<time className="vertical-tabs--list-time">{ActivityLogFormat(activityLog.dateTime)}</time>
 						</div>
 						<h2>{activityLog.userName}</h2>
 					</a>

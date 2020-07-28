@@ -206,7 +206,7 @@ export const DocumentSnipet = ({
             <React.Fragment>
               <input
                 ref={inputRef}
-                className={`${!filenameUnique && 'error'}`}
+                className={`${(!filenameUnique || !!filenameEmpty || !validFilename) && 'error'}`}
                 maxLength={255}
                 size={38}
                 type="text"
