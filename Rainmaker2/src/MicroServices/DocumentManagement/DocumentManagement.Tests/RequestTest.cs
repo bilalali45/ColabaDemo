@@ -77,7 +77,6 @@ namespace DocumentManagement.Tests
 
             Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
-            document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";
@@ -159,7 +158,6 @@ namespace DocumentManagement.Tests
 
             Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
-            document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";

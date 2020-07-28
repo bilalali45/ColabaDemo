@@ -364,30 +364,7 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
 
-                //set new activityId
-
-                IMongoCollection<Entity.Request> collectionUpdateActivityId = mongoService.db.GetCollection<Entity.Request>("Request");
-
-                UpdateResult resultUpdateActivityId = await collectionUpdateActivityId.UpdateOneAsync(new BsonDocument()
-                {
-                    { "_id", BsonObjectId.Create(id) }
-                }, new BsonDocument()
-                {
-                    { "$set", new BsonDocument()
-                        {
-                            { "requests.$[request].documents.$[document].activityId", new ObjectId(newActivityLogId)}
-                        }
-                    }
-                }, new UpdateOptions()
-                {
-                    ArrayFilters = new List<ArrayFilterDefinition>()
-                    {
-                        new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-                        new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
-                    }
-
-                });
-
+              
 
                 //get existing activity log detail
 
