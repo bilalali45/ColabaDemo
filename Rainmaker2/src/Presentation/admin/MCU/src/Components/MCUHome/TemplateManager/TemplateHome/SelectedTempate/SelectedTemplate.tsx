@@ -15,6 +15,7 @@ import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
 import { trim } from 'lodash'
+import { LocalDB } from '../../../../../Utils/LocalDB'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -111,10 +112,10 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const addNewTemplate = async (name: string) => {
         dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
-        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
+        let insertedTemplate = await TemplateActions.insertTemplate(LocalDB.getTenantId(), name);
         if (insertedTemplate) {
 
-            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            let updatedTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
             dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
@@ -166,9 +167,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        const renamed = await TemplateActions.renameTemplate('1', currentTemplate?.id, value?.trim());
+        const renamed = await TemplateActions.renameTemplate(LocalDB.getTenantId(), currentTemplate?.id, value?.trim());
         if (renamed) {
-            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            let updatedTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
             if (updatedTemplates) {
                 dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
                 dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((ut: Template) => ut.id === currentTemplate.id) });
@@ -188,7 +189,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         setAddRequestSent(true);
         setLoaderVisible(true);
         setRemoveDocName(documentId);
-        let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
+        let isDeleted = await TemplateActions.deleteTemplateDocument(LocalDB.getTenantId(), templateId, documentId);
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }

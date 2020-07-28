@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
+import { Template } from '../../../../../Entities/Models/Template';
 
 type headerProps = {
-    toggleCallBack: Function
+    toggleCallBack: Function;
+    templateList: Template[];
 }
 
-export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
+export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) => {
     const [toggle, setToggle] = useState(true);
     
     const callBack = () => {
         toggleCallBack(toggle)
-        setToggle(!toggle)
-       
+        setToggle(!toggle)  
       }
 
     return (
@@ -22,7 +23,7 @@ export const NeedListViewHeader = ({toggleCallBack}:headerProps) => {
                 <span className="h2">Needs List</span> 
                 <div className="btn-group">                
                     <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  style={{pointerEvents:'none'}}>
+                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
                         Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
                     </Dropdown.Toggle>
 

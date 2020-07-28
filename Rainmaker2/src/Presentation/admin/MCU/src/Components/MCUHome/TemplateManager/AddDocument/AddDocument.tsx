@@ -10,6 +10,7 @@ import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer
 import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
+import { LocalDB } from '../../../../Utils/LocalDB'
 
 type AddDocumentType = {
     popoverplacement?: any;
@@ -112,7 +113,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         //     return;
         // }
         try {
-            let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
+            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, docName, type);
             if (success) {
                 let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
                 dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });

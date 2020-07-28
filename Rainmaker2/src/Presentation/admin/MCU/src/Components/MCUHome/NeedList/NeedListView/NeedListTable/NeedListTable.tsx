@@ -99,7 +99,7 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
                             <span className="block-element c-filename">
                                 {item.mcuName ?
                                     <React.Fragment>
-                                        <span title={item.clientName} key={item.id} className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.mcuName, 47)}</span>
+                                        <span title={item.mcuName} key={item.id} className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.mcuName, 47)}</span>
                                         <small title={item.clientName} key={item.id} className="block-element-child td-filename filename-by-b">{truncate(item.clientName, 47)}</small>
                                     </React.Fragment>
                                     :

@@ -30,11 +30,13 @@ export const DocumentSnipet = ({
   currentFileIndex: number
   uploadedOn: string
   username: string
-  allowFileRenameMCU: (filename: string, fileId: string) => boolean
+  allowFileRenameMCU: (filename: string, fileId: string, addToList?: boolean) => boolean
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
   const [filenameUnique, setFilenameUnique] = useState(true)
+  const [validFilename, setValidFilename] = useState(true)
+  const [filenameEmpty, setFilenameEmpty] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
@@ -60,22 +62,11 @@ export const DocumentSnipet = ({
       event.stopPropagation()
     }
 
-    // if (!filenameUnique) return
+    !filenameUnique && setFilenameUnique(true)
+    !validFilename && setValidFilename(true)
+    !!filenameEmpty && setFilenameEmpty(false)
 
-    if (renameMCUName !== "") {
-      const fileExtension = getFileExtension(mcuName || clientName)
-
-      setRenameMCUName(() => `${renameMCUName.trim()}${fileExtension}`) // This will keep name persistant on edit / cacnel again and again
-    } else {
-      setRenameMCUName(() => "") //This will bring either mcuName or clientName with file extension
-    }
-
-    if (!filenameUnique) {
-      setRenameMCUName(mcuName || clientName)
-
-      setFilenameUnique(true)
-    }
-
+    setRenameMCUName(mcuName || clientName)
     setEditingModeEnabled(false)
   }
 
@@ -87,7 +78,7 @@ export const DocumentSnipet = ({
 
     if (newName) {
       //lets check if new filename without extension is not equal to other files in this document
-      const filenameAllowed = allowFileRenameMCU(newName, fileId)
+      const filenameAllowed = allowFileRenameMCU(newName, fileId, true)
 
       if (filenameAllowed) {
         setFilenameUnique(() => true)
@@ -121,12 +112,9 @@ export const DocumentSnipet = ({
 
       } else {
         // 1. We need to check if renaming being triggered by onBlur event
-        // 2. We will simply cancel edit and will bring back values from mcuName or ClientName
         // 3. We will only fallback here if there is filename conflict else we will save filename on Blur
         if (onBlur) {
-          setFilenameUnique(() => true)
-          setEditingModeEnabled(() => false)
-          setRenameMCUName(() => "")
+          setFilenameUnique(() => false)
         } else
           setFilenameUnique(() => false)
         inputRef.current?.focus()
@@ -138,12 +126,6 @@ export const DocumentSnipet = ({
     event.stopPropagation()
 
     moveNextFile(index, fileId, clientName)
-  }
-
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, newValue: string) => {
-    if (event.key === 'Enter') {
-      renameDocumentMCU(newValue)
-    }
   }
 
   const eventBubblingHandler = (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
@@ -159,12 +141,55 @@ export const DocumentSnipet = ({
     }
   }
 
-  const onBlur = (newValue: string, event: any) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, newValue: string) => {
+    if (event.key === 'Enter') {
+      if (validFilename === false || filenameUnique === false || filenameEmpty === true) {
+        return event.preventDefault()
+      }
+
+      renameDocumentMCU(newValue)
+    }
+  }
+
+  const onBlur = (newValue: string, event: React.FocusEvent<HTMLInputElement>) => {
+    if (filenameUnique === false || validFilename === false || filenameEmpty === true) {
+      return event.preventDefault()
+    }
+
     renameDocumentMCU(newValue, event, true)
   }
 
-  const onDoubleClick = (event: any) => {
+  const onDoubleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (editingModeEnabled) return
+
     setInputValue(event)
+  }
+
+  const validateFilename = (value: string) => {
+    setValidFilename(true)
+    setFilenameEmpty(false)
+
+    if (value === "") {
+      setFilenameEmpty(true)
+    }
+
+    !filenameUnique && setFilenameUnique(true)
+
+    const regex = /[^a-zA-Z0-9- ]/g // This regex will allow only alphanumeric values with - and spaces.
+
+    if (regex.test(value)) {
+      setValidFilename(false)
+    }
+
+    // Here we won't be saving name to list insdie ReviewDocumentStatement.tsx, its just for checking
+    // We will only save name in list onBlur or onEnter events.
+    const filenameAlreadyInList = allowFileRenameMCU(value, fileId, false)
+
+    if (filenameAlreadyInList) {
+      setFilenameUnique(false)
+    }
+
+    setRenameMCUName(value)
   }
 
   useEffect(() => {
@@ -180,16 +205,16 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
-                onChange={(e) => setRenameMCUName(e.target.value.replace(/[^a-zA-Z0-9- ]/g, ''))}
-                type="text"
-                size={38}
-                value={renameMCUName}
-                onClick={event => event.stopPropagation()}
-                onBlur={(event) => onBlur(renameMCUName.trim(), event)}
-                onKeyDown={(event) => onKeyDown(event, renameMCUName.trim())}
                 ref={inputRef}
-                maxLength={255}
                 className={`${!filenameUnique && 'error'}`}
+                maxLength={255}
+                size={38}
+                type="text"
+                value={renameMCUName}
+                onBlur={event => onBlur(renameMCUName.trim(), event)}
+                onChange={event => validateFilename(event.target.value)}
+                onClick={event => event.stopPropagation()}
+                onKeyDown={event => onKeyDown(event, renameMCUName.trim())}
               />
             </React.Fragment>
           ) : (
@@ -199,7 +224,9 @@ export const DocumentSnipet = ({
         <small className="document-snipet--detail">
           {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
-        {!filenameUnique && (<small className="document-snipet--detail error">Filename must be unique</small>)}
+        {!!filenameEmpty && (<small className="document-snipet--detail error">File name cannot be empty</small>)}
+        {!filenameUnique && (<small className="document-snipet--detail error">File name must be unique</small>)}
+        {!validFilename && (<small className="document-snipet--detail error">File name cannot contain any special characters</small>)}
       </div>
       <div className="document-snipet--right">
         {!!editingModeEnabled && (

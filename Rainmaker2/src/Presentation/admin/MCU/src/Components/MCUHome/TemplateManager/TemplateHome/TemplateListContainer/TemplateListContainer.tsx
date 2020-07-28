@@ -5,6 +5,7 @@ import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesRedu
 import { Template } from '../../../../../Entities/Models/Template';
 import { TemplateItem } from '../SelectedTempate/TemplateItem/TemplateItem';
 import { Loader } from "../../../../../Shared/components/loader";
+import { LocalDB } from '../../../../../Utils/LocalDB';
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
@@ -52,7 +53,7 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
 
     const fetchTemplatesList = async () => {
         setLoaderVisible(true);
-        let newTemplates: any = await TemplateActions.fetchTemplates('1');
+        let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
         if (newTemplates) {
             dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: newTemplates[0] });
@@ -65,7 +66,7 @@ export const TemplateListContainer = ({ setLoaderVisible, listContainerElRef }: 
 
     const removeTemplate = async (templateId: string) => {
         setLoaderVisible(true);
-        let isDeleted = await TemplateActions.deleteTemplate('1', templateId);
+        let isDeleted = await TemplateActions.deleteTemplate(LocalDB.getTenantId(), templateId);
         if (isDeleted) {
             fetchTemplatesList();
         }

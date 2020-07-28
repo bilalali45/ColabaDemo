@@ -19,8 +19,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string message { get; set; }
         public string status { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string activityId { get; set; }
         public List<RequestFile> files { get; set; }
     }
 }
