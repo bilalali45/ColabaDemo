@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import {
   DocEditIcon,
@@ -38,17 +38,70 @@ export const DocumentItem = ({
   shouldFocus,
   toggleFocus
 }: DocumentItemType) => {
-  const [filename, setfilename] = useState<string>("");
-  const [iseditable, seteditable] = useState<any>(true);
   const [nameExists, setNameExists] = useState<any>(false);
-  const [isdeleted, setdeleted] = useState<any>(false);
   const [showInput, setShowInput] = useState<boolean>(false);
   const [validFilename, setValidFilename] = useState(true)
+  const [filename, setFilename] = useState<string>("")
 
-  const txtInput: any = useRef(null);
+  const txtInput = useRef<HTMLInputElement>(null);
+
+  const doubleClickHandler = (isUploaded: string | undefined) => {
+    if (isUploaded === 'done' || validFilename === false || nameExists === true || filename === "") {
+      return;
+    }
+
+    toggleFocus(file, true)
+
+    changeName(file, filename);
+  }
+
+  const modifyFilename = (filename: string) => {
+    // Hide Filename validation on each Input only if its not valid
+    !validFilename && setValidFilename(() => true)
+
+    setNameExists(() => false)
+
+    // Check speical characters only - and spaces allowed
+    if (FileUpload.nameTest.test(filename) === false) {
+      setValidFilename(false)
+    }
+
+    // Check if filename is unique
+    if (fileAlreadyExists(file, filename)) {
+      setNameExists(true);
+    }
+
+    setFilename(filename)
+  }
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    modifyFilename(event.target.value)
+  }
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      if (nameExists === true || validFilename === false || filename === "") {
+        return event.preventDefault()
+      }
+
+      toggleFocus(file, true);
+
+      changeName(file, filename);
+    }
+  }
+
+  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (nameExists === true || validFilename === false || filename === "") {
+      return event.preventDefault()
+    }
+
+    toggleFocus(file, true);
+
+    changeName(file, filename);
+  }
 
   useEffect(() => {
-    setfilename(
+    setFilename(
       FileUpload.removeSpecialChars(
         FileUpload.removeDefaultExt(file.clientName)
       )
@@ -56,34 +109,18 @@ export const DocumentItem = ({
   }, [file]);
 
   useEffect(() => {
-
-  }, [file.editName === true && showInput]);
-
-
-
-  useEffect(() => {
     if (!file.editName) {
       setShowInput(false);
     }
   }, [file.editName])
 
-  const rename = (e) => {
-    toggleFocus(file, false, true)
-    seteditable(false);
-    if (filename === "") {
-      setNameExists(true);
-      return;
-    }
-    let nameExists = changeName(file, filename);
-    if (nameExists === false) {
-      setNameExists(true);
-    }
-  };
-
   const EditTitle = () => {
     changeName(file, filename);
+
     toggleFocus(file, true)
+
     setShowInput(true);
+
     if (showInput) {
       if (txtInput.current) {
         txtInput.current.focus();
@@ -96,46 +133,6 @@ export const DocumentItem = ({
     deleteDoc(file.clientName);
     setNameExists(false);
   };
-  const cancelDeleteDOC = () => {
-    // disableSubmitButton(false)
-    handleDelete(file);
-  };
-
-  const renderDeleteBox = () => {
-    return (
-      <>
-        <div className="document-confirm-wrap">
-          <div className="row">
-            <div className="col-sm-7">
-              <div className="dc-text">
-                <p>Are you sure to delete this file?</p>
-              </div>
-            </div>
-
-            <div className="col-sm-5">
-              <div className="dc-actions">
-                <button
-                  className="btn btn-small btn-secondary"
-                  onClick={() => cancelDeleteDOC()}
-                >
-                  No
-                </button>
-                <button
-                  className="btn btn-small btn-primary"
-                  onClick={() => {
-                    file.uploadReqCancelToken.cancel();
-                    deleteDoc(file.clientName);
-                  }}
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
 
   const renderDocListActions = () => {
     return (
@@ -145,8 +142,13 @@ export const DocumentItem = ({
             <li>
               <button
                 onClick={(e) => {
-                  setShowInput(false);
-                  rename(e);
+                  if (nameExists === true || validFilename === false || filename === "") {
+                    return e.preventDefault()
+                  }
+
+                  toggleFocus(file, true);
+
+                  changeName(file, filename);
                 }}
                 className="btn btn-primary doc-rename-btn"
               >
@@ -199,75 +201,28 @@ export const DocumentItem = ({
       </div>
     );
   };
-  const doubleClickHandler = (isUploaded: string | undefined) => {
-    if (isUploaded === 'done') {
-      return;
 
-    }
-    toggleFocus(file, true)
-    changeName(file, filename);
-  }
   const renderFileTitle = () => {
-    console.log('filename', filename, filename.split(".")[0])
-
     return (
       <div className="title">
         {file.editName ? (
           <input
-            autoFocus={file.focused}
-            style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
             ref={txtInput}
+            style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
+            autoFocus={file.focused}
             maxLength={255}
             type="text"
-            value={filename.split(".")[0]}
-            onChange={(e) => {
-              !validFilename && setValidFilename(() => true)
-              setNameExists(false);
-              if (fileAlreadyExists(file, e.target.value)) {
-                setNameExists(true);
-              }
-              if (FileUpload.nameTest.test(e.target.value)) {
-                setfilename(e.target.value);
-                return;
-              } else {
-                setValidFilename(() => false)
-              }
-
-              setNameExists(true);
-            }}
-            onKeyDown={(e) => {
-              if (e.keyCode === 13) {
-                rename(e);
-              }
-            }}
-            onBlur={(e) => rename(e)}
+            value={filename} //filename is default value on edit without extension
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            onBlur={onBlur}
           />
         ) : (
             <p> {file.clientName}</p>
           )}
       </div>
-    );
-  };
-
-  const renderFileContent = () => {
-    return (
-      <div className="dl-info">
-        {nameExists ? (
-          <span className="dl-errorrename">File name must be unique.</span>
-        ) : (
-            <>
-              <span className="dl-date">
-                {DateFormatWithMoment(file.fileUploadedOn)}
-              </span>
-              <span className="dl-text-by"> by </span>
-              <span className="dl-text-auther">{UserActions.getUserName()}</span>
-              <span className="dl-pipe"> | </span>
-              <span className="dl-filesize">{FileUpload.getFileSize(file)}</span>
-            </>
-          )}
-      </div>
-    );
-  };
+    )
+  }
 
   const renderAllowedFile = () => {
     return (
@@ -285,8 +240,16 @@ export const DocumentItem = ({
             </div>
             <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
-              {!validFilename && (<span className='text-danger'>File name cannot contain any special characters</span>)}
-              {/* {renderFileContent()} */}
+              {!validFilename && (
+                <div className="dl-info">
+                  <span className="dl-errorrename">File name cannot contain any special characters</span>
+                </div>
+              )}
+              {!!nameExists && (
+                <div className="dl-info">
+                  <span className="dl-errorrename">File name must be unique.</span>
+                </div>
+              )}
             </div>
             {renderDocListActions()}
           </div>
