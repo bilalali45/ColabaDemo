@@ -59,7 +59,7 @@ export const ReviewDocumentStatement = ({
     }
   }, [setDocumentFiles])
 
-  const allowFileRenameMCU = (filename: string, fileId: string): boolean => {
+  const allowFileRenameMCU = (filename: string, fileId: string, addToList: boolean = true): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
     // Why filter? because we don't want to check filename of current file being renamed
@@ -67,7 +67,13 @@ export const ReviewDocumentStatement = ({
       return file.mcuName.trim() === filename.trim()
     })
 
-    if (mcuNameAlreadyInList) return false
+    // This condition will make sure we are not saving each value in string
+    // addToList === false, means we don't want to save it in List setMcuNamesUpdated
+    if (addToList === false) {
+      return mcuNameAlreadyInList
+    } else if (mcuNameAlreadyInList) {
+      return false
+    }
 
     const documentFile = clonedArray.find(file => file.fileId === fileId)
 
@@ -101,40 +107,40 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
-        <div className="document-statement--body-footer">
-          <section className="document-statement--body">
-            {/* <h3>Documents</h3> */}
-            {!!documentFiles && documentFiles.length ?
-              documentFiles.map((file, index) => <DocumentSnipet
-                key={index}
-                index={index}
-                moveNextFile={moveNextFile}
-                id={currentDocument?.id!}
-                requestId={currentDocument?.requestId!}
-                docId={currentDocument?.docId!}
-                fileId={file.fileId}
-                mcuName={file.mcuName}
-                clientName={file.clientName}
-                currentFileIndex={currentFileIndex}
-                uploadedOn={file.fileUploadedOn}
-                username={username}
-                allowFileRenameMCU={allowFileRenameMCU}
-              />) : (
-                <span>No file submitted yet</span>
-              )}
-          </section>
+          <div className="document-statement--body-footer">
+            <section className="document-statement--body">
+              {/* <h3>Documents</h3> */}
+              {!!documentFiles && documentFiles.length ?
+                documentFiles.map((file, index) => <DocumentSnipet
+                  key={index}
+                  index={index}
+                  moveNextFile={moveNextFile}
+                  id={currentDocument?.id!}
+                  requestId={currentDocument?.requestId!}
+                  docId={currentDocument?.docId!}
+                  fileId={file.fileId}
+                  mcuName={file.mcuName}
+                  clientName={file.clientName}
+                  currentFileIndex={currentFileIndex}
+                  uploadedOn={file.fileUploadedOn}
+                  username={username}
+                  allowFileRenameMCU={allowFileRenameMCU}
+                />) : (
+                  <span>No file submitted yet</span>
+                )}
+            </section>
 
-          <footer className="document-statement--footer">
-            <div className="row">
-              <div className="col-md-6">
-                <button className="btn btn-secondry btn-block">Reject Document</button>
+            <footer className="document-statement--footer">
+              <div className="row">
+                <div className="col-md-6">
+                  <button className="btn btn-secondry btn-block">Reject Document</button>
+                </div>
+                <div className="col-md-6">
+                  <button className="btn btn-primary btn-block">Accept Document</button>
+                </div>
               </div>
-              <div className="col-md-6">
-                <button className="btn btn-primary btn-block">Accept Document</button>
-              </div>
-            </div>
-          </footer>
-        </div>
+            </footer>
+          </div>
         )}
     </div>
   );
