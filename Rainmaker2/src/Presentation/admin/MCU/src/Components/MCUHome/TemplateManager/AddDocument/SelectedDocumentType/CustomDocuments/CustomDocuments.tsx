@@ -86,7 +86,6 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 </div>
 
-                {!isValid && <label className={'error'}>Name cannot be empty and must be less than 256 chars.</label>}
                 {docNameError && <label className={'error'}>{docNameError}</label>}
             </div>
         </div>

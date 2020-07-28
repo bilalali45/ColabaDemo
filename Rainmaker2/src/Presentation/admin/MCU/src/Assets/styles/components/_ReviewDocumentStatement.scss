@@ -39,10 +39,12 @@
 
     h2{
         font:500 #{fontSize("xmd") + "/" + fontSize("xmd")} fontFamily("base");
+        color: color('heading');
     }
 
     h3{
         font:500 #{fontSize("md") + "/" + fontSize("md")} fontFamily("base");
+        color: color('heading');
     }
 
     .activity-logs-icon{

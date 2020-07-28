@@ -246,7 +246,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 target?.select();
                                             }, 0);
                                         }}
-                                        style={{ border: nameError ? '1px solid red' : '' }}
+                                        
+                                        className={`editable-TemplateTitle ${nameError ? 'error' : ''}`} 
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 
@@ -267,8 +268,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 setNewNameText(e.target.value);
                                             }
                                         }}
-                                        onBlur={() => renameTemplate(newNameText)}
-                                        className="editable-TemplateTitle" />
+                                        onBlur={() => renameTemplate(newNameText)}  />
                                     {addRequestSent ?
                                         <div className="rename-spinner">
                                             <Spinner size="sm" animation="border" role="status">
@@ -276,7 +276,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                             </Spinner>
                                         </div> : ''}
                                     {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                                    {nameError && <span className={"error-name"}>{nameError}</span>}
+                                    {nameError && <label className={"error"}>{nameError}</label>}
                                 </p>
                             </>
                             : <>

@@ -621,3 +621,17 @@ ul {
         }
     }
 }
+
+
+
+input.error{
+    border:1px solid $danger !important;
+    color: $danger !important;
+}
+label.error{
+    color: $danger  !important;
+    display: block;
+    font: 400 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    text-transform: initial;
+    padding-top: 5px;
+}
