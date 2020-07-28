@@ -18,6 +18,7 @@ namespace Rainmaker.Service
             LoanContact = 1 << 0,
             LoanContact_Ethnicity = 1 << 1,
             LoanApplication = 1 << 2,
+            LoanContact_Race = 1 << 3,
         }
 
 
@@ -60,6 +61,7 @@ namespace Rainmaker.Service
             if (includes.HasFlag(RelatedEntity.LoanContact))                query = query.Include(borrower => borrower.LoanContact);
             if (includes.HasFlag(RelatedEntity.LoanContact_Ethnicity))      query = query.Include(borrower => borrower.LoanContact).ThenInclude(loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(ethnicityBinder => ethnicityBinder.Ethnicity);
             if (includes.HasFlag(RelatedEntity.LoanApplication))            query = query.Include(borrower => borrower.LoanApplication);
+            if (includes.HasFlag(RelatedEntity.LoanContact_Race))           query = query.Include(borrower => borrower.LoanContact).ThenInclude(loanContact => loanContact.LoanContactRaceBinders).ThenInclude(raceBinder => raceBinder.Race);
             // ReSharper enable formatting
             return query;
         }

@@ -18,10 +18,12 @@ namespace ByteWebConnector.API.Controllers
         #region Constructors
 
         public BorrowerController(IHttpClientFactory clientFactory,
-                                  IConfiguration configuration)
+                                  IConfiguration configuration
+                                  )
         {
             _clientFactory = clientFactory;
             _configuration = configuration;
+            _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
             //_tokenService = tokenService;
             //_logger = logger;
         }
@@ -62,13 +64,10 @@ namespace ByteWebConnector.API.Controllers
         {
             var rainmakerBorrower = byteBorrower.GetRainmakerBorrower();
 
-            var httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-
             var content = rainmakerBorrower.ToJsonString();
 
-
             var callResponse =
-                await httpClient.PostAsync(requestUri:
+                await _httpClient.PostAsync(requestUri:
                                            $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/borrower/AddOrUpdate",
                                            content: new StringContent(content: content,
                                                                       encoding: Encoding.UTF8,
@@ -110,6 +109,7 @@ namespace ByteWebConnector.API.Controllers
         private readonly IHttpClientFactory _clientFactory;
 
         private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
         #endregion
     }

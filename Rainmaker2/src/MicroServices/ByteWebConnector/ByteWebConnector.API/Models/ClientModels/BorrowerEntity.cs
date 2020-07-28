@@ -1,4 +1,6 @@
-﻿namespace ByteWebConnector.API.Models.ClientModels
+﻿using System.Collections.Generic;
+
+namespace ByteWebConnector.API.Models.ClientModels
 {
     public class BorrowerEntity
     {
@@ -11,9 +13,9 @@
         public string Suffix { get; set; }
         public string HomePhone { get; set; }
         public string EmailAddress { get; set; }
-        public int MaritalStatusId { get; set; }
-        public int ResidencyStateId { get; set; }
-        public int GenderId { get; set; }
+        public int? MaritalStatusId { get; set; }
+        public int? ResidencyStateId { get; set; }
+        public List<int> GenderIds { get; set; }
         public int? NoOfDependent { get; set; }
         public string DependentAge { get; set; }
         public int OutstandingJudgementsIndicator { get; set; }
@@ -30,9 +32,12 @@
         public int DeclarationsKIndicator { get; set; }
         public string PriorPropertyUsageType { get; set; }
         public string PriorPropertyTitleType { get; set; }
-        public int EthnicityId { get; set; }
-        public int EthnicityDetailId { get; set; }
-        public int RaceId { get; set; }
-        public int RaceDetailId { get; set; }
+        public List<int> EthnicityId { get; set; }
+        public List<int> EthnicityDetailId { get; set; }
+        public List<int> RaceIds { get; set; }
+        public List<int> RaceDetailIds { get; set; }
+        public Dictionary<int, List<int>> EthnicityDictionary { get; set; }
+        
+        public List<RaceInfoItem> RaceInfo { get; set; }
     }
 }

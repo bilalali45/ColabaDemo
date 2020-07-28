@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Rainmaker.Model.Borrower;
 using Rainmaker.Service;
@@ -8,7 +9,6 @@ using Rainmaker.Service;
 
 namespace Rainmaker.API.Controllers
 {
- 
     [ApiController]
     [Route(template: "/api/rainmaker/[controller]")]
     public class BorrowerController : ControllerBase
@@ -43,28 +43,31 @@ namespace Rainmaker.API.Controllers
 
 
         // POST api/<BorrowerController>
-        [HttpPost("[action]")]
-        public IActionResult AddOrUpdate(RainmakerBorrower rainmakerBorrowerModel,bool addIfNotExists = false)
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> AddOrUpdate(RainmakerBorrower rainmakerBorrowerModel,
+                                                     bool addIfNotExists = false)
         {
-            var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId:rainmakerBorrowerModel.FileDataId,
+            var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId: rainmakerBorrowerModel.FileDataId,
                                                                          firstName: rainmakerBorrowerModel.FirstName,
-                                                                                    email: rainmakerBorrowerModel.EmailAddress,
-                                                                                     includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity | 
-                                                                                               BorrowerService.RelatedEntity.LoanApplication).SingleOrDefault();
+                                                                         email: rainmakerBorrowerModel.EmailAddress,
+                                                                         // @formatter:off
+                                                                         includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity |
+                                                                                   BorrowerService.RelatedEntity.LoanContact_Race |
+                                                                                   BorrowerService.RelatedEntity.LoanApplication
+                                                                         // @formatter:on
+                                                                        )
+                                                 .SingleOrDefault();
 
             if (borrowerEntity == null)
-            {
                 if (addIfNotExists)
                 {
                     // insertLogic
                 }
-            }
 
-            rainmakerBorrowerModel.PopulateEntity(borrowerEntity);
+            rainmakerBorrowerModel.PopulateEntity(entity: borrowerEntity);
 
             _borrowerService.Update(item: borrowerEntity);
-
-            _borrowerService.SaveChangesAsync();
+            await _borrowerService.SaveChangesAsync();
             return Ok();
         }
 

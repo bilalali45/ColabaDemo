@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RainMaker.Entity.Models;
+using TrackableEntities.Common.Core;
 
 namespace Rainmaker.Model.Borrower
 {
@@ -10,6 +13,7 @@ namespace Rainmaker.Model.Borrower
             
         }
 
+        public int? BorrowerId { get; set; }
         public string CellPhone { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,9 +21,9 @@ namespace Rainmaker.Model.Borrower
         public string Suffix { get; set; }
         public string HomePhone { get; set; }
         public string EmailAddress { get; set; }
-        public int MaritalStatusId { get; set; }
-        public int ResidencyStateId { get; set; }
-        public int GenderId { get; set; }
+        public int? MaritalStatusId { get; set; }
+        public int? ResidencyStateId { get; set; }
+        public List<int> GenderIds { get; set; }
         public int? NoOfDependent { get; set; }
         public string DependentAge { get; set; }
         public int OutstandingJudgementsIndicator { get; set; }
@@ -36,11 +40,15 @@ namespace Rainmaker.Model.Borrower
         public int DeclarationsKIndicator { get; set; }
         public string PriorPropertyUsageType { get; set; }
         public string PriorPropertyTitleType { get; set; }
-        public int EthnicityId { get; set; }
-        public int EthnicityDetailId { get; set; }
-        public int RaceId { get; set; }
-        public int RaceDetailId { get; set; }
+        public List<int> EthnicityIds { get; set; }
+        public List<int> EthnicityDetailIds { get; set; }
+        public List<int> RaceIds { get; set; }
+        public List<int> RaceDetailIds { get; set; }
         public string FileDataId { get; set; }
+        public List<int> EthnicityDetailId { get; set; }
+        public Dictionary<int, List<int>> EthnicityDictionary { get; set; }
+
+        public List<RaceInfoItem> RaceInfo { get; set; }
 
 
         public  void PopulateEntity(RainMaker.Entity.Models.Borrower entity)
@@ -53,19 +61,63 @@ namespace Rainmaker.Model.Borrower
             entity.LoanContact.HomePhone = this.HomePhone;
             entity.LoanContact.MaritalStatusId = this.MaritalStatusId;
             entity.LoanContact.ResidencyStateId = this.ResidencyStateId;
-            entity.LoanContact.GenderId = this.GenderId;
+            entity.LoanContact.GenderId = this.GenderIds[0];
+            entity.LoanContact.TrackingState = TrackingState.Modified;
             entity.NoOfDependent = this.NoOfDependent;
             entity.DependentAge = this.DependentAge;
-          
-            foreach (var ethnicityBinder in entity.LoanContact.LoanContactEthnicityBinders)
+
+            //entity.LoanContact.LoanContactEthnicityBinders delete all
+            entity.LoanContact.LoanContactEthnicityBinders.Select(loanContactEthnicityBinder =>
             {
-                ethnicityBinder.EthnicityId = this.EthnicityId;
-                ethnicityBinder.EthnicityDetailId = this.EthnicityDetailId;
+                return loanContactEthnicityBinder.TrackingState = TrackingState.Deleted;
+
+            }).ToList();
+           
+            foreach (var ethnicity in EthnicityDictionary)
+            {
+                int binderEthnicityId = ethnicity.Key;
+                int valueCount = ethnicity.Value.Count;
+                if (valueCount > 0)
+                {
+                    foreach (int detailId in ethnicity.Value)
+                    {
+                        var ethnicityBinder = new LoanContactEthnicityBinder();
+                        //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
+                        ethnicityBinder.EthnicityDetailId = detailId;
+                        ethnicityBinder.EthnicityId = binderEthnicityId;
+                        ethnicityBinder.TrackingState = TrackingState.Added;
+                        entity.LoanContact.LoanContactEthnicityBinders.Add(ethnicityBinder);
+                    }
+                   
+                }
+                else
+                {
+                    var ethnicityBinder = new LoanContactEthnicityBinder();
+                    //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
+                    ethnicityBinder.EthnicityDetailId = null;
+                    ethnicityBinder.EthnicityId = binderEthnicityId;
+                    ethnicityBinder.TrackingState = TrackingState.Added;
+                    entity.LoanContact.LoanContactEthnicityBinders.Add(ethnicityBinder);
+                }
             }
-            foreach (var raceBinder in entity.LoanContact.LoanContactRaceBinders)
+
+            //entity.LoanContact.LoanContactRaceBinders delete all
+            entity.LoanContact.LoanContactRaceBinders.Select(loanContactRaceBinder =>
             {
-                raceBinder.RaceId = this.RaceId;
-                raceBinder.RaceDetailId = this.RaceDetailId;
+                return loanContactRaceBinder.TrackingState = TrackingState.Deleted;
+            }).ToList();
+
+
+            
+
+            foreach (var raceInfoItem in RaceInfo)
+            {
+                var raceBinder = new LoanContactRaceBinder();
+                //raceBinder.LoanContactId = entity.LoanContactId.Value;
+                raceBinder.RaceDetailId = raceInfoItem.RaceDetailId;
+                raceBinder.RaceId = raceInfoItem.RaceId.Value;
+                raceBinder.TrackingState = TrackingState.Added;
+                entity.LoanContact.LoanContactRaceBinders.Add(raceBinder);
             }
 
 
