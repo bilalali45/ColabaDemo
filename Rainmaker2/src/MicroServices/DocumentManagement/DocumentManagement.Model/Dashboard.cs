@@ -190,8 +190,6 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
-
-        public string userName { get; set; }
     }
 
     public class GetDocuments

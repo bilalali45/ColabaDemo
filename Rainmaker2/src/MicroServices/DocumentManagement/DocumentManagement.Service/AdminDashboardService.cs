@@ -221,23 +221,6 @@ namespace DocumentManagement.Service
                     query = BsonSerializer.Deserialize<RequestIdQuery>(current);
                 }
             }
-
-            using var asyncCursor1 = await collection.FindAsync(new BsonDocument() {
-                {"loanApplicationId",loanApplicationId }
-            }, new FindOptions<Entity.Request, BsonDocument>()
-            {
-                Projection = new BsonDocument() { {"userName", 1 },{"_id",0}
-                }
-            });
-            while (await asyncCursor1.MoveNextAsync())
-            {
-                foreach (var current in asyncCursor1.Current)
-                {
-                    RequestIdQuery query1 = BsonSerializer.Deserialize<RequestIdQuery>(current);
-                    query.userName = query1.userName;
-                }
-            }
-
             return query;
         }
     }
