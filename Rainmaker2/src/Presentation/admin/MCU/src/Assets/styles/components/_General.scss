@@ -135,6 +135,14 @@ ul {
         margin-left: 6px;
     }
 
+    .btn-icon{
+        i,em{
+            &::before{
+                @include transition(all 0.3s ease-out);
+            }
+        }
+    }
+
     &:hover,
     &:focus{
         .rotate-plus{
@@ -148,12 +156,23 @@ ul {
         &-icon-right{
             border-left: 1px solid darken($color: color('primary'), $amount: 50%);
         }
+
+        .btn-icon{
+            i,em{
+                &::before{
+                    @include transform(rotate(40deg));
+                    position: relative;
+                    display: block;
+                }
+            }
+        }
     }
 
     &:focus,&:active{
         box-shadow:none;
     }
 
+    
 
 }//.btn
 
@@ -572,4 +591,47 @@ ul {
     p{
         margin: 0;
     }
+}
+
+.dialogbox{
+    &-backdrop {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        background: rgba(color('widgetBg'),0.6);
+        @include transition(all 0.5s ease-out);
+    }
+    &-slideup{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 7;
+        padding: 20px;
+        color: color('dialogText');
+        border-top: 1px solid color('border');
+        box-shadow: 0 -3px 6px rgba(0,0,0,0.08);
+        @include transition(all 0.5s ease-out);
+        h2{
+            font: normal #{fontSize('nr')+'/1.2'} fontFamily('heading'); 
+        }
+    }
+}
+
+
+
+input.error{
+    border:1px solid $danger !important;
+    color: $danger !important;
+}
+label.error{
+    color: $danger  !important;
+    display: block;
+    font: 400 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    text-transform: initial;
+    padding-top: 5px;
 }

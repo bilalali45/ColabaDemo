@@ -20,3 +20,10 @@ export const DateFormat = (
     : "MMMM DD, YYYY ";
   return moment(date).format("MMM DD, YYYY");
 };
+
+export const ActivityLogFormat = (date: string) => {
+  const eventDate = moment(date).format("MMM, DD")
+  const eventTime = moment(date).format("hh:mm A")
+
+  return `${eventDate} at ${eventTime}`
+}

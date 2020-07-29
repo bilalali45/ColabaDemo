@@ -1,7 +1,26 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
 export const TemplateHeader = () => {
+
+    const history = useHistory();
+
+    useEffect(() => {
+
+        const closeTemplateManager = (e: any) => {
+            console.log('key', e.keyCode)
+            if (e.keyCode === 27) {
+                history.push('/needList');
+            }
+        }
+
+        document.addEventListener('keydown', closeTemplateManager);
+
+        return () => {
+            document.removeEventListener('keydown', closeTemplateManager)
+        }
+    }, [])
+
     return (
         <section className="MTheader">
             <h2>Manage Templates</h2>

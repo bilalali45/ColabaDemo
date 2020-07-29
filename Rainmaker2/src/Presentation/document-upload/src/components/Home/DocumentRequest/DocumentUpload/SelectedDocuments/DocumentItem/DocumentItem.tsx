@@ -208,9 +208,9 @@ export const DocumentItem = ({
         {file.editName ? (
           <input
             ref={txtInput}
-            style={{ border: nameExists ? "1px solid #D7373F" : "none" }}
+            style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
             autoFocus={file.focused}
-            maxLength={255}
+            maxLength={250}
             type="text"
             value={filename} //filename is default value on edit without extension
             onChange={onChange}
@@ -248,6 +248,11 @@ export const DocumentItem = ({
               {!!nameExists && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name must be unique.</span>
+                </div>
+              )}
+              {filename === "" && (
+                <div className="dl-info">
+                  <span className="dl-errorrename">File name cannot be empty.</span>
                 </div>
               )}
             </div>

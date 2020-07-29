@@ -205,8 +205,7 @@ namespace DocumentManagement.Service
                                 ""path"": ""$requests"",
                                 ""preserveNullAndEmptyArrays"": true}
                         }", @"{""$match"": {
-                                ""requests.userId"": " + userId + @",
-                                ""requests.status"": """ + DocumentStatus.Draft + @"""
+                                ""requests.status"": """ + RequestStatus.Draft + @"""
                             }
                         }", @"{
                             ""$project"": {
