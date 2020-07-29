@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { NeedListDocumentType } from "../../../../../Entities/Types/Types";
 
 interface NeedListItemProps {
+  changeDocument: Function
   index: number;
   toDocumentReview: (index: number) => void;
 }

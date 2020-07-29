@@ -8,7 +8,7 @@ type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
     redirectToDocumentRequest: Function;
-    isDraft: boolean;
+    isDraft: string;
     viewSaveDraft: Function;
 }
 
@@ -80,7 +80,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
     }
 
     const displayAddButton = () => {
-       if(isDraft){
+       if(false){
            return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
        }else{
            return (

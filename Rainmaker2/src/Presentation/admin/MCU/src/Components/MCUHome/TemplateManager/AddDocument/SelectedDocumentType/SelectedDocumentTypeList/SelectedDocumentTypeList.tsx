@@ -44,7 +44,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                                 onClick={async () => {
                                 setRemoveDocName(dl?.docTypeId);
                                 setRequestSent(true)
-                                await addNewDoc(dl.docTypeId, 'typeId');
+                                await addNewDoc(dl, 'typeId');
                                 setRequestSent(false)
                                 // setVisible(false);
                             }}>{dl?.docType}
