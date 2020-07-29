@@ -11,22 +11,15 @@ import { NewNeedList } from "./NeedList/NewNeedList/NewNeedList";
 
 
 export const MCUHome = () => {
-  const { state, dispatch } = useContext(Store);
-
-  useEffect(() => {}, []);
-
-  useEffect(() => {}, []);
 
   return (
     <section className="home-layout">
       <Switch>
         <Redirect exact from="/" to="/needList" />
         <Authorized path="/needList" component={NeedList} />
-        <Authorized path="/add-needList" component={AddNeedList} />
+        <Authorized path="/newNeedList" component={NewNeedList} />
         <Authorized path="/templateManager" component={TemplateManager} />
         <Authorized path="/ReviewDocument" component={ReviewDocument} />
-
-        <Authorized path="/NewNeedList" component={NewNeedList} />
       </Switch>
     </section>
   );
