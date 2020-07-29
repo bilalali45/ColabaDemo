@@ -49,6 +49,7 @@ namespace Rainmaker.Model.Borrower
         public Dictionary<int, List<int>> EthnicityDictionary { get; set; }
 
         public List<RaceInfoItem> RaceInfo { get; set; }
+        public List<EthnicInfoItem> EthnicityInfo { get; set; }
 
 
         public  void PopulateEntity(RainMaker.Entity.Models.Borrower entity)
@@ -73,32 +74,14 @@ namespace Rainmaker.Model.Borrower
 
             }).ToList();
            
-            foreach (var ethnicity in EthnicityDictionary)
+            foreach (var ethnicInfoItem in EthnicityInfo)
             {
-                int binderEthnicityId = ethnicity.Key;
-                int valueCount = ethnicity.Value.Count;
-                if (valueCount > 0)
-                {
-                    foreach (int detailId in ethnicity.Value)
-                    {
-                        var ethnicityBinder = new LoanContactEthnicityBinder();
-                        //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
-                        ethnicityBinder.EthnicityDetailId = detailId;
-                        ethnicityBinder.EthnicityId = binderEthnicityId;
-                        ethnicityBinder.TrackingState = TrackingState.Added;
-                        entity.LoanContact.LoanContactEthnicityBinders.Add(ethnicityBinder);
-                    }
-                   
-                }
-                else
-                {
-                    var ethnicityBinder = new LoanContactEthnicityBinder();
-                    //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
-                    ethnicityBinder.EthnicityDetailId = null;
-                    ethnicityBinder.EthnicityId = binderEthnicityId;
-                    ethnicityBinder.TrackingState = TrackingState.Added;
-                    entity.LoanContact.LoanContactEthnicityBinders.Add(ethnicityBinder);
-                }
+                var ethnicityBinder = new LoanContactEthnicityBinder();
+                //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
+                ethnicityBinder.EthnicityDetailId = ethnicInfoItem.EthnicDetailId;
+                ethnicityBinder.EthnicityId = ethnicInfoItem.EthnicId.Value;
+                ethnicityBinder.TrackingState = TrackingState.Added;
+                entity.LoanContact.LoanContactEthnicityBinders.Add(ethnicityBinder);
             }
 
             //entity.LoanContact.LoanContactRaceBinders delete all

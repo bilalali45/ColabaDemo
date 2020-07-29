@@ -116,7 +116,6 @@ namespace ByteWebConnector.API.Models
         public int Ethnicity2CompletionMethod { get; set; }
         [DataMember]
         public long FileDataId { get; set; }
-
         public BorrowerEntity GetRainmakerBorrower()
         {
             var borrowerEntity = new ClientModels.BorrowerEntity();
@@ -151,13 +150,9 @@ namespace ByteWebConnector.API.Models
 
             borrowerEntity.GenderIds = GetGenderId(this.Gender2);
 
-            Dictionary<int, List<int>> ethnicityDictionary;
-            borrowerEntity.EthnicityId = GetEthnicityId(this.Ethnicity2,out ethnicityDictionary);
-            borrowerEntity.EthnicityDetailId = GetEthnicityDetailId(this.Ethnicity2);
-            borrowerEntity.EthnicityDictionary = ethnicityDictionary;
-
-
-            Dictionary<int, List<int>> raceDictionary;
+            borrowerEntity.EthnicityInfo = GetEthnicityInfo(Ethnicity2).Select(ethnicMap => new EthnicInfoItem(ethnicMap.RmEthId,
+                                                                                                             ethnicMap.RmEthDetailId))
+                                                        .ToList();
             borrowerEntity.RaceInfo = GetRaceInfo(Race2).Select(raceMap => new RaceInfoItem(raceMap.RmRaceId,
                                                                                        raceMap.RmRaceDetailId))
                                                    .ToList();
@@ -166,8 +161,6 @@ namespace ByteWebConnector.API.Models
 
             return borrowerEntity;
         }
-
-
         private  List<RaceMap> GetRaceMapping()
         {
             var raceMaps  = new List<RaceMap>();
@@ -190,8 +183,6 @@ namespace ByteWebConnector.API.Models
             return raceMaps;
 
         }
-
-
         private class RaceMap
         {
             public int? RmRaceId { get; set; }
@@ -204,7 +195,6 @@ namespace ByteWebConnector.API.Models
             public string ByteRaceDetailName { get; set; } 
 
         }
-
         private List<RaceMap> GetRaceInfo(string race2)
         {
             var raceMapping = GetRaceMapping();
@@ -355,8 +345,50 @@ namespace ByteWebConnector.API.Models
 
             return raceMaps;
         }
+        private class EthnicMap
+        {
+            public int? RmEthId { get; set; }
+            public string RmEthName { get; set; }
+            public int? RmEthDetailId { get; set; }
+            public string RmEthDetailName { get; set; }
+            public int? ByteEthId { get; set; }
+            public string ByteEthName { get; set; }
+            public int? ByteEthDetailId { get; set; }
+            public string ByteEthDetailName { get; set; }
+
+        }
+        private List<EthnicMap> GetEthnicMapping()
+        {
+            var ethnicMaps = new List<EthnicMap>();
+            ethnicMaps.Add(new EthnicMap { RmEthId = 1, RmEthName = "Hispanic or Latino",                         RmEthDetailId = 1,    RmEthDetailName = "Mexican",                  ByteEthId = null, ByteEthName = "HispanicOrLatino",    ByteEthDetailId = null, ByteEthDetailName = "Mexican" });
+            ethnicMaps.Add(new EthnicMap { RmEthId = 1, RmEthName = "Hispanic or Latino",                         RmEthDetailId = 2,    RmEthDetailName = "Puerto Rican",             ByteEthId = null, ByteEthName = "HispanicOrLatino",    ByteEthDetailId = null, ByteEthDetailName = "PuertoRican" });
+            ethnicMaps.Add(new EthnicMap { RmEthId = 1, RmEthName = "Hispanic or Latino",                         RmEthDetailId = 3,    RmEthDetailName = "Cuban",                    ByteEthId = null, ByteEthName = "HispanicOrLatino",    ByteEthDetailId = null, ByteEthDetailName = "Cuban" });
+            ethnicMaps.Add(new EthnicMap { RmEthId = 1, RmEthName = "Hispanic or Latino",                         RmEthDetailId = 4,    RmEthDetailName = "Other Hispanic or Latino", ByteEthId = null, ByteEthName = "HispanicOrLatino",    ByteEthDetailId = null, ByteEthDetailName = "OtherHispanicOrLatino" });
+            ethnicMaps.Add(new EthnicMap { RmEthId = 2, RmEthName = "Not Hispanic or Latino",                     RmEthDetailId = null, RmEthDetailName = null,                       ByteEthId = null, ByteEthName = "NotHispanicOrLatino", ByteEthDetailId = null, ByteEthDetailName = null });
+            ethnicMaps.Add(new EthnicMap { RmEthId = 3, RmEthName = "I do not wish to provide this information",  RmEthDetailId = null, RmEthDetailName = null,                       ByteEthId = null, ByteEthName = "IDoNotWishToFurnish", ByteEthDetailId = null, ByteEthDetailName = null });
+            return ethnicMaps;
+
+        }
+        private List<EthnicMap> GetEthnicityInfo(string ethnicity2)
+        {
+            var ethnicMapping = GetEthnicMapping();
+            var ethnicMaps = new List<EthnicMap>();
+
+            string[] ethnicityStrings = ethnicity2.Split(",");
+            foreach (string ethnicString in ethnicityStrings)
+            {
+                var ethnicMap = ethnicMapping.SingleOrDefault(map => map.ByteEthDetailName == ethnicString.Trim());
+                if (ethnicMap == null)
+                {
+                    ethnicMap = ethnicMapping.FirstOrDefault(map => map.ByteEthName == ethnicString.Trim());
+                }
+                if (ethnicMap != null)
+                    ethnicMaps.Add(ethnicMap);
 
 
+            }
+            return ethnicMaps;
+        }
         private string GetTitleHeldId(string titleHeld)
         {
             string title = "";
@@ -384,8 +416,6 @@ namespace ByteWebConnector.API.Models
 
             return title;
         }
-
-
         private string GetPropertyTypeId(string propertyType)
         {
             string property = "";
@@ -413,8 +443,6 @@ namespace ByteWebConnector.API.Models
 
             return property;
         }
-
-
         private int GetDeclarationId(string declaration)
         {
             int id = 0;
@@ -436,31 +464,6 @@ namespace ByteWebConnector.API.Models
 
             return id;
         }
-
-
-        private string GetEthnicityValue(string[] ethnicityValues)
-        {
-            foreach (string ethnicityValue in ethnicityValues)
-            {
-                if (ethnicityValue == EthnicityEnum.HispanicOrLatino.ToString())
-                {
-
-                    return ethnicityValue;
-                }
-                else if (ethnicityValue == EthnicityEnum.NotHispanicOrLatino.ToString())
-                {
-                    return ethnicityValue;
-                }
-                else if (ethnicityValue == EthnicityEnum.DoNotWishToProvideThisInformation.ToString())
-                {
-                    return ethnicityValue;
-                }
-            }
-
-            return null;
-        }
-
-
         private List<int> GetGenderId(string gender2)
         {
             List<int> ids = new List<int>();
@@ -492,167 +495,6 @@ namespace ByteWebConnector.API.Models
 
             return ids;
         }
-
-
-        private List<int> GetRaceDetailId(string race2,
-                                          Dictionary<int, List<int>> raceDictionary)
-        {
-            List<int> ids= new List<int>();
-            string[] raceValues = race2.Split(",");
-            foreach (string raceValue in raceValues)
-            {
-                switch (raceValue.Trim())
-                {
-                    case "AsianIndian":
-                        {
-                            const int asianIndian = (int)RaceDetailEnum.AsianIndian;
-                            ids.Add(asianIndian);
-                            break;
-                        }
-                    case "Chinese":
-                        {
-                            const int chinese = (int)RaceDetailEnum.Chinese;
-                            ids.Add(chinese);
-                            break;
-                        }
-                    case "Filipino":
-                        {
-                            const int filipino = (int)RaceDetailEnum.Filipino;
-                            ids.Add(filipino);
-                            break;
-                        }
-                    case "Japanese":
-                        {
-                            const int japanese = (int)RaceDetailEnum.Japanese;
-                            ids.Add(japanese);
-                            break;
-                        }
-                    case "Korean":
-                        {
-                            const int korean = (int)RaceDetailEnum.Korean;
-                            ids.Add(korean);
-                            break;
-                        }
-                    case "Vietnamese":
-                        {
-                            const int vietnamese = (int)RaceDetailEnum.Vietnamese;
-                            ids.Add(vietnamese);
-                            break;
-                        }
-                    case "OtherAsian":
-                        {
-                            const int otherAsian = (int)RaceDetailEnum.OtherAsian;
-                            ids.Add(otherAsian);
-                            break;
-                        }
-                    case "NativeHawaiian":
-                        {
-                            const int nativeHawaiian = (int)RaceDetailEnum.NativeHawaiian;
-                            ids.Add(nativeHawaiian);
-                            break;
-                        }
-                    case "GuamanianOrChamorro":
-                        {
-                            const int guamanianOrChamorro = (int)RaceDetailEnum.GuamanianOrChamorro;
-                            ids.Add(guamanianOrChamorro);
-                            break;
-                        }
-                    case "Samoan":
-                        {
-                            const int samoan = (int)RaceDetailEnum.Samoan;
-                            ids.Add(samoan);
-                            break;
-                        }
-                    case "OtherPacificIslander":
-                        {
-                            const int otherPacificIslander = (int)RaceDetailEnum.OtherPacificIslander;
-                            ids.Add(otherPacificIslander);
-                            break;
-                        }
-                }
-            }
-         
-
-            return ids;
-        }
-
-
-        private List<int> GetEthnicityId(string ethnicity2,
-                                         out Dictionary<int, List<int>> ethnicityDictionary)
-        {
-             ethnicityDictionary = new Dictionary<int, List<int>>();
-            List<int> ids = new List<int>();
-            string[] ethnicityValues = ethnicity2.Split(",");
-            foreach (var ethnicityValue in ethnicityValues)
-            {
-                switch (ethnicityValue.Trim())
-                {
-                    case "HispanicOrLatino":
-                    {
-                        const int hispanicOrLatino = (int)EthnicityEnum.HispanicOrLatino;
-                        ids.Add(hispanicOrLatino);
-                        List<int> ethnicityDetailIds = GetEthnicityDetailId(ethnicity2);
-                        ethnicityDictionary.Add(hispanicOrLatino, ethnicityDetailIds);
-                        break;
-                    }
-                    case "NotHispanicOrLatino":
-                    {
-                        const int notHispanicOrLatino = (int)EthnicityEnum.NotHispanicOrLatino;
-                        ids.Add(notHispanicOrLatino);
-                        ethnicityDictionary.Add(notHispanicOrLatino, new List<int>());
-                        break;
-                        }
-                    case "IDoNotWishToFurnish":
-                    {
-                        const int doNotWishToProvideThisInformation = (int)EthnicityEnum.DoNotWishToProvideThisInformation;
-                        ids.Add(doNotWishToProvideThisInformation);
-                        ethnicityDictionary.Add(doNotWishToProvideThisInformation, new List<int>());
-                        break;
-                    }
-                }
-            }
-            return ids;
-        }
-
-
-        private List<int> GetEthnicityDetailId(string ethnicity2)
-        {
-            List<int> ids = new List<int>();
-            string[] ethnicityValues = ethnicity2.Split(",");
-            foreach (var ethnicityValue in ethnicityValues)
-            {
-                switch (ethnicityValue.Trim())
-                {
-
-                    case "Mexican":
-                    {
-                        const int mexican = (int)EthnicityDetailEnum.Mexican;
-                        ids.Add(mexican);
-                        break;
-                    }
-                    case "PuertoRican":
-                    {
-                        const int puertoRican = (int)EthnicityDetailEnum.PuertoRican;
-                        ids.Add(puertoRican);
-                        break;
-                    }
-                    case "Cuban":
-                    {
-                        const int cuban = (int)EthnicityDetailEnum.Cuban;
-                        ids.Add(cuban);
-                        break;
-                    }
-                    case "OtherHispanicOrLatino":
-                    {
-                        const int otherHispanicOrLatino = (int)EthnicityDetailEnum.OtherHispanicOrLatino;
-                        ids.Add(otherHispanicOrLatino);
-                        break;
-                    }
-                }
-            }
-            return ids;
-        }
-
         public static int? GetResidencyStateId(string residencyType)
         {
             int? residencyStateId;
@@ -708,6 +550,20 @@ namespace ByteWebConnector.API.Models
             RaceId = raceId;
             RaceDetailId = raceDetailId;
         }
-    }
 
+    }
+    public class EthnicInfoItem
+    {
+        public int? EthnicId { get; }
+        public int? EthnicDetailId { get; }
+
+
+        public EthnicInfoItem(int? ethnicId,
+                              int? ethnicDetailId)
+        {
+            EthnicId = ethnicId;
+            EthnicDetailId = ethnicDetailId;
+        }
+
+    }
 }

@@ -32,12 +32,7 @@ namespace ByteWebConnector.API.Models.ClientModels
         public int DeclarationsKIndicator { get; set; }
         public string PriorPropertyUsageType { get; set; }
         public string PriorPropertyTitleType { get; set; }
-        public List<int> EthnicityId { get; set; }
-        public List<int> EthnicityDetailId { get; set; }
-        public List<int> RaceIds { get; set; }
-        public List<int> RaceDetailIds { get; set; }
-        public Dictionary<int, List<int>> EthnicityDictionary { get; set; }
-        
         public List<RaceInfoItem> RaceInfo { get; set; }
+        public List<EthnicInfoItem> EthnicityInfo { get; set; }
     }
 }
