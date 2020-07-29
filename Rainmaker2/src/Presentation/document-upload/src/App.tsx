@@ -91,6 +91,7 @@ const App = () => {
 
   const onIdle = (e) => {
     console.log("Idle time meet");
+    window.onbeforeunload = null;
     Auth.removeAuth();
     window.open("/Account/LogOff", "_self");
   };
