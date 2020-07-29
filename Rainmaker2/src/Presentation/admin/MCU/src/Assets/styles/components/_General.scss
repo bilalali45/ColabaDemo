@@ -172,6 +172,17 @@ ul {
         box-shadow:none;
     }
 
+    &-loading{
+        position: relative;
+        .spinner-border{
+            position: absolute;
+            top: calc(50% - 6px);
+            left: calc(50% - 6px);
+        }
+        .btn-text{
+            opacity: 0;
+        }
+    }
     
 
 }//.btn
