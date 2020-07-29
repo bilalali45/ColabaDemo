@@ -213,8 +213,7 @@ namespace DocumentManagement.Model
     {
         [FromQuery(Name = "id")]
         [Required(ErrorMessage = "Field Can't be empty")]
-        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
-        public string id { get; set; }
+        public int loanApplicationId { get; set; }
     }
     public class GetPendingDocuments
     {

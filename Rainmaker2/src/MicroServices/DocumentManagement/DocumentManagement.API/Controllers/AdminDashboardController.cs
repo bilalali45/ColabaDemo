@@ -49,7 +49,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
+            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.loanApplicationId, userProfileId);
             return Ok(docQuery);
         }
     }
