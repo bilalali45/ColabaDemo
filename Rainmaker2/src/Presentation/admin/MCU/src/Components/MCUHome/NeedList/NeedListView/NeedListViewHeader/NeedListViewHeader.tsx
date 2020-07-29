@@ -83,7 +83,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
     const displayAddButton = () => {
       if(isDraft === '') return '';
        if(isDraft){
-           return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
+           return  <button onClick={() => viewSaveDraft()} className="btn btn-secondry btn-sm">View Saved Draft</button>
        }else{
            return (
                <>

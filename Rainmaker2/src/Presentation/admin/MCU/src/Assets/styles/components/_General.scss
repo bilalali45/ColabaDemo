@@ -679,3 +679,19 @@ label.error{
     text-transform: initial;
     padding-top: 5px;
 }
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.alert{
+    font: normal #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    
+    &-primary{
+        color: color('primary');
+    }
+
+    &-success{
+        color: $success;
+    }
+}
