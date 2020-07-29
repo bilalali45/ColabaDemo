@@ -54,7 +54,12 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
         }
         if (isValid) {
             setRequestSent(true);
-            await addDocToTemplate(docName, 'docName');
+            let newDoc = {
+                docTypeId: '',
+                docType: docName,
+                docMessage: ''
+            }
+            await addDocToTemplate(newDoc, 'docName');
             setDocName('');
             setRequestSent(false);
         }

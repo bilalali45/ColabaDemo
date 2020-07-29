@@ -80,45 +80,28 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
     }
 
     const displayAddButton = () => {
-    return(
-        <Dropdown>
-        <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret btn-dropdown-toggle" id="dropdown-basic" >
-            Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
-        </Dropdown.Toggle>
+       if(isDraft){
+           return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
+       }else{
+           return (
+               <>
+                     <Dropdown>
+                        <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
+                            Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+                        </Dropdown.Toggle>
 
-        <Dropdown.Menu className="padding">
-            <h2>Select a need list Template</h2>
-            {MyTemplates()}
-            {TemplatesByTenant()}                          
-            <div className="external-link">
-            {StartListButton()}
-            </div>
-        </Dropdown.Menu>
-    </Dropdown>
-    )
-
-    //    if(isDraft){
-    //        return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
-    //    }else{
-    //        return (
-    //            <>
-    //                  <Dropdown>
-    //                     <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
-    //                         Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
-    //                     </Dropdown.Toggle>
-
-    //                     <Dropdown.Menu className="padding">
-    //                         <h2>Select a need list Template</h2>
-    //                         {MyTemplates()}
-    //                         {TemplatesByTenant()}                          
-    //                         <div className="external-link">
-    //                         {StartListButton()}
-    //                         </div>
-    //                     </Dropdown.Menu>
-    //                 </Dropdown>
-    //            </>
-    //        )
-    //    }
+                        <Dropdown.Menu className="padding">
+                            <h2>Select a need list Template</h2>
+                            {MyTemplates()}
+                            {TemplatesByTenant()}                          
+                            <div className="external-link">
+                            {StartListButton()}
+                            </div>
+                        </Dropdown.Menu>
+                    </Dropdown>
+               </>
+           )
+       }
     }
 
     return (

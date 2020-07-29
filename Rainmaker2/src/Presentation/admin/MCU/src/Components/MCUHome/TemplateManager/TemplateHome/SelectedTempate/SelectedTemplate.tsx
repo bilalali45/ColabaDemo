@@ -16,6 +16,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
 import { trim } from 'lodash'
 import { LocalDB } from '../../../../../Utils/LocalDB'
+import { Document } from '../../../../../Entities/Models/Document'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -98,6 +99,17 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         }
     }
 
+    const addDocumentToList = async (doc: Document, type: string) => {
+        try {
+            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, doc?.docTypeId, type);
+            if (success) {
+                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
+                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
+            }
+        } catch (error) {
+
+        }
+    }
 
 
     const setCurrentTemplateDocs = async (template: any) => {
@@ -247,7 +259,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                             }, 0);
                                         }}
                                         placeholder="New Template"
-                                        className={`editable-TemplateTitle ${nameError ? 'error' : ''}`} 
+                                        className={`editable-TemplateTitle ${nameError ? 'error' : ''}`}
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 
@@ -268,7 +280,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 setNewNameText(e.target.value);
                                             }
                                         }}
-                                        onBlur={() => renameTemplate(newNameText)}  />
+                                        onBlur={() => renameTemplate(newNameText)} />
                                     {addRequestSent ?
                                         <div className="rename-spinner">
                                             <Spinner size="sm" animation="border" role="status">
@@ -287,6 +299,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         {
                             currentTemplate?.type === MyTemplate &&
                             <AddDocument
+                                addDocumentToList={addDocumentToList}
                                 setLoaderVisible={setLoaderVisible}
                                 popoverplacement="bottom-start"
                             />

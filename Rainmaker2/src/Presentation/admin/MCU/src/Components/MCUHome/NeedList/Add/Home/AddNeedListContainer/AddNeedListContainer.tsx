@@ -8,7 +8,7 @@ export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
 type AddNeedListContainerType = {
     loaderVisible: boolean;
-    setLoaderVisible: Function;
+    setLoaderVisible: Function
 }
 
 
@@ -19,11 +19,6 @@ export const AddNeedListContainer = ({ loaderVisible, setLoaderVisible }: AddNee
     useEffect(() => {
         setLoaderVisible(false);
     }, []);
-
-
-
-
-
 
     const MyTemplates = () => {
         return (
@@ -64,10 +59,11 @@ export const AddNeedListContainer = ({ loaderVisible, setLoaderVisible }: AddNee
 
                 <div className="btn-add-new-Temp">
 
-                    <AddDocument
+                    {/* <AddDocument
+                        
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right-end"
-                    />
+                    /> */}
 
                     {/* <button className="btn btn-primary addnewTemplate-btn">
                         <span className="btn-text">Add document</span>
