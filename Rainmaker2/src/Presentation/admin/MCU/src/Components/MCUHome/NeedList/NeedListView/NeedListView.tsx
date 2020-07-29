@@ -10,6 +10,7 @@ import { sortList } from '../../../../Utils/helpers/Sort'
 import { Template } from '../../../../Entities/Models/Template'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
+import { useHistory } from 'react-router-dom'
 
 export const NeedListView = () => {
 
@@ -20,6 +21,7 @@ export const NeedListView = () => {
     const [statusSort, setStatusSort] = useState(false);
 
     const { state, dispatch } = useContext(Store);
+    const history = useHistory();
 
     const needListManager: any = state?.needListManager;
     const needListData = needListManager?.needList;
@@ -31,7 +33,6 @@ export const NeedListView = () => {
         if (!templates) {
             fetchTemplatesList();
         }
-        fetchSelectedTemplateDocuments();
     }, [])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
@@ -53,8 +54,8 @@ export const NeedListView = () => {
         }
     }
 
-    const fetchSelectedTemplateDocuments = async () => {
-        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments()
+    const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
+        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
         console.log('documents',documents)
         dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: documents})
     }
@@ -118,13 +119,19 @@ export const NeedListView = () => {
         }     
     }
 
-    
+    const redirectToDocumentRequestHandler = (idArray: string[]) => {
+        debugger
+        let tenantId =  LocalDB.getTenantId();
+        fetchSelectedTemplateDocuments(idArray, +tenantId);
+        history.push('/newNeedList');
+    }
 
     return (
         <div className="need-list-view">
             <NeedListViewHeader
                 toggleCallBack={togglerHandler}
                 templateList = {templates}
+                redirectToDocumentRequest = {redirectToDocumentRequestHandler}
             />
             <NeedListTable
                 needList={needListData}
