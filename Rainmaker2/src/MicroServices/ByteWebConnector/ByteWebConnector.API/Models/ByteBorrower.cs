@@ -148,8 +148,8 @@ namespace ByteWebConnector.API.Models
             borrowerEntity.HomeownerPastThreeYearsIndicator = GetDeclarationId(this.OwnershipInterest);
             borrowerEntity.PresentlyDelinquentIndicator = GetDeclarationId(this.DelinquentFederalDebt);
             borrowerEntity.IntentToOccupyIndicator = GetDeclarationId(this.OccupyAsPrimaryRes);
-            borrowerEntity.DeclarationsJIndicator = GetResidencyStateId(this.CitizenResidencyType) == 1 ? 1 : 0;
-            borrowerEntity.DeclarationsKIndicator = GetResidencyStateId(this.CitizenResidencyType) == 2 ? 1 : 0;
+            borrowerEntity.DeclarationsJIndicator = GetResidencyStateId(this.CitizenResidencyType) == 1 ? 1 : 0;//USCitizen
+            borrowerEntity.DeclarationsKIndicator = GetResidencyStateId(this.CitizenResidencyType) == 2 ? 1 : 0;// PermanentResidentAlien
 
             borrowerEntity.PriorPropertyUsageType = GetPropertyTypeId(this.PropertyType);
             borrowerEntity.PriorPropertyTitleType = GetTitleHeldId(this.TitleHeld);
@@ -451,24 +451,20 @@ namespace ByteWebConnector.API.Models
         }
         private int GetDeclarationId(string declaration)
         {
-            int id = 0;
             switch (declaration)
             {
                 case "Yes":
                 {
-                    const int yes = (int)Enums.Declaration.Yes;
-                    id = yes;
-                    break;
+                    return (int)Enums.Declaration.Yes;
+                    
                 }
                 case "No":
                 {
-                    const int male = (int)Enums.Declaration.No;
-                    id = male;
-                    break;
+                    return  (int)Enums.Declaration.No;
                 }
             }
 
-            return id;
+            return -1;
         }
         private List<int> GetGenderId(string gender2)
         {

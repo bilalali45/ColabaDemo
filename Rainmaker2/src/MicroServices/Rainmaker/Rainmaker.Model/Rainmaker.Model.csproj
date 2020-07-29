@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RainMaker.Common\RainMaker.Common.csproj" />
     <ProjectReference Include="..\RainMaker.Entity\RainMaker.Entity.csproj" />
   </ItemGroup>
 

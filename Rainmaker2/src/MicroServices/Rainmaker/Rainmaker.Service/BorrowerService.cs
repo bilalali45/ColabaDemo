@@ -19,6 +19,8 @@ namespace Rainmaker.Service
             LoanContact_Ethnicity = 1 << 1,
             LoanApplication = 1 << 2,
             LoanContact_Race = 1 << 3,
+            BorrowerQuestionResponses = 1 << 4,
+            BorrowerQuestionResponses_QuestionResponse = 1 << 5,
         }
 
 
@@ -58,10 +60,12 @@ namespace Rainmaker.Service
                                                      RelatedEntity includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact))                query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact);
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Ethnicity))      query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(navigationPropertyPath:ethnicityBinder => ethnicityBinder.Ethnicity);
-            if (includes.HasFlag(flag:RelatedEntity.LoanApplication))            query = query.Include(navigationPropertyPath:borrower => borrower.LoanApplication);
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Race))           query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactRaceBinders).ThenInclude(navigationPropertyPath:raceBinder => raceBinder.Race);
+            if (includes.HasFlag(flag:RelatedEntity.LoanContact))                         query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact);
+            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Ethnicity))               query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(navigationPropertyPath:ethnicityBinder => ethnicityBinder.Ethnicity);
+            if (includes.HasFlag(flag:RelatedEntity.LoanApplication))                     query = query.Include(navigationPropertyPath:borrower => borrower.LoanApplication);
+            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Race))                    query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactRaceBinders).ThenInclude(navigationPropertyPath:raceBinder => raceBinder.Race);
+            if (includes.HasFlag(flag: RelatedEntity.BorrowerQuestionResponses))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses);
+            if (includes.HasFlag(flag: RelatedEntity.BorrowerQuestionResponses_QuestionResponse))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses).ThenInclude(borrowerQuestionResponse=>borrowerQuestionResponse.QuestionResponse);
             // @formatter:on 
             return query;
         }

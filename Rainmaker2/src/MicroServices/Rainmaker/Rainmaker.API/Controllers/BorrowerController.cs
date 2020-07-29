@@ -54,6 +54,7 @@ namespace Rainmaker.API.Controllers
         {
             var firstName = rainmakerBorrowerModel.FirstName;
             var email = rainmakerBorrowerModel.EmailAddress;
+
             if (!string.IsNullOrEmpty(value: rainmakerBorrowerModel.OldFirstName) &&
                 rainmakerBorrowerModel.OldFirstName != rainmakerBorrowerModel.FirstName)
                 firstName = rainmakerBorrowerModel.OldFirstName;
@@ -61,9 +62,11 @@ namespace Rainmaker.API.Controllers
                 rainmakerBorrowerModel.OldEmailAddress != rainmakerBorrowerModel.EmailAddress)
                 email = rainmakerBorrowerModel.OldEmailAddress;
 
-            var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: rainmakerBorrowerModel.FileDataId,
-                                                                        includes: LoanApplicationService.RelatedEntity.Borrowers)
-                                                         .SingleOrDefault();
+            var loanApplication = _loanApplicationService
+                                  .GetLoanApplicationWithDetails(encompassNumber: rainmakerBorrowerModel.FileDataId,
+                                                                 includes: LoanApplicationService
+                                                                           .RelatedEntity.Borrowers)
+                                  .SingleOrDefault();
 
             var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId: rainmakerBorrowerModel.FileDataId,
                                                                          firstName: firstName,
@@ -71,7 +74,8 @@ namespace Rainmaker.API.Controllers
                                                                          // @formatter:off
                                                                          includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity |
                                                                                    BorrowerService.RelatedEntity.LoanContact_Race |
-                                                                                   BorrowerService.RelatedEntity.LoanApplication
+                                                                                   BorrowerService.RelatedEntity.LoanApplication|
+                                                                                   BorrowerService.RelatedEntity.BorrowerQuestionResponses_QuestionResponse
                                                                          // @formatter:on
                                                                         )
                                                  .SingleOrDefault();
@@ -90,10 +94,17 @@ namespace Rainmaker.API.Controllers
                                                      TrackingState = TrackingState.Added
                                                  };
                     rainmakerBorrowerModel.PopulateEntity(entity: borrowerEntity);
-                    loanApplication.Borrowers.Add(borrowerEntity);
-                    loanApplication.TrackingState = TrackingState.Modified;
-                    _loanApplicationService.Update(item: loanApplication);
-                    await _loanApplicationService.SaveChangesAsync();
+                    if (loanApplication != null)
+                    {
+                        loanApplication.Borrowers.Add(item: borrowerEntity);
+                        loanApplication.TrackingState = TrackingState.Modified;
+                        _loanApplicationService.Update(item: loanApplication);
+                        await _loanApplicationService.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
                 }
             }
             else
@@ -104,7 +115,6 @@ namespace Rainmaker.API.Controllers
                 await _borrowerService.SaveChangesAsync();
             }
 
-          
             return Ok();
         }
 
