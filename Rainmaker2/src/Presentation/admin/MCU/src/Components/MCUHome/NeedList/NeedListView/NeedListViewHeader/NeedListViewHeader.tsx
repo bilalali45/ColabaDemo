@@ -3,7 +3,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
 import { Template } from '../../../../../Entities/Models/Template';
-
+import { MyTemplate, TenantTemplate, SystemTemplate } from '../../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
@@ -17,6 +17,46 @@ export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) =
         setToggle(!toggle)  
       }
 
+    const MyTemplates = () => {
+        if(!templateList) return '';
+     return (
+         <>
+          <h3>My Templates</h3>
+          <ul className="checklist">
+            {
+              templateList?.map((t: Template) => {
+            if (t?.type === MyTemplate) {
+            return <li><label><input id= {t.id} type="checkbox" /> {t.name}</label></li>
+                                        }
+                                    })
+            }
+            </ul> 
+         </>
+     );
+    };
+
+    const TemplatesByTenant = () => {
+        if(!templateList) return '';
+        return (
+            <>
+            <h3>Templates by Tenants</h3>
+            <ul className="checklist">
+            {
+              templateList?.map((t: Template) => {
+            if (t?.type === TenantTemplate) {
+            return <li><label><input id= {t.id} type="checkbox" /> {t.name}</label></li>
+                                        }
+                                    })
+            }
+            </ul> 
+            </>
+        );
+    } 
+    const StartListButton = () => {
+   return <a href="">Start from new list</a>
+//    <button className="btn btn-primary btn-block">Continue with Template</button>
+    }
+  console.log('templateList',templateList)
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
@@ -29,7 +69,10 @@ export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) =
 
                     <Dropdown.Menu className="padding">
                         <h2>Select a need list Template</h2>
-                        <h3>My Templates</h3>
+                        {MyTemplates()}
+
+                       {TemplatesByTenant()}
+                        {/* <h3>My Templates</h3>
                         <ul className="checklist">
                             <li><label><input type="checkbox" /> Income templates</label></li>
                             <li><label><input type="checkbox" /> My standard checklist</label></li>
@@ -46,10 +89,10 @@ export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) =
                             <li><label><input type="checkbox" /> Additional Questions</label></li>
                             <li><label><input type="checkbox" /> Auto Loan</label></li>
                             <li><label><input type="checkbox" /> Construction Loan-Phase 1</label></li>
-                        </ul> 
+                        </ul>  */}
 
                         <div className="external-link">
-                            <a href="">Start from new list</a>
+                          {StartListButton()}                         
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>
