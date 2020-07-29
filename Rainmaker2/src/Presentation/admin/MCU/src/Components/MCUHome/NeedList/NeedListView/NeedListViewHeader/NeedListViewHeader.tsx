@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
 import { Template } from '../../../../../Entities/Models/Template';
 import { MyTemplate, TenantTemplate, SystemTemplate } from '../../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer';
+import { Link } from 'react-router-dom';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
@@ -60,7 +61,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
         if (idArray.length > 0) {
             return <button onClick={() => {redirectToDocumentRequest(idArray)}} className="btn btn-primary btn-block"><span className="btn-text">Continue with template</span><span className="btn-icon"><em className="zmdi zmdi-plus"></em></span></button>
         } else {
-            return <a href="">Start from new list</a>
+            return <Link to="/newNeedList" >Start from new list</Link> 
         }
     }
 
@@ -80,7 +81,8 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
     }
 
     const displayAddButton = () => {
-       if(false){
+      if(isDraft === '') return '';
+       if(isDraft){
            return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
        }else{
            return (
