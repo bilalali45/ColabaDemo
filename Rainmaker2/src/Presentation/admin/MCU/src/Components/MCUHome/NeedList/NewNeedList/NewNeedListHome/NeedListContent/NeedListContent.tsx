@@ -3,8 +3,14 @@ import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
 // ../../../../../../Assets/images/editicon.svg
 import EditIcon from '../../../../../../Assets/images/editicon.svg';
+import { TemplateDocument } from "../../../../../../Entities/Models/TemplateDocument";
 
-export const NeedListContent = () => {
+type NeedListContentType = {
+    document: TemplateDocument | null;
+    updateDocumentMessage: Function
+}
+
+export const NeedListContent = ({document, updateDocumentMessage} : NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
@@ -19,13 +25,13 @@ export const NeedListContent = () => {
                                 <p className="editable">
                                     <input
                                         autoFocus
-                                        value={"Financial Statement"}
+                                        value={document?.docName}
                                         onBlur={() => toggleRename()}
                                         className="editable-TemplateTitle" />
                                 </p>
                             </>
                             : <>
-                                <p> Financial Statement  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p>
+                                <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p>
                             </>}
                     </div>
                 </div>
@@ -42,12 +48,7 @@ export const NeedListContent = () => {
             <div className="mainbody">
                 <p>If you’d like, you can customize this email.</p>
                 <div className="editer-wrap">
-                    <textarea rows={6} className="editer">
-                        Hi Richard Glenn Randall,
-                        As we discussed, I’m adding addition |
-                        To continue your application, we need some more information.
-
-                </textarea>
+                    <textarea rows={6} className="editer" value={document?.docMessage} onChange={(e) => updateDocumentMessage(e.target.value, document)}></textarea>
                 </div>
 
             </div>

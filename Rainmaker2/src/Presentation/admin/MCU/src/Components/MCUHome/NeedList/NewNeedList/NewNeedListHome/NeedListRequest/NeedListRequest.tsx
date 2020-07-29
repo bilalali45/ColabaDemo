@@ -3,29 +3,36 @@ import { AddDocument } from '../../../../TemplateManager/AddDocument/AddDocument
 
 import { clear } from 'console';
 import { NeedListRequestItem } from './NeedListRequestItem/NeedListRequestItem';
+import { Document } from '../../../../../../Entities/Models/Document';
+import { DocumentRequest } from '../../../../../../Entities/Models/DocumentRequest';
+import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument';
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
 type AddNeedListContainerType = {
-    loaderVisible: boolean;
-    setLoaderVisible: Function;
+    currentDocument: TemplateDocument | null,
+    changeDocument: Function,
+    documentList: TemplateDocument[],
+    loaderVisible: boolean,
+    setLoaderVisible: Function,
+    addDocumentToList: Function
 }
 
 
-export const NeedListRequest = ({ loaderVisible, setLoaderVisible }: AddNeedListContainerType) => {
-    const Itemslist = [0, 1, 3]
-
+export const NeedListRequest = ({ 
+        loaderVisible, 
+        setLoaderVisible, 
+        documentList, 
+        changeDocument, 
+        currentDocument,
+        addDocumentToList }: AddNeedListContainerType) => {
 
     useEffect(() => {
         setLoaderVisible(false);
     }, []);
 
 
-
-
-
-
-    const MyTemplates = () => {
+    const renderDocumentList = () => {
         return (
             <>
                 <div className="m-template">
@@ -33,11 +40,12 @@ export const NeedListRequest = ({ loaderVisible, setLoaderVisible }: AddNeedList
                         <div className="list-wrap my-temp-list">
                             <ul>
                                 {
-                                    Itemslist.map((index: any) => {
+                                    documentList?.map((d: TemplateDocument) => {
 
                                         return <NeedListRequestItem
-                                            key={index}
-
+                                            isSelected={currentDocument?.docId === d.docId}
+                                            changeDocument={changeDocument}
+                                            document={d}
                                         />
 
                                     })
@@ -65,6 +73,7 @@ export const NeedListRequest = ({ loaderVisible, setLoaderVisible }: AddNeedList
                 <div className="btn-add-new-Temp">
 
                     <AddDocument
+                        addDocumentToList={addDocumentToList}
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right-end"
                     />
@@ -84,9 +93,7 @@ export const NeedListRequest = ({ loaderVisible, setLoaderVisible }: AddNeedList
 
 
             <div className="listWrap-templates">
-                {/* My Templates */}
-                {MyTemplates()}
-
+                {renderDocumentList()}
             </div>
 
             <div className="left-footer">

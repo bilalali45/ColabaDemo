@@ -13,11 +13,12 @@ import Overlay from 'react-bootstrap/Overlay'
 import { LocalDB } from '../../../../Utils/LocalDB'
 
 type AddDocumentType = {
+    addDocumentToList: Function
     popoverplacement?: any;
     setLoaderVisible: Function;
 
 }
-export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
+export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, addDocumentToList }: AddDocumentType) => {
     const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
@@ -60,7 +61,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     };
 
     useEffect(() => {
-        
+
         if (mainContainerRef?.current) {
             setTarget(null);
         }
@@ -84,7 +85,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
         } else {
-            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
+            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c?.catId === curDocType);
             setCurrentDocType(currentDoc);
         }
     }
@@ -102,25 +103,16 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         };
     }
 
-    const addDocToTemplate = async (docName: string, type: string) => {
-        if (!docName?.length || docName?.length > 255) {
+    const addDocToTemplate = async (doc: Document, type: string, onlyName: boolean) => {
+        if (!doc?.docType?.length || doc?.docType?.length > 255) {
             return;
         }
         if (requestSent) return;
         setRequestSent(true);
         setLoaderVisible(true);
-        // if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
-        //     return;
-        // }
-        try {
-            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, docName, type);
-            if (success) {
-                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
-                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
-            }
-        } catch (error) {
 
-        }
+        await addDocumentToList(doc, type);
+
         setRequestSent(false);
         setLoaderVisible(false);
     }

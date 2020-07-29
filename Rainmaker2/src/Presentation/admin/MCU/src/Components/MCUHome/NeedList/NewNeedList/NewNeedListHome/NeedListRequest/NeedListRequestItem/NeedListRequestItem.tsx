@@ -1,13 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { Document } from '../../../../../../../Entities/Models/Document';
+import { DocumentRequest } from '../../../../../../../Entities/Models/DocumentRequest';
+import { TemplateDocument } from '../../../../../../../Entities/Models/TemplateDocument';
 
-export const NeedListRequestItem = () => {
+type NeedListRequestItemType = {
+    changeDocument: Function,
+    document: TemplateDocument,
+    isSelected: boolean
+}
+
+export const NeedListRequestItem = ({document, changeDocument, isSelected}: NeedListRequestItemType) => {
     const [toRemoveList, setRemoveList] = useState<boolean>(false);
     return (
-         <li>
+         <li
+            onClick={() => changeDocument(document)}>
             <div className="l-wrap">
                 {!toRemoveList ?
-                    <div className="c-list">
-                    Test test 
+                    <div className={`c-list ${isSelected ? 'active' : ''}`}>
+                    {document.docName}
                             <span className="BTNclose" onClick={() => {}}><i className="zmdi zmdi-close"></i></span>
                     </div>
                     : <>

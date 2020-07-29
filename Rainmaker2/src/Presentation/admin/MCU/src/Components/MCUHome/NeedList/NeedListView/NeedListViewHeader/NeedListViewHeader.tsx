@@ -4,75 +4,76 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
 import { Template } from '../../../../../Entities/Models/Template';
 import { MyTemplate, TenantTemplate, SystemTemplate } from '../../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer';
+import { Link } from 'react-router-dom';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
 }
 
-export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps) => {
     const [toggle, setToggle] = useState(true);
-    
+
     const callBack = () => {
         toggleCallBack(toggle)
-        setToggle(!toggle)  
-      }
+        setToggle(!toggle)
+    }
 
     const MyTemplates = () => {
-        if(!templateList) return '';
-     return (
-         <>
-          <h3>My Templates</h3>
-          <ul className="checklist">
-            {
-              templateList?.map((t: Template) => {
-            if (t?.type === MyTemplate) {
-            return <li><label><input id= {t.id} type="checkbox" /> {t.name}</label></li>
-                                        }
-                                    })
-            }
-            </ul> 
-         </>
-     );
+        if (!templateList) return '';
+        return (
+            <>
+                <h3>My Templates</h3>
+                <ul className="checklist">
+                    {
+                        templateList?.map((t: Template) => {
+                            if (t?.type === MyTemplate) {
+                                return <li><label><input id={t.id} type="checkbox" /> {t.name}</label></li>
+                            }
+                        })
+                    }
+                </ul>
+            </>
+        );
     };
 
     const TemplatesByTenant = () => {
-        if(!templateList) return '';
+        if (!templateList) return '';
         return (
             <>
-            <h3>Templates by Tenants</h3>
-            <ul className="checklist">
-            {
-              templateList?.map((t: Template) => {
-            if (t?.type === TenantTemplate) {
-            return <li><label><input id= {t.id} type="checkbox" /> {t.name}</label></li>
-                                        }
-                                    })
-            }
-            </ul> 
+                <h3>Templates by Tenants</h3>
+                <ul className="checklist">
+                    {
+                        templateList?.map((t: Template) => {
+                            if (t?.type === TenantTemplate) {
+                                return <li><label><input id={t.id} type="checkbox" /> {t.name}</label></li>
+                            }
+                        })
+                    }
+                </ul>
             </>
         );
-    } 
-    const StartListButton = () => {
-   return <a href="">Start from new list</a>
-//    <button className="btn btn-primary btn-block">Continue with Template</button>
     }
-  console.log('templateList',templateList)
+    const StartListButton = () => {
+        return <Link to="/newNeedList">Start from new list</Link>
+        //  <button className="btn btn-primary btn-block">Continue with Template</button>
+    }
+    console.log('templateList', templateList)
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
-                <span className="h2">Needs List</span> 
-                <div className="btn-group">                
+                <span className="h2">Needs List</span>
+                <div className="btn-group">
                     <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
-                        Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
-                    </Dropdown.Toggle>
+                        <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
+                            Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+                        </Dropdown.Toggle>
 
-                    <Dropdown.Menu className="padding">
-                        <h2>Select a need list Template</h2>
-                        {MyTemplates()}
+                        <Dropdown.Menu className="padding">
+                            <h2>Select a need list Template</h2>
+                            {MyTemplates()}
 
-                       {TemplatesByTenant()}
-                        {/* <h3>My Templates</h3>
+                            {TemplatesByTenant()}
+                            {/* <h3>My Templates</h3>
                         <ul className="checklist">
                             <li><label><input type="checkbox" /> Income templates</label></li>
                             <li><label><input type="checkbox" /> My standard checklist</label></li>
@@ -91,11 +92,11 @@ export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) =
                             <li><label><input type="checkbox" /> Construction Loan-Phase 1</label></li>
                         </ul>  */}
 
-                        <div className="external-link">
-                          {StartListButton()}                         
-                        </div>
-                    </Dropdown.Menu>
-                </Dropdown>
+                            <div className="external-link">
+                                {StartListButton()}
+                            </div>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
             </div>
             <div className="need-list-view-header--right">
@@ -103,12 +104,12 @@ export const NeedListViewHeader = ({toggleCallBack, templateList}:headerProps) =
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} />
-                <span className="slider round"></span>
+                    <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} />
+                    <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;
                 <label><strong>Pending</strong></label>
-            </div>            
+            </div>
         </div>
     )
 }
