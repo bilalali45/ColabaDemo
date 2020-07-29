@@ -31,6 +31,7 @@ export const NeedListView = () => {
         if (!templates) {
             fetchTemplatesList();
         }
+        fetchSelectedTemplateDocuments();
     }, [])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
@@ -50,6 +51,12 @@ export const NeedListView = () => {
         if (newTemplates) {
             dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
         }
+    }
+
+    const fetchSelectedTemplateDocuments = async () => {
+        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments()
+        console.log('documents',documents)
+        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: documents})
     }
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {

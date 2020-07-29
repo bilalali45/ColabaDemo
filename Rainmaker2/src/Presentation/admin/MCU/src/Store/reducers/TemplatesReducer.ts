@@ -18,7 +18,7 @@ export enum TemplateActionsType {
     RenameTemplate = "RENAME_TEMPLATE",
     DeleteTemplate = "DELETE_TEMPLATE",
     ToggleAddDocumentBox = "TOGGLE_ADD_DOCUMENT_BOX",
-
+    SetSelectedTemplateDocuments = "SET_SELECTED_TEMPLATE_DOCUMENTS"
 }
 
 export type TemplateType = {
@@ -37,6 +37,7 @@ export type TemplateActionPayload = {
     [TemplateActionsType.SetCategoryDocuments]: CategoryDocument[],
     [TemplateActionsType.SetCurrentCategoryDocuments]: CategoryDocument,
     [TemplateActionsType.ToggleAddDocumentBox]: AddDocumentBoxVisibleType,
+    [TemplateActionsType.SetSelectedTemplateDocuments]: TemplateDocument[]
 }
 
 export type TemplateActions = ActionMap<TemplateActionPayload>[keyof ActionMap<TemplateActionPayload>];
@@ -80,6 +81,11 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
             return {
                 ...state,
                 addDocumentBoxVisible: payload
+            }
+        case TemplateActionsType.SetSelectedTemplateDocuments:
+            return {
+                ...state,
+                selectedTemplateDocuments: payload
             }
 
         default:
