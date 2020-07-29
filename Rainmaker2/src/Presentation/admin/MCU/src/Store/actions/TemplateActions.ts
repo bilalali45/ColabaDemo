@@ -146,4 +146,14 @@ export class TemplateActions {
             console.log(error)
         }
     }
+
+    static async isDocumentDraft(loanApplicationId: string){
+     let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(loanApplicationId);
+     try {
+         let res = await http.get(url);
+         return res.data;
+     } catch (error) {
+        console.log(error);
+     }
+    }
 }

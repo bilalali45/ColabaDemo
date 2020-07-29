@@ -20,5 +20,9 @@ namespace DocumentManagement.Model
         public string message { get; set; }
         public string status { get; set; }
         public List<RequestFile> files { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
     }
 }

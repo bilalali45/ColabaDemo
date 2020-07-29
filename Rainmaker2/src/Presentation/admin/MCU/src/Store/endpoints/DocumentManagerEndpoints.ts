@@ -4,7 +4,8 @@ export class DocumentManagerEndpoints {
             all: (tenantId: string) => `/api/documentmanagement/template/gettemplates?tenantId=${tenantId}`
         },
         documents: {
-            submitted: (loanApplicationId: string, tenentId: string) => `/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=${loanApplicationId}&tenantId=${tenentId}&pending=false`
+            submitted: (loanApplicationId: string, tenentId: string) => `/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=${loanApplicationId}&tenantId=${tenentId}&pending=false`,
+            isDocumentDraft: (id: string) => `/api/Documentmanagement/AdminDashboard/IsDocumentDraft?loanApplicationId=${id}`
         }
     }
 

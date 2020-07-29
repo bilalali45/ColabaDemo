@@ -53,6 +53,8 @@
 
         &.error{
             color: $danger;
+            margin-bottom: 0;
+            font: normal #{fontSize('sm')+'/1.2'} fontFamily('heading'); 
         }
     }
 

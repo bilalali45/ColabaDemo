@@ -362,8 +362,8 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            
-            mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync("abc15d1fe456051af2eeb768");
+            RequestIdQuery query = new RequestIdQuery(){requestId = "abc15d1fe456051af2eeb768"};
+            mock.Setup(x => x.IsDocumentDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(query);
 
             var adminDashboardController = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
@@ -375,7 +375,7 @@ namespace DocumentManagement.Tests
 
             adminDashboardController.ControllerContext = context;
             IsDocumentDraft moIsDocumentDraft= new IsDocumentDraft();
-            moIsDocumentDraft.id = "5eb25d1fe519051af2eeb72d";
+            moIsDocumentDraft.loanApplicationId=14;
             //Act
             IActionResult result = await adminDashboardController.IsDocumentDraft(moIsDocumentDraft);
             //Assert
@@ -417,7 +417,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             //Act
-            var dto = await service.IsDocumentDraft("5eb25d1fe519051af2eeb72d", 3842);
+            var dto = await service.IsDocumentDraft(14, 3842);
             //Assert
             Assert.NotNull(dto);
         }

@@ -10,6 +10,7 @@ import { sortList } from '../../../../Utils/helpers/Sort'
 import { Template } from '../../../../Entities/Models/Template'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
+import { useHistory } from 'react-router-dom'
 
 export const NeedListView = () => {
 
@@ -18,8 +19,10 @@ export const NeedListView = () => {
     const [sortStatusArrow, setStatusSortArrow] = useState('desc')
     const [docSort, setDocSort] = useState(false);
     const [statusSort, setStatusSort] = useState(false);
+    const [isDraft, setIsDraft] = useState('');
 
     const { state, dispatch } = useContext(Store);
+    const history = useHistory();
 
     const needListManager: any = state?.needListManager;
     const needListData = needListManager?.needList;
@@ -28,10 +31,10 @@ export const NeedListView = () => {
 
     useEffect(() => {
         fetchNeedList(true, true);
+        isDocumentDraft(LocalDB.getLoanAppliationId());
         if (!templates) {
             fetchTemplatesList();
         }
-        fetchSelectedTemplateDocuments();
     }, [])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
@@ -45,7 +48,14 @@ export const NeedListView = () => {
             }
         }
     }
-
+    const isDocumentDraft = async (id: string) =>{
+     let result: any = await TemplateActions.isDocumentDraft(id);
+     if(result.requestId){
+        setIsDraft('true')
+     }else{
+        setIsDraft('false')
+     }
+    } 
     const fetchTemplatesList = async () => {
         let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
         if (newTemplates) {
@@ -53,10 +63,11 @@ export const NeedListView = () => {
         }
     }
 
-    const fetchSelectedTemplateDocuments = async () => {
-        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments()
+    const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
+        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
+        const data =  documents.map((obj: any) => ({ ...obj, isRejected: false }) )
+        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data})
         console.log('documents',documents)
-        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: documents})
     }
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
@@ -118,13 +129,24 @@ export const NeedListView = () => {
         }     
     }
 
-    
+    const redirectToDocumentRequestHandler = (idArray: string[]) => {
+       dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray })
+        history.push('/newNeedList');
+    }
+
+    const viewSaveDraftHandler = () =>{
+       dispatch({type: NeedListActionsType.SetIsDraft, payload: true })
+        history.push('/newNeedList'); 
+    }
 
     return (
         <div className="need-list-view">
             <NeedListViewHeader
                 toggleCallBack={togglerHandler}
                 templateList = {templates}
+                redirectToDocumentRequest = {redirectToDocumentRequestHandler}
+                isDraft = {isDraft}
+                viewSaveDraft = {viewSaveDraftHandler}
             />
             <NeedListTable
                 needList={needListData}

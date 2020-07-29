@@ -8,10 +8,14 @@ import { Link } from 'react-router-dom';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
+    redirectToDocumentRequest: Function;
+    isDraft: string;
+    viewSaveDraft: Function;
 }
 
-export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDocumentRequest, isDraft, viewSaveDraft }: headerProps) => {
     const [toggle, setToggle] = useState(true);
+    const [idArray, setIdArray] = useState<String[]>([]);
 
     const callBack = () => {
         toggleCallBack(toggle)
@@ -27,7 +31,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps
                     {
                         templateList?.map((t: Template) => {
                             if (t?.type === MyTemplate) {
-                                return <li><label><input id={t.id} type="checkbox" /> {t.name}</label></li>
+                                return <li><label><input onClick={(e) => chechIdInArray(t.id)} id={t.id} type="checkbox" /> {t.name}</label></li>
                             }
                         })
                     }
@@ -45,7 +49,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps
                     {
                         templateList?.map((t: Template) => {
                             if (t?.type === TenantTemplate) {
-                                return <li><label><input id={t.id} type="checkbox" /> {t.name}</label></li>
+                                return <li><label><input onClick={(e) => chechIdInArray(t.id)} id={t.id} type="checkbox" /> {t.name}</label></li>
                             }
                         })
                     }
@@ -54,16 +58,36 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps
         );
     }
     const StartListButton = () => {
-        return <Link to="/newNeedList">Start from new list</Link>
-        //  <button className="btn btn-primary btn-block">Continue with Template</button>
+        if (idArray.length > 0) {
+            return <button onClick={() => {redirectToDocumentRequest(idArray)}} className="btn btn-primary btn-block">Continue with Template</button>
+        } else {
+            return <a href="">Start from new list</a>
+        }
     }
-    console.log('templateList', templateList)
-    return (
-        <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
-            <div className="need-list-view-header--left">
-                <span className="h2">Needs List</span>
-                <div className="btn-group">
-                    <Dropdown>
+
+    const chechIdInArray = (id: string) => {
+        let isExist = idArray.includes(id);
+        if (isExist) {
+            let oldArray = [...idArray];
+            const index = oldArray.indexOf(id);
+            if (index > -1) {
+                oldArray.splice(index, 1);
+                setIdArray(oldArray);
+            }
+        } else {
+            let newArray = [...idArray, id]
+            setIdArray(newArray);
+        }
+    }
+
+    const displayAddButton = () => {
+      if(isDraft === '') return '';
+       if(isDraft){
+           return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
+       }else{
+           return (
+               <>
+                     <Dropdown>
                         <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
                             Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
                         </Dropdown.Toggle>
@@ -71,32 +95,25 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList }: headerProps
                         <Dropdown.Menu className="padding">
                             <h2>Select a need list Template</h2>
                             {MyTemplates()}
-
-                            {TemplatesByTenant()}
-                            {/* <h3>My Templates</h3>
-                        <ul className="checklist">
-                            <li><label><input type="checkbox" /> Income templates</label></li>
-                            <li><label><input type="checkbox" /> My standard checklist</label></li>
-                            <li><label><input type="checkbox" /> Assets template</label></li>
-                        </ul> 
-
-                        <h3>Templates by Tenants</h3>
-                        <ul className="checklist">
-                            <li><label><input type="checkbox" /> FHA Full Doc Refinance - W2</label></li>
-                            <li><label><input type="checkbox" /> VA Cash Out - W-2</label></li>
-                            <li><label><input type="checkbox" /> FHA Full Doc Refinance</label></li>
-                            <li><label><input type="checkbox" /> Conventional Refinance - SE</label></li>
-                            <li><label><input type="checkbox" /> VA Purchase - W-2</label></li>
-                            <li><label><input type="checkbox" /> Additional Questions</label></li>
-                            <li><label><input type="checkbox" /> Auto Loan</label></li>
-                            <li><label><input type="checkbox" /> Construction Loan-Phase 1</label></li>
-                        </ul>  */}
-
+                            {TemplatesByTenant()}                          
                             <div className="external-link">
-                                {StartListButton()}
+                            {StartListButton()}
                             </div>
                         </Dropdown.Menu>
                     </Dropdown>
+               </>
+           )
+       }
+    }
+
+    return (
+        <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
+            <div className="need-list-view-header--left">
+                <span className="h2">Needs List</span>
+                <div className="btn-group">
+                   
+                  {displayAddButton()}
+                   
                 </div>
             </div>
             <div className="need-list-view-header--right">

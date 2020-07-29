@@ -77,16 +77,22 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                         if (e.keyCode === 13) {
                             addDoc();
                         }
-                    }} className={ isValid ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    }} className={ isValid  ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
 
                     <div className="input-btn-wrap">
-                        {requestSent ? <button className="btn btn-primary btn-sm">
+                        {requestSent ? 
+                            <button className="btn btn-primary btn-sm btn-loading">
                             <Spinner size="sm" animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
-                        </button> :
-                        <button onClick={addDoc} className="btn btn-primary btn-sm">Add</button>}
+                            <span className="btn-text">Add</span>
+                        </button> 
+                            :
+                            <button onClick={addDoc} className="btn btn-primary btn-sm">
+                                <span className="btn-text">Add</span>
+                            </button>
+                        }
                     </div>
 
                 </div>

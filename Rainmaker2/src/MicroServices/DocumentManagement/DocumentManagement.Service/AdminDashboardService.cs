@@ -191,13 +191,12 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<string> IsDocumentDraft(string id, int userId)
+        public async Task<RequestIdQuery> IsDocumentDraft(int loanApplicationId, int userId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-            string requestId = String.Empty;
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
-                  ""_id"": " + new ObjectId(id).ToJson() + @"
+                  ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }",
                         @"{
@@ -214,16 +213,15 @@ namespace DocumentManagement.Service
                             }
                         }"
             ));
+            RequestIdQuery query = new RequestIdQuery();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
-                    requestId = query.requestId;
+                    query = BsonSerializer.Deserialize<RequestIdQuery>(current);
                 }
             }
-
-            return requestId;
+            return query;
         }
     }
 
