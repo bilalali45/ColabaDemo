@@ -207,7 +207,7 @@ export const DocumentSnipet = ({
               <input
                 ref={inputRef}
                 className={`${(!filenameUnique || !!filenameEmpty || !validFilename) && 'error'}`}
-                maxLength={255}
+                maxLength={250}
                 size={38}
                 type="text"
                 value={renameMCUName}
