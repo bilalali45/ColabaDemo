@@ -50,11 +50,11 @@ export class TemplateActions {
         }
     }
 
-    static async fetchSelectedTemplateDocuments(id: string[] = ["5f20071dcbd86a223071e74e","5f20072acbd86a223071e750"], tenantId: number = 1) {   
+    static async fetchSelectedTemplateDocuments(ids: string[], tenantId: number = 1) {   
         let url = Endpoints.TemplateManager.POST.getDocumentsByTemplateIds()      
         try {
             let res  = await http.post(url, {
-                id, tenantId
+                id: ids, tenantId
             })
             console.log('res', res)
             return res.data;       

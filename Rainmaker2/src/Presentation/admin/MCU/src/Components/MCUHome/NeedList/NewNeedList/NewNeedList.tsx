@@ -24,10 +24,18 @@ export const NewNeedList = () => {
             fetchCurrentCatDocs();
         }
 
+        if(!selectedTemplateDocuments) {
+            fetchSelectedTemplateDocuments()
+        }
+
         setAllDocuments(selectedTemplateDocuments)
-    }, [])
+    }, []);
 
     const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
+
+    const fetchSelectedTemplateDocuments = async () => {
+        // let res = await TemplateActions.fetchSelectedTemplateDocuments()
+    }
 
     const updateDocumentMessage = (message: string, document: TemplateDocument) => {
         setAllDocuments((preDocs: TemplateDocument[]) => {
