@@ -10,6 +10,6 @@ namespace DocumentManagement.Service
     {
         Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending);
         Task<bool> Delete(AdminDeleteModel model);
-        Task<RequestIdQuery> IsDocumentDraft(string id, int userId);
+        Task<RequestIdQuery> IsDocumentDraft(int loanApplicationId, int userId);
     }
 }

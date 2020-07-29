@@ -94,16 +94,16 @@ export const NeedListTable = ({ needList, deleteDocument, sortDocumentTitle, doc
         } else {
             return (
                 <div className="td ">
-                    {data.map((item: NeedListDocuments) => {
+                    {data.map((item: NeedListDocuments, index) => {
                         return (
                             <span className="block-element c-filename">
                                 {item.mcuName ?
                                     <React.Fragment>
-                                        <span title={item.mcuName} key={item.id} className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.mcuName, 47)}</span>
-                                        <small title={item.clientName} key={item.id} className="block-element-child td-filename filename-by-b">{truncate(item.clientName, 47)}</small>
+                                        <span title={item.mcuName}  className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.mcuName, 47)}</span>
+                                        <small title={item.clientName}  className="block-element-child td-filename filename-by-b">{truncate(item.clientName, 47)}</small>
                                     </React.Fragment>
                                     :
-                                    <span title={item.clientName} key={item.id} className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.clientName, 47)}</span>
+                                    <span title={item.clientName}  className={ status === 'Pending review' ? "block-element-child td-filename filename-by-mcu filename-p" : "block-element-child td-filename filename-by-mcu"}>{truncate(item.clientName, 47)}</span>
                                 }
                             </span>
                         )
