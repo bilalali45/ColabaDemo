@@ -209,7 +209,7 @@ namespace DocumentManagement.Model
     }
     public class IsDocumentDraft
     {
-        [FromQuery(Name = "id")]
+        [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
     }
