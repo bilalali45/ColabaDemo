@@ -11,6 +11,7 @@ import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
 import { LocalDB } from '../../../../Utils/LocalDB'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 type AddDocumentType = {
     popoverplacement?: any;
@@ -166,7 +167,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
             <div className="add-doc-link-wrap" >
                 <div ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
-                    <button className="btn btn-primary addnewTemplate-btn">
+                    <button className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
                         <span className="btn-text">Add Document</span>
                         <span className="btn-icon">
                             <i className="zmdi zmdi-plus"></i>
@@ -174,8 +175,9 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
                     </button>
                 </div>
-                {/* </OverlayTrigger> */}
             </div>
+
+
             <Overlay show={show}
                 target={target}
                 placement={popoverplacement}

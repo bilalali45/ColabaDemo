@@ -145,26 +145,9 @@ ul {
 
     &:hover,
     &:focus{
-        .rotate-plus{
-            &::before{
-                transform: rotate(45deg);
-            }
-            &::after{
-                transform: rotate(45deg);
-            }
-        }
+        
         &-icon-right{
             border-left: 1px solid darken($color: color('primary'), $amount: 50%);
-        }
-
-        .btn-icon{
-            i,em{
-                &::before{
-                    @include transform(rotate(40deg));
-                    position: relative;
-                    display: block;
-                }
-            }
         }
     }
 
@@ -184,6 +167,28 @@ ul {
         }
     }
     
+    &-dropdown-toggle{
+        &:hover,&:focus,&:visited, &.active{
+            .rotate-plus{
+                &::before{
+                    transform: rotate(45deg);
+                }
+                &::after{
+                    transform: rotate(45deg);
+                }
+            }
+
+            .btn-icon{
+                i,em{
+                    &::before{
+                        @include transform(rotate(40deg));
+                        position: relative;
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
 
 }//.btn
 
