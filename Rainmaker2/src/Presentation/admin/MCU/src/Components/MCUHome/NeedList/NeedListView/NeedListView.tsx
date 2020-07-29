@@ -19,6 +19,7 @@ export const NeedListView = () => {
     const [sortStatusArrow, setStatusSortArrow] = useState('desc')
     const [docSort, setDocSort] = useState(false);
     const [statusSort, setStatusSort] = useState(false);
+    const [isDraft, setIsDraft] = useState(false);
 
     const { state, dispatch } = useContext(Store);
     const history = useHistory();
@@ -30,6 +31,7 @@ export const NeedListView = () => {
 
     useEffect(() => {
         fetchNeedList(true, true);
+        isDocumentDraft(LocalDB.getLoanAppliationId());
         if (!templates) {
             fetchTemplatesList();
         }
@@ -46,7 +48,14 @@ export const NeedListView = () => {
             }
         }
     }
-
+    const isDocumentDraft = async (id: string) =>{
+     let result: any = await TemplateActions.isDocumentDraft(id);
+     if(result.requestId){
+        setIsDraft(true)
+     }else{
+        setIsDraft(false)
+     }
+    } 
     const fetchTemplatesList = async () => {
         let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
         if (newTemplates) {
@@ -120,10 +129,14 @@ export const NeedListView = () => {
     }
 
     const redirectToDocumentRequestHandler = (idArray: string[]) => {
-        debugger
         let tenantId =  LocalDB.getTenantId();
         fetchSelectedTemplateDocuments(idArray, +tenantId);
         history.push('/newNeedList');
+    }
+
+    const viewSaveDraftHandler = () =>{
+        
+        history.push('/newNeedList'); 
     }
 
     return (
@@ -132,6 +145,8 @@ export const NeedListView = () => {
                 toggleCallBack={togglerHandler}
                 templateList = {templates}
                 redirectToDocumentRequest = {redirectToDocumentRequestHandler}
+                isDraft = {isDraft}
+                viewSaveDraft = {viewSaveDraftHandler}
             />
             <NeedListTable
                 needList={needListData}
