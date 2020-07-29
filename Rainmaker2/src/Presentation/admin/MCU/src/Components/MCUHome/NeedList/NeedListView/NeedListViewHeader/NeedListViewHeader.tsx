@@ -58,7 +58,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
     }
     const StartListButton = () => {
         if (idArray.length > 0) {
-            return <button onClick={() => {redirectToDocumentRequest(idArray)}} className="btn btn-primary btn-block">Continue with Template</button>
+            return <button onClick={() => {redirectToDocumentRequest(idArray)}} className="btn btn-primary btn-block"><span className="btn-text">Continue with template</span><span className="btn-icon"><em className="zmdi zmdi-plus"></em></span></button>
         } else {
             return <a href="">Start from new list</a>
         }

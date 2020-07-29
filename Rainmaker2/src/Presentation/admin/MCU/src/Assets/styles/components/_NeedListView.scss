@@ -3,4 +3,11 @@
     .loader-widget{
         min-height: calc(100vh - 500px);
     }
+
+    .dropdown-menu{
+        .btn-block{
+                padding: 12px 15px;
+        }
+    }
+
 }
