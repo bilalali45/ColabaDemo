@@ -8,9 +8,11 @@ type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
     redirectToDocumentRequest: Function;
+    isDraft: boolean;
+    viewSaveDraft: Function;
 }
 
-export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDocumentRequest }: headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDocumentRequest, isDraft, viewSaveDraft }: headerProps) => {
     const [toggle, setToggle] = useState(true);
     const [idArray, setIdArray] = useState<String[]>([]);
 
@@ -77,13 +79,13 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
         }
     }
 
-    console.log('idArray', idArray)
-    return (
-        <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
-            <div className="need-list-view-header--left">
-                <span className="h2">Needs List</span>
-                <div className="btn-group">
-                    <Dropdown>
+    const displayAddButton = () => {
+       if(isDraft){
+           return  <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
+       }else{
+           return (
+               <>
+                     <Dropdown>
                         <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
                             Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
                         </Dropdown.Toggle>
@@ -91,32 +93,25 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
                         <Dropdown.Menu className="padding">
                             <h2>Select a need list Template</h2>
                             {MyTemplates()}
-
-                            {TemplatesByTenant()}
-                            {/* <h3>My Templates</h3>
-                        <ul className="checklist">
-                            <li><label><input type="checkbox" /> Income templates</label></li>
-                            <li><label><input type="checkbox" /> My standard checklist</label></li>
-                            <li><label><input type="checkbox" /> Assets template</label></li>
-                        </ul> 
-
-                        <h3>Templates by Tenants</h3>
-                        <ul className="checklist">
-                            <li><label><input type="checkbox" /> FHA Full Doc Refinance - W2</label></li>
-                            <li><label><input type="checkbox" /> VA Cash Out - W-2</label></li>
-                            <li><label><input type="checkbox" /> FHA Full Doc Refinance</label></li>
-                            <li><label><input type="checkbox" /> Conventional Refinance - SE</label></li>
-                            <li><label><input type="checkbox" /> VA Purchase - W-2</label></li>
-                            <li><label><input type="checkbox" /> Additional Questions</label></li>
-                            <li><label><input type="checkbox" /> Auto Loan</label></li>
-                            <li><label><input type="checkbox" /> Construction Loan-Phase 1</label></li>
-                        </ul>  */}
-
+                            {TemplatesByTenant()}                          
                             <div className="external-link">
-                                {StartListButton()}
+                            {StartListButton()}
                             </div>
                         </Dropdown.Menu>
                     </Dropdown>
+               </>
+           )
+       }
+    }
+
+    return (
+        <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
+            <div className="need-list-view-header--left">
+                <span className="h2">Needs List</span>
+                <div className="btn-group">
+                   
+                  {displayAddButton()}
+                   
                 </div>
             </div>
             <div className="need-list-view-header--right">
