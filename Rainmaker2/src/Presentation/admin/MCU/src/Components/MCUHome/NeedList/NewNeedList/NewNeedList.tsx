@@ -8,6 +8,7 @@ import { Store } from "../../../../Store/Store";
 import { TemplateActions } from "../../../../Store/actions/TemplateActions";
 import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer";
 import { Document } from "../../../../Entities/Models/Document";
+import { LocalDB } from "../../../../Utils/LocalDB";
 
 export const NewNeedList = () => {
 
@@ -16,8 +17,12 @@ export const NewNeedList = () => {
     const { state, dispatch } = useContext(Store);
 
     const templateManager: any = state?.templateManager;
+    const needListManager: any = state?.needListManager;
     const categoryDocuments = templateManager?.categoryDocuments;
     const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+    const selectedIds: string[] = needListManager?.templateIds;
+
+    console.log('selectedIds',selectedIds)
 
     useEffect(() => {
         if (!categoryDocuments) {
@@ -25,16 +30,20 @@ export const NewNeedList = () => {
         }
 
         if(!selectedTemplateDocuments) {
-            fetchSelectedTemplateDocuments()
+            let tenantId = LocalDB.getTenantId();
+            fetchSelectedTemplateDocuments(selectedIds, +tenantId)
         }
 
         setAllDocuments(selectedTemplateDocuments)
-    }, []);
+    }, [selectedTemplateDocuments]);
 
     const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
 
-    const fetchSelectedTemplateDocuments = async () => {
-        // let res = await TemplateActions.fetchSelectedTemplateDocuments()
+    
+    const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
+        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
+        const data =  documents.map((obj: any) => ({ ...obj, isRejected: false }) )
+        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data})
     }
 
     const updateDocumentMessage = (message: string, document: TemplateDocument) => {
