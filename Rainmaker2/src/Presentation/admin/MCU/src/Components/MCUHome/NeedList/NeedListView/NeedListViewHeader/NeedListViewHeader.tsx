@@ -8,7 +8,7 @@ type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
     redirectToDocumentRequest: Function;
-    isDraft: boolean;
+    isDraft: string;
     viewSaveDraft: Function;
 }
 
@@ -60,7 +60,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
         if (idArray.length > 0) {
             return <button onClick={() => {redirectToDocumentRequest(idArray)}} className="btn btn-primary btn-block">Continue with Template</button>
         } else {
-            return <Link to="/newNeedList" >Start from new list</Link> 
+            return <a href="">Start from new list</a>
         }
     }
 
