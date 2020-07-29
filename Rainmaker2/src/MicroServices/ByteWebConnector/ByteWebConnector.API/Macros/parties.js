@@ -1,0 +1,31 @@
+if (ev.TableAndFieldName == "Party.ContactNMLSID" ||ev.TableAndFieldName=="Party.FirstName" ||ev.TableAndFieldName=="Party.EMail" ||ev.TableAndFieldName=="Party.WorkPhone") {
+    var firstName = los.GetField("LO.FirstName");
+    var contactNMLSID = los.GetField("LO.ContactNMLSID");
+    var workPhone = los.GetField("LO.WorkPhone");
+    var email = los.GetField("LO.EMail");
+    var fileDataId = ev.Table.GetFieldValue("FileDataID");
+    var useProxy = true;
+
+
+
+    var dataRaw = " --data-raw \"{ \"\"firstName\"\":\"\"{{firstName}}\"\" ,\"\"contactNMLSID\"\":\"\"{{contactNMLSID}}\"\", \"\"workPhone\"\":\"\"{{workPhone}}\"\" ,\"\"email\"\":\"\"{{email}}\"\", \"\"fileDataId\"\":\"{{fileDataId}}\"  }\" ";
+
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/party\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+
+    if (useProxy) {
+        arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
+    }
+    dataRaw = dataRaw.replace("{{firstName}}", firstName);
+    dataRaw = dataRaw.replace("{{contactNMLSID}}", contactNMLSID);
+    dataRaw = dataRaw.replace("{{workPhone}}", workPhone);
+    dataRaw = dataRaw.replace("{{email}}", email);
+    dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
+    arguments = arguments.replace("{{dataRaw}}", dataRaw);
+
+    los.Application.ShowMessageBox("arguments " + arguments);
+    System.Diagnostics.Process.Start("curl.exe", arguments);
+};
+
+
+
+
