@@ -144,7 +144,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/Documentmanagement/document/GetDocumemntsByTemplateIds",
+					"raw": "{{baseUrl}}/api/Documentmanagement/document/GetDocumentsByTemplateIds",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -152,7 +152,7 @@
 						"api",
 						"Documentmanagement",
 						"document",
-						"GetDocumemntsByTemplateIds"
+						"GetDocumentsByTemplateIds"
 					],
 					"query": [
 						{
@@ -215,6 +215,85 @@
 							"key": "isDraft",
 							"value": "false"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDraft",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/request/GetDraft?loanApplicationId=14&tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"request",
+						"GetDraft"
+					],
+					"query": [
+						{
+							"key": "loanApplicationId",
+							"value": "14"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveTemplate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"tenantId\":1,\r\n      \"name\":\"Save template with documents\",\r\n      \"documentTypes\": [\r\n            {\r\n                \"typeId\": \"5ebc18cba5d847268075ad4f\"\r\n            }\r\n            ,\r\n            {\r\n                \"docName\": \"Salary Slip\"\r\n            }\r\n      ]\r\n   }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/template/SaveTemplate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"template",
+						"SaveTemplate"
 					]
 				}
 			},
