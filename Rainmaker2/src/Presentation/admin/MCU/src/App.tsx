@@ -43,6 +43,7 @@ const App = () => {
 
   const onIdle = (e: any) => {
     console.log("Idle time meet");
+    window.onbeforeunload = null;
     LocalDB.removeAuth();
     //window.open("/Login/LogOff", "_self");
     window.top.location.href = "/Login/LogOff";
