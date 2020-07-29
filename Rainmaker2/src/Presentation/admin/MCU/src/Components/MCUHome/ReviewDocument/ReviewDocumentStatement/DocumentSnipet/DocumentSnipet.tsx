@@ -224,9 +224,9 @@ export const DocumentSnipet = ({
         <small className="document-snipet--detail">
           {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
         </small>
-        {!!filenameEmpty && (<small className="document-snipet--detail error">File name cannot be empty</small>)}
-        {!filenameUnique && (<small className="document-snipet--detail error">File name must be unique</small>)}
-        {!validFilename && (<small className="document-snipet--detail error">File name cannot contain any special characters</small>)}
+        {!!filenameEmpty && (<label className="document-snipet--detail error">File name cannot be empty</label>)}
+        {!filenameUnique && (<label className="document-snipet--detail error">File name must be unique</label>)}
+        {!validFilename && (<label className="document-snipet--detail error">File name cannot contain any special characters</label>)}
       </div>
       <div className="document-snipet--right">
         {!!editingModeEnabled && (

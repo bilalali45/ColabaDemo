@@ -172,6 +172,17 @@ ul {
         box-shadow:none;
     }
 
+    &-loading{
+        position: relative;
+        .spinner-border{
+            position: absolute;
+            top: calc(50% - 6px);
+            left: calc(50% - 6px);
+        }
+        .btn-text{
+            opacity: 0;
+        }
+    }
     
 
 }//.btn
@@ -613,9 +624,11 @@ ul {
         z-index: 7;
         padding: 20px;
         color: color('dialogText');
+        background-color: color('dialogBg');
         border-top: 1px solid color('border');
         box-shadow: 0 -3px 6px rgba(0,0,0,0.08);
         @include transition(all 0.5s ease-out);
+        
         h2{
             font: normal #{fontSize('nr')+'/1.2'} fontFamily('heading'); 
         }
@@ -626,12 +639,11 @@ ul {
 
 input.error{
     border:1px solid $danger !important;
-    color: $danger !important;
 }
 label.error{
     color: $danger  !important;
     display: block;
-    font: 400 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    font: 400 #{fontSize('sm')+'/1.2'} fontFamily('base'); 
     text-transform: initial;
     padding-top: 5px;
 }

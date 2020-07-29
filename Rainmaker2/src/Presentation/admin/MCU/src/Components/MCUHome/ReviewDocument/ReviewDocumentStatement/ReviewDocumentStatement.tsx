@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -26,6 +26,8 @@ export const ReviewDocumentStatement = ({
   const [rejectPopup, setRejectPopup] = useState(false);
 
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
+
+  const documentStateBodyRef = useRef<HTMLSelectElement>(null)
 
   const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
     try {
@@ -60,6 +62,12 @@ export const ReviewDocumentStatement = ({
     }
   }, [setDocumentFiles])
 
+  useEffect(() => {
+    if (documentStateBodyRef.current) {
+      documentStateBodyRef.current.scrollTo(0, 0);
+    }
+  }, [rejectPopup]);
+
   const allowFileRenameMCU = (filename: string, fileId: string, addToList: boolean = true): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
@@ -86,6 +94,12 @@ export const ReviewDocumentStatement = ({
     return true
   }
 
+  const checkDialog = () => {
+    return {
+      overflow: rejectPopup ? 'hidden' : ''
+    }
+  }
+
   useEffect(() => {
     if (currentDocument) {
       getDocumentFiles(currentDocument)
@@ -109,7 +123,7 @@ export const ReviewDocumentStatement = ({
         </div>
       ) : (
           <div className="document-statement--body-footer">
-            <section className="document-statement--body">
+            <section ref={documentStateBodyRef} className="document-statement--body" style={checkDialog()}>
               {/* <h3>Documents</h3> */}
               {!!documentFiles && documentFiles.length ?
                 documentFiles.map((file, index) => <DocumentSnipet

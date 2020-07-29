@@ -113,4 +113,17 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
 
     }
+
+   
+    public class InDraftDocumentQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string _id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+
+    }
 }
