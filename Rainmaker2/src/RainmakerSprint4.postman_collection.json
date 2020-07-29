@@ -99,7 +99,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/Documentmanagement/AdminDashboard/IsDocumentDraft?id=5eb25d1fe519051af2eeb72d",
+					"raw": "{{baseUrl}}/api/Documentmanagement/AdminDashboard/IsDocumentDraft?loanApplicationId=14",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -111,8 +111,8 @@
 					],
 					"query": [
 						{
-							"key": "id",
-							"value": "5eb25d1fe519051af2eeb72d"
+							"key": "loanApplicationId",
+							"value": "14"
 						}
 					]
 				}
@@ -192,7 +192,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n      \"tenantId\":1,\r\n      \"loanApplicationId\":14,\r\n      \"requests\":[{\r\n            \"message\":\"Hi Mark\" ,\r\n            \"documents\": [\r\n            {\r\n                \"typeId\": \"5eb257a3e519051af2eeb624\",\r\n                \"displayName\":\"W2 2020\",\r\n                \"message\":\"please upload salary slip\"\r\n            }\r\n            ,\r\n            {\r\n                \"typeId\": \"5ebc18cba5d847268075ad4f\",\r\n                \"displayName\":\"W3 2020\",\r\n                \"message\":\"please upload salary slip\"\r\n            }\r\n      ]\r\n      }]\r\n}\r\n",
+					"raw": "{\r\n      \"tenantId\":1,\r\n      \"loanApplicationId\":14,\r\n      \"requests\":[{\r\n            \"message\":\"Hi Mark\" ,\r\n            \"documents\": [\r\n            {\r\n                \"typeId\": \"5eb257a3e519051af2eeb624\",\r\n                \"displayName\":\"W2 2020\",\r\n                \"message\":\"please upload salary slip\",\r\n                \"docId\":\"5f2147136621531660dc42c2\",\r\n                \"requestId\":\"5f2147116621531660dc42bf\"\r\n            }\r\n            ,\r\n            {\r\n                \"typeId\": \"5ebc18cba5d847268075ad4f\",\r\n                \"displayName\":\"W3 2020\",\r\n                \"message\":\"please upload salary slip\",\r\n                \"docId\":null,\r\n                \"requestId\":null\r\n            }\r\n      ]\r\n      }]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -200,7 +200,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/Documentmanagement/request/Save?isDraft=false",
+					"raw": "{{baseUrl}}/api/Documentmanagement/request/Save?isDraft=true",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -213,7 +213,7 @@
 					"query": [
 						{
 							"key": "isDraft",
-							"value": "false"
+							"value": "true"
 						}
 					]
 				}
