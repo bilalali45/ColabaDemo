@@ -34,5 +34,8 @@ namespace ByteWebConnector.API.Models.ClientModels
         public string PriorPropertyTitleType { get; set; }
         public List<RaceInfoItem> RaceInfo { get; set; }
         public List<EthnicInfoItem> EthnicityInfo { get; set; }
+        public string OldFirstName { get; set; }
+        public string OldEmailAddress { get; set; }
+        public bool IsAddOrUpdate { get; set; }
     }
 }

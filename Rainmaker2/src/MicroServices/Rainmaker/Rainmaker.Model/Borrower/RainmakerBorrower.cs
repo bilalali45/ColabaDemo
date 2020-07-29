@@ -47,10 +47,11 @@ namespace Rainmaker.Model.Borrower
         public string FileDataId { get; set; }
         public List<int> EthnicityDetailId { get; set; }
         public Dictionary<int, List<int>> EthnicityDictionary { get; set; }
-
         public List<RaceInfoItem> RaceInfo { get; set; }
         public List<EthnicInfoItem> EthnicityInfo { get; set; }
-
+        public string OldFirstName { get; set; }
+        public string OldEmailAddress { get; set; }
+        public bool IsAddOrUpdate { get; set; }
 
         public  void PopulateEntity(RainMaker.Entity.Models.Borrower entity)
         {
@@ -62,8 +63,8 @@ namespace Rainmaker.Model.Borrower
             entity.LoanContact.HomePhone = this.HomePhone;
             entity.LoanContact.MaritalStatusId = this.MaritalStatusId;
             entity.LoanContact.ResidencyStateId = this.ResidencyStateId;
-            entity.LoanContact.GenderId = this.GenderIds[0];
-            entity.LoanContact.TrackingState = TrackingState.Modified;
+            if (this.GenderIds.Count > 0) entity.LoanContact.GenderId = this.GenderIds[0];
+            //entity.LoanContact.TrackingState = TrackingState.Modified;
             entity.NoOfDependent = this.NoOfDependent;
             entity.DependentAge = this.DependentAge;
 
@@ -90,9 +91,6 @@ namespace Rainmaker.Model.Borrower
                 return loanContactRaceBinder.TrackingState = TrackingState.Deleted;
             }).ToList();
 
-
-            
-
             foreach (var raceInfoItem in RaceInfo)
             {
                 var raceBinder = new LoanContactRaceBinder();
@@ -102,13 +100,6 @@ namespace Rainmaker.Model.Borrower
                 raceBinder.TrackingState = TrackingState.Added;
                 entity.LoanContact.LoanContactRaceBinders.Add(raceBinder);
             }
-
-
-
-
-
-
-
 
         }
     }

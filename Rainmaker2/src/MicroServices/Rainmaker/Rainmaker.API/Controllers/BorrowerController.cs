@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RainMaker.Entity.Models;
 using Rainmaker.Model.Borrower;
 using Rainmaker.Service;
+using TrackableEntities.Common.Core;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +16,14 @@ namespace Rainmaker.API.Controllers
     public class BorrowerController : ControllerBase
     {
         private readonly IBorrowerService _borrowerService;
+        private readonly ILoanApplicationService _loanApplicationService;
 
 
-        public BorrowerController(IBorrowerService borrowerService)
+        public BorrowerController(IBorrowerService borrowerService,
+                                  ILoanApplicationService loanApplicationService)
         {
             _borrowerService = borrowerService;
+            _loanApplicationService = loanApplicationService;
         }
 
 
@@ -47,9 +52,22 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> AddOrUpdate(RainmakerBorrower rainmakerBorrowerModel,
                                                      bool addIfNotExists = false)
         {
+            var firstName = rainmakerBorrowerModel.FirstName;
+            var email = rainmakerBorrowerModel.EmailAddress;
+            if (!string.IsNullOrEmpty(value: rainmakerBorrowerModel.OldFirstName) &&
+                rainmakerBorrowerModel.OldFirstName != rainmakerBorrowerModel.FirstName)
+                firstName = rainmakerBorrowerModel.OldFirstName;
+            if (!string.IsNullOrEmpty(value: rainmakerBorrowerModel.OldEmailAddress) &&
+                rainmakerBorrowerModel.OldEmailAddress != rainmakerBorrowerModel.EmailAddress)
+                email = rainmakerBorrowerModel.OldEmailAddress;
+
+            var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: rainmakerBorrowerModel.FileDataId,
+                                                                        includes: LoanApplicationService.RelatedEntity.Borrowers)
+                                                         .SingleOrDefault();
+
             var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId: rainmakerBorrowerModel.FileDataId,
-                                                                         firstName: rainmakerBorrowerModel.FirstName,
-                                                                         email: rainmakerBorrowerModel.EmailAddress,
+                                                                         firstName: firstName,
+                                                                         email: email,
                                                                          // @formatter:off
                                                                          includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity |
                                                                                    BorrowerService.RelatedEntity.LoanContact_Race |
@@ -59,15 +77,34 @@ namespace Rainmaker.API.Controllers
                                                  .SingleOrDefault();
 
             if (borrowerEntity == null)
-                if (addIfNotExists)
+            {
+                // insertLogic
+                if (rainmakerBorrowerModel.IsAddOrUpdate)
                 {
-                    // insertLogic
+                    borrowerEntity = new Borrower
+                                     {
+                                         TrackingState = TrackingState.Added,
+                                     };
+                    borrowerEntity.LoanContact = new LoanContact
+                                                 {
+                                                     TrackingState = TrackingState.Added
+                                                 };
+                    rainmakerBorrowerModel.PopulateEntity(entity: borrowerEntity);
+                    loanApplication.Borrowers.Add(borrowerEntity);
+                    loanApplication.TrackingState = TrackingState.Modified;
+                    _loanApplicationService.Update(item: loanApplication);
+                    await _loanApplicationService.SaveChangesAsync();
                 }
+            }
+            else
+            {
+                borrowerEntity.LoanContact.TrackingState = TrackingState.Modified;
+                rainmakerBorrowerModel.PopulateEntity(entity: borrowerEntity);
+                _borrowerService.Update(item: borrowerEntity);
+                await _borrowerService.SaveChangesAsync();
+            }
 
-            rainmakerBorrowerModel.PopulateEntity(entity: borrowerEntity);
-
-            _borrowerService.Update(item: borrowerEntity);
-            await _borrowerService.SaveChangesAsync();
+          
             return Ok();
         }
 

@@ -16,6 +16,8 @@ namespace ByteWebConnector.API.Models
         [DataMember]
         public string FirstName { get; set; }
         [DataMember]
+        public string OldFirstName { get; set; }
+        [DataMember]
         public string MiddleName { get; set; }
         [DataMember]
         public string LastName { get; set; }
@@ -65,6 +67,8 @@ namespace ByteWebConnector.API.Models
         public string DepsAges { get; set; }
         [DataMember]
         public string Email { get; set; }
+        [DataMember]
+        public string OldEmail { get; set; }
         [DataMember]
         public string OutstandingJudgements { get; set; }
         [DataMember]
@@ -123,11 +127,13 @@ namespace ByteWebConnector.API.Models
             borrowerEntity.FileDataId = this.FileDataId;
             borrowerEntity.CellPhone = this.MobilePhone;
             borrowerEntity.FirstName = this.FirstName;
+            borrowerEntity.OldFirstName = this.OldFirstName;
             borrowerEntity.LastName = this.LastName;
             borrowerEntity.MiddleName = this.MiddleName;
             borrowerEntity.Suffix = this.Generation;
             borrowerEntity.HomePhone = this.HomePhone;
             borrowerEntity.EmailAddress = this.Email;
+            borrowerEntity.OldEmailAddress = this.OldEmail;
             borrowerEntity.MaritalStatusId = GetMaritalStatusId(this.MaritalStatus);
             borrowerEntity.ResidencyStateId = GetResidencyStateId(this.CitizenResidencyType);
             borrowerEntity.NoOfDependent = this.NoDeps;
@@ -156,7 +162,7 @@ namespace ByteWebConnector.API.Models
             borrowerEntity.RaceInfo = GetRaceInfo(Race2).Select(raceMap => new RaceInfoItem(raceMap.RmRaceId,
                                                                                        raceMap.RmRaceDetailId))
                                                    .ToList();
-
+            borrowerEntity.IsAddOrUpdate = true;
 
 
             return borrowerEntity;
