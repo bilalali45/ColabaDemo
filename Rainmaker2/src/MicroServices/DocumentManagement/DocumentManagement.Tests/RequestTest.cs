@@ -403,6 +403,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -421,6 +422,16 @@ namespace DocumentManagement.Tests
                 }
             };
 
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "docId" , "5f2147136621531660dc42c23"},
+                    { "requestId" , "5f2147116621531660dc42bf"}
+                }
+            };
+
             List<BsonDocument> listActivityLog = new List<BsonDocument>()
             {
                 new BsonDocument
@@ -435,9 +446,12 @@ namespace DocumentManagement.Tests
             mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
 
             mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursorRequest.SetupGet(x => x.Current).Returns(listRequest);
+            mockCursorRequest.Setup(x => x.Current).Returns(listRequest);
 
-            mockCollectionRequest.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object);
+            mockCursorDraftDocument.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorDraftDocument.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorDraftDocument.Object);
 
             mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 
@@ -445,7 +459,6 @@ namespace DocumentManagement.Tests
             mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
-
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
@@ -476,6 +489,8 @@ namespace DocumentManagement.Tests
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
+            requestDocument.docId = "5f2147136621531660dc42c2";
+            requestDocument.requestId = "5f2147116621531660dc42bf";
             requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);

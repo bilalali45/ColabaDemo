@@ -77,7 +77,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                         if (e.keyCode === 13) {
                             addDoc();
                         }
-                    }} className={ isValid  ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    }} className={ !docNameError  ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
 
                     <div className="input-btn-wrap">
