@@ -54,6 +54,7 @@ namespace DocumentManagement.Model
     public class DocumentModel
     {
         public string docId { get; set; }
+        public string typeId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
     }
@@ -62,6 +63,8 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
         public string typeName { get; set; }
         public string docMessage { get; set; }
         public List<Message> messages { get; set; }
