@@ -63,12 +63,6 @@ export const NeedListView = () => {
         }
     }
 
-    const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
-        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
-        const data =  documents.map((obj: any) => ({ ...obj, isRejected: false }) )
-        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data})
-        console.log('documents',documents)
-    }
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
         let tenentId = LocalDB.getTenantId();
