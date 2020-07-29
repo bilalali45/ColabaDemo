@@ -362,8 +362,8 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            
-            mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync("abc15d1fe456051af2eeb768");
+            RequestIdQuery query = new RequestIdQuery(){requestId = "abc15d1fe456051af2eeb768",userName = "test user"};
+            mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(query);
 
             var adminDashboardController = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );

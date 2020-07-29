@@ -7,6 +7,8 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Store } from "../../Store/Store";
 import { ReviewDocument } from "./ReviewDocument/ReviewDocument";
 import { Authorized } from "../Authorized/Authorized";
+import { NewNeedList } from "./NeedList/NewNeedList/NewNeedList";
+
 
 export const MCUHome = () => {
   const { state, dispatch } = useContext(Store);
@@ -23,6 +25,8 @@ export const MCUHome = () => {
         <Authorized path="/add-needList" component={AddNeedList} />
         <Authorized path="/templateManager" component={TemplateManager} />
         <Authorized path="/ReviewDocument" component={ReviewDocument} />
+
+        <Authorized path="/NewNeedList" component={NewNeedList} />
       </Switch>
     </section>
   );

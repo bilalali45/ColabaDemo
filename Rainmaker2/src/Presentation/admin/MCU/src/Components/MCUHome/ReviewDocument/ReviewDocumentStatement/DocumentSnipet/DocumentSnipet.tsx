@@ -206,8 +206,8 @@ export const DocumentSnipet = ({
             <React.Fragment>
               <input
                 ref={inputRef}
-                className={`${!filenameUnique && 'error'}`}
-                maxLength={255}
+                className={`${(!filenameUnique || !!filenameEmpty || !validFilename) && 'error'}`}
+                maxLength={250}
                 size={38}
                 type="text"
                 value={renameMCUName}
