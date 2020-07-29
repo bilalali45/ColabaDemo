@@ -19,7 +19,7 @@ export const NeedListView = () => {
     const [sortStatusArrow, setStatusSortArrow] = useState('desc')
     const [docSort, setDocSort] = useState(false);
     const [statusSort, setStatusSort] = useState(false);
-    const [isDraft, setIsDraft] = useState(false);
+    const [isDraft, setIsDraft] = useState('');
 
     const { state, dispatch } = useContext(Store);
     const history = useHistory();
@@ -51,9 +51,9 @@ export const NeedListView = () => {
     const isDocumentDraft = async (id: string) =>{
      let result: any = await TemplateActions.isDocumentDraft(id);
      if(result.requestId){
-        setIsDraft(true)
+        setIsDraft('true')
      }else{
-        setIsDraft(false)
+        setIsDraft('false')
      }
     } 
     const fetchTemplatesList = async () => {
@@ -65,8 +65,9 @@ export const NeedListView = () => {
 
     const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
         let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
+        const data =  documents.map((obj: any) => ({ ...obj, isRejected: false }) )
+        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data})
         console.log('documents',documents)
-        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: documents})
     }
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
@@ -129,13 +130,12 @@ export const NeedListView = () => {
     }
 
     const redirectToDocumentRequestHandler = (idArray: string[]) => {
-        let tenantId =  LocalDB.getTenantId();
-        fetchSelectedTemplateDocuments(idArray, +tenantId);
+       dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray })
         history.push('/newNeedList');
     }
 
     const viewSaveDraftHandler = () =>{
-        
+       dispatch({type: NeedListActionsType.SetIsDraft, payload: true })
         history.push('/newNeedList'); 
     }
 
