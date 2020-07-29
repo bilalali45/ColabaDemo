@@ -15,7 +15,7 @@ namespace DocumentManagement.Model
     }
     public static class DocumentStatus
     {
-        public const string Draft = "Draft"; // under mcu process
+        public const string Draft = "In draft"; // under mcu process
         public const string BorrowerTodo = "Borrower to do"; // mcu request
         public const string PendingReview = "Pending review"; // borrower submit
         public const string Started = "Started"; // borrower has added a file or rejected by mcu
@@ -190,6 +190,8 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
+
+        public string userName { get; set; }
     }
 
     public class GetDocuments

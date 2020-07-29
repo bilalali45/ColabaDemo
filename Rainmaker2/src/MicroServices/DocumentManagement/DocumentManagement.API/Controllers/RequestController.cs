@@ -70,6 +70,17 @@ namespace DocumentManagement.API.Controllers
 
         #endregion
 
+        #region Get Actions
+
+        [HttpGet("GetDraft")]
+        public async Task<IActionResult> GetDraft([FromQuery] GetDraft getDraft)
+        {
+            var docQuery = await requestService.GetDraft(getDraft.loanApplicationId,getDraft.tenantId);
+            return Ok(docQuery);
+        }
+
+        #endregion
+
         #endregion
     }
 }

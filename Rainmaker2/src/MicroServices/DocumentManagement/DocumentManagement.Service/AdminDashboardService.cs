@@ -191,10 +191,9 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<string> IsDocumentDraft(string id, int userId)
+        public async Task<RequestIdQuery> IsDocumentDraft(string id, int userId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-            string requestId = String.Empty;
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
                   ""_id"": " + new ObjectId(id).ToJson() + @"
@@ -214,16 +213,32 @@ namespace DocumentManagement.Service
                             }
                         }"
             ));
+            RequestIdQuery query = new RequestIdQuery();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
-                    requestId = query.requestId;
+                    query = BsonSerializer.Deserialize<RequestIdQuery>(current);
                 }
             }
 
-            return requestId;
+            using var asyncCursor1 = await collection.FindAsync(new BsonDocument() {
+                {"_id",new ObjectId(id) }
+            }, new FindOptions<Entity.Request, BsonDocument>()
+            {
+                Projection = new BsonDocument() { {"userName", 1 },{"_id",0}
+                }
+            });
+            while (await asyncCursor1.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor1.Current)
+                {
+                    RequestIdQuery query1 = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                    query.userName = query1.userName;
+                }
+            }
+
+            return query;
         }
     }
 
