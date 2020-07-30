@@ -703,5 +703,188 @@ namespace DocumentManagement.Tests
             Assert.True(result);
 
         }
+
+        [Fact]
+        public async Task TestGetDraftController()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+            List<DraftDocumentDTO> list = new List<DraftDocumentDTO>() { { new DraftDocumentDTO()
+            {
+                message = "Hi Mark",
+                typeId = "5ebc18cba5d847268075ad4f",
+                docId = "5f2155194ce1db1a7cdb17e9",
+                requestId = "5f2155194ce1db1a7cdb17e8",
+                docName = "W3 2020",
+                docMessage = "please upload salary slip"
+            } } };
+
+            GetDraft getDraft = new GetDraft();
+            getDraft.loanApplicationId = 14;
+            getDraft.tenantId = 1;
+
+            mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            var controller = new RequestController(mock.Object, null);
+
+            //Act
+            IActionResult result = await controller.GetDraft(getDraft);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<DraftDocumentDTO>;
+            Assert.Single(content);
+            Assert.Equal("Hi Mark", content[0].message);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].typeId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e8", content[0].requestId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e9", content[0].docId);
+            Assert.Equal("W3 2020", content[0].docName);
+            Assert.Equal("please upload salary slip", content[0].docMessage);
+        }
+
+        [Fact]
+        public async Task TestGetDraftService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequestDraft = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "message" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , BsonString.Empty},
+                    { "typeMessage" , BsonString.Empty},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , "please upload salary slip"},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonNull.Value }
+                }
+            };
+
+            List<BsonDocument> listRequestDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "message" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , BsonString.Empty},
+                    { "typeMessage" , BsonString.Empty},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                ,new BsonDocument
+                {
+                   { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , "please upload salary slip"},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                     { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonNull.Value }
+                }
+            };
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCursorRequestDraft.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequestDraft.Setup(x => x.Current).Returns(listRequestDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorRequestDraft.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new RequestService(mock.Object, null);
+
+            //Act
+            List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
+
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(8, dto.Count);
+            Assert.Equal("", dto[0].docId);
+            Assert.Equal("please upload salary slip", dto[1].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[2].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[3].docMessage);
+            Assert.Equal("", dto[4].docMessage);
+            Assert.Equal("please upload salary slip", dto[5].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[6].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[7].docMessage);
+        }
     }
 }
