@@ -1,19 +1,19 @@
 if (ev.TableAndFieldName == "FileData.AgencyCaseNo" || ev.TableAndFieldName == "FileData.OccupancyType") {
-    var occuType = los.GetField("FileData.OccupancyType");
-    var agencyCaseNo = los.GetField("FileData.AgencyCaseNo");
+    var occupancyType = los.GetFieldValue("FileData.OccupancyType");
+    var agencyCaseNo = los.GetFieldValue("FileData.AgencyCaseNo");
     var fileDataId = ev.Table.GetFieldValue("FileDataID");
     var useProxy = true;
 
 
 
-    var dataRaw = " --data-raw \"{ \"\"occupancyType\"\":\"{{occuType}}\" ,\"\"agencyCaseNo\"\":\"\"{{agencyCaseNo}}\"\" , \"\"fileDataId\"\":\"{{fileDataId}}\" }\" ";
+    var dataRaw = " --data-raw \"{ \"\"occupancyType\"\":\"\"{{occupancyType}}\"\" ,\"\"agencyCaseNo\"\":\"\"{{agencyCaseNo}}\"\" , \"\"fileDataId\"\":{{fileDataId}} }\" ";
 
-    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/filedata\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/FileData/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
 
     if (useProxy) {
         arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
     }
-    dataRaw = dataRaw.replace("{{occuType}}", occuType);
+    dataRaw = dataRaw.replace("{{occupancyType}}", occupancyType);
     dataRaw = dataRaw.replace("{{agencyCaseNo}}", agencyCaseNo);
     dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
     arguments = arguments.replace("{{dataRaw}}", dataRaw);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ByteWebConnector.API.Enums
 {
-    public enum PropertyType
+    public enum PropertyUsageType
     {
         Primary = 1,
         Rental = 2,

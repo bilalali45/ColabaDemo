@@ -429,19 +429,19 @@ namespace ByteWebConnector.API.Models
             {
                 case "PRPrincipalResidence":
                 {
-                    const int primary = (int)Enums.PropertyType.Primary;
+                    const int primary = (int)Enums.PropertyUsageType.Primary;
                     property = primary.ToString();
                     break;
                 }
                 case "SHSecondHome":
                 {
-                    const int second = (int)Enums.PropertyType.Second;
+                    const int second = (int)Enums.PropertyUsageType.Second;
                     property = second.ToString();
                     break;
                 }
                 case "IPInvestmentProperty":
                 {
-                    const int rental = (int)Enums.PropertyType.Rental;
+                    const int rental = (int)Enums.PropertyUsageType.Rental;
                     property = rental.ToString();
                     break;
                     }

@@ -77,7 +77,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("filedata")]
         [HttpPost]
-        public void Post(FileData request)
+        public void Post(ByteFileData request)
         {
 
         }
