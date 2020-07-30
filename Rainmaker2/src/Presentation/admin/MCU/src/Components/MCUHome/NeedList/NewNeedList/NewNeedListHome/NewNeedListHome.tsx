@@ -15,7 +15,11 @@ type NewNeedListHomeType = {
     allDocuments: TemplateDocument[],
     addDocumentToList: Function,
     changeDocument: Function,
-    updateDocumentMessage: Function
+    updateDocumentMessage: Function,
+    templateList: Template[];
+    redirectToDocumentRequest: Function;
+    isDraft: string;
+    viewSaveDraft: Function;
 }
 
 export const NewNeedListHome = ({
@@ -23,7 +27,11 @@ export const NewNeedListHome = ({
     currentDocument,
     changeDocument,
     allDocuments,
-    updateDocumentMessage
+    updateDocumentMessage,
+    templateList, 
+    redirectToDocumentRequest, 
+    isDraft, 
+    viewSaveDraft
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -40,6 +48,10 @@ export const NewNeedListHome = ({
                                 documentList={allDocuments}
                                 setLoaderVisible={setLoaderVisible}
                                 loaderVisible={loaderVisible}
+                                templateList={templateList}
+                                redirectToDocumentRequest={redirectToDocumentRequest}
+                                viewSaveDraft={viewSaveDraft}
+                                isDraft={isDraft}
                             />
 
                         </div>

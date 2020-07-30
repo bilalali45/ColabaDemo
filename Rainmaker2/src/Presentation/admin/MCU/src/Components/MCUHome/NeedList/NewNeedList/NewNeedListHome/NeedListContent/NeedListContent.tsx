@@ -4,6 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 // ../../../../../../Assets/images/editicon.svg
 import EditIcon from '../../../../../../Assets/images/editicon.svg';
 import { TemplateDocument } from "../../../../../../Entities/Models/TemplateDocument";
+import { useHistory } from "react-router-dom";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
@@ -15,6 +16,9 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
     }
+
+    const history = useHistory();
+
     const renderTitleInputText = () => {
         return (
             <div className="T-head">
@@ -55,7 +59,7 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
 
             <div className="right-footer">
                 <div className="btn-wrap">
-                    <button className="btn btn-primary">Review Request</button>
+                    <button onClick={() => history.push('/ReviewNeedListRequest')} className="btn btn-primary">Review Request</button>
 
                 </div>
             </div>
