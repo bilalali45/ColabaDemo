@@ -8,7 +8,7 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     || ev.TableAndFieldName == "Borrower.MiddleName" || ev.TableAndFieldName == "Borrower.LastName" || ev.TableAndFieldName == "Borrower.Generation"
     || ev.TableAndFieldName == "Borrower.DOB" || ev.TableAndFieldName == "Borrower.HomePhone" || ev.TableAndFieldName == "Borrower.MobilePhone"
     || ev.TableAndFieldName == "Borrower.Email" || ev.TableAndFieldName == "Borrower.MaritalStatus" || ev.TableAndFieldName == "Borrower.NoDeps"
-    || ev.TableAndFieldName == "Borrower.DepsAges" || ev.TableAndFieldName == "Borrower.OutstandingJudgements" || ev.TableAndFieldName=="Borrower.Bankruptcy"
+    || ev.TableAndFieldName == "Borrower.DepsAges" || ev.TableAndFieldName == "Borrower.OutstandingJudgements" || ev.TableAndFieldName == "Borrower.Bankruptcy"
     || ev.TableAndFieldName == "Borrower.PartyToLawsuit"
     || ev.TableAndFieldName == "Borrower.PropertyForeclosed" || ev.TableAndFieldName == "Borrower.LoanForeclosed" || ev.TableAndFieldName == "Borrower.AlimonyObligation"
     || ev.TableAndFieldName == "Borrower.DownPaymentBorrowed" || ev.TableAndFieldName == "Borrower.EndorserOnNote" || ev.TableAndFieldName == "Borrower.OwnershipInterest"
@@ -18,12 +18,12 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     || ev.TableAndFieldName == "Borrower.RaceWhite" || ev.TableAndFieldName == "Borrower.RaceAmericanIndian" || ev.TableAndFieldName == "Borrower.RaceAsian"
     || ev.TableAndFieldName == "Borrower.RaceBlack" || ev.TableAndFieldName == "Borrower.GovDoNotWishToFurnish" || ev.TableAndFieldName == "Borrower.Gender2"
 ) {
-    var oldFirstName ="";
-    var oldEmail ="";
-    if(ev.TableAndFieldName == "Borrower.FirstName"){
+    var oldFirstName = "";
+    var oldEmail = "";
+    if (ev.TableAndFieldName == "Borrower.FirstName") {
         oldFirstName = ev.OldValue;
     }
-    if(ev.TableAndFieldName == "Borrower.Email"){
+    if (ev.TableAndFieldName == "Borrower.Email") {
         oldEmail = ev.OldValue;
     }
     var useProxy = true;
@@ -33,7 +33,7 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     var dob = ev.Table.GetFieldValue("DOB");
     var suffix = ev.Table.GetFieldValue("Generation");
     var homePhone = ev.Table.GetFieldValue("HomePhone");
-    var mobilePhone = ev.Table.GetFieldValue("MobilePhone"); 
+    var mobilePhone = ev.Table.GetFieldValue("MobilePhone");
     var email = ev.Table.GetFieldValue("Email");
     var maritalStatus = ev.Table.GetFieldValue("MaritalStatus");
     var noDeps = ev.Table.GetFieldValue("NoDeps");
@@ -65,7 +65,6 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     var borId = ev.Table.GetFieldValue("BorrowerID");
     var fileDataId = ev.Table.GetFieldValue("FileDataID");
 
-    los.Application.ShowMessageBox("gender2 " + gender2 + "maritalStatus " + maritalStatus +"outstandingJudgements " +outstandingJudgements);
     var dataRaw = " --data-raw \"{ \"\"firstName\"\":\"\"{{firstName}}\"\" ,\"\"oldFirstName\"\":\"\"{{oldFirstName}}\"\" ,\"\"middleName\"\":\"\"{{middleName}}\"\" ,\"\"lastName\"\":\"\"{{lastName}}\"\" ,\"\"generation\"\":\"\"{{suffix}}\"\" ,\"\"dob\"\":{{dob}} ,\"\"homePhone\"\":\"\"{{homePhone}}\"\" ,\"\"mobilePhone\"\":\"\"{{mobilePhone}}\"\" ,\"\"email\"\":\"\"{{email}}\"\",\"\"oldEmail\"\":\"\"{{oldEmail}}\"\" ,\"\"maritalStatus\"\":\"\"{{maritalStatus}}\"\" ,\"\"noDeps\"\":{{noDeps}} ,\"\"depsAges\"\":\"\"{{depsAges}}\"\"  ,\"\"outstandingJudgements\"\":\"\"{{outstandingJudgements}}\"\",\"\"bankruptcy\"\":\"\"{{bankruptcy}}\"\",\"\"partyToLawsuit\"\":\"\"{{partyToLawsuit}}\"\",\"\"propertyForeclosed\"\":\"\"{{propertyForeclosed}}\"\",\"\"loanForeclosed\"\":\"\"{{loanForeclosed}}\"\",\"\"alimonyObligation\"\":\"\"{{alimonyObligation}}\"\"  ,\"\"downPaymentBorrowed\"\":\"\"{{downPaymentBorrowed}}\"\" ,\"\"endorserOnNote\"\":\"\"{{endorserOnNote}}\"\" ,\"\"ownershipInterest\"\":\"\"{{ownershipInterest}}\"\" ,\"\"delinquentFederalDebt\"\":\"\"{{delinquentFederalDebt}}\"\",\"\"occupyAsPrimaryRes\"\":\"\"{{occupyAsPrimaryRes}}\"\" ,\"\"citizenResidencyType\"\":\"\"{{citizenResidencyType}}\"\" ,\"\"propertyType\"\":\"\"{{propertyType}}\"\",\"\"titleHeld\"\":\"\"{{titleHeld}}\"\",\"\"ethnicity\"\":\"\"{{ethnicity}}\"\" ,\"\"ethnicity2\"\":\"\"{{ethnicity2}}\"\" ,\"\"raceAmericanIndian\"\":\"{{raceAmericanIndian}}\" ,\"\"raceAsian\"\":\"{{raceAsian}}\",\"\"raceBlack\"\":\"{{raceBlack}}\",\"\"race2\"\":\"\"{{race2}}\"\",\"\"racePacificIslander\"\":\"{{racePacificIslander}}\" ,\"\"raceWhite\"\":\"{{raceWhite}}\",\"\"govDoNotWishToFurnish\"\":\"{{govDoNotWishToFurnish}}\" ,\"\"gender2\"\":\"\"{{gender2}}\"\", \"\"borrowerID\"\":{{borId}} , \"\"fileDataId\"\":{{fileDataId}}  }\" ";
 
     var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/Borrower/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
@@ -84,8 +83,8 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     dataRaw = dataRaw.replace("{{mobilePhone}}", mobilePhone);
     dataRaw = dataRaw.replace("{{email}}", email);
     dataRaw = dataRaw.replace("{{oldEmail}}", oldEmail);
-    dataRaw = dataRaw.replace("{{maritalStatus}}", (maritalStatus)==0?null:maritalStatus);
-    dataRaw = dataRaw.replace("{{noDeps}}", (noDeps)? noDeps : null);
+    dataRaw = dataRaw.replace("{{maritalStatus}}", (maritalStatus) == 0 ? null : maritalStatus);
+    dataRaw = dataRaw.replace("{{noDeps}}", (noDeps) ? noDeps : null);
     dataRaw = dataRaw.replace("{{depsAges}}", depsAges);
     dataRaw = dataRaw.replace("{{outstandingJudgements}}", outstandingJudgements);
     dataRaw = dataRaw.replace("{{bankruptcy}}", bankruptcy);
@@ -98,7 +97,7 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     dataRaw = dataRaw.replace("{{ownershipInterest}}", ownershipInterest);
     dataRaw = dataRaw.replace("{{delinquentFederalDebt}}", delinquentFederalDebt);
     dataRaw = dataRaw.replace("{{occupyAsPrimaryRes}}", occupyAsPrimaryRes);
-    dataRaw = dataRaw.replace("{{citizenResidencyType}}", (citizenResidencyType)==0?null:citizenResidencyType);
+    dataRaw = dataRaw.replace("{{citizenResidencyType}}", (citizenResidencyType) == 0 ? null : citizenResidencyType);
     dataRaw = dataRaw.replace("{{propertyType}}", propertyType);
     dataRaw = dataRaw.replace("{{titleHeld}}", titleHeld);
     dataRaw = dataRaw.replace("{{ethnicity}}", ethnicity);
@@ -110,8 +109,8 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     dataRaw = dataRaw.replace("{{racePacificIslander}}", racePacificIslander);
     dataRaw = dataRaw.replace("{{raceWhite}}", raceWhite);
     dataRaw = dataRaw.replace("{{govDoNotWishToFurnish}}", govDoNotWishToFurnish);
-    dataRaw = dataRaw.replace("{{gender2}}", (gender2)==0 ? null : gender2);
-    dataRaw = dataRaw.replace("{{borId}}", (borId)? borId : null);
+    dataRaw = dataRaw.replace("{{gender2}}", (gender2) == 0 ? null : gender2);
+    dataRaw = dataRaw.replace("{{borId}}", (borId) ? borId : null);
     dataRaw = dataRaw.replace("{{fileDataId}}", (fileDataId) ? fileDataId : null);
 
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
@@ -119,16 +118,12 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
     los.Application.ShowMessageBox("arguments " + arguments);
 
 
-
-System.Diagnostics.Process.Start("curl.exe", arguments);
-//System.Diagnostics.Process process = new System.Diagnostics.Process();
-//System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-//startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-//startInfo.FileName = "curl.exe";
-//startInfo.Arguments = arguments;
-//process.StartInfo = startInfo;
-//process.Start();
-
+    var process = new System.Diagnostics.Process();
+    process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+    process.StartInfo.CreateNoWindow = true;
+    process.StartInfo.FileName = "curl.exe";
+    process.StartInfo.Arguments = arguments;
+    process.Start();
 
 }//end if
 

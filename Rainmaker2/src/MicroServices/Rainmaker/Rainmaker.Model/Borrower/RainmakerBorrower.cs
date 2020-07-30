@@ -218,7 +218,8 @@ namespace Rainmaker.Model.Borrower
                 // add answer
                 borrowerQuestionResponse = new BorrowerQuestionResponse
                                            {
-                                               TrackingState = TrackingState.Added
+                                               TrackingState = TrackingState.Added,
+                                               QuestionId = questionId
                                            };
                 borrowerQuestionResponse.QuestionResponse = new QuestionResponse
                                                             {
