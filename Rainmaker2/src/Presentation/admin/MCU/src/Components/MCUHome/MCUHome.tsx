@@ -8,6 +8,7 @@ import { Store } from "../../Store/Store";
 import { ReviewDocument } from "./ReviewDocument/ReviewDocument";
 import { Authorized } from "../Authorized/Authorized";
 import { NewNeedList } from "./NeedList/NewNeedList/NewNeedList";
+import { ReviewNeedListRequest } from "./ReviewNeedListRequest/ReviewNeedListRequest";
 
 
 export const MCUHome = () => {
@@ -27,6 +28,7 @@ export const MCUHome = () => {
         <Authorized path="/newNeedList" component={NewNeedList} />
         <Authorized path="/templateManager" component={TemplateManager} />
         <Authorized path="/ReviewDocument" component={ReviewDocument} />
+        <Authorized path="/ReviewNeedListRequest" component={ReviewNeedListRequest} />
       </Switch>
     </section>
   );
