@@ -42,9 +42,6 @@ export const NeedListRequest = ({
         setLoaderVisible(false);
     }, []);
 
-    
-
-
     const renderDocumentList = () => {
         return (
             <>
@@ -101,18 +98,14 @@ export const NeedListRequest = ({
                 </div>
             </div>
 
-
-
-
-
             <div className="listWrap-templates">
                 {renderDocumentList()}
             </div>
 
             <div className="left-footer">
                 <div className="btn-wrap">
-                    <a className="btn-link link-primary">Add from template</a>
                     <NeedListSelect
+                        showButton={false}
                         templateList={templateList}
                         redirectToDocumentRequest={redirectToDocumentRequest}
                         viewSaveDraft={viewSaveDraft}

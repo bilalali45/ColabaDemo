@@ -54,9 +54,9 @@ export const DocumentSnipet = ({
     const filenameWithoutExtension = getFileNameWithoutExtension(renameMCUName) || getFileNameWithoutExtension(mcuName || clientName)
 
     if (renameMCUName !== "") {
-      setRenameMCUName(getFileNameWithoutExtension(renameMCUName));
+      setRenameMCUName(getFileNameWithoutExtension(renameMCUName).trim());
     } else {
-      setRenameMCUName(filenameWithoutExtension)
+      setRenameMCUName(filenameWithoutExtension.trim())
     }
   };
 
@@ -83,7 +83,9 @@ export const DocumentSnipet = ({
         const mcuNameUpdated = getMcuNameUpdated(fileId)
 
         if (mcuNamePreviousName === `${mcuNameUpdated}${fileExtension}`) {
-          return setRenameMCUName(() => `${renameMCUName}${fileExtension}`)
+          return setRenameMCUName(() => `${renameMCUName.trim()}${fileExtension}`)
+        } else if (mcuNamePreviousName === '' && (data.newName === mcuName || data.newName === clientName)) {
+          return setRenameMCUName(mcuName || clientName)
         }
 
         try {
@@ -98,9 +100,8 @@ export const DocumentSnipet = ({
         } catch (error) {
           //swallod error because it should not update
 
-          // alert('something went wrong while updating file name')
+          alert('something went wrong while updating file name')
         }
-
       } else {
         // 1. We need to check if renaming being triggered by onBlur event
         // 3. We will only fallback here if there is filename conflict else we will save filename on Blur
@@ -136,7 +137,7 @@ export const DocumentSnipet = ({
         return event.preventDefault()
       }
 
-      renameDocumentMCU(newValue)
+      renameDocumentMCU(newValue.trim())
     }
   }
 
@@ -145,7 +146,7 @@ export const DocumentSnipet = ({
       return event.preventDefault()
     }
 
-    renameDocumentMCU(newValue, event, true)
+    renameDocumentMCU(newValue.trim(), event, true)
   }
 
   const onDoubleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -207,7 +208,7 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-              <p title={renameMCUName || mcuName || clientName}>{renameMCUName || mcuName || clientName}</p>
+              <p title={renameMCUName.trim() || mcuName || clientName}>{renameMCUName.trim() || mcuName || clientName}</p>
             )}
         </div>
         <small className="document-snipet--detail">

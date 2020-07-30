@@ -34,7 +34,7 @@ export const NeedListView = () => {
 
     useEffect(() => {
         fetchNeedList(true, true);
-        isDocumentDraft(LocalDB.getLoanAppliationId());
+        //isDocumentDraft(LocalDB.getLoanAppliationId());
         if (!templates) {
             fetchTemplatesList();
         }
