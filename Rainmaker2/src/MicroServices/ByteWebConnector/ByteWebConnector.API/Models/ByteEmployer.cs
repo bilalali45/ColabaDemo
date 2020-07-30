@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class Employer
+    public class ByteEmployer
     {
         public int AppNo { get; set; }
         public int EmployerID { get; set; }
@@ -39,6 +39,11 @@
         public string VOEEmployeeID { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerEmployer()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }

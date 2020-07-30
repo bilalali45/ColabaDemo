@@ -83,7 +83,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("debt")]
         [HttpPost]
-        public void Post(Debt request)
+        public void Post(ByteLiability request)
         {
 
         }
@@ -101,13 +101,13 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("employer")]
         [HttpPost]
-        public void Post(Employer request)
+        public void Post(ByteEmployer request)
         {
 
         }
         [Route("income")]
         [HttpPost]
-        public void Post(Income request)
+        public void Post(ByteIncome request)
         {
 
         }

@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class Income
+    public class ByteIncome
     {
         public int AppNo { get; set; }
         public int IncomeID { get; set; }
@@ -29,6 +29,11 @@
         public int EmployerID { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerIncome()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }

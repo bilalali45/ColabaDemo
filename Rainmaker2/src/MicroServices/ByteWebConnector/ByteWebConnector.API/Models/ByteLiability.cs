@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class Debt
+    public class ByteLiability
     {
         public int AppNo { get; set; }
         public int DebtID { get; set; }
@@ -39,6 +39,11 @@
         public int AccountHeldByType { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerLiability()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }
