@@ -10,11 +10,11 @@ namespace ByteWebConnector.API.Models
         public string AmortizationType { get; set; }
         public string AmortizationTypeDescOv { get; set; }
         public string LoanProgramName { get; set; }
-        public double? PurPrice { get; set; }
-        public double? BaseLoan { get; set; }
+        public decimal? PurPrice { get; set; }
+        public decimal? BaseLoan { get; set; }
         public double LoanWith { get; set; }
         public string MortgageType { get; set; }
-        public double? SubFiBaseLoan { get; set; }
+        public decimal? SubFiBaseLoan { get; set; }
         public long FileDataId { get; set; }
         public double? RefinanceCashOutAmount { get; internal set; }
         public string LoanGuid { get; set; }
@@ -26,11 +26,11 @@ namespace ByteWebConnector.API.Models
             loanInfoEntity.FileDataId = this.FileDataId;
             loanInfoEntity.AmortizationTypeId = GetRainMakerAmortizationId(this.AmortizationType);
             loanInfoEntity.MortgageTypeId = GetRainMakerMortgageId(this.MortgageType);
-            loanInfoEntity.RefinanceCashOutAmount = this.RefinanceCashOutAmount;
-            loanInfoEntity.BaseLoan = this.BaseLoan;
-            loanInfoEntity.PurPrice = this.PurPrice;
+            loanInfoEntity.CashOutAmount = this.RefinanceCashOutAmount;
+            loanInfoEntity.LoanAmount = this.BaseLoan;
+            loanInfoEntity.PropertyValue = this.PurPrice;
             loanInfoEntity.LoanPurpose = GetRainMakerLoanPurposeId(this.LoanPurpose);
-            loanInfoEntity.SubFiBaseLoan = this.SubFiBaseLoan;
+            loanInfoEntity.MortgageToBeSubordinate = this.SubFiBaseLoan;
             return loanInfoEntity;
         }
 

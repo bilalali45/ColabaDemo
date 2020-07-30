@@ -29,7 +29,7 @@ namespace ByteWebConnector.API.Models
         [DataMember]
         public object LifeInsFaceValue { get; set; }
         [DataMember]
-        public int? LifeInsCashValue { get; set; }
+        public decimal? LifeInsCashValue { get; set; }
         [DataMember]
         public long FileDataId { get; set; }
 
@@ -39,7 +39,7 @@ namespace ByteWebConnector.API.Models
             var applicationEntity = new ClientModels.ApplicationEntity();
             applicationEntity.ApplicationId = this.ApplicationId;
             applicationEntity.ApplicationMethod = this.ApplicationMethod;
-            applicationEntity.LifeInsCashValue = this.LifeInsCashValue;
+            applicationEntity.LifeInsuranceEstimatedMonthlyAmount = this.LifeInsCashValue;
             applicationEntity.BorrowerId = this.BorrowerId;
             applicationEntity.CoBorrowerId = this.CoBorrowerId;
             applicationEntity.FileDataId = this.FileDataId;

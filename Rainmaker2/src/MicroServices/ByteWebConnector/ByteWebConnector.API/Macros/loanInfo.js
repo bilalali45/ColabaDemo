@@ -16,7 +16,7 @@ if (ev.TableAndFieldName == "Loan.PurPrice" || ev.TableAndFieldName == "Loan.Bas
 
     var dataRaw = " --data-raw \"{ \"\"baseLoan\"\":{{baseLoan}} ,\"\"purPrice\"\":{{purPrice}} ,\"\"subFiBaseLoan\"\":{{subFiBaseLoan}} ,\"\"amortizationType\"\":\"\"{{amortizationType}}\"\" ,\"\"mortgageType\"\":\"\"{{mortgageType}}\"\",\"\"RefinanceCashOutAmount\"\":{{RefinanceCashOutAmount}},\"\"loanPurpose\"\":\"\"{{loanPurpose}}\"\", \"\"fileDataId\"\":{{fileDataId}}   }\" ";
 
-    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/loan\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/LoanInfo/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
 
     if (useProxy) {
         arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
