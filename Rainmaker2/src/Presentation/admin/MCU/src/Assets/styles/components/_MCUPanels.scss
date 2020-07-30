@@ -1,0 +1,81 @@
+.mcu-panel{
+
+    h2,.h2{
+        font: 400 #{fontSize("lg") + "/1.2"} fontFamily("base");
+    }
+
+    &-header{
+        background-color: color('widgetBg');
+        color: color('widgetText');
+        padding: 15px 30px;
+        border-bottom:1px solid color('border');
+        
+        h2{
+            font-family: fontFamily('base'); 
+            font-size: fontSize('lg') - 3px; 
+            font-weight: 500;     
+            margin: 0;
+            padding: 10px 0;  
+            color:color('heading');
+        }
+
+        &--left{
+
+        }
+
+        &--right{
+            text-align: end;
+            .btn-close{
+                font-size: fontSize('lg');
+                padding: 10px 20px;
+                line-height: 1;
+                height: 44px;
+            }
+        }
+
+    }
+
+    &-body{
+        background-color: color('widgetBg');
+
+        &.padding{
+            padding: 30px;
+        }
+
+        > .row{
+            margin: 0;
+        }
+
+        &--col{
+            & + .mcu-panel-body--col{
+                border-left: 1px solid color('border');
+            }
+        }
+
+        &--content{
+            padding: 0;
+            .document-view--header---options{
+                ul{
+                    li:last-child{
+                        display: none;
+                    }
+                }
+            }
+        }
+        &--aside{
+            background-color: color('ReviewDocumentSidebarBg');
+            color: color('ReviewDocumentSidebarText');
+            padding: 0;
+        }
+    }
+
+    &-footer{
+
+    }
+
+    .no-preview{
+        min-height: calc(100vh - 180px);
+        background-color: color('widgetBg');
+    }
+
+}
