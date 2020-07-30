@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class REO
+    public class ByteREO
     {
         public int AppNo { get; set; }
         public int REOID { get; set; }
@@ -35,5 +35,10 @@
         public string Country { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerReo()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class Asset
+    public class ByteAsset
     {
         public int AppNo { get; set; }
         public int AssetID { get; set; }
@@ -32,5 +32,10 @@
         public int AccountHeldByType { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerAsset()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

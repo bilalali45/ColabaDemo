@@ -53,7 +53,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("party")]
         [HttpPost]
-        public void Post(Party request)
+        public void Post(ByteParties request)
         {
 
         }
@@ -89,13 +89,13 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("residence")]
         [HttpPost]
-        public void Post(Residence request)
+        public void Post(ByteResidence request)
         {
 
         }
         [Route("asset")]
         [HttpPost]
-        public void Post(Asset request)
+        public void Post(ByteAsset request)
         {
 
         }
@@ -113,7 +113,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("reo")]
         [HttpPost]
-        public void Post(REO request)
+        public void Post(ByteREO request)
         {
 
         }

@@ -1,8 +1,10 @@
-﻿namespace ByteWebConnector.API.Models
+﻿using ByteWebConnector.API.Models.ClientModels;
+
+namespace ByteWebConnector.API.Models
 {
-    public class Party
+    public class ByteParties
     {
-        public long PartyID { get; set; }
+        public long PartyId { get; set; }
         public long CategoryID { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -25,7 +27,7 @@
         public string FHAOrigOrSponsorID { get; set; }
         public string BranchID { get; set; }
         public string Notes { get; set; }
-        public string ContactNMLSID { get; set; }
+        public string ContactNmlsid { get; set; }
         public string CompanyNMLSID { get; set; }
         //public string LockToUser { get; set; }
         //public string CompanyEIN { get; set; }
@@ -36,7 +38,21 @@
         //public string LicensingAgencyCode { get; set; }
         //public string EMail2 { get; set; }
         //public string EMail3 { get; set; }
-        public long FileDataID { get; set; }
+        public long FileDataId { get; set; }
 
+
+        public PartiesEntity GetRainmakerParties()
+        {
+            var partiesEntity = new PartiesEntity
+                                {
+                                    InterviewerName = this.FirstName,
+                                    NmlsLoanOriginatorId = this.ContactNmlsid,
+                                    InterviewerPhoneNumber = this.WorkPhone,
+                                    InterviewerEmail = this.EMail,
+                                    FileDataId = this.FileDataId
+                                };
+            return partiesEntity;
+            
+        }
     }
 }

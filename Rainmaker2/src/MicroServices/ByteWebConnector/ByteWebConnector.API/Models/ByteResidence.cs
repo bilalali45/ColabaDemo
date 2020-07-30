@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class Residence
+    public class ByteResidence
     {
         public int AppNo { get; set; }
         public int ResidenceID { get; set; }
@@ -32,5 +32,10 @@
         public int StreetContainsUnitNumberOV { get; set; }
         public long FileDataID { get; set; }
 
+
+        public object GetRainmakerBorrowerResidence() 
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
