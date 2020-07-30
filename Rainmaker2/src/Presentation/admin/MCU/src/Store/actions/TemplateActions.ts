@@ -50,18 +50,7 @@ export class TemplateActions {
         }
     }
 
-    static async fetchSelectedTemplateDocuments(ids: string[], tenantId: number = 1) {   
-        let url = Endpoints.TemplateManager.POST.getDocumentsByTemplateIds()      
-        try {
-            let res  = await http.post(url, {
-                id: ids, tenantId
-            })
-            console.log('res', res)
-            return res.data;       
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  
 
     static async insertTemplate(tenantId: string, name: string) {
         fetchTemplateDocumentCancelToken.cancel();

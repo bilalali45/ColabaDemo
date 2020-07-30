@@ -10,7 +10,6 @@ export class TemplateManagerEndpoints {
         insertTemplate: () => `/api/documentmanagement/template/inserttemplate`,
         renameTemplate: () => `/api/documentmanagement/template/RenameTemplate`,
         addDocument: () => `/api/documentmanagement/template/adddocument`,
-        getDocumentsByTemplateIds: () => `/api/Documentmanagement/document/GetDocumentsByTemplateIds`
     }
 
     static PUT = {
