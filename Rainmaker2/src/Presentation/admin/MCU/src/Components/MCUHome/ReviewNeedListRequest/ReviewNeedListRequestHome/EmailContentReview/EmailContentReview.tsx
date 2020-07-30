@@ -10,6 +10,10 @@ export const EmailContentReview = () => {
                 <textarea name="" id="" className="form-control" rows={10}></textarea>
 
             </div>
+
+            <footer className="mcu-panel-footer text-right">
+                <button className="btn btn-primary">Send Request</button>
+            </footer>
         </div>
     )
 }

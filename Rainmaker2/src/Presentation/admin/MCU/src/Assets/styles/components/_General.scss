@@ -697,3 +697,35 @@ label.error{
         color: $success;
     }
 }
+
+.listing{
+    ul{
+        @extend .list-style-none;
+        >li{
+            display: block;
+            padding-left: 25px;
+            position: relative;
+
+            a{
+                display: inline-block;
+                color: color('base');
+            }
+
+            &::before{
+                content: "";
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: color('primary');
+                position: absolute;
+                top: 6px;
+                left: 5px;
+            }
+
+            & + li{
+                margin-top: 15px;
+            }
+        }
+    }
+}// listing

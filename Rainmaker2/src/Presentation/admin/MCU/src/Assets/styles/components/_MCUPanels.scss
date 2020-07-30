@@ -1,7 +1,7 @@
 .mcu-panel{
 
     h2,.h2{
-        font: 400 #{fontSize("lg") + "/1.2"} fontFamily("base");
+        font: 500 #{fontSize("xmd") + "/1.2"} fontFamily("base");
     }
 
     &-header{
@@ -37,9 +37,11 @@
 
     &-body{
         background-color: color('widgetBg');
+        border-bottom:1px solid color('border');
 
         &.padding{
             padding: 30px;
+            min-height: calc(100% - 145px);
         }
 
         > .row{
@@ -61,16 +63,22 @@
                     }
                 }
             }
+            .mcu-panel-body.padding{
+                min-height: 70vh;
+            }
         }
         &--aside{
             background-color: color('ReviewDocumentSidebarBg');
             color: color('ReviewDocumentSidebarText');
             padding: 0;
+            height: 100%;
         }
     }
 
     &-footer{
-
+        padding: 15px 30px;
+        border-bottom:1px solid color('border');
+        min-height: 75px;
     }
 
     .no-preview{
