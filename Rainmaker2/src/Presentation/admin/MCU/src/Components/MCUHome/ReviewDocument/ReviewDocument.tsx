@@ -153,7 +153,7 @@ export const ReviewDocument = () => {
   }, [nextDocumentButtonDisabled, perviousDocumentButtonDisabled, documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
 
   const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string, loadingFile?: boolean) => {
-    if (index === currentFileIndex || loadingFile) return
+    if (index === currentFileIndex || loading === true) return
 
     if (currentDocument) {
       const { id, requestId, docId } = currentDocument
@@ -166,7 +166,7 @@ export const ReviewDocument = () => {
 
       !loadingFile && getDocumentForView(id, requestId, docId, fileId, tenantId)
     }
-  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
+  }, [setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex, loading])
 
   const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
     setTypeIdId({ id, typeId: typeIdOrDocName })
@@ -350,7 +350,7 @@ export const ReviewDocument = () => {
               <ReviewDocumentStatement
                 typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
                 moveNextFile={moveNextFile}
-                loadingFile={!!loading ? true : false}
+                loadingFile={loading}
                 currentDocument={!!currentDocument ? currentDocument : null}
                 currentFileIndex={currentFileIndex}
               />
