@@ -83,7 +83,7 @@ export const NeedListSelect = ({
       return (
         <>
           <Dropdown>
-            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" style={{pointerEvents: "none"}} >
+            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
             </Dropdown.Toggle>
 

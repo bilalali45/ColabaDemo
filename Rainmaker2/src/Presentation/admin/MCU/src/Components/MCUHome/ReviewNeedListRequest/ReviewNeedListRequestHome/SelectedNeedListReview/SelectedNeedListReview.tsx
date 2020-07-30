@@ -1,6 +1,28 @@
 import React from 'react'
+import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 
-export const SelectedNeedListReview = () => {
+type SelectedNeedListReviewProps = {
+    documentList: TemplateDocument[];
+}
+
+export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProps) => {
+
+    const displayRequestDocumentsList = () => {
+        return (
+            <>
+                <div className="listing">
+                    <ul>
+                        {
+                         documentList?.map((t: TemplateDocument) => {
+                         return  <li><a>{t.docName}</a></li>
+                         })
+                        }
+                    </ul>
+                </div>
+            </>
+        )
+    }
+
     return (
         <div className="mcu-panel-body--aside">
             <header className="mcu-panel-header">
@@ -8,12 +30,7 @@ export const SelectedNeedListReview = () => {
             </header>
 
             <div className="mcu-panel-body padding">
-                <div className="listing">
-                    <ul>
-                        <li><a href="">Page 5 of 5 case checking acount</a></li>
-                        <li><a href="">Financial statements</a></li>
-                    </ul>
-                </div>
+                {displayRequestDocumentsList()}
             </div>
 
             <footer className="mcu-panel-footer">
