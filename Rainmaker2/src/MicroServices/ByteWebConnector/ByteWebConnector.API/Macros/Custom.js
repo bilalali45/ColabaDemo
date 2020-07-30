@@ -23,8 +23,12 @@ if (ev.TableAndFieldName == "CustomFields.Field01" || ev.TableAndFieldName == "C
     
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
 
-    los.Application.ShowMessageBox("arguments " + arguments);
-    System.Diagnostics.Process.Start("curl.exe", arguments);
+    var process = new System.Diagnostics.Process();
+    process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+    process.StartInfo.CreateNoWindow = true;
+    process.StartInfo.FileName = "curl.exe";
+    process.StartInfo.Arguments = arguments;
+    process.Start();
 };
 
 

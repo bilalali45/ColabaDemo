@@ -115,8 +115,6 @@ if (ev.TableAndFieldName == "Borrower.FirstName"
 
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
 
-    los.Application.ShowMessageBox("arguments " + arguments);
-
 
     var process = new System.Diagnostics.Process();
     process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;

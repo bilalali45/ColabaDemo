@@ -41,13 +41,13 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("loan")]
         [HttpPost]
-        public void Post(Loan request)
+        public void Post(Models.ByteLoanInfo request)
         {
 
         }
         [Route("application")]
         [HttpPost]
-        public void Post(Application request)
+        public void Post(ByteApplication request)
         {
 
         }

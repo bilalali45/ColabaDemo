@@ -540,32 +540,4 @@ namespace ByteWebConnector.API.Models
             return maritalStatusId;
         }
     }
-    public class RaceInfoItem
-    {
-        public int? RaceId { get; }
-        public int? RaceDetailId { get; }
-
-
-        public RaceInfoItem(int? raceId,
-                            int? raceDetailId)
-        {
-            RaceId = raceId;
-            RaceDetailId = raceDetailId;
-        }
-
-    }
-    public class EthnicInfoItem
-    {
-        public int? EthnicId { get; }
-        public int? EthnicDetailId { get; }
-
-
-        public EthnicInfoItem(int? ethnicId,
-                              int? ethnicDetailId)
-        {
-            EthnicId = ethnicId;
-            EthnicDetailId = ethnicDetailId;
-        }
-
-    }
 }
