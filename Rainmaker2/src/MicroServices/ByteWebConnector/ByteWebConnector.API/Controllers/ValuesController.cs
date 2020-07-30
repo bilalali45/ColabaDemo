@@ -34,7 +34,7 @@ namespace ByteWebConnector.API.Controllers
         // POST api/<ValuesController>
         [Route("subprop")]
         [HttpPost]
-        public void Post(SubProp request)
+        public void Post(ByteSubProperty request)
         {
             
 

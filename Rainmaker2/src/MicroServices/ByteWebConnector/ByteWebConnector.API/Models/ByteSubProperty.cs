@@ -1,8 +1,10 @@
-﻿namespace ByteWebConnector.API.Models
+﻿using ByteWebConnector.API.Models.ClientModels;
+
+namespace ByteWebConnector.API.Models
 {
-    public class SubProp
+    public class ByteSubProperty
     {
-        public long SubPropID { get; set; }
+        public long SubPropId { get; set; }
         public string FullAddress { get; set; }
         public string CityStateZip { get; set; }
         public string Street { get; set; }
@@ -27,10 +29,10 @@
         public object CYearLotAcq { get; set; }
         public object COrigCost { get; set; }
         public object CAmtExLiens { get; set; }
-        public object CPresValLot { get; set; }
+        public decimal? CPresValLot { get; set; }
         public object CImprvCost { get; set; }
-        public object RYearLotAcq { get; set; }
-        public object ROrigCost { get; set; }
+        public int? RYearLotAcq { get; set; }
+        public decimal? ROrigCost { get; set; }
         public object RAmtExLiens { get; set; }
         public int ImprvMade { get; set; }
         public string ImprvDesc { get; set; }
@@ -119,25 +121,43 @@
         public object ManufacturedHomeLength { get; set; }
         public int ManufacturedHomeAttachedToFoundation { get; set; }
         public int ManufacturedHomeCondition { get; set; }
-        public string ManufacturedHomeHUDCertLabelID1 { get; set; }
-        public string ManufacturedHomeHUDCertLabelID2 { get; set; }
-        public string ManufacturedHomeHUDCertLabelID3 { get; set; }
+        public string ManufacturedHomeHudCertLabelId1 { get; set; }
+        public string ManufacturedHomeHudCertLabelId2 { get; set; }
+        public string ManufacturedHomeHudCertLabelId3 { get; set; }
         public string ManufacturedHomeMake { get; set; }
         public string ManufacturedHomeModel { get; set; }
         public string ManufacturedHomeSerialNo { get; set; }
         public bool HasHomesteadExemption { get; set; }
         public int IsMixedUseProperty { get; set; }
-        public bool NetCashFlowDNADesired { get; set; }
-        public bool OtherLoansDNADesired { get; set; }
+        public bool NetCashFlowDnaDesired { get; set; }
+        public bool OtherLoansDnaDesired { get; set; }
         public bool IsConversionOfLandContract { get; set; }
         public bool IsRenovation { get; set; }
         public bool HasCleanEnergyLien { get; set; }
         public object LotAcquiredDate { get; set; }
         public int IndianCountryLandTenure { get; set; }
-        public int StreetContainsUnitNumberOV { get; set; }
+        public int StreetContainsUnitNumberOv { get; set; }
         public int LandValueType { get; set; }
-        public string PropertyDataID { get; set; }
-        public long FileDataID { get; set; }
+        public string PropertyDataId { get; set; }
+        public long FileDataId { get; set; }
 
+
+        public SubPropertyEntity GetRainmakerSubProperty()
+        {
+            var subPropertyEntity = new SubPropertyEntity();
+            subPropertyEntity.PAddressCityName = this.City;
+            subPropertyEntity.Abbreviation = this.State;
+            subPropertyEntity.CountyName = this.County;
+            subPropertyEntity.PAddressStreet = this.Street;
+            subPropertyEntity.PAddressZipCode = this.Zip;
+            subPropertyEntity.PAddressUnitNo = this.NoUnits;
+            subPropertyEntity.PropertyValue = this.CPresValLot;
+            //subPropertyEntity.NoUnits = this.CAmtExLiens;//loanDetailDb.FirstMOPMortgageBalance + loanDetailDb.SecondMOPMortgageBalance
+            //subPropertyEntity.NoUnits = this.RAmtExLiens;//loanDetailDb.FirstMOPMortgageBalance + loanDetailDb.SecondMOPMortgageBalance
+            subPropertyEntity.OriginalPurchasePrice = this.ROrigCost;
+            subPropertyEntity.DateAcquiredYear = this.RYearLotAcq;//loanDetailDb.DateAcquired.Value.Year
+            subPropertyEntity.FileDataId = this.FileDataId;
+            return subPropertyEntity;
+        }
     }
 }

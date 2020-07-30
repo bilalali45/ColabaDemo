@@ -23,9 +23,9 @@ if (ev.TableAndFieldName == "SubProp.City" || ev.TableAndFieldName == "SubProp.S
 
 
 
-    var dataRaw = " --data-raw \"{ \"\"city\"\":\"\"{{city}}\"\" ,\"\"state\"\":\"\"{{state}}\"\" ,\"\"county\"\":\"\"{{county}}\"\" ,\"\"street\"\":\"\"{{street}}\"\" ,\"\"zip\"\":\"\"{{zip}}\"\" ,\"\"noUnit\"\":\"\"{{noUnit}}\"\" ,\"\"cpressValLot\"\":\"\"{{cpressValLot}}\"\" ,\"\"camExtLiens\"\":\"\"{{camExtLiens}}\"\" ,\"\"ramExtLiens\"\":\"\"{{ramExtLiens}}\"\" ,\"\"rorigCost\"\":\"\"{{rorigCost}}\"\" ,\"\"rYearLotAcq\"\":\"\"{{rYearLotAcq}}\"\" , \"\"fileDataId\"\":\"{{fileDataId}}\" }\" ";
+    var dataRaw = " --data-raw \"{ \"\"city\"\":\"\"{{city}}\"\" ,\"\"state\"\":\"\"{{state}}\"\" ,\"\"county\"\":\"\"{{county}}\"\" ,\"\"street\"\":\"\"{{street}}\"\" ,\"\"zip\"\":\"\"{{zip}}\"\" ,\"\"noUnit\"\":{{noUnit}} ,\"\"cpressValLot\"\":{{cpressValLot}} ,\"\"camExtLiens\"\":{{camExtLiens}} ,\"\"ramExtLiens\"\":{{ramExtLiens}} ,\"\"rorigCost\"\":{{rorigCost}} ,\"\"rYearLotAcq\"\":{{rYearLotAcq}} , \"\"fileDataId\"\":{{fileDataId}} } ";
 
-    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/subprop\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/SubProperty/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
 
     if (useProxy) {
         arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
@@ -35,12 +35,12 @@ if (ev.TableAndFieldName == "SubProp.City" || ev.TableAndFieldName == "SubProp.S
     dataRaw = dataRaw.replace("{{county}}", county);
     dataRaw = dataRaw.replace("{{street}}", street);
     dataRaw = dataRaw.replace("{{zip}}", zip);
-    dataRaw = dataRaw.replace("{{noUnit}}", noUnit);
-    dataRaw = dataRaw.replace("{{cpressValLot}}", cpressValLot);
-    dataRaw = dataRaw.replace("{{camExtLiens}}", camExtLiens);
-    dataRaw = dataRaw.replace("{{ramExtLiens}}", ramExtLiens);
-    dataRaw = dataRaw.replace("{{rorigCost}}", rorigCost);
-    dataRaw = dataRaw.replace("{{rYearLotAcq}}", rYearLotAcq);
+    dataRaw = dataRaw.replace("{{noUnit}}", (noUnit) ? noUnit : null);
+    dataRaw = dataRaw.replace("{{cpressValLot}}", (cpressValLot) ? cpressValLot : null);
+    dataRaw = dataRaw.replace("{{camExtLiens}}", (camExtLiens) ? camExtLiens : null);
+    dataRaw = dataRaw.replace("{{ramExtLiens}}", (ramExtLiens) ? ramExtLiens : null);
+    dataRaw = dataRaw.replace("{{rorigCost}}", (rorigCost) ? rorigCost : null);
+    dataRaw = dataRaw.replace("{{rYearLotAcq}}", (rYearLotAcq) ? rYearLotAcq : null);
     dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
 
