@@ -71,7 +71,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("status")]
         [HttpPost]
-        public void Post(Status request)
+        public void Post(ByteStatus request)
         {
 
         }
