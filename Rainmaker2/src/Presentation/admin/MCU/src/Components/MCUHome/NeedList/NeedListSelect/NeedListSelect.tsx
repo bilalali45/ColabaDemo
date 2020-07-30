@@ -8,14 +8,16 @@ type NeedListSelectType = {
   templateList: Template[],
   redirectToDocumentRequest: Function,
   viewSaveDraft: Function,
-  isDraft: string
+  isDraft: string,
+  showButton: boolean
 }
 
 export const NeedListSelect = ({
   templateList,
   redirectToDocumentRequest,
   viewSaveDraft,
-  isDraft }: NeedListSelectType) => {
+  isDraft,
+  showButton = false }: NeedListSelectType) => {
 
   const [idArray, setIdArray] = useState<String[]>([]);
 
@@ -71,9 +73,15 @@ export const NeedListSelect = ({
   }
   const StartListButton = () => {
     if (idArray.length > 0) {
-      return <button onClick={() => { redirectToDocumentRequest(idArray) }} className="btn btn-primary btn-block">Continue with Template</button>
+      if (showButton) {
+        return <button onClick={() => { redirectToDocumentRequest(idArray) }} className="btn btn-primary btn-block">Continue with Template</button>
+      } else {
+        return <button onClick={() => { redirectToDocumentRequest(idArray) }} className="btn btn-primary btn-block">Add Selected</button>
+      }
     } else {
-      return <Link to="/newNeedList" >Start from new list</Link>
+      if (showButton) {
+        return <Link to="/newNeedList" >Start from new list</Link>
+      }
     }
   }
 
@@ -87,18 +95,18 @@ export const NeedListSelect = ({
               Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
             </Dropdown.Toggle>
 
-            <Dropdown.Menu className="padding">
-              <h2>Select a need list Template</h2>
-              {MyTemplates()}
-              {TemplatesByTenant()}
-              <div className="external-link">
-                {StartListButton()}
-              </div>
-            </Dropdown.Menu>
-          </Dropdown>
-        </>
-      )
-    }
+          <Dropdown.Menu className="padding">
+            <h2>Select a need list Template</h2>
+            {MyTemplates()}
+            {TemplatesByTenant()}
+            <div className="external-link">
+              {StartListButton()}
+            </div>
+          </Dropdown.Menu>
+        </Dropdown>
+      </>
+    )
+  }
   // if(!templateList || !templateList?.length) {
   //   return <div></div>;
   // }

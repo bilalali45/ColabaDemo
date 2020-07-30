@@ -155,7 +155,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         }
 
         if (!value?.trim()?.length) {
-            setNameError('Name cannot be empty');
+            setNameError('Template name cannot be empty');
             return;
         }
 

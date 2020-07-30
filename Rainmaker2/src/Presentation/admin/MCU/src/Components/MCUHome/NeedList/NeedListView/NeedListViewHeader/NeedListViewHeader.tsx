@@ -57,6 +57,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, redirectToDoc
 
                     {/* {displayAddButton()} */}
                     <NeedListSelect
+                        showButton={false}
                         templateList={templateList}
                         redirectToDocumentRequest={redirectToDocumentRequest}
                         viewSaveDraft={viewSaveDraft}
