@@ -3,9 +3,10 @@ import React from 'react'
 export const SelectedNeedListReview = () => {
     return (
         <div className="mcu-panel-body--aside">
-            <div className="mcu-panel-header">
+            <header className="mcu-panel-header">
                 <h2 className="h2">Review Needs List</h2>
-            </div>
+            </header>
+
             <div className="mcu-panel-body padding">
                 <div className="listing">
                     <ul>
@@ -14,6 +15,10 @@ export const SelectedNeedListReview = () => {
                     </ul>
                 </div>
             </div>
+
+            <footer className="mcu-panel-footer">
+                &nbsp;
+            </footer>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { ReviewNeedListRequestHome } from './ReviewNeedListRequestHome/ReviewNee
 
 export const ReviewNeedListRequest = () => {
     return (
-        <div>
+        <div className="mcu-panel">
             <ReviewNeedListRequestHeader></ReviewNeedListRequestHeader>
             <ReviewNeedListRequestHome></ReviewNeedListRequestHome>
         </div>
