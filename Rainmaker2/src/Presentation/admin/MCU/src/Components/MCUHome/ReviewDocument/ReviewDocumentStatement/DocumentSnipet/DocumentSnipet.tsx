@@ -84,8 +84,10 @@ export const DocumentSnipet = ({
 
         if (mcuNamePreviousName === `${mcuNameUpdated}${fileExtension}`) {
           return setRenameMCUName(() => `${renameMCUName.trim()}${fileExtension}`)
-        } else if (mcuNamePreviousName === '' && (data.newName === mcuName || data.newName === clientName)) {
+        } else if (mcuNamePreviousName === '' && data.newName === mcuName) {
           return setRenameMCUName(mcuName || clientName)
+        } else if (mcuNamePreviousName === '' && mcuName === '' && data.newName === clientName) {
+          return setRenameMCUName(clientName)
         }
 
         try {
