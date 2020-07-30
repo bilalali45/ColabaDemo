@@ -24,6 +24,8 @@ export const ReviewDocumentStatement = ({
   const [username, setUsername] = useState('');
   const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([]);
   const [rejectPopup, setRejectPopup] = useState(false);
+  const [getAddToDraft, setAddToDraft] = useState(false);
+  const [getAcceptDoc, setAcceptDoc] = useState(false);
 
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
 
@@ -100,6 +102,11 @@ export const ReviewDocumentStatement = ({
     }
   }
 
+  const addToDraft = () => {
+    setRejectPopup(false);
+    setAddToDraft(true);
+  }
+
   useEffect(() => {
     if (currentDocument) {
       getDocumentFiles(currentDocument)
@@ -156,30 +163,54 @@ export const ReviewDocumentStatement = ({
 
             </section>
 
-            <footer className="document-statement--footer">
-              {rejectPopup &&
-                <div className="row">
-                  <div className="col-md-6">
-                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
-                  </div>
-                  <div className="col-md-6">
-                    <button className="btn btn-primary btn-block">Add to Draft</button>
-                  </div>
-                </div>
+            
+              
+              
+              
+
+              {getAcceptDoc && 
+                <footer className="document-statement--footer alert alert-success" role="alert">
+                  This document has been accepted.
+                </footer>
               }
 
-              {!rejectPopup &&
-                <div className="row">
-                  <div className="col-md-6">
-                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
-                  </div>
-                  <div className="col-md-6">
-                    <button className="btn btn-primary btn-block">Accept Document</button>
-                  </div>
-                </div>
+              {!getAcceptDoc &&
+                <>
+                    {getAddToDraft &&
+                      <footer className="document-statement--footer alert alert-primary" role="alert">
+                        This document has been saved as draft.
+                      </footer>
+                    }
+
+                    {!getAddToDraft &&
+                      <footer className="document-statement--footer">
+                      {rejectPopup &&
+                        <div className="row">
+                          <div className="col-md-6">
+                            <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
+                          </div>
+                          <div className="col-md-6">
+                            <button className="btn btn-primary btn-block" onClick={()=>{ addToDraft() }}>Add to Draft</button>
+                          </div>
+                        </div>
+                      }
+
+                      {!rejectPopup &&
+                        <div className="row">
+                          <div className="col-md-6">
+                            <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
+                          </div>
+                          <div className="col-md-6">
+                            <button className="btn btn-primary btn-block" onClick={()=>{ setAcceptDoc(true) }}>Accept Document</button>
+                          </div>
+                        </div>
+                      }
+                      </footer>
+                }
+                </>
               }
 
-            </footer>
+            
           </div>
         )}
     </div>
