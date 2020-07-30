@@ -24,6 +24,8 @@ export const ReviewDocumentStatement = ({
   const [username, setUsername] = useState('');
   const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([]);
   const [rejectPopup, setRejectPopup] = useState(false);
+  const [getAddToDraft, setAddToDraft] = useState(false);
+  const [getAcceptDoc, setAcceptDoc] = useState(false);
 
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
 
@@ -68,6 +70,12 @@ export const ReviewDocumentStatement = ({
     }
   }, [rejectPopup]);
 
+  const getMcuNameUpdated = (fileId: string): string => {
+    const item = mcuNamesUpdated.find(item => item.fileId === fileId)
+
+    return !!item ? item.mcuName : ""
+  }
+
   const allowFileRenameMCU = (filename: string, fileId: string, addToList: boolean = true): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
@@ -98,6 +106,11 @@ export const ReviewDocumentStatement = ({
     return {
       overflow: rejectPopup ? 'hidden' : ''
     }
+  }
+
+  const addToDraft = () => {
+    setRejectPopup(false);
+    setAddToDraft(true);
   }
 
   useEffect(() => {
@@ -140,10 +153,10 @@ export const ReviewDocumentStatement = ({
                   uploadedOn={file.fileUploadedOn}
                   username={username}
                   allowFileRenameMCU={allowFileRenameMCU}
+                  getMcuNameUpdated={getMcuNameUpdated}
                 />) : (
                   <span>No file submitted yet</span>
                 )}
-
               {rejectPopup &&
                 <div className="dialogbox">
                   <div className="dialogbox-backdrop"></div>
@@ -155,31 +168,44 @@ export const ReviewDocumentStatement = ({
                 </div>}
 
             </section>
-
-            <footer className="document-statement--footer">
-              {rejectPopup &&
-                <div className="row">
-                  <div className="col-md-6">
-                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
-                  </div>
-                  <div className="col-md-6">
-                    <button className="btn btn-primary btn-block">Add to Draft</button>
-                  </div>
-                </div>
-              }
-
-              {!rejectPopup &&
-                <div className="row">
-                  <div className="col-md-6">
-                    <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
-                  </div>
-                  <div className="col-md-6">
-                    <button className="btn btn-primary btn-block">Accept Document</button>
-                  </div>
-                </div>
-              }
-
-            </footer>
+            {getAcceptDoc &&
+              <footer className="document-statement--footer alert alert-success" role="alert">
+                This document has been accepted.
+                </footer>
+            }
+            {!getAcceptDoc &&
+              <>
+                {getAddToDraft &&
+                  <footer className="document-statement--footer alert alert-primary" role="alert">
+                    This document has been saved as draft.
+                      </footer>
+                }
+                {!getAddToDraft &&
+                  <footer className="document-statement--footer">
+                    {rejectPopup &&
+                      <div className="row">
+                        <div className="col-md-6">
+                          <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
+                        </div>
+                        <div className="col-md-6">
+                          <button className="btn btn-primary btn-block" onClick={() => { addToDraft() }}>Add to Draft</button>
+                        </div>
+                      </div>
+                    }
+                    {!rejectPopup &&
+                      <div className="row">
+                        <div className="col-md-6">
+                          <button className="btn btn-secondry btn-block" disabled onClick={() => { setRejectPopup(true) }}>Reject Document</button>
+                        </div>
+                        <div className="col-md-6">
+                          <button className="btn btn-primary btn-block" disabled onClick={() => { setAcceptDoc(true) }}>Accept Document</button>
+                        </div>
+                      </div>
+                    }
+                  </footer>
+                }
+              </>
+            }
           </div>
         )}
     </div>

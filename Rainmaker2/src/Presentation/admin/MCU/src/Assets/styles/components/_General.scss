@@ -111,7 +111,9 @@ ul {
         background-color: color('default');
     }
 
-    &-back {}
+    &-back {
+        padding-left: 0 !important;
+    }
 
     &-secondry {
         @include button-variant(color('secondry'), color('secondry'), $hover-background: darken(color('secondry'), 7.5%), $hover-border: darken(color('secondry'), 10%), $active-background: darken(color('secondry'), 10%), $active-border: darken(color('secondry'), 12.5%));
@@ -168,16 +170,7 @@ ul {
     }
     
     &-dropdown-toggle{
-        &:hover,&:focus,&:visited, &.active{
-            .rotate-plus{
-                &::before{
-                    transform: rotate(45deg);
-                }
-                &::after{
-                    transform: rotate(45deg);
-                }
-            }
-
+        &.active{
             .btn-icon{
                 i,em{
                     &::before{
@@ -187,6 +180,27 @@ ul {
                     }
                 }
             }
+        }
+    }
+
+    .btn-text{
+        text-transform: initial;
+        float: left;
+
+        & + .btn-icon {
+            margin-left: 15px;
+        }
+    }
+
+    .btn-icon {
+        padding: 3px 0 4px 12px;
+        display: inline-block;
+        border-left: 1px solid darken($color: color('primary'), $amount: 15%);
+        vertical-align: middle;
+        float: right;
+        em,i{
+            display: inline-block;
+            vertical-align: middle;
         }
     }
 
@@ -379,7 +393,7 @@ ul {
     
     & + .dropdown-menu,
     .dropdown-menu{
-        width: 260px;
+        width: 290px;
         border-radius: 0px;
         font-family: fontFamily('heading');
         font-size: fontSize('sm') - 1px ;
@@ -428,6 +442,12 @@ ul {
             font-size: fontSize('sm');
             font-weight: 500;
         }
+        .btn-block{
+            .btn-icon{
+                margin-top: -3px;
+                margin-bottom: -5px;
+            }            
+        }
     }
 
     &.no-caret{
@@ -442,6 +462,29 @@ ul {
         }
     }
 }// .dropdown-toggle
+
+.dropdown{
+    &.show{
+        .rotate-plus{
+            &::before{
+                transform: rotate(45deg);
+            }
+            &::after{
+                transform: rotate(45deg);
+            }
+        }
+    
+        .btn-icon{
+            i,em{
+                &::before{
+                    @include transform(rotate(40deg));
+                    position: relative;
+                    display: block;
+                }
+            }
+        }
+    }
+}
 
 // Rotate Plus
 .rotate-plus{
@@ -652,3 +695,51 @@ label.error{
     text-transform: initial;
     padding-top: 5px;
 }
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.alert{
+    font: normal #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    
+    &-primary{
+        color: color('primary');
+    }
+
+    &-success{
+        color: $success;
+    }
+}
+
+.listing{
+    ul{
+        @extend .list-style-none;
+        >li{
+            display: block;
+            padding-left: 25px;
+            position: relative;
+
+            a{
+                display: inline-block;
+                color: color('base');
+            }
+
+            &::before{
+                content: "";
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: color('primary');
+                position: absolute;
+                top: 6px;
+                left: 5px;
+            }
+
+            & + li{
+                margin-top: 15px;
+            }
+        }
+    }
+}// listing

@@ -28,14 +28,23 @@ export const NeedListView = () => {
     const needListData = needListManager?.needList;
     const templateManager: any = state.templateManager;
     const templates: Template[] = templateManager?.templates;
+    const currentTemplate: Template[] = templateManager?.currentTemplate;
+    const isDraftStore: boolean = needListManager?.isDraft;
+    const templateIds: boolean = needListManager?.templateIds;
 
     useEffect(() => {
         fetchNeedList(true, true);
-        isDocumentDraft(LocalDB.getLoanAppliationId());
+        //isDocumentDraft(LocalDB.getLoanAppliationId());
         if (!templates) {
             fetchTemplatesList();
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (templates && templates?.length) {
+            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: templates[0] });
+        }
+    }, [templates?.length])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
         if (LocalDB.getLoanAppliationId() && LocalDB.getTenantId()) {
@@ -63,12 +72,6 @@ export const NeedListView = () => {
         }
     }
 
-    const fetchSelectedTemplateDocuments = async (ids: string[], tenantId: number) => {
-        let documents: any = await TemplateActions.fetchSelectedTemplateDocuments(ids, tenantId)
-        const data =  documents.map((obj: any) => ({ ...obj, isRejected: false }) )
-        dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data})
-        console.log('documents',documents)
-    }
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
         let tenentId = LocalDB.getTenantId();
@@ -135,8 +138,8 @@ export const NeedListView = () => {
     }
 
     const viewSaveDraftHandler = () =>{
-       dispatch({type: NeedListActionsType.SetIsDraft, payload: true })
-        history.push('/newNeedList'); 
+       dispatch({type: NeedListActionsType.SetIsDraft, payload: true });
+       history.push('/newNeedList');
     }
 
     return (

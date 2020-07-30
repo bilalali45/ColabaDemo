@@ -3,7 +3,7 @@ import { Http } from "rainsoft-js";
 
 import { NeedListEndpoints } from "../../../../../Store/endpoints/NeedListEndpoints";
 import { SVGeditFile } from "../../../../../Shared/SVG";
-import { DateTimeFormat } from "../../../../../Utils/helpers/DateFormat";
+import { datetimeFormatRenameFile } from "../../../../../Utils/helpers/DateFormat";
 
 export const DocumentSnipet = ({
   index,
@@ -17,7 +17,8 @@ export const DocumentSnipet = ({
   currentFileIndex,
   uploadedOn,
   username,
-  allowFileRenameMCU
+  allowFileRenameMCU,
+  getMcuNameUpdated
 }: {
   index: number,
   moveNextFile: (index: number, fileId: string, clientName: string) => void
@@ -31,12 +32,14 @@ export const DocumentSnipet = ({
   uploadedOn: string
   username: string
   allowFileRenameMCU: (filename: string, fileId: string, addToList?: boolean) => boolean
+  getMcuNameUpdated: (fileId: string) => string
 }) => {
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [renameMCUName, setRenameMCUName] = useState("");
   const [filenameUnique, setFilenameUnique] = useState(true)
   const [validFilename, setValidFilename] = useState(true)
   const [filenameEmpty, setFilenameEmpty] = useState(false)
+  const [mcuNamePreviousName, setMCUNamePreviousName] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const getFileExtension = (fileName: string) => fileName.substring(fileName.lastIndexOf('.'))
@@ -51,24 +54,11 @@ export const DocumentSnipet = ({
     const filenameWithoutExtension = getFileNameWithoutExtension(renameMCUName) || getFileNameWithoutExtension(mcuName || clientName)
 
     if (renameMCUName !== "") {
-      setRenameMCUName(getFileNameWithoutExtension(renameMCUName));
+      setRenameMCUName(getFileNameWithoutExtension(renameMCUName).trim());
     } else {
-      setRenameMCUName(filenameWithoutExtension)
+      setRenameMCUName(filenameWithoutExtension.trim())
     }
   };
-
-  const cancelEdit = (event?: any) => {
-    if (event) {
-      event.stopPropagation()
-    }
-
-    !filenameUnique && setFilenameUnique(true)
-    !validFilename && setValidFilename(true)
-    !!filenameEmpty && setFilenameEmpty(false)
-
-    setRenameMCUName(mcuName || clientName)
-    setEditingModeEnabled(false)
-  }
 
   const renameDocumentMCU = async (newName: string, event?: any, onBlur: boolean = false) => {
     if (event) {
@@ -88,28 +78,32 @@ export const DocumentSnipet = ({
 
         const newNameWithFileExtension = `${newName}${fileExtension}`
 
-        setRenameMCUName(() => newNameWithFileExtension)
+        const data = { id, requestId, docId, fileId, newName: newNameWithFileExtension }
+
+        const mcuNameUpdated = getMcuNameUpdated(fileId)
+
+        if (mcuNamePreviousName === `${mcuNameUpdated}${fileExtension}`) {
+          return setRenameMCUName(() => `${renameMCUName.trim()}${fileExtension}`)
+        } else if (mcuNamePreviousName === '' && data.newName === mcuName) {
+          return setRenameMCUName(mcuName || clientName)
+        } else if (mcuNamePreviousName === '' && mcuName === '' && data.newName === clientName) {
+          return setRenameMCUName(clientName)
+        }
 
         try {
-          const data = { id, requestId, docId, fileId, newName: newNameWithFileExtension }
-
           const http = new Http()
-
-          // 1. This will prevent API call
-          // 2. This will not make unnecessary Rename Logs in BE
-          if (mcuName === data.newName || clientName === data.newName) {
-            return
-          }
 
           await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
             ...data
           })
+
+          setMCUNamePreviousName(() => newNameWithFileExtension)
+          setRenameMCUName(() => newNameWithFileExtension)
         } catch (error) {
-          //swallod error because it shold not update
+          //swallod error because it should not update
 
-          // alert('something went wrong while updating file name')
+          alert('something went wrong while updating file name')
         }
-
       } else {
         // 1. We need to check if renaming being triggered by onBlur event
         // 3. We will only fallback here if there is filename conflict else we will save filename on Blur
@@ -136,8 +130,6 @@ export const DocumentSnipet = ({
         return renameDocumentMCU(renameMCUName.trim(), event)
       case 'enableMode':
         return setInputValue(event)
-      case 'cancel':
-        return cancelEdit(event)
     }
   }
 
@@ -147,7 +139,7 @@ export const DocumentSnipet = ({
         return event.preventDefault()
       }
 
-      renameDocumentMCU(newValue)
+      renameDocumentMCU(newValue.trim())
     }
   }
 
@@ -156,7 +148,7 @@ export const DocumentSnipet = ({
       return event.preventDefault()
     }
 
-    renameDocumentMCU(newValue, event, true)
+    renameDocumentMCU(newValue.trim(), event, true)
   }
 
   const onDoubleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -218,26 +210,17 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-              <p title={renameMCUName || mcuName || clientName}>{renameMCUName || mcuName || clientName}</p>
+              <p title={renameMCUName.trim() || mcuName || clientName}>{renameMCUName.trim() || mcuName || clientName}</p>
             )}
         </div>
         <small className="document-snipet--detail">
-          {`By ${username} on ${DateTimeFormat(uploadedOn, true)}`}
+          {`By ${username} on ${datetimeFormatRenameFile(uploadedOn)}`}
         </small>
         {!!filenameEmpty && (<label className="document-snipet--detail error">File name cannot be empty</label>)}
         {!filenameUnique && (<label className="document-snipet--detail error">File name must be unique</label>)}
         {!validFilename && (<label className="document-snipet--detail error">File name cannot contain any special characters</label>)}
       </div>
       <div className="document-snipet--right">
-        {!!editingModeEnabled && (
-          <button
-            id="cancel"
-            className="document-snipet-btn-cancel"
-            onClick={eventBubblingHandler}
-          >
-            <em className="zmdi zmdi-close"></em>
-          </button>
-        )}
         {!editingModeEnabled && (
           <button className="document-snipet-btn-edit" id="enableMode" onClick={eventBubblingHandler}>
             <SVGeditFile />
