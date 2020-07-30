@@ -4,6 +4,7 @@ import { LocalDB } from '../../Utils/LocalDB';
 import { Http } from 'rainsoft-js';
 import { Template } from '../../Entities/Models/Template';
 import { CategoryDocument } from '../../Entities/Models/CategoryDocument';
+import { debug } from 'console';
 
 const http = new Http();
 
@@ -99,7 +100,6 @@ export class TemplateActions {
             console.log(error)
         }
     }
-
 
     static async addDocument(tenantId: string, templateId: string, docTypeOrName: string, type: string) {
 

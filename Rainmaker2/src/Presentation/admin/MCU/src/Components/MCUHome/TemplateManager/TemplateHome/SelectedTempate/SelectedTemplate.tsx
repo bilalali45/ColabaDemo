@@ -100,8 +100,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }
 
     const addDocumentToList = async (doc: Document, type: string) => {
+        
         try {
-            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, doc?.docTypeId, type);
+            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
             if (success) {
                 let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
                 dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
