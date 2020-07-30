@@ -37,19 +37,119 @@ namespace ByteWebConnector.API.Models
 
         private int? GetRainMakerLoanPurposeId(string loanPurpose)
         {
-            throw new System.NotImplementedException();
+            switch (loanPurpose)
+            {
+                case "Purchase":
+                {
+                    return (int)Enums.LoanPurpose.Purchase;
+                }                     
+                case "Refinance":           
+                {                     
+                    return (int)Enums.LoanPurpose.Refinance;
+                }                     
+                case "Construction":  
+                {                     
+                    return (int)Enums.LoanPurpose.CashOut;
+                }                     
+                case "ConstructionPerm":         
+                {                     
+                    return (int)Enums.LoanPurpose.CashOut;
+                }                     
+                case "Second":         
+                {                     
+                    return (int)Enums.LoanPurpose.Refinance;
+                }                     
+                case "Third":   
+                {                     
+                    return (int)Enums.LoanPurpose.Refinance;
+                }                     
+                case "PurchaseMoneySecond":   
+                {                     
+                    return (int)Enums.LoanPurpose.Purchase;
+                }
+                case "Other":
+                {
+                    return (int)Enums.LoanPurpose.Refinance;
+                }
+                case "PurchaseMoneyThird":
+                {
+                    return (int)Enums.LoanPurpose.Purchase;
+                }
+                case "RefiSecond":
+                {
+                    return (int)Enums.LoanPurpose.Refinance;
+                }
+                case "RefiThird":
+                {
+                    return (int)Enums.LoanPurpose.Refinance;
+                }
+            }
+
+            return -1;
         }
 
 
         private int? GetRainMakerMortgageId(string mortgageType)
         {
-            throw new System.NotImplementedException();
+            switch (mortgageType)
+            {
+                case "VA":
+                {
+                    return (int)Enums.MortgageType.VA;
+                }
+                case "FHA":
+                {
+                    return (int)Enums.MortgageType.FHA;
+                }
+                case "Conventional":
+                {
+                    return (int)Enums.MortgageType.Conventional;
+                }
+                case "HELOC":
+                {
+                    return (int)Enums.MortgageType.Other;
+                }
+                case "Other":
+                {
+                    return (int)Enums.MortgageType.Other;
+                }
+                case "StateAgency":
+                {
+                    return (int)Enums.MortgageType.Other;
+                }
+                case "LocalAgency":
+                {
+                    return (int)Enums.MortgageType.Other;
+                }
+            }
+
+            return -1;
         }
 
 
         private int? GetRainMakerAmortizationId(string amortizationType)
         {
-            throw new System.NotImplementedException();
+            switch (amortizationType)
+            {
+                case "Fixed":
+                {
+                    return (int)Enums.AmortizationType.Fixed;
+                }
+                case "ARM":
+                {
+                    return (int)Enums.AmortizationType.ARM;
+                }
+                case "GPM":
+                {
+                    return (int)Enums.AmortizationType.GPM;
+                }
+                case "Other":
+                {
+                    return (int)Enums.AmortizationType.Other;
+                }
+            }
+
+            return -1;
         }
     }
 }
