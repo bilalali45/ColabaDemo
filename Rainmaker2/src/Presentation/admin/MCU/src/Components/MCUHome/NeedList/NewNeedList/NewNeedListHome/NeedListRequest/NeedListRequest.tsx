@@ -51,12 +51,15 @@ export const NeedListRequest = ({
 
     const renderNoDocumentSelect = () => {
         return (
-            <>
+            <div className="no-preview">
+                <div>
                 <div className="icon-wrap">
                     <img src={emptyIcon} alt="" />
                 </div>
-                <p>No Document Selected yet</p>
-            </>
+                <h2>Nothing</h2>
+                <p>You have not added any document</p>
+                </div>
+            </div>
         )
     }
 
@@ -92,10 +95,13 @@ export const NeedListRequest = ({
 
     const renderSaveAsTemplate = () => {
         return (
-            <div>
-                <input type="text" />
-                <button onClick={toggleSaveAsTemplate}>Close</button>
-                <button onClick={toggleSaveAsTemplate}>Save</button>
+            <div className="save-template">
+                <input className="form-control" type="text" placeholder="Template Name"/>
+                <div className="save-template-btns">
+                    <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
+                    {" "}
+                    <button className="btn btn-sm btn-primary" onClick={toggleSaveAsTemplate}>Save</button>
+                </div>
             </div>
         )
     }
