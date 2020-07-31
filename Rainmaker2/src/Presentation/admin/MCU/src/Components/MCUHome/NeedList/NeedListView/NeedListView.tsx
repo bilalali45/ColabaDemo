@@ -35,9 +35,6 @@ export const NeedListView = () => {
     useEffect(() => {
         fetchNeedList(true, true);
         //isDocumentDraft(LocalDB.getLoanAppliationId());
-        if (!templates) {
-            fetchTemplatesList();
-        }
     }, []);
 
     useEffect(() => {
@@ -65,12 +62,7 @@ export const NeedListView = () => {
         setIsDraft('false')
      }
     } 
-    const fetchTemplatesList = async () => {
-        let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
-        if (newTemplates) {
-            dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
-        }
-    }
+   
 
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
@@ -132,7 +124,7 @@ export const NeedListView = () => {
         }     
     }
 
-    const redirectToDocumentRequestHandler = (idArray: string[]) => {
+    const addTemplatesDocuments = (idArray: string[]) => {
        dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray })
         history.push('/newNeedList');
     }
@@ -147,7 +139,7 @@ export const NeedListView = () => {
             <NeedListViewHeader
                 toggleCallBack={togglerHandler}
                 templateList = {templates}
-                redirectToDocumentRequest = {redirectToDocumentRequestHandler}
+                addTemplatesDocuments = {addTemplatesDocuments}
                 isDraft = {isDraft}
                 viewSaveDraft = {viewSaveDraftHandler}
             />

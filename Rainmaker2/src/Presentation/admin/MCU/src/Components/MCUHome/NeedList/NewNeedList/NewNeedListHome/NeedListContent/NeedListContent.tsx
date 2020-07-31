@@ -13,13 +13,29 @@ type NeedListContentType = {
 
 export const NeedListContent = ({document, updateDocumentMessage} : NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
+    const [docMessage, setDocMessage] = useState<string | undefined>('');
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
     }
 
     const history = useHistory();
 
+    useEffect(() => {
+        setDocMessage(document?.docMessage);
+    }, [document?.docId]);
+
+    console.log(document);
+
+    if(!document) {
+        return null;
+    }
+
     const renderTitleInputText = () => {
+
+        if(!document?.docName) {
+            return null;
+        }
+
         return (
             <div className="T-head">
                 <div className="T-head-flex">
@@ -52,7 +68,7 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
             <div className="mainbody">
                 <p>If you’d like, you can customize this email.</p>
                 <div className="editer-wrap">
-                    <textarea rows={6} className="editer" value={document?.docMessage} onChange={(e) => updateDocumentMessage(e.target.value, document)}></textarea>
+                    <textarea rows={6} className="editer" value={document?.docMessage || ''} onChange={(e) => updateDocumentMessage(e.target.value, document)}></textarea>
                 </div>
 
             </div>
