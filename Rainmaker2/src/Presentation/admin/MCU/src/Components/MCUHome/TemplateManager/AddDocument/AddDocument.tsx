@@ -13,6 +13,7 @@ import Overlay from 'react-bootstrap/Overlay'
 import { LocalDB } from '../../../../Utils/LocalDB'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { SelectedTemplate } from '../TemplateHome/SelectedTempate/SelectedTemplate'
+import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 
 type AddDocumentType = {
     addDocumentToList: Function
@@ -37,12 +38,15 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
     const addDocumentBoxVisible = templateManager?.addDocumentBoxVisible;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+
 
     useEffect(() => {
         if (categoryDocuments?.length) {
             changeCurrentDocType('all');
         }
     }, [currentTemplate?.name, currentTemplate])
+
 
 
     const handleClick = (event: any) => {
@@ -77,7 +81,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
             changeCurrentDocType('all');
         }
         // setShow(addDocumentBoxVisible?.value)
-    }, [currentTemplate && !currentCategoryDocuments && categoryDocuments])
+    }, [!currentCategoryDocuments && categoryDocuments])
 
     const setCurrentDocType = (curDoc: CategoryDocument) => {
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: curDoc });

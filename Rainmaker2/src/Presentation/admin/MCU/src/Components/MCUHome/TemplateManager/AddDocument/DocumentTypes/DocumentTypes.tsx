@@ -15,7 +15,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
         setDocumentTypeList((pre: CategoryDocument[]) => {
             let items: CategoryDocument[] = [];
             let other: CategoryDocument | null = null;
-            pre.forEach((cd: CategoryDocument) => {
+            pre?.forEach((cd: CategoryDocument) => {
                 if (cd.catName !== 'Other') {
                     items.push(cd);
                 } else {

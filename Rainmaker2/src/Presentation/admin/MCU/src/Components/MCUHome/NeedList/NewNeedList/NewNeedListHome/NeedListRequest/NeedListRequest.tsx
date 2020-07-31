@@ -8,6 +8,9 @@ import { DocumentRequest } from '../../../../../../Entities/Models/DocumentReque
 import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument';
 import { Template } from '../../../../../../Entities/Models/Template';
 import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
+
+import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
+
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
@@ -20,7 +23,7 @@ type AddNeedListContainerType = {
     setLoaderVisible: Function,
     addDocumentToList: Function,
     templateList: Template[];
-    redirectToDocumentRequest: Function;
+    addTemplatesDocuments: Function;
     isDraft: string;
     viewSaveDraft: Function;
 }
@@ -33,16 +36,34 @@ export const NeedListRequest = ({
     changeDocument,
     currentDocument,
     addDocumentToList,
-    templateList, 
-    redirectToDocumentRequest, 
-    isDraft, 
+    templateList,
+    addTemplatesDocuments,
+    isDraft,
     viewSaveDraft }: AddNeedListContainerType) => {
+
+    const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
 
     useEffect(() => {
         setLoaderVisible(false);
     }, []);
 
+    const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
+
+    const renderNoDocumentSelect = () => {
+        return (
+            <>
+                <div className="icon-wrap">
+                    <img src={emptyIcon} alt="" />
+                </div>
+                <p>No Document Selected yet</p>
+            </>
+        )
+    }
+
     const renderDocumentList = () => {
+        if (!documentList?.length) {
+            return renderNoDocumentSelect()
+        }
         return (
             <>
                 <div className="m-template">
@@ -69,6 +90,15 @@ export const NeedListRequest = ({
     };
 
 
+    const renderSaveAsTemplate = () => {
+        return (
+            <div>
+                <input type="text" />
+                <button onClick={toggleSaveAsTemplate}>Close</button>
+                <button onClick={toggleSaveAsTemplate}>Save</button>
+            </div>
+        )
+    }
 
 
     // if(!templates) return  <Loader containerHeight={"100%"} />;
@@ -103,16 +133,23 @@ export const NeedListRequest = ({
             </div>
 
             <div className="left-footer">
-                <div className="btn-wrap">
-                    <NeedListSelect
-                        showButton={false}
-                        templateList={templateList}
-                        redirectToDocumentRequest={redirectToDocumentRequest}
-                        viewSaveDraft={viewSaveDraft}
-                        isDraft={isDraft}
-                    />
-                    <a className="btn-link link-primary">Save as template</a>
-                </div>
+                {showSaveAsTemplate ?
+                    renderSaveAsTemplate()
+                    :
+                    <div className="btn-wrap">
+                        <NeedListSelect
+                            showButton={false}
+                            templateList={templateList}
+                            addTemplatesDocuments={addTemplatesDocuments}
+                            viewSaveDraft={viewSaveDraft}
+                            isDraft={isDraft}
+                        />
+                        <a
+                            onClick={toggleSaveAsTemplate}
+                            className="btn-link link-primary">
+                            Save as template
+                        </a>
+                    </div>}
             </div>
         </div>
     )

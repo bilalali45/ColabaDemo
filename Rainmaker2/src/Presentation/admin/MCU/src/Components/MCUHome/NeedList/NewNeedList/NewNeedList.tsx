@@ -12,7 +12,7 @@ import { LocalDB } from "../../../../Utils/LocalDB";
 import { NewNeedListActions } from "../../../../Store/actions/NewNeedListActions";
 import { Template } from "../../../../Entities/Models/Template";
 import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 export const NewNeedList = () => {
 
@@ -22,7 +22,9 @@ export const NewNeedList = () => {
 
     const templateManager: any = state?.templateManager;
     const needListManager: any = state?.needListManager;
+    const templateIds = needListManager?.templateIds || [];
     const categoryDocuments = templateManager?.categoryDocuments;
+    const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
     const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
     const selectedIds: string[] = needListManager?.templateIds;
     const isDraft: string = needListManager?.isDraft;
@@ -31,28 +33,45 @@ export const NewNeedList = () => {
     console.log('selectedIds', selectedIds)
 
     const history = useHistory();
+    const location = useLocation();
 
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
         }
 
-        if (!selectedTemplateDocuments && !isDraft) {
+        setAllDocuments(selectedTemplateDocuments || []);
+        if (selectedTemplateDocuments?.length) {
+            setCurrentDocument(selectedTemplateDocuments[0]);
+        }
+    }, [selectedTemplateDocuments?.length, templateIds?.length]);
+
+
+    useEffect(() => {
+        if (!isDraft) {
             let tenantId = LocalDB.getTenantId();
             getDocumentsFromSelectedTemplates(selectedIds, +tenantId)
-        }else {
+        } else {
             fetchDraftDocuments();
         }
+    }, [selectedIds?.length])
 
-        setAllDocuments(selectedTemplateDocuments)
-    }, [!selectedTemplateDocuments]);
+    // useEffect(() => {
+
+    // }, [allDocuments?.length])
 
     const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
 
 
     const getDocumentsFromSelectedTemplates = async (ids: string[], tenantId: number) => {
         let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids, tenantId)
-        const data = documents?.map((obj: any) => ({ ...obj, isRejected: false }))
+        const data = documents?.map((obj: TemplateDocument) => {
+            return {
+                ...obj,
+                docMessage: allDocuments?.find((d: TemplateDocument) => d.docId === obj.docId)?.docMessage,
+                isRejected: false
+            }
+        })
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
     }
 
@@ -63,15 +82,19 @@ export const NewNeedList = () => {
     }
 
     const updateDocumentMessage = (message: string, document: TemplateDocument) => {
+
+        let documents: TemplateDocument[] = [];
         setAllDocuments((preDocs: TemplateDocument[]) => {
-            return preDocs?.map((pd: TemplateDocument) => {
+            documents = preDocs?.map((pd: TemplateDocument) => {
                 if (pd?.docId === document?.docId) {
                     pd.docMessage = message;
                     return pd;
                 }
                 return pd;
             });
+            return documents;
         });
+
     }
 
     const fetchCurrentCatDocs = async () => {
@@ -84,32 +107,48 @@ export const NewNeedList = () => {
     }
 
     const addDocumentToList = (doc: Document, type: string) => {
-        debugger
         let newDoc: TemplateDocument = {
             docId: doc?.docTypeId,
             docName: doc?.docType,
             docMessage: doc?.docMessage,
         }
-        setAllDocuments([...allDocuments, newDoc]);
+        // dispatch({type: NeedListActionsType.SetTemplateIds, payload: [...allDocuments, newDoc]});
+        let newDocs = [...allDocuments, newDoc];
+        setAllDocuments(newDocs);
+        dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
+        setCurrentDocument(newDoc);
     }
 
     const saveAsDraft = () => {
         console.log(allDocuments);
     }
 
-    const redirectToDocumentRequestHandler = (idArray: string[]) => {
-        dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray })
-         history.push('/newNeedList');
-     }
- 
-     const viewSaveDraftHandler = () =>{
-        dispatch({type: NeedListActionsType.SetIsDraft, payload: true });
-        history.push('/newNeedList');
-     }
-
-    if (!allDocuments?.length) {
-        return '';
+    const addTemplatesDocuments = (idArray: string[]) => {
+        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray });
+        console.log('idArray', idArray);
+        if (!idArray) {
+            idArray = [];
+        }
+        let newIds = [...idArray];
+        selectedIds?.forEach(id => {
+            if (!newIds.includes(id)) {
+                newIds.push(id)
+            }
+        });
+        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: newIds })
+        if (!location.pathname.includes('newNeedList')) {
+            history.push('/newNeedList');
+        }
     }
+
+    const viewSaveDraftHandler = () => {
+        dispatch({ type: NeedListActionsType.SetIsDraft, payload: true });
+        history.push('/newNeedList');
+    }
+
+    // if (!allDocuments?.length) {
+    //     return '';
+    // }
 
     return (
         <main className="NeedListAddDoc-wrap">
@@ -121,10 +160,10 @@ export const NewNeedList = () => {
                 changeDocument={changeDocument}
                 allDocuments={allDocuments}
                 updateDocumentMessage={updateDocumentMessage}
-                templateList = {templates}
-                redirectToDocumentRequest = {redirectToDocumentRequestHandler}
-                isDraft = {isDraft}
-                viewSaveDraft = {viewSaveDraftHandler} />
+                templateList={templates?.filter((td: Template) => !templateIds?.includes(td?.id))}
+                addTemplatesDocuments={addTemplatesDocuments}
+                isDraft={isDraft}
+                viewSaveDraft={viewSaveDraftHandler} />
         </main>
     )
 }
