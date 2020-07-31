@@ -99,9 +99,13 @@
                 }
 
             }
+            .TL-container{
+                height: 100%;
+            }
             .listWrap-templates {
                 padding: 20px 30px;
                 margin-left: -30px;
+                height: calc(100% - 50px);
 
                 .MT-groupList {
                     .title-wrap {
@@ -732,4 +736,22 @@
        } 
     }
 }
+}
+
+
+.save-template{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+
+    .form-control{
+        height: 32px;
+        line-height: 1;
+    }
+
+    &-btns{
+        padding-left: 10px;
+        white-space: nowrap;
+    }
 }

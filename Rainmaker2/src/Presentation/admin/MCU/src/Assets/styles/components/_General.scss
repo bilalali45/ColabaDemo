@@ -21,6 +21,14 @@ a,button{
     }
 }
 
+.clearfix{
+    &::before,&::after{
+        content:"";
+        display: table;
+        clear: both;
+    }
+}
+
 .box-wrap {
     box-shadow: $shadow;
     padding: 20px;
@@ -683,7 +691,9 @@ ul {
     }
 }
 
-
+.form-control{
+    border-radius: 0;
+}
 
 input.error{
     border:1px solid $danger !important;

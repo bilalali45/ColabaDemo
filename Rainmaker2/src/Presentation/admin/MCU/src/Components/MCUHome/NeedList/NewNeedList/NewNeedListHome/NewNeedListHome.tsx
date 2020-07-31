@@ -17,7 +17,7 @@ type NewNeedListHomeType = {
     changeDocument: Function,
     updateDocumentMessage: Function,
     templateList: Template[];
-    redirectToDocumentRequest: Function;
+    addTemplatesDocuments: Function;
     isDraft: string;
     viewSaveDraft: Function;
 }
@@ -29,7 +29,7 @@ export const NewNeedListHome = ({
     allDocuments,
     updateDocumentMessage,
     templateList, 
-    redirectToDocumentRequest, 
+    addTemplatesDocuments, 
     isDraft, 
     viewSaveDraft
 }: NewNeedListHomeType) => {
@@ -49,7 +49,7 @@ export const NewNeedListHome = ({
                                 setLoaderVisible={setLoaderVisible}
                                 loaderVisible={loaderVisible}
                                 templateList={templateList}
-                                redirectToDocumentRequest={redirectToDocumentRequest}
+                                addTemplatesDocuments={addTemplatesDocuments}
                                 viewSaveDraft={viewSaveDraft}
                                 isDraft={isDraft}
                             />

@@ -4,6 +4,7 @@ import { TemplateActions } from '../../../../../../Store/actions/TemplateActions
 import { Store } from '../../../../../../Store/Store'
 import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument'
 import Spinner from 'react-bootstrap/Spinner'
+import { useLocation } from 'react-router-dom'
 
 
 type SelectedTypeType = {
@@ -23,40 +24,55 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
     const templateManager: any = state?.templateManager;
     const templateDocuments: any = templateManager?.templateDocuments;
     const currentCategoryDocuments: any = templateManager?.currentCategoryDocuments;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+
+
+    const location = useLocation();
 
     const filterUsedDocs = (templateDocs: Document[]) => {
-        return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => td?.typeId === cd?.docTypeId));
+        return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => {
+            console.log(cd, td);
+            if(!cd?.docId) {
+                if(cd?.docType?.toLowerCase() === td?.docName?.toLowerCase()) {
+                    return cd;
+                }
+            }
+            if(td?.typeId === cd?.docTypeId) {
+                return cd;
+            }
+        }));
     }
 
     if (!documentList) {
         return null;
     }
 
-    return (
+    let usedDocs = location.pathname.includes('newNeedList') ? selectedTemplateDocuments : templateDocuments;
 
+    return (
         <div className="active-docs">
-            <ul className={currentCategoryDocuments?.catName == 'Other'? 'other-ul' : ''}>
+            <ul className={currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''}>
                 {documentList &&
-                    filterUsedDocs(templateDocuments)?.map(dl => {
+                    filterUsedDocs(usedDocs)?.map(dl => {
                         return (
-                            <li 
+                            <li
                                 key={dl.docTypeId}
                                 onClick={async () => {
-                                setRemoveDocName(dl?.docTypeId);
-                                setRequestSent(true)
-                                await addNewDoc(dl, 'typeId');
-                                setRequestSent(false)
-                                // setVisible(false);
-                            }}>{dl?.docType}
-                            {
+                                    setRemoveDocName(dl?.docTypeId);
+                                    setRequestSent(true)
+                                    await addNewDoc(dl, 'typeId');
+                                    setRequestSent(false)
+                                    // setVisible(false);
+                                }}>{dl?.docType}
+                                {
                                     (requestSent && removeDocName === dl.docTypeId) ?
-                                     <span>
-                                        <Spinner size="sm" animation="border" role="status">
-                                            <span className="sr-only">Loading...</span>
-                                        </Spinner>
-                                    </span>
-                                    
-                                    : ''}
+                                        <span>
+                                            <Spinner size="sm" animation="border" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </Spinner>
+                                        </span>
+
+                                        : ''}
                             </li>
                         )
                     })

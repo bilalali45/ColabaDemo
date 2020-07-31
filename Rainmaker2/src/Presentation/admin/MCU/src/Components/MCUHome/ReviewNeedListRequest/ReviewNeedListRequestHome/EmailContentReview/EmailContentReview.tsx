@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+import { TextArea } from '../../../../../Shared/components/TextArea';
 
 
 type emailContentReviewProps = {
     documentList: TemplateDocument[];
     documentsName: string | undefined;
 }
+export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentList, documentsName}:emailContentReviewProps) => {
     //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
@@ -23,7 +25,8 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
     const loanData = needListManager?.loanInfo;
     const borrowername = loanData?.borrowers[0];
     const [emailBody, setEmailBody] = useState(setDeafultText());
-
+    const [isValid, setIsValid] = useState<boolean>(false);
+    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
    
 
     useEffect(() =>{        
@@ -38,7 +41,12 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
 
   const editEmailBodyHandler = (e: any) => {
      let txt = e.target.value;
-     setEmailBody(txt);
+     if(regex.test(txt)){
+        setEmailBody(txt);
+        setIsValid(false)
+     }else{
+        setIsValid(true)
+     }   
    }
 
    const saveEmailContent = () => {
@@ -50,9 +58,13 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
             <div className="mcu-panel-body padding">
          <h2 className="h2">Review email to {borrowername}</h2>
                 <p>If you'd like, you can customize this email.</p>
-
-                <textarea onBlur={saveEmailContent} value={emailBody} onChange = {(e) => {editEmailBodyHandler(e)}} name="" id="" className="form-control" rows={20}>
-                </textarea>
+                <TextArea
+                 textAreaValue = {emailBody} 
+                 onBlurHandler = {saveEmailContent}
+                 onChangeHandler = {editEmailBodyHandler}
+                 errorText = {errorText}
+                 isValid = {isValid}
+                />
 
             </div>
 
