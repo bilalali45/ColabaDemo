@@ -34,7 +34,7 @@ export const NeedListSelect = ({
   const templates: Template[] = templateManager?.templates;
 
   const needListManager: any = state?.needListManager;
-  const selectedIds: string[] = needListManager?.templateIds;
+  const selectedIds: string[] = needListManager?.templateIds || [];
 
 
 
@@ -63,9 +63,9 @@ export const NeedListSelect = ({
   }
 
   const updateIdsList = ({ target: { checked } }: ChangeEvent<HTMLInputElement>, id: string) => {
-    
+
     if (checked) {
-      setIdArray([...idArray, id]);
+      setIdArray([...idArray, ...selectedIds, id]);
     } else {
       setIdArray(pre => pre?.filter(idOld => idOld !== id));
     }
@@ -127,11 +127,11 @@ export const NeedListSelect = ({
   }
   const StartListButton = () => {
 
-    return <button onClick={() => {
+    // return <button onClick={() => {
 
-      setShow(false);
-      addTemplatesDocuments(idArray);
-    }} className="btn btn-primary btn-block">Add Selected</button>
+    //   setShow(false);
+    //   addTemplatesDocuments(idArray);
+    // }} className="btn btn-primary btn-block">Add Selected</button>
 
     if (idArray.length > 0) {
       if (showButton) {
@@ -147,13 +147,10 @@ export const NeedListSelect = ({
         }} className="btn btn-primary btn-block">Add Selected</button>
       }
     } else {
-      if (showButton) {
-        return <Link to="/newNeedList" >Start from new list</Link>
-      }
+      return <Link to="/newNeedList" >Start from new list</Link>
     }
   }
 
-  // <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
 
   const displayAddButton = () => {
     return (

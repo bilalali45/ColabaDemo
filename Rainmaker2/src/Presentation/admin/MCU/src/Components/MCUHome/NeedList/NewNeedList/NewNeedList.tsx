@@ -25,7 +25,7 @@ export const NewNeedList = () => {
     const templateIds = needListManager?.templateIds || [];
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
-    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
     const selectedIds: string[] = needListManager?.templateIds;
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
@@ -48,7 +48,7 @@ export const NewNeedList = () => {
 
 
     useEffect(() => {
-        if (!isDraft) {
+        if (!isDraft && !selectedTemplateDocuments) {
             let tenantId = LocalDB.getTenantId();
             getDocumentsFromSelectedTemplates(selectedIds, +tenantId)
         } else {
@@ -71,7 +71,7 @@ export const NewNeedList = () => {
                 docMessage: allDocuments?.find((d: TemplateDocument) => d.docId === obj.docId)?.docMessage,
                 isRejected: false
             }
-        })
+        }) || [];
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
     }
 
@@ -124,18 +124,11 @@ export const NewNeedList = () => {
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
-        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray });
         console.log('idArray', idArray);
         if (!idArray) {
             idArray = [];
         }
-        let newIds = [...idArray];
-        selectedIds?.forEach(id => {
-            if (!newIds.includes(id)) {
-                newIds.push(id)
-            }
-        });
-        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: newIds })
+        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray });
         if (!location.pathname.includes('newNeedList')) {
             history.push('/newNeedList');
         }
