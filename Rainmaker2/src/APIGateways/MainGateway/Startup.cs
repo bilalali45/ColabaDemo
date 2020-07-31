@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
@@ -110,22 +111,33 @@ namespace MainGateway
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
-            app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 endpoints.MapControllers();
             });
-            
+            app.Use(async (context, next) =>
+            {
+                await next();
+                context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
+                context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
+                context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
+                context.Response.Headers.Remove("Server");
+            });
             app.UseOcelot().Wait();
+            
         }
     }
 }
