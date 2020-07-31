@@ -54,10 +54,15 @@ const App = () => {
 
   const authenticate = async () => {
     let isAuth = await UserActions.authorize();
-    setAuthenticated(Boolean(isAuth));
-    getFooterText();
-    addExpiryListener();
-    keepAliveParentApp();
+    if (isAuth) {
+      setAuthenticated(Boolean(isAuth));
+      getFooterText();
+      addExpiryListener();
+      keepAliveParentApp();
+    } else {
+      Auth.removeAuth();
+      window.open("/Account/LogOff", "_self");
+    }
   };
 
   const getFooterText = async () => {

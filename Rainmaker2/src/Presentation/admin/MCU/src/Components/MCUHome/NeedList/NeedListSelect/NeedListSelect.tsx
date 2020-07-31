@@ -159,7 +159,7 @@ export const NeedListSelect = ({
     return (
       <>
         <Dropdown onToggle={() => setShow(!show)} show={show}>
-          <Dropdown.Toggle size="sm" className="mcu-dropdown-toggle no-caret" id="dropdown-basic" >
+          <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
             {
               showButton ?
                 <>

@@ -170,16 +170,7 @@ ul {
     }
     
     &-dropdown-toggle{
-        &:focus,&:visited, &.active{
-            .rotate-plus{
-                &::before{
-                    transform: rotate(45deg);
-                }
-                &::after{
-                    transform: rotate(45deg);
-                }
-            }
-
+        &.active{
             .btn-icon{
                 i,em{
                     &::before{
@@ -471,6 +462,29 @@ ul {
         }
     }
 }// .dropdown-toggle
+
+.dropdown{
+    &.show{
+        .rotate-plus{
+            &::before{
+                transform: rotate(45deg);
+            }
+            &::after{
+                transform: rotate(45deg);
+            }
+        }
+    
+        .btn-icon{
+            i,em{
+                &::before{
+                    @include transform(rotate(40deg));
+                    position: relative;
+                    display: block;
+                }
+            }
+        }
+    }
+}
 
 // Rotate Plus
 .rotate-plus{
