@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Store } from '../../../../../Store/Store';
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+import { TextArea } from '../../../../../Shared/components/TextArea';
 
 
 type emailContentReviewProps = {
@@ -50,9 +51,13 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
             <div className="mcu-panel-body padding">
          <h2 className="h2">Review email to {borrowername}</h2>
                 <p>If you'd like, you can customize this email.</p>
-
-                <textarea onBlur={saveEmailContent} value={emailBody} onChange = {(e) => {editEmailBodyHandler(e)}} name="" id="" className="form-control" rows={20}>
-                </textarea>
+                <TextArea
+                 textAreaValue = {emailBody} 
+                 onBlurHandler = {saveEmailContent}
+                 onChangeHandler = {editEmailBodyHandler}
+                />
+                {/* <textarea onBlur={saveEmailContent}  onChange = {(e) => {editEmailBodyHandler(e)}} name="" id="" className="form-control" rows={20}>
+                </textarea> */}
 
             </div>
 
