@@ -2,7 +2,7 @@ if (ev.TableAndFieldName == "Debt.Name" || ev.TableAndFieldName == "Debt.DebtTyp
     || ev.TableAndFieldName == "Debt.PaymentsLeft" || ev.TableAndFieldName == "Debt.ToBePaidOff" || ev.TableAndFieldName == "Debt.MoPayment"
     || ev.TableAndFieldName == "Debt.AccountNo" || ev.TableAndFieldName == "Debt.Notes") {
     var name = ev.Table.GetFieldValue("Name");
-    var debtIndex = ev.Table.GetField("DebtType");
+    var debtTypeVal = ev.Table.GetFieldValue("DebtType");
     var unpaidBal = ev.Table.GetFieldValue("UnpaidBal");
     var paymentsLeft = ev.Table.GetFieldValue("PaymentsLeft");
     var tobepaidoff = ev.Table.GetFieldValue("ToBePaidOff");
@@ -16,22 +16,22 @@ if (ev.TableAndFieldName == "Debt.Name" || ev.TableAndFieldName == "Debt.DebtTyp
 
 
 
-    var dataRaw = " --data-raw \"{ \"\"name\"\":\"\"{{name}}\"\" ,\"\"debtType\"\":\"{{debtIndex}}\" , \"\"unpaidBal\"\":\"\"{{unpaidBal}}\"\" , \"\"paymentsLeft\"\":\"\"{{paymentsLeft}}\"\" , \"\"tobepaidoff\"\":\"{{tobepaidoff}}\" , \"\"borrowerID\"\":\"\"{{borrowerID}}\"\" , \"\"fileDataId\"\":\"{{fileDataId}}\" , \"\"moPayment\"\":\"\"{{moPayment}}\"\" , \"\"accountNo\"\":\"\"{{accountNo}}\"\" , \"\"notes\"\":\"\"{{notes}}\"\"    }\" ";
+    var dataRaw = " --data-raw \"{ \"\"name\"\":\"\"{{name}}\"\" ,\"\"debtType\"\":\"\"{{debtTypeVal}}\"\" , \"\"unpaidBal\"\":{{unpaidBal}} , \"\"paymentsLeft\"\":{{paymentsLeft}} , \"\"tobepaidoff\"\":{{tobepaidoff}} , \"\"borrowerID\"\":{{borrowerID}} , \"\"fileDataId\"\":{{fileDataId}} , \"\"moPayment\"\":{{moPayment}} , \"\"accountNo\"\":\"\"{{accountNo}}\"\" , \"\"notes\"\":\"\"{{notes}}\"\"    }\" ";
 
-    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/debt\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/BorrowerLiabilities/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
 
     if (useProxy) {
         arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
     }
     dataRaw = dataRaw.replace("{{name}}", name);
-    dataRaw = dataRaw.replace("{{debtIndex}}", debtIndex);
-    dataRaw = dataRaw.replace("{{unpaidBal}}", unpaidBal);
-    dataRaw = dataRaw.replace("{{paymentsLeft}}", paymentsLeft);
-    dataRaw = dataRaw.replace("{{moPayment}}", moPayment);
+    dataRaw = dataRaw.replace("{{debtTypeVal}}", debtTypeVal);
+    dataRaw = dataRaw.replace("{{unpaidBal}}", (unpaidBal) ? unpaidBal : null);
+    dataRaw = dataRaw.replace("{{paymentsLeft}}", (paymentsLeft) ? paymentsLeft : null);
+    dataRaw = dataRaw.replace("{{moPayment}}", (moPayment) ? moPayment : null);
     dataRaw = dataRaw.replace("{{accountNo}}", accountNo);
     dataRaw = dataRaw.replace("{{notes}}", notes);
     dataRaw = dataRaw.replace("{{tobepaidoff}}", tobepaidoff);
-    dataRaw = dataRaw.replace("{{borrowerID}}", (borrowerID)? borrowerID : null);    
+    dataRaw = dataRaw.replace("{{borrowerID}}", (borrowerID) ? borrowerID : null);
     dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
 
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
