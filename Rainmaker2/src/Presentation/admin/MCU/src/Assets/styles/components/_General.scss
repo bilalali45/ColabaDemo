@@ -21,6 +21,14 @@ a,button{
     }
 }
 
+.clearfix{
+    &::before,&::after{
+        content:"";
+        display: table;
+        clear: both;
+    }
+}
+
 .box-wrap {
     box-shadow: $shadow;
     padding: 20px;
