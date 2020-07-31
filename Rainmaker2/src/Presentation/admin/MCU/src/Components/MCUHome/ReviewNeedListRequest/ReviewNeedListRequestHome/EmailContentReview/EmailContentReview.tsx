@@ -9,6 +9,7 @@ type emailContentReviewProps = {
     documentList: TemplateDocument[];
     documentsName: string | undefined;
 }
+export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentList, documentsName}:emailContentReviewProps) => {
     //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
@@ -24,7 +25,8 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
     const loanData = needListManager?.loanInfo;
     const borrowername = loanData?.borrowers[0];
     const [emailBody, setEmailBody] = useState(setDeafultText());
-
+    const [isValid, setIsValid] = useState<boolean>(false);
+    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
    
 
     useEffect(() =>{        
@@ -39,7 +41,12 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
 
   const editEmailBodyHandler = (e: any) => {
      let txt = e.target.value;
-     setEmailBody(txt);
+     if(regex.test(txt)){
+        setEmailBody(txt);
+        setIsValid(false)
+     }else{
+        setIsValid(true)
+     }   
    }
 
    const saveEmailContent = () => {
@@ -55,9 +62,9 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
                  textAreaValue = {emailBody} 
                  onBlurHandler = {saveEmailContent}
                  onChangeHandler = {editEmailBodyHandler}
+                 errorText = {errorText}
+                 isValid = {isValid}
                 />
-                {/* <textarea onBlur={saveEmailContent}  onChange = {(e) => {editEmailBodyHandler(e)}} name="" id="" className="form-control" rows={20}>
-                </textarea> */}
 
             </div>
 
