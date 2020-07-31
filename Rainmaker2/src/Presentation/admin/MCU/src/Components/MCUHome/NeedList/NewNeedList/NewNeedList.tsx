@@ -48,7 +48,7 @@ export const NewNeedList = () => {
 
 
     useEffect(() => {
-        if (!isDraft && !selectedTemplateDocuments) {
+        if (!isDraft) {
             let tenantId = LocalDB.getTenantId();
             getDocumentsFromSelectedTemplates(selectedIds, +tenantId)
         } else {
