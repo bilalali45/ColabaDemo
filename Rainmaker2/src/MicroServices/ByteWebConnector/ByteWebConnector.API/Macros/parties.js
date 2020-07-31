@@ -7,7 +7,6 @@ if (ev.TableAndFieldName == "Party.ContactNMLSID" || ev.TableAndFieldName == "Pa
     var useProxy = true;
 
 
-
     var dataRaw = " --data-raw \"{ \"\"firstName\"\":\"\"{{firstName}}\"\" ,\"\"contactNMLSID\"\":\"\"{{contactNMLSID}}\"\", \"\"workPhone\"\":\"\"{{workPhone}}\"\" ,\"\"email\"\":\"\"{{email}}\"\", \"\"fileDataId\"\":{{fileDataId}}  }\" ";
 
     var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/Parties/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
@@ -20,6 +19,7 @@ if (ev.TableAndFieldName == "Party.ContactNMLSID" || ev.TableAndFieldName == "Pa
     dataRaw = dataRaw.replace("{{workPhone}}", workPhone);
     dataRaw = dataRaw.replace("{{email}}", email);
     dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
+
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
 
     var process = new System.Diagnostics.Process();
