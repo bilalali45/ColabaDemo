@@ -6,26 +6,27 @@ import { TemplateDocument } from '../../../../../../../Entities/Models/TemplateD
 type NeedListRequestItemType = {
     changeDocument: Function,
     document: TemplateDocument,
-    isSelected: boolean
+    isSelected: boolean,
 }
 
 export const NeedListRequestItem = ({document, changeDocument, isSelected}: NeedListRequestItemType) => {
     const [toRemoveList, setRemoveList] = useState<boolean>(false);
+    //const [getDelete, setDelete] = useState<boolean>(false);
     return (
-         <li
-            onClick={() => changeDocument(document)}>
-            <div className="l-wrap">
+         <li>
+           
+            <div className="l-wrap" onClick={() => changeDocument(document)}>
                 {!toRemoveList ?
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
                     {document.docName}
-                            <span className="BTNclose" onClick={() => {}}><i className="zmdi zmdi-close"></i></span>
+                            <span className="BTNclose" onClick={() => {setRemoveList(true)}}><i className="zmdi zmdi-close"></i></span>
                     </div>
                     : <>
                         <div className="alert-cancel">
                             <span>Remove this template?</span>
                             <div className="l-remove-actions">
-                                <button className="lbtn btn-no" onClick={() => {}}> No</button>
-                                <button className="lbtn btn-yes" onClick={() => {}}>Yes</button></div>
+                                <button className="lbtn btn-no" onClick={() => { setRemoveList(false) }}> No</button>
+                                <button className="lbtn btn-yes" onClick={() => { setRemoveList(false) }}>Yes</button></div>
                         </div>
                     </>
                 }

@@ -136,6 +136,10 @@ export const NeedListRequest = ({
 
             <div className="listWrap-templates">
                 {renderDocumentList()}
+                
+                {/* Remove Message */}
+                
+                
             </div>
 
             <div className="left-footer">

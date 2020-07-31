@@ -753,3 +753,17 @@ label.error{
         }
     }
 }// listing
+
+.list-remove{
+    
+    &-alert{
+        display: flex;
+        justify-content: space-between;
+        align-self: center;
+    }
+
+    &-text{
+        font: 500 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    }
+
+}
