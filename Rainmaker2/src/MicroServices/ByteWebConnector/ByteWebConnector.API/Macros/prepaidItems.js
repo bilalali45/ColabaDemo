@@ -7,16 +7,17 @@ if (ev.TableAndFieldName == "PrepaidItem.Payment") {
 
 
 
-    var dataRaw = " --data-raw \"{ \"\"HazPayment\"\":\"{{hazPayment}}\" ,\"\"propTaxPayment\"\":\"{{propTaxPayment}}\" , \"\"fileDataId\"\":\"{{fileDataId}}\"  }\" ";
+    var dataRaw = " --data-raw \"{ \"\"HazPayment\"\":{{hazPayment}} ,\"\"propTaxPayment\"\":{{propTaxPayment}} , \"\"fileDataId\"\":{{fileDataId}}  }\" ";
 
-    var arguments = "{{proxy}} --location --request POST \"http://localhost:52537/api/Values/prepaid\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
+    var arguments = "{{proxy}} --location --request POST \"http://localhost:5050/api/ByteWebConnector/PrepaidItem/update\" --header \"Content-Type: application/json\" --header \"Accept: application/json\" {{dataRaw}}";
 
     if (useProxy) {
         arguments = arguments.replace("{{proxy}}", "--proxy 127.0.0.1:8888");
     }
-    dataRaw = dataRaw.replace("{{hazPayment}}", hazPayment);
-    dataRaw = dataRaw.replace("{{propTaxPayment}}", propTaxPayment);
+    dataRaw = dataRaw.replace("{{hazPayment}}", (hazPayment) ? hazPayment : null);
+    dataRaw = dataRaw.replace("{{propTaxPayment}}", (propTaxPayment) ? propTaxPayment : null);
     dataRaw = dataRaw.replace("{{fileDataId}}", fileDataId);
+
     arguments = arguments.replace("{{dataRaw}}", dataRaw);
 
     var process = new System.Diagnostics.Process();
@@ -26,8 +27,3 @@ if (ev.TableAndFieldName == "PrepaidItem.Payment") {
     process.StartInfo.Arguments = arguments;
     process.Start();
 };
-
-
-
-
-

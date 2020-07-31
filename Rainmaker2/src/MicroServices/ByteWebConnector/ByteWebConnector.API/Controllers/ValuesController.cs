@@ -59,7 +59,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("prepaid")]
         [HttpPost]
-        public void Post(PrepaidItem request)
+        public void Post(BytePrepaidItem request)
         {
 
         }
