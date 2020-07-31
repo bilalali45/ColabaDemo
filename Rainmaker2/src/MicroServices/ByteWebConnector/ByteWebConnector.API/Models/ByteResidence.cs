@@ -3,8 +3,8 @@
     public class ByteResidence
     {
         public int AppNo { get; set; }
-        public int ResidenceID { get; set; }
-        public int? BorrowerID { get; set; }
+        public int ResidenceId { get; set; }
+        public int? BorrowerId { get; set; }
         public int DisplayOrder { get; set; }
         public bool Current { get; set; }
         public string FullAddress { get; set; }
@@ -13,9 +13,9 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
-        public int LivingStatus { get; set; }
-        public string NoYears { get; set; }
-        public string NoMonths { get; set; }
+        public string LivingStatus { get; set; }
+        public int? NoYears { get; set; }
+        public int? NoMonths { get; set; }
         public string LLName { get; set; }
         public string LLAttn { get; set; }
         public string LLFullAddress { get; set; }
@@ -28,9 +28,9 @@
         public string Notes { get; set; }
         public string LLFax { get; set; }
         public string Country { get; set; }
-        public object MonthlyRent { get; set; }
-        public int StreetContainsUnitNumberOV { get; set; }
-        public long FileDataID { get; set; }
+        public int? MonthlyRent { get; set; }
+        public int StreetContainsUnitNumberOv { get; set; }
+        public long FileDataId { get; set; }
 
 
         public object GetRainmakerBorrowerResidence() 
