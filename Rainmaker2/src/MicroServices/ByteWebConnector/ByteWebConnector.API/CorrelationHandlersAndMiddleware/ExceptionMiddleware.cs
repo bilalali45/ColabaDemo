@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Identity.Models;
+using LosIntegration.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
+namespace LosIntegration.API.CorrelationHandlersAndMiddleware
 {
     public class ExceptionMiddleware
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ByteWebConnector.API.Controllers
+namespace LosIntegration.API.Controllers
 {
     [ApiController]
     [Route(template: "api/ByteWebConnector/[controller]")]

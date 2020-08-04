@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace ByteWebConnector.API.ExtensionMethods
+namespace LosIntegration.API.ExtensionMethods
 {
     public static class JsonStringExtension
     {

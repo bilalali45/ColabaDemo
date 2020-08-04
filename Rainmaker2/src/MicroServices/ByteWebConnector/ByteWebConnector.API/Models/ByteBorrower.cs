@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Runtime.Serialization;
-using ByteWebConnector.API.Enums;
-using ByteWebConnector.API.Models.ClientModels;
+using LosIntegration.API.Enums;
+using LosIntegration.API.Models.ClientModels;
 
-namespace ByteWebConnector.API.Models
+namespace LosIntegration.API.Models
 {
     [DataContract(Name = "Borrower")]
     public class ByteBorrower

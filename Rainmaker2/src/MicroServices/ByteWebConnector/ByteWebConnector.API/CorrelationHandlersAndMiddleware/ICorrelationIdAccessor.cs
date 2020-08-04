@@ -1,4 +1,4 @@
-﻿namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
+﻿namespace LosIntegration.API.CorrelationHandlersAndMiddleware
 {
 
     public interface ICorrelationIdAccessor

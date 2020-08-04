@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Identity.Models
+namespace LosIntegration.API.Models
 {
     public class ApiResponse
     {

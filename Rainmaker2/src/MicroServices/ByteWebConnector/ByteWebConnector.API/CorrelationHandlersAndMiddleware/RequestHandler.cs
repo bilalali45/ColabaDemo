@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
+namespace LosIntegration.API.CorrelationHandlersAndMiddleware
 {
     public class RequestHandler : DelegatingHandler
     {

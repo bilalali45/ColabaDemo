@@ -2,14 +2,14 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using ByteWebConnector.API.ExtensionMethods;
-using ByteWebConnector.API.Models;
+using LosIntegration.API.ExtensionMethods;
+using LosIntegration.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ByteWebConnector.API.Controllers
+namespace LosIntegration.API.Controllers
 {
     [Route(template: "api/ByteWebConnector/[controller]")]
     [ApiController]

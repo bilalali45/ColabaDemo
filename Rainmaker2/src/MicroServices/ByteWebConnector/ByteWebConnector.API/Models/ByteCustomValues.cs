@@ -1,4 +1,4 @@
-﻿namespace ByteWebConnector.API.Models
+﻿namespace LosIntegration.API.Models
 {
     public class ByteCustomFields
     {

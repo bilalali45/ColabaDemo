@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ByteWebConnector.API.Models.ClientModels
+namespace LosIntegration.API.Models.ClientModels
 {
     public class StatusEntity
     {

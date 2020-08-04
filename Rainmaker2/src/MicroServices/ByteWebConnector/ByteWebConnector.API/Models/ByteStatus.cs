@@ -1,7 +1,7 @@
 ﻿using System;
-using ByteWebConnector.API.Models.ClientModels;
+using LosIntegration.API.Models.ClientModels;
 
-namespace ByteWebConnector.API.Models
+namespace LosIntegration.API.Models
 {
     public class ByteStatus
     {

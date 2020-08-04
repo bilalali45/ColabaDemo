@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace ByteWebConnector.API.Enums
+namespace LosIntegration.API.Enums
 {
     public enum ResidencyStateEnum
     {
