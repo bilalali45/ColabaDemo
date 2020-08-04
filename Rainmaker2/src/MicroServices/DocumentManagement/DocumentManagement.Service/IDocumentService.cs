@@ -16,6 +16,6 @@ namespace DocumentManagement.Service
         Task<bool> McuRename(string id, string requestId, string docId, string fileId, string newName, string userName);
         Task<bool> AcceptDocument(string id, string requestId, string docId, string userName);
         Task<bool> RejectDocument(string id, string requestId, string docId,string message,int userId, string userName);
-        Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress);
+        Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId);
     }
 }

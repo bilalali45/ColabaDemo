@@ -17,7 +17,6 @@ interface DocumentViewProps {
   id: string
   requestId: string
   docId: string
-  tenantId?: string
   blobData?: any | null
   submittedDocumentCallBack?: Function
   fileId?: string
@@ -42,7 +41,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   clientName,
   hideViewer,
   file,
-  tenantId,
   blobData,
   submittedDocumentCallBack,
   loading = false,
@@ -69,7 +67,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
       if (submittedDocumentCallBack) {
-        submittedDocumentCallBack(id, requestId, docId, fileId, tenantId)
+        submittedDocumentCallBack(id, requestId, docId, fileId)
       }
     } catch (error) {
       console.log(error)
@@ -164,19 +162,17 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                 </li>
               </Fragment>
             )}
-           
-              { showCloseBtn &&
-                 <li>
+
+            {showCloseBtn && (
+              <li>
                 <button
-                className='document-view--button'
-                onClick={() => hideViewer(false)}
-              >
-                <SVGclose />
-              </button>
+                  className='document-view--button'
+                  onClick={() => hideViewer(false)}
+                >
+                  <SVGclose />
+                </button>
               </li>
-              }
-              
-            
+            )}
           </ul>
         </div>
 

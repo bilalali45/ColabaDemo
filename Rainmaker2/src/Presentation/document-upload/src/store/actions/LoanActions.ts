@@ -16,13 +16,10 @@ export const statusText = {
   UPCOMMING: "UPCOMING",
 };
 export class LaonActions {
-  static async getLoanOfficer(
-    loanApplicationId: string,
-    businessUnitId: string
-  ) {
+  static async getLoanOfficer(loanApplicationId: string) {
     try {
       let res: AxiosResponse<ContactUs> = await http.get<ContactUs>(
-        Endpoints.loan.GET.officer(loanApplicationId, businessUnitId)
+        Endpoints.loan.GET.officer(loanApplicationId)
       );
       return new ContactUs().fromJson(res.data);
     } catch (error) {
@@ -44,35 +41,28 @@ export class LaonActions {
     }
   }
 
-  static async getLOPhoto(lOPhotoId: string = "", businessUnitId: string = "") {
+  static async getLOPhoto(lOPhotoId: string = "", loanApplicationId: string) {
     try {
-      let res: any = await http.get(
-        Endpoints.loan.GET.getLOPhoto(lOPhotoId, businessUnitId)
-      );
+      let res: any = await http.get(Endpoints.loan.GET.getLOPhoto(lOPhotoId, loanApplicationId));
       return res.data;
     } catch (error) {
       console.log("error.response", error);
     }
   }
 
-  static async getFooter(tenentId: string, businessUnitId: string) {
+  static async getFooter(loanApplicationId: string) {
     try {
-      let res: any = await http.get(
-        Endpoints.loan.GET.getFooter(tenentId, businessUnitId)
-      );
+      let res: any = await http.get(Endpoints.loan.GET.getFooter(loanApplicationId));
       return res.data;
     } catch (error) {
       console.log("error.response", error);
     }
   }
 
-  static async getLoanProgressStatus(
-    loanApplicationId: string,
-    tenentId: string
-  ) {
+  static async getLoanProgressStatus(loanApplicationId: string) {
     try {
       let res: AxiosResponse<LoanProgress[]> = await http.get<LoanProgress[]>(
-        Endpoints.loan.GET.loanProgressStatus(loanApplicationId, tenentId)
+        Endpoints.loan.GET.loanProgressStatus(loanApplicationId)
       );
       return attachStatus(res.data);
     } catch (error) {

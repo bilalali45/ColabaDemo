@@ -73,8 +73,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = "Field Can't be empty")]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string fileId { get; set; }
-
-        public int tenantId { get; set; }
     }
     public class FileRenameModel
     {

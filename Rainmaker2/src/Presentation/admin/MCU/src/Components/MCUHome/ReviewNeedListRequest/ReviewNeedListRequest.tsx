@@ -11,11 +11,11 @@ export const ReviewNeedListRequest = () => {
     console.log('Parent')
     return (
         <div className="mcu-panel">
-            <ReviewNeedListRequestHeader
+            {/* <ReviewNeedListRequestHeader
              saveAsDraft={saveAsDraft}
-            />
-            <ReviewNeedListRequestHome
-            />
+            /> */}
+            {/* <ReviewNeedListRequestHome
+            /> */}
         </div>
     )
 }

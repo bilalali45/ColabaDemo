@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, ChangeEvent } from 'react'
 import { AddDocument } from '../../../../TemplateManager/AddDocument/AddDocument';
 
 import { clear } from 'console';
@@ -22,10 +22,14 @@ type AddNeedListContainerType = {
     loaderVisible: boolean,
     setLoaderVisible: Function,
     addDocumentToList: Function,
-    templateList: Template[];
-    addTemplatesDocuments: Function;
-    isDraft: string;
-    viewSaveDraft: Function;
+    templateList: Template[],
+    addTemplatesDocuments: Function,
+    isDraft: string,
+    viewSaveDraft: Function,
+    saveAsTemplate: Function,
+    templateName: string,
+    changeTemplateName: Function,
+    removeDocumentFromList: Function
 }
 
 
@@ -39,7 +43,11 @@ export const NeedListRequest = ({
     templateList,
     addTemplatesDocuments,
     isDraft,
-    viewSaveDraft }: AddNeedListContainerType) => {
+    viewSaveDraft,
+    saveAsTemplate,
+    changeTemplateName,
+    templateName,
+    removeDocumentFromList }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
 
@@ -49,15 +57,16 @@ export const NeedListRequest = ({
 
     const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
 
+
     const renderNoDocumentSelect = () => {
         return (
             <div className="no-preview">
                 <div>
-                <div className="icon-wrap">
-                    <img src={emptyIcon} alt="" />
-                </div>
-                <h2>Nothing</h2>
-                <p>You have not added any document</p>
+                    <div className="icon-wrap">
+                        <img src={emptyIcon} alt="" />
+                    </div>
+                    <h2>Nothing</h2>
+                    <p>You have not added any document</p>
                 </div>
             </div>
         )
@@ -77,9 +86,10 @@ export const NeedListRequest = ({
                                     documentList?.map((d: TemplateDocument) => {
 
                                         return <NeedListRequestItem
-                                            isSelected={currentDocument?.docId === d.docId}
+                                            isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
+                                            removeDocumentFromList={removeDocumentFromList}
                                         />
 
                                     })
@@ -96,11 +106,14 @@ export const NeedListRequest = ({
     const renderSaveAsTemplate = () => {
         return (
             <div className="save-template">
-                <input className="form-control" type="text" placeholder="Template Name"/>
+                <input value={templateName} onChange={(e) => changeTemplateName(e)} className="form-control" type="text" placeholder="Template Name" />
                 <div className="save-template-btns">
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
-                    <button className="btn btn-sm btn-primary" onClick={toggleSaveAsTemplate}>Save</button>
+                    <button className="btn btn-sm btn-primary" onClick={() => {
+                        saveAsTemplate();
+                        toggleSaveAsTemplate();
+                    }}>Save</button>
                 </div>
             </div>
         )
@@ -136,10 +149,10 @@ export const NeedListRequest = ({
 
             <div className="listWrap-templates">
                 {renderDocumentList()}
-                
+
                 {/* Remove Message */}
-                
-                
+
+
             </div>
 
             <div className="left-footer">
@@ -152,7 +165,6 @@ export const NeedListRequest = ({
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
-                            isDraft={isDraft}
                         />
                         <a
                             onClick={toggleSaveAsTemplate}

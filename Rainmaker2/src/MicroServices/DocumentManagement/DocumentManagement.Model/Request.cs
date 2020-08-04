@@ -17,7 +17,6 @@ namespace DocumentManagement.Model
         public string userName { get; set; }
         public DateTime createdOn { get; set; }
         public string status { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string message { get; set; }
         public List<RequestDocument> documents { get; set; }
     }
@@ -75,10 +74,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "loanApplicationId")]
         public int loanApplicationId { get; set; }
-
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "tenantId")]
-        public int tenantId { get; set; }
     }
 
     public class DraftDTO
@@ -125,13 +120,6 @@ namespace DocumentManagement.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
 
-    }
-
-    public class GetEmailTemplate
-    {
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "tenantId")]
-        public int tenantId { get; set; }
     }
 
     public class EmailTemplateQuery

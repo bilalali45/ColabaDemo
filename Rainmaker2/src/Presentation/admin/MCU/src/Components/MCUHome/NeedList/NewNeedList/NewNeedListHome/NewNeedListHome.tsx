@@ -16,10 +16,15 @@ type NewNeedListHomeType = {
     addDocumentToList: Function,
     changeDocument: Function,
     updateDocumentMessage: Function,
-    templateList: Template[];
-    addTemplatesDocuments: Function;
-    isDraft: string;
-    viewSaveDraft: Function;
+    templateList: Template[],
+    addTemplatesDocuments: Function,
+    isDraft: string,
+    viewSaveDraft: Function,
+    saveAsTemplate: Function,
+    templateName: string,
+    changeTemplateName: Function,
+    removeDocumentFromList: Function,
+    toggleShowReview: Function
 }
 
 export const NewNeedListHome = ({
@@ -28,10 +33,15 @@ export const NewNeedListHome = ({
     changeDocument,
     allDocuments,
     updateDocumentMessage,
-    templateList, 
-    addTemplatesDocuments, 
-    isDraft, 
-    viewSaveDraft
+    templateList,
+    addTemplatesDocuments,
+    isDraft,
+    viewSaveDraft,
+    saveAsTemplate,
+    changeTemplateName,
+    templateName,
+    removeDocumentFromList,
+    toggleShowReview
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -52,6 +62,10 @@ export const NewNeedListHome = ({
                                 addTemplatesDocuments={addTemplatesDocuments}
                                 viewSaveDraft={viewSaveDraft}
                                 isDraft={isDraft}
+                                saveAsTemplate={saveAsTemplate}
+                                templateName={templateName}
+                                changeTemplateName={changeTemplateName}
+                                removeDocumentFromList={removeDocumentFromList}
                             />
 
                         </div>
@@ -60,7 +74,8 @@ export const NewNeedListHome = ({
                         <div className="MT-rightbar">
                             <NeedListContent
                                 updateDocumentMessage={updateDocumentMessage}
-                                document={currentDocument} />
+                                document={currentDocument}
+                                toggleShowReview={toggleShowReview} />
                         </div>
                     </div>
                 </div>

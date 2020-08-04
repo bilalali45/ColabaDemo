@@ -6,15 +6,16 @@ import { Template } from '../../../../../Entities/Models/Template';
 import { MyTemplate, TenantTemplate, SystemTemplate } from '../../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer';
 import { Link } from 'react-router-dom';
 import { NeedListSelect } from '../../NeedListSelect/NeedListSelect';
+import { isDocumentDraftType } from '../../../../../Store/reducers/TemplatesReducer';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
     addTemplatesDocuments: Function;
-    isDraft: string;
+    isDocumentDraft: isDocumentDraftType;
     viewSaveDraft: Function;
 }
 
-export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDraft, viewSaveDraft }: headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft }: headerProps) => {
     const [toggle, setToggle] = useState(true);
 
 
@@ -31,17 +32,14 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 <div className="btn-group">
 
                     {/* {displayAddButton()} */}
-                    {isDraft ?
-
-                        <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
-                        
-                        : <NeedListSelect
+                    {!isDocumentDraft || isDocumentDraft?.requestId === null ?
+                        <NeedListSelect
                             showButton={true}
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
-                            isDraft={isDraft}
-                        />}
+                        /> :
+                        <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>}
                 </div>
             </div>
             <div className="need-list-view-header--right">

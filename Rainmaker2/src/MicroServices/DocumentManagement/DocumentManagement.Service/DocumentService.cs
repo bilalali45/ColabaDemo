@@ -366,7 +366,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress)
+        public async Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -374,7 +374,7 @@ namespace DocumentManagement.Service
               @"{""$match"": {
 
                   ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
-                  ""tenantId"": " + model.tenantId + @"
+                  ""tenantId"": " + tenantId + @"
                             }
                         }",
                         @"{
