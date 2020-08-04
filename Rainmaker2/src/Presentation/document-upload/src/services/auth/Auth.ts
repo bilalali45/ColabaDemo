@@ -6,23 +6,23 @@ const cookies = new Cookies();
 
 export class Auth {
   public static saveAuth(token: string) {
-    localStorage.setItem("auth", this.encodeString(token));
+    window.sessionStorage.setItem("auth", this.encodeString(token));
   }
 
   public static saveRefreshToken(refToken: string) {
-    localStorage.setItem("refreshToken", this.encodeString(refToken));
+    window.sessionStorage.setItem("refreshToken", this.encodeString(refToken));
   }
 
   public static getRefreshToken() {
-    return this.decodeString(localStorage.getItem("refreshToken"));
+    return this.decodeString(window.sessionStorage.getItem("refreshToken"));
   }
 
   public static removeRefreshToken() {
-    localStorage.removeItem("refreshToken");
+    window.sessionStorage.removeItem("refreshToken");
   }
 
   public static getAuth() {
-    return this.decodeString(localStorage.getItem("auth"));
+    return this.decodeString(window.sessionStorage.getItem("auth"));
   }
 
   public static getLoginUserName() {
@@ -64,67 +64,56 @@ export class Auth {
 
   static storeTokenPayload(payload) {
     if (!payload) return;
-    localStorage.setItem("payload", this.encodeString(JSON.stringify(payload)));
+    window.sessionStorage.setItem(
+      "payload",
+      this.encodeString(JSON.stringify(payload))
+    );
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(localStorage.getItem("payload"));
+    let payload = this.decodeString(window.sessionStorage.getItem("payload"));
     if (payload) {
       return JSON.parse(payload);
     }
   }
 
   static removeAuthToken() {
-    localStorage.removeItem("auth");
+    window.sessionStorage.removeItem("auth");
   }
 
   public static removeAuth() {
     let items = [
       "auth",
       "loanApplicationId",
-      "tenantId",
-      "businessUnitId",
       "payload",
       "refreshToken",
+      "baseParam",
     ];
     for (const item of items) {
-      localStorage.removeItem(item);
+      window.sessionStorage.removeItem(item);
     }
   }
 
   public static getLoanAppliationId() {
-    return this.decodeString(localStorage.getItem("loanApplicationId")) || "";
-  }
-
-  public static getTenantId() {
-    return this.decodeString(localStorage.getItem("tenantId")) || "";
-  }
-
-  public static getBusinessUnitId() {
-    return this.decodeString(localStorage.getItem("businessUnitId")) || "";
+    return (
+      this.decodeString(window.sessionStorage.getItem("loanApplicationId")) ||
+      ""
+    );
   }
 
   public static setLoanAppliationId(loanApplicationId: string) {
-    localStorage.setItem(
+    window.sessionStorage.setItem(
       "loanApplicationId",
       this.encodeString(loanApplicationId)
     );
   }
 
-  public static setTenantId(tenantId: string) {
-    localStorage.setItem("tenantId", this.encodeString(tenantId));
-  }
-
-  public static setBusinessUnitId(businessUnitId: string) {
-    localStorage.setItem("businessUnitId", this.encodeString(businessUnitId));
-  }
-
   public static storeItem(name: string, data: string) {
-    localStorage.setItem(name, this.encodeString(data));
+    window.sessionStorage.setItem(name, this.encodeString(data));
   }
 
   public static removeItem(name: string) {
-    localStorage.removeItem(name);
+    window.sessionStorage.removeItem(name);
   }
 
   public static encodeString(value: string) {
