@@ -40,6 +40,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -121,6 +122,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -721,11 +723,17 @@ namespace DocumentManagement.Tests
 
             GetDraft getDraft = new GetDraft();
             getDraft.loanApplicationId = 14;
-            getDraft.tenantId = 1;
 
             mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
             var controller = new RequestController(mock.Object, null);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
 
             //Act
             IActionResult result = await controller.GetDraft(getDraft);
@@ -893,15 +901,19 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
 
-            GetEmailTemplate getEmailTemplate = new GetEmailTemplate();
-            getEmailTemplate.tenantId = 1;
-
             mock.Setup(x => x.GetEmailTemplate(It.IsAny<int>())).ReturnsAsync("Email Template");
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var controller = new RequestController(mock.Object, null);
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
-            IActionResult result = await controller.GetEmailTemplate(getEmailTemplate);
+            IActionResult result = await controller.GetEmailTemplate();
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
