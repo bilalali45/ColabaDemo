@@ -40,6 +40,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -121,6 +122,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -721,11 +723,17 @@ namespace DocumentManagement.Tests
 
             GetDraft getDraft = new GetDraft();
             getDraft.loanApplicationId = 14;
-            getDraft.tenantId = 1;
 
             mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
             var controller = new RequestController(mock.Object, null);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
 
             //Act
             IActionResult result = await controller.GetDraft(getDraft);
@@ -886,5 +894,98 @@ namespace DocumentManagement.Tests
             Assert.Equal("Credit report has been uploaded", dto[6].docMessage);
             Assert.Equal("Credit report has been uploaded", dto[7].docMessage);
         }
-    }
+
+        [Fact]
+        public async Task TestGetEmailTemplateController()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+
+            mock.Setup(x => x.GetEmailTemplate(It.IsAny<int>())).ReturnsAsync("Email Template");
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var controller = new RequestController(mock.Object, null);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.GetEmailTemplate();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as string;
+        }
+
+        [Fact]
+        public async Task TestGetEmailTemplateServiceTrue()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Tenant>> mockCollectionEmailTemplate = new Mock<IMongoCollection<Tenant>>();
+
+            List<BsonDocument> emailTemplate = new List<BsonDocument>()
+            {
+                new BsonDocument
+                 {
+                        { "emailTemplate" , "Email Template"}
+                 }
+                };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(emailTemplate);
+
+            mockCollectionEmailTemplate.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Tenant, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Tenant>("Tenant", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionEmailTemplate.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new RequestService(mock.Object, null);
+            //Act
+            string dto = await service.GetEmailTemplate(1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("Email Template", dto);
+        }
+
+            [Fact]
+            public async Task TestGetEmailTemplateServiceFalse()
+            {
+                //Arrange
+                Mock<IMongoService> mock = new Mock<IMongoService>();
+                Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+                Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+                Mock<IMongoCollection<Tenant>> mockCollectionEmailTemplate = new Mock<IMongoCollection<Tenant>>();
+
+                List<BsonDocument> emailTemplate = new List<BsonDocument>()
+            {
+                new BsonDocument
+                 {
+                        { "emailTemplate" , "Email Template"}
+                 }
+                };
+
+                mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false);
+                mockCursor.SetupGet(x => x.Current).Returns(emailTemplate);
+
+                mockCollectionEmailTemplate.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Tenant, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+                mockdb.Setup(x => x.GetCollection<Tenant>("Tenant", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionEmailTemplate.Object);
+
+                mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+                var service = new RequestService(mock.Object, null);
+                //Act
+                string dto = await service.GetEmailTemplate(1);
+                //Assert
+                Assert.NotNull(dto);
+                Assert.Equal(string.Empty, dto);
+            }
+        }
 }

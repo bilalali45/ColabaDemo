@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xunit;
+using Microsoft.Extensions.Primitives;
 
 namespace DocumentManagement.Tests
 {
@@ -29,18 +30,17 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetPendingDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object,Mock.Of<ILogger<DashboardController>>());
+            var dashboardController = new DashboardController(mock.Object,Mock.Of<ILogger<DashboardController>>(), null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             dashboardController.ControllerContext = context;
 
-           
             GetPendingDocuments moGetPendingDocuments= new GetPendingDocuments();
-            moGetPendingDocuments.tenantId = 1;
             moGetPendingDocuments.loanApplicationId = 1;
        
             IActionResult result = await dashboardController.GetPendingDocuments(moGetPendingDocuments);
@@ -223,17 +223,17 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetSubmittedDocuments(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(),null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             dashboardController.ControllerContext = context;
             GetSubmittedDocuments moGetSubmittedDocuments= new GetSubmittedDocuments();
             moGetSubmittedDocuments.loanApplicationId = 1;
-            moGetSubmittedDocuments.tenantId = 1;
             //Act
             IActionResult result = await dashboardController.GetSubmittedDocuments(moGetSubmittedDocuments);
             //Assert
@@ -415,16 +415,16 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDashboardStatus(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
 
-            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(),null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             dashboardController.ControllerContext = context;
             GetDashboardStatus moGetDashboardStatus= new GetDashboardStatus();
-            moGetDashboardStatus.tenantId = 1;
             moGetDashboardStatus.loanApplicationId = 1;
            //Act
            IActionResult result = await dashboardController.GetDashboardStatus(moGetDashboardStatus);
@@ -661,16 +661,37 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDashboardService> mock = new Mock<IDashboardService>();
+            Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
 
             mock.Setup(x => x.GetFooterText(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("document footer text");
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            mockRainMock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(loanApplicationModel);
 
-            DashboardController controller = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>());
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(), mockRainMock.Object);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            //DashboardController controller = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(),null);
            
             GetFooterText moGetFooterText= new GetFooterText();
-            moGetFooterText.tenantId = 1;
-            moGetFooterText.businessUnitId = 1;
-               //Act
-               IActionResult result = await controller.GetFooterText(moGetFooterText);
+            moGetFooterText.loanApplicationId = 1;
+
+            //Act
+            IActionResult result = await dashboardController.GetFooterText(moGetFooterText);
+
             //Assert
             Assert.NotNull(result);
             
