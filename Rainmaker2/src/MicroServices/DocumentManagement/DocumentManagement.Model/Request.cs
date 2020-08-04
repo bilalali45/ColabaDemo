@@ -126,4 +126,16 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
 
     }
+
+    public class GetEmailTemplate
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "tenantId")]
+        public int tenantId { get; set; }
+    }
+
+    public class EmailTemplateQuery
+    {
+        public string emailTemplate { get; set; }
+    }
 }

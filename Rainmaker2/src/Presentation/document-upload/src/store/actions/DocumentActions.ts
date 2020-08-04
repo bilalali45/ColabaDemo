@@ -11,14 +11,11 @@ import { FileUpload } from "../../utils/helpers/FileUpload";
 const http = new Http();
 
 export class DocumentActions {
-  static async getPendingDocuments(
-    loanApplicationId: string,
-    tenentId: string
-  ) {
+  static async getPendingDocuments(loanApplicationId: string) {
     try {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
-      >(Endpoints.documents.GET.pendingDocuments(loanApplicationId, tenentId));
+      >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
       // res.data = [
       //   new DocumentRequest(
       //     '1',
@@ -64,16 +61,11 @@ export class DocumentActions {
     }
   }
 
-  static async getSubmittedDocuments(
-    loanApplicationId: string,
-    tenentId: string
-  ) {
+  static async getSubmittedDocuments(loanApplicationId: string) {
     try {
       let res: AxiosResponse<UploadedDocuments[]> = await http.get<
         UploadedDocuments[]
-      >(
-        Endpoints.documents.GET.submittedDocuments(loanApplicationId, tenentId)
-      );
+      >(Endpoints.documents.GET.submittedDocuments(loanApplicationId));
       return res.data.map((r) => r);
     } catch (error) {
       console.log(error);
@@ -90,8 +82,7 @@ export class DocumentActions {
         params.id,
         params.requestId,
         params.docId,
-        params.fileId,
-        params.tenantId
+        params.fileId
       );
 
       const response = await axios.get(http.createUrl(http.baseUrl, url), {
@@ -109,20 +100,14 @@ export class DocumentActions {
     }
   }
 
-  static async finishDocument(
-    loanApplicationId: string,
-    tenentId: string,
-    data: {}
-  ) {
+  static async finishDocument(loanApplicationId: string, data: {}) {
     try {
       let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), {
         ...data,
-        tenantId: +tenentId,
       });
       if (doneRes) {
         let remainingPendingDocs = await DocumentActions.getPendingDocuments(
-          loanApplicationId,
-          tenentId
+          loanApplicationId
         );
         if (remainingPendingDocs) {
           return remainingPendingDocs;

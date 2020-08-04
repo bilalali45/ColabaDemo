@@ -218,43 +218,24 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetSubmittedDocuments
     {
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetDashboardStatus
     {
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetFooterText
     {
-        [FromQuery(Name = "tenantId")]
+        [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
-        [FromQuery(Name = "businessUnitId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int businessUnitId { get; set; }
+        public int loanApplicationId { get; set; }
 
     }
 

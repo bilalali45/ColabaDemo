@@ -56,3 +56,9 @@ export interface ActivityLogType {
   message: string
   log: LogType[]
 }
+
+export enum DocumentStatus {
+  PENDING_REVIEW = 'Pending review',
+  COMPLETED = 'Completed',
+  IN_DRAFT = 'In draft'
+}

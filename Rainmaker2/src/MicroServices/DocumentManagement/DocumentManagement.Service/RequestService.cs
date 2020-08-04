@@ -552,5 +552,33 @@ namespace DocumentManagement.Service
 
             return result;
         }
+
+        public async Task<string> GetEmailTemplate(int tenantId)
+        {
+            IMongoCollection<Tenant> collection = mongoService.db.GetCollection<Tenant>("Tenant");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Tenant, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""tenantId"": " + tenantId + @"}
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""emailTemplate"": ""$emailTemplate""
+                            }
+                        }"
+                ));
+
+            while (await asyncCursor.MoveNextAsync())
+            {
+                string emailTemplate = string.Empty;
+                if (asyncCursor.Current.Count() > 0)
+                {
+                    EmailTemplateQuery query = BsonSerializer.Deserialize<EmailTemplateQuery>(asyncCursor.Current.First());
+                    emailTemplate = query.emailTemplate;
+                }
+                return emailTemplate;
+            }
+            return string.Empty;
+        }
     }
 }

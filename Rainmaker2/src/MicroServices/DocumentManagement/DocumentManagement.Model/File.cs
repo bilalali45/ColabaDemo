@@ -27,9 +27,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string requestId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        public int tenantId { get; set; }
-
     }
 
     public class FileViewModel
@@ -53,9 +50,30 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = "Field Can't be empty")]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string fileId { get; set; }
+    }
 
-        [FromQuery(Name = "tenantId")]
+    public class AdminFileViewModel
+    {
+        [FromQuery(Name = "id")]
         [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string id { get; set; }
+
+        [FromQuery(Name = "requestId")]
+        [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string requestId { get; set; }
+
+        [FromQuery(Name = "docId")]
+        [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string docId { get; set; }
+
+        [FromQuery(Name = "fileId")]
+        [Required(ErrorMessage = "Field Can't be empty")]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
+        public string fileId { get; set; }
+
         public int tenantId { get; set; }
     }
     public class FileRenameModel
@@ -74,8 +92,6 @@ namespace DocumentManagement.Model
         public string fileId { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string fileName { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        public int tenantId { get; set; }
     }
 
     public class FileOrderModel
@@ -90,8 +106,6 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string requestId { get; set; }
         public List<FileNameModel> files { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        public int tenantId { get; set; }
     }
 
 }

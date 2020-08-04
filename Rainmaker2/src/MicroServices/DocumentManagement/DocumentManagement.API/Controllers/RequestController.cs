@@ -79,6 +79,13 @@ namespace DocumentManagement.API.Controllers
             return Ok(docQuery);
         }
 
+        [HttpGet("GetEmailTemplate")]
+        public async Task<IActionResult> GetEmailTemplate([FromQuery] GetEmailTemplate getEmailTemplate)
+        {
+            var docQuery = await requestService.GetEmailTemplate(tenantId: getEmailTemplate.tenantId);
+            return Ok(value: docQuery);
+        }
+
         #endregion
 
         #endregion

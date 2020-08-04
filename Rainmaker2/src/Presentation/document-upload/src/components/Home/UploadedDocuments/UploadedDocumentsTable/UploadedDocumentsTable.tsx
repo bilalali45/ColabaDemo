@@ -38,8 +38,7 @@ export const UploadedDocumentsTable = () => {
   const fetchUploadedDocuments = async () => {
     if (!submittedDocs) {
       let uploadedDocs = await DocumentActions.getSubmittedDocuments(
-        Auth.getLoanAppliationId(),
-        Auth.getTenantId()
+        Auth.getLoanAppliationId()
       );
       if (uploadedDocs) {
         dispatch({
@@ -108,27 +107,29 @@ export const UploadedDocumentsTable = () => {
       "asc",
     ]);
 
-    return sortedUploadedDocuments.map((item: UploadedDocuments, index: number) => {
-      if (!item?.files?.length) return;
-      const { files, docId, requestId, id } = item;
-      const sortedFiles = _.orderBy(
-        files,
-        (file) => new Date(file.fileUploadedOn),
-        ["desc"]
-      );
+    return sortedUploadedDocuments.map(
+      (item: UploadedDocuments, index: number) => {
+        if (!item?.files?.length) return;
+        const { files, docId, requestId, id } = item;
+        const sortedFiles = _.orderBy(
+          files,
+          (file) => new Date(file.fileUploadedOn),
+          ["desc"]
+        );
 
-      return (
-        <tr key={index}>
-          <td>
-            <span className="doc-name">
-              <em className="far fa-file"></em> {item.docName}
-            </span>
-          </td>
-          {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
-          {renderAddedColumn(sortedFiles)}
-        </tr>
-      );
-    });
+        return (
+          <tr key={index}>
+            <td>
+              <span className="doc-name">
+                <em className="far fa-file"></em> {item.docName}
+              </span>
+            </td>
+            {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
+            {renderAddedColumn(sortedFiles)}
+          </tr>
+        );
+      }
+    );
   };
 
   const loanHomeHandler = () => {
@@ -171,19 +172,12 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
-  const getSubmittedDocumentForView = async (
-    id,
-    requestId,
-    docId,
-    fileId,
-    tenantId
-  ) => {
+  const getSubmittedDocumentForView = async (id, requestId, docId, fileId) => {
     const response = (await DocumentActions.getSubmittedDocumentForView({
       id,
       requestId,
       docId,
       fileId,
-      tenantId,
     })) as any;
     setBlobData(response);
   };
@@ -198,7 +192,7 @@ export const UploadedDocumentsTable = () => {
     document.body.removeAttribute("style");
     clearBlob();
     setCurrentDoc(null);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -212,7 +206,6 @@ export const UploadedDocumentsTable = () => {
           hideViewer={hdieViewer}
           {...currentDoc}
           fileId={currentDoc.fileId}
-          tenantId={Auth.getTenantId()}
           blobData={blobData}
           submittedDocumentCallBack={getSubmittedDocumentForView}
         />

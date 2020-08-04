@@ -186,7 +186,9 @@ namespace Identity.Controllers
                                   new Claim(type: "FirstName",
                                             value: contact.FirstName),
                                   new Claim(type: "LastName",
-                                            value: contact.LastName)
+                                            value: contact.LastName),
+                                  new Claim(type: "TenantId",
+                                      value: "1")
                               };
 
             if (userProfile.Employees.FirstOrDefault() != null)

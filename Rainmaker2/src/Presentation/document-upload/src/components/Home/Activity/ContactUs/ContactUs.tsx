@@ -37,14 +37,10 @@ export const ContactUs = ({}) => {
     let loanOfficer:
       | ContactUsModal
       | undefined = await LaonActions.getLoanOfficer(
-      Auth.getLoanAppliationId(),
-      Auth.getBusinessUnitId()
+      Auth.getLoanAppliationId()
     );
     if (loanOfficer) {
-      let src: any = await LaonActions.getLOPhoto(
-        loanOfficer.photo,
-        Auth.getBusinessUnitId()
-      );
+      let src: any = await LaonActions.getLOPhoto(loanOfficer.photo);
       dispatch({
         type: LoanActionsType.FetchLoanOfficer,
         payload: loanOfficer,
