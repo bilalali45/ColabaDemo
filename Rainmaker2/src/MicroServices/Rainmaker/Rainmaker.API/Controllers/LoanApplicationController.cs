@@ -48,9 +48,10 @@ namespace Rainmaker.API.Controllers
         }
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetLOInfo(int loanApplicationId, int businessUnitId)
+        public async Task<IActionResult> GetLOInfo(int loanApplicationId)
         {   
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            int businessUnitId = (await loanApplicationService.GetByLoanApplicationId(loanApplicationId)).BusinessUnitId.Value;
             Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
             if(lo==null || lo.FirstName==null)
             {
@@ -59,9 +60,16 @@ namespace Rainmaker.API.Controllers
             return Ok(lo);
         }
         [Authorize(Roles = "Customer")]
-        [HttpGet("[action]")]
-        public async Task<string> GetPhoto(string photo, int businessUnitId)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetByLoanApplicationId([FromBody] GetLoanApplicationModel model)
         {
+            return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
+        }
+        [Authorize(Roles = "Customer")]
+        [HttpGet("[action]")]
+        public async Task<string> GetPhoto(string photo, int loanApplicationId)
+        {
+            int businessUnitId = (await loanApplicationService.GetByLoanApplicationId(loanApplicationId)).BusinessUnitId.Value;
             var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
             Stream imageData = null;
             try
@@ -74,7 +82,6 @@ namespace Rainmaker.API.Controllers
             if (imageData == null)
             {
                 imageData = new FileStream("Content\\images\\default-LO.jpg", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                   // new FileStream(remoteFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             }
             using MemoryStream ms = new MemoryStream();
             imageData.CopyTo(ms);
