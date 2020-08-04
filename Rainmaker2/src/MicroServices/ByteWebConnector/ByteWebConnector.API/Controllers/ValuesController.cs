@@ -65,7 +65,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("custom")]
         [HttpPost]
-        public void Post(CustomFields request)
+        public void Post(ByteCustomValue request)
         {
 
         }

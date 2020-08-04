@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.API.Models
 {
-    public class CustomFields
+    public class ByteCustomFields
     {
         public int CustomFieldsID { get; set; }
         public string Field01 { get; set; }
@@ -505,5 +505,20 @@
         public string Field500 { get; set; }
         public long FileDataID { get; set; }
 
+    }
+
+    public class ByteCustomValue
+    {
+        public int CustomValueId { get; set; }
+        public int CustomValueType { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public long FileDataId { get; set; }
+
+
+        public object GetRainmakerCustomValue()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
