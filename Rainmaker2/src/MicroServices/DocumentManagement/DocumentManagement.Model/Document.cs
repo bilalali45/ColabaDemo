@@ -107,9 +107,6 @@ namespace DocumentManagement.Model
         public string id { get; set; }
 
         [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
-        [Required(ErrorMessage = "Field Can't be empty")]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string documentId { get; set; } 
     }
@@ -169,17 +166,12 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$",ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "fileId")]
         public string fileId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "tenantId")]
-        public int tenantId { get; set; }
     }
     public class GetDocumentsByTemplateIds
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [ArrayRegularExpression(@"^[A-Fa-f\d]{24}$")]
         public  string[] id { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        public int tenantId { get; set; }
     }
 
     public class ArrayRegularExpressionAttribute : ValidationAttribute

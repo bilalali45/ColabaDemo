@@ -108,14 +108,14 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<bool> Delete(AdminDeleteModel model)
+        public async Task<bool> Delete(AdminDeleteModel model, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(model.id) },
-                { "tenantId", model.tenantId},
+                { "tenantId", tenantId},
 
                 {
                     "requests" , new BsonDocument()
@@ -221,9 +221,46 @@ namespace DocumentManagement.Service
                     query = BsonSerializer.Deserialize<RequestIdQuery>(current);
                 }
             }
+
+            if (string.IsNullOrEmpty(query.requestId))
+            {
+                IMongoCollection<Entity.Request> collectionDocumentDraft = mongoService.db.GetCollection<Entity.Request>("Request");
+
+                using var asyncCursorDocumentDraft = collectionDocumentDraft.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                 @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @" 
+                            }
+                        }",
+                           @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                            @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                            @"{
+                            ""$match"": {
+                                ""requests.documents.status"": """ + DocumentStatus.Draft + @""",
+                            }
+                        }",
+                           @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""requestId"": ""$requests.id""
+                                }
+                         } "
+
+                   ));
+
+                while (await asyncCursorDocumentDraft.MoveNextAsync())
+                {
+                    foreach (var current in asyncCursorDocumentDraft.Current)
+                    {
+                        query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                    }
+                }
+            }
             return query;
         }
     }
-
 }
 
