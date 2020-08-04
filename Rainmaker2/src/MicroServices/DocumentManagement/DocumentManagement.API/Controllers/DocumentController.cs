@@ -56,8 +56,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"GetDocumentsByTemplateIds requested by {userProfileId}");
-            var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), getDocumentsByTemplateIds.tenantId);
+            var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), tenantId);
             return Ok(value: docQuery);
         }
 
@@ -164,19 +165,19 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> View([FromQuery] View view)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
             var model = new AdminFileViewModel
                         {
                             docId = view.docId,
                             fileId = view.fileId,
                             id = view.id,
-                            requestId = view.requestId,
-                            tenantId = view.tenantId
+                            requestId = view.requestId
             };
 
             var fileviewdto = await documentService.View(model,
                                                          userProfileId,
-                                                         HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
+                                                         HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(),tenantId);
             var setting = await settingService.GetSetting();
 
             ftpClient.Setup(hostIp: setting.ftpServer,
