@@ -3,21 +3,25 @@ import { Store } from '../../../../../Store/Store';
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument';
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { TextArea } from '../../../../../Shared/components/TextArea';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 type emailContentReviewProps = {
     documentsName: string | undefined;
-    saveAsDraft: Function
+    saveAsDraft: Function;
+    emailTemplate: string;
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentReviewProps) => {
-    //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
-    console.log('documentsName', documentsName)
+export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate}:emailContentReviewProps) => {
+    
     const setDeafultText = () => {
+        let str: string = '';
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
-        let mainText = "Hi " +borrowername+",\n\n\n To continue your application, we need some more information."+"\n\n\n"+documentNames+"\n\n\n Complete these items as soon as possible so we can continue reviewing your application."
-        return mainText;
+        if(emailTemplate){
+            str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);          
+        }
+        return str       
     }
 
     const { state, dispatch } = useContext(Store);
@@ -32,13 +36,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentRevi
 
     useEffect(() =>{     
         setEmailBody(setDeafultText());  
-    },[documentsName])
-
-    // useEffect(() =>{        
-    //     setTimeout(()=>{
-    //         saveEmailContent();
-    //     },3000)      
-    // },[])
+    },[emailTemplate])
 
   const editEmailBodyHandler = (e: any) => {
      let txt = e.target.value;
@@ -51,9 +49,19 @@ export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentRevi
    }
 
    const saveEmailContent = () => {
-    console.log('emailBody',emailBody)
        dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
    }
+
+   if(!emailTemplate){
+    return (
+        <div className="loader-widget loansnapshot">
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </div>
+      );
+   }
+  
    
     return (
         <div className="mcu-panel-body--content">

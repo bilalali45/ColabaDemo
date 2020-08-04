@@ -51,7 +51,15 @@ export class TemplateActions {
         }
     }
 
-  
+    static async fetchEmailTemplate(tenantId: string){
+        let url = Endpoints.TemplateManager.GET.getEmailTemplate(tenantId);
+        try {
+            let res = await http.get(url)
+            return res.data;
+        } catch (error) {
+          console.log(error);
+        }
+    }
 
     static async insertTemplate(tenantId: string, name: string) {
         fetchTemplateDocumentCancelToken.cancel();

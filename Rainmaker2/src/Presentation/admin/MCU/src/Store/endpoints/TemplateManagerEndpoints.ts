@@ -3,7 +3,8 @@ export class TemplateManagerEndpoints {
     static GET = {
         templates: (tenantId: string) => `/api/documentmanagement/template/gettemplates?tenantId=${tenantId}`,
         categoryDocuments: () => `/api/documentmanagement/template/GetCategoryDocument`,
-        templateDocuments: (id: string) => `/api/Documentmanagement/template/getdocuments?id=${id}`
+        templateDocuments: (id: string) => `/api/Documentmanagement/template/getdocuments?id=${id}`,
+        getEmailTemplate: (tenantId: string) => `/api/Documentmanagement/request/GetEmailTemplate?=${tenantId}`
     }
 
     static POST = {
