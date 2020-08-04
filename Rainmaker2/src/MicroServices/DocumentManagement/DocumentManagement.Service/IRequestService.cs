@@ -12,5 +12,6 @@ namespace DocumentManagement.Service
         Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft);
 
         Task<List<DraftDocumentDTO>> GetDraft(int loanApplicationId, int tenantId);
+        Task<string> GetEmailTemplate(int tenantId);
     }
 }
