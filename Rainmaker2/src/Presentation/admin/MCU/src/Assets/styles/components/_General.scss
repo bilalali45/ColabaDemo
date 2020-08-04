@@ -797,6 +797,9 @@ label.error{
             margin-bottom: 15px;
             color: color('heading');
         }
+        .modal-content{
+            max-width: 500px;
+        }
         .modal-header{
             border-bottom: none;
             padding-bottom: 0;
