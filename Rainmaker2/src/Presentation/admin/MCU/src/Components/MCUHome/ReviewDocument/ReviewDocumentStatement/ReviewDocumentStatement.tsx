@@ -3,35 +3,105 @@ import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
 
 import { DocumentSnipet } from "./DocumentSnipet/DocumentSnipet";
-import { NeedListDocumentType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
+import { DocumentFileType, FileType } from "../../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
+import { NeedList } from "../../../../Entities/Models/NeedList";
+import { DocumentStatus } from "../../../../Entities/Types/Types";
+
+const Footer = ({
+  acceptDocument,
+  rejectDocument,
+  setRejectPopup,
+  rejectModalOpen,
+  status,
+  acceptRejectEnabled
+}:
+  {
+    acceptDocument: () => void,
+    rejectDocument: () => void,
+    setRejectPopup: () => void,
+    rejectModalOpen: boolean,
+    status?: string,
+    acceptRejectEnabled: boolean
+  }) => {
+  const rejectAndCloseRejectPopUp = () => {
+    rejectDocument();
+
+    if (acceptRejectEnabled === false) {
+      setRejectPopup()
+    }
+  }
+
+  if (status === DocumentStatus.COMPLETED) {
+    return (
+      <footer className="document-statement--footer alert alert-success" role="alert">
+        This document has been accepted.
+      </footer>
+    )
+  } else if (status === DocumentStatus.IN_DRAFT) {
+    return (
+      <footer className="document-statement--footer alert alert-primary" role="alert">
+        This document has been saved as draft.
+      </footer>
+    )
+  } else if (rejectModalOpen) {
+    return (
+      <footer className="document-statement--footer">
+        <div className="row">
+          <div className="col-md-6">
+            <button className="btn btn-secondry btn-block" disabled={acceptRejectEnabled} onClick={setRejectPopup}>Cancel</button>
+          </div>
+          <div className="col-md-6">
+            <button className="btn btn-primary btn-block" disabled={acceptRejectEnabled} onClick={rejectAndCloseRejectPopUp} >Add to Draft</button>
+          </div>
+        </div>
+      </footer>
+    )
+  }
+
+  return status === DocumentStatus.PENDING_REVIEW ? (
+    <footer className="document-statement--footer">
+      <div className="row">
+        <div className="col-md-6">
+          <button className="btn btn-secondry btn-block" disabled={acceptRejectEnabled} onClick={setRejectPopup}>Reject Document</button>
+        </div>
+        <div className="col-md-6">
+          <button className="btn btn-primary btn-block" disabled={acceptRejectEnabled} onClick={acceptDocument}>Accept Document</button>
+        </div>
+      </div>
+    </footer>
+  ) : (null)
+}
 
 export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
   currentFileIndex,
-  loadingFile
+  acceptDocument,
+  rejectDocument,
+  documentViewLoading
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
   moveNextFile: (index: number, fileId: string, clientName: string, loading?: boolean) => void
-  currentDocument: NeedListDocumentType | null;
+  currentDocument: NeedList | null;
   currentFileIndex: number,
-  loadingFile: boolean
+  acceptDocument: () => void,
+  rejectDocument: (rejectMessage: string) => void,
+  documentViewLoading: boolean
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([]);
-  const [rejectPopup, setRejectPopup] = useState(false);
-  const [getAddToDraft, setAddToDraft] = useState(false);
-  const [getAcceptDoc, setAcceptDoc] = useState(false);
+  const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
+  const [rejectDocumentMessage, setRejectDocumentMessage] = useState(`Hi ${currentDocument!.userName}, please submit the bank state again`)
 
   const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
 
   const documentStateBodyRef = useRef<HTMLSelectElement>(null)
 
-  const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
+  const getDocumentFiles = useCallback(async (currentDocument: NeedList) => {
     try {
       setLoading(true)
 
@@ -63,12 +133,6 @@ export const ReviewDocumentStatement = ({
       alert('Something went wrong while getting files for document. Please try again.')
     }
   }, [setDocumentFiles])
-
-  useEffect(() => {
-    if (documentStateBodyRef.current) {
-      documentStateBodyRef.current.scrollTo(0, 0);
-    }
-  }, [rejectPopup]);
 
   const getMcuNameUpdated = (fileId: string): string => {
     const item = mcuNamesUpdated.find(item => item.fileId === fileId)
@@ -104,13 +168,12 @@ export const ReviewDocumentStatement = ({
 
   const checkDialog = () => {
     return {
-      overflow: rejectPopup ? 'hidden' : ''
+      overflow: rejectDocumentModal ? 'hidden' : ''
     }
   }
 
-  const addToDraft = () => {
-    setRejectPopup(false);
-    setAddToDraft(true);
+  const onChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRejectDocumentMessage(event.target.value.trim())
   }
 
   useEffect(() => {
@@ -141,9 +204,9 @@ export const ReviewDocumentStatement = ({
               {!!documentFiles && documentFiles.length ?
                 documentFiles.map((file, index) => <DocumentSnipet
                   key={index}
+                  id={currentDocument?.id!}
                   index={index}
                   moveNextFile={moveNextFile}
-                  id={currentDocument?.id!}
                   requestId={currentDocument?.requestId!}
                   docId={currentDocument?.docId!}
                   fileId={file.fileId}
@@ -157,55 +220,33 @@ export const ReviewDocumentStatement = ({
                 />) : (
                   <span>No file submitted yet</span>
                 )}
-              {rejectPopup &&
+              {
+                rejectDocumentModal &&
                 <div className="dialogbox">
                   <div className="dialogbox-backdrop"></div>
                   <div className="dialogbox-slideup">
                     <h2 className="h2">Request this document again.</h2>
                     <p>Let the borrower know what you need to mark it as complete</p>
-                    <textarea className="form-control" rows={6}>Hi James, please submit the bank state again</textarea>
+                    <textarea
+                      className="form-control"
+                      rows={6}
+                      value={rejectDocumentMessage}
+                      onChange={onChangeTextArea}
+                    />
                   </div>
-                </div>}
-
+                </div>
+              }
             </section>
-            {getAcceptDoc &&
-              <footer className="document-statement--footer alert alert-success" role="alert">
-                This document has been accepted.
-                </footer>
-            }
-            {!getAcceptDoc &&
-              <>
-                {getAddToDraft &&
-                  <footer className="document-statement--footer alert alert-primary" role="alert">
-                    This document has been saved as draft.
-                      </footer>
-                }
-                {!getAddToDraft &&
-                  <footer className="document-statement--footer">
-                    {rejectPopup &&
-                      <div className="row">
-                        <div className="col-md-6">
-                          <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(false) }}>Cancel</button>
-                        </div>
-                        <div className="col-md-6">
-                          <button className="btn btn-primary btn-block" onClick={() => { addToDraft() }}>Add to Draft</button>
-                        </div>
-                      </div>
-                    }
-                    {!rejectPopup &&
-                      <div className="row">
-                        <div className="col-md-6">
-                          <button className="btn btn-secondry btn-block" disabled onClick={() => { setRejectPopup(true) }}>Reject Document</button>
-                        </div>
-                        <div className="col-md-6">
-                          <button className="btn btn-primary btn-block" disabled onClick={() => { setAcceptDoc(true) }}>Accept Document</button>
-                        </div>
-                      </div>
-                    }
-                  </footer>
-                }
-              </>
-            }
+
+            <Footer
+              status={currentDocument?.status}
+              acceptDocument={acceptDocument}
+              rejectDocument={() => rejectDocument(rejectDocumentMessage)}
+              setRejectPopup={() => setRejectDocumentModal(prevState => !prevState)}
+              rejectModalOpen={rejectDocumentModal}
+              acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
+            />
+
           </div>
         )}
     </div>
