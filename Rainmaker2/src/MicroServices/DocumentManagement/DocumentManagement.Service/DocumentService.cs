@@ -264,7 +264,7 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName, string userName)
+        public async Task<bool> McuRename(string id, string requestId, string docId, string fileId, string newName, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -366,7 +366,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
+        public async Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 

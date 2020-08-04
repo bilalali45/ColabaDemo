@@ -21,14 +21,14 @@ namespace DocumentManagement.Service
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
         }
-        public async Task<bool> Rename(FileRenameModel model,int userProfileId)
+        public async Task<bool> Rename(FileRenameModel model,int userProfileId, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(model.id) },
-                { "tenantId", model.tenantId},
+                { "tenantId", tenantId},
                 { "userId", userProfileId}
             }, new BsonDocument()
             {
@@ -49,13 +49,13 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> Done(DoneModel model, int userProfileId)
+        public async Task<bool> Done(DoneModel model, int userProfileId, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(model.id) },
-                { "tenantId", model.tenantId},
+                { "tenantId", tenantId},
                 { "userId", userProfileId}
             }, new BsonDocument()
             {
@@ -84,7 +84,7 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task Order(FileOrderModel model, int userProfileId)
+        public async Task Order(FileOrderModel model, int userProfileId, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -93,7 +93,7 @@ namespace DocumentManagement.Service
                 UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
                 {
                     { "_id", BsonObjectId.Create(model.id) },
-                    { "tenantId", model.tenantId},
+                    { "tenantId", tenantId},
                     { "userId", userProfileId}
                 }, new BsonDocument()
                 {
@@ -258,7 +258,7 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress)
+        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -266,7 +266,7 @@ namespace DocumentManagement.Service
               @"{""$match"": {
 
                   ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
-                  ""tenantId"": " + model.tenantId + @",
+                  ""tenantId"": " + tenantId + @",
                   ""userId"": " + userProfileId + @"
                             }
                         }",

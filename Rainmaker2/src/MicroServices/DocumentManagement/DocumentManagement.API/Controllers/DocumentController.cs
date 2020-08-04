@@ -110,7 +110,7 @@ namespace DocumentManagement.API.Controllers
             if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
                 throw new Exception(message: "File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
-            var docQuery = await documentService.mcuRename(id: mcuRenameModel.id,
+            var docQuery = await documentService.McuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,
                                                            docId: mcuRenameModel.docId,
                                                            fileId: mcuRenameModel.fileId,
@@ -165,7 +165,7 @@ namespace DocumentManagement.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
-            var model = new FileViewModel
+            var model = new AdminFileViewModel
                         {
                             docId = view.docId,
                             fileId = view.fileId,
