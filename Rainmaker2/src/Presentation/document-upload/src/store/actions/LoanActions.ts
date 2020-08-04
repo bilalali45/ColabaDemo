@@ -41,18 +41,18 @@ export class LaonActions {
     }
   }
 
-  static async getLOPhoto(lOPhotoId: string = "") {
+  static async getLOPhoto(lOPhotoId: string = "", loanApplicationId: string) {
     try {
-      let res: any = await http.get(Endpoints.loan.GET.getLOPhoto(lOPhotoId));
+      let res: any = await http.get(Endpoints.loan.GET.getLOPhoto(lOPhotoId, loanApplicationId));
       return res.data;
     } catch (error) {
       console.log("error.response", error);
     }
   }
 
-  static async getFooter() {
+  static async getFooter(loanApplicationId: string) {
     try {
-      let res: any = await http.get(Endpoints.loan.GET.getFooter());
+      let res: any = await http.get(Endpoints.loan.GET.getFooter(loanApplicationId));
       return res.data;
     } catch (error) {
       console.log("error.response", error);

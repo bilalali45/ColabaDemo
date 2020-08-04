@@ -61,7 +61,8 @@ const App = () => {
   };
 
   const getFooterText = async () => {
-    let footerText = await LaonActions.getFooter();
+    let applicationId = Auth.getLoanAppliationId();
+    let footerText = await LaonActions.getFooter(applicationId);
     setFooterText(footerText);
   };
 

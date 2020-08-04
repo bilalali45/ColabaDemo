@@ -34,13 +34,14 @@ export const ContactUs = ({}) => {
   }, [LO]);
 
   const fetchLoanOfficer = async () => {
+    let loanApplicationId = Auth.getLoanAppliationId();
     let loanOfficer:
       | ContactUsModal
       | undefined = await LaonActions.getLoanOfficer(
       Auth.getLoanAppliationId()
     );
     if (loanOfficer) {
-      let src: any = await LaonActions.getLOPhoto(loanOfficer.photo);
+      let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, loanApplicationId);
       dispatch({
         type: LoanActionsType.FetchLoanOfficer,
         payload: loanOfficer,
