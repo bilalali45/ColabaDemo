@@ -30,10 +30,16 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
             var admindashboardController = new AdminDashboardController(mock.Object,Mock.Of<ILogger<AdminDashboardController>>());
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            admindashboardController.ControllerContext = context;
+
             GetDocuments moGetDocuments = new GetDocuments();
-            moGetDocuments.tenantId = 1;
             moGetDocuments.loanApplicationId = 1;
             moGetDocuments.pending = true;
             //Act
@@ -51,17 +57,22 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 };
+            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(true);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(true);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
+            controller.ControllerContext = context;
 
             //Act
-            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
+            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" });
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
@@ -72,15 +83,22 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 };
+            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(false);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(false);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
-            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
+            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1"});
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
@@ -321,7 +339,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d", tenantId = 1 };
+            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
@@ -329,7 +347,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel);
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
 
             //Assert
             Assert.True(result);
@@ -344,7 +362,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d", tenantId = 1 };
+            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
@@ -352,7 +370,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel);
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
             //Assert
             Assert.False(result);
         }

@@ -17,7 +17,6 @@ namespace DocumentManagement.Model
         public string userName { get; set; }
         public DateTime createdOn { get; set; }
         public string status { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public string message { get; set; }
         public List<RequestDocument> documents { get; set; }
     }

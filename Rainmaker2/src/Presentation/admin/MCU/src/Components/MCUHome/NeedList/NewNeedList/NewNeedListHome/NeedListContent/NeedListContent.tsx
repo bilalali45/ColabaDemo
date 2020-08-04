@@ -10,11 +10,13 @@ import { LocalDB } from "../../../../../../Utils/LocalDB";
 type NeedListContentType = {
   document: TemplateDocument | null;
   updateDocumentMessage: Function;
+  toggleShowReview: Function;
 };
 
 export const NeedListContent = ({
   document,
   updateDocumentMessage,
+  toggleShowReview,
 }: NeedListContentType) => {
   const [editTitleview, seteditTitleview] = useState<boolean>(false);
   const [docMessage, setDocMessage] = useState<string | undefined>("");
@@ -27,8 +29,6 @@ export const NeedListContent = ({
   useEffect(() => {
     setDocMessage(document?.docMessage);
   }, [document?.docId]);
-
-  console.log(document);
 
   if (!document) {
     return null;
@@ -56,13 +56,8 @@ export const NeedListContent = ({
               </>
             ) : (
               <>
-                <p>
-                  {" "}
-                  {document?.docName}{" "}
-                  <span className="editicon" onClick={toggleRename}>
-                    <img src={EditIcon} alt="" />
-                  </span>
-                </p>
+                <p> {document?.docName} </p>
+                {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
               </>
             )}
           </div>
@@ -76,7 +71,7 @@ export const NeedListContent = ({
       {renderTitleInputText()}
 
       <div className="mainbody">
-        <p>If you’d like, you can customize this email.</p>
+        <p>Document request message.</p>
         <div className="editer-wrap">
           <textarea
             rows={6}
@@ -90,11 +85,7 @@ export const NeedListContent = ({
       <div className="right-footer">
         <div className="btn-wrap">
           <button
-            onClick={() =>
-              history.push(
-                `/ReviewNeedListRequest/${LocalDB.getLoanAppliationId()}`
-              )
-            }
+            onClick={(e) => toggleShowReview(e)}
             className="btn btn-primary"
           >
             Review Request

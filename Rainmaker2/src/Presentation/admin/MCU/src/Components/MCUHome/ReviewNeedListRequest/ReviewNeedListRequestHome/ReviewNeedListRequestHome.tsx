@@ -3,51 +3,60 @@ import { SelectedNeedListReview } from './SelectedNeedListReview/SelectedNeedLis
 import { EmailContentReview } from './EmailContentReview/EmailContentReview'
 import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 import { Store } from '../../../../Store/Store'
+import { LocalDB } from '../../../../Utils/LocalDB'
+import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 
 
 
+type ReviewNeedListRequestHomeType = {
+    documentList: any[],
+    saveAsDraft: Function
+}
 
-
-export const ReviewNeedListRequestHome = () => {
-
-    const { state, dispatch } = useContext(Store);
-
-    const templateManager: any = state?.templateManager;
-    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewNeedListRequestHomeType) => {
 
     const [documentsName, setDocumentName] = useState<string>();
-    
+    const [emailTemplate, setEmailTemplate] = useState();
     const getDocumentsName = () => {
-        if(!selectedTemplateDocuments) return;
-        let names: string ="";
-     for(let i = 0; i < selectedTemplateDocuments.length; i++){
-         names += "-"+selectedTemplateDocuments[i].docName;
-         if(i != selectedTemplateDocuments.length-1)
-          names = names+",";
-     }
-     setDocumentName(names)
+        if (!documentList) return;
+        let names: string = "";
+        
+        for (let i = 0; i < documentList.length; i++) {
+            names += "-" + documentList[i].docName;
+            if (i != documentList.length - 1)
+                names = names + ",";
+        }
+        setDocumentName(names)
     }
-    
-    useEffect(() =>{
-        getDocumentsName();
-    },[selectedTemplateDocuments])
 
-console.log('Request Home')
+    const getEmailTemplate = async () => {
+        let tenantId = LocalDB.getTenantId();
+        let res: any = await TemplateActions.fetchEmailTemplate(tenantId);
+        setEmailTemplate(res);
+    }
+
+    useEffect(() => {
+        getDocumentsName();
+        getEmailTemplate();
+    }, [documentList])
+
     return (
         <div className="mcu-panel-body">
             <div className="row">
                 <div className="col-md-4 no-padding mcu-panel-body--col">
                     <SelectedNeedListReview
-                    documentList = {selectedTemplateDocuments}
-                    
+                        documentList={documentList}
+
                     />
                 </div>
                 <div className="col-md-8 no-padding mcu-panel-body--col">
                     <EmailContentReview
-                     documentsName = {documentsName}
+                        documentsName={documentsName}
+                        saveAsDraft={saveAsDraft}
+                        emailTemplate = {emailTemplate}
                     />
                 </div>
-            </div>            
+            </div>
         </div>
     )
 }

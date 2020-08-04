@@ -53,19 +53,30 @@ export class TemplateActions {
     } catch (error) {
       console.log(error);
     }
-  }
 
-  static async insertTemplate(name: string) {
-    fetchTemplateDocumentCancelToken.cancel();
-    let url = Endpoints.TemplateManager.POST.insertTemplate();
-    let template = {
-      name,
-    };
-    try {
-      let res = await http.post(url, template);
-      return res.data;
-    } catch (error) {
-      console.log(error);
+    static async fetchEmailTemplate(tenantId: string){
+        let url = Endpoints.TemplateManager.GET.getEmailTemplate(tenantId);
+        try {
+            let res = await http.get(url)
+            return res.data;
+        } catch (error) {
+          console.log(error);
+        }
+    }
+
+    static async insertTemplate(tenantId: string, name: string) {
+        fetchTemplateDocumentCancelToken.cancel();
+        let url = Endpoints.TemplateManager.POST.insertTemplate();
+        let template = {
+            tenantId: Number(tenantId),
+            name
+        }
+        try {
+            let res = await http.post(url, template);
+            return res.data;
+        } catch (error) {
+            console.log(error)
+        }
     }
   }
 
@@ -143,17 +154,17 @@ export class TemplateActions {
     } catch (error) {
       console.log(error);
     }
-  }
 
-  static async isDocumentDraft(loanApplicationId: string) {
-    let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(
-      loanApplicationId
-    );
-    try {
-      let res = await http.get(url);
-      return res.data;
-    } catch (error) {
-      console.log(error);
+    static async isDocumentDraft(loanApplicationId: string){
+     let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(loanApplicationId);
+     try {
+         let res : any = await http.get(url);
+         return {
+             requestId: res?.data?.requestId
+         };
+     } catch (error) {
+        console.log(error);
+     }
     }
   }
 }

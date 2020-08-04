@@ -17,7 +17,6 @@ type NeedListSelectType = {
   templateList: Template[];
   addTemplatesDocuments: Function;
   viewSaveDraft: Function;
-  isDraft: string;
   showButton: boolean;
 };
 
@@ -25,7 +24,6 @@ export const NeedListSelect = ({
   // templateList,
   addTemplatesDocuments,
   viewSaveDraft,
-  isDraft,
   showButton = false,
 }: NeedListSelectType) => {
   const [idArray, setIdArray] = useState<String[]>([]);
@@ -40,10 +38,11 @@ export const NeedListSelect = ({
   const selectedIds: string[] = needListManager?.templateIds || [];
 
   useEffect(() => {
+    console.log("in here you know sdf", templates);
     if (!templates) {
       fetchTemplatesList();
     }
-  }, []);
+  }, [!templates]);
 
   useEffect(() => {
     setIdArray(selectedIds || []);
@@ -157,8 +156,20 @@ export const NeedListSelect = ({
     //   addTemplatesDocuments(idArray);
     // }} className="btn btn-primary btn-block">Add Selected</button>
 
-    if (idArray.length > 0) {
-      if (showButton) {
+    if (!showButton) {
+      return (
+        <button
+          onClick={() => {
+            setShow(false);
+            addTemplatesDocuments(idArray);
+          }}
+          className="btn btn-primary btn-block"
+        >
+          Add Selected
+        </button>
+      );
+    } else {
+      if (idArray.length > 0) {
         return (
           <button
             onClick={() => {
@@ -171,20 +182,8 @@ export const NeedListSelect = ({
           </button>
         );
       } else {
-        return (
-          <button
-            onClick={() => {
-              setShow(false);
-              addTemplatesDocuments(idArray);
-            }}
-            className="btn btn-primary btn-block"
-          >
-            Add Selected
-          </button>
-        );
+        return <Link to="/newNeedList">Start from new list</Link>;
       }
-    } else {
-      return <Link to="/newNeedList">Start from new list</Link>;
     }
   };
 
