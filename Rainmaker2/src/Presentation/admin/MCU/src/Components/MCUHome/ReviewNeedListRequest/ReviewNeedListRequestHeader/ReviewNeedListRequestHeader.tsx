@@ -23,7 +23,7 @@ export const ReviewNeedListRequestHeader = ({saveAsDraft} : NewNeedListHeaderTyp
         <div id="ReviewNeedListRequestHeader" data-component="ReviewNeedListRequestHeader" className="mcu-panel-header">
            <div className="row">
                 <div className="mcu-panel-header--left col-md-8">
-                    <button onClick={backHandler} className="btn btn-sm btn-back"><em className="zmdi zmdi-arrow-left"></em> Back</button>
+                    {!window.location.pathname.includes('/newNeedList') && <button onClick={backHandler} className="btn btn-sm btn-back"><em className="zmdi zmdi-arrow-left"></em> Back</button>}
                 </div>
 
                 <div className="mcu-panel-header--right col-md-4">

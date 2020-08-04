@@ -39,10 +39,11 @@ export const NeedListSelect = ({
 
 
   useEffect(() => {
+    console.log('in here you know sdf', templates);
     if (!templates) {
       fetchTemplatesList();
     }
-  }, [])
+  }, [!templates])
 
   useEffect(() => {
     setIdArray(selectedIds || []);
@@ -133,22 +134,25 @@ export const NeedListSelect = ({
     //   addTemplatesDocuments(idArray);
     // }} className="btn btn-primary btn-block">Add Selected</button>
 
-    if (idArray.length > 0) {
-      if (showButton) {
+    if (!showButton) {
+      return <button onClick={() => {
+
+        setShow(false);
+        addTemplatesDocuments(idArray);
+      }} className="btn btn-primary btn-block">Add Selected</button>
+    } else {
+
+      if (idArray.length > 0) {
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
         }} className="btn btn-primary btn-block">Continue with Template</button>
-      } else {
-        return <button onClick={() => {
 
-          setShow(false);
-          addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block">Add Selected</button>
+      } else {
+        return <Link to="/newNeedList" >Start from new list</Link>
       }
-    } else {
-      return <Link to="/newNeedList" >Start from new list</Link>
     }
+
   }
 
 

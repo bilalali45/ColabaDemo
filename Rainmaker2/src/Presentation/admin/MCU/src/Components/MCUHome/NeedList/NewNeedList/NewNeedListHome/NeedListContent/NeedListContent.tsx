@@ -8,10 +8,11 @@ import { useHistory } from "react-router-dom";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
-    updateDocumentMessage: Function
+    updateDocumentMessage: Function,
+    toggleShowReview: Function
 }
 
-export const NeedListContent = ({document, updateDocumentMessage} : NeedListContentType) => {
+export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview }: NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [docMessage, setDocMessage] = useState<string | undefined>('');
     const toggleRename = () => {
@@ -26,13 +27,13 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
 
     console.log(document);
 
-    if(!document) {
+    if (!document) {
         return null;
     }
 
     const renderTitleInputText = () => {
 
-        if(!document?.docName) {
+        if (!document?.docName) {
             return null;
         }
 
@@ -51,7 +52,8 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
                                 </p>
                             </>
                             : <>
-                                <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p>
+                                <p> {document?.docName} </p>
+                                {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
                             </>}
                     </div>
                 </div>
@@ -66,7 +68,7 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
 
 
             <div className="mainbody">
-                <p>If you’d like, you can customize this email.</p>
+                <p>Document request message.</p>
                 <div className="editer-wrap">
                     <textarea rows={6} className="editer" value={document?.docMessage || ''} onChange={(e) => updateDocumentMessage(e.target.value, document)}></textarea>
                 </div>
@@ -75,7 +77,7 @@ export const NeedListContent = ({document, updateDocumentMessage} : NeedListCont
 
             <div className="right-footer">
                 <div className="btn-wrap">
-                    <button onClick={() => history.push('/ReviewNeedListRequest')} className="btn btn-primary">Review Request</button>
+                    <button onClick={(e) => toggleShowReview(e)} className="btn btn-primary">Review Request</button>
 
                 </div>
             </div>
