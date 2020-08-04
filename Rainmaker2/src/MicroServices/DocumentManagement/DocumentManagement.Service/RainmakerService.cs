@@ -102,5 +102,29 @@ namespace DocumentManagement.Service
                 }
             }
         }
+        public async Task<LoanApplicationModel> GetByLoanApplicationId(int loanApplicationId,
+            IEnumerable<string> authHeader)
+        {
+            var content = new
+            {
+                loanApplicationId
+            };
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/LoanApplication/GetByLoanApplicationId"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content: content.ToJson(),
+                    encoding: Encoding.UTF8,
+                    mediaType: "application/json")
+            };
+            request.Headers.Add("Authorization", authHeader);
+            var resp = await _httpClient.SendAsync(request);
+            if (resp.IsSuccessStatusCode)
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<LoanApplicationModel>(await resp.Content.ReadAsStringAsync());
+            }
+            throw new Exception("Unable to get loan info");
+        }
     }
 }

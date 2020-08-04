@@ -8,6 +8,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
+    public class LoanApplicationModel
+    {
+        public int? OpportunityId { get; set; }
+        public int? LoanRequestId { get; set; }
+        public int? BusinessUnitId { get; set; }
+    }
     public enum ActivityForType
     {
         LoanApplicationDocumentRequestActivity = 19,

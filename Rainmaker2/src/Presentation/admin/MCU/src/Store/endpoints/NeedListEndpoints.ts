@@ -32,7 +32,9 @@ export class NeedListEndpoints {
 
   static POST = {
     documents: {
-      renameMCU: () => '/api/documentmanagement/document/mcurename'
+      renameMCU: () => '/api/documentmanagement/document/mcurename',
+      accept: () => '/api/Documentmanagement/document/AcceptDocument',
+      reject: () => '/api/Documentmanagement/document/RejectDocument'
     }
   };
 
