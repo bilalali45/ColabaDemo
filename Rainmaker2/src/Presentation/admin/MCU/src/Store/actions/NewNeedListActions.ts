@@ -59,7 +59,7 @@ export class NewNeedListActions {
                             displayName: d.docName,
                             message: d.docMessage,
                             docId: d.docId,
-                            requestId: null
+                            requestId: d.requestId
                         }
                     })
                 }

@@ -31,7 +31,6 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
 
     const filterUsedDocs = (templateDocs: Document[]) => {
         return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => {
-            console.log(cd, td);
             if(!cd?.docId) {
                 if(cd?.docType?.toLowerCase() === td?.docName?.toLowerCase()) {
                     return cd;

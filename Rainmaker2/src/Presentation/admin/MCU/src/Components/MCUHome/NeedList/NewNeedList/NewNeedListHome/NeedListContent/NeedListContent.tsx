@@ -25,8 +25,6 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
         setDocMessage(document?.docMessage);
     }, [document?.docId]);
 
-    console.log(document);
-
     if (!document) {
         return null;
     }

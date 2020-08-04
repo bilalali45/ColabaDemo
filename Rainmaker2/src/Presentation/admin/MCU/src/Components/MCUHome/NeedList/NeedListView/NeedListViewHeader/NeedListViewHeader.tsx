@@ -15,7 +15,7 @@ type headerProps = {
     viewSaveDraft: Function;
 }
 
-export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft,  viewSaveDraft }: headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft }: headerProps) => {
     const [toggle, setToggle] = useState(true);
 
 
@@ -32,16 +32,14 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 <div className="btn-group">
 
                     {/* {displayAddButton()} */}
-                    {isDocumentDraft?.requestId !== null ?
-
-                        <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>
-                        
-                        : <NeedListSelect
+                    {!isDocumentDraft || isDocumentDraft?.requestId === null ?
+                        <NeedListSelect
                             showButton={true}
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
-                        />}
+                        /> :
+                        <button onClick={() => viewSaveDraft()} className="btn btn-success btn-sm">View Save Draft</button>}
                 </div>
             </div>
             <div className="need-list-view-header--right">

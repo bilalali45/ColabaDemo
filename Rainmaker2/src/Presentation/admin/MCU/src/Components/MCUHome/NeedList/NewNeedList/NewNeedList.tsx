@@ -27,6 +27,7 @@ export const NewNeedList = () => {
 
     const templateManager: any = state?.templateManager;
     const needListManager: any = state?.needListManager;
+    const isDocumentDraft = templateManager?.isDocumentDraft;
     const templateIds = needListManager?.templateIds || [];
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
@@ -41,6 +42,12 @@ export const NewNeedList = () => {
     const location = useLocation();
 
     useEffect(() => {
+        return () => {
+            clearOldData()
+        }
+    }, []);
+
+    useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
         }
@@ -49,7 +56,20 @@ export const NewNeedList = () => {
         if (selectedTemplateDocuments?.length) {
             setCurrentDocument(selectedTemplateDocuments[0]);
         }
+
+
     }, [selectedTemplateDocuments?.length, templateIds?.length]);
+
+    const clearOldData = () => {
+        setCurrentDocument(null);
+        setAllDocuments([]);
+        setTemplateName('');
+        dispatch({ type: TemplateActionsType.SetTemplates, payload: null })
+        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: null });
+        dispatch({ type: TemplateActionsType.SetEmailContent, payload: null })
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
+        dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
+    }
 
 
     useEffect(() => {
@@ -83,7 +103,7 @@ export const NewNeedList = () => {
     }
 
     const fetchDraftDocuments = async () => {
-        let documents: any = await NewNeedListActions.getDraft(LocalDB.getLoanAppliationId(), LocalDB.getTenantId())
+        let documents: any = await NewNeedListActions.getDraft(LocalDB.getLoanAppliationId(), LocalDB.getTenantId());
         const data = documents?.map((obj: any) => ({ ...obj, isRejected: false }))
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
     }
@@ -114,8 +134,12 @@ export const NewNeedList = () => {
     }
 
     const addDocumentToList = (doc: Document, type: string) => {
-        let newDoc: TemplateDocument = {
-            docId: doc?.docTypeId,
+
+        console.log('doc', doc);
+        let newDoc: any = {
+            docId: null,
+            requestId: null,
+            typeId: doc.docTypeId,
             docName: doc?.docType,
             docMessage: doc?.docMessage,
         }
@@ -124,9 +148,7 @@ export const NewNeedList = () => {
         setAllDocuments(newDocs);
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
         setCurrentDocument(newDoc);
-        setTimeout(() => {
-            console.log('in here', newDoc, currentDocument);
-        }, 4000);
+
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
