@@ -129,16 +129,18 @@ export const NewNeedList = () => {
         }, 4000);
     }
 
-    const saveAsDraft = () => {
+    const saveAsDraft = async (toDraft: boolean) => {
         let emailText = 'testing is good!!' // from store
-        NewNeedListActions.saveNeedList(
+        await NewNeedListActions.saveNeedList(
             LocalDB.getLoanAppliationId(),
             LocalDB.getTenantId(),
-            false,
+            toDraft,
             emailText,
             allDocuments
         )
         console.log(allDocuments);
+        history.push('/needList');
+
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
@@ -161,7 +163,7 @@ export const NewNeedList = () => {
         let id = await NewNeedListActions.saveAsTemplate(LocalDB.getTenantId(), templateName, allDocuments);
         dispatch({ type: TemplateActionsType.SetTemplates, payload: null });
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: [id] });
-        setTemplateName('')
+        setTemplateName('');
     }
 
     const removeDocumentFromList = async (docName: string) => {
@@ -180,10 +182,13 @@ export const NewNeedList = () => {
             {/* <NewNeedListHeader
                 saveAsDraft={saveAsDraft} /> */}
             <ReviewNeedListRequestHeader
-                saveAsDraft={saveAsDraft} />
+                saveAsDraft={saveAsDraft}
+                showReview={showReview}
+                toggleShowReview={toggleShowReview} />
             {showReview ?
                 <ReviewNeedListRequestHome
                     documentList={allDocuments}
+                    saveAsDraft={saveAsDraft}
                 />
                 :
                 <NewNeedListHome
@@ -199,8 +204,8 @@ export const NewNeedList = () => {
                     saveAsTemplate={saveAsTemplate}
                     templateName={templateName}
                     changeTemplateName={changeTemplateName}
-                    removeDocumentFromList={removeDocumentFromList} 
-                    toggleShowReview={toggleShowReview}/>}
+                    removeDocumentFromList={removeDocumentFromList}
+                    toggleShowReview={toggleShowReview} />}
         </main>
     )
 }

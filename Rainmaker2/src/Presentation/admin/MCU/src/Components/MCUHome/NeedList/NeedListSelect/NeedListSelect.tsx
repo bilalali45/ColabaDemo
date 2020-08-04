@@ -14,7 +14,6 @@ type NeedListSelectType = {
   templateList: Template[],
   addTemplatesDocuments: Function,
   viewSaveDraft: Function,
-  isDraft: string,
   showButton: boolean
 }
 
@@ -22,7 +21,6 @@ export const NeedListSelect = ({
   // templateList,
   addTemplatesDocuments,
   viewSaveDraft,
-  isDraft,
   showButton = false }: NeedListSelectType) => {
 
   const [idArray, setIdArray] = useState<String[]>([]);

@@ -195,10 +195,10 @@ export const ReviewDocumentStatement = ({
                     {!rejectPopup &&
                       <div className="row">
                         <div className="col-md-6">
-                          <button className="btn btn-secondry btn-block" disabled onClick={() => { setRejectPopup(true) }}>Reject Document</button>
+                          <button className="btn btn-secondry btn-block" onClick={() => { setRejectPopup(true) }}>Reject Document</button>
                         </div>
                         <div className="col-md-6">
-                          <button className="btn btn-primary btn-block" disabled onClick={() => { setAcceptDoc(true) }}>Accept Document</button>
+                          <button className="btn btn-primary btn-block" onClick={() => { setAcceptDoc(true) }}>Accept Document</button>
                         </div>
                       </div>
                     }

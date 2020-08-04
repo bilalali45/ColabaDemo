@@ -165,7 +165,6 @@ export const NeedListRequest = ({
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
-                            isDraft={isDraft}
                         />
                         <a
                             onClick={toggleSaveAsTemplate}

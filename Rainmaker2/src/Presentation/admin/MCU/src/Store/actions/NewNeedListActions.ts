@@ -42,10 +42,10 @@ export class NewNeedListActions {
     static async saveNeedList(
         loanApplicationId: string,
         tenantId: string,
-        isDraf: boolean,
+        isDraft: boolean,
         emailText: string,
         documents: any[]) {
-        let url = Endpoints.NewNeedList.POST.save(false);
+        let url = Endpoints.NewNeedList.POST.save(isDraft);
 
         let requestData = {
             tenantId: parseInt(tenantId),

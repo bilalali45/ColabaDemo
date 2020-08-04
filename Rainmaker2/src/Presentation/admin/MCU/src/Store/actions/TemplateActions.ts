@@ -139,8 +139,10 @@ export class TemplateActions {
     static async isDocumentDraft(loanApplicationId: string){
      let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(loanApplicationId);
      try {
-         let res = await http.get(url);
-         return res.data;
+         let res : any = await http.get(url);
+         return {
+             requestId: res?.data?.requestId
+         };
      } catch (error) {
         console.log(error);
      }
