@@ -13,8 +13,7 @@ export const NeedListRequestItem = ({document, changeDocument, isSelected}: Need
     const [toRemoveList, setRemoveList] = useState<boolean>(false);
     //const [getDelete, setDelete] = useState<boolean>(false);
     return (
-         <li>
-           
+         <li>           
             <div className="l-wrap" onClick={() => changeDocument(document)}>
                 {!toRemoveList ?
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
