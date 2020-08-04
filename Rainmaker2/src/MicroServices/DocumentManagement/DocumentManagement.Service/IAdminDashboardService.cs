@@ -9,7 +9,7 @@ namespace DocumentManagement.Service
    public interface IAdminDashboardService
     {
         Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending);
-        Task<bool> Delete(AdminDeleteModel model);
+        Task<bool> Delete(AdminDeleteModel model, int tenantId);
         Task<RequestIdQuery> IsDocumentDraft(int loanApplicationId, int userId);
     }
 }

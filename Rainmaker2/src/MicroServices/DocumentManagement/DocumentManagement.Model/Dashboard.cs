@@ -125,10 +125,6 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public string requestId { get; set; }
-
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
 
     public class FileViewDTO
@@ -197,10 +193,6 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
 
         [FromQuery(Name = "pending")]
         [Required(ErrorMessage = "Field Can't be empty")]
