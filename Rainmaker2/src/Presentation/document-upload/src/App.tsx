@@ -5,6 +5,7 @@ import {
   Switch,
   Route,
   useHistory,
+  useLocation,
 } from "react-router-dom";
 import { Home } from "./components/Home/Home";
 import { StoreProvider } from "./store/store";
@@ -37,15 +38,9 @@ const App = () => {
   const tokenData: any = UserActions.getUserInfo();
   const displayName = " " + tokenData?.FirstName + " " + tokenData?.LastName;
   const history = useHistory();
-
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
     authenticate();
-    ParamsService.storeParams([
-      "loanApplicationId",
-      "tenantId",
-      "businessUnitId",
-    ]);
     // component unmount
     return () => {
       Auth.removeAuth();
@@ -66,15 +61,7 @@ const App = () => {
   };
 
   const getFooterText = async () => {
-    const tenantId = Auth.getTenantId();
-    const businessUnitId = Auth.getBusinessUnitId();
-    console.log(
-      "getFooterText TenantID",
-      tenantId,
-      "Business Unit id",
-      businessUnitId
-    );
-    let footerText = await LaonActions.getFooter(tenantId, businessUnitId);
+    let footerText = await LaonActions.getFooter();
     setFooterText(footerText);
   };
 
@@ -122,7 +109,11 @@ const App = () => {
         />
         <Router basename="/LoanPortal">
           <Switch>
-            <Authorized path="/" component={Home} />
+            <Authorized
+              path="/:navigation/:loanApplicationId"
+              component={Home}
+            />
+            <Authorized path="/:loanApplicationId" component={Home} />
           </Switch>
         </Router>
         <RainsoftRcFooter content={footerText} />

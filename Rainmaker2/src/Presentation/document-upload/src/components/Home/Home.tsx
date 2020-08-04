@@ -5,6 +5,7 @@ import {
   useLocation,
   useHistory,
   Redirect,
+  useParams,
 } from "react-router-dom";
 import { Activity } from "./Activity/Activity";
 import { UploadedDocuments } from "./UploadedDocuments/UploadedDocuments";
@@ -17,12 +18,20 @@ import { DocumentsStatus } from "./Activity/DocumentsStatus/DocumentsStatus";
 import { DocumentRequest } from "./DocumentRequest/DocumentRequest";
 import ImageAssets from "../../utils/image_assets/ImageAssets";
 import { PageNotFound } from "../../shared/Errors/PageNotFound";
-import { debug } from "console";
 import { Authorized } from "../../shared/Components/Authorized/Authorized";
-
-const httpClient = new Http();
+import { ParamsService } from "../../utils/ParamsService";
 
 export class Home extends Component {
+  componentDidMount() {
+    this.setParams(this.props);
+  }
+
+  setParams = (props: any) => {
+    console.log("Props", props);
+    const { loanApplicationId } = props.match.params;
+    ParamsService.storeParams(loanApplicationId);
+  };
+
   render() {
     return (
       <div>
@@ -32,14 +41,21 @@ export class Home extends Component {
         <main className="page-content">
           <div className="container">
             <Switch>
-              <Redirect exact from={"/"} to={"/activity"} />
-              <Authorized path="/activity" component={Activity} />
+              <Redirect
+                exact
+                from={"/:loanApplicationId"}
+                to={"/activity/:loanApplicationId"}
+              />
               <Authorized
-                path="/documentsRequest"
+                path="/activity/:loanApplicationId"
+                component={Activity}
+              />
+              <Authorized
+                path="/documentsRequest/:loanApplicationId"
                 component={DocumentRequest}
               />
               <Authorized
-                path="/uploadedDocuments"
+                path="/uploadedDocuments/:loanApplicationId"
                 component={UploadedDocuments}
               />
               <Route path="/404" component={PageNotFound} />

@@ -1,12 +1,11 @@
-
-import { Http } from 'rainsoft-js';
+import { Http } from "rainsoft-js";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { Document } from "../../entities/Models/Document";
 import { DocumentsActionType } from "../reducers/documentReducer";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
-import { ApplicationEnv } from '../../utils/helpers/AppEnv';
+import { ApplicationEnv } from "../../utils/helpers/AppEnv";
 
 //const http = new Http();
 const http = new Http();
@@ -16,8 +15,7 @@ export class DocumentUploadActions {
     currentSelected: DocumentRequest,
     file: Document,
     dispatchProgress: Function,
-    loanApplicationId: string,
-    tenentId: string
+    loanApplicationId: string
   ) {
     try {
       let res = await http.fetch(
@@ -70,7 +68,6 @@ export class DocumentUploadActions {
     }
 
     data.append("order", JSON.stringify(file.documentOrder));
-    data.append("tenantId", Auth.getTenantId());
 
     return data;
   }
@@ -118,9 +115,9 @@ export class DocumentUploadActions {
       allSelectedFiles.push(selectedFile);
       // }
 
-      if(counter === 0) {
+      if (counter === 0) {
         selectedFile.focused = true;
-      }else {
+      } else {
         selectedFile.focused = false;
       }
       counter++;

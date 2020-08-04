@@ -18,7 +18,6 @@ interface DocumentViewProps {
   id: string;
   requestId: string;
   docId: string;
-  tenantId?: string;
   blobData?: any | null;
   submittedDocumentCallBack?: Function;
   fileId?: string;
@@ -42,7 +41,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   clientName,
   hideViewer,
   file,
-  tenantId,
   blobData,
   submittedDocumentCallBack,
   clearBlob,
@@ -67,10 +65,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
       if (submittedDocumentCallBack) {
-        submittedDocumentCallBack(id, requestId, docId, fileId, tenantId);
+        submittedDocumentCallBack(id, requestId, docId, fileId);
       }
-
-      //const response = (await DocumentActions.getSubmittedDocumentForView({id,requestId,docId,fileId,tenantId: tenantId,})) as any;
 
       // URL required to view the document
     } catch (error) {
