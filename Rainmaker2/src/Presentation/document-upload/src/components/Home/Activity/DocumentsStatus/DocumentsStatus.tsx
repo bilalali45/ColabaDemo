@@ -28,7 +28,8 @@ export const DocumentsStatus = () => {
   }, []);
 
   const getStarted = () => {
-    history.push("/documentsRequest");
+    let loanApplicationId = Auth.getLoanAppliationId();
+    history.push(`/documentsRequest/${loanApplicationId}`);
   };
 
   const fetchPendingDocs = async () => {

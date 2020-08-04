@@ -7,10 +7,11 @@ import { TextArea } from '../../../../../Shared/components/TextArea';
 
 type emailContentReviewProps = {
     documentsName: string | undefined;
+    saveAsDraft: Function
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName}:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentReviewProps) => {
     //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
     console.log('documentsName', documentsName)
     const setDeafultText = () => {
@@ -71,7 +72,7 @@ export const EmailContentReview = ({documentsName}:emailContentReviewProps) => {
             </div>
 
             <footer className="mcu-panel-footer text-right">
-                <button className="btn btn-primary">Send Request</button>
+                <button onClick={() => saveAsDraft(false)} className="btn btn-primary">Send Request</button>
             </footer>
         </div>
     )

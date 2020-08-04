@@ -6,11 +6,11 @@ export class LoanEndpoints {
       `/api/Rainmaker/LoanApplication/GetLoanInfo?loanApplicationId=${Number(
         loanApplicationId
       )}`,
-    getLOPhoto: (lOPhotoId?: string) =>
-      `/api/Rainmaker/LoanApplication/GetPhoto?photo=${lOPhotoId}`,
+    getLOPhoto: (lOPhotoId?: string, loanApplicationId?: string) =>
+      `/api/Rainmaker/LoanApplication/GetPhoto?photo=${lOPhotoId}&loanApplicationId=${loanApplicationId}`,
     loanProgressStatus: (loanApplicationId: string) =>
       `/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=${loanApplicationId}`,
-    getFooter: () => `/api/Documentmanagement/dashboard/GetFooterText`,
+    getFooter: (loanApplicationId: string) => `/api/Documentmanagement/dashboard/GetFooterText?loanApplicationId=${loanApplicationId}`,
   };
 
   static POST = {};

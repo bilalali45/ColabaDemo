@@ -19,7 +19,6 @@ export const NeedListView = () => {
     const [sortStatusArrow, setStatusSortArrow] = useState('desc')
     const [docSort, setDocSort] = useState(false);
     const [statusSort, setStatusSort] = useState(false);
-    const [isDraft, setIsDraft] = useState('');
 
     const { state, dispatch } = useContext(Store);
     const history = useHistory();
@@ -28,13 +27,14 @@ export const NeedListView = () => {
     const needListData = needListManager?.needList;
     const templateManager: any = state.templateManager;
     const templates: Template[] = templateManager?.templates;
+    const isDocumentDraft = templateManager?.isDocumentDraft;
     const currentTemplate: Template[] = templateManager?.currentTemplate;
     const isDraftStore: boolean = needListManager?.isDraft;
     const templateIds: boolean = needListManager?.templateIds;
 
     useEffect(() => {
         fetchNeedList(true, true);
-        //isDocumentDraft(LocalDB.getLoanAppliationId());
+        checkIsDocumentDraft(LocalDB.getLoanAppliationId());
     }, []);
 
     useEffect(() => {
@@ -54,15 +54,17 @@ export const NeedListView = () => {
             }
         }
     }
-    const isDocumentDraft = async (id: string) =>{
-     let result: any = await TemplateActions.isDocumentDraft(id);
-     if(result.requestId){
-        setIsDraft('true')
-     }else{
-        setIsDraft('false')
-     }
-    } 
-   
+    const checkIsDocumentDraft = async (id: string) => {
+        let res: any = await TemplateActions.isDocumentDraft(id);
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
+
+        //  if(result?.requestId){
+        //     setIsDraft('true')
+        //  }else{
+        //     setIsDraft('false')
+        //  }
+    }
+
 
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
@@ -72,8 +74,8 @@ export const NeedListView = () => {
             if (res === 200) {
                 fetchNeedList(toggle, true).then((data) => {
                     let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
-                    dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })                     
-                    })
+                    dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
+                })
             }
         }
     }
@@ -83,13 +85,13 @@ export const NeedListView = () => {
             fetchNeedList(!pending, true).then((data) => {
                 let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
                 dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
-                setToggle(!toggle)              
+                setToggle(!toggle)
             })
         } else {
             fetchNeedList(!pending, true).then((data) => {
                 let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
                 dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
-                setToggle(!toggle)            
+                setToggle(!toggle)
             })
         }
     }
@@ -100,48 +102,48 @@ export const NeedListView = () => {
 
     const sortDocumentTitleHandler = () => {
         setDocSort(true);
-        if (sortArrow === 'asc') {         
+        if (sortArrow === 'asc') {
             let sortedList = sortList(needListData, true, false, statusSort, sortStatusArrow === 'asc' ? true : false);
             dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
             setSortArrow('desc')
         } else {
-            setSortArrow('asc')       
+            setSortArrow('asc')
             let sortedList = sortList(needListData, true, true, statusSort, sortStatusArrow === 'asc' ? true : false);
             dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
-        }    
+        }
     }
 
     const sortStatusTitleHandler = () => {
         setStatusSort(true);
-        if (sortStatusArrow === 'asc') {          
+        if (sortStatusArrow === 'asc') {
             let sortedList = sortList(needListData, docSort, sortArrow === 'asc' ? true : false, true, false);
             dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
             setStatusSortArrow('desc')
         } else {
-            setStatusSortArrow('asc')         
+            setStatusSortArrow('asc')
             let sortedList = sortList(needListData, docSort, sortArrow === 'asc' ? true : false, true, true);
             dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
-        }     
+        }
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
-       dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray })
+        dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray })
         history.push('/newNeedList');
     }
 
-    const viewSaveDraftHandler = () =>{
-       dispatch({type: NeedListActionsType.SetIsDraft, payload: true });
-       history.push('/newNeedList');
+    const viewSaveDraftHandler = () => {
+        dispatch({ type: NeedListActionsType.SetIsDraft, payload: true });
+        history.push('/newNeedList');
     }
 
     return (
         <div className="need-list-view">
             <NeedListViewHeader
                 toggleCallBack={togglerHandler}
-                templateList = {templates}
-                addTemplatesDocuments = {addTemplatesDocuments}
-                isDraft = {isDraft}
-                viewSaveDraft = {viewSaveDraftHandler}
+                templateList={templates}
+                addTemplatesDocuments={addTemplatesDocuments}
+                isDocumentDraft={isDocumentDraft}
+                viewSaveDraft={viewSaveDraftHandler}
             />
             <NeedListTable
                 needList={needListData}
@@ -150,8 +152,8 @@ export const NeedListView = () => {
                 documentTitleArrow={sortArrow}
                 sortStatusTitle={sortStatusTitleHandler}
                 statusTitleArrow={sortStatusArrow}
-                documentSortClick = {docSort}
-                statusSortClick = {statusSort}
+                documentSortClick={docSort}
+                statusSortClick={statusSort}
             />
         </div>
     )
