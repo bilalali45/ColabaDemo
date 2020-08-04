@@ -6,13 +6,13 @@ import { TextArea } from '../../../../../Shared/components/TextArea';
 
 
 type emailContentReviewProps = {
-    documentList: TemplateDocument[];
     documentsName: string | undefined;
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentList, documentsName}:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName}:emailContentReviewProps) => {
     //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
+    console.log('documentsName', documentsName)
     const setDeafultText = () => {
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
         let mainText = "Hi " +borrowername+",\n\n\n To continue your application, we need some more information."+"\n\n\n"+documentNames+"\n\n\n Complete these items as soon as possible so we can continue reviewing your application."
@@ -29,15 +29,15 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
    
 
-    useEffect(() =>{        
+    useEffect(() =>{     
         setEmailBody(setDeafultText());  
     },[documentsName])
 
-    useEffect(() =>{        
-        setTimeout(()=>{
-            saveEmailContent();
-        },1000)      
-    })
+    // useEffect(() =>{        
+    //     setTimeout(()=>{
+    //         saveEmailContent();
+    //     },3000)      
+    // },[])
 
   const editEmailBodyHandler = (e: any) => {
      let txt = e.target.value;
@@ -50,15 +50,17 @@ export const EmailContentReview = ({documentList, documentsName}:emailContentRev
    }
 
    const saveEmailContent = () => {
+    console.log('emailBody',emailBody)
        dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
    }
-
+   
     return (
         <div className="mcu-panel-body--content">
             <div className="mcu-panel-body padding">
          <h2 className="h2">Review email to {borrowername}</h2>
                 <p>If you'd like, you can customize this email.</p>
                 <TextArea
+                 focus = {true}
                  textAreaValue = {emailBody} 
                  onBlurHandler = {saveEmailContent}
                  onChangeHandler = {editEmailBodyHandler}
