@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { SelectedNeedListReview } from './SelectedNeedListReview/SelectedNeedListReview'
 import { EmailContentReview } from './EmailContentReview/EmailContentReview'
 import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
+import { Store } from '../../../../Store/Store'
 
 
-type needListRequestReviewProps = {
-    documentList: TemplateDocument[];
-}
 
 
-export const ReviewNeedListRequestHome = ({documentList} : needListRequestReviewProps) => {
+
+export const ReviewNeedListRequestHome = () => {
+
+    const { state, dispatch } = useContext(Store);
+
+    const templateManager: any = state?.templateManager;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+
     const [documentsName, setDocumentName] = useState<string>();
     
     const getDocumentsName = () => {
-        if(!documentList) return;
+        if(!selectedTemplateDocuments) return;
         let names: string ="";
-     for(let i = 0; i < documentList.length; i++){
-         names = "-"+documentList[i].docName;
-         if(i != documentList.length-1)
+     for(let i = 0; i < selectedTemplateDocuments.length; i++){
+         names += "-"+selectedTemplateDocuments[i].docName;
+         if(i != selectedTemplateDocuments.length-1)
           names = names+",";
      }
      setDocumentName(names)
@@ -25,20 +30,20 @@ export const ReviewNeedListRequestHome = ({documentList} : needListRequestReview
     
     useEffect(() =>{
         getDocumentsName();
-    })
+    },[selectedTemplateDocuments])
 
+console.log('Request Home')
     return (
         <div className="mcu-panel-body">
             <div className="row">
                 <div className="col-md-4 no-padding mcu-panel-body--col">
                     <SelectedNeedListReview
-                    documentList = {documentList}
+                    documentList = {selectedTemplateDocuments}
                     
                     />
                 </div>
                 <div className="col-md-8 no-padding mcu-panel-body--col">
                     <EmailContentReview
-                     documentList = {documentList}
                      documentsName = {documentsName}
                     />
                 </div>
