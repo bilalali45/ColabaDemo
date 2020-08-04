@@ -46,9 +46,9 @@ namespace MainGateway
                 options.AddDefaultPolicy(
                                          builder =>
                                          {
-                                             builder.AllowAnyHeader().AllowAnyMethod();
                                              var itemArray = Configuration.GetSection("AllowedOrigins").GetChildren().Select(c => c.Value).ToArray();
-                                             builder.WithOrigins(itemArray);
+                                             //builder.WithOrigins(itemArray).AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("Content-Disposition", "Content-Length");
+                                             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                          });
             });
 
@@ -113,11 +113,11 @@ namespace MainGateway
             }
             else
             {
-                app.UseHsts();
+                //app.UseHsts();
             }
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
             app.UseAuthentication();
@@ -131,10 +131,10 @@ namespace MainGateway
             app.Use(async (context, next) =>
             {
                 await next();
-                context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
-                context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
-                context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
-                context.Response.Headers.Remove("Server");
+                //context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
+                //context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
+                //context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
+                //context.Response.Headers.Remove("Server");
             });
             app.UseOcelot().Wait();
             
