@@ -132,7 +132,9 @@ export const NeedListSelect = ({
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block">Continue with Template</button>
+        }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
+
+        
 
       } else {
         return <Link to={`/newNeedList/${LocalDB.getLoanAppliationId()}`} >Start from new list</Link>
