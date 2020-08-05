@@ -1,5 +1,6 @@
 import jwt_decode from "jwt-decode";
 import Cookies from "universal-cookie";
+import { ApplicationEnv } from "./helpers/AppEnv";
 const cookies = new Cookies();
 
 export class LocalDB {
@@ -15,11 +16,11 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken() {
-    return localStorage.getItem("token");
+    return this.decodeString(window.sessionStorage.getItem("token"));
   }
 
   static getRefreshToken() {
-    return localStorage.getItem("refreshToken");
+    return this.decodeString(window.sessionStorage.getItem("refreshToken"));
   }
 
   static getLoginDevUserName() {
@@ -31,18 +32,24 @@ export class LocalDB {
   }
 
   static getUserPayload() {
-    let payload = localStorage.getItem("payload");
+    let payload = this.decodeString(window.sessionStorage.getItem("payload"));
     if (payload) {
       return JSON.parse(payload);
     }
   }
 
   static getLoanAppliationId() {
-    return localStorage.getItem("loanApplicationId") || "";
+    return (
+      this.decodeString(window.sessionStorage.getItem("loanApplicationId")) ||
+      ""
+    );
   }
 
-  static getTenantId() {
-    return localStorage.getItem("tenantId") || "";
+  static setLoanAppliationId(loanApplicationId: string) {
+    window.sessionStorage.setItem(
+      "loanApplicationId",
+      this.encodeString(loanApplicationId)
+    );
   }
 
   //#endregion
@@ -50,17 +57,23 @@ export class LocalDB {
   //#region Local DB Post Methods
   static storeTokenPayload(payload: any) {
     if (!payload) return;
-    localStorage.setItem("payload", JSON.stringify(payload));
+    window.sessionStorage.setItem(
+      "payload",
+      this.encodeString(JSON.stringify(payload))
+    );
   }
 
   static storeAuthTokens(token: string, refreshToken: string) {
-    localStorage.setItem("token", token);
-    localStorage.setItem("refreshToken", refreshToken);
+    window.sessionStorage.setItem("token", this.encodeString(token));
+    window.sessionStorage.setItem(
+      "refreshToken",
+      this.encodeString(refreshToken)
+    );
   }
 
   public static checkAuth(): boolean | string {
     let rainmaker2Token = cookies.get("Rainmaker2Token");
-    let auth = localStorage.getItem("token");
+    let auth = this.getAuthToken();
     if (!auth) {
       return false;
     }
@@ -88,7 +101,7 @@ export class LocalDB {
   }
 
   public static storeItem(name: string, data: string) {
-    localStorage.setItem(name, data);
+    window.sessionStorage.setItem(name, this.encodeString(data));
   }
   //#endregion
 
@@ -96,7 +109,29 @@ export class LocalDB {
   static removeAuth() {
     let items = ["token", "payload", "refreshToken"];
     for (const item of items) {
-      localStorage.removeItem(item);
+      window.sessionStorage.removeItem(item);
+    }
+  }
+  //#endregion
+
+  //#region Encode Decode
+  public static encodeString(value: string) {
+    // Encode the String
+    //const currentDate = Date.toString();
+    const string = value + "|" + ApplicationEnv.Encode_Key;
+    return btoa(string);
+  }
+
+  public static decodeString(value?: string | null) {
+    // Decode the String
+    if (!value) {
+      return "";
+    }
+    try {
+      const decodedString = atob(value);
+      return decodedString.split("|")[0];
+    } catch {
+      return null;
     }
   }
   //#endregion

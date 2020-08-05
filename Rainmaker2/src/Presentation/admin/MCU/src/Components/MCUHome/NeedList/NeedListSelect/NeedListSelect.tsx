@@ -54,7 +54,7 @@ export const NeedListSelect = ({
   }, [templates?.length])
 
   const fetchTemplatesList = async () => {
-    let newTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
+    let newTemplates: any = await TemplateActions.fetchTemplates();
     if (newTemplates) {
       dispatch({ type: TemplateActionsType.SetTemplates, payload: newTemplates });
     }
@@ -80,9 +80,9 @@ export const NeedListSelect = ({
             templates?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
-                return <li><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
-                  updateIdsList(e, t.id);
-                }} id={t.id} type="checkbox" /> {t.name}</label></li>
+                return <li key={t?.id}><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                  updateIdsList(e, t?.id);
+                }} id={t.id} type="checkbox" /> {t?.name}</label></li>
               }
             })
           }
@@ -100,7 +100,7 @@ export const NeedListSelect = ({
           {
             templates?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
@@ -133,7 +133,7 @@ export const NeedListSelect = ({
         }} className="btn btn-primary btn-block">Continue with Template</button>
 
       } else {
-        return <Link to="/newNeedList" >Start from new list</Link>
+        return <Link to={`/newNeedList/${LocalDB.getLoanAppliationId()}`} >Start from new list</Link>
       }
     }
 

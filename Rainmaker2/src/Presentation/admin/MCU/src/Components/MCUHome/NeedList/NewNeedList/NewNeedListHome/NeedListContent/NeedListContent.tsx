@@ -5,6 +5,8 @@ import Spinner from "react-bootstrap/Spinner";
 import EditIcon from '../../../../../../Assets/images/editicon.svg';
 import { TemplateDocument } from "../../../../../../Entities/Models/TemplateDocument";
 import { useHistory } from "react-router-dom";
+import { TextArea } from "../../../../../../Shared/components/TextArea";
+import { errorText } from "../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
@@ -15,6 +17,8 @@ type NeedListContentType = {
 export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview }: NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
+    const [isValid, setIsValid] = useState<boolean>(false);
+    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
 
     useEffect(() => {
         setDoc(document)
@@ -23,7 +27,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
     }
-    
+
     if (!document) {
         return null;
     }
@@ -58,7 +62,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
             </div>
         )
     }
-
+    // rows={6}
     return (
         <section className="veiw-SelectedTemplate">
 
@@ -68,8 +72,13 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
             <div className="mainbody">
                 <p>Document request message.</p>
                 <div className="editer-wrap">
-                    <textarea value={document?.docMessage || ''} rows={6} className="editer" onChange={(e) => updateDocumentMessage(e.target.value, document)}>
-                    </textarea>
+                    <TextArea
+                        focus={true}
+                        textAreaValue={document?.docMessage || ''}
+                        onBlurHandler={() => { }}
+                        errorText={errorText}
+                        isValid={isValid}
+                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)} />
                 </div>
 
             </div>

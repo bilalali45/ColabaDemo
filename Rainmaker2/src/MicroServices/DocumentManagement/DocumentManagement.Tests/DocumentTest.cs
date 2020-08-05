@@ -36,6 +36,7 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -44,7 +45,6 @@ namespace DocumentManagement.Tests
             GetDocumentsByTemplateIds getDocumentsByTemplateIds = new GetDocumentsByTemplateIds();
             string[] arr = new string[] { "5eb25acde519051af2eeb111", "5eb25acde519051af2eeb111" };
             getDocumentsByTemplateIds.id = arr;
-            getDocumentsByTemplateIds.tenantId = 1;
            //Act
            IActionResult result = await controller.GetDocumentsByTemplateIds(getDocumentsByTemplateIds);
 
@@ -802,7 +802,7 @@ namespace DocumentManagement.Tests
             setting.maxFileSize = 1000000;
             setting.maxFileNameSize = 255;
 
-            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.McuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting); 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -841,7 +841,7 @@ namespace DocumentManagement.Tests
             setting.maxFileSize = 1000000;
             setting.maxFileNameSize = 255;
 
-            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mock.Setup(x => x.McuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting); 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -877,7 +877,7 @@ namespace DocumentManagement.Tests
             setting.maxFileSize = 1000000;
             setting.maxFileNameSize = 255;
 
-            mock.Setup(x => x.mcuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.McuRename(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -914,7 +914,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
-            bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc","Danish Faiz");
+            bool result = await service.McuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc","Danish Faiz");
 
             //Assert
             Assert.True(result);
@@ -936,7 +936,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
-            bool result = await service.mcuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc", "Danish Faiz");
+            bool result = await service.McuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc", "Danish Faiz");
 
             //Assert
             Assert.False(result);
@@ -1154,14 +1154,13 @@ namespace DocumentManagement.Tests
             fileViewModel.id = "5eb25d1fe519051af2eeb72d";
             fileViewModel.requestId = "abc15d1fe456051af2eeb768";
             fileViewModel.fileId = "5ef454cd86c96583744140d9";
-            fileViewModel.tenantId = 1;
 
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
 
-            mock.Setup(x => x.View(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(fileViewDTO);
+            mock.Setup(x => x.View(It.IsAny<AdminFileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTO);
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
             mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
@@ -1173,6 +1172,7 @@ namespace DocumentManagement.Tests
             mockFileEncryptorFacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockFileEcryptor.Object);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -1185,7 +1185,6 @@ namespace DocumentManagement.Tests
             view.requestId = "abc15d1fe456051af2eeb768";
             view.docId = "ddd25d1fe456057652eeb72d";
             view.fileId = "5eeb19874db574137c1fabde";
-            view.tenantId = 1;
             IActionResult result = await controller.View(view);
             //Assert
             Assert.NotNull(result);
@@ -1201,11 +1200,11 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
-            FileViewModel fileViewModel = new FileViewModel();
-            fileViewModel.docId = "ddd25d1fe456057652eeb72d";
-            fileViewModel.id = "5eb25d1fe519051af2eeb72d";
-            fileViewModel.requestId = "abc15d1fe456051af2eeb768";
-            fileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+            AdminFileViewModel adminFileViewModel = new AdminFileViewModel();
+            adminFileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            adminFileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            adminFileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            adminFileViewModel.fileId = "5ef049d896f9f41cec4b358f";
 
             List<BsonDocument> list = new List<BsonDocument>()
             {
@@ -1244,7 +1243,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object, mockIActivityLogService.Object);
             //Act
-            var dto = await service.View(fileViewModel, 1, "127.0.0.1");
+            var dto = await service.View(adminFileViewModel, 1, "127.0.0.1",1);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);

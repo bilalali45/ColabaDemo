@@ -3,6 +3,8 @@ import { SelectedNeedListReview } from './SelectedNeedListReview/SelectedNeedLis
 import { EmailContentReview } from './EmailContentReview/EmailContentReview'
 import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 import { Store } from '../../../../Store/Store'
+import { LocalDB } from '../../../../Utils/LocalDB'
+import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 
 
 
@@ -13,13 +15,8 @@ type ReviewNeedListRequestHomeType = {
 
 export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewNeedListRequestHomeType) => {
 
-    // const { state, dispatch } = useContext(Store);
-
-    // const templateManager: any = state?.templateManager;
-    // const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
-
     const [documentsName, setDocumentName] = useState<string>();
-
+    const [emailTemplate, setEmailTemplate] = useState();
     const getDocumentsName = () => {
         if (!documentList) return;
         let names: string = "";
@@ -32,8 +29,14 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewN
         setDocumentName(names)
     }
 
+    const getEmailTemplate = async () => {
+        let res: any = await TemplateActions.fetchEmailTemplate();
+        setEmailTemplate(res);
+    }
+
     useEffect(() => {
         getDocumentsName();
+        getEmailTemplate();
     }, [documentList])
 
     return (
@@ -49,6 +52,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewN
                     <EmailContentReview
                         documentsName={documentsName}
                         saveAsDraft={saveAsDraft}
+                        emailTemplate = {emailTemplate}
                     />
                 </div>
             </div>

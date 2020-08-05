@@ -1,11 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
+import Spinner from 'react-bootstrap/Spinner';
+import { useHistory } from 'react-router-dom';
+import { LocalDB } from '../../../../../Utils/LocalDB';
 
 type SelectedNeedListReviewProps = {
     documentList: TemplateDocument[];
 }
 
 export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProps) => {
+
+    const history = useHistory()
+
+    useEffect(() => {
+        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
+    }, [!documentList?.length])
+
+    if(!documentList){
+        return (
+            <div className="loader-widget loansnapshot">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          );
+    }
 
     const displayRequestDocumentsList = () => {
         return (

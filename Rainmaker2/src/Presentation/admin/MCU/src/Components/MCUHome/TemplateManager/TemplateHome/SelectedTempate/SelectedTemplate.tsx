@@ -101,7 +101,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     const addDocumentToList = async (doc: Document, type: string) => {
         
         try {
-            let success = await TemplateActions.addDocument(LocalDB.getTenantId(), currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
+            let success = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
             if (success) {
                 let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
                 dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
@@ -124,10 +124,10 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const addNewTemplate = async (name: string) => {
         dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
-        let insertedTemplate = await TemplateActions.insertTemplate(LocalDB.getTenantId(), name);
+        let insertedTemplate = await TemplateActions.insertTemplate(name);
         if (insertedTemplate) {
 
-            let updatedTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
+            let updatedTemplates: any = await TemplateActions.fetchTemplates();
             dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
@@ -178,9 +178,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        const renamed = await TemplateActions.renameTemplate(LocalDB.getTenantId(), currentTemplate?.id, value?.trim());
+        const renamed = await TemplateActions.renameTemplate(currentTemplate?.id, value?.trim());
         if (renamed) {
-            let updatedTemplates: any = await TemplateActions.fetchTemplates(LocalDB.getTenantId());
+            let updatedTemplates: any = await TemplateActions.fetchTemplates();
             if (updatedTemplates) {
                 dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
                 dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((ut: Template) => ut.id === currentTemplate.id) });
@@ -200,7 +200,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         setAddRequestSent(true);
         setLoaderVisible(true);
         setRemoveDocName(documentId);
-        let isDeleted = await TemplateActions.deleteTemplateDocument(LocalDB.getTenantId(), templateId, documentId);
+        let isDeleted = await TemplateActions.deleteTemplateDocument(templateId, documentId);
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }

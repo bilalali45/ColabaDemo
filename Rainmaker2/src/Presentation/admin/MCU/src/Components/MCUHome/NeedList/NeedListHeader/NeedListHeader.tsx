@@ -6,7 +6,7 @@ export const NeedListHeader = () => {
   const history = useHistory();
 
   const redirectToTemplate = () => {
-    history.push("/templateManager");
+    history.push(`/templateManager/${LocalDB.getLoanAppliationId()}`);
   };
 
   const redirectToMVC = () => {

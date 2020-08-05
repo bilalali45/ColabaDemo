@@ -1,30 +1,36 @@
-import React, { useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { LocalDB } from "../../../../Utils/LocalDB";
 
 export const TemplateHeader = () => {
+  const history = useHistory();
 
-    const history = useHistory();
+  useEffect(() => {
+    const closeTemplateManager = (e: any) => {
+      console.log("key", e.keyCode);
+      if (e.keyCode === 27) {
+        history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+      }
+    };
 
-    useEffect(() => {
+    document.addEventListener("keydown", closeTemplateManager);
 
-        const closeTemplateManager = (e: any) => {
-            if (e.keyCode === 27) {
-                history.push('/needList');
-            }
-        }
+    return () => {
+      document.removeEventListener("keydown", closeTemplateManager);
+    };
+  }, []);
 
-        document.addEventListener('keydown', closeTemplateManager);
+  return (
+    <section className="MTheader">
+      <h2>Manage Templates</h2>
 
-        return () => {
-            document.removeEventListener('keydown', closeTemplateManager)
-        }
-    }, [])
-
-    return (
-        <section className="MTheader">
-            <h2>Manage Templates</h2>
-
-            <Link title="Close" to={'/needList'} className="close-ManageTemplate"><i className="zmdi zmdi-close"></i></Link>
-        </section>
-    )
-}
+      <Link
+        title="Close"
+        to={`/needList/${LocalDB.getLoanAppliationId()}`}
+        className="close-ManageTemplate"
+      >
+        <i className="zmdi zmdi-close"></i>
+      </Link>
+    </section>
+  );
+};

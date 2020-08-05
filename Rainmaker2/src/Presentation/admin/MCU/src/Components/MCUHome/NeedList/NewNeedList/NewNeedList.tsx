@@ -15,6 +15,8 @@ import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer"
 import { useHistory, useLocation } from "react-router-dom";
 import { ReviewNeedListRequestHeader } from "../../ReviewNeedListRequest/ReviewNeedListRequestHeader/ReviewNeedListRequestHeader";
 import { ReviewNeedListRequestHome } from "../../ReviewNeedListRequest/ReviewNeedListRequestHome/ReviewNeedListRequestHome";
+import { LoanApplication } from "../../../../Entities/Models/LoanApplication";
+import { NeedListActions } from "../../../../Store/actions/NeedListActions";
 
 export const NewNeedList = () => {
 
@@ -33,6 +35,7 @@ export const NewNeedList = () => {
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
     const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
     const selectedIds: string[] = needListManager?.templateIds;
+    const loanInfo: string[] = needListManager?.loanInfo;
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
 
@@ -40,6 +43,11 @@ export const NewNeedList = () => {
     const location = useLocation();
 
     useEffect(() => {
+
+        if(!loanInfo) {
+            fetchLoanApplicationDetail();
+        }
+
         return () => {
             clearOldData()
         }
@@ -77,22 +85,37 @@ export const NewNeedList = () => {
         if (isDocumentDraft?.requestId) {
             fetchDraftDocuments();
         } else {
-            let tenantId = LocalDB.getTenantId();
-            getDocumentsFromSelectedTemplates(selectedIds, +tenantId)
+            getDocumentsFromSelectedTemplates(selectedIds)
         }
+
     }, [selectedIds?.length])
 
     // useEffect(() => {
 
     // }, [allDocuments?.length])
 
+    const fetchLoanApplicationDetail = async () => {
+        let applicationId = LocalDB.getLoanAppliationId();
+        if (applicationId) {
+          let res:
+            | LoanApplication
+            | undefined = await NeedListActions.getLoanApplicationDetail(
+            applicationId
+          );
+          if (res) {
+            dispatch({ type: NeedListActionsType.SetLoanInfo, payload: res });
+            // setLoanInfo(res)
+          }
+        }
+      };
+
     const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
 
     const changeTemplateName = (e: ChangeEvent<HTMLInputElement>) => setTemplateName(e.target.value);
 
 
-    const getDocumentsFromSelectedTemplates = async (ids: string[], tenantId: number) => {
-        let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids, tenantId)
+    const getDocumentsFromSelectedTemplates = async (ids: string[]) => {
+        let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids)
         const data = documents?.map((obj: TemplateDocument) => {
             return {
                 ...obj,
@@ -104,7 +127,7 @@ export const NewNeedList = () => {
     }
 
     const fetchDraftDocuments = async () => {
-        let documents: any = await NewNeedListActions.getDraft(LocalDB.getLoanAppliationId(), LocalDB.getTenantId());
+        let documents: any = await NewNeedListActions.getDraft(LocalDB.getLoanAppliationId());
         const data = documents?.map((obj: any) => ({ ...obj, isRejected: false }))
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
     }
@@ -153,12 +176,11 @@ export const NewNeedList = () => {
         let emailText = 'testing is good!!' // from store
         await NewNeedListActions.saveNeedList(
             LocalDB.getLoanAppliationId(),
-            LocalDB.getTenantId(),
             toDraft,
             emailText,
             allDocuments
         )
-        history.push('/needList');
+        history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
 
     }
 
@@ -169,17 +191,17 @@ export const NewNeedList = () => {
         }
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray });
         if (!location.pathname.includes('newNeedList')) {
-            history.push('/newNeedList');
+            history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
         }
     }
 
     const viewSaveDraftHandler = () => {
         dispatch({ type: NeedListActionsType.SetIsDraft, payload: true });
-        history.push('/newNeedList');
+        history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
     }
 
     const saveAsTemplate = async () => {
-        let id = await NewNeedListActions.saveAsTemplate(LocalDB.getTenantId(), templateName, allDocuments);
+        let id = await NewNeedListActions.saveAsTemplate(templateName, allDocuments);
         dispatch({ type: TemplateActionsType.SetTemplates, payload: null });
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: [id] });
         setTemplateName('');
