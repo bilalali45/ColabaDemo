@@ -64,14 +64,14 @@ namespace LosIntegration.API.Controllers
                 = new AuthenticationHeaderValue("Bearer", Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
 
             //var csResponse = _httpClient.GetAsync($"{_configuration["ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/view?id={request.DocumentLoanApplicationId}&requestId={request.RequestId}&docId={request.DocumentId}&fileId={request.FileId}&tenantId={tenantId}").Result;
-            var url =
+            var documentRequestUri =
                 $"https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view?id={request.DocumentLoanApplicationId}&requestId={request.RequestId}&docId={request.DocumentId}&fileId={request.FileId}&tenantId={tenantId}";
-            var csResponse = _httpClient.GetAsync(url).Result;
+            var documentResponse = _httpClient.GetAsync(documentRequestUri).Result;
 
 
-            var fileData = csResponse.Content.ReadAsByteArrayAsync().Result;
+            var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
 
-            if (!csResponse.IsSuccessStatusCode)
+            if (!documentResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load Document from Document Management");
             }
@@ -89,7 +89,15 @@ namespace LosIntegration.API.Controllers
                                                                            encoding: Encoding.UTF8,
                                                                            mediaType: "application/json")).Result;
                 if (callResponse.IsSuccessStatusCode)
+                {
+                    var url =
+                        $"https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/document/UpdateByteProStatus";
+                    var csResponse = _httpClient.PostAsync(url, content: new StringContent(content: request.ToJsonString(),
+                                                                                           encoding: Encoding.UTF8,
+                                                                                           mediaType: "application/json")).Result;
                     return Ok();
+                }
+                    
                 return BadRequest();
             }
         }

@@ -72,7 +72,7 @@ namespace ByteWebConnector.API.Controllers
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
                                               DocumentCategory = "PROP",//request.DocumentCategory,
                                               DocumentExtenstion = "jpg",//request.DocumentExension,
-                                              DocumentName = "This is a Test Document",//request.DocumentName,
+                                              DocumentName = "Senior React Engineer",//request.DocumentName,
                                               DocumentStatus = "0",//request.DocumentStatus,
                                               DocumentType = "PurchaseAgr",//request.DocumentType,
                                               DocumentData = request.FileData.ToBase64String()
