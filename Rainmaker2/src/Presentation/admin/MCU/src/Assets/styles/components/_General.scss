@@ -423,7 +423,7 @@ ul {
         width: 290px;
         border-radius: 0px;
         font-family: fontFamily('heading');
-        font-size: fontSize('sm') - 1px ;
+        font-size: fontSize('sm');
         font-weight: 400;
         
         &.padding{
@@ -432,7 +432,7 @@ ul {
 
         > h2 {
             font-family: fontFamily('heading');
-            font-size: fontSize('nr') - 1px ;
+            font-size: fontSize('nr');
             font-weight: 500;
             text-transform: uppercase;
             margin-bottom: 22px;
@@ -440,7 +440,7 @@ ul {
         }
         > h3 {
             font-family: fontFamily('heading');
-            font-size: fontSize('sm') - 1px ;
+            font-size: fontSize('sm') ;
             font-weight: 500;
             text-transform: uppercase;
             margin-bottom: 10px;
@@ -775,16 +775,30 @@ label.error{
     }
 }// listing
 
-.list-remove{
+.list-remove{    
     
     &-alert{
         display: flex;
         justify-content: space-between;
         align-self: center;
+        background-color: color('widgetBg');
+        opacity: 0;
+        -webkit-animation: fadeIn 0.3s forwards;    
+                animation: fadeIn 0.3s forwards;
     }
 
     &-text{
-        font: 500 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+        font: 500 #{fontSize('nr')+'/0.8'} fontFamily('base'); 
+        white-space: nowrap;
+        padding:10px 15px;
+        -webkit-animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+                animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+    }
+
+    &-options{
+        white-space: nowrap;
+        -webkit-animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+                animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
     }
 
 }
@@ -835,3 +849,7 @@ label.error{
     }
 
 }//.modal
+
+.popover {
+    min-width: 450px;
+}
