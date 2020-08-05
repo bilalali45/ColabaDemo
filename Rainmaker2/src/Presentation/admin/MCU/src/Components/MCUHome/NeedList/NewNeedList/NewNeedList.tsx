@@ -38,6 +38,7 @@ export const NewNeedList = () => {
     const loanInfo: string[] = needListManager?.loanInfo;
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
+    const emailContent: string = templateManager?.emailContent;
 
     const history = useHistory();
     const location = useLocation();
@@ -173,11 +174,10 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        let emailText = 'testing is good!!' // from store
         await NewNeedListActions.saveNeedList(
             LocalDB.getLoanAppliationId(),
             toDraft,
-            emailText,
+            emailContent,
             allDocuments
         )
         history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
