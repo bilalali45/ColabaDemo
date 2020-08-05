@@ -733,6 +733,7 @@ label.error{
 
 .alert{
     font: normal #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    border-radius: 0;
     
     &-primary{
         color: color('primary');

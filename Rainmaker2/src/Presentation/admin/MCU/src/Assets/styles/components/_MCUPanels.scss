@@ -41,7 +41,7 @@
 
         &.padding{
             padding: 30px;
-            min-height: calc(100% - 145px);
+            min-height: calc(100% - 149px);
         }
 
         > .row{
@@ -76,9 +76,14 @@
     }
 
     &-footer{
-        padding: 15px 30px;
-        border-bottom:1px solid color('border');
-        min-height: 75px;
+        padding: 17px 30px;
+        //border-bottom:1px solid color('border');
+        min-height: 73px;
+        margin-bottom: 0;
+        
+        &.alert{
+            padding: 27px 30px;
+        }
     }
 
     .no-preview{
