@@ -47,9 +47,9 @@ export const NewNeedList = () => {
 
     useEffect(() => {
         console.log(isDocumentDraft, 'isDocumentDraft');
-        if (!isDocumentDraft) {
-            checkIsDocumentDraft(LocalDB.getLoanAppliationId());
-        }
+        // if (!isDocumentDraft) {
+        //     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
+        // }
 
 
         if (!loanInfo) {
