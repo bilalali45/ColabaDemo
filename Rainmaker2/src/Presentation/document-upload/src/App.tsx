@@ -89,6 +89,7 @@ const App = () => {
     window.open("/Account/LogOff", "_self");
   };
 
+  console.log("Application is ", authenticated);
   if (!authenticated) {
     return null;
   }
