@@ -174,6 +174,22 @@ namespace DocumentManagement.Model
         public  string[] id { get; set; }
     }
 
+    public class UpdateByteProStatus
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string docId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string fileId { get; set; }
+    }
+
     public class ArrayRegularExpressionAttribute : ValidationAttribute
     {
         private string regex;
