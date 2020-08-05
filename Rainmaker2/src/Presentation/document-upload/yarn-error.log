@@ -1,20 +1,20 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Jehangir\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
 
 PATH: 
-  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Jehangir\bin;C:\Python27;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Users\Jehangir\AppData\Local\Microsoft\WindowsApps;C:\Users\Jehangir\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Jehangir\AppData\Roaming\npm;C:\Users\Jehangir\AppData\Local\Programs\Fiddler;C:\Users\Jehangir\AppData\Local\Programs\Microsoft VS Code Insiders\bin
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Danish Iqbal\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\130\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\Git\cmd;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\Danish Iqbal\AppData\Local\Microsoft\WindowsApps;C:\Users\Danish Iqbal\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Users\Danish Iqbal\AppData\Roaming\npm;C:\Users\Danish Iqbal\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Danish Iqbal\AppData\Local\Yarn\bin;C:\Users\Danish Iqbal\AppData\Local\Programs\Fiddler
 
 Yarn version: 
   1.22.4
 
 Node version: 
-  12.16.1
+  12.16.3
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'D:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\node_modules\rainsoft-js\node_modules\.bin'
+  Error: EPERM: operation not permitted, unlink 'C:\Users\Danish Iqbal\rainsoft-repos\Rainmaker2\Rainmaker2\src\Presentation\document-upload\node_modules\cfb\node_modules\.bin'
 
 npm manifest: 
   {
@@ -38,12 +38,13 @@ npm manifest:
       "moment": "^2.27.0",
       "node-sass": "^4.14.1",
       "print-js": "^1.0.63",
-      "rainsoft-js": "^1.0.18",
-      "rainsoft-rc": "^1.0.6",
+      "rainsoft-js": "^1.0.32",
+      "rainsoft-rc": "^1.0.15",
       "react": "^16.13.1",
       "react-bootstrap": "^1.0.1",
       "react-dom": "^16.13.1",
       "react-file-viewer": "^1.2.1",
+      "react-idle-timer": "^4.2.12",
       "react-router-dom": "^5.2.0",
       "react-scripts": "3.4.1",
       "react-zoom-pan-pinch": "^1.6.1",
@@ -5900,13 +5901,6 @@ Lockfile:
       pkg-dir "^3.0.0"
       resolve-cwd "^2.0.0"
   
-  import@^0.0.6:
-    version "0.0.6"
-    resolved "https://registry.yarnpkg.com/import/-/import-0.0.6.tgz#d0eb79df86aa2677c6db61578a5212b3031e6042"
-    integrity sha1-0Ot534aqJnfG22FXilISswMeYEI=
-    dependencies:
-      optimist "0.3.x"
-  
   imurmurhash@^0.1.4:
     version "0.1.4"
     resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -8110,13 +8104,6 @@ Lockfile:
     dependencies:
       is-wsl "^1.1.0"
   
-  optimist@0.3.x:
-    version "0.3.7"
-    resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.3.7.tgz#c90941ad59e4273328923074d2cf2e7cbc6ec0d9"
-    integrity sha1-yQlBrVnkJzMokjB00s8ufLxuwNk=
-    dependencies:
-      wordwrap "~0.0.2"
-  
   optimize-css-assets-webpack-plugin@5.0.3:
     version "5.0.3"
     resolved "https://registry.yarnpkg.com/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-5.0.3.tgz#e2f1d4d94ad8c0af8967ebd7cf138dcb1ef14572"
@@ -9490,25 +9477,27 @@ Lockfile:
     dependencies:
       performance-now "^2.1.0"
   
-  rainsoft-js@^1.0.17:
-    version "1.0.17"
-    resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.17.tgz#e21cb234f8a01c94ff8123b2026bc3490af43ae1"
-    integrity sha512-lBRLKLLR4GnhVJOCfEQGlyFAzq8XZW+WAzS4MVxa44C1HGXYUVx1+rx2gDTZl1a3/WsvZQ+Kb42S4Uu8k6SvGA==
+  rainsoft-js@^1.0.32:
+    version "1.0.32"
+    resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.32.tgz#c74ed080d16caa4727f94405ef6c89c42711277f"
+    integrity sha512-erx0ebkq+3Hd0stvV3CqIHRMuKxRkKMhuOS1AjvNW1yIrGl2TkPPEvUIn67NVEvBIQIfLLtIVzaNvyXoErHiKw==
     dependencies:
       "@types/jest" "^24.9.1"
       "@types/node" "^12.12.39"
       axios "^0.19.2"
       from "^0.1.7"
-      import "^0.0.6"
       moment "^2.27.0"
   
-  rainsoft-rc@^1.0.6:
-    version "1.0.6"
-    resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.6.tgz#019bbeed546ba471b632ca86571b8b7a62bcf534"
-    integrity sha512-rp77Wp4PGSdcOEGeyqQYCo6P8Ui8t7GQH5/EjYzImfXepVcV+y8mBJaq414SGFypsW047Mt47Y0vLtL0fLHJyA==
+  rainsoft-rc@^1.0.15:
+    version "1.0.15"
+    resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.15.tgz#2d26c7eb493edb507bfa846886f2d4db6d6639bf"
+    integrity sha512-+J3vJJDXVUlEmoJ8jNDnZPauu8YfpfecHOtv0A8xRyuVEXYe86aUVm9YGPh0/6f2oOms2TFbNAtbkIDsdd57mA==
     dependencies:
       node-sass "^4.14.1"
+      print-js "^1.0.63"
       react-bootstrap "^1.0.1"
+      react-file-viewer "^1.2.1"
+      react-zoom-pan-pinch "^1.6.1"
   
   randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
     version "2.1.0"
@@ -9649,6 +9638,11 @@ Lockfile:
       react-visibility-sensor "^5.0.2"
       three "0.85.2"
       xlsx "^0.10.1"
+  
+  react-idle-timer@^4.2.12:
+    version "4.2.12"
+    resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.2.12.tgz#3756e3256cd225f319ed093b3d5ebe0d98fcc498"
+    integrity sha512-YD/2Oe4PU5uRv/TH6zTxykKMHpRHWHPEWCUohda81o/jzsrlgyUrklfy46fd8WjgYhlNkJKsiX/GXJAQQC1hcQ==
   
   react-is@^16.12.0, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
     version "16.13.1"
@@ -12000,11 +11994,6 @@ Lockfile:
     version "1.2.3"
     resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
     integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
-  
-  wordwrap@~0.0.2:
-    version "0.0.3"
-    resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
-    integrity sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
   
   workbox-background-sync@^4.3.1:
     version "4.3.1"
