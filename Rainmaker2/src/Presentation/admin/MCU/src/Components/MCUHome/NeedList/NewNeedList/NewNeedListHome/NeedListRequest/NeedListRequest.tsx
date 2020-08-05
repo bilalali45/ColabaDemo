@@ -11,6 +11,7 @@ import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
 import { nameTest } from '../../../Add/Home/AddNeedListHome';
+import Spinner from 'react-bootstrap/Spinner';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -30,7 +31,8 @@ type AddNeedListContainerType = {
     saveAsTemplate: Function,
     templateName: string,
     changeTemplateName: Function,
-    removeDocumentFromList: Function
+    removeDocumentFromList: Function,
+    requestSent: boolean
 }
 
 
@@ -48,7 +50,8 @@ export const NeedListRequest = ({
     saveAsTemplate,
     changeTemplateName,
     templateName,
-    removeDocumentFromList }: AddNeedListContainerType) => {
+    removeDocumentFromList,
+    requestSent }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
     const [templateNameError, setTemplateNameError] = useState<string>();
@@ -92,6 +95,14 @@ export const NeedListRequest = ({
                     <p>You have not added any document</p>
                 </div>
             </div>
+        )
+    }
+
+    if (requestSent) {
+        return (
+            <Spinner size="sm" animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
         )
     }
 

@@ -163,7 +163,7 @@ export const NeedListTable = ({
         <div className="td ">
           {data.map((item: NeedListDocuments, index) => {
             return (
-              <span className="block-element c-filename">
+              <span key={item?.id} className="block-element c-filename">
                 {item.mcuName ? (
                   <React.Fragment>
                     <span
