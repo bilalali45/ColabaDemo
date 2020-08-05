@@ -21,11 +21,10 @@ export const MCUHome = () => {
   const { state, dispatch } = useContext(Store);
   const { loanApplicationId } = useParams();
   const location = useLocation();
-
+  ParamsService.storeParams(loanApplicationId);
   useEffect(() => {
     window.scrollTo(0, 0);
-    setParams(loanApplicationId);
-  }, [location.pathname, loanApplicationId]);
+  }, [location.pathname]);
 
   const setParams = (loanId: string) => {
     ParamsService.storeParams(loanId);
