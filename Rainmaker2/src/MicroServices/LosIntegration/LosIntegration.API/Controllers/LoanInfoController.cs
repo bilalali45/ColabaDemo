@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LosIntegration.API.Controllers
 {
-    [Route(template: "api/ByteWebConnector/[controller]")]
+    [Route(template: "api/LosIntegration/[controller]")]
     [ApiController]
     public class LoanInfoController : ControllerBase
     {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LosIntegration.API.Controllers
 {
-    [Route(template: "api/ByteWebConnector/[controller]")]
+    [Route(template: "api/LosIntegration/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {

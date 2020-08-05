@@ -53,6 +53,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LosIntegration", "LosIntegr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LosIntegration.API", "..\MicroServices\LosIntegration\LosIntegration.API\LosIntegration.API.csproj", "{AA3DC286-712F-4983-A08C-85B4860B1A34}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ByteWebConnector", "ByteWebConnector", "{EB4C197E-E8F0-446A-BE23-9E4F4C763938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.API", "..\MicroServices\ByteWebConnector\ByteWebConnector.API\ByteWebConnector.API.csproj", "{705B576C-0479-475D-B269-7F76CC3A9487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +135,10 @@ Global
 		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA3DC286-712F-4983-A08C-85B4860B1A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705B576C-0479-475D-B269-7F76CC3A9487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705B576C-0479-475D-B269-7F76CC3A9487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705B576C-0479-475D-B269-7F76CC3A9487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705B576C-0479-475D-B269-7F76CC3A9487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +167,8 @@ Global
 		{A7F035EA-99AC-4897-9779-DFDF512A71D6} = {60455E47-E82D-44BE-A52D-96D6E9C1331C}
 		{72A77178-843D-45F0-BCA5-50B97D4EDE30} = {E0FB9C7C-9C8F-4C2E-95DD-E025A45C520F}
 		{AA3DC286-712F-4983-A08C-85B4860B1A34} = {72A77178-843D-45F0-BCA5-50B97D4EDE30}
+		{EB4C197E-E8F0-446A-BE23-9E4F4C763938} = {E0FB9C7C-9C8F-4C2E-95DD-E025A45C520F}
+		{705B576C-0479-475D-B269-7F76CC3A9487} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E56FE89-36B5-422C-B211-A1E23C5F0D3E}

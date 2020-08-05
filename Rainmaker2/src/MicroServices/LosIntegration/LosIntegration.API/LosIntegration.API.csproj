@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Macros\**" />
+    <Content Remove="Macros\**" />
+    <EmbeddedResource Remove="Macros\**" />
+    <None Remove="Macros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
   </ItemGroup>

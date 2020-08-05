@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace LosIntegration.API.Controllers
+namespace ByteWebConnector.API.Controllers
 {
     [ApiController]
-    [Route(template: "api/LosIntegration/[controller]")]
+    [Route("api/[controller]")]
     public class HomeController : Controller
     {
-        [HttpGet("[action]")]
         [Route("/")]
+        [Route("[action]")]
         public string Index()
         {
-            return "LosIntegration.API is running";
+            return "ByteWebConnector micro service is running";
         }
     }
 }

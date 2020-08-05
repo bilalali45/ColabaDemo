@@ -73,7 +73,7 @@
 
     //Byte Web Connector api config
     {
-      "DownstreamPathTemplate": "/api/ByteWebConnector/{everything}",
+      "DownstreamPathTemplate": "/api/LosIntegration/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -81,7 +81,7 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "/api/ByteWebConnector/{everything}",
+      "UpstreamPathTemplate": "/api/LosIntegration/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       //"AuthenticationOptions": {
       //  "AuthenticationProviderKey": "Bearer",
