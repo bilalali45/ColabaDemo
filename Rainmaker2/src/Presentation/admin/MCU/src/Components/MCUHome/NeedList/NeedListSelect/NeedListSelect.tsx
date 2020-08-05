@@ -37,7 +37,6 @@ export const NeedListSelect = ({
 
 
   useEffect(() => {
-    console.log('in here you know sdf', templates);
     if (!templates) {
       fetchTemplatesList();
     }
@@ -69,18 +68,6 @@ export const NeedListSelect = ({
       setIdArray(pre => pre?.filter(idOld => idOld !== id));
     }
 
-    // let isExist = idArray.includes(id);
-    // if (isExist) {
-    //   let oldArray = [...idArray];
-    //   const index = oldArray.indexOf(id);
-    //   if (index > -1) {
-    //     oldArray.splice(index, 1);
-    //     setIdArray(oldArray);
-    //   }
-    // } else {
-    //   let newArray = [...idArray, id]
-    //   setIdArray(newArray);
-    // }
   }
 
   const MyTemplates = () => {
@@ -91,7 +78,6 @@ export const NeedListSelect = ({
         <ul className="checklist">
           {
             templates?.map((t: Template) => {
-              console.log(idArray.includes(t?.id));
 
               if (t?.type === MyTemplate) {
                 return <li><label><input checked={idArray.includes(t?.id)} onChange={(e) => {

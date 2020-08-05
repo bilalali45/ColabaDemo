@@ -8,7 +8,6 @@ export const TemplateHeader = () => {
     useEffect(() => {
 
         const closeTemplateManager = (e: any) => {
-            console.log('key', e.keyCode)
             if (e.keyCode === 27) {
                 history.push('/needList');
             }

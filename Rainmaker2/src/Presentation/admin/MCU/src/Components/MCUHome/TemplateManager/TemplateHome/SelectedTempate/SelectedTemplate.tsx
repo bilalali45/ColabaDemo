@@ -81,7 +81,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     useEffect(() => {
         if (!nameTest.test(newNameText)) {
-            console.log('in here you know where ...');
             setNameError('Template name cannot contain any special characters');
         }
 
@@ -171,7 +170,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
         setAddRequestSent(true);
         setLoaderVisible(true);
-        console.log(value.trim().length);
         if (!currentTemplate) {
             await addNewTemplate(value.trim());
             toggleRename();

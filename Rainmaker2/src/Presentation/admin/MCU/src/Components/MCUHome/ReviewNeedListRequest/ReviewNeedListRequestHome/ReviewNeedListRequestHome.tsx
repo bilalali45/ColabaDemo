@@ -36,7 +36,6 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewN
         getDocumentsName();
     }, [documentList])
 
-    console.log('Request Home')
     return (
         <div className="mcu-panel-body">
             <div className="row">

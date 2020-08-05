@@ -36,8 +36,6 @@ export const NewNeedList = () => {
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
 
-    console.log('selectedIds', selectedIds)
-
     const history = useHistory();
     const location = useLocation();
 
@@ -52,7 +50,8 @@ export const NewNeedList = () => {
             fetchCurrentCatDocs();
         }
 
-        setAllDocuments(selectedTemplateDocuments || []);
+        setAllDocuments(selectedTemplateDocuments);
+
         if (selectedTemplateDocuments?.length) {
             setCurrentDocument(selectedTemplateDocuments[0]);
         }
@@ -68,16 +67,18 @@ export const NewNeedList = () => {
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: null });
         dispatch({ type: TemplateActionsType.SetEmailContent, payload: null })
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
+        dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
     }
 
 
     useEffect(() => {
-        if (!isDraft) {
+        if (isDocumentDraft?.requestId) {
+            fetchDraftDocuments();
+        } else {
             let tenantId = LocalDB.getTenantId();
             getDocumentsFromSelectedTemplates(selectedIds, +tenantId)
-        } else {
-            fetchDraftDocuments();
         }
     }, [selectedIds?.length])
 
@@ -113,7 +114,7 @@ export const NewNeedList = () => {
         let documents: TemplateDocument[] = [];
         setAllDocuments((preDocs: TemplateDocument[]) => {
             documents = preDocs?.map((pd: TemplateDocument) => {
-                if (pd?.docId === document?.docId) {
+                if (pd?.docName === document?.docName) {
                     pd.docMessage = message;
                     return pd;
                 }
@@ -128,14 +129,11 @@ export const NewNeedList = () => {
         let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
         if (currentCatDocs) {
             dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
-
-            // setCurrentDocType(currentCatDocs[0]);
         }
     }
 
     const addDocumentToList = (doc: Document, type: string) => {
 
-        console.log('doc', doc);
         let newDoc: any = {
             docId: null,
             requestId: null,
@@ -143,7 +141,7 @@ export const NewNeedList = () => {
             docName: doc?.docType,
             docMessage: doc?.docMessage,
         }
-        // dispatch({type: NeedListActionsType.SetTemplateIds, payload: [...allDocuments, newDoc]});
+
         let newDocs = [...allDocuments, newDoc];
         setAllDocuments(newDocs);
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
@@ -160,13 +158,12 @@ export const NewNeedList = () => {
             emailText,
             allDocuments
         )
-        console.log(allDocuments);
         history.push('/needList');
 
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
-        console.log('idArray', idArray);
+
         if (!idArray) {
             idArray = [];
         }

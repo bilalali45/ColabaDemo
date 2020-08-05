@@ -19,7 +19,6 @@ export class NewNeedListActions {
             let res = await http.post(url, {
                 id: ids, tenantId
             })
-            console.log('res', res)
             return res.data;
         } catch (error) {
             console.log(error);
@@ -30,7 +29,6 @@ export class NewNeedListActions {
         let url = Endpoints.NewNeedList.GET.getDraft(loanApplicationId, tenantId);
         try {
             let res = await http.get(url);
-            console.log('res', res)
             return res.data;
         } catch (error) {
             console.log(error);
@@ -68,7 +66,6 @@ export class NewNeedListActions {
 
         try {
             let res = await http.post(url, requestData);
-            console.log('res', res)
             return res.data;
         } catch (error) {
             console.log(error);
@@ -92,7 +89,6 @@ export class NewNeedListActions {
                 }
             })
         }
-        console.log(templateData);
 
         try {
             let res = await http.post(url, templateData);

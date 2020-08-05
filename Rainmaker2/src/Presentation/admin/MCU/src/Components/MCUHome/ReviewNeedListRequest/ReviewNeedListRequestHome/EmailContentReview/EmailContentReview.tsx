@@ -13,7 +13,6 @@ export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentReviewProps) => {
     //const arr: string = "-Financial statement,-Bank statement,-Pay slip";
-    console.log('documentsName', documentsName)
     const setDeafultText = () => {
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
         let mainText = "Hi " +borrowername+",\n\n\n To continue your application, we need some more information."+"\n\n\n"+documentNames+"\n\n\n Complete these items as soon as possible so we can continue reviewing your application."
@@ -51,7 +50,6 @@ export const EmailContentReview = ({documentsName, saveAsDraft}:emailContentRevi
    }
 
    const saveEmailContent = () => {
-    console.log('emailBody',emailBody)
        dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
    }
    

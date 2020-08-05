@@ -14,20 +14,20 @@ type NeedListContentType = {
 
 export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview }: NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
-    const [docMessage, setDocMessage] = useState<string | undefined>('');
+    const [doc, setDoc] = useState<TemplateDocument | null>(null);
+
+    useEffect(() => {
+        setDoc(document)
+    }, [doc?.docName])
+
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
     }
-
-    const history = useHistory();
-
-    useEffect(() => {
-        setDocMessage(document?.docMessage);
-    }, [document?.docId]);
-
+    
     if (!document) {
         return null;
     }
+
 
     const renderTitleInputText = () => {
 
@@ -68,7 +68,8 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
             <div className="mainbody">
                 <p>Document request message.</p>
                 <div className="editer-wrap">
-                    <textarea rows={6} className="editer" value={document?.docMessage || ''} onChange={(e) => updateDocumentMessage(e.target.value, document)}></textarea>
+                    <textarea value={document?.docMessage || ''} rows={6} className="editer" onChange={(e) => updateDocumentMessage(e.target.value, document)}>
+                    </textarea>
                 </div>
 
             </div>
