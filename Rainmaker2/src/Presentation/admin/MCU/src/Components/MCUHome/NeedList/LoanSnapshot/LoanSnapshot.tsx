@@ -16,7 +16,6 @@ export const LoanSnapshot = () => {
   const loanData = needListManager?.loanInfo;
   useEffect(() => {
     if (!loanData) {
-      console.log("Authorize Snap shot call");
       fetchLoanApplicationDetail();
     }
 

@@ -5,10 +5,8 @@ import { ReviewNeedListRequestHome } from './ReviewNeedListRequestHome/ReviewNee
 export const ReviewNeedListRequest = () => {
     
     const saveAsDraft = () => {
-        console.log('Save as Draft');
     }
 
-    console.log('Parent')
     return (
         <div className="mcu-panel">
             {/* <ReviewNeedListRequestHeader

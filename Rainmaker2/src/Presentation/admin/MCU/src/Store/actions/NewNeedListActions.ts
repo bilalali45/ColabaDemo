@@ -13,41 +13,38 @@ type SaveAsTemnplateDocumentType = {
 }
 
 export class NewNeedListActions {
-  static async getDocumentsFromSelectedTemplates(ids: string[]) {
-    let url = Endpoints.NewNeedList.POST.getByTemplateIds();
-    try {
-      let res = await http.post(url, {
-        id: ids,
-      });
-      console.log("res", res);
-      return res.data;
-    } catch (error) {
-      console.log(error);
+    static async getDocumentsFromSelectedTemplates(ids: string[]) {
+        let url = Endpoints.NewNeedList.POST.getByTemplateIds()
+        try {
+            let res = await http.post(url, {
+                id: ids
+            })
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
-  static async getDraft(loanApplicationId: string) {
-    let url = Endpoints.NewNeedList.GET.getDraft(loanApplicationId);
-    try {
-      let res = await http.get(url);
-      console.log("res", res);
-      return res.data;
-    } catch (error) {
-      console.log(error);
+    static async getDraft(loanApplicationId: string) {
+        let url = Endpoints.NewNeedList.GET.getDraft(loanApplicationId);
+        try {
+            let res = await http.get(url);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
 
     static async saveNeedList(
         loanApplicationId: string,
-        tenantId: string,
         isDraft: boolean,
         emailText: string,
         documents: any[]) {
         let url = Endpoints.NewNeedList.POST.save(isDraft);
 
         let requestData = {
-            tenantId: parseInt(tenantId),
             loanApplicationId: parseInt(loanApplicationId),
             requests: [
                 {
@@ -67,18 +64,16 @@ export class NewNeedListActions {
 
         try {
             let res = await http.post(url, requestData);
-            console.log('res', res)
             return res.data;
         } catch (error) {
             console.log(error);
         }
     }
 
-    static async saveAsTemplate(tenantId: string, name: string, documents: TemplateDocument[]) {
+    static async saveAsTemplate(name: string, documents: TemplateDocument[]) {
         let url = Endpoints.NewNeedList.POST.saveAsTemplate();
 
         let templateData = {
-            tenantId: parseInt(tenantId),
             name,
             documentTypes: documents.map((d: TemplateDocument) => {
                 if(d.docId) {
@@ -91,7 +86,6 @@ export class NewNeedListActions {
                 }
             })
         }
-        console.log(templateData);
 
         try {
             let res = await http.post(url, templateData);

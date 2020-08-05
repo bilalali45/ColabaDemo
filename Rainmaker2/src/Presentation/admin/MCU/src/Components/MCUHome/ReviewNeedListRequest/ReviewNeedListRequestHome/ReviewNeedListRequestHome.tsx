@@ -30,8 +30,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewN
     }
 
     const getEmailTemplate = async () => {
-        let tenantId = LocalDB.getTenantId();
-        let res: any = await TemplateActions.fetchEmailTemplate(tenantId);
+        let res: any = await TemplateActions.fetchEmailTemplate();
         setEmailTemplate(res);
     }
 

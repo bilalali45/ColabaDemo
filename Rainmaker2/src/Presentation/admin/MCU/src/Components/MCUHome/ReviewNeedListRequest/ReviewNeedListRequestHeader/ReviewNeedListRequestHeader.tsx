@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { LocalDB } from "../../../../Utils/LocalDB";
 
 type NewNeedListHeaderType = {
   saveAsDraft: Function;
@@ -22,7 +23,7 @@ export const ReviewNeedListRequestHeader = ({
   const history = useHistory();
 
   const closeHandler = () => {
-    history.push("/needList");
+    history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
   };
 
   return (

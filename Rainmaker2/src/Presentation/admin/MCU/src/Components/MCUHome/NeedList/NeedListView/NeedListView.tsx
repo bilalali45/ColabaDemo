@@ -44,9 +44,9 @@ export const NeedListView = () => {
     }, [templates?.length])
 
     const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
-        if (LocalDB.getLoanAppliationId() && LocalDB.getTenantId()) {
+        if (LocalDB.getLoanAppliationId()) {
             if (fetchNew) {
-                let res: NeedList | undefined = await NeedListActions.getNeedList(LocalDB.getLoanAppliationId(), LocalDB.getTenantId(), status);
+                let res: NeedList | undefined = await NeedListActions.getNeedList(LocalDB.getLoanAppliationId(), status);
                 dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: res })
                 if (res) {
                     return res
@@ -68,9 +68,9 @@ export const NeedListView = () => {
 
 
     const deleteNeedListDoc = async (id: string, requestId: string, docId: string) => {
-        let tenentId = LocalDB.getTenantId();
-        if (id && requestId && docId && tenentId) {
-            let res = await NeedListActions.deleteNeedListDocument(id, requestId, docId, parseInt(tenentId))
+
+        if (id && requestId && docId) {
+            let res = await NeedListActions.deleteNeedListDocument(id, requestId, docId)
             if (res === 200) {
                 fetchNeedList(toggle, true).then((data) => {
                     let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
@@ -78,8 +78,8 @@ export const NeedListView = () => {
                 })
             }
         }
-      }
     }
+
 
     const togglerHandler = (pending: boolean) => {
         if (!pending) {
@@ -96,35 +96,35 @@ export const NeedListView = () => {
             })
         }
     }
-  };
 
-  const deleteNeedListDoc = async (
-    id: string,
-    requestId: string,
-    docId: string
-  ) => {
-    if (id && requestId && docId) {
-      let res = await NeedListActions.deleteNeedListDocument(
-        id,
-        requestId,
-        docId
-      );
-      if (res === 200) {
-        fetchNeedList(toggle, true).then((data) => {
-          let sortedList = sortList(
-            data,
-            docSort,
-            sortArrow === "asc" ? true : false,
-            statusSort,
-            sortStatusArrow === "asc" ? true : false
-          );
-          dispatch({
-            type: NeedListActionsType.SetNeedListTableDATA,
-            payload: sortedList,
-          });
-        });
-      }
-    }
+    // const deleteNeedListDoc = async (
+    //     id: string,
+    //     requestId: string,
+    //     docId: string
+    // ) => {
+    //     if (id && requestId && docId) {
+    //         let res = await NeedListActions.deleteNeedListDocument(
+    //             id,
+    //             requestId,
+    //             docId
+    //         );
+    //         if (res === 200) {
+    //             fetchNeedList(toggle, true).then((data) => {
+    //                 let sortedList = sortList(
+    //                     data,
+    //                     docSort,
+    //                     sortArrow === "asc" ? true : false,
+    //                     statusSort,
+    //                     sortStatusArrow === "asc" ? true : false
+    //                 );
+    //                 dispatch({
+    //                     type: NeedListActionsType.SetNeedListTableDATA,
+    //                     payload: sortedList,
+    //                 });
+    //             });
+    //         }
+    //     }
+
 
     const sortDocumentTitleHandler = () => {
         setDocSort(true);
@@ -154,12 +154,16 @@ export const NeedListView = () => {
 
     const addTemplatesDocuments = (idArray: string[]) => {
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray })
-        history.push('/newNeedList');
+        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`)
     }
 
     const viewSaveDraftHandler = () => {
         dispatch({ type: NeedListActionsType.SetIsDraft, payload: true });
-        history.push('/newNeedList');
+        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`)
+    }
+
+    const deleteClickHandler = (id: string, requestId: string, docId: string) => {
+        deleteNeedListDoc(id, requestId, docId);
     }
 
     return (
@@ -184,3 +188,4 @@ export const NeedListView = () => {
         </div>
     )
 }
+

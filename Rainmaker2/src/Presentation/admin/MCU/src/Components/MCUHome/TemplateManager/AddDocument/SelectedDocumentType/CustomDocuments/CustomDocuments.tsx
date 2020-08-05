@@ -22,7 +22,6 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     useEffect(() => {
         if (!nameTest.test(docName)) {
-            console.log('in here you know where ...');
             setDocNameError('Document name cannot contain any special characters');
         }else {
             setDocNameError('');

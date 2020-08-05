@@ -9,11 +9,11 @@ import Spinner from 'react-bootstrap/Spinner';
 type emailContentReviewProps = {
     documentsName: string | undefined;
     saveAsDraft: Function;
-    emailTemplate: string;
+    emailTemplate?: string;
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate}:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = ''}:emailContentReviewProps) => {
     
     const setDeafultText = () => {
         let str: string = '';

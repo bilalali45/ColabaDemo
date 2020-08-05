@@ -1,28 +1,46 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect, ChangeEvent } from 'react'
 
 type TextAreaType = {
-    textAreaValue: string;
-    focus: boolean;
-    onBlurHandler: Function;
-    onChangeHandler: Function;
-    isValid: boolean;
-    errorText: string;  
+    textAreaValue?: string;
+    focus?: boolean;
+    onBlurHandler?: Function;
+    onChangeHandler?: Function;
+    isValid?: boolean;
+    errorText?: string;
 }
 
-export const TextArea = ({textAreaValue, onBlurHandler, onChangeHandler, isValid, errorText, focus}: TextAreaType) => {
+export const TextArea = ({ textAreaValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus }: TextAreaType) => {
 
-   const textAreaStyle = {
-    border: isValid ?  "1px solid #f00" : ""
-   };
-   
+
+    const [isTextValid, setIsTextValid] = useState<boolean>(false);
+    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
+
+
+    const checkIfValid = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        if (regex.test(e.target.value)) {
+            setIsTextValid(false)
+            onChangeHandler(e);
+        } else {
+            setIsTextValid(true);
+        }
+    }
+
+    const textAreaStyle = {
+        border: isTextValid ? "1px solid #f00" : "",
+        outine: 'none'
+    };
+
 
     return (
         <Fragment>
-        <textarea style={textAreaStyle} autoFocus={focus} onBlur={(e) => onBlurHandler()} value={textAreaValue} onChange = {(e) => {onChangeHandler(e)}} name="" id="" className="form-control" rows={20}>
-        </textarea>
-        <div>
-       <p style={{color:"red"}} >{isValid ? errorText : ''}</p>
-        </div>
+            <textarea
+                style={textAreaStyle} autoFocus={focus} onBlur={(e) => onBlurHandler()} value={textAreaValue} onChange={(e) => {
+                    checkIfValid(e);
+                }} name="" id="" className="form-control" rows={20}>
+            </textarea>
+            <div>
+                <p style={{ color: "red" }} >{isTextValid ? errorText : ''}</p>
+            </div>
         </Fragment>
     )
 }

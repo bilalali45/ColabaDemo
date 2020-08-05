@@ -86,6 +86,7 @@ export const NeedListRequest = ({
                                     documentList?.map((d: TemplateDocument) => {
 
                                         return <NeedListRequestItem
+                                            key={d?.docName}
                                             isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
