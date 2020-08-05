@@ -50,9 +50,10 @@ export class UserActions {
         http.setAuth(res.data.data.token);
         return true;
       }
-      LocalDB.removeAuth();
+      console.log("Refresh token fail.");
+      //LocalDB.removeAuth();
       //window.open("/Login/LogOff", "_self");
-      window.top.location.href = "/Login/LogOff";
+      //window.top.location.href = "/Login/LogOff";
 
       return false;
     } catch (error) {
