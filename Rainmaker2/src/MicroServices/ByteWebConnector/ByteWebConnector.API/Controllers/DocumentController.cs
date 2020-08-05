@@ -71,7 +71,7 @@ namespace ByteWebConnector.API.Controllers
                                           {
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
                                               DocumentCategory = "PROP",//request.DocumentCategory,
-                                              DocumentExtenstion = "jpg",//request.DocumentExension,
+                                              DocumentExtenstion = "PDF",//request.DocumentExension,
                                               DocumentName = "Senior React Engineer",//request.DocumentName,
                                               DocumentStatus = "0",//request.DocumentStatus,
                                               DocumentType = "PurchaseAgr",//request.DocumentType,
@@ -94,7 +94,13 @@ namespace ByteWebConnector.API.Controllers
 
 
         }
+        // POST api/<DocumentController>
+        //[Route(template: "[action]")]
+        //[HttpPost]
+        //public IActionResult SendDocumentToManagement([FromBody] SendDocumentRequest request)
+        //{
 
+        //}
         // PUT api/<DocumentController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
