@@ -1,11 +1,22 @@
 import React from 'react'
 import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
+import Spinner from 'react-bootstrap/Spinner';
 
 type SelectedNeedListReviewProps = {
     documentList: TemplateDocument[];
 }
 
 export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProps) => {
+
+    if(!documentList){
+        return (
+            <div className="loader-widget loansnapshot">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          );
+    }
 
     const displayRequestDocumentsList = () => {
         return (

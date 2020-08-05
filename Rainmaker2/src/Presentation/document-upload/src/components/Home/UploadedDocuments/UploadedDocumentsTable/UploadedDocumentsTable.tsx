@@ -133,7 +133,7 @@ export const UploadedDocumentsTable = () => {
   };
 
   const loanHomeHandler = () => {
-    history.push("/activity");
+    history.push(`/activity/${Auth.getLoanAppliationId()}`);
   };
 
   const renderTable = (data) => {

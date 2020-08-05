@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { NeedListViewHeader } from './NeedListViewHeader/NeedListViewHeader'
-import { NeedListTable } from './NeedListTable/NeedListTable'
-import { NeedList } from '../../../../Entities/Models/NeedList'
-import { NeedListActions } from '../../../../Store/actions/NeedListActions'
-import { LocalDB } from '../../../../Utils/LocalDB'
-import { Store } from '../../../../Store/Store'
-import { NeedListActionsType } from '../../../../Store/reducers/NeedListReducer';
-import { sortList } from '../../../../Utils/helpers/Sort'
-import { Template } from '../../../../Entities/Models/Template'
-import { TemplateActions } from '../../../../Store/actions/TemplateActions'
-import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState, useContext } from "react";
+import { NeedListViewHeader } from "./NeedListViewHeader/NeedListViewHeader";
+import { NeedListTable } from "./NeedListTable/NeedListTable";
+import { NeedList } from "../../../../Entities/Models/NeedList";
+import { NeedListActions } from "../../../../Store/actions/NeedListActions";
+import { LocalDB } from "../../../../Utils/LocalDB";
+import { Store } from "../../../../Store/Store";
+import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
+import { sortList } from "../../../../Utils/helpers/Sort";
+import { Template } from "../../../../Entities/Models/Template";
+import { TemplateActions } from "../../../../Store/actions/TemplateActions";
+import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer";
+import { useHistory } from "react-router-dom";
 
 export const NeedListView = () => {
 
@@ -78,6 +78,7 @@ export const NeedListView = () => {
                 })
             }
         }
+      }
     }
 
     const togglerHandler = (pending: boolean) => {
@@ -95,9 +96,34 @@ export const NeedListView = () => {
             })
         }
     }
+  };
 
-    const deleteClickHandler = (id: string, requestId: string, docId: string) => {
-        deleteNeedListDoc(id, requestId, docId);
+  const deleteNeedListDoc = async (
+    id: string,
+    requestId: string,
+    docId: string
+  ) => {
+    if (id && requestId && docId) {
+      let res = await NeedListActions.deleteNeedListDocument(
+        id,
+        requestId,
+        docId
+      );
+      if (res === 200) {
+        fetchNeedList(toggle, true).then((data) => {
+          let sortedList = sortList(
+            data,
+            docSort,
+            sortArrow === "asc" ? true : false,
+            statusSort,
+            sortStatusArrow === "asc" ? true : false
+          );
+          dispatch({
+            type: NeedListActionsType.SetNeedListTableDATA,
+            payload: sortedList,
+          });
+        });
+      }
     }
 
     const sortDocumentTitleHandler = () => {

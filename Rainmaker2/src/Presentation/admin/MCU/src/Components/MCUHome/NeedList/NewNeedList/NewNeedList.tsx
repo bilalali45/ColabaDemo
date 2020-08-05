@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState, useContext, ChangeEvent } from "react";
 import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
-import { NewNeedListHeader } from './NewNeedListHeader/NewNeedListHeader'
-import { NewNeedListHome } from './NewNeedListHome/NewNeedListHome'
+import { NewNeedListHeader } from "./NewNeedListHeader/NewNeedListHeader";
+import { NewNeedListHome } from "./NewNeedListHome/NewNeedListHome";
 import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import { Store } from "../../../../Store/Store";
 import { TemplateActions } from "../../../../Store/actions/TemplateActions";
@@ -107,30 +107,79 @@ export const NewNeedList = () => {
         const data = documents?.map((obj: any) => ({ ...obj, isRejected: false }))
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
     }
+  }, [selectedTemplateDocuments?.length, templateIds?.length]);
 
-    const updateDocumentMessage = (message: string, document: TemplateDocument) => {
-
-        let documents: TemplateDocument[] = [];
-        setAllDocuments((preDocs: TemplateDocument[]) => {
-            documents = preDocs?.map((pd: TemplateDocument) => {
-                if (pd?.docId === document?.docId) {
-                    pd.docMessage = message;
-                    return pd;
-                }
-                return pd;
-            });
-            return documents;
-        });
-
+  useEffect(() => {
+    if (!isDraft) {
+      getDocumentsFromSelectedTemplates(selectedIds);
+    } else {
+      fetchDraftDocuments();
     }
+  }, [selectedIds?.length]);
 
-    const fetchCurrentCatDocs = async () => {
-        let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
-        if (currentCatDocs) {
-            dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
+  // useEffect(() => {
 
-            // setCurrentDocType(currentCatDocs[0]);
+  // }, [allDocuments?.length])
+
+  const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
+
+  const getDocumentsFromSelectedTemplates = async (ids: string[]) => {
+    let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(
+      ids
+    );
+    const data =
+      documents?.map((obj: TemplateDocument) => {
+        return {
+          ...obj,
+          docMessage: allDocuments?.find(
+            (d: TemplateDocument) => d.docId === obj.docId
+          )?.docMessage,
+          isRejected: false,
+        };
+      }) || [];
+    dispatch({
+      type: TemplateActionsType.SetSelectedTemplateDocuments,
+      payload: data,
+    });
+  };
+
+  const fetchDraftDocuments = async () => {
+    let documents: any = await NewNeedListActions.getDraft(
+      LocalDB.getLoanAppliationId()
+    );
+    const data = documents?.map((obj: any) => ({ ...obj, isRejected: false }));
+    dispatch({
+      type: TemplateActionsType.SetSelectedTemplateDocuments,
+      payload: data,
+    });
+  };
+
+  const updateDocumentMessage = (
+    message: string,
+    document: TemplateDocument
+  ) => {
+    let documents: TemplateDocument[] = [];
+    setAllDocuments((preDocs: TemplateDocument[]) => {
+      documents = preDocs?.map((pd: TemplateDocument) => {
+        if (pd?.docId === document?.docId) {
+          pd.docMessage = message;
+          return pd;
         }
+        return pd;
+      });
+      return documents;
+    });
+  };
+
+  const fetchCurrentCatDocs = async () => {
+    let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
+    if (currentCatDocs) {
+      dispatch({
+        type: TemplateActionsType.SetCategoryDocuments,
+        payload: currentCatDocs,
+      });
+
+      // setCurrentDocType(currentCatDocs[0]);
     }
 
     const addDocumentToList = (doc: Document, type: string) => {
