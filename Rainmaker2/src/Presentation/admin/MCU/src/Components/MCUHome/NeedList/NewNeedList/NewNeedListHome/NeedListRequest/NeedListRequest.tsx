@@ -10,6 +10,7 @@ import { Template } from '../../../../../../Entities/Models/Template';
 import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
+import { nameTest } from '../../../Add/Home/AddNeedListHome';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -50,12 +51,34 @@ export const NeedListRequest = ({
     removeDocumentFromList }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
+    const [templateNameError, setTemplateNameError] = useState<string>();
+    const [requestHit, setRequestHit] = useState<boolean>(false);
 
     useEffect(() => {
         setLoaderVisible(false);
     }, []);
 
     const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
+
+    const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
+        let { target: { value } } = e;
+        changeTemplateName(e);
+        setTemplateNameError('');
+
+        if (value?.length > 255) {
+            setTemplateNameError('Name must be less than 256 chars');
+            return;
+        }
+
+        if (templateList.find((t: Template) => t.name.trim() === value.trim())) {
+            setTemplateNameError(`Template name must be unique`);
+            return;
+        };
+
+        if (!nameTest.test(value)) {
+            setTemplateNameError('Template name cannot contain any special characters');
+        }
+    }
 
 
     const renderNoDocumentSelect = () => {
@@ -107,7 +130,25 @@ export const NeedListRequest = ({
     const renderSaveAsTemplate = () => {
         return (
             <div className="save-template">
-                <input value={templateName} onChange={(e) => changeTemplateName(e)} className="form-control" type="text" placeholder="Template Name" />
+                <input
+                    onKeyDown={(e: any) => {
+                        let { keyCode, target: { value } } = e;
+                        console.log('in here you know werhe', keyCode);
+                        if (keyCode === 13) {
+                            if (!value?.trim()?.length) {
+                                setTemplateNameError('Template name cannot be empty');
+                                return;
+                            }
+                        }
+                    }}
+                    style={{ border: templateNameError && '1px solid red' }}
+                    value={templateName}
+                    onChange={validateTemplateName}
+                    className="form-control"
+                    type="text"
+                    placeholder="Template Name"
+                    autoFocus
+                />
                 <div className="save-template-btns">
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
@@ -158,7 +199,10 @@ export const NeedListRequest = ({
 
             <div className="left-footer">
                 {showSaveAsTemplate ?
-                    renderSaveAsTemplate()
+                    <>
+                        {renderSaveAsTemplate()}
+                        {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                    </>
                     :
                     <div className="btn-wrap">
                         <NeedListSelect
@@ -167,11 +211,11 @@ export const NeedListRequest = ({
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
                         />
-                        <a
+                        {documentList?.length ? <a
                             onClick={toggleSaveAsTemplate}
                             className="btn-link link-primary">
                             Save as template
-                        </a>
+                        </a> : ''}
                     </div>}
             </div>
         </div>
