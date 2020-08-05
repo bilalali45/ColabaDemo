@@ -36,6 +36,27 @@ export const SelectedDocument = () => {
 
             {renderTitleInputText()}
 
+
+            <div className="mainbody">
+                <p>If you’d like, you can customize this email.</p>
+                <div className="editer-wrap">
+                <textarea rows={6} className="editer">
+                Hi Richard Glenn Randall,
+As we discussed, I’m adding addition |
+To continue your application, we need some more information.
+
+                </textarea>
+                </div>
+                
+            </div>
+
+            <div className="right-footer">
+            <div className="btn-wrap">
+                    <button className="btn btn-primary">Review Request</button>
+                
+                </div>
+            </div>
+
                 
         </section>
     )

@@ -13,9 +13,11 @@ namespace DocumentManagement.Service
         Task<List<DocumentModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId);
         Task<List<EmailLogDTO>> GetEmailLog(string id);
 
-        Task<bool> mcuRename(string id, string requestId, string docId, string fileId, string newName);
+        Task<bool> McuRename(string id, string requestId, string docId, string fileId, string newName, string userName);
         Task<bool> AcceptDocument(string id, string requestId, string docId, string userName);
         Task<bool> RejectDocument(string id, string requestId, string docId,string message,int userId, string userName);
-        Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress);
+        Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId);
+
+        Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
     }
 }

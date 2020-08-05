@@ -61,18 +61,24 @@ export const FormatAmountByCountry = (amount: number) =>                        
         })();
 }
 
-export const toTitleCase = (str: string | undefined) => {
-  
+export const toTitleCase = (str: string | undefined) => {  
     if (str) {
-      let sentence = str?.toLowerCase().split(" ");
-      for (var i = 0; i < sentence.length; i++) {
-        sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
+        str = str.replace(/\s+/g,' ').trim();
+        let sentence = str?.toLowerCase().split(" ");
+        for (var i = 0; i <= sentence.length; i++) {
+          if(sentence[i] != undefined && sentence[i] != ""){
+            sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
+          }else{
+            sentence.splice(i,1)
+          }
+        }
+        let sen = sentence.join(" ");
+        console.log('sen', sen)
+        return sen
+      }else {
+        console.log(str);
       }
-      return sentence.join(" ");
-    }else {
-      console.log(str);
-    }
-    return "";
+      return "";
   }
   
 

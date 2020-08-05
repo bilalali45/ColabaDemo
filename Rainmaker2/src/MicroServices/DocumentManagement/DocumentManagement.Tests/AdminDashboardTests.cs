@@ -30,10 +30,16 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
             var admindashboardController = new AdminDashboardController(mock.Object,Mock.Of<ILogger<AdminDashboardController>>());
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            admindashboardController.ControllerContext = context;
+
             GetDocuments moGetDocuments = new GetDocuments();
-            moGetDocuments.tenantId = 1;
             moGetDocuments.loanApplicationId = 1;
             moGetDocuments.pending = true;
             //Act
@@ -51,46 +57,55 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 };
+            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(true);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(true);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
+            controller.ControllerContext = context;
 
             //Act
-            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
+            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" });
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
-
 
         [Fact]
         public async Task TestDeleteControllerFalse()
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 };
+            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>())).ReturnsAsync(false);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(false);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
 
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
             //Act
-            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1", tenantId = 1 });
+            IActionResult result = await controller.Delete(new AdminDeleteModel() { id = "1", docId = "1", requestId = "1"});
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
         }
 
-
-
         [Fact]
-        public async Task TestGetDocumentsService()
+        public async Task TestGetDocumentsServicePending()
         {
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
@@ -110,6 +125,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
@@ -119,9 +135,10 @@ namespace DocumentManagement.Tests
                           { "_id" , BsonString.Empty },
                         { "requestId" , BsonString.Empty  },
                         { "docId" , BsonString.Empty },
-                         { "docName" , "House Document" },
+                        { "docName" , "House Document" },
                         { "typeName" , BsonString.Empty },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -134,6 +151,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" ,  "Property" },
                         { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -146,6 +164,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty},
                         { "status" ,"Started" },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -158,6 +177,7 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started"  },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" ,BsonNull.Value}
                     }
                   ,
@@ -170,7 +190,8 @@ namespace DocumentManagement.Tests
                         { "docName" , BsonString.Empty },
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started" },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" }} })}
+                        { "createdOn" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
                     }
             };
 
@@ -196,7 +217,119 @@ namespace DocumentManagement.Tests
             Assert.Equal("asd", dto[5].files[0].clientName);
         }
 
-       
+        [Fact]
+        public async Task TestGetDocumentsService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty fields
+                        { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+            ,
+                    new BsonDocument
+                    {
+                        //Cover all empty fields except docName
+                          { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , "House Document" },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                    new BsonDocument
+                    {
+                        //Cover all empty fields except typeName
+                         { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" ,  "Property" },
+                        { "status" , BsonString.Empty },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                  new BsonDocument
+                    {
+                        //Cover all empty fields except status
+                         { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty},
+                        { "status" ,"Started" },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                    }
+                    ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except status and set files null
+                          { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , "Started"  },
+                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
+                        { "files" ,BsonNull.Value}
+                    }
+                  ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except status and files
+                        { "_id" , BsonString.Empty },
+                        { "requestId" , BsonString.Empty  },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "typeName" , BsonString.Empty },
+                        { "status" , "Started" },
+                        { "createdOn" , BsonNull.Value },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
+                    }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
+            //Act
+            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1, false);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(6, dto.Count);
+            Assert.Equal("House Document", dto[1].docName);
+            Assert.Equal("Property", dto[2].docName);
+            Assert.Equal("Started", dto[3].status);
+            Assert.Equal("Started", dto[4].status);
+            Assert.Equal("asd", dto[5].files[0].clientName);
+        }
+
         [Fact]
         public async Task TestDeleteServiceTrue()
         {
@@ -206,7 +339,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d", tenantId = 1 };
+            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
@@ -214,7 +347,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel);
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
 
             //Assert
             Assert.True(result);
@@ -229,7 +362,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
 
-            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d", tenantId = 1 };
+            var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
@@ -237,7 +370,7 @@ namespace DocumentManagement.Tests
             //Act
 
             IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel);
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
             //Assert
             Assert.False(result);
         }
@@ -247,8 +380,8 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            
-            mock.Setup(x => x.IsDocumentDraft(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync("abc15d1fe456051af2eeb768");
+            RequestIdQuery query = new RequestIdQuery(){requestId = "abc15d1fe456051af2eeb768"};
+            mock.Setup(x => x.IsDocumentDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(query);
 
             var adminDashboardController = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
@@ -260,7 +393,7 @@ namespace DocumentManagement.Tests
 
             adminDashboardController.ControllerContext = context;
             IsDocumentDraft moIsDocumentDraft= new IsDocumentDraft();
-            moIsDocumentDraft.id = "5eb25d1fe519051af2eeb72d";
+            moIsDocumentDraft.loanApplicationId=14;
             //Act
             IActionResult result = await adminDashboardController.IsDocumentDraft(moIsDocumentDraft);
             //Assert
@@ -277,6 +410,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockRequestCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()
             {
@@ -289,12 +423,20 @@ namespace DocumentManagement.Tests
                     {
                         { "requestId" , "abc15d1fe456051af2eeb768" }
                     }
+            ,
+                    new BsonDocument
+                    {
+                        { "requestId" , "" }
+                    }
             };
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
-            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockRequestCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockRequestCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object).Returns(mockRequestCursor.Object);
 
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
 
@@ -302,7 +444,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
             //Act
-            var dto = await service.IsDocumentDraft("5eb25d1fe519051af2eeb72d", 3842);
+            var dto = await service.IsDocumentDraft(14, 3842);
             //Assert
             Assert.NotNull(dto);
         }

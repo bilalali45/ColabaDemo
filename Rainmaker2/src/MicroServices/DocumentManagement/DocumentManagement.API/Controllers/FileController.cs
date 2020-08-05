@@ -69,11 +69,10 @@ namespace DocumentManagement.API.Controllers
                                                 [FromForm] string docId,
                                                 [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
                                                 [FromForm] string order,
-                                                [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-                                                [FromForm] int tenantId,
                                                 List<IFormFile> files)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var algo = config[key: "File:Algo"];
             var key = config[key: "File:Key"];
             var setting = await settingService.GetSetting();
@@ -122,11 +121,10 @@ namespace DocumentManagement.API.Controllers
                 id = id,
                 docId = docId,
                 requestId = requestId,
-                files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order),
-                tenantId = tenantId
+                files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order)
             };
             await fileService.Order(model: model,
-                                    userProfileId: userProfileId);
+                                    userProfileId: userProfileId,tenantId);
             return Ok();
         }
 
@@ -138,9 +136,10 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Done(DoneModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
-                                                  userProfileId: userProfileId);
+                                                  userProfileId: userProfileId,tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -151,11 +150,12 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Rename(FileRenameModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await settingService.GetSetting();
             if (model.fileName.Length > setting.maxFileNameSize)
                 throw new Exception(message: "File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
-                                                    userProfileId: userProfileId);
+                                                    userProfileId: userProfileId,tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -166,8 +166,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Order(FileOrderModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             await fileService.Order(model: model,
-                                    userProfileId: userProfileId);
+                                    userProfileId: userProfileId,tenantId);
             return Ok();
         }
 
@@ -179,18 +180,18 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> View([FromQuery] FileViewModel moView)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var model = new FileViewModel
             {
                 docId = moView.docId,
                 fileId = moView.fileId,
                 id = moView.id,
-                requestId = moView.requestId,
-                tenantId = moView.tenantId
+                requestId = moView.requestId
             };
             logger.LogInformation($"document { moView.docId} is viewed by {userProfileId}");
             var fileviewdto = await fileService.View(model: model,
                                                      userProfileId: userProfileId,
-                                                     ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
+                                                     ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(),tenantId);
             var setting = await settingService.GetSetting();
 
             ftpClient.Setup(hostIp: setting.ftpServer,

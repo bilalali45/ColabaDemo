@@ -15,7 +15,7 @@ namespace DocumentManagement.Model
     }
     public static class DocumentStatus
     {
-        public const string Draft = "Draft"; // under mcu process
+        public const string Draft = "In draft"; // under mcu process
         public const string BorrowerTodo = "Borrower to do"; // mcu request
         public const string PendingReview = "Pending review"; // borrower submit
         public const string Started = "Started"; // borrower has added a file or rejected by mcu
@@ -125,10 +125,6 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public string requestId { get; set; }
-
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
 
     public class FileViewDTO
@@ -198,10 +194,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
 
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
         [FromQuery(Name = "pending")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public bool pending { get; set; }
@@ -209,53 +201,33 @@ namespace DocumentManagement.Model
     }
     public class IsDocumentDraft
     {
-        [FromQuery(Name = "id")]
+        [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
-        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
-        public string id { get; set; }
+        public int loanApplicationId { get; set; }
     }
     public class GetPendingDocuments
     {
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetSubmittedDocuments
     {
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetDashboardStatus
     {
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
-
-        [FromQuery(Name = "tenantId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
     }
     public class GetFooterText
     {
-        [FromQuery(Name = "tenantId")]
+        [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
-
-        [FromQuery(Name = "businessUnitId")]
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int businessUnitId { get; set; }
+        public int loanApplicationId { get; set; }
 
     }
 

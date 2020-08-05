@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DocumentManagement.Model
 {
@@ -53,6 +54,7 @@ namespace DocumentManagement.Model
     public class DocumentModel
     {
         public string docId { get; set; }
+        public string typeId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
     }
@@ -61,6 +63,8 @@ namespace DocumentManagement.Model
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
         public string typeName { get; set; }
         public string docMessage { get; set; }
         public List<Message> messages { get; set; }
@@ -101,9 +105,6 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = "Field Can't be empty")]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
         public string id { get; set; }
-
-        [Required(ErrorMessage = "Field Can't be empty")]
-        public int tenantId { get; set; }
 
         [Required(ErrorMessage = "Field Can't be empty")]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = "Validation Failed")]
@@ -165,18 +166,53 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$",ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "fileId")]
         public string fileId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "tenantId")]
-        public int tenantId { get; set; }
     }
     public class GetDocumentsByTemplateIds
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [ArrayRegularExpression(@"^[A-Fa-f\d]{24}$")]
         public  string[] id { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
-        public int tenantId { get; set; }
     }
+
+    public class UpdateByteProStatus
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string id { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string requestId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string docId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string fileId { get; set; }
+    }
+
+    public class ArrayRegularExpressionAttribute : ValidationAttribute
+    {
+        private string regex;
+
+        public ArrayRegularExpressionAttribute(string regex)
+        {
+            this.regex = regex;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            string[] array = value as string[];
+            if(array==null || array.Length<=0)
+                return new ValidationResult(ValidationMessages.ValidationFailed);
+            foreach (var item in array)
+            {
+                if(!Regex.IsMatch(item,this.regex))
+                    return new ValidationResult(ValidationMessages.ValidationFailed);
+            }
+            return ValidationResult.Success;
+        }
+    }
+
 }
 
 

@@ -1,0 +1,64 @@
+# OWASP Dependency Checker
+trigger:
+- master
+pr:
+# triggers build on pull request to develop
+- develop
+
+variables:
+- group: OWASPDependencyScan
+jobs: 
+- job: DependencyScan
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '$(codeSourceDirectory)/**/*.sln'
+        feedsToUse: 'select'
+    - task: MSBuild@1
+      inputs:
+        solution: '$(codeSourceDirectory)/**/*.sln'
+        msbuildVersion: '16.0'
+        maximumCpuCount: true
+  
+    - task: PowerShell@2
+      displayName: NPM Install All Sub Directories
+      inputs:
+        targetType: inline
+        errorActionPreference: 'continue'
+        script: | 
+          $orig_dir = $(pwd)
+          $dir_list = Get-childitem -Recurse -Filter package.json
+          # searches through all files in the repo and tries to find package.json files.
+          foreach ($package_file in $dir_list) {
+            if ($package_file.Directory -notlike '*example*'){
+              cd $package_file.Directory
+              # install all packages directory
+              npm install --package-lock
+              }
+          }
+          cd $orig_dir
+
+          # node_modules doesn't work in Dependency Checker CLI scan path for exclude. Change node_modules name directory into something that does
+          Get-ChildItem $(codeSourceDirectory) -Recurse -include "node_modules" | Rename-Item -NewName { $_.Name -replace 'node_modules' , 'nodemodules'}
+
+    - task: dependency-check-build-task@5
+      displayName: 'OWASP Scan'
+      inputs:
+        projectName: 'Project Analyzer'
+        scanPath: '$(codeSourceDirectory)/**'
+        format: 'JUNIT'
+        # exclude node_modules directory. Don't scan these files 
+        additionalArguments: "--exclude **/nodemodules/** "
+
+    # publish JUNIT test results
+    - task: PublishTestResults@2
+      condition: succeeded()
+      displayName: 'Publish Dependency Scan Results'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'dependency-check/*.xml'
+        searchFolder: $(Common.TestResultsDirectory)
+        testRunTitle: 'OWASP Dependency Check'

@@ -40,6 +40,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -77,7 +78,6 @@ namespace DocumentManagement.Tests
 
             Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
-            document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";
@@ -122,6 +122,7 @@ namespace DocumentManagement.Tests
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
@@ -159,7 +160,6 @@ namespace DocumentManagement.Tests
 
             Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
-            document.activityId = "5f0ede3cce9c4b62509d0dc2";
             document.status = DocumentStatus.BorrowerTodo;
             document.typeId = "5eb257a3e519051af2eeb624";
             document.displayName = "W2 2020";
@@ -405,6 +405,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -423,6 +424,16 @@ namespace DocumentManagement.Tests
                 }
             };
 
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "docId" , "5f2147136621531660dc42c23"},
+                    { "requestId" , "5f2147116621531660dc42bf"}
+                }
+            };
+
             List<BsonDocument> listActivityLog = new List<BsonDocument>()
             {
                 new BsonDocument
@@ -437,9 +448,12 @@ namespace DocumentManagement.Tests
             mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
 
             mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursorRequest.SetupGet(x => x.Current).Returns(listRequest);
+            mockCursorRequest.Setup(x => x.Current).Returns(listRequest);
 
-            mockCollectionRequest.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object);
+            mockCursorDraftDocument.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorDraftDocument.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorDraftDocument.Object);
 
             mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 
@@ -447,7 +461,6 @@ namespace DocumentManagement.Tests
             mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
-
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
@@ -478,6 +491,8 @@ namespace DocumentManagement.Tests
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
+            requestDocument.docId = "5f2147136621531660dc42c2";
+            requestDocument.requestId = "5f2147116621531660dc42bf";
             requestDocument.files = new List<Model.RequestFile>() { };
 
             request.documents.Add(requestDocument);
@@ -690,5 +705,287 @@ namespace DocumentManagement.Tests
             Assert.True(result);
 
         }
-    }
+
+        [Fact]
+        public async Task TestGetDraftController()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+            List<DraftDocumentDTO> list = new List<DraftDocumentDTO>() { { new DraftDocumentDTO()
+            {
+                message = "Hi Mark",
+                typeId = "5ebc18cba5d847268075ad4f",
+                docId = "5f2155194ce1db1a7cdb17e9",
+                requestId = "5f2155194ce1db1a7cdb17e8",
+                docName = "W3 2020",
+                docMessage = "please upload salary slip"
+            } } };
+
+            GetDraft getDraft = new GetDraft();
+            getDraft.loanApplicationId = 14;
+
+            mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var controller = new RequestController(mock.Object, null);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.GetDraft(getDraft);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<DraftDocumentDTO>;
+            Assert.Single(content);
+            Assert.Equal("Hi Mark", content[0].message);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].typeId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e8", content[0].requestId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e9", content[0].docId);
+            Assert.Equal("W3 2020", content[0].docName);
+            Assert.Equal("please upload salary slip", content[0].docMessage);
+        }
+
+        [Fact]
+        public async Task TestGetDraftService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequestDraft = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "message" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , BsonString.Empty},
+                    { "typeMessage" , BsonString.Empty},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , "please upload salary slip"},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonNull.Value }
+                }
+            };
+
+            List<BsonDocument> listRequestDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "message" , BsonString.Empty},
+                    { "typeId" , BsonString.Empty},
+                    { "docId" , BsonString.Empty},
+                    { "requestId" , BsonString.Empty},
+                    { "docName" , BsonString.Empty},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , BsonString.Empty},
+                    { "typeMessage" , BsonString.Empty},
+                    { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                ,new BsonDocument
+                {
+                   { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , "please upload salary slip"},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                     { "messages" , BsonArray.Create(new Message[]{ })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })}
+                }
+                 ,new BsonDocument
+                {
+                    { "message" , "Hi Mark"},
+                    { "typeId" , "5ebc18cba5d847268075ad4f"},
+                    { "docId" , "5f2155194ce1db1a7cdb17e9"},
+                    { "requestId" , "5f2155194ce1db1a7cdb17e8"},
+                    { "docName" , "W3 2020"},
+                    { "docMessage" , BsonString.Empty},
+                    { "typeName" , "Salary Slip"},
+                    { "typeMessage" , "Credit report has been uploaded"},
+                    { "messages" , BsonNull.Value }
+                }
+            };
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCursorRequestDraft.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequestDraft.Setup(x => x.Current).Returns(listRequestDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorRequestDraft.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new RequestService(mock.Object, null);
+
+            //Act
+            List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
+
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(8, dto.Count);
+            Assert.Equal("", dto[0].docId);
+            Assert.Equal("please upload salary slip", dto[1].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[2].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[3].docMessage);
+            Assert.Equal("", dto[4].docMessage);
+            Assert.Equal("please upload salary slip", dto[5].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[6].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[7].docMessage);
+        }
+
+        [Fact]
+        public async Task TestGetEmailTemplateController()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+
+            mock.Setup(x => x.GetEmailTemplate(It.IsAny<int>())).ReturnsAsync("Email Template");
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var controller = new RequestController(mock.Object, null);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.GetEmailTemplate();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as string;
+        }
+
+        [Fact]
+        public async Task TestGetEmailTemplateServiceTrue()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Tenant>> mockCollectionEmailTemplate = new Mock<IMongoCollection<Tenant>>();
+
+            List<BsonDocument> emailTemplate = new List<BsonDocument>()
+            {
+                new BsonDocument
+                 {
+                        { "emailTemplate" , "Email Template"}
+                 }
+                };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(emailTemplate);
+
+            mockCollectionEmailTemplate.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Tenant, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Tenant>("Tenant", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionEmailTemplate.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new RequestService(mock.Object, null);
+            //Act
+            string dto = await service.GetEmailTemplate(1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("Email Template", dto);
+        }
+
+            [Fact]
+            public async Task TestGetEmailTemplateServiceFalse()
+            {
+                //Arrange
+                Mock<IMongoService> mock = new Mock<IMongoService>();
+                Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+                Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+                Mock<IMongoCollection<Tenant>> mockCollectionEmailTemplate = new Mock<IMongoCollection<Tenant>>();
+
+                List<BsonDocument> emailTemplate = new List<BsonDocument>()
+            {
+                new BsonDocument
+                 {
+                        { "emailTemplate" , "Email Template"}
+                 }
+                };
+
+                mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false);
+                mockCursor.SetupGet(x => x.Current).Returns(emailTemplate);
+
+                mockCollectionEmailTemplate.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Tenant, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+                mockdb.Setup(x => x.GetCollection<Tenant>("Tenant", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionEmailTemplate.Object);
+
+                mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+                var service = new RequestService(mock.Object, null);
+                //Act
+                string dto = await service.GetEmailTemplate(1);
+                //Assert
+                Assert.NotNull(dto);
+                Assert.Equal(string.Empty, dto);
+            }
+        }
 }

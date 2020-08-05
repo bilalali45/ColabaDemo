@@ -60,10 +60,9 @@ export const LoanProgress = () => {
 
   const fetchLoanProgress = async () => {
     let applicationId = Auth.getLoanAppliationId();
-    let tenantId = Auth.getTenantId();
+
     let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(
-      applicationId ? applicationId : "1",
-      tenantId ? tenantId : "1"
+      applicationId ? applicationId : "1"
     );
     if (loanProgress) {
       setLoanProgress(loanProgress);

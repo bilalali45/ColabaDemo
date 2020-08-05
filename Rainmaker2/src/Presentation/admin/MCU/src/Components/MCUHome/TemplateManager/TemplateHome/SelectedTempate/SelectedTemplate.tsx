@@ -14,6 +14,9 @@ import { MyTemplate, TemplateListContainer } from '../TemplateListContainer/Temp
 import { nameTest } from '../TemplateHome';
 import Spinner from 'react-bootstrap/Spinner'
 import { Loader } from "../../../../../Shared/components/loader";
+import { trim } from 'lodash'
+import { LocalDB } from '../../../../../Utils/LocalDB'
+import { Document } from '../../../../../Entities/Models/Document'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -26,25 +29,31 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     const { state, dispatch } = useContext(Store);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [newNameText, setNewNameText] = useState<string>('');
-    const [nameExistsError, setNameExistsError] = useState<string>()
+    const [nameError, setNameError] = useState<string>()
     const [addRequestSent, setAddRequestSent] = useState<boolean>(false);
     const [removeDocName, setRemoveDocName] = useState<string>();
+    // const [showSpecialCharsError, setShowSpecialCharsError] = useState<boolean>(error);
 
 
     const templateManager: any = state.templateManager;
     const currentTemplate = templateManager?.currentTemplate;
     const templates = templateManager?.templates;
     const templateDocuments = templateManager?.templateDocuments;
+    const categoryDocuments = templateManager?.categoryDocuments;
 
     useEffect(() => {
         setNewNameText(currentTemplate?.name)
     }, [editTitleview]);
 
     useEffect(() => {
-        setNameExistsError('');
+        setNameError('');
     }, [currentTemplate?.name]);
 
     useEffect(() => {
+        if (!categoryDocuments) {
+            fetchCurrentCatDocs();
+        }
+
         if (currentTemplate) {
             seteditTitleview(false);
         }
@@ -58,16 +67,49 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     useEffect(() => {
         let nameUsed = templates?.filter((t: Template) => t.name.toLowerCase().includes('new template') && !isNaN(parseInt(t.name.split(' ')[2])))?.length;
-      
-        let name = `New Template ${nameUsed === 0? '' : nameUsed}`.trimEnd();
 
-        if(templates?.find((t: Template) => t?.name === name)) {
-            setNewNameText(`New Template ${nameUsed+1}`.trimEnd())
+        let name = `New Template ${nameUsed === 0 ? '' : nameUsed}`.trimEnd();
+
+        if (templates?.find((t: Template) => t?.name?.trim() === name?.trim())) {
+            setNewNameText(`New Template ${nameUsed + 1}`.trimEnd())
             return;
         }
 
         setNewNameText(name);
-    }, [!currentTemplate])
+    }, [!currentTemplate]);
+
+
+    useEffect(() => {
+        if (!nameTest.test(newNameText)) {
+            setNameError('Template name cannot contain any special characters');
+        }
+
+        if (!newNameText?.trim()?.length) {
+            setNameError('');
+        }
+    }, [newNameText]);
+
+    const fetchCurrentCatDocs = async () => {
+        let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
+        if (currentCatDocs) {
+            dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
+
+            // setCurrentDocType(currentCatDocs[0]);
+        }
+    }
+
+    const addDocumentToList = async (doc: Document, type: string) => {
+        
+        try {
+            let success = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
+            if (success) {
+                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
+                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
+            }
+        } catch (error) {
+
+        }
+    }
 
 
     const setCurrentTemplateDocs = async (template: any) => {
@@ -82,17 +124,15 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const addNewTemplate = async (name: string) => {
         dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
-        let insertedTemplate = await TemplateActions.insertTemplate('1', name);
+        let insertedTemplate = await TemplateActions.insertTemplate(name);
         if (insertedTemplate) {
 
-            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            let updatedTemplates: any = await TemplateActions.fetchTemplates();
             dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
 
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-            console.log(listContainerElRef.current?.clientHeight);
             if (listContainerElRef?.current) {
-                console.log(listContainerElRef.current?.children[0]?.clientHeight);
                 listContainerElRef.current.scrollTo(0, listContainerElRef.current?.children[0]?.clientHeight + 40);
             }
         }
@@ -100,38 +140,47 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const renameTemplate = async (value: string) => {
 
-        if(value === currentTemplate?.name) {
+        if (!nameTest.test(value.trim())) {
+            return;
+        }
+
+        if (value === currentTemplate?.name) {
             toggleRename();
             return;
         }
-        
+
         if (addRequestSent) {
             return;
         }
-       
-        if (!value?.length || value?.length > 255 || !value.trim().length) {
+
+        if (!value?.trim()?.length) {
+            setNameError('Template name cannot be empty');
             return;
         }
-       
-        if (templates.find((t: Template) => t.name === value && t.id !== currentTemplate?.id)) {
-            setNameExistsError(`A template named "${value.toLowerCase()}" already exists`);
+
+        if (value?.length > 255) {
+            setNameError('Name must be less than 256 chars');
+            return;
+        }
+
+        if (templates.find((t: Template) => t.name.trim() === value.trim() && t.id !== currentTemplate?.id)) {
+            setNameError(`Template name must be unique`);
             return;
         };
-       
+
         setAddRequestSent(true);
         setLoaderVisible(true);
-
         if (!currentTemplate) {
-            await addNewTemplate(value);
+            await addNewTemplate(value.trim());
             toggleRename();
             setLoaderVisible(false);
             setAddRequestSent(false);
             return;
         }
 
-        const renamed = await TemplateActions.renameTemplate('1', currentTemplate?.id, value);
+        const renamed = await TemplateActions.renameTemplate(currentTemplate?.id, value?.trim());
         if (renamed) {
-            let updatedTemplates: any = await TemplateActions.fetchTemplates('1');
+            let updatedTemplates: any = await TemplateActions.fetchTemplates();
             if (updatedTemplates) {
                 dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
                 dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((ut: Template) => ut.id === currentTemplate.id) });
@@ -151,7 +200,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         setAddRequestSent(true);
         setLoaderVisible(true);
         setRemoveDocName(documentId);
-        let isDeleted = await TemplateActions.deleteTemplateDocument('1', templateId, documentId);
+        let isDeleted = await TemplateActions.deleteTemplateDocument(templateId, documentId);
         if (isDeleted === 200) {
             await setCurrentTemplateDocs(currentTemplate);
         }
@@ -167,7 +216,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
                                 <li key={td.docId}>
-                                    <p>{td.docName}
+                                    <p title={td.docName}>{td?.docName}
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
                                                 addRequestSent && td.docId === removeDocName ?
@@ -175,7 +224,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                     <Spinner size="sm" animation="border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </Spinner>
-                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove"  className="BTNclose">
+                                                </span> : currentTemplate?.type === MyTemplate && <span title="Remove" className="BTNclose">
                                                     <i className="zmdi zmdi-close" onClick={() => removeDoc(currentTemplate?.id, td?.docId)}></i>
                                                 </span>
                                         }
@@ -200,22 +249,28 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
-                                        style={{ border: nameExistsError ? '1px solid red' : '' }}
+                                        maxLength={255}
                                         autoFocus
+                                        onFocus={(e: any) => {
+                                            let target = e.target;
+                                            setTimeout(() => {
+                                                target?.select();
+                                            }, 0);
+                                        }}
+                                        placeholder="New Template"
+                                        className={`editable-TemplateTitle ${nameError ? 'error' : ''}`}
                                         value={newNameText}
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-                                            setNewNameText(value);
 
+                                            setNewNameText(value);
                                             if (!value?.length || value?.length > 255) {
                                                 return;
                                             }
-                                            // console.log(letterNumber.test(e.target.value));
-                                            if (!nameTest.test(value)) {
-                                                return;
-                                            }
+
                                             setAddRequestSent(false);
                                             setLoaderVisible(false);
-                                            setNameExistsError('');
+                                            setNameError('');
+
                                             setNewNameText(value);
                                         }}
                                         onKeyDown={(e: any) => {
@@ -224,8 +279,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 setNewNameText(e.target.value);
                                             }
                                         }}
-                                        onBlur={() => renameTemplate(newNameText)}
-                                        className="editable-TemplateTitle" />
+                                        onBlur={() => renameTemplate(newNameText)} />
                                     {addRequestSent ?
                                         <div className="rename-spinner">
                                             <Spinner size="sm" animation="border" role="status">
@@ -233,7 +287,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                             </Spinner>
                                         </div> : ''}
                                     {/* <span className="editsaveicon" onClick={() => renameTemplate(newNameText)}><img src={checkicon} alt="" /></span> */}
-                                    {nameExistsError && <span className={"error-name"}>{nameExistsError}</span>}
+                                    {nameError && <label className={"error"}>{nameError}</label>}
                                 </p>
                             </>
                             : <>
@@ -244,6 +298,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                         {
                             currentTemplate?.type === MyTemplate &&
                             <AddDocument
+                                addDocumentToList={addDocumentToList}
                                 setLoaderVisible={setLoaderVisible}
                                 popoverplacement="bottom-start"
                             />

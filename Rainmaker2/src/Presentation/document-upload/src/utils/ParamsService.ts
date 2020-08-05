@@ -8,12 +8,7 @@ export class ParamsService {
     return this.params.find((p) => p?.includes(param))?.split("=")[1];
   }
 
-  static storeParams(params: string[]) {
-    for (const param of params) {
-      let extractedParam = this.getParam(param);
-      if (extractedParam) {
-        Auth.storeItem(param, extractedParam);
-      }
-    }
+  static storeParams(loanApplicationId) {
+    Auth.setLoanAppliationId(loanApplicationId);
   }
 }

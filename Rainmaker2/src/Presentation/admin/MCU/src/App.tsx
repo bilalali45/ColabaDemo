@@ -25,7 +25,6 @@ const App = () => {
   useEffect(() => {
     console.log("MCU App Version", "0.0.1");
     authenticate();
-    ParamsService.storeParams(["loanApplicationId", "tenantId"]);
     // component unmount
     return () => {
       LocalDB.removeAuth();
@@ -43,6 +42,7 @@ const App = () => {
 
   const onIdle = (e: any) => {
     console.log("Idle time meet");
+    window.onbeforeunload = null;
     LocalDB.removeAuth();
     //window.open("/Login/LogOff", "_self");
     window.top.location.href = "/Login/LogOff";
@@ -67,7 +67,15 @@ const App = () => {
         <main className="main-layout">
           <StoreProvider>
             <Router basename="/DocumentManagement">
-              <Authorized path="/" component={MCUHome} />
+              <Authorized
+                exact
+                path="/:loanApplicationId"
+                component={MCUHome}
+              />
+              <Authorized
+                path="/:activity/:loanApplicationId/"
+                component={MCUHome}
+              />
               <RainMakerFooter />
             </Router>
           </StoreProvider>

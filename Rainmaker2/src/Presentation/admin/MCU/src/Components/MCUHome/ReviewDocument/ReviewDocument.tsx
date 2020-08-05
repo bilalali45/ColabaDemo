@@ -1,237 +1,427 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Http } from "rainsoft-js";
 import Axios from "axios";
-import { DocumentView } from 'rainsoft-rc';
-import _ from 'lodash'
+import { DocumentView } from "rainsoft-rc";
+import _ from "lodash";
 
 import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
 import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
-import { NeedListDocumentType } from "../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
 import { LocalDB } from "../../../Utils/LocalDB";
-import emptyIcon from '../../../Assets/images/empty-icon.svg';
+import emptyIcon from "../../../Assets/images/empty-icon.svg";
+import { Store } from "../../../Store/Store";
+import {
+  NeedListType,
+  NeedListActionsType,
+} from "../../../Store/reducers/NeedListReducer";
+import { NeedList } from "../../../Entities/Models/NeedList";
+import { DocumentStatus } from "../../../Entities/Types/Types";
+
 export const ReviewDocument = () => {
-  const [currentDocument, setCurrentDocument] = useState<
-    NeedListDocumentType
-  >();
-  const [documentList1, setDocumentList1] = useState<NeedListDocumentType[]>(
-    []
-  );
+  const [currentDocument, setCurrentDocument] = useState<NeedList>();
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [currentFileIndex, setCurrentFileIndex] = useState(0)
-  const [documentDetail, setDocumentDetail] = useState(false)
-  const [typeIdId, setTypeIdId] = useState<{ id: string | null, typeId: string | null }>({
+  const [currentFileIndex, setCurrentFileIndex] = useState(0);
+  const [documentDetail, setDocumentDetail] = useState(false);
+  const [typeIdId, setTypeIdId] = useState<{
+    id: string | null;
+    typeId: string | null;
+  }>({
     id: null,
-    typeId: null
-  })
-  const [clientName, setClientName] = useState('')
-  const [perviousDocumentButtonDisabled, setPerviousDocumentButtonDisabled] = useState(true)
-  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(false)
+    typeId: null,
+  });
+  const [clientName, setClientName] = useState("");
+  const [
+    previousDocumentButtonDisabled,
+    setPreviousDocumentButtonDisabled,
+  ] = useState(true);
+  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(
+    false
+  );
+  const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
-  const tenantId = LocalDB.getTenantId()
+  const { state: AppState, dispatch } = useContext(Store);
+  const { needListManager } = AppState;
+  const { needList } = needListManager as Pick<NeedListType, "needList">;
 
   const history = useHistory();
   const location = useLocation();
   const { state } = location;
 
   const goBack = () => {
-    history.push("/needlist");
+    history.goBack();
   };
 
   const [blobData, setBlobData] = useState<any>();
 
-  const documentsForReviewArrayIndexes = () => _.keys(_.pickBy(documentList1, { status: 'Pending review' }))
+  const documentsForReviewArrayIndexes = () =>
+    _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
 
   const getDocumentForView = useCallback(
-    async (id, requestId, docId, fileId, tenantId) => {
+    async (id, requestId, docId, fileId) => {
       const params = {
         id,
         requestId,
         docId,
         fileId,
-        tenantId,
       };
 
       try {
-        setLoading(true)
+        setLoading(true);
 
         const http = new Http();
+
+        const authToken = LocalDB.getAuthToken();
 
         const url = NeedListEndpoints.GET.documents.view(
           id,
           requestId,
           docId,
-          fileId,
-          tenantId
-        )
+          fileId
+        );
 
         const response = await Axios.get(http.createUrl(http.baseUrl, url), {
-          params,
-          responseType: 'arraybuffer',
+          responseType: "arraybuffer",
           headers: {
-            Authorization: `Bearer ${LocalDB.getAuthToken()}`
-          }
-        })
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
 
-        setBlobData(response)
-        setLoading(false)
+        setBlobData(response);
+        setLoading(false);
       } catch (error) {
-        setLoading(false)
+        alert("Something went wrong while fetching document/file from server.");
 
-        alert('Something went wrong while fetching document/file from server.')
+        goBack();
       }
     },
     []
   );
 
-  const onNextDocument = useCallback(() => {
-    const pendingReviewDocuments: NeedListDocumentType[] = documentList1.filter((document: NeedListDocumentType) => document.status === 'Pending review')
+  const moveNextFile = useCallback(
+    async (
+      index: number,
+      fileId: string,
+      clientName: string,
+      loadingFile?: boolean
+    ) => {
+      if (index === currentFileIndex || loading === true) return;
 
-    const indexOfReview = navigationIndex + 1
+      if (currentDocument) {
+        const { id, requestId, docId } = currentDocument;
 
-    const currentDocument = pendingReviewDocuments[indexOfReview]
+        setCurrentFileIndex(() => index);
+        setBlobData(() => null);
+        setClientName(clientName);
 
-    if (!pendingReviewDocuments[navigationIndex + 2] && !nextDocumentButtonDisabled) {
-      setNextDocumentButtonDisabled(true)
-    }
-
-    if (perviousDocumentButtonDisabled === true) {
-      setPerviousDocumentButtonDisabled(false)
-    }
-
-    if (!currentDocument) return
-
-    const { id, requestId, docId, files } = currentDocument
-
-    setCurrentDocument(() => currentDocument);
-    setNavigationIndex(() => indexOfReview);
-    setCurrentFileIndex(0)
-    setTypeIdId({ id: null, typeId: null })
-
-    if (!!files && files.length > 0) {
-      setClientName(files[0].clientName)
-
-      getDocumentForView(id, requestId, docId, files[0].id, 1);
-    }
-  }, [navigationIndex, documentList1, getDocumentForView]);
-
-  const onPreviousDocument = useCallback(() => {
-    const pendingReviewDocuments: NeedListDocumentType[] = documentList1.filter((document: NeedListDocumentType) => document.status === 'Pending review')
-
-    const indexOfReview = navigationIndex - 1
-
-    const currentDocument = pendingReviewDocuments[indexOfReview]
-
-    if (!pendingReviewDocuments[navigationIndex - 2] && !perviousDocumentButtonDisabled) {
-      setPerviousDocumentButtonDisabled(true)
-    }
-
-    if (nextDocumentButtonDisabled === true) {
-      setNextDocumentButtonDisabled(false)
-    }
-
-    if (!currentDocument) return
-
-    const { id, requestId, docId, files } = currentDocument
-
-    setCurrentDocument(() => currentDocument);
-    setNavigationIndex(() => indexOfReview);
-    setCurrentFileIndex(() => 0)
-    setTypeIdId({ id: null, typeId: null })
-
-    if (!!files && files.length > 0) {
-      setClientName(files[0].clientName)
-
-      getDocumentForView(id, requestId, docId, files[0].id, tenantId);
-    }
-  }, [documentList1, navigationIndex, documentList1, getDocumentForView, tenantId]);
-
-  const moveNextFile = useCallback(async (index: number, fileId: string, clientName: string) => {
-    if (index === currentFileIndex || loading === true) return
-
-    if (currentDocument) {
-      const { id, requestId, docId } = currentDocument
-
-      const tenantId = LocalDB.getTenantId()
-
-      setCurrentFileIndex(() => index)
-      setBlobData(() => null)
-      setClientName(clientName)
-
-      !loading && getDocumentForView(id, requestId, docId, fileId, tenantId)
-    }
-  }, [loading, setCurrentFileIndex, getDocumentForView, currentDocument, currentFileIndex])
+        getDocumentForView(id, requestId, docId, fileId);
+      }
+    },
+    [
+      setCurrentFileIndex,
+      getDocumentForView,
+      currentDocument,
+      currentFileIndex,
+      loading,
+    ]
+  );
 
   const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
-    setTypeIdId({ id, typeId: typeIdOrDocName })
-  }, [])
+    setTypeIdId({ id, typeId: typeIdOrDocName });
+  }, []);
+
+  const changeCurrentDocument = useCallback(
+    (nextDocument: NeedList, nextIndex: number) => {
+      const { id, requestId, docId, files } = nextDocument;
+
+      setCurrentDocument(() => nextDocument);
+      setNavigationIndex(() => nextIndex);
+      setCurrentFileIndex(0);
+      setTypeIdId({ id: null, typeId: null });
+
+      if (!!files && files.length > 0) {
+        setClientName(files[0].clientName);
+
+        getDocumentForView(id, requestId, docId, files[0].id);
+      }
+    },
+    []
+  );
+
+  //This function is being called inside useEffect
+  const navigateDocument = useCallback(
+    (docs: NeedList[], navigateBackOrForward: string) => {
+      if (currentDocument) {
+        let index: number;
+
+        if (navigateBackOrForward === "next") {
+          const nextDocIndex = docs.findIndex(
+            (doc, index) =>
+              doc.docId !== currentDocument.docId &&
+              index > navigationIndex &&
+              doc.status === DocumentStatus.PENDING_REVIEW
+          );
+
+          const previousDoc = docs
+            .filter(
+              (doc, index) =>
+                doc.status === DocumentStatus.PENDING_REVIEW &&
+                index < nextDocIndex
+            )
+            .reverse()[0];
+
+          if (previousDoc && previousDocumentButtonDisabled) {
+            setPreviousDocumentButtonDisabled(false);
+          }
+
+          index = nextDocIndex;
+        } else {
+          index = docs.findIndex(
+            (doc, index) =>
+              doc.docId !== currentDocument.docId &&
+              index === navigationIndex - 1 &&
+              doc.status === DocumentStatus.PENDING_REVIEW
+          );
+
+          if (index === -1) {
+            const previousDoc = docs
+              .filter(
+                (doc, index) =>
+                  doc.docId !== currentDocument.docId &&
+                  doc.status === DocumentStatus.PENDING_REVIEW &&
+                  index < navigationIndex
+              )
+              .reverse()[0];
+
+            if (previousDoc) {
+              index = docs.findIndex((doc) => doc.docId === previousDoc.docId);
+            }
+          }
+        }
+
+        if (index === -1) {
+          history.goBack();
+        } else {
+          const nextDocument = docs[index];
+
+          changeCurrentDocument(nextDocument, index);
+        }
+      }
+    },
+    [navigationIndex, currentDocument]
+  );
+
+  const acceptDocument = useCallback(
+    async (needList: NeedList[]) => {
+      if (currentDocument) {
+        try {
+          setAcceptRejectLoading(true);
+
+          const { id, requestId, docId } = currentDocument;
+
+          const http = new Http();
+
+          await http.post(NeedListEndpoints.POST.documents.accept(), {
+            id,
+            requestId,
+            docId,
+          });
+
+          setAcceptRejectLoading(false);
+
+          const clonedNeedList = _.cloneDeep(needList);
+
+          const clonedCurrentDocument = clonedNeedList[navigationIndex];
+          clonedCurrentDocument.status = DocumentStatus.COMPLETED;
+
+          dispatch({
+            type: NeedListActionsType.SetNeedListTableDATA,
+            payload: clonedNeedList,
+          });
+
+          navigateDocument(needList, "next");
+        } catch (error) {
+          alert("Something went wrong. Please try again later.");
+
+          setAcceptRejectLoading(false);
+        }
+      }
+    },
+    [navigateDocument, currentDocument, navigationIndex, dispatch]
+  );
+
+  const rejectDocument = useCallback(
+    async (needList: NeedList[], rejectDocumentMessage: string) => {
+      if (currentDocument) {
+        try {
+          setAcceptRejectLoading(true);
+
+          const { id, requestId, docId } = currentDocument;
+
+          const loanApplicationId = Number(LocalDB.getLoanAppliationId());
+
+          const http = new Http();
+
+          await http.post(NeedListEndpoints.POST.documents.reject(), {
+            loanApplicationId,
+            id,
+            requestId,
+            docId,
+            message: rejectDocumentMessage,
+          });
+
+          setAcceptRejectLoading(false);
+
+          const clonedNeedList = _.cloneDeep(needList);
+
+          const clonedCurrentDocument = clonedNeedList[navigationIndex];
+          clonedCurrentDocument.status = DocumentStatus.IN_DRAFT;
+
+          dispatch({
+            type: NeedListActionsType.SetNeedListTableDATA,
+            payload: clonedNeedList,
+          });
+
+          navigateDocument(needList, "next");
+        } catch (error) {
+          alert("Something went wrong. Please try again later.");
+
+          setAcceptRejectLoading(false);
+        }
+      }
+    },
+    [navigateDocument, currentDocument, navigationIndex, dispatch]
+  );
+
+  const getNextFileIndex = () => {
+    if (currentDocument!.files[currentFileIndex + 1]) {
+      return currentFileIndex + 1;
+    }
+
+    return -1;
+  };
+
+  const getPreviousFileIndex = () => {
+    if (currentDocument!.files[currentFileIndex - 1]) {
+      return currentFileIndex - 1;
+    }
+
+    return -1;
+  };
+
+  const onMoveArrowKeys = (event: KeyboardEvent) => {
+    if (loading) return;
+
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+
+      if (currentDocument) {
+        if (event.key === "ArrowDown") {
+          // move forward
+          const fileIndex = getNextFileIndex();
+
+          if (fileIndex !== -1) {
+            const currentFile = currentDocument.files[fileIndex];
+
+            moveNextFile(
+              fileIndex,
+              currentFile.id,
+              currentFile.clientName,
+              loading
+            );
+          }
+        } else if (event.key === "ArrowUp") {
+          // move back
+          const fileIndex = getPreviousFileIndex();
+
+          if (fileIndex !== -1) {
+            const currentFile = currentDocument.files[fileIndex];
+
+            moveNextFile(
+              fileIndex,
+              currentFile.id,
+              currentFile.clientName,
+              loading
+            );
+          }
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", onMoveArrowKeys);
+
+    return () => {
+      window.removeEventListener("keydown", onMoveArrowKeys);
+    };
+  }, [currentDocument, loading, currentFileIndex]);
 
   useEffect(() => {
     //onload Goto Top
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-  }, [])
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: any) => {
-      if (event.key === 'Escape') {
-        goBack()
+      if (event.key === "Escape") {
+        if (loading) return; // Prevent closing it down while loading
+
+        goBack();
       }
-    }
+    };
 
-    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener("keydown", onKeyDown);
 
-    return () => window.removeEventListener('keydown', onKeyDown) //clear up event
-  }, [])
+    return () => window.removeEventListener("keydown", onKeyDown); //clear up event
+  }, [goBack]);
 
   useEffect(() => {
+    if (loading) return;
+
     if (!!location.state) {
       try {
-        const { documentList, currentDocumentIndex, documentDetail } = state as any;
-        const doc: NeedListDocumentType = documentList[currentDocumentIndex];
+        const { currentDocumentIndex, documentDetail } = state as any;
+        const doc = needList[currentDocumentIndex];
 
-        if (!!documentList && documentList.length) {
-          if (!documentDetail) {
-            const pendingReviewDocuments: NeedListDocumentType[] = documentList.filter((document: NeedListDocumentType) => document.status === 'Pending review')
+        if (!documentDetail) {
+          const nextIndex = needList.findIndex(
+            (document, index) =>
+              document.docId !== doc.docId &&
+              document.status === DocumentStatus.PENDING_REVIEW &&
+              index > currentDocumentIndex
+          );
 
-            if (pendingReviewDocuments.length > 0) {
-              const index = pendingReviewDocuments.findIndex((document: NeedListDocumentType) => document.docId === doc.docId)
+          const previousIndex = needList.findIndex(
+            (document, index) =>
+              document.docId !== doc.docId &&
+              document.status === DocumentStatus.PENDING_REVIEW &&
+              index < currentDocumentIndex
+          );
 
-              if (!pendingReviewDocuments[index + 1]) {
-                setNextDocumentButtonDisabled(() => true)
-              }
-
-              if (pendingReviewDocuments[index - 1] && perviousDocumentButtonDisabled === true) {
-                setPerviousDocumentButtonDisabled(() => false)
-              }
-
-              setNavigationIndex(index);
-            }
-          } else {
-            setNavigationIndex(currentDocumentIndex);
+          if (nextIndex === -1) {
+            setNextDocumentButtonDisabled(() => true);
           }
 
-          setDocumentList1(() => documentList);
-          setCurrentDocument(() => documentList[currentDocumentIndex]);
-          setDocumentDetail(() => documentDetail)
-
-          const { id, requestId, docId, files, typeId, docName } = doc
-
-          if (!loading && !!files && !!files.length && files.length > 0) {
-            setClientName(files[0].clientName)
-
-            getDocumentForView(
-              id,
-              requestId,
-              docId,
-              files[0].id,
-              tenantId
-            );
-          } else {
-            setTypeIdId({ id, typeId: !!typeId ? typeId : docName })
+          if (previousIndex !== -1) {
+            setPreviousDocumentButtonDisabled(() => false);
           }
+        }
+
+        setNavigationIndex(currentDocumentIndex);
+        setCurrentDocument(() => doc);
+        setDocumentDetail(() => documentDetail);
+
+        const { id, requestId, docId, files, typeId, docName } = doc;
+
+        if (!loading && !!files && !!files.length && files.length > 0) {
+          setClientName(files[0].clientName);
+
+          getDocumentForView(id, requestId, docId, files[0].id);
+        } else {
+          setTypeIdId({ id, typeId: !!typeId ? typeId : docName });
         }
       } catch (error) {
         console.log("error", error);
@@ -239,7 +429,12 @@ export const ReviewDocument = () => {
         alert("Something went wrong. Please try again.");
       }
     }
-  }, [getDocumentForView, state, location.state, tenantId]);
+  }, [
+    getDocumentForView,
+    previousDocumentButtonDisabled,
+    state,
+    location.state,
+  ]);
 
   return (
     <div
@@ -250,18 +445,26 @@ export const ReviewDocument = () => {
       <ReviewDocumentHeader
         id={typeIdId.id}
         typeId={typeIdId.typeId}
-        hideNextPreviousNavigation={documentDetail || documentsForReviewArrayIndexes().length === 1}
+        hideNextPreviousNavigation={
+          documentDetail || documentsForReviewArrayIndexes().length === 1
+        }
         buttonsEnabled={!loading}
         onClose={goBack}
-        nextDocument={onNextDocument}
-        previousDocument={onPreviousDocument}
-        perviousDocumentButtonDisabled={perviousDocumentButtonDisabled}
-        nextDocumentButtonDisabled={nextDocumentButtonDisabled}
+        nextDocument={() => navigateDocument(needList, "next")}
+        previousDocument={() => navigateDocument(needList, "back")}
+        perviousDocumentButtonDisabled={
+          previousDocumentButtonDisabled || acceptRejectLoading
+        }
+        nextDocumentButtonDisabled={
+          nextDocumentButtonDisabled || acceptRejectLoading
+        }
         documentDetail={documentDetail}
       />
       <div className="review-document-body">
         <div className="row">
-          {!!currentDocument && currentDocument.files && currentDocument.files.length ? (
+          {!!currentDocument &&
+          currentDocument.files &&
+          currentDocument.files.length ? (
             <div className="review-document-body--content col-md-8">
               <div className="doc-view-mcu">
                 <DocumentView
@@ -269,35 +472,41 @@ export const ReviewDocument = () => {
                   id={currentDocument.id}
                   requestId={currentDocument.requestId}
                   docId={currentDocument.docId}
-                  tenantId={tenantId}
                   clientName={clientName}
                   blobData={blobData}
-                  hideViewer={() => { }}
+                  hideViewer={() => {}}
                 />
               </div>
             </div>
           ) : (
-              <div className="no-preview">
-                <div className="no-preview--wrap">
-                  <div className="clearfix">
-                    <img src={emptyIcon} alt="No preview available" />
-                  </div>
-                  <h2>{currentDocument?.docName}</h2>
-                  <p>No file submitted yet</p>
+            <div className="no-preview">
+              <div className="no-preview--wrap">
+                <div className="clearfix">
+                  <img src={emptyIcon} alt="No preview available" />
                 </div>
+                <h2>Nothing In {currentDocument?.docName}</h2>
+                <p>No file submitted yet</p>
               </div>
-            )}
-          {/* review-document-body--content */}
-          {!!currentDocument && currentDocument.files && currentDocument.files.length && (
-            <aside className="review-document-body--aside col-md-4">
-              <ReviewDocumentStatement
-                typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
-                moveNextFile={moveNextFile}
-                currentDocument={!!currentDocument ? currentDocument : null}
-                currentFileIndex={currentFileIndex}
-              />
-            </aside>
+            </div>
           )}
+          {/* review-document-body--content */}
+          {!!currentDocument &&
+            currentDocument.files &&
+            currentDocument.files.length > 0 && (
+              <aside className="review-document-body--aside col-md-4">
+                <ReviewDocumentStatement
+                  typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
+                  moveNextFile={moveNextFile}
+                  currentDocument={!!currentDocument ? currentDocument : null}
+                  currentFileIndex={currentFileIndex}
+                  acceptDocument={() => acceptDocument(needList)}
+                  rejectDocument={(rejectMessage: string) =>
+                    rejectDocument(needList, rejectMessage)
+                  }
+                  documentViewLoading={loading || acceptRejectLoading}
+                />
+              </aside>
+            )}
           {/* review-document-body--aside */}
         </div>
       </div>

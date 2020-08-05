@@ -1,30 +1,107 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
 
 import { DocumentSnipet } from "./DocumentSnipet/DocumentSnipet";
-import { NeedListDocumentType, DocumentFileType, FileType } from "../../../../Entities/Types/Types";
+import { DocumentFileType, FileType } from "../../../../Entities/Types/Types";
 import { NeedListEndpoints } from "../../../../Store/endpoints/NeedListEndpoints";
+import { NeedList } from "../../../../Entities/Models/NeedList";
+import { DocumentStatus } from "../../../../Entities/Types/Types";
+
+const Footer = ({
+  acceptDocument,
+  rejectDocument,
+  setRejectPopup,
+  rejectModalOpen,
+  status,
+  acceptRejectEnabled
+}:
+  {
+    acceptDocument: () => void,
+    rejectDocument: () => void,
+    setRejectPopup: () => void,
+    rejectModalOpen: boolean,
+    status?: string,
+    acceptRejectEnabled: boolean
+  }) => {
+  const rejectAndCloseRejectPopUp = () => {
+    rejectDocument();
+
+    if (acceptRejectEnabled === false) {
+      setRejectPopup()
+    }
+  }
+
+  if (status === DocumentStatus.COMPLETED) {
+    return (
+      <footer className="document-statement--footer alert alert-success" role="alert">
+        This document has been accepted.
+      </footer>
+    )
+  } else if (status === DocumentStatus.IN_DRAFT) {
+    return (
+      <footer className="document-statement--footer alert alert-primary" role="alert">
+        This document has been saved as draft.
+      </footer>
+    )
+  } else if (rejectModalOpen) {
+    return (
+      <footer className="document-statement--footer">
+        <div className="row">
+          <div className="col-md-6">
+            <button className="btn btn-secondry btn-block" disabled={acceptRejectEnabled} onClick={setRejectPopup}>Cancel</button>
+          </div>
+          <div className="col-md-6">
+            <button className="btn btn-primary btn-block" disabled={acceptRejectEnabled} onClick={rejectAndCloseRejectPopUp} >Add to Draft</button>
+          </div>
+        </div>
+      </footer>
+    )
+  }
+
+  return status === DocumentStatus.PENDING_REVIEW ? (
+    <footer className="document-statement--footer">
+      <div className="row">
+        <div className="col-md-6">
+          <button className="btn btn-secondry btn-block" disabled={acceptRejectEnabled} onClick={setRejectPopup}>Reject Document</button>
+        </div>
+        <div className="col-md-6">
+          <button className="btn btn-primary btn-block" disabled={acceptRejectEnabled} onClick={acceptDocument}>Accept Document</button>
+        </div>
+      </div>
+    </footer>
+  ) : (null)
+}
 
 export const ReviewDocumentStatement = ({
   typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
-  currentFileIndex
+  currentFileIndex,
+  acceptDocument,
+  rejectDocument,
+  documentViewLoading
 }: {
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void,
-  moveNextFile: (index: number, fileId: string, clientName: string) => void
-  currentDocument: NeedListDocumentType | null;
-  currentFileIndex: number
+  moveNextFile: (index: number, fileId: string, clientName: string, loading?: boolean) => void
+  currentDocument: NeedList | null;
+  currentFileIndex: number,
+  acceptDocument: () => void,
+  rejectDocument: (rejectMessage: string) => void,
+  documentViewLoading: boolean
 }) => {
-  const [documentFiles, setDocumentFiles] = useState<FileType[]>([])
-  const [loading, setLoading] = useState(false)
-  const [username, setUsername] = useState('')
-  const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([])
+  const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [mcuNamesUpdated, setMcuNamesUpdated] = useState<{ fileId: string, mcuName: string }[]>([]);
+  const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
+  const [rejectDocumentMessage, setRejectDocumentMessage] = useState(`Hi ${currentDocument!.userName}, please submit the bank state again`)
 
-  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."))
+  const getFileNameWithoutExtension = (fileName: string) => fileName.substring(0, fileName.lastIndexOf("."));
 
-  const getDocumentFiles = useCallback(async (currentDocument: NeedListDocumentType) => {
+  const documentStateBodyRef = useRef<HTMLSelectElement>(null)
+
+  const getDocumentFiles = useCallback(async (currentDocument: NeedList) => {
     try {
       setLoading(true)
 
@@ -57,7 +134,13 @@ export const ReviewDocumentStatement = ({
     }
   }, [setDocumentFiles])
 
-  const allowFileRenameMCU = (filename: string, fileId: string): boolean => {
+  const getMcuNameUpdated = (fileId: string): string => {
+    const item = mcuNamesUpdated.find(item => item.fileId === fileId)
+
+    return !!item ? item.mcuName : ""
+  }
+
+  const allowFileRenameMCU = (filename: string, fileId: string, addToList: boolean = true): boolean => {
     const clonedArray = [...mcuNamesUpdated]
 
     // Why filter? because we don't want to check filename of current file being renamed
@@ -65,7 +148,13 @@ export const ReviewDocumentStatement = ({
       return file.mcuName.trim() === filename.trim()
     })
 
-    if (mcuNameAlreadyInList) return false
+    // This condition will make sure we are not saving each value in string
+    // addToList === false, means we don't want to save it in List setMcuNamesUpdated
+    if (addToList === false) {
+      return mcuNameAlreadyInList
+    } else if (mcuNameAlreadyInList) {
+      return false
+    }
 
     const documentFile = clonedArray.find(file => file.fileId === fileId)
 
@@ -75,6 +164,16 @@ export const ReviewDocumentStatement = ({
 
     setMcuNamesUpdated(() => clonedArray)
     return true
+  }
+
+  const checkDialog = () => {
+    return {
+      overflow: rejectDocumentModal ? 'hidden' : ''
+    }
+  }
+
+  const onChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRejectDocumentMessage(event.target.value.trim())
   }
 
   useEffect(() => {
@@ -99,27 +198,56 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
-          <section className="document-statement--body">
-            {/* <h3>Documents</h3> */}
-            {!!documentFiles && documentFiles.length ?
-              documentFiles.map((file, index) => <DocumentSnipet
-                key={index}
-                index={index}
-                moveNextFile={moveNextFile}
-                id={currentDocument?.id!}
-                requestId={currentDocument?.requestId!}
-                docId={currentDocument?.docId!}
-                fileId={file.fileId}
-                mcuName={file.mcuName}
-                clientName={file.clientName}
-                currentFileIndex={currentFileIndex}
-                uploadedOn={file.fileUploadedOn}
-                username={username}
-                allowFileRenameMCU={allowFileRenameMCU}
-              />) : (
-                <span>No file submitted yet</span>
-              )}
-          </section>
+          <div className="document-statement--body-footer">
+            <section ref={documentStateBodyRef} className="document-statement--body" style={checkDialog()}>
+              {/* <h3>Documents</h3> */}
+              {!!documentFiles && documentFiles.length ?
+                documentFiles.map((file, index) => <DocumentSnipet
+                  key={index}
+                  id={currentDocument?.id!}
+                  index={index}
+                  moveNextFile={moveNextFile}
+                  requestId={currentDocument?.requestId!}
+                  docId={currentDocument?.docId!}
+                  fileId={file.fileId}
+                  mcuName={file.mcuName}
+                  clientName={file.clientName}
+                  currentFileIndex={currentFileIndex}
+                  uploadedOn={file.fileUploadedOn}
+                  username={username}
+                  allowFileRenameMCU={allowFileRenameMCU}
+                  getMcuNameUpdated={getMcuNameUpdated}
+                />) : (
+                  <span>No file submitted yet</span>
+                )}
+              {
+                rejectDocumentModal &&
+                <div className="dialogbox">
+                  <div className="dialogbox-backdrop"></div>
+                  <div className="dialogbox-slideup">
+                    <h2 className="h2">Request this document again.</h2>
+                    <p>Let the borrower know what you need to mark it as complete</p>
+                    <textarea
+                      className="form-control"
+                      rows={6}
+                      value={rejectDocumentMessage}
+                      onChange={onChangeTextArea}
+                    />
+                  </div>
+                </div>
+              }
+            </section>
+
+            <Footer
+              status={currentDocument?.status}
+              acceptDocument={acceptDocument}
+              rejectDocument={() => rejectDocument(rejectDocumentMessage)}
+              setRejectPopup={() => setRejectDocumentModal(prevState => !prevState)}
+              rejectModalOpen={rejectDocumentModal}
+              acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
+            />
+
+          </div>
         )}
     </div>
   );

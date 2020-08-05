@@ -108,14 +108,14 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<bool> Delete(AdminDeleteModel model)
+        public async Task<bool> Delete(AdminDeleteModel model, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(model.id) },
-                { "tenantId", model.tenantId},
+                { "tenantId", tenantId},
 
                 {
                     "requests" , new BsonDocument()
@@ -191,13 +191,12 @@ namespace DocumentManagement.Service
             return result.ModifiedCount == 1;
         }
 
-        public async Task<string> IsDocumentDraft(string id, int userId)
+        public async Task<RequestIdQuery> IsDocumentDraft(int loanApplicationId, int userId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-            string requestId = String.Empty;
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
                 @"{""$match"": {
-                  ""_id"": " + new ObjectId(id).ToJson() + @"
+                  ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }",
                         @"{
@@ -205,8 +204,7 @@ namespace DocumentManagement.Service
                                 ""path"": ""$requests"",
                                 ""preserveNullAndEmptyArrays"": true}
                         }", @"{""$match"": {
-                                ""requests.userId"": " + userId + @",
-                                ""requests.status"": """ + DocumentStatus.Draft + @"""
+                                ""requests.status"": """ + RequestStatus.Draft + @"""
                             }
                         }", @"{
                             ""$project"": {
@@ -215,18 +213,54 @@ namespace DocumentManagement.Service
                             }
                         }"
             ));
+            RequestIdQuery query = new RequestIdQuery();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    RequestIdQuery query = BsonSerializer.Deserialize<RequestIdQuery>(current);
-                    requestId = query.requestId;
+                    query = BsonSerializer.Deserialize<RequestIdQuery>(current);
                 }
             }
 
-            return requestId;
+            if (string.IsNullOrEmpty(query.requestId))
+            {
+                IMongoCollection<Entity.Request> collectionDocumentDraft = mongoService.db.GetCollection<Entity.Request>("Request");
+
+                using var asyncCursorDocumentDraft = collectionDocumentDraft.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                 @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @" 
+                            }
+                        }",
+                           @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                            @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                            @"{
+                            ""$match"": {
+                                ""requests.documents.status"": """ + DocumentStatus.Draft + @""",
+                            }
+                        }",
+                           @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""requestId"": ""$requests.id""
+                                }
+                         } "
+
+                   ));
+
+                while (await asyncCursorDocumentDraft.MoveNextAsync())
+                {
+                    foreach (var current in asyncCursorDocumentDraft.Current)
+                    {
+                        query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                    }
+                }
+            }
+            return query;
         }
     }
-
 }
 

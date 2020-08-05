@@ -10,13 +10,18 @@ import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer
 import { Document } from '../../../../Entities/Models/Document'
 import { CategoryDocument } from '../../../../Entities/Models/CategoryDocument'
 import Overlay from 'react-bootstrap/Overlay'
+import { LocalDB } from '../../../../Utils/LocalDB'
+import Dropdown from 'react-bootstrap/Dropdown'
+import { SelectedTemplate } from '../TemplateHome/SelectedTempate/SelectedTemplate'
+import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 
 type AddDocumentType = {
+    addDocumentToList: Function
     popoverplacement?: any;
     setLoaderVisible: Function;
 
 }
-export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: AddDocumentType) => {
+export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, addDocumentToList }: AddDocumentType) => {
     const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
@@ -33,6 +38,15 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
     const addDocumentBoxVisible = templateManager?.addDocumentBoxVisible;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments;
+
+
+    useEffect(() => {
+        if (categoryDocuments?.length) {
+            changeCurrentDocType('all');
+        }
+    }, [currentTemplate?.name, currentTemplate])
+
 
 
     const handleClick = (event: any) => {
@@ -48,14 +62,12 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         setTarget(event.target);
     };
 
-    const handleOnEntered = (event:any) => {
+    const handleOnEntered = (event: any) => {
         setpopovershowClass(event);
     };
-    
+
     useEffect(() => {
-        if (!categoryDocuments) {
-            fetchCurrentCatDocs();
-        }
+
         if (mainContainerRef?.current) {
             setTarget(null);
         }
@@ -65,16 +77,11 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     }, [aRef?.current, mainContainerRef?.current]);
 
     useEffect(() => {
-        // setShow(addDocumentBoxVisible?.value)
-    }, [addDocumentBoxVisible])
-
-    const fetchCurrentCatDocs = async () => {
-        let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
-        if (currentCatDocs) {
-            dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
-            setCurrentDocType(currentCatDocs[0]);
+        if (categoryDocuments?.length) {
+            changeCurrentDocType('all');
         }
-    }
+        // setShow(addDocumentBoxVisible?.value)
+    }, [!currentCategoryDocuments && categoryDocuments])
 
     const setCurrentDocType = (curDoc: CategoryDocument) => {
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: curDoc });
@@ -82,19 +89,10 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     }
 
     const changeCurrentDocType = (curDocType: string) => {
-
         if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
-        // }
-        //  else if (curDocType === 'other') {
-        //     let currentDoc = {
-        //         catId: 'other',
-        //         catName: 'Other',
-        //         documents: []
-        //     };
-        //     setCurrentDocType(currentDoc);
         } else {
-            let currentDoc = categoryDocuments.find((c: CategoryDocument) => c.catId === curDocType);
+            let currentDoc = categoryDocuments?.find((c: CategoryDocument) => c?.catId === curDocType);
             setCurrentDocType(currentDoc);
         }
     }
@@ -112,25 +110,16 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
         };
     }
 
-    const addDocToTemplate = async (docName: string, type: string) => {
-        if (!docName?.length || docName?.length > 255) {
+    const addDocToTemplate = async (doc: Document, type: string, onlyName: boolean) => {
+        if (!doc?.docType?.length || doc?.docType?.length > 255) {
             return;
         }
-        if(requestSent) return;
+        if (requestSent) return;
         setRequestSent(true);
         setLoaderVisible(true);
-        // if (templateDocuments.find((t: any) => t.docName?.toLowerCase() === docName?.toLowerCase())) {
-        //     return;
-        // }
-        try {
-            let success = await TemplateActions.addDocument('1', currentTemplate?.id, docName, type);
-            if (success) {
-                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
-                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
-            }
-        } catch (error) {
 
-        }
+        await addDocumentToList(doc, type);
+
         setRequestSent(false);
         setLoaderVisible(false);
     }
@@ -163,7 +152,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
     const renderPopOver = () => {
         return (
-            <Popover id="popover-add-document" className={PopoverShowClass}> 
+            <Popover id="popover-add-document" className={PopoverShowClass}>
                 <Popover.Content>
                     {renderPopOverContent()}
                 </Popover.Content>
@@ -172,16 +161,11 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
     }
 
     return (
-        <div className="Compo-add-document" >
+        <div className="Compo-add-document" ref={mainContainerRef}  >
 
-            <div className="add-doc-link-wrap" ref={mainContainerRef} >
-                {/* <OverlayTrigger trigger="click" placement="auto" overlay={renderPopOver()}  > */}
-                {/* <a ref={aRef} className="add-doc-link" onClick={(e) => { handleClick(e) }} >
-                    Add Document <i className="zmdi zmdi-plus"></i>
-                </a> */}
-
-                <div ref={aRef}  className="btn-add-new-Temp"  onClick={(e) => { handleClick(e) }} >
-                    <button className="btn btn-primary addnewTemplate-btn">
+            <div className="add-doc-link-wrap" >
+                <div ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
+                    <button className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
                         <span className="btn-text">Add Document</span>
                         <span className="btn-icon">
                             <i className="zmdi zmdi-plus"></i>
@@ -189,8 +173,9 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
 
                     </button>
                 </div>
-                {/* </OverlayTrigger> */}
             </div>
+
+
             <Overlay show={show}
                 target={target}
                 placement={popoverplacement}
@@ -199,7 +184,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible }: A
                 rootClose={true}
                 rootCloseEvent={'click'}
                 transition={false}
-                
+
             >
                 {renderPopOver()}
             </Overlay>

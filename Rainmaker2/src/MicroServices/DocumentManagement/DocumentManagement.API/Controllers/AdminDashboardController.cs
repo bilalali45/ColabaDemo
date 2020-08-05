@@ -29,8 +29,9 @@ namespace DocumentManagement.API.Controllers
         [HttpGet("GetDocuments")]
         public async Task<IActionResult> GetDocuments([FromQuery] GetDocuments moGetDocuments)
         {
-            logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {moGetDocuments.tenantId} and value of pending is {moGetDocuments.pending}");
-            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, moGetDocuments.tenantId, moGetDocuments.pending);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {tenantId} and value of pending is {moGetDocuments.pending}");
+            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, tenantId, moGetDocuments.pending);
             return Ok(docQuery);
         }
 
@@ -39,7 +40,8 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> Delete(AdminDeleteModel model)
         {
             logger.LogInformation(message: $"document {model.docId} is being deleted as borrower to do");
-            var docQuery = await adminDashboardService.Delete(model: model);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await adminDashboardService.Delete(model: model,tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -49,9 +51,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> IsDocumentDraft([FromQuery] IsDocumentDraft moIsDocumentDraft)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.id, userProfileId);
-            if (!string.IsNullOrEmpty(docQuery))
-                logger.LogInformation($"Draft exists for user {userProfileId}, loan application {moIsDocumentDraft.id}");
+            var docQuery = await adminDashboardService.IsDocumentDraft(moIsDocumentDraft.loanApplicationId, userProfileId);
             return Ok(docQuery);
         }
     }

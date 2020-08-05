@@ -33,14 +33,14 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             templateController.ControllerContext = context;
-            GetTemplates moGetTemplates= new GetTemplates();
-            moGetTemplates.tenantId = 1;
+
             //Act
-            IActionResult result = await templateController.GetTemplates(moGetTemplates);
+            IActionResult result = await templateController.GetTemplates();
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -59,19 +59,19 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             DeleteTemplateModel deleteTemaplateModel = new DeleteTemplateModel();
             deleteTemaplateModel.templateId = "5eba77905561502c495f6777";
-            deleteTemaplateModel.tenantId = 1;
+
             //Act
             IActionResult result = await controller.DeleteTemplate(deleteTemaplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
-
         }
 
         [Fact]
@@ -84,20 +84,19 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             DeleteTemplateModel deleteTemplateModel = new DeleteTemplateModel();
             deleteTemplateModel.templateId = "5eba77905561502c495f6777";
-            deleteTemplateModel.tenantId = 1;
         
             //Act
             IActionResult result = await controller.DeleteTemplate(deleteTemplateModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
-
         }
 
         [Fact]
@@ -292,20 +291,19 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             DeleteDocumentModel deleteDocumentModel = new DeleteDocumentModel();
             deleteDocumentModel.id = "5eba77905561502c495f6333";
-            deleteDocumentModel.tenantId = 1;
             deleteDocumentModel.documentId = "5eb257a3e519051af2eeb477";
             //Act
             IActionResult result = await controller.DeleteDocument(deleteDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
-
         }
 
         [Fact]
@@ -318,20 +316,19 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             DeleteDocumentModel deleteDocumentModel = new DeleteDocumentModel();
             deleteDocumentModel.id = "5eb25acde519051af2eeb111";
-            deleteDocumentModel.tenantId = 1;
             deleteDocumentModel.documentId = "5eb257a3e519051af2eeb477";
             //Act
             IActionResult result = await controller.DeleteDocument(deleteDocumentModel);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
-
         }
 
 
@@ -347,13 +344,13 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             RenameTemplateModel renameTemplateModel = new RenameTemplateModel();
             renameTemplateModel.id = "5eb25acde519051af2eeb111";
-            renameTemplateModel.tenantId = 1;
             renameTemplateModel.name = "salary";
             //Act
             IActionResult result = await controller.RenameTemplate(renameTemplateModel);
@@ -373,13 +370,13 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             RenameTemplateModel renameTemplateModel = new RenameTemplateModel();
             renameTemplateModel.id = "5eb25acde519051af2eeb111";
-            renameTemplateModel.tenantId = 1;
             renameTemplateModel.name = "salary";
             //Act
             IActionResult result = await controller.RenameTemplate(renameTemplateModel);
@@ -477,6 +474,7 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
             var controller = new TemplateController(mock.Object);
@@ -486,7 +484,6 @@ namespace DocumentManagement.Tests
 
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
             addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
             IActionResult result = await controller.AddDocument(addDocumentModel);
@@ -504,6 +501,7 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
             var controller = new TemplateController(mock.Object);
@@ -513,7 +511,6 @@ namespace DocumentManagement.Tests
 
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
             addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
             IActionResult result = await controller.AddDocument(addDocumentModel);
@@ -531,11 +528,14 @@ namespace DocumentManagement.Tests
 
             mock.Setup(x => x.GetCategoryDocument(It.IsAny<int>())).ReturnsAsync(list);
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
             var templateController = new TemplateController(mock.Object);
-            GetCategoryDocument moGetCategoryDocument= new GetCategoryDocument();
-            moGetCategoryDocument.tenantId = 1;
+            templateController.ControllerContext = context;
             //Act
-            IActionResult result = await templateController.GetCategoryDocument(moGetCategoryDocument);
+            IActionResult result = await templateController.GetCategoryDocument();
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -553,6 +553,7 @@ namespace DocumentManagement.Tests
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -561,7 +562,6 @@ namespace DocumentManagement.Tests
             //Act
             InsertTemplateModel insertTemplateModel = new InsertTemplateModel();
             insertTemplateModel.name = "Salary Slip";
-            insertTemplateModel.tenantId = 1;
             IActionResult result = await controller.InsertTemplate(insertTemplateModel);
             //Assert
             Assert.NotNull(result);
@@ -585,10 +585,9 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
             addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
-            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId,1, addDocumentModel.typeId, addDocumentModel.docName);
+            bool result = await templateService.AddDocument(addDocumentModel.templateId,1,1, addDocumentModel.typeId, addDocumentModel.docName);
             //Assert
             Assert.True(result);
         }
@@ -610,10 +609,9 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
             addDocumentModel.typeId = "5eb257a3e519051af2eeb624";
-            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, 1, addDocumentModel.typeId, addDocumentModel.docName);
+            bool result = await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName);
             //Assert
             Assert.False(result);
         }
@@ -634,10 +632,9 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
             
-            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, 1, addDocumentModel.typeId, addDocumentModel.docName);
+            bool result = await templateService.AddDocument(addDocumentModel.templateId,1, 1, addDocumentModel.typeId, addDocumentModel.docName);
             //Assert
             Assert.True(result);
         }
@@ -659,10 +656,9 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
             addDocumentModel.docName = "Credit Report";
          
-            bool result = await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, 1, addDocumentModel.typeId, addDocumentModel.docName);
+            bool result = await templateService.AddDocument(addDocumentModel.templateId,1, 1, addDocumentModel.typeId, addDocumentModel.docName);
             //Assert
             Assert.False(result);
         }
@@ -685,11 +681,8 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
-            addDocumentModel.tenantId = 1;
-           
 
-            Assert.ThrowsAsync<Exception>(async () => await templateService.AddDocument(addDocumentModel.templateId, addDocumentModel.tenantId, 1, addDocumentModel.typeId, addDocumentModel.docName));
-
+            await Assert.ThrowsAsync<Exception>(async () => await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName));
           }
         [Fact]
         public async Task TestGetCategoryDocumentService()
@@ -798,12 +791,13 @@ namespace DocumentManagement.Tests
             Mock<ITemplateService> mock = new Mock<ITemplateService>();
             AddTemplateModel addTemplateModel= new AddTemplateModel();
 
-            mock.Setup(x => x.SaveTemplate(It.IsAny<AddTemplateModel>(),It.IsAny<int>())).ReturnsAsync("5eb25acde519051af2eeb111");
+            mock.Setup(x => x.SaveTemplate(It.IsAny<AddTemplateModel>(),It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("5eb25acde519051af2eeb111");
 
             var controller = new TemplateController(mock.Object);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -832,14 +826,13 @@ namespace DocumentManagement.Tests
             ITemplateService templateService = new TemplateService(mock.Object);
             AddTemplateModel addTemplateModel = new AddTemplateModel();
             DocumentManagement.Model.Template.TemplateDocument templateDocument = new DocumentManagement.Model.Template.TemplateDocument();
-            addTemplateModel.tenantId =1;
             addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
 
            // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.docName = "abcbbc";
             addTemplateModel.documentTypes.Add(templateDocument);
-            string result = await templateService.SaveTemplate(addTemplateModel, 3872);
+            string result = await templateService.SaveTemplate(addTemplateModel, 3872,1);
             //Assert
             Assert.NotNull(result);
         }
@@ -860,14 +853,13 @@ namespace DocumentManagement.Tests
             //Act
             ITemplateService templateService = new TemplateService(mock.Object);
             AddTemplateModel addTemplateModel = new AddTemplateModel();
-            addTemplateModel.tenantId = 1;
             addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
             DocumentManagement.Model.Template.TemplateDocument templateDocument = new DocumentManagement.Model.Template.TemplateDocument();
            // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
             templateDocument.typeId = "5ebc18cba5d847268075ad22";
             addTemplateModel.documentTypes.Add(templateDocument);
-            string result = await templateService.SaveTemplate(addTemplateModel, 3872);
+            string result = await templateService.SaveTemplate(addTemplateModel, 3872, 1);
             //Assert
             Assert.NotNull(result);
         }

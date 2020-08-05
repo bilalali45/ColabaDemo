@@ -32,10 +32,11 @@ namespace DocumentManagement.API.Controllers
         #region Get
 
         [HttpGet(template: "GetTemplates")]
-        public async Task<IActionResult> GetTemplates([FromQuery] GetTemplates moGetTemplates)
+        public async Task<IActionResult> GetTemplates()
         {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            var docQuery = await templateService.GetTemplates(tenantId: moGetTemplates.tenantId,
+            var docQuery = await templateService.GetTemplates(tenantId: tenantId,
                                                               userProfileId: userProfileId);
             return Ok(value: docQuery);
         }
@@ -51,9 +52,10 @@ namespace DocumentManagement.API.Controllers
 
 
         [HttpGet(template: "GetCategoryDocument")]
-        public async Task<IActionResult> GetCategoryDocument([FromQuery] GetCategoryDocument moGetCategoryDocument)
+        public async Task<IActionResult> GetCategoryDocument()
         {
-            var docQuery = await templateService.GetCategoryDocument(tenantId: moGetCategoryDocument.tenantId);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.GetCategoryDocument(tenantId: tenantId);
             return Ok(value: docQuery);
         }
 
@@ -65,9 +67,10 @@ namespace DocumentManagement.API.Controllers
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> RenameTemplate(RenameTemplateModel renameTemplateModel)
         {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var docQuery = await templateService.RenameTemplate(id: renameTemplateModel.id,
-                                                                tenantid: renameTemplateModel.tenantId,
+                                                                tenantid: tenantId,
                                                                 newname: renameTemplateModel.name,
                                                                 userProfileId: userProfileId);
             if (docQuery)
@@ -80,8 +83,8 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-
-            var docQuery = await templateService.InsertTemplate(tenantId: insertTemplateModel.tenantId,
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.InsertTemplate(tenantId: tenantId,
                                                                 userProfileId: userProfileId,
                                                                 name: insertTemplateModel.name);
 
@@ -93,9 +96,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> AddDocument(AddDocumentModel addDocumentModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var docQuery = await templateService.AddDocument(templateId: addDocumentModel.templateId,
-                                                             tenantId: addDocumentModel.tenantId,
+                                                             tenantId: tenantId,
                                                              userProfileId: userProfileId,
                                                              typeId: addDocumentModel.typeId,
                                                              docName: addDocumentModel.docName);
@@ -110,8 +113,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> SaveTemplate(AddTemplateModel model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(value: await templateService.SaveTemplate(model: model,
-                                                                userProfileId: userProfileId));
+                                                                userProfileId: userProfileId,tenantId));
         }
 
         #endregion
@@ -122,9 +126,10 @@ namespace DocumentManagement.API.Controllers
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteDocument(DeleteDocumentModel deleteDocumentModel)
         {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var docQuery = await templateService.DeleteDocument(id: deleteDocumentModel.id,
-                                                                tenantid: deleteDocumentModel.tenantId,
+                                                                tenantid: tenantId,
                                                                 documentid: deleteDocumentModel.documentId,
                                                                 userProfileId: userProfileId);
             if (docQuery)
@@ -138,8 +143,9 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> DeleteTemplate(DeleteTemplateModel deleteTemplateModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var docQuery = await templateService.DeleteTemplate(templateId: deleteTemplateModel.templateId,
-                                                                tenantId: deleteTemplateModel.tenantId,
+                                                                tenantId: tenantId,
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();

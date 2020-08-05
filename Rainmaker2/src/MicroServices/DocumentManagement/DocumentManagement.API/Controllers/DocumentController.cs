@@ -51,18 +51,8 @@ namespace DocumentManagement.API.Controllers
 
         #region Action Methods
 
-       
-        [HttpPost(template: "[action]")]
-        public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
-        {
-            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"GetDocumentsByTemplateIds requested by {userProfileId}");
-            var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), getDocumentsByTemplateIds.tenantId);
-            return Ok(value: docQuery);
-        }
+        #region Get
 
-
-        
         [HttpGet(template: "[action]")]
         public async Task<IActionResult> GetFiles([FromQuery] GetFiles getFiles)
 
@@ -98,22 +88,60 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id));
         }
 
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> View([FromQuery] View view)
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
+            var model = new AdminFileViewModel
+            {
+                docId = view.docId,
+                fileId = view.fileId,
+                id = view.id,
+                requestId = view.requestId
+            };
 
-        
+            var fileviewdto = await documentService.View(model,
+                                                         userProfileId,
+                                                         HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
+            var setting = await settingService.GetSetting();
+
+            ftpClient.Setup(hostIp: setting.ftpServer,
+                            userName: setting.ftpUser,
+                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                                                              key: await keyStoreService.GetFtpKey()));
+            var filepath = Path.GetTempFileName();
+            await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
+                                          localFile: filepath);
+
+            return File(fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
+                                                                                                              password: await keyStoreService.GetFileKey(),
+                                                                                                              originalFileName: fileviewdto.clientName),
+                        fileviewdto.contentType,
+                        fileviewdto.clientName);
+        }
+
+        #endregion
+
+        #region Post
+
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> McuRename(mcuRenameModel mcuRenameModel)
 
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             var setting = await settingService.GetSetting();
             if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
                 throw new Exception(message: "File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
-            var docQuery = await documentService.mcuRename(id: mcuRenameModel.id,
+            var docQuery = await documentService.McuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,
                                                            docId: mcuRenameModel.docId,
                                                            fileId: mcuRenameModel.fileId,
-                                                           newName: mcuRenameModel.newName);
+                                                           newName: mcuRenameModel.newName,
+                                                           userName: userName);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -157,40 +185,29 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
+        [HttpPost(template:"[action]")]
+        public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
+        {
+            var docQuery = await documentService.UpdateByteProStatus(id: updateByteProStatus.id,
+                                                                requestId: updateByteProStatus.requestId,
+                                                                docId: updateByteProStatus.docId,
+                                                                fileId: updateByteProStatus.fileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
 
-        [HttpGet(template: "[action]")]
-        public async Task<IActionResult> View([FromQuery] View view)
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
-            var model = new FileViewModel
-                        {
-                            docId = view.docId,
-                            fileId = view.fileId,
-                            id = view.id,
-                            requestId = view.requestId,
-                            tenantId = view.tenantId
-            };
-
-            var fileviewdto = await documentService.View(model,
-                                                         userProfileId,
-                                                         HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
-            var setting = await settingService.GetSetting();
-
-            ftpClient.Setup(hostIp: setting.ftpServer,
-                            userName: setting.ftpUser,
-                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
-                                                              key: await keyStoreService.GetFtpKey()));
-            var filepath = Path.GetTempFileName();
-            await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
-                                          localFile: filepath);
-
-            return File(fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
-                                                                                                              password: await keyStoreService.GetFileKey(),
-                                                                                                              originalFileName: fileviewdto.clientName),
-                        fileviewdto.contentType,
-                        fileviewdto.clientName);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            logger.LogInformation($"GetDocumentsByTemplateIds requested by {userProfileId}");
+            var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), tenantId);
+            return Ok(value: docQuery);
         }
+
+        #endregion
 
         #endregion
     }

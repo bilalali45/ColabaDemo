@@ -25,14 +25,14 @@ export const DocumentsRequired = () => {
     function confirmExit() {
       return "show message";
     }
-  }
+  };
 
   const allowBrowserClosing = () => {
     window.onbeforeunload = confirmExit;
     function confirmExit() {
       return null;
     }
-  }
+  };
 
   useEffect(() => {
     if (pendingDocs?.length) {
@@ -47,10 +47,10 @@ export const DocumentsRequired = () => {
 
     if (sideBarNav.current) {
       if (files) {
-        stopBrowerTabFromClosing()
+        stopBrowerTabFromClosing();
         sideBarNav.current.onclick = showAlertPopup;
       } else {
-        allowBrowserClosing()
+        allowBrowserClosing();
         sideBarNav.current.onclick = null;
       }
     }
@@ -67,8 +67,7 @@ export const DocumentsRequired = () => {
   const fetchPendingDocs = async () => {
     if (!pendingDocs) {
       let docs = await DocumentActions.getPendingDocuments(
-        Auth.getLoanAppliationId(),
-        Auth.getTenantId()
+        Auth.getLoanAppliationId()
       );
       if (docs) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });

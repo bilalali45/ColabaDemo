@@ -5,7 +5,7 @@ $color:(
     secondry-text       :       #ffffff,
     border              :       #DDDDDD, 
     base                :       #4E4E4E, 
-    heading             :       #263238,
+    heading             :       #000000,//#263238,
     bg                  :       #F2F3F5,
     default             :       #F2F3F5,
     colorWhite          :       #ffffff,
@@ -52,6 +52,8 @@ $color:(
     docSnipetSuccess        :       #00AD46,
     docSnipetFailed         :       #FF5652,
 
+    dialogText              :       #A7A7A7,
+    dialogBg                :       #ffffff,
 
     // File Viewer
     fileReaderHeaderBg      :       #2D2D2D,

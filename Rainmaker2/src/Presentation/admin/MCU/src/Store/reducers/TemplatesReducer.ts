@@ -8,6 +8,10 @@ type AddDocumentBoxVisibleType = {
     value: boolean
 }
 
+export type isDocumentDraftType = {
+    requestId: string | null
+}
+
 export enum TemplateActionsType {
     SetTemplates = "SET_TEMPLATES",
     SetCategoryDocuments = "SET_CATEGORY_DOCUMENTS",
@@ -18,7 +22,9 @@ export enum TemplateActionsType {
     RenameTemplate = "RENAME_TEMPLATE",
     DeleteTemplate = "DELETE_TEMPLATE",
     ToggleAddDocumentBox = "TOGGLE_ADD_DOCUMENT_BOX",
-
+    SetSelectedTemplateDocuments = "SET_SELECTED_TEMPLATE_DOCUMENTS",
+    SetEmailContent = "SET_EMAIL_CONTENT",
+    SetIsDocumentDraft = "SET_IS_DOCUMENT_DRAFT"
 }
 
 export type TemplateType = {
@@ -28,6 +34,7 @@ export type TemplateType = {
     currentCategoryDocuments: CategoryDocument,
     templateDocuments: TemplateDocument[],
     addDocumentBoxVisible: AddDocumentBoxVisibleType,
+    isDocumentDraft: isDocumentDraftType
 }
 
 export type TemplateActionPayload = {
@@ -37,6 +44,9 @@ export type TemplateActionPayload = {
     [TemplateActionsType.SetCategoryDocuments]: CategoryDocument[],
     [TemplateActionsType.SetCurrentCategoryDocuments]: CategoryDocument,
     [TemplateActionsType.ToggleAddDocumentBox]: AddDocumentBoxVisibleType,
+    [TemplateActionsType.SetSelectedTemplateDocuments]: TemplateDocument[],
+    [TemplateActionsType.SetEmailContent]: string
+    [TemplateActionsType.SetIsDocumentDraft]: isDocumentDraftType
 }
 
 export type TemplateActions = ActionMap<TemplateActionPayload>[keyof ActionMap<TemplateActionPayload>];
@@ -80,6 +90,24 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
             return {
                 ...state,
                 addDocumentBoxVisible: payload
+            }
+
+        case TemplateActionsType.SetSelectedTemplateDocuments:
+            return {
+                ...state,
+                selectedTemplateDocuments: payload
+            }
+
+        case TemplateActionsType.SetEmailContent:
+            return {
+                ...state,
+                emailContent: payload
+            }
+
+        case TemplateActionsType.SetIsDocumentDraft:
+            return {
+                ...state,
+                isDocumentDraft: payload
             }
 
         default:

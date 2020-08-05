@@ -40,6 +40,7 @@ namespace MainGateway
                        {
                            webBuilder.ConfigureKestrel(options =>
                            {
+                               options.AddServerHeader = false;
                                options.ConfigureHttpsDefaults(httpsOptions =>
                                {
                                    httpsOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
