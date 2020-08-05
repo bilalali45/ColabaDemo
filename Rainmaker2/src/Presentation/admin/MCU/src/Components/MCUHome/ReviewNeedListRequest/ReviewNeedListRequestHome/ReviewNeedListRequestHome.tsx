@@ -10,10 +10,11 @@ import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 
 type ReviewNeedListRequestHomeType = {
     documentList: any[],
-    saveAsDraft: Function
+    saveAsDraft: Function,
+    showSendButton: boolean
 }
 
-export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewNeedListRequestHomeType) => {
+export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton }: ReviewNeedListRequestHomeType) => {
 
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
@@ -53,6 +54,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft }: ReviewN
                         documentsName={documentsName}
                         saveAsDraft={saveAsDraft}
                         emailTemplate = {emailTemplate}
+                        showSendButton = {showSendButton}
                     />
                 </div>
             </div>

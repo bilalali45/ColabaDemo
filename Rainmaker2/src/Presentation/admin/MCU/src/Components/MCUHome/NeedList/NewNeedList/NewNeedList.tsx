@@ -38,6 +38,7 @@ export const NewNeedList = () => {
     const loanInfo: string[] = needListManager?.loanInfo;
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
+    const [showSendButton, setShowSendButton] = useState<boolean>(false);
     const emailContent: string = templateManager?.emailContent;
 
     const history = useHistory();
@@ -174,6 +175,16 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
+        let emailText = 'testing is good!!' // from store
+        await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(),toDraft,emailText,allDocuments)
+        if(toDraft){
+            history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+        }else{
+            setShowSendButton(true)
+            setTimeout(() => {
+                history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+            }, 1000)
+        }   
         await NewNeedListActions.saveNeedList(
             LocalDB.getLoanAppliationId(),
             toDraft,
@@ -230,6 +241,7 @@ export const NewNeedList = () => {
                 <ReviewNeedListRequestHome
                     documentList={allDocuments}
                     saveAsDraft={saveAsDraft}
+                    showSendButton = {showSendButton}
                 />
                 :
                 <NewNeedListHome
