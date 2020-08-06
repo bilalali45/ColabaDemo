@@ -72,6 +72,7 @@ export const NeedListView = () => {
                 fetchNeedList(toggle, true).then((data) => {
                     let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
                     dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
+                    setDeleteRequestSent(false)
                 })
             }
         }
