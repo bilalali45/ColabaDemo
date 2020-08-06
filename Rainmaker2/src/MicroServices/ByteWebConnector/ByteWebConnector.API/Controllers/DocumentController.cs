@@ -71,11 +71,11 @@ namespace ByteWebConnector.API.Controllers
                                           {
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
                                               DocumentCategory = "PROP",//request.DocumentCategory,
-                                              DocumentExtenstion = "PDF",//request.DocumentExension,
-                                              DocumentName = "Senior React Engineer",//request.DocumentName,
+                                              DocumentExension = "DOCX",//request.DocumentExension,
+                                              DocumentName = "Bank Doc",//request.DocumentName,
                                               DocumentStatus = "0",//request.DocumentStatus,
                                               DocumentType = "PurchaseAgr",//request.DocumentType,
-                                              DocumentData = request.FileData.ToBase64String()
+                                              DocumentData = request.FileData.ToBase64String(0, request.FileData.Length)
                                           };
                 #region BytePro API Call
 
