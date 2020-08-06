@@ -42,6 +42,7 @@ export const NewNeedList = () => {
     const templates: Template[] = templateManager?.templates;
     const [showSendButton, setShowSendButton] = useState<boolean>(false);
     const emailContent: string = templateManager?.emailContent;
+    const [documentHash, setDocumentHash] = useState<string>();
 
     const history = useHistory();
     const location = useLocation();
@@ -254,6 +255,9 @@ export const NewNeedList = () => {
     }
 
     const toggleShowReview = () => setShowReview(!showReview)
+    const setHashHandler = (hash: string) => {
+        setDocumentHash(hash)
+    }
 
     // if (!allDocuments?.length) {
     //     return '';
@@ -272,6 +276,8 @@ export const NewNeedList = () => {
                     documentList={allDocuments}
                     saveAsDraft={saveAsDraft}
                     showSendButton = {showSendButton}
+                    documentHash = {documentHash}
+                    setHash = {setHashHandler}
                 />
                 :
                 <NewNeedListHome
