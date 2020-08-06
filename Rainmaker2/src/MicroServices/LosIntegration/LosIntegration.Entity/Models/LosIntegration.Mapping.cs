@@ -18,7 +18,8 @@ using System.Collections.Generic;
 
 namespace LosIntegration.Entity.Models
 {
-    public partial class Mapping {
+    public partial class Mapping: URF.Core.EF.Trackable.Entity
+    {
 
         public Mapping()
         {

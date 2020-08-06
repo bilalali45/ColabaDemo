@@ -3,21 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ByteWebConnector.API.Models.ByteApi
+namespace LosIntegration.API.Models
 {
-    public class DocumentUploadRequest
-    {
-
-        public long FileDataId { get; set; }
-        public string DocumentName { get; set; }
-        public string DocumentType { get; set; }
-        public string DocumentCategory { get; set; }
-        public string DocumentStatus { get; set; }
-        public string DocumentExension { get; set; }
-        public string DocumentData { get; set; }
-    }
-
-    public class DocumentUploadResponse
+    public class DocumentResponse
     {
         public long FileDataId { get; set; }
         public long DocumentId { get; set; }
@@ -34,5 +22,6 @@ namespace ByteWebConnector.API.Models.ByteApi
         public DateTime? ExpirationDate { get; set; }
         public string DocumentData { get; set; }
         public short ExtOriginatorId { get; set; }
+
     }
 }

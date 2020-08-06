@@ -1,16 +1,25 @@
+using System;
 using System.Net.Http;
 using System.Security.Authentication;
 using LosIntegration.API.CorrelationHandlersAndMiddleware;
+using LosIntegration.API.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using LosIntegration.Service;
+using LosIntegration.Service.Interface;
+using Microsoft.EntityFrameworkCore;
+using URF.Core.Abstractions;
+using URF.Core.EF;
+using URF.Core.EF.Factories;
 
 namespace LosIntegration.API
 {
     public class Startup
     {
+        private static HttpClient httpClient = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,6 +31,17 @@ namespace LosIntegration.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
+            if (!csResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Unable to load key store");
+            }
+            services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer("Password=test123;Persist Security Info=True;User ID=sa;Initial Catalog=LosIntegration;Data Source=110.93.237.3,1404")); //todo shehroz get from keystore
+            services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
+            services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();
+            //services.AddScoped<ISettingService, SettingService>();
+            //services.AddScoped<IStringResourceService, StringResourceService>();
+            services.AddScoped<IMappingService, MappingService>();
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();
