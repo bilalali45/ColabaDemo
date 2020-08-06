@@ -68,7 +68,7 @@ namespace ByteWebConnector.API.Controllers
 
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
-                                           $"{_configuration[key: "LosIntegration:Url"]}/api/rainmaker/SubProperty/AddOrUpdate",
+                                           $"{_configuration[key: "LosIntegration:Url"]}/api/LosIntegration/SubProperty/AddOrUpdate",
                                            content: new StringContent(content: content,
                                                                       encoding: Encoding.UTF8,
                                                                       mediaType: "application/json"));
