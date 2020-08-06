@@ -17,6 +17,7 @@ import { ReviewNeedListRequestHeader } from "../../ReviewNeedListRequest/ReviewN
 import { ReviewNeedListRequestHome } from "../../ReviewNeedListRequest/ReviewNeedListRequestHome/ReviewNeedListRequestHome";
 import { LoanApplication } from "../../../../Entities/Models/LoanApplication";
 import { NeedListActions } from "../../../../Store/actions/NeedListActions";
+import { v4 } from "uuid";
 
 export const NewNeedList = () => {
 
@@ -49,9 +50,9 @@ export const NewNeedList = () => {
 
     useEffect(() => {
         console.log(isDocumentDraft, 'isDocumentDraft');
-        // if (!isDocumentDraft) {
-        //     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
-        // }
+        if (!isDocumentDraft) {
+            checkIsDocumentDraft(LocalDB.getLoanAppliationId());
+        }
 
 
         if (!loanInfo) {
@@ -75,14 +76,16 @@ export const NewNeedList = () => {
         }
 
 
-    }, [selectedTemplateDocuments?.length, templateIds?.length]);
+    }, [selectedTemplateDocuments?.length]);
 
 
     useEffect(() => {
         if (isDocumentDraft?.requestId) {
             fetchDraftDocuments();
         } else {
-            getDocumentsFromSelectedTemplates(selectedIds)
+            if (selectedIds) {
+                getDocumentsFromSelectedTemplates(selectedIds)
+            }
         }
 
     }, [selectedIds?.length])
@@ -104,6 +107,9 @@ export const NewNeedList = () => {
 
     const checkIsDocumentDraft = async (id: string) => {
         let res: any = await TemplateActions.isDocumentDraft(id);
+        if (res.requestId) {
+            fetchDraftDocuments();
+        }
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
 
         //  if(result?.requestId){
@@ -142,6 +148,7 @@ export const NewNeedList = () => {
         let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
         documents = documents?.map((d: any) => {
             return {
+                localId: v4(),
                 typeId: d.typeId,
                 docName: d.docName,
                 docMessage: d.docMessage,
@@ -150,10 +157,14 @@ export const NewNeedList = () => {
             }
         })
         console.log(documents, 'documents');
-        // allDocuments?.find((d: TemplateDocument) => d.docId === obj.docId)?.docMessage
         const data = documents?.map((obj: TemplateDocument) => {
             return {
                 ...obj,
+                docMessage: allDocuments?.find((d: TemplateDocument) => {
+                    if (d?.docName === obj?.docName) {
+                        return d;
+                    }
+                })?.docMessage,
                 isRejected: false
             }
         }) || [];
@@ -210,20 +221,17 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        if(toDraft){
+
+        await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailContent || '', allDocuments)
+        if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
-        }else{
+        } else {
             setShowSendButton(true)
             setTimeout(() => {
                 history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
             }, 1000)
-        }   
-        await NewNeedListActions.saveNeedList(
-            LocalDB.getLoanAppliationId(),
-            toDraft,
-            emailContent || '',
-            allDocuments
-        )
+        }
+
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
@@ -250,8 +258,13 @@ export const NewNeedList = () => {
     }
 
     const removeDocumentFromList = async (docName: string) => {
+        let prevDocs = [];
         await setAllDocuments((pre: TemplateDocument[]) => pre.filter((d: TemplateDocument) => d.docName !== docName));
-        setCurrentDocument(allDocuments[0]);
+        setTimeout(() => {
+            if (allDocuments.length) {
+                setCurrentDocument(allDocuments[0]);
+            }
+        }, 1);
     }
 
     const toggleShowReview = () => setShowReview(!showReview)
@@ -268,6 +281,7 @@ export const NewNeedList = () => {
             {/* <NewNeedListHeader
                 saveAsDraft={saveAsDraft} /> */}
             <ReviewNeedListRequestHeader
+                documentList={allDocuments}
                 saveAsDraft={saveAsDraft}
                 showReview={showReview}
                 toggleShowReview={toggleShowReview} />
@@ -275,7 +289,7 @@ export const NewNeedList = () => {
                 <ReviewNeedListRequestHome
                     documentList={allDocuments}
                     saveAsDraft={saveAsDraft}
-                    showSendButton = {showSendButton}
+                    showSendButton={showSendButton}
                     documentHash = {documentHash}
                     setHash = {setHashHandler}
                 />
@@ -288,7 +302,7 @@ export const NewNeedList = () => {
                     updateDocumentMessage={updateDocumentMessage}
                     templateList={templates?.filter((td: Template) => !templateIds?.includes(td?.id))}
                     addTemplatesDocuments={addTemplatesDocuments}
-                    isDraft={isDraft}
+                    isDraft={isDocumentDraft}
                     viewSaveDraft={viewSaveDraftHandler}
                     saveAsTemplate={saveAsTemplate}
                     templateName={templateName}

@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, useEffect } from 'react'
 import { nameTest } from '../../../TemplateHome/TemplateHome';
 import Spinner from 'react-bootstrap/Spinner';
 import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocument';
+import { kMaxLength } from 'buffer';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -73,6 +74,10 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="input-wrap">
 
                     <input maxLength={255} onKeyDown={(e: any) => {
+                        if(e.keyCode === 9) {
+                            e.preventDefault()
+                            return;
+                        }
                         if (e.keyCode === 13) {
                             addDoc();
                         }

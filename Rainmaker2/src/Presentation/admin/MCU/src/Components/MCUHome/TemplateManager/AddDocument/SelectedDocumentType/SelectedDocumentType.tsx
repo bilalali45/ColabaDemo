@@ -6,14 +6,16 @@ import { CustomDocuments } from './CustomDocuments/CustomDocuments'
 import { Document } from '../../../../../Entities/Models/Document'
 import { Template } from '../../../../../Entities/Models/Template'
 import { CategoryDocument } from '../../../../../Entities/Models/CategoryDocument'
+import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument'
 
 type SelectedTypeType = {
     selectedCatDocs: CategoryDocument,
     addNewDoc: Function,
-    setVisible: Function
+    setVisible: Function,
+    needList?: TemplateDocument[],
 }
 
-export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
+export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible, needList }: SelectedTypeType) => {
     const renderCurrentlySelected = () => {
 
         if (selectedCatDocs?.catId === 'all') {
@@ -28,6 +30,7 @@ export const SelectedType = ({ selectedCatDocs, addNewDoc, setVisible }: Selecte
                 documentList={selectedCatDocs?.documents}
                 selectedCatDocs={selectedCatDocs}
                 addNewDoc={addNewDoc}
+                needList={needList}
             />
         }
     }
