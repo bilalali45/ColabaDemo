@@ -43,14 +43,14 @@ const ActivityHeader = (props) => {
         setLeftNav("Home");
         setLeftNavUrl("/activity/" + Auth.getLoanAppliationId());
         if (pendingDocs?.length > 0) {
-          setRightNav("Documents");
+          setRightNav("Document Request");
           setRightNavUrl("/documentsRequest/" + Auth.getLoanAppliationId());
         } else {
           setRightNav("");
           setRightNavUrl("");
         }
       } else {
-        setLeftNav("Documents");
+        setLeftNav("Document Request");
         setLeftNavUrl("/documentsRequest/" + Auth.getLoanAppliationId());
         setRightNav("");
         setRightNavUrl("");

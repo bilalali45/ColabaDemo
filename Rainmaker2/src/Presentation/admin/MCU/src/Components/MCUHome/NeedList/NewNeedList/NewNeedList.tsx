@@ -32,6 +32,7 @@ export const NewNeedList = () => {
     const templateManager: any = state?.templateManager;
     const needListManager: any = state?.needListManager;
     const isDocumentDraft = templateManager?.isDocumentDraft;
+    const emailBody = templateManager?.emailContent;
     const templateIds = needListManager?.templateIds || [];
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
@@ -42,6 +43,7 @@ export const NewNeedList = () => {
     const templates: Template[] = templateManager?.templates;
     const [showSendButton, setShowSendButton] = useState<boolean>(false);
     const emailContent: string = templateManager?.emailContent;
+    const [documentHash, setDocumentHash] = useState<string>();
 
     const history = useHistory();
     const location = useLocation();
@@ -99,6 +101,7 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
+        dispatch({ type: TemplateActionsType.SetDocumentLength, payload: null })
     }
 
 
@@ -265,6 +268,9 @@ export const NewNeedList = () => {
     }
 
     const toggleShowReview = () => setShowReview(!showReview)
+    const setHashHandler = (hash: string) => {
+        setDocumentHash(hash)
+    }
 
     // if (!allDocuments?.length) {
     //     return '';
@@ -284,6 +290,8 @@ export const NewNeedList = () => {
                     documentList={allDocuments}
                     saveAsDraft={saveAsDraft}
                     showSendButton={showSendButton}
+                    documentHash = {documentHash}
+                    setHash = {setHashHandler}
                 />
                 :
                 <NewNeedListHome

@@ -2,12 +2,12 @@ export class TemplateDocument {
     public docId: string;
     public docName: string;
     public docMessage: string;
-    public localId: string;
+    public message: string;
 
-    constructor(docId: string, docName: string, docMessage: string, localId: string) {
+    constructor(docId: string, docName: string, docMessage: string, message: string) {
         this.docId = docId;
         this.docName = docName;
         this.docMessage = docMessage;
-        this.localId = localId;
+        this.message = message;
     }
 }

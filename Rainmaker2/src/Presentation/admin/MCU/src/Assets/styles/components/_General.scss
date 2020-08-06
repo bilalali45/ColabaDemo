@@ -494,21 +494,34 @@ ul {
 
 .dropdown{
     &.show{
-        .rotate-plus{
-            &::before{
-                transform: rotate(45deg);
-            }
-            &::after{
-                transform: rotate(45deg);
+        .btn-icon-right{
+            >.rotate-plus{
+                &::before{
+                    transform: rotate(45deg);
+                }
+                &::after{
+                    transform: rotate(45deg);
+                }
             }
         }
+        
     
-        .btn-icon{
+        >.btn-icon{
             i,em{
                 &::before{
                     @include transform(rotate(40deg));
                     position: relative;
                     display: block;
+                }
+            }
+        }
+
+        .dropdown-menu{
+            .btn-icon{
+                i,em{
+                    &.zmdi{
+                        font-size: 17px;
+                    }
                 }
             }
         }
@@ -536,7 +549,7 @@ ul {
         width: 1px;
         top: 0;
         left: 50%;
-        transform: translateX(-50%);
+        //transform: translateX(-50%);
     }
 
     &::after{
@@ -544,7 +557,8 @@ ul {
         height: 1px;
         top: 50%;
         left: 0;
-        transform: translateY(-50%);
+        //transform: translateY(-50%);
+        margin-top: -1px;
     }
 
 }//rotate-plus
@@ -862,4 +876,12 @@ label.error{
 
 .popover {
     min-width: 450px;
+}
+
+.show > .btn-primary.dropdown-toggle:focus,
+.show > .btn-primary.dropdown-toggle:active,
+.btn-primary:not(:disabled):not(.disabled):active:focus, 
+.btn-primary:not(:disabled):not(.disabled).active:focus, 
+.show > .btn-primary.dropdown-toggle:focus{
+    box-shadow: none;
 }

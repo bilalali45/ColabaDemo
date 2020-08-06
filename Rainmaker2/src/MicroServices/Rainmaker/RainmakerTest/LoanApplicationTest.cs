@@ -118,7 +118,8 @@ namespace RainmakerTest
             {
                 Id = 1,
                 PropertyTypeId = 1,
-                AddressInfoId = 1
+                AddressInfoId = 1,
+                PropertyValue = 458780
             };
             dataContext.Set<PropertyInfo>().Add(propertyInfo);
 
@@ -769,6 +770,17 @@ namespace RainmakerTest
             dataContext.SaveChanges();
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
+            Opportunity model = new Opportunity();
+            model.Id = 1;
+            model.StatusId = 1;
+            model.StatusCauseId = null;
+            model.LockStatusId = 1;
+            model.LockCauseId = null;
+            model.ModifiedBy = 1;
+            model.ModifiedOnUtc = DateTime.UtcNow;
+            model.TpId = null;
+
+            mock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(model);
             //Act
             PostModel res = await loanService.PostLoanApplication(3, false, 1, mock.Object);
 
@@ -898,6 +910,252 @@ namespace RainmakerTest
             data.Add(FillKey.EmailBody, sendBorrowerEmailModel.emailBody.Replace(Environment.NewLine, "<br/>"));
 
             await Assert.ThrowsAsync<Exception>(async () => { await loanApplicationController.SendBorrowerEmail(sendBorrowerEmailModel); });
+        }
+        [Fact]
+        public async Task TestGetAdminLoanSummaryService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication app = new LoanApplication()
+            {
+                Id = 14,
+                LoanAmount = 1000,
+                LoanPurposeId = 3,
+                EntityTypeId = 2,
+                SubjectPropertyDetailId = 1,
+                OpportunityId = 14,
+                LoanNumber = "xyz",
+                ExpectedClosingDate = DateTime.Now
+            };
+            dataContext.Set<LoanApplication>().Add(app);
+
+            PropertyInfo propertyInfo = new PropertyInfo()
+            {
+                Id = 2,
+                PropertyTypeId = 2,
+                AddressInfoId = 2
+            };
+            dataContext.Set<PropertyInfo>().Add(propertyInfo);
+
+            PropertyType propertyType = new PropertyType()
+            {
+                Id = 2,
+                Description = "Single Family Detached",
+                Name = "Single Family Detached",
+                DisplayOrder = 1,
+                IsDefault = true,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDeleted = false,
+                TpId = "",
+                IsSystem = true
+            };
+            dataContext.Set<PropertyType>().Add(propertyType);
+
+            AddressInfo addressInfo = new AddressInfo
+            {
+                Id = 2,
+                IsDeleted = false,
+                EntityTypeId = 2,
+                CityName = "Karachi",
+                CountyName = "Pakistan",
+                StateName = "Sindh",
+                ZipCode = "7550",
+                StreetAddress = "abc",
+                StateId = 45,
+                UnitNo = "1151"
+
+            };
+            dataContext.Set<AddressInfo>().Add(addressInfo);
+
+            State state = new State
+            {
+                Id = 1,
+                CountryId = 1,
+                Name = "Alaska",
+                Abbreviation = "AK",
+                DisplayOrder = 1,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDefault = true,
+                IsSystem = true,
+                IsLicenseActive = true,
+                IsDeleted = false
+            };
+            dataContext.Set<State>().Add(state);
+
+            LoanPurpose loanPurpose = new LoanPurpose
+            {
+                Id = 3,
+                Name = "Purchase",
+                Description = "Purchase a home",
+                IsPurchase = true,
+                DisplayOrder = 1,
+                IsActive = true,
+                IsDefault = true,
+                IsDeleted = false,
+                IsSystem = true,
+                EntityTypeId = 2,
+                TpId = string.Empty
+            };
+            dataContext.Set<LoanPurpose>().Add(loanPurpose);
+
+            StatusList statusList = new StatusList
+            {
+                Id = 1,
+                Name = "Floating",
+                DisplayOrder = 1,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDefault = true,
+                IsSystem = true,
+                IsDeleted = false,
+                TypeId = 1,
+                CategoryId = 1,
+                CanLockOpportunity = false
+            };
+            dataContext.Set<StatusList>().Add(statusList);
+
+            Borrower borrower = new Borrower
+            {
+                Id = 1,
+                EntityTypeId = 2,
+                OwnTypeId = 1
+            };
+            dataContext.Set<Borrower>().Add(borrower);
+
+            LoanContact loanContact = new LoanContact
+            {
+                Id = 1,
+                EntityTypeId = 2,
+                IsDeleted = false,
+                FirstName = "Danish",
+                LastName = "Faiz"
+            };
+            dataContext.Set<LoanContact>().Add(loanContact);
+
+            Product product = new Product
+            {
+                Id = 1,
+                Name = "10 Year Fixed",
+                DisplayOrder = 1,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDefault = true,
+                IsSystem = true,
+                IsDeleted = false,
+                AliasName = "10 Year Fixed"
+            };
+            dataContext.Set<Product>().Add(product);
+
+            Opportunity opportunity = new Opportunity()
+            {
+                Id = 14,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDeleted = false,
+                NoRuleMatched = false,
+                IsAutoAssigned = false,
+                IsPickedByOwner = false,
+                IsDuplicate = false,
+                BusinessUnitId = 1,
+                OwnerId = 1
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            OpportunityLockStatusLog opportunityLockStatusLog = new OpportunityLockStatusLog
+            {
+                Id = 2,
+                IsActive = true,
+                EntityTypeId = 2,
+                CreatedOnUtc = DateTime.Now
+            };
+            dataContext.Set<OpportunityLockStatusLog>().Add(opportunityLockStatusLog);
+
+            LockStatusList lockStatusList = new LockStatusList
+            {
+                Id = 1,
+                Name = "Locked",
+                DisplayOrder = 1,
+                IsActive = true,
+                EntityTypeId = 2,
+                IsDefault = true,
+                IsSystem = false,
+                IsDeleted = false,
+                LockTypeId = 1
+            };
+            dataContext.Set<LockStatusList>().Add(lockStatusList);
+
+            dataContext.SaveChanges();
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            AdminLoanSummary res = await loanService.GetAdminLoanSummary(14);
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal("Purchase a home", res.LoanPurpose);
+            Assert.Equal("xyz", res.LoanNumber);
+        }
+        [Fact]
+        public async Task TestGetByLoanApplicationIdService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication app = new LoanApplication()
+            {
+                Id = 5,
+                LoanAmount = 1000,
+                LoanPurposeId = 4,
+                EntityTypeId = 3,
+                SubjectPropertyDetailId = 1,
+                OpportunityId = 5,
+                LoanNumber = "xyz",
+                ExpectedClosingDate = DateTime.Now
+            };
+            dataContext.Set<LoanApplication>().Add(app);
+
+            Opportunity opportunity = new Opportunity()
+            {
+                Id = 5,
+                IsActive = true,
+                EntityTypeId = 3,
+                IsDeleted = false,
+                NoRuleMatched = false,
+                IsAutoAssigned = false,
+                IsPickedByOwner = false,
+                IsDuplicate = false,
+                BusinessUnitId = 5,
+                OwnerId = 2,
+                LoanRequestId = 5
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            dataContext.SaveChanges();
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            LoanApplicationModel res = await loanService.GetByLoanApplicationId(5);
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(5, res.BusinessUnitId);
+            Assert.Equal(5, res.LoanRequestId);
+            Assert.Equal(5, res.OpportunityId);
         }
     }
 }
