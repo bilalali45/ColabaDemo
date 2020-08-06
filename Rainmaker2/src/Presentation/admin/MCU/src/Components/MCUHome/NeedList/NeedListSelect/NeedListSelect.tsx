@@ -66,8 +66,16 @@ export const NeedListSelect = ({
 
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
+      addTemplatesDocuments([...idArray, ...selectedIds, id]);
+      setShow(true);
     } else {
-      setIdArray(pre => pre?.filter(idOld => idOld !== id));
+      setIdArray((pre: any) => {
+        let ids = pre?.filter((idOld: any) => idOld !== id);
+        addTemplatesDocuments(ids);
+        setShow(true);
+        return ids;
+      });
+
     }
 
   }
@@ -134,7 +142,7 @@ export const NeedListSelect = ({
           addTemplatesDocuments(idArray);
         }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
 
-        
+
 
       } else {
         return <Link to={`/newNeedList/${LocalDB.getLoanAppliationId()}`} >Start from new list</Link>
@@ -153,7 +161,7 @@ export const NeedListSelect = ({
               Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
             </Dropdown.Toggle> :
 
-            <Dropdown.Toggle size="sm" style={{background: 'none', border: 'none', color: '#2C9EF5', outline: 'none'}} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 

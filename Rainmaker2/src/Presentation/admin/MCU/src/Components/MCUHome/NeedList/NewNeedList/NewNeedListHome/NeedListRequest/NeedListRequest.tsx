@@ -99,15 +99,7 @@ export const NeedListRequest = ({
         )
     }
 
-    if (requestSent || !isDraft) {
-        return (
-            <div className="flex-center">
-                <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </Spinner>
-            </div>
-        )
-    }
+
 
     const renderDocumentList = () => {
         if (!documentList?.length) {
@@ -205,13 +197,22 @@ export const NeedListRequest = ({
                 </div>
             </div>
 
-            <div className="listWrap-templates">
-                {renderDocumentList()}
+            {requestSent || !isDraft
+                ?
+                <div className="flex-center">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>
 
-                {/* Remove Message */}
+
+                : <div className="listWrap-templates">
+                    {renderDocumentList()}
+
+                    {/* Remove Message */}
 
 
-            </div>
+                </div>}
 
             <div className="left-footer">
                 {showSaveAsTemplate ?
