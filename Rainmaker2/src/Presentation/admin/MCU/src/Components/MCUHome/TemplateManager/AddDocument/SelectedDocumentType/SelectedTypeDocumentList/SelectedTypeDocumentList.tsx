@@ -5,15 +5,17 @@ import { Template } from '../../../../../../Entities/Models/Template'
 import { CategoryDocument } from '../../../../../../Entities/Models/CategoryDocument'
 import SearchIcon from '../../../../../../Assets/images/search-icon.svg'
 import { CustomDocuments } from '../CustomDocuments/CustomDocuments'
+import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument'
 
 type SelectedTypeType = {
     setVisible: Function,
     documentList: Document[],
     selectedCatDocs: CategoryDocument,
-    addNewDoc: Function
+    addNewDoc: Function,
+    needList?: TemplateDocument[]
 }
 
-export const SelectedTypeDocumentList = ({ documentList, selectedCatDocs, addNewDoc, setVisible }: SelectedTypeType) => {
+export const SelectedTypeDocumentList = ({ documentList, selectedCatDocs, addNewDoc, setVisible, needList }: SelectedTypeType) => {
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 
@@ -28,6 +30,7 @@ export const SelectedTypeDocumentList = ({ documentList, selectedCatDocs, addNew
                 setVisible={setVisible}
                 documentList={documentList}
                 addNewDoc={addNewDoc}
+                needList={needList}
             />
             {selectedCatDocs?.catName === 'Other' && <CustomDocuments
                 setVisible={setVisible}

@@ -12,6 +12,7 @@ import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
 import { nameTest } from '../../../Add/Home/AddNeedListHome';
 import Spinner from 'react-bootstrap/Spinner';
+import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -26,7 +27,7 @@ type AddNeedListContainerType = {
     addDocumentToList: Function,
     templateList: Template[],
     addTemplatesDocuments: Function,
-    isDraft: string,
+    isDraft: isDocumentDraftType,
     viewSaveDraft: Function,
     saveAsTemplate: Function,
     templateName: string,
@@ -98,11 +99,13 @@ export const NeedListRequest = ({
         )
     }
 
-    if (requestSent) {
+    if (requestSent || !isDraft) {
         return (
-            <Spinner size="sm" animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
+            <div className="flex-center">
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
         )
     }
 
@@ -121,7 +124,8 @@ export const NeedListRequest = ({
 
                                         return <NeedListRequestItem
                                             key={d?.docName}
-                                            isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
+                                            isSelected={currentDocument?.docName === d?.docName}
+                                            // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
                                             removeDocumentFromList={removeDocumentFromList}
@@ -185,6 +189,7 @@ export const NeedListRequest = ({
                 <div className="btn-add-new-Temp">
 
                     <AddDocument
+                        needList={documentList}
                         addDocumentToList={addDocumentToList}
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right-end"

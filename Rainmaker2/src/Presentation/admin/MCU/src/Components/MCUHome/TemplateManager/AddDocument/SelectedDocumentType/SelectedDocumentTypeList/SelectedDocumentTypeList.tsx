@@ -11,10 +11,11 @@ type SelectedTypeType = {
     setVisible: Function,
     documentList: Document[],
     addNewDoc: Function,
-    term?: string
+    term?: string,
+    needList?: TemplateDocument[]
 }
 
-export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, term }: SelectedTypeType) => {
+export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, term, needList }: SelectedTypeType) => {
 
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [removeDocName, setRemoveDocName] = useState<string>();
@@ -29,7 +30,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
 
     const location = useLocation();
 
-    const filterUsedDocs = (templateDocs: Document[]) => {
+    const filterUsedDocs = (templateDocs: any[]) => {
         return documentList?.filter((cd: any) => !templateDocs?.find((td: any) => {
             if(!cd?.docId) {
                 if(cd?.docType?.toLowerCase() === td?.docName?.toLowerCase()) {
@@ -46,7 +47,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
         return null;
     }
 
-    let usedDocs = location.pathname.includes('newNeedList') ? selectedTemplateDocuments : templateDocuments;
+    let usedDocs = location.pathname.includes('newNeedList') ? needList : templateDocuments;
 
     return (
         <div className="active-docs">

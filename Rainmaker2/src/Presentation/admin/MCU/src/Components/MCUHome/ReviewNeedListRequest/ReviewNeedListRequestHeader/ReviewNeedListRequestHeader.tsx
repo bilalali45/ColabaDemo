@@ -9,12 +9,14 @@ type NewNeedListHeaderType = {
   saveAsDraft: Function;
   showReview: boolean;
   toggleShowReview: Function;
+  documentList: TemplateDocument[]
 };
 
 export const ReviewNeedListRequestHeader = ({
   saveAsDraft,
   showReview,
   toggleShowReview,
+  documentList
 }: NewNeedListHeaderType) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -53,6 +55,7 @@ export const ReviewNeedListRequestHeader = ({
               Close
             </button>{" "}
             <button
+              disabled={!documentList?.length}
               onClick={() => saveAsDraft(true)}
               className="btn btn-sm btn-primary"
             >
@@ -84,7 +87,7 @@ export const ReviewNeedListRequestHeader = ({
                 Close
               </Button>{" "}
               <Button onClick={() => saveAsDraft(true)} variant="primary">
-                Save & Close
+                Save As Close
               </Button>
             </p>
           </Modal.Body>

@@ -19,9 +19,9 @@ type AddDocumentType = {
     addDocumentToList: Function
     popoverplacement?: any;
     setLoaderVisible: Function;
-
+    needList?: TemplateDocument[],
 }
-export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, addDocumentToList }: AddDocumentType) => {
+export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, addDocumentToList, needList }: AddDocumentType) => {
     const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
     const [requestSent, setRequestSent] = useState<boolean>(false);
@@ -141,6 +141,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
                     <div className="col-sm-7 col-md-7 col-lg-8 popup-add-doc-row--right">
 
                         <SelectedType
+                            needList={needList}
                             setVisible={hidePopup}
                             selectedCatDocs={currentCategoryDocuments}
                             addNewDoc={addDocToTemplate} />

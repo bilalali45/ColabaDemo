@@ -7,14 +7,16 @@ import { TemplateDocument } from "../../../../../../Entities/Models/TemplateDocu
 import { useHistory } from "react-router-dom";
 import { TextArea } from "../../../../../../Shared/components/TextArea";
 import { errorText } from "../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview";
+import { isDocumentDraftType } from "../../../../../../Store/reducers/TemplatesReducer";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
     updateDocumentMessage: Function,
     toggleShowReview: Function
+    isDraft: isDocumentDraftType
 }
 
-export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview }: NeedListContentType) => {
+export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview, isDraft }: NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
@@ -62,6 +64,17 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
             </div>
         )
     }
+
+    if (!isDraft) {
+        return (
+            <div className="flex-center">
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
+        )
+    }
+
     // rows={6}
     return (
         <section className="veiw-SelectedTemplate">

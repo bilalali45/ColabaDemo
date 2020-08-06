@@ -7,7 +7,7 @@ import { Store } from "../../../../../Store/Store";
 import { TemplateDocument } from "../../../../../Entities/Models/TemplateDocument";
 import { Template } from "../../../../../Entities/Models/Template";
 import { TemplateActions } from "../../../../../Store/actions/TemplateActions";
-import { TemplateActionsType } from "../../../../../Store/reducers/TemplatesReducer";
+import { TemplateActionsType, isDocumentDraftType } from "../../../../../Store/reducers/TemplatesReducer";
 import { Document } from "../../../../../Entities/Models/Document";
 
 type NewNeedListHomeType = {
@@ -18,7 +18,7 @@ type NewNeedListHomeType = {
     updateDocumentMessage: Function,
     templateList: Template[],
     addTemplatesDocuments: Function,
-    isDraft: string,
+    isDraft: isDocumentDraftType,
     viewSaveDraft: Function,
     saveAsTemplate: Function,
     templateName: string,
@@ -76,8 +76,9 @@ export const NewNeedListHome = ({
                     <div className="col-sm-8">
                         <div className="MT-rightbar">
                             <NeedListContent
+                                isDraft={isDraft}
                                 updateDocumentMessage={updateDocumentMessage}
-                                document={currentDocument}
+                                document={!allDocuments?.length ? null : currentDocument}
                                 toggleShowReview={toggleShowReview} />
                         </div>
                     </div>
