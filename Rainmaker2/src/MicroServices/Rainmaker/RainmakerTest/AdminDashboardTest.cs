@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using RainMaker.Data;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
+using Rainmaker.Model;
 
 namespace Rainmaker.Test
 {
@@ -73,7 +74,6 @@ namespace Rainmaker.Test
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
         }
-
         [Fact]
         public async Task TestGetSystemAdminMenuService()
         {
@@ -86,7 +86,7 @@ namespace Rainmaker.Test
 
             dataContext.Database.EnsureCreated();
 
-            Sitemap sitemap = new Sitemap()
+            RainMaker.Entity.Models.Sitemap sitemap = new RainMaker.Entity.Models.Sitemap()
             {
                 Id = 2,
                 IsParent = true,
@@ -96,7 +96,7 @@ namespace Rainmaker.Test
                 DisplayOrder = 1,
                 IsPermissive = false
             };
-            dataContext.Set<Sitemap>().Add(sitemap);
+            dataContext.Set<RainMaker.Entity.Models.Sitemap>().Add(sitemap);
 
             UserPermission userPermission = new UserPermission()
             {
@@ -119,7 +119,6 @@ namespace Rainmaker.Test
             // Assert
             Assert.NotNull(result);
         }
-
         [Fact]
         public async Task TestGetMenuService()
         {
@@ -162,7 +161,7 @@ namespace Rainmaker.Test
             };
             dataContext.Set<UserRole>().Add(userRole);
 
-            Sitemap sitemap = new Sitemap()
+            RainMaker.Entity.Models.Sitemap sitemap = new RainMaker.Entity.Models.Sitemap()
             {
                 Id = 1,
                 IsParent = true,
@@ -172,7 +171,7 @@ namespace Rainmaker.Test
                 DisplayOrder = 1,
                 IsPermissive = false
             };
-            dataContext.Set<Sitemap>().Add(sitemap);
+            dataContext.Set<RainMaker.Entity.Models.Sitemap>().Add(sitemap);
 
             UserPermission userPermission = new UserPermission()
             {
@@ -194,6 +193,25 @@ namespace Rainmaker.Test
 
             // Assert
             Assert.NotNull(result);
+        }
+        [Fact]
+        public async Task TestGetLoanInfoController()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mockLoanApplicationService = new Mock<ILoanApplicationService>();
+
+            var adminDashboardController = new AdminDashboardController(null, null, mockLoanApplicationService.Object);
+
+            AdminLoanSummary adminLoanSummary = new AdminLoanSummary();
+            adminLoanSummary.CityName = "Karachi";
+            adminLoanSummary.CountryName = "Pakistan";
+            mockLoanApplicationService.Setup(x => x.GetAdminLoanSummary(It.IsAny<int>())).ReturnsAsync(adminLoanSummary);
+
+            //Act
+            IActionResult result = await adminDashboardController.GetLoanInfo(1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
         }
 
     }
