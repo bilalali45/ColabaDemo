@@ -2,6 +2,10 @@ body {
     background: color("bg");
 }
 
+*:focus{
+    outline: none;
+}
+
 h1,
 h2,
 h3,
@@ -10,7 +14,7 @@ h5,
 h6 {
     font-weight: 500;
     font-family: fontFamily("heading");
-    color: color("base");
+    color: color("heading");
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -45,6 +49,16 @@ a,button{
         content:"";
         display: table;
         clear: both;
+    }
+}
+
+.text-ellipsis{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    *{
+        max-width: 100%;
     }
 }
 
@@ -442,15 +456,19 @@ ul {
             font-family: fontFamily('heading');
             font-size: fontSize('sm') ;
             font-weight: 500;
-            text-transform: uppercase;
             margin-bottom: 10px;
         }
 
         input{
             vertical-align: middle;
             &[type=checkbox]{
-                width: 10px;
                 transform: translateY(-1px);
+                border-radius: 0;
+                width: 10px;
+                height: 10px;
+                &:focus{
+                    outline: none;
+                }
             }
         }
 
@@ -501,6 +519,8 @@ ul {
                 }
                 &::after{
                     transform: rotate(45deg);
+                    margin-top: 0;
+                    width: 11px;
                 }
             }
         }
