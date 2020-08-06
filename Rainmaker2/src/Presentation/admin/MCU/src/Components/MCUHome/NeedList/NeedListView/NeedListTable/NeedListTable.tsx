@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { NeedList } from "../../../../../Entities/Models/NeedList";
 import { NeedListDocuments } from "../../../../../Entities/Models/NeedListDocuments";
@@ -28,6 +28,11 @@ export const NeedListTable = ({
   documentSortClick,
   statusSortClick,
 }: NeedListProps) => {
+
+
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
+
   const history = useHistory();
   const renderNeedList = (data: any) => {
     return data.map((item: NeedList, index: number) => {
@@ -37,7 +42,10 @@ export const NeedListTable = ({
           {renderStatus(item.status)}
           {renderFile(item.files, item.status)}
           {renderSyncToLos(item.files)}
-          {renderButton(item, index)}
+          {renderButton(item, index)}          
+          <div className="td td-options">
+           {confirmDelete && currentItem === item && deleteDocAlert(item, index)}
+          </div>
         </div>
       );
     });
@@ -82,11 +90,31 @@ export const NeedListTable = ({
       </div>
     );
   };
+  const deleteDocAlert = (data: NeedList, index: number) => {
+    return (
+      <>
+        <div>
+          <div className="list-remove-alert">
+            <span className="list-remove-text">Are you sure want to delet this Document?</span>
+            <div className="list-remove-options">
+              <button onClick={() => {
+                deleteDocument(data.id, data.requestId, data.docId);
+                setConfirmDelete(false)
+              }} className="btn btn-sm btn-secondry">Yes</button>
+              {" "}
+              <button onClick={() => setConfirmDelete(false)} className="btn btn-sm btn-primary">No</button>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   const renderButton = (data: NeedList, index: number) => {
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === "Pending review") {
       return (
-        <div className="td">
+        <div className="td options">
           <button
             onClick={() => reviewClickHandler(index)}
             className="btn btn-secondry btn-sm"
@@ -97,7 +125,7 @@ export const NeedListTable = ({
       );
     } else {
       return (
-        <div className="td">
+        <div className="td options">
           <button
             onClick={() => detailClickHandler(index)}
             className="btn btn-default btn-sm"
@@ -106,16 +134,18 @@ export const NeedListTable = ({
           </button>
           {data.status === "Borrower to do" ? (
             <button
-              onClick={() =>
-                deleteDocument(data.id, data.requestId, data.docId)
-              }
+              onClick={() => {
+                setCurrentItem(data)
+                setConfirmDelete(true)
+              }}
               className="btn btn-delete btn-sm"
             >
               <em className="zmdi zmdi-close"></em>
             </button>
+
           ) : (
-            ""
-          )}
+              ""
+            )}
         </div>
       );
     }
@@ -133,7 +163,7 @@ export const NeedListTable = ({
         <div className="td ">
           {data.map((item: NeedListDocuments, index) => {
             return (
-              <span className="block-element c-filename">
+              <span key={item?.id} className="block-element c-filename">
                 {item.mcuName ? (
                   <React.Fragment>
                     <span
@@ -154,17 +184,17 @@ export const NeedListTable = ({
                     </small>
                   </React.Fragment>
                 ) : (
-                  <span
-                    title={item.clientName}
-                    className={
-                      status === "Pending review"
-                        ? "block-element-child td-filename filename-by-mcu filename-p"
-                        : "block-element-child td-filename filename-by-mcu"
-                    }
-                  >
-                    {truncate(item.clientName, 47)}
-                  </span>
-                )}
+                    <span
+                      title={item.clientName}
+                      className={
+                        status === "Pending review"
+                          ? "block-element-child td-filename filename-by-mcu filename-p"
+                          : "block-element-child td-filename filename-by-mcu"
+                      }
+                    >
+                      {truncate(item.clientName, 47)}
+                    </span>
+                  )}
               </span>
             );
           })}
@@ -200,6 +230,7 @@ export const NeedListTable = ({
       );
     }
   };
+
   const reviewClickHandler = (index: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       documentList: needList,
@@ -280,6 +311,8 @@ export const NeedListTable = ({
   return (
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
+
+
         <div className="need-list-table table">
           <div className="tr">
             {renderDocumentTitle()}
@@ -291,7 +324,8 @@ export const NeedListTable = ({
               </a>{" "}
               sync to LOS
             </div>
-            <div className="th">&nbsp;</div>
+            <div className="th options">&nbsp;</div>
+            <div className="th th-options">&nbsp;</div>
           </div>
           {needList && renderNeedList(needList)}
         </div>

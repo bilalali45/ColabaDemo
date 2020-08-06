@@ -16,11 +16,11 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken() {
-    return this.decodeString(window.sessionStorage.getItem("token"));
+    return this.decodeString(localStorage.getItem("token"));
   }
 
   static getRefreshToken() {
-    return this.decodeString(window.sessionStorage.getItem("refreshToken"));
+    return this.decodeString(localStorage.getItem("refreshToken"));
   }
 
   static getLoginDevUserName() {
@@ -32,7 +32,7 @@ export class LocalDB {
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(window.sessionStorage.getItem("payload"));
+    let payload = this.decodeString(localStorage.getItem("payload"));
     if (payload) {
       return JSON.parse(payload);
     }
@@ -57,18 +57,12 @@ export class LocalDB {
   //#region Local DB Post Methods
   static storeTokenPayload(payload: any) {
     if (!payload) return;
-    window.sessionStorage.setItem(
-      "payload",
-      this.encodeString(JSON.stringify(payload))
-    );
+    localStorage.setItem("payload", this.encodeString(JSON.stringify(payload)));
   }
 
   static storeAuthTokens(token: string, refreshToken: string) {
-    window.sessionStorage.setItem("token", this.encodeString(token));
-    window.sessionStorage.setItem(
-      "refreshToken",
-      this.encodeString(refreshToken)
-    );
+    localStorage.setItem("token", this.encodeString(token));
+    localStorage.setItem("refreshToken", this.encodeString(refreshToken));
   }
 
   public static checkAuth(): boolean | string {
@@ -101,7 +95,7 @@ export class LocalDB {
   }
 
   public static storeItem(name: string, data: string) {
-    window.sessionStorage.setItem(name, this.encodeString(data));
+    localStorage.setItem(name, this.encodeString(data));
   }
   //#endregion
 
@@ -109,7 +103,7 @@ export class LocalDB {
   static removeAuth() {
     let items = ["token", "payload", "refreshToken"];
     for (const item of items) {
-      window.sessionStorage.removeItem(item);
+      localStorage.removeItem(item);
     }
   }
   //#endregion

@@ -24,7 +24,8 @@ type NewNeedListHomeType = {
     templateName: string,
     changeTemplateName: Function,
     removeDocumentFromList: Function,
-    toggleShowReview: Function
+    toggleShowReview: Function,
+    requestSent: boolean
 }
 
 export const NewNeedListHome = ({
@@ -41,7 +42,8 @@ export const NewNeedListHome = ({
     changeTemplateName,
     templateName,
     removeDocumentFromList,
-    toggleShowReview
+    toggleShowReview,
+    requestSent
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -52,6 +54,7 @@ export const NewNeedListHome = ({
                     <div className="col-sm-4">
                         <div className="MT-leftbar">
                             <NeedListRequest
+                                requestSent={requestSent}
                                 addDocumentToList={addDocumentToList}
                                 currentDocument={currentDocument}
                                 changeDocument={changeDocument}

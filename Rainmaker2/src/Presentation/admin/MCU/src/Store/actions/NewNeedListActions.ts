@@ -3,6 +3,7 @@ import { Http } from "rainsoft-js";
 import { LocalDB } from "../../Utils/LocalDB";
 import { DocumentRequest } from "../../Entities/Models/DocumentRequest";
 import { TemplateDocument } from "../../Entities/Models/TemplateDocument";
+import { debug } from "console";
 
 const http = new Http();
 
@@ -44,24 +45,27 @@ export class NewNeedListActions {
         documents: any[]) {
         let url = Endpoints.NewNeedList.POST.save(isDraft);
 
+        let mappedDocs = documents.map(d => {
+            return {
+                typeId: d.typeId,
+                displayName: d.docName,
+                message: d.docMessage || '',
+                docId: d?.docId,
+                requestId: d?.requestId
+            }
+        });
+
+        console.log(mappedDocs);
         let requestData = {
             loanApplicationId: parseInt(loanApplicationId),
             requests: [
                 {
                     message: emailText,
-                    documents: documents.map(d => {
-                        return {
-                            typeId: d.typeId,
-                            displayName: d.docName,
-                            message: d.docMessage,
-                            docId: d.docId,
-                            requestId: d.requestId
-                        }
-                    })
+                    documents: mappedDocs
                 }
             ]
         }
-
+        console.log(requestData);
         try {
             let res = await http.post(url, requestData);
             return res.data;
@@ -76,7 +80,7 @@ export class NewNeedListActions {
         let templateData = {
             name,
             documentTypes: documents.map((d: TemplateDocument) => {
-                if(d.docId) {
+                if (d.docId) {
                     return {
                         typeId: d.docId
                     }
@@ -92,9 +96,7 @@ export class NewNeedListActions {
             console.log(res.data);
             return res?.data;
         } catch (error) {
-            
+
         }
     }
-
-
 }

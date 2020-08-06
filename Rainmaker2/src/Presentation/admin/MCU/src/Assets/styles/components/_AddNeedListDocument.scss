@@ -256,14 +256,21 @@
                     align-items: center;
                     height: 100%;
                     justify-content: space-between;
-                .btn-link {
-                    cursor: pointer;
-                    font: 400 #{fontSize('nr')+'/'+1} fontFamily('base');
-                    &.link-primary {
-                        color: color('primary');
+                    .btn-link {
+                        cursor: pointer;
+                        font: 400 #{fontSize('nr')+'/'+1} fontFamily('base');
+
+                        &.link-primary {
+                            color: color('primary');
+                        }
                     }
+                    .dropdown{
+                        .mcu-dropdown-toggle{
+                            padding-left: 0;
+                        }
+                    }
+
                 }
-            }
             }
         }
 

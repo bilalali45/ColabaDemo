@@ -10,10 +10,11 @@ type emailContentReviewProps = {
     documentsName: string | undefined;
     saveAsDraft: Function;
     emailTemplate?: string;
+    showSendButton: boolean
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate }:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton}:emailContentReviewProps) => {
     
     const setDeafultText = () => {
         let str: string = '';
@@ -101,6 +102,25 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate }:
        }    
    }
 
+   const sendRequestButton = () => {
+       if(!showSendButton){
+        return(
+            <>
+             <footer className="mcu-panel-footer text-right">
+                 <button onClick={() => saveAsDraft(false)} className="btn btn-primary">Send Request</button>
+             </footer>
+            </>
+        )
+       }else{
+        return(
+            <>
+             <footer className="mcu-panel-footer text-center alert alert-success">Need list has been sent.</footer>
+            </>
+        )  
+       }
+       
+   }
+
    if(!emailTemplate){
     return (
         <div className="loader-widget loansnapshot">
@@ -127,10 +147,10 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate }:
                 />
 
             </div>
+                 {sendRequestButton()}
+           
 
-            <footer className="mcu-panel-footer text-right">
-                <button onClick={() => saveAsDraft(false)} className="btn btn-primary">Send Request</button>
-            </footer>
+           
         </div>
     )
 }
