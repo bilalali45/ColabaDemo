@@ -4,23 +4,29 @@ import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocumen
 import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
 import { TextArea } from '../../../../../Shared/components/TextArea';
 import Spinner from 'react-bootstrap/Spinner';
+import { LocalDB } from '../../../../../Utils/LocalDB';
 
 
 type emailContentReviewProps = {
     documentsName: string | undefined;
     saveAsDraft: Function;
     emailTemplate?: string;
-    showSendButton: boolean
+    showSendButton: boolean;
+    documentList: any;
+    documentHash: string | undefined;
+    setHash: Function
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton}:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton, documentList, documentHash, setHash}:emailContentReviewProps) => {
     
+    console.log('documentHash',documentHash)
     const setDeafultText = () => {
         let str: string = '';
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
         if(emailTemplate){
-            str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);     
+            str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);
+            hashDocuments();     
         }
 
         let length = documentsName?.split(',').length;  
@@ -52,6 +58,12 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
             draftNotExist(); 
         }     
     },[emailTemplate])
+
+    const hashDocuments = () => {
+     let hash = LocalDB.encodeString(JSON.stringify(documentList))
+     setHash(hash);
+    }
+
 
   const editEmailBodyHandler = (e: any) => {
      let txt = e.target.value;
@@ -92,8 +104,10 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     
    }
    const draftNotExist = () => {
+       debugger
        if(emailTemplate){   
-        if(previousDocLength != selectedTemplateDocuments.length){
+        let Newhash = LocalDB.encodeString(JSON.stringify(selectedTemplateDocuments))
+        if(documentHash != Newhash){
               setEmailBody(setDeafultText());
              }
         else{
