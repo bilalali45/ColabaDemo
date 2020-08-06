@@ -117,7 +117,7 @@ export class UserActions {
           console.log(
             "Refresh token called from authorize in case of MVC expire token"
           );
-          UserActions.refreshToken();
+          await UserActions.refreshToken();
         }
         console.log("Cache token is valid");
         return true;
@@ -138,7 +138,9 @@ export class UserActions {
     let time = expiryTime - currentTime;
     if (time < 1) {
       console.log("Refresh token called from addExpiryListener in case of < 1");
-      UserActions.refreshToken();
+      (async () => {
+        await UserActions.refreshToken();
+      })();
       return;
     }
     // let t = (time * 1000) * 60;
