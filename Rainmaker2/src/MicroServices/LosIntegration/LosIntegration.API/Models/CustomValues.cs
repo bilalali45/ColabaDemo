@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Models
 {
-    public class ByteCustomFields
+    public class CustomFields
     {
         public int CustomFieldsID { get; set; }
         public string Field01 { get; set; }

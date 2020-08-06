@@ -4,7 +4,7 @@ using LosIntegration.API.Models.ClientModels;
 namespace LosIntegration.API.Models
 {
     [DataContract]
-    public class ByteApplication
+    public class Application
     {
         //[DataMember(Name = "Borrower")]
         //public ByteBorrower Borrower { get; set; }

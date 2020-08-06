@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Models
 {
-    public class ByteLiability
+    public class Liability
     {
         public int AppNo { get; set; }
         public int DebtId { get; set; }

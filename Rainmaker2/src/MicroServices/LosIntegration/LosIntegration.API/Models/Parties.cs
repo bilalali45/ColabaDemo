@@ -2,7 +2,7 @@
 
 namespace LosIntegration.API.Models
 {
-    public class ByteParties
+    public class Parties
     {
         public long PartyId { get; set; }
         public long CategoryID { get; set; }

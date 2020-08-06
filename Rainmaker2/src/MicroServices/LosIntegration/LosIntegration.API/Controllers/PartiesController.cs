@@ -60,9 +60,9 @@ namespace LosIntegration.API.Controllers
         // POST api/<BorrowerController>
         [Route(template: "update")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ByteParties byteParties)
+        public async Task<IActionResult> PostAsync(Parties parties)
         {
-            var rainmakerParties = byteParties.GetRainmakerParties();
+            var rainmakerParties = parties.GetRainmakerParties();
 
             var content = rainmakerParties.ToJsonString();
 

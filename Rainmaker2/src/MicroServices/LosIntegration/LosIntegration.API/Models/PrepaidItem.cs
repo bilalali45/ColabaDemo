@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Models
 {
-    public class BytePrepaidItem
+    public class PrepaidItem
     {
         public long PrepaidItemId { get; set; }
         public long LoanId { get; set; }

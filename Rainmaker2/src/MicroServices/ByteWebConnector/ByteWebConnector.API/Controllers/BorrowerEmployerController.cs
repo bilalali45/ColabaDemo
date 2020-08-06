@@ -68,7 +68,7 @@ namespace ByteWebConnector.API.Controllers
 
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
-                                           $"{_configuration[key: "LosIntegration:Url"]}/api/rainmaker/BorrowerEmployer/AddOrUpdate",
+                                           $"{_configuration[key: "LosIntegration:Url"]}/api/LosIntegration/BorrowerEmployer/AddOrUpdate",
                                            content: new StringContent(content: content,
                                                                       encoding: Encoding.UTF8,
                                                                       mediaType: "application/json"));

@@ -2,7 +2,7 @@
 
 namespace LosIntegration.API.Models
 {
-    public class ByteFileData
+    public class FileData
     {
         public int LoanId { get; set; }
         public long OrganizationId { get; set; }

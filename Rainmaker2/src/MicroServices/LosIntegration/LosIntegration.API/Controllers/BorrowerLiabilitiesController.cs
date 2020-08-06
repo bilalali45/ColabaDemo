@@ -60,9 +60,9 @@ namespace LosIntegration.API.Controllers
         // POST api/<BorrowerController>
         [Route(template: "update")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ByteLiability byteLiability)
+        public async Task<IActionResult> PostAsync(Liability liability)
         {
-            var rainmakerBorrowerLiability = byteLiability.GetRainmakerBorrowerLiability();
+            var rainmakerBorrowerLiability = liability.GetRainmakerBorrowerLiability();
 
             var content = rainmakerBorrowerLiability.ToJsonString();
 
