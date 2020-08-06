@@ -8,7 +8,7 @@ using LosIntegration.API.Models.ClientModels;
 namespace LosIntegration.API.Models
 {
     [DataContract(Name = "Borrower")]
-    public class ByteBorrower
+    public class Borrower
     {
         [DataMember]
         public int? BorrowerId { get; set; }

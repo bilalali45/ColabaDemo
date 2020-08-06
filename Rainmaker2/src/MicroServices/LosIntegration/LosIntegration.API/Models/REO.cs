@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Models
 {
-    public class ByteREO
+    public class REO
     {
         public int AppNo { get; set; }
         public int Reoid { get; set; }

@@ -3,7 +3,7 @@ using LosIntegration.API.Models.ClientModels;
 
 namespace LosIntegration.API.Models
 {
-    public class ByteStatus
+    public class Status
     {
         public long StatusId { get; set; }
         public int LoanStatus { get; set; }

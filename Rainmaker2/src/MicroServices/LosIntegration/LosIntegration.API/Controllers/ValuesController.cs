@@ -26,7 +26,7 @@ namespace LosIntegration.API.Controllers
         [Route("borrower")]
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post(ByteBorrower request)
+        public void Post(Borrower request)
         {
            
         }
@@ -34,14 +34,14 @@ namespace LosIntegration.API.Controllers
         // POST api/<ValuesController>
         [Route("subprop")]
         [HttpPost]
-        public void Post(ByteSubProperty request)
+        public void Post(SubProperty request)
         {
             
 
         }
         [Route("loan")]
         [HttpPost]
-        public void Post(Models.ByteLoanInfo request)
+        public void Post(Models.LoanInfo request)
         {
 
         }
@@ -53,13 +53,13 @@ namespace LosIntegration.API.Controllers
         }
         [Route("party")]
         [HttpPost]
-        public void Post(ByteParties request)
+        public void Post(Parties request)
         {
 
         }
         [Route("prepaid")]
         [HttpPost]
-        public void Post(BytePrepaidItem request)
+        public void Post(PrepaidItem request)
         {
 
         }
@@ -71,49 +71,49 @@ namespace LosIntegration.API.Controllers
         }
         [Route("status")]
         [HttpPost]
-        public void Post(ByteStatus request)
+        public void Post(Status request)
         {
 
         }
         [Route("filedata")]
         [HttpPost]
-        public void Post(ByteFileData request)
+        public void Post(FileData request)
         {
 
         }
         [Route("debt")]
         [HttpPost]
-        public void Post(ByteLiability request)
+        public void Post(Liability request)
         {
 
         }
         [Route("residence")]
         [HttpPost]
-        public void Post(ByteResidence request)
+        public void Post(Residence request)
         {
 
         }
         [Route("asset")]
         [HttpPost]
-        public void Post(ByteAsset request)
+        public void Post(Asset request)
         {
 
         }
         [Route("employer")]
         [HttpPost]
-        public void Post(ByteEmployer request)
+        public void Post(Employer request)
         {
 
         }
         [Route("income")]
         [HttpPost]
-        public void Post(ByteIncome request)
+        public void Post(Income request)
         {
 
         }
         [Route("reo")]
         [HttpPost]
-        public void Post(ByteREO request)
+        public void Post(REO request)
         {
 
         }

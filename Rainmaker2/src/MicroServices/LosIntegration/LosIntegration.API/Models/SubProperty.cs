@@ -2,7 +2,7 @@
 
 namespace LosIntegration.API.Models
 {
-    public class ByteSubProperty
+    public class SubProperty
     {
         public long SubPropId { get; set; }
         public string FullAddress { get; set; }

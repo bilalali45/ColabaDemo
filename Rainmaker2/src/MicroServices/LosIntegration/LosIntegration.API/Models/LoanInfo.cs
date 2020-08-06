@@ -2,7 +2,7 @@
 
 namespace LosIntegration.API.Models
 {
-    public class ByteLoanInfo
+    public class LoanInfo
     {
         public long LoanId { get; set; }
 

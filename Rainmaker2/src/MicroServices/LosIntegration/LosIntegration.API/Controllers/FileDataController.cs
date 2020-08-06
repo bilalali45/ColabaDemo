@@ -60,9 +60,9 @@ namespace LosIntegration.API.Controllers
         // POST api/<BorrowerController>
         [Route(template: "update")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ByteFileData byteFileData)
+        public async Task<IActionResult> PostAsync(FileData fileData)
         {
-            var rainmakerFileData = byteFileData.GetRainmakerFileData();
+            var rainmakerFileData = fileData.GetRainmakerFileData();
 
             var content = rainmakerFileData.ToJsonString();
 
