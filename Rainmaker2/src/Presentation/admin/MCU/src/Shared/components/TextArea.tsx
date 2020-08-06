@@ -13,7 +13,8 @@ export const TextArea = ({ textAreaValue, onBlurHandler = () => { }, onChangeHan
 
 
     const [isTextValid, setIsTextValid] = useState<boolean>(false);
-    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
+    //const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}[\s]*$/i;
+    const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/;
 
 
     const checkIfValid = (e: ChangeEvent<HTMLTextAreaElement>) => {
