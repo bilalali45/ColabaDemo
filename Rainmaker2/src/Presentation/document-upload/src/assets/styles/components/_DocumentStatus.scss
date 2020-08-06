@@ -4,6 +4,7 @@
     &.hasData{
         background-image: url("../../images/doc-request.png");
         background-image: url("../../images/doc-request.svg");
+        background-image: url("../../images/get-started-bg.svg");
         background-position:center;
         background-repeat: no-repeat;
         background-color: color('colorWhite');
@@ -17,7 +18,7 @@
         }
     }
     .overlay-DocumentStatus {
-        background: rgba(color('colorWhite'), 0.80);
+        //background: rgba(color('colorWhite'), 0.80);
     }
 .list {
     li {

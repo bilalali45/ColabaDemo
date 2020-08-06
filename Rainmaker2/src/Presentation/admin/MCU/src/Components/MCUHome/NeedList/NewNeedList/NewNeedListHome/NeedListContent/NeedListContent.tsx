@@ -43,7 +43,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
         return (
             <div className="T-head">
-                <div className="T-head-flex">
+                <div className="T-head-flex text-ellipsis">
                     <div>
                         {editTitleview ?
                             <>
@@ -56,7 +56,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                                 </p>
                             </>
                             : <>
-                                <p> {document?.docName} </p>
+                                <p><span className="text-ellipsis"> {document?.docName}</span></p>
                                 {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
                             </>}
                     </div>
