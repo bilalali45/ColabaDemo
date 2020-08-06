@@ -30,6 +30,7 @@ export const NewNeedList = () => {
     const templateManager: any = state?.templateManager;
     const needListManager: any = state?.needListManager;
     const isDocumentDraft = templateManager?.isDocumentDraft;
+    const emailBody = templateManager?.emailContent;
     const templateIds = needListManager?.templateIds || [];
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
@@ -78,6 +79,7 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
+        dispatch({ type: TemplateActionsType.SetDocumentLength, payload: null })
     }
 
 
@@ -173,11 +175,12 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        let emailText = 'testing is good!!' // from store
+        debugger
+       // let emailText = 'testing is good!!' // from store
         await NewNeedListActions.saveNeedList(
             LocalDB.getLoanAppliationId(),
             toDraft,
-            emailText,
+            emailBody ? emailBody : '',
             allDocuments
         )
         history.push(`/needList/${LocalDB.getLoanAppliationId()}`);

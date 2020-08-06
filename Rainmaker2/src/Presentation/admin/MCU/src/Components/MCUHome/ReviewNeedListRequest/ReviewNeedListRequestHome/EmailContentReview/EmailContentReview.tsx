@@ -13,29 +13,43 @@ type emailContentReviewProps = {
 }
 export const errorText = "Invalid character entered";
 
-export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = ''}:emailContentReviewProps) => {
+export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate }:emailContentReviewProps) => {
     
     const setDeafultText = () => {
         let str: string = '';
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
         if(emailTemplate){
-            str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);          
+            str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);     
         }
+
+        let length = documentsName?.split(',').length;  
+        if(length){
+            dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
+        }        
         return str       
     }
 
     const { state, dispatch } = useContext(Store);
 
     const needListManager: any = state?.needListManager;
+    const templateManager: any = state?.templateManager;
+    const isDocumentDraft = templateManager?.isDocumentDraft;
+    const emailContent = templateManager?.emailContent;
+    const previousDocLength = templateManager?.documentLength;
+    const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
     const loanData = needListManager?.loanInfo;
     const borrowername = loanData?.borrowers[0];
-    const [emailBody, setEmailBody] = useState(setDeafultText());
+    const [emailBody, setEmailBody] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
    
 
-    useEffect(() =>{     
-        setEmailBody(setDeafultText());  
+    useEffect(() =>{ 
+        if(isDocumentDraft?.requestId) {
+            draftExist();         
+        }else{
+            draftNotExist(); 
+        }     
     },[emailTemplate])
 
   const editEmailBodyHandler = (e: any) => {
@@ -49,7 +63,42 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
    }
 
    const saveEmailContent = () => {
-       dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
+       if(emailBody){
+        dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
+       }     
+   }
+
+   const draftExist = () => {
+       if(!previousDocLength){
+        if(selectedTemplateDocuments[0].message != ''){
+            setEmailBody(selectedTemplateDocuments[0].message); 
+            dispatch({type: TemplateActionsType.SetEmailContent, payload: selectedTemplateDocuments[0].message})
+            dispatch({type: TemplateActionsType.SetDocumentLength, payload: selectedTemplateDocuments.length }) 
+        }else{
+            setEmailBody(setDeafultText()); 
+            dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
+        }
+        return ;
+       }else{
+        if(previousDocLength != selectedTemplateDocuments.length){
+            setEmailBody(setDeafultText());
+            dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
+        }else{
+            setEmailBody(emailContent);
+            dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
+        }
+       }
+    
+   }
+   const draftNotExist = () => {
+       if(emailTemplate){   
+        if(previousDocLength != selectedTemplateDocuments.length){
+              setEmailBody(setDeafultText());
+             }
+        else{
+             setEmailBody(emailContent);
+            } 
+       }    
    }
 
    if(!emailTemplate){
