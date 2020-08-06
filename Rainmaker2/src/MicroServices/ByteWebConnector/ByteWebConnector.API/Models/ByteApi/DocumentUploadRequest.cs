@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ByteWebConnector.API.Models.ByteApi
 {
-    public class DocumentUploadModel
+    public class DocumentUploadRequest
     {
 
         public long FileDataId { get; set; }
@@ -15,5 +15,11 @@ namespace ByteWebConnector.API.Models.ByteApi
         public string DocumentStatus { get; set; }
         public string DocumentExension { get; set; }
         public string DocumentData { get; set; }
+    }
+
+    public class DocumentUploadResponse
+    {
+
+       
     }
 }

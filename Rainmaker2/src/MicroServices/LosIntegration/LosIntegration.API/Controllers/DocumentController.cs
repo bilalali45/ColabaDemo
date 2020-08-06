@@ -70,7 +70,7 @@ namespace LosIntegration.API.Controllers
 
 
             var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
-
+            
             if (!documentResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to load Document from Document Management");
@@ -88,6 +88,8 @@ namespace LosIntegration.API.Controllers
                                                 content: new StringContent(content: sendDocumentResponse.ToJsonString(),
                                                                            encoding: Encoding.UTF8,
                                                                            mediaType: "application/json")).Result;
+                //string result = callResponse.Content.ReadAsAsync<>()ReadAsStringAsync().Result;
+
                 if (callResponse.IsSuccessStatusCode)
                 {
                     var url =

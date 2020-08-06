@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ByteApi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Newtonsoft.Json;
 using RainMaker.Common;
 using Rainmaker.Service;
@@ -56,7 +57,7 @@ namespace ByteWebConnector.API.Controllers
         // POST api/<DocumentController>
         [Route(template: "[action]")]
         [HttpPost]
-        public IActionResult SendDocument([FromBody] SendDocumentRequest request
+        public ApiResponse SendDocument([FromBody] SendDocumentRequest request
                                  )
         {
 
@@ -67,7 +68,7 @@ namespace ByteWebConnector.API.Controllers
 
             if (loanApplication != null)
             {
-                var documentUploadModel = new DocumentUploadModel
+                var documentUploadModel = new DocumentUploadRequest
                                           {
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
                                               DocumentCategory = "PROP",//request.DocumentCategory,
@@ -80,18 +81,16 @@ namespace ByteWebConnector.API.Controllers
                 #region BytePro API Call
 
                 string byteProSession = GetByteProSession();
-                IActionResult documentResponse = SendDocumentToByte(documentUploadModel,
-                                                            byteProSession);
+                ApiResponse documentResponse = SendDocumentToByte(documentUploadModel,
+                                                                  byteProSession);
                 return documentResponse;
 
                 #endregion
             }
             else
             {
-                return BadRequest();
+                return null;
             }
-
-
 
         }
         // POST api/<DocumentController>
@@ -155,33 +154,39 @@ namespace ByteWebConnector.API.Controllers
             }
 
         }
-        private IActionResult SendDocumentToByte(DocumentUploadModel documentUploadModel,string session)
+        private ApiResponse SendDocumentToByte(DocumentUploadRequest documentUploadRequest,string session)
         {
+            var  respone = new ApiResponse();
             try
             {
-                string output = JsonConvert.SerializeObject(documentUploadModel, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                string output = JsonConvert.SerializeObject(documentUploadRequest, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 //string output = JsonConvert.SerializeObject(loanInfo);
-                Task<string> response = Send(output,session);
+                Task<string> documentResponse = Send(output,session);
                 var settings = new JsonSerializerSettings
                                {
                                    NullValueHandling = NullValueHandling.Ignore,
                                    MissingMemberHandling = MissingMemberHandling.Ignore
                                };
-                DocumentUploadModel document = JsonConvert.DeserializeObject<DocumentUploadModel>(response.Result, settings);
-                if (document != null && document.FileDataId != 0)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                //DocumentUploadRequest document = JsonConvert.DeserializeObject<DocumentUploadRequest>(response.Result, settings);
+                //if (response.Result != null)
+                //{
+                //    respone = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(response.Result) };
+                //}
+
+                respone.Status = ApiResponse.ApiResponseStatus.Success;
+                respone.Data = documentResponse.Result;
+                
+                
             }
             catch (Exception ex)
             {
-                throw new System.ArgumentException(ex.InnerException != null ? ex.InnerException.Message : "BytePro Error in API Update File Call");
+                respone.Status = ApiResponse.ApiResponseStatus.Fail;
+                respone.Message = ex.Message;
             }
-            return null;
+
+            return respone;
+
+
         }
         private async Task<string> Send(string output,string session)
         {
