@@ -31,6 +31,8 @@ export const NeedListView = () => {
     const currentTemplate: Template[] = templateManager?.currentTemplate;
     const isDraftStore: boolean = needListManager?.isDraft;
     const templateIds: boolean = needListManager?.templateIds;
+    const [deleteRequestSent, setDeleteRequestSent] = useState<boolean>(false);
+
 
     useEffect(() => {
         fetchNeedList(true, true);
@@ -58,11 +60,6 @@ export const NeedListView = () => {
         let res: any = await TemplateActions.isDocumentDraft(id);
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
 
-        //  if(result?.requestId){
-        //     setIsDraft('true')
-        //  }else{
-        //     setIsDraft('false')
-        //  }
     }
 
 
@@ -75,6 +72,7 @@ export const NeedListView = () => {
                 fetchNeedList(toggle, true).then((data) => {
                     let sortedList = sortList(data, docSort, sortArrow === 'asc' ? true : false, statusSort, sortStatusArrow === 'asc' ? true : false);
                     dispatch({ type: NeedListActionsType.SetNeedListTableDATA, payload: sortedList })
+                    setDeleteRequestSent(false)
                 })
             }
         }
@@ -96,34 +94,6 @@ export const NeedListView = () => {
             })
         }
     }
-
-    // const deleteNeedListDoc = async (
-    //     id: string,
-    //     requestId: string,
-    //     docId: string
-    // ) => {
-    //     if (id && requestId && docId) {
-    //         let res = await NeedListActions.deleteNeedListDocument(
-    //             id,
-    //             requestId,
-    //             docId
-    //         );
-    //         if (res === 200) {
-    //             fetchNeedList(toggle, true).then((data) => {
-    //                 let sortedList = sortList(
-    //                     data,
-    //                     docSort,
-    //                     sortArrow === "asc" ? true : false,
-    //                     statusSort,
-    //                     sortStatusArrow === "asc" ? true : false
-    //                 );
-    //                 dispatch({
-    //                     type: NeedListActionsType.SetNeedListTableDATA,
-    //                     payload: sortedList,
-    //                 });
-    //             });
-    //         }
-    //     }
 
 
     const sortDocumentTitleHandler = () => {
@@ -163,6 +133,7 @@ export const NeedListView = () => {
     }
 
     const deleteClickHandler = (id: string, requestId: string, docId: string) => {
+        setDeleteRequestSent(true)
         deleteNeedListDoc(id, requestId, docId);
     }
 
@@ -184,6 +155,7 @@ export const NeedListView = () => {
                 statusTitleArrow={sortStatusArrow}
                 documentSortClick={docSort}
                 statusSortClick={statusSort}
+                deleteRequestSent = {deleteRequestSent}
             />
         </div>
     )

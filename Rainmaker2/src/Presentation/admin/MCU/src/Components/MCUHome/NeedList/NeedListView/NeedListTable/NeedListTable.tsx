@@ -16,6 +16,7 @@ type NeedListProps = {
   sortStatusTitle: Function;
   documentSortClick: boolean;
   statusSortClick: boolean;
+  deleteRequestSent: boolean;
 };
 
 export const NeedListTable = ({
@@ -27,11 +28,13 @@ export const NeedListTable = ({
   sortStatusTitle,
   documentSortClick,
   statusSortClick,
+  deleteRequestSent
 }: NeedListProps) => {
 
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
+ 
 
   const history = useHistory();
   const renderNeedList = (data: any) => {
@@ -111,6 +114,7 @@ export const NeedListTable = ({
   }
 
   const renderButton = (data: NeedList, index: number) => {
+  
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === "Pending review") {
       return (
@@ -132,17 +136,31 @@ export const NeedListTable = ({
           >
             Details
           </button>
-          {data.status === "Borrower to do" ? (
-            <button
-              onClick={() => {
+          {data.status === "Borrower to do" &&  !count  ? (
+            deleteRequestSent &&  currentItem === data ?
+            <span className="btnloader">
+            <Spinner size="sm" animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+            </span>
+            : deleteRequestSent && currentItem != data ?         
+            <button onClick={() => {
                 setCurrentItem(data)
                 setConfirmDelete(true)
               }}
               className="btn btn-delete btn-sm"
             >
               <em className="zmdi zmdi-close"></em>
-            </button>
-
+            </button> 
+           : <button onClick={() => {
+            setCurrentItem(data)
+            setConfirmDelete(true)
+          }}
+          className="btn btn-delete btn-sm"
+        >
+          <em className="zmdi zmdi-close"></em>
+        </button> 
+            
           ) : (
               ""
             )}

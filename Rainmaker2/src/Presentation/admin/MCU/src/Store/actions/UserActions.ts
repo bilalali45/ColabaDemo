@@ -1,9 +1,9 @@
-import axios from "axios";
-import { LocalDB } from "../../Utils/LocalDB";
-import { Http } from "rainsoft-js";
-import { Endpoints } from "../endpoints/Endpoints";
-import Cookies from "universal-cookie";
-import jwt_decode from "jwt-decode";
+import axios from 'axios';
+import {LocalDB} from '../../Utils/LocalDB';
+import {Http} from 'rainsoft-js';
+import {Endpoints} from '../endpoints/Endpoints';
+import Cookies from 'universal-cookie';
+import jwt_decode from 'jwt-decode';
 const http = new Http();
 const cookies = new Cookies();
 
@@ -12,7 +12,7 @@ export class UserActions {
     const credentials = {
       userName: LocalDB.getLoginDevUserName(),
       password: LocalDB.getLoginDevPassword(),
-      employee: true,
+      employee: true
     };
 
     let res: any = await http.post(
@@ -22,10 +22,10 @@ export class UserActions {
     if (!res.data.data) {
       return null;
     }
-    let { token, refreshToken } = res.data.data;
+    let {token, refreshToken} = res.data.data;
     if (token && refreshToken) {
       LocalDB.storeTokenPayload(UserActions.decodeJwt(token));
-      return { token, refreshToken };
+      return {token, refreshToken};
     }
   }
 
@@ -36,7 +36,7 @@ export class UserActions {
       }
       let res: any = await http.post(Endpoints.User.POST.refreshToken(), {
         token: LocalDB.getAuthToken(),
-        refreshToken: LocalDB.getRefreshToken(),
+        refreshToken: LocalDB.getRefreshToken()
       });
 
       if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
@@ -50,7 +50,7 @@ export class UserActions {
         http.setAuth(res.data.data.token);
         return true;
       }
-      console.log("Refresh token fail.");
+      console.log('Refresh token fail.');
       //LocalDB.removeAuth();
       //window.open("/Login/LogOff", "_self");
       //window.top.location.href = "/Login/LogOff";
@@ -66,8 +66,8 @@ export class UserActions {
 
   static async authorize() {
     let isAuth = LocalDB.checkAuth();
-    if (isAuth === "token expired") {
-      console.log("Refresh token called from authorize");
+    if (isAuth === 'token expired') {
+      console.log('Refresh token called from authorize');
       let res: any = await UserActions.refreshToken();
       if (res) {
         return true;
@@ -77,7 +77,7 @@ export class UserActions {
     }
 
     if (!isAuth) {
-      if (process.env.NODE_ENV === "development") {
+      if (process.env.NODE_ENV === 'development') {
         let tokens: any = await UserActions.authenticate();
         if (tokens?.token) {
           LocalDB.storeAuthTokens(tokens.token, tokens.refreshToken);
@@ -88,32 +88,32 @@ export class UserActions {
         }
       }
 
-      let Rainmaker2Token = cookies.get("Rainmaker2Token");
-      let Rainmaker2RefreshToken = cookies.get("Rainmaker2RefreshToken");
+      let Rainmaker2Token = cookies.get('Rainmaker2Token');
+      let Rainmaker2RefreshToken = cookies.get('Rainmaker2RefreshToken');
       console.log(
-        "Cache token values in authorize Rainmaker2Token",
+        'Cache token values in authorize Rainmaker2Token',
         Rainmaker2Token,
-        "Rainmaker2RefreshToken",
+        'Rainmaker2RefreshToken',
         Rainmaker2RefreshToken
       );
       if (Rainmaker2Token && Rainmaker2RefreshToken) {
-        console.log("Cache token values exist");
+        console.log('Cache token values exist');
         LocalDB.storeAuthTokens(Rainmaker2Token, Rainmaker2RefreshToken);
         LocalDB.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
         http.setAuth(Rainmaker2Token);
         let isAuth = LocalDB.checkAuth();
-        console.log("Cache token check Auth", isAuth);
-        if (isAuth === "token expired" || !isAuth) {
-          console.log("Cache token is not valid");
+        console.log('Cache token check Auth', isAuth);
+        if (isAuth === 'token expired' || !isAuth) {
+          console.log('Cache token is not valid');
           console.log(
-            "Refresh token called from authorize in case of MVC expire token"
+            'Refresh token called from authorize in case of MVC expire token'
           );
           await UserActions.refreshToken();
         }
-        console.log("Cache token is valid");
+        console.log('Cache token is valid');
         return true;
       } else {
-        console.log("Cache token not found");
+        console.log('Cache token not found');
         return false;
       }
     } else {
@@ -123,7 +123,7 @@ export class UserActions {
 
   static addExpiryListener() {
     const payload = LocalDB.getUserPayload();
-    console.log("in listener added");
+    console.log('in listener added');
     if (payload != undefined) {
       let expiry = payload.exp;
       let currentTime = Date.now();
@@ -131,19 +131,19 @@ export class UserActions {
       let time = expiryTime - currentTime;
       if (time < 1) {
         console.log(
-          "Refresh token called from addExpiryListener in case of < 1"
+          'Refresh token called from addExpiryListener in case of < 1'
         );
-        const resp = async () => {
+        (async () => {
           await UserActions.refreshToken();
-        };
+        })();
         return;
       }
       // let t = (time * 1000) * 60;
 
-      console.log("toke will expire after", time, "mil sec");
+      console.log('toke will expire after', time, 'mil sec');
       setTimeout(async () => {
         console.log(
-          "Refresh token called from addExpiryListener in case of time out meet"
+          'Refresh token called from addExpiryListener in case of time out meet'
         );
         await UserActions.refreshToken();
       }, time - 2000);
@@ -157,7 +157,7 @@ export class UserActions {
   }
 
   static keepAliveParentApp = () => {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       setInterval(() => {
         UserActions.refreshParentApp();
       }, 60 * 1000);
@@ -166,11 +166,11 @@ export class UserActions {
 
   static async refreshParentApp() {
     try {
-      console.log("In refreshParentApp");
-      axios.get(window.location.origin + "/Login/KeepAlive");
+      console.log('In refreshParentApp');
+      axios.get(window.location.origin + '/Login/KeepAlive');
       return true;
     } catch (error) {
-      console.log("In refreshParentApp Error");
+      console.log('In refreshParentApp Error');
       return false;
     }
   }

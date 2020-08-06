@@ -24,7 +24,7 @@ export class LaonActions {
       return new ContactUs().fromJson(res.data);
     } catch (error) {
       if (error?.response?.data?.errors?.loanApplicationId?.length) {
-        Auth.removeAuth();
+        window.open("/DashBoard/Index", "_self");
         //alert("The Loan Application ID provided does not exist");
       }
     }
@@ -43,7 +43,9 @@ export class LaonActions {
 
   static async getLOPhoto(lOPhotoId: string = "", loanApplicationId: string) {
     try {
-      let res: any = await http.get(Endpoints.loan.GET.getLOPhoto(lOPhotoId, loanApplicationId));
+      let res: any = await http.get(
+        Endpoints.loan.GET.getLOPhoto(lOPhotoId, loanApplicationId)
+      );
       return res.data;
     } catch (error) {
       console.log("error.response", error);
@@ -52,7 +54,9 @@ export class LaonActions {
 
   static async getFooter(loanApplicationId: string) {
     try {
-      let res: any = await http.get(Endpoints.loan.GET.getFooter(loanApplicationId));
+      let res: any = await http.get(
+        Endpoints.loan.GET.getFooter(loanApplicationId)
+      );
       return res.data;
     } catch (error) {
       console.log("error.response", error);

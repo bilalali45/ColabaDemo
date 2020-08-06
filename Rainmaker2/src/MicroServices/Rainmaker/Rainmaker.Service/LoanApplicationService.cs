@@ -24,7 +24,7 @@ namespace Rainmaker.Service
 
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId, int userProfileId)
         {
-            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y=>y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact).First().Customer.UserId==userProfileId && x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
+            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y=>y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer.UserId==userProfileId && x.Id == loanApplicationId).Include(x => x.PropertyInfo).ThenInclude(x => x.PropertyType)
                 .Include(x => x.PropertyInfo).ThenInclude(x => x.AddressInfo).ThenInclude(x=>x.State)
                 .Include(x => x.LoanPurpose)
                 .Include(x => x.StatusList)
@@ -74,8 +74,8 @@ namespace Rainmaker.Service
                     PopertyValue = x.PropertyInfo.PropertyValue,
                     LoanProgram = x.Product.AliasName,
                     Rate = null,
-                    LockStatus=x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y=>y.Id).First().LockStatusList.Name,
-                    LockDate= x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y => y.Id).First().CreatedOnUtc.SpecifyKind(DateTimeKind.Utc),
+                    LockStatus=x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y=>y.Id).FirstOrDefault().LockStatusList.Name,
+                    LockDate= x.Opportunity.OpportunityLockStatusLogs.OrderByDescending(y => y.Id).FirstOrDefault().CreatedOnUtc.SpecifyKind(DateTimeKind.Utc),
                     ExpirationDate=null
                 }).FirstOrDefaultAsync();
         }
@@ -83,7 +83,7 @@ namespace Rainmaker.Service
 
         public async Task<LoanOfficer> GetLOInfo(int loanApplicationId, int businessUnitId, int userProfileId)
         {
-            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).First().Customer.UserId == userProfileId && x.Id == loanApplicationId && x.BusinessUnit.Id == businessUnitId)
+            return await Repository.Query(x => x.Opportunity.OpportunityLeadBinders.Where(y => y.OwnTypeId == (int)OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer.UserId == userProfileId && x.Id == loanApplicationId && x.BusinessUnit.Id == businessUnitId)
                 .Include(x => x.Opportunity).ThenInclude(x => x.Employee).ThenInclude(x=>x.Contact)
                 .Include(x => x.Opportunity).ThenInclude(x => x.Employee)
                 .ThenInclude(x => x.EmployeeBusinessUnitEmails).ThenInclude(x => x.EmailAccount)
@@ -94,11 +94,11 @@ namespace Rainmaker.Service
                 .Select(x =>
                     new LoanOfficer()
                     {
-                        Email = x.Opportunity.Employee.EmployeeBusinessUnitEmails.Where(y=>y.BusinessUnitId==businessUnitId).First().EmailAccount.Email,
+                        Email = x.Opportunity.Employee.EmployeeBusinessUnitEmails.Where(y=>y.BusinessUnitId==businessUnitId).FirstOrDefault().EmailAccount.Email,
                         FirstName = x.Opportunity.Employee.Contact.FirstName,
                         LastName = x.Opportunity.Employee.Contact.LastName,
                         NMLS = x.Opportunity.Employee.NmlsNo,
-                        Phone = x.Opportunity.Employee.EmployeePhoneBinders.Where(y=>y.TypeId==3).First().CompanyPhoneInfo.Phone,
+                        Phone = x.Opportunity.Employee.EmployeePhoneBinders.Where(y=>y.TypeId==3).FirstOrDefault().CompanyPhoneInfo.Phone,
                         Photo = x.Opportunity.Employee.Photo,
                         WebUrl = x.BusinessUnit.WebUrl+"/lo/"+x.Opportunity.Employee.CmsName
                     }
