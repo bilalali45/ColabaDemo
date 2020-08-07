@@ -13,6 +13,7 @@ import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
 import { nameTest } from '../../../Add/Home/AddNeedListHome';
 import Spinner from 'react-bootstrap/Spinner';
 import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
+import { CustomDocuments } from '../../../../TemplateManager/AddDocument/SelectedDocumentType/CustomDocuments/CustomDocuments';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -33,7 +34,8 @@ type AddNeedListContainerType = {
     templateName: string,
     changeTemplateName: Function,
     removeDocumentFromList: Function,
-    requestSent: boolean
+    requestSent: boolean,
+    showSaveAsTemplateLink: boolean,
 }
 
 
@@ -52,7 +54,8 @@ export const NeedListRequest = ({
     changeTemplateName,
     templateName,
     removeDocumentFromList,
-    requestSent }: AddNeedListContainerType) => {
+    requestSent,
+    showSaveAsTemplateLink }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
     const [templateNameError, setTemplateNameError] = useState<string>();
@@ -84,7 +87,7 @@ export const NeedListRequest = ({
         }
     }
 
-
+    console.log('needlee', showSaveAsTemplateLink)
     const renderNoDocumentSelect = () => {
         return (
             <div className="no-preview">
@@ -236,7 +239,7 @@ export const NeedListRequest = ({
                                 addTemplatesDocuments={addTemplatesDocuments}
                                 viewSaveDraft={viewSaveDraft}
                             />
-                            {documentList?.length ? <a
+                            {showSaveAsTemplateLink ? <a
                                 onClick={toggleSaveAsTemplate}
                                 className="btn-link link-primary">
                                 Save as template

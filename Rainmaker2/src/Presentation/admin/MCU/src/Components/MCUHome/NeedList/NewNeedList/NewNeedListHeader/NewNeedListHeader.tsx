@@ -24,7 +24,7 @@ export const NewNeedListHeader = ({saveAsDraft} : NewNeedListHeaderType) => {
         <section className="MTheader">
             <div className="addneedlist-actions">
                 <button className="btn btn-sm btn-secondary">Close</button>
-                <button onClick={() => saveAsDraft()} className="btn btn-sm btn-primary">Save as Close</button>
+                <button onClick={() => saveAsDraft()} className="btn btn-sm btn-primary">Save & Close</button>
             </div>
         </section>
         <Modal
@@ -44,7 +44,7 @@ export const NewNeedListHeader = ({saveAsDraft} : NewNeedListHeaderType) => {
                 <p className="text-center">
                     <Button variant="secondary">Close</Button>
                     {" "}
-                    <Button variant="primary">Save As Close</Button>
+                    <Button variant="primary">Save & Close</Button>
                 </p>
             </Modal.Body>
             <Modal.Footer>
