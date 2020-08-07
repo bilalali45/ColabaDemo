@@ -223,20 +223,27 @@ namespace LosIntegration.API.Controllers
 
             if (mapping != null)
             {
-                var loanApplicationRequestContent = new GeLoanApplicationRequest
-                                                    {
-                                                        EncompassNumber =
-                                                            request.ExtOriginatorLoanApplicationId.ToString()
-                                                    }.ToJsonString();
+                //var loanApplicationRequestContent = new GeLoanApplicationRequest
+                //                                    {
+                //                                        EncompassNumber =
+                //                                            request.ExtOriginatorLoanApplicationId.ToString()
+                //                                    }.ToJsonString();
 
-                var callResponse =
-                    _httpClient.PostAsync(requestUri:
-                                          $"{_configuration[key: "RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
-                                          content: new StringContent(content: loanApplicationRequestContent,
-                                                                     encoding: Encoding.UTF8,
-                                                                     mediaType: "application/json")).Result;
+                //var callResponse =
+                //    _httpClient.PostAsync(requestUri:
+                //                          $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
+                //                          content: new StringContent(content: loanApplicationRequestContent,
+                //                                                     encoding: Encoding.UTF8,
+                //                                                     mediaType: "application/json")).Result;
+                _httpClient.DefaultRequestHeaders.Authorization
+                    = new AuthenticationHeaderValue(scheme: "Bearer",
+                                                    parameter: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiNTczMSIsIlVzZXJOYW1lIjoiZGFuaXNoIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImRhbmlzaCIsIkZpcnN0TmFtZSI6IkRhbmlzaCIsIkxhc3ROYW1lIjoiRmFpeiIsIlRlbmFudElkIjoiMSIsIkVtcGxveWVlSWQiOiI2MyIsImV4cCI6MTU5NjgxMzM4OCwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.NWq8E7N6cC6doabPmwqsyRvF2j2GYbEaFE9GBsD6Muk");
+                string uri =
+                    $"/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
+                HttpResponseMessage httpResponseMessage = _httpClient.GetAsync(requestUri:
+                                                               $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}" + uri).Result;
                 //var apiResponse = JsonConvert.DeserializeObject(value: result);
-                var loanApplicationId = JObject.Parse(json: callResponse.Content.ReadAsStringAsync().Result)
+                var loanApplicationId = JObject.Parse(json: httpResponseMessage.Content.ReadAsStringAsync().Result)
                                                .SelectToken(path: "id")
                                                .Value<int>();
 
@@ -247,12 +254,16 @@ namespace LosIntegration.API.Controllers
                               }.ToJsonString();
 
                 var url =
-                    "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/document/delete";
+                    "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/document/DeleteFile";
                 var csResponse = _httpClient.PostAsync(requestUri: url,
                                                        content: new StringContent(content: content,
                                                                                   encoding: Encoding.UTF8,
                                                                                   mediaType: "application/json"))
                                             .Result;
+                if (csResponse.IsSuccessStatusCode)
+                {
+
+                }
 
                 _mappingService.Delete(item: mapping);
                 _mappingService.SaveChangesAsync();

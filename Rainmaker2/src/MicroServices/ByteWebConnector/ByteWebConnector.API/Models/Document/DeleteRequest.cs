@@ -12,6 +12,7 @@
 
             modal.ExtOriginatorLoanApplicationId = FileDataId;
             modal.ExtOriginatorFileId = EmbeddedDocId;
+            modal.ExtOriginatorId = 1;
             return modal;
 
         }

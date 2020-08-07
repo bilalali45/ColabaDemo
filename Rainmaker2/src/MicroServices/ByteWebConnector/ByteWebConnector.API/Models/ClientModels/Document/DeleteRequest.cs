@@ -4,6 +4,6 @@
     {
         public int ExtOriginatorLoanApplicationId { get; set; }
         public int ExtOriginatorFileId { get; set; }
-
+        public int ExtOriginatorId { get; set; }
     }
 }
