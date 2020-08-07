@@ -168,7 +168,7 @@ namespace DocumentManagement.Service
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
                             activity = string.Format(ActivityStatus.RerequestedBy, request.userName),
-                            typeId = item.typeId,
+                            typeId = string.IsNullOrEmpty(item.typeId)?null:item.typeId,
                             docId = item.docId,
                             docName = item.displayName,
                             loanId = loanApplication.id,
@@ -189,7 +189,7 @@ namespace DocumentManagement.Service
 
                     bsonDocument.Add("id", new ObjectId(item.id));
                     bsonDocument.Add("status", item.status);
-                    bsonDocument.Add("typeId", item.typeId == null ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
+                    bsonDocument.Add("typeId", string.IsNullOrEmpty(item.typeId) ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
                     bsonDocument.Add("displayName", item.displayName);
                     bsonDocument.Add("message", item.message);
                     bsonDocument.Add("files", new BsonArray());
@@ -269,7 +269,7 @@ namespace DocumentManagement.Service
                             activity = !String.IsNullOrEmpty(activityLogId)
                                 ? string.Format(ActivityStatus.RerequestedBy, request.userName)
                                 : string.Format(ActivityStatus.RequestedBy, request.userName),
-                            typeId = item.typeId,
+                            typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,
                             docId = item.id,
                             docName = item.displayName,
                             loanId = loanApplication.id,
