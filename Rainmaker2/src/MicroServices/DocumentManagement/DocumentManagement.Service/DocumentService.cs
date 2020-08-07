@@ -344,7 +344,8 @@ namespace DocumentManagement.Service
                 { "$set", new BsonDocument()
                     {
                         { "requests.$[request].documents.$[document].status", DocumentStatus.Draft},
-                        { "requests.$[request].documents.$[document].message", message}
+                        { "requests.$[request].documents.$[document].message", message},
+                        { "requests.$[request].message", BsonString.Empty}
                     }
                 }
             }, new UpdateOptions()

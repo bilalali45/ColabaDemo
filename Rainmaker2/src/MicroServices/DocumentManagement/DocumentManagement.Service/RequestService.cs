@@ -120,7 +120,8 @@ namespace DocumentManagement.Service
                     {
                         { "$set", new BsonDocument()
                             {
-                                { "requests.$[request].documents.$[document].message", item.message}
+                                { "requests.$[request].documents.$[document].message", item.message},
+                                { "requests.$[request].message", loanApplication.requests[0].message}
                             }
                         }
                     }, new UpdateOptions()
@@ -525,7 +526,7 @@ namespace DocumentManagement.Service
                 {
                     DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
                     DraftDocumentDTO dto = new DraftDocumentDTO();
-                    dto.message = "";
+                    dto.message = query.message;
                     dto.typeId = query.typeId;
                     dto.docId = query.docId;
                     dto.requestId = query.requestId;
