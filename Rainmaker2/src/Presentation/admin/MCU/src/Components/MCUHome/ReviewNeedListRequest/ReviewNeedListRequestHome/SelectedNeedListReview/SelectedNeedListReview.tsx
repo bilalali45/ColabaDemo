@@ -45,7 +45,7 @@ export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProp
     return (
         <div className="mcu-panel-body--aside">
             <header className="mcu-panel-header">
-                <h2 className="h2">Review Needs List</h2>
+                <h3 className="h3">Review Needs List</h3>
             </header>
 
             <div className="mcu-panel-body padding">

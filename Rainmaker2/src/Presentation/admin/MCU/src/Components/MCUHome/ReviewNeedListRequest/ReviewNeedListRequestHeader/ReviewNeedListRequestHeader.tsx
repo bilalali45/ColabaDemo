@@ -40,7 +40,7 @@ export const ReviewNeedListRequestHeader = ({
             {showReview && (
               <button
                 onClick={(e) => toggleShowReview(e)}
-                className="btn btn-sm btn-back"
+                className="btn btn-back"
               >
                 <em className="zmdi zmdi-arrow-left"></em> Back
               </button>
@@ -50,14 +50,14 @@ export const ReviewNeedListRequestHeader = ({
           <div className="mcu-panel-header--right col-md-4">
             <button
               onClick={() => setShow(true)}
-              className="btn btn-sm btn-secondary"
+              className="btn btn-secondary"
             >
               Close
             </button>{" "}
             <button
               disabled={!documentList?.length}
               onClick={() => saveAsDraft(true)}
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary"
             >
               Save & Close
             </button>
