@@ -116,7 +116,7 @@ export const NeedListRequest = ({
 
                                         return <NeedListRequestItem
                                             key={d?.docName}
-                                            isSelected={currentDocument?.docName === d?.docName}
+                                            isSelected={currentDocument?.localId === d?.localId}
                                             // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
@@ -148,6 +148,7 @@ export const NeedListRequest = ({
                             }
                         }
                     }}
+                    maxLength={255}
                     style={{ border: templateNameError && '1px solid red' }}
                     value={templateName}
                     onChange={validateTemplateName}
@@ -159,8 +160,10 @@ export const NeedListRequest = ({
                 <div className="save-template-btns">
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
-                    <button className="btn btn-sm btn-primary" onClick={() => {
-                        saveAsTemplate();
+                    <button className="btn btn-sm btn-primary" onClick={async () => {
+                        setRequestHit(true);
+                        await saveAsTemplate();
+                        setRequestHit(false);
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
@@ -214,27 +217,32 @@ export const NeedListRequest = ({
 
                 </div>}
 
-            <div className="left-footer">
-                {showSaveAsTemplate ?
-                    <>
-                        {renderSaveAsTemplate()}
-                        {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
-                    </>
-                    :
-                    <div className="btn-wrap">
-                        <NeedListSelect
-                            showButton={false}
-                            templateList={templateList}
-                            addTemplatesDocuments={addTemplatesDocuments}
-                            viewSaveDraft={viewSaveDraft}
-                        />
-                        {documentList?.length ? <a
-                            onClick={toggleSaveAsTemplate}
-                            className="btn-link link-primary">
-                            Save as template
+            {requestHit ?
+                <div className="left-footer text-center alert alert-success">Need list has been sent.</div>
+                :
+                <div className="left-footer">
+
+
+                    {showSaveAsTemplate ?
+                        <>
+                            {renderSaveAsTemplate()}
+                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                        </>
+                        :
+                        <div className="btn-wrap">
+                            <NeedListSelect
+                                showButton={false}
+                                templateList={templateList}
+                                addTemplatesDocuments={addTemplatesDocuments}
+                                viewSaveDraft={viewSaveDraft}
+                            />
+                            {documentList?.length ? <a
+                                onClick={toggleSaveAsTemplate}
+                                className="btn-link link-primary">
+                                Save as template
                         </a> : ''}
-                    </div>}
-            </div>
+                        </div>}
+                </div>}
         </div>
     )
 }
