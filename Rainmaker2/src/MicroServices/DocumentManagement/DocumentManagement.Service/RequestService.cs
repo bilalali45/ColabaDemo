@@ -168,7 +168,7 @@ namespace DocumentManagement.Service
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
                             activity = string.Format(ActivityStatus.RerequestedBy, request.userName),
-                            typeId = item.typeId,
+                            typeId = string.IsNullOrEmpty(item.typeId)?null:item.typeId,
                             docId = item.docId,
                             docName = item.displayName,
                             loanId = loanApplication.id,
@@ -189,7 +189,7 @@ namespace DocumentManagement.Service
 
                     bsonDocument.Add("id", new ObjectId(item.id));
                     bsonDocument.Add("status", item.status);
-                    bsonDocument.Add("typeId", item.typeId == null ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
+                    bsonDocument.Add("typeId", string.IsNullOrEmpty(item.typeId) ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
                     bsonDocument.Add("displayName", item.displayName);
                     bsonDocument.Add("message", item.message);
                     bsonDocument.Add("files", new BsonArray());
@@ -269,7 +269,7 @@ namespace DocumentManagement.Service
                             activity = !String.IsNullOrEmpty(activityLogId)
                                 ? string.Format(ActivityStatus.RerequestedBy, request.userName)
                                 : string.Format(ActivityStatus.RequestedBy, request.userName),
-                            typeId = item.typeId,
+                            typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,
                             docId = item.id,
                             docName = item.displayName,
                             loanId = loanApplication.id,
@@ -397,84 +397,6 @@ namespace DocumentManagement.Service
             IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
             IMongoCollection<Entity.Request> collectionDocumentDraft = mongoService.db.GetCollection<Entity.Request>("Request");
             List<DraftDocumentDTO> result = new List<DraftDocumentDTO>();
-
-            using var asyncCursorDocumentDraft = collectionDocumentDraft.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
-             @"{""$match"": {
-                  ""loanApplicationId"": " + loanApplicationId + @" 
-                            }
-                        }",
-                       @"{
-                            ""$unwind"": ""$requests""
-                        }",
-                        @"{
-                            ""$unwind"": ""$requests.documents""
-                        }",
-                        @"{
-                            ""$match"": {
-                                ""requests.documents.status"": """ + DocumentStatus.Draft + @""",
-                            }
-                        }",
-                        @"{
-                            ""$lookup"": {
-                                ""from"": ""DocumentType"",
-                                ""localField"": ""requests.documents.typeId"",
-                                ""foreignField"": ""_id"",
-                                ""as"": ""documentObjects""
-                            }
-                        }", @"{
-                            ""$unwind"": {
-                                ""path"": ""$documentObjects"",
-                                ""preserveNullAndEmptyArrays"": true
-                            }
-                        }",
-                       @"{
-                            ""$project"": {
-                                ""_id"": 0,                               
-                                ""message"": ""$requests.message"",
-                                ""typeId"": ""$requests.documents.typeId"",
-                                ""docId"": ""$requests.documents.id"",
-                                ""requestId"": ""$requests.id"",
-                                ""docName"": ""$requests.documents.displayName"",
-                                ""docMessage"": ""$requests.documents.message"",
-                                ""typeName"": ""$documentObjects.name"",
-                                ""typeMessage"": ""$documentObjects.message"",
-                                ""messages"": ""$documentObjects.messages""
-                                }
-                         } "
-
-               ));
-
-            while (await asyncCursorDocumentDraft.MoveNextAsync())
-            {
-
-                foreach (var current in asyncCursorDocumentDraft.Current)
-                {
-                    DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
-                    DraftDocumentDTO dto = new DraftDocumentDTO();
-                    dto.message = query.message;
-                    dto.typeId = query.typeId;
-                    dto.docId = query.docId;
-                    dto.requestId = query.requestId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (string.IsNullOrEmpty(query.docMessage))
-                    {
-                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
-                        {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
-                        }
-                        else
-                        {
-                            dto.docMessage = query.typeMessage;
-                        }
-                    }
-                    else
-                    {
-                        dto.docMessage = query.docMessage;
-                    }
-                    result.Add(dto);
-                }
-            }
-
             using var asyncCursor = collectionRequest.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
               @"{""$match"": {
                   ""loanApplicationId"": " + loanApplicationId + @" 
@@ -549,6 +471,85 @@ namespace DocumentManagement.Service
 
 
             }
+
+            using var asyncCursorDocumentDraft = collectionDocumentDraft.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+             @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @" 
+                            }
+                        }",
+                       @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.status"": """ + DocumentStatus.Draft + @""",
+                            }
+                        }",
+                        @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""requests.documents.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documentObjects""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documentObjects"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }",
+                       @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""message"": ""$requests.message"",
+                                ""typeId"": ""$requests.documents.typeId"",
+                                ""docId"": ""$requests.documents.id"",
+                                ""requestId"": ""$requests.id"",
+                                ""docName"": ""$requests.documents.displayName"",
+                                ""docMessage"": ""$requests.documents.message"",
+                                ""typeName"": ""$documentObjects.name"",
+                                ""typeMessage"": ""$documentObjects.message"",
+                                ""messages"": ""$documentObjects.messages""
+                                }
+                         } "
+
+               ));
+
+            while (await asyncCursorDocumentDraft.MoveNextAsync())
+            {
+
+                foreach (var current in asyncCursorDocumentDraft.Current)
+                {
+                    DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
+                    DraftDocumentDTO dto = new DraftDocumentDTO();
+                    dto.message = "";
+                    dto.typeId = query.typeId;
+                    dto.docId = query.docId;
+                    dto.requestId = query.requestId;
+                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    if (string.IsNullOrEmpty(query.docMessage))
+                    {
+                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                        {
+                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                        }
+                        else
+                        {
+                            dto.docMessage = query.typeMessage;
+                        }
+                    }
+                    else
+                    {
+                        dto.docMessage = query.docMessage;
+                    }
+                    result.Add(dto);
+                }
+            }
+
+            
 
             return result;
         }

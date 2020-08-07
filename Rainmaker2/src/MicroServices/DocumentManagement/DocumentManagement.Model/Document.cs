@@ -190,6 +190,15 @@ namespace DocumentManagement.Model
         public string fileId { get; set; }
     }
 
+    public class DeleteFile
+    {
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        public int loanApplicationId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        public string fileId { get; set; }
+    }
+
     public class ArrayRegularExpressionAttribute : ValidationAttribute
     {
         private string regex;

@@ -26,6 +26,7 @@ namespace DocumentManagement.Model
     {
         public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
         public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
+        public const string Deleted = "Deleted";
     }
     public static class ByteProStatus
     {
