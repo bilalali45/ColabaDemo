@@ -16,5 +16,11 @@ namespace LosIntegration.Service.Interface
                                             string rmEnittyId = "",
                                             string rmEntityName = "",
                                             int? extOriginatorId=null);
+
+
+   
+
+        List<Mapping> GetMapping(List<string> rmEnittyIds,
+                                 string rmEntityName );
     }
 }

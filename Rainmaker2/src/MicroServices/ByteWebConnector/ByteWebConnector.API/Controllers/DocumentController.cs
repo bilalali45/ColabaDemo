@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ByteWebConnector.API.ExtensionMethods;
 using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ByteApi;
+using ByteWebConnector.API.Models.ClientModels.Document;
 using ByteWebConnector.API.Models.Document;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ using RainMaker.Common;
 using RainMaker.Common.Extensions;
 using Rainmaker.Service;
 using RainMaker.Service;
+using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -152,23 +154,80 @@ namespace ByteWebConnector.API.Controllers
         [HttpPost]
         public async Task DocumentAdded(DocumentAddedRequest request)
         {
-            //System.Threading.Thread.Sleep();
-            //var callResponse =
-            //    await _httpClient.PostAsync(requestUri:
-            //                                $"{_configuration[key: "LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
-            //                                content: new StringContent(content: request.ToJsonString(),
-            //                                                           encoding: Encoding.UTF8,
-            //                                                           mediaType: "application/json"));
+           // System.Threading.Thread.Sleep();
+           
             #region Byte API Call
 
-           var byteProSession=  GetByteProSession();
+            var byteProSession=  GetByteProSession();
 
-           GetAllByteDocuments(byteProSession,
-                               request.FileDataId);
+            var embeddedDocs =     GetAllByteDocuments(byteProSession,
+                                   request.FileDataId);
 
-           #endregion
+            var content = new AddDocumentRequest(request.FileDataId,
+                                   embeddedDocs).ToJson();
+            var callResponse =
+                await _httpClient.PostAsync(requestUri:
+                                            $"{_configuration[key: "LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
+                                            content: new StringContent(content: content,
+                                                                       encoding: Encoding.UTF8,
+                                                                       mediaType: "application/json"));
 
 
+
+            var embeddedDocWithData = GetEmbeddedDocData(byteProSession, embeddedDocs[0].DocumentId, embeddedDocs[0].FileDataId);
+
+
+
+            #endregion
+
+
+        }
+
+        [Route(template: "[action]")]
+        [HttpPost]
+        public EmbeddedDoc GetDocumentDataFromByte(DocumentDataRequest request)
+        {
+
+            #region Byte API Call
+            
+            var byteProSession = GetByteProSession();
+
+            var embeddedDocWithData = GetEmbeddedDocData(byteProSession, request.DocumentId, request.FileDataId);
+
+            return embeddedDocWithData;
+
+            #endregion
+
+
+        }
+
+
+        private EmbeddedDoc GetEmbeddedDocData(string byteProSession,
+                                               int documentId,
+                                               int fileDataId)
+        {
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId + "/" + documentId);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("Session", byteProSession);
+            request.Accept = "application/json";
+            String test = String.Empty;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                Stream dataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(dataStream);
+                var responseString = reader.ReadToEnd();
+
+                var embeddedDoc =
+                    JsonConvert.DeserializeObject<EmbeddedDoc>(responseString);
+                reader.Close();
+                dataStream.Close();
+                return embeddedDoc;
+
+            }
+
+            return null;
         }
 
         #endregion
@@ -263,16 +322,8 @@ namespace ByteWebConnector.API.Controllers
         }
 
 
-        private ApiResponse GetAllByteDocuments(string session,int fileDataId)
+        private List<EmbeddedDoc> GetAllByteDocuments(string session,int fileDataId)
         {
-            //HttpClientHandler clientHandler = new HttpClientHandler();
-            //clientHandler.ServerCertificateCustomValidationCallback = (sender,
-            //                                                           cert,
-            //                                                           chain,
-            //                                                           sslPolicyErrors) =>
-            //{
-            //    return true;
-            //};
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId);
             request.Method = "GET";
             request.ContentType = "application/json";
@@ -283,17 +334,16 @@ namespace ByteWebConnector.API.Controllers
             {
                 Stream dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
-                test = reader.ReadToEnd();
+                var responseString = reader.ReadToEnd();
+
+                var embeddedDocList =
+                    JsonConvert.DeserializeObject<List<EmbeddedDoc>>(responseString);
                 reader.Close();
                 dataStream.Close();
+                return embeddedDocList;
 
             }
-            //using (var client = new HttpClient(clientHandler))
-            //{
-                
-            //    //return test;
-            //    return null;
-            //}
+
             return null;
         }
 
