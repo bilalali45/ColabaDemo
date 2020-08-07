@@ -6,12 +6,12 @@ body {
     outline: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1,.h1,
+h2,.h2,
+h3,.h3,
+h4,.h4,
+h5,.h5,
+h6,.h6 {
     font-weight: 500;
     font-family: fontFamily("heading");
     color: color("heading");
@@ -19,22 +19,22 @@ h6 {
     -webkit-font-smoothing: antialiased;
 }
 
-h1{
+h1,.h1{
     font-size: fontSize('xlg');
 }
-h2{
+h2,.h2{
     font-size: fontSize('lg');
 }
-h3{
-    font-size: fontSize('md');
+h3,.h3{
+    font-size: fontSize('xmd');
 }
-h4{
+h4,.h4{
     font-size: fontSize('nr');
 }
-h5{
+h5,.h5{
     font-size: fontSize('sm');
 }
-h6{
+h6,.h6{
     font-size: fontSize('xs');
 }
 
@@ -154,6 +154,8 @@ ul {
 
     &-back {
         padding-left: 0 !important;
+        font-size: fontSize('nr');
+        color: color('primary');
     }
 
     &-secondry {
