@@ -66,16 +66,8 @@ export const NeedListSelect = ({
 
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
-      addTemplatesDocuments([...idArray, ...selectedIds, id]);
-      setShow(true);
     } else {
-      setIdArray((pre: any) => {
-        let ids = pre?.filter((idOld: any) => idOld !== id);
-        addTemplatesDocuments(ids);
-        setShow(true);
-        return ids;
-      });
-
+      setIdArray((pre: any) => pre?.filter((idOld: any) => idOld !== id));
     }
 
   }

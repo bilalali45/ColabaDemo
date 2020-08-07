@@ -97,8 +97,6 @@ namespace DocumentManagement.Service
 
             return result;
         }
-
-
         public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
@@ -332,7 +330,6 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-
         public async Task<bool> RejectDocument(string id, string requestId, string docId, string message,int userId, string userName)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
@@ -344,7 +341,8 @@ namespace DocumentManagement.Service
                 { "$set", new BsonDocument()
                     {
                         { "requests.$[request].documents.$[document].status", DocumentStatus.Draft},
-                        { "requests.$[request].documents.$[document].message", message}
+                        { "requests.$[request].documents.$[document].message", message},
+                        { "requests.$[request].message", BsonString.Empty}
                     }
                 }
             }, new UpdateOptions()
@@ -427,7 +425,6 @@ namespace DocumentManagement.Service
 
             return fileViewDTO;
         }
-
         public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
@@ -448,6 +445,31 @@ namespace DocumentManagement.Service
                 {
                     new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
                     new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
+                }
+
+            });
+
+            return result.ModifiedCount == 1;
+        }
+        public async Task<bool> DeleteFile(int loanApplicationId, string fileId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "loanApplicationId", loanApplicationId }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[].documents.$[].files.$[file].status", FileStatus.Deleted}
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
                     new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
                 }
 
