@@ -73,15 +73,26 @@ export const NeedListSelect = ({
   }
 
   const MyTemplates = () => {
-    if (!templateList) return '';
+    if (!templateList || templateList.length === 0) return '';
     return (
-      <>
-        <h3>My Templates</h3>
+      <>{
+       
+          templates?.map((t: Template) => {
+            if (t?.type === MyTemplate) {
+              return  <h3>My Templates</h3> 
+             
+            }
+            return;
+          })
+        }
+     
+    
         <ul className="checklist">
           {
             templates?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
+              
                 return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
@@ -97,7 +108,15 @@ export const NeedListSelect = ({
     if (!templateList) return '';
     return (
       <>
-        <h3>Templates by Tenants</h3>
+{     
+       templates?.map((t: Template) => {
+         if (t?.type === TenantTemplate) {
+           return  <h3>Templates by Tenants</h3>
+          
+         }
+         return;
+       })
+     }     
         <ul className="checklist">
           {
             templates?.map((t: Template) => {
@@ -113,12 +132,6 @@ export const NeedListSelect = ({
     );
   }
   const StartListButton = () => {
-
-    // return <button onClick={() => {
-
-    //   setShow(false);
-    //   addTemplatesDocuments(idArray);
-    // }} className="btn btn-primary btn-block">Add Selected</button>
 
     if (!showButton) {
       return <button onClick={() => {
@@ -169,9 +182,7 @@ export const NeedListSelect = ({
       </>
     )
   }
-  // if(!templateList || !templateList?.length) {
-  //   return <div></div>;
-  // }
+ 
 
   return displayAddButton();
 };
