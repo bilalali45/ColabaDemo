@@ -82,18 +82,19 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
    }
 
    const draftExist = () => {
-       if(!previousDocLength){
+       if(!documentHash){
         if(selectedTemplateDocuments[0].message != ''){
             setEmailBody(selectedTemplateDocuments[0].message); 
             dispatch({type: TemplateActionsType.SetEmailContent, payload: selectedTemplateDocuments[0].message})
-            dispatch({type: TemplateActionsType.SetDocumentLength, payload: selectedTemplateDocuments.length }) 
+            hashDocuments(); 
         }else{
             setEmailBody(setDeafultText()); 
             dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
         }
         return ;
        }else{
-        if(previousDocLength != selectedTemplateDocuments.length){
+        let Newhash = LocalDB.encodeString(JSON.stringify(documentList))
+        if(documentHash != Newhash){
             setEmailBody(setDeafultText());
             dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
         }else{
@@ -104,9 +105,8 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     
    }
    const draftNotExist = () => {
-       debugger
        if(emailTemplate){   
-        let Newhash = LocalDB.encodeString(JSON.stringify(selectedTemplateDocuments))
+        let Newhash = LocalDB.encodeString(JSON.stringify(documentList))
         if(documentHash != Newhash){
               setEmailBody(setDeafultText());
              }
@@ -162,8 +162,6 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
 
             </div>
                  {sendRequestButton()}
-           
-
            
         </div>
     )
