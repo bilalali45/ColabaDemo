@@ -526,7 +526,7 @@ namespace DocumentManagement.Service
                 {
                     DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
                     DraftDocumentDTO dto = new DraftDocumentDTO();
-                    dto.message = query.message;
+                    dto.message = "";
                     dto.typeId = query.typeId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (string.IsNullOrEmpty(query.docMessage))
