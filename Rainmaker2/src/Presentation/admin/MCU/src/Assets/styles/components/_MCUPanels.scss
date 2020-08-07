@@ -5,10 +5,11 @@
         color: color('widgetText');
         padding: 15px 30px;
         border-bottom:1px solid color('border');
-        min-height: 70px;
+        min-height: 66px;
         @include headings{ 
             margin: 0; 
             line-height: 2.4;
+            @extend .text-ellipsis;
         }
                 
         &--left{
@@ -33,7 +34,7 @@
 
         &.padding{
             padding: 30px;
-            min-height: calc(100% - 140px);
+            min-height: calc(100% - 135px);
         }
 
         > .row{
@@ -70,7 +71,7 @@
     &-footer{
         padding: 15px 30px;
         //border-bottom:1px solid color('border');
-        min-height: 70px;
+        min-height: 66px;
         margin-bottom: 0;
         
         &.alert{

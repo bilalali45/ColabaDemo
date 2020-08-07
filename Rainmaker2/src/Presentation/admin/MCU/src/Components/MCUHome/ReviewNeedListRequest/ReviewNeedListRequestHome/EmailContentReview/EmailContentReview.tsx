@@ -149,7 +149,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     return (
         <div className="mcu-panel-body--content">
             <div className="mcu-panel-body padding">
-                <h3>Review email to {borrowername}</h3>
+                <h3 className="text-ellipsis">Review email to {borrowername}</h3>
                 <p>If you'd like, you can customize this email.</p>
                 <TextArea
                  focus = {true}

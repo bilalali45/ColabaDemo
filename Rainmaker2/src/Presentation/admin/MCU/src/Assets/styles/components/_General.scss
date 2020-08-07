@@ -137,7 +137,7 @@ ul {
 .btn {
     border-radius: 0px;
     font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
-    padding: 10px 25px;
+    padding: 8px 25px;
     text-transform: capitalize;
 
     &.disabled,
@@ -796,10 +796,12 @@ label.error{
             display: block;
             padding-left: 25px;
             position: relative;
+            @extend .text-ellipsis;
 
             a{
                 display: inline-block;
-                color: color('base');
+                color: color('base'); 
+                @extend .text-ellipsis;               
             }
 
             &::before{
