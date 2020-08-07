@@ -140,6 +140,12 @@ namespace ByteWebConnector.API.Controllers
 
             var content = losModel.ToJsonString();
 
+            var token = Request.Headers[key: "Authorization"].ToString().Replace(oldValue: "Bearer ",
+                                                                                 newValue: "");
+            _httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue(scheme: "Bearer",
+                                                parameter: token);
+
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
                                             $"{_configuration[key: "ServiceAddress:LosIntegration:Url"]}/api/LosIntegration/Document/Delete",
@@ -149,22 +155,21 @@ namespace ByteWebConnector.API.Controllers
         }
 
 
-        
         [Route(template: "[action]")]
         [HttpPost]
         public async Task DocumentAdded(DocumentAddedRequest request)
         {
-           // System.Threading.Thread.Sleep();
-           
+            // System.Threading.Thread.Sleep();
+
             #region Byte API Call
 
-            var byteProSession=  GetByteProSession();
+            var byteProSession = GetByteProSession();
 
-            var embeddedDocs =     GetAllByteDocuments(byteProSession,
-                                   request.FileDataId);
+            var embeddedDocs = GetAllByteDocuments(byteProSession,
+                                                   request.FileDataId);
 
             var content = new AddDocumentRequest(request.FileDataId,
-                                   embeddedDocs).ToJson();
+                                                 embeddedDocs).ToJson();
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
                                             $"{_configuration[key: "ServiceAddress:LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
@@ -172,33 +177,29 @@ namespace ByteWebConnector.API.Controllers
                                                                        encoding: Encoding.UTF8,
                                                                        mediaType: "application/json"));
 
-
-
-            var embeddedDocWithData = GetEmbeddedDocData(byteProSession, embeddedDocs[0].DocumentId, embeddedDocs[0].FileDataId);
-
-
+            var embeddedDocWithData = GetEmbeddedDocData(byteProSession,
+                                                         embeddedDocs[0].DocumentId,
+                                                         embeddedDocs[0].FileDataId);
 
             #endregion
-
-
         }
+
 
         [Route(template: "[action]")]
         [HttpPost]
         public EmbeddedDoc GetDocumentDataFromByte(DocumentDataRequest request)
         {
-
             #region Byte API Call
-            
+
             var byteProSession = GetByteProSession();
 
-            var embeddedDocWithData = GetEmbeddedDocData(byteProSession, request.DocumentId, request.FileDataId);
+            var embeddedDocWithData = GetEmbeddedDocData(byteProSession,
+                                                         request.DocumentId,
+                                                         request.FileDataId);
 
             return embeddedDocWithData;
 
             #endregion
-
-
         }
 
 
@@ -206,14 +207,15 @@ namespace ByteWebConnector.API.Controllers
                                                int documentId,
                                                int fileDataId)
         {
-
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId + "/" + documentId);
+            HttpWebRequest request =
+                (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId + "/" + documentId);
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("Session", byteProSession);
+            request.Headers.Add("Session",
+                                byteProSession);
             request.Accept = "application/json";
             String test = String.Empty;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
             {
                 Stream dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
@@ -224,7 +226,6 @@ namespace ByteWebConnector.API.Controllers
                 reader.Close();
                 dataStream.Close();
                 return embeddedDoc;
-
             }
 
             return null;
@@ -280,6 +281,7 @@ namespace ByteWebConnector.API.Controllers
             }
         }
 
+
         [NonAction]
         private ApiResponse SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
                                                string session)
@@ -322,15 +324,17 @@ namespace ByteWebConnector.API.Controllers
         }
 
 
-        private List<EmbeddedDoc> GetAllByteDocuments(string session,int fileDataId)
+        private List<EmbeddedDoc> GetAllByteDocuments(string session,
+                                                      int fileDataId)
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId);
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId);
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("Session", session);
+            request.Headers.Add("Session",
+                                session);
             request.Accept = "application/json";
             String test = String.Empty;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
             {
                 Stream dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
@@ -341,11 +345,11 @@ namespace ByteWebConnector.API.Controllers
                 reader.Close();
                 dataStream.Close();
                 return embeddedDocList;
-
             }
 
             return null;
         }
+
 
         private async Task<string> Send(string output,
                                         string session)

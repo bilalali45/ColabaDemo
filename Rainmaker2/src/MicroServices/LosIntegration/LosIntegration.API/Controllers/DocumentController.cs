@@ -93,13 +93,13 @@ namespace LosIntegration.API.Controllers
                 throw new Exception(message: "Unable to load Document from Document Management");
 
             //var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
-            jump :
+            jump:
             var fileData = System.IO.File.ReadAllBytes(path: @"C:\Users\H)P\Desktop\LOAN INFO.docx");
             var sendDocumentResponse = new SendDocumentResponse
-                                       {
-                                           LoanApplicationId = request.LoanApplicationId,
-                                           FileData = fileData
-                                       };
+            {
+                LoanApplicationId = request.LoanApplicationId,
+                FileData = fileData
+            };
             var callResponse =
                 _httpClient.PostAsync(requestUri:
                                       $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
@@ -112,13 +112,13 @@ namespace LosIntegration.API.Controllers
             {
                 DocumentResponse response = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
                 var mapping = new Mapping
-                              {
-                                  RMEnittyId = request.FileId,
-                                  RMEntityName = "File",
-                                  ExtOriginatorEntityId = response.DocumentId.ToString(),
-                                  ExtOriginatorEntityName = "Document",
-                                  ExtOriginatorId = response.ExtOriginatorId
-                              };
+                {
+                    RMEnittyId = request.FileId,
+                    RMEntityName = "File",
+                    ExtOriginatorEntityId = response.DocumentId.ToString(),
+                    ExtOriginatorEntityName = "Document",
+                    ExtOriginatorId = response.ExtOriginatorId
+                };
                 _mappingService.Insert(item: mapping);
                 _mappingService.SaveChangesAsync();
 
@@ -143,9 +143,9 @@ namespace LosIntegration.API.Controllers
         {
             //--Get LoanApplication Id from rm by externalLoan Application Id
             var loanApplicationRequestContent = new GeLoanApplicationRequest
-                                                {
-                                                    EncompassNumber = request.FileDataId.ToString()
-                                                }.ToJsonString();
+            {
+                EncompassNumber = request.FileDataId.ToString()
+            }.ToJsonString();
             var loanlApplicationResult =
                 _httpClient.PostAsync(requestUri:
                                       $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
@@ -170,10 +170,10 @@ namespace LosIntegration.API.Controllers
             {
                 // -- gey newly added file from BWC
                 var documentDataRequest = new GetDocumentDataRequest
-                                          {
-                                              FileDataId = request.FileDataId,
-                                              DocumentId = Convert.ToInt32(fileIdAbsentOnRm)
-                                          };
+                {
+                    FileDataId = request.FileDataId,
+                    DocumentId = Convert.ToInt32(fileIdAbsentOnRm)
+                };
                 var documentDaResult =
                     _httpClient.PostAsync(requestUri:
                                           $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/GetDocumentDataFromByte",
@@ -186,13 +186,13 @@ namespace LosIntegration.API.Controllers
 
                 //-- update mapping
                 var mapping = new Mapping
-                              {
-                                  RMEnittyId = fileId,
-                                  RMEntityName = "File",
-                                  ExtOriginatorEntityId = fileIdAbsentOnRm,
-                                  ExtOriginatorEntityName = "Document",
-                                  ExtOriginatorId = 1
-                              };
+                {
+                    RMEnittyId = fileId,
+                    RMEntityName = "File",
+                    ExtOriginatorEntityId = fileIdAbsentOnRm,
+                    ExtOriginatorEntityName = "Document",
+                    ExtOriginatorId = 1
+                };
                 _mappingService.Insert(item: mapping);
             }
 
@@ -235,38 +235,47 @@ namespace LosIntegration.API.Controllers
                 //                          content: new StringContent(content: loanApplicationRequestContent,
                 //                                                     encoding: Encoding.UTF8,
                 //                                                     mediaType: "application/json")).Result;
+
+
+                var token = Request
+                            .Headers[key: "Authorization"].ToString()
+                            .Replace(oldValue: "Bearer ",
+                                     newValue: "");
+
                 _httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",
-                                                    parameter: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiNTczMSIsIlVzZXJOYW1lIjoiZGFuaXNoIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImRhbmlzaCIsIkZpcnN0TmFtZSI6IkRhbmlzaCIsIkxhc3ROYW1lIjoiRmFpeiIsIlRlbmFudElkIjoiMSIsIkVtcGxveWVlSWQiOiI2MyIsImV4cCI6MTU5NjgxMzM4OCwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.NWq8E7N6cC6doabPmwqsyRvF2j2GYbEaFE9GBsD6Muk");
+                                                    parameter: token);
+
                 string uri =
-                    $"/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
-                HttpResponseMessage httpResponseMessage = _httpClient.GetAsync(requestUri:
-                                                               $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}" + uri).Result;
+                    $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
+                HttpResponseMessage httpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
+
                 //var apiResponse = JsonConvert.DeserializeObject(value: result);
                 var loanApplicationId = JObject.Parse(json: httpResponseMessage.Content.ReadAsStringAsync().Result)
                                                .SelectToken(path: "id")
                                                .Value<int>();
 
                 var content = new DeleteFileRequest
-                              {
-                                  LoanApplicationId = loanApplicationId,
-                                  FileId = mapping.RMEnittyId
-                              }.ToJsonString();
+                {
+                    LoanApplicationId = loanApplicationId,
+                    FileId = mapping.RMEnittyId
+                }.ToJsonString();
 
-                var url =
-                    "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/document/DeleteFile";
-                var csResponse = _httpClient.PostAsync(requestUri: url,
-                                                       content: new StringContent(content: content,
-                                                                                  encoding: Encoding.UTF8,
-                                                                                  mediaType: "application/json"))
-                                            .Result;
+                var url = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/DeleteFile";
+                HttpRequestMessage delRequest = new HttpRequestMessage
+                {
+                    Content = new StringContent(content, Encoding.UTF8, "application/json"),
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri(url)
+                };
+                var csResponse = _httpClient.SendAsync(delRequest).Result;
                 if (csResponse.IsSuccessStatusCode)
                 {
-
+                    _mappingService.Delete(item: mapping);
+                    _mappingService.SaveChangesAsync();
                 }
 
-                _mappingService.Delete(item: mapping);
-                _mappingService.SaveChangesAsync();
+
             }
         }
 
