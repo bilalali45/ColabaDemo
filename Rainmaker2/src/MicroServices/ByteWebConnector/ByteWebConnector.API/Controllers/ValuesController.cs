@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ClientModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,8 +21,22 @@ namespace ByteWebConnector.API.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        [HttpGet]
+        [Route("TestImageWrap")]
+        public IEnumerable<string> TestImageWrap()
+        {
+            var imageBytes = System.IO.File.ReadAllBytes(@"C:\Users\user\Downloads\Foo.jpg");
+
+           var pdfBytes =  Utility.Helper.WrapImagesInPdf(new List<byte[]> { imageBytes });
+
+            System.IO.File.WriteAllBytes(@"C:\Users\user\Downloads\Foo.pdf", pdfBytes.First());
+
+
+            return null;
+        }
+
         // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{ id}")]
         public string Get(int id)
         {
             return "value";

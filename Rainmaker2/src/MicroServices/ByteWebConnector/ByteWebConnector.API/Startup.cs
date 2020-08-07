@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Authentication;
+using System.Text;
 using System.Threading.Tasks;
 using ByteWebConnector.API.CorrelationHandlersAndMiddleware;
 using Microsoft.AspNetCore.Builder;
@@ -48,6 +49,7 @@ namespace ByteWebConnector.API
             services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
             services.AddScoped<ICommonService, CommonService>();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();
