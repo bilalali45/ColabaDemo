@@ -28,12 +28,12 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
             str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);
             hashDocuments();     
         }
-
-        let length = documentsName?.split(',').length;  
-        if(length){
-            dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
-        }        
-        return str       
+        return str 
+        // let length = documentsName?.split(',').length;  
+        // if(length){
+        //     dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
+        // }        
+              
     }
 
     const { state, dispatch } = useContext(Store);
