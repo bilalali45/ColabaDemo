@@ -101,7 +101,6 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
-        dispatch({ type: TemplateActionsType.SetDocumentLength, payload: null })
     }
 
 
