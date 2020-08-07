@@ -218,7 +218,7 @@ export const NeedListRequest = ({
                 </div>}
 
             {requestHit ?
-                <div className="left-footer text-center alert alert-success">Need list has been sent.</div>
+                <div className="left-footer text-center alert alert-success">Template has been created.</div>
                 :
                 <div className="left-footer">
 
