@@ -2,35 +2,39 @@ body {
     background: color("bg");
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+*:focus{
+    outline: none;
+}
+
+h1,.h1,
+h2,.h2,
+h3,.h3,
+h4,.h4,
+h5,.h5,
+h6,.h6 {
     font-weight: 500;
     font-family: fontFamily("heading");
-    color: color("base");
+    color: color("heading");
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
 
-h1{
+h1,.h1{
     font-size: fontSize('xlg');
 }
-h2{
+h2,.h2{
     font-size: fontSize('lg');
 }
-h3{
-    font-size: fontSize('md');
+h3,.h3{
+    font-size: fontSize('xmd');
 }
-h4{
+h4,.h4{
     font-size: fontSize('nr');
 }
-h5{
+h5,.h5{
     font-size: fontSize('sm');
 }
-h6{
+h6,.h6{
     font-size: fontSize('xs');
 }
 
@@ -45,6 +49,16 @@ a,button{
         content:"";
         display: table;
         clear: both;
+    }
+}
+
+.text-ellipsis{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    *{
+        max-width: 100%;
     }
 }
 
@@ -123,7 +137,7 @@ ul {
 .btn {
     border-radius: 0px;
     font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
-    padding: 10px 25px;
+    padding: 8px 25px;
     text-transform: capitalize;
 
     &.disabled,
@@ -140,6 +154,8 @@ ul {
 
     &-back {
         padding-left: 0 !important;
+        font-size: fontSize('nr');
+        color: color('primary');
     }
 
     &-secondry {
@@ -423,7 +439,7 @@ ul {
         width: 290px;
         border-radius: 0px;
         font-family: fontFamily('heading');
-        font-size: fontSize('sm') - 1px ;
+        font-size: fontSize('sm');
         font-weight: 400;
         
         &.padding{
@@ -432,7 +448,7 @@ ul {
 
         > h2 {
             font-family: fontFamily('heading');
-            font-size: fontSize('nr') - 1px ;
+            font-size: fontSize('nr');
             font-weight: 500;
             text-transform: uppercase;
             margin-bottom: 22px;
@@ -440,17 +456,21 @@ ul {
         }
         > h3 {
             font-family: fontFamily('heading');
-            font-size: fontSize('sm') - 1px ;
+            font-size: fontSize('sm') ;
             font-weight: 500;
-            text-transform: uppercase;
             margin-bottom: 10px;
         }
 
         input{
             vertical-align: middle;
             &[type=checkbox]{
-                width: 10px;
                 transform: translateY(-1px);
+                border-radius: 0;
+                width: 10px;
+                height: 10px;
+                &:focus{
+                    outline: none;
+                }
             }
         }
 
@@ -494,21 +514,36 @@ ul {
 
 .dropdown{
     &.show{
-        .rotate-plus{
-            &::before{
-                transform: rotate(45deg);
-            }
-            &::after{
-                transform: rotate(45deg);
+        .btn-icon-right{
+            >.rotate-plus{
+                &::before{
+                    transform: rotate(45deg);
+                }
+                &::after{
+                    transform: rotate(45deg);
+                    margin-top: 0;
+                    width: 11px;
+                }
             }
         }
+        
     
-        .btn-icon{
+        >.btn-icon{
             i,em{
                 &::before{
                     @include transform(rotate(40deg));
                     position: relative;
                     display: block;
+                }
+            }
+        }
+
+        .dropdown-menu{
+            .btn-icon{
+                i,em{
+                    &.zmdi{
+                        font-size: 17px;
+                    }
                 }
             }
         }
@@ -536,7 +571,7 @@ ul {
         width: 1px;
         top: 0;
         left: 50%;
-        transform: translateX(-50%);
+        //transform: translateX(-50%);
     }
 
     &::after{
@@ -544,7 +579,8 @@ ul {
         height: 1px;
         top: 50%;
         left: 0;
-        transform: translateY(-50%);
+        //transform: translateY(-50%);
+        margin-top: -1px;
     }
 
 }//rotate-plus
@@ -681,6 +717,15 @@ ul {
     }
 }
 
+.flex-center{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .dialogbox{
     &-backdrop {
         position: absolute;
@@ -733,6 +778,7 @@ label.error{
 
 .alert{
     font: normal #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+    border-radius: 0;
     
     &-primary{
         color: color('primary');
@@ -750,10 +796,12 @@ label.error{
             display: block;
             padding-left: 25px;
             position: relative;
+            @extend .text-ellipsis;
 
             a{
                 display: inline-block;
-                color: color('base');
+                color: color('base'); 
+                @extend .text-ellipsis;               
             }
 
             &::before{
@@ -775,16 +823,30 @@ label.error{
     }
 }// listing
 
-.list-remove{
+.list-remove{    
     
     &-alert{
         display: flex;
         justify-content: space-between;
         align-self: center;
+        background-color: color('widgetBg');
+        opacity: 0;
+        -webkit-animation: fadeIn 0.3s forwards;    
+                animation: fadeIn 0.3s forwards;
     }
 
     &-text{
-        font: 500 #{fontSize('nr')+'/1.2'} fontFamily('base'); 
+        font: 500 #{fontSize('nr')+'/0.8'} fontFamily('base'); 
+        white-space: nowrap;
+        padding:10px 15px;
+        -webkit-animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+                animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+    }
+
+    &-options{
+        white-space: nowrap;
+        -webkit-animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+                animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
     }
 
 }
@@ -835,3 +897,15 @@ label.error{
     }
 
 }//.modal
+
+.popover {
+    min-width: 450px;
+}
+
+.show > .btn-primary.dropdown-toggle:focus,
+.show > .btn-primary.dropdown-toggle:active,
+.btn-primary:not(:disabled):not(.disabled):active:focus, 
+.btn-primary:not(:disabled):not(.disabled).active:focus, 
+.show > .btn-primary.dropdown-toggle:focus{
+    box-shadow: none;
+}

@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useRef,
-  Fragment,
-} from "react";
+import React, { useState, useContext, useRef, Fragment } from "react";
 
 import {
   DocumentDropBox,
@@ -34,8 +29,10 @@ export const DocumentUpload = () => {
   };
 
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
-
-    let files = selectedfiles.filter(f => f.uploadProgress > 0 && f.uploadStatus === 'pending').length > 0;
+    let files =
+      selectedfiles.filter(
+        (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
+      ).length > 0;
 
     if (files) {
       setshowAlert(true);
@@ -77,7 +74,20 @@ export const DocumentUpload = () => {
       >
         {currentDoc && (
           <div className="Doc-head-wrap">
-            <h2> {docTitle}</h2>
+            <h2>
+              {docTitle}
+              {currentDoc.docMessage && (
+                <span
+                  style={{
+                    color: "red",
+                    fontSize: 11,
+                  }}
+                  className="Doc-head-wrap--alert"
+                >
+                  CHANGES REQUESTED
+                </span>
+              )}
+            </h2>
             <div className="doc-note">
               <p>
                 <i className="fas fa-info-circle"></i>
@@ -102,20 +112,19 @@ export const DocumentUpload = () => {
                 setFileInput={getFileInput}
               />
             ) : (
-                <>
-                  <SelectedDocuments
-                    fileLimitError={fileLimitError}
-                    setFileLimitError={setFileLimitError}
-                    addMore={showFileExplorer}
-                    setFileInput={getFileInput}
-                  />
-                </>
-              )}
+              <>
+                <SelectedDocuments
+                  fileLimitError={fileLimitError}
+                  setFileLimitError={setFileLimitError}
+                  addMore={showFileExplorer}
+                  setFileInput={getFileInput}
+                />
+              </>
+            )}
           </Fragment>
         )}
       </FileDropper>
-      {showAlert && <AlertBox
-        hideAlert={() => setshowAlert(false)} />}
+      {showAlert && <AlertBox hideAlert={() => setshowAlert(false)} />}
     </section>
   );
 };

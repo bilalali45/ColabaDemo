@@ -26,7 +26,6 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int loanApplicationId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int tenantId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string status { get; set; }

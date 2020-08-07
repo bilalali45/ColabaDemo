@@ -44,7 +44,7 @@ export const NewNeedListHeader = ({saveAsDraft} : NewNeedListHeaderType) => {
                 <p className="text-center">
                     <Button variant="secondary">Close</Button>
                     {" "}
-                    <Button variant="primary">Save & Close</Button>
+                    <Button variant="primary">Save As Close</Button>
                 </p>
             </Modal.Body>
             <Modal.Footer>

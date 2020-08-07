@@ -6,23 +6,23 @@ const cookies = new Cookies();
 
 export class Auth {
   public static saveAuth(token: string) {
-    window.sessionStorage.setItem("auth", this.encodeString(token));
+    localStorage.setItem("auth", this.encodeString(token));
   }
 
   public static saveRefreshToken(refToken: string) {
-    window.sessionStorage.setItem("refreshToken", this.encodeString(refToken));
+    localStorage.setItem("refreshToken", this.encodeString(refToken));
   }
 
   public static getRefreshToken() {
-    return this.decodeString(window.sessionStorage.getItem("refreshToken"));
+    return this.decodeString(localStorage.getItem("refreshToken"));
   }
 
   public static removeRefreshToken() {
-    window.sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken");
   }
 
   public static getAuth() {
-    return this.decodeString(window.sessionStorage.getItem("auth"));
+    return this.decodeString(localStorage.getItem("auth"));
   }
 
   public static getLoginUserName() {
@@ -64,33 +64,24 @@ export class Auth {
 
   static storeTokenPayload(payload) {
     if (!payload) return;
-    window.sessionStorage.setItem(
-      "payload",
-      this.encodeString(JSON.stringify(payload))
-    );
+    localStorage.setItem("payload", this.encodeString(JSON.stringify(payload)));
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(window.sessionStorage.getItem("payload"));
+    let payload = this.decodeString(localStorage.getItem("payload"));
     if (payload) {
       return JSON.parse(payload);
     }
   }
 
   static removeAuthToken() {
-    window.sessionStorage.removeItem("auth");
+    localStorage.removeItem("auth");
   }
 
   public static removeAuth() {
-    let items = [
-      "auth",
-      "loanApplicationId",
-      "payload",
-      "refreshToken",
-      "baseParam",
-    ];
+    let items = ["auth", "payload", "refreshToken"];
     for (const item of items) {
-      window.sessionStorage.removeItem(item);
+      localStorage.removeItem(item);
     }
   }
 
@@ -109,11 +100,11 @@ export class Auth {
   }
 
   public static storeItem(name: string, data: string) {
-    window.sessionStorage.setItem(name, this.encodeString(data));
+    localStorage.setItem(name, this.encodeString(data));
   }
 
   public static removeItem(name: string) {
-    window.sessionStorage.removeItem(name);
+    localStorage.removeItem(name);
   }
 
   public static encodeString(value: string) {

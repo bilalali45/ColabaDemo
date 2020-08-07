@@ -127,7 +127,7 @@ export const DocumentsRequired = () => {
   };
 
   if (pendingDocs?.length === 0) {
-    return <Redirect to="activity" />;
+    return <Redirect to={`/activity/${Auth.getLoanAppliationId()}`} />;
   }
 
   return (

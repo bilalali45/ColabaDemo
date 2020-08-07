@@ -1,24 +1,17 @@
 .mcu-panel{
 
-    h2,.h2{
-        font: 500 #{fontSize("xmd") + "/1.2"} fontFamily("base");
-    }
-
     &-header{
         background-color: color('widgetBg');
         color: color('widgetText');
         padding: 15px 30px;
         border-bottom:1px solid color('border');
-        
-        h2{
-            font-family: fontFamily('base'); 
-            font-size: fontSize('lg') - 3px; 
-            font-weight: 500;     
-            margin: 0;
-            padding: 10px 0;  
-            color:color('heading');
+        min-height: 66px;
+        @include headings{ 
+            margin: 0; 
+            line-height: 2.4;
+            @extend .text-ellipsis;
         }
-
+                
         &--left{
 
         }
@@ -41,7 +34,7 @@
 
         &.padding{
             padding: 30px;
-            min-height: calc(100% - 145px);
+            min-height: calc(100% - 135px);
         }
 
         > .row{
@@ -77,8 +70,13 @@
 
     &-footer{
         padding: 15px 30px;
-        border-bottom:1px solid color('border');
-        min-height: 75px;
+        //border-bottom:1px solid color('border');
+        min-height: 66px;
+        margin-bottom: 0;
+        
+        &.alert{
+            padding: 27px 30px;
+        }
     }
 
     .no-preview{

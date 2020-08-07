@@ -1,22 +1,22 @@
-import React, { useEffect, useCallback, useState, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { Http } from "rainsoft-js";
-import Axios from "axios";
-import { DocumentView } from "rainsoft-rc";
-import _ from "lodash";
+import React, {useEffect, useCallback, useState, useContext} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import {Http} from 'rainsoft-js';
+import Axios from 'axios';
+import {DocumentView} from 'rainsoft-rc';
+import _ from 'lodash';
 
-import { ReviewDocumentHeader } from "./ReviewDocumentHeader/ReviewDocumentHeader";
-import { ReviewDocumentStatement } from "./ReviewDocumentStatement/ReviewDocumentStatement";
-import { NeedListEndpoints } from "../../../Store/endpoints/NeedListEndpoints";
-import { LocalDB } from "../../../Utils/LocalDB";
-import emptyIcon from "../../../Assets/images/empty-icon.svg";
-import { Store } from "../../../Store/Store";
+import {ReviewDocumentHeader} from './ReviewDocumentHeader/ReviewDocumentHeader';
+import {ReviewDocumentStatement} from './ReviewDocumentStatement/ReviewDocumentStatement';
+import {NeedListEndpoints} from '../../../Store/endpoints/NeedListEndpoints';
+import {LocalDB} from '../../../Utils/LocalDB';
+import emptyIcon from '../../../Assets/images/empty-icon.svg';
+import {Store} from '../../../Store/Store';
 import {
   NeedListType,
-  NeedListActionsType,
-} from "../../../Store/reducers/NeedListReducer";
-import { NeedList } from "../../../Entities/Models/NeedList";
-import { DocumentStatus } from "../../../Entities/Types/Types";
+  NeedListActionsType
+} from '../../../Store/reducers/NeedListReducer';
+import {NeedList} from '../../../Entities/Models/NeedList';
+import {DocumentStatus} from '../../../Entities/Types/Types';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -29,25 +29,25 @@ export const ReviewDocument = () => {
     typeId: string | null;
   }>({
     id: null,
-    typeId: null,
+    typeId: null
   });
-  const [clientName, setClientName] = useState("");
+  const [clientName, setClientName] = useState('');
   const [
     previousDocumentButtonDisabled,
-    setPreviousDocumentButtonDisabled,
+    setPreviousDocumentButtonDisabled
   ] = useState(true);
   const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(
     false
   );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
-  const { state: AppState, dispatch } = useContext(Store);
-  const { needListManager } = AppState;
-  const { needList } = needListManager as Pick<NeedListType, "needList">;
+  const {state: AppState, dispatch} = useContext(Store);
+  const {needListManager} = AppState;
+  const {needList} = needListManager as Pick<NeedListType, 'needList'>;
 
   const history = useHistory();
   const location = useLocation();
-  const { state } = location;
+  const {state} = location;
 
   const goBack = () => {
     history.goBack();
@@ -56,7 +56,7 @@ export const ReviewDocument = () => {
   const [blobData, setBlobData] = useState<any>();
 
   const documentsForReviewArrayIndexes = () =>
-    _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
+    _.keys(_.pickBy(needList, {status: DocumentStatus.PENDING_REVIEW}));
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
@@ -64,7 +64,7 @@ export const ReviewDocument = () => {
         id,
         requestId,
         docId,
-        fileId,
+        fileId
       };
 
       try {
@@ -82,16 +82,16 @@ export const ReviewDocument = () => {
         );
 
         const response = await Axios.get(http.createUrl(http.baseUrl, url), {
-          responseType: "arraybuffer",
+          responseType: 'arraybuffer',
           headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+            Authorization: `Bearer ${authToken}`
+          }
         });
 
         setBlobData(response);
         setLoading(false);
       } catch (error) {
-        alert("Something went wrong while fetching document/file from server.");
+        alert('Something went wrong while fetching document/file from server.');
 
         goBack();
       }
@@ -109,7 +109,7 @@ export const ReviewDocument = () => {
       if (index === currentFileIndex || loading === true) return;
 
       if (currentDocument) {
-        const { id, requestId, docId } = currentDocument;
+        const {id, requestId, docId} = currentDocument;
 
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
@@ -123,22 +123,48 @@ export const ReviewDocument = () => {
       getDocumentForView,
       currentDocument,
       currentFileIndex,
-      loading,
+      loading
     ]
   );
 
   const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
-    setTypeIdId({ id, typeId: typeIdOrDocName });
+    setTypeIdId({id, typeId: typeIdOrDocName});
   }, []);
 
   const changeCurrentDocument = useCallback(
-    (nextDocument: NeedList, nextIndex: number) => {
-      const { id, requestId, docId, files } = nextDocument;
+    (nextDocument: NeedList, nextIndex: number, fromHeader: boolean) => {
+      const {id, requestId, docId, files} = nextDocument;
+
+      const nextDocIndex = needList.findIndex(
+        (document, index) =>
+          document.docId !== nextDocument.docId &&
+          document.status === DocumentStatus.PENDING_REVIEW &&
+          index > nextIndex
+      );
+
+      const previousDocIndex = needList.findIndex(
+        (document, index) =>
+          document.docId !== nextDocument.docId &&
+          document.status === DocumentStatus.PENDING_REVIEW &&
+          index < nextIndex
+      );
+
+      if (nextDocIndex === -1) {
+        setNextDocumentButtonDisabled(true);
+      }
+
+      if (fromHeader == true) {
+        if (previousDocIndex !== -1) {
+          setPreviousDocumentButtonDisabled(() => false);
+        } else if (previousDocIndex === -1) {
+          setPreviousDocumentButtonDisabled(() => true);
+        }
+      }
 
       setCurrentDocument(() => nextDocument);
       setNavigationIndex(() => nextIndex);
       setCurrentFileIndex(0);
-      setTypeIdId({ id: null, typeId: null });
+      setTypeIdId({id: null, typeId: null});
 
       if (!!files && files.length > 0) {
         setClientName(files[0].clientName);
@@ -151,29 +177,21 @@ export const ReviewDocument = () => {
 
   //This function is being called inside useEffect
   const navigateDocument = useCallback(
-    (docs: NeedList[], navigateBackOrForward: string) => {
+    (
+      docs: NeedList[],
+      navigateBackOrForward: string,
+      fromHeader: boolean = false
+    ) => {
       if (currentDocument) {
         let index: number;
 
-        if (navigateBackOrForward === "next") {
+        if (navigateBackOrForward === 'next') {
           const nextDocIndex = docs.findIndex(
             (doc, index) =>
               doc.docId !== currentDocument.docId &&
               index > navigationIndex &&
               doc.status === DocumentStatus.PENDING_REVIEW
           );
-
-          const previousDoc = docs
-            .filter(
-              (doc, index) =>
-                doc.status === DocumentStatus.PENDING_REVIEW &&
-                index < nextDocIndex
-            )
-            .reverse()[0];
-
-          if (previousDoc && previousDocumentButtonDisabled) {
-            setPreviousDocumentButtonDisabled(false);
-          }
 
           index = nextDocIndex;
         } else {
@@ -201,11 +219,20 @@ export const ReviewDocument = () => {
         }
 
         if (index === -1) {
-          history.goBack();
+          if (fromHeader === false) {
+            return goBack();
+          }
         } else {
           const nextDocument = docs[index];
 
-          changeCurrentDocument(nextDocument, index);
+          if (
+            navigateBackOrForward === 'back' &&
+            nextDocumentButtonDisabled === true
+          ) {
+            setNextDocumentButtonDisabled(false);
+          }
+
+          changeCurrentDocument(nextDocument, index, fromHeader);
         }
       }
     },
@@ -218,14 +245,14 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const { id, requestId, docId } = currentDocument;
+          const {id, requestId, docId} = currentDocument;
 
           const http = new Http();
 
           await http.post(NeedListEndpoints.POST.documents.accept(), {
             id,
             requestId,
-            docId,
+            docId
           });
 
           setAcceptRejectLoading(false);
@@ -237,12 +264,12 @@ export const ReviewDocument = () => {
 
           dispatch({
             type: NeedListActionsType.SetNeedListTableDATA,
-            payload: clonedNeedList,
+            payload: clonedNeedList
           });
 
-          navigateDocument(needList, "next");
+          navigateDocument(clonedNeedList, 'next');
         } catch (error) {
-          alert("Something went wrong. Please try again later.");
+          alert('Something went wrong. Please try again later.');
 
           setAcceptRejectLoading(false);
         }
@@ -257,7 +284,7 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const { id, requestId, docId } = currentDocument;
+          const {id, requestId, docId} = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
 
@@ -268,7 +295,7 @@ export const ReviewDocument = () => {
             id,
             requestId,
             docId,
-            message: rejectDocumentMessage,
+            message: rejectDocumentMessage.trim()
           });
 
           setAcceptRejectLoading(false);
@@ -280,12 +307,12 @@ export const ReviewDocument = () => {
 
           dispatch({
             type: NeedListActionsType.SetNeedListTableDATA,
-            payload: clonedNeedList,
+            payload: clonedNeedList
           });
 
-          navigateDocument(needList, "next");
+          navigateDocument(needList, 'next');
         } catch (error) {
-          alert("Something went wrong. Please try again later.");
+          alert('Something went wrong. Please try again later.');
 
           setAcceptRejectLoading(false);
         }
@@ -313,11 +340,11 @@ export const ReviewDocument = () => {
   const onMoveArrowKeys = (event: KeyboardEvent) => {
     if (loading) return;
 
-    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
 
       if (currentDocument) {
-        if (event.key === "ArrowDown") {
+        if (event.key === 'ArrowDown') {
           // move forward
           const fileIndex = getNextFileIndex();
 
@@ -331,7 +358,7 @@ export const ReviewDocument = () => {
               loading
             );
           }
-        } else if (event.key === "ArrowUp") {
+        } else if (event.key === 'ArrowUp') {
           // move back
           const fileIndex = getPreviousFileIndex();
 
@@ -351,10 +378,10 @@ export const ReviewDocument = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("keydown", onMoveArrowKeys);
+    window.addEventListener('keydown', onMoveArrowKeys);
 
     return () => {
-      window.removeEventListener("keydown", onMoveArrowKeys);
+      window.removeEventListener('keydown', onMoveArrowKeys);
     };
   }, [currentDocument, loading, currentFileIndex]);
 
@@ -366,16 +393,16 @@ export const ReviewDocument = () => {
 
   useEffect(() => {
     const onKeyDown = (event: any) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         if (loading) return; // Prevent closing it down while loading
 
         goBack();
       }
     };
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
 
-    return () => window.removeEventListener("keydown", onKeyDown); //clear up event
+    return () => window.removeEventListener('keydown', onKeyDown); //clear up event
   }, [goBack]);
 
   useEffect(() => {
@@ -383,7 +410,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const { currentDocumentIndex, documentDetail } = state as any;
+        const {currentDocumentIndex, documentDetail} = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -414,27 +441,22 @@ export const ReviewDocument = () => {
         setCurrentDocument(() => doc);
         setDocumentDetail(() => documentDetail);
 
-        const { id, requestId, docId, files, typeId, docName } = doc;
+        const {id, requestId, docId, files, typeId, docName} = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
           setClientName(files[0].clientName);
 
           getDocumentForView(id, requestId, docId, files[0].id);
         } else {
-          setTypeIdId({ id, typeId: !!typeId ? typeId : docName });
+          setTypeIdId({id, typeId: !!typeId ? typeId : docName});
         }
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error);
 
-        alert("Something went wrong. Please try again.");
+        alert('Something went wrong. Please try again.');
       }
     }
-  }, [
-    getDocumentForView,
-    previousDocumentButtonDisabled,
-    state,
-    location.state,
-  ]);
+  }, [getDocumentForView, state, location.state]);
 
   return (
     <div
@@ -450,8 +472,8 @@ export const ReviewDocument = () => {
         }
         buttonsEnabled={!loading}
         onClose={goBack}
-        nextDocument={() => navigateDocument(needList, "next")}
-        previousDocument={() => navigateDocument(needList, "back")}
+        nextDocument={() => navigateDocument(needList, 'next', true)}
+        previousDocument={() => navigateDocument(needList, 'back', true)}
         perviousDocumentButtonDisabled={
           previousDocumentButtonDisabled || acceptRejectLoading
         }

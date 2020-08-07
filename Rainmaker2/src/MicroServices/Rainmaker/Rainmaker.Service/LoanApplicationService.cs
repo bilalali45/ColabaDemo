@@ -35,7 +35,7 @@ namespace Rainmaker.Service
             return await Repository
                          .Query(query: x =>
                                     x.Opportunity.OpportunityLeadBinders
-                                     .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).First().Customer
+                                     .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer
                                      .UserId == userProfileId && x.Id == loanApplicationId)
                          .Include(navigationPropertyPath: x => x.PropertyInfo)
                          .ThenInclude(navigationPropertyPath: x => x.PropertyType)
@@ -124,11 +124,11 @@ namespace Rainmaker.Service
                                                               Rate = null,
                                                               LockStatus =
                                                                   x.Opportunity.OpportunityLockStatusLogs
-                                                                   .OrderByDescending(y => y.Id).First()
+                                                                   .OrderByDescending(y => y.Id).FirstOrDefault()
                                                                    .LockStatusList.Name,
                                                               LockDate = x
                                                                          .Opportunity.OpportunityLockStatusLogs
-                                                                         .OrderByDescending(y => y.Id).First()
+                                                                         .OrderByDescending(y => y.Id).FirstOrDefault()
                                                                          .CreatedOnUtc.SpecifyKind(DateTimeKind.Utc),
                                                               ExpirationDate = null
                                                           }).FirstOrDefaultAsync();
@@ -172,7 +172,7 @@ namespace Rainmaker.Service
         {
             return await Repository.Query(query: x =>
                                               x.Opportunity.OpportunityLeadBinders
-                                               .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).First()
+                                               .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault()
                                                .Customer.UserId == userProfileId && x.Id == loanApplicationId &&
                                               x.BusinessUnit.Id == businessUnitId)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
@@ -194,13 +194,13 @@ namespace Rainmaker.Service
                                                new LoanOfficer
                                                {
                                                    Email = x.Opportunity.Employee.EmployeeBusinessUnitEmails
-                                                            .Where(y => y.BusinessUnitId == businessUnitId).First()
+                                                            .Where(y => y.BusinessUnitId == businessUnitId).FirstOrDefault()
                                                             .EmailAccount.Email,
                                                    FirstName = x.Opportunity.Employee.Contact.FirstName,
                                                    LastName = x.Opportunity.Employee.Contact.LastName,
                                                    NMLS = x.Opportunity.Employee.NmlsNo,
                                                    Phone = x.Opportunity.Employee.EmployeePhoneBinders
-                                                            .Where(y => y.TypeId == 3).First().CompanyPhoneInfo.Phone,
+                                                            .Where(y => y.TypeId == 3).FirstOrDefault().CompanyPhoneInfo.Phone,
                                                    Photo = x.Opportunity.Employee.Photo,
                                                    WebUrl = x.BusinessUnit.WebUrl + "/lo/" +
                                                             x.Opportunity.Employee.CmsName

@@ -116,6 +116,7 @@
                         max-height: 320px;
                         overflow: auto;
                         @include scrollbar(6,6);
+                        text-transform: capitalize;
                     }
                     .tenant-temp-list {
                         max-height: 270px;  
@@ -284,7 +285,7 @@
             font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
             color: color('colorBlack');
             margin-bottom: 0;
-            text-transform: uppercase;
+            text-transform: capitalize;
             padding-right: 25px;
             display: inline-block;
             position: relative;

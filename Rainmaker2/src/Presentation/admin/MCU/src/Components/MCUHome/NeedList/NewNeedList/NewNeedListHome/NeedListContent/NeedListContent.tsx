@@ -7,21 +7,23 @@ import { TemplateDocument } from "../../../../../../Entities/Models/TemplateDocu
 import { useHistory } from "react-router-dom";
 import { TextArea } from "../../../../../../Shared/components/TextArea";
 import { errorText } from "../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview";
+import { isDocumentDraftType } from "../../../../../../Store/reducers/TemplatesReducer";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
     updateDocumentMessage: Function,
     toggleShowReview: Function
+    isDraft: isDocumentDraftType
 }
 
-export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview }: NeedListContentType) => {
+export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview, isDraft }: NeedListContentType) => {
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
-
+    console.log(document, 'document');
     useEffect(() => {
-        setDoc(document)
+        setDoc(document);
     }, [doc?.docName])
 
     const toggleRename = () => {
@@ -41,20 +43,20 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
         return (
             <div className="T-head">
-                <div className="T-head-flex">
+                <div className="T-head-flex text-ellipsis">
                     <div>
                         {editTitleview ?
                             <>
-                                <p className="editable">
+                                <h3 className="editable">
                                     <input
                                         autoFocus
                                         value={document?.docName}
                                         onBlur={() => toggleRename()}
                                         className="editable-TemplateTitle" />
-                                </p>
+                                </h3>
                             </>
                             : <>
-                                <p> {document?.docName} </p>
+                                <h3><span className="text-ellipsis"> {document?.docName}</span></h3>
                                 {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
                             </>}
                     </div>
@@ -62,6 +64,17 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
             </div>
         )
     }
+
+    if (!isDraft) {
+        return (
+            <div className="flex-center">
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
+        )
+    }
+
     // rows={6}
     return (
         <section className="veiw-SelectedTemplate">
@@ -73,6 +86,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                 <p>Document request message.</p>
                 <div className="editer-wrap">
                     <TextArea
+                        placeholderValue={"Type your message"}
                         focus={true}
                         textAreaValue={document?.docMessage || ''}
                         onBlurHandler={() => { }}

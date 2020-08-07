@@ -9,6 +9,9 @@
         './functions/fontFamily',
         './functions/fontSizes';
 
+
+@import './components/Animations';
+
 // Mixins
 @import 'mixins/arrow',
         'mixins/border-radius',
@@ -25,6 +28,7 @@
         'mixins/transform-origin',
         'mixins/backface-visibility',
         'mixins/scrollbar',
+        'mixins/headings',
         
         // MEDIA QUERIES
         'mixins/mediaquery-desktop',

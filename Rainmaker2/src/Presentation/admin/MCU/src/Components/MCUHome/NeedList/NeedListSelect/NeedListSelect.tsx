@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Template } from "../../../../Entities/Models/Template";
 import { MyTemplate, TenantTemplate } from "../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import { Store } from "../../../../Store/Store";
 import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer";
@@ -27,6 +27,8 @@ export const NeedListSelect = ({
   const [templateList, setTemplateList] = useState<Template[]>([]);
 
   const { state, dispatch } = useContext(Store);
+
+  const location = useLocation();
 
   const templateManager: any = state?.templateManager;
   const templates: Template[] = templateManager?.templates;
@@ -65,7 +67,7 @@ export const NeedListSelect = ({
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
     } else {
-      setIdArray(pre => pre?.filter(idOld => idOld !== id));
+      setIdArray((pre: any) => pre?.filter((idOld: any) => idOld !== id));
     }
 
   }
@@ -80,7 +82,7 @@ export const NeedListSelect = ({
             templates?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
-                return <li key={t?.id}><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
               }
@@ -100,7 +102,7 @@ export const NeedListSelect = ({
           {
             templates?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id}><label><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
@@ -130,7 +132,9 @@ export const NeedListSelect = ({
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block">Continue with Template</button>
+        }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
+
+
 
       } else {
         return <Link to={`/newNeedList/${LocalDB.getLoanAppliationId()}`} >Start from new list</Link>
@@ -144,15 +148,14 @@ export const NeedListSelect = ({
     return (
       <>
         <Dropdown onToggle={() => setShow(!show)} show={show}>
-          <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
-            {
-              showButton ?
-                <>
-                  Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
-                </>
-                : <span className="btn-text">Add from template</span>
-            }
-          </Dropdown.Toggle>
+          {showButton ?
+            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+              Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+            </Dropdown.Toggle> :
+
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+              <span className="btn-text">Add from template</span>
+            </Dropdown.Toggle>}
 
           <Dropdown.Menu className="padding" show={show}>
             <h2>Select a need list Template</h2>

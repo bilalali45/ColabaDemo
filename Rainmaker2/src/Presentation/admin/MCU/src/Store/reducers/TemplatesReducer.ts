@@ -24,7 +24,8 @@ export enum TemplateActionsType {
     ToggleAddDocumentBox = "TOGGLE_ADD_DOCUMENT_BOX",
     SetSelectedTemplateDocuments = "SET_SELECTED_TEMPLATE_DOCUMENTS",
     SetEmailContent = "SET_EMAIL_CONTENT",
-    SetIsDocumentDraft = "SET_IS_DOCUMENT_DRAFT"
+    SetIsDocumentDraft = "SET_IS_DOCUMENT_DRAFT",
+    SetDocumentLength = "SET_DOCUMENT_LENGTH"
 }
 
 export type TemplateType = {
@@ -45,8 +46,9 @@ export type TemplateActionPayload = {
     [TemplateActionsType.SetCurrentCategoryDocuments]: CategoryDocument,
     [TemplateActionsType.ToggleAddDocumentBox]: AddDocumentBoxVisibleType,
     [TemplateActionsType.SetSelectedTemplateDocuments]: TemplateDocument[],
-    [TemplateActionsType.SetEmailContent]: string
-    [TemplateActionsType.SetIsDocumentDraft]: isDocumentDraftType
+    [TemplateActionsType.SetEmailContent]: string,
+    [TemplateActionsType.SetIsDocumentDraft]: isDocumentDraftType,
+    [TemplateActionsType.SetDocumentLength]: number
 }
 
 export type TemplateActions = ActionMap<TemplateActionPayload>[keyof ActionMap<TemplateActionPayload>];
@@ -109,7 +111,12 @@ export const templateReducer = (state: TemplateType | {}, { type, payload }: Act
                 ...state,
                 isDocumentDraft: payload
             }
-
+            case TemplateActionsType.SetDocumentLength:
+                return {
+                    ...state,
+                    documentLength: payload
+                }
+    
         default:
             return state;
     }

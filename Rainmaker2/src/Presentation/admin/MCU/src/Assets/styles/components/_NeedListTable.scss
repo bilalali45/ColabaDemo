@@ -20,8 +20,11 @@
     }
 
     .tr{
+        position: relative;
+        transform: scale(1);
         .td{
             padding: 10px; 
+            position: relative;
             &:last-child{
                 padding: 10px;
             }
@@ -30,6 +33,18 @@
                    height: auto;
                 }
             }
+            .btnloader{
+                padding: 0 0 0 15px;
+            }
+        }
+
+        .td-options,
+        .th-options{
+            width: 1px !important;
+            max-width: 1px;
+            position: relative;
+            min-width: 1px;
+            padding: 0 !important;
         }
 
 
@@ -45,13 +60,35 @@
             min-width: 200px;
         }
 
-        >.th:last-child,
-        >.td:last-child{
+        //>.th:last-child,
+        //>.td:last-child{
+        >.th.options,
+        >.td.options{
             width: 150px;
             white-space: nowrap;
         }
+
+        .list-remove-alert{
+            position: absolute;
+            top: 0;
+            right: -2px;
+            z-index: 9;
+            padding: 10px;
+            box-sizing: border-box;
+            background: color('listalertbg');
+            border: 1px solid color('border');
+            overflow: hidden;
+
+            .list-remove-text{
+
+            }
+
+            .list-remove-options{
+                
+            }
+        }
         
-    }
+    }// tr
 
     .th,.td{
         padding: 10px;
@@ -75,20 +112,10 @@
     }
 
     .row-shadow{
-        //&::before{
-            box-sizing: border-box;
-            //content:'';
-           // position:absolute;
-            /* do not use top and bottom */
-            //left:0;
-            //right:2px;
-
-           // display: block;
-           // height: calc(100% - 10px);
-            box-shadow:0 0px 6px 0px rgba(0, 0, 0, 0.06);
-            -webkit-box-shadow: 0 0px 6px 0px rgba(0, 0, 0, 0.06);
-            z-index: 2;
-        //}
+        box-sizing: border-box;
+        box-shadow:0 0px 6px 0px rgba(0, 0, 0, 0.06);
+        -webkit-box-shadow: 0 0px 6px 0px rgba(0, 0, 0, 0.06);
+        z-index: 2;
     }
     
     tbody{
@@ -165,4 +192,3 @@
         color: lighten($color: color('primary'), $amount: 6%);
     }
 }
-

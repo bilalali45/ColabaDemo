@@ -10,6 +10,9 @@ import { Template } from '../../../../../../Entities/Models/Template';
 import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
+import { nameTest } from '../../../Add/Home/AddNeedListHome';
+import Spinner from 'react-bootstrap/Spinner';
+import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -24,12 +27,13 @@ type AddNeedListContainerType = {
     addDocumentToList: Function,
     templateList: Template[],
     addTemplatesDocuments: Function,
-    isDraft: string,
+    isDraft: isDocumentDraftType,
     viewSaveDraft: Function,
     saveAsTemplate: Function,
     templateName: string,
     changeTemplateName: Function,
-    removeDocumentFromList: Function
+    removeDocumentFromList: Function,
+    requestSent: boolean
 }
 
 
@@ -47,15 +51,38 @@ export const NeedListRequest = ({
     saveAsTemplate,
     changeTemplateName,
     templateName,
-    removeDocumentFromList }: AddNeedListContainerType) => {
+    removeDocumentFromList,
+    requestSent }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
+    const [templateNameError, setTemplateNameError] = useState<string>();
+    const [requestHit, setRequestHit] = useState<boolean>(false);
 
     useEffect(() => {
         setLoaderVisible(false);
     }, []);
 
     const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
+
+    const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
+        let { target: { value } } = e;
+        changeTemplateName(e);
+        setTemplateNameError('');
+
+        if (value?.length > 255) {
+            setTemplateNameError('Name must be less than 256 chars');
+            return;
+        }
+
+        if (templateList.find((t: Template) => t.name.trim() === value.trim())) {
+            setTemplateNameError(`Template name must be unique`);
+            return;
+        };
+
+        if (!nameTest.test(value)) {
+            setTemplateNameError('Template name cannot contain any special characters');
+        }
+    }
 
 
     const renderNoDocumentSelect = () => {
@@ -72,6 +99,8 @@ export const NeedListRequest = ({
         )
     }
 
+
+
     const renderDocumentList = () => {
         if (!documentList?.length) {
             return renderNoDocumentSelect()
@@ -87,7 +116,8 @@ export const NeedListRequest = ({
 
                                         return <NeedListRequestItem
                                             key={d?.docName}
-                                            isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
+                                            isSelected={currentDocument?.localId === d?.localId}
+                                            // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
                                             removeDocumentFromList={removeDocumentFromList}
@@ -107,12 +137,33 @@ export const NeedListRequest = ({
     const renderSaveAsTemplate = () => {
         return (
             <div className="save-template">
-                <input value={templateName} onChange={(e) => changeTemplateName(e)} className="form-control" type="text" placeholder="Template Name" />
+                <input
+                    onKeyDown={(e: any) => {
+                        let { keyCode, target: { value } } = e;
+                        console.log('in here you know werhe', keyCode);
+                        if (keyCode === 13) {
+                            if (!value?.trim()?.length) {
+                                setTemplateNameError('Template name cannot be empty');
+                                return;
+                            }
+                        }
+                    }}
+                    maxLength={255}
+                    style={{ border: templateNameError && '1px solid red' }}
+                    value={templateName}
+                    onChange={validateTemplateName}
+                    className="form-control"
+                    type="text"
+                    placeholder="Template Name"
+                    autoFocus
+                />
                 <div className="save-template-btns">
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
-                    <button className="btn btn-sm btn-primary" onClick={() => {
-                        saveAsTemplate();
+                    <button className="btn btn-sm btn-primary" onClick={async () => {
+                        setRequestHit(true);
+                        await saveAsTemplate();
+                        setRequestHit(false);
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
@@ -133,6 +184,7 @@ export const NeedListRequest = ({
                 <div className="btn-add-new-Temp">
 
                     <AddDocument
+                        needList={documentList}
                         addDocumentToList={addDocumentToList}
                         setLoaderVisible={setLoaderVisible}
                         popoverplacement="right-end"
@@ -148,32 +200,49 @@ export const NeedListRequest = ({
                 </div>
             </div>
 
-            <div className="listWrap-templates">
-                {renderDocumentList()}
+            {requestSent || !isDraft
+                ?
+                <div className="flex-center">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>
 
-                {/* Remove Message */}
+
+                : <div className="listWrap-templates">
+                    {renderDocumentList()}
+
+                    {/* Remove Message */}
 
 
-            </div>
+                </div>}
 
-            <div className="left-footer">
-                {showSaveAsTemplate ?
-                    renderSaveAsTemplate()
-                    :
-                    <div className="btn-wrap">
-                        <NeedListSelect
-                            showButton={false}
-                            templateList={templateList}
-                            addTemplatesDocuments={addTemplatesDocuments}
-                            viewSaveDraft={viewSaveDraft}
-                        />
-                        <a
-                            onClick={toggleSaveAsTemplate}
-                            className="btn-link link-primary">
-                            Save as template
-                        </a>
-                    </div>}
-            </div>
+            {requestHit ?
+                <div className="left-footer text-center alert alert-success">Template has been created.</div>
+                :
+                <div className="left-footer">
+
+
+                    {showSaveAsTemplate ?
+                        <>
+                            {renderSaveAsTemplate()}
+                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                        </>
+                        :
+                        <div className="btn-wrap">
+                            <NeedListSelect
+                                showButton={false}
+                                templateList={templateList}
+                                addTemplatesDocuments={addTemplatesDocuments}
+                                viewSaveDraft={viewSaveDraft}
+                            />
+                            {documentList?.length ? <a
+                                onClick={toggleSaveAsTemplate}
+                                className="btn-link link-primary">
+                                Save as template
+                        </a> : ''}
+                        </div>}
+                </div>}
         </div>
     )
 }
