@@ -84,7 +84,7 @@ namespace DocumentManagement.Service
                     dto.requestId = query.requestId;
                     dto.userName = query.userName;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.files = query.files?.Select(x => new DocumentFileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDTO()
                     {
                         fileId = x.id,
                         clientName = x.clientName,
