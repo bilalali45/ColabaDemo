@@ -149,7 +149,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     return (
         <div className="mcu-panel-body--content">
             <div className="mcu-panel-body padding">
-         <h2 className="h2">Review email to {borrowername}</h2>
+         <h3 className="h3">Review email to {borrowername}</h3>
                 <p>If you'd like, you can customize this email.</p>
                 <TextArea
                  focus = {true}
@@ -158,6 +158,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
                  onChangeHandler = {editEmailBodyHandler}
                  errorText = {errorText}
                  isValid = {isValid}
+                 placeholderValue={"Type your message"}
                 />
 
             </div>
