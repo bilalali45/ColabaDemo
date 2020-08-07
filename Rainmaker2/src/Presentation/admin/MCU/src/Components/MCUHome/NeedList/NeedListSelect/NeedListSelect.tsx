@@ -163,7 +163,7 @@ export const NeedListSelect = ({
         <Dropdown onToggle={() => setShow(!show)} show={show}>
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
-              Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+              Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
             <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
