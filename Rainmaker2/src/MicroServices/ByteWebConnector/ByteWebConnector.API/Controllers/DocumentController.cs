@@ -167,7 +167,7 @@ namespace ByteWebConnector.API.Controllers
                                    embeddedDocs).ToJson();
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
-                                            $"{_configuration[key: "LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
+                                            $"{_configuration[key: "ServiceAddress:LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
                                             content: new StringContent(content: content,
                                                                        encoding: Encoding.UTF8,
                                                                        mediaType: "application/json"));
