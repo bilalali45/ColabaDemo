@@ -80,9 +80,9 @@ export class NewNeedListActions {
         let templateData = {
             name,
             documentTypes: documents.map((d: TemplateDocument) => {
-                if (d.docId) {
+                if (d.typeId) {
                     return {
-                        typeId: d.docId
+                        typeId: d.typeId
                     }
                 }
                 return {

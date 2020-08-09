@@ -13,8 +13,14 @@ type NeedListRequestItemType = {
 export const NeedListRequestItem = ({ document, changeDocument, isSelected, removeDocumentFromList }: NeedListRequestItemType) => {
     const [toRemoveList, setRemoveList] = useState<boolean>(false);
     //const [getDelete, setDelete] = useState<boolean>(false);
+
+    useEffect(() => {
+        setRemoveList(false);
+    }, [!isSelected])
+
+    
     return (
-         <li onMouseLeave={() => setRemoveList(false)}>           
+         <li>           
             <div className="l-wrap" onClick={() => changeDocument(document)}>
                 {!toRemoveList ?
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
@@ -27,7 +33,7 @@ export const NeedListRequestItem = ({ document, changeDocument, isSelected, remo
                             <div className="l-remove-actions">
                                 <button className="lbtn btn-no" onClick={() => { setRemoveList(false) }}> No</button>
                                 <button className="lbtn btn-yes" onClick={() => {
-                                    removeDocumentFromList(document?.docName)
+                                    removeDocumentFromList(document?.localId)
                                     setRemoveList(false);
                                 }}>Yes</button></div>
                         </div>}

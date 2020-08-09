@@ -193,6 +193,13 @@ export const SelectedDocuments = ({
       // debugger
       return f;
     });
+    updatedFiles = updatedFiles.map((f: Document, i: number) => {
+      if(i === nextInd) {
+        f.focused = true;
+        return f;
+      }
+      return f;
+    });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
     // moveFocus(updatedFiles, selectedFiles[nextInd])
   };

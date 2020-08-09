@@ -47,16 +47,16 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                     <div>
                         {editTitleview ?
                             <>
-                                <p className="editable">
+                                <h3 className="editable">
                                     <input
                                         autoFocus
                                         value={document?.docName}
                                         onBlur={() => toggleRename()}
                                         className="editable-TemplateTitle" />
-                                </p>
+                                </h3>
                             </>
                             : <>
-                                <p><span className="text-ellipsis"> {document?.docName}</span></p>
+                                <h3><span className="text-ellipsis"> {document?.docName}</span></h3>
                                 {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
                             </>}
                     </div>
@@ -83,9 +83,10 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
 
             <div className="mainbody">
-                <p>Document request message.</p>
+                <p>Include a message to the borrower</p>
                 <div className="editer-wrap">
                     <TextArea
+                        placeholderValue={"Type your message"}
                         focus={true}
                         textAreaValue={document?.docMessage || ''}
                         onBlurHandler={() => { }}
