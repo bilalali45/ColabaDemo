@@ -49,6 +49,7 @@ namespace DocumentManagement.Model
         public string typeMessage { get; set; }
         public List<Message> messages { get; set; }
         public List<RequestFile> files { get; set; }
+        public bool? isRejected { get; set; }
     }
 
     public class DashboardDTO
@@ -58,6 +59,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
+        public bool isRejected { get; set; }
         public List<FileDTO> files { get; set; }
     }
 

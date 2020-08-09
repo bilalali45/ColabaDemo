@@ -305,7 +305,8 @@ namespace DocumentManagement.Service
             {
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].status", DocumentStatus.Completed}
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Completed},
+                        { "requests.$[request].documents.$[document].isRejected", false}
 
                     }
                 }
@@ -341,6 +342,7 @@ namespace DocumentManagement.Service
                 { "$set", new BsonDocument()
                     {
                         { "requests.$[request].documents.$[document].status", DocumentStatus.Draft},
+                        { "requests.$[request].documents.$[document].isRejected", true},
                         { "requests.$[request].documents.$[document].message", message},
                         { "requests.$[request].message", BsonString.Empty}
                     }

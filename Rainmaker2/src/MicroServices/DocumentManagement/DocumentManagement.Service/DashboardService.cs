@@ -63,6 +63,7 @@ namespace DocumentManagement.Service
                                 ""typeName"": ""$documentObjects.name"",
                                 ""typeMessage"": ""$documentObjects.message"",
                                 ""messages"": ""$documentObjects.messages"",
+                                ""isRejected"": ""$requests.documents.isRejected"",
                                 ""files"": ""$requests.documents.files""
                             }
                         }"
@@ -76,6 +77,7 @@ namespace DocumentManagement.Service
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
                     dto.id = query.id;
+                    dto.isRejected = query.isRejected.HasValue ? query.isRejected.Value : false;
                     dto.docId = query.docId;
                     dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
@@ -125,11 +127,8 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
-                            ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.PendingReview + @"""},
-                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
-                            ]}
-                        }", @"{
+                            ""$match"": {""requests.documents.status"":{""$ne"": """ + DocumentStatus.Deleted + @"""}}
+                            }", @"{
                             ""$lookup"": {
                                 ""from"": ""DocumentType"",
                                 ""localField"": ""requests.documents.typeId"",
@@ -152,6 +151,7 @@ namespace DocumentManagement.Service
                                 ""typeName"": ""$documentObjects.name"",
                                 ""typeMessage"": ""$documentObjects.message"",
                                 ""messages"": ""$documentObjects.messages"",
+                                ""isRejected"": ""$requests.documents.isRejected"",
                                 ""files"": ""$requests.documents.files""
                             }
                         }"
@@ -162,35 +162,39 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
-                    DashboardDTO dto = new DashboardDTO();
-                    dto.id = query.id;
-                    dto.docId = query.docId;
-                    dto.requestId = query.requestId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (string.IsNullOrEmpty(query.docMessage))
+                    if (query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Count() > 0)
                     {
-                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                        DashboardDTO dto = new DashboardDTO();
+                        dto.id = query.id;
+                        dto.isRejected = query.isRejected.HasValue ? query.isRejected.Value : false;
+                        dto.docId = query.docId;
+                        dto.requestId = query.requestId;
+                        dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                        if (string.IsNullOrEmpty(query.docMessage))
                         {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                            {
+                                dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            }
+                            else
+                            {
+                                dto.docMessage = query.typeMessage;
+                            }
                         }
                         else
                         {
-                            dto.docMessage = query.typeMessage;
+                            dto.docMessage = query.docMessage;
                         }
+                        dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDTO()
+                        {
+                            clientName = x.clientName,
+                            fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                            id = x.id,
+                            order = x.order,
+                            size = x.size
+                        }).OrderBy(x => x.order).ToList();
+                        result.Add(dto);
                     }
-                    else
-                    {
-                        dto.docMessage = query.docMessage;
-                    }
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDTO()
-                    {
-                        clientName = x.clientName,
-                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
-                        id = x.id,
-                        order = x.order,
-                        size = x.size
-                    }).OrderBy(x => x.order).ToList();
-                    result.Add(dto);
                 }
             }
             return result;

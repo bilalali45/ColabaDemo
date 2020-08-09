@@ -158,6 +158,7 @@ namespace DocumentManagement.Service
             bsonDocument.Add("typeId", BsonNull.Value);
             bsonDocument.Add("displayName", model.documentType);
             bsonDocument.Add("message", BsonString.Empty);
+            bsonDocument.Add("isRejected",false);
             bsonDocument.Add("files", filesArray);
             documentBsonArray.Add(bsonDocument);
 
@@ -357,6 +358,7 @@ namespace DocumentManagement.Service
                     bsonDocument.Add("typeId", string.IsNullOrEmpty(item.typeId) ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(item.typeId)));
                     bsonDocument.Add("displayName", item.displayName);
                     bsonDocument.Add("message", item.message);
+                    bsonDocument.Add("isRejected", false);
                     bsonDocument.Add("files", new BsonArray());
 
                     //Add document
