@@ -259,7 +259,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -359,7 +359,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -470,7 +470,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -585,7 +585,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -687,7 +687,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -787,7 +787,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -992,7 +992,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null);
 
             //Act
             List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
@@ -1061,7 +1061,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -1095,7 +1095,7 @@ namespace DocumentManagement.Tests
 
                 mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-                var service = new RequestService(mock.Object, null);
+                var service = new RequestService(mock.Object, null, null, null, null, null, null);
                 //Act
                 string dto = await service.GetEmailTemplate(1);
                 //Assert

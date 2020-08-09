@@ -33,4 +33,13 @@ namespace DocumentManagement.Model
         public string userName { get; set; }
         public List<Request> requests { get; set; }
     }
+
+    public class UploadFileModel
+    {
+        public int loanApplicationId { get; set; }
+        public string documentType { get; set; }
+        public string fileName { get; set; }
+        public string fileData { get; set; }
+        public string contentType { get; set; }
+    }
 }
