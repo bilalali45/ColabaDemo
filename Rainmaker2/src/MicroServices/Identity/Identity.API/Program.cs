@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +17,8 @@ namespace Identity
         {
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12;
+            ThreadPool.SetMaxThreads(1000, 1000);
+            ThreadPool.SetMinThreads(1000, 1000);
             ConfigureLogging();
             CreateHost(args: args);
         }

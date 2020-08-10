@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using KeyStore.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ namespace Identity
         public static void Main(string[] args)
         {
             ServicePointManager.DefaultConnectionLimit = 1000;
+            ThreadPool.SetMaxThreads(1000, 1000);
+            ThreadPool.SetMinThreads(1000, 1000);
             ConfigureLogging();
             CreateHost(args: args);
         }
