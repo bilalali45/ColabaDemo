@@ -40,6 +40,5 @@ namespace DocumentManagement.Model
         public string documentType { get; set; }
         public string fileName { get; set; }
         public string fileData { get; set; }
-        public string contentType { get; set; }
     }
 }
