@@ -49,8 +49,8 @@ export class UserActions {
         return true;
       }
       console.log("Refresh token fail.");
-      //Auth.removeAuth();
-      //window.open("/Account/LogOff", "_self");
+      Auth.removeAuth();
+      window.open("/Account/LogOff", "_self");
       return false;
     } catch (error) {
       setTimeout(() => {
