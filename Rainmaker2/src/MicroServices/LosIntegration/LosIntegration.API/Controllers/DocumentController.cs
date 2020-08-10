@@ -9,6 +9,7 @@ using LosIntegration.API.Models;
 using LosIntegration.API.Models.ClientModels.Document;
 using LosIntegration.API.Models.ClientModels.LoanApplication;
 using LosIntegration.API.Models.Document;
+using LosIntegration.API.Models.LoanApplication;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -141,64 +142,126 @@ namespace LosIntegration.API.Controllers
         [HttpPost]
         public IActionResult AddDocument([FromBody] AddDocumentRequest request)
         {
+            List<string> fileIds = new List<string>();
             //--Get LoanApplication Id from rm by externalLoan Application Id
             var loanApplicationRequestContent = new GeLoanApplicationRequest
             {
                 EncompassNumber = request.FileDataId.ToString()
             }.ToJsonString();
-            var loanlApplicationResult =
-                _httpClient.PostAsync(requestUri:
-                                      $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
-                                      content: new StringContent(content: loanApplicationRequestContent.ToJsonString(),
-                                                                 encoding: Encoding.UTF8,
-                                                                 mediaType: "application/json")).Result;
 
-            // get all files from document mang by loanapplication Id
-
-            List<string> fileIds = null; // from Doc Managment;
-
-            // --fetch mapping details to identify newly added file in Byte => embeddedDocId
-            var mappings = _mappingService.GetMapping(rmEnittyIds: fileIds,
-                                                      rmEntityName: "File").ToList();
-            var fileIdsOnByte = request.EmbeddedDocs.Select(selector: doc => doc.DocumentId.ToString());
-            var fileIdsOnRm = mappings.Select(selector: map => map.ExtOriginatorEntityId);
-
-            var fileIdsAbsentOnRm = fileIdsOnByte.Except(second: fileIdsOnRm);
-
-
-            foreach (var fileIdAbsentOnRm in fileIdsAbsentOnRm)
+            HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.PostAsync(requestUri:
+                                                                                                 $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
+                                                                                                 content: new StringContent(content: loanApplicationRequestContent.ToJsonString(),
+                                                                                                                            encoding: Encoding.UTF8,
+                                                                                                                            mediaType: "application/json")).Result;
+            if (loanApplicationHttpResponseMessage.IsSuccessStatusCode)
             {
-                // -- gey newly added file from BWC
-                var documentDataRequest = new GetDocumentDataRequest
-                {
-                    FileDataId = request.FileDataId,
-                    DocumentId = Convert.ToInt32(fileIdAbsentOnRm)
-                };
-                var documentDaResult =
-                    _httpClient.PostAsync(requestUri:
-                                          $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/GetDocumentDataFromByte",
-                                          content: new StringContent(content: documentDataRequest.ToJsonString(),
-                                                                     encoding: Encoding.UTF8,
-                                                                     mediaType: "application/json")).Result;
+                string loanApplicationResult = loanApplicationHttpResponseMessage.Content.ReadAsStringAsync().Result;
+                LoanApplicationResponse loanApplicationResponseModel = JsonConvert.DeserializeObject<LoanApplicationResponse>(value: loanApplicationResult);
 
-                // push newly added file to DOC management
-                string fileId = null;// comes from doc management after upload
-
-                //-- update mapping
-                var mapping = new Mapping
+                // get all files from document mang by loanapplication Id
+                if (loanApplicationResponseModel != null)
                 {
-                    RMEnittyId = fileId,
-                    RMEntityName = "File",
-                    ExtOriginatorEntityId = fileIdAbsentOnRm,
-                    ExtOriginatorEntityName = "Document",
-                    ExtOriginatorId = 1
-                };
-                _mappingService.Insert(item: mapping);
+                    int loanId = loanApplicationResponseModel.Id;
+                    var getDocumentRequestContent = new GetDocumentsRequest()
+                    {
+                        LoanApplicationId = loanId
+                    }.ToJsonString();
+
+                    var getDocumentsUrl = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments";
+                    HttpRequestMessage getDocumentRequestMessage = new HttpRequestMessage
+                                                                   {
+                                                                       Content = new StringContent(getDocumentRequestContent, Encoding.UTF8, "application/json"),
+                                                                       Method = HttpMethod.Get,
+                                                                       RequestUri = new Uri(getDocumentsUrl)
+                                                                   };
+                    var getDocumentResponse = _httpClient.SendAsync(getDocumentRequestMessage).Result;
+                    if (getDocumentResponse != null)
+                    {
+                        string documentResponseResult = getDocumentResponse.Content.ReadAsStringAsync().Result;
+                        List<DocumentManagementDocument> documentManagementDocument = JsonConvert.DeserializeObject<List<DocumentManagementDocument>>(value: documentResponseResult);
+                        if (documentManagementDocument != null)
+                            fileIds = documentManagementDocument
+                                      .SelectMany(document => document.Files).Select(file => file.Id).ToList();
+                    }
+
+                    // --fetch mapping details to identify newly added file in Byte => embeddedDocId
+                    var mappings = _mappingService.GetMapping(rmEnittyIds: fileIds,
+                                                              rmEntityName: "File").ToList();
+                    var fileIdsOnByte = request.EmbeddedDocs.Select(selector: doc => doc.DocumentId.ToString());
+                    var fileIdsOnRm = mappings.Select(selector: map => map.ExtOriginatorEntityId);
+
+                    var fileIdsAbsentOnRm = fileIdsOnByte.Except(second: fileIdsOnRm);
+
+
+                    foreach (var fileIdAbsentOnRm in fileIdsAbsentOnRm)
+                    {
+                        // -- gey newly added file from BWC
+                        var documentDataRequest = new GetDocumentDataRequest
+                        {
+                            FileDataId = request.FileDataId,
+                            DocumentId = Convert.ToInt32(fileIdAbsentOnRm)
+                        };
+                        var documentDataResult =
+                            _httpClient.PostAsync(requestUri:
+                                                  $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/GetDocumentDataFromByte",
+                                                  content: new StringContent(content: documentDataRequest.ToJsonString(),
+                                                                             encoding: Encoding.UTF8,
+                                                                             mediaType: "application/json")).Result;
+                        if (documentDataResult.IsSuccessStatusCode)
+                        {
+                            string documentResult = documentDataResult.Content.ReadAsStringAsync().Result;
+                            EmbeddedDoc embeddedDocModel = JsonConvert.DeserializeObject<EmbeddedDoc>(value: documentResult);
+
+                            // push newly added file to DOC management
+                            var uploadFileRequestContent = new UploadFileRequest()
+                            {
+                                LoanApplicationId = loanId,
+                                DocumentType = embeddedDocModel.DocumentType,
+                                FileName = embeddedDocModel.DocumentName +"."+ embeddedDocModel.DocumentExension,
+                                FileData =  embeddedDocModel.DocumentData
+                            }.ToJsonString();
+
+                            var url = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/request/UploadFile";
+                            HttpRequestMessage uploadFileRequestMessage = new HttpRequestMessage
+                            {
+                                Content = new StringContent(uploadFileRequestContent, Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Get,
+                                RequestUri = new Uri(url)
+                            };
+                            HttpResponseMessage uploadFileHttpResponse = _httpClient.SendAsync(uploadFileRequestMessage).Result;
+                            if (uploadFileHttpResponse.IsSuccessStatusCode)
+                            {
+                                string uploadFileResponseResult = uploadFileHttpResponse.Content.ReadAsStringAsync().Result;
+                                UploadFileResponse uploadFileResponseModel = JsonConvert.DeserializeObject<UploadFileResponse>(value: uploadFileResponseResult);
+
+                                //-- update mapping
+                                if (uploadFileResponseModel != null)
+                                {
+                                    var mapping = new Mapping
+                                    {
+                                        RMEnittyId = uploadFileResponseModel.FileId,// comes from doc management after upload
+                                        RMEntityName = "File",
+                                        ExtOriginatorEntityId = fileIdAbsentOnRm,
+                                        ExtOriginatorEntityName = "Document",
+                                        ExtOriginatorId = 1
+                                    };
+                                    _mappingService.Insert(item: mapping);
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    _mappingService.SaveChangesAsync();
+
+                    return Ok();
+                }
+
             }
 
-            _mappingService.SaveChangesAsync();
-
-            return Ok();
+            return BadRequest();
         }
 
 
