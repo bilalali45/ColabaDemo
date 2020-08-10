@@ -235,7 +235,7 @@ export const NeedListRequest = ({
                         <div className="btn-wrap">
                             <NeedListSelect
                                 showButton={false}
-                                templateList={templateList}
+                                templateList={templateList?.filter((t: Template) => t.name)}
                                 addTemplatesDocuments={addTemplatesDocuments}
                                 viewSaveDraft={viewSaveDraft}
                             />

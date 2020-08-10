@@ -8,22 +8,17 @@ type SelectedNeedListReviewProps = {
     documentList: TemplateDocument[];
 }
 
-export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProps) => {
+export const SelectedNeedListReview = ({ documentList }: SelectedNeedListReviewProps) => {
 
-    const history = useHistory()
 
-    useEffect(() => {
-        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
-    }, [!documentList?.length])
-
-    if(!documentList){
+    if (!documentList) {
         return (
             <div className="loader-widget loansnapshot">
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
             </div>
-          );
+        );
     }
 
     const displayRequestDocumentsList = () => {
@@ -32,9 +27,9 @@ export const SelectedNeedListReview = ({documentList}:SelectedNeedListReviewProp
                 <div className="listing">
                     <ul>
                         {
-                         documentList?.map((t: TemplateDocument) => {
-                         return  <li><a>{t.docName}</a></li>
-                         })
+                            documentList?.map((t: TemplateDocument) => {
+                                return <li><a>{t.docName}</a></li>
+                            })
                         }
                     </ul>
                 </div>

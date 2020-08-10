@@ -1000,7 +1000,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
-            Assert.Equal("", dto[0].docId);
+            Assert.Equal("", dto[0].docMessage);
             Assert.Equal("please upload salary slip", dto[1].docMessage);
             Assert.Equal("Credit report has been uploaded", dto[2].docMessage);
             Assert.Equal("Credit report has been uploaded", dto[3].docMessage);
