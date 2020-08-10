@@ -168,7 +168,7 @@ namespace DocumentManagement.Service
                               }}
                         }", @"{
                             ""$unwind"":{ ""path"": ""$documentTypes"",
-                                ""preserveNullAndEmptyArrays"": true
+                                ""preserveNullAndEmptyArrays"": false
                             }
                         }", @"{
                             ""$lookup"": {
