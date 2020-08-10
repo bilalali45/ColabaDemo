@@ -8,6 +8,7 @@ export class DocumentRequest {
     public docName: string;
     public docMessage: string;
     public files: Document[] | null;
+    public isRejected: boolean = false;
 
     constructor(
         id: string,
@@ -15,7 +16,8 @@ export class DocumentRequest {
         docId: string,
         docName: string,
         docMessage: string,
-        files: Document[] | null
+        files: Document[] | null,
+        isRejected: boolean
     ) {
         this.id = id;
         this.docId = docId;
@@ -23,6 +25,7 @@ export class DocumentRequest {
         this.docName = docName;
         this.docMessage = docMessage;
         this.files = files;
+        this.isRejected = isRejected
     }
     
     // public get remainingCount() : number {
