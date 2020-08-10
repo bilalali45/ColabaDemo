@@ -48,7 +48,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     const borrowername = loanData?.borrowers[0];
     const [emailBody, setEmailBody] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
-    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
+    const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
    
 
     useEffect(() =>{ 

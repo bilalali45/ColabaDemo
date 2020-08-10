@@ -39,7 +39,7 @@ export const NeedListTable = ({
     return data.map((item: NeedList, index: number) => {
       return (
         <div key={index} className="tr row-shadow">
-          {renderDocName(item.docName, item.status)}
+          {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
           {renderSyncToLos(item.files)}
@@ -53,8 +53,20 @@ export const NeedListTable = ({
       );
     });
   };
-  const renderDocName = (name: string, status: string) => {
-    if (status === 'Pending review')
+  const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
+    debugger
+    let count = 0;
+    console.log('data',data)
+    if(data){
+      for(let i = 0; i < data?.length; i++){
+         if(data[i].isRead === false){
+            count++;
+            break;
+          } 
+      }
+    }
+    
+    if (count > 0)
       return (
         <div className="td">
           <span className="f-normal">
@@ -198,7 +210,7 @@ export const NeedListTable = ({
         <div className="td ">
           {data.map((file: NeedListDocuments, index) => {
             const pendingReview = status === DocumentStatus.PENDING_REVIEW;
-            const {mcuName, clientName} = file;
+            const {mcuName, clientName, isRead} = file;
 
             return (
               <span key={index} className="block-element c-filename">
@@ -207,9 +219,9 @@ export const NeedListTable = ({
                     <span
                       title={mcuName}
                       className={
-                        pendingReview
-                          ? 'block-element-child td-filename filename-by-mcu filename-p'
-                          : 'block-element-child td-filename filename-by-mcu'
+                        isRead === false
+                          ? "block-element-child td-filename filename-by-mcu filename-p"
+                          : "block-element-child td-filename filename-by-mcu"
                       }
                     >
                       <a
@@ -234,7 +246,7 @@ export const NeedListTable = ({
                   <span
                     title={clientName}
                     className={
-                      status === 'Pending review'
+                      isRead === false
                         ? 'block-element-child td-filename filename-by-mcu filename-p'
                         : 'block-element-child td-filename filename-by-mcu'
                     }
