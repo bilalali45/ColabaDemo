@@ -896,7 +896,7 @@ namespace DocumentManagement.Tests
             mcuRenameModel.newName = new string('a', 256); ;
 
             //Assert
-            Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
+            await Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
 
         }
         [Fact]

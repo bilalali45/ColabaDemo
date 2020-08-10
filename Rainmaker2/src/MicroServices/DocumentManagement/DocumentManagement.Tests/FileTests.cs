@@ -493,7 +493,7 @@ namespace DocumentManagement.Tests
             string requestId = "abc15d1fe456051af2eeb768"; 
             string docId = "ddd25d1fe456057652eeb72d";
             string order = "0"; 
-            int tenantId = 1;
+            //int tenantId = 1;
             //var stream = File.OpenRead(@"C:\NET Unit Testing.docx");
 
             string path = Path.GetTempFileName();
@@ -589,7 +589,7 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
-            int tenantId = 1;
+            //int tenantId = 1;
 
             string path = Path.GetTempFileName();
 
@@ -784,7 +784,7 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
-            int tenantId = 1;
+            //int tenantId = 1;
 
             string path = Path.GetTempFileName();
 
@@ -927,7 +927,7 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d"; string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d"; string order = "0";
-            int tenantId = 1;
+            //int tenantId = 1;
 
             string path = Path.GetTempFileName();
 

@@ -19,5 +19,7 @@ namespace DocumentManagement.Service
         Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId);
 
         Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
+
+        Task<bool> DeleteFile(int loanApplicationId, string fileId);
     }
 }

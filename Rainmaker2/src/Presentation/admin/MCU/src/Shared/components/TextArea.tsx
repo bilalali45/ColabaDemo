@@ -7,9 +7,10 @@ type TextAreaType = {
     onChangeHandler?: Function;
     isValid?: boolean;
     errorText?: string;
+    placeholderValue?: string
 }
 
-export const TextArea = ({ textAreaValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus }: TextAreaType) => {
+export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus }: TextAreaType) => {
 
 
     const [isTextValid, setIsTextValid] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export const TextArea = ({ textAreaValue, onBlurHandler = () => { }, onChangeHan
             <textarea
                 style={textAreaStyle} autoFocus={focus} onBlur={(e) => onBlurHandler()} value={textAreaValue} onChange={(e) => {
                     checkIfValid(e);
-                }} name="" id="" className="form-control" rows={20}>
+                }} name="" id="" className="form-control" rows={20} placeholder={placeholderValue}>
             </textarea>
             <div>
                 <p style={{ color: "red" }} >{isTextValid ? errorText : ''}</p>

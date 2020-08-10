@@ -13,6 +13,7 @@ import emptyIcon from '../../../../../../Assets/images/empty-icon.svg'
 import { nameTest } from '../../../Add/Home/AddNeedListHome';
 import Spinner from 'react-bootstrap/Spinner';
 import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
+import { CustomDocuments } from '../../../../TemplateManager/AddDocument/SelectedDocumentType/CustomDocuments/CustomDocuments';
 
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
@@ -33,7 +34,8 @@ type AddNeedListContainerType = {
     templateName: string,
     changeTemplateName: Function,
     removeDocumentFromList: Function,
-    requestSent: boolean
+    requestSent: boolean,
+    showSaveAsTemplateLink: boolean,
 }
 
 
@@ -52,7 +54,8 @@ export const NeedListRequest = ({
     changeTemplateName,
     templateName,
     removeDocumentFromList,
-    requestSent }: AddNeedListContainerType) => {
+    requestSent,
+    showSaveAsTemplateLink }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
     const [templateNameError, setTemplateNameError] = useState<string>();
@@ -84,7 +87,7 @@ export const NeedListRequest = ({
         }
     }
 
-
+    console.log('needlee', showSaveAsTemplateLink)
     const renderNoDocumentSelect = () => {
         return (
             <div className="no-preview">
@@ -99,15 +102,7 @@ export const NeedListRequest = ({
         )
     }
 
-    if (requestSent || !isDraft) {
-        return (
-            <div className="flex-center">
-                <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </Spinner>
-            </div>
-        )
-    }
+
 
     const renderDocumentList = () => {
         if (!documentList?.length) {
@@ -124,7 +119,7 @@ export const NeedListRequest = ({
 
                                         return <NeedListRequestItem
                                             key={d?.docName}
-                                            isSelected={currentDocument?.docName === d?.docName}
+                                            isSelected={currentDocument?.localId === d?.localId}
                                             // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
                                             document={d}
@@ -156,6 +151,7 @@ export const NeedListRequest = ({
                             }
                         }
                     }}
+                    maxLength={255}
                     style={{ border: templateNameError && '1px solid red' }}
                     value={templateName}
                     onChange={validateTemplateName}
@@ -167,8 +163,10 @@ export const NeedListRequest = ({
                 <div className="save-template-btns">
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
-                    <button className="btn btn-sm btn-primary" onClick={() => {
-                        saveAsTemplate();
+                    <button className="btn btn-sm btn-primary" onClick={async () => {
+                        setRequestHit(true);
+                        await saveAsTemplate();
+                        setRequestHit(false);
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
@@ -205,35 +203,49 @@ export const NeedListRequest = ({
                 </div>
             </div>
 
-            <div className="listWrap-templates">
-                {renderDocumentList()}
+            {requestSent || !isDraft
+                ?
+                <div className="flex-center">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>
 
-                {/* Remove Message */}
+
+                : <div className="listWrap-templates">
+                    {renderDocumentList()}
+
+                    {/* Remove Message */}
 
 
-            </div>
+                </div>}
 
-            <div className="left-footer">
-                {showSaveAsTemplate ?
-                    <>
-                        {renderSaveAsTemplate()}
-                        {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
-                    </>
-                    :
-                    <div className="btn-wrap">
-                        <NeedListSelect
-                            showButton={false}
-                            templateList={templateList}
-                            addTemplatesDocuments={addTemplatesDocuments}
-                            viewSaveDraft={viewSaveDraft}
-                        />
-                        {documentList?.length ? <a
-                            onClick={toggleSaveAsTemplate}
-                            className="btn-link link-primary">
-                            Save as template
+            {requestHit ?
+                <div className="left-footer text-center alert alert-success">Template has been created.</div>
+                :
+                <div className="left-footer">
+
+
+                    {showSaveAsTemplate ?
+                        <>
+                            {renderSaveAsTemplate()}
+                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                        </>
+                        :
+                        <div className="btn-wrap">
+                            <NeedListSelect
+                                showButton={false}
+                                templateList={templateList}
+                                addTemplatesDocuments={addTemplatesDocuments}
+                                viewSaveDraft={viewSaveDraft}
+                            />
+                            {showSaveAsTemplateLink ? <a
+                                onClick={toggleSaveAsTemplate}
+                                className="btn-link link-primary">
+                                Save as template
                         </a> : ''}
-                    </div>}
-            </div>
+                        </div>}
+                </div>}
         </div>
     )
 }

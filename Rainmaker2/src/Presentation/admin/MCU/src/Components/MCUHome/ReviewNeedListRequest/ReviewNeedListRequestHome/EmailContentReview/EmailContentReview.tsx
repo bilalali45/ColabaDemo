@@ -28,12 +28,12 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
             str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);
             hashDocuments();     
         }
-
-        let length = documentsName?.split(',').length;  
-        if(length){
-            dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
-        }        
-        return str       
+        return str 
+        // let length = documentsName?.split(',').length;  
+        // if(length){
+        //     dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
+        // }        
+              
     }
 
     const { state, dispatch } = useContext(Store);
@@ -82,18 +82,19 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
    }
 
    const draftExist = () => {
-       if(!previousDocLength){
+       if(!documentHash){
         if(selectedTemplateDocuments[0].message != ''){
             setEmailBody(selectedTemplateDocuments[0].message); 
             dispatch({type: TemplateActionsType.SetEmailContent, payload: selectedTemplateDocuments[0].message})
-            dispatch({type: TemplateActionsType.SetDocumentLength, payload: selectedTemplateDocuments.length }) 
+            hashDocuments(); 
         }else{
             setEmailBody(setDeafultText()); 
             dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
         }
         return ;
        }else{
-        if(previousDocLength != selectedTemplateDocuments.length){
+        let Newhash = LocalDB.encodeString(JSON.stringify(documentList))
+        if(documentHash != Newhash){
             setEmailBody(setDeafultText());
             dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody})
         }else{
@@ -104,9 +105,8 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     
    }
    const draftNotExist = () => {
-       debugger
        if(emailTemplate){   
-        let Newhash = LocalDB.encodeString(JSON.stringify(selectedTemplateDocuments))
+        let Newhash = LocalDB.encodeString(JSON.stringify(documentList))
         if(documentHash != Newhash){
               setEmailBody(setDeafultText());
              }
@@ -149,7 +149,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     return (
         <div className="mcu-panel-body--content">
             <div className="mcu-panel-body padding">
-         <h2 className="h2">Review email to {borrowername}</h2>
+                <h3 className="text-ellipsis">Review email to {borrowername}</h3>
                 <p>If you'd like, you can customize this email.</p>
                 <TextArea
                  focus = {true}
@@ -158,12 +158,11 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
                  onChangeHandler = {editEmailBodyHandler}
                  errorText = {errorText}
                  isValid = {isValid}
+                 placeholderValue={"Type your message"}
                 />
 
             </div>
                  {sendRequestButton()}
-           
-
            
         </div>
     )

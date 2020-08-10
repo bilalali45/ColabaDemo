@@ -259,7 +259,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -359,7 +359,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -470,7 +470,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -491,6 +491,121 @@ namespace DocumentManagement.Tests
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
             requestDocument.typeId = "5eb257a3e519051af2eeb624";
+            requestDocument.docId = "5f2147136621531660dc42c2";
+            requestDocument.requestId = "5f2147116621531660dc42bf";
+            requestDocument.files = new List<Model.RequestFile>() { };
+
+            request.documents.Add(requestDocument);
+
+            loanApplication.requests.Add(request);
+
+            bool result = await service.Save(loanApplication, false);
+
+            //Assert
+            Assert.True(result);
+
+        }
+
+        [Fact]
+        public async Task TestSaveServiceIsDraftFalse()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
+            Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> statusList = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5ee86503305e33a11c51ebbc"}
+                }
+            };
+
+            List<BsonDocument> listRequest = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "loanApplicationId" , 14}
+                }
+            };
+
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "docId" , "5f2147136621531660dc42c23"},
+                    { "requestId" , "5f2147116621531660dc42bf"}
+                }
+            };
+
+            List<BsonDocument> listActivityLog = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ffa5cba6f754a10129586"}
+                }
+            };
+
+            mockCursorStatusList.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorStatusList.SetupGet(x => x.Current).Returns(statusList);
+
+            mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listRequest);
+
+            mockCursorDraftDocument.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorDraftDocument.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorDraftDocument.Object);
+
+            mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mockCursorActivityLog.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
+
+            mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
+
+            mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+
+            mock.Setup(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+
+            Model.LoanApplication loanApplication = new Model.LoanApplication();
+            loanApplication.userId = 59;
+            loanApplication.userName = "Melissa Merritt";
+            loanApplication.loanApplicationId = 1;
+            loanApplication.tenantId = 1;
+            loanApplication.status = "5ee86503305e33a11c51ebbc";
+            loanApplication.requests = new List<Model.Request>() { };
+
+            Model.Request request = new Model.Request();
+            request.userId = 3842;
+            request.userName = "Danish Faiz";
+            request.message = "Hi Mark";
+            request.documents = new List<Model.RequestDocument>() { };
+
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
+            requestDocument.status = "Started";
+            requestDocument.displayName = "";
+            requestDocument.message = "document rejected";
+            //requestDocument.typeId = "5eb257a3e519051af2eeb624";
             requestDocument.docId = "5f2147136621531660dc42c2";
             requestDocument.requestId = "5f2147116621531660dc42bf";
             requestDocument.files = new List<Model.RequestFile>() { };
@@ -572,7 +687,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -672,7 +787,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -877,7 +992,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null);
 
             //Act
             List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
@@ -946,7 +1061,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -954,8 +1069,8 @@ namespace DocumentManagement.Tests
             Assert.Equal("Email Template", dto);
         }
 
-            [Fact]
-            public async Task TestGetEmailTemplateServiceFalse()
+        [Fact]
+        public async Task TestGetEmailTemplateServiceFalse()
             {
                 //Arrange
                 Mock<IMongoService> mock = new Mock<IMongoService>();
@@ -980,7 +1095,7 @@ namespace DocumentManagement.Tests
 
                 mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-                var service = new RequestService(mock.Object, null);
+                var service = new RequestService(mock.Object, null, null, null, null, null, null);
                 //Act
                 string dto = await service.GetEmailTemplate(1);
                 //Assert

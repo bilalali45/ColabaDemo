@@ -25,7 +25,8 @@ type NewNeedListHomeType = {
     changeTemplateName: Function,
     removeDocumentFromList: Function,
     toggleShowReview: Function,
-    requestSent: boolean
+    requestSent: boolean,
+    showSaveAsTemplateLink: boolean
 }
 
 export const NewNeedListHome = ({
@@ -43,7 +44,8 @@ export const NewNeedListHome = ({
     templateName,
     removeDocumentFromList,
     toggleShowReview,
-    requestSent
+    requestSent,
+    showSaveAsTemplateLink
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -69,6 +71,7 @@ export const NewNeedListHome = ({
                                 templateName={templateName}
                                 changeTemplateName={changeTemplateName}
                                 removeDocumentFromList={removeDocumentFromList}
+                                showSaveAsTemplateLink={showSaveAsTemplateLink}
                             />
 
                         </div>

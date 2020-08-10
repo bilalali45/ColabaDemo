@@ -147,7 +147,6 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
-
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> AcceptDocument(AcceptDocumentModel acceptDocumentModel)
         {
@@ -163,7 +162,6 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
-
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> RejectDocument(RejectDocumentModel rejectDocumentModel)
         {
@@ -178,7 +176,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userName: userName);
             if (docQuery)
             {
-                await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 
@@ -205,6 +203,16 @@ namespace DocumentManagement.API.Controllers
             logger.LogInformation($"GetDocumentsByTemplateIds requested by {userProfileId}");
             var docQuery = await documentService.GetDocumentsByTemplateIds(getDocumentsByTemplateIds.id.ToList(), tenantId);
             return Ok(value: docQuery);
+        }
+
+        [HttpDelete(template: "[action]")]
+        public async Task<IActionResult> DeleteFile(DeleteFile deleteFile)
+        {
+            var docQuery = await documentService.DeleteFile(loanApplicationId: deleteFile.loanApplicationId,
+                                                                fileId: deleteFile.fileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
         }
 
         #endregion

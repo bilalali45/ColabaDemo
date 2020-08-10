@@ -67,21 +67,32 @@ export const NeedListSelect = ({
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
     } else {
-      setIdArray(pre => pre?.filter(idOld => idOld !== id));
+      setIdArray((pre: any) => pre?.filter((idOld: any) => idOld !== id));
     }
 
   }
 
   const MyTemplates = () => {
-    if (!templateList) return '';
+    if (!templateList || templateList.length === 0) return '';
     return (
-      <>
-        <h3>My Templates</h3>
+      <>{
+       
+          templates?.map((t: Template) => {
+            if (t?.type === MyTemplate) {
+              return  <h3>My Templates</h3> 
+             
+            }
+            return;
+          })
+        }
+     
+    
         <ul className="checklist">
           {
             templates?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
+              
                 return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
@@ -97,7 +108,15 @@ export const NeedListSelect = ({
     if (!templateList) return '';
     return (
       <>
-        <h3>Templates by Tenants</h3>
+{     
+       templates?.map((t: Template) => {
+         if (t?.type === TenantTemplate) {
+           return  <h3>Templates by Tenants</h3>
+          
+         }
+         return;
+       })
+     }     
         <ul className="checklist">
           {
             templates?.map((t: Template) => {
@@ -114,12 +133,6 @@ export const NeedListSelect = ({
   }
   const StartListButton = () => {
 
-    // return <button onClick={() => {
-
-    //   setShow(false);
-    //   addTemplatesDocuments(idArray);
-    // }} className="btn btn-primary btn-block">Add Selected</button>
-
     if (!showButton) {
       return <button onClick={() => {
 
@@ -134,7 +147,7 @@ export const NeedListSelect = ({
           addTemplatesDocuments(idArray);
         }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
 
-        
+
 
       } else {
         return <Link to={`/newNeedList/${LocalDB.getLoanAppliationId()}`} >Start from new list</Link>
@@ -150,10 +163,10 @@ export const NeedListSelect = ({
         <Dropdown onToggle={() => setShow(!show)} show={show}>
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
-              Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+              Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
-            <Dropdown.Toggle size="sm" style={{background: 'none', border: 'none', color: '#2C9EF5', outline: 'none'}} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 
@@ -169,9 +182,7 @@ export const NeedListSelect = ({
       </>
     )
   }
-  // if(!templateList || !templateList?.length) {
-  //   return <div></div>;
-  // }
+ 
 
   return displayAddButton();
 };

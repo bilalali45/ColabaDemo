@@ -26,12 +26,19 @@ namespace DocumentManagement.Model
         public string id { get; set; }
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int loanApplicationId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         public int tenantId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string status { get; set; }
         public int userId { get; set; }
         public string userName { get; set; }
         public List<Request> requests { get; set; }
+    }
+
+    public class UploadFileModel
+    {
+        public int loanApplicationId { get; set; }
+        public string documentType { get; set; }
+        public string fileName { get; set; }
+        public string fileData { get; set; }
     }
 }

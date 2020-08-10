@@ -26,6 +26,7 @@ namespace DocumentManagement.Model
     {
         public const string SubmittedToMcu = "Submitted to MCU"; // borrower submit
         public const string RejectedByMcu = "Rejected by MCU"; // mcu has rejected, want file again
+        public const string Deleted = "Deleted";
     }
     public static class ByteProStatus
     {
@@ -48,6 +49,7 @@ namespace DocumentManagement.Model
         public string typeMessage { get; set; }
         public List<Message> messages { get; set; }
         public List<RequestFile> files { get; set; }
+        public bool? isRejected { get; set; }
     }
 
     public class DashboardDTO
@@ -57,6 +59,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
+        public bool isRejected { get; set; }
         public List<FileDTO> files { get; set; }
     }
 
@@ -109,7 +112,7 @@ namespace DocumentManagement.Model
         public DateTime fileUploadedOn { get; set; }
         public string mcuName { get; set; }
         public string byteProStatus { get; set; }
-
+        public bool isRead { get; set; }
         public string status { get; set; }
     }
     public class AdminDeleteModel

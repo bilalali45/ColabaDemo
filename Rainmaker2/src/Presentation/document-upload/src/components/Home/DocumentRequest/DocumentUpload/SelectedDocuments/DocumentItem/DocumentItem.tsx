@@ -40,6 +40,7 @@ export const DocumentItem = ({
 }: DocumentItemType) => {
   const [nameExists, setNameExists] = useState<any>(false);
   const [showInput, setShowInput] = useState<boolean>(false);
+  const [focus, setFocus] = useState<boolean>(false);
   const [validFilename, setValidFilename] = useState(true)
   const [filename, setFilename] = useState<string>("")
 
@@ -112,7 +113,16 @@ export const DocumentItem = ({
     if (!file.editName) {
       setShowInput(false);
     }
-  }, [file.editName])
+  }, [file.editName]);
+
+  useEffect(() => {
+    if (file.focused) {
+
+      if (txtInput?.current) {
+        txtInput.current.focus();
+      }
+    }
+  }, [file.focused, file.editName]);
 
   const EditTitle = () => {
     changeName(file, filename);
@@ -209,7 +219,6 @@ export const DocumentItem = ({
           <input
             ref={txtInput}
             style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
-            autoFocus={file.focused}
             maxLength={250}
             type="text"
             value={filename} //filename is default value on edit without extension
