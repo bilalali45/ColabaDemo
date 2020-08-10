@@ -53,23 +53,20 @@ export const NeedListTable = ({
       );
     });
   };
-<<<<<<< HEAD
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
+    debugger
     let count = 0;
     console.log('data',data)
     if(data){
       for(let i = 0; i < data?.length; i++){
-         if(data[i].isRead === false)
-           count++;
-           break;
+         if(data[i].isRead === false){
+            count++;
+            break;
+          } 
       }
     }
     
     if (count > 0)
-=======
-  const renderDocName = (name: string, status: string) => {
-    if (status === 'Pending review')
->>>>>>> b4b051fcf787069e93a7e142996d41fa8d1e3929
       return (
         <div className="td">
           <span className="f-normal">
