@@ -29,7 +29,6 @@ export class Home extends Component {
   setParams = (props: any) => {
     console.log("Props", props);
     const { loanApplicationId } = props.match.params;
-    debugger;
     if (!isNaN(loanApplicationId)) {
       ParamsService.storeParams(loanApplicationId);
     } else {
@@ -40,9 +39,7 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        {/* {!window.location.pathname.includes("404") && (
-          <ActivityHeader {...this.props} />
-        )} */}
+        <ActivityHeader {...this.props} />
         <main className="page-content">
           <div className="container">
             <Switch>
