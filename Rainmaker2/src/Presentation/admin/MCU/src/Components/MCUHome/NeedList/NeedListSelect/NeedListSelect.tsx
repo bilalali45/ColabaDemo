@@ -72,27 +72,18 @@ export const NeedListSelect = ({
 
   }
 
-  const MyTemplates = () => {
-    if (!templateList || templateList.length === 0) return '';
+  const MyTemplates = (templateList: Template[]) => {
+    if (!templateList || templateList.length === 0) return null;
     return (
-      <>{
-       
-          templates?.map((t: Template) => {
-            if (t?.type === MyTemplate) {
-              return  <h3>My Templates</h3> 
-             
-            }
-            return;
-          })
-        }
-     
-    
+      <>
+        <h3>My Templates</h3>
+
         <ul className="checklist">
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
-              
+
                 return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
@@ -104,22 +95,14 @@ export const NeedListSelect = ({
     );
   };
 
-  const TemplatesByTenant = () => {
-    if (!templateList) return '';
+  const TemplatesByTenant = (templateList: Template[]) => {
+    if (!templateList) return null;
     return (
       <>
-{     
-       templates?.map((t: Template) => {
-         if (t?.type === TenantTemplate) {
-           return  <h3>Templates by Tenants</h3>
-          
-         }
-         return;
-       })
-     }     
+        <h3>Templates by Tenants</h3>
         <ul className="checklist">
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
                 return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
@@ -172,8 +155,8 @@ export const NeedListSelect = ({
 
           <Dropdown.Menu className="padding" show={show}>
             <h2>Select a need list Template</h2>
-            {MyTemplates()}
-            {TemplatesByTenant()}
+            {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
+            {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
             <div className="external-link">
               {StartListButton()}
             </div>
@@ -182,7 +165,7 @@ export const NeedListSelect = ({
       </>
     )
   }
- 
+
 
   return displayAddButton();
 };

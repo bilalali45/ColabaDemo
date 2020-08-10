@@ -5,6 +5,7 @@ import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 import { Store } from '../../../../Store/Store'
 import { LocalDB } from '../../../../Utils/LocalDB'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -20,6 +21,13 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
 
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
+
+    const history = useHistory();
+ 
+    useEffect(() => {
+        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
+    }, [!documentList]);
+
     const getDocumentsName = () => {
         if (!documentList) return;
         let names: string = "";

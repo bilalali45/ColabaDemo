@@ -19,7 +19,7 @@ type emailContentReviewProps = {
 export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton, documentList, documentHash, setHash}:emailContentReviewProps) => {
-    
+    console.log(documentList?.length);
     console.log('documentHash',documentHash)
     const setDeafultText = () => {
         let str: string = '';
@@ -52,7 +52,7 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
    
 
     useEffect(() =>{ 
-        if(isDocumentDraft?.requestId) {
+        if(Boolean(isDocumentDraft?.requestId)) {
             draftExist();         
         }else{
             draftNotExist(); 
