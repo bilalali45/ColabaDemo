@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentManagement.Entity;
 using DocumentManagement.Model;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -41,6 +42,13 @@ namespace DocumentManagement.Service
         }
         public async Task<string> UploadFile(int userProfileId, string userName, int tenantId, int custUserId, string custUserName, UploadFileModel model)
         {
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+            if (!provider.TryGetContentType(model.fileName, out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
             using MemoryStream memoryStream = new MemoryStream();
             byte[] bytes = Convert.FromBase64String(model.fileData);
             memoryStream.Write(bytes,0,bytes.Length);
@@ -146,9 +154,11 @@ namespace DocumentManagement.Service
                 { "encryptionAlgorithm", algo },
                 { "order", 0 },
                 { "mcuName", BsonString.Empty },
-                { "contentType", model.contentType },
+                { "contentType", contentType },
                 { "status", FileStatus.SubmittedToMcu },
-                { "byteProStatus", ByteProStatus.Synchronized } };
+                { "byteProStatus", ByteProStatus.Synchronized },
+                { "isRead", true }
+            };
 
             filesArray.Add(fileDocument);
 

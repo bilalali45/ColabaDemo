@@ -112,7 +112,7 @@ namespace DocumentManagement.Model
         public DateTime fileUploadedOn { get; set; }
         public string mcuName { get; set; }
         public string byteProStatus { get; set; }
-
+        public bool isRead { get; set; }
         public string status { get; set; }
     }
     public class AdminDeleteModel
