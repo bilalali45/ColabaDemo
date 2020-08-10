@@ -98,7 +98,7 @@ export const NeedListTable = ({
       <>
         <div>
           <div className="list-remove-alert">
-            <span className="list-remove-text">Are you sure want to delet this Document?</span>
+            <span className="list-remove-text">Are you sure want to delete this Document?</span>
             <div className="list-remove-options">
               <button onClick={() => {
                 deleteDocument(data.id, data.requestId, data.docId);
