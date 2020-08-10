@@ -118,7 +118,7 @@ export const NeedListRequest = ({
                                     documentList?.map((d: TemplateDocument) => {
 
                                         return <NeedListRequestItem
-                                            key={d?.docName}
+                                            key={d?.localId}
                                             isSelected={currentDocument?.localId === d?.localId}
                                             // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
