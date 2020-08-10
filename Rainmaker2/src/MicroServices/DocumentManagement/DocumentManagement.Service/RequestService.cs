@@ -156,7 +156,9 @@ namespace DocumentManagement.Service
                 { "mcuName", BsonString.Empty },
                 { "contentType", contentType },
                 { "status", FileStatus.SubmittedToMcu },
-                { "byteProStatus", ByteProStatus.Synchronized } };
+                { "byteProStatus", ByteProStatus.Synchronized },
+                { "isRead", true }
+            };
 
             filesArray.Add(fileDocument);
 

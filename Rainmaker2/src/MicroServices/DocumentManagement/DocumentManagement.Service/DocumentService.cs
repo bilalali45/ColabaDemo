@@ -424,7 +424,26 @@ namespace DocumentManagement.Service
 
             ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
             await viewLogCollection.InsertOneAsync(viewLog);
-
+            // mark as read
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(model.id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].files.$[file].isRead", true}
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(model.fileId).ToJson()+"}")
+                }
+            });
             return fileViewDTO;
         }
         public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
