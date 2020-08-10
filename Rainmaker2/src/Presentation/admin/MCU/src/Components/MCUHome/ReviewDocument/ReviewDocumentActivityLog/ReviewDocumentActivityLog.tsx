@@ -208,7 +208,7 @@ export const ReviewDocumentActivityLog = ({
 
   const renderEmailLogs = (emailLogs: EmailLogsType[]) => {
     return emailLogs.map((emailLog, index) => (
-      <li className="active" key={index}>
+      <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
           <div className="row">
             <div className="col-md-5">
