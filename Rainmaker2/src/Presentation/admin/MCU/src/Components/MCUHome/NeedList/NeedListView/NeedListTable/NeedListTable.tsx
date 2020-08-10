@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { NeedList } from "../../../../../Entities/Models/NeedList";
-import { NeedListDocuments } from "../../../../../Entities/Models/NeedListDocuments";
-import Spinner from "react-bootstrap/Spinner";
-import { truncate } from "../../../../../Utils/helpers/TruncateString";
-import { toTitleCase } from "rainsoft-js";
-import { LocalDB } from "../../../../../Utils/LocalDB";
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {NeedList} from '../../../../../Entities/Models/NeedList';
+import {NeedListDocuments} from '../../../../../Entities/Models/NeedListDocuments';
+import Spinner from 'react-bootstrap/Spinner';
+import {truncate} from '../../../../../Utils/helpers/TruncateString';
+import {toTitleCase} from 'rainsoft-js';
+import {LocalDB} from '../../../../../Utils/LocalDB';
+import {DocumentStatus} from '../../../../../Entities/Types/Types';
 
 type NeedListProps = {
   needList: NeedList | null | undefined;
@@ -30,31 +31,41 @@ export const NeedListTable = ({
   statusSortClick,
   deleteRequestSent
 }: NeedListProps) => {
-
-
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
- 
 
   const history = useHistory();
   const renderNeedList = (data: any) => {
     return data.map((item: NeedList, index: number) => {
       return (
         <div key={index} className="tr row-shadow">
-          {renderDocName(item.docName, item.status)}
+          {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
-          {renderFile(item.files, item.status)}
+          {renderFile(item.files, item.status, index)}
           {renderSyncToLos(item.files)}
-          {renderButton(item, index)}          
+          {renderButton(item, index)}
           <div className="td td-options">
-           {confirmDelete && currentItem === item && deleteDocAlert(item, index)}
+            {confirmDelete &&
+              currentItem === item &&
+              deleteDocAlert(item, index)}
           </div>
         </div>
       );
     });
   };
-  const renderDocName = (name: string, status: string) => {
-    if (status === "Pending review")
+  const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
+    let count = 0;
+    console.log('data', data);
+    if (data) {
+      for (let i = 0; i < data?.length; i++) {
+        if (data[i].isRead === false) {
+          count++;
+          break;
+        }
+      }
+    }
+
+    if (count > 0)
       return (
         <div className="td">
           <span className="f-normal">
@@ -70,22 +81,22 @@ export const NeedListTable = ({
       );
   };
   const renderStatus = (status: string) => {
-    let cssClass = "";
+    let cssClass = '';
     switch (status) {
-      case "Pending review":
-        cssClass = "status-bullet pending";
+      case 'Pending review':
+        cssClass = 'status-bullet pending';
         break;
-      case "Started":
-        cssClass = "status-bullet started";
+      case 'Started':
+        cssClass = 'status-bullet started';
         break;
-      case "Borrower to do":
-        cssClass = "status-bullet borrower";
+      case 'Borrower to do':
+        cssClass = 'status-bullet borrower';
         break;
-      case "Completed":
-        cssClass = "status-bullet completed";
+      case 'Completed':
+        cssClass = 'status-bullet completed';
         break;
       default:
-        cssClass = "status-bullet pending";
+        cssClass = 'status-bullet pending';
     }
     return (
       <div className="td">
@@ -98,25 +109,35 @@ export const NeedListTable = ({
       <>
         <div>
           <div className="list-remove-alert">
-            <span className="list-remove-text">Are you sure want to delet this Document?</span>
+            <span className="list-remove-text">
+              Are you sure want to delet this Document?
+            </span>
             <div className="list-remove-options">
-              <button onClick={() => {
-                deleteDocument(data.id, data.requestId, data.docId);
-                setConfirmDelete(false)
-              }} className="btn btn-sm btn-secondry">Yes</button>
-              {" "}
-              <button onClick={() => setConfirmDelete(false)} className="btn btn-sm btn-primary">No</button>
+              <button
+                onClick={() => {
+                  deleteDocument(data.id, data.requestId, data.docId);
+                  setConfirmDelete(false);
+                }}
+                className="btn btn-sm btn-secondry"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="btn btn-sm btn-primary"
+              >
+                No
+              </button>
             </div>
           </div>
         </div>
       </>
-    )
-  }
+    );
+  };
 
   const renderButton = (data: NeedList, index: number) => {
-  
     let count = data.files != null ? data.files.length : data.files;
-    if (data.status === "Pending review") {
+    if (data.status === 'Pending review') {
       return (
         <div className="td options">
           <button
@@ -136,40 +157,47 @@ export const NeedListTable = ({
           >
             Details
           </button>
-          {data.status === "Borrower to do" &&  !count  ? (
-            deleteRequestSent &&  currentItem === data ?
-            <span className="btnloader">
-            <Spinner size="sm" animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-            </span>
-            : deleteRequestSent && currentItem != data ?         
-            <button onClick={() => {
-                setCurrentItem(data)
-                setConfirmDelete(true)
-              }}
-              className="btn btn-delete btn-sm"
-            >
-              <em className="zmdi zmdi-close"></em>
-            </button> 
-           : <button onClick={() => {
-            setCurrentItem(data)
-            setConfirmDelete(true)
-          }}
-          className="btn btn-delete btn-sm"
-        >
-          <em className="zmdi zmdi-close"></em>
-        </button> 
-            
+          {data.status === 'Borrower to do' && !count ? (
+            deleteRequestSent && currentItem === data ? (
+              <span className="btnloader">
+                <Spinner size="sm" animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </span>
+            ) : deleteRequestSent && currentItem != data ? (
+              <button
+                onClick={() => {
+                  setCurrentItem(data);
+                  setConfirmDelete(true);
+                }}
+                className="btn btn-delete btn-sm"
+              >
+                <em className="zmdi zmdi-close"></em>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setCurrentItem(data);
+                  setConfirmDelete(true);
+                }}
+                className="btn btn-delete btn-sm"
+              >
+                <em className="zmdi zmdi-close"></em>
+              </button>
+            )
           ) : (
-              ""
-            )}
+            ''
+          )}
         </div>
       );
     }
   };
 
-  const renderFile = (data: NeedListDocuments[] | null, status: string) => {
+  const renderFile = (
+    data: NeedListDocuments[] | null,
+    status: string,
+    documentIndex: number
+  ) => {
     if (data === null || data.length === 0) {
       return (
         <div className="td">
@@ -179,40 +207,61 @@ export const NeedListTable = ({
     } else {
       return (
         <div className="td ">
-          {data.map((item: NeedListDocuments, index) => {
+          {data.map((file: NeedListDocuments, index) => {
+            const pendingReview = status === DocumentStatus.PENDING_REVIEW;
+            const {mcuName, clientName, isRead} = file;
+
             return (
-              <span key={item?.id} className="block-element c-filename">
-                {item.mcuName ? (
+              <span key={index} className="block-element c-filename">
+                {mcuName ? (
                   <React.Fragment>
                     <span
-                      title={item.mcuName}
+                      title={mcuName}
                       className={
-                        status === "Pending review"
-                          ? "block-element-child td-filename filename-by-mcu filename-p"
-                          : "block-element-child td-filename filename-by-mcu"
+                        isRead === false
+                          ? 'block-element-child td-filename filename-by-mcu filename-p'
+                          : 'block-element-child td-filename filename-by-mcu'
                       }
                     >
-                      {truncate(item.mcuName, 47)}
+                      <a
+                        href="javascript:void"
+                        onClick={() =>
+                          pendingReview
+                            ? reviewClickHandler(documentIndex, index)
+                            : detailClickHandler(documentIndex, index)
+                        }
+                      >
+                        {truncate(mcuName, 47)}
+                      </a>
                     </span>
                     <small
-                      title={item.clientName}
+                      title={clientName}
                       className="block-element-child td-filename filename-by-b"
                     >
-                      {truncate(item.clientName, 47)}
+                      {truncate(clientName, 47)}
                     </small>
                   </React.Fragment>
                 ) : (
-                    <span
-                      title={item.clientName}
-                      className={
-                        status === "Pending review"
-                          ? "block-element-child td-filename filename-by-mcu filename-p"
-                          : "block-element-child td-filename filename-by-mcu"
+                  <span
+                    title={clientName}
+                    className={
+                      isRead === false
+                        ? 'block-element-child td-filename filename-by-mcu filename-p'
+                        : 'block-element-child td-filename filename-by-mcu'
+                    }
+                  >
+                    <a
+                      href="javascript:void"
+                      onClick={() =>
+                        pendingReview
+                          ? reviewClickHandler(documentIndex, index)
+                          : detailClickHandler(documentIndex, index)
                       }
                     >
-                      {truncate(item.clientName, 47)}
-                    </span>
-                  )}
+                      {truncate(clientName, 47)}
+                    </a>
+                  </span>
+                )}
               </span>
             );
           })}
@@ -229,7 +278,7 @@ export const NeedListTable = ({
             <a>
               <em className="icon-refresh default"></em>
             </a>
-          </span>{" "}
+          </span>{' '}
         </div>
       );
     } else {
@@ -249,19 +298,19 @@ export const NeedListTable = ({
     }
   };
 
-  const reviewClickHandler = (index: number) => {
+  const reviewClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
-      documentList: needList,
       currentDocumentIndex: index,
-      documentDetail: false,
+      fileIndex: fileIndex ? fileIndex : null,
+      documentDetail: false
     });
   };
 
-  const detailClickHandler = (index: number) => {
+  const detailClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
-      documentList: needList,
       currentDocumentIndex: index,
-      documentDetail: true,
+      fileIndex: fileIndex ? fileIndex : null,
+      documentDetail: true
     });
   };
 
@@ -270,12 +319,12 @@ export const NeedListTable = ({
       return (
         <div className="th">
           <a onClick={() => sortDocumentTitle()} href="javascript:;">
-            Document{" "}
+            Document{' '}
             <em
               className={
-                documentTitleArrow === "asc"
-                  ? "zmdi zmdi-long-arrow-down table-th-arrow"
-                  : "zmdi zmdi-long-arrow-up table-th-arrow"
+                documentTitleArrow === 'asc'
+                  ? 'zmdi zmdi-long-arrow-down table-th-arrow'
+                  : 'zmdi zmdi-long-arrow-up table-th-arrow'
               }
             ></em>
           </a>
@@ -295,12 +344,12 @@ export const NeedListTable = ({
       return (
         <div className="th">
           <a onClick={() => sortStatusTitle()} href="javascript:;">
-            Status{" "}
+            Status{' '}
             <em
               className={
-                statusTitleArrow === "asc"
-                  ? "zmdi zmdi-long-arrow-down table-th-arrow"
-                  : "zmdi zmdi-long-arrow-up table-th-arrow"
+                statusTitleArrow === 'asc'
+                  ? 'zmdi zmdi-long-arrow-down table-th-arrow'
+                  : 'zmdi zmdi-long-arrow-up table-th-arrow'
               }
             ></em>
           </a>
@@ -310,7 +359,7 @@ export const NeedListTable = ({
       return (
         <div className="th">
           <a onClick={() => sortStatusTitle()} href="javascript:;">
-            Status{" "}
+            Status{' '}
           </a>
         </div>
       );
@@ -329,8 +378,6 @@ export const NeedListTable = ({
   return (
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
-
-
         <div className="need-list-table table">
           <div className="tr">
             {renderDocumentTitle()}
@@ -339,7 +386,7 @@ export const NeedListTable = ({
             <div className="th">
               <a href="javascript:;">
                 <em className="icon-refresh"></em>
-              </a>{" "}
+              </a>{' '}
               sync to LOS
             </div>
             <div className="th options">&nbsp;</div>
