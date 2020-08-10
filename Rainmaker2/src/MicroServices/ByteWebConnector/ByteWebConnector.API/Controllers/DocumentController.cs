@@ -170,6 +170,11 @@ namespace ByteWebConnector.API.Controllers
 
             var content = new AddDocumentRequest(request.FileDataId,
                                                  embeddedDocs).ToJson();
+            var token = Request.Headers[key: "Authorization"].ToString().Replace(oldValue: "Bearer ",
+                                                                                 newValue: "");
+            _httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue(scheme: "Bearer",
+                                                parameter: token);
             var callResponse =
                 await _httpClient.PostAsync(requestUri:
                                             $"{_configuration[key: "ServiceAddress:LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",

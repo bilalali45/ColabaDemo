@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LosIntegration.API.Models.Document
 {
     public class AddDocumentRequest
     {
-        public int FileDataId { get; }
-        public List<EmbeddedDoc> EmbeddedDocs { get; }
+        [FromBody]
+        public int FileDataId { get; set; }
+        [FromBody]
+        public List<EmbeddedDoc> EmbeddedDocs { get; set; }
 
 
       

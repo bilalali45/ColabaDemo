@@ -77,7 +77,6 @@ namespace LosIntegration.API.Controllers
         public IActionResult SendToExternalOriginator([FromBody] SendToExternalOriginatorRequest request)
         {
             var tenantId = "1";
-            goto jump;
             _httpClient.DefaultRequestHeaders.Authorization
                 = new AuthenticationHeaderValue(scheme: "Bearer",
                                                 parameter: Request
@@ -85,29 +84,26 @@ namespace LosIntegration.API.Controllers
                                                            .Replace(oldValue: "Bearer ",
                                                                     newValue: ""));
 
-            //var csResponse = _httpClient.GetAsync($"{_configuration["ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/view?id={request.DocumentLoanApplicationId}&requestId={request.RequestId}&docId={request.DocumentId}&fileId={request.FileId}&tenantId={tenantId}").Result;
-            var documentRequestUri =
-                $"https://alphamaingateway.rainsoftfn.com/api/documentmanagement/document/view?id={request.DocumentLoanApplicationId}&requestId={request.RequestId}&docId={request.DocumentId}&fileId={request.FileId}&tenantId={tenantId}";
-            var documentResponse = _httpClient.GetAsync(requestUri: documentRequestUri).Result;
-
+            var documentResponse = _httpClient.GetAsync($"{_configuration["ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/view?id={request.DocumentLoanApplicationId}&requestId={request.RequestId}&docId={request.DocumentId}&fileId={request.FileId}&tenantId={tenantId}").Result;
             if (!documentResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to load Document from Document Management");
 
-            //var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
-            jump:
-            var fileData = System.IO.File.ReadAllBytes(path: @"C:\Users\H)P\Desktop\LOAN INFO.docx");
+            var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
+
             var sendDocumentResponse = new SendDocumentResponse
             {
                 LoanApplicationId = request.LoanApplicationId,
                 FileData = fileData
             };
-            var callResponse =
+            var externalOriginatorSendDocumentResponse =
                 _httpClient.PostAsync(requestUri:
                                       $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
                                       content: new StringContent(content: sendDocumentResponse.ToJsonString(),
                                                                  encoding: Encoding.UTF8,
                                                                  mediaType: "application/json")).Result;
-            var result = callResponse.Content.ReadAsStringAsync().Result;
+            if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
+                throw new Exception(message: "Unable to Upload Document to External Originator");
+            var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             if (apiResponse.Status == ApiResponse.ApiResponseStatus.Success)
             {
@@ -123,13 +119,16 @@ namespace LosIntegration.API.Controllers
                 _mappingService.Insert(item: mapping);
                 _mappingService.SaveChangesAsync();
 
-                var url =
-                    "https://alphamaingateway.rainsoftfn.com/api/Documentmanagement/document/UpdateByteProStatus";
-                var csResponse = _httpClient.PostAsync(requestUri: url,
-                                                       content: new StringContent(content: request.ToJsonString(),
-                                                                                  encoding: Encoding.UTF8,
-                                                                                  mediaType: "application/json"))
-                                            .Result;
+
+
+                var url = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/document/UpdateByteProStatus";
+                var updateByteProStatusResponse = _httpClient.PostAsync(requestUri: url,
+                                                                content: new StringContent(content: request.ToJsonString(),
+                                                                                           encoding: Encoding.UTF8,
+                                                                                           mediaType: "application/json"))
+                                                     .Result;
+                if (!updateByteProStatusResponse.IsSuccessStatusCode)
+                    throw new Exception(message: "Unable to Update Status in Document Management");
                 return Ok();
             }
 
@@ -148,12 +147,25 @@ namespace LosIntegration.API.Controllers
             {
                 EncompassNumber = request.FileDataId.ToString()
             }.ToJsonString();
+            var token = Request
+                        .Headers[key: "Authorization"].ToString()
+                        .Replace(oldValue: "Bearer ",
+                                 newValue: "");
 
-            HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.PostAsync(requestUri:
-                                                                                                 $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
-                                                                                                 content: new StringContent(content: loanApplicationRequestContent.ToJsonString(),
-                                                                                                                            encoding: Encoding.UTF8,
-                                                                                                                            mediaType: "application/json")).Result;
+            _httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue(scheme: "Bearer",
+                                                parameter: token);
+
+            string uri =
+                $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.FileDataId.ToString()}";
+            HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
+
+
+            //HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.PostAsync(requestUri:
+            //                                                                                     $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
+            //                                                                                     content: new StringContent(content: loanApplicationRequestContent,
+            //                                                                                                                encoding: Encoding.UTF8,
+            //                                                                                                                mediaType: "application/json")).Result;
             if (loanApplicationHttpResponseMessage.IsSuccessStatusCode)
             {
                 string loanApplicationResult = loanApplicationHttpResponseMessage.Content.ReadAsStringAsync().Result;
@@ -162,10 +174,10 @@ namespace LosIntegration.API.Controllers
                 // get all files from document mang by loanapplication Id
                 if (loanApplicationResponseModel != null)
                 {
-                    int loanId = loanApplicationResponseModel.Id;
+                    int loanApplicationId = loanApplicationResponseModel.Id;
                     var getDocumentRequestContent = new GetDocumentsRequest()
                     {
-                        LoanApplicationId = loanId
+                        LoanApplicationId = loanApplicationId
                     }.ToJsonString();
 
                     var getDocumentsUrl = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments";
@@ -216,7 +228,7 @@ namespace LosIntegration.API.Controllers
                             // push newly added file to DOC management
                             var uploadFileRequestContent = new UploadFileRequest()
                             {
-                                LoanApplicationId = loanId,
+                                LoanApplicationId = loanApplicationId,
                                 DocumentType = embeddedDocModel.DocumentType,
                                 FileName = embeddedDocModel.DocumentName +"."+ embeddedDocModel.DocumentExension,
                                 FileData =  embeddedDocModel.DocumentData
