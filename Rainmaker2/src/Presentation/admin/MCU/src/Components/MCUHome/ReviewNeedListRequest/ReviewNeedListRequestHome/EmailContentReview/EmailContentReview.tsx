@@ -19,10 +19,11 @@ type emailContentReviewProps = {
 export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton, documentList, documentHash, setHash}:emailContentReviewProps) => {
-    console.log(documentList?.length);
-    console.log('documentHash',documentHash)
+   
+  
     const setDeafultText = () => {
         let str: string = '';
+        debugger
         let documentNames = documentsName ? documentsName?.split(',').join("\n") : '';
         if(emailTemplate){
             str = emailTemplate.replace("{user}",borrowername).replace("{documents}",documentNames);
