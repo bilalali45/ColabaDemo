@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Microsoft.Extensions.Primitives;
+using System.IO;
 
 namespace DocumentManagement.Tests
 {
@@ -73,6 +74,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
+                        { "isRejected",BsonNull.Value},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
@@ -87,6 +89,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
+                        { "isRejected", BsonBoolean.True},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -101,6 +104,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
+                        { "isRejected",BsonNull.Value},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                     ,
@@ -115,6 +119,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                 ,
@@ -129,6 +134,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty  },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                  ,
@@ -143,6 +149,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
@@ -157,6 +164,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
@@ -171,6 +179,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonNull.Value}
                     }
                  ,
@@ -185,6 +194,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonNull.Value },
+                        { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
                     }
             };
@@ -265,6 +275,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
+                        { "isRejected",BsonNull.Value},
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
             ,
@@ -279,7 +290,8 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected", BsonBoolean.True},
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                     ,
                     new BsonDocument
@@ -293,26 +305,28 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected", BsonNull.Value},
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                     ,
                 new BsonDocument
                     {
-                        //Cover all empty fields except docMessage
+                        //Cover all empty fields except docMessage,typeName and files
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
-                        { "docName" , BsonString.Empty },
+                        { "docName" , BsonNull.Value },
                         { "docMessage" , "please upload house document" },
-                        { "typeName" ,  BsonString.Empty },
+                        { "typeName" ,  "Property" },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new Message[]{ }) },
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected", BsonBoolean.False },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                 ,
                  new BsonDocument
                     {
-                        //Cover all empty fields except typeMessage
+                        //Cover all empty fields except typeMessage and files
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
@@ -321,12 +335,13 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty  },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new Message[]{ })},
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected",BsonBoolean.False },
+                       { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                  ,
                  new BsonDocument
                     {
-                        //Cover all empty fields except messages
+                        //Cover all empty fields except messages and files
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
@@ -335,12 +350,13 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", "please upload house document" },{ "tenantId" , 1 } } })},
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected", BsonBoolean.False },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                   ,
                  new BsonDocument
                     {
-                        //Cover all empty fields except typeMessage and messages
+                        //Cover all empty fields except typeMessage, messages and files
                         { "_id" , BsonString.Empty },
                         { "createdOn" , BsonDateTime.Create(DateTime.Now) },
                         { "docId" , BsonString.Empty },
@@ -349,7 +365,8 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "message", BsonString.Empty },{ "tenantId" , 2 } } })},
-                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
+                        { "isRejected", BsonBoolean.False },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status",FileStatus.SubmittedToMcu }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
                   ,
                  new BsonDocument
@@ -363,6 +380,7 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , "please upload house document" },
                         { "messages" , BsonNull.Value },
+                        { "isRejected", BsonNull.Value },
                         { "files" , BsonNull.Value }
                     }
                  ,
@@ -377,7 +395,8 @@ namespace DocumentManagement.Tests
                         { "typeName" ,  BsonString.Empty },
                         { "typeMessage" , BsonString.Empty },
                         { "messages" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
+                        { "isRejected", BsonBoolean.False},
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status", BsonString.Empty }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
             };
 
@@ -395,15 +414,14 @@ namespace DocumentManagement.Tests
             List<DashboardDTO> dto = await service.GetSubmittedDocuments(1, 1,1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(9, dto.Count);
-            Assert.Equal("House Document", dto[1].docName);
-            Assert.Equal("Property", dto[2].docName);
+            Assert.Equal(7, dto.Count);
+            Assert.Equal("House Document", dto[0].docName);
+            Assert.Equal("Property", dto[1].docName);
+            Assert.Equal("please upload house document", dto[2].docMessage);
             Assert.Equal("please upload house document", dto[3].docMessage);
             Assert.Equal("please upload house document", dto[4].docMessage);
             Assert.Equal("please upload house document", dto[5].docMessage);
-            Assert.Equal("please upload house document", dto[6].docMessage);
-            Assert.Equal("please upload house document", dto[7].docMessage);
-            Assert.Equal("asd", dto[8].files[0].clientName);
+            Assert.Equal("", dto[6].docMessage);
         }
 
         [Fact]
