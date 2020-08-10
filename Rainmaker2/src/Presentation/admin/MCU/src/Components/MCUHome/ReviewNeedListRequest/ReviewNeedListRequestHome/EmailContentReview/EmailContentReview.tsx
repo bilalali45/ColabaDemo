@@ -19,7 +19,7 @@ type emailContentReviewProps = {
 export const errorText = "Invalid character entered";
 
 export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = '', showSendButton, documentList, documentHash, setHash}:emailContentReviewProps) => {
-    
+    console.log(documentList?.length);
     console.log('documentHash',documentHash)
     const setDeafultText = () => {
         let str: string = '';
@@ -48,11 +48,11 @@ export const EmailContentReview = ({documentsName, saveAsDraft, emailTemplate = 
     const borrowername = loanData?.borrowers[0];
     const [emailBody, setEmailBody] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
-    const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
+    const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
    
 
     useEffect(() =>{ 
-        if(isDocumentDraft?.requestId) {
+        if(Boolean(isDocumentDraft?.requestId)) {
             draftExist();         
         }else{
             draftNotExist(); 

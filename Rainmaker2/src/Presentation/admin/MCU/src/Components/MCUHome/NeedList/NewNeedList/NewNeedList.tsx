@@ -108,7 +108,7 @@ export const NewNeedList = () => {
 
     const checkIsDocumentDraft = async (id: string) => {
         let res: any = await TemplateActions.isDocumentDraft(id);
-        if (res.requestId) {
+        if (res?.requestId) {
             fetchDraftDocuments();
         }
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
@@ -220,7 +220,6 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-
         await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailContent || '', allDocuments)
         if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
@@ -314,7 +313,7 @@ export const NewNeedList = () => {
                     removeDocumentFromList={removeDocumentFromList}
                     toggleShowReview={toggleShowReview}
                     requestSent={requestSent} 
-                    showSaveAsTemplateLink={customDocuments?.length > 0? true : false}/>}
+                    showSaveAsTemplateLink={Boolean(customDocuments?.length || selectedIds?.length > 1)}/>}
         </main>
     )
 }
