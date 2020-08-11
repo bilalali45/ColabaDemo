@@ -227,7 +227,7 @@ export const ReviewDocumentActivityLog = ({
 
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
-    const emailText = emailLog.emailText.split('\n');
+    const emailText = emailLog.emailText.split('<br />');
 
     return (
       <React.Fragment>
