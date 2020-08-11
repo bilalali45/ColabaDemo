@@ -162,6 +162,10 @@ ul {
         @include button-variant(color('secondry'), color('secondry'), $hover-background: darken(color('secondry'), 7.5%), $hover-border: darken(color('secondry'), 10%), $active-background: darken(color('secondry'), 10%), $active-border: darken(color('secondry'), 12.5%));
     }
 
+    &.btn-block{
+        padding: 12px 25px;
+    }
+
     &-sm,
     &-group-sm>& {
         padding: 6px 15px;
@@ -293,6 +297,9 @@ ul {
 
     &.completed {
         background-color: color('completed');
+    }
+    &.indraft{
+        background-color: color('secondry');
     }
 }
 .button-float {
@@ -511,6 +518,8 @@ ul {
             }
         }
         .btn-block{
+            padding: 12px 25px;
+            
             .btn-icon{
                 margin-top: -3px;
                 margin-bottom: -5px;
@@ -873,6 +882,10 @@ label.error{
         white-space: nowrap;
         -webkit-animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
                 animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+
+        .btn + .btn{
+            margin-left: 4px;
+        }
     }
 
 }

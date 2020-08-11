@@ -27,7 +27,6 @@ export const EmailContentReview = ({
   setHash
 }: emailContentReviewProps) => {
   console.log(documentList?.length);
-  console.log('documentHash', documentHash);
   const setDeafultText = () => {
     let str: string = '';
     let documentNames = documentsName
@@ -40,10 +39,6 @@ export const EmailContentReview = ({
       hashDocuments();
     }
     return str;
-    // let length = documentsName?.split(',').length;
-    // if(length){
-    //     dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
-    // }
   };
 
   const {state, dispatch} = useContext(Store);
@@ -59,6 +54,8 @@ export const EmailContentReview = ({
   const borrowername = loanData?.borrowers[0];
   const [emailBody, setEmailBody] = useState<string>();
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
+
   const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
 
   useEffect(() => {
@@ -93,10 +90,11 @@ export const EmailContentReview = ({
   const draftExist = () => {
     if (!documentHash) {
       if (selectedTemplateDocuments[0].message != '') {
-        setEmailBody(selectedTemplateDocuments[0].message);
+        let body = selectedTemplateDocuments[0].message.replace('<br />',' \r\n')
+        setEmailBody(body);
         dispatch({
           type: TemplateActionsType.SetEmailContent,
-          payload: selectedTemplateDocuments[0].message
+          payload: body
         });
         hashDocuments();
       } else {
@@ -136,12 +134,16 @@ export const EmailContentReview = ({
   };
 
   const sendRequestButton = () => {
-    if (!showSendButton) {
+    if (showSendButton) {
       return (
         <>
           <footer className="mcu-panel-footer text-right">
-            <button
-              onClick={() => saveAsDraft(false)}
+            <button disabled={isSendBtnDisable}
+              onClick={
+                () =>{
+                  setSendBtnDisable(true)
+                  saveAsDraft(false)
+                }}
               className="btn btn-primary"
             >
               Send Request

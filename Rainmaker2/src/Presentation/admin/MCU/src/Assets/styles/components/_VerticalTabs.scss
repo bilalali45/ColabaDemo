@@ -52,6 +52,9 @@
     }// header
 
     &--body{
+        height: 450px;
+        max-height: 450px;
+        overflow-y: auto;
         &.padding{
             padding: 15px;
         }
@@ -67,6 +70,7 @@
                             background-color: transparent;
                             em,i{
                                 color: color('primary');
+                                margin-left: 5px;
                             }
                         }
                     }
@@ -145,6 +149,7 @@
                     line-height: 1;
                     display: block;
                     color: lighten($color: color('base'), $amount: 12%);
+                    text-align: end;
                 }
             }
             &:last-child{
@@ -170,6 +175,12 @@
         margin: 0;
         table-layout: fixed;
         word-wrap: break-word;
+    }
+
+    .email-log{
+        .vertical-tabs--list > li a h2{
+            margin-top: 0;
+        }
     }
     
 }
