@@ -36,6 +36,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                         <button onClick={() => viewSaveDraft()} className="btn btn-secondry btn-sm">View Save Draft</button>
                         :
                         <NeedListSelect
+                            fetchTemplateDocs={() => {}}
                             showButton={true}
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
