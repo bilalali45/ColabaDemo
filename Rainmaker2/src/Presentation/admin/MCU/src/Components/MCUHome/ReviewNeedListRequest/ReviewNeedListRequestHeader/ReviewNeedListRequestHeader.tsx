@@ -4,6 +4,7 @@ import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { LocalDB } from "../../../../Utils/LocalDB";
+import { disableBrowserPrompt } from "../../../../Utils/helpers/Common";
 
 type NewNeedListHeaderType = {
   saveAsDraft: Function;
@@ -26,6 +27,7 @@ export const ReviewNeedListRequestHeader = ({
 
   const closeHandler = () => {
     history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+    disableBrowserPrompt();
   };
 
   return (
