@@ -331,6 +331,9 @@ export const ReviewDocumentStatement = ({
                     onChange={onChangeTextArea}
                     maxLength={255}
                   />
+                  {rejectDocumentMessage === '' && (
+                    <div style={{color: 'red'}}>This field is required.</div>
+                  )}
                 </div>
               </div>
             )}
