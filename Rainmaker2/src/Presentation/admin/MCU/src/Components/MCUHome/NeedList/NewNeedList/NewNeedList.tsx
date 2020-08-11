@@ -19,6 +19,7 @@ import { LoanApplication } from "../../../../Entities/Models/LoanApplication";
 import { NeedListActions } from "../../../../Store/actions/NeedListActions";
 import { v4 } from "uuid";
 import { template } from "lodash";
+import { enableBrowserPrompt, disableBrowserPrompt } from "../../../../Utils/helpers/Common";
 
 export const NewNeedList = () => {
 
@@ -66,7 +67,6 @@ export const NewNeedList = () => {
             clearOldData()
         }
     }, []);
-
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
@@ -129,10 +129,6 @@ export const NewNeedList = () => {
         //     setIsDraft('false')
         //  }
     }
-
-    // useEffect(() => {
-
-    // }, [allDocuments?.length])
 
     const fetchLoanApplicationDetail = async () => {
         let applicationId = LocalDB.getLoanAppliationId();
@@ -237,7 +233,7 @@ export const NewNeedList = () => {
             });
             return documents;
         });
-
+        enableBrowserPrompt()
     }
 
     const fetchCurrentCatDocs = async () => {
@@ -265,7 +261,7 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
         setCurrentDocument(newDoc);
-
+        enableBrowserPrompt()
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
@@ -280,7 +276,7 @@ export const NewNeedList = () => {
                 history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
             }, 1000)
         }
-
+        disableBrowserPrompt();
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
@@ -292,6 +288,7 @@ export const NewNeedList = () => {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
         }
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
+        enableBrowserPrompt()
     }
 
     const editcustomDocName = (doc: TemplateDocument) => {
@@ -302,7 +299,8 @@ export const NewNeedList = () => {
                 }
                 return pt;
             })
-        })       
+        }) 
+        enableBrowserPrompt()      
     }
 
     const viewSaveDraftHandler = () => {
@@ -317,6 +315,7 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetTemplates, payload: null });
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: [id] });
         setTemplateName('');
+        enableBrowserPrompt()
     }
 
     const removeDocumentFromList = async (doc: TemplateDocument) => {
@@ -335,6 +334,7 @@ export const NewNeedList = () => {
             }
         }, 1);
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
+        enableBrowserPrompt()
     }
 
     const toggleShowReview = () => setShowReview(!showReview)

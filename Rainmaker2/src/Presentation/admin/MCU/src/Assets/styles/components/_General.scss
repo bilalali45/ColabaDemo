@@ -162,6 +162,10 @@ ul {
         @include button-variant(color('secondry'), color('secondry'), $hover-background: darken(color('secondry'), 7.5%), $hover-border: darken(color('secondry'), 10%), $active-background: darken(color('secondry'), 10%), $active-border: darken(color('secondry'), 12.5%));
     }
 
+    &.btn-block{
+        padding: 12px 25px;
+    }
+
     &-sm,
     &-group-sm>& {
         padding: 6px 15px;
@@ -294,6 +298,9 @@ ul {
     &.completed {
         background-color: color('completed');
     }
+    &.indraft{
+        background-color: color('secondry');
+    }
 }
 .button-float {
     background-color: color('colorWhite');
@@ -352,11 +359,19 @@ ul {
     }
 }
 .spinner-border {
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: spinner-border 2.2222222222222223s linear infinite;
+}
+
+.spinner-border {
     &.spinner-border-sm {
         border-width: 1px;
 
     }
 }
+
+
 
 .loader-row {
     height: 100%;
@@ -368,6 +383,10 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    circle {
+        stroke: #212529;
+        stroke-width: 5px;
+    }
 
     .bg {
         background: color("colorWhite");
@@ -474,9 +493,14 @@ ul {
                 border-radius: 0;
                 width: 10px;
                 height: 10px;
+                margin-right: 3px;
                 &:focus{
-                    outline: none;
+                    outline:auto;
+                    outline-color: color('primary');
+                    outline-width: 1px;
+                    // box-shadow: 0px 0px 1px color('primary'), -1px -1px 1px color('primary'), 1px 1px 1px color('primary');
                 }
+ 
             }
         }
 
@@ -490,6 +514,12 @@ ul {
             margin-bottom: 25px;
             max-height: 100px;
             overflow-y: auto;
+            margin-left: -5px;
+            label {
+                padding-left: 5px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
         }
 
         .external-link{
@@ -503,6 +533,8 @@ ul {
             }
         }
         .btn-block{
+            padding: 12px 25px;
+            
             .btn-icon{
                 margin-top: -3px;
                 margin-bottom: -5px;
@@ -865,6 +897,10 @@ label.error{
         white-space: nowrap;
         -webkit-animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
                 animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+
+        .btn + .btn{
+            margin-left: 4px;
+        }
     }
 
 }

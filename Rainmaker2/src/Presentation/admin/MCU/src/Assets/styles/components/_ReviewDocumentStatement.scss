@@ -9,6 +9,9 @@
         > *{
             margin: 0;
         }
+        h2{
+            @extend .text-ellipsis;
+        }
     }
 
     &--body{

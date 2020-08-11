@@ -267,7 +267,7 @@ export const ReviewDocumentStatement = ({
       className="document-statement"
     >
       <header className="document-statement--header">
-        <h2>{currentDocument?.docName}</h2>
+        <h2 title={currentDocument?.docName}>{currentDocument?.docName}</h2>
       </header>
       {!!loading ? (
         <div

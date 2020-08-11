@@ -21,14 +21,18 @@ export const NeedListItem: FunctionComponent<
     statusBullet = "borrower";
   } else if (status === "Completed") {
     statusBullet = "completed";
+  }else if (status === "In Draft") {
+    statusBullet = "indraft";
   }
+
+ 
 
   const pendingReview = status === "Pending review";
 
   return (
     <div className="tr row-shadow">
       <div className="td">
-        <span className="f-normal">
+        <span className="f-normal" title={docName}>
           <strong>{docName}</strong>
         </span>
       </div>

@@ -5,6 +5,7 @@ import {TemplateActionsType} from '../../../../../Store/reducers/TemplatesReduce
 import {TextArea} from '../../../../../Shared/components/TextArea';
 import Spinner from 'react-bootstrap/Spinner';
 import {LocalDB} from '../../../../../Utils/LocalDB';
+import { enableBrowserPrompt } from '../../../../../Utils/helpers/Common';
 
 type emailContentReviewProps = {
   documentsName: string | undefined;
@@ -29,14 +30,18 @@ export const EmailContentReview = ({
   console.log(documentList?.length);
   const setDeafultText = () => {
     let str: string = '';
+    let payload = LocalDB.getUserPayload();
+    let mcuName = payload.FirstName+' '+payload.LastName;
     let documentNames = documentsName
       ? documentsName?.split(',').join(' \r\n')
       : '';
     if (emailTemplate) {
       str = emailTemplate
         .replace('{user}', borrowername)
-        .replace('{documents}', documentNames);
+        .replace('{documents}', documentNames)
+        .replace('{mcu}',mcuName);
       hashDocuments();
+      enableBrowserPrompt();
     }
     return str;
   };
@@ -92,6 +97,7 @@ export const EmailContentReview = ({
       if (selectedTemplateDocuments[0].message != '') {
         let body = selectedTemplateDocuments[0].message.replace('<br />',' \r\n')
         setEmailBody(body);
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: body
@@ -99,6 +105,7 @@ export const EmailContentReview = ({
         hashDocuments();
       } else {
         setEmailBody(setDeafultText());
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
@@ -109,12 +116,14 @@ export const EmailContentReview = ({
       let Newhash = LocalDB.encodeString(JSON.stringify(documentList));
       if (documentHash != Newhash) {
         setEmailBody(setDeafultText());
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
         });
       } else {
         setEmailBody(emailContent);
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
@@ -130,6 +139,7 @@ export const EmailContentReview = ({
       } else {
         setEmailBody(emailContent);
       }
+      enableBrowserPrompt();
     }
   };
 
@@ -175,7 +185,7 @@ export const EmailContentReview = ({
   return (
     <div className="mcu-panel-body--content">
       <div className="mcu-panel-body padding">
-        <h3 className="text-ellipsis">Review email to {borrowername}</h3>
+        <h3 className="text-ellipsis" title={'Review email to '+ borrowername}>Review email to {borrowername}</h3>
         <p>If you'd like, you can customize this email.</p>
         <TextArea
           focus={true}
