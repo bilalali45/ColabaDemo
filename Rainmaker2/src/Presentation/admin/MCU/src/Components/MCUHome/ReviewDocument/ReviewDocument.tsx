@@ -60,13 +60,6 @@ export const ReviewDocument = () => {
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
-      const params = {
-        id,
-        requestId,
-        docId,
-        fileId
-      };
-
       try {
         setLoading(true);
 
@@ -142,23 +135,8 @@ export const ReviewDocument = () => {
           index > nextIndex
       );
 
-      const previousDocIndex = needList.findIndex(
-        (document, index) =>
-          document.docId !== nextDocument.docId &&
-          document.status === DocumentStatus.PENDING_REVIEW &&
-          index < nextIndex
-      );
-
       if (nextDocIndex === -1) {
         setNextDocumentButtonDisabled(true);
-      }
-
-      if (fromHeader == true) {
-        if (previousDocIndex !== -1) {
-          setPreviousDocumentButtonDisabled(() => false);
-        } else if (previousDocIndex === -1) {
-          setPreviousDocumentButtonDisabled(() => true);
-        }
       }
 
       setCurrentDocument(() => nextDocument);
@@ -230,6 +208,26 @@ export const ReviewDocument = () => {
             nextDocumentButtonDisabled === true
           ) {
             setNextDocumentButtonDisabled(false);
+          }
+
+          if (navigateBackOrForward === 'back' && fromHeader === true) {
+            let currIndex = index;
+
+            const doc = docs
+              .filter(
+                (doc, index) =>
+                  doc.docId !== currentDocument.docId &&
+                  doc.status === DocumentStatus.PENDING_REVIEW &&
+                  index < currIndex
+              )
+              .reverse()[0];
+
+            if (!doc) {
+              setPreviousDocumentButtonDisabled(() => true);
+            }
+          } else if (fromHeader === true) {
+            previousDocumentButtonDisabled === true &&
+              setPreviousDocumentButtonDisabled(() => false);
           }
 
           changeCurrentDocument(nextDocument, index, fromHeader);

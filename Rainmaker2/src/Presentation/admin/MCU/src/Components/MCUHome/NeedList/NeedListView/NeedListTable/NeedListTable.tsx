@@ -54,18 +54,17 @@ export const NeedListTable = ({
     });
   };
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
-
     let count = 0;
-    console.log('data',data)
-    if(data){
-      for(let i = 0; i < data?.length; i++){
-         if(data[i].isRead === false){
-            count++;
-            break;
-          } 
+    console.log('data', data);
+    if (data) {
+      for (let i = 0; i < data?.length; i++) {
+        if (data[i].isRead === false) {
+          count++;
+          break;
+        }
       }
     }
-    
+
     if (count > 0)
       return (
         <div className="td">
@@ -221,8 +220,8 @@ export const NeedListTable = ({
                       title={mcuName}
                       className={
                         isRead === false
-                          ? "block-element-child td-filename filename-by-mcu filename-p"
-                          : "block-element-child td-filename filename-by-mcu"
+                          ? 'block-element-child td-filename filename-by-mcu filename-p'
+                          : 'block-element-child td-filename filename-by-mcu'
                       }
                     >
                       <a

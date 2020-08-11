@@ -36,6 +36,7 @@ type AddNeedListContainerType = {
     removeDocumentFromList: Function,
     requestSent: boolean,
     showSaveAsTemplateLink: boolean,
+    fetchTemplateDocs: Function
 }
 
 
@@ -55,7 +56,8 @@ export const NeedListRequest = ({
     templateName,
     removeDocumentFromList,
     requestSent,
-    showSaveAsTemplateLink }: AddNeedListContainerType) => {
+    showSaveAsTemplateLink,
+    fetchTemplateDocs }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
     const [templateNameError, setTemplateNameError] = useState<string>();
@@ -118,7 +120,7 @@ export const NeedListRequest = ({
                                     documentList?.map((d: TemplateDocument) => {
 
                                         return <NeedListRequestItem
-                                            key={d?.docName}
+                                            key={d?.localId}
                                             isSelected={currentDocument?.localId === d?.localId}
                                             // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                                             changeDocument={changeDocument}
@@ -238,6 +240,7 @@ export const NeedListRequest = ({
                                 templateList={templateList?.filter((t: Template) => t.name)}
                                 addTemplatesDocuments={addTemplatesDocuments}
                                 viewSaveDraft={viewSaveDraft}
+                                fetchTemplateDocs={fetchTemplateDocs}
                             />
                             {showSaveAsTemplateLink ? <a
                                 onClick={toggleSaveAsTemplate}

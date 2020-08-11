@@ -228,28 +228,34 @@ ul {
                 }
             }
         }
+ 
     }
 
-    .btn-text{
-        text-transform: initial;
-        float: left;
-
-        & + .btn-icon {
-            margin-left: 15px;
+           .btn-text{
+               &.d-text {
+            text-transform: initial;
+            float: left;
+    
+            & + .btn-icon {
+                margin-left: 15px;
+            }
         }
     }
-
-    .btn-icon {
-        padding: 3px 0 4px 12px;
-        display: inline-block;
-        border-left: 1px solid darken($color: color('primary'), $amount: 15%);
-        vertical-align: middle;
-        float: right;
-        em,i{
+    
+        .btn-icon {
+            &.d-icon {
+            padding: 3px 0 4px 12px;
             display: inline-block;
+            border-left: 1px solid darken($color: color('primary'), $amount: 15%);
             vertical-align: middle;
+            float: right;
+            em,i{
+                display: inline-block;
+                vertical-align: middle;
+            }
         }
-    }
+        }
+
 
 }//.btn
 

@@ -33,7 +33,7 @@ export const NeedListRequestItem = ({ document, changeDocument, isSelected, remo
                             <div className="l-remove-actions">
                                 <button className="lbtn btn-no" onClick={() => { setRemoveList(false) }}> No</button>
                                 <button className="lbtn btn-yes" onClick={() => {
-                                    removeDocumentFromList(document?.localId)
+                                    removeDocumentFromList(document)
                                     setRemoveList(false);
                                 }}>Yes</button></div>
                         </div>}
