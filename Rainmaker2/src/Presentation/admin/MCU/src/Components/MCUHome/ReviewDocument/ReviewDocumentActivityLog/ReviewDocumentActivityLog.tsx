@@ -290,7 +290,8 @@ export const ReviewDocumentActivityLog = ({
                     getTab(2);
                   }}
                 >
-                  View Email Log <em className="zmdi zmdi-arrow-right"></em>
+                  View Email Log 
+                  {/* <em className="zmdi zmdi-arrow-right"></em> */}
                 </button>
               </div>
             </header>

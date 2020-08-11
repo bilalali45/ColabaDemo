@@ -5,6 +5,7 @@ import {TemplateActionsType} from '../../../../../Store/reducers/TemplatesReduce
 import {TextArea} from '../../../../../Shared/components/TextArea';
 import Spinner from 'react-bootstrap/Spinner';
 import {LocalDB} from '../../../../../Utils/LocalDB';
+import { enableBrowserPrompt } from '../../../../../Utils/helpers/Common';
 
 type emailContentReviewProps = {
   documentsName: string | undefined;
@@ -40,6 +41,7 @@ export const EmailContentReview = ({
         .replace('{documents}', documentNames)
         .replace('{mcu}',mcuName);
       hashDocuments();
+      enableBrowserPrompt();
     }
     return str;
   };
@@ -95,6 +97,7 @@ export const EmailContentReview = ({
       if (selectedTemplateDocuments[0].message != '') {
         let body = selectedTemplateDocuments[0].message.replace('<br />',' \r\n')
         setEmailBody(body);
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: body
@@ -102,6 +105,7 @@ export const EmailContentReview = ({
         hashDocuments();
       } else {
         setEmailBody(setDeafultText());
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
@@ -112,12 +116,14 @@ export const EmailContentReview = ({
       let Newhash = LocalDB.encodeString(JSON.stringify(documentList));
       if (documentHash != Newhash) {
         setEmailBody(setDeafultText());
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
         });
       } else {
         setEmailBody(emailContent);
+        enableBrowserPrompt();
         dispatch({
           type: TemplateActionsType.SetEmailContent,
           payload: emailBody
@@ -133,6 +139,7 @@ export const EmailContentReview = ({
       } else {
         setEmailBody(emailContent);
       }
+      enableBrowserPrompt();
     }
   };
 
