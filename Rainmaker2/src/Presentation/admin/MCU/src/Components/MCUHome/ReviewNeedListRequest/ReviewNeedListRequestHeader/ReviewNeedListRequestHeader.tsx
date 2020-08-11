@@ -36,7 +36,7 @@ export const ReviewNeedListRequestHeader = ({
         className="mcu-panel-header"
       >
         <div className="row">
-          <div className="mcu-panel-header--left col-md-8">
+          <div className="mcu-panel-header--left col-md-7 col-lg-8">
             {showReview && (
               <button
                 onClick={(e) => toggleShowReview(e)}
@@ -47,7 +47,7 @@ export const ReviewNeedListRequestHeader = ({
             )}
           </div>
 
-          <div className="mcu-panel-header--right col-md-4">
+          <div className="mcu-panel-header--right col-md-5 col-lg-4">
             <button
               onClick={() => setShow(true)}
               className="btn btn-secondary"
