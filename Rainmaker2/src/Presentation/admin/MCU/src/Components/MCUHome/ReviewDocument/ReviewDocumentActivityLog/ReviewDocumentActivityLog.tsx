@@ -43,7 +43,7 @@ export const ReviewDocumentActivityLog = ({
   };
 
   const switchTab = () => {
-    return (tab - 1) * -getWidthSection;
+    return (tab - 1) * -(getWidthSection+2);
   };
 
   const tabDataStyle: any = {
@@ -210,16 +210,13 @@ export const ReviewDocumentActivityLog = ({
     return emailLogs.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
-          <div className="row">
-            <div className="col-md-5">
+              <div className="d-flex justify-content-between">
+                <h6>{'Requested By'}</h6>
+                <time className="vertical-tabs--list-time">
+                  {ActivityLogFormat(emailLog.dateTime)}
+                </time>
+              </div>
               <h2>{emailLog.userName}</h2>
-            </div>
-            <div className="col-md-6 offset-md-1">
-              <time className="vertical-tabs--list-time">
-                {ActivityLogFormat(emailLog.dateTime)}
-              </time>
-            </div>
-          </div>
         </a>
       </li>
     ));
@@ -262,7 +259,7 @@ export const ReviewDocumentActivityLog = ({
       <div className="vertical-tabs--data" style={tabDataStyle}>
         {/* Activity Log */}
         <div
-          className={'vertical-tabs--wrap ' + checkActiveTab(1)}
+          className={'vertical-tabs--wrap activity-log ' + checkActiveTab(1)}
           data-step="1"
           style={{width: `${getWidthSection}px`}}
         >
@@ -336,7 +333,7 @@ export const ReviewDocumentActivityLog = ({
 
         {/* Email Log */}
         <div
-          className={'vertical-tabs--wrap ' + checkActiveTab(2)}
+          className={'vertical-tabs--wrap email-log ' + checkActiveTab(2)}
           data-step="2"
           style={{width: `${sectionRef?.current?.offsetWidth}px`}}
         >

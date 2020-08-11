@@ -116,7 +116,8 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                         onBlurHandler={() => { }}
                         errorText={errorText}
                         isValid={isValid}
-                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)} />
+                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)}
+                        maxLengthValue={500} />
                 </div>
 
             </div>
