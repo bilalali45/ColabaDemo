@@ -542,15 +542,24 @@
             }
         }
     }
+
     .popover {
         max-width: 100%;
         border-radius: 0;
+        min-width: 590px;
+        @include media-breakpoint-down(lg) {
+            min-width: 450px;
+        }
     }
     .popover {
         margin-top: 71px !important;
         margin-left: 3px !important;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
         border: none;
+    }
+
+    .popup-add-doc {
+        width: 100%;
     }
 
 }
