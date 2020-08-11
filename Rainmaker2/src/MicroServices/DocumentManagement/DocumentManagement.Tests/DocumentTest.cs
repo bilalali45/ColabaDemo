@@ -546,7 +546,7 @@ namespace DocumentManagement.Tests
             {
                 new BsonDocument
                  {
-                     { "docId" ,"5ebc18cba5d847268075ad4f" },
+                     { "typeId",BsonString.Empty },
                      { "typeName" , BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new Message[]{ })},
@@ -555,7 +555,7 @@ namespace DocumentManagement.Tests
                   ,
                  new BsonDocument
                  {
-                     { "docId" , "5ebc18cba5d847268075ad4f"},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" , BsonString.Empty},
                      { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })},
@@ -564,7 +564,7 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" , BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new Message[]{ })},
@@ -573,7 +573,7 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", BsonString.Empty } } })},
@@ -582,12 +582,20 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" ,BsonString.Empty},
                      { "messages" , BsonNull.Value},
                      { "docName" , BsonString.Empty}
-
+                 }
+                 , 
+                new BsonDocument
+                 {
+                     { "typeId", BsonNull.Value },
+                     { "typeName" , BsonString.Empty},
+                     { "docMessage" , "Credit report has been uploaded"},
+                     { "messages" , BsonArray.Create(new Message[]{ })},
+                     { "docName" , BsonNull.Value}
                  }
             };
 
@@ -611,9 +619,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(2, dto.Count);
-            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].id);
-            Assert.Equal("Credit report has been uploaded", dto[1].id);
+            Assert.Equal("Credit report has been uploaded", dto[0].docs[0].docMessage);
         }
 
         [Fact]
