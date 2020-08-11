@@ -22,8 +22,8 @@ namespace DocumentManagement.Model
     }
     public static class ActivityStatus
     {
-        public const string RequestedBy = "Requested By : {0}";
-        public const string RerequestedBy = "Re-requested By : {0}";
+        public const string RequestedBy = "Requested By";
+        public const string RerequestedBy = "Re-requested By";
         public const string AcceptedBy = "Accepted By : {0}"; 
         public const string StatusChanged = "Status Changed : {0}";
         public const string RejectedBy = "Rejected By : {0}";

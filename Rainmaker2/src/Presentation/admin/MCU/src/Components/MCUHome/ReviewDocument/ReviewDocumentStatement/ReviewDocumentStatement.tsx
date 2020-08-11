@@ -23,13 +23,8 @@ const Footer = ({
   status?: string;
   acceptRejectEnabled: boolean;
 }) => {
-  console.log('status', status);
   const rejectAndCloseRejectPopUp = () => {
     rejectDocument();
-
-    if (acceptRejectEnabled === false) {
-      setRejectPopup();
-    }
   };
 
   if (status === DocumentStatus.COMPLETED) {
@@ -133,7 +128,9 @@ export const ReviewDocumentStatement = ({
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState(
-    `Hi ${currentDocument!.userName}, please submit the bank state again`
+    `Hi ${currentDocument!.userName}, please submit the ${
+      currentDocument!.docName
+    } again.`
   );
 
   const getFileNameWithoutExtension = (fileName: string) =>
@@ -234,6 +231,22 @@ export const ReviewDocumentStatement = ({
     setRejectDocumentMessage(event.target.value);
   };
 
+  const validateAndRejectDocument = () => {
+    if (rejectDocumentMessage === '') {
+      return false;
+    }
+
+    rejectDocument(rejectDocumentMessage);
+
+    if (documentViewLoading === false) {
+      setRejectDocumentModal((prevState) => !prevState);
+    }
+  };
+
+  const setRejectPopup = () => {
+    setRejectDocumentModal((prevState) => !prevState);
+  };
+
   useEffect(() => {
     if (currentDocument) {
       getDocumentFiles(currentDocument);
@@ -302,23 +315,24 @@ export const ReviewDocumentStatement = ({
                     Let the borrower know what you need to mark it as complete
                   </p>
                   <textarea
+                    style={{
+                      borderColor: rejectDocumentMessage === '' ? 'red' : ''
+                    }}
                     className="form-control"
                     rows={6}
                     value={rejectDocumentMessage}
                     onChange={onChangeTextArea}
+                    maxLength={255}
                   />
                 </div>
               </div>
             )}
           </section>
-
           <Footer
             status={currentDocument?.status}
             acceptDocument={acceptDocument}
-            rejectDocument={() => rejectDocument(rejectDocumentMessage)}
-            setRejectPopup={() =>
-              setRejectDocumentModal((prevState) => !prevState)
-            }
+            rejectDocument={validateAndRejectDocument}
+            setRejectPopup={setRejectPopup}
             rejectModalOpen={rejectDocumentModal}
             acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
           />

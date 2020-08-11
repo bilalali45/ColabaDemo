@@ -83,7 +83,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
 
             <div className="mainbody">
-                <p>Document request message.</p>
+                <p>Include a message to the borrower</p>
                 <div className="editer-wrap">
                     <TextArea
                         placeholderValue={"Type your message"}

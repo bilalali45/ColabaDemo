@@ -410,7 +410,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const {currentDocumentIndex, documentDetail} = state as any;
+        const {currentDocumentIndex, documentDetail, fileIndex} = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -439,14 +439,15 @@ export const ReviewDocument = () => {
 
         setNavigationIndex(currentDocumentIndex);
         setCurrentDocument(() => doc);
+        !!fileIndex && setCurrentFileIndex(fileIndex);
         setDocumentDetail(() => documentDetail);
 
         const {id, requestId, docId, files, typeId, docName} = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
-          setClientName(files[0].clientName);
+          setClientName(files[fileIndex || 0].clientName);
 
-          getDocumentForView(id, requestId, docId, files[0].id);
+          getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
         } else {
           setTypeIdId({id, typeId: !!typeId ? typeId : docName});
         }

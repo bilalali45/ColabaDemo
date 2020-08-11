@@ -105,7 +105,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
         }
         return {
             catId: 'all',
-            catName: 'Commonly Used Documnets',
+            catName: 'Commonly Used',
             documents: allDocs
         };
     }
@@ -167,7 +167,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
             <div className="add-doc-link-wrap" >
                 <div ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
                     <button className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
-                        <span className="btn-text">Add Document</span>
+                        <span className="btn-text">Add document</span>
                         <span className="btn-icon">
                             <i className="zmdi zmdi-plus"></i>
                         </span>

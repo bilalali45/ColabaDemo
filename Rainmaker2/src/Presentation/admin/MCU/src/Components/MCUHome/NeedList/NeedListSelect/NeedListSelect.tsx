@@ -72,17 +72,19 @@ export const NeedListSelect = ({
 
   }
 
-  const MyTemplates = () => {
-    if (!templateList) return '';
+  const MyTemplates = (templateList: Template[]) => {
+    if (!templateList || templateList.length === 0) return null;
     return (
       <>
         <h3>My Templates</h3>
+
         <ul className="checklist">
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+
+                return <li key={t?.id}><label className="text-ellipsis"><input disabled={selectedIds.includes(t?.id)} autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
               }
@@ -93,16 +95,16 @@ export const NeedListSelect = ({
     );
   };
 
-  const TemplatesByTenant = () => {
-    if (!templateList) return '';
+  const TemplatesByTenant = (templateList: Template[]) => {
+    if (!templateList) return null;
     return (
       <>
         <h3>Templates by Tenants</h3>
         <ul className="checklist">
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis"><input disabled={selectedIds.includes(t?.id)} checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
@@ -113,12 +115,6 @@ export const NeedListSelect = ({
     );
   }
   const StartListButton = () => {
-
-    // return <button onClick={() => {
-
-    //   setShow(false);
-    //   addTemplatesDocuments(idArray);
-    // }} className="btn btn-primary btn-block">Add Selected</button>
 
     if (!showButton) {
       return <button onClick={() => {
@@ -150,7 +146,7 @@ export const NeedListSelect = ({
         <Dropdown onToggle={() => setShow(!show)} show={show}>
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
-              Add <span className="btn-icon-right"><span className="rotate-plus"></span></span>
+              Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
             <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
@@ -159,8 +155,8 @@ export const NeedListSelect = ({
 
           <Dropdown.Menu className="padding" show={show}>
             <h2>Select a need list Template</h2>
-            {MyTemplates()}
-            {TemplatesByTenant()}
+            {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
+            {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
             <div className="external-link">
               {StartListButton()}
             </div>
@@ -169,9 +165,7 @@ export const NeedListSelect = ({
       </>
     )
   }
-  // if(!templateList || !templateList?.length) {
-  //   return <div></div>;
-  // }
+
 
   return displayAddButton();
 };

@@ -22,5 +22,6 @@ namespace DocumentManagement.Model
         public string contentType { get; set; }
         public string status { get; set; }
         public string byteProStatus { get; set; }
+        public bool? isRead { get; set; }
     }
 }

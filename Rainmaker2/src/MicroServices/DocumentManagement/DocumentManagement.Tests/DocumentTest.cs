@@ -30,7 +30,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
+            List<GetTemplateModel> list = new List<GetTemplateModel>() { { new GetTemplateModel() { id = "5ebc18cba5d847268075ad4f" } } };
 
             mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<List<string>>(), It.IsAny<int>())).ReturnsAsync(list);
 
@@ -51,9 +51,9 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DocumentModel>;
+            var content = (result as OkObjectResult).Value as List<GetTemplateModel>;
             Assert.Single(content);
-            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].docId);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].id);
         }
         [Fact]
         public async Task TestGetFilesController()
@@ -607,13 +607,13 @@ namespace DocumentManagement.Tests
             listIds.Add("5eb25acde519051af2eeb211");
  
             //Act
-            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
+            List<GetTemplateModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
 
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(2, dto.Count);
-            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].docId);
-            Assert.Equal("Credit report has been uploaded", dto[1].docMessage);
+            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].id);
+            Assert.Equal("Credit report has been uploaded", dto[1].id);
         }
 
         [Fact]
@@ -896,7 +896,7 @@ namespace DocumentManagement.Tests
             mcuRenameModel.newName = new string('a', 256); ;
 
             //Assert
-            Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
+            await Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
 
         }
         [Fact]
@@ -1309,6 +1309,68 @@ namespace DocumentManagement.Tests
             //Act
             IDocumentService service = new DocumentService(mock.Object, null);
             bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4");
+
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileControllerTrue()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.DeleteFile(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
+
+            //Act
+            DeleteFile deleteFile = new DeleteFile();
+            deleteFile.loanApplicationId = 14;
+            deleteFile.fileId = "5f30d944ccbf4475dcdfed33";
+           
+            IActionResult result = await controller.DeleteFile(deleteFile);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileControllerFalse()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.DeleteFile(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
+
+            //Act
+            DeleteFile deleteFile = new DeleteFile();
+            deleteFile.loanApplicationId = 14;
+            deleteFile.fileId = "5f30d944ccbf4475dcdfed33";
+
+            IActionResult result = await controller.DeleteFile(deleteFile);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IDocumentService service = new DocumentService(mock.Object, null);
+            bool result = await service.DeleteFile(14, "5f30d944ccbf4475dcdfed33");
 
             //Assert
             Assert.True(result);

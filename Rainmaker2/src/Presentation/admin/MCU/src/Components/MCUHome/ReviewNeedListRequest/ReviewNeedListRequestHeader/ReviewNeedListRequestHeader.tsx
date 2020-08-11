@@ -59,7 +59,7 @@ export const ReviewNeedListRequestHeader = ({
               onClick={() => saveAsDraft(true)}
               className="btn btn-primary"
             >
-              Save as Close
+              Save & Close
             </button>
           </div>
         </div>
@@ -87,7 +87,7 @@ export const ReviewNeedListRequestHeader = ({
                 Close
               </Button>{" "}
               <Button onClick={() => saveAsDraft(true)} variant="primary">
-                Save As Close
+                Save & Close
               </Button>
             </p>
           </Modal.Body>

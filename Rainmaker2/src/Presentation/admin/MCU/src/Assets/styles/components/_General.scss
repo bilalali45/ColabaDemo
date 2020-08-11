@@ -482,7 +482,7 @@ ul {
         .checklist{
             @extend .list-style-none;
             margin-bottom: 25px;
-            max-height: 200px;
+            max-height: 100px;
             overflow-y: auto;
         }
 
@@ -490,6 +490,11 @@ ul {
             font-family: fontFamily('base');
             font-size: fontSize('sm');
             font-weight: 500;
+            min-height: 38px;
+            a{
+                display: block;
+                padding: 10px 0;
+            }
         }
         .btn-block{
             .btn-icon{
@@ -513,8 +518,15 @@ ul {
 }// .dropdown-toggle
 
 .dropdown{
+    .btn-icon-right{
+        font-size: fontSize('nr') + 1px;
+    }
     &.show{
         .btn-icon-right{
+            
+            >.zmdi-plus{
+                transform: rotate(45deg);                
+            }
             >.rotate-plus{
                 &::before{
                     transform: rotate(45deg);

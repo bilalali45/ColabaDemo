@@ -108,7 +108,7 @@ export const NewNeedList = () => {
 
     const checkIsDocumentDraft = async (id: string) => {
         let res: any = await TemplateActions.isDocumentDraft(id);
-        if (res.requestId) {
+        if (res?.requestId) {
             fetchDraftDocuments();
         }
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
@@ -220,7 +220,6 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-
         await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailContent || '', allDocuments)
         if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
@@ -250,6 +249,8 @@ export const NewNeedList = () => {
     }
 
     const saveAsTemplate = async () => {
+        setCustomDocuments([]);
+        setDraftDocuments([]);
         let id = await NewNeedListActions.saveAsTemplate(templateName, allDocuments);
         dispatch({ type: TemplateActionsType.SetTemplates, payload: null });
         dispatch({ type: NeedListActionsType.SetTemplateIds, payload: [id] });
@@ -258,7 +259,10 @@ export const NewNeedList = () => {
 
     const removeDocumentFromList = async (localId: string) => {
         let prevDocs = [];
-        await setAllDocuments((pre: TemplateDocument[]) => pre.filter((d: TemplateDocument) => d.localId !== localId));
+        let filter = (pre: TemplateDocument[]) => pre.filter((d: TemplateDocument) => d.localId !== localId);
+        await setAllDocuments(filter);
+        setCustomDocuments(filter);
+        setDraftDocuments(filter);
         setTimeout(() => {
             if (allDocuments.length) {
                 setCurrentDocument(allDocuments[0]);
@@ -308,7 +312,8 @@ export const NewNeedList = () => {
                     changeTemplateName={changeTemplateName}
                     removeDocumentFromList={removeDocumentFromList}
                     toggleShowReview={toggleShowReview}
-                    requestSent={requestSent} />}
+                    requestSent={requestSent} 
+                    showSaveAsTemplateLink={Boolean(customDocuments?.length || selectedIds?.length > 1)}/>}
         </main>
     )
 }

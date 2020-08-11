@@ -124,6 +124,7 @@ export const SelectedDocuments = ({
     }
     setSubBtnPressed(false);
     try {
+      fetchUploadedDocuments();
       let docs = await DocumentActions.getPendingDocuments(
         Auth.getLoanAppliationId()
       );
@@ -191,6 +192,13 @@ export const SelectedDocuments = ({
         return f;
       }
       // debugger
+      return f;
+    });
+    updatedFiles = updatedFiles.map((f: Document, i: number) => {
+      if (i === nextInd) {
+        f.focused = true;
+        return f;
+      }
       return f;
     });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });

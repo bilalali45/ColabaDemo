@@ -3,8 +3,8 @@
     border-bottom: 1px solid color('border');
     
 .btn-add-new-Temp {
-    cursor: pointer;
     
+
     .addnewTemplate-btn {        
         padding: 5px 15px;
         font: 400 #{fontSize('nr')-1+'/'+1} fontFamily('base');
@@ -86,7 +86,7 @@
                 justify-content: space-between;
                 align-items: center;
                 margin-left: -30px;
-                padding-left: 30px;
+                padding: 15px 30px;
                 padding-right: 15px;
 
                 h4 {
@@ -216,15 +216,20 @@
                                                     border-radius: 0;
                                                     &:active,&:hover {
                                                         outline: none;
-                                                        opacity: 0.9;
                                                     }
                                                 }
                                                 .btn-no {
                                                     background: color('secondry');
+                                                    &:active,&:hover {
+                                                        background: darken($color: color('secondry'), $amount: 7.5%);
+                                                    }
                                                 }
                                                 .btn-yes {
                                                     background: color('primary');
                                                     margin-left: 5px;
+                                                    &:active,&:hover {
+                                                        background: darken($color: color('primary'), $amount: 7.5%);
+                                                    }
                                                 }
                                             }
                                         }
@@ -246,12 +251,11 @@
             .left-footer {
                 position: absolute;
                 bottom: 0px;
-                height: 60px;
+                min-height: 66px;
                 border-top: 1px solid color('border');
                 width: 100%;
                 margin-left: -30px;
-                padding-left: 30px;
-                padding-right: 30px;
+                padding: 15px 30px;
                 margin-bottom: 0;
 
                 .btn-wrap{
@@ -293,6 +297,7 @@
             min-height: 75px;
             h3{
                 font: 500 #{fontSize('xmd')+'/'+"1"} fontFamily('base');
+                max-width: 500px;
             }
             .T-head-flex {
                 display: flex;
@@ -431,10 +436,9 @@
             position: absolute;
             bottom: 0px;
             left: -15px;
-            height: 60px;
+            min-height: 66px;
             border-top: 1px solid color('border');
-            padding-left: 30px;
-            padding-right: 30px;
+            padding: 15px 30px;
             right: -15px;
             .btn-wrap{
                 display: flex;
@@ -525,6 +529,7 @@
 }
 .popup-add-doc {
     width: 590px;
+    max-width: 100%;
 
     @include media-breakpoint-down(lg) {
         width: 450px;

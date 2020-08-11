@@ -85,6 +85,7 @@ namespace DocumentManagement.Service
                     dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value,DateTimeKind.Utc) : null;
                     dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status!=FileStatus.Deleted).Select(x => new AdminFileDTO()
                     {
+                        isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         id = x.id,
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
