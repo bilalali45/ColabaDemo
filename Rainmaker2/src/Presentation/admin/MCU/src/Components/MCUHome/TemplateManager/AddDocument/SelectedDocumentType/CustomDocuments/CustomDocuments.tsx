@@ -24,7 +24,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     useEffect(() => {
         if (!nameTest.test(docName)) {
             setDocNameError('Document name cannot contain any special characters');
-        }else {
+        } else {
             setDocNameError('');
         }
 
@@ -57,7 +57,8 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
             let newDoc = {
                 docTypeId: '',
                 docType: docName,
-                docMessage: ''
+                docMessage: '',
+                isCustom: true
             }
             await addDocToTemplate(newDoc, 'docName');
             setDocName('');
@@ -74,24 +75,24 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="input-wrap">
 
                     <input maxLength={255} onKeyDown={(e: any) => {
-                        if(e.keyCode === 9) {
+                        if (e.keyCode === 9) {
                             e.preventDefault()
                             return;
                         }
                         if (e.keyCode === 13) {
                             addDoc();
                         }
-                    }} className={ !docNameError  ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
+                    }} className={!docNameError ? '' : 'error'} autoFocus={true} value={docName} onChange={hanldeChange} type="name" placeholder="Type document name" />
 
 
                     <div className="input-btn-wrap">
-                        {requestSent ? 
+                        {requestSent ?
                             <button className="btn btn-primary btn-sm btn-loading">
-                            <Spinner size="sm" animation="border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </Spinner>
-                            <span className="btn-text">Add</span>
-                        </button> 
+                                <Spinner size="sm" animation="border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
+                                <span className="btn-text">Add</span>
+                            </button>
                             :
                             <button onClick={addDoc} className="btn btn-primary btn-sm">
                                 <span className="btn-text">Add</span>
