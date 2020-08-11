@@ -69,6 +69,31 @@
         "PeriodTimespan": 1,
         "Limit": 100
       }
+    },
+
+    //Byte Web Connector api config
+    {
+      "DownstreamPathTemplate": "/api/LosIntegration/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5050
+        }
+      ],
+      "UpstreamPathTemplate": "/api/LosIntegration/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //},
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 100
+      }
     }
   ]
 }

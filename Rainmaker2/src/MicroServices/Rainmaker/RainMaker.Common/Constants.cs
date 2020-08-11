@@ -1181,6 +1181,16 @@ namespace RainMaker.Common
         public const string EncompassLoanFolder = "EncompassLoanFolder";
         public const string EncompassLoanTemplatePath = "EncompassLoanTemplatePath";
 
+        public const string ByteProUserName = "ByteProUserName";
+        public const string ByteProPassword = "ByteProPassword";
+        public const string ByteProApiUserName = "ByteProApiUserName";
+        public const string ByteProApiPassword = "ByteProApiPassword";
+        public const string ByteCompanyCode = "ByteCompanyCode";
+        public const string ByteProUserNo = "ByteProUserNo";
+        public const string ByteAuthKey = "ByteAuthKey";
+        public const string ByteApiAuthKey = "ByteApiAuthKey";
+        public const string ByteApiUrl = "ByteApiUrl";
+
         public const string MaxPointFeeValue = "MaxPointFee";
         public const string ForgotTokenExpiry = "ForgotTokenExpiry";
         public const string LeadGenErrorLocationLicense = "LeadGen.Error.LocationLicense";
