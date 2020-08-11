@@ -168,7 +168,7 @@ namespace DocumentManagement.Service
                               }}
                         }", @"{
                             ""$unwind"":{ ""path"": ""$documentTypes"",
-                                ""preserveNullAndEmptyArrays"": false
+                                ""preserveNullAndEmptyArrays"": true
                             }
                         }", @"{
                             ""$lookup"": {
@@ -214,6 +214,8 @@ namespace DocumentManagement.Service
                         dto.docs = new List<TemplateDocumentModel>();
                         result.Add(dto);
                     }
+                    if(query.typeId==null && query.docName==null)
+                        continue;
                     TemplateDocumentModel dto1 = new TemplateDocumentModel();
                     dto1.typeId = query.typeId;
                     dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
