@@ -80,9 +80,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
 
     useEffect(() => {
-        if (!nameTest.test(newNameText)) {
-            setNameError('Template name cannot contain any special characters');
-        }
+        // if (!nameTest.test(newNameText)) {
+        //     setNameError('Template name cannot contain any special characters');
+        // }
 
         if (!newNameText?.trim()?.length) {
             setNameError('');
@@ -140,9 +140,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
     const renameTemplate = async (value: string) => {
 
-        if (!nameTest.test(value.trim())) {
-            return;
-        }
+        // if (!nameTest.test(value.trim())) {
+        //     return;
+        // }
 
         if (value === currentTemplate?.name) {
             toggleRename();
@@ -158,8 +158,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (value?.length > 255) {
-            setNameError('Name must be less than 256 chars');
+        if (value?.length > 30) {
+            setNameError('Name must be less than 31 chars');
             return;
         }
 
@@ -249,7 +249,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
-                                        maxLength={255}
+                                        maxLength={30}
                                         autoFocus
                                         onFocus={(e: any) => {
                                             let target = e.target;
@@ -263,7 +263,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 
                                             setNewNameText(value);
-                                            if (!value?.length || value?.length > 255) {
+                                            if (!value?.length || value?.length > 30) {
                                                 return;
                                             }
 

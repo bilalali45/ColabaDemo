@@ -142,7 +142,7 @@ export const NeedListSelect = ({
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
+        }} className="btn btn-primary btn-block"><span className="btn-text d-text">Continue with Template</span><span className="btn-icon d-icon"><i className="zmdi zmdi-plus"></i></span></button>
 
 
 
