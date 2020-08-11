@@ -359,11 +359,19 @@ ul {
     }
 }
 .spinner-border {
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: spinner-border 2.2222222222222223s linear infinite;
+}
+
+.spinner-border {
     &.spinner-border-sm {
         border-width: 1px;
 
     }
 }
+
+
 
 .loader-row {
     height: 100%;
@@ -375,6 +383,10 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    circle {
+        stroke: #212529;
+        stroke-width: 5px;
+    }
 
     .bg {
         background: color("colorWhite");
@@ -481,8 +493,11 @@ ul {
                 border-radius: 0;
                 width: 10px;
                 height: 10px;
+                margin-right: 3px;
                 &:focus{
                     outline:auto;
+                    outline-color: color('primary');
+                    outline-width: 1px;
                     // box-shadow: 0px 0px 1px color('primary'), -1px -1px 1px color('primary'), 1px 1px 1px color('primary');
                 }
  
