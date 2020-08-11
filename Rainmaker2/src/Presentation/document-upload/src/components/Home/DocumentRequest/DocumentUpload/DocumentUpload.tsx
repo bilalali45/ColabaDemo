@@ -76,7 +76,7 @@ export const DocumentUpload = () => {
           <div className="Doc-head-wrap">
             <h2>
               {docTitle}
-              {currentDoc.docMessage && (
+              {currentDoc?.isRejected && (
                 <span
                   style={{
                     color: "red",

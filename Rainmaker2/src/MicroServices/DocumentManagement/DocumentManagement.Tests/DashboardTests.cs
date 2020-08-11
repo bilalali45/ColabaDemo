@@ -398,6 +398,20 @@ namespace DocumentManagement.Tests
                         { "isRejected", BsonBoolean.False},
                         { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 },{ "status", BsonString.Empty }, { "id", "5f30d944ccbf4475dcdfed33" } } })}
                     }
+                ,
+                new BsonDocument
+                    {
+                        { "_id" , BsonString.Empty },
+                        { "createdOn" , BsonDateTime.Create(DateTime.Now) },
+                        { "docId" , BsonString.Empty },
+                        { "docName" , BsonString.Empty },
+                        { "docMessage" , BsonString.Empty },
+                        { "typeName" ,  BsonString.Empty },
+                        { "typeMessage" , BsonString.Empty },
+                        { "messages" , BsonNull.Value },
+                        { "isRejected", BsonBoolean.False},
+                        { "files" , BsonArray.Create(new Entity.RequestFile[]{ }) }
+                    }
             };
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
@@ -421,7 +435,7 @@ namespace DocumentManagement.Tests
             Assert.Equal("please upload house document", dto[3].docMessage);
             Assert.Equal("please upload house document", dto[4].docMessage);
             Assert.Equal("please upload house document", dto[5].docMessage);
-            Assert.Equal("", dto[6].docMessage);
+            Assert.Equal("asd", dto[6].files[0].clientName);
         }
 
         [Fact]
