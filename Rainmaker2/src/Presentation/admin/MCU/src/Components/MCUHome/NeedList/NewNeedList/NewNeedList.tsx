@@ -248,6 +248,7 @@ export const NewNeedList = () => {
     const addDocumentToList = (doc: Document, type: string) => {
 
         let newDoc: any = {
+            isCustom: true,
             localId: v4(),
             docId: null,
             requestId: null,
@@ -285,6 +286,17 @@ export const NewNeedList = () => {
         if (!location.pathname.includes('newNeedList')) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
         }
+    }
+
+    const editcustomDocName = (doc: TemplateDocument) => {
+        setAllDocuments((pre: TemplateDocument[]) => {
+            return pre?.map((pt: TemplateDocument) => {
+                if(pt?.localId === doc?.localId) {
+                    return doc;
+                }
+                return pt;
+            })
+        })       
     }
 
     const viewSaveDraftHandler = () => {
@@ -363,6 +375,7 @@ export const NewNeedList = () => {
                     requestSent={requestSent}
                     showSaveAsTemplateLink={Boolean(customDocuments?.length || selectedIds?.length > 1)}
                     fetchTemplateDocs={fetchTemplateDocs}
+                    editcustomDocName={editcustomDocName}
                 />}
 
         </main>

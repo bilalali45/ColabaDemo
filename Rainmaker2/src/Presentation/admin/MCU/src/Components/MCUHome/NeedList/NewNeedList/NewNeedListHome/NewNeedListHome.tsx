@@ -28,6 +28,7 @@ type NewNeedListHomeType = {
     requestSent: boolean,
     showSaveAsTemplateLink: boolean,
     fetchTemplateDocs: Function,
+    editcustomDocName: Function,
 }
 
 export const NewNeedListHome = ({
@@ -47,7 +48,8 @@ export const NewNeedListHome = ({
     toggleShowReview,
     requestSent,
     showSaveAsTemplateLink,
-    fetchTemplateDocs
+    fetchTemplateDocs,
+    editcustomDocName
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -85,7 +87,8 @@ export const NewNeedListHome = ({
                                 isDraft={isDraft}
                                 updateDocumentMessage={updateDocumentMessage}
                                 document={!allDocuments?.length ? null : currentDocument}
-                                toggleShowReview={toggleShowReview} />
+                                toggleShowReview={toggleShowReview} 
+                                editcustomDocName={editcustomDocName}/>
                         </div>
                     </div>
                 </div>

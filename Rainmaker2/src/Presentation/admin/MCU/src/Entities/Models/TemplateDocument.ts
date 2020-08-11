@@ -7,6 +7,7 @@ export class TemplateDocument {
     public localId: string;
     public templateId: string;
     public requestId: string = '';
+    public isCustom: boolean = false;
     
     constructor(templateId: string, typeId: string, localId: string, docId: string, docName: string, docMessage: string, message: string) {
         this.docId = docId;
