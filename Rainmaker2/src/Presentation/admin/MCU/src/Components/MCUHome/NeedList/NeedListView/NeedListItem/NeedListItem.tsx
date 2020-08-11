@@ -32,7 +32,7 @@ export const NeedListItem: FunctionComponent<
   return (
     <div className="tr row-shadow">
       <div className="td">
-        <span className="f-normal">
+        <span className="f-normal" title={docName}>
           <strong>{docName}</strong>
         </span>
       </div>

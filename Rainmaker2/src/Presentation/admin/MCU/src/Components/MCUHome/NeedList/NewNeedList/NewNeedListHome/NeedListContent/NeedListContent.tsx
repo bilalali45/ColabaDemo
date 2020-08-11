@@ -77,11 +77,11 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                             </>
                             : <>
                                 {/* <h3><span className="text-ellipsis"> {document?.docName}</span></h3> */}
-                                <p> {document?.docName}
+                                <h3 className="text-ellipsis" title={document?.docName}> {document?.docName}
                                     {document?.isCustom &&
                                         <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span>
                                     }
-                                </p>
+                                </h3>
                             </>}
                     </div>
                 </div>

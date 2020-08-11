@@ -308,6 +308,13 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                &.text-ellipsis{
+                    max-width: 450px;
+                    p{
+                       @extend .text-ellipsis;
+                       vertical-align: middle;
+                    }
+                }
             }
             p {
                 font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
@@ -517,6 +524,20 @@
 
     }
 
+    }
+    .mcu-panel-body{
+        .text-ellipsis{
+            max-width: 450px;
+        }
+    }
+    .mcu-panel-body--aside{
+        .listing{
+            li{
+                a{
+                    @extend .text-ellipsis;
+                }
+            }
+        }
     }
 }
 .popover {

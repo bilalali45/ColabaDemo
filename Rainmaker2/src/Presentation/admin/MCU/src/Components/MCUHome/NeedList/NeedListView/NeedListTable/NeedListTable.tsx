@@ -68,7 +68,7 @@ export const NeedListTable = ({
     if (count > 0)
       return (
         <div className="td">
-          <span className="f-normal">
+          <span className="f-normal" title={toTitleCase(name)}>
             <strong>{toTitleCase(name)}</strong>
           </span>
         </div>
@@ -76,7 +76,7 @@ export const NeedListTable = ({
     else
       return (
         <div className="td">
-          <span className="f-normal">{toTitleCase(name)}</span>
+          <span className="f-normal" title={toTitleCase(name)}>{toTitleCase(name)}</span>
         </div>
       );
   };

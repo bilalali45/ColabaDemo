@@ -144,6 +144,8 @@
 
     .f-normal{
         font-size: fontSize("nr");
+        @extend .text-ellipsis;
+        max-width: 400px;
         strong{
             font-weight: 500;
         }
