@@ -71,7 +71,7 @@ export const NewNeedList = () => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
         }
-
+        
         setAllDocuments(selectedTemplateDocuments);
 
         if (selectedTemplateDocuments?.length) {
@@ -164,6 +164,7 @@ export const NewNeedList = () => {
                 let docs = template?.docs;
                 for (const d of docs) {
                     let exists = allTemplateDocs?.find((pd: TemplateDocument) => pd.docName?.toLowerCase() === d.docName?.toLowerCase());
+                  
                     if (!exists) {
                         allTemplateDocs.push({
                             localId: v4(),
@@ -182,8 +183,9 @@ export const NewNeedList = () => {
             }
         }
 
-
         let data: any = [...draftDocuments, ...customDocuments, ...allTemplateDocs];
+        setAllDocuments(data);
+        
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
         setRequestSent(false);
     }
@@ -266,7 +268,7 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        let body = emailContent.replace(/\n/g, "<br />");
+        let body = emailContent?.replace(/\n/g, "<br />");
         await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, body || '', allDocuments)
         if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
