@@ -113,7 +113,7 @@ export class LocalDB {
     // Encode the String
     //const currentDate = Date.toString();
     const string = value + "|" + ApplicationEnv.Encode_Key;
-    return btoa(string);
+    return btoa(unescape(encodeURIComponent(string)));
   }
 
   public static decodeString(value?: string | null) {
