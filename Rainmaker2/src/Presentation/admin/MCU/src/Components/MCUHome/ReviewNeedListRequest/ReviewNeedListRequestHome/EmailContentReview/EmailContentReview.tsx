@@ -29,13 +29,16 @@ export const EmailContentReview = ({
   console.log(documentList?.length);
   const setDeafultText = () => {
     let str: string = '';
+    let payload = LocalDB.getUserPayload();
+    let mcuName = payload.FirstName+' '+payload.LastName;
     let documentNames = documentsName
       ? documentsName?.split(',').join(' \r\n')
       : '';
     if (emailTemplate) {
       str = emailTemplate
         .replace('{user}', borrowername)
-        .replace('{documents}', documentNames);
+        .replace('{documents}', documentNames)
+        .replace('{mcu}',mcuName);
       hashDocuments();
     }
     return str;

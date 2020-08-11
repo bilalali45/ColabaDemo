@@ -95,8 +95,8 @@ export const NeedListTable = ({
       case 'Completed':
         cssClass = 'status-bullet completed';
         break;
-      case 'In Draft':
-        cssClass = 'indraft';
+      case 'In draft':
+        cssClass = 'status-bullet indraft';
         break;
       default:
         cssClass = 'status-bullet pending';
@@ -112,7 +112,9 @@ export const NeedListTable = ({
       <>
         <div>
           <div className="list-remove-alert">
-            <span className="list-remove-text">Are you sure want to delete this Document?</span>
+            <span className="list-remove-text">
+              Are you sure want to delete this Document?
+            </span>
             <div className="list-remove-options">
               <button
                 onClick={() => {
