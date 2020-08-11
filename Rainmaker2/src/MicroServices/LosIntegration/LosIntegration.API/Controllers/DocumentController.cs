@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using LosIntegration.API.ExtensionMethods;
 using LosIntegration.API.Models;
 using LosIntegration.API.Models.ClientModels.Document;
@@ -74,7 +75,7 @@ namespace LosIntegration.API.Controllers
         // POST api/<DocumentController>
         [Route(template: "[action]")]
         [HttpPost]
-        public IActionResult SendToExternalOriginator([FromBody] SendToExternalOriginatorRequest request)
+        public async Task<IActionResult> SendToExternalOriginator([FromBody] SendToExternalOriginatorRequest request)
         {
             var tenantId = "1";
             _httpClient.DefaultRequestHeaders.Authorization
@@ -117,7 +118,7 @@ namespace LosIntegration.API.Controllers
                     ExtOriginatorId = response.ExtOriginatorId
                 };
                 _mappingService.Insert(item: mapping);
-                _mappingService.SaveChangesAsync();
+                await _mappingService.SaveChangesAsync();
 
 
 
@@ -139,7 +140,7 @@ namespace LosIntegration.API.Controllers
         // POST api/<DocumentController>
         [Route(template: "[action]")]
         [HttpPost]
-        public IActionResult AddDocument([FromBody] AddDocumentRequest request)
+        public async Task<IActionResult> AddDocument([FromBody] AddDocumentRequest request)
         {
             List<string> fileIds = new List<string>();
             //--Get LoanApplication Id from rm by externalLoan Application Id
@@ -160,12 +161,6 @@ namespace LosIntegration.API.Controllers
                 $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.FileDataId.ToString()}";
             HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
 
-
-            //HttpResponseMessage loanApplicationHttpResponseMessage = _httpClient.PostAsync(requestUri:
-            //                                                                                     $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
-            //                                                                                     content: new StringContent(content: loanApplicationRequestContent,
-            //                                                                                                                encoding: Encoding.UTF8,
-            //                                                                                                                mediaType: "application/json")).Result;
             if (loanApplicationHttpResponseMessage.IsSuccessStatusCode)
             {
                 string loanApplicationResult = loanApplicationHttpResponseMessage.Content.ReadAsStringAsync().Result;
@@ -180,14 +175,9 @@ namespace LosIntegration.API.Controllers
                         LoanApplicationId = loanApplicationId
                     }.ToJsonString();
 
-                    var getDocumentsUrl = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments";
-                    HttpRequestMessage getDocumentRequestMessage = new HttpRequestMessage
-                                                                   {
-                                                                       Content = new StringContent(getDocumentRequestContent, Encoding.UTF8, "application/json"),
-                                                                       Method = HttpMethod.Get,
-                                                                       RequestUri = new Uri(getDocumentsUrl)
-                                                                   };
-                    var getDocumentResponse = _httpClient.SendAsync(getDocumentRequestMessage).Result;
+                    var getDocumentsUrl = $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments?loanApplicationId={loanApplicationResponseModel.Id}&pending={false}";
+                    var getDocumentResponse = _httpClient.GetAsync(requestUri: getDocumentsUrl).Result;
+
                     if (getDocumentResponse != null)
                     {
                         string documentResponseResult = getDocumentResponse.Content.ReadAsStringAsync().Result;
@@ -238,7 +228,7 @@ namespace LosIntegration.API.Controllers
                             HttpRequestMessage uploadFileRequestMessage = new HttpRequestMessage
                             {
                                 Content = new StringContent(uploadFileRequestContent, Encoding.UTF8, "application/json"),
-                                Method = HttpMethod.Get,
+                                Method = HttpMethod.Post,
                                 RequestUri = new Uri(url)
                             };
                             HttpResponseMessage uploadFileHttpResponse = _httpClient.SendAsync(uploadFileRequestMessage).Result;
@@ -259,14 +249,12 @@ namespace LosIntegration.API.Controllers
                                         ExtOriginatorId = 1
                                     };
                                     _mappingService.Insert(item: mapping);
+                                   
                                 }
                             }
-
                         }
-
                     }
-
-                    _mappingService.SaveChangesAsync();
+                  await  _mappingService.SaveChangesAsync();
 
                     return Ok();
                 }
@@ -288,7 +276,7 @@ namespace LosIntegration.API.Controllers
         // DELETE api/<DocumentController>/5
         [HttpPost]
         [Route(template: "[action]")]
-        public void Delete(DeleteRequest request)
+        public async Task<IActionResult> Delete(DeleteRequest request)
         {
             var mapping = _mappingService
                           .GetMappingWithDetails(extOriginatorEntityId: request.ExtOriginatorFileId.ToString(),
@@ -298,19 +286,6 @@ namespace LosIntegration.API.Controllers
 
             if (mapping != null)
             {
-                //var loanApplicationRequestContent = new GeLoanApplicationRequest
-                //                                    {
-                //                                        EncompassNumber =
-                //                                            request.ExtOriginatorLoanApplicationId.ToString()
-                //                                    }.ToJsonString();
-
-                //var callResponse =
-                //    _httpClient.PostAsync(requestUri:
-                //                          $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication",
-                //                          content: new StringContent(content: loanApplicationRequestContent,
-                //                                                     encoding: Encoding.UTF8,
-                //                                                     mediaType: "application/json")).Result;
-
 
                 var token = Request
                             .Headers[key: "Authorization"].ToString()
@@ -347,11 +322,12 @@ namespace LosIntegration.API.Controllers
                 if (csResponse.IsSuccessStatusCode)
                 {
                     _mappingService.Delete(item: mapping);
-                    _mappingService.SaveChangesAsync();
+                    await _mappingService.SaveChangesAsync();
+                    return Ok();
                 }
-
-
             }
+
+            return BadRequest();
         }
 
         #endregion

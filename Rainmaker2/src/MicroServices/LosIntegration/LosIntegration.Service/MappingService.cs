@@ -51,7 +51,7 @@ namespace LosIntegration.Service
 
             // @formatter:off 
 
-            mappings = mappings.Where(predicate: mapping => rmEnittyIds.Contains(mapping.ExtOriginatorEntityId) );
+            mappings = mappings.Where(predicate: mapping => rmEnittyIds.Contains(mapping.RMEnittyId) );
            
             mappings = mappings.Where(predicate: mapping => mapping.RMEntityName == rmEntityName);
             

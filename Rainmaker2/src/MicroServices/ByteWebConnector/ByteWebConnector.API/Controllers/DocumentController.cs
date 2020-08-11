@@ -134,7 +134,7 @@ namespace ByteWebConnector.API.Controllers
         // DELETE api/<DocumentController>/5
         [Route(template: "[action]")]
         [HttpPost]
-        public async Task Delete(DeleteRequest request)
+        public async Task<IActionResult> Delete(DeleteRequest request)
         {
             var losModel = request.GetLosModel();
 
@@ -152,12 +152,18 @@ namespace ByteWebConnector.API.Controllers
                                             content: new StringContent(content: content,
                                                                        encoding: Encoding.UTF8,
                                                                        mediaType: "application/json"));
+            if (callResponse.IsSuccessStatusCode)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
 
         [Route(template: "[action]")]
         [HttpPost]
-        public async Task DocumentAdded(DocumentAddedRequest request)
+        public async Task<IActionResult> DocumentAdded(DocumentAddedRequest request)
         {
             // System.Threading.Thread.Sleep();
 
@@ -184,8 +190,11 @@ namespace ByteWebConnector.API.Controllers
 
             if (callResponse.IsSuccessStatusCode)
             {
-
+                return Ok();
             }
+
+            return BadRequest();
+
             #endregion
         }
 
