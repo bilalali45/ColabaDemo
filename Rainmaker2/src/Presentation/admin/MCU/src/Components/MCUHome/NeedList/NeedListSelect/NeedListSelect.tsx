@@ -109,7 +109,7 @@ export const NeedListSelect = ({
   };
 
   const TemplatesByTenant = (templateList: Template[]) => {
-    if (!templateList) return null;
+    if (!templateList || templateList.length === 0) return null;
     return (
       <>
         <h3>Templates by Tenants</h3>

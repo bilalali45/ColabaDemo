@@ -7,10 +7,11 @@ type TextAreaType = {
     onChangeHandler?: Function;
     isValid?: boolean;
     errorText?: string;
-    placeholderValue?: string
+    placeholderValue?: string,
+    maxLengthValue?: number
 }
 
-export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus }: TextAreaType) => {
+export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus, maxLengthValue = 3000}: TextAreaType) => {
 
 
     const [isTextValid, setIsTextValid] = useState<boolean>(false);
@@ -36,9 +37,19 @@ export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () =
     return (
         <Fragment>
             <textarea
-                style={textAreaStyle} autoFocus={focus} onBlur={(e) => onBlurHandler()} value={textAreaValue} onChange={(e) => {
+                style={textAreaStyle} 
+                autoFocus={focus} 
+                onBlur={(e) => onBlurHandler()} 
+                value={textAreaValue} 
+                onChange={(e) => {
                     checkIfValid(e);
-                }} name="" id="" className="form-control" rows={20} placeholder={placeholderValue}>
+                }} 
+                name="" 
+                id="" 
+                className="form-control" 
+                rows={20} 
+                placeholder={placeholderValue} 
+                maxLength={maxLengthValue}>
             </textarea>
             <div>
                 <p style={{ color: "red" }} >{isTextValid ? errorText : ''}</p>
