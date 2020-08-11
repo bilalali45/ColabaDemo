@@ -220,7 +220,8 @@ export const NewNeedList = () => {
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailContent || '', allDocuments)
+        let body = emailContent.replace(/\n/g, "<br />");
+        await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, body || '', allDocuments)
         if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
         } else {
