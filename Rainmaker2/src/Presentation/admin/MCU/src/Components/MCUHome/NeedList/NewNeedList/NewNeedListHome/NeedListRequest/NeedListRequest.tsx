@@ -67,7 +67,10 @@ export const NeedListRequest = ({
         setLoaderVisible(false);
     }, []);
 
-    const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
+    const toggleSaveAsTemplate = () => {
+        setShowSaveAsTemplate(!showSaveAsTemplate);
+        setTemplateNameError('');
+    };
 
     const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
         let { target: { value } } = e;
@@ -166,6 +169,10 @@ export const NeedListRequest = ({
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
                     <button className="btn btn-sm btn-primary" onClick={async () => {
+                        if (!templateName) {
+                            setTemplateNameError('Template name cannot be empty');
+                            return;
+                        }
                         setRequestHit(true);
                         await saveAsTemplate();
                         setRequestHit(false);
