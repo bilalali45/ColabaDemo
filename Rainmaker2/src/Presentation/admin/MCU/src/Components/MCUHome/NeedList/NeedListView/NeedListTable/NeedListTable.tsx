@@ -54,7 +54,7 @@ export const NeedListTable = ({
     });
   };
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
-    debugger
+
     let count = 0;
     console.log('data',data)
     if(data){

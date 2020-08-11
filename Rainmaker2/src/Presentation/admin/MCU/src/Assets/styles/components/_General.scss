@@ -288,6 +288,9 @@ ul {
     &.completed {
         background-color: color('completed');
     }
+    &.indraft{
+        background-color: color('secondry');
+    }
 }
 .button-float {
     background-color: color('colorWhite');
@@ -859,6 +862,10 @@ label.error{
         white-space: nowrap;
         -webkit-animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
                 animation: slide-out-top 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
+
+        .btn + .btn{
+            margin-left: 4px;
+        }
     }
 
 }
