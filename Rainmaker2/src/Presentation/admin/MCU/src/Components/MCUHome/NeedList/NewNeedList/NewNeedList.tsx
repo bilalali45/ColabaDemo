@@ -43,7 +43,7 @@ export const NewNeedList = () => {
     const loanInfo: string[] = needListManager?.loanInfo;
     const isDraft: string = needListManager?.isDraft;
     const templates: Template[] = templateManager?.templates;
-    const [showSendButton, setShowSendButton] = useState<boolean>(false);
+    const [showSendButton, setShowSendButton] = useState<boolean>(true);
     const emailContent: string = templateManager?.emailContent;
     const [documentHash, setDocumentHash] = useState<string>();
 
@@ -215,17 +215,19 @@ export const NewNeedList = () => {
         setCustomDocuments([...customDocuments, newDoc]);
         setAllDocuments(newDocs);
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
         setCurrentDocument(newDoc);
 
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
-        let body = emailContent.replace(/\n/g, "<br />");
+
+        let body = toDraft === false ? emailContent.replace(/\n/g, "<br />") : emailContent;
         await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, body || '', allDocuments)
         if (toDraft) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
         } else {
-            setShowSendButton(true)
+            setShowSendButton(false)
             setTimeout(() => {
                 history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
             }, 1000)
@@ -234,7 +236,6 @@ export const NewNeedList = () => {
     }
 
     const addTemplatesDocuments = (idArray: string[]) => {
-
         if (!idArray) {
             idArray = [];
         }
@@ -242,6 +243,7 @@ export const NewNeedList = () => {
         if (!location.pathname.includes('newNeedList')) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
         }
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
     }
 
     const viewSaveDraftHandler = () => {
@@ -269,6 +271,7 @@ export const NewNeedList = () => {
                 setCurrentDocument(allDocuments[0]);
             }
         }, 1);
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
     }
 
     const toggleShowReview = () => setShowReview(!showReview)
