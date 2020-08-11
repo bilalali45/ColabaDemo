@@ -303,7 +303,14 @@
             h3{
                 font: 500 #{fontSize('xmd')+'/'+"1"} fontFamily('base');
                 max-width: 500px;
+                padding-right: 25px;
+                display: inline-block;
+                position: relative;
+
+
             }
+
+
             .T-head-flex {
                 display: flex;
                 align-items: center;
@@ -316,18 +323,20 @@
                     }
                 }
             }
-            p {
-                font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
-                color: color('colorBlack');
-                margin-bottom: 0;
-                text-transform: uppercase;
-                padding-right: 25px;
-                display: inline-block;
-                position: relative;
+            h3 {
+                // font: 500 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
+                // color: color('colorBlack');
+                // margin-bottom: 0;
+                // text-transform: uppercase;
+                // padding-right: 25px;
+                // display: inline-block;
+                // position: relative;
 
                 .editable-TemplateTitle {
                     min-width: 230px;
                     border: 1px solid color('primary');
+                    height: 22px;
+                    font: 400 #{fontSize('xmd')-2+'/'+"1"} fontFamily('base');
                     border-radius: none;
                     outline: none;
                     padding: 4px 5px 3px;
