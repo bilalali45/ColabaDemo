@@ -9,7 +9,7 @@ import { TemplateActions } from "../../../../Store/actions/TemplateActions";
 import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer";
 import { Document } from "../../../../Entities/Models/Document";
 import { LocalDB } from "../../../../Utils/LocalDB";
-import { NewNeedListActions } from "../../../../Store/actions/NewNeedListActions";
+import { NewNeedListActions, DocumentsWithTemplateDetails } from "../../../../Store/actions/NewNeedListActions";
 import { Template } from "../../../../Entities/Models/Template";
 import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
 import { useHistory, useLocation } from "react-router-dom";
@@ -18,6 +18,7 @@ import { ReviewNeedListRequestHome } from "../../ReviewNeedListRequest/ReviewNee
 import { LoanApplication } from "../../../../Entities/Models/LoanApplication";
 import { NeedListActions } from "../../../../Store/actions/NeedListActions";
 import { v4 } from "uuid";
+import { template } from "lodash";
 
 export const NewNeedList = () => {
 
@@ -84,13 +85,16 @@ export const NewNeedList = () => {
     useEffect(() => {
         if (isDocumentDraft?.requestId && !selectedTemplateDocuments?.length) {
             fetchDraftDocuments();
-        } else {
-            if (selectedIds) {
-                getDocumentsFromSelectedTemplates(selectedIds)
-            }
         }
 
-    }, [selectedIds?.length])
+    }, []);
+
+    useEffect(() => {
+        if (!selectedTemplateDocuments?.length && selectedIds) {
+            fetchTemplateDocs(selectedIds);
+        }
+
+    }, []);
 
     const clearOldData = () => {
         setCurrentDocument(null);
@@ -103,6 +107,12 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: null })
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: null })
+    }
+
+    const fetchTemplateDocs = (idArray: string[]) => {
+        if (idArray) {
+            getDocumentsFromSelectedTemplates(idArray)
+        }
     }
 
 
@@ -146,28 +156,62 @@ export const NewNeedList = () => {
 
     const getDocumentsFromSelectedTemplates = async (ids: string[]) => {
         setRequestSent(true);
-        let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
-        documents = documents?.map((d: any) => {
-            return {
-                localId: v4(),
-                typeId: d.typeId,
-                docName: d.docName,
-                docMessage: d.docMessage,
-                docId: null,
-                requestId: null
+        let allTemplateDocs: any[] = [];
+        let documentsWithTemplate: DocumentsWithTemplateDetails[] | undefined = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
+        console.log(documentsWithTemplate);
+        if (documentsWithTemplate) {
+            for (const template of documentsWithTemplate) {
+                let docs = template?.docs;
+                for (const d of docs) {
+                    let exists = allTemplateDocs?.find((pd: TemplateDocument) => pd.docName?.toLowerCase() === d.docName?.toLowerCase());
+                    if (!exists) {
+                        allTemplateDocs.push({
+                            localId: v4(),
+                            typeId: d.typeId,
+                            docName: d.docName,
+                            docMessage: d.docMessage,
+                            docId: null,
+                            requestId: null,
+                            templateId: template?.id,
+                            isRejected: false
+
+                        });
+                    }
+                }
+
             }
-        })
-        console.log(documents, 'documents');
-        let data = documents?.map((obj: TemplateDocument) => {
-            return {
-                ...obj,
-                isRejected: false
-            }
-        }) || [];
-        data = [...draftDocuments, ...customDocuments, ...data];
+        }
+
+
+        let data: any = [...draftDocuments, ...customDocuments, ...allTemplateDocs];
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
         setRequestSent(false);
     }
+
+    // const getDocumentsFromSelectedTemplates = async (ids: string[]) => {
+    //     setRequestSent(true);
+    //     let documents: any = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
+    //     documents = documents?.map((d: any) => {
+    //         return {
+    //             localId: v4(),
+    //             typeId: d.typeId,
+    //             docName: d.docName,
+    //             docMessage: d.docMessage,
+    //             docId: null,
+    //             requestId: null
+    //         }
+    //     })
+    //     console.log(documents, 'documents');
+    //     let data = documents?.map((obj: TemplateDocument) => {
+    //         return {
+    //             ...obj,
+    //             isRejected: false
+    //         }
+    //     }) || [];
+    //     data = [...draftDocuments, ...customDocuments, ...data];
+    //     dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
+    //     setRequestSent(false);
+    // }
 
     const fetchDraftDocuments = async () => {
         setRequestSent(true);
@@ -257,9 +301,13 @@ export const NewNeedList = () => {
         setTemplateName('');
     }
 
-    const removeDocumentFromList = async (localId: string) => {
+    const removeDocumentFromList = async (doc: TemplateDocument) => {
         let prevDocs = [];
-        let filter = (pre: TemplateDocument[]) => pre.filter((d: TemplateDocument) => d.localId !== localId);
+        let filter = (pre: TemplateDocument[]) => pre.filter((d: TemplateDocument) => d.localId !== doc?.localId);
+        if (selectedIds?.length) {
+            let updatedTemplateIds = selectedIds?.filter((id: any) => id !== doc?.templateId);
+            dispatch({ type: NeedListActionsType.SetTemplateIds, payload: updatedTemplateIds })
+        }
         await setAllDocuments(filter);
         setCustomDocuments(filter);
         setDraftDocuments(filter);
@@ -312,8 +360,11 @@ export const NewNeedList = () => {
                     changeTemplateName={changeTemplateName}
                     removeDocumentFromList={removeDocumentFromList}
                     toggleShowReview={toggleShowReview}
-                    requestSent={requestSent} 
-                    showSaveAsTemplateLink={Boolean(customDocuments?.length || selectedIds?.length > 1)}/>}
+                    requestSent={requestSent}
+                    showSaveAsTemplateLink={Boolean(customDocuments?.length || selectedIds?.length > 1)}
+                    fetchTemplateDocs={fetchTemplateDocs}
+                />}
+
         </main>
     )
 }
