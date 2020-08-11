@@ -1,10 +1,8 @@
-﻿using PdfSharp.Drawing;
-using PdfSharp.Pdf;
+﻿using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ByteWebConnector.API.Utility
 {
@@ -22,8 +20,10 @@ namespace ByteWebConnector.API.Utility
 
                 XGraphics graph = XGraphics.FromPdfPage(pdfPage);
 
+
                 //    var imagebyte = File.ReadAllBytes(item);
-                XImage image = XImage.FromStream(new MemoryStream(item));
+             
+                XImage image = XImage.FromStream(()=> new MemoryStream(item));
 
 
                 pdfPage.Width = image.PixelWidth + 100;
