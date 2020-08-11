@@ -424,15 +424,18 @@
             }
         }
         .mainbody {
+            padding-bottom: 70px;
             .editer-wrap {
-            .editer {
+            .editer,textarea {
                 min-height: 320px;
                 width: 100%;
                 border: 1px solid color('border');
                 padding: 10px;
+                resize: none;
                 &:focus {
                     outline: none;
                     border: 1px solid color('border');
+                    box-shadow: none;
                 }
             } 
             }

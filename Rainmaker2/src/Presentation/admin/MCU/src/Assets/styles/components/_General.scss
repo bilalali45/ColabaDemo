@@ -475,8 +475,10 @@ ul {
                 width: 10px;
                 height: 10px;
                 &:focus{
-                    outline: none;
+                    outline:auto;
+                    // box-shadow: 0px 0px 1px color('primary'), -1px -1px 1px color('primary'), 1px 1px 1px color('primary');
                 }
+ 
             }
         }
 
@@ -490,6 +492,12 @@ ul {
             margin-bottom: 25px;
             max-height: 100px;
             overflow-y: auto;
+            margin-left: -5px;
+            label {
+                padding-left: 5px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
         }
 
         .external-link{
