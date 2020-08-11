@@ -43,7 +43,7 @@ export const ReviewDocumentActivityLog = ({
   };
 
   const switchTab = () => {
-    return (tab - 1) * -getWidthSection;
+    return (tab - 1) * -(getWidthSection+2);
   };
 
   const tabDataStyle: any = {
@@ -210,16 +210,13 @@ export const ReviewDocumentActivityLog = ({
     return emailLogs.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
-          <div className="row">
-            <div className="col-md-5">
+              <div className="d-flex justify-content-between">
+                <h6>{'Requested By'}</h6>
+                <time className="vertical-tabs--list-time">
+                  {ActivityLogFormat(emailLog.dateTime)}
+                </time>
+              </div>
               <h2>{emailLog.userName}</h2>
-            </div>
-            <div className="col-md-6 offset-md-1">
-              <time className="vertical-tabs--list-time">
-                {ActivityLogFormat(emailLog.dateTime)}
-              </time>
-            </div>
-          </div>
         </a>
       </li>
     ));
