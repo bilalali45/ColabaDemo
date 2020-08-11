@@ -55,6 +55,7 @@
         height: 450px;
         max-height: 450px;
         overflow-y: auto;
+        font:  400 #{fontSize("sm") + "/1.2"} fontFamily("base");
         &.padding{
             padding: 15px;
         }
@@ -179,7 +180,7 @@
 
     .email-log{
         .vertical-tabs--list > li a h2{
-            margin-top: 0;
+            
         }
     }
     
