@@ -27,7 +27,6 @@ export const EmailContentReview = ({
   setHash
 }: emailContentReviewProps) => {
   console.log(documentList?.length);
-  console.log('documentHash', documentHash);
   const setDeafultText = () => {
     let str: string = '';
     let documentNames = documentsName
@@ -40,10 +39,6 @@ export const EmailContentReview = ({
       hashDocuments();
     }
     return str;
-    // let length = documentsName?.split(',').length;
-    // if(length){
-    //     dispatch({type: TemplateActionsType.SetDocumentLength, payload: length })
-    // }
   };
 
   const {state, dispatch} = useContext(Store);
