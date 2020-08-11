@@ -262,7 +262,7 @@ export const ReviewDocumentActivityLog = ({
       <div className="vertical-tabs--data" style={tabDataStyle}>
         {/* Activity Log */}
         <div
-          className={'vertical-tabs--wrap ' + checkActiveTab(1)}
+          className={'vertical-tabs--wrap activity-log ' + checkActiveTab(1)}
           data-step="1"
           style={{width: `${getWidthSection}px`}}
         >
@@ -336,7 +336,7 @@ export const ReviewDocumentActivityLog = ({
 
         {/* Email Log */}
         <div
-          className={'vertical-tabs--wrap ' + checkActiveTab(2)}
+          className={'vertical-tabs--wrap email-log ' + checkActiveTab(2)}
           data-step="2"
           style={{width: `${sectionRef?.current?.offsetWidth}px`}}
         >

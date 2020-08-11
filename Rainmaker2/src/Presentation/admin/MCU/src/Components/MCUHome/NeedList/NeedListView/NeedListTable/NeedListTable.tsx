@@ -96,6 +96,9 @@ export const NeedListTable = ({
       case 'Completed':
         cssClass = 'status-bullet completed';
         break;
+      case 'In Draft':
+        cssClass = 'indraft';
+        break;
       default:
         cssClass = 'status-bullet pending';
     }

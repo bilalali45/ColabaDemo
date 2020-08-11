@@ -21,7 +21,11 @@ export const NeedListItem: FunctionComponent<
     statusBullet = "borrower";
   } else if (status === "Completed") {
     statusBullet = "completed";
+  }else if (status === "In Draft") {
+    statusBullet = "indraft";
   }
+
+ 
 
   const pendingReview = status === "Pending review";
 
