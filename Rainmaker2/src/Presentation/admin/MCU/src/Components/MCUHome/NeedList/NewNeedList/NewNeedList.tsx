@@ -245,17 +245,18 @@ export const NewNeedList = () => {
         }
     }
 
-    const addDocumentToList = (doc: Document, type: string) => {
+    const addDocumentToList = (doc: any, type: string) => {
 
         let newDoc: any = {
-            isCustom: true,
             localId: v4(),
             docId: null,
             requestId: null,
             typeId: doc.docTypeId,
             docName: doc?.docType,
+            isCustom: doc?.isCustom,
             docMessage: doc?.docMessage,
         }
+        
         let newDocs = [...allDocuments, newDoc];
         setCustomDocuments([...customDocuments, newDoc]);
         setAllDocuments(newDocs);
