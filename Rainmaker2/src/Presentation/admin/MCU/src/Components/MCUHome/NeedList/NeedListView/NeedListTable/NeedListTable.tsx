@@ -68,7 +68,7 @@ export const NeedListTable = ({
     if (count > 0)
       return (
         <div className="td">
-          <span className="f-normal">
+          <span className="f-normal" title={toTitleCase(name)}>
             <strong>{toTitleCase(name)}</strong>
           </span>
         </div>
@@ -76,7 +76,7 @@ export const NeedListTable = ({
     else
       return (
         <div className="td">
-          <span className="f-normal">{toTitleCase(name)}</span>
+          <span className="f-normal" title={toTitleCase(name)}>{toTitleCase(name)}</span>
         </div>
       );
   };
@@ -95,8 +95,8 @@ export const NeedListTable = ({
       case 'Completed':
         cssClass = 'status-bullet completed';
         break;
-      case 'In Draft':
-        cssClass = 'indraft';
+      case 'In draft':
+        cssClass = 'status-bullet indraft';
         break;
       default:
         cssClass = 'status-bullet pending';
@@ -112,7 +112,9 @@ export const NeedListTable = ({
       <>
         <div>
           <div className="list-remove-alert">
-            <span className="list-remove-text">Are you sure want to delete this Document?</span>
+            <span className="list-remove-text">
+              Are you sure want to delete this Document?
+            </span>
             <div className="list-remove-options">
               <button
                 onClick={() => {

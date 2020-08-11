@@ -29,13 +29,16 @@ export const EmailContentReview = ({
   console.log(documentList?.length);
   const setDeafultText = () => {
     let str: string = '';
+    let payload = LocalDB.getUserPayload();
+    let mcuName = payload.FirstName+' '+payload.LastName;
     let documentNames = documentsName
       ? documentsName?.split(',').join(' \r\n')
       : '';
     if (emailTemplate) {
       str = emailTemplate
         .replace('{user}', borrowername)
-        .replace('{documents}', documentNames);
+        .replace('{documents}', documentNames)
+        .replace('{mcu}',mcuName);
       hashDocuments();
     }
     return str;
@@ -175,7 +178,7 @@ export const EmailContentReview = ({
   return (
     <div className="mcu-panel-body--content">
       <div className="mcu-panel-body padding">
-        <h3 className="text-ellipsis">Review email to {borrowername}</h3>
+        <h3 className="text-ellipsis" title={'Review email to '+ borrowername}>Review email to {borrowername}</h3>
         <p>If you'd like, you can customize this email.</p>
         <TextArea
           focus={true}

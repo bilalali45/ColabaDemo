@@ -11,9 +11,11 @@ import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
 import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
 
 export const ReviewDocumentActivityLog = ({
+  doc,
   id,
   typeId
 }: {
+  doc: boolean;
   id: string | null;
   typeId: string | null;
 }) => {
@@ -43,7 +45,7 @@ export const ReviewDocumentActivityLog = ({
   };
 
   const switchTab = () => {
-    return (tab - 1) * -(getWidthSection+2);
+    return (tab - 1) * -(getWidthSection + 2);
   };
 
   const tabDataStyle: any = {
@@ -56,7 +58,9 @@ export const ReviewDocumentActivityLog = ({
       const http = new Http();
 
       const {data} = await http.get<ActivityLogType[]>(
-        NeedListEndpoints.GET.documents.activityLogs(id, typeId)
+        doc
+          ? NeedListEndpoints.GET.documents.activityLogsDoc(id, typeId)
+          : NeedListEndpoints.GET.documents.activityLogs(id, typeId)
       );
 
       setActivityLogs(data);
@@ -210,13 +214,13 @@ export const ReviewDocumentActivityLog = ({
     return emailLogs.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
-              <div className="d-flex justify-content-between">
-                <h6>{'Requested By'}</h6>
-                <time className="vertical-tabs--list-time">
-                  {ActivityLogFormat(emailLog.dateTime)}
-                </time>
-              </div>
-              <h2>{emailLog.userName}</h2>
+          <div className="d-flex justify-content-between">
+            <h6>{'Requested By'}</h6>
+            <time className="vertical-tabs--list-time">
+              {ActivityLogFormat(emailLog.dateTime)}
+            </time>
+          </div>
+          <h2>{emailLog.userName}</h2>
         </a>
       </li>
     ));
@@ -224,7 +228,7 @@ export const ReviewDocumentActivityLog = ({
 
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
-    const emailText = emailLog.emailText.split('\n');
+    const emailText = emailLog.emailText.split('<br />');
 
     return (
       <React.Fragment>

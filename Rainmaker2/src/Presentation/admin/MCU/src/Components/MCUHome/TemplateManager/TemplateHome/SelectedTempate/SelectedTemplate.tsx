@@ -291,7 +291,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                 </p>
                             </>
                             : <>
-                                <p className="title"> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span title="Rename" className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
+                                <p className="title" title={currentTemplate?.name}> {currentTemplate?.name} {currentTemplate?.type === MyTemplate && <span title="Rename" className="editicon" onClick={toggleRename}><img src={EditIcon} alt="" /></span>}</p>
                             </>}
                     </div>
                     <div>

@@ -28,7 +28,7 @@ export const SelectedNeedListReview = ({ documentList }: SelectedNeedListReviewP
                     <ul>
                         {
                             documentList?.map((t: TemplateDocument) => {
-                                return <li><a>{t.docName}</a></li>
+                                return <li><a title={t.docName}>{t.docName}</a></li>
                             })
                         }
                     </ul>
