@@ -11,7 +11,7 @@
         text-transform: none;
 
         @include media-breakpoint-down(lg) {
-            padding: 3px 3px 3px;
+            padding: 3px 5px 3px;
             font: 400 #{fontSize('sm')-1+'/'+1} fontFamily('base');
         }
 
@@ -26,7 +26,7 @@
             vertical-align: middle;
             @include media-breakpoint-down(md) {
                 padding: 4px 10px 4px 0;
-                max-width: 80px;
+                max-width: 55px;
             }
 
             
@@ -39,7 +39,9 @@
             border-left: 1px solid #1580D1;
             vertical-align: middle;
             pointer-events: none;
-
+            @include media-breakpoint-down(lg) {
+                padding: 3px 2px 4px 7px;
+            }
             i {
                 font-size: fontSize('md');
                 position: relative;
@@ -88,11 +90,14 @@
                 margin-left: -30px;
                 padding: 15px 30px;
                 padding-right: 15px;
+                @include media-breakpoint-down(md) {
+                    padding: 15px 15px;
+                }
 
                 h4 {
                     font: 500 #{fontSize('xmd')+'/'+fontSize('xmd')} fontFamily('base');
                     @include media-breakpoint-down(md) {
-                        font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('base');
+                        font: 500 #{fontSize('nr')-1 +'/'+1} fontFamily('base');
                     }
                     color: color('colorBlack');
                     margin-bottom: 0;
@@ -567,7 +572,7 @@
                 
                 li {
                     font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
-                    @include media-breakpoint-down(md) {
+                    @include media-breakpoint-down(lg) {
                         font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                     } 
                     color: color('heading');
@@ -660,6 +665,10 @@
                        }
                        li {
                         font: 400 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base');  
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        vertical-align: middle;
                         @include media-breakpoint-down(md) {
                             font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                         }

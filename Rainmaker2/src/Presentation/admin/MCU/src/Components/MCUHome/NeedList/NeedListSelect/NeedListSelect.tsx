@@ -84,7 +84,7 @@ export const NeedListSelect = ({
 
               if (t?.type === MyTemplate) {
 
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis"><input disabled={selectedIds.includes(t?.id)} autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
               }
@@ -104,7 +104,7 @@ export const NeedListSelect = ({
           {
             templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis"><input disabled={selectedIds.includes(t?.id)} checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
@@ -128,7 +128,7 @@ export const NeedListSelect = ({
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
+        }} className="btn btn-primary btn-block"><span className="btn-text d-text">Continue with Template</span><span className="btn-icon d-icon"><i className="zmdi zmdi-plus"></i></span></button>
 
 
 

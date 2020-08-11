@@ -56,6 +56,7 @@ export const SelectedDocumentTypeList = ({ documentList, addNewDoc, setVisible, 
                     filterUsedDocs(usedDocs)?.map(dl => {
                         return (
                             <li
+                            title={dl?.docType}
                                 key={dl.docTypeId}
                                 onClick={async () => {
                                     setRemoveDocName(dl?.docTypeId);

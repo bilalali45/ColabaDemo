@@ -124,6 +124,7 @@ export const SelectedDocuments = ({
     }
     setSubBtnPressed(false);
     try {
+      fetchUploadedDocuments();
       let docs = await DocumentActions.getPendingDocuments(
         Auth.getLoanAppliationId()
       );
@@ -194,7 +195,7 @@ export const SelectedDocuments = ({
       return f;
     });
     updatedFiles = updatedFiles.map((f: Document, i: number) => {
-      if(i === nextInd) {
+      if (i === nextInd) {
         f.focused = true;
         return f;
       }
