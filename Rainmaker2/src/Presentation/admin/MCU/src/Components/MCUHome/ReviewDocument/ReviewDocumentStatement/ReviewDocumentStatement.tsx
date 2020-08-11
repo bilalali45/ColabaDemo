@@ -127,11 +127,7 @@ export const ReviewDocumentStatement = ({
     {fileId: string; mcuName: string}[]
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
-  const [rejectDocumentMessage, setRejectDocumentMessage] = useState(
-    `Hi ${currentDocument!.userName}, please submit the ${
-      currentDocument!.docName
-    } again.`
-  );
+  const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
 
   const getFileNameWithoutExtension = (fileName: string) =>
     fileName.substring(0, fileName.lastIndexOf('.'));
@@ -252,6 +248,17 @@ export const ReviewDocumentStatement = ({
       getDocumentFiles(currentDocument);
     }
   }, [getDocumentFiles, currentDocument]);
+
+  useEffect(() => {
+    // Set reject document message when document changed.
+    setRejectDocumentMessage(
+      `Hi ${currentDocument!.userName}, please submit the ${
+        currentDocument!.docName
+      } again.`
+    );
+
+    setRejectDocumentModal(false); // Force close reject modal on next documentload
+  }, [currentDocument!.docName]);
 
   return (
     <div
