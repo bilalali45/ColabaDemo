@@ -464,6 +464,7 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        doc={currentDocument?.docName === typeIdId.typeId || false}
         id={typeIdId.id}
         typeId={typeIdId.typeId}
         hideNextPreviousNavigation={

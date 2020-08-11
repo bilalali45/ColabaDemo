@@ -13,6 +13,8 @@ export class NeedListEndpoints {
         `/api/documentmanagement/document/getfiles?id=${id}&requestId=${requestId}&docId=${docId}`,
       activityLogs: (id: string, typeIdOrDocName: string) =>
         `/api/Documentmanagement/Document/GetActivityLog?id=${id}&typeId=${typeIdOrDocName}`,
+      activityLogsDoc: (id: string, docName: string) =>
+        `/api/Documentmanagement/Document/GetActivityLog?id=${id}&docName=${docName}`,
       emailLogs: (id: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}`
     }
