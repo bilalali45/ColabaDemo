@@ -160,7 +160,7 @@ namespace DocumentManagement.Service
 
             return result.OrderByDescending(x => x.dateTime).ToList();
         }
-        public async Task<List<DocumentModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId)
+        public async Task<List<GetTemplateModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
@@ -184,8 +184,8 @@ namespace DocumentManagement.Service
                             }
                         }", @"{
                             ""$project"": {
-                                ""_id"": 0,
-                                ""docId"": ""$documents._id"",
+                                ""_id"": 1,
+                                ""name"":1,
                                 ""typeId"": ""$documentTypes.typeId"",
                                 ""typeName"": ""$documents.name"",
                                 ""docMessage"": ""$documents.message"",
@@ -195,28 +195,40 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            List<DocumentModel> result = new List<DocumentModel>();
+            List<GetTemplateModel> result = new List<GetTemplateModel>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    DocumentQuery query = BsonSerializer.Deserialize<DocumentQuery>(current);
-                    DocumentModel dto = new DocumentModel();
-                    dto.docId = query.docId;
-                    dto.typeId = query.typeId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                    TempDocumentQuery query = BsonSerializer.Deserialize<TempDocumentQuery>(current);
+                    GetTemplateModel dto;
+                    if (result.Any(x => x.id == query.id))
                     {
-                        dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                        dto = result.Where(x => x.id == query.id).First();
                     }
                     else
                     {
-                        dto.docMessage = query.docMessage;
+                        dto = new GetTemplateModel();
+                        dto.id = query.id;
+                        dto.name = query.name;
+                        dto.docs = new List<TemplateDocumentModel>();
+                        result.Add(dto);
                     }
-                    result.Add(dto);
+                    TemplateDocumentModel dto1 = new TemplateDocumentModel();
+                    dto1.typeId = query.typeId;
+                    dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                    {
+                        dto1.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                    }
+                    else
+                    {
+                        dto1.docMessage = query.docMessage;
+                    }
+                    dto.docs.Add(dto1);
                 }
             }
-            return result.GroupBy(x => new { x.docId, x.docName }).Select(x => x.First()).ToList();
+            return result;
         }
         public async Task<List<EmailLogDTO>> GetEmailLog(string id)
         {

@@ -10,7 +10,7 @@ namespace DocumentManagement.Service
     {
         Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId);
         Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName);
-        Task<List<DocumentModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId);
+        Task<List<GetTemplateModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId);
         Task<List<EmailLogDTO>> GetEmailLog(string id);
 
         Task<bool> McuRename(string id, string requestId, string docId, string fileId, string newName, string userName);

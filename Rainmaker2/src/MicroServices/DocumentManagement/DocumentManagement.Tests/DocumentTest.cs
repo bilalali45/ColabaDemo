@@ -30,7 +30,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
+            List<GetTemplateModel> list = new List<GetTemplateModel>() { { new GetTemplateModel() { id = "5ebc18cba5d847268075ad4f" } } };
 
             mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<List<string>>(), It.IsAny<int>())).ReturnsAsync(list);
 
@@ -51,9 +51,9 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DocumentModel>;
+            var content = (result as OkObjectResult).Value as List<GetTemplateModel>;
             Assert.Single(content);
-            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].docId);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].id);
         }
         [Fact]
         public async Task TestGetFilesController()
@@ -607,13 +607,13 @@ namespace DocumentManagement.Tests
             listIds.Add("5eb25acde519051af2eeb211");
  
             //Act
-            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
+            List<GetTemplateModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
 
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(2, dto.Count);
-            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].docId);
-            Assert.Equal("Credit report has been uploaded", dto[1].docMessage);
+            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].id);
+            Assert.Equal("Credit report has been uploaded", dto[1].id);
         }
 
         [Fact]

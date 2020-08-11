@@ -58,7 +58,18 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string docMessage { get; set; }
     }
-
+    public class TemplateDocumentModel
+    {
+        public string typeId { get; set; }
+        public string docName { get; set; }
+        public string docMessage { get; set; }
+    }
+    public class GetTemplateModel
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public List<TemplateDocumentModel> docs { get; set; }
+    }
     public class DocumentQuery
     {
         [BsonRepresentation(BsonType.ObjectId)]
@@ -70,7 +81,19 @@ namespace DocumentManagement.Model
         public List<Message> messages { get; set; }
         public string docName { get; set; }
     }
-
+    public class TempDocumentQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public string name { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
+        public string typeName { get; set; }
+        public string docMessage { get; set; }
+        public List<Message> messages { get; set; }
+        public string docName { get; set; }
+    }
     public class AcceptDocumentModel
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
