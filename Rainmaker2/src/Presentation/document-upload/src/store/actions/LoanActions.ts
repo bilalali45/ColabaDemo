@@ -24,7 +24,7 @@ export class LaonActions {
       return new ContactUs().fromJson(res.data);
     } catch (error) {
       if (error?.response?.data?.errors?.loanApplicationId?.length) {
-        window.open("/DashBoard/Index", "_self");
+        window.open("/404", "_self");
         //alert("The Loan Application ID provided does not exist");
       }
     }
