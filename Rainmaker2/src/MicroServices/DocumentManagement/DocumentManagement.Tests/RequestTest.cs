@@ -208,6 +208,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -251,10 +252,13 @@ namespace DocumentManagement.Tests
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
 
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
@@ -307,6 +311,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -350,11 +355,13 @@ namespace DocumentManagement.Tests
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("LoanApplication", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
 
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
@@ -406,6 +413,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -462,10 +470,13 @@ namespace DocumentManagement.Tests
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
 
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
@@ -521,6 +532,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -577,10 +589,13 @@ namespace DocumentManagement.Tests
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
 
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
@@ -735,6 +750,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
             Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
 
             List<BsonDocument> statusList = new List<BsonDocument>()
             {
@@ -778,11 +794,13 @@ namespace DocumentManagement.Tests
 
             mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
 
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
 
             mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
             mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
             mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
 
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
