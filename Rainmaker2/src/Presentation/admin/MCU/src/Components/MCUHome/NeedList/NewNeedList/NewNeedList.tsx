@@ -53,7 +53,6 @@ export const NewNeedList = () => {
     const location = useLocation();
 
     useEffect(() => {
-        console.log(isDocumentDraft, 'isDocumentDraft');
         if (!isDocumentDraft) {
             checkIsDocumentDraft(LocalDB.getLoanAppliationId());
         }
@@ -71,7 +70,7 @@ export const NewNeedList = () => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
         }
-        
+
         setAllDocuments(selectedTemplateDocuments);
 
         if (selectedTemplateDocuments?.length) {
@@ -154,13 +153,12 @@ export const NewNeedList = () => {
         setRequestSent(true);
         let allTemplateDocs: any[] = [];
         let documentsWithTemplate: DocumentsWithTemplateDetails[] | undefined = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
-        console.log(documentsWithTemplate);
         if (documentsWithTemplate) {
             for (const template of documentsWithTemplate) {
-                let docs = template?.docs;
+                let docs = template?.docs || [];
                 for (const d of docs) {
                     let exists = allTemplateDocs?.find((pd: TemplateDocument) => pd.docName?.toLowerCase() === d.docName?.toLowerCase());
-                  
+
                     if (!exists) {
                         allTemplateDocs.push({
                             localId: v4(),
@@ -181,7 +179,7 @@ export const NewNeedList = () => {
 
         let data: any = [...draftDocuments, ...customDocuments, ...allTemplateDocs];
         setAllDocuments(data);
-        
+
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: data })
         setRequestSent(false);
     }
@@ -254,12 +252,12 @@ export const NewNeedList = () => {
             isCustom: doc?.isCustom,
             docMessage: doc?.docMessage,
         }
-        
+
         let newDocs = [...allDocuments, newDoc];
         setCustomDocuments([...customDocuments, newDoc]);
         setAllDocuments(newDocs);
         dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: newDocs });
-        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: { requestId: null } })
         setCurrentDocument(newDoc);
         enableBrowserPrompt()
     }
@@ -287,20 +285,22 @@ export const NewNeedList = () => {
         if (!location.pathname.includes('newNeedList')) {
             history.push(`/needList/${LocalDB.getLoanAppliationId()}`)
         }
-        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: { requestId: null } })
         enableBrowserPrompt()
     }
 
     const editcustomDocName = (doc: TemplateDocument) => {
         setAllDocuments((pre: TemplateDocument[]) => {
+            setCurrentDocument(null);
             return pre?.map((pt: TemplateDocument) => {
-                if(pt?.localId === doc?.localId) {
+                if (pt?.localId === doc?.localId) {
                     return doc;
                 }
                 return pt;
             })
-        }) 
-        enableBrowserPrompt()      
+        })
+        setCurrentDocument(doc);
+        enableBrowserPrompt()
     }
 
     const viewSaveDraftHandler = () => {
@@ -333,7 +333,7 @@ export const NewNeedList = () => {
                 setCurrentDocument(allDocuments[0]);
             }
         }, 1);
-        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
+        dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: { requestId: null } })
         enableBrowserPrompt()
     }
 
