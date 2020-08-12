@@ -354,6 +354,11 @@ namespace DocumentManagement.Service
                         await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
                         await activityLogService.InsertLog(activityLog.id, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
+
+                        IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
+
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RerequestedBy,typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,docName = item.displayName };
+                        await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
                 else
@@ -375,7 +380,7 @@ namespace DocumentManagement.Service
                     documentBsonArray.Add(bsonDocument);
                     if (!isDraft)
                     {
-                        string activityLogId = String.Empty;
+                       /* string activityLogId = String.Empty;
 
                         if (!string.IsNullOrEmpty(item.typeId))
                         {
@@ -432,7 +437,7 @@ namespace DocumentManagement.Service
                                 }
                             }
                         }
-
+                       */
                         IMongoCollection<ActivityLog> collectionInsertActivityLog =
                             mongoService.db.GetCollection<ActivityLog>("ActivityLog");
 
@@ -443,9 +448,7 @@ namespace DocumentManagement.Service
                             userId = request.userId,
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
-                            activity = !String.IsNullOrEmpty(activityLogId)
-                                ? string.Format(ActivityStatus.RerequestedBy, request.userName)
-                                : string.Format(ActivityStatus.RequestedBy, request.userName),
+                            activity = ActivityStatus.RequestedBy,
                             typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,
                             docId = item.id,
                             docName = item.displayName,
@@ -456,6 +459,11 @@ namespace DocumentManagement.Service
                         await collectionInsertActivityLog.InsertOneAsync(activityLog);
 
                         await activityLogService.InsertLog(activityLog.id, string.Format(ActivityStatus.StatusChanged, DocumentStatus.BorrowerTodo));
+
+                        IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
+
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName };
+                        await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
             }

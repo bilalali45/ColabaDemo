@@ -143,6 +143,7 @@ export const NeedListRequest = ({
 
     const renderSaveAsTemplate = () => {
         return (
+            <div className="save-template-wrap">
             <div className="save-template">
                 <input
                     onKeyDown={(e: any) => {
@@ -180,6 +181,9 @@ export const NeedListRequest = ({
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
+                
+            </div>
+            {templateNameError && <p className="error">{templateNameError}</p>}
             </div>
         )
     }
@@ -239,7 +243,7 @@ export const NeedListRequest = ({
                     {showSaveAsTemplate ?
                         <>
                             {renderSaveAsTemplate()}
-                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                            
                         </>
                         :
                         <div className="btn-wrap">

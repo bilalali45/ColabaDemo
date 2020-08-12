@@ -26,7 +26,6 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
     const [docMessage, setDocMessage] = useState<string | undefined>();
 
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
-
     useEffect(() => {
         setDoc(document);
         setDocName(document?.docName);

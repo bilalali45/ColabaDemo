@@ -11,7 +11,7 @@ namespace DocumentManagement.Service
         Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId);
         Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName);
         Task<List<GetTemplateModel>> GetDocumentsByTemplateIds(List<string> id, int tenantId);
-        Task<List<EmailLogDTO>> GetEmailLog(string id);
+        Task<List<EmailLogDTO>> GetEmailLog(string id, string typeId, string docName);
 
         Task<bool> McuRename(string id, string requestId, string docId, string fileId, string newName, string userName);
         Task<bool> AcceptDocument(string id, string requestId, string docId, string userName);
