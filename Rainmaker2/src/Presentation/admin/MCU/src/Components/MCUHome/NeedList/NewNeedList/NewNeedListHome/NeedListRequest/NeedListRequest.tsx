@@ -164,7 +164,7 @@ export const NeedListRequest = ({
                     autoFocus
                 />
                 <div className="save-template-btns">
-                    <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
+                    <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Cancel</button>
                     {" "}
                     <button className="btn btn-sm btn-primary" onClick={async () => {
                         if (!templateName) {
