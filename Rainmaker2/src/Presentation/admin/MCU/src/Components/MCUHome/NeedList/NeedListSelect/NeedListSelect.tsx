@@ -61,7 +61,7 @@ export const NeedListSelect = ({
       myTemplateContainerRef?.current.scrollTo(0, 0);
       tenantTemplateContainerRef?.current.scrollTo(0, 0);
     }
-  }, [show === true]);
+  }, [show === true, location.pathname, templates]);
 
 
   useEffect(() => {

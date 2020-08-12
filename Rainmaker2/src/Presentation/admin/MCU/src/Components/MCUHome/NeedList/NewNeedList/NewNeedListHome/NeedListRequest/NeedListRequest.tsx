@@ -82,7 +82,7 @@ export const NeedListRequest = ({
             return;
         }
 
-        if (templateList.find((t: Template) => t.name.trim() === value.trim())) {
+        if (templateList.find((t: Template) => t?.name?.toLowerCase().trim() === value?.toLowerCase().trim())) {
             setTemplateNameError(`Template name must be unique`);
             return;
         };
@@ -92,7 +92,6 @@ export const NeedListRequest = ({
         }
     }
 
-    console.log('needlee', showSaveAsTemplateLink)
     const renderNoDocumentSelect = () => {
         return (
             <div className="no-preview">
@@ -144,11 +143,11 @@ export const NeedListRequest = ({
 
     const renderSaveAsTemplate = () => {
         return (
+            <div className="save-template-wrap">
             <div className="save-template">
                 <input
                     onKeyDown={(e: any) => {
                         let { keyCode, target: { value } } = e;
-                        console.log('in here you know werhe', keyCode);
                         if (keyCode === 13) {
                             if (!value?.trim()?.length) {
                                 setTemplateNameError('Template name cannot be empty');
@@ -179,6 +178,9 @@ export const NeedListRequest = ({
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
+                
+            </div>
+            {templateNameError && <p className="error">{templateNameError}</p>}
             </div>
         )
     }
@@ -238,7 +240,7 @@ export const NeedListRequest = ({
                     {showSaveAsTemplate ?
                         <>
                             {renderSaveAsTemplate()}
-                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                            
                         </>
                         :
                         <div className="btn-wrap">

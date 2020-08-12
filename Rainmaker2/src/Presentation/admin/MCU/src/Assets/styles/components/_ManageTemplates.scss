@@ -558,12 +558,12 @@
                    display: flex;
                    align-items: center;
                    h4{
-                    font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
+                    font: 500 #{fontSize('xmd')+'/'+"1.2"} fontFamily('base'); 
                     @include media-breakpoint-down(md) {
-                        font: 500 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                        font: 500 #{fontSize('xmd')-1+'/'+"1.2"} fontFamily('base'); 
                     }
                     color: color('colorBlack'); 
-                    text-transform: uppercase;
+                    text-transform:capitalize;
                     margin-bottom: 0;
                     padding: 8px 15px;
                     width: 100%;

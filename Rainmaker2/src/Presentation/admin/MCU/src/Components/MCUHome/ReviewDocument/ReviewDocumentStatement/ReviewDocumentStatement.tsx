@@ -128,6 +128,7 @@ export const ReviewDocumentStatement = ({
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
+  const [currentDocId, setCurrentDocId] = useState('');
 
   const getFileNameWithoutExtension = (fileName: string) =>
     fileName.substring(0, fileName.lastIndexOf('.'));
@@ -244,10 +245,11 @@ export const ReviewDocumentStatement = ({
   };
 
   useEffect(() => {
-    if (currentDocument) {
+    if (currentDocument && currentDocId !== currentDocument.docId) {
+      setCurrentDocId(currentDocument.docId);
       getDocumentFiles(currentDocument);
     }
-  }, [getDocumentFiles, currentDocument]);
+  }, [currentDocument]);
 
   useEffect(() => {
     // Set reject document message when document changed.

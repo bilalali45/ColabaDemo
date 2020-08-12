@@ -15,9 +15,10 @@ type ReviewNeedListRequestHomeType = {
     showSendButton: boolean
     documentHash: string | undefined
     setHash: Function
+    defaultEmail: string | undefined
 }
 
-export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash }: ReviewNeedListRequestHomeType) => {
+export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash, defaultEmail }: ReviewNeedListRequestHomeType) => {
 
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
@@ -68,6 +69,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
                         documentList={documentList}
                         documentHash = {documentHash}
                         setHash = {setHash}
+                        defaultEmail = {defaultEmail}
                     />
                 </div>
             </div>
