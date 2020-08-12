@@ -13,10 +13,12 @@ type NeedListContentType = {
     document: TemplateDocument | null;
     updateDocumentMessage: Function,
     toggleShowReview: Function
-    isDraft: isDocumentDraftType
+    isDraft: isDocumentDraftType,
+    editcustomDocName: Function
 }
 
-export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview, isDraft }: NeedListContentType) => {
+export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview, isDraft, editcustomDocName }: NeedListContentType) => {
+    const [docName, setDocName] = useState(document?.docName);
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
@@ -28,6 +30,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
+        setDocName(document?.docName);
     }
 
     if (!document) {
@@ -49,15 +52,36 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                             <>
                                 <h3 className="editable">
                                     <input
+                                        maxLength={255}
                                         autoFocus
-                                        value={document?.docName}
-                                        onBlur={() => toggleRename()}
+                                        value={docName}
+                                        onBlur={(e) => {
+                                            setDocName(e.target.value);
+                                            let updatedDoc = {
+                                                ...document,
+                                                docName: e.target.value
+                                            }
+                                            editcustomDocName(updatedDoc);
+                                            toggleRename();
+                                        }}
+                                        onChange={(e) => {
+                                            setDocName(e.target.value);
+                                            let updatedDoc = {
+                                                ...document,
+                                                docName: e.target.value
+                                            }
+                                            editcustomDocName(updatedDoc);
+                                        }}
                                         className="editable-TemplateTitle" />
                                 </h3>
                             </>
                             : <>
-                                <h3><span className="text-ellipsis"> {document?.docName}</span></h3>
-                                {/* <p> {document?.docName}  <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span></p> */}
+                                {/* <h3><span className="text-ellipsis"> {document?.docName}</span></h3> */}
+                                <h3 className="text-ellipsis" title={document?.docName}> {document?.docName}
+                                    {document?.isCustom &&
+                                        <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span>
+                                    }
+                                </h3>
                             </>}
                     </div>
                 </div>
@@ -92,7 +116,8 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                         onBlurHandler={() => { }}
                         errorText={errorText}
                         isValid={isValid}
-                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)} />
+                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)}
+                        maxLengthValue={500} />
                 </div>
 
             </div>

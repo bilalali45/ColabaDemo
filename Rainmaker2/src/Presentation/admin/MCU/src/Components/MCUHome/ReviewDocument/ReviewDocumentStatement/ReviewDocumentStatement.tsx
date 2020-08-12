@@ -228,7 +228,7 @@ export const ReviewDocumentStatement = ({
   };
 
   const validateAndRejectDocument = () => {
-    if (rejectDocumentMessage === '') {
+    if (rejectDocumentMessage.trim() === '') {
       return false;
     }
 
@@ -267,7 +267,7 @@ export const ReviewDocumentStatement = ({
       className="document-statement"
     >
       <header className="document-statement--header">
-        <h2>{currentDocument?.docName}</h2>
+        <h2 title={currentDocument?.docName}>{currentDocument?.docName}</h2>
       </header>
       {!!loading ? (
         <div
@@ -323,7 +323,8 @@ export const ReviewDocumentStatement = ({
                   </p>
                   <textarea
                     style={{
-                      borderColor: rejectDocumentMessage === '' ? 'red' : ''
+                      borderColor:
+                        rejectDocumentMessage.trim() === '' ? 'red' : ''
                     }}
                     className="form-control"
                     rows={6}
@@ -331,6 +332,9 @@ export const ReviewDocumentStatement = ({
                     onChange={onChangeTextArea}
                     maxLength={255}
                   />
+                  {rejectDocumentMessage.trim() === '' && (
+                    <div style={{color: 'red'}}>This field is required.</div>
+                  )}
                 </div>
               </div>
             )}

@@ -108,7 +108,7 @@ export const DocumentsRequired = () => {
                   changeCurrentDoc(pd);
                 }}
               >
-                <a
+                <a title={pd.docName}
                   className={
                     currentDoc && pd?.docId === currentDoc?.docId
                       ? "active"

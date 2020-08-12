@@ -28,6 +28,12 @@
             &:last-child{
                 padding: 10px;
             }
+            &:nth-child(3n){
+                color:color('needListTableFileName');
+                a{
+                    color: currentColor;
+                }
+            }
             .block-element{
                 &:last-child{
                    height: auto;
@@ -35,6 +41,9 @@
             }
             .btnloader{
                 padding: 0 0 0 15px;
+            }
+            a{
+                color: color('base');
             }
         }
 
@@ -135,6 +144,8 @@
 
     .f-normal{
         font-size: fontSize("nr");
+        @extend .text-ellipsis;
+        max-width: 400px;
         strong{
             font-weight: 500;
         }
@@ -170,7 +181,7 @@
         }
     }
     .filename-by-b {
-        color:#A8A6A6;
+        color:color('needListTableFileName');
         font-size: fontSize("xs")-1;
     }
 

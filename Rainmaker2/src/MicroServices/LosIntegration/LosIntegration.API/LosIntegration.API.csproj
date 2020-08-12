@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Macros\**" />
+    <Content Remove="Macros\**" />
+    <EmbeddedResource Remove="Macros\**" />
+    <None Remove="Macros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LosIntegration.Service\LosIntegration.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TrackableEntities.Common.Core">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.Common.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackableEntities.EF.Core">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.EF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="URF.Core.Abstractions">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="URF.Core.EF">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.EF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>

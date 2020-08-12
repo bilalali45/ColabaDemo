@@ -26,7 +26,9 @@ type NewNeedListHomeType = {
     removeDocumentFromList: Function,
     toggleShowReview: Function,
     requestSent: boolean,
-    showSaveAsTemplateLink: boolean
+    showSaveAsTemplateLink: boolean,
+    fetchTemplateDocs: Function,
+    editcustomDocName: Function,
 }
 
 export const NewNeedListHome = ({
@@ -45,7 +47,9 @@ export const NewNeedListHome = ({
     removeDocumentFromList,
     toggleShowReview,
     requestSent,
-    showSaveAsTemplateLink
+    showSaveAsTemplateLink,
+    fetchTemplateDocs,
+    editcustomDocName
 }: NewNeedListHomeType) => {
     const [loaderVisible, setLoaderVisible] = useState<boolean>(false);
 
@@ -72,6 +76,7 @@ export const NewNeedListHome = ({
                                 changeTemplateName={changeTemplateName}
                                 removeDocumentFromList={removeDocumentFromList}
                                 showSaveAsTemplateLink={showSaveAsTemplateLink}
+                                fetchTemplateDocs={fetchTemplateDocs}
                             />
 
                         </div>
@@ -82,7 +87,8 @@ export const NewNeedListHome = ({
                                 isDraft={isDraft}
                                 updateDocumentMessage={updateDocumentMessage}
                                 document={!allDocuments?.length ? null : currentDocument}
-                                toggleShowReview={toggleShowReview} />
+                                toggleShowReview={toggleShowReview} 
+                                editcustomDocName={editcustomDocName}/>
                         </div>
                     </div>
                 </div>
