@@ -284,6 +284,9 @@
                     .btn-sm{
                         font-size: fontSize('nr');
                     }
+                    .btn{
+                        text-transform: initial;
+                    }
 
                 }
                 &.alert{
@@ -307,6 +310,9 @@
                 display: inline-block;
                 position: relative;
                 margin-top: 5px;
+                span{
+                    display: inline-block;
+                }
             }
 
 

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="TrackableEntities.Common.Core">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.Common.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackableEntities.EF.Core">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.EF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="URF.Core.Abstractions">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="URF.Core.EF">
+      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.EF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
