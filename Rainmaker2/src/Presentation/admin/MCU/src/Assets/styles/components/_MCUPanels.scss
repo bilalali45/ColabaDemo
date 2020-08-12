@@ -58,6 +58,8 @@
             }
             .mcu-panel-body.padding{
                 min-height: 70vh;
+                height: calc(100vh - 250px);
+                overflow-y: auto;
             }
         }
         &--aside{
@@ -65,6 +67,12 @@
             color: color('ReviewDocumentSidebarText');
             padding: 0;
             height: 100%;
+
+            .mcu-panel-body{
+                max-height: calc(100vh - 360px);
+                overflow-y: auto;
+            }
+
         }
     }
 
