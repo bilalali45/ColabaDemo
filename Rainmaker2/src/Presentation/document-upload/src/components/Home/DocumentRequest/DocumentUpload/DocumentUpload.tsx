@@ -17,6 +17,7 @@ export const DocumentUpload = () => {
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
+ 
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc?.docMessage
     ? currentDoc.docMessage
