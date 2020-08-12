@@ -113,6 +113,8 @@ namespace DocumentManagement.API.Controllers
                                                             tenantId: tenantId,
                                                             userProfileId: userProfileId);
                     System.IO.File.Delete(path: filePath);
+                    if(docQuery==false)
+                        throw new Exception("unable to update file in mongo");
                 }
 
             // set order
