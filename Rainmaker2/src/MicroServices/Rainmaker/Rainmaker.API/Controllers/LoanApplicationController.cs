@@ -14,6 +14,7 @@ using RainMaker.Common.FTP;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
 using RainMaker.Common.Extensions;
+using Rainmaker.Model.LoanApplication;
 using TrackableEntities.Common.Core;
 
 
@@ -65,6 +66,15 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
         }
+
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLoanApplication([FromQuery] string encompassNumber)
+        {
+           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: encompassNumber).SingleOrDefault();
+            return Ok(loanApplication);
+        }
+
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<string> GetPhoto(string photo, int loanApplicationId)
