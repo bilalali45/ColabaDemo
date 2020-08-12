@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import { Http } from "rainsoft-js";
 import Spinner from "react-bootstrap/Spinner";
 // ../../../../../../Assets/images/editicon.svg
@@ -18,19 +18,20 @@ type NeedListContentType = {
 }
 
 export const NeedListContent = ({ document, updateDocumentMessage, toggleShowReview, isDraft, editcustomDocName }: NeedListContentType) => {
-    const [docName, setDocName] = useState(document?.docName);
+    const [docName, setDocName] = useState<string | undefined>('');
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
-    console.log(document, 'document');
+
     useEffect(() => {
         setDoc(document);
-    }, [doc?.docName])
+        setDocName(document?.docName);
+
+    }, [document])
 
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
-        setDocName(document?.docName);
     }
 
     if (!document) {
@@ -46,7 +47,7 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
 
         return (
             <div className="T-head">
-                <div className="T-head-flex text-ellipsis">
+                <div className="T-head-flex">
                     <div>
                         {editTitleview ?
                             <>
@@ -55,31 +56,36 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                                         maxLength={255}
                                         autoFocus
                                         value={docName}
+                                        onFocus={(e: any) => {
+                                            let target = e.target;
+                                            setTimeout(() => {
+                                                target?.select();
+                                            }, 0);
+                                        }}
                                         onBlur={(e) => {
                                             setDocName(e.target.value);
                                             let updatedDoc = {
                                                 ...document,
                                                 docName: e.target.value
                                             }
+                                           
                                             editcustomDocName(updatedDoc);
                                             toggleRename();
                                         }}
-                                        onChange={(e) => {
+                                        onChange={(e: any) => {
                                             setDocName(e.target.value);
-                                            let updatedDoc = {
-                                                ...document,
-                                                docName: e.target.value
-                                            }
-                                            editcustomDocName(updatedDoc);
                                         }}
                                         className="editable-TemplateTitle" />
                                 </h3>
                             </>
                             : <>
                                 {/* <h3><span className="text-ellipsis"> {document?.docName}</span></h3> */}
-                                <h3 className="text-ellipsis" title={document?.docName}> {document?.docName}
+                                <h3 className="text-ellipsis" title={docName}><span className="text-ellipsis">{docName}</span>
                                     {document?.isCustom &&
-                                        <span className="editicon" onClick={toggleRename} ><img src={EditIcon} alt="" /></span>
+                                        <span className="editicon" onClick={() => {
+                                            toggleRename();
+                                            setDocName(document?.docName);
+                                        }} ><img src={EditIcon} alt="" /></span>
                                     }
                                 </h3>
                             </>}

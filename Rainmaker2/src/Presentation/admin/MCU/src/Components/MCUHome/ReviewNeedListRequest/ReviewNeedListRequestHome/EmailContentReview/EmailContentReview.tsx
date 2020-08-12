@@ -27,7 +27,6 @@ export const EmailContentReview = ({
   documentHash,
   setHash
 }: emailContentReviewProps) => {
-  console.log(documentList?.length);
   const setDeafultText = () => {
     let str: string = '';
     let payload = LocalDB.getUserPayload();
