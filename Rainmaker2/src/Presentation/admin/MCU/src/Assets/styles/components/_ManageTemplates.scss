@@ -563,7 +563,7 @@
                         font: 500 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                     }
                     color: color('colorBlack'); 
-                    text-transform: uppercase;
+                    text-transform:capitalize;
                     margin-bottom: 0;
                     padding: 8px 15px;
                     width: 100%;
