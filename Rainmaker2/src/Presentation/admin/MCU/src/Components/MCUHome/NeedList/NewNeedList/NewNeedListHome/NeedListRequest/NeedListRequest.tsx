@@ -171,6 +171,9 @@ export const NeedListRequest = ({
                             setTemplateNameError('Template name cannot be empty');
                             return;
                         }
+                        if(templateNameError) {
+                           return; 
+                        }
                         setRequestHit(true);
                         await saveAsTemplate();
                         setRequestHit(false);

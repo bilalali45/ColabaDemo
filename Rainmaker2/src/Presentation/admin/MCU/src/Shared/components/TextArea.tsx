@@ -8,10 +8,21 @@ type TextAreaType = {
     isValid?: boolean;
     errorText?: string;
     placeholderValue?: string,
-    maxLengthValue?: number
+    maxLengthValue?: number,
+    onKeyDown?: Function
 }
 
-export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () => { }, onChangeHandler = () => { }, isValid, errorText, focus, maxLengthValue = 3000}: TextAreaType) => {
+export const TextArea = ({ 
+        textAreaValue, 
+        placeholderValue, 
+        onBlurHandler = () => { }, 
+        onChangeHandler = () => { }, 
+        isValid, 
+        errorText, 
+        focus, 
+        maxLengthValue = 3000,
+        onKeyDown = () => {}
+    }: TextAreaType) => {
 
 
     const [isTextValid, setIsTextValid] = useState<boolean>(false);
@@ -37,6 +48,7 @@ export const TextArea = ({ textAreaValue, placeholderValue, onBlurHandler = () =
     return (
         <Fragment>
             <textarea
+                onKeyDown={(e) => onKeyDown(e)}
                 style={textAreaStyle} 
                 autoFocus={focus} 
                 onBlur={(e) => onBlurHandler()} 

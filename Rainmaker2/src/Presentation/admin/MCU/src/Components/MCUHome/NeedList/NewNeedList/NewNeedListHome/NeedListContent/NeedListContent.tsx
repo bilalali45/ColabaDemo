@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { TextArea } from "../../../../../../Shared/components/TextArea";
 import { errorText } from "../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview";
 import { isDocumentDraftType } from "../../../../../../Store/reducers/TemplatesReducer";
+import { debug } from "console";
 
 type NeedListContentType = {
     document: TemplateDocument | null;
@@ -22,13 +23,22 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
     const [editTitleview, seteditTitleview] = useState<boolean>(false);
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
+    const [docMessage, setDocMessage] = useState<string | undefined>();
+
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
 
     useEffect(() => {
         setDoc(document);
         setDocName(document?.docName);
+        let m = document?.docMessage?.replace(/<br\s*[\/]?>/gi, '\n');
+        setDocMessage(m);
+    }, [document]);
 
-    }, [document])
+    useEffect(() => {
+        // setDocMessage(document?.docMessage?.replace(/<br>\\*/g, `${/\n/}`))
+    }, [document?.docMessage]);
+
+    console.log(document);
 
     const toggleRename = () => {
         seteditTitleview(!editTitleview);
@@ -118,11 +128,14 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
                     <TextArea
                         placeholderValue={"Type your message"}
                         focus={true}
-                        textAreaValue={document?.docMessage || ''}
+                        textAreaValue={docMessage || ''}
                         onBlurHandler={() => { }}
                         errorText={errorText}
                         isValid={isValid}
-                        onChangeHandler={(e: any) => updateDocumentMessage(e.target.value, document)}
+                        onChangeHandler={(e: any) => {
+                            setDocMessage(e.target.value);
+                            updateDocumentMessage(e.target.value.replace(/\n/g, '<br/>'), document);
+                        }}
                         maxLengthValue={500} />
                 </div>
 
