@@ -56,7 +56,6 @@ export class NewNeedListActions {
             }
         });
 
-        
         let requestData = {
             loanApplicationId: parseInt(loanApplicationId),
             requests: [
@@ -66,7 +65,6 @@ export class NewNeedListActions {
                 }
             ]
         }
-      
         try {
             let res = await http.post(url, requestData);
             return res.data;
@@ -94,7 +92,6 @@ export class NewNeedListActions {
 
         try {
             let res = await http.post(url, templateData);
-            console.log(res.data);
             return res?.data;
         } catch (error) {
 

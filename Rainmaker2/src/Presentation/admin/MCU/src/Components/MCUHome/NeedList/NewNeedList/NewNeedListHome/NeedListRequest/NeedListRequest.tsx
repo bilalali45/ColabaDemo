@@ -67,7 +67,10 @@ export const NeedListRequest = ({
         setLoaderVisible(false);
     }, []);
 
-    const toggleSaveAsTemplate = () => setShowSaveAsTemplate(!showSaveAsTemplate);
+    const toggleSaveAsTemplate = () => {
+        setShowSaveAsTemplate(!showSaveAsTemplate);
+        setTemplateNameError('');
+    };
 
     const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
         let { target: { value } } = e;
@@ -79,7 +82,7 @@ export const NeedListRequest = ({
             return;
         }
 
-        if (templateList.find((t: Template) => t.name.trim() === value.trim())) {
+        if (templateList.find((t: Template) => t?.name?.toLowerCase().trim() === value?.toLowerCase().trim())) {
             setTemplateNameError(`Template name must be unique`);
             return;
         };
@@ -140,11 +143,11 @@ export const NeedListRequest = ({
 
     const renderSaveAsTemplate = () => {
         return (
+            <div className="save-template-wrap">
             <div className="save-template">
                 <input
                     onKeyDown={(e: any) => {
                         let { keyCode, target: { value } } = e;
-                    
                         if (keyCode === 13) {
                             if (!value?.trim()?.length) {
                                 setTemplateNameError('Template name cannot be empty');
@@ -165,12 +168,19 @@ export const NeedListRequest = ({
                     <button className="btn btn-sm btn-secondry" onClick={toggleSaveAsTemplate}>Close</button>
                     {" "}
                     <button className="btn btn-sm btn-primary" onClick={async () => {
+                        if (!templateName) {
+                            setTemplateNameError('Template name cannot be empty');
+                            return;
+                        }
                         setRequestHit(true);
                         await saveAsTemplate();
                         setRequestHit(false);
                         toggleSaveAsTemplate();
                     }}>Save</button>
                 </div>
+                
+            </div>
+            {templateNameError && <p className="error">{templateNameError}</p>}
             </div>
         )
     }
@@ -230,7 +240,7 @@ export const NeedListRequest = ({
                     {showSaveAsTemplate ?
                         <>
                             {renderSaveAsTemplate()}
-                            {templateNameError && <p style={{ color: 'red' }}>{templateNameError}</p>}
+                            
                         </>
                         :
                         <div className="btn-wrap">

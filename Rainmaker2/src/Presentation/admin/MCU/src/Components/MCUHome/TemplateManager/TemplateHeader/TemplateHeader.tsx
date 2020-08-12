@@ -7,7 +7,6 @@ export const TemplateHeader = () => {
 
   useEffect(() => {
     const closeTemplateManager = (e: any) => {
-     
       if (e.keyCode === 27) {
         history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
       }

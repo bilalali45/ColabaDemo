@@ -39,6 +39,11 @@
             color: color("heading");
             margin-top: 0;
             margin-bottom: 5px;
+            span{
+                max-width: 450px;
+                display: inline-block;
+                vertical-align: middle;
+            }
         }
         p {
             font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
@@ -53,6 +58,12 @@
                 position: absolute;
                 left: 0;
             }
+        }
+        &--alert{
+            color: $danger;
+            font: 500 #{fontSize("xs") + "/17px"} fontFamily("base");
+            padding: 0 5px;
+            text-transform: uppercase;
         }
     }
     .file-drop-box {
@@ -330,9 +341,9 @@
         .addmore-wrap {
             text-align: left;
             padding-top: 10px;
-    padding-bottom: 5px;
-    display: flex;
-    align-items: center;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
             .addmoreDoc {
                 cursor: pointer;
                 font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");

@@ -128,6 +128,7 @@ export const ReviewDocumentStatement = ({
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
+  const [currentDocId, setCurrentDocId] = useState('');
 
   const getFileNameWithoutExtension = (fileName: string) =>
     fileName.substring(0, fileName.lastIndexOf('.'));
@@ -228,7 +229,7 @@ export const ReviewDocumentStatement = ({
   };
 
   const validateAndRejectDocument = () => {
-    if (rejectDocumentMessage === '') {
+    if (rejectDocumentMessage.trim() === '') {
       return false;
     }
 
@@ -244,10 +245,11 @@ export const ReviewDocumentStatement = ({
   };
 
   useEffect(() => {
-    if (currentDocument) {
+    if (currentDocument && currentDocId !== currentDocument.docId) {
+      setCurrentDocId(currentDocument.docId);
       getDocumentFiles(currentDocument);
     }
-  }, [getDocumentFiles, currentDocument]);
+  }, [currentDocument]);
 
   useEffect(() => {
     // Set reject document message when document changed.
@@ -323,7 +325,8 @@ export const ReviewDocumentStatement = ({
                   </p>
                   <textarea
                     style={{
-                      borderColor: rejectDocumentMessage === '' ? 'red' : ''
+                      borderColor:
+                        rejectDocumentMessage.trim() === '' ? 'red' : ''
                     }}
                     className="form-control"
                     rows={6}
@@ -331,7 +334,7 @@ export const ReviewDocumentStatement = ({
                     onChange={onChangeTextArea}
                     maxLength={255}
                   />
-                  {rejectDocumentMessage === '' && (
+                  {rejectDocumentMessage.trim() === '' && (
                     <div style={{color: 'red'}}>This field is required.</div>
                   )}
                 </div>

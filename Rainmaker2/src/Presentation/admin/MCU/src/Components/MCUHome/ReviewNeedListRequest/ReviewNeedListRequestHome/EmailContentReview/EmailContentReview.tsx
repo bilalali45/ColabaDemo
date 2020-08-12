@@ -30,7 +30,6 @@ export const EmailContentReview = ({
   setHash,
   defaultEmail
 }: emailContentReviewProps) => {
-
   const setDeafultText = () => {
     let str: string = '';
     let payload = LocalDB.getUserPayload();
