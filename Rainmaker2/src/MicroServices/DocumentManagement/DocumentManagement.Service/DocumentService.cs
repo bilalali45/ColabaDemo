@@ -232,15 +232,30 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<List<EmailLogDTO>> GetEmailLog(string id)
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id,string typeId,string docName)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
-              @"{""$match"": {
-                  ""loanId"": " + new ObjectId(id).ToJson() + @"
+            string match = "";
+            if (!string.IsNullOrEmpty(typeId))
+            {
+                match = @"{""$match"": {
+                  ""loanId"": " + new ObjectId(id).ToJson() + @", 
+                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
                             }
-                        }"
+                        }";
+            }
+            else
+            {
+                match = @"{""$match"": {
+                  ""loanId"": " + new ObjectId(id).ToJson() + @",
+                  ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
+                            }
+                        }";
+            }
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+              match
                         , @"{
                             ""$project"": {
                                 ""userId"": 1,                               

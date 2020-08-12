@@ -637,7 +637,7 @@ namespace DocumentManagement.Tests
                 loanId = "5eb25d1fe519051af2eeb72d"
             } } };
 
-            mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetEmailLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
@@ -783,7 +783,139 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d","Salary Slip");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(9, dto.Count);
+            Assert.Equal(3842, dto[1].userId);
+            Assert.Equal("abc", dto[2].userName);
+            Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
+            Assert.Equal("abc", dto[7].emailText);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
+
+        }
+        [Fact]
+        public async Task TestGetEmailLogServiceTypeIdNull()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty  fields  
+                        { "userId" ,  3842},
+                        { "userName" ,BsonString.Empty},
+                        { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                        { "_id" , BsonString.Empty},
+                        { "emailText" , BsonString.Empty},
+                        { "loanId" , BsonString.Empty}
+                    }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except userId
+                    { "userId" , 3842 },
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields  except userName
+                    { "userId" , 3842},
+                    { "userName" , "abc"},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except dateTime
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except id
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" ,  "5f046210f50dc78d7b0c059c"},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except requestId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except docId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except activity
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , "abc" },
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except loanId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , "5eb25d1fe519051af2eeb72d" }
+                }
+
+            };
+
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.EmailLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockActivityLogService.Object);
+            //Act
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "", "Salary Slip");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
