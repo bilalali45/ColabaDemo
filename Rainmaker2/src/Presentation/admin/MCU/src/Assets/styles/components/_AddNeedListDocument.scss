@@ -284,6 +284,9 @@
                     .btn-sm{
                         font-size: fontSize('nr');
                     }
+                    .btn{
+                        text-transform: initial;
+                    }
 
                 }
                 &.alert{

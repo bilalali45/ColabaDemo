@@ -238,7 +238,6 @@ namespace DocumentManagement.Service
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
               @"{""$match"": {
-
                   ""loanId"": " + new ObjectId(id).ToJson() + @"
                             }
                         }"
@@ -249,12 +248,11 @@ namespace DocumentManagement.Service
                                 ""dateTime"": 1,
                                 ""_id"": 1 ,
                                 ""emailText"": 1, 
-                                ""loanId"": 1  
+                                ""loanId"": 1,
+                                ""message"": 1
                             }
-                             } "
-
+                           } "
                 ));
-
 
             List<EmailLogDTO> result = new List<EmailLogDTO>();
             while (await asyncCursor.MoveNextAsync())
@@ -269,7 +267,7 @@ namespace DocumentManagement.Service
                     dto.emailText = query.emailText;
                     dto.id = query.id;
                     dto.loanId = query.loanId;
-
+                    dto.message = query.message;
                     result.Add(dto);
                 }
             }
