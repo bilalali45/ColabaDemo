@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
@@ -85,7 +86,7 @@ namespace DocumentManagement.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetEmailLog requested by {userProfileId}");
-            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id));
+            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id,typeId: getEmailLog.typeId,docName: getEmailLog.docName));
         }
 
         [HttpGet(template: "[action]")]

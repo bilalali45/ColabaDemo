@@ -23,7 +23,6 @@ export const NeedListContent = ({ document, updateDocumentMessage, toggleShowRev
     const [doc, setDoc] = useState<TemplateDocument | null>(null);
     const [isValid, setIsValid] = useState<boolean>(false);
     const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
-
     useEffect(() => {
         setDoc(document);
         setDocName(document?.docName);

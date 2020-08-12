@@ -50,7 +50,9 @@ export class DocumentUploadActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log('-------------->Upload errors------------>',error)
+    }
   }
 
   static prepareFormData(currentSelected: DocumentRequest, file: Document) {
