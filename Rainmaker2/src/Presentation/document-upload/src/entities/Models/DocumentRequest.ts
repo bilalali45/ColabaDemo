@@ -9,6 +9,7 @@ export class DocumentRequest {
     public docMessage: string;
     public files: Document[] | null;
     public isRejected: boolean = false;
+    public resubmittedNewFiles?: boolean = false;
 
     constructor(
         id: string,

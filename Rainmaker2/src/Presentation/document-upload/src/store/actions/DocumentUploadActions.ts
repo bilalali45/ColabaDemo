@@ -50,6 +50,7 @@ export class DocumentUploadActions {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
+      
     } catch (error) {}
   }
 

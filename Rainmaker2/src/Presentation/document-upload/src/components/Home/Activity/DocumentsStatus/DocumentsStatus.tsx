@@ -37,6 +37,7 @@ export const DocumentsStatus = () => {
       Auth.getLoanAppliationId()
     );
     if (docsPending) {
+
       dispatch({
         type: DocumentsActionType.FetchPendingDocs,
         payload: docsPending,

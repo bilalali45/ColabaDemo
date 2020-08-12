@@ -112,14 +112,21 @@ export const SelectedDocuments = ({
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
+
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        await DocumentUploadActions.submitDocuments(
-          currentSelected,
-          file,
-          dispatch,
-          Auth.getLoanAppliationId()
-        );
+        try {
+          await DocumentUploadActions.submitDocuments(
+            currentSelected,
+            file,
+            dispatch,
+            Auth.getLoanAppliationId()
+          );
+        } catch (error) {
+          console.log('error during file submit', error);
+          console.log('error during file submit', error.response);
+        }
+
       }
     }
     setSubBtnPressed(false);
@@ -141,7 +148,21 @@ export const SelectedDocuments = ({
           });
         }
       }
-    } catch (error) {}
+      let current = currentSelected;
+      let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
+
+        if (p.docId === currentSelected.docId) {
+          // p.resubmittedNewFiles = true;
+          current = p;
+          return p;
+        }
+        return p;
+      });
+      console.log(updatedPendingDocs);
+      dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: updatedPendingDocs });
+      dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
+    } catch (error) {
+    }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -149,7 +170,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -273,9 +294,9 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          data
+        );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -304,6 +325,13 @@ export const SelectedDocuments = ({
     ).length;
     return foundIndx === index;
   };
+
+  // useEffect(() => {
+  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
+  //     setDoneVisible(false);
+  //     setBtnDisabled(true);
+  //   }
+  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
   return (
     <section className="file-drop-box-wrap">
@@ -348,19 +376,19 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -368,8 +396,8 @@ export const SelectedDocuments = ({
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
         {!!currentDoc && (
@@ -416,18 +444,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );
