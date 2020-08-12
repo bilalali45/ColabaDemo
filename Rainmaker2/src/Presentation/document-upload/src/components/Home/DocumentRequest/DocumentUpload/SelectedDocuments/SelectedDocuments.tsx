@@ -112,15 +112,9 @@ export const SelectedDocuments = ({
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
-    let counter = 0;
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        counter++;
         try {
-          if (counter === 1) {
-            throw new Error("file could not be uploaded");
-
-          }
           await DocumentUploadActions.submitDocuments(
             currentSelected,
             file,
@@ -136,7 +130,6 @@ export const SelectedDocuments = ({
       }
     }
     setSubBtnPressed(false);
-    console.log(selectedFiles);
     try {
       fetchUploadedDocuments();
       let docs = await DocumentActions.getPendingDocuments(
@@ -165,6 +158,7 @@ export const SelectedDocuments = ({
         }
         return p;
       });
+
       current.files = selectedFiles.filter((f: Document) => f.uploadStatus !== 'failed');
       dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: updatedPendingDocs });
       dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
