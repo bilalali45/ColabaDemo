@@ -154,7 +154,6 @@ export const ReviewDocument = () => {
     []
   );
 
-  //This function is being called inside useEffect
   const navigateDocument = useCallback(
     (
       docs: NeedList[],
@@ -268,7 +267,7 @@ export const ReviewDocument = () => {
 
           setCurrentDocument(clonedCurrentDocument);
 
-          await timeout(2000);
+          await timeout(1000);
 
           navigateDocument(clonedNeedList, 'next');
         } catch (error) {
@@ -315,7 +314,7 @@ export const ReviewDocument = () => {
 
           setCurrentDocument(clonedCurrentDocument);
 
-          await timeout(2000);
+          await timeout(1000);
 
           navigateDocument(needList, 'next');
         } catch (error) {

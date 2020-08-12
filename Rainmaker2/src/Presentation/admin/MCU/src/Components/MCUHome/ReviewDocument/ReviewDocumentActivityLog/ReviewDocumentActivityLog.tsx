@@ -194,12 +194,14 @@ export const ReviewDocumentActivityLog = ({
     }
   };
 
-  const getEmailLogs = useCallback(async (id) => {
+  const getEmailLogs = useCallback(async (id, typeId) => {
     try {
       const http = new Http();
 
       const {data} = await http.get<EmailLogsType[]>(
-        NeedListEndpoints.GET.documents.emailLogs(id)
+        doc
+          ? NeedListEndpoints.GET.documents.emailLogsDoc(id, typeId)
+          : NeedListEndpoints.GET.documents.emailLogs(id, typeId)
       );
 
       setEmailLogs(data);
@@ -257,7 +259,7 @@ export const ReviewDocumentActivityLog = ({
 
   useEffect(() => {
     if (id === null) return;
-    getEmailLogs(id);
+    getEmailLogs(id, typeId);
   }, [getEmailLogs, id]);
 
   return (
