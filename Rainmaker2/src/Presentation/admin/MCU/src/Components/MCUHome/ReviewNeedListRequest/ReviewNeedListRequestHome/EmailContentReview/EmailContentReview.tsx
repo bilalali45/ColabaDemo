@@ -15,6 +15,8 @@ type emailContentReviewProps = {
   documentList: any;
   documentHash: string | undefined;
   setHash: Function;
+  defaultEmail: string | undefined
+
 };
 export const errorText = 'Invalid character entered';
 
@@ -25,9 +27,10 @@ export const EmailContentReview = ({
   showSendButton,
   documentList,
   documentHash,
-  setHash
+  setHash,
+  defaultEmail
 }: emailContentReviewProps) => {
-  console.log(documentList?.length);
+
   const setDeafultText = () => {
     let str: string = '';
     let payload = LocalDB.getUserPayload();
@@ -62,6 +65,9 @@ export const EmailContentReview = ({
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
 
   const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
+
+  console.log('defaultEmail',defaultEmail)
+
 
   useEffect(() => {
     if (Boolean(isDocumentDraft?.requestId)) {

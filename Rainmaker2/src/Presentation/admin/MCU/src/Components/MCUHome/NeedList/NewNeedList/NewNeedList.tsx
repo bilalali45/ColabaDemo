@@ -38,6 +38,7 @@ export const NewNeedList = () => {
     const isDocumentDraft = templateManager?.isDocumentDraft;
     const emailBody = templateManager?.emailContent;
     const templateIds = needListManager?.templateIds || [];
+    const loanData = needListManager?.loanInfo;
     const categoryDocuments = templateManager?.categoryDocuments;
     const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
     const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
@@ -48,25 +49,43 @@ export const NewNeedList = () => {
     const [showSendButton, setShowSendButton] = useState<boolean>(true);
     const emailContent: string = templateManager?.emailContent;
     const [documentHash, setDocumentHash] = useState<string>();
-
+    const [emailTemplate, setEmailTemplate] = useState<string>();
+    const [documentsName, setDocumentName] = useState<string>();
+    const [defaultEmail, setDefaultEmail] = useState<string>();
+    const borrowername = loanData?.borrowers[0];
     const history = useHistory();
     const location = useLocation();
 
     useEffect(() => {
-        console.log(isDocumentDraft, 'isDocumentDraft');
         if (!isDocumentDraft) {
             checkIsDocumentDraft(LocalDB.getLoanAppliationId());
         }
-
-
         if (!loanInfo) {
             fetchLoanApplicationDetail();
         }
-
+        setTimeout(()=> {
+            getEmailTemplate();
+        }, 1000)
         return () => {
             clearOldData()
         }
+        
     }, []);
+
+    useEffect(()=> {
+        getDocumentsName(); 
+    },[allDocuments?.length])
+
+    useEffect(()=> {     
+            setDeafultText();     
+    },[documentsName])
+
+    useEffect(()=> {
+        if(allDocuments){         
+                setDeafultText();              
+        }
+    },[emailTemplate || documentsName])
+
     useEffect(() => {
         if (!categoryDocuments) {
             fetchCurrentCatDocs();
@@ -154,7 +173,7 @@ export const NewNeedList = () => {
         setRequestSent(true);
         let allTemplateDocs: any[] = [];
         let documentsWithTemplate: DocumentsWithTemplateDetails[] | undefined = await NewNeedListActions.getDocumentsFromSelectedTemplates(ids);
-        console.log(documentsWithTemplate);
+        
         if (documentsWithTemplate) {
             for (const template of documentsWithTemplate) {
                 let docs = template?.docs;
@@ -244,7 +263,6 @@ export const NewNeedList = () => {
     }
 
     const addDocumentToList = (doc: any, type: string) => {
-
         let newDoc: any = {
             localId: v4(),
             docId: null,
@@ -262,6 +280,8 @@ export const NewNeedList = () => {
         dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: {requestId: null}})
         setCurrentDocument(newDoc);
         enableBrowserPrompt()
+        console.log('allDocuments',allDocuments)
+        updateEmailContent();
     }
 
     const saveAsDraft = async (toDraft: boolean) => {
@@ -342,9 +362,46 @@ export const NewNeedList = () => {
         setDocumentHash(hash)
     }
 
-    // if (!allDocuments?.length) {
-    //     return '';
-    // }
+    const getEmailTemplate = async () => {
+        let res: any = await TemplateActions.fetchEmailTemplate();
+        setEmailTemplate(res);
+    }
+
+    const getDocumentsName = () => {
+        if (!allDocuments) return;
+        let names: string = "";
+        
+        for (let i = 0; i < allDocuments.length; i++) {
+            names += "-" + allDocuments[i].docName;
+            if (i != allDocuments.length - 1)
+                names = names + ",";
+        }
+        setDocumentName(names)
+    }
+
+    const setDeafultText = () => {
+        let str: string = '';
+        let payload = LocalDB.getUserPayload();
+        let mcuName = payload.FirstName+' '+payload.LastName;
+        let documentNames = documentsName
+          ? documentsName?.split(',').join(' \r\n')
+          : '';
+        if (emailTemplate != undefined) {
+          str = emailTemplate.replace('{user}', borrowername).replace('{documents}', documentNames).replace('{mcu}',mcuName);
+          enableBrowserPrompt();
+          setDefaultEmail(str)
+          dispatch({
+            type: TemplateActionsType.SetEmailContent,
+            payload: str
+          });
+        }
+      };
+   
+    const updateEmailContent = () => {
+      
+      
+    }
+
 
     return (
         <main className="NeedListAddDoc-wrap">
@@ -362,6 +419,7 @@ export const NewNeedList = () => {
                     showSendButton={showSendButton}
                     documentHash={documentHash}
                     setHash={setHashHandler}
+                    defaultEmail = {defaultEmail}
                 />
                 :
                 <NewNeedListHome

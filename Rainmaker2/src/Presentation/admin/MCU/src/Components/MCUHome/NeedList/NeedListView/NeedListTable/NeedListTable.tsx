@@ -55,7 +55,6 @@ export const NeedListTable = ({
   };
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
-    console.log('data', data);
     if (data) {
       for (let i = 0; i < data?.length; i++) {
         if (data[i].isRead === false) {

@@ -56,7 +56,7 @@ export class NewNeedListActions {
             }
         });
 
-        console.log(mappedDocs);
+        
         let requestData = {
             loanApplicationId: parseInt(loanApplicationId),
             requests: [
@@ -66,7 +66,7 @@ export class NewNeedListActions {
                 }
             ]
         }
-        console.log(requestData);
+      
         try {
             let res = await http.post(url, requestData);
             return res.data;

@@ -89,7 +89,6 @@ export const NeedListRequest = ({
         }
     }
 
-    console.log('needlee', showSaveAsTemplateLink)
     const renderNoDocumentSelect = () => {
         return (
             <div className="no-preview">
@@ -145,7 +144,7 @@ export const NeedListRequest = ({
                 <input
                     onKeyDown={(e: any) => {
                         let { keyCode, target: { value } } = e;
-                        console.log('in here you know werhe', keyCode);
+                    
                         if (keyCode === 13) {
                             if (!value?.trim()?.length) {
                                 setTemplateNameError('Template name cannot be empty');
