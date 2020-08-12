@@ -637,7 +637,7 @@ namespace DocumentManagement.Tests
                 loanId = "5eb25d1fe519051af2eeb72d"
             } } };
 
-            mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetEmailLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
@@ -783,7 +783,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d","Salary Slip");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);

@@ -96,32 +96,32 @@ namespace DocumentManagement.Service
 
                     //insert emaillog
 
-                    IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
+                    //IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                    using var asyncCursorEmailLog = collection.Aggregate(
-                    PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
-                        @"{""$match"": {
-                        ""loanId"": " + new ObjectId(loanId).ToJson() + @"
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1
-                            }
-                        }"
-                    ));
+                    //using var asyncCursorEmailLog = collection.Aggregate(
+                    //PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+                    //    @"{""$match"": {
+                    //    ""loanId"": " + new ObjectId(loanId).ToJson() + @"
+                    //        }
+                    //    }", @"{
+                    //        ""$project"": {
+                    //            ""_id"": 1
+                    //        }
+                    //    }"
+                    //));
 
-                    string message = ActivityStatus.RequestedBy;
+                    //string message = ActivityStatus.RequestedBy;
 
-                    if (await asyncCursorEmailLog.MoveNextAsync())
-                    {
-                        foreach (var current in asyncCursorEmailLog.Current)
-                        {
-                            message = ActivityStatus.RerequestedBy;
-                        }
-                    }
+                    //if (await asyncCursorEmailLog.MoveNextAsync())
+                    //{
+                    //    foreach (var current in asyncCursorEmailLog.Current)
+                    //    {
+                    //        message = ActivityStatus.RerequestedBy;
+                    //    }
+                    //}
 
-                    Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = userId, userName = userName, dateTime = DateTime.UtcNow, emailText = emailBody, loanId = loanId, message = message };
-                    await collection.InsertOneAsync(emailLog);
+                    //Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = userId, userName = userName, dateTime = DateTime.UtcNow, emailText = emailBody, loanId = loanId, message = message };
+                    //await collection.InsertOneAsync(emailLog);
                 }
             }
         }
