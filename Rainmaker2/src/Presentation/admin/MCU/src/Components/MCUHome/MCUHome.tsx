@@ -1,29 +1,31 @@
-import React, { useEffect, useContext } from "react";
+import React, {useEffect, useContext} from 'react';
 
-import { NeedList } from "./NeedList/NeedList";
-import { AddNeedList } from "./NeedList/Add/AddNeedList";
-import { TemplateManager } from "./TemplateManager/TemplateManager";
+import {NeedList} from './NeedList/NeedList';
+import {AddNeedList} from './NeedList/Add/AddNeedList';
+import {TemplateManager} from './TemplateManager/TemplateManager';
 import {
   Route,
   Switch,
   Redirect,
   useLocation,
-  useParams,
-} from "react-router-dom";
-import { Store } from "../../Store/Store";
-import { ReviewDocument } from "./ReviewDocument/ReviewDocument";
-import { Authorized } from "../Authorized/Authorized";
-import { NewNeedList } from "./NeedList/NewNeedList/NewNeedList";
-import { ReviewNeedListRequest } from "./ReviewNeedListRequest/ReviewNeedListRequest";
-import { ParamsService } from "../../Utils/helpers/ParamService";
+  useParams
+} from 'react-router-dom';
+import {Store} from '../../Store/Store';
+import {ReviewDocument} from './ReviewDocument/ReviewDocument';
+import {Authorized} from '../Authorized/Authorized';
+import {NewNeedList} from './NeedList/NewNeedList/NewNeedList';
+import {ReviewNeedListRequest} from './ReviewNeedListRequest/ReviewNeedListRequest';
+import {ParamsService} from '../../Utils/helpers/ParamService';
+import {SignalRHub} from '../../Utils/helpers/SignalR';
 
 export const MCUHome = () => {
-  const { state, dispatch } = useContext(Store);
-  const { loanApplicationId } = useParams();
+  const {state, dispatch} = useContext(Store);
+  const {loanApplicationId} = useParams();
   const location = useLocation();
   ParamsService.storeParams(loanApplicationId);
   useEffect(() => {
     window.scrollTo(0, 0);
+    //SignalRHub.configureHubConnection();
   }, [location.pathname]);
 
   const setParams = (loanId: string) => {
