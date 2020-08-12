@@ -27,7 +27,7 @@ namespace DocumentManagement.Model
         public const string AcceptedBy = "Accepted By : {0}"; 
         public const string StatusChanged = "Status Changed : {0}";
         public const string RejectedBy = "Rejected By : {0}";
-        public const string FileSubmitted = "File submitted : {0}";
+        public const string FileSubmitted = "File Submission : {0}";
         public const string RenamedBy = "Renamed By : {0} \r\n File Name : {1}";
     }
     public class StatusNameQuery
