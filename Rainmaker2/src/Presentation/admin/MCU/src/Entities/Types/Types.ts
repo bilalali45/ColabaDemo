@@ -67,4 +67,5 @@ export interface EmailLogsType {
   dateTime: string;
   emailText: string;
   userName: string;
+  message: string;
 }

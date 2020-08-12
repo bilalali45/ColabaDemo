@@ -215,7 +215,9 @@ export const ReviewDocumentActivityLog = ({
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
           <div className="d-flex justify-content-between">
-            <h6>{'Requested By'}</h6>
+            <h6>
+              {emailLog.message ? `${emailLog.message}:` : 'Requested by:'}
+            </h6>
             <time className="vertical-tabs--list-time">
               {ActivityLogFormat(emailLog.dateTime)}
             </time>
@@ -290,7 +292,7 @@ export const ReviewDocumentActivityLog = ({
                     getTab(2);
                   }}
                 >
-                  View Email Log 
+                  View Email Log
                   {/* <em className="zmdi zmdi-arrow-right"></em> */}
                 </button>
               </div>
