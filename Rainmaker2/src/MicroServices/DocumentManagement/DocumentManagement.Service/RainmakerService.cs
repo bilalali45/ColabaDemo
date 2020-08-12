@@ -93,11 +93,34 @@ namespace DocumentManagement.Service
                         LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
                         loanId = query._id;
                     }
+
                     //insert emaillog
 
                     IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                    Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = userId, userName = userName, dateTime = DateTime.UtcNow, emailText = emailBody, loanId = loanId };
+                    using var asyncCursorEmailLog = collection.Aggregate(
+                    PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+                        @"{""$match"": {
+                        ""loanId"": " + new ObjectId(loanId).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1
+                            }
+                        }"
+                    ));
+
+                    string message = ActivityStatus.RequestedBy;
+
+                    if (await asyncCursorEmailLog.MoveNextAsync())
+                    {
+                        foreach (var current in asyncCursorEmailLog.Current)
+                        {
+                            message = ActivityStatus.RerequestedBy;
+                        }
+                    }
+
+                    Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = userId, userName = userName, dateTime = DateTime.UtcNow, emailText = emailBody, loanId = loanId, message = message };
                     await collection.InsertOneAsync(emailLog);
                 }
             }
