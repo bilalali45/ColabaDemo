@@ -40,7 +40,10 @@
             padding-left: 25px;
             position: relative;
             display: block;
-
+            max-width: 450px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        
             .fa-file{
                 position: absolute;
                 top: 0px;
