@@ -152,7 +152,7 @@ export const NeedListContent = ({
       <div className="right-footer">
         <div className="btn-wrap">
           <button
-            disabled={document!.docMessage === '' ? true : false}
+            // disabled={!document?.docMessage}
             onClick={(e) => toggleShowReview(e)}
             className="btn btn-primary"
           >
