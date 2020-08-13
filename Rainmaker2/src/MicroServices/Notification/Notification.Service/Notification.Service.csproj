@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\Notification.Common\Notification.Common.csproj" />
+    <ProjectReference Include="..\Notification.Data\Notification.Data.csproj" />
+    <ProjectReference Include="..\Notification.Entity\Notification.Entity.csproj" />
   </ItemGroup>
 
 </Project>
