@@ -432,6 +432,7 @@ export const NewNeedList = () => {
                     viewSaveDraft={viewSaveDraftHandler}
                     saveAsTemplate={saveAsTemplate}
                     templateName={templateName}
+                    setTemplateName={setTemplateName}
                     changeTemplateName={changeTemplateName}
                     removeDocumentFromList={removeDocumentFromList}
                     toggleShowReview={toggleShowReview}
