@@ -383,7 +383,7 @@ export const NewNeedList = () => {
     const setDeafultText = () => {
         let str: string = '';
         let payload = LocalDB.getUserPayload();
-        let mcuName = payload.FirstName+' '+payload.LastName;
+        let mcuName = payload?.FirstName+' '+payload?.LastName;
         let documentNames = documentsName
           ? documentsName?.split(',').join(' \r\n')
           : '';
