@@ -1,4 +1,5 @@
 .UploadedDocumentsTable{
+    overflow: auto;
     @include media-breakpoint-down(lg) {
         font-size: fontSize("nr")-1;
     }
@@ -7,6 +8,8 @@
     }
     .block-element{
         margin-bottom: 10px;
+        display: block !important;
+        white-space: nowrap;
     }
 
     .table{
@@ -43,6 +46,7 @@
             max-width: 450px;
             text-overflow: ellipsis;
             overflow: hidden;
+            white-space: nowrap;
         
             .fa-file{
                 position: absolute;
