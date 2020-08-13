@@ -163,7 +163,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (templates.find((t: Template) => t.name.trim() === value.trim() && t.id !== currentTemplate?.id)) {
+        if (templates.find((t: Template) => t.name.toLowerCase().trim() === value.toLowerCase().trim() && t.id !== currentTemplate?.id)) {
             setNameError(`Template name must be unique`);
             return;
         };

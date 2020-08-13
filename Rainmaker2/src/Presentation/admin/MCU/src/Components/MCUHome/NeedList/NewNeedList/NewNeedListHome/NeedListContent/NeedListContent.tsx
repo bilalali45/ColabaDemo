@@ -39,11 +39,6 @@ export const NeedListContent = ({
     setDocMessage(m);
   }, [document]);
 
-  useEffect(() => {
-    // setDocMessage(document?.docMessage?.replace(/<br>\\*/g, `${/\n/}`))
-  }, [document?.docMessage]);
-
-  console.log(document);
 
   const toggleRename = () => {
     seteditTitleview(!editTitleview);

@@ -36,7 +36,8 @@ type AddNeedListContainerType = {
     removeDocumentFromList: Function,
     requestSent: boolean,
     showSaveAsTemplateLink: boolean,
-    fetchTemplateDocs: Function
+    fetchTemplateDocs: Function,
+    setTemplateName: Function
 }
 
 
@@ -57,7 +58,8 @@ export const NeedListRequest = ({
     removeDocumentFromList,
     requestSent,
     showSaveAsTemplateLink,
-    fetchTemplateDocs }: AddNeedListContainerType) => {
+    fetchTemplateDocs,
+    setTemplateName }: AddNeedListContainerType) => {
 
     const [showSaveAsTemplate, setShowSaveAsTemplate] = useState<boolean>(false);
     const [templateNameError, setTemplateNameError] = useState<string>();
@@ -70,6 +72,7 @@ export const NeedListRequest = ({
     const toggleSaveAsTemplate = () => {
         setShowSaveAsTemplate(!showSaveAsTemplate);
         setTemplateNameError('');
+        setTemplateName('');
     };
 
     const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {

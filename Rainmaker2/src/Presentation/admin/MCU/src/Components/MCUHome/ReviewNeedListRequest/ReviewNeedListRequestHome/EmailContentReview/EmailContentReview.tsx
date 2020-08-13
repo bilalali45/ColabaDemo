@@ -65,9 +65,6 @@ export const EmailContentReview = ({
 
   const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
 
-  console.log('defaultEmail',defaultEmail)
-
-
   useEffect(() => {
     if (Boolean(isDocumentDraft?.requestId)) {
       draftExist();
