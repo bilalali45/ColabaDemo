@@ -45,8 +45,18 @@ export class SignalRHub {
   };
 
   static eventsRegister = () => {
+    // Example Event Listner
+    window.addEventListener('TestSignalR', (data: any) => {
+      alert(data.detail.name);
+    });
+
     SignalRHub.hubConnection.on('TestSignalR', () => {
       console.log(`TestSignalR Tested`);
+      window.dispatchEvent(
+        new CustomEvent('TestSignalR', {
+          detail: {name: 'John'}
+        })
+      );
     });
   };
 }
