@@ -63,12 +63,12 @@ export const TextArea = ({
         placeholder={placeholderValue}
         maxLength={maxLengthValue}
       ></textarea>
-      <div>
+      {/* <div>
         <p style={{color: 'red'}}>{isTextValid ? errorText : ''}</p>
         {textAreaValue?.trim() === '' && (
           <p style={{color: 'red'}}>This field is required.</p>
         )}
-      </div>
+      </div> */}
     </Fragment>
   );
 };
