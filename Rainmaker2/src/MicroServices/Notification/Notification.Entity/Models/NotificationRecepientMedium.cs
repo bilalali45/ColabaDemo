@@ -24,6 +24,7 @@ namespace Notification.Entity.Models
         public long Id { get; set; } // Id (Primary key)
         public long? NotificationRecepientId { get; set; } // NotificationRecepientId
         public byte? StatusId { get; set; } // StatusId
+        public string SentTextJson { get; set; } // SentTextJSON
         public int? NotificationMediumid { get; set; } // NotificationMediumid
 
         // Reverse navigation

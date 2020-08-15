@@ -30,6 +30,7 @@ namespace Notification.Data.Mapping
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("bigint").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.NotificationRecepientId).HasColumnName(@"NotificationRecepientId").HasColumnType("bigint").IsRequired(false);
             builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("tinyint").IsRequired(false);
+            builder.Property(x => x.SentTextJson).HasColumnName(@"SentTextJSON").HasColumnType("nvarchar(max)").IsRequired();
             builder.Property(x => x.NotificationMediumid).HasColumnName(@"NotificationMediumid").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
