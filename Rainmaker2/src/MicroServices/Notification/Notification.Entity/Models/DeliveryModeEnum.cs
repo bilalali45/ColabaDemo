@@ -27,12 +27,17 @@ namespace Notification.Entity.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child NotificationRecepientMediums where [NotificationRecepientMedium].[DeliveryModeId] point to this entity (FK_NotificationRecepientMedium_DeliveryModeEnum)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<NotificationRecepientMedium> NotificationRecepientMediums { get; set; } // NotificationRecepientMedium.FK_NotificationRecepientMedium_DeliveryModeEnum
+        /// <summary>
         /// Child TenantDeliveryModes where [TenantDeliveryMode].[DeliveryModeId] point to this entity (FK_TenantDeliveryMode_DeliveryModeEnum)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TenantDeliveryMode> TenantDeliveryModes { get; set; } // TenantDeliveryMode.FK_TenantDeliveryMode_DeliveryModeEnum
 
         public DeliveryModeEnum()
         {
+            NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
             TenantDeliveryModes = new System.Collections.Generic.HashSet<TenantDeliveryMode>();
             InitializePartial();
         }

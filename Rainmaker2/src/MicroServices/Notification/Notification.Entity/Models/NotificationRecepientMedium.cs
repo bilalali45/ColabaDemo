@@ -25,6 +25,7 @@ namespace Notification.Entity.Models
         public long? NotificationRecepientId { get; set; } // NotificationRecepientId
         public byte? StatusId { get; set; } // StatusId
         public string SentTextJson { get; set; } // SentTextJSON
+        public short DeliveryModeId { get; set; } // DeliveryModeId
         public int? NotificationMediumid { get; set; } // NotificationMediumid
 
         // Reverse navigation
@@ -35,6 +36,11 @@ namespace Notification.Entity.Models
         public virtual System.Collections.Generic.ICollection<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList.FK_NotificationRecipientMediumStatusList_NotificationRecepientMedium
 
         // Foreign keys
+
+        /// <summary>
+        /// Parent DeliveryModeEnum pointed by [NotificationRecepientMedium].([DeliveryModeId]) (FK_NotificationRecepientMedium_DeliveryModeEnum)
+        /// </summary>
+        public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_NotificationRecepientMedium_DeliveryModeEnum
 
         /// <summary>
         /// Parent NotificationMedium pointed by [NotificationRecepientMedium].([NotificationMediumid]) (FK_NotificationRecepientMedium_NotificationMedium_Id)
