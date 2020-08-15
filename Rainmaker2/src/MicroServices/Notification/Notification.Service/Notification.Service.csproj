@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Notification.Common\Notification.Common.csproj" />
     <ProjectReference Include="..\Notification.Data\Notification.Data.csproj" />
     <ProjectReference Include="..\Notification.Entity\Notification.Entity.csproj" />
+    <ProjectReference Include="..\Notification.Model\Notification.Model.csproj" />
   </ItemGroup>
 
 </Project>

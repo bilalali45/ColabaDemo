@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Notification.Model;
 using Notification.Service;
 
 namespace Notification.API.Controllers
@@ -18,10 +19,11 @@ namespace Notification.API.Controllers
         {
             _notificationService = notificationService;
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> Test()
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Add(NotificationModel model)
         {
-            return Ok(await _notificationService.Test());
+
+            return Ok();
         }
     }
 }

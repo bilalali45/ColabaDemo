@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Notification.Data;
 using Notification.Entity.Models;
+using Notification.Model;
 using URF.Core.Abstractions;
 
 namespace Notification.Service
@@ -16,9 +17,9 @@ namespace Notification.Service
             services: services)
         {
         }
-        public async Task<NotificationType> Test()
+        public async Task<long> Add(NotificationModel model, int userId, int tenantId)
         {
-            return await Uow.Repository<NotificationType>().Query().FirstOrDefaultAsync();
+            return -1;
         }
     }
 }
