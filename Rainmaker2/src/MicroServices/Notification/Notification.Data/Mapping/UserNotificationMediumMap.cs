@@ -25,12 +25,12 @@ namespace Notification.Data.Mapping
         public void Configure(EntityTypeBuilder<UserNotificationMedium> builder)
         {
             builder.ToTable("UserNotificationMedium", "dbo");
-            builder.HasKey(x => new { x.UserId, x.NotificationMediumId });
+            builder.HasKey(x => new { x.UserId, x.NotificationMediumId, x.NotificationTypeId, x.TenantId });
 
             builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.NotificationMediumId).HasColumnName(@"NotificationMediumId").HasColumnType("int").IsRequired().ValueGeneratedNever();
-            builder.Property(x => x.NotificationTypeId).HasColumnName(@"NotificationTypeId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.NotificationTypeId).HasColumnName(@"NotificationTypeId").HasColumnType("int").IsRequired().ValueGeneratedNever();
+            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.IsActive).HasColumnName(@"IsActive").HasColumnType("bit").IsRequired(false);
 
             // Foreign keys
