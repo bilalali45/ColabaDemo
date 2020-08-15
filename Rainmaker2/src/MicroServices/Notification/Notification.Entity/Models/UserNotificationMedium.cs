@@ -24,6 +24,7 @@ namespace Notification.Entity.Models
         public int UserId { get; set; } // UserId (Primary key)
         public int NotificationMediumId { get; set; } // NotificationMediumId (Primary key)
         public int? NotificationTypeId { get; set; } // NotificationTypeId
+        public int TenantId { get; set; } // TenantId
         public bool? IsActive { get; set; } // IsActive
 
         // Foreign keys

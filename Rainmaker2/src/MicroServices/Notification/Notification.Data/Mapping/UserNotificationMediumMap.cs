@@ -30,6 +30,7 @@ namespace Notification.Data.Mapping
             builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.NotificationMediumId).HasColumnName(@"NotificationMediumId").HasColumnType("int").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.NotificationTypeId).HasColumnName(@"NotificationTypeId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
             builder.Property(x => x.IsActive).HasColumnName(@"IsActive").HasColumnType("bit").IsRequired(false);
 
             // Foreign keys

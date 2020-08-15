@@ -39,16 +39,26 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationRecepient> NotificationRecepients { get; set; } // NotificationRecepient.FK_NotificationRecepient_StatusListEnum_Id
         /// <summary>
+        /// Child NotificationRecepientMediums where [NotificationRecepientMedium].[StatusId] point to this entity (FK_NotificationRecepientMedium_StatusListEnum)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<NotificationRecepientMedium> NotificationRecepientMediums { get; set; } // NotificationRecepientMedium.FK_NotificationRecepientMedium_StatusListEnum
+        /// <summary>
         /// Child NotificationRecepientStatusLogs where [NotificationRecepientStatusLog].[StatusId] point to this entity (FK_NotificationRecepientStatusLog_StatusListEnum_Id)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationRecepientStatusLog> NotificationRecepientStatusLogs { get; set; } // NotificationRecepientStatusLog.FK_NotificationRecepientStatusLog_StatusListEnum_Id
+        /// <summary>
+        /// Child NotificationRecipientMediumStatusLists where [NotificationRecipientMediumStatusList].[StatusId] point to this entity (FK_NotificationRecipientMediumStatusList_StatusListEnum)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList.FK_NotificationRecipientMediumStatusList_StatusListEnum
 
         public StatusListEnum()
         {
             NotificationObjects = new System.Collections.Generic.HashSet<NotificationObject>();
             NotificationObjectStatusLogs = new System.Collections.Generic.HashSet<NotificationObjectStatusLog>();
             NotificationRecepients = new System.Collections.Generic.HashSet<NotificationRecepient>();
+            NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
             NotificationRecepientStatusLogs = new System.Collections.Generic.HashSet<NotificationRecepientStatusLog>();
+            NotificationRecipientMediumStatusLists = new System.Collections.Generic.HashSet<NotificationRecipientMediumStatusList>();
             InitializePartial();
         }
 

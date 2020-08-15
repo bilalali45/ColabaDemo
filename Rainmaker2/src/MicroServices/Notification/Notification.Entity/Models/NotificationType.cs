@@ -23,7 +23,6 @@ namespace Notification.Entity.Models
     {
         public int Id { get; set; } // Id (Primary key)
         public string Name { get; set; } // Name (length: 50)
-        public short? DeliveryModeId { get; set; } // DeliveryModeId
 
         // Reverse navigation
 
@@ -36,21 +35,24 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate.FK_NotificationTemplate_NotificationType_Id
         /// <summary>
+        /// Child TenantDeliveryModes where [TenantDeliveryMode].[NotificationTypeId] point to this entity (FK_TenantDeliveryMode_NotificationType)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TenantDeliveryMode> TenantDeliveryModes { get; set; } // TenantDeliveryMode.FK_TenantDeliveryMode_NotificationType
+        /// <summary>
+        /// Child TenantNotificationMediums where [TenantNotificationMedium].[NotificationTypeId] point to this entity (FK_TenantNotificationMedium_NotificationType)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TenantNotificationMedium> TenantNotificationMediums { get; set; } // TenantNotificationMedium.FK_TenantNotificationMedium_NotificationType
+        /// <summary>
         /// Child UserNotificationMediums where [UserNotificationMedium].[NotificationTypeId] point to this entity (FK_UserNotificationMedium_NotificationType_Id)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<UserNotificationMedium> UserNotificationMediums { get; set; } // UserNotificationMedium.FK_UserNotificationMedium_NotificationType_Id
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent DeliveryModeEnum pointed by [NotificationType].([DeliveryModeId]) (FK_NotificationType_DeliveryModeEnum_Id)
-        /// </summary>
-        public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_NotificationType_DeliveryModeEnum_Id
 
         public NotificationType()
         {
             NotificationObjects = new System.Collections.Generic.HashSet<NotificationObject>();
             NotificationTemplates = new System.Collections.Generic.HashSet<NotificationTemplate>();
+            TenantDeliveryModes = new System.Collections.Generic.HashSet<TenantDeliveryMode>();
+            TenantNotificationMediums = new System.Collections.Generic.HashSet<TenantNotificationMedium>();
             UserNotificationMediums = new System.Collections.Generic.HashSet<UserNotificationMedium>();
             InitializePartial();
         }

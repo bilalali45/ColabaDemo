@@ -23,7 +23,15 @@ namespace Notification.Entity.Models
     {
         public long Id { get; set; } // Id (Primary key)
         public long? NotificationRecepientId { get; set; } // NotificationRecepientId
+        public byte? StatusId { get; set; } // StatusId
         public int? NotificationMediumid { get; set; } // NotificationMediumid
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child NotificationRecipientMediumStatusLists where [NotificationRecipientMediumStatusList].[NotificationRecepientMediumId] point to this entity (FK_NotificationRecipientMediumStatusList_NotificationRecepientMedium)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList.FK_NotificationRecipientMediumStatusList_NotificationRecepientMedium
 
         // Foreign keys
 
@@ -37,8 +45,14 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual NotificationRecepient NotificationRecepient { get; set; } // FK_NotificationRecepientMedium_NotificationRecepient_Id
 
+        /// <summary>
+        /// Parent StatusListEnum pointed by [NotificationRecepientMedium].([StatusId]) (FK_NotificationRecepientMedium_StatusListEnum)
+        /// </summary>
+        public virtual StatusListEnum StatusListEnum { get; set; } // FK_NotificationRecepientMedium_StatusListEnum
+
         public NotificationRecepientMedium()
         {
+            NotificationRecipientMediumStatusLists = new System.Collections.Generic.HashSet<NotificationRecipientMediumStatusList>();
             InitializePartial();
         }
 
