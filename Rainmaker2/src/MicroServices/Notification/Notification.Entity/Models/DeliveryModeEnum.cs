@@ -31,14 +31,14 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationRecepientMedium> NotificationRecepientMediums { get; set; } // NotificationRecepientMedium.FK_NotificationRecepientMedium_DeliveryModeEnum
         /// <summary>
-        /// Child TenantDeliveryModes where [TenantDeliveryMode].[DeliveryModeId] point to this entity (FK_TenantDeliveryMode_DeliveryModeEnum)
+        /// Child TenantSettings where [TenantSettings].[DeliveryModeId] point to this entity (FK_TenantDeliveryMode_DeliveryModeEnum)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<TenantDeliveryMode> TenantDeliveryModes { get; set; } // TenantDeliveryMode.FK_TenantDeliveryMode_DeliveryModeEnum
+        public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantDeliveryMode_DeliveryModeEnum
 
         public DeliveryModeEnum()
         {
             NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
-            TenantDeliveryModes = new System.Collections.Generic.HashSet<TenantDeliveryMode>();
+            TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
             InitializePartial();
         }
 

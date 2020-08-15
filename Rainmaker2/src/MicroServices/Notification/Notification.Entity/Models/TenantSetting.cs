@@ -17,28 +17,34 @@ namespace Notification.Entity.Models
     using System;
     using System.Collections.Generic;
 
-    // TenantDeliveryMode
+    // TenantSettings
     
-    public partial class TenantDeliveryMode : URF.Core.EF.Trackable.Entity
+    public partial class TenantSetting : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
         public int TenantId { get; set; } // TenantId
         public short DeliveryModeId { get; set; } // DeliveryModeId
+        public int NotificationMediumId { get; set; } // NotificationMediumId
         public int NotificationTypeId { get; set; } // NotificationTypeId
 
         // Foreign keys
 
         /// <summary>
-        /// Parent DeliveryModeEnum pointed by [TenantDeliveryMode].([DeliveryModeId]) (FK_TenantDeliveryMode_DeliveryModeEnum)
+        /// Parent DeliveryModeEnum pointed by [TenantSettings].([DeliveryModeId]) (FK_TenantDeliveryMode_DeliveryModeEnum)
         /// </summary>
         public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_TenantDeliveryMode_DeliveryModeEnum
 
         /// <summary>
-        /// Parent NotificationType pointed by [TenantDeliveryMode].([NotificationTypeId]) (FK_TenantDeliveryMode_NotificationType)
+        /// Parent NotificationMedium pointed by [TenantSettings].([NotificationMediumId]) (FK_TenantSettings_NotificationMedium)
+        /// </summary>
+        public virtual NotificationMedium NotificationMedium { get; set; } // FK_TenantSettings_NotificationMedium
+
+        /// <summary>
+        /// Parent NotificationType pointed by [TenantSettings].([NotificationTypeId]) (FK_TenantDeliveryMode_NotificationType)
         /// </summary>
         public virtual NotificationType NotificationType { get; set; } // FK_TenantDeliveryMode_NotificationType
 
-        public TenantDeliveryMode()
+        public TenantSetting()
         {
             InitializePartial();
         }

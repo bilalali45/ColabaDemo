@@ -35,9 +35,9 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate.FK_NotificationTemplate_NotificationMedium_Id
         /// <summary>
-        /// Child TenantNotificationMediums where [TenantNotificationMedium].[NotificationMediumId] point to this entity (FK_TenantNotificationMedium_NotificationMedium)
+        /// Child TenantSettings where [TenantSettings].[NotificationMediumId] point to this entity (FK_TenantSettings_NotificationMedium)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<TenantNotificationMedium> TenantNotificationMediums { get; set; } // TenantNotificationMedium.FK_TenantNotificationMedium_NotificationMedium
+        public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantSettings_NotificationMedium
         /// <summary>
         /// Child UserNotificationMediums where [UserNotificationMedium].[NotificationMediumId] point to this entity (FK_UserNotificationMedium_NotificationMedium_Id)
         /// </summary>
@@ -47,7 +47,7 @@ namespace Notification.Entity.Models
         {
             NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
             NotificationTemplates = new System.Collections.Generic.HashSet<NotificationTemplate>();
-            TenantNotificationMediums = new System.Collections.Generic.HashSet<TenantNotificationMedium>();
+            TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
             UserNotificationMediums = new System.Collections.Generic.HashSet<UserNotificationMedium>();
             InitializePartial();
         }

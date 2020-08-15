@@ -18,23 +18,25 @@ namespace Notification.Data.Mapping
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Notification.Entity.Models;
 
-    // TenantNotificationMedium
+    // TenantSettings
     
-    public partial class TenantNotificationMediumMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TenantNotificationMedium>
+    public partial class TenantSettingMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TenantSetting>
     {
-        public void Configure(EntityTypeBuilder<TenantNotificationMedium> builder)
+        public void Configure(EntityTypeBuilder<TenantSetting> builder)
         {
-            builder.ToTable("TenantNotificationMedium", "dbo");
+            builder.ToTable("TenantSettings", "dbo");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.DeliveryModeId).HasColumnName(@"DeliveryModeId").HasColumnType("smallint").IsRequired();
             builder.Property(x => x.NotificationMediumId).HasColumnName(@"NotificationMediumId").HasColumnType("int").IsRequired();
             builder.Property(x => x.NotificationTypeId).HasColumnName(@"NotificationTypeId").HasColumnType("int").IsRequired();
 
             // Foreign keys
-            builder.HasOne(a => a.NotificationMedium).WithMany(b => b.TenantNotificationMediums).HasForeignKey(c => c.NotificationMediumId).OnDelete(DeleteBehavior.SetNull); // FK_TenantNotificationMedium_NotificationMedium
-            builder.HasOne(a => a.NotificationType).WithMany(b => b.TenantNotificationMediums).HasForeignKey(c => c.NotificationTypeId).OnDelete(DeleteBehavior.SetNull); // FK_TenantNotificationMedium_NotificationType
+            builder.HasOne(a => a.DeliveryModeEnum).WithMany(b => b.TenantSettings).HasForeignKey(c => c.DeliveryModeId).OnDelete(DeleteBehavior.SetNull); // FK_TenantDeliveryMode_DeliveryModeEnum
+            builder.HasOne(a => a.NotificationMedium).WithMany(b => b.TenantSettings).HasForeignKey(c => c.NotificationMediumId).OnDelete(DeleteBehavior.SetNull); // FK_TenantSettings_NotificationMedium
+            builder.HasOne(a => a.NotificationType).WithMany(b => b.TenantSettings).HasForeignKey(c => c.NotificationTypeId).OnDelete(DeleteBehavior.SetNull); // FK_TenantDeliveryMode_NotificationType
             InitializePartial();
         }
         partial void InitializePartial();

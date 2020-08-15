@@ -35,13 +35,9 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate.FK_NotificationTemplate_NotificationType_Id
         /// <summary>
-        /// Child TenantDeliveryModes where [TenantDeliveryMode].[NotificationTypeId] point to this entity (FK_TenantDeliveryMode_NotificationType)
+        /// Child TenantSettings where [TenantSettings].[NotificationTypeId] point to this entity (FK_TenantDeliveryMode_NotificationType)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<TenantDeliveryMode> TenantDeliveryModes { get; set; } // TenantDeliveryMode.FK_TenantDeliveryMode_NotificationType
-        /// <summary>
-        /// Child TenantNotificationMediums where [TenantNotificationMedium].[NotificationTypeId] point to this entity (FK_TenantNotificationMedium_NotificationType)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<TenantNotificationMedium> TenantNotificationMediums { get; set; } // TenantNotificationMedium.FK_TenantNotificationMedium_NotificationType
+        public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantDeliveryMode_NotificationType
         /// <summary>
         /// Child UserNotificationMediums where [UserNotificationMedium].[NotificationTypeId] point to this entity (FK_UserNotificationMedium_NotificationType_Id)
         /// </summary>
@@ -51,8 +47,7 @@ namespace Notification.Entity.Models
         {
             NotificationObjects = new System.Collections.Generic.HashSet<NotificationObject>();
             NotificationTemplates = new System.Collections.Generic.HashSet<NotificationTemplate>();
-            TenantDeliveryModes = new System.Collections.Generic.HashSet<TenantDeliveryMode>();
-            TenantNotificationMediums = new System.Collections.Generic.HashSet<TenantNotificationMedium>();
+            TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
             UserNotificationMediums = new System.Collections.Generic.HashSet<UserNotificationMedium>();
             InitializePartial();
         }
