@@ -1,5 +1,6 @@
-import React from "react";
-import { Notifications } from "../features/Notifications";
+import React from 'react';
+
+import {Notifications} from '../features/Notifications';
 
 export const HomePage = () => {
   return (

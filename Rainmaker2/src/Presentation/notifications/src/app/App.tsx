@@ -1,9 +1,7 @@
-import React from "react";
-import { HomePage } from "../pages/HomePage";
-import { AppRoutes } from "./routes";
+import React from 'react';
 
-function App() {
+import {AppRoutes} from './routes';
+
+export const App = () => {
   return <AppRoutes />;
-}
-
-export default App;
+};

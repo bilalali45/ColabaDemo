@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const Notifications = () => {
+export const NotFoundPage = () => {
   return (
     <div>
-      <h1>Notifications</h1>
+      <h1>404 Not Found</h1>
     </div>
   );
 };
