@@ -62,6 +62,15 @@ body{
     &-dropdown{
         position: absolute;
         width: 100%;
+        max-height: calc(100vh - 40px);
+        overflow: hidden;
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        >*{
+            flex: 0 0 100%;
+            width: 100%;
+        }
     }
 
     &-header{
@@ -81,5 +90,6 @@ body{
 
     &-body{
         overflow: auto;
+        max-height: calc(100vh - 90px);
     }
 }
