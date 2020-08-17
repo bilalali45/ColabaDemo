@@ -58,8 +58,8 @@ namespace Notification.Service
             foreach (var item in list)
             {
                 JObject jObject = new JObject();
-                jObject.Add("text",JObject.Parse(templateJson));
-                jObject.Add("metaData", JObject.Parse(metaJson));
+                jObject.Add("data",JObject.Parse(templateJson));
+                jObject.Add("meta", JObject.Parse(metaJson));
                 item.SentTextJson = jObject.ToString();
                 item.TrackingState = TrackingState.Modified;
                 notificationService.Update(notificationObject);
