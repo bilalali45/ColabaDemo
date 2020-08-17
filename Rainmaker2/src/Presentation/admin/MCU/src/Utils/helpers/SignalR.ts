@@ -13,7 +13,7 @@ export class SignalRHub {
 
     let userAgent = navigator.userAgent;
     let accessToken;
-    const hubUrl = 'https://localhost:44322/serverhub';
+    const hubUrl = 'http://172.16.100.117:8065/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
         //skipNegotiation: true,
