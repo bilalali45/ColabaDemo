@@ -1,21 +1,45 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 
+export const dropdownConfig = () => {
+  let queryString  = window.location.search.substring(1, 100);
+  const urlParams = new URLSearchParams(queryString);
+  return {
+    width: urlParams.get('width'),
+    height: urlParams.get('height')
+  }
+}
+
 export const HomePage = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
 
+  const styling = {
+    top : dropdownConfig().height + 'px',
+    width: dropdownConfig().width + 'px',
+    height: 'calc(100vh - '+ dropdownConfig().height +'px)'
+  }
+
+  useEffect(() => {
+    dropdownConfig()
+    return () => {
+      dropdownConfig()
+    }
+  }, [dropdownConfig])
+
   return (
-    <div>
+    <div className="notify">
       <BellIcon
-        onClick={() => setNotificationsVisible((prevState) => !prevState)}
+        onClick={() => { setNotificationsVisible((prevState) => !prevState);}}
       />
       {!!notificationsVisible && (
-        <React.Fragment>
-          <Header />
-          <Notifications />
-        </React.Fragment>
+        
+          <div className="notify-dropdown" style={styling}>
+            <Header />
+            <Notifications />
+          </div>
+        
       )}
     </div>
   );

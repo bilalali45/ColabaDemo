@@ -1,10 +1,6 @@
 @import './assets/style/variable';
 
-// Components
-@import './assets/style/components/notification',
-        './assets/style/components/notifications';
-
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
 
 //Function
 @import './assets/style/functions/color',
@@ -32,3 +28,7 @@
         './assets/style/mixins/mediaquery-desktop',
         './assets/style/mixins/mediaquery-tablet',
         './assets/style/mixins/mediaquery-mobile';
+
+// Components
+@import './assets/style/components/notification',
+        './assets/style/components/notifications';
