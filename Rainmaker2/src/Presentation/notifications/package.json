@@ -41,6 +41,14 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/react-router-dom": "^5.1.5"
+    "@types/react-router-dom": "^5.1.5",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
