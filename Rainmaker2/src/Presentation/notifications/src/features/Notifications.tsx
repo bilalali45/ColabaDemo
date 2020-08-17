@@ -4,7 +4,7 @@ import {Notification} from './_Notifications';
 
 export const Notifications = () => {
   return (
-    <React.Fragment>
+    <div className="notify-body">
       <Notification />
       <Notification />
       <Notification />
@@ -14,6 +14,6 @@ export const Notifications = () => {
       <Notification />
       <Notification />
       <Notification />
-    </React.Fragment>
+    </div>
   );
 };
