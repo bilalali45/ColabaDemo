@@ -7,3 +7,11 @@ export const Header = () => {
     </div>
   );
 };
+
+export const BellIcon = ({onClick}: {onClick: () => void}) => {
+  return (
+    <div onClick={onClick}>
+      <h3>Bell Icon</h3>
+    </div>
+  );
+};
