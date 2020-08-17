@@ -9,7 +9,7 @@ namespace Notification.Service
 {
     public interface INotificationService : IServiceBase<NotificationObject>
     {
-        Task<long> Add(NotificationModel model, int userId, int tenantId);
+        Task<long> Add(NotificationModel model, int userId, int tenantId, IEnumerable<string> authHeader);
         Task<NotificationObject> GetByIdForTemplate(long notificationId);
     }
 }
