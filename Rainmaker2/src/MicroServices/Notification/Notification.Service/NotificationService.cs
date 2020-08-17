@@ -21,5 +21,11 @@ namespace Notification.Service
         {
             return -1;
         }
+
+        public async Task<NotificationObject> GetByIdForTemplate(long notificationId)
+        {
+            return await Repository.Query(x => x.Id == notificationId).Include(x => x.NotificationType).ThenInclude(x=>x.NotificationTemplates)
+                .Include(x=>x.NotificationRecepients).ThenInclude(x=>x.NotificationRecepientMediums).FirstAsync();
+        }
     }
 }
