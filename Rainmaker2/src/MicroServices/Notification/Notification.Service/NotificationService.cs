@@ -72,7 +72,7 @@ namespace Notification.Service
             Uow.Repository<NotificationObject>().Insert(notificationObject);
             await Uow.SaveChangesAsync();
 
-            await templateService.PopulateTemplate(notificationObject.Id);
+            await templateService.PopulateTemplate(notificationObject.Id, authHeader);
 
             return notificationObject.Id;
         }
