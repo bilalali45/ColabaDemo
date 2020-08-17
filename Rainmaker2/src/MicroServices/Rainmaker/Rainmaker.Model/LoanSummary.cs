@@ -20,7 +20,7 @@ namespace Rainmaker.Model
 
     public class AdminLoanSummary
     {
-        public int LoanApplicationId { get; set; }
+        public string Url { get; set; }
         public string LoanPurpose { get; set; }
         public string PropertyType { get; set; }
         public string StateName { get; set; }
