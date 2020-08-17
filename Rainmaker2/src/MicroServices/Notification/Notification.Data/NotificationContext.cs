@@ -30,9 +30,11 @@ namespace Notification.Data
         //public virtual DbSet<NotificationRecepient> NotificationRecepients { get; set; } // NotificationRecepient
         //public virtual DbSet<NotificationRecepientMedium> NotificationRecepientMediums { get; set; } // NotificationRecepientMedium
         //public virtual DbSet<NotificationRecepientStatusLog> NotificationRecepientStatusLogs { get; set; } // NotificationRecepientStatusLog
+        //public virtual DbSet<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList
         //public virtual DbSet<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate
         //public virtual DbSet<NotificationType> NotificationTypes { get; set; } // NotificationType
         //public virtual DbSet<StatusListEnum> StatusListEnums { get; set; } // StatusListEnum
+        //public virtual DbSet<TenantSetting> TenantSettings { get; set; } // TenantSettings
         //public virtual DbSet<UserNotificationMedium> UserNotificationMediums { get; set; } // UserNotificationMedium
 
 		public NotificationContext(DbContextOptions<NotificationContext> options)
@@ -53,9 +55,11 @@ namespace Notification.Data
             modelBuilder.ApplyConfiguration(new NotificationRecepientMap());
             modelBuilder.ApplyConfiguration(new NotificationRecepientMediumMap());
             modelBuilder.ApplyConfiguration(new NotificationRecepientStatusLogMap());
+            modelBuilder.ApplyConfiguration(new NotificationRecipientMediumStatusListMap());
             modelBuilder.ApplyConfiguration(new NotificationTemplateMap());
             modelBuilder.ApplyConfiguration(new NotificationTypeMap());
             modelBuilder.ApplyConfiguration(new StatusListEnumMap());
+            modelBuilder.ApplyConfiguration(new TenantSettingMap());
             modelBuilder.ApplyConfiguration(new UserNotificationMediumMap());
 
             OnModelCreatingPartial(modelBuilder);

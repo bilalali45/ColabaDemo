@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Notification.API.CorrelationHandlersAndMiddleware;
 using Notification.API.Helpers;
+using Notification.Service;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -45,9 +46,8 @@ namespace Notification.API
             services.AddDbContext<Notification.Data.NotificationContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<Notification.Data.NotificationContext>, UnitOfWork<Notification.Data.NotificationContext>>();
-            //services.AddScoped<ISettingService, SettingService>();
-            //services.AddScoped<IStringResourceService, StringResourceService>();
-            //services.AddSingleton<ICommonService, CommonService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ITemplateService,TemplateService>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)

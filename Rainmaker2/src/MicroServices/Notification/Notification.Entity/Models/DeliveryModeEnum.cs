@@ -27,18 +27,18 @@ namespace Notification.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child NotificationObjects where [NotificationObject].[DeliveryModeId] point to this entity (FK_NotificationObject_DeliveryModeEnum_Id)
+        /// Child NotificationRecepientMediums where [NotificationRecepientMedium].[DeliveryModeId] point to this entity (FK_NotificationRecepientMedium_DeliveryModeEnum)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<NotificationObject> NotificationObjects { get; set; } // NotificationObject.FK_NotificationObject_DeliveryModeEnum_Id
+        public virtual System.Collections.Generic.ICollection<NotificationRecepientMedium> NotificationRecepientMediums { get; set; } // NotificationRecepientMedium.FK_NotificationRecepientMedium_DeliveryModeEnum
         /// <summary>
-        /// Child NotificationTypes where [NotificationType].[DeliveryModeId] point to this entity (FK_NotificationType_DeliveryModeEnum_Id)
+        /// Child TenantSettings where [TenantSettings].[DeliveryModeId] point to this entity (FK_TenantDeliveryMode_DeliveryModeEnum)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<NotificationType> NotificationTypes { get; set; } // NotificationType.FK_NotificationType_DeliveryModeEnum_Id
+        public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantDeliveryMode_DeliveryModeEnum
 
         public DeliveryModeEnum()
         {
-            NotificationObjects = new System.Collections.Generic.HashSet<NotificationObject>();
-            NotificationTypes = new System.Collections.Generic.HashSet<NotificationType>();
+            NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
+            TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
             InitializePartial();
         }
 

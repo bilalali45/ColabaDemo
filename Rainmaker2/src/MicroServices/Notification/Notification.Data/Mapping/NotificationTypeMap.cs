@@ -29,10 +29,6 @@ namespace Notification.Data.Mapping
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasColumnName(@"Name").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
-            builder.Property(x => x.DeliveryModeId).HasColumnName(@"DeliveryModeId").HasColumnType("smallint").IsRequired(false);
-
-            // Foreign keys
-            builder.HasOne(a => a.DeliveryModeEnum).WithMany(b => b.NotificationTypes).HasForeignKey(c => c.DeliveryModeId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationType_DeliveryModeEnum_Id
             InitializePartial();
         }
         partial void InitializePartial();

@@ -3456,7 +3456,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
             switch (relationship)
             {
                 case Relationship.OneToOne:
-                    return string.Format(".WithMany()", withParam);
+                    return string.Format(".WithMany().HasForeignKey({0})", manyToManyMapping);
 
                 case Relationship.OneToMany:
                     return string.Format(".WithRequiredDependent({0})", withParam);

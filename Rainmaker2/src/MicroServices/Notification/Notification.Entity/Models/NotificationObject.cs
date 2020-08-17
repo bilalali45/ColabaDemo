@@ -27,8 +27,8 @@ namespace Notification.Entity.Models
         public string CustomTextJson { get; set; } // CustomTextJSON
         public System.DateTime? CreatedOn { get; set; } // CreatedOn
         public bool? IsActive { get; set; } // IsActive
+        public int TenantId { get; set; } // TenantId
         public byte? StatusId { get; set; } // StatusId
-        public short? DeliveryModeId { get; set; } // DeliveryModeId
 
         // Reverse navigation
 
@@ -46,11 +46,6 @@ namespace Notification.Entity.Models
         public virtual System.Collections.Generic.ICollection<NotificationRecepient> NotificationRecepients { get; set; } // NotificationRecepient.FK_NotificationRecepient_NotificationObject_Id
 
         // Foreign keys
-
-        /// <summary>
-        /// Parent DeliveryModeEnum pointed by [NotificationObject].([DeliveryModeId]) (FK_NotificationObject_DeliveryModeEnum_Id)
-        /// </summary>
-        public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_NotificationObject_DeliveryModeEnum_Id
 
         /// <summary>
         /// Parent NotificationType pointed by [NotificationObject].([NotificationTypeId]) (FK_NotificationObject_NotificationType_Id)

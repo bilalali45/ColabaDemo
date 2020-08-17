@@ -23,9 +23,24 @@ namespace Notification.Entity.Models
     {
         public long Id { get; set; } // Id (Primary key)
         public long? NotificationRecepientId { get; set; } // NotificationRecepientId
+        public byte? StatusId { get; set; } // StatusId
+        public string SentTextJson { get; set; } // SentTextJSON
+        public short DeliveryModeId { get; set; } // DeliveryModeId
         public int? NotificationMediumid { get; set; } // NotificationMediumid
 
+        // Reverse navigation
+
+        /// <summary>
+        /// Child NotificationRecipientMediumStatusLists where [NotificationRecipientMediumStatusList].[NotificationRecepientMediumId] point to this entity (FK_NotificationRecipientMediumStatusList_NotificationRecepientMedium)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList.FK_NotificationRecipientMediumStatusList_NotificationRecepientMedium
+
         // Foreign keys
+
+        /// <summary>
+        /// Parent DeliveryModeEnum pointed by [NotificationRecepientMedium].([DeliveryModeId]) (FK_NotificationRecepientMedium_DeliveryModeEnum)
+        /// </summary>
+        public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_NotificationRecepientMedium_DeliveryModeEnum
 
         /// <summary>
         /// Parent NotificationMedium pointed by [NotificationRecepientMedium].([NotificationMediumid]) (FK_NotificationRecepientMedium_NotificationMedium_Id)
@@ -37,8 +52,14 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual NotificationRecepient NotificationRecepient { get; set; } // FK_NotificationRecepientMedium_NotificationRecepient_Id
 
+        /// <summary>
+        /// Parent StatusListEnum pointed by [NotificationRecepientMedium].([StatusId]) (FK_NotificationRecepientMedium_StatusListEnum)
+        /// </summary>
+        public virtual StatusListEnum StatusListEnum { get; set; } // FK_NotificationRecepientMedium_StatusListEnum
+
         public NotificationRecepientMedium()
         {
+            NotificationRecipientMediumStatusLists = new System.Collections.Generic.HashSet<NotificationRecipientMediumStatusList>();
             InitializePartial();
         }
 

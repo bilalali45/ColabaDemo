@@ -29,11 +29,16 @@ namespace Notification.Data.Mapping
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("bigint").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.NotificationRecepientId).HasColumnName(@"NotificationRecepientId").HasColumnType("bigint").IsRequired(false);
+            builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("tinyint").IsRequired(false);
+            builder.Property(x => x.SentTextJson).HasColumnName(@"SentTextJSON").HasColumnType("nvarchar(max)").IsRequired();
+            builder.Property(x => x.DeliveryModeId).HasColumnName(@"DeliveryModeId").HasColumnType("smallint").IsRequired();
             builder.Property(x => x.NotificationMediumid).HasColumnName(@"NotificationMediumid").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
+            builder.HasOne(a => a.DeliveryModeEnum).WithMany(b => b.NotificationRecepientMediums).HasForeignKey(c => c.DeliveryModeId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationRecepientMedium_DeliveryModeEnum
             builder.HasOne(a => a.NotificationMedium).WithMany(b => b.NotificationRecepientMediums).HasForeignKey(c => c.NotificationMediumid).OnDelete(DeleteBehavior.SetNull); // FK_NotificationRecepientMedium_NotificationMedium_Id
             builder.HasOne(a => a.NotificationRecepient).WithMany(b => b.NotificationRecepientMediums).HasForeignKey(c => c.NotificationRecepientId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationRecepientMedium_NotificationRecepient_Id
+            builder.HasOne(a => a.StatusListEnum).WithMany(b => b.NotificationRecepientMediums).HasForeignKey(c => c.StatusId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationRecepientMedium_StatusListEnum
             InitializePartial();
         }
         partial void InitializePartial();

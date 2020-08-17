@@ -33,11 +33,10 @@ namespace Notification.Data.Mapping
             builder.Property(x => x.CustomTextJson).HasColumnName(@"CustomTextJSON").HasColumnType("nvarchar(max)").IsRequired(false);
             builder.Property(x => x.CreatedOn).HasColumnName(@"CreatedOn").HasColumnType("datetime2").IsRequired(false);
             builder.Property(x => x.IsActive).HasColumnName(@"IsActive").HasColumnType("bit").IsRequired(false);
+            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
             builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("tinyint").IsRequired(false);
-            builder.Property(x => x.DeliveryModeId).HasColumnName(@"DeliveryModeId").HasColumnType("smallint").IsRequired(false);
 
             // Foreign keys
-            builder.HasOne(a => a.DeliveryModeEnum).WithMany(b => b.NotificationObjects).HasForeignKey(c => c.DeliveryModeId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationObject_DeliveryModeEnum_Id
             builder.HasOne(a => a.NotificationType).WithMany(b => b.NotificationObjects).HasForeignKey(c => c.NotificationTypeId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationObject_NotificationType_Id
             builder.HasOne(a => a.StatusListEnum).WithMany(b => b.NotificationObjects).HasForeignKey(c => c.StatusId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationObject_StatusListEnum_Id
             InitializePartial();

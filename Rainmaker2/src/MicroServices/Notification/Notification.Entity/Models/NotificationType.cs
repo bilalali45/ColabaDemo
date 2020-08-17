@@ -23,7 +23,6 @@ namespace Notification.Entity.Models
     {
         public int Id { get; set; } // Id (Primary key)
         public string Name { get; set; } // Name (length: 50)
-        public short? DeliveryModeId { get; set; } // DeliveryModeId
 
         // Reverse navigation
 
@@ -36,21 +35,19 @@ namespace Notification.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate.FK_NotificationTemplate_NotificationType_Id
         /// <summary>
+        /// Child TenantSettings where [TenantSettings].[NotificationTypeId] point to this entity (FK_TenantDeliveryMode_NotificationType)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantDeliveryMode_NotificationType
+        /// <summary>
         /// Child UserNotificationMediums where [UserNotificationMedium].[NotificationTypeId] point to this entity (FK_UserNotificationMedium_NotificationType_Id)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<UserNotificationMedium> UserNotificationMediums { get; set; } // UserNotificationMedium.FK_UserNotificationMedium_NotificationType_Id
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent DeliveryModeEnum pointed by [NotificationType].([DeliveryModeId]) (FK_NotificationType_DeliveryModeEnum_Id)
-        /// </summary>
-        public virtual DeliveryModeEnum DeliveryModeEnum { get; set; } // FK_NotificationType_DeliveryModeEnum_Id
 
         public NotificationType()
         {
             NotificationObjects = new System.Collections.Generic.HashSet<NotificationObject>();
             NotificationTemplates = new System.Collections.Generic.HashSet<NotificationTemplate>();
+            TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
             UserNotificationMediums = new System.Collections.Generic.HashSet<UserNotificationMedium>();
             InitializePartial();
         }
