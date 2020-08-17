@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Notification} from './_Notifications';
+import {Notification} from './_Notification';
 
 export const Notifications = () => {
   return (
