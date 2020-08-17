@@ -819,7 +819,7 @@
             String fkc = fkColumns[i];
 
             String pkTableNameFiltered = Settings.TableRename( pkTableName, pkSchema, pkTable.IsView ); // TODO: This can probably be done-away with. Is `AddRelationship` called before or after table.NameFiltered is set?
-
+            String fkTableNameFiltered = Settings.TableRename( fkTableName, fkSchema, false );
             ForeignKey fk = new ForeignKey(
                 fkTableName        : fkTable.Name,
                 fkSchema           : fkSchema,
@@ -831,7 +831,8 @@
                 pkTableNameFiltered: pkTableNameFiltered,
                 ordinal            : Int32.MaxValue,
                 cascadeOnDelete    : false,
-                isNotEnforced      : false
+                isNotEnforced      : false,
+                fkTableNameFiltered: fkTableNameFiltered
             );
             fk.IncludeReverseNavigation = true;
 
@@ -2901,8 +2902,9 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
                     bool isNotEnforced = (bool) rdr["IsNotEnforced"];
 
                     string pkTableNameFiltered = Settings.TableRename(pkTableName, pkSchema, false);
+                    string fkTableNameFiltered = Settings.TableRename(fkTableName, fkSchema, false);
 
-                    var fk = new ForeignKey(fkTableName, fkSchema, pkTableName, pkSchema, fkColumn, pkColumn, constraintName, pkTableNameFiltered, ordinal, cascadeOnDelete, isNotEnforced);
+                    var fk = new ForeignKey(fkTableName, fkSchema, pkTableName, pkSchema, fkColumn, pkColumn, constraintName, pkTableNameFiltered, ordinal, cascadeOnDelete, isNotEnforced, fkTableNameFiltered);
 
                     var filteredFk = Settings.ForeignKeyFilter(fk);
                     if(filteredFk != null)
@@ -3307,6 +3309,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
 
                 string pkTableHumanCaseWithSuffix = foreignKey.PkTableHumanCase(pkTable.Suffix);
                 string pkTableHumanCase = foreignKey.PkTableHumanCase( null);
+                string fkTableHumanCase = foreignKey.FkTableHumanCase( null);
                 string pkPropName = fkTable.GetUniqueColumnName(pkTableHumanCase, foreignKey, checkForFkNameClashes, true, Relationship.ManyToOne);
                 bool fkMakePropNameSingular = (relationship == Relationship.OneToOne);
                 string fkPropName = pkTable.GetUniqueColumnName(fkTable.NameHumanCase, foreignKey, checkForFkNameClashes, fkMakePropNameSingular, Relationship.OneToMany);
@@ -3370,7 +3373,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
                 {
                     List<Column> fkCols2 = fkCols.Select( c => c.col ).ToList();
 
-                    string rel = GetRelationship(relationship, fkCols2, pkCols, pkPropName, fkPropName, manyToManyMapping, mapKey, foreignKey.CascadeOnDelete, foreignKey.IncludeReverseNavigation, foreignKey.IsNotEnforced);
+                    string rel = GetRelationship(relationship, fkCols2, pkCols, pkPropName, fkPropName, manyToManyMapping, mapKey, foreignKey.CascadeOnDelete, foreignKey.IncludeReverseNavigation, foreignKey.IsNotEnforced,fkTableHumanCase);
                     string com = Settings.IncludeComments != CommentsStyle.None ? " // " + foreignKey.ConstraintName : string.Empty;
                     firstFKCol.col.ConfigFk.Add(string.Format("{0};{1}", rel, com));
                 }
@@ -3406,10 +3409,10 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
             }
         }
 
-        private static string GetRelationship(Relationship relationship, IList<Column> fkCols, IList<Column> pkCols, string pkPropName, string fkPropName, string manyToManyMapping, string mapKey, bool cascadeOnDelete, bool includeReverseNavigation, bool isNotEnforced)
+        private static string GetRelationship(Relationship relationship, IList<Column> fkCols, IList<Column> pkCols, string pkPropName, string fkPropName, string manyToManyMapping, string mapKey, bool cascadeOnDelete, bool includeReverseNavigation, bool isNotEnforced, string fkTableName)
         {
             string hasMethod  = GetHasMethod(relationship, fkCols, pkCols, isNotEnforced);
-            string withMethod = GetWithMethod(relationship, fkCols, fkPropName, manyToManyMapping, mapKey, includeReverseNavigation);
+            string withMethod = GetWithMethod(relationship, fkCols, fkPropName, manyToManyMapping, mapKey, includeReverseNavigation,fkTableName);
 
             return string.Format("{0}(a => a.{1}){2}{3}",
                 hasMethod,
@@ -3450,13 +3453,13 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
         // WithMany
         // WithRequiredPrincipal
         // WithRequiredDependent
-        private static string GetWithMethod(Relationship relationship, IList<Column> fkCols, string fkPropName, string manyToManyMapping, string mapKey, bool includeReverseNavigation)
+        private static string GetWithMethod(Relationship relationship, IList<Column> fkCols, string fkPropName, string manyToManyMapping, string mapKey, bool includeReverseNavigation, string fkTableName)
         {
             string withParam = includeReverseNavigation ? string.Format("b => b.{0}", fkPropName) : string.Empty;
             switch (relationship)
             {
                 case Relationship.OneToOne:
-                    return string.Format(".WithMany().HasForeignKey({0})", manyToManyMapping);
+                    return string.Format(".WithOne({2}).HasForeignKey<{1}>({0})", manyToManyMapping,fkTableName,withParam);
 
                 case Relationship.OneToMany:
                     return string.Format(".WithRequiredDependent({0})", withParam);
@@ -3787,6 +3790,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
         public string FkSchema            { get; private set; }
         public string PkTableName         { get; private set; }
         public string PkTableNameFiltered { get; private set; }
+        public string FkTableNameFiltered { get; private set; }
         public string PkSchema            { get; private set; }
         public string FkColumn            { get; private set; }
         public string PkColumn            { get; private set; }
@@ -3800,7 +3804,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
         public bool   IncludeRequiredAttribute { get; set; }
         public bool   IsNotEnforced            { get; set; }
 
-        public ForeignKey(string fkTableName, string fkSchema, string pkTableName, string pkSchema, string fkColumn, string pkColumn, string constraintName, string pkTableNameFiltered, int ordinal, bool cascadeOnDelete, bool isNotEnforced)
+        public ForeignKey(string fkTableName, string fkSchema, string pkTableName, string pkSchema, string fkColumn, string pkColumn, string constraintName, string pkTableNameFiltered, int ordinal, bool cascadeOnDelete, bool isNotEnforced,string fkTableNameFiltered)
         {
             ConstraintName = constraintName;
             PkColumn = pkColumn;
@@ -3810,6 +3814,7 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
             FkSchema = fkSchema;
             FkTableName = fkTableName;
             PkTableNameFiltered = pkTableNameFiltered;
+            FkTableNameFiltered = fkTableNameFiltered;
             Ordinal = ordinal;
             CascadeOnDelete = cascadeOnDelete;
             IsNotEnforced = isNotEnforced;
@@ -3825,6 +3830,16 @@ SELECT  SERVERPROPERTY('Edition') AS Edition,
                 pkTableHumanCase = PkSchema + "_" + pkTableHumanCase;
             pkTableHumanCase += suffix;
             return pkTableHumanCase;
+        }
+
+        public string FkTableHumanCase(string suffix)
+        {
+            var singular = Inflector.MakeSingular(FkTableNameFiltered);
+            var fkTableHumanCase = (Settings.UsePascalCase ? Inflector.ToTitleCase(singular) : singular).Replace(" ", "").Replace("$", "");
+            if (string.Compare(FkSchema, "dbo", StringComparison.OrdinalIgnoreCase) != 0 && Settings.PrependSchemaName)
+                fkTableHumanCase = FkSchema + "_" + fkTableHumanCase;
+            fkTableHumanCase += suffix;
+            return fkTableHumanCase;
         }
     }
 

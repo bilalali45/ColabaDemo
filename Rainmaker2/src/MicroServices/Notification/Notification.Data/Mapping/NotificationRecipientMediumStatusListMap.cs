@@ -27,7 +27,7 @@ namespace Notification.Data.Mapping
             builder.ToTable("NotificationRecipientMediumStatusList", "dbo");
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("bigint").IsRequired().ValueGeneratedNever();
+            builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("bigint").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.UpdatedOn).HasColumnName(@"UpdatedOn").HasColumnType("datetime2").IsRequired();
             builder.Property(x => x.NotificationRecepientMediumId).HasColumnName(@"NotificationRecepientMediumId").HasColumnType("bigint").IsRequired();
             builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("tinyint").IsRequired();

@@ -25,8 +25,7 @@ export const MCUHome = () => {
   ParamsService.storeParams(loanApplicationId);
   useEffect(() => {
     window.scrollTo(0, 0);
-    //SignalRHub.configureHubConnection();
-    //SignalRHub.eventsRegister();
+    SignalRHub.configureHubConnection();
   }, [location.pathname]);
 
   const setParams = (loanId: string) => {

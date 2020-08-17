@@ -24,8 +24,10 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Add(NotificationModel model)
         {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
 
-            return Ok();
+            return Ok(await _notificationService.Add(model,userProfileId,tenantId, Request.Headers["Authorization"].Select(x => x.ToString())));
         }
     }
 }

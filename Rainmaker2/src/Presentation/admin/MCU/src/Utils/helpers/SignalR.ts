@@ -10,20 +10,19 @@ export class SignalRHub {
   // Set the initial SignalR Hub Connection.
   static configureHubConnection = async () => {
     // Events Register
-    SignalRHub.eventsRegister();
 
     let userAgent = navigator.userAgent;
     let accessToken;
-    const hubUrl = 'https://alphavortex.rainsoftfn.com/SignalR';
-    const param = `?userName=khalid&typeId=1&userAgent=${userAgent}`;
+    const hubUrl = 'http://172.16.100.117:8065/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets,
-        accessTokenFactory: accessToken
+        //skipNegotiation: true,
+        //transport: HttpTransportType.WebSockets,
+        //accessTokenFactory: accessToken
       })
       .configureLogging(LogLevel.Trace)
       .build();
+    SignalRHub.eventsRegister();
     await SignalRHub.hubStart();
   };
 
@@ -47,9 +46,6 @@ export class SignalRHub {
 
   static eventsRegister = () => {
     // Example Event Listner
-    window.addEventListener('TestSignalR', (data: any) => {
-      alert(data.detail.name);
-    });
 
     SignalRHub.hubConnection.on('TestSignalR', () => {
       console.log(`TestSignalR Tested`);

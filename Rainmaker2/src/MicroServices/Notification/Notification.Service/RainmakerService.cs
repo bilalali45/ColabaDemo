@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Notification.Model;
 
 namespace Notification.Service
 {
@@ -28,6 +29,22 @@ namespace Notification.Service
 
             if (response.IsSuccessStatusCode)
                 return Newtonsoft.Json.JsonConvert.DeserializeObject <List<int>>(await response.Content.ReadAsStringAsync());
+            else
+                return null;
+        }
+
+        public async Task<LoanSummary> GetLoanSummary(int loanApplicationId, IEnumerable<string> authHeader)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/loanapplication/GetLoanInfo?loanApplicationId=" + loanApplicationId),
+                Method = HttpMethod.Get
+            };
+            request.Headers.Add("Authorization", authHeader);
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<LoanSummary>(await response.Content.ReadAsStringAsync());
             else
                 return null;
         }
