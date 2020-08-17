@@ -48,6 +48,7 @@ namespace Notification.API
             services.AddScoped<IUnitOfWork<Notification.Data.NotificationContext>, UnitOfWork<Notification.Data.NotificationContext>>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ITemplateService,TemplateService>();
+            services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
@@ -83,6 +84,7 @@ namespace Notification.API
                         MaxConnectionsPerServer = int.MaxValue
                     })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
+            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor();  //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
