@@ -3,6 +3,10 @@ body{
     padding: 0;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 .clearfix{
     &::before,
     &::after{
@@ -28,7 +32,7 @@ body{
 .notify{
     font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
     position: relative;
-    padding: 0 5px;
+    margin: 0 5px;
 
     &-tigger-area{
         border-bottom: 1px solid #cfcfcf;
@@ -38,6 +42,7 @@ body{
 
     &-dropdown{
         position: absolute;
+        width: 100%;
     }
 
     &-header{
