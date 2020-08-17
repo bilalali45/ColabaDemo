@@ -12,7 +12,7 @@ using URF.Core.Abstractions;
 
 namespace Notification.Service
 {
-    public class NotificationService : ServiceBase<NotificationContext,NotificationObject>,INotificationService
+    public class NotificationService : ServiceBase<NotificationContext, NotificationObject>, INotificationService
     {
         private readonly IRainmakerService rainmakerService;
         private readonly ITemplateService templateService;
@@ -27,7 +27,7 @@ namespace Notification.Service
         }
         public async Task<long> Add(NotificationModel model, int userId, int tenantId, IEnumerable<string> authHeader)
         {
-            List<TenantSetting> tenantSetting = await Uow.Repository<TenantSetting>().Query(x=>x.TenantId == tenantId && x.NotificationTypeId == model.NotificationType).ToListAsync();
+            List<TenantSetting> tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId && x.NotificationTypeId == model.NotificationType).ToListAsync();
             NotificationObject notificationObject = new NotificationObject();
             notificationObject.CreatedOn = DateTime.UtcNow;
             notificationObject.CustomTextJson = model.CustomTextJson;
@@ -42,9 +42,9 @@ namespace Notification.Service
             notificationObject.NotificationActor.ActorId = userId;
 
             List<int> reciepient = await rainmakerService.GetAssignedUsers(model.EntityId, authHeader);
-            if(reciepient != null)
+            if (reciepient != null)
             {
-                foreach(var item in reciepient)
+                foreach (var item in reciepient)
                 {
                     NotificationRecepient notificationRecepient = new NotificationRecepient();
                     notificationRecepient.RecipientId = item;
@@ -52,15 +52,18 @@ namespace Notification.Service
                     notificationRecepient.TrackingState = TrackingState.Added;
                     notificationObject.NotificationRecepients.Add(notificationRecepient);
                     notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
-                    foreach(var setting in tenantSetting)
+                    foreach (var setting in tenantSetting)
                     {
-                        NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
-                        notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
-                        notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
-                        notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusListEnum.Created;
-                        notificationRecepientMedium.SentTextJson = String.Empty;
+                        if (await IsUserSubscribedToMedium(userId,tenantId,setting.NotificationMediumId))
+                        {
+                            NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
+                            notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
+                            notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
+                            notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusListEnum.Created;
+                            notificationRecepientMedium.SentTextJson = String.Empty;
 
-                        notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
+                            notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
+                        }
                     }
 
                 }
@@ -76,8 +79,21 @@ namespace Notification.Service
 
         public async Task<NotificationObject> GetByIdForTemplate(long notificationId)
         {
-            return await Repository.Query(x => x.Id == notificationId).Include(x => x.NotificationType).ThenInclude(x=>x.NotificationTemplates)
-                .Include(x=>x.NotificationRecepients).ThenInclude(x=>x.NotificationRecepientMediums).FirstAsync();
+            return await Repository.Query(x => x.Id == notificationId).Include(x => x.NotificationType).ThenInclude(x => x.NotificationTemplates)
+                .Include(x => x.NotificationRecepients).ThenInclude(x => x.NotificationRecepientMediums).FirstAsync();
+        }
+
+        private async Task<bool> IsUserSubscribedToMedium(int userId, int tenantId,int mediumId)
+        {
+            var result = await Uow.Repository<UserNotificationMedium>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId).FirstOrDefaultAsync();
+            if (result == null)
+            {
+                return true;
+            }
+            else
+            {
+                return result.IsActive.Value;
+            }
         }
     }
 }
