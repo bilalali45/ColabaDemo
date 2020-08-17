@@ -32,7 +32,7 @@ namespace Notification.Data.Mapping
             builder.Property(x => x.ActorId).HasColumnName(@"ActorId").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
-            builder.HasOne(a => a.NotificationObject).WithMany().HasForeignKey(c => c.NotificationObjectId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationActor_NotificationObject_Id
+            builder.HasOne(a => a.NotificationObject).WithOne(b => b.NotificationActor).HasForeignKey<NotificationActor>(c => c.NotificationObjectId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationActor_NotificationObject_Id
             InitializePartial();
         }
         partial void InitializePartial();

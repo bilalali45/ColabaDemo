@@ -10,8 +10,6 @@ export const Header = () => {
 
 export const BellIcon = ({onClick}: {onClick: () => void}) => {
   return (
-    <div onClick={onClick}>
-      <h3>Bell Icon</h3>
-    </div>
+    <button onClick={onClick} className="btn-notify"><i className="zmdi zmdi-notifications"></i></button>
   );
 };

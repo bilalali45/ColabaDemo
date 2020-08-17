@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using Notification.Common;
 using Notification.Data;
@@ -13,14 +14,15 @@ namespace Notification.Service
 {
     public class TemplateService : ITemplateService
     {
-        private readonly INotificationService notificationService;
+        private readonly IServiceProvider serviceProvider;
 
-        public TemplateService(INotificationService notificationService)
+        public TemplateService(IServiceProvider serviceProvider)
         {
-            this.notificationService = notificationService;
+            this.serviceProvider = serviceProvider;
         }
         public async Task PopulateTemplate(long notificationId)
         {
+            INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             NotificationObject notificationObject = await notificationService.GetByIdForTemplate(notificationId);
             switch ((NotificationTypeEnum)notificationObject.NotificationTypeId)
             {
@@ -46,6 +48,7 @@ namespace Notification.Service
         private async Task DocumentSubmissionTemplate_InApp(NotificationObject notificationObject,
             NotificationTemplate notificationTemplate)
         {
+            INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             // populate template
             string templateJson = notificationTemplate.TemplateJson.Replace("{{NotificationType}}",notificationObject.NotificationType.Name);
             templateJson = templateJson.Replace("{{NotificationDateTime}}",notificationObject.CreatedOn.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));

@@ -1,0 +1,4 @@
+// Font Sizes
+@function fontSize($value){
+    @return map-get($font-size,$value);
+}
