@@ -9,7 +9,7 @@ using Rainmaker.Service;
 
 namespace Rainmaker.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/rainmaker/[controller]")]
     [ApiController]
     public class NotificationController : Controller
     {
@@ -20,6 +20,7 @@ namespace Rainmaker.API.Controllers
         }
 
         [Authorize(Roles = "Customer")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetAssignedUsers(int loanApplicationId)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
