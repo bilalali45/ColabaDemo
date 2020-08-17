@@ -35,12 +35,12 @@ export const HomePage = () => {
       />
       {!!notificationsVisible && (
         
-          <div className="notify-dropdown" style={styling}>
+          <div className="notify-dropdown animated slideInRight" style={styling}>
             <Header />
             <Notifications />
           </div>
         
-      )}
+      )} 
     </div>
   );
 };
