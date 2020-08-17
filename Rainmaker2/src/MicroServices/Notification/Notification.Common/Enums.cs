@@ -2,29 +2,26 @@
 
 namespace Notification.Common
 {
-    public class Enums
+    public enum NotificationTypeEnum
     {
-        public enum NotificationType
-        {
-            DocumentSubmission=1
-        }
-        public enum DeliveryMode
-        {
-            Express=1
-        }
+        DocumentSubmission=1
+    }
+    public enum DeliveryModeEnum
+    {
+        Express=1
+    }
 
-        public enum NotificationMedium
-        {
-            InApp=1
-        }
+    public enum NotificationMediumEnum
+    {
+        InApp=1
+    }
 
-        public enum StatusList
-        {
-            Created=1,
-            Delivered=2,
-            Unread=3,
-            Read=4,
-            Deleted=5
-        }
+    public enum StatusListEnum
+    {
+        Created=1,
+        Delivered=2,
+        Unread=3,
+        Read=4,
+        Deleted=5
     }
 }

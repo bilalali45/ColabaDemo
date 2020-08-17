@@ -47,6 +47,7 @@ namespace Notification.API
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<Notification.Data.NotificationContext>, UnitOfWork<Notification.Data.NotificationContext>>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ITemplateService,TemplateService>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
