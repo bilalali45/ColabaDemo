@@ -1,11 +1,17 @@
 import React from 'react';
 import { dropdownConfig } from './HomePage';
+import toggle from './../assets/icons/toggle.svg';
 
 
 export const Header = () => {
+  const ClearNotification = () => {
+    console.log('ClearNotification');
+  }
+
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
+      <button className="notify-btn-clear" onClick={ClearNotification}>Clear all <img src={toggle} /></button>
     </div>
   );
 };

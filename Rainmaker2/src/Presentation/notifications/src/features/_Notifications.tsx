@@ -1,9 +1,10 @@
 import React from 'react';
+import uploadedFile from './../assets/icons/uploaded-file.svg';
 
 export const Notification = () => {
   return (
     <div>
-      <h4>Notification</h4>
+      <img src={uploadedFile} alt="Document Submission"/>
     </div>
   );
 };

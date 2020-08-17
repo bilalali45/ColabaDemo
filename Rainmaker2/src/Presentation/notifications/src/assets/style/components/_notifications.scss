@@ -5,6 +5,9 @@ body{
 
 *{
     box-sizing: border-box;
+    &:focus{
+        outline: none;
+    }
 }
 
 .clearfix{
@@ -14,6 +17,13 @@ body{
         display: table;
         clear: both;
     }
+}
+
+.flex{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .btn-notify{
@@ -40,6 +50,15 @@ body{
         text-align: right;
     }
 
+    &-btn-clear{
+        background-color: transparent;
+        border: none;
+        font: 400 #{fontSize("sm") + "/17px"} fontFamily("base");
+        img{
+            margin-left: 5px;
+        }
+    }
+
     &-dropdown{
         position: absolute;
         width: 100%;
@@ -49,10 +68,14 @@ body{
         padding: 15px;
         background-color: color('primary');
         color: color('primary-text');
+        @extend .flex;
         h2{
-            font: 400 #{fontSize("nr") + "/1.2"} fontFamily("heading");
+            font: 500 #{fontSize("nr") + "/1.2"} fontFamily("heading");
             margin: 0;
             text-transform: uppercase;
+        }
+        button,a{
+            color: color('primary-text');
         }
     }
 
