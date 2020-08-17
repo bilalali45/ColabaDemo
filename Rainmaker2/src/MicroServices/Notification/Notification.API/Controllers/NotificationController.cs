@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notification.Model;
@@ -20,6 +21,7 @@ namespace Notification.API.Controllers
             _notificationService = notificationService;
         }
         [HttpPost("[action]")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Add(NotificationModel model)
         {
 
