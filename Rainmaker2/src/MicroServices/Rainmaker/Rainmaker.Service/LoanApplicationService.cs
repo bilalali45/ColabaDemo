@@ -33,6 +33,7 @@ namespace Rainmaker.Service
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId,
                                                       int userProfileId)
         {
+            string url = await commonService.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl);
             return await Repository
                          .Query(query: x =>
                                     x.Opportunity.OpportunityLeadBinders
@@ -48,8 +49,26 @@ namespace Rainmaker.Service
                          .Include(navigationPropertyPath: x => x.Opportunity)
                          .ThenInclude(navigationPropertyPath: x => x.OpportunityLeadBinders)
                          .ThenInclude(navigationPropertyPath: x => x.Customer)
+                         .Include(navigationPropertyPath: x => x.Borrowers)
+                         .ThenInclude(navigationPropertyPath: x => x.LoanContact)
                          .Select(selector: x => new LoanSummary
                                                 {
+                                                    Url = url,
+                                                    Name = x
+                                                        .Borrowers.Where(y => y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact)
+                                                        .Select(y =>
+                                                            (string
+                                                                .IsNullOrEmpty(y.LoanContact
+                                                                    .FirstName)
+                                                                ? ""
+                                                                : y.LoanContact.FirstName) +
+                                                            " " +
+                                                            (string
+                                                                .IsNullOrEmpty(y.LoanContact
+                                                                    .LastName)
+                                                                ? ""
+                                                                : y.LoanContact.LastName))
+                                                        .FirstOrDefault(),
                                                     CityName = x.PropertyInfo.AddressInfo.CityName,
                                                     CountyName = x.PropertyInfo.AddressInfo.CountyName,
                                                     LoanAmount = x.LoanAmount,
@@ -70,7 +89,6 @@ namespace Rainmaker.Service
 
         public async Task<AdminLoanSummary> GetAdminLoanSummary(int loanApplicationId)
         {
-            string url = await commonService.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl);
             return await Repository.Query(query: x => x.Id == loanApplicationId)
                                    .Include(navigationPropertyPath: x => x.PropertyInfo)
                                    .ThenInclude(navigationPropertyPath: x => x.PropertyType)
@@ -89,7 +107,6 @@ namespace Rainmaker.Service
                                    .ThenInclude(navigationPropertyPath: x => x.StatusList)
                                    .Select(selector: x => new AdminLoanSummary
                                                           {
-                                                              Url=url,
                                                               CityName = x.PropertyInfo.AddressInfo.CityName,
                                                               CountyName = x.PropertyInfo.AddressInfo.CountyName,
                                                               LoanAmount = x.LoanAmount,

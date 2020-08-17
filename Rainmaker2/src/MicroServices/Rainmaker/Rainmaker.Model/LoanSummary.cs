@@ -6,6 +6,8 @@ namespace Rainmaker.Model
 {
     public class LoanSummary
     {
+        public string Url { get; set; }
+        public string Name { get; set; }
         public string LoanPurpose { get; set; }
         public string PropertyType { get; set; }
         public string StateName { get; set; }
@@ -20,7 +22,6 @@ namespace Rainmaker.Model
 
     public class AdminLoanSummary
     {
-        public string Url { get; set; }
         public string LoanPurpose { get; set; }
         public string PropertyType { get; set; }
         public string StateName { get; set; }
