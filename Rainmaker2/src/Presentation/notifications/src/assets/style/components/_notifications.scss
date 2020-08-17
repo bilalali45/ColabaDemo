@@ -28,6 +28,7 @@ body{
 .notify{
     font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
     position: relative;
+    padding: 0 5px;
 
     &-tigger-area{
         border-bottom: 1px solid #cfcfcf;
