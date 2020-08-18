@@ -2,14 +2,42 @@
     .notification-list {
         position: relative;
         margin-bottom: 2px;
+        
         &:last-child{
             margin-bottom: 0;
         }
+        
         &.unSeenList {
             .n-wrap {
                 background: rgba(color('primary'),0.05); 
             }
         }
+        
+        &-item{
+            
+        }
+        
+        &-item-remove{
+            padding: 20px;
+            background-color: color('primary');
+            color: color('primary-text');
+            @extend .flex;
+            font: 400 #{fontSize("sm") + "/1.2"} fontFamily("base");
+            
+            .n-alert-text{
+                font-style: italic;
+            }
+            
+            .btn-undo{
+                margin-left: 10px;
+                background-color: transparent;
+                border: none;
+                color: color('primary-text');
+                font: 400 #{fontSize("sm") + "/1.2"} fontFamily("base");
+                cursor: pointer;
+            }
+        }
+
         .n-wrap {
             display: flex;
             position: relative;

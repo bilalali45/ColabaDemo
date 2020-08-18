@@ -38,6 +38,7 @@ namespace Notification.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=NotificationCS"));
             if (!csResponse.IsSuccessStatusCode)
             {
@@ -71,6 +72,23 @@ namespace Notification.API
                             ValidIssuer = "rainsoftfn",
                             ValidAudience = "readers",
                             IssuerSigningKey = symmetricSecurityKey
+                        };
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                var accessToken = context.Request.Query["access_token"];
+
+                                // If the request is for our hub...
+                                var path = context.HttpContext.Request.Path;
+                                if (!string.IsNullOrEmpty(accessToken) &&
+                                    (path.StartsWithSegments("/serverhub")))
+                                {
+                                    // Read the token out of the query string
+                                    context.Token = accessToken;
+                                }
+                                return Task.CompletedTask;
+                            }
                         };
                     });
 
@@ -112,6 +130,7 @@ namespace Notification.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ServerHub>("/serverhub");
             });
         }
     }

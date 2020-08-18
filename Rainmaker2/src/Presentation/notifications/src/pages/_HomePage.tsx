@@ -5,6 +5,7 @@ import { SVGToggle } from '../SVGIcons';
 
 
 export const Header = () => {
+  
   const ClearNotification = () => {
     console.log('ClearNotification');
   }
