@@ -58,7 +58,7 @@ export const EmailContentReview = ({
   const selectedTemplateDocuments: TemplateDocument[] =
     templateManager?.selectedTemplateDocuments || [];
   const loanData = needListManager?.loanInfo;
-  const borrowername = loanData?.borrowers[0];
+  const borrowername = loanData?.borrowers?.[0];
   const [emailBody, setEmailBody] = useState<string>();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);

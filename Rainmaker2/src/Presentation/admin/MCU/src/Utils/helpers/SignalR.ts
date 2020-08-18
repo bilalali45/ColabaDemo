@@ -4,7 +4,7 @@ import {
   LogLevel,
   HttpTransportType
 } from '@aspnet/signalr';
-
+import { UserActions } from "../../Store/actions/UserActions";
 export class SignalRHub {
   static hubConnection: any;
   // Set the initial SignalR Hub Connection.
@@ -13,17 +13,18 @@ export class SignalRHub {
 
     let userAgent = navigator.userAgent;
     let accessToken;
-    const hubUrl = 'http://172.16.100.117:8065/serverhub';
+    const hubUrl = 'https://localhost:44322/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
-        //skipNegotiation: true,
-        //transport: HttpTransportType.WebSockets,
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
         //accessTokenFactory: accessToken
       })
       .configureLogging(LogLevel.Trace)
       .build();
-    SignalRHub.eventsRegister();
     await SignalRHub.hubStart();
+    SignalRHub.eventsRegister();
+    SignalRHub.checkSignalR();
   };
 
   static hubStart = async () => {
@@ -32,6 +33,7 @@ export class SignalRHub {
       console.log('Connection start successful!');
     } catch (err) {
       alert(err);
+      SignalRHub.signalRHubResume();
     }
   };
 
@@ -44,6 +46,30 @@ export class SignalRHub {
     }
   };
 
+ static checkSignalR = async () => {
+  SignalRHub.hubConnection.onclose(() => {
+    alert(`Signal R disconnected`);
+    UserActions.authorize().then((data) => {
+    console.log('isAuthorize',data)
+    if(data){
+      SignalRHub.signalRHubResume();
+    }
+    });
+  });
+ }
+
+ static signalRHubResume = async () => {
+  try{
+    setTimeout(()=> {
+      alert("SignalR Hub Resume");
+      SignalRHub.hubStart();
+    },3000)  
+  }
+  catch (err) {
+    alert(err);
+  } 
+};
+
   static eventsRegister = () => {
     // Example Event Listner
 
@@ -54,6 +80,9 @@ export class SignalRHub {
           detail: {name: 'John'}
         })
       );
-    });
+    });    
+
   };
+
+  
 }

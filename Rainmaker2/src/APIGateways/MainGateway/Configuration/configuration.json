@@ -1,5 +1,18 @@
 {
   "Routes": [
+    // signalr configuration
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5702
+        }
+      ],
+      "UpstreamPathTemplate": "/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+    },
     //notification api config
     {
       "DownstreamPathTemplate": "/api/notification/{everything}",

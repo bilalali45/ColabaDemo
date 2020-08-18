@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Notification.Model;
 using Notification.Service;
 
@@ -15,10 +16,13 @@ namespace Notification.API.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationService _notificationService;
+        private readonly IHubContext<ServerHub, IClientHub> _context;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService,
+            IHubContext<ServerHub, IClientHub> context)
         {
             _notificationService = notificationService;
+            _context = context;
         }
         [HttpPost("[action]")]
         [Authorize(Roles = "Customer")]
@@ -68,6 +72,12 @@ namespace Notification.API.Controllers
         public async Task<IActionResult> DeleteAll()
         {
             await _notificationService.DeleteAll();
+            return Ok();
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> TestSignalR()
+        {
+            await ServerHub.TestSignalR(_context);
             return Ok();
         }
     }
