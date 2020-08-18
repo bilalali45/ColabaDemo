@@ -1,13 +1,12 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 import { AlertForRemove } from '../features/NotificationAlerts';
 
-
 export const dropdownConfig = () => {
-  let queryString  = window.location.search.substring(1, 100);
+  let queryString = window.location.search.substring(1, 100);
   const urlParams = new URLSearchParams(queryString);
   return {
     width: urlParams.get('width'),
@@ -22,19 +21,37 @@ export const HomePage = () => {
   const [notifyClass, setNotifyClass] = useState('close');
   const [unClear,setClear] = useState(false);
   const [clearAllConfirm,setClearAllConfirm] = useState(false);
+  const refContainerSidebar = useRef<HTMLDivElement>(null);
 
-  console.log(notificationsVisible)
 
-  const styling = {
-    top : dropdownConfig().height + 'px',
-    width: dropdownConfig().width + 'px',
-    height: 'calc(100vh - '+ dropdownConfig().height +'px)'
+  const closeSidebar = (event: any) => {
+    if (refContainerSidebar.current && !refContainerSidebar.current.contains(event.target)) {
+      openEffect();
+      setTimeout(() => { setNotificationsVisible(false) }, 1000)
+    }
   }
 
+  useEffect(() => {
+    document.addEventListener("click", closeSidebar);
+    return () => {
+      document.removeEventListener("click", closeSidebar);
+    };
+  }, [notificationsVisible]);
+
   const openEffect = () => {
-    setTimeout(() => {
-        setNotifyClass(notificationsVisible ? "open" : "close");
-    }, 200);
+    setNotifyClass(notificationsVisible ? "animated slideOutRight" : "animated slideInRight");
+  }
+
+  const toggleNotificationSidebar = () => {
+    if (notificationsVisible === false) {
+      openEffect()
+      setNotificationsVisible((prevState) => !prevState)
+    }
+    else {
+      openEffect()
+      setTimeout(() => { setNotificationsVisible((prevState) => !prevState) }, 1000)
+    }
+
   }
 
   useEffect(() => {
@@ -73,18 +90,19 @@ export const HomePage = () => {
   }
 
   return (
-    <div className={`notify ${notifyClass}`}>
+    <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
-        onClick={() => { setNotificationsVisible((prevState) => !prevState); openEffect()}}
+        onClick={toggleNotificationSidebar}
       />
       {!!notificationsVisible && (
-        
-          <div className="notify-dropdown" style={styling}>
-            <Header handleClear={clearAll} />            
-            { notifying() }                        
-          </div>
-        
-      )} 
+
+        <div className={`notify-dropdown ${notifyClass}`}>
+          <Header handleClear={clearAll} />            
+            { notifying() }
+        </div>
+
+      )}
+
     </div>
   );
 };

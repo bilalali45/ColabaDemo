@@ -137,6 +137,7 @@ namespace MainGateway
                     context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
                 context.Response.Headers.Remove("Server");
             });
+            app.UseWebSockets();
             app.UseOcelot().Wait();
         }
     }
