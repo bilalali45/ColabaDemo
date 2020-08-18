@@ -56,6 +56,14 @@ ul {
         justify-content: center;
         text-align: center;
         font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+        color: color('base');
+        padding: 45px;
+
+        h4{
+            font-weight: 400;
+            color: #000;
+            margin-bottom: 5px;
+        }
 
         &--wrap{
             margin-top: -25%;

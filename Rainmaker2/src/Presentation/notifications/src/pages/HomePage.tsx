@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-import { AlertForRemove } from '../features/NotificationAlerts';
+import { AlertForRemove, AlertForNoData } from '../features/NotificationAlerts';
 
 export const dropdownConfig = () => {
   let queryString = window.location.search.substring(1, 100);
@@ -25,7 +25,9 @@ export const HomePage = () => {
 
 
   const closeSidebar = (event: any) => {
-    if (refContainerSidebar.current && !refContainerSidebar.current.contains(event.target)) {
+    // console.log(event.target.classList);
+    
+    if (!event.target?.className?.includes('btn-notify') && refContainerSidebar.current && !refContainerSidebar.current.contains(event.target)) {
       openEffect();
       setTimeout(() => { setNotificationsVisible(false) }, 1000)
     }
@@ -81,7 +83,7 @@ export const HomePage = () => {
       return <Notifications /> 
     }else{
       if(clearAllConfirm===true){
-        return <div>No Data Found!</div>;
+        return <AlertForNoData/>;
       }else{
         return <AlertForRemove handleClearVerification={clearAllVerification}/>;
       }
