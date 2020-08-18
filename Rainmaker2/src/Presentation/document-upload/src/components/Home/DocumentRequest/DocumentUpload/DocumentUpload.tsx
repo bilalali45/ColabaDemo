@@ -86,7 +86,7 @@ export const DocumentUpload = () => {
             <div className="doc-note">
               <p>
                 <i className="fas fa-info-circle"></i>
-                {docMessage}
+                {docMessage?.replace(/<br\s*[\/]?>/gi, '\n')}
               </p>
             </div>
           </div>

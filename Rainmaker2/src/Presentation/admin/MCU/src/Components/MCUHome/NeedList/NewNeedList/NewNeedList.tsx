@@ -52,7 +52,7 @@ export const NewNeedList = () => {
     const [emailTemplate, setEmailTemplate] = useState<string>();
     const [documentsName, setDocumentName] = useState<string>();
     const [defaultEmail, setDefaultEmail] = useState<string>();
-    const borrowername = loanData?.borrowers[0];
+    const borrowername = loanData?.borrowers?.[0];
     const history = useHistory();
     const location = useLocation();
 
@@ -66,6 +66,7 @@ export const NewNeedList = () => {
         setTimeout(()=> {
             getEmailTemplate();
         }, 1000)
+
         return () => {
             clearOldData()
         }

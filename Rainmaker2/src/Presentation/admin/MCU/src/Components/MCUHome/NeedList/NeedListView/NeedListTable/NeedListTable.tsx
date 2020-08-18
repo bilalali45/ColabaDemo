@@ -236,12 +236,7 @@ export const NeedListTable = ({
                         {truncate(mcuName, 47)}
                       </a>
                     </span>
-                    <small
-                      title={clientName}
-                      className="block-element-child td-filename filename-by-b"
-                    >
-                      {truncate(clientName, 47)}
-                    </small>
+                   
                   </React.Fragment>
                 ) : (
                   <span

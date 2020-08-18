@@ -14,7 +14,13 @@ export const LoanSnapshot = () => {
 
   const needListManager: any = state?.needListManager;
   const loanData = needListManager?.loanInfo;
+
+ 
+  
   useEffect(() => {
+    window.addEventListener('TestSignalR', (data: any) => {
+      alert(data.detail.name);
+    });
     if (!loanData) {
       fetchLoanApplicationDetail();
     }
