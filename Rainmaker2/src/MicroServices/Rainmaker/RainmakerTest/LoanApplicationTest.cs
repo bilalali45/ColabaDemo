@@ -169,7 +169,10 @@ namespace RainmakerTest
             };
             dataContext.Set<LoanPurpose>().Add(loanPurpose);
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
+            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl, 1, default)).ReturnsAsync(string.Empty);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, mockcommonservice.Object);
 
             //Act
             LoanSummary res = await loanService.GetLoanSummary(1, 1);
