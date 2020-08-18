@@ -2,6 +2,8 @@ import React from 'react';
 import uploadedFile from './../assets/icons/uploaded-file.svg';
 import calendar from './../assets/icons/calendar.svg';
 import close from './../assets/icons/close.svg';
+import { SVGDocument, SVGClose, SVGCalender } from '../SVGIcons';
+
 
 type NotificationType = {
   unSeen?: boolean,
@@ -10,7 +12,7 @@ export const Notification = ({unSeen }: NotificationType) => {
   return (
     <li className={`notification-list ${unSeen ? 'unSeenList' : ''}`} >
       <div className="n-wrap">
-        <div className="n-icon"><img src={uploadedFile} alt="" /></div>
+        <div className="n-icon"><SVGDocument/></div>
         <div className="n-content">
           <div className="n-cat" title={"Document Submission"}>Document Submission</div>
           <h4 className="n-title">
@@ -21,12 +23,12 @@ export const Notification = ({unSeen }: NotificationType) => {
             Dallas, TX 76099
          </p>
           <div className="n-date">
-            <img src={calendar} alt="" /> Jul. 25 2020 05:30 PM
+            <SVGCalender/> Jul. 25 2020 05:30 PM
           </div>
         </div>
       </div>
       <div className="n-close">
-        <img src={close} alt="" title="Close" />
+        <SVGClose/>
       </div>
     </li>
   );
