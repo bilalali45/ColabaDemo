@@ -33,11 +33,10 @@ ul {
 .btn-notify{
     border: 0;
     background-color: transparent;
-    font-size: fontSize('lg');
+    font-size: fontSize('lg') - 2px;
     color: color('primary-text');
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
     padding: 14px;
-    font-size: 22px;
     display: inline-block;
     cursor: pointer;
     &:focus{
@@ -49,6 +48,19 @@ ul {
     font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
     position: relative;
     margin: 0 5px;
+
+    &-alert-msg{
+        height: 100%;
+        width: 100%;
+        @extend .flex;
+        justify-content: center;
+        text-align: center;
+        font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+
+        &--wrap{
+            margin-top: -25%;
+        }
+    }
 
     &-tigger-area{
         @extend .clearfix;
@@ -74,6 +86,19 @@ ul {
         background-color: color('bgColor');
         @include transition(all 0.5s ease-out);
         z-index: 9;
+
+        .btn-notify{
+            display: inline-block;
+            padding: 8px 30px;
+            outline: 4px solid #fff;
+            font: 500 #{fontSize("sm") + "/1.2"} fontFamily("base");
+            background-color: color('primary');
+            text-transform: uppercase;
+
+            &.secondry{
+                background-color: color('secondry');
+            }
+        }
     }
 
     &-header{
@@ -104,6 +129,8 @@ ul {
         }
     }
 }
+
+
 
 .animated {
     -webkit-animation-duration: 1s;
