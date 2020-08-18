@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'unused-imports/no-unused-imports-ts': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'error',
+    'react/prop-types': 0,
     'unused-imports/no-unused-vars-ts': [
       'warn',
       {
@@ -33,6 +34,7 @@ module.exports = {
         argsIgnorePattern: '^_'
       }
     ],
+    'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
     '@typescript-eslint/no-use-before-define': [
       'error',

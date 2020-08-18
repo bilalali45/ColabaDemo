@@ -1,32 +1,21 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 
 import {Notification} from './_Notifications';
+import {NotificationType} from '../lib/type';
 
-export const Notifications = () => {
+interface NotificationsProps {
+  notifications: NotificationType[];
+}
+
+export const Notifications: FunctionComponent<NotificationsProps> = ({
+  notifications
+}) => {
   return (
     <div className="notify-body">
       <ul className="notification-ul">
-      <Notification unSeen={true} />
-       <Notification  unSeen={true}  />
-      <Notification />
-     <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
+        {notifications.map((notification, index) => {
+          return <Notification key={index} {...notification} />;
+        })}
       </ul>
     </div>
   );
