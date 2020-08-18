@@ -33,10 +33,11 @@ ul {
 .btn-notify{
     border: 0;
     background-color: transparent;
-    font-size: fontSize('xmd');
+    font-size: fontSize('lg');
     color: color('primary-text');
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-    padding: 10px 20px;
+    padding: 14px;
+    font-size: 22px;
     display: inline-block;
     cursor: pointer;
     &:focus{
@@ -50,7 +51,6 @@ ul {
     margin: 0 5px;
 
     &-tigger-area{
-        border-bottom: 1px solid #cfcfcf;
         @extend .clearfix;
         text-align: right;
     }
@@ -66,12 +66,14 @@ ul {
 
     &-dropdown{
         position: fixed;
-        width: 450px;
+        width: 410px;
         right: 0;
-        top: 39px;
+        top: 50px;
         height: calc(100vh - 39px);
         box-shadow: $shadow;
+        background-color: color('bgColor');
         @include transition(all 0.5s ease-out);
+        z-index: 9;
     }
 
     &-header{
@@ -86,6 +88,7 @@ ul {
         }
         button,a{
             color: color('primary-text');
+            cursor: pointer;
         }
     }
 
@@ -103,10 +106,8 @@ ul {
 }
 
 .animated {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both
 }
@@ -166,4 +167,37 @@ ul {
 .fadeIn {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn
+}
+
+
+
+@-webkit-keyframes slideOutRight {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0)
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0)
+    }
+}
+
+.slideOutRight {
+    -webkit-animation-name: slideOutRight;
+    animation-name: slideOutRight
 }
