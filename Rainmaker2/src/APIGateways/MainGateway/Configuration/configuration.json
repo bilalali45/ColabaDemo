@@ -1,5 +1,25 @@
 {
   "Routes": [
+    //notification api config
+    {
+      "DownstreamPathTemplate": "/api/notification/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5702
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notification/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 100
+      }
+    },
     //Identity api config
     {
       "DownstreamPathTemplate": "/api/Identity/{everything}",
@@ -70,8 +90,8 @@
         "Limit": 100
       }
     },
-	
-	
+
+
     //LosIntegration api config
     {
       "DownstreamPathTemplate": "/api/LosIntegration/{everything}",
