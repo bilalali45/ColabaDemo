@@ -29,5 +29,38 @@ namespace Notification.API.Controllers
 
             return Ok(await _notificationService.Add(model,userProfileId,tenantId, Request.Headers["Authorization"].Select(x => x.ToString())));
         }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> GetPaged(int pageSize,long lastId)
+        {
+            return null;
+        }
+
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> Read(NotificationRead model)
+        {
+            return null;
+        }
+
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> Delete(NotificationDelete model)
+        {
+            return null;
+        }
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> Undelete(NotificationUndelete model)
+        {
+            return null;
+        }
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            return null;
+        }
     }
 }

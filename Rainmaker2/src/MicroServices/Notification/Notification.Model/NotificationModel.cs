@@ -4,6 +4,18 @@ using System.Text;
 
 namespace Notification.Model
 {
+    public class NotificationRead
+    {
+        public long id { get; set; }
+    }
+    public class NotificationDelete
+    {
+        public long id { get; set; }
+    }
+    public class NotificationUndelete
+    {
+        public long id { get; set; }
+    }
     public class NotificationModel
     {
         public int NotificationType { get; set; }
