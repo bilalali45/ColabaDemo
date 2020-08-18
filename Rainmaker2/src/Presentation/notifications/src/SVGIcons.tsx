@@ -18,10 +18,8 @@ export const SVGCalender = () => {
 
 export const SVGClose = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15">
-            <g id="Group_1014" data-name="Group 1014" transform="translate(-1320 -113)">
-                <text id="_" data-name="" transform="translate(1320 126)" fill="#ff5652" font-size="15" font-family="Material-Design-Iconic-Font"><tspan x="0" y="0"></tspan></text>
-            </g>
+        <svg xmlns="http://www.w3.org/2000/svg" width="8.76" height="8.73" viewBox="0 0 8.76 8.73">
+            <path id="Path_546" data-name="Path 546" d="M8.76-9.111,5.244-5.625,8.76-2.139l-.879.879L4.365-4.746.879-1.26,0-2.139,3.486-5.625,0-9.111.879-9.99,4.365-6.5,7.881-9.99Z" transform="translate(0 9.99)" fill="#ff5652" />
         </svg>
     )
 }
