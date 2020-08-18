@@ -1,7 +1,7 @@
 import React, {useState, useEffect, FunctionComponent} from 'react';
 
 import {AppRoutes} from './routes';
-import {authenticate} from '../lib/authenticate';
+import {postAuthenticate} from '../lib/authenticate';
 
 export const App: FunctionComponent = () => {
   const [loading, setLoading] = useState(true);
@@ -9,7 +9,7 @@ export const App: FunctionComponent = () => {
   useEffect(() => {
     const getAuthToken = async () => {
       try {
-        await authenticate();
+        await postAuthenticate();
         setLoading(false);
       } catch (error) {
         setLoading(false);

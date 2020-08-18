@@ -26,8 +26,8 @@ export const HomePage: FunctionComponent = () => {
     lastIdRef.current = lastId;
   });
 
-  const getFetchNotifications = useCallback(
-    async (lastId: number) => {
+  const getFetchNotifications = useCallback(async (lastId: number) => {
+    try {
       const {data: response} = await apiV1.get<NotificationType[]>(
         '/api/Notification/notification/GetPaged',
         {
@@ -40,10 +40,13 @@ export const HomePage: FunctionComponent = () => {
       );
 
       setLastId(response[response.length - 1].id);
-      setNotifications(response);
-    },
-    [setLastId]
-  );
+      setNotifications((prevNotifications) =>
+        prevNotifications.concat(response)
+      );
+    } catch (error) {
+      //Error is obvious if there is no data
+    }
+  }, []);
 
   useEffect(() => {
     getFetchNotifications(lastIdRef.current);

@@ -1,7 +1,7 @@
 import {apiV1} from './api';
 import {setItem} from './localStorage';
 
-export const authenticate = async (): Promise<void> => {
+export const postAuthenticate = async (): Promise<void> => {
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   const {
