@@ -2,15 +2,13 @@ import React, {FunctionComponent} from 'react';
 
 import toggle from './../assets/icons/toggle.svg';
 
-export const Header: FunctionComponent = () => {
-  const ClearNotification = () => {
-    console.log('ClearNotification');
-  };
-
+export const Header: FunctionComponent<{onClearNotifications: () => void}> = ({
+  onClearNotifications
+}) => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      <button className="notify-btn-clear" onClick={ClearNotification}>
+      <button className="notify-btn-clear" onClick={onClearNotifications}>
         Clear all <img src={toggle} />
       </button>
     </div>

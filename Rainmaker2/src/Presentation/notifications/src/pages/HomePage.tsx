@@ -39,14 +39,24 @@ export const HomePage: FunctionComponent = () => {
         }
       );
 
-      setLastId(response[response.length - 1].id);
+      response.length > 0 && setLastId(response[response.length - 1].id);
       setNotifications((prevNotifications) =>
         prevNotifications.concat(response)
       );
     } catch (error) {
-      //Error is obvious if there is no data
+      console.warn('error', error);
     }
   }, []);
+
+  const onClearNotifications = async () => {
+    try {
+      await apiV1.put('/api/Notification/notification/DeleteAll');
+
+      setNotifications([]);
+    } catch (error) {
+      console.warn('error', error);
+    }
+  };
 
   useEffect(() => {
     getFetchNotifications(lastIdRef.current);
@@ -59,7 +69,7 @@ export const HomePage: FunctionComponent = () => {
       />
       {!!notificationsVisible && (
         <div className="notify-dropdown animated slideInRight">
-          <Header />
+          <Header onClearNotifications={onClearNotifications} />
           <Notifications
             notifications={notifications}
             fetchNotifications={() => getFetchNotifications(lastId)}
