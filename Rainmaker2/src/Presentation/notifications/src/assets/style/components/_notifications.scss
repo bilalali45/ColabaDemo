@@ -2,7 +2,11 @@ body{
     margin: 0;
     padding: 0;
 }
-
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 *{
     box-sizing: border-box;
     &:focus{
@@ -34,6 +38,7 @@ body{
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
     padding: 10px 20px;
     display: inline-block;
+    cursor: pointer;
     &:focus{
         outline: none;
     }
@@ -60,8 +65,12 @@ body{
     }
 
     &-dropdown{
-        position: absolute;
-        width: 100%;
+        position: fixed;
+        width: 450px;
+        right: 0;
+        top: 39px;
+        height: calc(100vh - 39px);
+      box-shadow: $shadow;
     }
 
     &-header{
@@ -81,5 +90,74 @@ body{
 
     &-body{
         overflow: auto;
+        max-height: calc(100% - 50px );
+        @include scrollbar(10, 10);
+        
     }
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both
+}
+
+@-webkit-keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+.slideInRight {
+    -webkit-animation-name: slideInRight;
+    animation-name: slideInRight
+}
+
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn
 }
