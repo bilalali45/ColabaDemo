@@ -86,6 +86,7 @@ namespace DocumentManagement.Service
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDTO()
                     {
+                        isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         fileId = x.id,
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
