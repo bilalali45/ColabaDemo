@@ -1,5 +1,6 @@
 {
   "Routes": [
+    // signalr configuration
     {
       "DownstreamPathTemplate": "/{catchAll}",
       "DownstreamScheme": "ws",
