@@ -70,7 +70,8 @@ ul {
         right: 0;
         top: 39px;
         height: calc(100vh - 39px);
-      box-shadow: $shadow;
+        box-shadow: $shadow;
+        @include transition(all 0.5s ease-out);
     }
 
     &-header{
@@ -92,7 +93,12 @@ ul {
         overflow: auto;
         max-height: calc(100% - 50px );
         @include scrollbar(10, 10);
-        
+    }
+
+    &.open{
+        .notify-dropdown{
+            right: 0;
+        }
     }
 }
 

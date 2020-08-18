@@ -13,12 +13,23 @@ export const dropdownConfig = () => {
 }
 
 export const HomePage = () => {
+
+  let notifyStatus = 'close';
   const [notificationsVisible, setNotificationsVisible] = useState(false);
+  const [notifyClass, setNotifyClass] = useState('close');
+
+  console.log(notificationsVisible)
 
   const styling = {
     top : dropdownConfig().height + 'px',
     width: dropdownConfig().width + 'px',
     height: 'calc(100vh - '+ dropdownConfig().height +'px)'
+  }
+
+  const openEffect = () => {
+    setTimeout(() => {
+        setNotifyClass(notificationsVisible ? "open" : "close");
+    }, 200);
   }
 
   useEffect(() => {
@@ -29,13 +40,13 @@ export const HomePage = () => {
   }, [dropdownConfig])
 
   return (
-    <div className="notify">
+    <div className={`notify ${notifyClass}`}>
       <BellIcon
-        onClick={() => { setNotificationsVisible((prevState) => !prevState);}}
+        onClick={() => { setNotificationsVisible((prevState) => !prevState); openEffect()}}
       />
       {!!notificationsVisible && (
         
-          <div className="notify-dropdown animated slideInRight" style={styling}>
+          <div className="notify-dropdown" style={styling}>
             <Header />
             <Notifications />
           </div>
