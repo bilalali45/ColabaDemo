@@ -1,6 +1,7 @@
 import React from 'react';
 import { dropdownConfig } from './HomePage';
-import toggle from './../assets/icons/toggle.svg';
+import { SVGToggle } from '../SVGIcons';
+
 
 
 export const Header = () => {
@@ -11,7 +12,7 @@ export const Header = () => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      <button className="notify-btn-clear" onClick={ClearNotification}>Clear all <img src={toggle} /></button>
+      <button className="notify-btn-clear" onClick={ClearNotification}>Clear all <SVGToggle/></button>
     </div>
   );
 };
