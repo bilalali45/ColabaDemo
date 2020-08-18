@@ -21,17 +21,19 @@ namespace Rainmaker.Service
             Borrowers = 1 << 0
         }
 
-
+        private readonly ICommonService commonService;
         public LoanApplicationService(IUnitOfWork<RainMakerContext> previousUow,
-                                      IServiceProvider services) : base(previousUow: previousUow,
+                                      IServiceProvider services,ICommonService commonService) : base(previousUow: previousUow,
                                                                         services: services)
         {
+            this.commonService = commonService;
         }
 
 
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId,
                                                       int userProfileId)
         {
+            string url = await commonService.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl);
             return await Repository
                          .Query(query: x =>
                                     x.Opportunity.OpportunityLeadBinders
@@ -47,8 +49,26 @@ namespace Rainmaker.Service
                          .Include(navigationPropertyPath: x => x.Opportunity)
                          .ThenInclude(navigationPropertyPath: x => x.OpportunityLeadBinders)
                          .ThenInclude(navigationPropertyPath: x => x.Customer)
+                         .Include(navigationPropertyPath: x => x.Borrowers)
+                         .ThenInclude(navigationPropertyPath: x => x.LoanContact)
                          .Select(selector: x => new LoanSummary
                                                 {
+                                                    Url = url,
+                                                    Name = x
+                                                        .Borrowers.Where(y => y.OwnTypeId==(int)OwnTypeEnum.PrimaryContact)
+                                                        .Select(y =>
+                                                            (string
+                                                                .IsNullOrEmpty(y.LoanContact
+                                                                    .FirstName)
+                                                                ? ""
+                                                                : y.LoanContact.FirstName) +
+                                                            " " +
+                                                            (string
+                                                                .IsNullOrEmpty(y.LoanContact
+                                                                    .LastName)
+                                                                ? ""
+                                                                : y.LoanContact.LastName))
+                                                        .FirstOrDefault(),
                                                     CityName = x.PropertyInfo.AddressInfo.CityName,
                                                     CountyName = x.PropertyInfo.AddressInfo.CountyName,
                                                     LoanAmount = x.LoanAmount,
