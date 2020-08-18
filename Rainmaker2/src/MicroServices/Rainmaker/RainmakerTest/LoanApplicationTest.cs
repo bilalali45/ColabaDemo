@@ -169,7 +169,10 @@ namespace RainmakerTest
             };
             dataContext.Set<LoanPurpose>().Add(loanPurpose);
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
+            mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl, 1, default)).ReturnsAsync(string.Empty);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, mockcommonservice.Object);
 
             //Act
             LoanSummary res = await loanService.GetLoanSummary(1, 1);
@@ -436,7 +439,7 @@ namespace RainmakerTest
 
             dataContext.SaveChanges();
 
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
             LoanOfficer res = await loanService.GetLOInfo(2, 1, 1);
@@ -580,7 +583,7 @@ namespace RainmakerTest
             dataContext.Set<BusinessUnitPhone>().Add(businessUnitPhone);
             dataContext.SaveChanges();
 
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
             LoanOfficer res = await loanService.GetDbaInfo(2);
@@ -689,7 +692,7 @@ namespace RainmakerTest
             };
             dataContext.Set<Contact>().Add(contact);
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
             PostModel res = await loanService.PostLoanApplication(4, true,1, mock.Object);
@@ -768,7 +771,7 @@ namespace RainmakerTest
             };
             dataContext.Set<Contact>().Add(contact);
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             Opportunity model = new Opportunity();
             model.Id = 1;
@@ -1094,7 +1097,7 @@ namespace RainmakerTest
             dataContext.Set<LockStatusList>().Add(lockStatusList);
 
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
             AdminLoanSummary res = await loanService.GetAdminLoanSummary(14);
@@ -1146,7 +1149,7 @@ namespace RainmakerTest
             dataContext.Set<Opportunity>().Add(opportunity);
 
             dataContext.SaveChanges();
-            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
             LoanApplicationModel res = await loanService.GetByLoanApplicationId(5);
