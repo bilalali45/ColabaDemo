@@ -49,7 +49,7 @@ namespace Notification.API
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ITemplateService,TemplateService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
             {

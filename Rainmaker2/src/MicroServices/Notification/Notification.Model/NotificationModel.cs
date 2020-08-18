@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,5 +38,12 @@ namespace Notification.Model
         public decimal? LoanAmount { get; set; }
         public string CountryName { get; set; }
         public string UnitNumber { get; set; }
+    }
+
+    public class NotificationMediumModel
+    {
+        public long id { get; set; }
+        public JObject payload { get; set; }
+        public string status { get; set; }
     }
 }

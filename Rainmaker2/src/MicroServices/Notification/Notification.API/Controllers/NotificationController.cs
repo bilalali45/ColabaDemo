@@ -32,35 +32,43 @@ namespace Notification.API.Controllers
 
         [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> GetPaged(int pageSize,long lastId)
+        public async Task<IActionResult> GetPaged(int pageSize,long lastId,int mediumId)
         {
-            return null;
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            if (lastId == -1)
+            {
+                lastId = long.MaxValue;
+            }
+            return Ok(await _notificationService.GetPaged(pageSize,lastId,mediumId,userProfileId));
         }
 
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Read(NotificationRead model)
         {
-            return null;
+            await _notificationService.Read(model.id);
+            return Ok();
         }
 
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Delete(NotificationDelete model)
         {
-            return null;
+            await _notificationService.Delete(model.id);
+            return Ok();
         }
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Undelete(NotificationUndelete model)
         {
-            return null;
+            return Ok(await _notificationService.Undelete(model.id));
         }
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> DeleteAll()
         {
-            return null;
+            await _notificationService.DeleteAll();
+            return Ok();
         }
     }
 }
