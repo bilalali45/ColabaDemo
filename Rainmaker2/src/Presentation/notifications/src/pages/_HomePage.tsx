@@ -4,15 +4,18 @@ import { SVGToggle } from '../SVGIcons';
 import { types } from 'util';
 
 interface  propsData{
-  handleClear: Function
+  handleClear: Function,
+  clearAllDisplay: boolean
 }
 
-export const Header = ({handleClear}:propsData) => {
+export const Header = ({handleClear,clearAllDisplay}:propsData) => {
 
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      <button className="notify-btn-clear" onClick={(e) => handleClear(e)}>Clear all <SVGToggle/></button>
+      {clearAllDisplay &&
+        <button className="notify-btn-clear" onClick={(e) => handleClear(e)}>Clear all <SVGToggle/></button>
+      }      
     </div>
   );
 };

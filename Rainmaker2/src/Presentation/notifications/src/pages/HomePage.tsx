@@ -99,7 +99,7 @@ export const HomePage = () => {
       {!!notificationsVisible && (
 
         <div className={`notify-dropdown ${notifyClass}`}>
-          <Header handleClear={clearAll} />            
+          <Header clearAllDisplay={!unClear} handleClear={clearAll} />            
             { notifying() }
         </div>
 
