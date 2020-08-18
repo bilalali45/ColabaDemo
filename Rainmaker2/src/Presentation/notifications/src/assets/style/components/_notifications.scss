@@ -33,10 +33,11 @@ ul {
 .btn-notify{
     border: 0;
     background-color: transparent;
-    font-size: fontSize('xmd');
+    font-size: fontSize('lg');
     color: color('primary-text');
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-    padding: 10px 20px;
+    padding: 14px;
+    font-size: 22px;
     display: inline-block;
     cursor: pointer;
     &:focus{
