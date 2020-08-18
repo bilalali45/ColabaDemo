@@ -45,6 +45,7 @@ namespace DocumentManagement.Model
         public string clientName { get; set; }
         public string mcuName { get; set; }
         public DateTime fileUploadedOn { get; set; }
+        public bool isRead { get; set; }
     }
     public class TemplateIdModel
     {
