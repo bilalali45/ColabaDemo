@@ -29,6 +29,7 @@ export const BellIcon: FunctionComponent<{onClick: () => void}> = ({
     <div className="notify-tigger-area">
       <button onClick={onClick} className="btn-notify">
         <i className="zmdi zmdi-notifications"></i>
+        <span className="notify-counts">20</span>
       </button>
     </div>
   );
