@@ -1,19 +1,20 @@
-import React from 'react';
-import {dropdownConfig} from './HomePage';
+import React, {FunctionComponent} from 'react';
 import {SVGToggle} from '../SVGIcons';
-import {types} from 'util';
 
-interface propsData {
-  handleClear: Function;
+interface HeaderProps {
+  handleClear: () => void;
   clearAllDisplay: boolean;
 }
 
-export const Header = ({handleClear, clearAllDisplay}: propsData) => {
+export const Header: FunctionComponent<HeaderProps> = ({
+  handleClear,
+  clearAllDisplay
+}) => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
       {clearAllDisplay && (
-        <button className="notify-btn-clear" onClick={(e) => handleClear(e)}>
+        <button className="notify-btn-clear" onClick={handleClear}>
           Clear all <SVGToggle />
         </button>
       )}
@@ -21,15 +22,11 @@ export const Header = ({handleClear, clearAllDisplay}: propsData) => {
   );
 };
 
-export const BellIcon = ({onClick}: {onClick: () => void}) => {
-  const styling = {
-    height: dropdownConfig().height + 'px',
-    width: dropdownConfig().width + 'px'
-  };
-
+export const BellIcon: FunctionComponent<{onClick: () => void}> = ({
+  onClick
+}) => {
   return (
-    <div className="notify-tigger-area" style={styling}>
-      <p>22</p>
+    <div className="notify-tigger-area">
       <button onClick={onClick} className="btn-notify">
         <i className="zmdi zmdi-notifications"></i>
       </button>

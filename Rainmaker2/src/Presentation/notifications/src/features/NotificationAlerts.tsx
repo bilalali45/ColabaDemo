@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import {SVGNoBell, SVGBellSleep} from '../SVGIcons';
 
-interface propsData {
-  handleClearVerification: Function;
+interface AlertForRemoveProps {
+  handleClearVerification: (value: boolean) => void;
 }
 
-export const AlertForRemove = ({handleClearVerification}: propsData) => {
+export const AlertForRemove: FunctionComponent<AlertForRemoveProps> = ({
+  handleClearVerification
+}) => {
   return (
     <div className="notify-alert-msg">
       <div className="notify-alert-msg--wrap">
@@ -13,13 +15,13 @@ export const AlertForRemove = ({handleClearVerification}: propsData) => {
         <h4>Are you sure you want to remove all notifications?</h4>
         <p>
           <button
-            onClick={(e) => handleClearVerification(false)}
+            onClick={() => handleClearVerification(false)}
             className="btn-notify secondry"
           >
             No
           </button>
           <button
-            onClick={(e) => handleClearVerification(true)}
+            onClick={() => handleClearVerification(true)}
             className="btn-notify primary"
           >
             Yes
@@ -30,7 +32,7 @@ export const AlertForRemove = ({handleClearVerification}: propsData) => {
   );
 };
 
-export const AlertForNoData = () => {
+export const AlertForNoData: FunctionComponent = () => {
   return (
     <div className="notify-alert-msg">
       <div className="notify-alert-msg--wrap">
