@@ -15,7 +15,7 @@ export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   /**
-   * This is lasId of notification inside notifications array
+   * This is last Id of notification inside notifications array
    * This needs to be send with API Call to fetch previous notifications on scroll.
    * -1 is the default value
    */
@@ -39,10 +39,12 @@ export const HomePage: FunctionComponent = () => {
         }
       );
 
-      response.length > 0 && setLastId(response[response.length - 1].id);
-      setNotifications((prevNotifications) =>
-        prevNotifications.concat(response)
-      );
+      if (response.length > 0) {
+        setLastId(response[response.length - 1].id);
+        setNotifications((prevNotifications) =>
+          prevNotifications.concat(response)
+        );
+      }
     } catch (error) {
       console.warn('error', error);
     }
