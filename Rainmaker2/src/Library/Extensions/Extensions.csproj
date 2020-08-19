@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ExtensionClasses\Twilio\**" />
+    <EmbeddedResource Remove="ExtensionClasses\Twilio\**" />
+    <None Remove="ExtensionClasses\Twilio\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ExtensionClasses\Dynamic.cs" />
+    <Compile Remove="ExtensionClasses\DynamicExtensions.cs" />
+    <Compile Remove="ExtensionClasses\EnumExtension.cs" />
+    <Compile Remove="ExtensionClasses\HtmlExtensions.cs" />
+    <Compile Remove="ExtensionClasses\ListExtensions.cs" />
+    <Compile Remove="ExtensionClasses\Mapping.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>

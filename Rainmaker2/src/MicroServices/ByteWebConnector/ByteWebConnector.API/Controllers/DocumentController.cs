@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ByteWebConnector.API.ExtensionMethods;
 using ByteWebConnector.API.Models;
@@ -14,9 +15,11 @@ using ByteWebConnector.API.Models.ClientModels.Document;
 using ByteWebConnector.API.Models.Document;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RainMaker.Common;
 using RainMaker.Common.Extensions;
+using RainMaker.Entity.Models;
 using Rainmaker.Service;
 using RainMaker.Service;
 using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
@@ -37,12 +40,14 @@ namespace ByteWebConnector.API.Controllers
         public DocumentController(ILoanApplicationService loanApplicationService,
                                   ICommonService commonService,
                                   HttpClient httpClient,
-                                  IConfiguration configuration)
+                                  IConfiguration configuration,
+                                  ILogger<DocumentController> logger)
         {
             _loanApplicationService = loanApplicationService;
             _commonService = commonService;
             _httpClient = httpClient;
             _configuration = configuration;
+            _logger = logger;
         }
 
         #endregion
@@ -52,6 +57,7 @@ namespace ByteWebConnector.API.Controllers
         private readonly ILoanApplicationService _loanApplicationService;
         private readonly ICommonService _commonService;
         private string _apiUrl;
+        private readonly ILogger<DocumentController> _logger;
 
         #endregion
 
@@ -82,30 +88,35 @@ namespace ByteWebConnector.API.Controllers
         [HttpPost]
         public ApiResponse SendDocument([FromBody] SendDocumentRequest request)
         {
+            _logger.LogInformation($"Start");
             var loanApplication = _loanApplicationService
                                   .GetLoanApplicationWithDetails(id: request.LoanApplicationId,
                                                                  includes: null)
                                   .SingleOrDefault();
 
+            _logger.LogInformation($"loanApplication found= {loanApplication.HasValue()}");
             if (loanApplication != null)
             {
+                _logger.LogInformation($"loanApplication.Id = {loanApplication.Id}");
                 var documentUploadModel = new DocumentUploadRequest
                                           {
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
-                                              DocumentCategory = "PROP", //request.DocumentCategory,
-                                              DocumentExension = "DOCX", //request.DocumentExension,
-                                              DocumentName = "Bank Doc", //request.DocumentName,
-                                              DocumentStatus = "0", //request.DocumentStatus,
-                                              DocumentType = "PurchaseAgr", //request.DocumentType,
+                                              DocumentCategory = request.DocumentCategory,
+                                              DocumentExension = request.DocumentExension,
+                                              DocumentName = request.DocumentName,
+                                              DocumentStatus = request.DocumentStatus,
+                                              DocumentType = request.DocumentType,
                                               DocumentData = request.FileData.ToBase64String(0,
                                                                                              request.FileData.Length)
                                           };
 
                 #region BytePro API Call
-
+                _logger.LogInformation($"Start GetByteProSession();");
                 string byteProSession = GetByteProSession();
+                _logger.LogInformation($"byteProSession = {byteProSession}");
                 ApiResponse documentResponse = SendDocumentToByte(documentUploadModel,
                                                                   byteProSession);
+                _logger.LogInformation($"byteProSession = {documentResponse.ToJson()}");
                 return documentResponse;
 
                 #endregion
@@ -168,12 +179,13 @@ namespace ByteWebConnector.API.Controllers
             // System.Threading.Thread.Sleep();
 
             #region Byte API Call
-
+            Thread.Sleep(5000);
             var byteProSession = GetByteProSession();
 
             var embeddedDocs = GetAllByteDocuments(byteProSession,
                                                    request.FileDataId);
 
+            _logger.LogInformation($"T====== Total embeddedDocs = {embeddedDocs.Count}");
             var content = new AddDocumentRequest(request.FileDataId,
                                                  embeddedDocs).ToJson();
             var token = Request.Headers[key: "Authorization"].ToString().Replace(oldValue: "Bearer ",
@@ -258,7 +270,14 @@ namespace ByteWebConnector.API.Controllers
                 var password = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteProApiPassword)
                                              .Result;
                 var authKey = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteApiAuthKey).Result;
+
+                _logger.LogInformation($"userName = {userName}");
+                _logger.LogInformation($"password = {password}");
+                _logger.LogInformation($"authKey = {authKey}");
+                
+
                 _apiUrl = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteApiUrl).Result;
+                _logger.LogInformation($"_apiUrl = {_apiUrl}");
                 ServicePointManager.ServerCertificateValidationCallback += (sender,
                                                                             certificate,
                                                                             chain,
