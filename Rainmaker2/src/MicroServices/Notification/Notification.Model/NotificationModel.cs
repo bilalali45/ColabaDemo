@@ -7,7 +7,11 @@ namespace Notification.Model
 {
     public class NotificationRead
     {
-        public long id { get; set; }
+        public List<long> ids { get; set; }
+    }
+    public class NotificationSeen
+    {
+        public List<long> ids { get; set; }
     }
     public class NotificationDelete
     {

@@ -3,7 +3,7 @@
 namespace ByteWebConnector.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(template: "api/ByteWebConnector/[controller]")]
     public class HomeController : Controller
     {
         [Route("/")]

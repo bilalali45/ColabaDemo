@@ -40,6 +40,13 @@ namespace Notification.API.Controllers
 
         [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> GetCount()
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            return Ok(await _notificationService.GetCount(userProfileId));
+        }
+        [HttpGet("[action]")]
+        [Authorize(Roles = "MCU")]
         public async Task<IActionResult> GetPaged(long lastId, int mediumId,int pageSize=10)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
@@ -54,7 +61,15 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Read(NotificationRead model)
         {
-            await _notificationService.Read(model.id);
+            await _notificationService.Read(model.ids);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> Seen(NotificationSeen model)
+        {
+            await _notificationService.Seen(model.ids);
             return Ok();
         }
 
