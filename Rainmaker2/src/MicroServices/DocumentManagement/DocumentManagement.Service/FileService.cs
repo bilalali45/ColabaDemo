@@ -21,7 +21,7 @@ namespace DocumentManagement.Service
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
         }
-        public async Task<bool> Rename(FileRenameModel model,int userProfileId, int tenantId)
+        public async Task<bool> Rename(FileRenameModel model, int userProfileId, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -114,7 +114,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
+        public async Task<bool> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
         {
             bool isStarted = false;
 
@@ -163,7 +163,7 @@ namespace DocumentManagement.Service
                 { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantId},
                 { "userId", userProfileId},
-                { 
+                {
                     "requests" , new BsonDocument()
                     {
                         {
@@ -181,7 +181,7 @@ namespace DocumentManagement.Service
                                             {
                                                 "documents",new BsonDocument()
                                                 {
-                                                    { 
+                                                    {
                                                         "$elemMatch", new BsonDocument()
                                                         {
                                                             {
@@ -193,7 +193,7 @@ namespace DocumentManagement.Service
                                                                     },
                                                                     new BsonDocument()
                                                                     {
-                                                                        { 
+                                                                        {
                                                                             "$or",new BsonArray()
                                                                             {
                                                                                 new BsonDocument()
@@ -205,7 +205,7 @@ namespace DocumentManagement.Service
                                                                                     { "status", DocumentStatus.Started}
                                                                                 }
                                                                             }
-                                                                        }    
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -218,7 +218,7 @@ namespace DocumentManagement.Service
                                 }
                             }
                         }
-                    } 
+                    }
                 }
             }, new BsonDocument()
             {
@@ -319,6 +319,36 @@ namespace DocumentManagement.Service
             await viewLogCollection.InsertOneAsync(viewLog);
 
             return fileViewDTO;
+        }
+
+        public async Task<int> GetLoanApplicationId(string loanId)
+        {
+            IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursorRequest = collectionRequest.Aggregate(
+                PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                    ""_id"": " + new ObjectId(loanId).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""loanApplicationId"": 1
+                            }
+                        }"
+                ));
+
+            int loanApplicationId = -1;
+            if (await asyncCursorRequest.MoveNextAsync())
+            {
+                foreach (var current in asyncCursorRequest.Current)
+                {
+                    LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
+                    loanApplicationId = query.loanApplicationId;
+                }
+
+
+            }
+            return loanApplicationId;
         }
 
     }

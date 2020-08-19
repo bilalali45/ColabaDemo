@@ -50,6 +50,8 @@ namespace DocumentManagement.API
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IByteProService, ByteProService>();
 
             #region HttpClientDependencies
 

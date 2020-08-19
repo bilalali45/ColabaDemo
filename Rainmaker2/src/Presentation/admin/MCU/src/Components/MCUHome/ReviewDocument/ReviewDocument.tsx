@@ -17,6 +17,7 @@ import {
 } from '../../../Store/reducers/NeedListReducer';
 import {NeedList} from '../../../Entities/Models/NeedList';
 import {DocumentStatus} from '../../../Entities/Types/Types';
+import {timeout} from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -153,7 +154,6 @@ export const ReviewDocument = () => {
     []
   );
 
-  //This function is being called inside useEffect
   const navigateDocument = useCallback(
     (
       docs: NeedList[],
@@ -265,6 +265,10 @@ export const ReviewDocument = () => {
             payload: clonedNeedList
           });
 
+          setCurrentDocument(clonedCurrentDocument);
+
+          await timeout(1000);
+
           navigateDocument(clonedNeedList, 'next');
         } catch (error) {
           alert('Something went wrong. Please try again later.');
@@ -307,6 +311,10 @@ export const ReviewDocument = () => {
             type: NeedListActionsType.SetNeedListTableDATA,
             payload: clonedNeedList
           });
+
+          setCurrentDocument(clonedCurrentDocument);
+
+          await timeout(1000);
 
           navigateDocument(needList, 'next');
         } catch (error) {

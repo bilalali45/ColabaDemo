@@ -120,7 +120,7 @@ export const UploadedDocumentsTable = () => {
         return (
           <tr key={index}>
             <td>
-              <span className="doc-name">
+              <span className="doc-name" title={item.docName}>
                 <em className="far fa-file"></em> {item.docName}
               </span>
             </td>

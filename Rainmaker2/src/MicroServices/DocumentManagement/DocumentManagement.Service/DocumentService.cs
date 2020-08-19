@@ -86,6 +86,7 @@ namespace DocumentManagement.Service
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDTO()
                     {
+                        isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         fileId = x.id,
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -232,16 +233,30 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<List<EmailLogDTO>> GetEmailLog(string id)
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id,string typeId,string docName)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
-              @"{""$match"": {
-
-                  ""loanId"": " + new ObjectId(id).ToJson() + @"
+            string match = "";
+            if (!string.IsNullOrEmpty(typeId))
+            {
+                match = @"{""$match"": {
+                  ""loanId"": " + new ObjectId(id).ToJson() + @", 
+                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
                             }
-                        }"
+                        }";
+            }
+            else
+            {
+                match = @"{""$match"": {
+                  ""loanId"": " + new ObjectId(id).ToJson() + @",
+                  ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
+                            }
+                        }";
+            }
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
+              match
                         , @"{
                             ""$project"": {
                                 ""userId"": 1,                               
@@ -249,12 +264,11 @@ namespace DocumentManagement.Service
                                 ""dateTime"": 1,
                                 ""_id"": 1 ,
                                 ""emailText"": 1, 
-                                ""loanId"": 1  
+                                ""loanId"": 1,
+                                ""message"": 1
                             }
-                             } "
-
+                           } "
                 ));
-
 
             List<EmailLogDTO> result = new List<EmailLogDTO>();
             while (await asyncCursor.MoveNextAsync())
@@ -269,7 +283,7 @@ namespace DocumentManagement.Service
                     dto.emailText = query.emailText;
                     dto.id = query.id;
                     dto.loanId = query.loanId;
-
+                    dto.message = query.message;
                     result.Add(dto);
                 }
             }

@@ -28,7 +28,8 @@ namespace DocumentManagement.API.Controllers
                               ISettingService settingService,
                               IKeyStoreService keyStoreService,
                               IConfiguration config,
-                              ILogger<FileController> logger)
+                              ILogger<FileController> logger,
+                              INotificationService notificationService)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -37,6 +38,7 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.config = config;
             this.logger = logger;
+            this.notificationService = notificationService;
         }
 
         #endregion
@@ -50,7 +52,7 @@ namespace DocumentManagement.API.Controllers
         private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
         private readonly ILogger<FileController> logger;
-
+        private readonly INotificationService notificationService;
         #endregion
 
         #region Action Methods
@@ -113,6 +115,8 @@ namespace DocumentManagement.API.Controllers
                                                             tenantId: tenantId,
                                                             userProfileId: userProfileId);
                     System.IO.File.Delete(path: filePath);
+                    if(docQuery==false)
+                        throw new Exception("unable to update file in mongo");
                 }
 
             // set order
@@ -125,6 +129,11 @@ namespace DocumentManagement.API.Controllers
             };
             await fileService.Order(model: model,
                                     userProfileId: userProfileId,tenantId);
+
+            int loanApplicationId = await fileService.GetLoanApplicationId(id);
+
+            await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
+
             return Ok();
         }
 

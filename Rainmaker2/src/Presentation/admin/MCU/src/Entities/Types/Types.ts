@@ -27,6 +27,7 @@ export interface FileType {
   clientName: string;
   mcuName: string;
   fileUploadedOn: string;
+  isRead: boolean;
 }
 
 export interface DocumentFileType {
@@ -67,4 +68,5 @@ export interface EmailLogsType {
   dateTime: string;
   emailText: string;
   userName: string;
+  message: string;
 }

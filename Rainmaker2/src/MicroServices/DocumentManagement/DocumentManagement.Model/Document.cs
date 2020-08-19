@@ -45,6 +45,7 @@ namespace DocumentManagement.Model
         public string clientName { get; set; }
         public string mcuName { get; set; }
         public DateTime fileUploadedOn { get; set; }
+        public bool isRead { get; set; }
     }
     public class TemplateIdModel
     {
@@ -170,6 +171,11 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "id")]
         public string id { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "typeId")]
+        public string typeId { get; set; }
+        [FromQuery(Name = "docName")]
+        public string docName { get; set; }
     }
     public class View
     {

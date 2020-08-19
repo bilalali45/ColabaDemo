@@ -55,7 +55,6 @@ export const NeedListTable = ({
   };
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
-    console.log('data', data);
     if (data) {
       for (let i = 0; i < data?.length; i++) {
         if (data[i].isRead === false) {
@@ -76,7 +75,9 @@ export const NeedListTable = ({
     else
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>{toTitleCase(name)}</span>
+          <span className="f-normal" title={toTitleCase(name)}>
+            {toTitleCase(name)}
+          </span>
         </div>
       );
   };
@@ -237,12 +238,6 @@ export const NeedListTable = ({
                         {truncate(mcuName, 47)}
                       </a>
                     </span>
-                    <small
-                      title={clientName}
-                      className="block-element-child td-filename filename-by-b"
-                    >
-                      {truncate(clientName, 47)}
-                    </small>
                   </React.Fragment>
                 ) : (
                   <span

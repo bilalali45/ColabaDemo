@@ -21,3 +21,5 @@ __createBinding(exports, fileUploadHelpers_1, "GetFileSize");
 __createBinding(exports, fileUploadHelpers_1, "IsSizeAllowed");
 __createBinding(exports, fileUploadHelpers_1, "RemoveDefaultExt");
 __createBinding(exports, fileUploadHelpers_1, "SortByDate");
+var signalR_1 = require("./signalR");
+__createBinding(exports, signalR_1, "SignalRHub");

@@ -1,6 +1,6 @@
 {
   "name": "rainsoft-js",
-  "version": "1.0.33",
+  "version": "1.0.38",
   "description": "Rainsoft reuseable js files",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "Rainsoft",
   "license": "ISC",
   "dependencies": {
+    "@microsoft/signalr": "^3.1.7",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.39",
     "axios": "^0.19.2",

@@ -113,11 +113,11 @@ namespace MainGateway
             }
             else
             {
-                //app.UseHsts();
+                app.UseHsts();
             }
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
             app.UseAuthentication();
@@ -131,14 +131,14 @@ namespace MainGateway
             app.Use(async (context, next) =>
             {
                 await next();
-                //context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
-                //context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
-                //if(context.Response.Headers["Content-Disposition"].Count<=0)
-                //    context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
-                //context.Response.Headers.Remove("Server");
+                context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
+                context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
+                if(context.Response.Headers["Content-Disposition"].Count<=0)
+                    context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
+                context.Response.Headers.Remove("Server");
             });
+            app.UseWebSockets();
             app.UseOcelot().Wait();
-            
         }
     }
 }

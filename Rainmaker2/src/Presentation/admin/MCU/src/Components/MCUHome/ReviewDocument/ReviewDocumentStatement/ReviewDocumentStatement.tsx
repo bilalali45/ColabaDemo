@@ -128,6 +128,9 @@ export const ReviewDocumentStatement = ({
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
+  const [currentDocId, setCurrentDocId] = useState('');
+
+  const [currentFileName, setCurrentFileName] = useState('');
 
   const getFileNameWithoutExtension = (fileName: string) =>
     fileName.substring(0, fileName.lastIndexOf('.'));
@@ -138,33 +141,7 @@ export const ReviewDocumentStatement = ({
     async (currentDocument: NeedList) => {
       try {
         setLoading(true);
-
-        const {id, requestId, docId} = currentDocument;
-
-        const http = new Http();
-
-        const {data} = await http.get<DocumentFileType[]>(
-          NeedListEndpoints.GET.documents.files(id, requestId, docId)
-        );
-
-        const {typeId, docName, files, userName} = data[0];
-
-        typeIdAndIdForActivityLogs(id, typeId || docName);
-
-        setDocumentFiles(files);
-        setUsername(userName);
-        setMcuNamesUpdated(
-          files.map((file) => {
-            return {
-              fileId: file.fileId,
-              mcuName:
-                file.mcuName === ''
-                  ? getFileNameWithoutExtension(file.clientName)
-                  : getFileNameWithoutExtension(file.mcuName)
-            };
-          })
-        );
-
+        await requestDocumentFiles(currentDocument);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -178,6 +155,34 @@ export const ReviewDocumentStatement = ({
     },
     [setDocumentFiles]
   );
+
+  const requestDocumentFiles = async (currentDocument: NeedList) => {
+    const {id, requestId, docId} = currentDocument;
+
+    const http = new Http();
+
+    const {data} = await http.get<DocumentFileType[]>(
+      NeedListEndpoints.GET.documents.files(id, requestId, docId)
+    );
+
+    const {typeId, docName, files, userName} = data[0];
+
+    typeIdAndIdForActivityLogs(id, typeId || docName);
+
+    setDocumentFiles(files);
+    setUsername(userName);
+    setMcuNamesUpdated(
+      files.map((file) => {
+        return {
+          fileId: file.fileId,
+          mcuName:
+            file.mcuName === ''
+              ? getFileNameWithoutExtension(file.clientName)
+              : getFileNameWithoutExtension(file.mcuName)
+        };
+      })
+    );
+  };
 
   const getMcuNameUpdated = (fileId: string): string => {
     const item = mcuNamesUpdated.find((item) => item.fileId === fileId);
@@ -228,7 +233,7 @@ export const ReviewDocumentStatement = ({
   };
 
   const validateAndRejectDocument = () => {
-    if (rejectDocumentMessage === '') {
+    if (rejectDocumentMessage.trim() === '') {
       return false;
     }
 
@@ -244,10 +249,11 @@ export const ReviewDocumentStatement = ({
   };
 
   useEffect(() => {
-    if (currentDocument) {
+    if (currentDocument && currentDocId !== currentDocument.docId) {
+      setCurrentDocId(currentDocument.docId);
       getDocumentFiles(currentDocument);
     }
-  }, [getDocumentFiles, currentDocument]);
+  }, [currentDocument]);
 
   useEffect(() => {
     // Set reject document message when document changed.
@@ -297,14 +303,27 @@ export const ReviewDocumentStatement = ({
                   key={index}
                   id={currentDocument?.id!}
                   index={index}
-                  moveNextFile={moveNextFile}
+                  moveNextFile={async (
+                    index: number,
+                    fileId: string,
+                    clientName: string,
+                    loadingFile?: boolean
+                  ) => {
+                    setCurrentFileName(clientName);
+                    await moveNextFile(index, fileId, clientName, loadingFile);
+                    if (currentDocument && !file?.isRead) {
+                      await requestDocumentFiles(currentDocument);
+                    }
+                  }}
                   requestId={currentDocument?.requestId!}
                   docId={currentDocument?.docId!}
                   fileId={file.fileId}
                   mcuName={file.mcuName}
                   clientName={file.clientName}
+                  isCurrent={currentFileName === file.clientName}
                   currentFileIndex={currentFileIndex}
                   uploadedOn={file.fileUploadedOn}
+                  isRead={file.isRead}
                   username={username}
                   allowFileRenameMCU={allowFileRenameMCU}
                   getMcuNameUpdated={getMcuNameUpdated}
@@ -323,7 +342,8 @@ export const ReviewDocumentStatement = ({
                   </p>
                   <textarea
                     style={{
-                      borderColor: rejectDocumentMessage === '' ? 'red' : ''
+                      borderColor:
+                        rejectDocumentMessage.trim() === '' ? 'red' : ''
                     }}
                     className="form-control"
                     rows={6}
@@ -331,7 +351,7 @@ export const ReviewDocumentStatement = ({
                     onChange={onChangeTextArea}
                     maxLength={255}
                   />
-                  {rejectDocumentMessage === '' && (
+                  {rejectDocumentMessage.trim() === '' && (
                     <div style={{color: 'red'}}>This field is required.</div>
                   )}
                 </div>

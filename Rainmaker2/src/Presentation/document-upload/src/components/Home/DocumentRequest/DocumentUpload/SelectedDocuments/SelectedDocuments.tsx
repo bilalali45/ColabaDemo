@@ -114,12 +114,18 @@ export const SelectedDocuments = ({
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        await DocumentUploadActions.submitDocuments(
-          currentSelected,
-          file,
-          dispatch,
-          Auth.getLoanAppliationId()
-        );
+        try {
+          await DocumentUploadActions.submitDocuments(
+            currentSelected,
+            file,
+            dispatch,
+            Auth.getLoanAppliationId()
+          );
+        } catch (error) {
+          file.uploadStatus = "failed";
+          console.log("error during file submit", error);
+          console.log("error during file submit", error.response);
+        }
       }
     }
     setSubBtnPressed(false);
@@ -141,6 +147,24 @@ export const SelectedDocuments = ({
           });
         }
       }
+      let current = currentSelected;
+      let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
+        if (p.docId === currentSelected.docId) {
+          // p.resubmittedNewFiles = true;
+          current = p;
+          return p;
+        }
+        return p;
+      });
+
+      current.files = selectedFiles.filter(
+        (f: Document) => f.uploadStatus !== "failed"
+      );
+      dispatch({
+        type: DocumentsActionType.FetchPendingDocs,
+        payload: updatedPendingDocs,
+      });
+      dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
     } catch (error) {}
   };
 
@@ -305,6 +329,13 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
+  // useEffect(() => {
+  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
+  //     setDoneVisible(false);
+  //     setBtnDisabled(true);
+  //   }
+  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
+
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -401,6 +432,25 @@ export const SelectedDocuments = ({
                     onClick={() => {
                       setDoneVisible(false);
                       disableSubmitBtn();
+                      if (pendingDocs.length > 1) {
+                        let curDocInd = 0;
+                        pendingDocs?.forEach((d, i) => {
+                          if (d.docId === currentSelected.docId) {
+                            curDocInd = i;
+                          }
+                        });
+
+                        if (curDocInd === pendingDocs?.length - 1) {
+                          curDocInd = 0;
+                        } else {
+                          curDocInd = curDocInd + 1;
+                        }
+
+                        dispatch({
+                          type: DocumentsActionType.SetCurrentDoc,
+                          payload: pendingDocs[curDocInd],
+                        });
+                      }
                     }}
                   >
                     No
