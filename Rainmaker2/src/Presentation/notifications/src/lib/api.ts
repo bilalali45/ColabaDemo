@@ -1,10 +1,10 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {getItem} from './localStorage';
+import {LocalDB} from '../Utils/LocalDB';
 
 const options: AxiosRequestConfig = {
   timeout: 30000, // it's 30 seconds, check with BE to know request timeout
   headers: {
-    Authorization: `Bearer ${getItem('token')}`
+    Authorization: `Bearer ${LocalDB.getAuthToken()}`
   }
 };
 
@@ -39,7 +39,7 @@ export const axiosCreate = (config?: AxiosRequestConfig): AxiosInstance => {
   return axiosBridge;
 };
 
-export const apiV1BaseUrl = 'https://alphamaingateway.rainsoftfn.com/';
+export const apiV1BaseUrl = `${window.envConfig.API_BASE_URL}/`;
 
 export const apiV1 = axiosCreate({
   ...options,
