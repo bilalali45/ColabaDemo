@@ -98,7 +98,7 @@ namespace ByteWebConnector.API.Controllers
             if (loanApplication != null)
             {
           
-                if (_configuration["MediaTypesToBeWrapedInPdf:0"].Contains(request.MediaType)||_configuration["MediaTypesToBeWrapedInPdf:1"].Contains(request.MediaType))
+                if (_configuration["MediaTypesToBeWrapedInPdf:0"].Contains(request.MediaType)||_configuration["MediaTypesToBeWrapedInPdf:1"].Contains(request.MediaType)) //todo shehroz this is hard code, plz fix
                 {
                     List<byte[]> intput = new List<byte[]>();
                     intput.Add(request.FileData);
