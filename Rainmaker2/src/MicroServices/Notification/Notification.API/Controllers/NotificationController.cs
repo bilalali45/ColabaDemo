@@ -40,7 +40,7 @@ namespace Notification.API.Controllers
 
         [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> GetPaged(int pageSize,long lastId,int mediumId)
+        public async Task<IActionResult> GetPaged(long lastId, int mediumId,int pageSize=10)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             if (lastId == -1)
