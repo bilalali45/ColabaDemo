@@ -127,9 +127,12 @@ ul {
   }
 
   &-body {
-    overflow: auto;
     max-height: calc(100% - 50px);
     @include scrollbar(10, 10);
+
+    .infinite-scroll-component {
+      //max-height: calc(100% - 50px) !important;
+    }
   }
 
   &.open {

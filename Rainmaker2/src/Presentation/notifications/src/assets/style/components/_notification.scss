@@ -3,6 +3,10 @@
     position: relative;
     margin-bottom: 2px;
 
+    a {
+      text-decoration: none;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -93,7 +97,12 @@
 
         .n-date {
           font: 400 #{fontSize('xs') + '/1.2'} fontFamily('base');
-          color: color('secondary');
+          color: color('base');
+          display: inline-block;
+          vertical-align: middle;
+          svg {
+            margin-right: 4px;
+          }
         }
       }
     }

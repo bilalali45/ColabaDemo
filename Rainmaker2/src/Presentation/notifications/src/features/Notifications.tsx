@@ -17,7 +17,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     <div className="notify-body">
       <ul className="notification-ul">
         <InfiniteScroll
-          height={'100vh'}
+          height={'calc(100vh - 100px)'}
           dataLength={notifications.length}
           hasMore={true}
           loader={''}
