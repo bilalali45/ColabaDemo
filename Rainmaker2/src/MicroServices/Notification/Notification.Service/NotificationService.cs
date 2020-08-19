@@ -27,6 +27,13 @@ namespace Notification.Service
             this.rainmakerService = rainmakerService;
             this.templateService = templateService;
         }
+
+        public async Task<int> GetCount(int userProfileId)
+        {
+            return await Uow.Repository<NotificationRecepient>().Query(x =>
+                    x.RecipientId == userProfileId && x.StatusId == (byte) Notification.Common.StatusListEnum.Unseen)
+                .CountAsync();
+        }
         public async Task<long> Add(NotificationModel model, int userId, int tenantId, IEnumerable<string> authHeader)
         {
             List<TenantSetting> tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId && x.NotificationTypeId == model.NotificationType).ToListAsync();
@@ -50,7 +57,7 @@ namespace Notification.Service
                 {
                     NotificationRecepient notificationRecepient = new NotificationRecepient();
                     notificationRecepient.RecipientId = item;
-                    notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unread;
+                    notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unseen;
                     notificationRecepient.TrackingState = TrackingState.Added;
                     notificationObject.NotificationRecepients.Add(notificationRecepient);
                     notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
@@ -114,18 +121,42 @@ namespace Notification.Service
                 }).ToListAsync();
         }
 
-        public async Task Read(long id)
+        public async Task Read(List<long> ids)
         {
-            var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id).Include(x => x.NotificationRecepient).FirstOrDefaultAsync();
+            foreach (var id in ids)
+            {
+                var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id)
+                    .Include(x => x.NotificationRecepient).FirstOrDefaultAsync();
 
-            result.NotificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Read;
+                result.NotificationRecepient.StatusId = (byte) Notification.Common.StatusListEnum.Read;
 
-            result.NotificationRecepient.TrackingState = TrackingState.Modified;
+                result.NotificationRecepient.TrackingState = TrackingState.Modified;
 
-            Uow.Repository<NotificationRecepientMedium>().Update(result);
+                Uow.Repository<NotificationRecepientMedium>().Update(result);
+            }
             await Uow.SaveChangesAsync();
         }
+        public async Task Seen(List<long> ids)
+        {
+            foreach (var id in ids)
+            {
+                var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id)
+                    .Include(x => x.NotificationRecepient).ThenInclude(x=>x.NotificationRecepientStatusLogs).FirstOrDefaultAsync();
 
+                result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
+                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count() >= 1 ? 
+                    result.NotificationRecepient.NotificationRecepientStatusLogs
+                        .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
+                                    && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x => x.UpdatedOn)
+                        .First().StatusId : (byte)Notification.Common.StatusListEnum.Unread;
+
+                result.NotificationRecepient.TrackingState = TrackingState.Modified;
+
+                Uow.Repository<NotificationRecepientMedium>().Update(result);
+            }
+            await Uow.SaveChangesAsync();
+        }
         public async Task Delete(long id)
         {
             var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id).Include(x => x.NotificationRecepient).FirstOrDefaultAsync();
@@ -158,7 +189,13 @@ namespace Notification.Service
                 .Include(x => x.NotificationRecepient)
                 .ThenInclude(x=>x.NotificationRecepientStatusLogs)
                 .FirstOrDefaultAsync();
-            result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs.Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted).Count()>=1 ? result.NotificationRecepient.NotificationRecepientStatusLogs.Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted).OrderByDescending(x=>x.UpdatedOn).First().StatusId : (byte)Notification.Common.StatusListEnum.Read;
+            result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
+                .Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
+                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count()>=1 ? 
+                result.NotificationRecepient.NotificationRecepientStatusLogs
+                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x=>x.UpdatedOn)
+                    .First().StatusId : (byte)Notification.Common.StatusListEnum.Unread;
 
             result.NotificationRecepient.TrackingState = TrackingState.Modified;
 

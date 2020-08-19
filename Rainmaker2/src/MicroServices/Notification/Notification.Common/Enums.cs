@@ -22,6 +22,7 @@ namespace Notification.Common
         Delivered=2,
         Unread=3,
         Read=4,
-        Deleted=5
+        Deleted=5,
+        Unseen=6
     }
 }

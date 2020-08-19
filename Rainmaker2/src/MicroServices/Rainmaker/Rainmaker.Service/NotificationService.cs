@@ -28,10 +28,19 @@ namespace Rainmaker.Service
                         .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer
                         .UserId == userId).Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders)
                 .ThenInclude(x => x.Customer)
-                .Include(x=>x.Opportunity).ThenInclude(x=>x.Employee).FirstAsync();
-            if(application.Opportunity.Employee!=null)
-                list.Add(application.Opportunity.Employee.UserId.Value);
-            return list;
+                .Include(x => x.Opportunity).ThenInclude(x => x.LoanOfficer)
+                .Include(x => x.Opportunity).ThenInclude(x => x.LoanCoordinator)
+                .Include(x => x.Opportunity).ThenInclude(x => x.LoanProcessor)
+                .Include(x => x.Opportunity).ThenInclude(x => x.PreProcessor).FirstAsync();
+            if (application.Opportunity.LoanOfficer != null)
+                list.Add(application.Opportunity.LoanOfficer.UserId.Value);
+            if (application.Opportunity.LoanCoordinator != null)
+                list.Add(application.Opportunity.LoanCoordinator.UserId.Value);
+            if (application.Opportunity.LoanProcessor != null)
+                list.Add(application.Opportunity.LoanProcessor.UserId.Value);
+            if (application.Opportunity.PreProcessor != null)
+                list.Add(application.Opportunity.PreProcessor.UserId.Value);
+            return list.Distinct().ToList();
         }
     }
 }

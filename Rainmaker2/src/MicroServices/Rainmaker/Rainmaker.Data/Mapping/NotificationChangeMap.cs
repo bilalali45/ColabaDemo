@@ -34,7 +34,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.Status).HasColumnName(@"Status").HasColumnType("tinyint").IsRequired(false);
 
             // Foreign keys
-            builder.HasOne(a => a.NotificationObject).WithMany(b => b.NotificationChanges).HasForeignKey(c => c.NotificationObjectId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationChange_NotificationObject_Id
+            //builder.HasOne(a => a.NotificationObject).WithMany(b => b.NotificationChanges).HasForeignKey(c => c.NotificationObjectId).OnDelete(DeleteBehavior.SetNull); // FK_NotificationChange_NotificationObject_Id
             InitializePartial();
         }
         partial void InitializePartial();

@@ -36,7 +36,7 @@ ul {
   font-size: fontSize('lg') - 2px;
   color: color('primary-text');
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-  padding: 14px;
+  padding: 14px 20px;
   display: inline-block;
   cursor: pointer;
   &:focus {
@@ -48,6 +48,18 @@ ul {
   font: 500 #{fontSize('nr') + '/17px'} fontFamily('base');
   position: relative;
   margin: 0 5px;
+
+  &-counts {
+    display: inline-block;
+    background: #ff5652;
+    color: #fff;
+    border-radius: 35px;
+    font: 500 #{fontSize('xs') + '/1'} fontFamily('base');
+    padding: 4px 6px;
+    position: absolute;
+    top: 8px;
+    right: 2px;
+  }
 
   &-alert-msg {
     height: 100%;
@@ -127,9 +139,16 @@ ul {
   }
 
   &-body {
-    overflow: auto;
     max-height: calc(100% - 50px);
+    overflow: auto;
     @include scrollbar(10, 10);
+    .InfiniteScroll {
+      overflow: initial;
+    }
+
+    .infinite-scroll-component {
+      //max-height: calc(100% - 50px) !important;
+    }
   }
 
   &.open {

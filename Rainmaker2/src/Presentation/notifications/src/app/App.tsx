@@ -1,23 +1,42 @@
-import React, {useState, useEffect, FunctionComponent} from 'react';
+import React, {FunctionComponent} from 'react';
+import {useEffect, useState} from 'react';
 
+import {LocalDB} from '../Utils/LocalDB';
+import {UserActions} from '../actions/UserActions';
 import {AppRoutes} from './routes';
-import {postAuthenticate} from '../lib/authenticate';
+
+declare global {
+  interface Window {
+    envConfig: any;
+  }
+}
+window.envConfig = window.envConfig || {};
 
 export const App: FunctionComponent = () => {
-  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const getAuthToken = async () => {
-      try {
-        await postAuthenticate();
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
+    console.log('MCU App Version', '0.0.1');
+    const authenticate = async () => {
+      console.log('Before Authorize');
+      const isAuth = await UserActions.authorize();
+      setAuthenticated(Boolean(isAuth));
+      console.log('After Authorize');
+
+      UserActions.addExpiryListener();
     };
 
-    getAuthToken();
+    authenticate();
+    // component unmount
+    return () => {
+      LocalDB.removeAuth();
+    };
   }, []);
 
-  return loading ? null : <AppRoutes />;
+  console.log('Authorize User is authenticated', authenticated);
+  if (!authenticated) {
+    return null;
+  }
+
+  return <AppRoutes />;
 };

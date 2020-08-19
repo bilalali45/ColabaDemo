@@ -24,11 +24,11 @@ export const Notification: FunctionComponent<NotificationType> = ({
   }: any = payload;
 
   return (
-    <li
+    <div
       className={`notification-list ${status === 'Unread' ? 'unSeenList' : ''}`}
     >
-      <div className="n-wrap">
-        <Link to={link} target="_blank">
+      <div>
+        <Link className="n-wrap" to={link} target="_blank">
           <div className="n-icon">
             <SVGDocument />
           </div>
@@ -42,7 +42,7 @@ export const Notification: FunctionComponent<NotificationType> = ({
               {city}, {state} {zipCode}
             </p>
             <div className="n-date">
-              <SVGCalender />{' '}
+              <SVGCalender />
               {formatDateTime(dateTime, 'MMM, DD, YYYY hh:mm A')}
             </div>
           </div>
@@ -58,6 +58,6 @@ export const Notification: FunctionComponent<NotificationType> = ({
         </span>
         <button className="btn-undo">Undo</button>
       </div>
-    </li>
+    </div>
   );
 };

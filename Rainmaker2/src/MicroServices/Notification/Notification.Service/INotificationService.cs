@@ -12,9 +12,11 @@ namespace Notification.Service
         Task<long> Add(NotificationModel model, int userId, int tenantId, IEnumerable<string> authHeader);
         Task<NotificationObject> GetByIdForTemplate(long notificationId);
         Task<List<NotificationMediumModel>> GetPaged(int pageSize, long lastId, int mediumId,int userId);
-        Task Read(long id);
+        Task Read(List<long> ids);
+        Task Seen(List<long> ids);
         Task Delete(long id);
         Task DeleteAll();
         Task<NotificationMediumModel> Undelete(long id);
+        Task<int> GetCount(int userProfileId);
     }
 }

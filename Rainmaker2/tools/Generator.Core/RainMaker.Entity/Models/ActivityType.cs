@@ -37,9 +37,9 @@ namespace RainMaker.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child Activities where [Activity].[ActivityTypeId] point to this entity (FK_Activity_ActivityType)
+        /// Child Activities where [Activity].[ActivityTypeId] point to this entity (FK_ActivityLog_ActivityType)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Activity> Activities { get; set; } // Activity.FK_Activity_ActivityType
+        public virtual System.Collections.Generic.ICollection<Activity> Activities { get; set; } // Activity.FK_ActivityLog_ActivityType
         /// <summary>
         /// Child WorkQueues where [WorkQueue].[ActivityTypeId] point to this entity (FK_WorkQueue_ActivityType)
         /// </summary>

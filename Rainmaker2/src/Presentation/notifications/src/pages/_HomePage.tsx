@@ -22,13 +22,15 @@ export const Header: FunctionComponent<HeaderProps> = ({
   );
 };
 
-export const BellIcon: FunctionComponent<{onClick: () => void}> = ({
-  onClick
-}) => {
+export const BellIcon: FunctionComponent<{
+  onClick: () => void;
+  notificationsCounter: number;
+}> = ({onClick, notificationsCounter}) => {
   return (
     <div className="notify-tigger-area">
       <button onClick={onClick} className="btn-notify">
         <i className="zmdi zmdi-notifications"></i>
+        <span className="notify-counts">{notificationsCounter}</span>
       </button>
     </div>
   );

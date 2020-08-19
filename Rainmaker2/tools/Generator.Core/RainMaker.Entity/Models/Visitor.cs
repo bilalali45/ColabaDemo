@@ -37,9 +37,17 @@ namespace RainMaker.Entity.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child InitialContacts where [InitialContact].[VisitorId] point to this entity (FK_InitialContact_Visitor)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<InitialContact> InitialContacts { get; set; } // InitialContact.FK_InitialContact_Visitor
+        /// <summary>
         /// Child LoanRequests where [LoanRequest].[VisitorId] point to this entity (FK_LoanRequest_Visitor)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LoanRequest> LoanRequests { get; set; } // LoanRequest.FK_LoanRequest_Visitor
+        /// <summary>
+        /// Child OtpTracings where [OtpTracing].[VisitorId] point to this entity (FK_OtpTracing_Visitor)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<OtpTracing> OtpTracings { get; set; } // OtpTracing.FK_OtpTracing_Visitor
         /// <summary>
         /// Child SessionLogs where [SessionLog].[VisitorId] point to this entity (FK_SessionLog_Visitor)
         /// </summary>
@@ -61,7 +69,9 @@ namespace RainMaker.Entity.Models
             EntityTypeId = 71;
             IsActive = true;
             IsDeleted = false;
+            InitialContacts = new System.Collections.Generic.HashSet<InitialContact>();
             LoanRequests = new System.Collections.Generic.HashSet<LoanRequest>();
+            OtpTracings = new System.Collections.Generic.HashSet<OtpTracing>();
             SessionLogs = new System.Collections.Generic.HashSet<SessionLog>();
             SystemEventLogs = new System.Collections.Generic.HashSet<SystemEventLog>();
             InitializePartial();

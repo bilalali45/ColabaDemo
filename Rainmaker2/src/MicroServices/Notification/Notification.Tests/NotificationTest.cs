@@ -87,7 +87,7 @@ namespace Notification.Tests
             var notificationController = new NotificationController(mockUserProfileService.Object, null);
 
             NotificationRead notificationRead = new NotificationRead();
-            notificationRead.id = 10;
+            notificationRead.ids = new List<long> {10};
 
             //Act
             IActionResult result = await notificationController.Read(notificationRead);
@@ -176,7 +176,7 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-            await notificationService.Read(1);
+            await notificationService.Read(new List<long>{1});
         }
         [Fact]
         public async Task TestDeleteService()

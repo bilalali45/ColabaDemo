@@ -44,6 +44,7 @@ namespace RainMaker.Entity.Models
         public string ShortName { get; set; } // ShortName (length: 150)
         public string AbbreviatedName { get; set; } // AbbreviatedName (length: 150)
         public string ScheduleUrl { get; set; } // ScheduleUrl (length: 500)
+        public string Logo { get; set; } // Logo (length: 50)
 
         // Reverse navigation
 
