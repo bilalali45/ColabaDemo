@@ -109,11 +109,11 @@ export const HomePage: FunctionComponent = () => {
     setClear(true);
   };
 
-  const clearAllVerification = (verify: boolean) => {
+  const clearAllVerification = async (verify: boolean) => {
     if (verify === true) {
+      await onClearNotifications();
       setClearAllConfirm(true);
       setClear(true);
-      onClearNotifications();
     } else {
       setClearAllConfirm(false);
       setClear(false);
@@ -121,7 +121,9 @@ export const HomePage: FunctionComponent = () => {
   };
 
   const notifying = (notifications: NotificationType[], lastId: number) => {
-    if (unClear === false && clearAllConfirm === false) {
+    if (notifications.length === 0) {
+      return <AlertForNoData />;
+    } else if (unClear === false && clearAllConfirm === false) {
       return (
         <Notifications
           notifications={notifications}
@@ -144,7 +146,10 @@ export const HomePage: FunctionComponent = () => {
       <BellIcon onClick={toggleNotificationSidebar} />
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
-          <Header clearAllDisplay={!unClear} handleClear={clearAll} />
+          <Header
+            clearAllDisplay={notifications.length > 0}
+            handleClear={clearAll}
+          />
           {notifying(notifications, lastId)}
         </div>
       )}

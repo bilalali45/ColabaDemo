@@ -39,7 +39,7 @@ export const axiosCreate = (config?: AxiosRequestConfig): AxiosInstance => {
   return axiosBridge;
 };
 
-export const apiV1BaseUrl = process.env.REACT_APP_BASE_URL;
+export const apiV1BaseUrl = 'https://alphamaingateway.rainsoftfn.com/';
 
 export const apiV1 = axiosCreate({
   ...options,
