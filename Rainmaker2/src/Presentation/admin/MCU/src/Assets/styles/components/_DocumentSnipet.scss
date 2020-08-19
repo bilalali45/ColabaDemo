@@ -8,6 +8,10 @@
     justify-content: space-between;
     padding: 15px 10px;
 
+    .filename-p{
+        font-weight: 500;
+    }
+
     &--left{
         flex: 3 0 0;
         line-height: 1;

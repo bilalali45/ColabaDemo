@@ -3,28 +3,32 @@ import {
   HubConnectionBuilder,
   LogLevel,
   HttpTransportType
-} from '@aspnet/signalr';
+} from '@microsoft/signalr';
 import { UserActions } from "../../Store/actions/UserActions";
+import { LocalDB } from '../LocalDB';
 export class SignalRHub {
   static hubConnection: any;
   // Set the initial SignalR Hub Connection.
   static configureHubConnection = async () => {
     // Events Register
 
-    let userAgent = navigator.userAgent;
-    let accessToken;
-    const hubUrl = 'https://localhost:44322/serverhub';
+    let accessToken= LocalDB.getAuthToken();
+    const hubUrl = 'http://172.16.100.117:8065/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-        //accessTokenFactory: accessToken
+        //skipNegotiation: true,
+        //transport: HttpTransportType.WebSockets,
+        // accessTokenFactory: () => {
+        //   if (accessToken) {
+        //     return accessToken;
+        //   }
+        //   return '';
+        // }
       })
       .configureLogging(LogLevel.Trace)
       .build();
     await SignalRHub.hubStart();
     SignalRHub.eventsRegister();
-    SignalRHub.checkSignalR();
   };
 
   static hubStart = async () => {
@@ -32,7 +36,7 @@ export class SignalRHub {
       await SignalRHub.hubConnection.start();
       console.log('Connection start successful!');
     } catch (err) {
-      alert(err);
+      console.log(err);
       SignalRHub.signalRHubResume();
     }
   };
@@ -42,31 +46,20 @@ export class SignalRHub {
       SignalRHub.hubConnection.stop();
       console.log('Connection stop successful!');
     } catch (err) {
-      alert(err);
+      console.log(err);
     }
   };
 
- static checkSignalR = async () => {
-  SignalRHub.hubConnection.onclose(() => {
-    alert(`Signal R disconnected`);
-    UserActions.authorize().then((data) => {
-    console.log('isAuthorize',data)
-    if(data){
-      SignalRHub.signalRHubResume();
-    }
-    });
-  });
- }
 
  static signalRHubResume = async () => {
   try{
     setTimeout(()=> {
-      alert("SignalR Hub Resume");
+      console.log("SignalR Hub Resume");
       SignalRHub.hubStart();
     },3000)  
   }
   catch (err) {
-    alert(err);
+    console.log(err);
   } 
 };
 
@@ -80,7 +73,15 @@ export class SignalRHub {
           detail: {name: 'John'}
         })
       );
-    });    
+    }); 
+    
+    SignalRHub.hubConnection.onclose(() => {
+      console.log(`Signal R disconnected`);
+      const auth = LocalDB.getAuthToken();
+      if(auth){
+        SignalRHub.signalRHubResume();
+      }
+    });
 
   };
 

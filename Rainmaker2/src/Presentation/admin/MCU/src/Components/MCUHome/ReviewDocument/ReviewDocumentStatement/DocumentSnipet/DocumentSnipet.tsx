@@ -16,6 +16,7 @@ export const DocumentSnipet = ({
   fileId,
   currentFileIndex,
   uploadedOn,
+  isRead,
   username,
   allowFileRenameMCU,
   getMcuNameUpdated
@@ -30,6 +31,7 @@ export const DocumentSnipet = ({
   mcuName: string
   currentFileIndex: number
   uploadedOn: string
+  isRead: boolean
   username: string
   allowFileRenameMCU: (filename: string, fileId: string, addToList?: boolean) => boolean
   getMcuNameUpdated: (fileId: string) => string
@@ -210,7 +212,7 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-              <p title={renameMCUName.trim() || mcuName || clientName}>{renameMCUName.trim() || mcuName || clientName}</p>
+              <p className={isRead === false ? 'filename-p': ''} title={renameMCUName.trim() || mcuName || clientName}>{renameMCUName.trim() || mcuName || clientName}</p>
             )}
         </div>
         <small className="document-snipet--detail">

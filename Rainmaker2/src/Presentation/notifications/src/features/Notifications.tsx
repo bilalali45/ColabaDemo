@@ -8,25 +8,30 @@ export const Notifications = () => {
       <ul className="notification-ul">
         <Notification unSeen={true} />
         <Notification unSeen={true} />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
+        <Notification unSeen={false} />
       </ul>
     </div>
   );
