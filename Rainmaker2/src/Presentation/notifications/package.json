@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel index.html"
+    "start": "parcel serve ./public/index.html --port 4000",
+    "build": "parcel build ./public/index.html",
+    "build-js": "parcel build ./src/index.tsx --out-file rs-notifications.js"
   },
   "dependencies": {
     "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "react": "^16.13.1",
@@ -16,14 +18,14 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4",
-    "sass": "^1.26.10",
-    "typescript": "^3.9.7",
     "@types/axios": "^0.14.0",
     "@types/react-router-dom": "^5.1.5",
     "husky": "^4.2.5",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "sass": "^1.26.10",
+    "typescript": "^3.9.7"
   },
   "husky": {
     "hooks": {

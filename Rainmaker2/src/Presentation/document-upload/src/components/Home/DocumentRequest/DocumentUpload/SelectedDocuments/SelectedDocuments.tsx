@@ -122,11 +122,10 @@ export const SelectedDocuments = ({
             Auth.getLoanAppliationId()
           );
         } catch (error) {
-          file.uploadStatus = 'failed';
-          console.log('error during file submit', error);
-          console.log('error during file submit', error.response);
+          file.uploadStatus = "failed";
+          console.log("error during file submit", error);
+          console.log("error during file submit", error.response);
         }
-
       }
     }
     setSubBtnPressed(false);
@@ -150,7 +149,6 @@ export const SelectedDocuments = ({
       }
       let current = currentSelected;
       let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
-
         if (p.docId === currentSelected.docId) {
           // p.resubmittedNewFiles = true;
           current = p;
@@ -159,11 +157,15 @@ export const SelectedDocuments = ({
         return p;
       });
 
-      current.files = selectedFiles.filter((f: Document) => f.uploadStatus !== 'failed');
-      dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: updatedPendingDocs });
+      current.files = selectedFiles.filter(
+        (f: Document) => f.uploadStatus !== "failed"
+      );
+      dispatch({
+        type: DocumentsActionType.FetchPendingDocs,
+        payload: updatedPendingDocs,
+      });
       dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -171,7 +173,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-        newName.toLowerCase()
+          newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -295,9 +297,9 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-          Auth.getLoanAppliationId(),
-          data
-        );
+        Auth.getLoanAppliationId(),
+        data
+      );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -377,19 +379,19 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-                <a className="addmoreDoc disabled">
-                  {" "}
+              <a className="addmoreDoc disabled">
+                {" "}
                 Add more files
-                  <input
-                    type="file"
-                    accept={FileUpload.allowedExtensions}
-                    id="inputFile"
-                    ref={inputRef}
-                    multiple
-                    style={{ display: "none" }}
-                  />
-                </a>
-              )}
+                <input
+                  type="file"
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef}
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </a>
+            )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -397,8 +399,8 @@ export const SelectedDocuments = ({
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </div>
         </div>
         {!!currentDoc && (
@@ -430,6 +432,25 @@ export const SelectedDocuments = ({
                     onClick={() => {
                       setDoneVisible(false);
                       disableSubmitBtn();
+                      if (pendingDocs.length > 1) {
+                        let curDocInd = 0;
+                        pendingDocs?.forEach((d, i) => {
+                          if (d.docId === currentSelected.docId) {
+                            curDocInd = i;
+                          }
+                        });
+
+                        if (curDocInd === pendingDocs?.length - 1) {
+                          curDocInd = 0;
+                        } else {
+                          curDocInd = curDocInd + 1;
+                        }
+
+                        dispatch({
+                          type: DocumentsActionType.SetCurrentDoc,
+                          payload: pendingDocs[curDocInd],
+                        });
+                      }
                     }}
                   >
                     No
@@ -445,18 +466,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-            <div className="doc-submit-wrap">
-              {!doneHit && (
-                <button
-                  disabled={btnDisabled || subBtnPressed}
-                  className="btn btn-primary"
-                  onClick={uploadFiles}
-                >
-                  Submit
-                </button>
-              )}
-            </div>
-          )}
+          <div className="doc-submit-wrap">
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
