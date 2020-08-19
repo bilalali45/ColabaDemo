@@ -42,7 +42,8 @@ export const Notification: FunctionComponent<NotificationType> = ({
               {city}, {state} {zipCode}
             </p>
             <div className="n-date">
-              <SVGCalender /> {formatDateTime(dateTime)}
+              <SVGCalender />{' '}
+              {formatDateTime(dateTime, 'MMM, DD, YYYY hh:mm A')}
             </div>
           </div>
         </Link>
