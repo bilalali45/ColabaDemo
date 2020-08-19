@@ -4,6 +4,7 @@ import {Http} from 'rainsoft-js';
 import {NeedListEndpoints} from '../../../../../Store/endpoints/NeedListEndpoints';
 import {SVGeditFile} from '../../../../../Shared/SVG';
 import {datetimeFormatRenameFile} from '../../../../../Utils/helpers/DateFormat';
+import {NeedList} from '../../../../../Entities/Models/NeedList';
 
 export const DocumentSnipet = ({
   index,
@@ -19,7 +20,8 @@ export const DocumentSnipet = ({
   isRead,
   username,
   allowFileRenameMCU,
-  getMcuNameUpdated
+  getMcuNameUpdated,
+  isCurrent
 }: {
   index: number;
   moveNextFile: (index: number, fileId: string, clientName: string) => void;
@@ -33,6 +35,7 @@ export const DocumentSnipet = ({
   uploadedOn: string;
   isRead: boolean;
   username: string;
+  isCurrent: boolean;
   allowFileRenameMCU: (
     filename: string,
     fileId: string,
@@ -143,7 +146,7 @@ export const DocumentSnipet = ({
 
   const moveNext = (event: any) => {
     event.stopPropagation();
-
+    // getDocumentFiles(currentDocument);
     moveNextFile(index, fileId, clientName);
   };
 
