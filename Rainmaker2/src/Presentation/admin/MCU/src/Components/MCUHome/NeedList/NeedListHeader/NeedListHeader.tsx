@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { LocalDB } from "../../../../Utils/LocalDB";
-import {SignalRHub} from '../../../../Utils/helpers/SignalR';
+
 
 export const NeedListHeader = () => {
   const history = useHistory();
@@ -17,10 +17,6 @@ export const NeedListHeader = () => {
       "/Admin/Loanapplication/Edit/" + loanApplicationId;
   };
 
-  const stopSignalR = () => {
-    console.log('stopping signalR')
-    SignalRHub.hubStop();
-  }
 
   return (
     <div className="need-list-header">
@@ -33,7 +29,7 @@ export const NeedListHeader = () => {
         <button onClick={redirectToTemplate} className="btn btn-secondry">
           <em className="icon-record"></em> Manage Template
         </button>
-        <button className="btn btn-primary" onClick={stopSignalR} >
+        <button className="btn btn-primary"  >
           <em className="icon-edit"></em> Post to Byte Pro
         </button>
       </div>
