@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
+using Notification.Entity.Models;
 using Notification.Model;
 using Notification.Service;
 
@@ -30,8 +32,10 @@ namespace Notification.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-
-            return Ok(await _notificationService.Add(model,userProfileId,tenantId, Request.Headers["Authorization"].Select(x => x.ToString())));
+            long id = await _notificationService.Add(model, userProfileId, tenantId,
+                Request.Headers["Authorization"].Select(x => x.ToString()));
+            await SendNotification(id);
+            return Ok(id);
         }
 
         [HttpGet("[action]")]
@@ -75,10 +79,33 @@ namespace Notification.API.Controllers
             return Ok();
         }
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<IActionResult> TestSignalR()
         {
             await ServerHub.TestSignalR(_context);
             return Ok();
+        }
+
+        private async Task SendNotification(long id)
+        {
+            NotificationObject notificationObject = await _notificationService.GetByIdForTemplate(id);
+            foreach (var recep in notificationObject.NotificationRecepients)
+            {
+                foreach (var medium in recep.NotificationRecepientMediums)
+                {
+                    if (medium.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Express &&
+                        medium.NotificationMediumid == (int)Notification.Common.NotificationMediumEnum.InApp)
+                    {
+                        NotificationMediumModel model = new NotificationMediumModel()
+                        {
+                            id = medium.Id,
+                            payload = string.IsNullOrEmpty(medium.SentTextJson) ? new JObject() : JObject.Parse(medium.SentTextJson),
+                            status = recep.StatusListEnum.Name
+                        };
+                        await ServerHub.SendNotification(_context,recep.RecipientId.Value,model);
+                    }
+                }
+            }
         }
     }
 }

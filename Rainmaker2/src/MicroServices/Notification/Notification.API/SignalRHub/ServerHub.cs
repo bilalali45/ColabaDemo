@@ -4,12 +4,14 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Notification.Model;
 
 namespace Notification.API
 {
     public interface IClientHub
     {
         Task TestSignalR(string message);
+        Task SendNotification(NotificationMediumModel model);
     }
     [Authorize(Roles ="MCU")]
     public class ServerHub : Hub<IClientHub>
@@ -49,6 +51,11 @@ namespace Notification.API
             await hubContext.Clients.All.TestSignalR("Hello");
         }
 
+        public static async Task SendNotification(IHubContext<ServerHub, IClientHub> hubContext, int userId, NotificationMediumModel model)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).SendNotification(model);
+        }
         #endregion
     }
 }
