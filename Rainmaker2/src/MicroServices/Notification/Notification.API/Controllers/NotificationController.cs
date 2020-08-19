@@ -85,7 +85,12 @@ namespace Notification.API.Controllers
             await ServerHub.TestSignalR(_context);
             return Ok();
         }
-
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public IActionResult DumpSignalR()
+        {
+            return Ok(ClientConnection<int>._connections);
+        }
         private async Task SendNotification(long id)
         {
             NotificationObject notificationObject = await _notificationService.GetByIdForTemplate(id);
