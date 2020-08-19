@@ -28,24 +28,24 @@ export const Notification: FunctionComponent<NotificationType> = ({
       className={`notification-list ${status === 'Unread' ? 'unSeenList' : ''}`}
     >
       <div className="n-wrap">
-        <div className="n-icon">
-          <Link to={link} target="_blank">
+        <Link to={link} target="_blank">
+          <div className="n-icon">
             <SVGDocument />
-          </Link>
-        </div>
-        <div className="n-content">
-          <div className="n-cat" title={'Document Submission'}>
-            {notificationType}
           </div>
-          <h4 className="n-title">{name}</h4>
-          <p className="n-address">
-            {address} # {unitNumber} <br />
-            {city}, {state} {zipCode}
-          </p>
-          <div className="n-date">
-            <SVGCalender /> {formatDateTime(dateTime)}
+          <div className="n-content">
+            <div className="n-cat" title={'Document Submission'}>
+              {notificationType}
+            </div>
+            <h4 className="n-title">{name}</h4>
+            <p className="n-address">
+              {address} # {unitNumber} <br />
+              {city}, {state} {zipCode}
+            </p>
+            <div className="n-date">
+              <SVGCalender /> {formatDateTime(dateTime)}
+            </div>
           </div>
-        </div>
+        </Link>
         <div className="n-close">
           <SVGClose />
         </div>
