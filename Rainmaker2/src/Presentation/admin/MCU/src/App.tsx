@@ -23,8 +23,6 @@ window.envConfig = window.envConfig || {};
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const hubUrl: string =  baseUrl+'/serverhub';
-
-  let cached = LocalDB.getAuthToken();
   
   useEffect(() => {
     console.log("MCU App Version", "0.0.1");

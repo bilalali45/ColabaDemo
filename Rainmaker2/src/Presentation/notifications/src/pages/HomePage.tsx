@@ -5,12 +5,14 @@ import React, {
   useRef,
   useCallback
 } from 'react';
+import {SignalRHub} from 'rainsoft-js';
 
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 import {AlertForRemove, AlertForNoData} from '../features/NotificationAlerts';
 import {apiV1} from '../lib/api';
 import {NotificationType} from '../lib/type';
+import {LocalDB} from '../Utils/LocalDB';
 
 export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
@@ -141,9 +143,46 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
+  const eventsRegister = () => {
+    console.log('signalR eventsRegister on Client', SignalRHub.hubConnection);
+    SignalRHub.hubConnection.on('TestSignalR', (data: string) => {
+      console.log(`TestSignalR`, data);
+    });
+    SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
+      console.log(
+        'Notification comes from SignalR on Client',
+        JSON.parse(notification)
+      );
+    });
+
+    SignalRHub.hubConnection.onclose((e: any) => {
+      console.log(`SignalR disconnected on Client`, e);
+      const auth = LocalDB.getAuthToken();
+      if (auth) {
+        SignalRHub.signalRHubResume();
+      }
+    });
+  };
+
+  useEffect(() => {
+    const accessToken: string = LocalDB.getAuthToken() || '';
+    SignalRHub.configureHubConnection(
+      window.envConfig.API_BASE_URL + '/serverhub',
+      accessToken,
+      eventsRegister
+    );
+  }, []);
+
   return (
     <div className={`notify`} ref={refContainerSidebar}>
-      <BellIcon onClick={toggleNotificationSidebar} />
+      <BellIcon
+        onClick={toggleNotificationSidebar}
+        notificationsCounter={
+          notifications.filter(
+            (notification) => notification.status === 'Unread'
+          ).length
+        }
+      />
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
           <Header

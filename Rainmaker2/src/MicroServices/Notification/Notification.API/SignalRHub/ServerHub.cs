@@ -40,7 +40,7 @@ namespace Notification.API
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
             _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId);
-            return base.OnDisconnectedAsync(null);
+            return base.OnDisconnectedAsync(ex);
         }
 
         #endregion
