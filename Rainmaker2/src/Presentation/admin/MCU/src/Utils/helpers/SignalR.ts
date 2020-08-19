@@ -4,15 +4,15 @@ import {
   LogLevel,
   HttpTransportType
 } from '@microsoft/signalr';
-import { UserActions } from "../../Store/actions/UserActions";
-import { LocalDB } from '../LocalDB';
+import {UserActions} from '../../Store/actions/UserActions';
+import {LocalDB} from '../LocalDB';
 export class SignalRHub {
   static hubConnection: any;
   // Set the initial SignalR Hub Connection.
   static configureHubConnection = async () => {
     // Events Register
 
-    let accessToken= LocalDB.getAuthToken();
+    let accessToken = LocalDB.getAuthToken();
     const hubUrl = 'http://172.16.100.117:8065/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
@@ -50,18 +50,16 @@ export class SignalRHub {
     }
   };
 
-
- static signalRHubResume = async () => {
-  try{
-    setTimeout(()=> {
-      console.log("SignalR Hub Resume");
-      SignalRHub.hubStart();
-    },3000)  
-  }
-  catch (err) {
-    console.log(err);
-  } 
-};
+  static signalRHubResume = async () => {
+    try {
+      setTimeout(() => {
+        console.log('SignalR Hub Resume');
+        SignalRHub.hubStart();
+      }, 3000);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   static eventsRegister = () => {
     // Example Event Listner
@@ -73,17 +71,14 @@ export class SignalRHub {
           detail: {name: 'John'}
         })
       );
-    }); 
-    
+    });
+
     SignalRHub.hubConnection.onclose(() => {
       console.log(`Signal R disconnected`);
       const auth = LocalDB.getAuthToken();
-      if(auth){
+      if (auth) {
         SignalRHub.signalRHubResume();
       }
     });
-
   };
-
-  
 }

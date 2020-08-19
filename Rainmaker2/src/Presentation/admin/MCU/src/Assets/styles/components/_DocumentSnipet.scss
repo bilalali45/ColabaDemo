@@ -1,103 +1,105 @@
-.document-snipet{
-    background-color: color('docSnipetBg');
-    color: color('docSnipetText');
-    border: 1px solid color('docSnipetBorder');
-    margin-bottom: 15px;
-    display: -webkit-flex;
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 10px;
+.document-snipet {
+  background-color: color('docSnipetBg');
+  color: color('docSnipetText');
+  border: 1px solid color('docSnipetBorder');
+  margin-bottom: 15px;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 10px;
 
-    .filename-p{
-        font-weight: 500;
+  .filename-p {
+    font-weight: 500;
+  }
+
+  &--left {
+    flex: 3 0 0;
+    line-height: 1;
+    max-width: 90%;
+  }
+
+  &--right {
+    svg,
+    i,
+    em {
+      overflow: hidden;
+      vertical-align: top;
     }
+  }
 
-    &--left{
-        flex: 3 0 0;
-        line-height: 1;
-        max-width: 90%;
-    }
-
-    &--right{
-        svg,i,em {
-            overflow: hidden;
-            vertical-align: top;
-        }
-    }
-
-    &--input-group{
-        line-height: 1;
-        color: color('base');
-        input{
-            border: none;
-            color: color('heading');
-            vertical-align: middle;
-            &:focus{
-                border-color: color('docSnipetBorderActive');
-                outline: 1px solid color('docSnipetBorderActive');
-            }
-            &.error{
-                border: 1px solid $danger;
-                outline: none;
-            }
-        }
-        p{
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            vertical-align: middle;
-            margin-bottom: 0;
-            height: 23px;
-        }
-    }
-
-    &--detail{
-        display: block;
-        padding-top: 5px;
-
-        &.error{
-            color: $danger;
-            margin-bottom: 0;
-            font: normal #{fontSize('sm')+'/1.2'} fontFamily('heading'); 
-        }
-    }
-
-    [class^="document-snipet-btn"],
-    [class*="document-snipet-btn"]{
-        border: none;
-        padding: 0 6px;
-        height: 20px;
-        font-size: fontSize('lg');
-        background-color: transparent;
-        vertical-align: middle;
-    }
-
-    &-btn-ok{
-        color: color('docSnipetSuccess');
-    }
-
-    &-btn-cancel{
-        color: color('docSnipetFailed');
-    }
-
-    &-btn-edit{
-        color: color('heading');
-        i,em{
-            &::before{
-                color: color('heading');
-            }
-        }
-    }
-
-    &.focus{
-        background-color: color('docSnipetBgActive');
+  &--input-group {
+    line-height: 1;
+    color: color('base');
+    input {
+      border: none;
+      color: color('heading');
+      vertical-align: middle;
+      &:focus {
         border-color: color('docSnipetBorderActive');
-        .document-snipet--input-group{
-            //background-color: color('docSnipetBg');
-            //border:1px solid color('docSnipetBorderActive');
-            display: block;
-            // vertical-align: middle;
-        }
+        outline: 1px solid color('docSnipetBorderActive');
+      }
+      &.error {
+        border: 1px solid $danger;
+        outline: none;
+      }
     }
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      margin-bottom: 0;
+      height: 23px;
+    }
+  }
 
+  &--detail {
+    display: block;
+    padding-top: 5px;
+
+    &.error {
+      color: $danger;
+      margin-bottom: 0;
+      font: normal #{fontSize('sm') + '/1.2'} fontFamily('heading');
+    }
+  }
+
+  [class^='document-snipet-btn'],
+  [class*='document-snipet-btn'] {
+    border: none;
+    padding: 0 6px;
+    height: 20px;
+    font-size: fontSize('lg');
+    background-color: transparent;
+    vertical-align: middle;
+  }
+
+  &-btn-ok {
+    color: color('docSnipetSuccess');
+  }
+
+  &-btn-cancel {
+    color: color('docSnipetFailed');
+  }
+
+  &-btn-edit {
+    color: color('heading');
+    i,
+    em {
+      &::before {
+        color: color('heading');
+      }
+    }
+  }
+
+  &.focus {
+    background-color: color('docSnipetBgActive');
+    border-color: color('docSnipetBorderActive');
+    .document-snipet--input-group {
+      //background-color: color('docSnipetBg');
+      //border:1px solid color('docSnipetBorderActive');
+      display: block;
+      // vertical-align: middle;
+    }
+  }
 }

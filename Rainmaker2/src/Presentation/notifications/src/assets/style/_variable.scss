@@ -1,32 +1,32 @@
-$color:(
-    primary             :       #4484F4,
-    primary-text        :       #ffffff,
-    secondry            :       #103B5C,
-    secondry-text       :       #ffffff,
-    border              :       #DDE7F5, 
-    base                :       #707070, 
-    colorBlack          :       #000000,
-    colorWhite          :       #ffffff,
-    listhover           :       #F6F6F6,
-    scroll              :       #DBDBDB,
-    disabled            :       #E5E5E5,
-    disabled-text       :       #C1C0C0,
-    bgColor             :       #ffffff,    
+$color: (
+  primary: #4484f4,
+  primary-text: #ffffff,
+  secondry: #103b5c,
+  secondry-text: #ffffff,
+  border: #dde7f5,
+  base: #707070,
+  colorBlack: #000000,
+  colorWhite: #ffffff,
+  listhover: #f6f6f6,
+  scroll: #dbdbdb,
+  disabled: #e5e5e5,
+  disabled-text: #c1c0c0,
+  bgColor: #ffffff
 );
 
-$font:(
-    base                :      'Rubik'#{', sans-serif'},
-    heading             :      'Rubik'#{', sans-serif'}
+$font: (
+  base: 'Rubik' #{', sans-serif'},
+  heading: 'Rubik' #{', sans-serif'}
 );
 
-$font-size:(
-    xs: 10px,
-    sm: 12px,
-    nr: 14px,
-    md: 14px,
-    xmd:16px,
-    lg: 24px,
-    xlg: 34px,
+$font-size: (
+  xs: 10px,
+  sm: 12px,
+  nr: 14px,
+  md: 14px,
+  xmd: 16px,
+  lg: 24px,
+  xlg: 34px
 );
 
-$shadow                :        -5px 0 30px rgba(0, 0, 0, 0.16);
+$shadow: -5px 0 30px rgba(0, 0, 0, 0.16);

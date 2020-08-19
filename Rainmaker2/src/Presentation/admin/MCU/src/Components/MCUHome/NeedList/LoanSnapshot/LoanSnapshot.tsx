@@ -1,22 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
-import { SVGopenLock } from "../../../../Shared/SVG";
-import { LoanApplication } from "../../../../Entities/Models/LoanApplication";
-import { NeedListActions } from "../../../../Store/actions/NeedListActions";
-import Spinner from "react-bootstrap/Spinner";
-import { LocalDB } from "../../../../Utils/LocalDB";
-import { Store } from "../../../../Store/Store";
-import { stat } from "fs";
-import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
+import React, {useState, useEffect, useContext} from 'react';
+import {SVGopenLock} from '../../../../Shared/SVG';
+import {LoanApplication} from '../../../../Entities/Models/LoanApplication';
+import {NeedListActions} from '../../../../Store/actions/NeedListActions';
+import Spinner from 'react-bootstrap/Spinner';
+import {LocalDB} from '../../../../Utils/LocalDB';
+import {Store} from '../../../../Store/Store';
+import {stat} from 'fs';
+import {NeedListActionsType} from '../../../../Store/reducers/NeedListReducer';
 
 export const LoanSnapshot = () => {
   const [loanInfo, setLoanInfo] = useState<LoanApplication | null>();
-  const { state, dispatch } = useContext(Store);
+  const {state, dispatch} = useContext(Store);
 
   const needListManager: any = state?.needListManager;
   const loanData = needListManager?.loanInfo;
 
- 
-  
   useEffect(() => {
     window.addEventListener('TestSignalR', (data: any) => {
       alert(data.detail.name);
@@ -39,7 +37,7 @@ export const LoanSnapshot = () => {
         applicationId
       );
       if (res) {
-        dispatch({ type: NeedListActionsType.SetLoanInfo, payload: res });
+        dispatch({type: NeedListActionsType.SetLoanInfo, payload: res});
         // setLoanInfo(res)
       }
     }
@@ -47,7 +45,7 @@ export const LoanSnapshot = () => {
 
   const renderLoanProgram = (data: string | undefined) => {
     if (data) {
-      let splitData = data.split(" ");
+      let splitData = data.split(' ');
       return (
         <span className="mcu-label-value plus">
           {splitData[0]}
@@ -70,8 +68,8 @@ export const LoanSnapshot = () => {
     );
   }
   const formattedAddress = () => {
-    return `${loanInfo.streetAddress || ""}   ${
-      loanInfo.unitNumber ? " # " + loanInfo.unitNumber : ""
+    return `${loanInfo.streetAddress || ''}   ${
+      loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : ''
     }`;
   };
 
@@ -142,14 +140,14 @@ export const LoanSnapshot = () => {
               <span className="mcu-label-value">{}</span>
               <p className="LoanStatus--text ">
                 <span className="mcu-label-value" title={formattedAddress()}>
-                  {" "}
-                  {formattedAddress()}{" "}
+                  {' '}
+                  {formattedAddress()}{' '}
                 </span>
                 <span className="mcu-label-value">
-                  {" "}
-                  {loanInfo.cityName},{" "}
-                  {loanInfo.stateName + " " + loanInfo.zipCode}{" "}
-                </span>{" "}
+                  {' '}
+                  {loanInfo.cityName},{' '}
+                  {loanInfo.stateName + ' ' + loanInfo.zipCode}{' '}
+                </span>{' '}
               </p>
             </li>
           </ul>

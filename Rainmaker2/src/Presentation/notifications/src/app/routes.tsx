@@ -8,7 +8,7 @@ export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>
