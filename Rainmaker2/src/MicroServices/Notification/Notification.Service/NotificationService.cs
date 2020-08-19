@@ -82,6 +82,7 @@ namespace Notification.Service
         public async Task<NotificationObject> GetByIdForTemplate(long notificationId)
         {
             return await Repository.Query(x => x.Id == notificationId).Include(x => x.NotificationType).ThenInclude(x => x.NotificationTemplates)
+                .Include(x=>x.NotificationRecepients).ThenInclude(x=>x.StatusListEnum)
                 .Include(x => x.NotificationRecepients).ThenInclude(x => x.NotificationRecepientMediums).FirstAsync();
         }
 

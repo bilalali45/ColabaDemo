@@ -46,7 +46,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.UpTime).HasColumnName(@"UpTime").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
 
             // Foreign keys
-            builder.HasOne(a => a.Vortex_UserSessionLog).WithMany().OnDelete(DeleteBehavior.SetNull); // FK_ClientInfo_UserSessionLog_Id
+            builder.HasOne(a => a.Vortex_UserSessionLog).WithMany(b => b.Vortex_ClientInfoes).HasForeignKey(c => c.UserSessionid).OnDelete(DeleteBehavior.SetNull); // FK_ClientInfo_UserSessionLog_Id
             InitializePartial();
         }
         partial void InitializePartial();

@@ -34,6 +34,8 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.CreatedOnUtc).HasColumnName(@"CreatedOnUtc").HasColumnType("datetime2").IsRequired();
             builder.Property(x => x.IsActive).HasColumnName(@"IsActive").HasColumnType("bit").IsRequired();
             builder.Property(x => x.IsOnCall).HasColumnName(@"IsOnCall").HasColumnType("bit").IsRequired(false);
+            builder.Property(x => x.MobileDeviceId).HasColumnName(@"MobileDeviceId").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(100);
+            builder.Property(x => x.DeviceToken).HasColumnName(@"DeviceToken").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(100);
 
             // Foreign keys
             builder.HasOne(a => a.UserProfile).WithMany(b => b.Vortex_UserSessionLogs).HasForeignKey(c => c.UserProfileId).OnDelete(DeleteBehavior.SetNull); // FK_UserSessionLog_UserProfile_Id

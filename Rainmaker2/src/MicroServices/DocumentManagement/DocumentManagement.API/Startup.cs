@@ -51,7 +51,8 @@ namespace DocumentManagement.API
             services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddScoped<INotificationService, NotificationService>();
-            
+            services.AddScoped<IByteProService, ByteProService>();
+
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();

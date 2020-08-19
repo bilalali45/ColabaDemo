@@ -75,7 +75,9 @@ export const NeedListTable = ({
     else
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>{toTitleCase(name)}</span>
+          <span className="f-normal" title={toTitleCase(name)}>
+            {toTitleCase(name)}
+          </span>
         </div>
       );
   };
@@ -236,7 +238,6 @@ export const NeedListTable = ({
                         {truncate(mcuName, 47)}
                       </a>
                     </span>
-                   
                   </React.Fragment>
                 ) : (
                   <span

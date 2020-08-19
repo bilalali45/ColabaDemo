@@ -32,9 +32,9 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.MbsSecurityId).HasColumnName(@"MbsSecurityId").HasColumnType("int").IsRequired();
             builder.Property(x => x.CouponRate).HasColumnName(@"CouponRate").HasColumnType("decimal(18,3)").IsRequired(false);
             builder.Property(x => x.SettlementMonth).HasColumnName(@"SettlementMonth").HasColumnType("date").IsRequired(false);
-            builder.Property(x => x.BidBasis).HasColumnName(@"BidBasis").HasColumnType("decimal(18,8)").IsRequired(false);
             builder.Property(x => x.CreatedOnUtc).HasColumnName(@"CreatedOnUtc").HasColumnType("datetime").IsRequired();
             builder.Property(x => x.EntityTypeId).HasColumnName(@"EntityTypeId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.BidBasis).HasColumnName(@"BidBasis").HasColumnType("decimal(18,8)").IsRequired(false);
             builder.Property(x => x.Bid32Nds).HasColumnName(@"Bid32nds").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(20);
             builder.Property(x => x.TMaturity).HasColumnName(@"TMaturity").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(20);
             builder.Property(x => x.TPrice).HasColumnName(@"TPrice").HasColumnType("decimal(18,8)").IsRequired(false);

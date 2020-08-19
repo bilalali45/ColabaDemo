@@ -5,7 +5,7 @@ import {TemplateActionsType} from '../../../../../Store/reducers/TemplatesReduce
 import {TextArea} from '../../../../../Shared/components/TextArea';
 import Spinner from 'react-bootstrap/Spinner';
 import {LocalDB} from '../../../../../Utils/LocalDB';
-import { enableBrowserPrompt } from '../../../../../Utils/helpers/Common';
+import {enableBrowserPrompt} from '../../../../../Utils/helpers/Common';
 
 type emailContentReviewProps = {
   documentsName: string | undefined;
@@ -15,8 +15,7 @@ type emailContentReviewProps = {
   documentList: any;
   documentHash: string | undefined;
   setHash: Function;
-  defaultEmail: string | undefined
-
+  defaultEmail: string | undefined;
 };
 export const errorText = 'Invalid character entered';
 
@@ -33,7 +32,7 @@ export const EmailContentReview = ({
   const setDeafultText = () => {
     let str: string = '';
     let payload = LocalDB.getUserPayload();
-    let mcuName = payload?.FirstName+' '+payload?.LastName;
+    let mcuName = payload?.FirstName + ' ' + payload?.LastName;
     let documentNames = documentsName
       ? documentsName?.split(',').join(' \r\n')
       : '';
@@ -41,7 +40,7 @@ export const EmailContentReview = ({
       str = emailTemplate
         .replace('{user}', borrowername)
         .replace('{documents}', documentNames)
-        .replace('{mcu}',mcuName);
+        .replace('{mcu}', mcuName);
       hashDocuments();
       enableBrowserPrompt();
     }
@@ -97,7 +96,10 @@ export const EmailContentReview = ({
   const draftExist = () => {
     if (!documentHash) {
       if (selectedTemplateDocuments[0].message != '') {
-        let body = selectedTemplateDocuments[0].message.replace('<br />',' \r\n')
+        let body = selectedTemplateDocuments[0].message.replace(
+          '<br />',
+          ' \r\n'
+        );
         setEmailBody(body);
         enableBrowserPrompt();
         dispatch({
@@ -150,12 +152,12 @@ export const EmailContentReview = ({
       return (
         <>
           <footer className="mcu-panel-footer text-right">
-            <button disabled={isSendBtnDisable}
-              onClick={
-                () =>{
-                  setSendBtnDisable(true)
-                  saveAsDraft(false)
-                }}
+            <button
+              disabled={isSendBtnDisable}
+              onClick={() => {
+                setSendBtnDisable(true);
+                saveAsDraft(false);
+              }}
               className="btn btn-primary"
             >
               Send Request
@@ -187,7 +189,9 @@ export const EmailContentReview = ({
   return (
     <div className="mcu-panel-body--content">
       <div className="mcu-panel-body padding">
-        <h3 className="text-ellipsis" title={'Review email to '+ borrowername}>Review email to {borrowername}</h3>
+        <h3 className="text-ellipsis" title={'Review email to ' + borrowername}>
+          Review email to {borrowername}
+        </h3>
         <p>If you'd like, you can customize this email.</p>
         <TextArea
           focus={true}

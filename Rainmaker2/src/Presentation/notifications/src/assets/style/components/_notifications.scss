@@ -1,238 +1,241 @@
-body{
-    margin: 0;
-    padding: 0;
+body {
+  margin: 0;
+  padding: 0;
 }
 ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-*{
-    box-sizing: border-box;
-    &:focus{
-        outline: none;
+* {
+  box-sizing: border-box;
+  &:focus {
+    outline: none;
+  }
+}
+
+.clearfix {
+  &::before,
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+.flex {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-notify {
+  border: 0;
+  background-color: transparent;
+  font-size: fontSize('lg') - 2px;
+  color: color('primary-text');
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+  padding: 14px;
+  display: inline-block;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+.notify {
+  font: 500 #{fontSize('nr') + '/17px'} fontFamily('base');
+  position: relative;
+  margin: 0 5px;
+
+  &-alert-msg {
+    height: 100%;
+    width: 100%;
+    @extend .flex;
+    justify-content: center;
+    text-align: center;
+    font: 400 #{fontSize('nr') + '/1.2'} fontFamily('base');
+    color: color('base');
+    padding: 45px;
+
+    h4 {
+      font-weight: 400;
+      color: #000;
+      margin-bottom: 5px;
     }
-}
 
-.clearfix{
-    &::before,
-    &::after{
-        content: "";
-        display: table;
-        clear: both;
+    &--wrap {
+      margin-top: -25%;
     }
-}
+  }
 
-.flex{
-    display: flex;
-    display: -webkit-flex;
-    justify-content: space-between;
-    align-items: center;
-}
+  &-tigger-area {
+    @extend .clearfix;
+    text-align: right;
+  }
 
-.btn-notify{
-    border: 0;
+  &-btn-clear {
     background-color: transparent;
-    font-size: fontSize('lg') - 2px;
+    border: none;
+    font: 400 #{fontSize('sm') + '/17px'} fontFamily('base');
+    img {
+      margin-left: 5px;
+    }
+  }
+
+  &-dropdown {
+    position: fixed;
+    width: 410px;
+    right: 0;
+    top: 50px;
+    height: calc(100vh - 39px);
+    box-shadow: $shadow;
+    background-color: color('bgColor');
+    @include transition(all 0.5s ease-out);
+    z-index: 9;
+
+    .btn-notify {
+      display: inline-block;
+      padding: 8px 30px;
+      outline: 4px solid #fff;
+      font: 500 #{fontSize('sm') + '/1.2'} fontFamily('base');
+      background-color: color('primary');
+      text-transform: uppercase;
+
+      &.secondry {
+        background-color: color('secondry');
+      }
+    }
+  }
+
+  &-header {
+    padding: 15px;
+    background-color: color('primary');
     color: color('primary-text');
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-    padding: 14px;
-    display: inline-block;
-    cursor: pointer;
-    &:focus{
-        outline: none;
+    @extend .flex;
+    h2 {
+      font: 500 #{fontSize('nr') + '/1.2'} fontFamily('heading');
+      margin: 0;
+      text-transform: uppercase;
     }
+    button,
+    a {
+      color: color('primary-text');
+      cursor: pointer;
+    }
+  }
+
+  &-body {
+    max-height: calc(100% - 50px);
+    overflow: auto;
+    @include scrollbar(10, 10);
+    .InfiniteScroll {
+      overflow: initial;
+    }
+
+    .infinite-scroll-component {
+      //max-height: calc(100% - 50px) !important;
+    }
+  }
+
+  &.open {
+    .notify-dropdown {
+      right: 0;
+    }
+  }
 }
-
-.notify{
-    font: 500 #{fontSize("nr") + "/17px"} fontFamily("base");
-    position: relative;
-    margin: 0 5px;
-
-    &-alert-msg{
-        height: 100%;
-        width: 100%;
-        @extend .flex;
-        justify-content: center;
-        text-align: center;
-        font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
-        color: color('base');
-        padding: 45px;
-
-        h4{
-            font-weight: 400;
-            color: #000;
-            margin-bottom: 5px;
-        }
-
-        &--wrap{
-            margin-top: -25%;
-        }
-    }
-
-    &-tigger-area{
-        @extend .clearfix;
-        text-align: right;
-    }
-
-    &-btn-clear{
-        background-color: transparent;
-        border: none;
-        font: 400 #{fontSize("sm") + "/17px"} fontFamily("base");
-        img{
-            margin-left: 5px;
-        }
-    }
-
-    &-dropdown{
-        position: fixed;
-        width: 410px;
-        right: 0;
-        top: 50px;
-        height: calc(100vh - 39px);
-        box-shadow: $shadow;
-        background-color: color('bgColor');
-        @include transition(all 0.5s ease-out);
-        z-index: 9;
-
-        .btn-notify{
-            display: inline-block;
-            padding: 8px 30px;
-            outline: 4px solid #fff;
-            font: 500 #{fontSize("sm") + "/1.2"} fontFamily("base");
-            background-color: color('primary');
-            text-transform: uppercase;
-
-            &.secondry{
-                background-color: color('secondry');
-            }
-        }
-    }
-
-    &-header{
-        padding: 15px;
-        background-color: color('primary');
-        color: color('primary-text');
-        @extend .flex;
-        h2{
-            font: 500 #{fontSize("nr") + "/1.2"} fontFamily("heading");
-            margin: 0;
-            text-transform: uppercase;
-        }
-        button,a{
-            color: color('primary-text');
-            cursor: pointer;
-        }
-    }
-
-    &-body{
-        overflow: auto;
-        max-height: calc(100% - 50px );
-        @include scrollbar(10, 10);
-    }
-
-    &.open{
-        .notify-dropdown{
-            right: 0;
-        }
-    }
-}
-
-
 
 .animated {
-    -webkit-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 @-webkit-keyframes slideInRight {
-    0% {
-        -webkit-transform: translate3d(100%,0,0);
-        transform: translate3d(100%,0,0);
-        visibility: visible
-    }
+  0% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
 
-    to {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0)
-    }
+  to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
 
 @keyframes slideInRight {
-    0% {
-        -webkit-transform: translate3d(100%,0,0);
-        transform: translate3d(100%,0,0);
-        visibility: visible
-    }
+  0% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
 
-    to {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0)
-    }
+  to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
 
 .slideInRight {
-    -webkit-animation-name: slideInRight;
-    animation-name: slideInRight
+  -webkit-animation-name: slideInRight;
+  animation-name: slideInRight;
 }
 
-
 @-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 .fadeIn {
-    -webkit-animation-name: fadeIn;
-    animation-name: fadeIn
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 
-
-
 @-webkit-keyframes slideOutRight {
-    0% {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0)
-    }
+  0% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 
-    to {
-        visibility: hidden;
-        -webkit-transform: translate3d(100%,0,0);
-        transform: translate3d(100%,0,0)
-    }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
 }
 
 @keyframes slideOutRight {
-    0% {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0)
-    }
+  0% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 
-    to {
-        visibility: hidden;
-        -webkit-transform: translate3d(100%,0,0);
-        transform: translate3d(100%,0,0)
-    }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
 }
 
 .slideOutRight {
-    -webkit-animation-name: slideOutRight;
-    animation-name: slideOutRight
+  -webkit-animation-name: slideOutRight;
+  animation-name: slideOutRight;
 }

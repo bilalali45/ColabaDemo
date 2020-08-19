@@ -1,35 +1,35 @@
-import React from 'react';
-import { dropdownConfig } from './HomePage';
-import { SVGToggle } from '../SVGIcons';
-import { types } from 'util';
+import React, {FunctionComponent} from 'react';
+import {SVGToggle} from '../SVGIcons';
 
-interface  propsData{
-  handleClear: Function,
-  clearAllDisplay: boolean
+interface HeaderProps {
+  handleClear: () => void;
+  clearAllDisplay: boolean;
 }
 
-export const Header = ({handleClear,clearAllDisplay}:propsData) => {
-
+export const Header: FunctionComponent<HeaderProps> = ({
+  handleClear,
+  clearAllDisplay
+}) => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      {clearAllDisplay &&
-        <button className="notify-btn-clear" onClick={(e) => handleClear(e)}>Clear all <SVGToggle/></button>
-      }      
+      {clearAllDisplay && (
+        <button className="notify-btn-clear" onClick={handleClear}>
+          Clear all <SVGToggle />
+        </button>
+      )}
     </div>
   );
 };
 
-export const BellIcon = ({onClick}: {onClick: () => void}) => {
-
-  const styling = {
-    height : dropdownConfig().height + 'px',
-    width : dropdownConfig().width + 'px'
-  }
-
+export const BellIcon: FunctionComponent<{onClick: () => void}> = ({
+  onClick
+}) => {
   return (
-    <div className="notify-tigger-area" style={styling}>
-      <button onClick={onClick} className="btn-notify"><i className="zmdi zmdi-notifications"></i></button>
-    </div>    
+    <div className="notify-tigger-area">
+      <button onClick={onClick} className="btn-notify">
+        <i className="zmdi zmdi-notifications"></i>
+      </button>
+    </div>
   );
 };

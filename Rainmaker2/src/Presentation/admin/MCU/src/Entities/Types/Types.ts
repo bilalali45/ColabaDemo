@@ -27,7 +27,7 @@ export interface FileType {
   clientName: string;
   mcuName: string;
   fileUploadedOn: string;
-  isRead: boolean
+  isRead: boolean;
 }
 
 export interface DocumentFileType {

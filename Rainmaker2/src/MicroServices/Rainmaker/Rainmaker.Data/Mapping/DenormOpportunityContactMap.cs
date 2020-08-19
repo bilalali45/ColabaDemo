@@ -49,7 +49,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.EmpPreferred).HasColumnName(@"EmpPreferred").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(1000);
 
             // Foreign keys
-            builder.HasOne(a => a.Opportunity).WithMany().OnDelete(DeleteBehavior.SetNull); // FK_DenormOpportunityContact_Opportunity
+            builder.HasOne(a => a.Opportunity).WithOne(b => b.DenormOpportunityContact).HasForeignKey<DenormOpportunityContact>(c => c.Id).OnDelete(DeleteBehavior.SetNull); // FK_DenormOpportunityContact_Opportunity
             InitializePartial();
         }
         partial void InitializePartial();

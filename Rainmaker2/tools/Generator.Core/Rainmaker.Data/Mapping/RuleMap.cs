@@ -138,13 +138,13 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.LoanIndexTypes).HasColumnName(@"LoanIndexTypes").HasColumnType("nvarchar(max)").IsRequired(false);
             builder.Property(x => x.QuestionsBoolYes).HasColumnName(@"QuestionsBoolYes").HasColumnType("nvarchar(max)").IsRequired(false);
             builder.Property(x => x.QuestionsBoolNo).HasColumnName(@"QuestionsBoolNo").HasColumnType("nvarchar(max)").IsRequired(false);
-            builder.Property(x => x.LeadGroups).HasColumnName(@"LeadGroups").HasColumnType("nvarchar(max)").IsRequired(false);
             builder.Property(x => x.IsPickedHighestBenchmarkRate).HasColumnName(@"IsPickedHighestBenchmarkRate").HasColumnType("bit").IsRequired(false);
             builder.Property(x => x.IsEmployeeLoggedIn).HasColumnName(@"IsEmployeeLoggedIn").HasColumnType("bit").IsRequired(false);
             builder.Property(x => x.IsDesireRateSelected).HasColumnName(@"IsDesireRateSelected").HasColumnType("bit").IsRequired(false);
             builder.Property(x => x.OpportunityCreatedDateUtcFrom).HasColumnName(@"OpportunityCreatedDateUtcFrom").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.OpportunityCreatedDateUtcTo).HasColumnName(@"OpportunityCreatedDateUtcTo").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.ClosingDateOffset).HasColumnName(@"ClosingDateOffset").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LeadGroups).HasColumnName(@"LeadGroups").HasColumnType("nvarchar(max)").IsRequired(false);
             InitializePartial();
         }
         partial void InitializePartial();
