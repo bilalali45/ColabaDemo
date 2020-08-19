@@ -87,10 +87,10 @@ var Http = /** @class */ (function () {
             });
         });
     };
-    Http.prototype["delete"] = function (url) {
+    Http.prototype["delete"] = function (url, data) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.DELETE, url)];
+                return [2 /*return*/, this.createRequest(this.methods.DELETE, url, data)];
             });
         });
     };

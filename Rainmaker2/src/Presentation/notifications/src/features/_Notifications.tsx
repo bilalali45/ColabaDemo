@@ -24,7 +24,7 @@ export const Notification: FunctionComponent<NotificationType> = ({
   }: any = payload;
 
   return (
-    <li
+    <div
       className={`notification-list ${status === 'Unread' ? 'unSeenList' : ''}`}
     >
       <div>
@@ -58,6 +58,6 @@ export const Notification: FunctionComponent<NotificationType> = ({
         </span>
         <button className="btn-undo">Undo</button>
       </div>
-    </li>
+    </div>
   );
 };

@@ -85,6 +85,10 @@ namespace RainMaker.Entity.Models
         // Reverse navigation
 
         /// <summary>
+        /// Parent (One-to-One) LoanApplication pointed by [LoanDocumentPipeLine].[LoanApplicationId] (FK_LoanDocumentPipeLine_LoanApplication)
+        /// </summary>
+        public virtual LoanDocumentPipeLine LoanDocumentPipeLine { get; set; } // LoanDocumentPipeLine.FK_LoanDocumentPipeLine_LoanApplication
+        /// <summary>
         /// Child Borrowers where [Borrower].[LoanApplicationId] point to this entity (FK_Borrower_LoanApplication)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Borrower> Borrowers { get; set; } // Borrower.FK_Borrower_LoanApplication
