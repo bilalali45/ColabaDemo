@@ -141,9 +141,15 @@ namespace Notification.Service
             foreach (var id in ids)
             {
                 var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id)
-                    .Include(x => x.NotificationRecepient).FirstOrDefaultAsync();
+                    .Include(x => x.NotificationRecepient).ThenInclude(x=>x.NotificationRecepientStatusLogs).FirstOrDefaultAsync();
 
-                result.NotificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unread;
+                result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
+                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count() >= 1 ? 
+                    result.NotificationRecepient.NotificationRecepientStatusLogs
+                        .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
+                                    && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x => x.UpdatedOn)
+                        .First().StatusId : (byte)Notification.Common.StatusListEnum.Unread;
 
                 result.NotificationRecepient.TrackingState = TrackingState.Modified;
 
@@ -183,7 +189,13 @@ namespace Notification.Service
                 .Include(x => x.NotificationRecepient)
                 .ThenInclude(x=>x.NotificationRecepientStatusLogs)
                 .FirstOrDefaultAsync();
-            result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs.Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted).Count()>=1 ? result.NotificationRecepient.NotificationRecepientStatusLogs.Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted).OrderByDescending(x=>x.UpdatedOn).First().StatusId : (byte)Notification.Common.StatusListEnum.Read;
+            result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
+                .Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
+                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count()>=1 ? 
+                result.NotificationRecepient.NotificationRecepientStatusLogs
+                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x=>x.UpdatedOn)
+                    .First().StatusId : (byte)Notification.Common.StatusListEnum.Unread;
 
             result.NotificationRecepient.TrackingState = TrackingState.Modified;
 
