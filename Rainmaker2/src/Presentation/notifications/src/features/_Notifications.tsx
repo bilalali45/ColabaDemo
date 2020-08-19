@@ -1,32 +1,49 @@
-import React from 'react';
-import uploadedFile from './../assets/icons/uploaded-file.svg';
-import calendar from './../assets/icons/calendar.svg';
-import close from './../assets/icons/close.svg';
-import { SVGDocument, SVGClose, SVGCalender } from '../SVGIcons';
+import React, {FunctionComponent} from 'react';
+import {Link} from 'react-router-dom';
 
+import {NotificationType} from '../lib/type';
+import {formatDateTime} from '../lib/utils';
+import {SVGDocument, SVGClose, SVGCalender} from '../SVGIcons';
 
-type NotificationType = {
-  unSeen?: boolean,
-}
-export const Notification = ({ unSeen }: NotificationType) => {
+export const Notification: FunctionComponent<NotificationType> = ({
+  status,
+  payload
+}) => {
+  const {
+    data: {
+      address,
+      notificationType,
+      name,
+      city,
+      state,
+      zipCode,
+      unitNumber,
+      dateTime
+    },
+    meta: {link}
+  } = payload;
+
   return (
-    <li className={`notification-list ${unSeen ? 'unSeenList' : ''}`} >
-
-      <div className="notification-list-item">
-        <div className="n-wrap">
-          <div className="n-icon"><SVGDocument /></div>
-          <div className="n-content">
-            <div className="n-cat" title={"Document Submission"}>Document Submission</div>
-            <h4 className="n-title">
-              Richard Glenn
-          </h4>
-            <p className="n-address">
-              727 Ashleigh LN # 222 <br />
-            Dallas, TX 76099
-         </p>
-            <div className="n-date">
-              <SVGCalender /> Jul. 25 2020 05:30 PM
+    <li
+      className={`notification-list ${status === 'Unread' ? 'unSeenList' : ''}`}
+    >
+      <div className="n-wrap">
+        <div className="n-icon">
+          <Link to={link} target="_blank">
+            <SVGDocument />
+          </Link>
+        </div>
+        <div className="n-content">
+          <div className="n-cat" title={'Document Submission'}>
+            {notificationType}
           </div>
+          <h4 className="n-title">{name}</h4>
+          <p className="n-address">
+            {address} # {unitNumber} <br />
+            {city}, {state} {zipCode}
+          </p>
+          <div className="n-date">
+            <SVGCalender /> {formatDateTime(dateTime)}
           </div>
         </div>
         <div className="n-close">
@@ -35,10 +52,11 @@ export const Notification = ({ unSeen }: NotificationType) => {
       </div>
 
       <div className="notification-list-item-remove">
-        <span className="n-alert-text">This notification has been removed.</span>
+        <span className="n-alert-text">
+          This notification has been removed.
+        </span>
         <button className="btn-undo">Undo</button>
       </div>
-
     </li>
   );
 };
