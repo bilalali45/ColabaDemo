@@ -204,7 +204,7 @@ namespace LosIntegration.API.Controllers
         private HttpResponseMessage UpdateByteStatusInDocumentManagement(SendToExternalOriginatorRequest request)
         {
             var url =
-                $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/document/UpdateByteProStatus";
+                $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/UpdateByteProStatus";
             _logger.LogInformation(message: $"request.ToJsonString() = {request.ToJsonString()}");
             var updateByteProStatusResponse = _httpClient.PostAsync(requestUri: url,
                                                                     content: new StringContent(content: request
@@ -452,7 +452,7 @@ namespace LosIntegration.API.Controllers
 
             var documentResponse = _httpClient
                                    .GetAsync(requestUri:
-                                             $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/view?id={documentLoanApplicationId}&requestId={requestId}&docId={documentId}&fileId={fileId}&tenantId={tenantId}")
+                                             $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/view?id={documentLoanApplicationId}&requestId={requestId}&docId={documentId}&fileId={fileId}&tenantId={tenantId}")
                                    .Result;
             if (!documentResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to load Document from Document Management");
