@@ -1,252 +1,210 @@
 {
-	"info": {
-		"_postman_id": "fb7c021a-a51c-4eff-a3c5-a67d4f30022e",
-		"name": "Notification",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Add",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n      \"notificationType\":1,\r\n      \"entityId\":5047,\r\n      \"customTextJson\":\"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/Add",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"Add"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetPaged",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/GetPaged?pageSize=1&lastId=-1&mediumId=1",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"GetPaged"
-					],
-					"query": [
-						{
-							"key": "pageSize",
-							"value": "1"
-						},
-						{
-							"key": "lastId",
-							"value": "-1"
-						},
-						{
-							"key": "mediumId",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Read",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n      \"id\":10\r\n\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/Read",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"Read"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n      \"id\":10\r\n\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/Delete",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"Delete"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Undelete",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n      \"id\":10\r\n\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/unDelete",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"unDelete"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteAll",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5701/api/Notification/notification/DeleteAll",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5701",
-					"path": [
-						"api",
-						"Notification",
-						"notification",
-						"DeleteAll"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"protocolProfileBehavior": {}
+  "info": {
+    "_postman_id": "fb7c021a-a51c-4eff-a3c5-a67d4f30022e",
+    "name": "Notification",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n      \"notificationType\":1,\r\n      \"entityId\":5047,\r\n      \"customTextJson\":\"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/Add",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "Add"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetPaged",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/GetPaged?pageSize=1&lastId=-1&mediumId=1",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "GetPaged"],
+          "query": [
+            {
+              "key": "pageSize",
+              "value": "1"
+            },
+            {
+              "key": "lastId",
+              "value": "-1"
+            },
+            {
+              "key": "mediumId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Read",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n      \"id\":10\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/Read",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "Read"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n      \"id\":10\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/Delete",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "Delete"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Undelete",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n      \"id\":10\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/unDelete",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "unDelete"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteAll",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5701/api/Notification/notification/DeleteAll",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5701",
+          "path": ["api", "Notification", "notification", "DeleteAll"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
 }

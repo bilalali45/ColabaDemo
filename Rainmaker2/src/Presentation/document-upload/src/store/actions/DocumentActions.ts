@@ -13,11 +13,20 @@ const http = new Http();
 export class DocumentActions {
   static async getPendingDocuments(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<DocumentRequest[]> = await http.get<DocumentRequest[]>(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
+      let res: AxiosResponse<DocumentRequest[]> = await http.get<
+        DocumentRequest[]
+      >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
       console.log(res);
       let d = res.data.map((d: DocumentRequest, i: number) => {
-        debugger
-        let { id, requestId, docId, docName, docMessage, files, isRejected } = d;
+        let {
+          id,
+          requestId,
+          docId,
+          docName,
+          docMessage,
+          files,
+          isRejected,
+        } = d;
         let doc = new DocumentRequest(
           id,
           requestId,
@@ -27,7 +36,7 @@ export class DocumentActions {
           files,
           isRejected
         );
-        console.log('------d-----',d)
+        console.log("------d-----", d);
         // doc.files = null;
         if (doc.files === null || doc.files === undefined) {
           doc.files = [];

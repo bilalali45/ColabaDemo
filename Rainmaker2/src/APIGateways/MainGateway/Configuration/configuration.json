@@ -11,7 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/{catchAll}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     },
     //notification api config
     {
@@ -24,7 +24,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/notification/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -44,7 +44,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Identity/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -65,7 +65,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/DocumentManagement/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -90,7 +90,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/RainMaker/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -104,7 +104,6 @@
       }
     },
 
-
     //LosIntegration api config
     {
       "DownstreamPathTemplate": "/api/LosIntegration/{everything}",
@@ -116,7 +115,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/LosIntegration/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       //"AuthenticationOptions": {
       //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
@@ -141,7 +140,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ByteWebConnector/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
       //"AuthenticationOptions": {
       //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []

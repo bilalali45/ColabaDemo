@@ -17,7 +17,7 @@ export const DocumentUpload = () => {
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
- 
+
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc?.docMessage
     ? currentDoc.docMessage
@@ -75,18 +75,16 @@ export const DocumentUpload = () => {
       >
         {currentDoc && (
           <div className="Doc-head-wrap">
-            <h2 title={docTitle}><span className="text-ellipsis">
-              {docTitle}</span>
+            <h2 title={docTitle}>
+              <span className="text-ellipsis">{docTitle}</span>
               {currentDoc?.isRejected && (
-                <span className="Doc-head-wrap--alert">
-                  CHANGES REQUESTED
-                </span>
+                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
               )}
             </h2>
             <div className="doc-note">
               <p>
                 <i className="fas fa-info-circle"></i>
-                {docMessage?.replace(/<br\s*[\/]?>/gi, '\n')}
+                {docMessage?.replace(/<br\s*[\/]?>/gi, "\n")}
               </p>
             </div>
           </div>
