@@ -25,7 +25,9 @@ namespace DocumentManagement.API.Controllers
             ISettingService settingService,
             IKeyStoreService keyStoreService,
             ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService)
+            IRainmakerService rainmakerService,
+              IByteProService byteProService
+            )
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -34,6 +36,7 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.logger = logger;
             this.rainmakerService = rainmakerService;
+            this.byteProService = byteProService;
         }
 
         #endregion

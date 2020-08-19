@@ -50,6 +50,7 @@ namespace DocumentManagement.API
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
+            services.AddScoped<ILossIntegrationService, LossintegrationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IByteProService, ByteProService>();
 
@@ -80,16 +81,16 @@ namespace DocumentManagement.API
                     .AddJwtBearer(configureOptions: options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
-                                                            {
-                                                                //what to validate
-                                                                ValidateIssuer = true,
-                                                                ValidateAudience = true,
-                                                                ValidateIssuerSigningKey = true,
-                                                                //setup validate data
-                                                                ValidIssuer = "rainsoftfn",
-                                                                ValidAudience = "readers",
-                                                                IssuerSigningKey = symmetricSecurityKey
-                                                            };
+                        {
+                            //what to validate
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            //setup validate data
+                            ValidIssuer = "rainsoftfn",
+                            ValidAudience = "readers",
+                            IssuerSigningKey = symmetricSecurityKey
+                        };
                     });
         }
 

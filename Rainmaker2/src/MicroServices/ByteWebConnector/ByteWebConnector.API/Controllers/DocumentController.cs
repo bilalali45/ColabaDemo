@@ -89,6 +89,13 @@ namespace ByteWebConnector.API.Controllers
 
             if (loanApplication != null)
             {
+          
+                if (_configuration["MediaTypesToBeWrapedInPdf:0"].Contains(request.MediaType)||_configuration["MediaTypesToBeWrapedInPdf:1"].Contains(request.MediaType))
+                {
+                    List<byte[]> intput = new List<byte[]>();
+                    intput.Add(request.FileData);
+                    request.FileData = Utility.Helper.WrapImagesInPdf(intput).Single();
+                }
                 var documentUploadModel = new DocumentUploadRequest
                                           {
                                               FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),

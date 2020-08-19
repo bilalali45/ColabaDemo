@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles = "Customer")]
+   [Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class FileController : Controller
@@ -28,7 +28,8 @@ namespace DocumentManagement.API.Controllers
                               ISettingService settingService,
                               IKeyStoreService keyStoreService,
                               IConfiguration config,
-                              ILogger<FileController> logger,
+                              ILogger<FileController> logger, ILossIntegrationService lossintegration,
+                           
                               INotificationService notificationService)
         {
             this.fileService = fileService;
@@ -38,6 +39,7 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.config = config;
             this.logger = logger;
+            this.lossintegration = lossintegration;
             this.notificationService = notificationService;
         }
 
@@ -52,6 +54,7 @@ namespace DocumentManagement.API.Controllers
         private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
         private readonly ILogger<FileController> logger;
+        private readonly ILossIntegrationService lossintegration;
         private readonly INotificationService notificationService;
         #endregion
 
@@ -102,6 +105,7 @@ namespace DocumentManagement.API.Controllers
                     // upload to ftp
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 localFile: filePath);
+                   
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
                                                             id: id,
@@ -119,6 +123,19 @@ namespace DocumentManagement.API.Controllers
                         throw new Exception("unable to update file in mongo");
                 }
 
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.id = id;
+            fileViewModel.requestId = requestId;
+            fileViewModel.docId = docId;
+            var Files= await fileService.GetFileByDocId(fileViewModel,   userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
+
+            foreach (var file in Files)
+            {
+                //rainmaker document
+                var responseBody = await lossintegration.SendDocumentToBytePro(file.loanApplicationId, id, requestId, docId, file.id, Request.Headers["Authorization"].Select(x=>x.ToString()));
+            }
+
+
             // set order
             var model = new FileOrderModel
             {
@@ -132,7 +149,7 @@ namespace DocumentManagement.API.Controllers
 
             int loanApplicationId = await fileService.GetLoanApplicationId(id);
 
-            await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
+           // await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
 
             return Ok();
         }
