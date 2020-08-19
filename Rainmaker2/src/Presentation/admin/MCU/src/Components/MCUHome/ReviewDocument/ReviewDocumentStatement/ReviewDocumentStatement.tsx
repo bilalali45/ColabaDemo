@@ -307,6 +307,7 @@ export const ReviewDocumentStatement = ({
                   clientName={file.clientName}
                   currentFileIndex={currentFileIndex}
                   uploadedOn={file.fileUploadedOn}
+                  isRead={file.isRead}
                   username={username}
                   allowFileRenameMCU={allowFileRenameMCU}
                   getMcuNameUpdated={getMcuNameUpdated}

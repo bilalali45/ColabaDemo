@@ -3,27 +3,32 @@ import {
   HubConnectionBuilder,
   LogLevel,
   HttpTransportType
-} from '@aspnet/signalr';
-
+} from '@microsoft/signalr';
+import {UserActions} from '../../Store/actions/UserActions';
+import {LocalDB} from '../LocalDB';
 export class SignalRHub {
   static hubConnection: any;
   // Set the initial SignalR Hub Connection.
   static configureHubConnection = async () => {
     // Events Register
 
-    let userAgent = navigator.userAgent;
-    let accessToken;
+    let accessToken = LocalDB.getAuthToken();
     const hubUrl = 'http://172.16.100.117:8065/serverhub';
     SignalRHub.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
         //skipNegotiation: true,
         //transport: HttpTransportType.WebSockets,
-        //accessTokenFactory: accessToken
+        // accessTokenFactory: () => {
+        //   if (accessToken) {
+        //     return accessToken;
+        //   }
+        //   return '';
+        // }
       })
       .configureLogging(LogLevel.Trace)
       .build();
-    SignalRHub.eventsRegister();
     await SignalRHub.hubStart();
+    SignalRHub.eventsRegister();
   };
 
   static hubStart = async () => {
@@ -31,7 +36,8 @@ export class SignalRHub {
       await SignalRHub.hubConnection.start();
       console.log('Connection start successful!');
     } catch (err) {
-      alert(err);
+      console.log(err);
+      SignalRHub.signalRHubResume();
     }
   };
 
@@ -40,7 +46,18 @@ export class SignalRHub {
       SignalRHub.hubConnection.stop();
       console.log('Connection stop successful!');
     } catch (err) {
-      alert(err);
+      console.log(err);
+    }
+  };
+
+  static signalRHubResume = async () => {
+    try {
+      setTimeout(() => {
+        console.log('SignalR Hub Resume');
+        SignalRHub.hubStart();
+      }, 3000);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -54,6 +71,14 @@ export class SignalRHub {
           detail: {name: 'John'}
         })
       );
+    });
+
+    SignalRHub.hubConnection.onclose(() => {
+      console.log(`Signal R disconnected`);
+      const auth = LocalDB.getAuthToken();
+      if (auth) {
+        SignalRHub.signalRHubResume();
+      }
     });
   };
 }
