@@ -53,7 +53,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.MinimumInterval).HasColumnName(@"MinimumInterval").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
-            builder.HasOne(a => a.ActivityType).WithMany(b => b.Activities).HasForeignKey(c => c.ActivityTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Activity_ActivityType
+            builder.HasOne(a => a.ActivityType).WithMany(b => b.Activities).HasForeignKey(c => c.ActivityTypeId).OnDelete(DeleteBehavior.SetNull); // FK_ActivityLog_ActivityType
             builder.HasOne(a => a.BusinessUnit).WithMany(b => b.Activities).HasForeignKey(c => c.BusinessUnitId).OnDelete(DeleteBehavior.SetNull); // FK_Activity_BusinessUnit
             builder.HasOne(a => a.Template).WithMany(b => b.Activities).HasForeignKey(c => c.TemplateId).OnDelete(DeleteBehavior.SetNull); // FK_Activity_Template
             InitializePartial();

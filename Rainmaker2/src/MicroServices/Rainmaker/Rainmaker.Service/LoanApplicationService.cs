@@ -196,10 +196,10 @@ namespace Rainmaker.Service
                                                .Customer.UserId == userProfileId && x.Id == loanApplicationId &&
                                               x.BusinessUnit.Id == businessUnitId)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
-                                   .ThenInclude(navigationPropertyPath: x => x.Employee)
+                                   .ThenInclude(navigationPropertyPath: x => x.Owner)
                                    .ThenInclude(navigationPropertyPath: x => x.Contact)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
-                                   .ThenInclude(navigationPropertyPath: x => x.Employee)
+                                   .ThenInclude(navigationPropertyPath: x => x.Owner)
                                    .ThenInclude(navigationPropertyPath: x => x.EmployeeBusinessUnitEmails)
                                    .ThenInclude(navigationPropertyPath: x => x.EmailAccount)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
@@ -207,23 +207,23 @@ namespace Rainmaker.Service
                                    .ThenInclude(navigationPropertyPath: x => x.Customer)
                                    .Include(navigationPropertyPath: x => x.BusinessUnit)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
-                                   .ThenInclude(navigationPropertyPath: x => x.Employee)
+                                   .ThenInclude(navigationPropertyPath: x => x.Owner)
                                    .ThenInclude(navigationPropertyPath: x => x.EmployeePhoneBinders)
                                    .ThenInclude(navigationPropertyPath: x => x.CompanyPhoneInfo)
                                    .Select(selector: x =>
                                                new LoanOfficer
                                                {
-                                                   Email = x.Opportunity.Employee.EmployeeBusinessUnitEmails
+                                                   Email = x.Opportunity.Owner.EmployeeBusinessUnitEmails
                                                             .Where(y => y.BusinessUnitId == businessUnitId).FirstOrDefault()
                                                             .EmailAccount.Email,
-                                                   FirstName = x.Opportunity.Employee.Contact.FirstName,
-                                                   LastName = x.Opportunity.Employee.Contact.LastName,
-                                                   NMLS = x.Opportunity.Employee.NmlsNo,
-                                                   Phone = x.Opportunity.Employee.EmployeePhoneBinders
+                                                   FirstName = x.Opportunity.Owner.Contact.FirstName,
+                                                   LastName = x.Opportunity.Owner.Contact.LastName,
+                                                   NMLS = x.Opportunity.Owner.NmlsNo,
+                                                   Phone = x.Opportunity.Owner.EmployeePhoneBinders
                                                             .Where(y => y.TypeId == 3).FirstOrDefault().CompanyPhoneInfo.Phone,
-                                                   Photo = x.Opportunity.Employee.Photo,
+                                                   Photo = x.Opportunity.Owner.Photo,
                                                    WebUrl = x.BusinessUnit.WebUrl + "/lo/" +
-                                                            x.Opportunity.Employee.CmsName
+                                                            x.Opportunity.Owner.CmsName
                                                }
                                           ).FirstOrDefaultAsync();
         }

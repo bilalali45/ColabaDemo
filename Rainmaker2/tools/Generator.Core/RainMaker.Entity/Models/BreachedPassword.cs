@@ -17,17 +17,15 @@ namespace RainMaker.Entity.Models
     using System;
     using System.Collections.Generic;
 
-    // notification_object
+    // BreachedPassword
     
-    public partial class NotificationObject : URF.Core.EF.Trackable.Entity
+    public partial class BreachedPassword : URF.Core.EF.Trackable.Entity
     {
-        public int Id { get; set; } // Id (Primary key)
-        public int? NotificationTypeId { get; set; } // NotificationTypeId
-        public int? EntityId { get; set; } // EntityId
-        public System.DateTime? CreatedOn { get; set; } // CreatedOn
-        public bool? Active { get; set; } // Active
+        public long Id { get; set; } // Id (Primary key)
+        public string Password { get; set; } // Password (length: 200)
+        public System.DateTime CreatedDateUtc { get; set; } // CreatedDateUtc
 
-        public NotificationObject()
+        public BreachedPassword()
         {
             InitializePartial();
         }
