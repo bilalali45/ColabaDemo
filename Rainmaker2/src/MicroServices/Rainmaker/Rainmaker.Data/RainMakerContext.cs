@@ -190,6 +190,7 @@ namespace RainMaker.Data
         //public virtual DbSet<LoanContactRaceBinder> LoanContactRaceBinders { get; set; } // LoanContactRaceBinder
         //public virtual DbSet<LoanDocType> LoanDocTypes { get; set; } // LoanDocType
         //public virtual DbSet<LoanDocument> LoanDocuments { get; set; } // LoanDocument
+        //public virtual DbSet<LoanDocumentPipeLine> LoanDocumentPipeLines { get; set; } // LoanDocumentPipeLine
         //public virtual DbSet<LoanDocumentStatusList> LoanDocumentStatusLists { get; set; } // LoanDocumentStatusList
         //public virtual DbSet<LoanDocumentSubType> LoanDocumentSubTypes { get; set; } // LoanDocumentSubType
         //public virtual DbSet<LoanDocumentType> LoanDocumentTypes { get; set; } // LoanDocumentType
@@ -589,6 +590,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LoanContactRaceBinderMap());
             modelBuilder.ApplyConfiguration(new LoanDocTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentMap());
+            modelBuilder.ApplyConfiguration(new LoanDocumentPipeLineMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentStatusListMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentSubTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentTypeMap());
