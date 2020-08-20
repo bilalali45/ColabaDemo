@@ -128,7 +128,7 @@ export const ReviewDocumentStatement = ({
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
-  const [currentDocId, setCurrentDocId] = useState();
+  const [currentDocId, setCurrentDocId] = useState<string>('');
 
   const [currentFileName, setCurrentFileName] = useState('');
 
