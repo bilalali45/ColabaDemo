@@ -144,7 +144,10 @@ export const HomePage: FunctionComponent = () => {
   };
 
   const eventsRegister = () => {
-    console.log('signalR eventsRegister on Client', SignalRHub.hubConnection);
+    console.log(
+      'signalR eventsRegister on Client',
+      SignalRHub.hubConnection.connectionState
+    );
     SignalRHub.hubConnection.on('TestSignalR', (data: string) => {
       console.log(`TestSignalR`, data);
     });
