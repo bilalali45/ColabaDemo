@@ -117,7 +117,7 @@ namespace LosIntegration.API.Controllers
             #region GetDocument Attributes
 
             var getDocumentsCallResponse = Call.Get<List<DocumentManagementDocument>>(httpClient: _httpClient,
-                                                                                       endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId={request.LoanApplicationId}&tenantId=1&pending=false",
+                                                                                       endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/GetDocuments?loanApplicationId={request.LoanApplicationId}&tenantId=1&pending=false",
                                                                                        request: Request,
                                                                                        attachBearerTokenFromCurrentRequest: true);
 
@@ -133,7 +133,7 @@ namespace LosIntegration.API.Controllers
 
             //GetDocument Categories
             var getCategoriesResponse = Call.Get<List<DocumentCategory>>(httpClient: _httpClient,
-                                                                         endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/Template/GetCategoryDocument",
+                                                                         endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
                                                                          request: Request,
                                                                          attachBearerTokenFromCurrentRequest: true);
 

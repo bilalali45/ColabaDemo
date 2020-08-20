@@ -268,7 +268,7 @@ export const DocumentSnipet = ({
             </React.Fragment>
           ) : (
               <p title={renameMCUName.trim() || mcuName || clientName}>
-                {!isCurrent && !isRead && index !== 0 ? <strong>
+                {!isRead ? <strong>
                   {renameMCUName.trim() || mcuName || clientName}
                 </strong>
                   :
