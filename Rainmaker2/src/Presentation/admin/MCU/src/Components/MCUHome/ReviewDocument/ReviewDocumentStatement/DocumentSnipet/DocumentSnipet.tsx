@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Http} from 'rainsoft-js';
+import React, { useState, useEffect, useRef } from 'react';
+import { Http } from 'rainsoft-js';
 
-import {NeedListEndpoints} from '../../../../../Store/endpoints/NeedListEndpoints';
-import {SVGeditFile} from '../../../../../Shared/SVG';
-import {datetimeFormatRenameFile} from '../../../../../Utils/helpers/DateFormat';
-import {NeedList} from '../../../../../Entities/Models/NeedList';
+import { NeedListEndpoints } from '../../../../../Store/endpoints/NeedListEndpoints';
+import { SVGeditFile } from '../../../../../Shared/SVG';
+import { datetimeFormatRenameFile } from '../../../../../Utils/helpers/DateFormat';
+import { NeedList } from '../../../../../Entities/Models/NeedList';
 
 export const DocumentSnipet = ({
   index,
@@ -241,8 +241,8 @@ export const DocumentSnipet = ({
       onDoubleClick={(event) => onDoubleClick(event)}
       className={`document-snipet ${index === currentFileIndex && 'focus'} ${
         editingModeEnabled && 'edit'
-      }`}
-      style={{cursor: 'pointer'}}
+        }`}
+      style={{ cursor: 'pointer' }}
       id="moveNext"
       onClick={eventBubblingHandler}
     >
@@ -255,7 +255,7 @@ export const DocumentSnipet = ({
                 className={`${
                   (!filenameUnique || !!filenameEmpty || !validFilename) &&
                   'error'
-                }`}
+                  }`}
                 maxLength={250}
                 size={38}
                 type="text"
@@ -267,13 +267,15 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-            <p
-              className={isRead === false ? 'filename-p' : ''}
-              title={renameMCUName.trim() || mcuName || clientName}
-            >
-              {renameMCUName.trim() || mcuName || clientName}
-            </p>
-          )}
+              <p title={renameMCUName.trim() || mcuName || clientName}>
+                {!isCurrent && !isRead && index !== 0 ? <strong>
+                  {renameMCUName.trim() || mcuName || clientName}
+                </strong>
+                  :
+                  renameMCUName.trim() || mcuName || clientName
+                }
+              </p>
+            )}
         </div>
         <small className="document-snipet--detail">
           {`By ${username} on ${datetimeFormatRenameFile(uploadedOn)}`}
