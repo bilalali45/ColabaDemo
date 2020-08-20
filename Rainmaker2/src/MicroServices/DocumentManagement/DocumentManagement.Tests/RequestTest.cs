@@ -36,7 +36,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>())).ReturnsAsync(true);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(),It.IsAny<List<string>>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -118,7 +118,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>())).ReturnsAsync(false);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(),It.IsAny<List<string>>())).ReturnsAsync(false);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -263,7 +263,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -290,7 +290,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false,new List<string>());
 
             //Assert
             Assert.True(result);
@@ -366,7 +366,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -392,7 +392,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -481,7 +481,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -510,7 +510,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -600,7 +600,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -629,7 +629,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -702,7 +702,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -729,7 +729,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, true);
+            bool result = await service.Save(loanApplication, true, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -805,7 +805,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -832,7 +832,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false);
+            bool result = await service.Save(loanApplication, false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -1010,7 +1010,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
 
             //Act
             List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
@@ -1079,7 +1079,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -1113,7 +1113,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -1127,7 +1127,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>())).ReturnsAsync("5f30d944ccbf4475dcdfed33");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f30d944ccbf4475dcdfed33");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1171,7 +1171,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>())).ReturnsAsync("");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).ReturnsAsync("");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1214,7 +1214,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>())).ReturnsAsync("");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).ReturnsAsync("");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1292,7 +1292,7 @@ namespace DocumentManagement.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
-            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>())).Verifiable();
+            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();
             uploadFileModel.documentType = "Salary Type";
@@ -1338,7 +1338,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -1367,7 +1367,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            string result = await service.UploadFile(3842, "Danish Faiz", 1,3333, "Danish Faiz", uploadFileModel);
+            string result = await service.UploadFile(3842, "Danish Faiz", 1,3333, "Danish Faiz", uploadFileModel, new List<string>());
 
             //Assert
             Assert.NotNull(result);
@@ -1415,7 +1415,7 @@ namespace DocumentManagement.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
-            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>())).Verifiable();
+            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();
             uploadFileModel.documentType = "Salary Type";
@@ -1461,7 +1461,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object,null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -1490,7 +1490,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            string result = await service.UploadFile(3842, "Danish Faiz", 1, 3333, "Danish Faiz", uploadFileModel);
+            string result = await service.UploadFile(3842, "Danish Faiz", 1, 3333, "Danish Faiz", uploadFileModel,new List<string>());
 
             //Assert
             Assert.Null(result);
