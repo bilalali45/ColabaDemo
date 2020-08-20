@@ -158,6 +158,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation($"DocumentCategory={byteDocCategoryMapping?.ByteDocCategoryName}");
             _logger.LogInformation($"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
             _logger.LogInformation($"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
+            _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
 
             var sendDocumentRequest = new SendDocumentRequest
                                       {
@@ -168,7 +169,7 @@ namespace LosIntegration.API.Controllers
                                           DocumentName = Path.GetFileNameWithoutExtension(file.ClientName),
                                           DocumentStatus = byteDocStatusMapping?.ByteDocStatusName ?? "0",// mapping required
                                           DocumentType = byteDocTypeMapping?.ByteDoctypeName ?? "Other",// mapping required
-                MediaType = documentResponse.Content.Headers.ContentType.MediaType
+                                          MediaType = documentResponse.Content.Headers.ContentType.MediaType
             };
             DocumentResponse byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest);
             if (byteDocumentResponse == null)

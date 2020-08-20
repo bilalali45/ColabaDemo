@@ -107,6 +107,7 @@ namespace ByteWebConnector.API.Controllers
                     List<byte[]> intput = new List<byte[]>();
                     intput.Add(request.FileData);
                     request.FileData = Utility.Helper.WrapImagesInPdf(intput).Single();
+                    request.DocumentExension = "pdf";
                 }
                 _logger.LogInformation($"loanApplication.Id = {loanApplication.Id}");
                 var documentUploadModel = new DocumentUploadRequest
