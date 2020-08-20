@@ -385,35 +385,5 @@ namespace DocumentManagement.Service
             return fileViewDTO;
         }
 
-        public async Task<int> GetLoanApplicationId(string loanId)
-        {
-            IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
-
-            using var asyncCursorRequest = collectionRequest.Aggregate(
-                PipelineDefinition<Entity.Request, BsonDocument>.Create(
-                    @"{""$match"": {
-                    ""_id"": " + new ObjectId(loanId).ToJson() + @"
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""loanApplicationId"": 1
-                            }
-                        }"
-                ));
-
-            int loanApplicationId = -1;
-            if (await asyncCursorRequest.MoveNextAsync())
-            {
-                foreach (var current in asyncCursorRequest.Current)
-                {
-                    LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
-                    loanApplicationId = query.loanApplicationId;
-                }
-
-
-            }
-            return loanApplicationId;
-        }
-
     }
 }
