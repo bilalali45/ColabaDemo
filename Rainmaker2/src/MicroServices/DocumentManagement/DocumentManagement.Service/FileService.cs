@@ -15,11 +15,12 @@ namespace DocumentManagement.Service
     {
         private readonly IMongoService mongoService;
         private readonly IActivityLogService activityLogService;
-
-        public FileService(IMongoService mongoService, IActivityLogService activityLogService)
+        private readonly IRainmakerService rainmakerService;
+        public FileService(IMongoService mongoService, IActivityLogService activityLogService, IRainmakerService rainmakerService)
         {
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
+            this.rainmakerService = rainmakerService;
         }
         public async Task<bool> Rename(FileRenameModel model, int userProfileId, int tenantId)
         {
@@ -49,7 +50,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> Done(DoneModel model, int userProfileId, int tenantId)
+        public async Task<bool> Done(DoneModel model, int userProfileId, int tenantId, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -80,6 +81,8 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
             }
+
+            await rainmakerService.UpdateLoanInfo(null, model.id, authHeader);
 
             return result.ModifiedCount == 1;
         }
@@ -114,7 +117,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
+        public async Task<bool> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
         {
             bool isStarted = false;
 
@@ -190,23 +193,24 @@ namespace DocumentManagement.Service
                                                                     new BsonDocument()
                                                                     {
                                                                         { "id", BsonObjectId.Create(docId) }
-                                                                    },
-                                                                    new BsonDocument()
-                                                                    {
-                                                                        {
-                                                                            "$or",new BsonArray()
-                                                                            {
-                                                                                new BsonDocument()
-                                                                                {
-                                                                                    { "status", DocumentStatus.BorrowerTodo}
-                                                                                },
-                                                                                new BsonDocument()
-                                                                                {
-                                                                                    { "status", DocumentStatus.Started}
-                                                                                }
-                                                                            }
-                                                                        }
                                                                     }
+                                                                    //,
+                                                                    //new BsonDocument()
+                                                                    //{
+                                                                    //    {
+                                                                    //        "$or",new BsonArray()
+                                                                    //        {
+                                                                    //            new BsonDocument()
+                                                                    //            {
+                                                                    //                { "status", DocumentStatus.BorrowerTodo}
+                                                                    //            },
+                                                                    //            new BsonDocument()
+                                                                    //            {
+                                                                    //                { "status", DocumentStatus.Started}
+                                                                    //            }
+                                                                    //        }
+                                                                    //    }
+                                                                    //}
                                                                 }
                                                             }
                                                         }
@@ -255,6 +259,7 @@ namespace DocumentManagement.Service
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
             }
 
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
             return result.ModifiedCount == 1;
         }
 

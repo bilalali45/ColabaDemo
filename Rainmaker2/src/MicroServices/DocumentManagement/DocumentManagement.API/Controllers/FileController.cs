@@ -119,7 +119,8 @@ namespace DocumentManagement.API.Controllers
                                                             encryptionKey: key,
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
-                                                            userProfileId: userProfileId);
+                                                            userProfileId: userProfileId,
+                                                            authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
                     if(docQuery==false)
                         throw new Exception("unable to update file in mongo");
@@ -167,7 +168,9 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
-                                                  userProfileId: userProfileId,tenantId);
+                                                  userProfileId: userProfileId,
+                                                  tenantId:tenantId,
+                                                  authHeader:Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();
