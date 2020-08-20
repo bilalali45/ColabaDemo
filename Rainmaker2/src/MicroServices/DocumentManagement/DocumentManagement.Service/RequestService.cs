@@ -24,13 +24,15 @@ namespace DocumentManagement.Service
         private readonly IFtpClient ftpClient;
         private readonly IKeyStoreService keyStoreService;
         private readonly IFileEncryptionFactory fileEncryptionFactory;
+        private readonly IRainmakerService rainmakerService;
         public RequestService(IMongoService mongoService,
             IActivityLogService activityLogService,
             IConfiguration config,
             ISettingService settingService,
             IFtpClient ftpClient,
             IKeyStoreService keyStoreService,
-            IFileEncryptionFactory fileEncryptionFactory)
+            IFileEncryptionFactory fileEncryptionFactory,
+            IRainmakerService rainmakerService)
         {
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
@@ -39,8 +41,9 @@ namespace DocumentManagement.Service
             this.ftpClient = ftpClient;
             this.keyStoreService = keyStoreService;
             this.fileEncryptionFactory = fileEncryptionFactory;
+            this.rainmakerService = rainmakerService;
         }
-        public async Task<string> UploadFile(int userProfileId, string userName, int tenantId, int custUserId, string custUserName, UploadFileModel model)
+        public async Task<string> UploadFile(int userProfileId, string userName, int tenantId, int custUserId, string custUserName, UploadFileModel model, IEnumerable<string> authHeader)
         {
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
@@ -193,11 +196,12 @@ namespace DocumentManagement.Service
                         },
                     }
             );
+            await rainmakerService.UpdateLoanInfo(model.loanApplicationId,"", authHeader);
             if (result.ModifiedCount > 0)
                 return fileId.ToString();
             return null;
         }
-        public async Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft)
+        public async Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft, IEnumerable<string> authHeader)
         {
             // get document upload status
             IMongoCollection<Entity.StatusList> collection =
@@ -573,6 +577,10 @@ namespace DocumentManagement.Service
                         await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
                     }
                 }
+            }
+            if(!isDraft)
+            {
+                await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId, "", authHeader);
             }
             return true;
         }

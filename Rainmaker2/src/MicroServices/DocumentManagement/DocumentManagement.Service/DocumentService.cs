@@ -14,10 +14,12 @@ namespace DocumentManagement.Service
     {
         private readonly IMongoService mongoService;
         private readonly IActivityLogService activityLogService;
-        public DocumentService(IMongoService mongoService, IActivityLogService activityLogService)
+        private readonly IRainmakerService rainmakerService;
+        public DocumentService(IMongoService mongoService, IActivityLogService activityLogService, IRainmakerService rainmakerService)
         {
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
+            this.rainmakerService = rainmakerService;
         }
         public async Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId)
         {
@@ -323,7 +325,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> AcceptDocument(string id, string requestId, string docId, string userName)
+        public async Task<bool> AcceptDocument(string id, string requestId, string docId, string userName, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -357,9 +359,11 @@ namespace DocumentManagement.Service
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Completed));
             }
 
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
+
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message,int userId, string userName)
+        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message,int userId, string userName, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -391,6 +395,8 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RejectedBy, userName));
             }
+
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
 
             return result.ModifiedCount == 1;
         }
