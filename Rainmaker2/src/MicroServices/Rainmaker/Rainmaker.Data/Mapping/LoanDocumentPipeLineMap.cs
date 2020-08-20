@@ -28,11 +28,12 @@ namespace RainMaker.Data.Mapping
             builder.HasKey(x => x.LoanApplicationId);
 
             builder.Property(x => x.LoanApplicationId).HasColumnName(@"LoanApplicationId").HasColumnType("int").IsRequired().ValueGeneratedNever();
-            builder.Property(x => x.DocumentUploadDate).HasColumnName(@"DocumentUploadDate").HasColumnType("datetime").IsRequired(false);
-            builder.Property(x => x.DocumentRequestSentDate).HasColumnName(@"DocumentRequestSentDate").HasColumnType("datetime").IsRequired(false);
+            builder.Property(x => x.DocumentUploadDateUtc).HasColumnName(@"DocumentUploadDateUtc").HasColumnType("datetime").IsRequired(false);
+            builder.Property(x => x.DocumentRequestSentDateUtc).HasColumnName(@"DocumentRequestSentDateUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.DocumentRemaining).HasColumnName(@"DocumentRemaining").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.DocumentOutstanding).HasColumnName(@"DocumentOutstanding").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.DocumentCompleted).HasColumnName(@"DocumentCompleted").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.ModifiedOnUtc).HasColumnName(@"ModifiedOnUtc").HasColumnType("datetime").IsRequired(false);
 
             // Foreign keys
             builder.HasOne(a => a.LoanApplication).WithOne(b => b.LoanDocumentPipeLine).HasForeignKey<LoanDocumentPipeLine>(c => c.LoanApplicationId).OnDelete(DeleteBehavior.SetNull); // FK_LoanDocumentPipeLine_LoanApplication

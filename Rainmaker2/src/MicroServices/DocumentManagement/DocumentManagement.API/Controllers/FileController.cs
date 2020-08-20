@@ -29,8 +29,8 @@ namespace DocumentManagement.API.Controllers
                               IKeyStoreService keyStoreService,
                               IConfiguration config,
                               ILogger<FileController> logger, ILossIntegrationService lossintegration,
-                           
-                              INotificationService notificationService)
+                              INotificationService notificationService,
+                              IRainmakerService rainmakerService)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -41,6 +41,7 @@ namespace DocumentManagement.API.Controllers
             this.logger = logger;
             this.lossintegration = lossintegration;
             this.notificationService = notificationService;
+            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -56,6 +57,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ILogger<FileController> logger;
         private readonly ILossIntegrationService lossintegration;
         private readonly INotificationService notificationService;
+        private readonly IRainmakerService rainmakerService;
         #endregion
 
         #region Action Methods
@@ -117,7 +119,8 @@ namespace DocumentManagement.API.Controllers
                                                             encryptionKey: key,
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
-                                                            userProfileId: userProfileId);
+                                                            userProfileId: userProfileId,
+                                                            authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
                     if(docQuery==false)
                         throw new Exception("unable to update file in mongo");
@@ -147,7 +150,7 @@ namespace DocumentManagement.API.Controllers
             await fileService.Order(model: model,
                                     userProfileId: userProfileId,tenantId);
 
-            int loanApplicationId = await fileService.GetLoanApplicationId(id);
+            int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
 
            // await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
 
@@ -165,7 +168,9 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
-                                                  userProfileId: userProfileId,tenantId);
+                                                  userProfileId: userProfileId,
+                                                  tenantId:tenantId,
+                                                  authHeader:Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();

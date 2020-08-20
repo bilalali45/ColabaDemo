@@ -375,5 +375,33 @@ namespace Rainmaker.Service
                                                               BusinessUnitId = x.Opportunity.BusinessUnitId
                                                           }).FirstOrDefaultAsync();
         }
+
+        public async Task UpdateLoanInfo(UpdateLoanInfo updateLoanInfo)
+        {
+            LoanDocumentPipeLine loanDocumentPipeLine = await Uow.Repository<LoanDocumentPipeLine>().Query(x => x.LoanApplicationId == updateLoanInfo.loanApplicationId.Value).FirstOrDefaultAsync();
+
+            if(loanDocumentPipeLine == null)
+            {
+                loanDocumentPipeLine = new LoanDocumentPipeLine();
+                loanDocumentPipeLine.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
+                loanDocumentPipeLine.LoanApplicationId = updateLoanInfo.loanApplicationId.Value;
+                Uow.Repository<LoanDocumentPipeLine>().Insert(loanDocumentPipeLine);
+            }
+            else
+            {
+                loanDocumentPipeLine.TrackingState = TrackableEntities.Common.Core.TrackingState.Modified;
+                Uow.Repository<LoanDocumentPipeLine>().Update(loanDocumentPipeLine);
+            }
+
+            loanDocumentPipeLine.DocumentUploadDateUtc = updateLoanInfo.lastDocUploadDate;
+            loanDocumentPipeLine.DocumentRequestSentDateUtc = updateLoanInfo.lastDocRequestSentDate;
+            loanDocumentPipeLine.DocumentRemaining = updateLoanInfo.remainingDocuments;
+            loanDocumentPipeLine.DocumentOutstanding = updateLoanInfo.outstandingDocuments;
+            loanDocumentPipeLine.DocumentCompleted = updateLoanInfo.completedDocuments;
+            loanDocumentPipeLine.ModifiedOnUtc = DateTime.UtcNow;
+          
+            await Uow.SaveChangesAsync();
+            
+        }
     }
 }

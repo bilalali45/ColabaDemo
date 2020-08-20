@@ -287,6 +287,7 @@ namespace Notification.Tests
                 Id = 4,
                 Name = "Read"
             };
+            dataContext.Set<StatusListEnum>().Add(statusListEnum);
 
             dataContext.SaveChanges();
 
@@ -357,5 +358,69 @@ namespace Notification.Tests
             Assert.NotNull(res);
             Assert.Equal(5, res.id);
         }
+        //[Fact]
+        //public async Task TestAddService()
+        //{
+        //    //Arrange
+        //    DbContextOptions<NotificationContext> options;
+        //    var builder = new DbContextOptionsBuilder<NotificationContext>();
+        //    builder.UseInMemoryDatabase("Notification");
+        //    options = builder.Options;
+        //    using NotificationContext dataContext = new NotificationContext(options);
+
+        //    dataContext.Database.EnsureCreated();
+
+        //    TenantSetting tenantSetting = new TenantSetting()
+        //    {
+        //        TenantId = 1,
+        //        NotificationTypeId = 1
+
+        //    };
+        //    dataContext.Set<TenantSetting>().Add(tenantSetting);
+
+        //    //NotificationRecepientMedium app = new NotificationRecepientMedium()
+        //    //{
+        //    //    Id = 6,
+        //    //    SentTextJson = @"{   
+        //    //                    'name':'Talha',  
+        //    //                    'addess':'Street 99'  
+        //    //                    }",
+        //    //    DeliveryModeId = 1,
+        //    //    NotificationRecepientId = 6,
+        //    //    NotificationMediumid = 1
+        //    //};
+        //    //dataContext.Set<NotificationRecepientMedium>().Add(app);
+
+        //    //NotificationRecepient notificationRecepient = new NotificationRecepient()
+        //    //{
+        //    //    Id = 6,
+        //    //    StatusId = 4,
+        //    //    RecipientId = 1
+        //    //};
+        //    //dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+        //    //StatusListEnum statusListEnum = new StatusListEnum()//    //{
+        //    //    Id = 4,
+        //    //    Name = "Read"
+        //    //};
+
+        //    dataContext.SaveChanges();
+
+        //    INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+        //    //Act
+        //    NotificationModel notificationModel = new NotificationModel();
+        //    notificationModel.NotificationType = 1;
+        //    notificationModel.EntityId = 1;
+        //    notificationModel.CustomTextJson = "";
+
+        //    List<string> authorization = new List<string>();
+        //    authorization.Add("Authorization");
+        //    long res = await notificationService.Add(notificationModel, 1, 1, authorization);
+
+        //    // Assert
+        //    Assert.NotNull(res);
+        //    //Assert.Equal(4, res);
+        //}
     }
 }

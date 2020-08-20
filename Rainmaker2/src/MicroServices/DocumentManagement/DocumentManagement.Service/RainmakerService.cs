@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace DocumentManagement.Service
 {
@@ -17,13 +18,11 @@ namespace DocumentManagement.Service
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly IMongoService mongoService;
-        private readonly IFileService fileService;
-        public RainmakerService(HttpClient _httpClient, IConfiguration _configuration, IMongoService mongoService,IFileService fileService)
+        public RainmakerService(HttpClient _httpClient, IConfiguration _configuration, IMongoService mongoService )
         {
             this._httpClient = _httpClient;
             this._configuration = _configuration;
             this.mongoService = mongoService;
-            this.fileService = fileService;
         }
 
         public async Task<string> PostLoanApplication(int loanApplicationId,bool isDraft,IEnumerable<string> authHeader )
@@ -155,7 +154,7 @@ namespace DocumentManagement.Service
         public async Task UpdateLoanInfo(int? loanApplicationId,string id, IEnumerable<string> authHeader)
         {
             if(loanApplicationId == null)
-                 loanApplicationId = await fileService.GetLoanApplicationId(id);
+                 loanApplicationId = await this.GetLoanApplicationId(id);
 
             IMongoCollection<Entity.Request> collectionLastDocUploadDate = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -164,14 +163,11 @@ namespace DocumentManagement.Service
                   ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }", @"{
-                            ""$unwind"": ""$requests"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests""
                         }", @"{
-                            ""$unwind"": ""$requests.documents"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests.documents""
                         }", @"{
-                            ""$unwind"": ""$requests.documents.files"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests.documents.files""
                         }", @"{
                             ""$sort"": {
                                  ""requests.documents.files.fileUploadedOn"": -1
@@ -186,7 +182,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            DateTime lastDocUploadDate;
+            DateTime? lastDocUploadDate = null;
             if (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
@@ -203,8 +199,7 @@ namespace DocumentManagement.Service
                   ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }", @"{
-                            ""$unwind"": ""$requests"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests""
                         }", @"{""$match"": {
                                 ""requests.status"": """ + RequestStatus.Active + @"""
                             }
@@ -222,7 +217,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            DateTime lastDocRequestSentDate;
+            DateTime? lastDocRequestSentDate = null; 
             if (await asyncCursorLastDocRequestSentDate.MoveNextAsync())
             {
                 foreach (var current in asyncCursorLastDocRequestSentDate.Current)
@@ -239,14 +234,12 @@ namespace DocumentManagement.Service
                   ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }", @"{
-                            ""$unwind"": ""$requests"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests""
                         }", @"{""$match"": {
                                 ""requests.status"": """ + RequestStatus.Active + @"""
                             }
                         }", @"{
-                            ""$unwind"": ""$requests.documents"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
                                 {""requests.documents.status"": """ + DocumentStatus.BorrowerTodo + @"""},
@@ -257,7 +250,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            int remainingDocuments = 0;
+            int? remainingDocuments = null;
             if (await asyncCursorRemainingDocuments.MoveNextAsync())
             {
                 foreach (var current in asyncCursorRemainingDocuments.Current)
@@ -274,25 +267,23 @@ namespace DocumentManagement.Service
                   ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }", @"{
-                            ""$unwind"": ""$requests"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests""
                         }", @"{""$match"": {
                                 ""requests.status"": """ + RequestStatus.Active + @"""
                             }
                         }", @"{
-                            ""$unwind"": ""$requests.documents"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
                                 {""requests.documents.status"": """ + DocumentStatus.Draft + @"""},
                                 {""requests.documents.status"": """ + DocumentStatus.PendingReview + @"""}
                             ]}
                         }", @"{
-                            ""$count"": ""RemainingDocuments""
+                            ""$count"": ""OutstandingDocuments""
                         }"
                 ));
 
-            int outstandingDocuments = 0;
+            int? outstandingDocuments = null;
             if (await asyncCursorOutstandingDocuments.MoveNextAsync())
             {
                 foreach (var current in asyncCursorOutstandingDocuments.Current)
@@ -309,24 +300,22 @@ namespace DocumentManagement.Service
                   ""loanApplicationId"": " + loanApplicationId + @"
                             }
                         }", @"{
-                            ""$unwind"": ""$requests"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests""
                         }", @"{""$match"": {
                                 ""requests.status"": """ + RequestStatus.Active + @"""
                             }
                         }", @"{
-                            ""$unwind"": ""$requests.documents"",
-                            ""preserveNullAndEmptyArrays"": false
+                            ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
                                 {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
                             ]}
                         }", @"{
-                            ""$count"": ""RemainingDocuments""
+                            ""$count"": ""CompletedDocuments""
                         }"
                 ));
 
-            int completedDocuments = 0;
+            int? completedDocuments = null;
             if (await asyncCursorCompletedDocuments.MoveNextAsync())
             {
                 foreach (var current in asyncCursorCompletedDocuments.Current)
@@ -335,6 +324,57 @@ namespace DocumentManagement.Service
                     completedDocuments = query.CompletedDocuments;
                 }
             }
+
+            var content = new
+            {
+                loanApplicationId,
+                lastDocUploadDate,
+                lastDocRequestSentDate,
+                remainingDocuments,
+                outstandingDocuments,
+                completedDocuments
+            };
+            var c = JsonConvert.SerializeObject(content);
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/LoanApplication/UpdateLoanInfo"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content: c,
+                    encoding: Encoding.UTF8,
+                    mediaType: "application/json")
+            };
+            request.Headers.Add("Authorization", authHeader);
+            var response = await _httpClient.SendAsync(request);
+            }
+
+        public async Task<int> GetLoanApplicationId(string loanId)
+        {
+            IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursorRequest = collectionRequest.Aggregate(
+                PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                    ""_id"": " + new ObjectId(loanId).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""loanApplicationId"": 1
+                            }
+                        }"
+                ));
+
+            int loanApplicationId = -1;
+            if (await asyncCursorRequest.MoveNextAsync())
+            {
+                foreach (var current in asyncCursorRequest.Current)
+                {
+                    LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
+                    loanApplicationId = query.loanApplicationId;
+                }
+
+
+            }
+            return loanApplicationId;
         }
     }
 }

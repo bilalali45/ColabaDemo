@@ -22,11 +22,12 @@ namespace RainMaker.Entity.Models
     public partial class LoanDocumentPipeLine : URF.Core.EF.Trackable.Entity
     {
         public int LoanApplicationId { get; set; } // LoanApplicationId (Primary key)
-        public System.DateTime? DocumentUploadDate { get; set; } // DocumentUploadDate
-        public System.DateTime? DocumentRequestSentDate { get; set; } // DocumentRequestSentDate
+        public System.DateTime? DocumentUploadDateUtc { get; set; } // DocumentUploadDateUtc
+        public System.DateTime? DocumentRequestSentDateUtc { get; set; } // DocumentRequestSentDateUtc
         public int? DocumentRemaining { get; set; } // DocumentRemaining
         public int? DocumentOutstanding { get; set; } // DocumentOutstanding
         public int? DocumentCompleted { get; set; } // DocumentCompleted
+        public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
 
         // Foreign keys
 

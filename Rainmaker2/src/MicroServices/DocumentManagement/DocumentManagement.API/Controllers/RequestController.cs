@@ -56,7 +56,7 @@ namespace DocumentManagement.API.Controllers
                 User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
                 int custUserId = user.userId;
                 string custUserName = user.userName;
-                var fileId = await requestService.UploadFile(userProfileId,userName,tenantId,custUserId,custUserName,model);
+                var fileId = await requestService.UploadFile(userProfileId,userName,tenantId,custUserId,custUserName,model, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!string.IsNullOrEmpty(fileId))
                     return Ok(new { fileId });
                 return BadRequest();
@@ -81,7 +81,7 @@ namespace DocumentManagement.API.Controllers
                 loanApplication.requests[0].userId = userProfileId;
                 loanApplication.requests[0].userName = userName;
 
-                var docQuery = await requestService.Save(loanApplication,isDraft);
+                var docQuery = await requestService.Save(loanApplication,isDraft, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!isDraft)
                     await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId,loanApplication.requests[0].message,(int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();

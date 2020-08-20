@@ -27,4 +27,14 @@ namespace Rainmaker.Model
     {
         public int loanApplicationId { get; set; }
     }
+
+    public class UpdateLoanInfo
+    {
+        public int? loanApplicationId { get; set; }
+        public DateTime? lastDocUploadDate { get; set; }
+        public DateTime? lastDocRequestSentDate { get; set; }
+        public int? remainingDocuments { get; set; }
+        public int? outstandingDocuments { get; set; }
+        public int? completedDocuments { get; set; }
+    }
 }

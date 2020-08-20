@@ -102,7 +102,11 @@ namespace LosIntegration.API.Controllers
                                                                     newValue: ""));
             #region GetFileDataFromDocumentManagement
 
-            byte[] fileData = GetFileDataFromDocumentManagement(request.DocumentLoanApplicationId, request.RequestId, request.DocumentId, request.FileId, tenantId);
+            var documentResponse = GetFileDataFromDocumentManagement(request.DocumentLoanApplicationId, request.RequestId, request.DocumentId, request.FileId, tenantId);
+
+            var fileData = await documentResponse.Content.ReadAsByteArrayAsync();
+
+
             if (fileData == null)
             {
                 return BadRequest("FileData is Null");
@@ -151,6 +155,9 @@ namespace LosIntegration.API.Controllers
             #endregion
 
             #region SendDocumentToExternalOriginator
+            _logger.LogInformation($"DocumentCategory={byteDocCategoryMapping?.ByteDocCategoryName}");
+            _logger.LogInformation($"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
+            _logger.LogInformation($"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
 
             var sendDocumentRequest = new SendDocumentRequest
                                       {
@@ -161,7 +168,8 @@ namespace LosIntegration.API.Controllers
                                           DocumentName = Path.GetFileNameWithoutExtension(file.ClientName),
                                           DocumentStatus = byteDocStatusMapping?.ByteDocStatusName ?? "0",// mapping required
                                           DocumentType = byteDocTypeMapping?.ByteDoctypeName ?? "Other",// mapping required
-                                      };
+                MediaType = documentResponse.Content.Headers.ContentType.MediaType
+            };
             DocumentResponse byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest);
             if (byteDocumentResponse == null)
             {
@@ -439,7 +447,7 @@ namespace LosIntegration.API.Controllers
         #endregion
 
         #region Private Methods
-        private byte[] GetFileDataFromDocumentManagement(string documentLoanApplicationId,
+        private HttpResponseMessage GetFileDataFromDocumentManagement(string documentLoanApplicationId,
                                                                       string requestId,
                                                                       string documentId,
                                                                       string fileId,
@@ -457,8 +465,8 @@ namespace LosIntegration.API.Controllers
             if (!documentResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to load Document from Document Management");
 
-            var fileData = documentResponse.Content.ReadAsByteArrayAsync().Result;
-            return fileData;
+            
+            return documentResponse;
         }
 
         private DocumentResponse SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)

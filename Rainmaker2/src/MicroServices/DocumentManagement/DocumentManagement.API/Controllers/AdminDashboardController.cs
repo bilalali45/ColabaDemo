@@ -41,7 +41,7 @@ namespace DocumentManagement.API.Controllers
         {
             logger.LogInformation(message: $"document {model.docId} is being deleted as borrower to do");
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            var docQuery = await adminDashboardService.Delete(model: model,tenantId);
+            var docQuery = await adminDashboardService.Delete(model: model,tenantId, Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();
