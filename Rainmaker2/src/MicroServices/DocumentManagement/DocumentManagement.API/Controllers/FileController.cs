@@ -28,7 +28,7 @@ namespace DocumentManagement.API.Controllers
                               ISettingService settingService,
                               IKeyStoreService keyStoreService,
                               IConfiguration config,
-                              ILogger<FileController> logger, ILossIntegrationService lossintegration,
+                              ILogger<FileController> logger, ILosIntegrationService losIntegration,
                               INotificationService notificationService,
                               IRainmakerService rainmakerService)
         {
@@ -39,7 +39,7 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.config = config;
             this.logger = logger;
-            this.lossintegration = lossintegration;
+            this.losIntegration = losIntegration;
             this.notificationService = notificationService;
             this.rainmakerService = rainmakerService;
         }
@@ -55,7 +55,7 @@ namespace DocumentManagement.API.Controllers
         private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
         private readonly ILogger<FileController> logger;
-        private readonly ILossIntegrationService lossintegration;
+        private readonly ILosIntegrationService losIntegration;
         private readonly INotificationService notificationService;
         private readonly IRainmakerService rainmakerService;
         #endregion
@@ -132,10 +132,9 @@ namespace DocumentManagement.API.Controllers
             fileViewModel.docId = docId;
             var Files= await fileService.GetFileByDocId(fileViewModel,   userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
 
-            foreach (var file in Files)
+            if (Files.Count > 0)
             {
-                //rainmaker document
-                var responseBody = await lossintegration.SendDocumentToBytePro(file.loanApplicationId, id, requestId, docId, file.id, Request.Headers["Authorization"].Select(x=>x.ToString()));
+                var responseBody = await losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString()));
             }
 
 
