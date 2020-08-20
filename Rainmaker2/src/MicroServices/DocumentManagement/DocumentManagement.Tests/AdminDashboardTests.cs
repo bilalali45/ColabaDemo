@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Xunit;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using System.Linq;
 
 namespace DocumentManagement.Tests
 {
@@ -59,10 +61,16 @@ namespace DocumentManagement.Tests
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
             AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(true);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(true);
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
@@ -85,10 +93,16 @@ namespace DocumentManagement.Tests
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
             AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
 
-            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>())).ReturnsAsync(false);
+            mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>(),It.IsAny<List<string>>())).ReturnsAsync(false);
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
             var controller = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
             );
@@ -204,7 +218,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
             List<AdminDashboardDTO> dto = await service.GetDocument(1, 1 ,true);
             //Assert
@@ -317,7 +331,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object);
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
             List<AdminDashboardDTO> dto = await service.GetDocument(1, 1, false);
             //Assert
@@ -346,8 +360,8 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object, Mock.Of<IRainmakerService>());
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1,new List<string>());
 
             //Assert
             Assert.True(result);
@@ -369,8 +383,8 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
-            bool result = await adminDashboardService.Delete(adminDeleteModel,1);
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object,Mock.Of<IRainmakerService>());
+            bool result = await adminDashboardService.Delete(adminDeleteModel,1, new List<string>());
             //Assert
             Assert.False(result);
         }
@@ -442,7 +456,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object);
+            var service = new AdminDashboardService(mock.Object,mockActivityLogService.Object,null);
             //Act
             var dto = await service.IsDocumentDraft(14, 3842);
             //Assert
