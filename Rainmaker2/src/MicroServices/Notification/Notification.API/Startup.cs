@@ -134,10 +134,10 @@ namespace Notification.API
                 endpoints.MapHub<ServerHub>("/serverhub");
             });
             IRedisService redisService = services.GetRequiredService<IRedisService>();
-            Task.Factory.StartNew(async ()=>
+            Task.Run(async ()=>
             {
                 await redisService.Run();
-            },TaskCreationOptions.LongRunning);
+            });
         }
     }
 }
