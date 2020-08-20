@@ -15,7 +15,7 @@ namespace Notification.Service
         {
             this.serviceProvider = serviceProvider;
         }
-        public void Run()
+        public async Task Run()
         {
             using (IServiceScope scope = serviceProvider.CreateScope())
             {
