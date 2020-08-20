@@ -507,7 +507,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>(), Mock.Of<ILossIntegrationService>(), mockNotificationService.Object, Mock.Of<IRainmakerService>());
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>(), Mock.Of<ILosIntegrationService>(), mockNotificationService.Object, Mock.Of<IRainmakerService>());
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
