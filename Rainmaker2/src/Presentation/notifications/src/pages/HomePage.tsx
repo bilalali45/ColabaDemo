@@ -6,17 +6,22 @@ import React, {
   useCallback
 } from 'react';
 import {SignalRHub} from 'rainsoft-js';
+import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 import {AlertForRemove, AlertForNoData} from '../features/NotificationAlerts';
 import {apiV1} from '../lib/api';
-import {NotificationType} from '../lib/type';
+import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
 
 export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
+  const notificationsVisibleRef = useRef(notificationsVisible);
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [unSeenNotificationsCount, setUnSeenNotificationsCount] = useState(0);
+  const notificationsRef = useRef(notifications);
+  const [receivedNewNotification, setReceivedNewNotification] = useState(false);
   /**
    * This is last Id of notification inside notifications array on every API hit.
    * This needs to be send with API Call to fetch previous notifications on scroll.
@@ -28,6 +33,7 @@ export const HomePage: FunctionComponent = () => {
   const [unClear, setClear] = useState(false);
   const [clearAllConfirm, setClearAllConfirm] = useState(false);
   const refContainerSidebar = useRef<HTMLDivElement>(null);
+  const [timers, setTimers] = useState<TimersType[]>();
 
   const openEffect = useCallback(() => {
     setNotifyClass(
@@ -36,29 +42,30 @@ export const HomePage: FunctionComponent = () => {
   }, [notificationsVisible]);
 
   useEffect(() => {
-    const closeSidebar = (event: any) => {
+    const handleClickOutside = (event: any) => {
       if (
-        !event.target?.className?.includes('btn-notify') &&
         refContainerSidebar.current &&
         !refContainerSidebar.current.contains(event.target)
       ) {
-        openEffect();
-        setNotificationsVisible(false);
+        setNotificationsVisible(() => false);
+        setReceivedNewNotification(() => false);
       }
     };
 
-    document.addEventListener('click', closeSidebar);
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
-      document.removeEventListener('click', closeSidebar);
+      document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [openEffect]);
+  }, []);
 
   const toggleNotificationSidebar = () => {
     if (notificationsVisible === false) {
       openEffect();
+
       setNotificationsVisible(!notificationsVisible);
     } else {
       openEffect();
+
       setTimeout(() => {
         setNotificationsVisible(!notificationsVisible);
       }, 50);
@@ -67,6 +74,10 @@ export const HomePage: FunctionComponent = () => {
 
   useEffect(() => {
     lastIdRef.current = lastId;
+  });
+
+  useEffect(() => {
+    notificationsRef.current = notifications;
   });
 
   const getFetchNotifications = useCallback(async (lastId: number) => {
@@ -84,12 +95,30 @@ export const HomePage: FunctionComponent = () => {
 
       if (response.length > 0) {
         setLastId(response[response.length - 1].id);
-        setNotifications((prevNotifications) =>
-          prevNotifications.concat(response)
-        );
+
+        setNotifications((prevNotifications) => {
+          /**
+           * We are reseting notifications list to 10 notifications on following two conditions
+           * 1. if we just logged in
+           * 2. if SignalR connection Reset
+           */
+          return lastId === -1
+            ? [...response]
+            : prevNotifications.concat(response);
+        });
       }
     } catch (error) {
       console.warn('error', error);
+    }
+  }, []);
+
+  const getUnseenNotificationsCount = useCallback(async () => {
+    try {
+      const {data} = await apiV1.get('/api/Notification/notification/GetCount');
+
+      setUnSeenNotificationsCount(data);
+    } catch (error) {
+      console.warn(error);
     }
   }, []);
 
@@ -98,14 +127,11 @@ export const HomePage: FunctionComponent = () => {
       await apiV1.put('/api/Notification/notification/DeleteAll');
 
       setNotifications([]);
+      setUnSeenNotificationsCount(0);
     } catch (error) {
       console.warn('error', error);
     }
   };
-
-  useEffect(() => {
-    getFetchNotifications(lastIdRef.current);
-  }, [getFetchNotifications]);
 
   const clearAll = () => {
     setClear(true);
@@ -114,6 +140,7 @@ export const HomePage: FunctionComponent = () => {
   const clearAllVerification = async (verify: boolean) => {
     if (verify === true) {
       await onClearNotifications();
+
       setClearAllConfirm(true);
       setClear(true);
     } else {
@@ -122,14 +149,33 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
-  const notifying = (notifications: NotificationType[], lastId: number) => {
+  useEffect(() => {
+    notificationsVisibleRef.current = notificationsVisible;
+
+    if (notificationsVisible) {
+      setUnSeenNotificationsCount(0);
+    }
+  }, [notificationsVisible]);
+
+  const renderNotifications = (
+    tiemrs: TimersType[],
+    removeNotification: (id: number) => void,
+    notifications: NotificationType[],
+    lastId: number,
+    setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>
+  ) => {
     if (notifications.length === 0) {
       return <AlertForNoData />;
     } else if (unClear === false && clearAllConfirm === false) {
       return (
         <Notifications
+          timers={timers || []}
+          removeNotification={removeNotification}
+          receivedNewNotification={receivedNewNotification}
+          notificationsVisible={notificationsVisible}
           notifications={notifications}
           getFetchNotifications={() => getFetchNotifications(lastId)}
+          setTimers={setTimers}
         />
       );
     } else {
@@ -143,45 +189,69 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
-  const eventsRegister = () => {
-    console.log('signalR eventsRegister on Client', SignalRHub.hubConnection);
-    SignalRHub.hubConnection.on('TestSignalR', (data: string) => {
-      console.log(`TestSignalR`, data);
-    });
-    SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
-      console.log(
-        'Notification comes from SignalR on Client',
-        JSON.parse(notification)
-      );
-    });
-
-    SignalRHub.hubConnection.onclose((e: any) => {
-      console.log(`SignalR disconnected on Client`, e);
-      const auth = LocalDB.getAuthToken();
-      if (auth) {
-        SignalRHub.signalRHubResume();
-      }
-    });
-  };
-
   useEffect(() => {
-    const accessToken: string = LocalDB.getAuthToken() || '';
+    const signalREventRegister = async () => {
+      if (SignalRHub.hubConnection.connectionState === 'Connected') {
+        Promise.all([getFetchNotifications(-1), getUnseenNotificationsCount()]);
+      }
+
+      SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
+        const cloned = _.cloneDeep(notificationsRef.current);
+
+        cloned.unshift(JSON.parse(notification) as NotificationType);
+
+        setNotifications(() => cloned);
+        setReceivedNewNotification(() => true);
+
+        notificationsVisibleRef.current === false &&
+          setUnSeenNotificationsCount((count) => count + 1);
+      });
+
+      SignalRHub.hubConnection.onclose(() => {
+        const auth = LocalDB.getAuthToken();
+
+        if (auth) {
+          SignalRHub.signalRHubResume(signalREventRegister);
+        }
+      });
+    };
+
+    const accessToken = LocalDB.getAuthToken() || '';
+
     SignalRHub.configureHubConnection(
       window.envConfig.API_BASE_URL + '/serverhub',
       accessToken,
-      eventsRegister
+      signalREventRegister
     );
-  }, []);
+  }, [getFetchNotifications, getUnseenNotificationsCount]);
+
+  const removeNotification = (id: number) => {
+    if (!!timers && timers.length > 0) {
+      if (timers.some((timer) => timer.id === id)) {
+        return;
+      }
+
+      const timer = setTimeout(() => {
+        setNotifications((prev) => prev.filter((item) => item.id !== id));
+      }, 5000);
+
+      const cloned = _.cloneDeep(timers);
+      cloned!.push({id, timer});
+      setTimers(cloned);
+    } else {
+      const timer = setTimeout(() => {
+        setNotifications((prev) => prev.filter((item) => item.id !== id));
+      }, 5000);
+
+      setTimers(() => [{id, timer}]);
+    }
+  };
 
   return (
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
         onClick={toggleNotificationSidebar}
-        notificationsCounter={
-          notifications.filter(
-            (notification) => notification.status === 'Unread'
-          ).length
-        }
+        notificationsCounter={unSeenNotificationsCount}
       />
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
@@ -189,7 +259,13 @@ export const HomePage: FunctionComponent = () => {
             clearAllDisplay={notifications.length > 0}
             handleClear={clearAll}
           />
-          {notifying(notifications, lastId)}
+          {renderNotifications(
+            timers || [],
+            removeNotification,
+            notifications,
+            lastId,
+            setTimers
+          )}
         </div>
       )}
     </div>

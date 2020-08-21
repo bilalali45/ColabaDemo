@@ -1,23 +1,59 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useState, useEffect} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import _ from 'lodash';
 
 import {Notification} from './_Notifications';
-import {NotificationType} from '../lib/type';
+import {NotificationType, TimersType} from '../lib/type';
 
 interface NotificationsProps {
+  timers: TimersType[];
   notifications: NotificationType[];
   getFetchNotifications: () => void;
+  notificationsVisible: boolean;
+  receivedNewNotification: boolean;
+  removeNotification: (id: number) => void;
+  setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = ({
+  timers,
   notifications,
-  getFetchNotifications
+  getFetchNotifications,
+  notificationsVisible,
+  receivedNewNotification,
+  removeNotification,
+  setTimers
 }) => {
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (receivedNewNotification === true && notificationsVisible === true) {
+      setShowToast(true);
+    }
+  }, [receivedNewNotification, notificationsVisible]);
+
+  const clearTimeOut = (id: number, timers: TimersType[]) => {
+    console.log('hello', id);
+    const timer = timers.find((timer) => timer.id === id);
+
+    if (timer) {
+      console.log('hello clearing', id);
+      clearTimeout(timer.timer);
+      const cloned = _.cloneDeep(timers);
+      const filtred = cloned.filter((item) => item.id !== id);
+      setTimers(filtred);
+    }
+  };
+
   return (
     <div className="notify-body" id="notification-ul">
       <div className="notification-ul">
+        {showToast === true && (
+          <div>
+            <h1>See New Notifications</h1>
+          </div>
+        )}
         <InfiniteScroll
-          // height={'calc(100vh - 100px)'}
           dataLength={notifications.length}
           hasMore={true}
           loader={''}
@@ -27,7 +63,16 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
           style={{overflow: 'initial'}}
         >
           {notifications.map((notification, index) => {
-            return <Notification key={index} {...notification} />;
+            return (
+              <Notification
+                removeNotification={() => removeNotification(notification.id)}
+                clearTimeOut={clearTimeOut}
+                timers={timers}
+                notificationId={notification.id}
+                key={index}
+                notification={notification}
+              />
+            );
           })}
         </InfiniteScroll>
       </div>

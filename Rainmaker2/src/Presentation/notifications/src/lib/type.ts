@@ -23,3 +23,8 @@ export interface NotificationType {
   payload: Payload;
   status: string;
 }
+
+export interface TimersType {
+  id: number;
+  timer: NodeJS.Timeout;
+}
