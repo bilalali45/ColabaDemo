@@ -16,7 +16,7 @@ export const App: FunctionComponent = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('MCU App Version', '0.0.1');
+    console.log('Notification App Version', '0.0.1');
     const authenticate = async () => {
       console.log('Before Authorize');
       const isAuth = await UserActions.authorize();
