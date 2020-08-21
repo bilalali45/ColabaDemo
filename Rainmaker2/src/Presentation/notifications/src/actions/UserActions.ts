@@ -88,19 +88,19 @@ export class UserActions {
         }
       }
 
-      let Rainmaker2Token = cookies.get('Rainmaker2Token');
-      let Rainmaker2RefreshToken = cookies.get('Rainmaker2RefreshToken');
+      let notificationToken = cookies.get('NotificationToken');
+      let notificationRefreshToken = cookies.get('NotificationRefreshToken');
       console.log(
-        'Cache token values in authorize Rainmaker2Token',
-        Rainmaker2Token,
-        'Rainmaker2RefreshToken',
-        Rainmaker2RefreshToken
+        'Cache token values in authorize NotificationToken',
+        notificationToken,
+        'notificationRefreshToken',
+        notificationRefreshToken
       );
-      if (Rainmaker2Token && Rainmaker2RefreshToken) {
+      if (notificationToken && notificationRefreshToken) {
         console.log('Cache token values exist');
-        LocalDB.storeAuthTokens(Rainmaker2Token, Rainmaker2RefreshToken);
-        LocalDB.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        http.setAuth(Rainmaker2Token);
+        LocalDB.storeAuthTokens(notificationToken, notificationRefreshToken);
+        LocalDB.storeTokenPayload(UserActions.decodeJwt(notificationToken));
+        http.setAuth(notificationToken);
         let isAuth = LocalDB.checkAuth();
         console.log('Cache token check Auth', isAuth);
         if (isAuth === 'token expired' || !isAuth) {

@@ -15,7 +15,6 @@ using LosIntegration.API.Models.LoanApplication;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -91,7 +90,7 @@ namespace LosIntegration.API.Controllers
         // POST api/<DocumentController>
         [Route(template: "[action]")]
         [HttpPost]
-        public async Task<IActionResult> SendToExternalOriginator([FromBody] SendToExternalOriginatorRequest request)
+        public async Task<IActionResult> SendFileToExternalOriginator([FromBody] SendFileToExternalOriginatorRequest request)
         {
             var tenantId = "1";
             _httpClient.DefaultRequestHeaders.Authorization
@@ -100,81 +99,88 @@ namespace LosIntegration.API.Controllers
                                                            .Headers[key: "Authorization"].ToString()
                                                            .Replace(oldValue: "Bearer ",
                                                                     newValue: ""));
+
             #region GetFileDataFromDocumentManagement
 
-            var documentResponse = GetFileDataFromDocumentManagement(request.DocumentLoanApplicationId, request.RequestId, request.DocumentId, request.FileId, tenantId);
+            var documentResponse =
+                GetFileDataFromDocumentManagement(documentLoanApplicationId: request.DocumentLoanApplicationId,
+                                                  requestId: request.RequestId,
+                                                  documentId: request.DocumentId,
+                                                  fileId: request.FileId,
+                                                  tenantId: tenantId);
 
             var fileData = await documentResponse.Content.ReadAsByteArrayAsync();
 
-
-            if (fileData == null)
-            {
-                return BadRequest("FileData is Null");
-            }
+            if (fileData == null) return BadRequest(error: "FileData is Null");
 
             #endregion
 
             #region GetDocument Attributes
 
             var getDocumentsCallResponse = Call.Get<List<DocumentManagementDocument>>(httpClient: _httpClient,
-                                                                                       endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/GetDocuments?loanApplicationId={request.LoanApplicationId}&tenantId=1&pending=false",
-                                                                                       request: Request,
-                                                                                       attachBearerTokenFromCurrentRequest: true);
+                                                                                      endPoint:
+                                                                                      $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetDocuments?loanApplicationId={request.LoanApplicationId}&tenantId=1&pending=false",
+                                                                                      request: Request,
+                                                                                      attachBearerTokenFromCurrentRequest
+                                                                                      : true);
 
             if (!getDocumentsCallResponse.HttpResponseMessage.IsSuccessStatusCode)
-            {
-                return BadRequest("Unable to get all documents from DocumentManagement");
-            }
+                return BadRequest(error: "Unable to get all documents from DocumentManagement");
             var documentManagementDocuments = getDocumentsCallResponse.ResponseObject;
 
-            var document = documentManagementDocuments.Single(d => d.DocId == request.DocumentId);
-            var file = document.Files.Single(f => f.Id == request.FileId);
-
+            var document = documentManagementDocuments.Single(predicate: d => d.DocId == request.DocumentId);
+            var file = document.Files.Single(predicate: f => f.Id == request.FileId);
 
             //GetDocument Categories
             var getCategoriesResponse = Call.Get<List<DocumentCategory>>(httpClient: _httpClient,
-                                                                         endPoint: $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
+                                                                         endPoint:
+                                                                         $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
                                                                          request: Request,
                                                                          attachBearerTokenFromCurrentRequest: true);
 
             if (!getCategoriesResponse.HttpResponseMessage.IsSuccessStatusCode)
-            {
-                return BadRequest("Unable to get all document categories from DocumentManagement");
-            }
+                return BadRequest(error: "Unable to get all document categories from DocumentManagement");
             var categories = getCategoriesResponse.ResponseObject;
 
-            var documentType = categories.SelectMany(c => c.DocumentTypes)
-                                         .Single(dt => dt.DocTypeId == document.TypeId);
+            var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
+                                         .Single(predicate: dt => dt.DocTypeId == document.TypeId);
 
-            ByteDocTypeMapping byteDocTypeMapping = _byteDocTypeMappingService.GetByteDocTypeMappingWithDetails(docType: documentType.DocType).SingleOrDefault();
-            int? byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
-            ByteDocCategoryMapping byteDocCategoryMapping = _byteDocCategoryMappingService.GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10).SingleOrDefault();
-            ByteDocStatusMapping byteDocStatusMapping = _byteDocStatusMappingService.GetByteDocStatusMappingWithDetails(document.Status).SingleOrDefault();
-
+            var byteDocTypeMapping = _byteDocTypeMappingService
+                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType).SingleOrDefault();
+            var byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
+            var byteDocCategoryMapping = _byteDocCategoryMappingService
+                                         .GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10)
+                                         .SingleOrDefault();
+            var byteDocStatusMapping = _byteDocStatusMappingService
+                                       .GetByteDocStatusMappingWithDetails(status: document.Status).SingleOrDefault();
 
             #endregion
 
             #region SendDocumentToExternalOriginator
-            _logger.LogInformation($"DocumentCategory={byteDocCategoryMapping?.ByteDocCategoryName}");
-            _logger.LogInformation($"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
-            _logger.LogInformation($"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
+
+            _logger.LogInformation(message: $"DocumentCategory={byteDocCategoryMapping?.ByteDocCategoryName}");
+            _logger.LogInformation(message: $"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
+            _logger.LogInformation(message: $"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
+            _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
 
             var sendDocumentRequest = new SendDocumentRequest
                                       {
                                           LoanApplicationId = request.LoanApplicationId,
                                           FileData = fileData,
-                                          DocumentCategory = byteDocCategoryMapping?.ByteDocCategoryName ?? "MISC", // mapping required
-                                          DocumentExension = Path.GetExtension(file.ClientName).Replace(".", "") ?? "",
-                                          DocumentName = Path.GetFileNameWithoutExtension(file.ClientName),
-                                          DocumentStatus = byteDocStatusMapping?.ByteDocStatusName ?? "0",// mapping required
-                                          DocumentType = byteDocTypeMapping?.ByteDoctypeName ?? "Other",// mapping required
-                MediaType = documentResponse.Content.Headers.ContentType.MediaType
-            };
-            DocumentResponse byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest);
-            if (byteDocumentResponse == null)
-            {
-                return BadRequest("External originator document response null");
-            }
+                                          DocumentCategory =
+                                              byteDocCategoryMapping?.ByteDocCategoryName ?? "MISC", // mapping required
+                                          DocumentExension =
+                                              Path.GetExtension(path: file.ClientName).Replace(oldValue: ".",
+                                                                                               newValue: "") ?? "",
+                                          DocumentName = Path.GetFileNameWithoutExtension(path: file.ClientName),
+                                          DocumentStatus =
+                                              byteDocStatusMapping?.ByteDocStatusName ?? "0", // mapping required
+                                          DocumentType =
+                                              byteDocTypeMapping?.ByteDoctypeName ?? "Other", // mapping required
+                                          MediaType = documentResponse.Content.Headers.ContentType.MediaType
+                                      };
+            var byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
+            if (byteDocumentResponse == null) return BadRequest(error: "External originator document response null");
 
             #endregion
 
@@ -192,12 +198,13 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message: $"mapping params = {mapping.ToJsonString()}");
             _mappingService.Insert(item: mapping);
             await _mappingService.SaveChangesAsync();
-            _logger.LogInformation(message: $"mapping Saved");
+            _logger.LogInformation(message: "mapping Saved");
 
             #endregion
 
             #region UpdateByteProStatus
-            HttpResponseMessage updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request);
+
+            var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: request);
 
             if (!updateByteProStatusResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to Update Status in Document Management");
@@ -205,11 +212,52 @@ namespace LosIntegration.API.Controllers
             #endregion
 
             return Ok();
-
         }
 
 
-        private HttpResponseMessage UpdateByteStatusInDocumentManagement(SendToExternalOriginatorRequest request)
+        [Route(template: "[action]")]
+        [HttpPost]
+        public async Task<IActionResult> SendDocumentToExternalOriginator([FromBody] SendDocumentToExternalOriginatorRequest request)
+        {
+            var tenantId = "1";
+            _httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue(scheme: "Bearer",
+                                                parameter: Request
+                                                           .Headers[key: "Authorization"].ToString()
+                                                           .Replace(oldValue: "Bearer ",
+                                                                    newValue: ""));
+            ///ask to make specific api
+            var getAllFilesByLaonId = Call.Get<List<DocumentManagementDocument>>(httpClient: _httpClient,
+                                                                                 endPoint:
+                                                                                 $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/GetDocuments?loanApplicationId={request.LoanApplicationId}&tenantId=1&pending=false",
+                                                                                 request: Request,
+                                                                                 attachBearerTokenFromCurrentRequest:
+                                                                                 true).ResponseObject.ToList();
+            var Document = getAllFilesByLaonId.FirstOrDefault(x => x.DocId == request.DocumentId);
+            if (Document != null)
+            {
+                foreach (var file in Document.Files)
+                {
+                    var sendFileToExternalOriginatorRequest = new SendFileToExternalOriginatorRequest();
+                    sendFileToExternalOriginatorRequest.DocumentId = request.DocumentId;
+                    sendFileToExternalOriginatorRequest.DocumentLoanApplicationId = request.DocumentLoanApplicationId;
+                    sendFileToExternalOriginatorRequest.RequestId = request.RequestId;
+                    sendFileToExternalOriginatorRequest.DocumentId = request.DocumentId;
+                    sendFileToExternalOriginatorRequest.FileId = file.Id;
+                    sendFileToExternalOriginatorRequest.LoanApplicationId = request.LoanApplicationId;
+                    await  SendFileToExternalOriginator(sendFileToExternalOriginatorRequest);
+
+                  
+                }
+
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+
+        private HttpResponseMessage UpdateByteStatusInDocumentManagement(SendFileToExternalOriginatorRequest request)
         {
             var url =
                 $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/UpdateByteProStatus";
@@ -447,6 +495,7 @@ namespace LosIntegration.API.Controllers
         #endregion
 
         #region Private Methods
+
         private HttpResponseMessage GetFileDataFromDocumentManagement(string documentLoanApplicationId,
                                                                       string requestId,
                                                                       string documentId,
@@ -465,9 +514,9 @@ namespace LosIntegration.API.Controllers
             if (!documentResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to load Document from Document Management");
 
-            
             return documentResponse;
         }
+
 
         private DocumentResponse SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)
         {
@@ -483,16 +532,18 @@ namespace LosIntegration.API.Controllers
 
             if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
                 throw new Exception(message: "Unable to Upload Document to External Originator");
-            _logger.LogInformation(message: $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
+            _logger.LogInformation(message:
+                                   $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
             _logger.LogInformation(message: $"result={result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
-            _logger.LogInformation(message: $"Deserialize Successfully");
+            _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
                 throw new Exception(message: "Unable to deserialize External Originator document ");
             DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
             return documentResponse;
         }
+
         #endregion
     }
 }
