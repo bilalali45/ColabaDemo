@@ -9,6 +9,7 @@ import {
 } from "rainsoft-js";
 import { ApplicationEnv } from "./AppEnv";
 import { parse } from "path";
+import { split } from "lodash";
 export class FileUpload {
   static allowedSize = ApplicationEnv.MaxFileSize; //in mbs
 
@@ -77,8 +78,8 @@ export class FileUpload {
   }
 
   static removeSpecialChars(text: string) {
-    return RemoveSpecialChars(text);
-    //  return text.replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+    // return RemoveSpecialChars(text);
+     return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {
@@ -176,11 +177,23 @@ export class FileUpload {
   }
 
   static splitDataByType(fileName: string, type: string) {
-    let numberTest = /^[0-9\s]*$/i;
+    let numberTest = /^[0-9]/;
     let splitData = fileName.split("-");
     if (splitData.length == 1) return fileName;
-    if (numberTest.test(splitData[1])) return splitData[0] + "," + splitData[1];
-    else return fileName;
+    let num = splitData[splitData.length - 1];
+    splitData[splitData.length - 1] = '';
+    splitData.pop();
+    let actualName = splitData.join('-').replace(/\s/g,'');
+
+    if (numberTest.test(num)) {
+      return actualName + "," + num;
+    }
+    else {
+      let f = fileName.replace(/\s/g,'');
+      return f;
+    }
+   
+    ;
   }
 
   static sortByDate(array: any[]) {
@@ -199,7 +212,7 @@ export class FileUpload {
     let uploadingFileName = FileUpload.splitDataByType(
       FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),
       "-"
-    );
+    ).replace(/\s/g,'');
     if (uploadingFileName.includes(",")) {
       uploadingFileName = uploadingFileName.split(",")[0];
     }
