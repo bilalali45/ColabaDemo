@@ -4,11 +4,13 @@
     <Connection ConnectionString="Data Source=rsserver1;Initial Catalog=LosIntegration;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=test123" Provider="System.Data.SqlClient" />
     <Generation>
       <GeneratedFiles>
-        <File Name="LosIntegration.LosIntegrationModel.cs" />
-        <File Name="LosIntegration.ExternalOriginator.cs" />
-        <File Name="LosIntegration.Mapping.cs" />
-        <File Name="LosIntegration.ExternalOriginator.Configuration.cs" />
-        <File Name="LosIntegration.Mapping.Configuration.cs" />
+        <File Name="LosIntegration.LosIntegrationModel.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Data" />
+        <File Name="LosIntegration.ExternalOriginator.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Entity\Models" />
+        <File Name="LosIntegration.Mapping.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Entity\Models" />
+        <File Name="LosIntegration.ByteDocTypeMapping.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Entity\Models" />
+        <File Name="LosIntegration.ExternalOriginator.Configuration.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Data\Mapping" />
+        <File Name="LosIntegration.Mapping.Configuration.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Data\Mapping" />
+        <File Name="LosIntegration.ByteDocTypeMapping.Configuration.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\LosIntegration\LosIntegration.Data\Mapping" />
       </GeneratedFiles>
     </Generation>
     <DatabaseFirstNamingRules>

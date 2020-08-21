@@ -8,7 +8,9 @@ namespace Notification.Common
     }
     public enum DeliveryModeEnum
     {
-        Express=1
+        Express=1,
+        Queued=2,
+        Off=3
     }
 
     public enum NotificationMediumEnum
@@ -22,6 +24,7 @@ namespace Notification.Common
         Delivered=2,
         Unread=3,
         Read=4,
-        Deleted=5
+        Deleted=5,
+        Unseen=6
     }
 }

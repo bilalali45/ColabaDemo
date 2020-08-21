@@ -36,12 +36,15 @@ namespace LosIntegration.API
             {
                 throw new Exception("Unable to load key store");
             }
-            services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer("Password=test123;Persist Security Info=True;User ID=sa;Initial Catalog=LosIntegration;Data Source=110.93.237.3,1404")); //todo shehroz get from keystore
+            services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();
             //services.AddScoped<ISettingService, SettingService>();
             //services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddScoped<IMappingService, MappingService>();
+            services.AddScoped<IByteDocTypeMappingService, ByteDocTypeMappingService>();
+            services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
+            services.AddScoped<IByteDocStatusMappingService, ByteDocStatusMappingService>();
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();

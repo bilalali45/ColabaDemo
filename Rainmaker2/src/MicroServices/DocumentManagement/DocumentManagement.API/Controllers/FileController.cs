@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles = "Customer")]
+   [Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class FileController : Controller
@@ -28,8 +28,9 @@ namespace DocumentManagement.API.Controllers
                               ISettingService settingService,
                               IKeyStoreService keyStoreService,
                               IConfiguration config,
-                              ILogger<FileController> logger,
-                              INotificationService notificationService)
+                              ILogger<FileController> logger, ILosIntegrationService losIntegration,
+                              INotificationService notificationService,
+                              IRainmakerService rainmakerService)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -38,7 +39,9 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.config = config;
             this.logger = logger;
+            this.losIntegration = losIntegration;
             this.notificationService = notificationService;
+            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -52,7 +55,9 @@ namespace DocumentManagement.API.Controllers
         private readonly IKeyStoreService keyStoreService;
         private readonly IConfiguration config;
         private readonly ILogger<FileController> logger;
+        private readonly ILosIntegrationService losIntegration;
         private readonly INotificationService notificationService;
+        private readonly IRainmakerService rainmakerService;
         #endregion
 
         #region Action Methods
@@ -102,6 +107,7 @@ namespace DocumentManagement.API.Controllers
                     // upload to ftp
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 localFile: filePath);
+                   
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
                                                             id: id,
@@ -113,11 +119,24 @@ namespace DocumentManagement.API.Controllers
                                                             encryptionKey: key,
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
-                                                            userProfileId: userProfileId);
+                                                            userProfileId: userProfileId,
+                                                            authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
                     if(docQuery==false)
                         throw new Exception("unable to update file in mongo");
                 }
+
+            FileViewModel fileViewModel = new FileViewModel();
+            fileViewModel.id = id;
+            fileViewModel.requestId = requestId;
+            fileViewModel.docId = docId;
+            var Files= await fileService.GetFileByDocId(fileViewModel,   userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
+
+            if (Files.Count > 0)
+            {
+                var responseBody = await losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString()));
+            }
+
 
             // set order
             var model = new FileOrderModel
@@ -130,9 +149,9 @@ namespace DocumentManagement.API.Controllers
             await fileService.Order(model: model,
                                     userProfileId: userProfileId,tenantId);
 
-            int loanApplicationId = await fileService.GetLoanApplicationId(id);
+            int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
 
-            await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
+           // await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
 
             return Ok();
         }
@@ -148,7 +167,9 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
-                                                  userProfileId: userProfileId,tenantId);
+                                                  userProfileId: userProfileId,
+                                                  tenantId:tenantId,
+                                                  authHeader:Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();

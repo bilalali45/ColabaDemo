@@ -25,7 +25,11 @@ namespace DocumentManagement.API.Controllers
             ISettingService settingService,
             IKeyStoreService keyStoreService,
             ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService)
+            IRainmakerService rainmakerService,
+            IByteProService byteProService,
+            IAdminDashboardService adminDashboardService,
+            ITemplateService templateService
+            )
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -34,6 +38,9 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.logger = logger;
             this.rainmakerService = rainmakerService;
+            this.byteProService = byteProService;
+            this.adminDashboardService = adminDashboardService;
+            this.templateService = templateService;
         }
 
         #endregion
@@ -48,6 +55,8 @@ namespace DocumentManagement.API.Controllers
         private readonly ILogger<DocumentController> logger;
         private readonly IRainmakerService rainmakerService;
         private readonly IByteProService byteProService;
+        private readonly IAdminDashboardService adminDashboardService;
+        private readonly ITemplateService templateService;
 
         #endregion
 
@@ -87,6 +96,22 @@ namespace DocumentManagement.API.Controllers
                         fileviewdto.clientName);
         }
 
+        [HttpGet("GetDocuments")]
+        public async Task<IActionResult> GetDocuments([FromQuery] GetDocuments moGetDocuments)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {tenantId} and value of pending is {moGetDocuments.pending}");
+            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, tenantId, moGetDocuments.pending);
+            return Ok(docQuery);
+        }
+
+        [HttpGet(template: "GetCategoryDocument")]
+        public async Task<IActionResult> GetCategoryDocument()
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.GetCategoryDocument(tenantId: tenantId);
+            return Ok(value: docQuery);
+        }
         #endregion
 
         #region Post

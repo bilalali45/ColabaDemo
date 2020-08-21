@@ -50,6 +50,7 @@ namespace Notification.API
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ITemplateService,TemplateService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
+            services.AddSingleton<IRedisService, RedisService>();
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             if (!keyResponse.IsSuccessStatusCode)
@@ -110,7 +111,7 @@ namespace Notification.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -131,6 +132,11 @@ namespace Notification.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ServerHub>("/serverhub");
+            });
+            IRedisService redisService = services.GetRequiredService<IRedisService>();
+            Task.Run(async ()=>
+            {
+                await redisService.Run();
             });
         }
     }

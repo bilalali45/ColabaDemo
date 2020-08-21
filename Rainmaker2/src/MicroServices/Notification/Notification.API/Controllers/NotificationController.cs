@@ -19,12 +19,14 @@ namespace Notification.API.Controllers
     {
         private readonly INotificationService _notificationService;
         private readonly IHubContext<ServerHub, IClientHub> _context;
-
+        private readonly IRedisService _redisService;
         public NotificationController(INotificationService notificationService,
-            IHubContext<ServerHub, IClientHub> context)
+            IHubContext<ServerHub, IClientHub> context,
+            IRedisService redisService)
         {
             _notificationService = notificationService;
             _context = context;
+            _redisService = redisService;
         }
         [HttpPost("[action]")]
         [Authorize(Roles = "Customer")]
@@ -32,12 +34,30 @@ namespace Notification.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            long id = await _notificationService.Add(model, userProfileId, tenantId,
-                Request.Headers["Authorization"].Select(x => x.ToString()));
-            await SendNotification(id);
-            return Ok(id);
+            model.DateTime = DateTime.UtcNow;
+            model.userId = userProfileId;
+            model.tenantId = tenantId;
+            TenantSetting setting = await _notificationService.GetTenantSetting(tenantId,model.NotificationType);
+            if (setting.DeliveryModeId == (short) Notification.Common.DeliveryModeEnum.Express)
+            {
+                long id = await _notificationService.Add(model, userProfileId, tenantId,setting);
+                await _redisService.SendNotification(id);
+                return Ok(id);
+            }
+            else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Queued)
+            {
+                await _redisService.InsertInCache(model);
+            }
+            return Ok(-1L);
         }
 
+        [HttpGet("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> GetCount()
+        {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            return Ok(await _notificationService.GetCount(userProfileId));
+        }
         [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> GetPaged(long lastId, int mediumId,int pageSize=10)
@@ -54,7 +74,15 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Read(NotificationRead model)
         {
-            await _notificationService.Read(model.id);
+            await _notificationService.Read(model.ids);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> Seen(NotificationSeen model)
+        {
+            await _notificationService.Seen(model.ids);
             return Ok();
         }
 
@@ -90,27 +118,6 @@ namespace Notification.API.Controllers
         public IActionResult DumpSignalR()
         {
             return Ok(ClientConnection<int>._connections);
-        }
-        private async Task SendNotification(long id)
-        {
-            NotificationObject notificationObject = await _notificationService.GetByIdForTemplate(id);
-            foreach (var recep in notificationObject.NotificationRecepients)
-            {
-                foreach (var medium in recep.NotificationRecepientMediums)
-                {
-                    if (medium.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Express &&
-                        medium.NotificationMediumid == (int)Notification.Common.NotificationMediumEnum.InApp)
-                    {
-                        NotificationMediumModel model = new NotificationMediumModel()
-                        {
-                            id = medium.Id,
-                            payload = string.IsNullOrEmpty(medium.SentTextJson) ? new JObject() : JObject.Parse(medium.SentTextJson),
-                            status = recep.StatusListEnum.Name
-                        };
-                        await ServerHub.SendNotification(_context,recep.RecipientId.Value,model);
-                    }
-                }
-            }
         }
     }
 }

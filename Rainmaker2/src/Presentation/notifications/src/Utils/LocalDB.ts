@@ -70,13 +70,13 @@ export class LocalDB {
   }
 
   public static checkAuth(): boolean | string {
-    let rainmaker2Token = cookies.get('Rainmaker2Token');
+    let notificationToken = cookies.get('NotificationToken');
     let auth = this.getAuthToken();
     if (!auth) {
       return false;
     }
-    if (rainmaker2Token) {
-      const decodeCacheToken: any = jwt_decode(rainmaker2Token);
+    if (notificationToken) {
+      const decodeCacheToken: any = jwt_decode(notificationToken);
       const decodeAuth: any = jwt_decode(auth);
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;

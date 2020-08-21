@@ -157,7 +157,8 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await documentService.AcceptDocument(id: acceptDocumentModel.id,
                                                                 requestId: acceptDocumentModel.requestId,
                                                                 docId: acceptDocumentModel.docId,
-                                                                userName: userName);
+                                                                userName: userName,
+                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -174,7 +175,8 @@ namespace DocumentManagement.API.Controllers
                                                                 docId: rejectDocumentModel.docId,
                                                                 message: rejectDocumentModel.message,
                                                                 userId:userProfileId,
-                                                                userName: userName);
+                                                                userName: userName,
+                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
             {
                 //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));

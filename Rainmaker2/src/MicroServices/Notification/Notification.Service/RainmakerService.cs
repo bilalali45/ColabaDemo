@@ -17,14 +17,13 @@ namespace Notification.Service
             this._httpClient = _httpClient;
             this._configuration = _configuration;
         }
-        public async Task<List<int>> GetAssignedUsers(int loanApplicationId, IEnumerable<string> authHeader)
+        public async Task<List<int>> GetAssignedUsers(int loanApplicationId)
         {
             var request = new HttpRequestMessage()
             {
                 RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/Notification/GetAssignedUsers?loanApplicationId="+loanApplicationId),
                 Method = HttpMethod.Get
             };
-            request.Headers.Add("Authorization", authHeader);
             var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
@@ -33,14 +32,13 @@ namespace Notification.Service
                 return null;
         }
 
-        public async Task<LoanSummary> GetLoanSummary(int loanApplicationId, IEnumerable<string> authHeader)
+        public async Task<LoanSummary> GetLoanSummary(int loanApplicationId)
         {
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/loanapplication/GetLoanInfo?loanApplicationId=" + loanApplicationId),
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/notification/GetLoanInfo?loanApplicationId=" + loanApplicationId),
                 Method = HttpMethod.Get
             };
-            request.Headers.Add("Authorization", authHeader);
             var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)

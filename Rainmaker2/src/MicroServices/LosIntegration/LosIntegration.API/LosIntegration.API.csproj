@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\ServiceCallHelper\ServiceCallHelper.csproj" />
     <ProjectReference Include="..\LosIntegration.Service\LosIntegration.Service.csproj" />
   </ItemGroup>
 

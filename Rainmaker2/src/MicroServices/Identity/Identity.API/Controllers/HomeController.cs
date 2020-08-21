@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(template: "api/Identity/[controller]")]
     public class HomeController : Controller
     {
         [HttpGet("[action]")]

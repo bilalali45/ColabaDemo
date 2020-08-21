@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Identity.Controllers
+namespace MainGateway.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/MainGateway/[controller]")]
     public class HomeController : Controller
     {
         [HttpGet("[action]")]

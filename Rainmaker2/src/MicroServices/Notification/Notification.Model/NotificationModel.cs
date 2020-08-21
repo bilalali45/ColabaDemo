@@ -7,7 +7,11 @@ namespace Notification.Model
 {
     public class NotificationRead
     {
-        public long id { get; set; }
+        public List<long> ids { get; set; }
+    }
+    public class NotificationSeen
+    {
+        public List<long> ids { get; set; }
     }
     public class NotificationDelete
     {
@@ -22,6 +26,9 @@ namespace Notification.Model
         public int NotificationType { get; set; }
         public int EntityId { get; set; }
         public string CustomTextJson { get; set; }
+        public DateTime? DateTime  { get; set; }
+        public int? userId { get; set; }
+        public int? tenantId { get; set; }
     }
 
     public class LoanSummary
