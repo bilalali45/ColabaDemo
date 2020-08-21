@@ -37,7 +37,7 @@ export class LocalDB {
 
   static getUserPayload() {
     let payload = this.decodeString(
-      localStorage.getItem('notificationpayload')
+      localStorage.getItem('notificationPayload')
     );
     if (payload) {
       return JSON.parse(payload);
