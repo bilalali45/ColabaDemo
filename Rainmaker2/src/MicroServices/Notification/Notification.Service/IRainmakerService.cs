@@ -8,7 +8,7 @@ namespace Notification.Service
 {
     public interface IRainmakerService
     {
-        Task<List<int>> GetAssignedUsers(int loanApplicationId, IEnumerable<string> authHeader);
-        Task<LoanSummary> GetLoanSummary(int loanApplicationId, IEnumerable<string> authHeader);
+        Task<List<int>> GetAssignedUsers(int loanApplicationId);
+        Task<LoanSummary> GetLoanSummary(int loanApplicationId);
     }
 }

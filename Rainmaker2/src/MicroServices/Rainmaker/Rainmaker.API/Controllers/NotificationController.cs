@@ -19,12 +19,18 @@ namespace Rainmaker.API.Controllers
             _notificationService = notificationService;
         }
 
-        [Authorize(Roles = "Customer")]
+        [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAssignedUsers(int loanApplicationId)
         {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            return Ok(await _notificationService.GetAssignedUsers(loanApplicationId,userProfileId));
+            return Ok(await _notificationService.GetAssignedUsers(loanApplicationId));
+        }
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
+        {
+            var loanApplication = await _notificationService.GetLoanSummary(loanApplicationId);
+            return Ok(loanApplication);
         }
     }
 }

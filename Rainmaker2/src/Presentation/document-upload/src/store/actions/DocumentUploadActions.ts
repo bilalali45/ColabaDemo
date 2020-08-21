@@ -87,10 +87,12 @@ export class DocumentUploadActions {
         setFileLimitError({ value: true });
         break;
       }
-      var newName = f.name;
+      var newName = f.name.replace(/\s/g,'');
+     
       var countArray = FileUpload.checkName(prevFiles, f);
+    
       if (countArray[0] != 0) {
-        newName = FileUpload.updateName(f.name, f.type, countArray);
+        newName = FileUpload.updateName(f.name, f.type, countArray).replace(/\s/g,'');;
       }
 
       const selectedFile = new Document(

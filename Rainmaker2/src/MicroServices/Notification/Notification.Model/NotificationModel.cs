@@ -26,6 +26,9 @@ namespace Notification.Model
         public int NotificationType { get; set; }
         public int EntityId { get; set; }
         public string CustomTextJson { get; set; }
+        public DateTime? DateTime  { get; set; }
+        public int? userId { get; set; }
+        public int? tenantId { get; set; }
     }
 
     public class LoanSummary
