@@ -263,7 +263,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -366,7 +366,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -481,7 +481,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -600,7 +600,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -805,7 +805,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -1338,7 +1338,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -1461,7 +1461,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, mockconfiguration.Object, mocksettingservice.Object, mockftpclient.Object, mockKeyStoreService.Object, mockfileencryptorfacotry.Object, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
