@@ -236,6 +236,7 @@ namespace LosIntegration.API.Controllers
             var Document = getAllFilesByLaonId.FirstOrDefault(x => x.DocId == request.DocumentId);
             if (Document != null)
             {
+                Document.Files = Document.Files.Where(x => x.ByteProStatus != $"{_configuration[key: "ByteProStatus:Key"]}" ).ToList();
                 foreach (var file in Document.Files)
                 {
                     var sendFileToExternalOriginatorRequest = new SendFileToExternalOriginatorRequest();
