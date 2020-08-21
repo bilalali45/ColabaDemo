@@ -74,6 +74,7 @@ export const HomePage: FunctionComponent = () => {
   useEffect(() => {
     lastIdRef.current = lastId;
     notificationsRef.current = notifications;
+    notificationsVisibleRef.current = notificationsVisible;
   });
 
   const getFetchNotifications = useCallback(async (lastId: number) => {
@@ -141,12 +142,32 @@ export const HomePage: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    notificationsVisibleRef.current = notificationsVisible;
-
     if (notificationsVisible) {
-      setUnSeenNotificationsCount(0);
+      const cloned = _.cloneDeep(notifications);
+
+      const unseenIds = cloned
+        .filter((item) => item.status === 'Unseen')
+        .map((item) => item.id);
+
+      if (unseenIds.length > 0) {
+        setUnSeenNotificationsCount((count) => count - unseenIds.length);
+
+        unseenIds.forEach((id) => {
+          const item = cloned.find((item) => item.id === id);
+
+          if (item) {
+            item.status = 'Seen';
+          }
+        });
+
+        http.put('/api/Notification/notification/Seen', {
+          ids: unseenIds
+        });
+
+        setNotifications(() => cloned);
+      }
     }
-  }, [notificationsVisible]);
+  }, [notificationsVisible, notifications]);
 
   const renderNotifications = (
     tiemrs: TimersType[],
@@ -224,7 +245,7 @@ export const HomePage: FunctionComponent = () => {
       }
 
       const timer = setTimeout(async () => {
-        await apiV1.put('/api/Notification/notification/Delete', {
+        await http.put('/api/Notification/notification/Delete', {
           id
         });
 
@@ -236,7 +257,7 @@ export const HomePage: FunctionComponent = () => {
       setTimers(cloned);
     } else {
       const timer = setTimeout(async () => {
-        await apiV1.put('/api/Notification/notification/Delete', {
+        await http.put('/api/Notification/notification/Delete', {
           id
         });
 
