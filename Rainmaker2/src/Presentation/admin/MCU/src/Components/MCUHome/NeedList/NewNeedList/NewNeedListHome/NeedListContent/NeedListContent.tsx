@@ -71,7 +71,9 @@ export const NeedListContent = ({
                       }, 0);
                     }}
                     onBlur={(e) => {
+                      if(!e.target.value) return;
                       setDocName(e.target.value);
+
                       let updatedDoc = {
                         ...document,
                         docName: e.target.value

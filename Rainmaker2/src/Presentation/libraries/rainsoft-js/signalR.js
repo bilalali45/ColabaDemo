@@ -1,4 +1,10 @@
 "use strict";
+// import {
+//     HubConnection,
+//     HubConnectionBuilder,
+//     LogLevel,
+//     HttpTransportType
+//   } from '@microsoft/signalr';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,6 +43,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.SignalRHub = void 0;
+//   export class SignalRHub {
+//     public static hubConnection: any;
+//     static configureHubConnection = async (hubUrl: string, accessToken: string, eventsRegister: Function) => {
+//       SignalRHub.hubConnection = new HubConnectionBuilder()
+//         .withUrl(hubUrl, {
+//         skipNegotiation: true,
+//         transport: HttpTransportType.WebSockets,
+//         accessTokenFactory: () => {
+//           if (accessToken) {
+//             return accessToken;
+//           }
+//           return '';
+//          }
+//         })
+//         .configureLogging(LogLevel.Trace)
+//         .build();
+//       await SignalRHub.hubStart();
+//         eventsRegister();
+//     };
+//     static hubStart = async () => {
+//       try {
+//         await SignalRHub.hubConnection.start();
+//         console.log('SignalR Connection start successful!');
+//       } catch (err) {
+//         console.log(err);
+//         SignalRHub.signalRHubResume();
+//       }
+//     };
+//     static hubStop = async () => {
+//       try {
+//         SignalRHub.hubConnection.stop();
+//         console.log('SignalR Connection stop successful!');
+//       } catch (err) {
+//         console.log(err);
+//       }
+//     };
+//    static signalRHubResume = async () => {
+//     try{
+//       setTimeout(()=> {
+//         console.log("SignalR Hub Resume");
+//         SignalRHub.hubStart();
+//       },3000)  
+//     }
+//     catch (err) {
+//       console.log(err);
+//     } 
+//     };
+//   }
 var signalr_1 = require("@microsoft/signalr");
 var SignalRHub = /** @class */ (function () {
     function SignalRHub() {
@@ -58,31 +112,34 @@ var SignalRHub = /** @class */ (function () {
                     })
                         .configureLogging(signalr_1.LogLevel.Trace)
                         .build();
-                    return [4 /*yield*/, SignalRHub.hubStart()];
+                    return [4 /*yield*/, SignalRHub.hubStart(eventsRegister)];
                 case 1:
                     _a.sent();
-                    eventsRegister();
                     return [2 /*return*/];
             }
         });
     }); };
-    SignalRHub.hubStart = function () { return __awaiter(void 0, void 0, void 0, function () {
+    SignalRHub.hubStart = function (eventsRegister) { return __awaiter(void 0, void 0, void 0, function () {
         var err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    _a.trys.push([0, 3, , 4]);
+                    if (!(SignalRHub.hubConnection.connectionState === 'Disconnected')) return [3 /*break*/, 2];
                     return [4 /*yield*/, SignalRHub.hubConnection.start()];
                 case 1:
                     _a.sent();
-                    console.log('SignalR Connection start successful!');
-                    return [3 /*break*/, 3];
+                    eventsRegister();
+                    _a.label = 2;
                 case 2:
+                    console.log('SignalR Connection start successful!');
+                    return [3 /*break*/, 4];
+                case 3:
                     err_1 = _a.sent();
                     console.log(err_1);
-                    SignalRHub.signalRHubResume();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    SignalRHub.signalRHubResume(eventsRegister);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -98,12 +155,12 @@ var SignalRHub = /** @class */ (function () {
             return [2 /*return*/];
         });
     }); };
-    SignalRHub.signalRHubResume = function () { return __awaiter(void 0, void 0, void 0, function () {
+    SignalRHub.signalRHubResume = function (eventsRegister) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             try {
                 setTimeout(function () {
                     console.log("SignalR Hub Resume");
-                    SignalRHub.hubStart();
+                    SignalRHub.hubStart(eventsRegister);
                 }, 3000);
             }
             catch (err) {

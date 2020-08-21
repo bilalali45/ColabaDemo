@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RainMaker.Common;
 using RainMaker.Common.Extensions;
 using RainMaker.Entity.Models;
@@ -97,12 +98,16 @@ namespace ByteWebConnector.API.Controllers
             _logger.LogInformation($"loanApplication found= {loanApplication.HasValue()}");
             if (loanApplication != null)
             {
-          
-                if (_configuration["MediaTypesToBeWrapedInPdf:0"].Contains(request.MediaType)||_configuration["MediaTypesToBeWrapedInPdf:1"].Contains(request.MediaType)) //todo shehroz this is hard code, plz fix
+                _logger.LogInformation($"request.MediaType={request.MediaType}");
+                //if (_configuration["MediaTypesToBeWrapedInPdf:0"].Contains(request.MediaType)||_configuration["MediaTypesToBeWrapedInPdf:1"].Contains(request.MediaType)) //todo shehroz this is hard code, plz fix
+                //_logger.LogInformation($"_configuration.GetSection($MediaTypesToBeWrappedInPdf).Get<string[]>() = {_configuration.GetSection($"MediaTypesToBeWrappedInPdf").Get<string[]>().ToJson()}");
+                if (_configuration.GetSection($"MediaTypesToBeWrappedInPdf").Get<string[]>().Contains(request.MediaType))
                 {
+                    _logger.LogInformation("Wrapping In PDF");
                     List<byte[]> intput = new List<byte[]>();
                     intput.Add(request.FileData);
                     request.FileData = Utility.Helper.WrapImagesInPdf(intput).Single();
+                    request.DocumentExension = "pdf";
                 }
                 _logger.LogInformation($"loanApplication.Id = {loanApplication.Id}");
                 var documentUploadModel = new DocumentUploadRequest
@@ -343,6 +348,8 @@ namespace ByteWebConnector.API.Controllers
                                    NullValueHandling = NullValueHandling.Ignore,
                                    MissingMemberHandling = MissingMemberHandling.Ignore
                                };
+
+                _logger.LogInformation($"byteDocumentResponse= {documentResponse.Result}");
                 DocumentUploadResponse document =
                     JsonConvert.DeserializeObject<DocumentUploadResponse>(documentResponse.Result,
                                                                           settings);

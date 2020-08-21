@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace LosIntegration.API.Models
+namespace LosIntegration.API.Models.Document
 {
     [DataContract]
-    public class SendToExternalOriginatorRequest
+    public class SendFileToExternalOriginatorRequest
     {
         [DataMember]
         public int LoanApplicationId { get; set; }

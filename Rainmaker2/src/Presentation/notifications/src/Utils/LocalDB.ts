@@ -20,11 +20,11 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken() {
-    return this.decodeString(localStorage.getItem('token'));
+    return this.decodeString(localStorage.getItem('notificationToken'));
   }
 
   static getRefreshToken() {
-    return this.decodeString(localStorage.getItem('refreshToken'));
+    return this.decodeString(localStorage.getItem('notificationRefreshToken'));
   }
 
   static getLoginDevUserName() {
@@ -36,24 +36,12 @@ export class LocalDB {
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(localStorage.getItem('payload'));
+    let payload = this.decodeString(
+      localStorage.getItem('notificationpayload')
+    );
     if (payload) {
       return JSON.parse(payload);
     }
-  }
-
-  static getLoanAppliationId() {
-    return (
-      this.decodeString(window.sessionStorage.getItem('loanApplicationId')) ||
-      ''
-    );
-  }
-
-  static setLoanAppliationId(loanApplicationId: string) {
-    window.sessionStorage.setItem(
-      'loanApplicationId',
-      this.encodeString(loanApplicationId)
-    );
   }
 
   //#endregion
@@ -61,22 +49,28 @@ export class LocalDB {
   //#region Local DB Post Methods
   static storeTokenPayload(payload: any) {
     if (!payload) return;
-    localStorage.setItem('payload', this.encodeString(JSON.stringify(payload)));
+    localStorage.setItem(
+      'notificationPayload',
+      this.encodeString(JSON.stringify(payload))
+    );
   }
 
   static storeAuthTokens(token: string, refreshToken: string) {
-    localStorage.setItem('token', this.encodeString(token));
-    localStorage.setItem('refreshToken', this.encodeString(refreshToken));
+    localStorage.setItem('notificationToken', this.encodeString(token));
+    localStorage.setItem(
+      'notificationRefreshToken',
+      this.encodeString(refreshToken)
+    );
   }
 
   public static checkAuth(): boolean | string {
-    let rainmaker2Token = cookies.get('Rainmaker2Token');
+    let notificationToken = cookies.get('NotificationToken');
     let auth = this.getAuthToken();
     if (!auth) {
       return false;
     }
-    if (rainmaker2Token) {
-      const decodeCacheToken: any = jwt_decode(rainmaker2Token);
+    if (notificationToken) {
+      const decodeCacheToken: any = jwt_decode(notificationToken);
       const decodeAuth: any = jwt_decode(auth);
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;

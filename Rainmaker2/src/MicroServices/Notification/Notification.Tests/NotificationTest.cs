@@ -24,12 +24,50 @@ namespace Notification.Tests
     public class NotificationTest
     {
         [Fact]
-        public async Task TestAddController()
+        public async Task TestAddDeliveryModeExpressController()
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+            TenantSetting tenantSetting = new TenantSetting();
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Express;
+            mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
+            var notificationController = new NotificationController(mockUserProfileService.Object,null,Mock.Of<IRedisService>());
 
-            var notificationController = new NotificationController(mockUserProfileService.Object,null);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            notificationController.ControllerContext = context;
+
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            NotificationModel notificationModel = new NotificationModel();
+            notificationModel.NotificationType = 1;
+            notificationModel.EntityId = 1;
+            notificationModel.CustomTextJson = "test";
+            //Act
+            IActionResult result = await notificationController.Add(notificationModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestAddDeliveryModeQueuedController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+            TenantSetting tenantSetting = new TenantSetting();
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Queued;
+            mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -63,7 +101,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -84,7 +122,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationRead notificationRead = new NotificationRead();
             notificationRead.ids = new List<long> {10};
@@ -101,7 +139,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationDelete notificationDelete = new NotificationDelete();
             notificationDelete.id = 10;
@@ -118,7 +156,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             //Act
             IActionResult result = await notificationController.DeleteAll();
@@ -132,7 +170,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationUndelete notificationUndelete = new NotificationUndelete();
             notificationUndelete.id = 10;
@@ -287,6 +325,7 @@ namespace Notification.Tests
                 Id = 4,
                 Name = "Read"
             };
+            dataContext.Set<StatusListEnum>().Add(statusListEnum);
 
             dataContext.SaveChanges();
 
@@ -357,5 +396,69 @@ namespace Notification.Tests
             Assert.NotNull(res);
             Assert.Equal(5, res.id);
         }
+        //[Fact]
+        //public async Task TestAddService()
+        //{
+        //    //Arrange
+        //    DbContextOptions<NotificationContext> options;
+        //    var builder = new DbContextOptionsBuilder<NotificationContext>();
+        //    builder.UseInMemoryDatabase("Notification");
+        //    options = builder.Options;
+        //    using NotificationContext dataContext = new NotificationContext(options);
+
+        //    dataContext.Database.EnsureCreated();
+
+        //    TenantSetting tenantSetting = new TenantSetting()
+        //    {
+        //        TenantId = 1,
+        //        NotificationTypeId = 1
+
+        //    };
+        //    dataContext.Set<TenantSetting>().Add(tenantSetting);
+
+        //    //NotificationRecepientMedium app = new NotificationRecepientMedium()
+        //    //{
+        //    //    Id = 6,
+        //    //    SentTextJson = @"{   
+        //    //                    'name':'Talha',  
+        //    //                    'addess':'Street 99'  
+        //    //                    }",
+        //    //    DeliveryModeId = 1,
+        //    //    NotificationRecepientId = 6,
+        //    //    NotificationMediumid = 1
+        //    //};
+        //    //dataContext.Set<NotificationRecepientMedium>().Add(app);
+
+        //    //NotificationRecepient notificationRecepient = new NotificationRecepient()
+        //    //{
+        //    //    Id = 6,
+        //    //    StatusId = 4,
+        //    //    RecipientId = 1
+        //    //};
+        //    //dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+        //    //StatusListEnum statusListEnum = new StatusListEnum()//    //{
+        //    //    Id = 4,
+        //    //    Name = "Read"
+        //    //};
+
+        //    dataContext.SaveChanges();
+
+        //    INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+        //    //Act
+        //    NotificationModel notificationModel = new NotificationModel();
+        //    notificationModel.NotificationType = 1;
+        //    notificationModel.EntityId = 1;
+        //    notificationModel.CustomTextJson = "";
+
+        //    List<string> authorization = new List<string>();
+        //    authorization.Add("Authorization");
+        //    long res = await notificationService.Add(notificationModel, 1, 1, authorization);
+
+        //    // Assert
+        //    Assert.NotNull(res);
+        //    //Assert.Equal(4, res);
+        //}
     }
 }

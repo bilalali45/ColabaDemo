@@ -30,7 +30,11 @@ export const BellIcon: FunctionComponent<{
     <div className="notify-tigger-area">
       <button onClick={onClick} className="btn-notify">
         <i className="zmdi zmdi-notifications"></i>
-        <span className="notify-counts">{notificationsCounter}</span>
+        {notificationsCounter > 0 && (
+          <React.Fragment>
+            <span className="notify-counts">{notificationsCounter}</span>
+          </React.Fragment>
+        )}
       </button>
     </div>
   );

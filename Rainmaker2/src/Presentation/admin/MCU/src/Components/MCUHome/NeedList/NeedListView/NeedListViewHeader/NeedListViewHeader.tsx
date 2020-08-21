@@ -20,7 +20,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
 
 
     const callBack = () => {
-        toggleCallBack(toggle)
+        toggleCallBack(!toggle)
         setToggle(!toggle)
     }
 

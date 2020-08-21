@@ -335,13 +335,12 @@ export const ReviewDocumentStatement = ({
                       clientName: string,
                       loadingFile?: boolean
                     ) => {
-                      setCurrentFileName(clientName);
-                      if (currentDocument && !file?.isRead) {
-                        setTimeout(async () => {
-                          await requestDocumentFiles(currentDocument);
-                        }, 1000);
-                      }
                       await moveNextFile(index, fileId, clientName, loadingFile);
+                      setCurrentFileName(clientName);
+                      if (currentDocument) {
+                        await requestDocumentFiles(currentDocument);
+                      }
+                      
                     }}
                     requestId={currentDocument?.requestId!}
                     docId={currentDocument?.docId!}

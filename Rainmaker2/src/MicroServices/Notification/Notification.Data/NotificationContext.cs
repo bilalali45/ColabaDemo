@@ -33,6 +33,7 @@ namespace Notification.Data
         //public virtual DbSet<NotificationRecipientMediumStatusList> NotificationRecipientMediumStatusLists { get; set; } // NotificationRecipientMediumStatusList
         //public virtual DbSet<NotificationTemplate> NotificationTemplates { get; set; } // NotificationTemplate
         //public virtual DbSet<NotificationType> NotificationTypes { get; set; } // NotificationType
+        //public virtual DbSet<Setting> Settings { get; set; } // Settings
         //public virtual DbSet<StatusListEnum> StatusListEnums { get; set; } // StatusListEnum
         //public virtual DbSet<TenantSetting> TenantSettings { get; set; } // TenantSettings
         //public virtual DbSet<UserNotificationMedium> UserNotificationMediums { get; set; } // UserNotificationMedium
@@ -58,6 +59,7 @@ namespace Notification.Data
             modelBuilder.ApplyConfiguration(new NotificationRecipientMediumStatusListMap());
             modelBuilder.ApplyConfiguration(new NotificationTemplateMap());
             modelBuilder.ApplyConfiguration(new NotificationTypeMap());
+            modelBuilder.ApplyConfiguration(new SettingMap());
             modelBuilder.ApplyConfiguration(new StatusListEnumMap());
             modelBuilder.ApplyConfiguration(new TenantSettingMap());
             modelBuilder.ApplyConfiguration(new UserNotificationMediumMap());

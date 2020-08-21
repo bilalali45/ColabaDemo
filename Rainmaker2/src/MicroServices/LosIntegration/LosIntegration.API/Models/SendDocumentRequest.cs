@@ -16,7 +16,6 @@ namespace LosIntegration.API.Models
         public string DocumentName { get; set; }
         public string DocumentStatus { get; set; }
         public string DocumentType { get; set; }
-
-
+        public string MediaType { get; set; }
     }
 }

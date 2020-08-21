@@ -15,10 +15,12 @@ namespace DocumentManagement.Service
     {
         private readonly IMongoService mongoService;
         private readonly IActivityLogService activityLogService;
-        public AdminDashboardService(IMongoService mongoService, IActivityLogService activityLogService)
+        private readonly IRainmakerService rainmakerService;
+        public AdminDashboardService(IMongoService mongoService, IActivityLogService activityLogService, IRainmakerService rainmakerService)
         {
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
+            this.rainmakerService = rainmakerService;
         }
         public async Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending)
         {
@@ -109,7 +111,7 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<bool> Delete(AdminDeleteModel model, int tenantId)
+        public async Task<bool> Delete(AdminDeleteModel model, int tenantId, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -188,6 +190,8 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Deleted));
             }
+
+            await rainmakerService.UpdateLoanInfo(null, model.id, authHeader);
 
             return result.ModifiedCount == 1;
         }

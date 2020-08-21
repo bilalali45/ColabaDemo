@@ -166,5 +166,13 @@ namespace Rainmaker.API.Controllers
                 throw new Exception("Activity not found for Business unit");
             }
         }
+
+        [Authorize(Roles = "MCU,Customer")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateLoanInfo([FromBody] UpdateLoanInfo model)
+        {
+            await loanApplicationService.UpdateLoanInfo(model);
+            return Ok();
+        }
     }
 }
