@@ -366,7 +366,7 @@ namespace Notification.Tests
             NotificationRecepient notificationRecepient = new NotificationRecepient()
             {
                 Id = 5,
-                StatusId = 4,
+                StatusId = 3,
                 RecipientId = 1
             };
             dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
@@ -374,13 +374,13 @@ namespace Notification.Tests
             NotificationRecepientStatusLog notificationRecepientStatusLogs = new NotificationRecepientStatusLog()
             {
                 Id = 1,
-                StatusId = 4
+                StatusId = 3
             };
             dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs);
 
             StatusListEnum statusListEnum = new StatusListEnum()
             {
-                Id = 4,
+                Id = 3,
                 Name = "Read"
             };
             dataContext.Set<StatusListEnum>().Add(statusListEnum);
