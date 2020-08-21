@@ -8,13 +8,17 @@ import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints
 import { NeedList } from '../../../../Entities/Models/NeedList';
 import { DocumentStatus } from '../../../../Entities/Types/Types';
 
+import Dropdown from 'react-bootstrap/Dropdown';
+
+import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
+
 const Footer = ({
   acceptDocument,
   rejectDocument,
   setRejectPopup,
   rejectModalOpen,
   status,
-  acceptRejectEnabled
+  acceptRejectEnabled,
 }: {
   acceptDocument: () => void;
   rejectDocument: () => void;
@@ -105,8 +109,14 @@ export const ReviewDocumentStatement = ({
   currentFileIndex,
   acceptDocument,
   rejectDocument,
-  documentViewLoading
+  documentViewLoading,
+  doc,
+  id,
+  typeId,
 }: {
+  doc: boolean;
+  id: string | null;
+  typeId: string | null;
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void;
   moveNextFile: (
     index: number,
@@ -273,7 +283,23 @@ export const ReviewDocumentStatement = ({
       className="document-statement"
     >
       <header className="document-statement--header">
+
         <h2 title={currentDocument?.docName}>{currentDocument?.docName}</h2>
+        <Dropdown>
+            <Dropdown.Toggle
+              size="lg"
+              variant="primary"
+              className="mcu-dropdown-toggle no-caret"
+              id="dropdown-basic"
+            >
+              Activity Log
+            </Dropdown.Toggle>
+            {id !== null && typeId !== null && (
+              <Dropdown.Menu>
+                <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
+              </Dropdown.Menu>
+            )}
+          </Dropdown>
       </header>
       {!!loading ? (
         <div

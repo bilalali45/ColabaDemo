@@ -24,19 +24,23 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     useEffect(() => {
         if (!nameTest.test(docName)) {
             setDocNameError('Document name cannot contain any special characters');
-        } else {
-            setDocNameError('');
+        } else if(isValid) {
+            setDocNameError('')
         }
 
         if (!docName?.trim()?.length) {
             setDocNameError('');
         }
+        
     }, [docName]);
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
-        if (value?.length > 255) {
+        if (value?.length > 49) {
+           // debugger
             setIsValid(false);
+            setDocNameError('Only 50 chars allowed'); 
+            
         }
 
         setDocName(value);
@@ -74,7 +78,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 <div className="title-wrap"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input maxLength={255} onKeyDown={(e: any) => {
+                    <input maxLength={50} onKeyDown={(e: any) => {
                         if (e.keyCode === 9) {
                             e.preventDefault()
                             return;

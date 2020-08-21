@@ -448,11 +448,14 @@
             padding-bottom: 70px;
             .editer-wrap {
             .editer,textarea {
-                min-height: 320px;
+                min-height: 150px;
                 width: 100%;
                 border: 1px solid color('border');
                 padding: 10px;
                 resize: none;
+                @include media-breakpoint-down(md) {
+                    min-height: 250px;
+                }
                 &:focus {
                     outline: none;
                     border: 1px solid color('border');
@@ -619,4 +622,10 @@
     width: 100%;
     font-size:fontSize('sm') - 1;
 }
+}
+
+.input-chrac {
+    font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+    color:color('border');
+    margin-top: 8px;
 }

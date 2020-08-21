@@ -114,7 +114,8 @@ export const NeedListTable = ({
         <div>
           <div className="list-remove-alert">
             <span className="list-remove-text">
-              Are you sure want to delete this Document?
+              {/* Are you sure want to delete this Document? */}
+              Remove this document from needs list?
             </span>
             <div className="list-remove-options">
               <button

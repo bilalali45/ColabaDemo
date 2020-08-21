@@ -201,6 +201,7 @@ export const EmailContentReview = ({
           errorText={errorText}
           isValid={isValid}
           placeholderValue={'Type your message'}
+          rows={20}
         />
       </div>
       {sendRequestButton()}
