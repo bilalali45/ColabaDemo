@@ -525,6 +525,9 @@ export const ReviewDocument = () => {
             currentDocument.files.length > 0 && (
               <aside className="review-document-body--aside col-md-4">
                 <ReviewDocumentStatement
+                        doc={currentDocument?.docName === typeIdId.typeId || false}
+                        id={typeIdId.id}
+                        typeId={typeIdId.typeId}
                   typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
                   moveNextFile={moveNextFile}
                   currentDocument={!!currentDocument ? currentDocument : null}

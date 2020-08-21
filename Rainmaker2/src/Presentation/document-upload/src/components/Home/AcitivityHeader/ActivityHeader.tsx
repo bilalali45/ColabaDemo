@@ -29,7 +29,7 @@ const ActivityHeader = (props) => {
     }
 
     if (pathname.includes("documentsRequest")) {
-      setLeftNav("Home");
+      setLeftNav("Loan Center");
       setRightNav("Documents");
       setLeftNavUrl("/activity/" + Auth.getLoanAppliationId());
       setRightNavUrl("/uploadedDocuments/" + Auth.getLoanAppliationId());
@@ -40,7 +40,7 @@ const ActivityHeader = (props) => {
         props.location.state == undefined ||
         props.location.state.from.includes("/activity")
       ) {
-        setLeftNav("Home");
+        setLeftNav("Loan Center");
         setLeftNavUrl("/activity/" + Auth.getLoanAppliationId());
         if (pendingDocs?.length > 0) {
           setRightNav("Document Request");

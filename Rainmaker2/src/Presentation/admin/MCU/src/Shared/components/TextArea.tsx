@@ -9,11 +9,13 @@ type TextAreaType = {
   errorText?: string;
   placeholderValue?: string;
   maxLengthValue?: number;
+  rows?: number;
   onKeyDown?: Function;
 };
 
 export const TextArea = ({
   textAreaValue,
+  rows=20,
   placeholderValue,
   onBlurHandler = () => {},
   onChangeHandler = () => {},
@@ -59,7 +61,7 @@ export const TextArea = ({
         name=""
         id=""
         className="form-control"
-        rows={20}
+        rows={rows}
         placeholder={placeholderValue}
         maxLength={maxLengthValue}
       ></textarea>

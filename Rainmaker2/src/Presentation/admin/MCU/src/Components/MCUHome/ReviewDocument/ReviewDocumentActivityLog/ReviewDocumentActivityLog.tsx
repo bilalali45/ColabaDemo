@@ -273,7 +273,7 @@ export const ReviewDocumentActivityLog = ({
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">
-              <h2 className="vertical-tabs--header-title">Activity Log</h2>
+              <h2 className="vertical-tabs--header-title">Requests</h2>
             </header>
             <section className="vertical-tabs--body">
               <ul className="vertical-tabs--list">

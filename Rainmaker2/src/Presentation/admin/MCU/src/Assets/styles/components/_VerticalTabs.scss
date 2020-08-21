@@ -52,13 +52,18 @@
     }// header
 
     &--body{
-        height: 450px;
-        max-height: 450px;
+        min-height: 450px;
+        max-height: 451px;
         overflow-y: auto;
         word-break: break-all;
         font:  400 #{fontSize("sm") + "/1.2"} fontFamily("base");
         &.padding{
             padding: 15px;
+        }
+        ul {
+            li {
+                line-height: 1.5;
+            }
         }
 
         .table{

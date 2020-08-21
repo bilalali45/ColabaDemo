@@ -81,8 +81,8 @@ export const NeedListRequest = ({
     changeTemplateName(e);
     setTemplateNameError('');
 
-    if (value?.length > 255) {
-      setTemplateNameError('Name must be less than 256 chars');
+    if (value?.length > 49) {
+      setTemplateNameError('Only 50 chars allowed');
       return;
     }
 
@@ -164,7 +164,7 @@ export const NeedListRequest = ({
                 }
               }
             }}
-            maxLength={30}
+            maxLength={50}
             style={{border: templateNameError && '1px solid red'}}
             value={templateName}
             onChange={validateTemplateName}

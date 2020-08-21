@@ -61,7 +61,7 @@ export const NeedListContent = ({
               <>
                 <h3 className="editable">
                   <input
-                    maxLength={255}
+                    maxLength={50}
                     autoFocus
                     value={docName}
                     onFocus={(e: any) => {
@@ -137,6 +137,7 @@ export const NeedListContent = ({
             onBlurHandler={() => {}}
             errorText={errorText}
             isValid={isValid}
+            rows={7}
             onChangeHandler={(e: any) => {
               setDocMessage(e.target.value);
               updateDocumentMessage(
@@ -146,6 +147,9 @@ export const NeedListContent = ({
             }}
             maxLengthValue={500}
           />
+                  <div className="input-chrac">
+          <span>{docMessage?.length || 0}</span><span>/</span><span>500</span>
+        </div>
         </div>
       </div>
 

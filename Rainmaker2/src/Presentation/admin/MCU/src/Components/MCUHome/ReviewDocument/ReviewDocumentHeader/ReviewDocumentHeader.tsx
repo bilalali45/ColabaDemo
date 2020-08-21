@@ -1,7 +1,7 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import {ReviewDocumentActivityLog} from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
+import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
 
 export const ReviewDocumentHeader = ({
   doc,
@@ -45,7 +45,7 @@ export const ReviewDocumentHeader = ({
                 <button
                   className="btn btn-default"
                   disabled={perviousDocumentButtonDisabled}
-                  onClick={buttonsEnabled ? previousDocument : () => {}}
+                  onClick={buttonsEnabled ? previousDocument : () => { }}
                 >
                   <em className="zmdi zmdi-arrow-left"></em> Review Previous
                   Document
@@ -53,7 +53,7 @@ export const ReviewDocumentHeader = ({
                 <button
                   className="btn btn-default"
                   disabled={nextDocumentButtonDisabled}
-                  onClick={buttonsEnabled ? nextDocument : () => {}}
+                  onClick={buttonsEnabled ? nextDocument : () => { }}
                 >
                   Review Next Document{' '}
                   <em className="zmdi zmdi-arrow-right"></em>
@@ -65,10 +65,10 @@ export const ReviewDocumentHeader = ({
         <div
           className={`review-document-header--right col-md-${
             !hideNextPreviousNavigation ? 4 : 8
-          }`}
+            }`}
         >
           {/* <button className="btn btn-primary">Activity Log</button> */}
-          <Dropdown>
+          {/* <Dropdown>
             <Dropdown.Toggle
               size="lg"
               variant="primary"
@@ -82,7 +82,7 @@ export const ReviewDocumentHeader = ({
                 <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
               </Dropdown.Menu>
             )}
-          </Dropdown>
+          </Dropdown> */}
           <button className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>
           </button>

@@ -24,7 +24,7 @@ export const SelectedNeedListReview = ({
   const displayRequestDocumentsList = () => {
     return (
       <>
-        <div className="listing">
+        <div className="defaultlisting">
           <ul>
             {documentList?.map((t: TemplateDocument) => {
               return (

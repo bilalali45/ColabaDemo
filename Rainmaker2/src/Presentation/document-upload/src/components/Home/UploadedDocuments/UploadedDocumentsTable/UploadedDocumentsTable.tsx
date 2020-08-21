@@ -164,7 +164,7 @@ export const UploadedDocumentsTable = () => {
             <br />
             Go to{" "}
             <a tabIndex={-1} onClick={loanHomeHandler}>
-              Loan Home
+            Loan Center.
             </a>
           </label>
         </div>

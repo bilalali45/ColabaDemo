@@ -363,3 +363,72 @@ a[href],a[tabindex]{
         color: color('primary');
     }
 }
+
+.modal{    
+
+    &-alert{
+        .modal-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        h3{
+            font: 400 #{fontSize('xmd')+'/1.2'} fontFamily('base');  
+            margin-bottom: 0;
+            color: color('colorBlack');
+        }
+    }
+        .modal-content{
+            max-width: 500px;
+            min-height: 200px;
+        }
+        .modal-header{
+            border-bottom: none;
+            padding-bottom: 0;
+            display: none;
+            .close {
+                display: none;
+            }
+            // & + .modal-body{
+            //     padding-top: 10px;
+            // }
+        }
+        .modal-footer {
+            border-top: none;
+            align-items: center;
+            justify-content: center;
+            background:color('modalfooter');
+            .btn {
+                min-width: 100px;
+                padding: 6px 15px;
+                font: 400 #{fontSize('sm')+'/1'} fontFamily('base');
+            }
+            & > * {
+                margin: 0;
+            }
+        }
+    }//modal-alert
+
+    &-content{
+        border-radius: 0;
+        border: none;
+    }
+
+    .close{
+        opacity: 1;
+        display: inline-block;
+        font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+        font-size: 20px;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        &::before{
+            content: '\f136';
+        }
+        span{
+            display: none;
+        }
+    }
+
+}//.modal

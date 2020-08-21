@@ -75,7 +75,7 @@ export const ReviewNeedListRequestHeader = ({
           className="modal-alert"
           centered
         >
-          <Modal.Header closeButton>
+          <Modal.Header>
             {/* <Modal.Title></Modal.Title> */}
           </Modal.Header>
 
@@ -84,16 +84,17 @@ export const ReviewNeedListRequestHeader = ({
               Are you sure you want to close this
               <br /> request without saving?
             </h3>
-            <p className="text-center">
+          </Modal.Body>
+          <Modal.Footer>
+          <p className="text-center">
               <Button onClick={closeHandler} variant="secondary">
-                Close
+                {"Close"}
               </Button>{" "}
               <Button onClick={() => saveAsDraft(true)} variant="primary">
-                Save & Close
+                {"Save & Close"} 
               </Button>
             </p>
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          </Modal.Footer>
         </Modal>
       }
     </>
