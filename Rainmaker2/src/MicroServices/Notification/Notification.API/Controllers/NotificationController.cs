@@ -19,12 +19,14 @@ namespace Notification.API.Controllers
     {
         private readonly INotificationService _notificationService;
         private readonly IHubContext<ServerHub, IClientHub> _context;
-
+        private readonly IRedisService _redisService;
         public NotificationController(INotificationService notificationService,
-            IHubContext<ServerHub, IClientHub> context)
+            IHubContext<ServerHub, IClientHub> context,
+            IRedisService redisService)
         {
             _notificationService = notificationService;
             _context = context;
+            _redisService = redisService;
         }
         [HttpPost("[action]")]
         [Authorize(Roles = "Customer")]
@@ -32,10 +34,22 @@ namespace Notification.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            long id = await _notificationService.Add(model, userProfileId, tenantId,
-                Request.Headers["Authorization"].Select(x => x.ToString()));
-            await SendNotification(id);
-            return Ok(id);
+            model.DateTime = DateTime.UtcNow;
+            model.userId = userProfileId;
+            model.tenantId = tenantId;
+            TenantSetting setting = await _notificationService.GetTenantSetting(tenantId,model.NotificationType);
+            if (setting.DeliveryModeId == (short) Notification.Common.DeliveryModeEnum.Express)
+            {
+                long id = await _notificationService.Add(model, userProfileId, tenantId,
+                    Request.Headers["Authorization"].Select(x => x.ToString()),setting);
+                await SendNotification(id);
+                return Ok(id);
+            }
+            else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Queued)
+            {
+                await _redisService.InsertInCache(model);
+            }
+            return Ok();
         }
 
         [HttpGet("[action]")]
@@ -113,8 +127,7 @@ namespace Notification.API.Controllers
             {
                 foreach (var medium in recep.NotificationRecepientMediums)
                 {
-                    if (medium.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Express &&
-                        medium.NotificationMediumid == (int)Notification.Common.NotificationMediumEnum.InApp)
+                    if (medium.NotificationMediumid == (int)Notification.Common.NotificationMediumEnum.InApp)
                     {
                         NotificationMediumModel model = new NotificationMediumModel()
                         {
