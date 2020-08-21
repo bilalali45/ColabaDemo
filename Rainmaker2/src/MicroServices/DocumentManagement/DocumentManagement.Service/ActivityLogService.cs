@@ -21,25 +21,33 @@ namespace DocumentManagement.Service
 
         public async Task InsertLog(string activityId, string activity)
         {
-            IMongoCollection<ActivityLog> collection = mongoService.db.GetCollection<ActivityLog>("ActivityLog");
+            if (!string.IsNullOrEmpty(activityId))
+            {
+                IMongoCollection<ActivityLog> collection = mongoService.db.GetCollection<ActivityLog>("ActivityLog");
 
-            BsonDocument bsonElements = new BsonDocument();
-            bsonElements.Add("_id", ObjectId.GenerateNewId());
-            bsonElements.Add("dateTime", DateTime.UtcNow);
-            bsonElements.Add("activity", activity);
+                BsonDocument bsonElements = new BsonDocument();
+                bsonElements.Add("_id",
+                                 ObjectId.GenerateNewId());
+                bsonElements.Add("dateTime",
+                                 DateTime.UtcNow);
+                bsonElements.Add("activity",
+                                 activity);
 
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
-                {
-                    { "_id", new ObjectId(activityId)}
-                }, new BsonDocument()
-                {
-                    { "$push", new BsonDocument()
-                        {
-                            { "log", bsonElements  }
-                        }
-                    },
-                }
-            );
+                UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+                                                                      {
+                                                                          {"_id", new ObjectId(activityId)}
+                                                                      },
+                                                                      new BsonDocument()
+                                                                      {
+                                                                          {
+                                                                              "$push", new BsonDocument()
+                                                                                       {
+                                                                                           {"log", bsonElements}
+                                                                                       }
+                                                                          },
+                                                                      }
+                                                                     );
+            }
         }
 
         public async Task<string> GetActivityLogId(string loanId, string requestId, string docId)
