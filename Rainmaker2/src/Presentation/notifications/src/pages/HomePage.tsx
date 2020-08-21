@@ -5,16 +5,15 @@ import React, {
   useRef,
   useCallback
 } from 'react';
-import {SignalRHub} from 'rainsoft-js';
+import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
 import {Header, BellIcon} from './_HomePage';
 import {AlertForRemove, AlertForNoData} from '../features/NotificationAlerts';
-import {apiV1} from '../lib/api';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
-
+const http = new Http();
 export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const notificationsVisibleRef = useRef(notificationsVisible);
@@ -82,15 +81,8 @@ export const HomePage: FunctionComponent = () => {
 
   const getFetchNotifications = useCallback(async (lastId: number) => {
     try {
-      const {data: response} = await apiV1.get<NotificationType[]>(
-        '/api/Notification/notification/GetPaged',
-        {
-          params: {
-            pageSize: 10,
-            lastId,
-            mediumId: 1
-          }
-        }
+      const {data: response} = await http.get<NotificationType[]>(
+        `/api/Notification/notification/GetPaged?pageSize=10&lastId=${lastId}&mediumId=1`
       );
 
       if (response.length > 0) {
@@ -114,9 +106,11 @@ export const HomePage: FunctionComponent = () => {
 
   const getUnseenNotificationsCount = useCallback(async () => {
     try {
-      const {data} = await apiV1.get('/api/Notification/notification/GetCount');
+      const resp: any = await http.get(
+        '/api/Notification/notification/GetCount'
+      );
 
-      setUnSeenNotificationsCount(data);
+      setUnSeenNotificationsCount(resp.data);
     } catch (error) {
       console.warn(error);
     }
@@ -124,7 +118,7 @@ export const HomePage: FunctionComponent = () => {
 
   const onClearNotifications = async () => {
     try {
-      await apiV1.put('/api/Notification/notification/DeleteAll');
+      await http.put('/api/Notification/notification/DeleteAll', null);
 
       setNotifications([]);
       setUnSeenNotificationsCount(0);
