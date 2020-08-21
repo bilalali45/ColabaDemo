@@ -25,5 +25,12 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await _notificationService.GetAssignedUsers(loanApplicationId));
         }
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLoanInfo(int loanApplicationId)
+        {
+            var loanApplication = await _notificationService.GetLoanSummary(loanApplicationId);
+            return Ok(loanApplication);
+        }
     }
 }

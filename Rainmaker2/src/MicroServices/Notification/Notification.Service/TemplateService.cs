@@ -21,37 +21,37 @@ namespace Notification.Service
         {
             this.serviceProvider = serviceProvider;
         }
-        public async Task PopulateTemplate(long notificationId, IEnumerable<string> authHeader)
+        public async Task PopulateTemplate(long notificationId)
         {
             INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             NotificationObject notificationObject = await notificationService.GetByIdForTemplate(notificationId);
             switch ((NotificationTypeEnum)notificationObject.NotificationTypeId)
             {
                 case NotificationTypeEnum.DocumentSubmission:
-                    await DocumentSubmissionTemplate(notificationObject,authHeader);
+                    await DocumentSubmissionTemplate(notificationObject);
                     break;
             }
         }
 
-        private async Task DocumentSubmissionTemplate(NotificationObject notificationObject, IEnumerable<string> authHeader)
+        private async Task DocumentSubmissionTemplate(NotificationObject notificationObject)
         {
             foreach (var template in notificationObject.NotificationType.NotificationTemplates)
             {
                 switch ((NotificationMediumEnum)template.NotificationMediumId)
                 {
                     case NotificationMediumEnum.InApp:
-                        await DocumentSubmissionTemplate_InApp(notificationObject, template,authHeader);
+                        await DocumentSubmissionTemplate_InApp(notificationObject, template);
                         break;
                 }
             }
         }
 
         private async Task DocumentSubmissionTemplate_InApp(NotificationObject notificationObject,
-            NotificationTemplate notificationTemplate, IEnumerable<string> authHeader)
+            NotificationTemplate notificationTemplate)
         {
             INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             IRainmakerService rainmakerService = serviceProvider.GetRequiredService<IRainmakerService>();
-            LoanSummary summary = await rainmakerService.GetLoanSummary(notificationObject.EntityId.Value, authHeader);
+            LoanSummary summary = await rainmakerService.GetLoanSummary(notificationObject.EntityId.Value);
             // populate template
             string templateJson = notificationTemplate.TemplateJson.Replace("{{NotificationType}}",notificationObject.NotificationType.Name);
             templateJson = templateJson.Replace("{{NotificationDateTime}}",notificationObject.CreatedOn.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));

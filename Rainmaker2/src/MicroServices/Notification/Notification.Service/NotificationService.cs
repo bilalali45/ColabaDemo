@@ -39,7 +39,12 @@ namespace Notification.Service
         {
             return await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId && x.NotificationTypeId == notificationType).FirstOrDefaultAsync();
         }
-        public async Task<long> Add(NotificationModel model, int userId, int tenantId, IEnumerable<string> authHeader, TenantSetting setting)
+
+        public async Task<Setting> GetSetting(int tenantId)
+        {
+            return await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+        }
+        public async Task<long> Add(NotificationModel model, int userId, int tenantId, TenantSetting setting)
         {
             NotificationObject notificationObject = new NotificationObject();
             notificationObject.CreatedOn = model.DateTime;
@@ -54,7 +59,7 @@ namespace Notification.Service
             notificationObject.NotificationActor.TrackingState = TrackingState.Added;
             notificationObject.NotificationActor.ActorId = userId;
 
-            List<int> reciepient = await rainmakerService.GetAssignedUsers(model.EntityId, authHeader);
+            List<int> reciepient = await rainmakerService.GetAssignedUsers(model.EntityId);
             if (reciepient != null)
             {
                 foreach (var item in reciepient)
@@ -81,7 +86,7 @@ namespace Notification.Service
             Uow.Repository<NotificationObject>().Insert(notificationObject);
             await Uow.SaveChangesAsync();
 
-            await templateService.PopulateTemplate(notificationObject.Id, authHeader);
+            await templateService.PopulateTemplate(notificationObject.Id);
 
             return notificationObject.Id;
         }

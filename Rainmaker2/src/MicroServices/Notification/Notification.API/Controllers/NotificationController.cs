@@ -40,16 +40,15 @@ namespace Notification.API.Controllers
             TenantSetting setting = await _notificationService.GetTenantSetting(tenantId,model.NotificationType);
             if (setting.DeliveryModeId == (short) Notification.Common.DeliveryModeEnum.Express)
             {
-                long id = await _notificationService.Add(model, userProfileId, tenantId,
-                    Request.Headers["Authorization"].Select(x => x.ToString()),setting);
-                await SendNotification(id);
+                long id = await _notificationService.Add(model, userProfileId, tenantId,setting);
+                await _redisService.SendNotification(id);
                 return Ok(id);
             }
             else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Queued)
             {
                 await _redisService.InsertInCache(model);
             }
-            return Ok();
+            return Ok(-1L);
         }
 
         [HttpGet("[action]")]
@@ -119,26 +118,6 @@ namespace Notification.API.Controllers
         public IActionResult DumpSignalR()
         {
             return Ok(ClientConnection<int>._connections);
-        }
-        private async Task SendNotification(long id)
-        {
-            NotificationObject notificationObject = await _notificationService.GetByIdForTemplate(id);
-            foreach (var recep in notificationObject.NotificationRecepients)
-            {
-                foreach (var medium in recep.NotificationRecepientMediums)
-                {
-                    if (medium.NotificationMediumid == (int)Notification.Common.NotificationMediumEnum.InApp)
-                    {
-                        NotificationMediumModel model = new NotificationMediumModel()
-                        {
-                            id = medium.Id,
-                            payload = string.IsNullOrEmpty(medium.SentTextJson) ? new JObject() : JObject.Parse(medium.SentTextJson),
-                            status = recep.StatusListEnum.Name
-                        };
-                        await ServerHub.SendNotification(_context,recep.RecipientId.Value,model);
-                    }
-                }
-            }
         }
     }
 }

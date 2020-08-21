@@ -29,7 +29,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object,null);
+            var notificationController = new NotificationController(mockUserProfileService.Object,null,Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -63,7 +63,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -84,7 +84,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationRead notificationRead = new NotificationRead();
             notificationRead.ids = new List<long> {10};
@@ -101,7 +101,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationDelete notificationDelete = new NotificationDelete();
             notificationDelete.id = 10;
@@ -118,7 +118,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             //Act
             IActionResult result = await notificationController.DeleteAll();
@@ -132,7 +132,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             NotificationUndelete notificationUndelete = new NotificationUndelete();
             notificationUndelete.id = 10;

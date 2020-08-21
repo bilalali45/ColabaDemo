@@ -7,6 +7,6 @@ namespace Notification.Service
 {
     public interface ITemplateService
     {
-        Task PopulateTemplate(long notificationId, IEnumerable<string> authHeader);
+        Task PopulateTemplate(long notificationId);
     }
 }
