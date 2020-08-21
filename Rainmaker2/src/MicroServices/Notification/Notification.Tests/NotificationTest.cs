@@ -111,7 +111,7 @@ namespace Notification.Tests
             notificationController.ControllerContext = context;
 
             //Act
-            IActionResult result = await notificationController.GetPaged(1, -1, 1);
+            IActionResult result = await notificationController.GetPaged(-1, -1, 1);
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
@@ -396,69 +396,172 @@ namespace Notification.Tests
             Assert.NotNull(res);
             Assert.Equal(5, res.id);
         }
-        //[Fact]
-        //public async Task TestAddService()
-        //{
-        //    //Arrange
-        //    DbContextOptions<NotificationContext> options;
-        //    var builder = new DbContextOptionsBuilder<NotificationContext>();
-        //    builder.UseInMemoryDatabase("Notification");
-        //    options = builder.Options;
-        //    using NotificationContext dataContext = new NotificationContext(options);
+        [Fact]
+        public async Task TestAddService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
 
-        //    dataContext.Database.EnsureCreated();
+            dataContext.Database.EnsureCreated();
 
-        //    TenantSetting tenantSetting = new TenantSetting()
-        //    {
-        //        TenantId = 1,
-        //        NotificationTypeId = 1
+            TenantSetting tenantSetting = new TenantSetting()
+            {
+                TenantId = 1,
+                NotificationTypeId = 1
 
-        //    };
-        //    dataContext.Set<TenantSetting>().Add(tenantSetting);
+            };
+            dataContext.Set<TenantSetting>().Add(tenantSetting);
 
-        //    //NotificationRecepientMedium app = new NotificationRecepientMedium()
-        //    //{
-        //    //    Id = 6,
-        //    //    SentTextJson = @"{   
-        //    //                    'name':'Talha',  
-        //    //                    'addess':'Street 99'  
-        //    //                    }",
-        //    //    DeliveryModeId = 1,
-        //    //    NotificationRecepientId = 6,
-        //    //    NotificationMediumid = 1
-        //    //};
-        //    //dataContext.Set<NotificationRecepientMedium>().Add(app);
+            dataContext.SaveChanges();
 
-        //    //NotificationRecepient notificationRecepient = new NotificationRecepient()
-        //    //{
-        //    //    Id = 6,
-        //    //    StatusId = 4,
-        //    //    RecipientId = 1
-        //    //};
-        //    //dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+            Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
+            List<int> lstAssignedUsers = new List<int>();
+            lstAssignedUsers.Add(1);
+            mockRainmakerService.Setup(x=>x.GetAssignedUsers(It.IsAny<int>())).ReturnsAsync(lstAssignedUsers);
 
-        //    //StatusListEnum statusListEnum = new StatusListEnum()//    //{
-        //    //    Id = 4,
-        //    //    Name = "Read"
-        //    //};
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, mockRainmakerService.Object, Mock.Of<ITemplateService>());
 
-        //    dataContext.SaveChanges();
+            //Act
+            NotificationModel notificationModel = new NotificationModel();
+            notificationModel.NotificationType = 1;
+            notificationModel.EntityId = 1;
+            notificationModel.CustomTextJson = "";
 
-        //    INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+            TenantSetting model = new TenantSetting();
+            model.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Express;
+            model.NotificationMediumId = 1;
+            long res = await notificationService.Add(notificationModel, 1, 1, model);
 
-        //    //Act
-        //    NotificationModel notificationModel = new NotificationModel();
-        //    notificationModel.NotificationType = 1;
-        //    notificationModel.EntityId = 1;
-        //    notificationModel.CustomTextJson = "";
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(1, res);
+        }
+        [Fact]
+        public async Task TestSeenController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-        //    List<string> authorization = new List<string>();
-        //    authorization.Add("Authorization");
-        //    long res = await notificationService.Add(notificationModel, 1, 1, authorization);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
-        //    // Assert
-        //    Assert.NotNull(res);
-        //    //Assert.Equal(4, res);
-        //}
+            NotificationSeen notificationSeen = new NotificationSeen();
+            List<long> ids = new List<long>();
+            ids.Add(11);
+            notificationSeen.ids = ids;
+
+            //Act
+            IActionResult result = await notificationController.Seen(notificationSeen);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestSeenService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            NotificationRecepientMedium app = new NotificationRecepientMedium()
+            {
+                Id = 6,
+                SentTextJson = @"{   
+                                'name':'Talha',  
+                                'addess':'Street 99'  
+                                }",
+                DeliveryModeId = 1,
+                NotificationRecepientId = 6,
+                NotificationMediumid = 1, 
+            };
+            dataContext.Set<NotificationRecepientMedium>().Add(app);
+
+            NotificationRecepient notificationRecepient = new NotificationRecepient()
+            {
+                Id = 6,
+                StatusId = 2,
+                RecipientId = 1
+            };
+            dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+            NotificationRecepientStatusLog notificationRecepientStatusLogs = new NotificationRecepientStatusLog()
+            {
+                Id = 3,
+                StatusId = 2,
+                UpdatedOn = new DateTime()
+            };
+            dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs);
+
+            StatusListEnum statusListEnum = new StatusListEnum()
+            {
+                Id = 2,
+                Name = "Delivered",
+            };
+            dataContext.Set<StatusListEnum>().Add(statusListEnum);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            List<long> ids = new List<long>();
+            ids.Add(6);
+            await notificationService.Seen(ids);
+        }
+        [Fact]
+        public async Task TestGetCountController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            notificationController.ControllerContext = context;
+
+            //Act
+            IActionResult result = await notificationController.GetCount();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestGetCountService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            NotificationRecepient notificationRecepient = new NotificationRecepient()
+            {
+                Id = 7,
+                StatusId = 6
+            };
+            dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            await notificationService.GetCount(1);
+        }
     }
 }
