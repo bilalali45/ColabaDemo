@@ -50,7 +50,7 @@ namespace DocumentManagement.API
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
-            services.AddScoped<ILossIntegrationService, LossintegrationService>();
+            services.AddScoped<ILosIntegrationService, LosIntegrationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IByteProService, ByteProService>();
 

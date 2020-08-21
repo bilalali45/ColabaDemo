@@ -9,6 +9,6 @@ namespace Rainmaker.Service
 {
     public interface INotificationService : IServiceBase<LoanApplication>
     {
-        Task<List<int>> GetAssignedUsers(int loanApplicationId, int userId);
+        Task<List<int>> GetAssignedUsers(int loanApplicationId);
     }
 }

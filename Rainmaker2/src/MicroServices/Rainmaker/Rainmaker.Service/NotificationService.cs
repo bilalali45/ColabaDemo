@@ -20,13 +20,11 @@ namespace Rainmaker.Service
             services: services)
         {
         }
-        public async Task<List<int>> GetAssignedUsers(int loanApplicationId, int userId)
+        public async Task<List<int>> GetAssignedUsers(int loanApplicationId)
         {
             List<int> list = new List<int>();
             LoanApplication application = await Repository.Query(x =>
-                    x.Id == loanApplicationId && x.Opportunity.OpportunityLeadBinders
-                        .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer
-                        .UserId == userId).Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders)
+                    x.Id == loanApplicationId).Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders)
                 .ThenInclude(x => x.Customer)
                 .Include(x => x.Opportunity).ThenInclude(x => x.LoanOfficer)
                 .Include(x => x.Opportunity).ThenInclude(x => x.LoanCoordinator)
