@@ -42,10 +42,14 @@ namespace Notification.Service
                         for (int i = 0; i < count; i++)
                         {
                             RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
-                            NotificationModel m = JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                            Setting setting = await notificationService.GetSetting(m.tenantId.Value);
-                            if ((DateTime.UtcNow - m.DateTime.Value).TotalMinutes > setting.QueueTimeInMinute)
-                                list.Add(m);
+                            if (!value.IsNullOrEmpty)
+                            {
+                                NotificationModel m =
+                                    JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+                                Setting setting = await notificationService.GetSetting(m.tenantId.Value);
+                                if ((DateTime.UtcNow - m.DateTime.Value).TotalMinutes > setting.QueueTimeInMinute)
+                                    list.Add(m);
+                            }
                         }
                         foreach (var item in list)
                         {
@@ -75,9 +79,12 @@ namespace Notification.Service
                 for (int i = 0; i < count; i++)
                 {
                     RedisValue value = await database.ListGetByIndexAsync(NotificationKey,i);
-                    NotificationModel m = JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                    if (m.EntityId == model.EntityId)
-                        list.Add(m);
+                    if (!value.IsNullOrEmpty)
+                    {
+                        NotificationModel m = JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+                        if (m.EntityId == model.EntityId)
+                            list.Add(m);
+                    }
                 }
 
                 foreach (var item in list)
