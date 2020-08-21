@@ -249,7 +249,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                             <>
                                 <p className="editable">
                                     <input
-                                        maxLength={30}
+                                        maxLength={50}
                                         autoFocus
                                         onFocus={(e: any) => {
                                             let target = e.target;
@@ -263,7 +263,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 
                                             setNewNameText(value);
-                                            if (!value?.length || value?.length > 30) {
+                                            if (!value?.length || value?.length > 49) {
+                                                setNameError('Only 50 chars allowed');
                                                 return;
                                             }
 

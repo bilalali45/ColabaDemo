@@ -395,7 +395,14 @@
             .dc-actions {
                 text-align: right;
                 button {
+                    @include media-breakpoint-down(lg) {
+                        padding: 9px 12px 7px;
+                    }
+                    
                     margin-right:5px;
+                    @include media-breakpoint-down(md) {
+                        padding: 9px 9px 7px;
+                    }
                     &:last-child{
                         margin-right: 0;
                     }

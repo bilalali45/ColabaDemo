@@ -24,12 +24,50 @@ namespace Notification.Tests
     public class NotificationTest
     {
         [Fact]
-        public async Task TestAddController()
+        public async Task TestAddDeliveryModeExpressController()
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
-
+            TenantSetting tenantSetting = new TenantSetting();
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Express;
+            mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
             var notificationController = new NotificationController(mockUserProfileService.Object,null,Mock.Of<IRedisService>());
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            notificationController.ControllerContext = context;
+
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            NotificationModel notificationModel = new NotificationModel();
+            notificationModel.NotificationType = 1;
+            notificationModel.EntityId = 1;
+            notificationModel.CustomTextJson = "test";
+            //Act
+            IActionResult result = await notificationController.Add(notificationModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestAddDeliveryModeQueuedController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+            TenantSetting tenantSetting = new TenantSetting();
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Queued;
+            mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));

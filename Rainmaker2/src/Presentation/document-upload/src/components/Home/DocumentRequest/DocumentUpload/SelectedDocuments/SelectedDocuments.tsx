@@ -308,7 +308,7 @@ export const SelectedDocuments = ({
       }
       setDoneVisible(false);
       setDoneHit(false);
-      fetchUploadedDocuments();
+     await fetchUploadedDocuments();
     }
   };
 
@@ -416,16 +416,16 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-sm-7">
+              <div className="col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
-                    Have you submitted all required files for this document?
+                    You won't be able to come back to this once you're done.
                   </p>
                 </div>
               </div>
 
-              <div className="col-sm-5">
+              <div className="col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
@@ -453,13 +453,13 @@ export const SelectedDocuments = ({
                       }
                     }}
                   >
-                    No
+                    {"I'LL Come Back"}
                   </button>
                   <button
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >
-                    Yes
+                    {"I'M Done"}
                   </button>
                 </div>
               </div>
