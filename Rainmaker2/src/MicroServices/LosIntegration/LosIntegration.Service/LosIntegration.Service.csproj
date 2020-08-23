@@ -11,23 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
     <ProjectReference Include="..\LosIntegration.Entity\LosIntegration.Entity.csproj" />
     <ProjectReference Include="..\LosIntegration.Model\LosIntegration.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="TrackableEntities.Common.Core">
-      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.Common.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="TrackableEntities.EF.Core">
-      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\TrackableEntities.EF.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="URF.Core.Abstractions">
-      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="URF.Core.EF">
-      <HintPath>..\..\..\Library\URF\URF.Core.EF\bin\Debug\netstandard2.1\URF.Core.EF.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
