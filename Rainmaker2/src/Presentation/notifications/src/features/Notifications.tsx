@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState, useEffect} from 'react';
+import React, {FunctionComponent, useState, useEffect, useRef} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
@@ -26,7 +26,8 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   setTimers,
   readAllNotificationsForDocument
 }) => {
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false); //apex false
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (receivedNewNotification === true && notificationsVisible === true) {
@@ -47,41 +48,53 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     }
   };
 
-  return (
-    <div className="notify-body" id="notification-ul">
-      <div className="notification-ul">
-        {showToast === true && (
-          <div>
-            <h1>See New Notifications</h1>
-          </div>
-        )}
-        <InfiniteScroll
-          dataLength={notifications.length}
-          hasMore={true}
-          loader={''}
-          next={getFetchNotifications}
-          scrollableTarget="notification-ul"
-          className="InfiniteScroll"
-          style={{overflow: 'initial'}}
-        >
-          {notifications.map((notification, index) => {
-            const {id} = notification;
+  const handleScrollToTop = () => {
+    notificationRef.current!.scrollTo(0, 0);
+    setShowToast(false);
+  };
 
-            return (
-              <Notification
-                key={index}
-                removeNotification={() => removeNotification(id)}
-                clearTimeOut={clearTimeOut}
-                timers={timers}
-                notification={notification}
-                readAllNotificationsForDocument={
-                  readAllNotificationsForDocument
-                }
-              />
-            );
-          })}
-        </InfiniteScroll>
+  return (
+    <section className="notify-content">
+      {showToast === true && (
+        <div className="notify-toast">
+          <div
+            className="notify-toast-alert animated fadeIn"
+            onClick={handleScrollToTop}
+          >
+            See New Notifications
+          </div>
+        </div>
+      )}
+      <div className="notify-body" id="notification-ul" ref={notificationRef}>
+        <div className="notification-ul">
+          <InfiniteScroll
+            dataLength={notifications.length}
+            hasMore={true}
+            loader={''}
+            next={getFetchNotifications}
+            scrollableTarget="notification-ul"
+            className="InfiniteScroll"
+            style={{overflow: 'initial'}}
+          >
+            {notifications.map((notification, index) => {
+              const {id} = notification;
+
+              return (
+                <Notification
+                  key={index}
+                  removeNotification={() => removeNotification(id)}
+                  clearTimeOut={clearTimeOut}
+                  timers={timers}
+                  notification={notification}
+                  readAllNotificationsForDocument={
+                    readAllNotificationsForDocument
+                  }
+                />
+              );
+            })}
+          </InfiniteScroll>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
