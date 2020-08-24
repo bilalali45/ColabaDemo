@@ -74,8 +74,8 @@ namespace DocumentManagement.API.Controllers
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetActivityLog requested by {userProfileId}");
             return Ok(value: await documentService.GetActivityLog(id: getActivityLog.id,
-                                                                  typeId: getActivityLog.typeId,
-                                                                  docName: getActivityLog.docName));
+                                                                  requestId: getActivityLog.requestId,
+                                                                  docId: getActivityLog.docId));
         }
 
 
@@ -86,7 +86,7 @@ namespace DocumentManagement.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetEmailLog requested by {userProfileId}");
-            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id,typeId: getEmailLog.typeId,docName: getEmailLog.docName));
+            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id,requestId: getEmailLog.requestId,docId: getEmailLog.docId));
         }
 
         [HttpGet(template: "[action]")]

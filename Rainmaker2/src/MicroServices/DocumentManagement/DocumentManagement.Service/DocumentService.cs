@@ -100,26 +100,16 @@ namespace DocumentManagement.Service
 
             return result;
         }
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string typeId, string docName)
+        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
-            string match = "";
-            if (!string.IsNullOrEmpty(typeId))
-            {
-                match = @"{""$match"": {
+            string match =  @"{""$match"": {
                   ""loanId"": " + new ObjectId(id).ToJson() + @", 
-                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
+                  ""requestId"": " + new ObjectId(requestId).ToJson() + @", 
+                  ""docId"": " + new ObjectId(docId).ToJson() + @", 
                             }
                         }";
-            }
-            else
-            {
-                match = @"{""$match"": {
-                  ""loanId"": " + new ObjectId(id).ToJson() + @",
-                  ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
-                            }
-                        }";
-            }
+
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.ActivityLog, BsonDocument>.Create(
               match
                         , @"{
@@ -235,27 +225,16 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<List<EmailLogDTO>> GetEmailLog(string id,string typeId,string docName)
+        public async Task<List<EmailLogDTO>> GetEmailLog(string id,string requestId,string docId)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-            string match = "";
-            if (!string.IsNullOrEmpty(typeId))
-            {
-                match = @"{""$match"": {
+            string match =  @"{""$match"": {
                   ""loanId"": " + new ObjectId(id).ToJson() + @", 
-                  ""typeId"": " + new ObjectId(typeId).ToJson() + @"
+                  ""requestId"": " + new ObjectId(requestId).ToJson() + @",
+                  ""docId"": " + new ObjectId(docId).ToJson() + @"
                             }
                         }";
-            }
-            else
-            {
-                match = @"{""$match"": {
-                  ""loanId"": " + new ObjectId(id).ToJson() + @",
-                  ""docName"": """ + docName.Replace("\"", "\\\"") + @"""
-                            }
-                        }";
-            }
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
               match

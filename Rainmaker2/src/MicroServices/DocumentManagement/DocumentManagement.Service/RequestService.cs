@@ -361,7 +361,7 @@ namespace DocumentManagement.Service
 
                         IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RerequestedBy,typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,docName = item.displayName };
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(),requestId = item.requestId,docId = item.docId, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RerequestedBy,typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,docName = item.displayName };
                         await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
@@ -384,64 +384,6 @@ namespace DocumentManagement.Service
                     documentBsonArray.Add(bsonDocument);
                     if (!isDraft)
                     {
-                       /* string activityLogId = String.Empty;
-
-                        if (!string.IsNullOrEmpty(item.typeId))
-                        {
-                            IMongoCollection<ActivityLog> collectionActivityLog =
-                                mongoService.db.GetCollection<ActivityLog>("ActivityLog");
-
-                            using var asyncCursorActivityLog = collectionActivityLog.Aggregate(
-                                PipelineDefinition<ActivityLog, BsonDocument>.Create(
-                                    @"{""$match"": {
-                                        ""loanId"": " + new ObjectId(loanApplication.id).ToJson() + @",
-                                        ""typeId"": " + new ObjectId(item.typeId).ToJson() + @"
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1
-                            }
-                        }"
-                                ));
-
-                            if (await asyncCursorActivityLog.MoveNextAsync())
-                            {
-                                foreach (var current in asyncCursorActivityLog.Current)
-                                {
-                                    ActivityLogIdQuery query = BsonSerializer.Deserialize<ActivityLogIdQuery>(current);
-                                    activityLogId = query._id;
-                                }
-
-                            }
-                        }
-                        else if (!string.IsNullOrEmpty(item.displayName))
-                        {
-                            IMongoCollection<ActivityLog> collectionActivityLog =
-                                mongoService.db.GetCollection<ActivityLog>("ActivityLog");
-
-                            using var asyncCursorActivityLog = collectionActivityLog.Aggregate(
-                                PipelineDefinition<ActivityLog, BsonDocument>.Create(
-                                    @"{""$match"": {
-                                        ""loanId"": " + new ObjectId(loanApplication.id).ToJson() + @",
-                                        ""docName"": """ + item.displayName.Replace("\"", "\\\"") + @"""
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1
-                            }
-                        }"
-                                ));
-
-                            if (await asyncCursorActivityLog.MoveNextAsync())
-                            {
-                                foreach (var current in asyncCursorActivityLog.Current)
-                                {
-                                    ActivityLogIdQuery query = BsonSerializer.Deserialize<ActivityLogIdQuery>(current);
-                                    activityLogId = query._id;
-                                }
-                            }
-                        }
-                       */
                         IMongoCollection<ActivityLog> collectionInsertActivityLog =
                             mongoService.db.GetCollection<ActivityLog>("ActivityLog");
 
@@ -466,7 +408,7 @@ namespace DocumentManagement.Service
 
                         IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName };
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = request.id,docId = item.id , userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName };
                         await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
