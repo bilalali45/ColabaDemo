@@ -8,7 +8,6 @@ import {SVGDocument, SVGClose, SVGCalender} from '../SVGIcons';
 interface NotificationProps {
   removeNotification: () => void;
   notification: NotificationType;
-  notificationId: number;
   timers: TimersType[];
   clearTimeOut: (id: number, timers: TimersType[]) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => void;

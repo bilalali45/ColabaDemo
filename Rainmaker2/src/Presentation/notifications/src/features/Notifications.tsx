@@ -69,11 +69,10 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
             return (
               <Notification
+                key={index}
                 removeNotification={() => removeNotification(id)}
                 clearTimeOut={clearTimeOut}
                 timers={timers}
-                notificationId={id}
-                key={index}
                 notification={notification}
                 readAllNotificationsForDocument={
                   readAllNotificationsForDocument
