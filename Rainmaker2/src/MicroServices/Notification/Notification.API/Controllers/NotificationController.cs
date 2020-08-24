@@ -75,8 +75,8 @@ namespace Notification.API.Controllers
         public async Task<IActionResult> Read(NotificationRead model)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
-            await _notificationService.Read(model.ids,userProfileId);
-            return Ok();
+            var list = await _notificationService.Read(model.ids,userProfileId);
+            return Ok(list);
         }
 
         [HttpPut("[action]")]
