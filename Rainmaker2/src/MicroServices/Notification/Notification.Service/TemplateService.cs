@@ -61,6 +61,7 @@ namespace Notification.Service
             templateJson = templateJson.Replace("{{City}}", summary.CityName);
             templateJson = templateJson.Replace("{{State}}",summary.StateName);
             templateJson = templateJson.Replace("{{ZipCode}}",summary.ZipCode);
+            templateJson = templateJson.Replace("{{LoanApplicationId}}", notificationObject.EntityId.Value.ToString(()));
             string metaJson = notificationTemplate.MediumMetaDataJson.Replace("{{Link}}", $"/admin/loanapplication/documentmanagement?loanApplicationId={notificationObject.EntityId}");
 
             List<NotificationRecepientMedium> list = notificationObject.NotificationRecepients.SelectMany(x => x.NotificationRecepientMediums.Where(y=>y.NotificationMediumid==notificationTemplate.NotificationMediumId)).ToList();
