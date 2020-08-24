@@ -152,7 +152,7 @@ namespace DocumentManagement.API.Controllers
 
             int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
 
-           // await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
+           await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
 
             return Ok();
         }

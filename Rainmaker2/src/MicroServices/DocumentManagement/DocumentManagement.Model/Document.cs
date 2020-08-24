@@ -158,11 +158,11 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "id")]
         public string id { get; set; }
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "typeId")]
-        public string typeId { get; set; }
-        //[RegularExpression(@"^[A-Za-z0-9\s-]{0,255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "docName")]
-        public string docName { get; set; }
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
     }
 
     public class GetEmailLog
@@ -172,10 +172,11 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "id")]
         public string id { get; set; }
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "typeId")]
-        public string typeId { get; set; }
-        [FromQuery(Name = "docName")]
-        public string docName { get; set; }
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
     }
     public class View
     {

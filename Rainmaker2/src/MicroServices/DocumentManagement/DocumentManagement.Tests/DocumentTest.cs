@@ -121,8 +121,8 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
             GetActivityLog getActivityLog = new GetActivityLog();
             getActivityLog.id = "5f0d668fcc9ce539845d7f99";
-            getActivityLog.typeId = "5eb257a3e519051af2eeb624";
-            getActivityLog.docName = "W2 2020";
+            getActivityLog.requestId = "5eb257a3e519051af2eeb624";
+            getActivityLog.docId = "5eb257a3e519051af2eeb625";
             //Act
             IActionResult result = await controller.GetActivityLog(getActivityLog);
             //Assert

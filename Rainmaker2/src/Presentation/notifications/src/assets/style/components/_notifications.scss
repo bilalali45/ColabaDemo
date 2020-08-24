@@ -138,6 +138,9 @@ ul {
     }
   }
 
+&-content {
+  height: 100%;
+}
   &-body {
     max-height: calc(100% - 50px);
     overflow: auto;
@@ -151,10 +154,30 @@ ul {
     }
   }
 
+
   &.open {
     .notify-dropdown {
       right: 0;
     }
+  }
+}
+
+.notify-toast {
+  
+  display: flex;
+  justify-content: center;
+  &-alert{
+    background:color("primary");
+    position: absolute;
+    z-index: 78858;
+    padding: 10px 20px;
+    top: 60px;
+    color: color("primary-text");
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0px 5px 10px rgba(color('colorBlack'), 0.30);
+    font: 400 #{fontSize('nr') + '/1.2'} fontFamily('heading');
+
   }
 }
 
