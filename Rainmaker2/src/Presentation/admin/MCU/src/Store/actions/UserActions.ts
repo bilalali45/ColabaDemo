@@ -117,6 +117,7 @@ export class UserActions {
         return false;
       }
     } else {
+      http.setAuth(LocalDB.getAuthToken() || '');
       return true;
     }
   }
