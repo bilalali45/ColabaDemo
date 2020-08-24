@@ -3,7 +3,8 @@ import React, {
   useEffect,
   FunctionComponent,
   useRef,
-  useCallback
+  useCallback,
+  useMemo
 } from 'react';
 import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
@@ -13,7 +14,7 @@ import {Header, BellIcon} from './_HomePage';
 import {AlertForRemove, AlertForNoData} from '../features/NotificationAlerts';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
-const http = new Http();
+
 export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const notificationsVisibleRef = useRef(notificationsVisible);
@@ -21,6 +22,7 @@ export const HomePage: FunctionComponent = () => {
   const [unSeenNotificationsCount, setUnSeenNotificationsCount] = useState(0);
   const notificationsRef = useRef(notifications);
   const [receivedNewNotification, setReceivedNewNotification] = useState(false);
+  const http = useMemo(() => new Http(), []);
   /**
    * This is last Id of notification inside notifications array on every API hit.
    * This needs to be send with API Call to fetch previous notifications on scroll.
@@ -33,6 +35,12 @@ export const HomePage: FunctionComponent = () => {
   const [clearAllConfirm, setClearAllConfirm] = useState(false);
   const refContainerSidebar = useRef<HTMLDivElement>(null);
   const [timers, setTimers] = useState<TimersType[]>();
+
+  useEffect(() => {
+    lastIdRef.current = lastId;
+    notificationsRef.current = notifications;
+    notificationsVisibleRef.current = notificationsVisible;
+  });
 
   const openEffect = useCallback(() => {
     setNotifyClass(
@@ -71,36 +79,33 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
-  useEffect(() => {
-    lastIdRef.current = lastId;
-    notificationsRef.current = notifications;
-    notificationsVisibleRef.current = notificationsVisible;
-  });
+  const getFetchNotifications = useCallback(
+    async (lastId: number) => {
+      try {
+        const {data: response} = await http.get<NotificationType[]>(
+          `/api/Notification/notification/GetPaged?pageSize=10&lastId=${lastId}&mediumId=1`
+        );
 
-  const getFetchNotifications = useCallback(async (lastId: number) => {
-    try {
-      const {data: response} = await http.get<NotificationType[]>(
-        `/api/Notification/notification/GetPaged?pageSize=10&lastId=${lastId}&mediumId=1`
-      );
+        if (response.length > 0) {
+          setLastId(response[response.length - 1].id);
 
-      if (response.length > 0) {
-        setLastId(response[response.length - 1].id);
-
-        setNotifications((prevNotifications) => {
-          /**
-           * We are reseting notifications list to 10 notifications on following two conditions
-           * 1. if we just logged in
-           * 2. if SignalR connection Reset
-           */
-          return lastId === -1
-            ? [...response]
-            : prevNotifications.concat(response);
-        });
+          setNotifications((prevNotifications) => {
+            /**
+             * We are reseting notifications list to 10 notifications on following two conditions
+             * 1. if we just logged in
+             * 2. if SignalR connection Reset
+             */
+            return lastId === -1
+              ? [...response]
+              : prevNotifications.concat(response);
+          });
+        }
+      } catch (error) {
+        console.warn('error', error);
       }
-    } catch (error) {
-      console.warn('error', error);
-    }
-  }, []);
+    },
+    [http]
+  );
 
   const getUnseenNotificationsCount = useCallback(async () => {
     try {
@@ -112,7 +117,7 @@ export const HomePage: FunctionComponent = () => {
     } catch (error) {
       console.warn(error);
     }
-  }, []);
+  }, [http]);
 
   const onClearNotifications = async () => {
     try {
@@ -175,7 +180,7 @@ export const HomePage: FunctionComponent = () => {
         setNotifications(() => clonedNotifications);
       }
     }
-  }, [notificationsVisible, notifications]);
+  }, [notificationsVisible, notifications, http]);
 
   const renderNotifications = (
     tiemrs: TimersType[],
