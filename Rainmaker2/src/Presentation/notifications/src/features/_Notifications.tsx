@@ -11,18 +11,22 @@ interface NotificationProps {
   notificationId: number;
   timers: TimersType[];
   clearTimeOut: (id: number, timers: TimersType[]) => void;
+  readAllNotificationsForDocument: (loanApplicationId: string) => void;
 }
 
 export const Notification: FunctionComponent<NotificationProps> = ({
   removeNotification,
   clearTimeOut,
   timers,
-  notification
+  notification,
+  readAllNotificationsForDocument
 }) => {
   const {
+    status,
     id,
     payload: {
       data: {
+        loanApplicationId,
         address,
         notificationType,
         name,
@@ -36,13 +40,28 @@ export const Notification: FunctionComponent<NotificationProps> = ({
     }
   } = notification;
 
+  const readDocumentsAndOpenLink = (
+    loanApplicationId: string,
+    link: string,
+    notificationStatus: string
+  ) => {
+    //Prevent unecessary API call
+    if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
+      readAllNotificationsForDocument(loanApplicationId);
+    }
+
+    window.open(link, '_blank');
+  };
+
   return (
     <div
       className={`notification-list ${
-        status === 'Unread' || status === 'Unseen' ? 'unSeenList' : ''
+        ['Unseen', 'Unread', 'Seen'].includes(notification.status)
+          ? 'unSeenList'
+          : ''
       }`}
     >
-      {timers.some((item) => item.id === notification.id) ? (
+      {timers.some((timer) => timer.id === notification.id) ? (
         <div className="notification-list-item-remove">
           <span className="n-alert-text">
             This notification has been removed.
@@ -53,13 +72,20 @@ export const Notification: FunctionComponent<NotificationProps> = ({
         </div>
       ) : (
         <div>
-          <Link className="n-wrap" to={link} target="_blank">
+          <Link
+            className="n-wrap"
+            onClick={() =>
+              readDocumentsAndOpenLink(loanApplicationId, link, status)
+            }
+            to="#"
+            target="_blank"
+          >
             <div className="n-icon">
               <SVGDocument />
             </div>
             <div className="n-content">
               <div className="n-cat" title={'Document Submission'}>
-                {`${id} ${notificationType}`}
+                {`${notificationType}`}
               </div>
               <h4 className="n-title">{name}</h4>
               <p className="n-address">
