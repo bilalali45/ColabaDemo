@@ -278,7 +278,12 @@ export const HomePage: FunctionComponent = () => {
         const auth = LocalDB.getAuthToken();
 
         if (auth) {
-          SignalRHub.signalRHubResume(signalREventRegister);
+          //SignalRHub.signalRHubResume(signalREventRegister);
+          SignalRHub.configureHubConnection(
+            window.envConfig.API_BASE_URL + '/serverhub',
+            LocalDB.getAuthToken() || '',
+            signalREventRegister
+          );
         }
       });
     };
