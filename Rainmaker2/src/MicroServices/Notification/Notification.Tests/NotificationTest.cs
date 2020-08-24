@@ -205,7 +205,8 @@ namespace Notification.Tests
             NotificationRecepient notificationRecepient = new NotificationRecepient()
             {
                 Id = 1,
-                StatusId = 4
+                StatusId = 4,
+                RecipientId = 1
             };
             dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
 
@@ -214,7 +215,7 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-            await notificationService.Read(new List<long>{1});
+            await notificationService.Read(new List<long>{1},1);
         }
         [Fact]
         public async Task TestDeleteService()
@@ -437,7 +438,6 @@ namespace Notification.Tests
             long res = await notificationService.Add(notificationModel, 1, 1, model);
 
             // Assert
-            Assert.NotNull(res);
             Assert.Equal(1, res);
         }
         [Fact]
