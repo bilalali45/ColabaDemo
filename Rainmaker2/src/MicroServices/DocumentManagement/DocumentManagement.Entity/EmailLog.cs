@@ -21,5 +21,9 @@ namespace DocumentManagement.Entity
         [BsonRepresentation(BsonType.ObjectId)]
         public string typeId { get; set; }
         public string docName { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
     }
 }
