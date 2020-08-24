@@ -128,6 +128,7 @@ namespace Notification.Service
 
         public async Task<List<long>> Read(List<long> ids, int userId)
         {
+            List<long> readList = new List<long>(ids);
             foreach (var id in ids)
             {
                 var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id)
@@ -145,7 +146,7 @@ namespace Notification.Service
                     .Include(x => x.NotificationRecepient).ThenInclude(x => x.NotificationObject).ToListAsync();
                 foreach (var record in records)
                 {
-                    ids.Add(record.Id);
+                    readList.Add(record.Id);
                     record.NotificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Read;
 
                     record.NotificationRecepient.TrackingState = TrackingState.Modified;
@@ -154,7 +155,7 @@ namespace Notification.Service
                 }
             }
             await Uow.SaveChangesAsync();
-            return ids.Distinct().ToList();
+            return readList.Distinct().ToList();
         }
         public async Task Seen(List<long> ids)
         {
