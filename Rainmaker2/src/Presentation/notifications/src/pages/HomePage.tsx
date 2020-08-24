@@ -131,10 +131,14 @@ export const HomePage: FunctionComponent = () => {
 
   const clearAllVerification = async (verify: boolean) => {
     if (verify === true) {
-      await onClearNotifications();
+      try {
+        await onClearNotifications();
 
-      setClearAllConfirm(true);
-      setClear(true);
+        setClearAllConfirm(true);
+        setClear(true);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setClearAllConfirm(false);
       setClear(false);
@@ -143,28 +147,32 @@ export const HomePage: FunctionComponent = () => {
 
   useEffect(() => {
     if (notificationsVisible) {
-      const cloned = _.cloneDeep(notifications);
+      const clonedNotifications = _.cloneDeep(notifications);
 
-      const unseenIds = cloned
-        .filter((item) => item.status === 'Unseen')
-        .map((item) => item.id);
+      const unseenNotificationIds = clonedNotifications
+        .filter((notification) => notification.status === 'Unseen')
+        .map((notification) => notification.id);
 
-      if (unseenIds.length > 0) {
-        setUnSeenNotificationsCount((count) => count - unseenIds.length);
+      if (unseenNotificationIds.length > 0) {
+        setUnSeenNotificationsCount(
+          (count) => count - unseenNotificationIds.length
+        );
 
-        unseenIds.forEach((id) => {
-          const item = cloned.find((item) => item.id === id);
+        unseenNotificationIds.forEach((id) => {
+          const notification = clonedNotifications.find(
+            (notification) => notification.id === id
+          );
 
-          if (item) {
-            item.status = 'Seen';
+          if (notification) {
+            notification.status = 'Seen';
           }
         });
 
         http.put('/api/Notification/notification/Seen', {
-          ids: unseenIds
+          ids: unseenNotificationIds
         });
 
-        setNotifications(() => cloned);
+        setNotifications(() => clonedNotifications);
       }
     }
   }, [notificationsVisible, notifications]);
@@ -208,11 +216,13 @@ export const HomePage: FunctionComponent = () => {
       }
 
       SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
-        const cloned = _.cloneDeep(notificationsRef.current);
+        const clonedNotifications = _.cloneDeep(notificationsRef.current);
 
-        cloned.unshift(JSON.parse(notification) as NotificationType);
+        clonedNotifications.unshift(
+          JSON.parse(notification) as NotificationType
+        );
 
-        setNotifications(() => cloned);
+        setNotifications(() => clonedNotifications);
         notificationsVisibleRef.current === true &&
           setReceivedNewNotification(() => true);
 
@@ -239,32 +249,36 @@ export const HomePage: FunctionComponent = () => {
   }, [getFetchNotifications, getUnseenNotificationsCount]);
 
   const removeNotification = (id: number) => {
-    if (!!timers && timers.length > 0) {
-      if (timers.some((timer) => timer.id === id)) {
-        return;
+    try {
+      if (!!timers && timers.length > 0) {
+        if (timers.some((timer) => timer.id === id)) {
+          return;
+        }
+
+        const timer = setTimeout(async () => {
+          await http.put('/api/Notification/notification/Delete', {
+            id
+          });
+
+          setNotifications((prev) => prev.filter((item) => item.id !== id));
+        }, 5000);
+
+        const clonedTimeers = _.cloneDeep(timers);
+        clonedTimeers!.push({id, timer});
+        setTimers(clonedTimeers);
+      } else {
+        const timer = setTimeout(async () => {
+          await http.put('/api/Notification/notification/Delete', {
+            id
+          });
+
+          setNotifications((prev) => prev.filter((item) => item.id !== id));
+        }, 5000);
+
+        setTimers(() => [{id, timer}]);
       }
-
-      const timer = setTimeout(async () => {
-        await http.put('/api/Notification/notification/Delete', {
-          id
-        });
-
-        setNotifications((prev) => prev.filter((item) => item.id !== id));
-      }, 5000);
-
-      const cloned = _.cloneDeep(timers);
-      cloned!.push({id, timer});
-      setTimers(cloned);
-    } else {
-      const timer = setTimeout(async () => {
-        await http.put('/api/Notification/notification/Delete', {
-          id
-        });
-
-        setNotifications((prev) => prev.filter((item) => item.id !== id));
-      }, 5000);
-
-      setTimers(() => [{id, timer}]);
+    } catch (error) {
+      console.log(error);
     }
   };
 

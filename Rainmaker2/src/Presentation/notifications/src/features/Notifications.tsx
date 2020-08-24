@@ -33,15 +33,15 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   }, [receivedNewNotification, notificationsVisible]);
 
   const clearTimeOut = (id: number, timers: TimersType[]) => {
-    console.log('hello', id);
     const timer = timers.find((timer) => timer.id === id);
 
     if (timer) {
-      console.log('hello clearing', id);
       clearTimeout(timer.timer);
-      const cloned = _.cloneDeep(timers);
-      const filtred = cloned.filter((item) => item.id !== id);
-      setTimers(filtred);
+
+      const clonedTimers = _.cloneDeep(timers);
+      const filtredTiemrs = clonedTimers.filter((timer) => timer.id !== id);
+
+      setTimers(filtredTiemrs);
     }
   };
 
@@ -63,12 +63,14 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
           style={{overflow: 'initial'}}
         >
           {notifications.map((notification, index) => {
+            const {id} = notification;
+
             return (
               <Notification
-                removeNotification={() => removeNotification(notification.id)}
+                removeNotification={() => removeNotification(id)}
                 clearTimeOut={clearTimeOut}
                 timers={timers}
-                notificationId={notification.id}
+                notificationId={id}
                 key={index}
                 notification={notification}
               />
