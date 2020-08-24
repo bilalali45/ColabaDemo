@@ -127,11 +127,18 @@ namespace Notification.Tests
             NotificationRead notificationRead = new NotificationRead();
             notificationRead.ids = new List<long> {10};
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            notificationController.ControllerContext = context;
+
             //Act
             IActionResult result = await notificationController.Read(notificationRead);
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
         public async Task TestDeleteController()
@@ -205,10 +212,18 @@ namespace Notification.Tests
             NotificationRecepient notificationRecepient = new NotificationRecepient()
             {
                 Id = 1,
-                StatusId = 4,
-                RecipientId = 1
+                StatusId = 6,
+                RecipientId = 1,
+                NotificationObjectId = 1
             };
             dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+            NotificationObject notificationObject = new NotificationObject()
+            {
+                Id = 1,
+                EntityId = 1
+            };
+            dataContext.Set<NotificationObject>().Add(notificationObject);
 
             dataContext.SaveChanges();
 
@@ -375,7 +390,8 @@ namespace Notification.Tests
             NotificationRecepientStatusLog notificationRecepientStatusLogs = new NotificationRecepientStatusLog()
             {
                 Id = 1,
-                StatusId = 3
+                StatusId = 3,
+                NotificationRecepientId = 5
             };
             dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs);
 
@@ -438,7 +454,7 @@ namespace Notification.Tests
             long res = await notificationService.Add(notificationModel, 1, 1, model);
 
             // Assert
-            Assert.Equal(1, res);
+            Assert.Equal(2, res);
         }
         [Fact]
         public async Task TestSeenController()
@@ -487,7 +503,7 @@ namespace Notification.Tests
             NotificationRecepient notificationRecepient = new NotificationRecepient()
             {
                 Id = 6,
-                StatusId = 2,
+                StatusId = 1,
                 RecipientId = 1
             };
             dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
@@ -495,8 +511,76 @@ namespace Notification.Tests
             NotificationRecepientStatusLog notificationRecepientStatusLogs = new NotificationRecepientStatusLog()
             {
                 Id = 3,
+                StatusId = 1,
+                UpdatedOn = new DateTime(),
+                NotificationRecepientId = 6
+            };
+            dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs);
+
+            NotificationRecepientStatusLog notificationRecepientStatusLogs2 = new NotificationRecepientStatusLog()
+            {
+                Id = 4,
+                StatusId = 1,
+                UpdatedOn = new DateTime(),
+                NotificationRecepientId = 6
+            };
+            dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs2);
+
+            StatusListEnum statusListEnum = new StatusListEnum()
+            {
+                Id = 1,
+                Name = "Created",
+            };
+            dataContext.Set<StatusListEnum>().Add(statusListEnum);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            List<long> ids = new List<long>();
+            ids.Add(6);
+            await notificationService.Seen(ids);
+        }
+        [Fact]
+        public async Task TestSeenCountService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            NotificationRecepientMedium app = new NotificationRecepientMedium()
+            {
+                Id = 11,
+                SentTextJson = @"{   
+                                'name':'Talha',  
+                                'addess':'Street 99'  
+                                }",
+                DeliveryModeId = 1,
+                NotificationRecepientId = 11,
+                NotificationMediumid = 1,
+            };
+            dataContext.Set<NotificationRecepientMedium>().Add(app);
+
+            NotificationRecepient notificationRecepient = new NotificationRecepient()
+            {
+                Id = 11,
                 StatusId = 2,
-                UpdatedOn = new DateTime()
+                RecipientId = 1
+            };
+            dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+            NotificationRecepientStatusLog notificationRecepientStatusLogs = new NotificationRecepientStatusLog()
+            {
+                Id = 5,
+                StatusId = 2,
+                UpdatedOn = new DateTime(),
+                NotificationRecepientId = 11
             };
             dataContext.Set<NotificationRecepientStatusLog>().Add(notificationRecepientStatusLogs);
 
@@ -513,7 +597,7 @@ namespace Notification.Tests
 
             //Act
             List<long> ids = new List<long>();
-            ids.Add(6);
+            ids.Add(11);
             await notificationService.Seen(ids);
         }
         [Fact]

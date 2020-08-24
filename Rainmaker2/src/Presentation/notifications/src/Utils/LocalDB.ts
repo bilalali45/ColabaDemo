@@ -99,7 +99,11 @@ export class LocalDB {
 
   //#region Remove Auth
   static removeAuth() {
-    let items = ['token', 'payload', 'refreshToken'];
+    let items = [
+      'notificationToken',
+      'notificationPayload',
+      'notificationRefreshToken'
+    ];
     for (const item of items) {
       localStorage.removeItem(item);
     }

@@ -13,6 +13,7 @@ interface NotificationsProps {
   receivedNewNotification: boolean;
   removeNotification: (id: number) => void;
   setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>;
+  readAllNotificationsForDocument: (loanApplicationId: string) => void;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = ({
@@ -22,7 +23,8 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   notificationsVisible,
   receivedNewNotification,
   removeNotification,
-  setTimers
+  setTimers,
+  readAllNotificationsForDocument
 }) => {
   const [showToast, setShowToast] = useState(false);
 
@@ -67,12 +69,14 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
             return (
               <Notification
+                key={index}
                 removeNotification={() => removeNotification(id)}
                 clearTimeOut={clearTimeOut}
                 timers={timers}
-                notificationId={id}
-                key={index}
                 notification={notification}
+                readAllNotificationsForDocument={
+                  readAllNotificationsForDocument
+                }
               />
             );
           })}

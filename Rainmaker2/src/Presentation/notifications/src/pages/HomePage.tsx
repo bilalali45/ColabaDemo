@@ -182,12 +182,50 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [notificationsVisible, notifications, http]);
 
+  const readAllNotificationsForDocument = async (loanApplicationId: string) => {
+    try {
+      const documentIds = notifications
+        .filter(
+          (notification) =>
+            ['Unseen', 'Unread', 'Seen'].includes(notification.status) &&
+            notification.payload.data.loanApplicationId === loanApplicationId
+        )
+        .map((notification) => notification.id);
+
+      if (documentIds.length > 0) {
+        const {data: readDocumentIds} = await http.put<
+          number[],
+          {ids: number[]}
+        >('/api/Notification/notification/Read', {
+          ids: documentIds
+        });
+
+        const clonedNotifications = _.cloneDeep(notifications);
+
+        readDocumentIds.forEach((id) => {
+          const notificationIndex = clonedNotifications.findIndex(
+            (notification) => notification.id === id
+          );
+
+          if (notificationIndex !== -1) {
+            clonedNotifications[notificationIndex].status = 'Read';
+          }
+        });
+
+        setNotifications(clonedNotifications);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderNotifications = (
     tiemrs: TimersType[],
     removeNotification: (id: number) => void,
     notifications: NotificationType[],
     lastId: number,
-    setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>
+    setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>,
+    readAllNotificationsForDocument: (loanApplicationId: string) => void
   ) => {
     if (notifications.length === 0) {
       return <AlertForNoData />;
@@ -201,6 +239,7 @@ export const HomePage: FunctionComponent = () => {
           notifications={notifications}
           getFetchNotifications={() => getFetchNotifications(lastId)}
           setTimers={setTimers}
+          readAllNotificationsForDocument={readAllNotificationsForDocument}
         />
       );
     } else {
@@ -287,6 +326,12 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
+  useEffect(() => {
+    if (notificationsRef.current.length === 6 && lastIdRef.current !== -1) {
+      getFetchNotifications(lastIdRef.current);
+    }
+  });
+
   return (
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
@@ -304,7 +349,8 @@ export const HomePage: FunctionComponent = () => {
             removeNotification,
             notifications,
             lastId,
-            setTimers
+            setTimers,
+            readAllNotificationsForDocument
           )}
         </div>
       )}
