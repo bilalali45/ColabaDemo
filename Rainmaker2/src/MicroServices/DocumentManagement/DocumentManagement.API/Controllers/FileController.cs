@@ -134,7 +134,8 @@ namespace DocumentManagement.API.Controllers
 
             if (Files.Count > 0)
             {
-                var responseBody = await losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                Task.Run(() => losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString())));
+                //var responseBody = await losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString()));
             }
 
 
