@@ -70,7 +70,7 @@ namespace Notification.Service
                     notificationRecepient.TrackingState = TrackingState.Added;
                     notificationObject.NotificationRecepients.Add(notificationRecepient);
                     notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
-                    if (await IsUserSubscribedToMedium(userId, tenantId, setting.NotificationMediumId))
+                    if (await IsUserSubscribedToMedium(userId, tenantId, setting.NotificationMediumId, model.NotificationType))
                     {
                         NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
                         notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
@@ -98,9 +98,9 @@ namespace Notification.Service
                 .Include(x => x.NotificationRecepients).ThenInclude(x => x.NotificationRecepientMediums).FirstAsync();
         }
 
-        private async Task<bool> IsUserSubscribedToMedium(int userId, int tenantId, int mediumId)
+        private async Task<bool> IsUserSubscribedToMedium(int userId, int tenantId, int mediumId, int notificationType)
         {
-            var result = await Uow.Repository<UserNotificationMedium>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId).FirstOrDefaultAsync();
+            var result = await Uow.Repository<UserNotificationMedium>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId==notificationType).FirstOrDefaultAsync();
             if (result == null)
             {
                 return true;

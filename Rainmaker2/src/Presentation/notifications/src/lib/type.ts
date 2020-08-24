@@ -1,4 +1,5 @@
 interface Data {
+  loanApplicationId: string;
   address: string;
   city: string;
   dateTime: string;
