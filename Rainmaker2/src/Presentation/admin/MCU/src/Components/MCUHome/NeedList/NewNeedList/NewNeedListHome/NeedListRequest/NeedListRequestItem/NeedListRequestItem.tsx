@@ -25,7 +25,10 @@ export const NeedListRequestItem = ({ document, changeDocument, isSelected, remo
                 {!toRemoveList ?
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
                        <span className="text-ellipsis" title={document.docName}>{document.docName}</span>
-                        {isSelected && <span className="BTNclose" onClick={() => { setRemoveList(true) }}><i className="zmdi zmdi-close"></i></span>}
+                        {isSelected && <span className="BTNclose" onClick={() => {
+                                    removeDocumentFromList(document)
+                                    
+                                }}><i className="zmdi zmdi-close"></i></span>}
                     </div>
                     : <>
                         {<div className="alert-cancel">

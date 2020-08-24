@@ -296,7 +296,7 @@ export const DocumentSnipet = ({
           </label>
         )}
       </div>
-      <div className="document-snipet--right">
+      {/* <div className="document-snipet--right">
         {!editingModeEnabled && (
           <button
             className="document-snipet-btn-edit"
@@ -306,7 +306,7 @@ export const DocumentSnipet = ({
             <SVGeditFile />
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
