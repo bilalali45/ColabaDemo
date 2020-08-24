@@ -326,6 +326,12 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
+  useEffect(() => {
+    if (notificationsRef.current.length === 6 && lastIdRef.current !== -1) {
+      getFetchNotifications(lastIdRef.current);
+    }
+  });
+
   return (
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
