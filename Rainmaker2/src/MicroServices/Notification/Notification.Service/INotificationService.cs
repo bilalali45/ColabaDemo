@@ -12,7 +12,7 @@ namespace Notification.Service
         Task<long> Add(NotificationModel model, int userId, int tenantId, TenantSetting setting);
         Task<NotificationObject> GetByIdForTemplate(long notificationId);
         Task<List<NotificationMediumModel>> GetPaged(int pageSize, long lastId, int mediumId,int userId);
-        Task Read(List<long> ids);
+        Task<List<long>> Read(List<long> ids, int userId);
         Task Seen(List<long> ids);
         Task Delete(long id);
         Task DeleteAll();

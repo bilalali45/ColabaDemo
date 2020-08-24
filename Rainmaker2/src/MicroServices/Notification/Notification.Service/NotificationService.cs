@@ -126,20 +126,35 @@ namespace Notification.Service
                 }).ToListAsync();
         }
 
-        public async Task Read(List<long> ids)
+        public async Task<List<long>> Read(List<long> ids, int userId)
         {
             foreach (var id in ids)
             {
                 var result = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id == id)
-                    .Include(x => x.NotificationRecepient).FirstOrDefaultAsync();
+                    .Include(x => x.NotificationRecepient).ThenInclude(x=>x.NotificationObject).FirstOrDefaultAsync();
 
                 result.NotificationRecepient.StatusId = (byte) Notification.Common.StatusListEnum.Read;
 
                 result.NotificationRecepient.TrackingState = TrackingState.Modified;
 
                 Uow.Repository<NotificationRecepientMedium>().Update(result);
+                await Uow.SaveChangesAsync();
+                int loanApplicationId = result.NotificationRecepient.NotificationObject.EntityId.Value;
+                var records = await Uow.Repository<NotificationRecepientMedium>().Query(x => x.NotificationRecepient.RecipientId==userId && x.NotificationRecepient.NotificationObject.EntityId==loanApplicationId &&
+                                                                                             (x.NotificationRecepient.StatusId==(byte)Notification.Common.StatusListEnum.Unread || x.NotificationRecepient.StatusId == (byte)Notification.Common.StatusListEnum.Unseen))
+                    .Include(x => x.NotificationRecepient).ThenInclude(x => x.NotificationObject).ToListAsync();
+                foreach (var record in records)
+                {
+                    ids.Add(record.Id);
+                    record.NotificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Read;
+
+                    record.NotificationRecepient.TrackingState = TrackingState.Modified;
+
+                    Uow.Repository<NotificationRecepientMedium>().Update(record);
+                }
             }
             await Uow.SaveChangesAsync();
+            return ids.Distinct().ToList();
         }
         public async Task Seen(List<long> ids)
         {
