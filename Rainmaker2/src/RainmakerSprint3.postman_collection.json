@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "98fba80f-2674-4bd4-9c00-5e3ecf2fbdf3",
+		"_postman_id": "d8ad6025-06c4-44c3-a847-adf23af9f97a",
 		"name": "RainmakerSprint3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -135,7 +135,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/DocumentManagement/Document/GetEmailLog?id=abc15d1fe456051af2eeb768",
+					"raw": "{{baseUrl}}/api/DocumentManagement/Document/GetEmailLog?id=5f0ede3cce9c4b62509d0dbf&requestId=5f439e9ebf7ceb086c8ceb54&docId=5f439e9ebf7ceb086c8ceb59",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -148,7 +148,15 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "abc15d1fe456051af2eeb768"
+							"value": "5f0ede3cce9c4b62509d0dbf"
+						},
+						{
+							"key": "requestId",
+							"value": "5f439e9ebf7ceb086c8ceb54"
+						},
+						{
+							"key": "docId",
+							"value": "5f439e9ebf7ceb086c8ceb59"
 						}
 					]
 				}
@@ -215,7 +223,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/Documentmanagement/Document/GetActivityLog?id=5eb25d1fe519051af2eeb72d&docName=Salary Slip",
+					"raw": "{{baseUrl}}/api/Documentmanagement/Document/GetActivityLog?id=5f0ede3cce9c4b62509d0dbf&requestId=5f439e9ebf7ceb086c8ceb54&docId=5f439e9ebf7ceb086c8ceb59",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -228,16 +236,15 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "5eb25d1fe519051af2eeb72d"
+							"value": "5f0ede3cce9c4b62509d0dbf"
 						},
 						{
-							"key": "typeId",
-							"value": "1",
-							"disabled": true
+							"key": "requestId",
+							"value": "5f439e9ebf7ceb086c8ceb54"
 						},
 						{
-							"key": "docName",
-							"value": "Salary Slip"
+							"key": "docId",
+							"value": "5f439e9ebf7ceb086c8ceb59"
 						}
 					]
 				}
