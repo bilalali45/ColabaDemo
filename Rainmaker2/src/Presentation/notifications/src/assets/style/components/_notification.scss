@@ -26,10 +26,11 @@
       background-color: color('primary');
       color: color('primary-text');
       @extend .flex;
-      font: 400 #{fontSize('sm') + '/1.2'} fontFamily('base');
+      font: 300 #{fontSize('sm') + '/1.2'} fontFamily('base');
 
       .n-alert-text {
         font-style: italic;
+        opacity: 0.8;
       }
 
       .btn-undo {
@@ -37,7 +38,7 @@
         background-color: transparent;
         border: none;
         color: color('primary-text');
-        font: 400 #{fontSize('sm') + '/1.2'} fontFamily('base');
+        font: 300 #{fontSize('sm') + '/1.2'} fontFamily('base');
         cursor: pointer;
       }
     }

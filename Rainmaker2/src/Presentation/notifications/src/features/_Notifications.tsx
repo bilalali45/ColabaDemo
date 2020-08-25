@@ -99,6 +99,18 @@ export const Notification: FunctionComponent<NotificationProps> = ({
           <div className="n-close" onClick={removeNotification}>
             <SVGClose />
           </div>
+
+          <div className="notification-list-item-remove">
+            <span className="n-alert-text">
+              This notification has been removed.
+            </span>
+            <button
+              className="btn-undo"
+              onClick={() => clearTimeOut(id, timers)}
+            >
+              Undo
+            </button>
+          </div>
         </div>
       )}
     </div>
