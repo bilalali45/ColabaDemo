@@ -111,7 +111,7 @@ ul {
     .btn-notify {
       display: inline-block;
       padding: 8px 30px;
-      outline: 4px solid #fff;
+      outline: 4px solid #fff !important;
       font: 500 #{fontSize('sm') + '/1.2'} fontFamily('base');
       background-color: color('primary');
       text-transform: uppercase;
