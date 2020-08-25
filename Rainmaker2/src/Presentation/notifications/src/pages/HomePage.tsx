@@ -10,8 +10,7 @@ import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
-import {Header, BellIcon} from './_HomePage';
-import {AlertForRemove, AlertForNoData} from '../features/NotificationAlerts';
+import {Header, BellIcon, AlertForRemove, AlertForNoData} from './_HomePage';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
 
@@ -20,6 +19,7 @@ export const HomePage: FunctionComponent = () => {
   const notificationsVisibleRef = useRef(notificationsVisible);
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [unSeenNotificationsCount, setUnSeenNotificationsCount] = useState(0);
+  const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
   const notificationsRef = useRef(notifications);
   const [receivedNewNotification, setReceivedNewNotification] = useState(false);
   const http = useMemo(() => new Http(), []);
@@ -40,6 +40,7 @@ export const HomePage: FunctionComponent = () => {
     lastIdRef.current = lastId;
     notificationsRef.current = notifications;
     notificationsVisibleRef.current = notificationsVisible;
+    unSeenNotificationsCountRef.current = unSeenNotificationsCount;
   });
 
   const openEffect = useCallback(() => {
@@ -50,21 +51,22 @@ export const HomePage: FunctionComponent = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
-      console.log(event.target.tagName);
       if (
         refContainerSidebar.current &&
         !refContainerSidebar.current.contains(event.target)
       ) {
         setNotificationsVisible(() => false);
         setReceivedNewNotification(() => false);
+        setClear(() => false);
       }
     };
 
     const iframes = document.querySelectorAll('iframe');
+
     iframes.forEach((iframe: any) => {
       iframe.contentWindow.addEventListener('click', handleClickOutside, true);
     });
-    console.log(iframes);
+
     document.addEventListener('click', handleClickOutside, true);
 
     return () => {
@@ -75,6 +77,7 @@ export const HomePage: FunctionComponent = () => {
           true
         );
       });
+
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, []);
@@ -123,11 +126,11 @@ export const HomePage: FunctionComponent = () => {
 
   const getUnseenNotificationsCount = useCallback(async () => {
     try {
-      const resp: any = await http.get(
+      const {data} = await http.get<number>(
         '/api/Notification/notification/GetCount'
       );
 
-      setUnSeenNotificationsCount(resp.data);
+      setUnSeenNotificationsCount(data);
     } catch (error) {
       console.warn(error);
     }
@@ -153,8 +156,8 @@ export const HomePage: FunctionComponent = () => {
       try {
         await onClearNotifications();
 
-        setClearAllConfirm(true);
-        setClear(true);
+        setClearAllConfirm(() => false);
+        setClear(() => false);
       } catch (error) {
         console.log(error);
       }
@@ -173,8 +176,8 @@ export const HomePage: FunctionComponent = () => {
         .map((notification) => notification.id);
 
       if (unseenNotificationIds.length > 0) {
-        setUnSeenNotificationsCount(
-          (count) => count - unseenNotificationIds.length
+        setUnSeenNotificationsCount((count) =>
+          count === 0 ? 0 : count - unseenNotificationIds.length
         );
 
         unseenNotificationIds.forEach((id) => {
@@ -234,7 +237,7 @@ export const HomePage: FunctionComponent = () => {
   };
 
   const renderNotifications = (
-    tiemrs: TimersType[],
+    timers: TimersType[],
     removeNotification: (id: number) => void,
     notifications: NotificationType[],
     lastId: number,
@@ -280,12 +283,13 @@ export const HomePage: FunctionComponent = () => {
           JSON.parse(notification) as NotificationType
         );
 
-        setNotifications(() => clonedNotifications);
+        notificationsVisibleRef.current === false &&
+          setUnSeenNotificationsCount((count) => count + 1);
+
         notificationsVisibleRef.current === true &&
           setReceivedNewNotification(() => true);
 
-        notificationsVisibleRef.current === false &&
-          setUnSeenNotificationsCount((count) => count + 1);
+        setNotifications(() => clonedNotifications);
       });
 
       SignalRHub.hubConnection.onclose(() => {
@@ -351,11 +355,19 @@ export const HomePage: FunctionComponent = () => {
     }
   });
 
+  let notificationsCounter = 0;
+  if (receivedNewNotification === false) {
+    notificationsCounter = unSeenNotificationsCount;
+  } else {
+    notificationsCounter = notifications.filter((n) => n.status === 'Unseen')
+      .length;
+  }
+
   return (
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
         onClick={toggleNotificationSidebar}
-        notificationsCounter={unSeenNotificationsCount}
+        notificationsCounter={notificationsCounter}
       />
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
