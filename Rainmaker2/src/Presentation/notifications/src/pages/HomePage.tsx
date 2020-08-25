@@ -50,6 +50,7 @@ export const HomePage: FunctionComponent = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
+      console.log(event.target.tagName);
       if (
         refContainerSidebar.current &&
         !refContainerSidebar.current.contains(event.target)
@@ -59,8 +60,21 @@ export const HomePage: FunctionComponent = () => {
       }
     };
 
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach((iframe: any) => {
+      iframe.contentWindow.addEventListener('click', handleClickOutside, true);
+    });
+    console.log(iframes);
     document.addEventListener('click', handleClickOutside, true);
+
     return () => {
+      iframes.forEach((iframe: any) => {
+        iframe.contentWindow.removeEventListener(
+          'click',
+          handleClickOutside,
+          true
+        );
+      });
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, []);
