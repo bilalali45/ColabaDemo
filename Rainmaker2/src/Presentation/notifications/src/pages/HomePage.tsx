@@ -92,7 +92,7 @@ export const HomePage: FunctionComponent = () => {
 
       setTimeout(() => {
         setNotificationsVisible(!notificationsVisible);
-      }, 50);
+      }, 10);
     }
   };
 
