@@ -24,8 +24,11 @@ export const NeedListRequestItem = ({ document, changeDocument, isSelected, remo
             <div className="l-wrap" onClick={() => changeDocument(document)}>
                 {!toRemoveList ?
                     <div className={`c-list ${isSelected ? 'active' : ''}`}>
-                       <span className="text-ellipsis">{document.docName}</span>
-                        {isSelected && <span className="BTNclose" onClick={() => { setRemoveList(true) }}><i className="zmdi zmdi-close"></i></span>}
+                       <span className="text-ellipsis" title={document.docName}>{document.docName}</span>
+                        {isSelected && <span className="BTNclose" onClick={() => {
+                                    removeDocumentFromList(document)
+                                    
+                                }}><i className="zmdi zmdi-close"></i></span>}
                     </div>
                     : <>
                         {<div className="alert-cancel">
@@ -33,7 +36,7 @@ export const NeedListRequestItem = ({ document, changeDocument, isSelected, remo
                             <div className="l-remove-actions">
                                 <button className="lbtn btn-no" onClick={() => { setRemoveList(false) }}> No</button>
                                 <button className="lbtn btn-yes" onClick={() => {
-                                    removeDocumentFromList(document?.localId)
+                                    removeDocumentFromList(document)
                                     setRemoveList(false);
                                 }}>Yes</button></div>
                         </div>}

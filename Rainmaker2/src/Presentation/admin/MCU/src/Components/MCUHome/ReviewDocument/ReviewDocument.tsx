@@ -17,6 +17,7 @@ import {
 } from '../../../Store/reducers/NeedListReducer';
 import {NeedList} from '../../../Entities/Models/NeedList';
 import {DocumentStatus} from '../../../Entities/Types/Types';
+import {timeout} from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -60,13 +61,6 @@ export const ReviewDocument = () => {
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
-      const params = {
-        id,
-        requestId,
-        docId,
-        fileId
-      };
-
       try {
         setLoading(true);
 
@@ -142,23 +136,8 @@ export const ReviewDocument = () => {
           index > nextIndex
       );
 
-      const previousDocIndex = needList.findIndex(
-        (document, index) =>
-          document.docId !== nextDocument.docId &&
-          document.status === DocumentStatus.PENDING_REVIEW &&
-          index < nextIndex
-      );
-
       if (nextDocIndex === -1) {
         setNextDocumentButtonDisabled(true);
-      }
-
-      if (fromHeader == true) {
-        if (previousDocIndex !== -1) {
-          setPreviousDocumentButtonDisabled(() => false);
-        } else if (previousDocIndex === -1) {
-          setPreviousDocumentButtonDisabled(() => true);
-        }
       }
 
       setCurrentDocument(() => nextDocument);
@@ -175,7 +154,6 @@ export const ReviewDocument = () => {
     []
   );
 
-  //This function is being called inside useEffect
   const navigateDocument = useCallback(
     (
       docs: NeedList[],
@@ -232,6 +210,26 @@ export const ReviewDocument = () => {
             setNextDocumentButtonDisabled(false);
           }
 
+          if (navigateBackOrForward === 'back' && fromHeader === true) {
+            let currIndex = index;
+
+            const doc = docs
+              .filter(
+                (doc, index) =>
+                  doc.docId !== currentDocument.docId &&
+                  doc.status === DocumentStatus.PENDING_REVIEW &&
+                  index < currIndex
+              )
+              .reverse()[0];
+
+            if (!doc) {
+              setPreviousDocumentButtonDisabled(() => true);
+            }
+          } else if (fromHeader === true) {
+            previousDocumentButtonDisabled === true &&
+              setPreviousDocumentButtonDisabled(() => false);
+          }
+
           changeCurrentDocument(nextDocument, index, fromHeader);
         }
       }
@@ -266,6 +264,10 @@ export const ReviewDocument = () => {
             type: NeedListActionsType.SetNeedListTableDATA,
             payload: clonedNeedList
           });
+
+          setCurrentDocument(clonedCurrentDocument);
+
+          await timeout(1000);
 
           navigateDocument(clonedNeedList, 'next');
         } catch (error) {
@@ -309,6 +311,10 @@ export const ReviewDocument = () => {
             type: NeedListActionsType.SetNeedListTableDATA,
             payload: clonedNeedList
           });
+
+          setCurrentDocument(clonedCurrentDocument);
+
+          await timeout(1000);
 
           navigateDocument(needList, 'next');
         } catch (error) {
@@ -410,7 +416,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const {currentDocumentIndex, documentDetail} = state as any;
+        const {currentDocumentIndex, documentDetail, fileIndex} = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -439,14 +445,15 @@ export const ReviewDocument = () => {
 
         setNavigationIndex(currentDocumentIndex);
         setCurrentDocument(() => doc);
+        !!fileIndex && setCurrentFileIndex(fileIndex);
         setDocumentDetail(() => documentDetail);
 
         const {id, requestId, docId, files, typeId, docName} = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
-          setClientName(files[0].clientName);
+          setClientName(files[fileIndex || 0].clientName);
 
-          getDocumentForView(id, requestId, docId, files[0].id);
+          getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
         } else {
           setTypeIdId({id, typeId: !!typeId ? typeId : docName});
         }
@@ -465,6 +472,7 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        doc={currentDocument?.docName === typeIdId.typeId || false}
         id={typeIdId.id}
         typeId={typeIdId.typeId}
         hideNextPreviousNavigation={
@@ -517,6 +525,9 @@ export const ReviewDocument = () => {
             currentDocument.files.length > 0 && (
               <aside className="review-document-body--aside col-md-4">
                 <ReviewDocumentStatement
+                        doc={currentDocument?.docName === typeIdId.typeId || false}
+                        id={typeIdId.id}
+                        typeId={typeIdId.typeId}
                   typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
                   moveNextFile={moveNextFile}
                   currentDocument={!!currentDocument ? currentDocument : null}

@@ -1,0 +1,107 @@
+import React, {FunctionComponent} from 'react';
+import {Link} from 'react-router-dom';
+
+import {NotificationType, TimersType} from '../lib/type';
+import {formatDateTime} from '../lib/utils';
+import {SVGDocument, SVGClose, SVGCalender} from '../SVGIcons';
+
+interface NotificationProps {
+  removeNotification: () => void;
+  notification: NotificationType;
+  timers: TimersType[];
+  clearTimeOut: (id: number, timers: TimersType[]) => void;
+  readAllNotificationsForDocument: (loanApplicationId: string) => void;
+}
+
+export const Notification: FunctionComponent<NotificationProps> = ({
+  removeNotification,
+  clearTimeOut,
+  timers,
+  notification,
+  readAllNotificationsForDocument
+}) => {
+  const {
+    status,
+    id,
+    payload: {
+      data: {
+        loanApplicationId,
+        address,
+        notificationType,
+        name,
+        city,
+        state,
+        zipCode,
+        unitNumber,
+        dateTime
+      },
+      meta: {link}
+    }
+  } = notification;
+
+  const readDocumentsAndOpenLink = (
+    loanApplicationId: string,
+    link: string,
+    notificationStatus: string
+  ) => {
+    //Prevent unecessary API call
+    if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
+      readAllNotificationsForDocument(loanApplicationId);
+    }
+
+    window.open(link, '_blank');
+  };
+
+  return (
+    <div
+      className={`notification-list ${
+        ['Unseen', 'Unread', 'Seen'].includes(notification.status)
+          ? 'unSeenList'
+          : ''
+      }`}
+    >
+      {timers.some((timer) => timer.id === notification.id) ? (
+        <div className="notification-list-item-remove">
+          <span className="n-alert-text">
+            This notification has been removed.
+          </span>
+          <button className="btn-undo" onClick={() => clearTimeOut(id, timers)}>
+            Undo
+          </button>
+        </div>
+      ) : (
+        <div>
+          <Link
+            className="n-wrap"
+            onClick={() =>
+              readDocumentsAndOpenLink(loanApplicationId, link, status)
+            }
+            to="#"
+            target="_blank"
+          >
+            <div className="n-icon">
+              <SVGDocument />
+            </div>
+            <div className="n-content">
+              <div className="n-cat" title={'Document Submission'}>
+                {`${notificationType}`}
+              </div>
+              <h4 className="n-title">{name}</h4>
+              <p className="n-address">
+                {address} # {unitNumber} <br />
+                {city}, {state} {zipCode}
+              </p>
+              <div className="n-date">
+                <SVGCalender />
+                {formatDateTime(dateTime, 'MMM, DD, YYYY hh:mm A')}
+              </div>
+            </div>
+          </Link>
+          <div className="n-close" onClick={removeNotification}>
+            <SVGClose />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

@@ -5,6 +5,7 @@ import { TemplateDocument } from '../../../../Entities/Models/TemplateDocument'
 import { Store } from '../../../../Store/Store'
 import { LocalDB } from '../../../../Utils/LocalDB'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -14,12 +15,20 @@ type ReviewNeedListRequestHomeType = {
     showSendButton: boolean
     documentHash: string | undefined
     setHash: Function
+    defaultEmail: string | undefined
 }
 
-export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash }: ReviewNeedListRequestHomeType) => {
+export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash, defaultEmail }: ReviewNeedListRequestHomeType) => {
 
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
+
+    const history = useHistory();
+ 
+    useEffect(() => {
+        history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
+    }, [!documentList]);
+
     const getDocumentsName = () => {
         if (!documentList) return;
         let names: string = "";
@@ -60,6 +69,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
                         documentList={documentList}
                         documentHash = {documentHash}
                         setHash = {setHash}
+                        defaultEmail = {defaultEmail}
                     />
                 </div>
             </div>

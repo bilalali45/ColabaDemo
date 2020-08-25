@@ -64,9 +64,9 @@ namespace RainMaker.Entity.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent ActivityType pointed by [Activity].([ActivityTypeId]) (FK_Activity_ActivityType)
+        /// Parent ActivityType pointed by [Activity].([ActivityTypeId]) (FK_ActivityLog_ActivityType)
         /// </summary>
-        public virtual ActivityType ActivityType { get; set; } // FK_Activity_ActivityType
+        public virtual ActivityType ActivityType { get; set; } // FK_ActivityLog_ActivityType
 
         /// <summary>
         /// Parent BusinessUnit pointed by [Activity].([BusinessUnitId]) (FK_Activity_BusinessUnit)

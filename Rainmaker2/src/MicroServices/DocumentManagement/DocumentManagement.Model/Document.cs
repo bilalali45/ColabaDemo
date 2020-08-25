@@ -45,6 +45,7 @@ namespace DocumentManagement.Model
         public string clientName { get; set; }
         public string mcuName { get; set; }
         public DateTime fileUploadedOn { get; set; }
+        public bool isRead { get; set; }
     }
     public class TemplateIdModel
     {
@@ -58,7 +59,18 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string docMessage { get; set; }
     }
-
+    public class TemplateDocumentModel
+    {
+        public string typeId { get; set; }
+        public string docName { get; set; }
+        public string docMessage { get; set; }
+    }
+    public class GetTemplateModel
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public List<TemplateDocumentModel> docs { get; set; }
+    }
     public class DocumentQuery
     {
         [BsonRepresentation(BsonType.ObjectId)]
@@ -70,7 +82,19 @@ namespace DocumentManagement.Model
         public List<Message> messages { get; set; }
         public string docName { get; set; }
     }
-
+    public class TempDocumentQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public string name { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string typeId { get; set; }
+        public string typeName { get; set; }
+        public string docMessage { get; set; }
+        public List<Message> messages { get; set; }
+        public string docName { get; set; }
+    }
     public class AcceptDocumentModel
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
@@ -134,11 +158,11 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "id")]
         public string id { get; set; }
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "typeId")]
-        public string typeId { get; set; }
-        //[RegularExpression(@"^[A-Za-z0-9\s-]{0,255}$", ErrorMessage = ValidationMessages.ValidationFailed)]
-        [FromQuery(Name = "docName")]
-        public string docName { get; set; }
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
     }
 
     public class GetEmailLog
@@ -147,6 +171,12 @@ namespace DocumentManagement.Model
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         [FromQuery(Name = "id")]
         public string id { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "requestId")]
+        public string requestId { get; set; }
+        [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
+        [FromQuery(Name = "docId")]
+        public string docId { get; set; }
     }
     public class View
     {

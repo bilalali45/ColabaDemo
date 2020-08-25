@@ -47,10 +47,6 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType
     return (
         <div className="alert-box" id="AlertBox" data-component="AlertBox">
             <div className="alert-box--modal">
-                {/* <button className="alert-box--modal-close" onClick={() => { hideAlert() }} ><em className="zmdi zmdi-close"></em></button> */}
-                {/* <header className="alert-box--modal-header">
-                    <h2 className="text-center">Are you sure, you want to proceed!</h2>
-                </header> */}
                 <section className="alert-box--modal-body">
                     <div className="alert-box--modal-body-content">
                     <p>Are you sure you want to leave?</p>

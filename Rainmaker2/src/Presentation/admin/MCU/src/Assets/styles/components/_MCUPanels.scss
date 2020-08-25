@@ -31,9 +31,18 @@
     &-body{
         background-color: color('widgetBg');
         border-bottom:1px solid color('border');
+        .defaultlisting{
+            ul {
+            list-style: disc;
+            padding-left: 20px;
+            li{
+                list-style: disc; 
+            }
+        }
+        }
 
         &.padding{
-            padding: 30px;
+            padding: 25px 30px;
             min-height: calc(100% - 135px);
         }
 
@@ -58,6 +67,8 @@
             }
             .mcu-panel-body.padding{
                 min-height: 70vh;
+                height: calc(100vh - 250px);
+                overflow-y: auto;
             }
         }
         &--aside{
@@ -65,6 +76,12 @@
             color: color('ReviewDocumentSidebarText');
             padding: 0;
             height: 100%;
+
+            .mcu-panel-body{
+                max-height: calc(100vh - 360px);
+                overflow-y: auto;
+            }
+
         }
     }
 
@@ -75,7 +92,7 @@
         margin-bottom: 0;
         
         &.alert{
-            padding: 27px 30px;
+            padding: 23px 30px;
         }
     }
 

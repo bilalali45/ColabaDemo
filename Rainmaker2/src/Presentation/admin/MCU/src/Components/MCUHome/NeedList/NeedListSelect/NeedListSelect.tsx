@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent, useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Template } from "../../../../Entities/Models/Template";
 import { MyTemplate, TenantTemplate } from "../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer";
@@ -14,14 +14,16 @@ type NeedListSelectType = {
   templateList: Template[],
   addTemplatesDocuments: Function,
   viewSaveDraft: Function,
-  showButton: boolean
+  showButton: boolean,
+  fetchTemplateDocs: Function
 }
 
 export const NeedListSelect = ({
   // templateList,
   addTemplatesDocuments,
   viewSaveDraft,
-  showButton = false }: NeedListSelectType) => {
+  showButton = false,
+  fetchTemplateDocs }: NeedListSelectType) => {
 
   const [idArray, setIdArray] = useState<String[]>([]);
   const [templateList, setTemplateList] = useState<Template[]>([]);
@@ -30,26 +32,37 @@ export const NeedListSelect = ({
 
   const location = useLocation();
 
+  let myTemplateContainerRef = useRef<HTMLUListElement>(null);
+  let tenantTemplateContainerRef = useRef<HTMLUListElement>(null);
+
   const templateManager: any = state?.templateManager;
   const templates: Template[] = templateManager?.templates;
 
   const needListManager: any = state?.needListManager;
   const selectedIds: string[] = needListManager?.templateIds || [];
 
-
+  const [show, setShow] = useState<boolean>(false);
+    
 
   useEffect(() => {
     if (!templates) {
       fetchTemplatesList();
     }
+
+    
   }, [!templates])
 
   useEffect(() => {
     setIdArray(selectedIds || []);
-  }, [selectedIds?.length])
+  }, [selectedIds?.length]);
 
+  useEffect(() => {
+    if(myTemplateContainerRef?.current && tenantTemplateContainerRef?.current) {
+      myTemplateContainerRef?.current.scrollTo(0, 0);
+      tenantTemplateContainerRef?.current.scrollTo(0, 0);
+    }
+  }, [show === true, location.pathname, templates]);
 
-  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     setTemplateList(templates);
@@ -72,28 +85,19 @@ export const NeedListSelect = ({
 
   }
 
-  const MyTemplates = () => {
-    if (!templateList || templateList.length === 0) return '';
+  const MyTemplates = (templateList: Template[]) => {
+    if (!templateList || templateList.length === 0) return null;
     return (
-      <>{
-       
-          templates?.map((t: Template) => {
-            if (t?.type === MyTemplate) {
-              return  <h3>My Templates</h3> 
-             
-            }
-            return;
-          })
-        }
-     
-    
-        <ul className="checklist">
+      <>
+        <h3>My Templates</h3>
+
+        <ul className="checklist" ref={myTemplateContainerRef}>
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
 
               if (t?.type === MyTemplate) {
-              
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+
+                return <li key={t?.id}><label className="text-ellipsis"><input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}</label></li>
               }
@@ -104,22 +108,14 @@ export const NeedListSelect = ({
     );
   };
 
-  const TemplatesByTenant = () => {
-    if (!templateList) return '';
+  const TemplatesByTenant = (templateList: Template[]) => {
+    if (!templateList || templateList.length === 0) return null;
     return (
       <>
-{     
-       templates?.map((t: Template) => {
-         if (t?.type === TenantTemplate) {
-           return  <h3>Templates by Tenants</h3>
-          
-         }
-         return;
-       })
-     }     
-        <ul className="checklist">
+        <h3>Templates by Tenants</h3>
+        <ul className="checklist" ref={tenantTemplateContainerRef}>
           {
-            templates?.map((t: Template) => {
+            templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
                 return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
@@ -136,8 +132,9 @@ export const NeedListSelect = ({
     if (!showButton) {
       return <button onClick={() => {
 
-        setShow(false);
+        fetchTemplateDocs(idArray);
         addTemplatesDocuments(idArray);
+        setShow(false);
       }} className="btn btn-primary btn-block">Add Selected</button>
     } else {
 
@@ -145,7 +142,7 @@ export const NeedListSelect = ({
         return <button onClick={() => {
           setShow(false);
           addTemplatesDocuments(idArray);
-        }} className="btn btn-primary btn-block"><span className="btn-text">Continue with Template</span><span className="btn-icon"><i className="zmdi zmdi-plus"></i></span></button>
+        }} className="btn btn-primary btn-block"><span className="btn-text d-text">Continue with Template</span><span className="btn-icon d-icon"><i className="zmdi zmdi-plus"></i></span></button>
 
 
 
@@ -172,8 +169,8 @@ export const NeedListSelect = ({
 
           <Dropdown.Menu className="padding" show={show}>
             <h2>Select a need list Template</h2>
-            {MyTemplates()}
-            {TemplatesByTenant()}
+            {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
+            {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
             <div className="external-link">
               {StartListButton()}
             </div>
@@ -182,7 +179,7 @@ export const NeedListSelect = ({
       </>
     )
   }
- 
+
 
   return displayAddButton();
 };

@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using KeyStore.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ namespace Identity
         public static void Main(string[] args)
         {
             ServicePointManager.DefaultConnectionLimit = 1000;
+            ThreadPool.SetMaxThreads(1000, 1000);
+            ThreadPool.SetMinThreads(1000, 1000);
             ConfigureLogging();
             CreateHost(args: args);
         }
@@ -37,8 +40,9 @@ namespace Identity
                          .Enrich.FromLogContext()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
-                         .WriteTo.Debug()
-                         .WriteTo.Console()
+                         //.WriteTo.Debug()
+                         //.WriteTo.Console()
+                         .WriteTo.Async(x=>x.RollingFile("logs\\log-{Date}.log"))
                          .WriteTo.Elasticsearch(options: ConfigureElasticSink(configuration: configuration,
                                                                               environment: environment))
                          .Enrich.WithProperty(name: "Environment",

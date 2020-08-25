@@ -20,7 +20,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
 
 
     const callBack = () => {
-        toggleCallBack(toggle)
+        toggleCallBack(!toggle)
         setToggle(!toggle)
     }
 
@@ -33,9 +33,10 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
 
                     {/* {displayAddButton()} */}
                     {!isDocumentDraft ? null : isDocumentDraft?.requestId ?
-                        <button onClick={() => viewSaveDraft()} className="btn btn-secondry btn-sm">View Save Draft</button>
+                        <button onClick={() => viewSaveDraft()} className="btn btn-secondry btn-sm">View Saved Draft</button>
                         :
                         <NeedListSelect
+                            fetchTemplateDocs={() => {}}
                             showButton={true}
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}

@@ -114,16 +114,23 @@ export const SelectedDocuments = ({
     setSubBtnPressed(true);
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
-        await DocumentUploadActions.submitDocuments(
-          currentSelected,
-          file,
-          dispatch,
-          Auth.getLoanAppliationId()
-        );
+        try {
+          await DocumentUploadActions.submitDocuments(
+            currentSelected,
+            file,
+            dispatch,
+            Auth.getLoanAppliationId()
+          );
+        } catch (error) {
+          file.uploadStatus = "failed";
+          console.log("error during file submit", error);
+          console.log("error during file submit", error.response);
+        }
       }
     }
     setSubBtnPressed(false);
     try {
+      fetchUploadedDocuments();
       let docs = await DocumentActions.getPendingDocuments(
         Auth.getLoanAppliationId()
       );
@@ -140,6 +147,24 @@ export const SelectedDocuments = ({
           });
         }
       }
+      let current = currentSelected;
+      let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
+        if (p.docId === currentSelected.docId) {
+          // p.resubmittedNewFiles = true;
+          current = p;
+          return p;
+        }
+        return p;
+      });
+
+      current.files = selectedFiles.filter(
+        (f: Document) => f.uploadStatus !== "failed"
+      );
+      dispatch({
+        type: DocumentsActionType.FetchPendingDocs,
+        payload: updatedPendingDocs,
+      });
+      dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
     } catch (error) {}
   };
 
@@ -194,7 +219,7 @@ export const SelectedDocuments = ({
       return f;
     });
     updatedFiles = updatedFiles.map((f: Document, i: number) => {
-      if(i === nextInd) {
+      if (i === nextInd) {
         f.focused = true;
         return f;
       }
@@ -283,7 +308,7 @@ export const SelectedDocuments = ({
       }
       setDoneVisible(false);
       setDoneHit(false);
-      fetchUploadedDocuments();
+     await fetchUploadedDocuments();
     }
   };
 
@@ -303,6 +328,13 @@ export const SelectedDocuments = ({
     ).length;
     return foundIndx === index;
   };
+
+  // useEffect(() => {
+  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
+  //     setDoneVisible(false);
+  //     setBtnDisabled(true);
+  //   }
+  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
   return (
     <section className="file-drop-box-wrap">
@@ -384,31 +416,50 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-sm-7">
+              <div className="col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
-                    Have you submitted all required files for this document?
+                    You won't be able to come back to this once you're done.
                   </p>
                 </div>
               </div>
 
-              <div className="col-sm-5">
+              <div className="col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
                     onClick={() => {
                       setDoneVisible(false);
                       disableSubmitBtn();
+                      if (pendingDocs.length > 1) {
+                        let curDocInd = 0;
+                        pendingDocs?.forEach((d, i) => {
+                          if (d.docId === currentSelected.docId) {
+                            curDocInd = i;
+                          }
+                        });
+
+                        if (curDocInd === pendingDocs?.length - 1) {
+                          curDocInd = 0;
+                        } else {
+                          curDocInd = curDocInd + 1;
+                        }
+
+                        dispatch({
+                          type: DocumentsActionType.SetCurrentDoc,
+                          payload: pendingDocs[curDocInd],
+                        });
+                      }
                     }}
                   >
-                    No
+                    {"I'LL Come Back"}
                   </button>
                   <button
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >
-                    Yes
+                    {"I'M Done"}
                   </button>
                 </div>
               </div>

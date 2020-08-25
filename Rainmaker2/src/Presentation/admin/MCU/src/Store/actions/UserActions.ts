@@ -51,9 +51,9 @@ export class UserActions {
         return true;
       }
       console.log('Refresh token fail.');
-      //LocalDB.removeAuth();
+      LocalDB.removeAuth();
       //window.open("/Login/LogOff", "_self");
-      //window.top.location.href = "/Login/LogOff";
+      window.top.location.href = '/Login/LogOff';
 
       return false;
     } catch (error) {
@@ -117,6 +117,7 @@ export class UserActions {
         return false;
       }
     } else {
+      http.setAuth(LocalDB.getAuthToken() || '');
       return true;
     }
   }

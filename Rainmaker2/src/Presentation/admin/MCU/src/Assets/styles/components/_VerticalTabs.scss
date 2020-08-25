@@ -52,8 +52,18 @@
     }// header
 
     &--body{
+        min-height: 450px;
+        max-height: 451px;
+        overflow-y: auto;
+        word-break: break-all;
+        font:  400 #{fontSize("sm") + "/1.2"} fontFamily("base");
         &.padding{
             padding: 15px;
+        }
+        ul {
+            li {
+                line-height: 1.5;
+            }
         }
 
         .table{
@@ -67,6 +77,7 @@
                             background-color: transparent;
                             em,i{
                                 color: color('primary');
+                                margin-left: 5px;
                             }
                         }
                     }
@@ -76,9 +87,12 @@
                 tr{
                     td{
                         border: none;
+                        background-color: lighten($color: color('default'), $amount: 2%);
                     }
                     &:nth-child(even){
-                        background-color: lighten($color: color('default'), $amount: 2%);
+                        td{
+                            background-color: #fff;
+                        }
                     }
                 }
             }
@@ -102,13 +116,14 @@
     }// footer
 
     &--scrollable{
-        height: 400px;
+        max-height: 400px;
         overflow-y: auto;
     }
 
     &--aside{
         border-right: 1px solid color('border');
         flex: 1.5 0 0;
+        min-width: 30%;
         
         .vertical-tabs--header{
             .vertical-tabs--header-title{
@@ -119,6 +134,7 @@
 
     &--content{
         flex: 3 0 0;
+        max-width: 70%;
     }
 
     &--list{
@@ -145,6 +161,7 @@
                     line-height: 1;
                     display: block;
                     color: lighten($color: color('base'), $amount: 12%);
+                    text-align: end;
                 }
             }
             &:last-child{
@@ -170,6 +187,12 @@
         margin: 0;
         table-layout: fixed;
         word-wrap: break-word;
+    }
+
+    .email-log{
+        .vertical-tabs--list > li a h2{
+            
+        }
     }
     
 }

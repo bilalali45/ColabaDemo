@@ -15,13 +15,14 @@ namespace DocumentManagement.Service
     {
         private readonly IMongoService mongoService;
         private readonly IActivityLogService activityLogService;
-
-        public FileService(IMongoService mongoService, IActivityLogService activityLogService)
+        private readonly IRainmakerService rainmakerService;
+        public FileService(IMongoService mongoService, IActivityLogService activityLogService, IRainmakerService rainmakerService)
         {
             this.mongoService = mongoService;
             this.activityLogService = activityLogService;
+            this.rainmakerService = rainmakerService;
         }
-        public async Task<bool> Rename(FileRenameModel model,int userProfileId, int tenantId)
+        public async Task<bool> Rename(FileRenameModel model, int userProfileId, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -49,7 +50,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> Done(DoneModel model, int userProfileId, int tenantId)
+        public async Task<bool> Done(DoneModel model, int userProfileId, int tenantId, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -80,6 +81,8 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
             }
+
+            await rainmakerService.UpdateLoanInfo(null, model.id, authHeader);
 
             return result.ModifiedCount == 1;
         }
@@ -114,7 +117,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string contentType,string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId)
+        public async Task<bool> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
         {
             bool isStarted = false;
 
@@ -163,7 +166,7 @@ namespace DocumentManagement.Service
                 { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantId},
                 { "userId", userProfileId},
-                { 
+                {
                     "requests" , new BsonDocument()
                     {
                         {
@@ -181,7 +184,7 @@ namespace DocumentManagement.Service
                                             {
                                                 "documents",new BsonDocument()
                                                 {
-                                                    { 
+                                                    {
                                                         "$elemMatch", new BsonDocument()
                                                         {
                                                             {
@@ -190,23 +193,24 @@ namespace DocumentManagement.Service
                                                                     new BsonDocument()
                                                                     {
                                                                         { "id", BsonObjectId.Create(docId) }
-                                                                    },
-                                                                    new BsonDocument()
-                                                                    {
-                                                                        { 
-                                                                            "$or",new BsonArray()
-                                                                            {
-                                                                                new BsonDocument()
-                                                                                {
-                                                                                    { "status", DocumentStatus.BorrowerTodo}
-                                                                                },
-                                                                                new BsonDocument()
-                                                                                {
-                                                                                    { "status", DocumentStatus.Started}
-                                                                                }
-                                                                            }
-                                                                        }    
                                                                     }
+                                                                    //,
+                                                                    //new BsonDocument()
+                                                                    //{
+                                                                    //    {
+                                                                    //        "$or",new BsonArray()
+                                                                    //        {
+                                                                    //            new BsonDocument()
+                                                                    //            {
+                                                                    //                { "status", DocumentStatus.BorrowerTodo}
+                                                                    //            },
+                                                                    //            new BsonDocument()
+                                                                    //            {
+                                                                    //                { "status", DocumentStatus.Started}
+                                                                    //            }
+                                                                    //        }
+                                                                    //    }
+                                                                    //}
                                                                 }
                                                             }
                                                         }
@@ -218,13 +222,13 @@ namespace DocumentManagement.Service
                                 }
                             }
                         }
-                    } 
+                    }
                 }
             }, new BsonDocument()
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized} }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false } }   }
                     }
                 },
                 { "$set", new BsonDocument()
@@ -255,6 +259,7 @@ namespace DocumentManagement.Service
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
             }
 
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
             return result.ModifiedCount == 1;
         }
 
@@ -317,6 +322,70 @@ namespace DocumentManagement.Service
 
             ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
             await viewLogCollection.InsertOneAsync(viewLog);
+
+            return fileViewDTO;
+        }
+
+
+        public async Task<List<FileViewDTO>> GetFileByDocId(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + tenantId + @",
+                  ""userId"": " + userProfileId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": ""$requests.documents.files.id""  ,
+                                ""loanApplicationId"":1
+                                 
+                            }
+                             } "
+
+));
+            List<FileViewDTO> fileViewDTO = new List<FileViewDTO>();
+            if (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                   
+                    FileViewDTO query = BsonSerializer.Deserialize<FileViewDTO>(current.ToJson());
+
+                    
+                    fileViewDTO.Add(new FileViewDTO
+                    {
+                        id = query.id,
+                        loanApplicationId = query.loanApplicationId
+                    });
+                }
+            }
+
 
             return fileViewDTO;
         }

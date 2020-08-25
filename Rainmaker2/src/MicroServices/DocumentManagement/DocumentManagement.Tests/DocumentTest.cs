@@ -30,7 +30,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<DocumentModel> list = new List<DocumentModel>() { { new DocumentModel() { docId = "5ebc18cba5d847268075ad4f" } } };
+            List<GetTemplateModel> list = new List<GetTemplateModel>() { { new GetTemplateModel() { id = "5ebc18cba5d847268075ad4f" } } };
 
             mock.Setup(x => x.GetDocumentsByTemplateIds(It.IsAny<List<string>>(), It.IsAny<int>())).ReturnsAsync(list);
 
@@ -51,9 +51,9 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DocumentModel>;
+            var content = (result as OkObjectResult).Value as List<GetTemplateModel>;
             Assert.Single(content);
-            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].docId);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].id);
         }
         [Fact]
         public async Task TestGetFilesController()
@@ -121,8 +121,8 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
             GetActivityLog getActivityLog = new GetActivityLog();
             getActivityLog.id = "5f0d668fcc9ce539845d7f99";
-            getActivityLog.typeId = "5eb257a3e519051af2eeb624";
-            getActivityLog.docName = "W2 2020";
+            getActivityLog.requestId = "5eb257a3e519051af2eeb624";
+            getActivityLog.docId = "5eb257a3e519051af2eeb625";
             //Act
             IActionResult result = await controller.GetActivityLog(getActivityLog);
             //Assert
@@ -243,7 +243,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
             List<DocumendDTO> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -380,7 +380,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "");
             //Assert
@@ -517,7 +517,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
             List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "", "aaa25d1fe456051af2eeb72d");
             //Assert
@@ -546,7 +546,7 @@ namespace DocumentManagement.Tests
             {
                 new BsonDocument
                  {
-                     { "docId" ,"5ebc18cba5d847268075ad4f" },
+                     { "typeId",BsonString.Empty },
                      { "typeName" , BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new Message[]{ })},
@@ -555,7 +555,7 @@ namespace DocumentManagement.Tests
                   ,
                  new BsonDocument
                  {
-                     { "docId" , "5ebc18cba5d847268075ad4f"},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" , BsonString.Empty},
                      { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", "Credit report has been uploaded" } } })},
@@ -564,7 +564,7 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" , BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new Message[]{ })},
@@ -573,7 +573,7 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" , "Credit report has been uploaded"},
                      { "messages" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "tenantId", 1 },{ "message", BsonString.Empty } } })},
@@ -582,12 +582,20 @@ namespace DocumentManagement.Tests
                  ,
                  new BsonDocument
                  {
-                     { "docId" , BsonString.Empty},
+                     { "typeId",BsonString.Empty },
                      { "typeName" ,BsonString.Empty},
                      { "docMessage" ,BsonString.Empty},
                      { "messages" , BsonNull.Value},
                      { "docName" , BsonString.Empty}
-
+                 }
+                 , 
+                new BsonDocument
+                 {
+                     { "typeId", BsonNull.Value },
+                     { "typeName" , BsonString.Empty},
+                     { "docMessage" , "Credit report has been uploaded"},
+                     { "messages" , BsonArray.Create(new Message[]{ })},
+                     { "docName" , BsonNull.Value}
                  }
             };
 
@@ -600,20 +608,18 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
 
             List<string> listIds = new List<string>();
             listIds.Add("5eb25acde519051af2eeb111");
             listIds.Add("5eb25acde519051af2eeb211");
  
             //Act
-            List<DocumentModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
+            List<GetTemplateModel> dto = await service.GetDocumentsByTemplateIds(listIds,1);
 
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(2, dto.Count);
-            Assert.Equal("5ebc18cba5d847268075ad4f", dto[0].docId);
-            Assert.Equal("Credit report has been uploaded", dto[1].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto[0].docs[0].docMessage);
         }
 
         [Fact]
@@ -631,7 +637,7 @@ namespace DocumentManagement.Tests
                 loanId = "5eb25d1fe519051af2eeb72d"
             } } };
 
-            mock.Setup(x => x.GetEmailLog(It.IsAny<string>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetEmailLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(list);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
@@ -775,9 +781,141 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d","Salary Slip");
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(9, dto.Count);
+            Assert.Equal(3842, dto[1].userId);
+            Assert.Equal("abc", dto[2].userName);
+            Assert.Equal("5f046210f50dc78d7b0c059c", dto[4].id);
+            Assert.Equal("abc", dto[7].emailText);
+            Assert.Equal("5eb25d1fe519051af2eeb72d", dto[8].loanId);
+
+        }
+        [Fact]
+        public async Task TestGetEmailLogServiceTypeIdNull()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        //Cover all empty  fields  
+                        { "userId" ,  3842},
+                        { "userName" ,BsonString.Empty},
+                        { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                        { "_id" , BsonString.Empty},
+                        { "emailText" , BsonString.Empty},
+                        { "loanId" , BsonString.Empty}
+                    }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except userId
+                    { "userId" , 3842 },
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields  except userName
+                    { "userId" , 3842},
+                    { "userName" , "abc"},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except dateTime
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except id
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" ,  "5f046210f50dc78d7b0c059c"},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except requestId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except docId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except activity
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , "abc" },
+                    { "loanId" , BsonString.Empty}
+                }
+                ,new BsonDocument
+                {
+                    //Cover all empty  fields except loanId
+                    { "userId" ,  3842},
+                    { "userName" ,BsonString.Empty},
+                    { "dateTime" , Convert.ToDateTime("2020-06-25T07:39:57.233Z")},
+                    { "_id" , BsonString.Empty},
+                    { "emailText" , BsonString.Empty},
+                    { "loanId" , "5eb25d1fe519051af2eeb72d" }
+                }
+
+            };
+
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.EmailLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockActivityLogService.Object,null);
+            //Act
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "", "Salary Slip");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -896,7 +1034,7 @@ namespace DocumentManagement.Tests
             mcuRenameModel.newName = new string('a', 256); ;
 
             //Assert
-            Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
+            await Assert.ThrowsAsync<Exception>(async () => { await documentController.McuRename(mcuRenameModel); });
 
         }
         [Fact]
@@ -913,7 +1051,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             bool result = await service.McuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc","Danish Faiz");
 
             //Assert
@@ -935,7 +1073,7 @@ namespace DocumentManagement.Tests
 
             //Act
 
-            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             bool result = await service.McuRename("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "5ef454cd86c96583744140d9", "abc", "Danish Faiz");
 
             //Assert
@@ -947,15 +1085,20 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(true);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),Mock.Of<IRainmakerService>());
             controller.ControllerContext = context;
             //Act
             AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
@@ -973,18 +1116,23 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            mock.Setup(x => x.AcceptDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(false);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),null);
+            var controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(), Mock.Of<IRainmakerService>());
             controller.ControllerContext = context;
               //Act
-              AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
+            AcceptDocumentModel acceptDocumentModel = new AcceptDocumentModel();
             acceptDocumentModel.id = "5eb25d1fe519051af2eeb72d";
             acceptDocumentModel.requestId = "abc15d1fe456051af2eeb768";
             acceptDocumentModel.docId = "aaa25d1fe456051af2eeb72d";
@@ -1000,8 +1148,9 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(true);
             mockRainMakerService.Setup(x=>x.SendBorrowerEmail(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
+            mockRainMakerService.Setup(x => x.UpdateLoanInfo(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1038,13 +1187,17 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
-            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>())).ReturnsAsync(false);
-            
+            mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>(),It.IsAny<List<string>>())).ReturnsAsync(false);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             var documentController = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(),mockRainMakerService.Object);
@@ -1075,8 +1228,8 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
-            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d","Danish Faiz");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object,Mock.Of<IRainmakerService>());
+            bool result = await service.AcceptDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d","Danish Faiz",new List<string>());
 
             //Assert
             Assert.True(result);
@@ -1119,8 +1272,8 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object);
-            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected",3842,"Danish Faiz");
+            IDocumentService service = new DocumentService(mock.Object,mockActivityLogService.Object,Mock.Of<IRainmakerService>());
+            bool result = await service.RejectDocument("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d", "document rejected",3842,"Danish Faiz",new List<string>());
 
             //Assert
             Assert.True(result);
@@ -1241,7 +1394,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new DocumentService(mock.Object, mockIActivityLogService.Object);
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object,null);
             //Act
             var dto = await service.View(adminFileViewModel, 1, "127.0.0.1",1);
             //Assert
@@ -1307,8 +1460,70 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IDocumentService service = new DocumentService(mock.Object, null);
+            IDocumentService service = new DocumentService(mock.Object, null, null); ;
             bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4");
+
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileControllerTrue()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.DeleteFile(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
+
+            //Act
+            DeleteFile deleteFile = new DeleteFile();
+            deleteFile.loanApplicationId = 14;
+            deleteFile.fileId = "5f30d944ccbf4475dcdfed33";
+           
+            IActionResult result = await controller.DeleteFile(deleteFile);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileControllerFalse()
+        {
+            //Arrange
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            mock.Setup(x => x.DeleteFile(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+
+            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
+
+            //Act
+            DeleteFile deleteFile = new DeleteFile();
+            deleteFile.loanApplicationId = 14;
+            deleteFile.fileId = "5f30d944ccbf4475dcdfed33";
+
+            IActionResult result = await controller.DeleteFile(deleteFile);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestDeleteFileService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IDocumentService service = new DocumentService(mock.Object, null,null);
+            bool result = await service.DeleteFile(14, "5f30d944ccbf4475dcdfed33");
 
             //Assert
             Assert.True(result);

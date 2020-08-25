@@ -16,7 +16,7 @@ namespace DocumentManagement.Model
         public string emailText { get; set; }
         public DateTime dateTime { get; set; }
         public string loanId { get; set; }
-      
+        public string message { get; set; }
     }
 
     public class EmailLogQuery
@@ -29,9 +29,7 @@ namespace DocumentManagement.Model
         public string emailText { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string loanId { get; set; }
-  
-    
-
+        public string message { get; set; }
     }
 
 }

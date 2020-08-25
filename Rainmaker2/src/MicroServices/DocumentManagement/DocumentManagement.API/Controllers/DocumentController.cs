@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
@@ -73,8 +74,8 @@ namespace DocumentManagement.API.Controllers
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetActivityLog requested by {userProfileId}");
             return Ok(value: await documentService.GetActivityLog(id: getActivityLog.id,
-                                                                  typeId: getActivityLog.typeId,
-                                                                  docName: getActivityLog.docName));
+                                                                  requestId: getActivityLog.requestId,
+                                                                  docId: getActivityLog.docId));
         }
 
 
@@ -85,7 +86,7 @@ namespace DocumentManagement.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             logger.LogInformation($"GetEmailLog requested by {userProfileId}");
-            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id));
+            return Ok(value: await documentService.GetEmailLog(id: getEmailLog.id,requestId: getEmailLog.requestId,docId: getEmailLog.docId));
         }
 
         [HttpGet(template: "[action]")]
@@ -156,7 +157,8 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await documentService.AcceptDocument(id: acceptDocumentModel.id,
                                                                 requestId: acceptDocumentModel.requestId,
                                                                 docId: acceptDocumentModel.docId,
-                                                                userName: userName);
+                                                                userName: userName,
+                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -173,10 +175,11 @@ namespace DocumentManagement.API.Controllers
                                                                 docId: rejectDocumentModel.docId,
                                                                 message: rejectDocumentModel.message,
                                                                 userId:userProfileId,
-                                                                userName: userName);
+                                                                userName: userName,
+                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
             {
-                await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 

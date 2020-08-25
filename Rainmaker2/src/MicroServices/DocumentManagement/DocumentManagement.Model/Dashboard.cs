@@ -49,6 +49,7 @@ namespace DocumentManagement.Model
         public string typeMessage { get; set; }
         public List<Message> messages { get; set; }
         public List<RequestFile> files { get; set; }
+        public bool? isRejected { get; set; }
     }
 
     public class DashboardDTO
@@ -58,6 +59,7 @@ namespace DocumentManagement.Model
         public string docId { get; set; }
         public string docName { get; set; }
         public string docMessage { get; set; }
+        public bool isRejected { get; set; }
         public List<FileDTO> files { get; set; }
     }
 
@@ -110,7 +112,7 @@ namespace DocumentManagement.Model
         public DateTime fileUploadedOn { get; set; }
         public string mcuName { get; set; }
         public string byteProStatus { get; set; }
-
+        public bool isRead { get; set; }
         public string status { get; set; }
     }
     public class AdminDeleteModel
@@ -133,6 +135,8 @@ namespace DocumentManagement.Model
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
+        public int loanApplicationId { get; set; }
+
         public string serverName { get; set; }
         public string encryptionKey { get; set; }
         public string encryptionAlgorithm { get; set; }

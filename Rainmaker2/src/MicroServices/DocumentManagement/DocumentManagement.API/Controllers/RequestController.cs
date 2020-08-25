@@ -42,7 +42,27 @@ namespace DocumentManagement.API.Controllers
         #region Action Methods
 
         #region Post Actions
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UploadFile(UploadFileModel model)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
 
+            var responseBody = await rainmakerService.PostLoanApplication(model.loanApplicationId, false, Request.Headers["Authorization"].Select(x => x.ToString()));
+
+            if (!String.IsNullOrEmpty(responseBody))
+            {
+                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                int custUserId = user.userId;
+                string custUserName = user.userName;
+                var fileId = await requestService.UploadFile(userProfileId,userName,tenantId,custUserId,custUserName,model, Request.Headers["Authorization"].Select(x => x.ToString()));
+                if(!string.IsNullOrEmpty(fileId))
+                    return Ok(new { fileId });
+                return BadRequest();
+            }
+            return NotFound();
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> Save(Model.LoanApplication loanApplication, bool isDraft)
         {
@@ -61,7 +81,7 @@ namespace DocumentManagement.API.Controllers
                 loanApplication.requests[0].userId = userProfileId;
                 loanApplication.requests[0].userName = userName;
 
-                var docQuery = await requestService.Save(loanApplication,isDraft);
+                var docQuery = await requestService.Save(loanApplication,isDraft, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!isDraft)
                     await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId,loanApplication.requests[0].message,(int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();

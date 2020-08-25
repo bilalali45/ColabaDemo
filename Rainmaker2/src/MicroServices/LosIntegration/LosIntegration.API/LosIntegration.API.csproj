@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Macros\**" />
+    <Content Remove="Macros\**" />
+    <EmbeddedResource Remove="Macros\**" />
+    <None Remove="Macros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\ServiceCallHelper\ServiceCallHelper.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\LosIntegration.Service\LosIntegration.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>

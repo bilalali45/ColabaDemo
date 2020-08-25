@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Rainmaker.Model
 {
     public class LoanSummary
     {
+        public string Url { get; set; }
+        public string Name { get; set; }
         public string LoanPurpose { get; set; }
         public string PropertyType { get; set; }
         public string StateName { get; set; }

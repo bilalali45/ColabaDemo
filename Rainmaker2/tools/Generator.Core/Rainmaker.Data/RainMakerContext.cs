@@ -79,6 +79,7 @@ namespace RainMaker.Data
         //public virtual DbSet<BranchEmail> BranchEmails { get; set; } // BranchEmail
         //public virtual DbSet<BranchPhone> BranchPhones { get; set; } // BranchPhone
         //public virtual DbSet<BranchPhoneBinder> BranchPhoneBinders { get; set; } // BranchPhoneBinder
+        //public virtual DbSet<BreachedPassword> BreachedPasswords { get; set; } // BreachedPassword
         //public virtual DbSet<BusinessUnit> BusinessUnits { get; set; } // BusinessUnit
         //public virtual DbSet<BusinessUnitEmail> BusinessUnitEmails { get; set; } // BusinessUnitEmail
         //public virtual DbSet<BusinessUnitPhone> BusinessUnitPhones { get; set; } // BusinessUnitPhone
@@ -159,6 +160,7 @@ namespace RainMaker.Data
         //public virtual DbSet<HolidayType> HolidayTypes { get; set; } // HolidayType
         //public virtual DbSet<IncomeType> IncomeTypes { get; set; } // IncomeType
         //public virtual DbSet<InformationMedium> InformationMediums { get; set; } // InformationMedium
+        //public virtual DbSet<InitialContact> InitialContacts { get; set; } // InitialContact
         //public virtual DbSet<Investor> Investors { get; set; } // Investor
         //public virtual DbSet<InvestorProduct> InvestorProducts { get; set; } // InvestorProduct
         //public virtual DbSet<JobType> JobTypes { get; set; } // JobType
@@ -188,6 +190,7 @@ namespace RainMaker.Data
         //public virtual DbSet<LoanContactRaceBinder> LoanContactRaceBinders { get; set; } // LoanContactRaceBinder
         //public virtual DbSet<LoanDocType> LoanDocTypes { get; set; } // LoanDocType
         //public virtual DbSet<LoanDocument> LoanDocuments { get; set; } // LoanDocument
+        //public virtual DbSet<LoanDocumentPipeLine> LoanDocumentPipeLines { get; set; } // LoanDocumentPipeLine
         //public virtual DbSet<LoanDocumentStatusList> LoanDocumentStatusLists { get; set; } // LoanDocumentStatusList
         //public virtual DbSet<LoanDocumentSubType> LoanDocumentSubTypes { get; set; } // LoanDocumentSubType
         //public virtual DbSet<LoanDocumentType> LoanDocumentTypes { get; set; } // LoanDocumentType
@@ -233,9 +236,6 @@ namespace RainMaker.Data
         //public virtual DbSet<NoteSubject> NoteSubjects { get; set; } // NoteSubject
         //public virtual DbSet<NoteTopic> NoteTopics { get; set; } // NoteTopic
         //public virtual DbSet<Notification> Notifications { get; set; } // Notification
-        //public virtual DbSet<NotificationChange> NotificationChanges { get; set; } // NotificationChange
-        //public virtual DbSet<NotificationObject> NotificationObjects { get; set; } // notification_object
-        //public virtual DbSet<NotificationObject1> NotificationObject1 { get; set; } // NotificationObject
         //public virtual DbSet<NotificationTo> NotificationToes { get; set; } // NotificationTo
         //public virtual DbSet<ObjectType> ObjectTypes { get; set; } // ObjectType
         //public virtual DbSet<OfficeHoliday> OfficeHolidays { get; set; } // OfficeHoliday
@@ -256,10 +256,12 @@ namespace RainMaker.Data
         //public virtual DbSet<OtherEmploymentIncomeHistory> OtherEmploymentIncomeHistories { get; set; } // OtherEmploymentIncomeHistory
         //public virtual DbSet<OtherEmploymentIncomeType> OtherEmploymentIncomeTypes { get; set; } // OtherEmploymentIncomeType
         //public virtual DbSet<OtherIncome> OtherIncomes { get; set; } // OtherIncome
+        //public virtual DbSet<OtpTracing> OtpTracings { get; set; } // OtpTracing
         //public virtual DbSet<OwnerShipInterest> OwnerShipInterests { get; set; } // OwnerShipInterest
         //public virtual DbSet<OwnershipType> OwnershipTypes { get; set; } // OwnershipType
         //public virtual DbSet<OwnType> OwnTypes { get; set; } // OwnType
         //public virtual DbSet<PaidBy> PaidBies { get; set; } // PaidBy
+        //public virtual DbSet<PasswordPolicy> PasswordPolicies { get; set; } // PasswordPolicy
         //public virtual DbSet<PaymentOn> PaymentOns { get; set; } // PaymentOn
         //public virtual DbSet<PmiCompany> PmiCompanies { get; set; } // PmiCompany
         //public virtual DbSet<Position> Positions { get; set; } // Position
@@ -477,6 +479,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new BranchEmailMap());
             modelBuilder.ApplyConfiguration(new BranchPhoneMap());
             modelBuilder.ApplyConfiguration(new BranchPhoneBinderMap());
+            modelBuilder.ApplyConfiguration(new BreachedPasswordMap());
             modelBuilder.ApplyConfiguration(new BusinessUnitMap());
             modelBuilder.ApplyConfiguration(new BusinessUnitEmailMap());
             modelBuilder.ApplyConfiguration(new BusinessUnitPhoneMap());
@@ -557,6 +560,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new HolidayTypeMap());
             modelBuilder.ApplyConfiguration(new IncomeTypeMap());
             modelBuilder.ApplyConfiguration(new InformationMediumMap());
+            modelBuilder.ApplyConfiguration(new InitialContactMap());
             modelBuilder.ApplyConfiguration(new InvestorMap());
             modelBuilder.ApplyConfiguration(new InvestorProductMap());
             modelBuilder.ApplyConfiguration(new JobTypeMap());
@@ -586,6 +590,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LoanContactRaceBinderMap());
             modelBuilder.ApplyConfiguration(new LoanDocTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentMap());
+            modelBuilder.ApplyConfiguration(new LoanDocumentPipeLineMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentStatusListMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentSubTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentTypeMap());
@@ -631,9 +636,6 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new NoteSubjectMap());
             modelBuilder.ApplyConfiguration(new NoteTopicMap());
             modelBuilder.ApplyConfiguration(new NotificationMap());
-            modelBuilder.ApplyConfiguration(new NotificationChangeMap());
-            modelBuilder.ApplyConfiguration(new NotificationObjectMap());
-            modelBuilder.ApplyConfiguration(new NotificationObject1Map());
             modelBuilder.ApplyConfiguration(new NotificationToMap());
             modelBuilder.ApplyConfiguration(new ObjectTypeMap());
             modelBuilder.ApplyConfiguration(new OfficeHolidayMap());
@@ -654,10 +656,12 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new OtherEmploymentIncomeHistoryMap());
             modelBuilder.ApplyConfiguration(new OtherEmploymentIncomeTypeMap());
             modelBuilder.ApplyConfiguration(new OtherIncomeMap());
+            modelBuilder.ApplyConfiguration(new OtpTracingMap());
             modelBuilder.ApplyConfiguration(new OwnerShipInterestMap());
             modelBuilder.ApplyConfiguration(new OwnershipTypeMap());
             modelBuilder.ApplyConfiguration(new OwnTypeMap());
             modelBuilder.ApplyConfiguration(new PaidByMap());
+            modelBuilder.ApplyConfiguration(new PasswordPolicyMap());
             modelBuilder.ApplyConfiguration(new PaymentOnMap());
             modelBuilder.ApplyConfiguration(new PmiCompanyMap());
             modelBuilder.ApplyConfiguration(new PositionMap());

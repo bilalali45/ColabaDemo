@@ -4,20 +4,21 @@ import { LocalDB } from "../../Utils/LocalDB";
 import { DocumentRequest } from "../../Entities/Models/DocumentRequest";
 import { TemplateDocument } from "../../Entities/Models/TemplateDocument";
 import { debug } from "console";
+import { AxiosResponse } from "axios";
 
 const http = new Http();
 
-type SaveAsTemnplateDocumentType = {
-    typeId: string
-} | {
-    docName: string
+export type DocumentsWithTemplateDetails = {
+    id: string,
+    name: string,
+    docs: TemplateDocument[]
 }
 
 export class NewNeedListActions {
     static async getDocumentsFromSelectedTemplates(ids: string[]) {
         let url = Endpoints.NewNeedList.POST.getByTemplateIds()
         try {
-            let res = await http.post(url, {
+            let res: AxiosResponse<DocumentsWithTemplateDetails[]> = await http.post(url, {
                 id: ids
             })
             return res.data;
@@ -55,7 +56,6 @@ export class NewNeedListActions {
             }
         });
 
-        console.log(mappedDocs);
         let requestData = {
             loanApplicationId: parseInt(loanApplicationId),
             requests: [
@@ -65,7 +65,6 @@ export class NewNeedListActions {
                 }
             ]
         }
-        console.log(requestData);
         try {
             let res = await http.post(url, requestData);
             return res.data;
@@ -93,7 +92,6 @@ export class NewNeedListActions {
 
         try {
             let res = await http.post(url, templateData);
-            console.log(res.data);
             return res?.data;
         } catch (error) {
 

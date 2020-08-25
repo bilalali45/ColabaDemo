@@ -4,6 +4,7 @@ import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { LocalDB } from "../../../../Utils/LocalDB";
+import { disableBrowserPrompt } from "../../../../Utils/helpers/Common";
 
 type NewNeedListHeaderType = {
   saveAsDraft: Function;
@@ -26,6 +27,7 @@ export const ReviewNeedListRequestHeader = ({
 
   const closeHandler = () => {
     history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+    disableBrowserPrompt();
   };
 
   return (
@@ -36,7 +38,7 @@ export const ReviewNeedListRequestHeader = ({
         className="mcu-panel-header"
       >
         <div className="row">
-          <div className="mcu-panel-header--left col-md-8">
+          <div className="mcu-panel-header--left col-md-7 col-lg-8">
             {showReview && (
               <button
                 onClick={(e) => toggleShowReview(e)}
@@ -47,7 +49,7 @@ export const ReviewNeedListRequestHeader = ({
             )}
           </div>
 
-          <div className="mcu-panel-header--right col-md-4">
+          <div className="mcu-panel-header--right col-md-5 col-lg-4">
             <button
               onClick={() => setShow(true)}
               className="btn btn-secondary"
@@ -73,7 +75,7 @@ export const ReviewNeedListRequestHeader = ({
           className="modal-alert"
           centered
         >
-          <Modal.Header closeButton>
+          <Modal.Header>
             {/* <Modal.Title></Modal.Title> */}
           </Modal.Header>
 
@@ -82,16 +84,17 @@ export const ReviewNeedListRequestHeader = ({
               Are you sure you want to close this
               <br /> request without saving?
             </h3>
-            <p className="text-center">
+          </Modal.Body>
+          <Modal.Footer>
+          <p className="text-center">
               <Button onClick={closeHandler} variant="secondary">
-                Close
+                {"Close"}
               </Button>{" "}
               <Button onClick={() => saveAsDraft(true)} variant="primary">
-                Save & Close
+                {"Save & Close"} 
               </Button>
             </p>
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          </Modal.Footer>
         </Modal>
       }
     </>

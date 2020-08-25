@@ -16,27 +16,27 @@ export class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
-      // res.data = [
-      //   new DocumentRequest(
-      //     '1',
-      //     '2',
-      //     '3',
-      //     'testing',
-      //     '',
-      //     []
-      //   )
-      // ]
-
+      console.log(res);
       let d = res.data.map((d: DocumentRequest, i: number) => {
-        let { id, requestId, docId, docName, docMessage, files } = d;
+        let {
+          id,
+          requestId,
+          docId,
+          docName,
+          docMessage,
+          files,
+          isRejected,
+        } = d;
         let doc = new DocumentRequest(
           id,
           requestId,
           docId,
           docName,
           docMessage,
-          files
+          files,
+          isRejected
         );
+        console.log("------d-----", d);
         // doc.files = null;
         if (doc.files === null || doc.files === undefined) {
           doc.files = [];
