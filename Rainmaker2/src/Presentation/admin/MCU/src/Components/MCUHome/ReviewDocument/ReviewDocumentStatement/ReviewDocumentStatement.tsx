@@ -296,7 +296,9 @@ export const ReviewDocumentStatement = ({
             </Dropdown.Toggle>
             {id !== null && typeId !== null && (
               <Dropdown.Menu>
-                <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
+                <ReviewDocumentActivityLog  doc={doc} id={id} typeId={typeId} requestId={currentDocument?.requestId!} docId={currentDocument?.docId!} />
+                
+                    
               </Dropdown.Menu>
             )}
           </Dropdown>
