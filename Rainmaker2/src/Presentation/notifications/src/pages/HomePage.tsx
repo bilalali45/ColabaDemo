@@ -372,7 +372,10 @@ export const HomePage: FunctionComponent = () => {
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
           <Header
-            clearAllDisplay={notifications.length > 0}
+            clearAllDisplay={
+              clearAllConfirm === true ||
+              (notifications.length > 0 && unClear === false)
+            }
             handleClear={clearAll}
           />
           {renderNotifications(
