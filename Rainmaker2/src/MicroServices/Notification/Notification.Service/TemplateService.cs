@@ -52,15 +52,15 @@ namespace Notification.Service
             INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             IRainmakerService rainmakerService = serviceProvider.GetRequiredService<IRainmakerService>();
             LoanSummary summary = await rainmakerService.GetLoanSummary(notificationObject.EntityId.Value);
-            // populate template
+            // populate template  
             string templateJson = notificationTemplate.TemplateJson.Replace("{{NotificationType}}",notificationObject.NotificationType.Name);
             templateJson = templateJson.Replace("{{NotificationDateTime}}",notificationObject.CreatedOn.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));
-            templateJson = templateJson.Replace("{{PrimaryName}}", summary.Name);
-            templateJson = templateJson.Replace("{{Address}}", summary.StreetAddress);
-            templateJson = templateJson.Replace("{{UnitNumber}}", summary.UnitNumber);
-            templateJson = templateJson.Replace("{{City}}", summary.CityName);
-            templateJson = templateJson.Replace("{{State}}",summary.StateName);
-            templateJson = templateJson.Replace("{{ZipCode}}",summary.ZipCode);
+            templateJson = templateJson.Replace("{{PrimaryName}}", summary.Name ?? "");
+            templateJson = templateJson.Replace("{{Address}}", summary.StreetAddress ?? "");
+            templateJson = templateJson.Replace("{{UnitNumber}}", summary.UnitNumber ?? "");
+            templateJson = templateJson.Replace("{{City}}", summary.CityName ?? "");
+            templateJson = templateJson.Replace("{{State}}",summary.StateName ?? "");
+            templateJson = templateJson.Replace("{{ZipCode}}",summary.ZipCode ?? "");
             templateJson = templateJson.Replace("{{LoanApplicationId}}", notificationObject.EntityId.Value.ToString());
             string metaJson = notificationTemplate.MediumMetaDataJson.Replace("{{Link}}", $"/admin/loanapplication/documentmanagement?loanApplicationId={notificationObject.EntityId}");
 
