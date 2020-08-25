@@ -96,11 +96,11 @@ export const NeedListRequest = ({
       return;
     }
 
-    if (!nameTest.test(value)) {
-      setTemplateNameError(
-        'Template name cannot contain any special characters'
-      );
-    }
+    // if (!nameTest.test(value)) {
+    //   setTemplateNameError(
+    //     'Template name cannot contain any special characters'
+    //   );
+    // }
   };
 
   const renderNoDocumentSelect = () => {

@@ -158,11 +158,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             return;
         }
 
-        if (value?.length > 30) {
-            setNameError('Name must be less than 31 chars');
-            return;
-        }
-
         if (templates.find((t: Template) => t.name.toLowerCase().trim() === value.toLowerCase().trim() && t.id !== currentTemplate?.id)) {
             setNameError(`Template name must be unique`);
             return;
