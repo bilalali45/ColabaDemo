@@ -2,11 +2,11 @@
     min-height: calc(100% - 15px);
     position: relative;
     &.hasData{
-        background-image: url("../../images/doc-request.png");
+        background-image: url("../../images/doc-request.png"); 
         background-image: url("../../images/doc-request.svg");
-        background-image: url("../../images/get-started-bg.svg");
-        background-position:center;
+        background-position:center right;
         background-repeat: no-repeat;
+        background-size: cover;
         background-color: color('colorWhite');
         @include media-breakpoint-down(lg) {
             // background-position: 112% 43px;
@@ -16,6 +16,18 @@
             // background-position: 106% 69px;
             // background-size: 58%;
         }
+
+.box-wrap--body {
+    max-width: 400px;
+    min-height: 385px;
+    @include media-breakpoint-down(lg) {
+        max-width: 310px;
+    }
+    @include media-breakpoint-down(md) {
+        max-width: 100%;
+    }
+}
+
     }
     .overlay-DocumentStatus {
         //background: rgba(color('colorWhite'), 0.80);
@@ -44,6 +56,7 @@
         &--body {
             padding-bottom: 50px;
             min-height: 390px;
+       
         }
         &--footer {
             @extend .clearfix;

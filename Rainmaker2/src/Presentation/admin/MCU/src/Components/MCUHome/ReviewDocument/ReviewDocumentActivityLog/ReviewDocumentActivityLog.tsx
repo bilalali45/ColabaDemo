@@ -17,11 +17,11 @@ export const ReviewDocumentActivityLog = ({
   requestId,
   docId
 }: {
-  doc: boolean;
-  id: string | null;
-  typeId: string | null;
-  requestId: string | null;
-  docId: string | null;
+  doc?: boolean;
+  id?: string | null;
+  typeId?: string | null;
+  requestId?: string | null;
+  docId?: string | null;
 }) => {
   const [tab, setTab] = useState(1);
   const sectionRef = useRef<HTMLElement>(null);
