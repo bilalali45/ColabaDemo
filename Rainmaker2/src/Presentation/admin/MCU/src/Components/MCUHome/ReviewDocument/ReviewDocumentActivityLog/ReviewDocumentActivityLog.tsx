@@ -13,11 +13,15 @@ import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
 export const ReviewDocumentActivityLog = ({
   doc,
   id,
-  typeId
+  typeId,
+  requestId,
+  docId
 }: {
   doc: boolean;
   id: string | null;
   typeId: string | null;
+  requestId: string | null;
+  docId: string | null;
 }) => {
   const [tab, setTab] = useState(1);
   const sectionRef = useRef<HTMLElement>(null);
@@ -53,14 +57,14 @@ export const ReviewDocumentActivityLog = ({
     width: totalWidth
   };
 
-  const getActivityLogs = useCallback(async (id, typeId) => {
+  const getActivityLogs = useCallback(async (id, docId, requestId) => {
     try {
       const http = new Http();
 
       const {data} = await http.get<ActivityLogType[]>(
         doc
-          ? NeedListEndpoints.GET.documents.activityLogsDoc(id, typeId)
-          : NeedListEndpoints.GET.documents.activityLogs(id, typeId)
+          ? NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
+          : NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
       );
 
       setActivityLogs(data);
@@ -194,14 +198,14 @@ export const ReviewDocumentActivityLog = ({
     }
   };
 
-  const getEmailLogs = useCallback(async (id, typeId) => {
+  const getEmailLogs = useCallback(async (id, docId, requestId) => {
     try {
       const http = new Http();
 
       const {data} = await http.get<EmailLogsType[]>(
         doc
-          ? NeedListEndpoints.GET.documents.emailLogsDoc(id, typeId)
-          : NeedListEndpoints.GET.documents.emailLogs(id, typeId)
+          ? NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
+          : NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
       );
 
       setEmailLogs(data);
@@ -252,15 +256,15 @@ export const ReviewDocumentActivityLog = ({
   };
 
   useEffect(() => {
-    if (id === null || typeId === null) return;
+    if (id === null || docId === null || requestId === null) return;
 
-    getActivityLogs(id, typeId);
-  }, [getActivityLogs, id, typeId]);
+    getActivityLogs(id, requestId, docId);
+  }, [getActivityLogs, id, docId, requestId]);
 
   useEffect(() => {
-    if (id === null) return;
-    getEmailLogs(id, typeId);
-  }, [getEmailLogs, id]);
+    if (id === null || docId === null || requestId === null) return;
+    getEmailLogs(id, requestId, docId);
+  }, [getEmailLogs, id, docId, requestId]);
 
   return (
     <section ref={sectionRef} className="vertical-tabs" id="verticalTab">
