@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace DocumentManagement.API.Controllers
 {
-   [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class FileController : Controller
@@ -107,7 +107,7 @@ namespace DocumentManagement.API.Controllers
                     // upload to ftp
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 localFile: filePath);
-                   
+
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
                                                             id: id,
@@ -122,23 +122,52 @@ namespace DocumentManagement.API.Controllers
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
-                    if(docQuery==false)
+                    if (docQuery == false)
                         throw new Exception("unable to update file in mongo");
                 }
+            var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+#pragma warning disable 4014
+            Task.Run(async () =>
+#pragma warning restore 4014
+                     {
+                         try
+                         {
+                             int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
+                             await notificationService.DocumentsSubmitted(loanApplicationId, auth);
+                         }
+                         catch (Exception e)
+                         {
 
-            FileViewModel fileViewModel = new FileViewModel();
-            fileViewModel.id = id;
-            fileViewModel.requestId = requestId;
-            fileViewModel.docId = docId;
-            var Files= await fileService.GetFileByDocId(fileViewModel,   userProfileId, HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
+                         }
 
-            if (Files.Count > 0)
-            {
-                Task.Run(() => losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString())));
-                //var responseBody = await losIntegration.SendFilesToBytePro(Files[0].loanApplicationId, id, requestId, docId, Request.Headers["Authorization"].Select(x => x.ToString()));
-            }
+                         try
+                         {
+                             FileViewModel fileViewModel = new FileViewModel();
+                             fileViewModel.id = id;
+                             fileViewModel.requestId = requestId;
+                             fileViewModel.docId = docId;
+                             var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
+
+                             if (files.Count > 0)
+                             {
 
 
+                                 await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
+                                                                         id,
+                                                                         requestId,
+                                                                         docId,
+                                                                         auth);
+                             }
+                         }
+                         catch (Exception e)
+                         {
+                         }
+
+                        
+                 
+               
+                     });
             // set order
             var model = new FileOrderModel
             {
@@ -148,11 +177,8 @@ namespace DocumentManagement.API.Controllers
                 files = JsonConvert.DeserializeObject<List<FileNameModel>>(value: order)
             };
             await fileService.Order(model: model,
-                                    userProfileId: userProfileId,tenantId);
-
-            int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
-
-           await notificationService.DocumentsSubmitted(loanApplicationId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                                    userProfileId: userProfileId, tenantId);
+     
 
             return Ok();
         }
@@ -169,8 +195,8 @@ namespace DocumentManagement.API.Controllers
             logger.LogInformation($"Sending for mcu review {model.docId}");
             var docQuery = await fileService.Done(model: model,
                                                   userProfileId: userProfileId,
-                                                  tenantId:tenantId,
-                                                  authHeader:Request.Headers["Authorization"].Select(x => x.ToString()));
+                                                  tenantId: tenantId,
+                                                  authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -186,7 +212,7 @@ namespace DocumentManagement.API.Controllers
             if (model.fileName.Length > setting.maxFileNameSize)
                 throw new Exception(message: "File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
-                                                    userProfileId: userProfileId,tenantId);
+                                                    userProfileId: userProfileId, tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();
@@ -199,7 +225,7 @@ namespace DocumentManagement.API.Controllers
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             await fileService.Order(model: model,
-                                    userProfileId: userProfileId,tenantId);
+                                    userProfileId: userProfileId, tenantId);
             return Ok();
         }
 
@@ -222,7 +248,7 @@ namespace DocumentManagement.API.Controllers
             logger.LogInformation($"document { moView.docId} is viewed by {userProfileId}");
             var fileviewdto = await fileService.View(model: model,
                                                      userProfileId: userProfileId,
-                                                     ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(),tenantId);
+                                                     ipAddress: HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), tenantId);
             var setting = await settingService.GetSetting();
 
             ftpClient.Setup(hostIp: setting.ftpServer,
