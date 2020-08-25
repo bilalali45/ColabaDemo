@@ -62,19 +62,20 @@ ul {
   }
 
   &-alert-msg {
-    height: 100%;
+    height: calc(100% - 50px);
     width: 100%;
     @extend .flex;
     justify-content: center;
     text-align: center;
     font: 400 #{fontSize('nr') + '/1.2'} fontFamily('base');
     color: color('base');
-    padding: 45px;
+    padding: 45px 20px 95px 20px;
 
     h4 {
       font-weight: 400;
       color: #000;
       margin-bottom: 5px;
+      font: 400 #{fontSize('nr') + '/1.2'} fontFamily('base');
     }
 
     &--wrap {

@@ -40,8 +40,9 @@ namespace Identity
                          .Enrich.FromLogContext()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
-                         .WriteTo.Debug()
-                         .WriteTo.Console()
+                         //.WriteTo.Debug()
+                         //.WriteTo.Console()
+                         .WriteTo.Async(x => x.RollingFile("logs\\log-{Date}.log"))
                          .WriteTo.Elasticsearch(options: ConfigureElasticSink(configuration: configuration,
                                                                               environment: environment))
                          .Enrich.WithProperty(name: "Environment",
