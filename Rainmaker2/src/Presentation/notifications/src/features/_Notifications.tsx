@@ -49,7 +49,7 @@ export const Notification: FunctionComponent<NotificationProps> = ({
       readAllNotificationsForDocument(loanApplicationId);
     }
 
-    window.open(link, '_blank');
+    window.open(link, '_self');
   };
 
   return (
@@ -77,7 +77,6 @@ export const Notification: FunctionComponent<NotificationProps> = ({
               readDocumentsAndOpenLink(loanApplicationId, link, status)
             }
             to="#"
-            target="_blank"
           >
             <div className="n-icon">
               <SVGDocument />

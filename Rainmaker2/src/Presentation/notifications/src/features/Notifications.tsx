@@ -1,9 +1,9 @@
-import React, {FunctionComponent, useState, useEffect, useRef} from 'react';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
-import {Notification} from './_Notifications';
-import {NotificationType, TimersType} from '../lib/type';
+import { Notification } from './_Notifications';
+import { NotificationType, TimersType } from '../lib/type';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -34,6 +34,17 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
       setShowToast(true);
     }
   }, [receivedNewNotification, notificationsVisible]);
+
+  useEffect(() => {
+    if (notificationsVisible) {
+      setShowToast(true);
+    }
+  }, [notifications?.length]);
+
+  useEffect(() => {
+    setShowToast(false);
+  }, [notificationsVisible === false]);
+
 
   const clearTimeOut = (id: number, timers: TimersType[]) => {
     const timer = timers.find((timer) => timer.id === id);
@@ -74,10 +85,10 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
             next={getFetchNotifications}
             scrollableTarget="notification-ul"
             className="InfiniteScroll"
-            style={{overflow: 'initial'}}
+            style={{ overflow: 'initial' }}
           >
             {notifications.map((notification, index) => {
-              const {id} = notification;
+              const { id } = notification;
 
               return (
                 <Notification
