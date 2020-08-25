@@ -64,7 +64,7 @@ namespace DocumentManagement.API
                         MaxConnectionsPerServer = int.MaxValue
                     })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
-            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
