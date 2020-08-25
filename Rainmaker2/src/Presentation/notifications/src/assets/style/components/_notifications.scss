@@ -75,6 +75,7 @@ ul {
       font-weight: 400;
       color: #000;
       margin-bottom: 5px;
+      font: 400 #{fontSize('nr') + '/1.2'} fontFamily('base');
     }
 
     &--wrap {
