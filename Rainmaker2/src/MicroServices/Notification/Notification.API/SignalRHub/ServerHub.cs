@@ -15,7 +15,7 @@ namespace Notification.API
         Task SendNotification(string model);
         Task NotificationSeen(long[] ids);
         Task NotificationRead(long[] ids);
-        Task NotificationDelete(long);
+        Task NotificationDelete(long id);
         Task NotificationDeleteAll();
     }
     [Authorize(Roles ="MCU")]
