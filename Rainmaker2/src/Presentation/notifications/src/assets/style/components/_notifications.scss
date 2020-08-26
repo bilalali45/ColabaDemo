@@ -70,6 +70,11 @@ ul {
     font: 400 #{fontSize('nr') + '/1.2'} fontFamily('base');
     color: color('base');
     padding: 45px 20px 95px 20px;
+    background: rgba(#fff,0.9);
+    position: absolute;
+    z-index: 9;
+    top: 50px;
+    left: 0;
 
     h4 {
       font-weight: 400;
@@ -115,6 +120,7 @@ ul {
       font: 500 #{fontSize('sm') + '/1.2'} fontFamily('base');
       background-color: color('primary');
       text-transform: uppercase;
+      min-width: 80px;
 
       &.secondry {
         background-color: color('secondry');
