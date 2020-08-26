@@ -25,6 +25,8 @@ export const ReviewDocument = () => {
   const [loading, setLoading] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [documentDetail, setDocumentDetail] = useState(false);
+  const [fileViewd, setFileViewd] = useState(false);
+
   const [typeIdId, setTypeIdId] = useState<{
     id: string | null;
     typeId: string | null;
@@ -41,7 +43,7 @@ export const ReviewDocument = () => {
     false
   );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
-  const [haveDocuments, setHaveDocuments] = useState(false);
+
   const {state: AppState, dispatch} = useContext(Store);
   const {needListManager} = AppState;
   const {needList} = needListManager as Pick<NeedListType, 'needList'>;
@@ -83,6 +85,7 @@ export const ReviewDocument = () => {
         });
 
         setBlobData(response);
+        setFileViewd(true);
         setLoading(false);
       } catch (error) {
         alert('Something went wrong while fetching document/file from server.');
@@ -109,7 +112,7 @@ export const ReviewDocument = () => {
         setBlobData(() => null);
         setClientName(clientName);
 
-        getDocumentForView(id, requestId, docId, fileId);
+        return getDocumentForView(id, requestId, docId, fileId);
       }
     },
     [
@@ -384,27 +387,17 @@ export const ReviewDocument = () => {
   };
 
   useEffect(() => {
-    //apex
-    if (!!currentDocument && currentDocument.files && currentDocument.files.length){
-      setHaveDocuments(true);
-    } 
-    else {
-      setHaveDocuments(false)
-    }
-
     window.addEventListener('keydown', onMoveArrowKeys);
 
     return () => {
       window.removeEventListener('keydown', onMoveArrowKeys);
-    }
-
+    };
   }, [currentDocument, loading, currentFileIndex]);
 
   useEffect(() => {
     //onload Goto Top
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-
   }, []);
 
   useEffect(() => {
@@ -482,7 +475,6 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
-        haveDocuments={haveDocuments}
         doc={currentDocument?.docName === typeIdId.typeId || false}
         id={typeIdId.id}
         typeId={typeIdId.typeId}
@@ -547,6 +539,7 @@ export const ReviewDocument = () => {
                   rejectDocument={(rejectMessage: string) =>
                     rejectDocument(needList, rejectMessage)
                   }
+                  fileViewd={fileViewd}
                   documentViewLoading={loading || acceptRejectLoading}
                 />
               </aside>

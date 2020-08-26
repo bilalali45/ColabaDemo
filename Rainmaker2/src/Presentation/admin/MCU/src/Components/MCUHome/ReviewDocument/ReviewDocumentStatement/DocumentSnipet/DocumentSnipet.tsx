@@ -49,6 +49,7 @@ export const DocumentSnipet = ({
   const [validFilename, setValidFilename] = useState(true);
   const [filenameEmpty, setFilenameEmpty] = useState(false);
   const [mcuNamePreviousName, setMCUNamePreviousName] = useState('');
+  const [itemViewd, setItemViewd] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const getFileExtension = (fileName: string) =>
@@ -244,7 +245,10 @@ export const DocumentSnipet = ({
         }`}
       style={{ cursor: 'pointer' }}
       id="moveNext"
-      onClick={eventBubblingHandler}
+      onClick={(e) => {
+        setItemViewd(true)
+        eventBubblingHandler(e);
+      }}
     >
       <div className="document-snipet--left">
         <div className="document-snipet--input-group">
@@ -268,11 +272,12 @@ export const DocumentSnipet = ({
             </React.Fragment>
           ) : (
               <p title={renameMCUName.trim() || mcuName || clientName}>
-                {!isRead ? <strong>
+                {isRead || index === currentFileIndex || itemViewd ? 
+                  renameMCUName.trim() || mcuName || clientName
+                  :
+                <strong>
                   {renameMCUName.trim() || mcuName || clientName}
                 </strong>
-                  :
-                  renameMCUName.trim() || mcuName || clientName
                 }
               </p>
             )}
