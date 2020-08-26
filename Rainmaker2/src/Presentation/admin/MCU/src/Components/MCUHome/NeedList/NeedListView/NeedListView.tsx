@@ -100,13 +100,17 @@ export const NeedListView = () => {
    return arr;
   }
 
-  const FilesSyncToLos = async () => {
+  const FilesSyncToLosHandler = async () => {
     let data = await alterNeedListArray(needListData)
     dispatch({
       type: NeedListActionsType.SetNeedListTableDATA,
       payload: data
     });
     setShowConfirmBox(true)
+  }
+
+  const FileSyncToLosHandler = async (id: string) => {
+   console.log('FileSyncToLosHandler',id)
   }
 
   const checkIsDocumentDraft = async (id: string) => {
@@ -291,8 +295,9 @@ export const NeedListView = () => {
         statusSortClick={statusSort}
         deleteRequestSent={deleteRequestSent}
         isByteProAuto = {isByteProAuto}
-        FilesSyncToLos = {FilesSyncToLos}
+        FilesSyncToLos = {FilesSyncToLosHandler}
         showConfirmBox = {showConfirmBox}
+        FileSyncToLos = {FileSyncToLosHandler}
       />
       <NeedListAlertBox/>
     </div>

@@ -21,6 +21,7 @@ type NeedListProps = {
   isByteProAuto: boolean;
   FilesSyncToLos: Function;
   showConfirmBox: boolean;
+  FileSyncToLos: Function;
 };
 
 export const Sync = "Synchronized";
@@ -41,6 +42,7 @@ export const NeedListTable = ({
   deleteRequestSent,
   isByteProAuto,
   FilesSyncToLos,
+  FileSyncToLos,
   showConfirmBox
 }: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -292,7 +294,7 @@ export const NeedListTable = ({
           {data.map((item: NeedListDocuments) => {
             return (
               <span key={item.id} className="block-element c-filename">
-                <a>
+                <a onClick ={() => FileSyncToLos(item.id)} >
                   <em className={"icon-refresh "+item.byteProStatusClassName}></em>
                 </a>
                {' '} {item.byteProStatusText}
