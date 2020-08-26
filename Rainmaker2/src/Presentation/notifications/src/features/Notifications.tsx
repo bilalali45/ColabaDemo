@@ -2,8 +2,9 @@ import React, {FunctionComponent, useState, useEffect, createRef} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
-import {Notification} from './_Notifications';
+import {Notification, NewNotificationToss} from './_Notifications';
 import {NotificationType, TimersType} from '../lib/type';
+import {AlertForNoData} from '../pages/_HomePage';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -28,13 +29,14 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   readAllNotificationsForDocument,
   setReceivedNewNotification
 }) => {
-  const [showToast, setShowToast] = useState(false); //apex false
+  const [showToss, setShowToss] = useState(false); //apex false
   const notificationRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (receivedNewNotification === true && notificationsVisible === true) {
-      setShowToast(true);
-      setReceivedNewNotification(false);
+      setShowToss(true);
+
+      receivedNewNotification === true && setReceivedNewNotification(false);
     }
   }, [
     receivedNewNotification,
@@ -57,21 +59,15 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
   const handleScrollToTop = () => {
     !!notificationRef.current && notificationRef.current.scrollTo(0, 0);
-    setShowToast(false);
+    setShowToss(false);
   };
 
-  return (
+  return notifications.length > 0 ? (
     <section className="notify-content">
-      {showToast === true && (
-        <div className="notify-toast">
-          <div
-            className="notify-toast-alert animated fadeIn"
-            onClick={handleScrollToTop}
-          >
-            See New Notifications
-          </div>
-        </div>
-      )}
+      <NewNotificationToss
+        showToss={showToss}
+        handleScrollToTop={handleScrollToTop}
+      />
       <div className="notify-body" id="notification-ul" ref={notificationRef}>
         <div className="notification-ul">
           <InfiniteScroll
@@ -103,5 +99,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
         </div>
       </div>
     </section>
+  ) : (
+    <AlertForNoData />
   );
 };
