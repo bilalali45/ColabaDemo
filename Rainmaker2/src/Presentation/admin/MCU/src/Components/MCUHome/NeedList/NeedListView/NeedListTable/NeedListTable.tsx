@@ -9,6 +9,7 @@ import {LocalDB} from '../../../../../Utils/LocalDB';
 import {DocumentStatus} from '../../../../../Entities/Types/Types';
 
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
+import syncedIcon from '../../../../../Assets/images/check-icon.svg';
 
 type NeedListProps = {
   needList: NeedList | null | undefined;
@@ -296,9 +297,10 @@ export const NeedListTable = ({
           {data.map((item: NeedListDocuments) => {
             return (
               <span key={item.id} className="block-element c-filename">
-                <a  onClick ={() => FileSyncToLos(item.id, item.byteProStatusText)} >
-                  <em className={"icon-refresh "+item.byteProStatusClassName}></em>
-                </a>
+                <a onClick ={() => FileSyncToLos(item.id, item.byteProStatusText)}>
+                  {item.byteProStatusClassName=="synced"?<img src={syncedIcon} className={item.byteProStatusClassName} alt="" />:<em className={"icon-refresh "+item.byteProStatusClassName}></em>
+          }
+          </a>
                {' '} {item.byteProStatusText}
               </span>
             );
