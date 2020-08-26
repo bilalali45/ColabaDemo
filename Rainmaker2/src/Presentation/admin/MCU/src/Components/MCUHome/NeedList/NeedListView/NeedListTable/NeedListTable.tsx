@@ -8,6 +8,8 @@ import {toTitleCase} from 'rainsoft-js';
 import {LocalDB} from '../../../../../Utils/LocalDB';
 import {DocumentStatus} from '../../../../../Entities/Types/Types';
 
+import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
+
 type NeedListProps = {
   needList: NeedList | null | undefined;
   deleteDocument: Function;
@@ -389,11 +391,26 @@ export const NeedListTable = ({
     
   }
 
-  const renderSyncToLosConfirmationBox = () => {
+  const renderSyncToLosConfirmationBox = () => { //apex
     if(!showConfirmBox) {
       return '';
     }else{
-      return <div>Are you ready to sync selected document</div>
+      return (<div className="sync-alert">
+        <div className="sync-alert-wrap">
+          <div className="icon"><img src={sycLOSIcon} alt="" /></div>
+          <div className="msg">Are you ready to sync selected document</div>
+          <div className="btn-wrap">          
+          <button className="btn btn-primary btn-sm">
+            Sync
+            {/* <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner> */}
+          </button>
+          
+          </div>
+        </div>
+        
+        </div>)
     }  
   }
 
