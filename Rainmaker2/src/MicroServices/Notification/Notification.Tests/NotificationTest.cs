@@ -146,7 +146,14 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
             var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+
+            notificationController.ControllerContext = context;
 
             NotificationDelete notificationDelete = new NotificationDelete();
             notificationDelete.id = 10;

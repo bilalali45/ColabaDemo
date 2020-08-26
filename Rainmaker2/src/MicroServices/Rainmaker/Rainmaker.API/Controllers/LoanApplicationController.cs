@@ -117,19 +117,29 @@ namespace Rainmaker.API.Controllers
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             var activityEnumType = (ActivityForType)model.activityForId;
+            var busnessUnitId = loanApplication.BusinessUnitId.ToInt();
 
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+            EmailAccount emailAccount = null;
 
-            var emailaccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == loanApplication.BusinessUnitId.ToInt()).EmailAccount;
+            if(userProfile != null)
+                if (userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails
+                                          .SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
-            var data = new Dictionary<FillKey, string>();
-            data.Add(FillKey.CustomEmailHeader, "");
-            data.Add(FillKey.CustomEmailFooter, "");
-            data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
-            data.Add(FillKey.FromEmail, emailaccount.Email);
+            if (emailAccount != null)
+            {
+                var data = new Dictionary<FillKey, string>();
+                data.Add(FillKey.CustomEmailHeader, "");
+                data.Add(FillKey.CustomEmailFooter, "");
+                data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
+                data.Add(FillKey.FromEmail, emailAccount.Email);
 
-            await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
-            return Ok();
+                await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
+                return Ok();
+            }
+            else
+                return Ok();
         }
 
         private async Task SendLoanApplicationActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype)
