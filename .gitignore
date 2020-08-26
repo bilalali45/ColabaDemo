@@ -18,3 +18,4 @@ build
 dist
 yarn.lock
 *.log
+/Rainmaker2/src/Solutions/AllProjects.sln

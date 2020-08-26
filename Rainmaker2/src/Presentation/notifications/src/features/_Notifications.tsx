@@ -46,9 +46,10 @@ export const Notification: FunctionComponent<NotificationProps> = ({
   ) => {
     //Prevent unecessary API call
     if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
-      readAllNotificationsForDocument(loanApplicationId);
+      (async () => {
+        await readAllNotificationsForDocument(loanApplicationId);
+      })();
     }
-
     window.open(link, '_self');
   };
 
@@ -102,5 +103,23 @@ export const Notification: FunctionComponent<NotificationProps> = ({
         </div>
       )}
     </div>
+  );
+};
+
+export const NewNotificationToss: FunctionComponent<{
+  showToss: boolean;
+  handleScrollToTop: () => void;
+}> = ({showToss, handleScrollToTop}) => {
+  return showToss === true ? (
+    <div className="notify-toast">
+      <div
+        className="notify-toast-alert animated fadeIn"
+        onClick={handleScrollToTop}
+      >
+        See New Notifications
+      </div>
+    </div>
+  ) : (
+    <></>
   );
 };

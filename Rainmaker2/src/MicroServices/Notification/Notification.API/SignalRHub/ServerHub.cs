@@ -13,6 +13,10 @@ namespace Notification.API
     {
         Task TestSignalR(string message);
         Task SendNotification(string model);
+        Task NotificationSeen(long[] ids);
+        Task NotificationRead(long[] ids);
+        Task NotificationDelete(long id);
+        Task NotificationDeleteAll();
     }
     [Authorize(Roles ="MCU")]
     public class ServerHub : Hub<IClientHub>
@@ -56,6 +60,26 @@ namespace Notification.API
         {
             var connections = _clientConnections.GetConnections(userId).ToList();
             await hubContext.Clients.Clients(connections).SendNotification(JsonConvert.SerializeObject(model));
+        }
+        public static async Task NotificationSeen(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).NotificationSeen(ids);
+        }
+        public static async Task NotificationRead(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).NotificationRead(ids);
+        }
+        public static async Task NotificationDelete(IHubContext<ServerHub, IClientHub> hubContext, int userId, long id)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).NotificationDelete(id);
+        }
+        public static async Task NotificationDeleteAll(IHubContext<ServerHub, IClientHub> hubContext, int userId)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).NotificationDeleteAll();
         }
         #endregion
     }

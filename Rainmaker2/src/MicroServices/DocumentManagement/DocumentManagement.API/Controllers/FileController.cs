@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,8 @@ namespace DocumentManagement.API.Controllers
                               IConfiguration config,
                               ILogger<FileController> logger, ILosIntegrationService losIntegration,
                               INotificationService notificationService,
-                              IRainmakerService rainmakerService)
+                              IRainmakerService rainmakerService,
+                              IByteProService byteProService)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -42,6 +44,7 @@ namespace DocumentManagement.API.Controllers
             this.losIntegration = losIntegration;
             this.notificationService = notificationService;
             this.rainmakerService = rainmakerService;
+            this.byteProService = byteProService;
         }
 
         #endregion
@@ -58,6 +61,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ILosIntegrationService losIntegration;
         private readonly INotificationService notificationService;
         private readonly IRainmakerService rainmakerService;
+        private readonly IByteProService byteProService;
         #endregion
 
         #region Action Methods
@@ -98,6 +102,7 @@ namespace DocumentManagement.API.Controllers
                     throw new Exception(message: "This file type is not allowed for uploading");
             }
             // save
+            List<string> fileId = new List<string>();
             foreach (var formFile in files)
                 if (formFile.Length > 0)
                 {
@@ -122,8 +127,10 @@ namespace DocumentManagement.API.Controllers
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
-                    if (docQuery == false)
+                    if (String.IsNullOrEmpty(docQuery))
                         throw new Exception("unable to update file in mongo");
+                    fileId.Add(docQuery);
+
                 }
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
@@ -143,30 +150,40 @@ namespace DocumentManagement.API.Controllers
 
                          try
                          {
-                             FileViewModel fileViewModel = new FileViewModel();
-                             fileViewModel.id = id;
-                             fileViewModel.requestId = requestId;
-                             fileViewModel.docId = docId;
-                             var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
-
-                             if (files.Count > 0)
+                             Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                             if (tenant.syncToBytePro == (int)SyncToBytePro.Auto && tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnSubmit)
                              {
+                                 foreach (var fileid in fileId)
+                                 {
+                                     FileViewModel fileViewModel = new FileViewModel();
+                                     fileViewModel.id = id;
+                                     fileViewModel.requestId = requestId;
+                                     fileViewModel.docId = docId;
+                                     fileViewModel.fileId = fileid;
+                                     var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
+                                     logger.LogInformation(message: $"fileid {fileid} is getting from submit file");
+
+                                     if (files.Count > 0)
+                                     {
 
 
-                                 await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
-                                                                         id,
-                                                                         requestId,
-                                                                         docId,
-                                                                         auth);
+                                         await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
+                                                                                 id,
+                                                                                 requestId,
+                                                                                 docId,
+                                                                                 fileid,
+                                                                                 auth);
+                                     }
+                                 }
                              }
                          }
                          catch (Exception e)
                          {
                          }
 
-                        
-                 
-               
+
+
+
                      });
             // set order
             var model = new FileOrderModel
@@ -178,7 +195,7 @@ namespace DocumentManagement.API.Controllers
             };
             await fileService.Order(model: model,
                                     userProfileId: userProfileId, tenantId);
-     
+
 
             return Ok();
         }

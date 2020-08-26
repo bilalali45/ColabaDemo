@@ -1,4 +1,5 @@
-﻿using DocumentManagement.Model;
+﻿using DocumentManagement.Entity;
+using DocumentManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace DocumentManagement.Service
     public interface IByteProService
     {
         Task<FileViewDTO> View(AdminFileViewModel model, int tenantId);
-        Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
+        Task<Tenant> GetTenantSetting(int tenantId);
+        //Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
     }
 }

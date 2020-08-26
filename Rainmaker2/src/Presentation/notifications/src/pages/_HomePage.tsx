@@ -2,19 +2,19 @@ import React, {FunctionComponent} from 'react';
 import {SVGToggle, SVGNoBell, SVGBellSleep} from '../SVGIcons';
 
 interface HeaderProps {
-  handleClear: () => void;
-  clearAllDisplay: boolean;
+  onDeleteAll: () => void;
+  showClearAllButton: boolean;
 }
 
 export const Header: FunctionComponent<HeaderProps> = ({
-  handleClear,
-  clearAllDisplay
+  onDeleteAll,
+  showClearAllButton
 }) => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      {clearAllDisplay && (
-        <button className="notify-btn-clear" onClick={handleClear}>
+      {showClearAllButton === true && (
+        <button className="notify-btn-clear" onClick={onDeleteAll}>
           Clear all <SVGToggle />
         </button>
       )}
@@ -41,11 +41,13 @@ export const BellIcon: FunctionComponent<{
 };
 
 interface AlertForRemoveProps {
-  handleClearVerification: (value: boolean) => void;
+  onYes: () => void;
+  onNo: () => void;
 }
 
-export const AlertForRemove: FunctionComponent<AlertForRemoveProps> = ({
-  handleClearVerification
+export const ConfirmDeleteAll: FunctionComponent<AlertForRemoveProps> = ({
+  onYes,
+  onNo
 }) => {
   return (
     <div className="notify-alert-msg">
@@ -53,16 +55,10 @@ export const AlertForRemove: FunctionComponent<AlertForRemoveProps> = ({
         <SVGNoBell />
         <h4>Are you sure you want to remove all notifications?</h4>
         <p>
-          <button
-            onClick={() => handleClearVerification(false)}
-            className="btn-notify secondry"
-          >
+          <button onClick={onNo} className="btn-notify secondry">
             No
           </button>
-          <button
-            onClick={() => handleClearVerification(true)}
-            className="btn-notify primary"
-          >
+          <button onClick={onYes} className="btn-notify primary">
             Yes
           </button>
         </p>
@@ -81,6 +77,15 @@ export const AlertForNoData: FunctionComponent = () => {
           Stay tuned! Notifications about loan applications will show up here.{' '}
         </p>
       </div>
+    </div>
+  );
+};
+
+export const LoadingSpinner: FunctionComponent = () => {
+  return (
+    <div className="notify-loading">
+      <span className="notify-loading--circle"></span>
+      <span className="notify-loading--circle-bold"></span>
     </div>
   );
 };

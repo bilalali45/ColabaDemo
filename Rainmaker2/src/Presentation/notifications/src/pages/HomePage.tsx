@@ -10,14 +10,16 @@ import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
-import {Header, BellIcon, AlertForRemove, AlertForNoData} from './_HomePage';
+import {Header, BellIcon, ConfirmDeleteAll, LoadingSpinner} from './_HomePage';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
 
 export const HomePage: FunctionComponent = () => {
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const notificationsVisibleRef = useRef(notificationsVisible);
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [notifications, setNotifications] = useState<NotificationType[] | null>(
+    null
+  );
   const [unSeenNotificationsCount, setUnSeenNotificationsCount] = useState(0);
   const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
   const notificationsRef = useRef(notifications);
@@ -31,10 +33,9 @@ export const HomePage: FunctionComponent = () => {
   const [lastId, setLastId] = useState(-1);
   const lastIdRef = useRef(lastId);
   const [notifyClass, setNotifyClass] = useState('close');
-  const [unClear, setClear] = useState(false);
-  const [clearAllConfirm, setClearAllConfirm] = useState(false);
   const refContainerSidebar = useRef<HTMLDivElement>(null);
   const [timers, setTimers] = useState<TimersType[]>();
+  const [confirmDeleteAll, setConfimDeleteAll] = useState(false);
 
   useEffect(() => {
     lastIdRef.current = lastId;
@@ -57,7 +58,7 @@ export const HomePage: FunctionComponent = () => {
       ) {
         setNotificationsVisible(() => false);
         setReceivedNewNotification(() => false);
-        setClear(() => false);
+        setConfimDeleteAll(() => false);
       }
     };
 
@@ -114,8 +115,16 @@ export const HomePage: FunctionComponent = () => {
              */
             return lastId === -1
               ? [...response]
-              : prevNotifications.concat(response);
+              : prevNotifications!.concat(response);
           });
+        } else {
+          /**
+           * 1. !notificationsRef.current will be true if we are fetching notifications only for the first time
+           * 2. lastId=== -1 will be true if we are fetching notifications only for the first time
+           */
+          if (!notificationsRef.current && lastId === -1) {
+            setNotifications([]);
+          }
         }
       } catch (error) {
         console.warn('error', error);
@@ -136,7 +145,7 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [http]);
 
-  const onClearNotifications = async () => {
+  const onCDeleteAllNotifications = async () => {
     try {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
@@ -147,28 +156,20 @@ export const HomePage: FunctionComponent = () => {
     }
   };
 
-  const clearAll = () => {
-    setClear(true);
-  };
+  const deleteAllNotifications = async () => {
+    try {
+      await onCDeleteAllNotifications();
 
-  const clearAllVerification = async (verify: boolean) => {
-    if (verify === true) {
-      try {
-        await onClearNotifications();
-
-        setClearAllConfirm(() => false);
-        setClear(() => false);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      setClearAllConfirm(false);
-      setClear(false);
+      setConfimDeleteAll(false);
+    } catch (error) {
+      console.warn(error);
     }
   };
 
   useEffect(() => {
     if (notificationsVisible) {
+      if (!notifications) return;
+
       const clonedNotifications = _.cloneDeep(notifications);
 
       const unseenNotificationIds = clonedNotifications
@@ -201,6 +202,8 @@ export const HomePage: FunctionComponent = () => {
 
   const readAllNotificationsForDocument = async (loanApplicationId: string) => {
     try {
+      if (!notifications) return;
+
       const documentIds = notifications
         .filter(
           (notification) =>
@@ -232,43 +235,7 @@ export const HomePage: FunctionComponent = () => {
         setNotifications(clonedNotifications);
       }
     } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const renderNotifications = (
-    timers: TimersType[],
-    removeNotification: (id: number) => void,
-    notifications: NotificationType[],
-    lastId: number,
-    setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>,
-    readAllNotificationsForDocument: (loanApplicationId: string) => void,
-    setReceivedNewNotification: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    if (notifications.length === 0) {
-      return <AlertForNoData />;
-    } else if (unClear === false && clearAllConfirm === false) {
-      return (
-        <Notifications
-          timers={timers || []}
-          removeNotification={removeNotification}
-          receivedNewNotification={receivedNewNotification}
-          notificationsVisible={notificationsVisible}
-          notifications={notifications}
-          getFetchNotifications={() => getFetchNotifications(lastId)}
-          setTimers={setTimers}
-          readAllNotificationsForDocument={readAllNotificationsForDocument}
-          setReceivedNewNotification={setReceivedNewNotification}
-        />
-      );
-    } else {
-      if (clearAllConfirm === true) {
-        return <AlertForNoData />;
-      } else {
-        return (
-          <AlertForRemove handleClearVerification={clearAllVerification} />
-        );
-      }
+      console.warn(error);
     }
   };
 
@@ -279,6 +246,8 @@ export const HomePage: FunctionComponent = () => {
       }
 
       SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
+        if (!notificationsRef.current) return;
+
         const clonedNotifications = _.cloneDeep(notificationsRef.current);
 
         clonedNotifications.unshift(
@@ -294,11 +263,14 @@ export const HomePage: FunctionComponent = () => {
         setNotifications(() => clonedNotifications);
       });
 
+      SignalRHub.hubConnection.on('NotificationSeen', () => {
+        getUnseenNotificationsCount();
+      });
+
       SignalRHub.hubConnection.onclose(() => {
         const auth = LocalDB.getAuthToken();
 
         if (auth) {
-          //SignalRHub.signalRHubResume(signalREventRegister);
           SignalRHub.configureHubConnection(
             window.envConfig.API_BASE_URL + '/serverhub',
             LocalDB.getAuthToken() || '',
@@ -329,7 +301,9 @@ export const HomePage: FunctionComponent = () => {
             id
           });
 
-          setNotifications((prev) => prev.filter((item) => item.id !== id));
+          setNotifications((prevNotifications) =>
+            prevNotifications!.filter((notification) => notification.id !== id)
+          );
         }, 5000);
 
         const clonedTimeers = _.cloneDeep(timers);
@@ -341,27 +315,31 @@ export const HomePage: FunctionComponent = () => {
             id
           });
 
-          setNotifications((prev) => prev.filter((item) => item.id !== id));
+          setNotifications((prevNotifications) =>
+            prevNotifications!.filter((notification) => notification.id !== id)
+          );
         }, 5000);
 
         setTimers(() => [{id, timer}]);
       }
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
   };
 
   useEffect(() => {
-    if (notificationsRef.current.length === 6 && lastIdRef.current !== -1) {
+    if (!notifications) return;
+
+    if (notifications.length === 6 && lastIdRef.current !== -1) {
       getFetchNotifications(lastIdRef.current);
     }
-  });
+  }, [notifications, getFetchNotifications]);
 
   let notificationsCounter = 0;
   if (receivedNewNotification === false) {
     notificationsCounter = unSeenNotificationsCount;
   } else {
-    notificationsCounter = notifications.filter((n) => n.status === 'Unseen')
+    notificationsCounter = notifications!.filter((n) => n.status === 'Unseen')
       .length;
   }
 
@@ -374,20 +352,33 @@ export const HomePage: FunctionComponent = () => {
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
           <Header
-            clearAllDisplay={
-              clearAllConfirm === true ||
-              (notifications.length > 0 && unClear === false)
+            showClearAllButton={
+              !!notifications &&
+              notifications.length > 0 &&
+              confirmDeleteAll === false
             }
-            handleClear={clearAll}
+            onDeleteAll={() => setConfimDeleteAll(true)}
           />
-          {renderNotifications(
-            timers || [],
-            removeNotification,
-            notifications,
-            lastId,
-            setTimers,
-            readAllNotificationsForDocument,
-            setReceivedNewNotification
+          {confirmDeleteAll === true && (
+            <ConfirmDeleteAll
+              onYes={deleteAllNotifications}
+              onNo={() => setConfimDeleteAll(false)}
+            />
+          )}
+          {!notifications ? (
+            <LoadingSpinner />
+          ) : (
+            <Notifications
+              timers={timers || []}
+              removeNotification={removeNotification}
+              receivedNewNotification={receivedNewNotification}
+              notificationsVisible={notificationsVisible}
+              notifications={notifications}
+              getFetchNotifications={() => getFetchNotifications(lastId)}
+              setTimers={setTimers}
+              readAllNotificationsForDocument={readAllNotificationsForDocument}
+              setReceivedNewNotification={setReceivedNewNotification}
+            />
           )}
         </div>
       )}

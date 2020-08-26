@@ -13,5 +13,7 @@ namespace LosIntegration.API.Models.Document
         public string RequestId { get; set; }
         [DataMember(Name = "docId")]
         public string DocumentId { get; set; }
+        [DataMember(Name = "fileId")]
+        public string FileId { get; set; }
     }
 }

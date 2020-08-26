@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useHistory } from "react-router-dom";
 import { LoanStatus } from "../Activity/LoanStatus/LoanStatus";
 import { Store } from "../../../store/store";
 import { AlertBox } from "../../../shared/Components/AlertBox/AlertBox";
 import { Auth } from "../../../services/auth/Auth";
+import { debug } from "console";
+import { DocumentsActionType } from "../../../store/reducers/documentReducer";
 const ActivityHeader = (props) => {
   const [leftNav, setLeftNav] = useState("");
-  const [showAlert, setshowAlert] = useState<boolean>(false);
+  const [showAlert, setshowAlert] = useState(false);
   const [rightNav, setRightNav] = useState("");
   const [leftNavUrl, setLeftNavUrl] = useState("");
   const [rightNavUrl, setRightNavUrl] = useState("");
   const [currentUrl, setCurrentUrl] = useState("");
+  const [browserBack, setbrowserBack] = useState(false);
+
 
   const location = useLocation();
+  const history = useHistory();
   const { state, dispatch } = useContext(Store);
   const { pendingDocs, currentDoc }: any = state.documents;
 
@@ -60,6 +65,8 @@ const ActivityHeader = (props) => {
 
   useEffect(() => {
     setNavigations(location.pathname);
+
+
   }, [location.pathname]);
 
   useEffect(() => {
@@ -72,13 +79,41 @@ const ActivityHeader = (props) => {
         activityHeadeRef.current.onclick = null;
       }
     }
+
   }, [selectedFiles]);
 
+  useEffect(() => {
+      window.onpopstate = backHandler; 
+    
+    if(location.pathname.includes('view')) {
+      window.onpopstate = () => {};
+    } 
+  }, [location?.pathname, selectedFiles])
+
   const showAlertPopup = (e) => {
+
     if (e.target.tagName === "A") {
       setshowAlert(true);
     }
   };
+
+  let backHandler = async (event) => {
+        event.preventDefault();
+        let files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
+        if (files) {
+          let cur = currentDoc;
+          history.push(location.pathname);
+          setTimeout(() => {
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: cur });
+            setbrowserBack(() => {
+              setshowAlert(true);
+              return true
+            });
+          }, 0);
+          return;
+        }
+        // setbrowserBack(false);
+      };
 
   const renderLeftNav = () => {
     if (leftNav === "Dashboard") {
@@ -147,6 +182,7 @@ const ActivityHeader = (props) => {
       {showAlert && (
         <AlertBox
           navigateUrl={currentUrl}
+          isBrowserBack={browserBack}
           hideAlert={() => setshowAlert(false)}
         />
       )}

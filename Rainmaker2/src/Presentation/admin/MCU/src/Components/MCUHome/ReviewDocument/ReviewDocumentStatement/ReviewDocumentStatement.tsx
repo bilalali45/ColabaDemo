@@ -27,6 +27,8 @@ const Footer = ({
   status?: string;
   acceptRejectEnabled: boolean;
 }) => {
+
+
   const rejectAndCloseRejectPopUp = () => {
     rejectDocument();
   };
@@ -113,22 +115,19 @@ export const ReviewDocumentStatement = ({
   doc,
   id,
   typeId,
+  fileViewd
 }: {
   doc: boolean;
   id: string | null;
   typeId: string | null;
   typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void;
-  moveNextFile: (
-    index: number,
-    fileId: string,
-    clientName: string,
-    loading?: boolean
-  ) => void;
+  moveNextFile: Function;
   currentDocument: NeedList | null;
   currentFileIndex: number;
   acceptDocument: () => void;
   rejectDocument: (rejectMessage: string) => void;
   documentViewLoading: boolean;
+  fileViewd: boolean;
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -176,6 +175,9 @@ export const ReviewDocumentStatement = ({
     );
 
     const { typeId, docName, files, userName } = data[0];
+
+  console.log('currentDocument', currentDocument);
+
 
     typeIdAndIdForActivityLogs(id, typeId || docName);
 
@@ -266,6 +268,12 @@ export const ReviewDocumentStatement = ({
   }, [currentDocument]);
 
   useEffect(() => {
+    if (currentDocument) {
+      requestDocumentFiles(currentDocument);
+    }
+  }, [fileViewd]);
+
+  useEffect(() => {
     // Set reject document message when document changed.
     setRejectDocumentMessage(
       `Hi ${currentDocument!.userName}, please submit the ${
@@ -337,11 +345,12 @@ export const ReviewDocumentStatement = ({
                       clientName: string,
                       loadingFile?: boolean
                     ) => {
-                      await moveNextFile(index, fileId, clientName, loadingFile);
-                      setCurrentFileName(clientName);
-                      if (currentDocument) {
-                        await requestDocumentFiles(currentDocument);
-                      }
+                      moveNextFile(index, fileId, clientName, loadingFile).then(async() => {
+                        setCurrentFileName(clientName);
+                        if (currentDocument) {
+                          await requestDocumentFiles(currentDocument);
+                        }
+                      });
                       
                     }}
                     requestId={currentDocument?.requestId!}

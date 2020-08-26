@@ -6,6 +6,24 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DocumentManagement.Entity
 {
+    public class ByteProLog
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string loanId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string fileId { get; set; }
+        public string status { get; set; }
+        public DateTime updatedOn { get; set; }
+        public int userId { get; set; }
+        public int tenantId { get; set; }
+    }
     public class EmailLog
     {
         [BsonId]

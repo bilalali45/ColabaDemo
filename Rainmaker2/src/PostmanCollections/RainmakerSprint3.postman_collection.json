@@ -1,0 +1,732 @@
+{
+	"info": {
+		"_postman_id": "d8ad6025-06c4-44c3-a847-adf23af9f97a",
+		"name": "RainmakerSprint3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetMenu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/admindashboard/getmenu",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"admindashboard",
+						"getmenu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDocumentsByTemplateIds ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/admindashboard/getmenu?id=5eb25acde519051af2eeb211&id=5eb25acde519051af2eeb111&id=5eb25acde519051af2eeb221&tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"admindashboard",
+						"getmenu"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb211"
+						},
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb111"
+						},
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb221"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoanInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/admindashboard/getloaninfo?loanApplicationId=5005",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"admindashboard",
+						"getloaninfo"
+					],
+					"query": [
+						{
+							"key": "loanApplicationId",
+							"value": "5005"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailLog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/DocumentManagement/Document/GetEmailLog?id=5f0ede3cce9c4b62509d0dbf&requestId=5f439e9ebf7ceb086c8ceb54&docId=5f439e9ebf7ceb086c8ceb59",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"DocumentManagement",
+						"Document",
+						"GetEmailLog"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5f0ede3cce9c4b62509d0dbf"
+						},
+						{
+							"key": "requestId",
+							"value": "5f439e9ebf7ceb086c8ceb54"
+						},
+						{
+							"key": "docId",
+							"value": "5f439e9ebf7ceb086c8ceb59"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDocuments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=5976&tenantId=1&pending=false",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"admindashboard",
+						"GetDocuments"
+					],
+					"query": [
+						{
+							"key": "loanApplicationId",
+							"value": "5976"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						},
+						{
+							"key": "pending",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetActivityLog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/Document/GetActivityLog?id=5f0ede3cce9c4b62509d0dbf&requestId=5f439e9ebf7ceb086c8ceb54&docId=5f439e9ebf7ceb086c8ceb59",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"Document",
+						"GetActivityLog"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5f0ede3cce9c4b62509d0dbf"
+						},
+						{
+							"key": "requestId",
+							"value": "5f439e9ebf7ceb086c8ceb54"
+						},
+						{
+							"key": "docId",
+							"value": "5f439e9ebf7ceb086c8ceb59"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteBorrowerTodo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"docId\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"tenantId\":1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/admindashboard/delete",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"admindashboard",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTemplates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/gettemplates?tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"gettemplates"
+					],
+					"query": [
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/view?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=a2225d1fe456051af2eeb72d&fileId=5f02cf6efd0d322e6c103b11&tenantId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"view"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25d1fe519051af2eeb72d"
+						},
+						{
+							"key": "requestId",
+							"value": "abc15d1fe456051af2eeb768"
+						},
+						{
+							"key": "docId",
+							"value": "a2225d1fe456051af2eeb72d"
+						},
+						{
+							"key": "fileId",
+							"value": "5f02cf6efd0d322e6c103b11"
+						},
+						{
+							"key": "tenantId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mcuRename",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n     \"docId\":\"a2225d1fe456051af2eeb72d\",\r\n      \"fileId\":\"5f02cf6efd0d322e6c103b11\",\r\n       \"newName\":\"mcudownload.jpeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/mcurename",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"mcurename"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTemplateDocuments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/template/getdocuments?id=5eb25acde519051af2eeb111",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"template",
+						"getdocuments"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25acde519051af2eeb111"
+						},
+						{
+							"key": "tenantId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InsertTemplate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"name\":\"Test Template\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/inserttemplate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"inserttemplate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddDocument",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"templateId\":\"5eb25acde519051af2eeb111\",\r\n      \"tenantId\":1,\r\n      \"docName\":\"Credit Report\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/adddocument",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"adddocument"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCategoryDocument",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/GetCategoryDocument",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"GetCategoryDocument"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/document/getfiles?id=5eb25d1fe519051af2eeb72d&requestId=abc15d1fe456051af2eeb768&docId=aaa25d1fe456051af2eeb72d",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"document",
+						"getfiles"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5eb25d1fe519051af2eeb72d"
+						},
+						{
+							"key": "requestId",
+							"value": "abc15d1fe456051af2eeb768"
+						},
+						{
+							"key": "docId",
+							"value": "aaa25d1fe456051af2eeb72d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RenameTemplate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"id\":\"5eb25acde519051af2eeb111\",\r\n     \"name\":\"Salary Slip\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/RenameTemplate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"RenameTemplate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDocument",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"id\":\"5eb25acde519051af2eeb111\",\r\n     \"documentId\":\"5ebc18cba5d847268075ad11\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/deletedocument",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"deletedocument"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteTemplate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n     \"templateId\":\"5eb25acde519051af2eeb111\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/documentmanagement/template/deletetemplate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"documentmanagement",
+						"template",
+						"deletetemplate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

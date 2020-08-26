@@ -1,4 +1,5 @@
-﻿using DocumentManagement.Model;
+﻿using DocumentManagement.Entity;
+using DocumentManagement.Model;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -73,32 +74,48 @@ namespace DocumentManagement.Service
 
             return fileViewDTO;
         }
-        public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
+        public async Task<Tenant> GetTenantSetting(int tenantId)
         {
-            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
-            {
-                { "_id", BsonObjectId.Create(id) }
-            }, new BsonDocument()
-            {
-                { "$set", new BsonDocument()
-                    {
-                        { "requests.$[request].documents.$[document].files.$[file].byteProStatus", ByteProStatus.Synchronized}
-
-                    }
-                }
-            }, new UpdateOptions()
-            {
-                ArrayFilters = new List<ArrayFilterDefinition>()
-                {
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
-                }
-
+            Tenant tenant = null;
+            IMongoCollection<Entity.Tenant> collection = mongoService.db.GetCollection<Entity.Tenant>("Tenant");
+            using var asyncCursor = await collection.FindAsync(new BsonDocument() {
+                { "tenantId",tenantId }
             });
-
-            return result.ModifiedCount == 1;
+            if(await asyncCursor.MoveNextAsync())
+            {
+                if(asyncCursor.Current?.Count()>0)
+                {
+                    tenant = asyncCursor.Current.First();
+                }
+            }
+            return tenant;
         }
+        //public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
+        //{
+        //    IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+        //    UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+        //    {
+        //        { "_id", BsonObjectId.Create(id) }
+        //    }, new BsonDocument()
+        //    {
+        //        { "$set", new BsonDocument()
+        //            {
+        //                { "requests.$[request].documents.$[document].files.$[file].byteProStatus", ByteProStatus.Synchronized}
+
+        //            }
+        //        }
+        //    }, new UpdateOptions()
+        //    {
+        //        ArrayFilters = new List<ArrayFilterDefinition>()
+        //        {
+        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}"),
+        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
+        //        }
+
+        //    });
+
+        //    return result.ModifiedCount == 1;
+        //}
     }
 }
