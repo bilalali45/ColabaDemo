@@ -256,7 +256,6 @@ export const HomePage: FunctionComponent = () => {
         const auth = LocalDB.getAuthToken();
 
         if (auth) {
-          //SignalRHub.signalRHubResume(signalREventRegister);
           SignalRHub.configureHubConnection(
             window.envConfig.API_BASE_URL + '/serverhub',
             LocalDB.getAuthToken() || '',
@@ -343,17 +342,21 @@ export const HomePage: FunctionComponent = () => {
               onNo={() => setConfimDeleteAll(false)}
             />
           )}
-          <Notifications
-            timers={timers || []}
-            removeNotification={removeNotification}
-            receivedNewNotification={receivedNewNotification}
-            notificationsVisible={notificationsVisible}
-            notifications={notifications}
-            getFetchNotifications={() => getFetchNotifications(lastId)}
-            setTimers={setTimers}
-            readAllNotificationsForDocument={readAllNotificationsForDocument}
-            setReceivedNewNotification={setReceivedNewNotification}
-          />
+          {lastId === -1 ? (
+            <div>Loading</div>
+          ) : (
+            <Notifications
+              timers={timers || []}
+              removeNotification={removeNotification}
+              receivedNewNotification={receivedNewNotification}
+              notificationsVisible={notificationsVisible}
+              notifications={notifications}
+              getFetchNotifications={() => getFetchNotifications(lastId)}
+              setTimers={setTimers}
+              readAllNotificationsForDocument={readAllNotificationsForDocument}
+              setReceivedNewNotification={setReceivedNewNotification}
+            />
+          )}
         </div>
       )}
     </div>
