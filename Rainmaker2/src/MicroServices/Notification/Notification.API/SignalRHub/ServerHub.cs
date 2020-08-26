@@ -13,6 +13,7 @@ namespace Notification.API
     {
         Task TestSignalR(string message);
         Task SendNotification(string model);
+        Task NotificationSeen();
     }
     [Authorize(Roles ="MCU")]
     public class ServerHub : Hub<IClientHub>
@@ -56,6 +57,11 @@ namespace Notification.API
         {
             var connections = _clientConnections.GetConnections(userId).ToList();
             await hubContext.Clients.Clients(connections).SendNotification(JsonConvert.SerializeObject(model));
+        }
+        public static async Task NotificationSeen(IHubContext<ServerHub, IClientHub> hubContext, int userId)
+        {
+            var connections = _clientConnections.GetConnections(userId).ToList();
+            await hubContext.Clients.Clients(connections).NotificationSeen();
         }
         #endregion
     }

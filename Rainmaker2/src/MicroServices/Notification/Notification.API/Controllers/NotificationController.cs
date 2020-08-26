@@ -83,7 +83,9 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Seen(NotificationSeen model)
         {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.Seen(model.ids);
+            await ServerHub.NotificationSeen(_context,userProfileId);
             return Ok();
         }
 
