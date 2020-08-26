@@ -242,7 +242,8 @@ export const HomePage: FunctionComponent = () => {
     notifications: NotificationType[],
     lastId: number,
     setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>,
-    readAllNotificationsForDocument: (loanApplicationId: string) => void
+    readAllNotificationsForDocument: (loanApplicationId: string) => void,
+    setReceivedNewNotification: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     if (notifications.length === 0) {
       return <AlertForNoData />;
@@ -257,6 +258,7 @@ export const HomePage: FunctionComponent = () => {
           getFetchNotifications={() => getFetchNotifications(lastId)}
           setTimers={setTimers}
           readAllNotificationsForDocument={readAllNotificationsForDocument}
+          setReceivedNewNotification={setReceivedNewNotification}
         />
       );
     } else {
@@ -384,7 +386,8 @@ export const HomePage: FunctionComponent = () => {
             notifications,
             lastId,
             setTimers,
-            readAllNotificationsForDocument
+            readAllNotificationsForDocument,
+            setReceivedNewNotification
           )}
         </div>
       )}
