@@ -119,10 +119,12 @@ namespace DocumentManagement.API.Controllers
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
         {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var docQuery = await documentService.UpdateByteProStatus(id: updateByteProStatus.id,
                                                                 requestId: updateByteProStatus.requestId,
                                                                 docId: updateByteProStatus.docId,
-                                                                fileId: updateByteProStatus.fileId);
+                                                                fileId: updateByteProStatus.fileId,updateByteProStatus.isUploaded,userProfileId,tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();

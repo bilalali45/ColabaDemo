@@ -12,6 +12,8 @@ namespace DocumentManagement.Entity
       [BsonRepresentation(BsonType.ObjectId)]
       public string id { get; set; }
       public int tenantId { get; set; }
-      public string emailTemplate { get; set; }   
+      public string emailTemplate { get; set; }
+      public int syncToBytePro { get; set; }
+      public int autoSyncToBytePro { get; set; }
     }
 }

@@ -32,6 +32,7 @@ namespace DocumentManagement.Model
     {
         public const string Synchronized = "Synchronized";
         public const string NotSynchronized = "Not synchronized";
+        public const string Error = "Error";
     }
     public class DashboardQuery
     {

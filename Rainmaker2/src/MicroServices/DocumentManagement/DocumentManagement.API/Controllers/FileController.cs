@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,8 @@ namespace DocumentManagement.API.Controllers
                               IConfiguration config,
                               ILogger<FileController> logger, ILosIntegrationService losIntegration,
                               INotificationService notificationService,
-                              IRainmakerService rainmakerService)
+                              IRainmakerService rainmakerService,
+                              IByteProService byteProService)
         {
             this.fileService = fileService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -42,6 +44,7 @@ namespace DocumentManagement.API.Controllers
             this.losIntegration = losIntegration;
             this.notificationService = notificationService;
             this.rainmakerService = rainmakerService;
+            this.byteProService = byteProService;
         }
 
         #endregion
@@ -58,6 +61,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ILosIntegrationService losIntegration;
         private readonly INotificationService notificationService;
         private readonly IRainmakerService rainmakerService;
+        private readonly IByteProService byteProService;
         #endregion
 
         #region Action Methods
@@ -143,21 +147,25 @@ namespace DocumentManagement.API.Controllers
 
                          try
                          {
-                             FileViewModel fileViewModel = new FileViewModel();
-                             fileViewModel.id = id;
-                             fileViewModel.requestId = requestId;
-                             fileViewModel.docId = docId;
-                             var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
-
-                             if (files.Count > 0)
+                             Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                             if (tenant.syncToBytePro == (int)SyncToBytePro.Auto && tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnSubmit)
                              {
+                                 FileViewModel fileViewModel = new FileViewModel();
+                                 fileViewModel.id = id;
+                                 fileViewModel.requestId = requestId;
+                                 fileViewModel.docId = docId;
+                                 var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
+
+                                 if (files.Count > 0)
+                                 {
 
 
-                                 await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
-                                                                         id,
-                                                                         requestId,
-                                                                         docId,
-                                                                         auth);
+                                     await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
+                                                                             id,
+                                                                             requestId,
+                                                                             docId,
+                                                                             auth);
+                                 }
                              }
                          }
                          catch (Exception e)

@@ -76,6 +76,7 @@ namespace Notification.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var list = await _notificationService.Read(model.ids,userProfileId);
+            await ServerHub.NotificationRead(_context, userProfileId, list.ToArray());
             return Ok(list);
         }
 
@@ -85,7 +86,7 @@ namespace Notification.API.Controllers
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.Seen(model.ids);
-            await ServerHub.NotificationSeen(_context,userProfileId);
+            await ServerHub.NotificationSeen(_context,userProfileId,model.ids.ToArray());
             return Ok();
         }
 
@@ -93,7 +94,9 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> Delete(NotificationDelete model)
         {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.Delete(model.id);
+            await ServerHub.NotificationDelete(_context, userProfileId, model.id);
             return Ok();
         }
         [HttpPut("[action]")]
@@ -106,7 +109,9 @@ namespace Notification.API.Controllers
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> DeleteAll()
         {
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.DeleteAll();
+            await ServerHub.NotificationDeleteAll(_context, userProfileId);
             return Ok();
         }
         [HttpGet("[action]")]

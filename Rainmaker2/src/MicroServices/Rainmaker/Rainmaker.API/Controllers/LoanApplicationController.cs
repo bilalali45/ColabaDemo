@@ -30,7 +30,9 @@ namespace Rainmaker.API.Controllers
         private readonly IOpportunityService opportunityService;
         private readonly IActivityService activityService;
         private readonly IWorkQueueService workQueueService;
-        public LoanApplicationController(ILoanApplicationService loanApplicationService,ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService)
+        private readonly IUserProfileService userProfileService;
+
+        public LoanApplicationController(ILoanApplicationService loanApplicationService,ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService)
         {
             this.loanApplicationService = loanApplicationService;
             this.commonService = commonService;
@@ -38,6 +40,7 @@ namespace Rainmaker.API.Controllers
             this.opportunityService = opportunityService;
             this.activityService = activityService;
             this.workQueueService = workQueueService;
+            this.userProfileService = userProfileService;
         }
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
@@ -115,11 +118,15 @@ namespace Rainmaker.API.Controllers
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             var activityEnumType = (ActivityForType)model.activityForId;
 
+            var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+
+            var emailaccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == loanApplication.BusinessUnitId.ToInt()).EmailAccount;
+
             var data = new Dictionary<FillKey, string>();
             data.Add(FillKey.CustomEmailHeader, "");
             data.Add(FillKey.CustomEmailFooter, "");
             data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
-            data.Add(FillKey.FromEmail, model.fromEmailAddress);
+            data.Add(FillKey.FromEmail, emailaccount.Email);
 
             await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
             return Ok();
