@@ -33,8 +33,8 @@ export const DocviewIcon = ({ width=14.137,height=17.914 }: DocEditIconprops) =>
 <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox={"0 0 " + width +" "+ height}  >
   <g id="doc-file-view-icon" transform="translate(408.95 33.347)">
     <g id="Group_434" data-name="Group 434" transform="translate(-10)">
-      <path id="Path_334" data-name="Path 334" d="M-384.963-24.439q0,3.748,0,7.5a1.262,1.262,0,0,1-1.309,1.317h-11.174a1.259,1.259,0,0,1-1.353-1.35q0-5.961,0-11.922a1.294,1.294,0,0,1,.391-.955q1.5-1.494,2.991-2.991a1.314,1.314,0,0,1,.972-.4h8.125a1.263,1.263,0,0,1,1.358,1.365Q-384.962-28.157-384.963-24.439Zm-12.593-4.41v.222q0,5.676,0,11.352c0,.3.108.406.4.406h10.525c.324,0,.424-.1.424-.422q0-7.151,0-14.3c0-.293-.109-.4-.4-.4H-394.2c-.063,0-.126.006-.2.011v.228c0,.551.005,1.1,0,1.653a1.228,1.228,0,0,1-.885,1.191,1.937,1.937,0,0,1-.5.062C-396.376-28.844-396.952-28.849-397.556-28.849Z" transform="translate(0 0.044)" fill="#7e829e" stroke="#7e829e" stroke-width="0.3"/>
-      <path id="search_1_" data-name="search (1)" d="M6.332,5.571a3.518,3.518,0,1,0-.762.763l2.3,2.3.763-.763-2.3-2.3Zm-2.827.363A2.427,2.427,0,1,1,5.932,3.507,2.429,2.429,0,0,1,3.505,5.934Z" transform="translate(-396.109 -27.699)" fill="#7e829e" stroke="#7e829e" stroke-width="0.1"/>
+      <path id="Path_334" data-name="Path 334" d="M-384.963-24.439q0,3.748,0,7.5a1.262,1.262,0,0,1-1.309,1.317h-11.174a1.259,1.259,0,0,1-1.353-1.35q0-5.961,0-11.922a1.294,1.294,0,0,1,.391-.955q1.5-1.494,2.991-2.991a1.314,1.314,0,0,1,.972-.4h8.125a1.263,1.263,0,0,1,1.358,1.365Q-384.962-28.157-384.963-24.439Zm-12.593-4.41v.222q0,5.676,0,11.352c0,.3.108.406.4.406h10.525c.324,0,.424-.1.424-.422q0-7.151,0-14.3c0-.293-.109-.4-.4-.4H-394.2c-.063,0-.126.006-.2.011v.228c0,.551.005,1.1,0,1.653a1.228,1.228,0,0,1-.885,1.191,1.937,1.937,0,0,1-.5.062C-396.376-28.844-396.952-28.849-397.556-28.849Z" transform="translate(0 0.044)" fill="#7e829e" stroke="#7e829e" strokeWidth="0.3"/>
+      <path id="search_1_" data-name="search (1)" d="M6.332,5.571a3.518,3.518,0,1,0-.762.763l2.3,2.3.763-.763-2.3-2.3Zm-2.827.363A2.427,2.427,0,1,1,5.932,3.507,2.429,2.429,0,0,1,3.505,5.934Z" transform="translate(-396.109 -27.699)" fill="#7e829e" stroke="#7e829e" strokeWidth="0.1"/>
     </g>
   </g>
 </svg>
@@ -45,10 +45,10 @@ export const DocEditIcon = ({ width=18,height=18 }: DocEditIconprops) => {
   return (
 <svg id="doc-edit-icon" xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox={"0 0 " + width +" "+ height}>
   <g id="Group_431" data-name="Group 431" transform="translate(1.241 1.241)">
-    <path id="Path_325" data-name="Path 325" d="M91.551,35.931H79.758a.31.31,0,1,1,0-.621H91.551a.31.31,0,1,1,0,.621" transform="translate(-77.896 -35.31)" fill="#4484f4" stroke="#7e829e" stroke-width="0.8"/>
-    <path id="Path_326" data-name="Path 326" d="M459.344,91.862a.31.31,0,0,1-.31-.31V79.758a.31.31,0,1,1,.621,0V91.551a.31.31,0,0,1-.31.31" transform="translate(-444.137 -77.896)" fill="#4484f4" stroke="#7e829e" stroke-width="0.8"/>
-    <path id="Path_327" data-name="Path 327" d="M91.551,459.655H79.758a.31.31,0,0,1,0-.621H91.551a.31.31,0,0,1,0,.621" transform="translate(-77.896 -444.137)" fill="#4484f4" stroke="#7e829e" stroke-width="0.8"/>
-    <path id="Path_328" data-name="Path 328" d="M35.621,91.862a.31.31,0,0,1-.31-.31V79.758a.31.31,0,1,1,.621,0V91.551a.31.31,0,0,1-.31.31" transform="translate(-35.311 -77.896)" fill="#4484f4" stroke="#7e829e" stroke-width="0.8"/>
+    <path id="Path_325" data-name="Path 325" d="M91.551,35.931H79.758a.31.31,0,1,1,0-.621H91.551a.31.31,0,1,1,0,.621" transform="translate(-77.896 -35.31)" fill="#4484f4" stroke="#7e829e" strokeWidth="0.8"/>
+    <path id="Path_326" data-name="Path 326" d="M459.344,91.862a.31.31,0,0,1-.31-.31V79.758a.31.31,0,1,1,.621,0V91.551a.31.31,0,0,1-.31.31" transform="translate(-444.137 -77.896)" fill="#4484f4" stroke="#7e829e" strokeWidth="0.8"/>
+    <path id="Path_327" data-name="Path 327" d="M91.551,459.655H79.758a.31.31,0,0,1,0-.621H91.551a.31.31,0,0,1,0,.621" transform="translate(-77.896 -444.137)" fill="#4484f4" stroke="#7e829e" strokeWidth="0.8"/>
+    <path id="Path_328" data-name="Path 328" d="M35.621,91.862a.31.31,0,0,1-.31-.31V79.758a.31.31,0,1,1,.621,0V91.551a.31.31,0,0,1-.31.31" transform="translate(-35.311 -77.896)" fill="#4484f4" stroke="#7e829e" strokeWidth="0.8"/>
   </g>
   <g id="Group_432" data-name="Group 432">
     <path id="Path_330" data-name="Path 330" d="M3.1,1.552A1.552,1.552,0,1,1,1.552,0,1.552,1.552,0,0,1,3.1,1.552" fill="#7e829e"/>
@@ -179,7 +179,7 @@ export const SVGplus = () => {
 export const SVGprint = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="19.364" height="20.705" viewBox="0 0 19.364 20.705">
-      <path id="Path_497" data-name="Path 497" d="M35.272,4.459h-1.25l-1.4-2.247a.592.592,0,0,0-.5-.278H30.5V.592A.592.592,0,0,0,29.9,0H22.959a.592.592,0,0,0-.592.592V1.934H20.749a.592.592,0,0,0-.5.278l-1.4,2.247h-1.25A.592.592,0,0,0,17,5.051v10.1a.592.592,0,0,0,.592.592H21.42v3.867a.592.592,0,0,0,.592.592h8.84a.592.592,0,0,0,.592-.592V15.746h3.828a.592.592,0,0,0,.592-.592V5.051A.592.592,0,0,0,35.272,4.459ZM31.786,3.118l.839,1.342H30.5V3.118ZM23.551,1.184h5.762V4.459H23.551ZM21.077,3.118h1.29V4.459H20.238Zm9.183,15.9H22.6v-5.8H30.26Zm4.42-4.459H31.444V13.22h.671a.592.592,0,1,0,0-1.184H20.749a.592.592,0,1,0,0,1.184h.671v1.342H18.184V5.643h16.5Z" transform="translate(-16.75 0.25)" fill="#fff" stroke="#000" stroke-width="0.5"/>
+      <path id="Path_497" data-name="Path 497" d="M35.272,4.459h-1.25l-1.4-2.247a.592.592,0,0,0-.5-.278H30.5V.592A.592.592,0,0,0,29.9,0H22.959a.592.592,0,0,0-.592.592V1.934H20.749a.592.592,0,0,0-.5.278l-1.4,2.247h-1.25A.592.592,0,0,0,17,5.051v10.1a.592.592,0,0,0,.592.592H21.42v3.867a.592.592,0,0,0,.592.592h8.84a.592.592,0,0,0,.592-.592V15.746h3.828a.592.592,0,0,0,.592-.592V5.051A.592.592,0,0,0,35.272,4.459ZM31.786,3.118l.839,1.342H30.5V3.118ZM23.551,1.184h5.762V4.459H23.551ZM21.077,3.118h1.29V4.459H20.238Zm9.183,15.9H22.6v-5.8H30.26Zm4.42-4.459H31.444V13.22h.671a.592.592,0,1,0,0-1.184H20.749a.592.592,0,1,0,0,1.184h.671v1.342H18.184V5.643h16.5Z" transform="translate(-16.75 0.25)" fill="#fff" stroke="#000" strokeWidth="0.5"/>
     </svg>
   )
 }
@@ -187,7 +187,7 @@ export const SVGprint = () => {
 export const SVGdownload = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="17.024" height="17.024" viewBox="0 0 17.024 17.024" >
-      <path id="download" d="M12.985,8.825,8.112,13.7,3.239,8.825l.9-.9,3.343,3.343V0H8.746V11.271l3.343-3.343Zm3.239,6.131H0v1.267H16.224Zm0,0" transform="translate(0.4 0.4)" fill="#000" stroke="#000" stroke-width="0.8" />
+      <path id="download" d="M12.985,8.825,8.112,13.7,3.239,8.825l.9-.9,3.343,3.343V0H8.746V11.271l3.343-3.343Zm3.239,6.131H0v1.267H16.224Zm0,0" transform="translate(0.4 0.4)" fill="#000" stroke="#000" strokeWidth="0.8" />
     </svg>
   )
 }
@@ -211,7 +211,7 @@ export const SVGfullScreen = () => {
 export const SVGzoomOut = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="11.2" height="1.3" viewBox="0 0 11.2 1.3">
-      <line id="Line_70" data-name="Line 70" x2="11.2" transform="translate(0 0.65)" fill="none" stroke="#7e829e" stroke-width="1.3"/>
+      <line id="Line_70" data-name="Line 70" x2="11.2" transform="translate(0 0.65)" fill="none" stroke="#7e829e" strokeWidth="1.3"/>
     </svg>
   )
 }

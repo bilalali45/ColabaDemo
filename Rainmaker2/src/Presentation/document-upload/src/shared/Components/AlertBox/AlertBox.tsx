@@ -9,10 +9,11 @@ import { useHistory } from 'react-router-dom';
 type AlertBoxType = {
     hideAlert: Function,
     triedSelected?: any,
-    navigateUrl?: string
+    navigateUrl?: string,
+    isBrowserBack?: boolean
 }
 
-export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType) => {
+export const AlertBox = ({ hideAlert, triedSelected, navigateUrl, isBrowserBack }: AlertBoxType) => {
 
     const history = useHistory();
 
@@ -30,7 +31,10 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl }: AlertBoxType
             });
             dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
-            if (navigateUrl) {
+        
+            if((isBrowserBack || !navigateUrl) && !triedSelected) {
+                history.goBack();
+            }else if (navigateUrl) {
                 history.push(navigateUrl)
             }
             hideAlert();
