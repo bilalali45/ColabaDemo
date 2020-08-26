@@ -38,15 +38,14 @@ namespace Rainmaker.Service
         }
 
 
-        public List<UserProfile> GetUserProfileWithDetails(int? id = null,
-                                                           string encompassNumber = "",
-                                                           RelatedEntity? includes = null)
+        public async Task<UserProfile> GetUserProfileEmployeeDetail(int? id = null,
+                                                          RelatedEntity? includes = null)
         {
             var userProfiles = Repository.Query().AsQueryable();
 
             // @formatter:off 
 
-            if (id.HasValue()) userProfiles = userProfiles.Where(predicate:userProfile => userProfile.Id == id);
+            if (id.HasValue()) userProfiles = userProfiles.Where(predicate: userProfile => userProfile.Id == id);
             
 
             // @formatter:on 
@@ -55,7 +54,7 @@ namespace Rainmaker.Service
                 userProfiles = ProcessIncludes(query: userProfiles,
                                                includes: includes.Value);
 
-            return userProfiles.ToList();
+            return await userProfiles.FirstOrDefaultAsync();
         }
 
 
