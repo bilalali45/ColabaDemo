@@ -17,6 +17,7 @@ namespace DocumentManagement.Service
                                         string documentLoanApplicationId,
                                         string requestId,
                                         string documentId,
+                                        string fileid,
                                         IEnumerable<string> authHeader);
     }
 }

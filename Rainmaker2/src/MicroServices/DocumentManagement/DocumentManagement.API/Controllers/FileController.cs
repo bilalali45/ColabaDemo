@@ -102,6 +102,7 @@ namespace DocumentManagement.API.Controllers
                     throw new Exception(message: "This file type is not allowed for uploading");
             }
             // save
+            List<string> fileId = new List<string>();
             foreach (var formFile in files)
                 if (formFile.Length > 0)
                 {
@@ -126,8 +127,10 @@ namespace DocumentManagement.API.Controllers
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
-                    if (docQuery == false)
+                    if (String.IsNullOrEmpty(docQuery))
                         throw new Exception("unable to update file in mongo");
+                    fileId.Add(docQuery);
+
                 }
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
@@ -150,21 +153,27 @@ namespace DocumentManagement.API.Controllers
                              Tenant tenant = await byteProService.GetTenantSetting(tenantId);
                              if (tenant.syncToBytePro == (int)SyncToBytePro.Auto && tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnSubmit)
                              {
-                                 FileViewModel fileViewModel = new FileViewModel();
-                                 fileViewModel.id = id;
-                                 fileViewModel.requestId = requestId;
-                                 fileViewModel.docId = docId;
-                                 var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
-
-                                 if (files.Count > 0)
+                                 foreach (var fileid in fileId)
                                  {
+                                     FileViewModel fileViewModel = new FileViewModel();
+                                     fileViewModel.id = id;
+                                     fileViewModel.requestId = requestId;
+                                     fileViewModel.docId = docId;
+                                     fileViewModel.fileId = fileid;
+                                     var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
+                                     logger.LogInformation(message: $"fileid {fileid} is getting from submit file");
+
+                                     if (files.Count > 0)
+                                     {
 
 
-                                     await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
-                                                                             id,
-                                                                             requestId,
-                                                                             docId,
-                                                                             auth);
+                                         await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
+                                                                                 id,
+                                                                                 requestId,
+                                                                                 docId,
+                                                                                 fileid,
+                                                                                 auth);
+                                     }
                                  }
                              }
                          }
@@ -172,9 +181,9 @@ namespace DocumentManagement.API.Controllers
                          {
                          }
 
-                        
-                 
-               
+
+
+
                      });
             // set order
             var model = new FileOrderModel
@@ -186,7 +195,7 @@ namespace DocumentManagement.API.Controllers
             };
             await fileService.Order(model: model,
                                     userProfileId: userProfileId, tenantId);
-     
+
 
             return Ok();
         }
