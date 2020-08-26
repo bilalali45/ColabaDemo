@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "56577b2a-1e4f-4ba7-be4b-d51229eb9fef",
+		"name": "Rainmaker2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Token",
+					"item": [
+						{
+							"name": "authorize",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userName\":\"danish\",\r\n    \"password\":\"Rainsoft\",\r\n    \"employee\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Identity/token/authorize",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Identity",
+										"token",
+										"authorize"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refresh",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiMzg0MiIsIlVzZXJOYW1lIjoiZGFuaXNoIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImRhbmlzaCIsIkVtcGxveWVlSWQiOiI2MCIsImV4cCI6MTU5MjMxMDE2MiwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.F-Xbxx29LJ2_kKx-mpqYys4RHzhkm_idNv4RPylHMUw\",\r\n        \"refreshToken\": \"eB8BH9D5Omv/sJKtGR5CuEWIOdyroIBonfcIwgPa96Q=\",\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Identity/token/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Identity",
+										"token",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DocumentManagement",
+			"item": [
+				{
+					"name": "Dashboard",
+					"item": [
+						{
+							"name": "GetPendingDocuments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetPendingDocuments?loanApplicationId=1&tenantId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"dashboard",
+										"GetPendingDocuments"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "tenantId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetSubmittedDocuments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/dashboard/GetSubmittedDocuments?loanApplicationId=1&tenantId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"dashboard",
+										"GetSubmittedDocuments"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "tenantId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "File",
+					"item": [
+						{
+							"name": "Rename",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n    \"docId\":\"ddd25d1fe456057652eeb72d\",\r\n    \"fileId\":\"5eb25d1fe456051475eebccc\",\r\n    \"fileName\":\"test1.txt\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/rename",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"rename"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n    \"requestId\":\"abc15d1fe456051af2eeb768\",\r\n    \"docId\":\"ddd25d1fe456057652eeb72d\",\r\n    \"files\":[{\r\n        \"fileName\":\"\\\"test1.txt\",\r\n        \"order\":1\r\n        }]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/order",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Done",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n      \"id\":\"5eb25d1fe519051af2eeb72d\",\r\n      \"docId\":\"aaa25d1fe456051af2eeb72d\",\r\n      \"requestId\":\"abc15d1fe456051af2eeb768\"\r\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/done",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"done"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Submit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "5eb25d1fe519051af2eeb72d",
+											"type": "text"
+										},
+										{
+											"key": "requestId",
+											"value": "abc15d1fe456051af2eeb768",
+											"type": "text"
+										},
+										{
+											"key": "docId",
+											"value": "ddd25d1fe456057652eeb72d",
+											"type": "text"
+										},
+										{
+											"key": "order",
+											"value": "[{\n        \"fileName\":\"\\\"test1.txt\",\n        \"order\":1\n        }]",
+											"type": "text"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"/C:/Users/Mubashir/Downloads/Mirza Kashan Baig.pdf",
+												"/C:/Users/Mubashir/Downloads/2FA Borrower Workflow.pdf"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Documentmanagement/file/submit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Documentmanagement",
+										"file",
+										"submit"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "RainMaker",
+			"item": [
+				{
+					"name": "LoanApplication",
+					"item": [
+						{
+							"name": "GetLoanInfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetLoanInfo?loanApplicationId=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetLoanInfo"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetLOInfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetLOInfo?loanApplicationId=1&businessUnitId=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetLOInfo"
+									],
+									"query": [
+										{
+											"key": "loanApplicationId",
+											"value": "1"
+										},
+										{
+											"key": "businessUnitId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetPhoto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Rainmaker/LoanApplication/GetPhoto?photo=aliya-4ca15a93-e0a2-40d2-a32a-a20dd451460b.jpg&businessUnitId=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Rainmaker",
+										"LoanApplication",
+										"GetPhoto"
+									],
+									"query": [
+										{
+											"key": "photo",
+											"value": "aliya-4ca15a93-e0a2-40d2-a32a-a20dd451460b.jpg"
+										},
+										{
+											"key": "businessUnitId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
