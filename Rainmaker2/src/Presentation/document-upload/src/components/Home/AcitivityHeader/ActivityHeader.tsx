@@ -80,26 +80,15 @@ const ActivityHeader = (props) => {
       }
     }
 
-    let backHandler = async (event) => {
-      event.preventDefault();
-      let files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
-      if (files) {
-        let cur = currentDoc;
-        history.push(location.pathname);
-        setTimeout(() => {
-          dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: cur });
-          setbrowserBack(() => {
-            setshowAlert(true);
-            return true
-          });
-        }, 0);
-        return;
-      }
-      // setbrowserBack(false);
-    };
-    window.onpopstate = backHandler;
-
   }, [selectedFiles]);
+
+  useEffect(() => {
+      window.onpopstate = backHandler; 
+    
+    if(location.pathname.includes('view')) {
+      window.onpopstate = () => {};
+    } 
+  }, [location?.pathname, selectedFiles])
 
   const showAlertPopup = (e) => {
 
@@ -107,6 +96,24 @@ const ActivityHeader = (props) => {
       setshowAlert(true);
     }
   };
+
+  let backHandler = async (event) => {
+        event.preventDefault();
+        let files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
+        if (files) {
+          let cur = currentDoc;
+          history.push(location.pathname);
+          setTimeout(() => {
+            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: cur });
+            setbrowserBack(() => {
+              setshowAlert(true);
+              return true
+            });
+          }, 0);
+          return;
+        }
+        // setbrowserBack(false);
+      };
 
   const renderLeftNav = () => {
     if (leftNav === "Dashboard") {

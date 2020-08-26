@@ -30,12 +30,18 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl, isBrowserBack 
                 }
             });
             dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
+            if(triedSelected) {
+          
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
-        
-            if((isBrowserBack || (!navigateUrl && !triedSelected))) {
+
+            }else {
+            // debugger
+            if (navigateUrl) {
+                history.push(navigateUrl);
+            }else if(!isBrowserBack || !navigateUrl) {
                 history.goBack();
-            }else if (navigateUrl) {
-                history.push(navigateUrl)
+            }
+
             }
             hideAlert();
 
