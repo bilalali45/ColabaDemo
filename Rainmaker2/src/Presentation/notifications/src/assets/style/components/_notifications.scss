@@ -49,6 +49,32 @@ ul {
   position: relative;
   margin: 0 5px;
 
+  &-loading{
+    display: block;
+    position: relative;
+    height: #{$loader-res * 1.5 + 'px'};
+    
+    &--circle,
+    &--circle-bold{
+      width: #{$loader-res+'px'};
+      height: #{$loader-res+'px'};
+      border-radius: 50%;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      //@include transform(translate(-50%,-50%));
+    }
+    &--circle{
+      border: 1px solid color('primary');
+    }
+    &--circle-bold{
+      border:2px solid color('primary');
+      border-color: #fff transparent transparent transparent;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+  }
+
   &-counts {
     display: inline-block;
     background: #ff5652;
@@ -280,4 +306,28 @@ ul {
 .slideOutRight {
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
+}
+
+
+@-webkit-keyframes rotate{
+  from{
+    @include transform(rotate(0deg) translate(-50%,-50%));
+  }
+  to{
+    @include transform(rotate(360deg) translate(-50%,-50%));
+  }
+}
+
+@keyframes lds-ring{
+  from{
+    @include transform(rotate(0deg));
+  }
+  to{
+    @include transform(rotate(360deg));
+  }
+}
+
+.rotate {
+  -webkit-animation:0.5s rotate infinite;
+  animation:0.5s rotate infinite;
 }

@@ -10,7 +10,7 @@ import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
-import {Header, BellIcon, ConfirmDeleteAll} from './_HomePage';
+import {Header, BellIcon, ConfirmDeleteAll, NotifyLoading} from './_HomePage';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
 
@@ -336,14 +336,16 @@ export const HomePage: FunctionComponent = () => {
             }
             onDeleteAll={() => setConfimDeleteAll(true)}
           />
+
           {confirmDeleteAll === true && (
             <ConfirmDeleteAll
               onYes={deleteAllNotifications}
               onNo={() => setConfimDeleteAll(false)}
             />
           )}
+
           {lastId === -1 ? (
-            <div>Loading</div>
+            <NotifyLoading />
           ) : (
             <Notifications
               timers={timers || []}
