@@ -111,6 +111,7 @@ namespace Rainmaker.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SendBorrowerEmail([FromBody]SendBorrowerEmailModel model)
         {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             var activityEnumType = (ActivityForType)model.activityForId;
 

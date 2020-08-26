@@ -64,14 +64,15 @@ namespace Notification.Service
             {
                 foreach (var item in reciepient)
                 {
-                    NotificationRecepient notificationRecepient = new NotificationRecepient();
-                    notificationRecepient.RecipientId = item;
-                    notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unseen;
-                    notificationRecepient.TrackingState = TrackingState.Added;
-                    notificationObject.NotificationRecepients.Add(notificationRecepient);
-                    notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
                     if (await IsUserSubscribedToMedium(item, tenantId, setting.NotificationMediumId, model.NotificationType))
                     {
+                        NotificationRecepient notificationRecepient = new NotificationRecepient();
+                        notificationRecepient.RecipientId = item;
+                        notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unseen;
+                        notificationRecepient.TrackingState = TrackingState.Added;
+                        notificationObject.NotificationRecepients.Add(notificationRecepient);
+                        notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
+                    
                         NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
                         notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
                         notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
