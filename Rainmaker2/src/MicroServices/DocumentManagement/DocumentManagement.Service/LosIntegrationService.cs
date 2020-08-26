@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 
 namespace DocumentManagement.Service
@@ -14,6 +15,7 @@ namespace DocumentManagement.Service
 
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
+        
         //private readonly IMongoService _mongoService;
 
         #endregion
@@ -22,12 +24,12 @@ namespace DocumentManagement.Service
 
         public LosIntegrationService(HttpClient httpClient,
                                      IConfiguration configuration
-        //IMongoService mongoService
+        ,ILogger<LosIntegrationService> logger
         )
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            //_mongoService = mongoService;
+           
         }
 
         #endregion
@@ -74,6 +76,7 @@ namespace DocumentManagement.Service
                                                      string documentLoanApplicationId,
                                                      string requestId,
                                                      string documentId,
+                                                     string fileid,
                                                      IEnumerable<string> authHeader)
         {
             var content = new
@@ -81,9 +84,11 @@ namespace DocumentManagement.Service
                               LoanApplicationId = loanApplicationId,
                               DocumentLoanApplicationId = documentLoanApplicationId,
                               RequestId = requestId,
-                              DocumentId = documentId
-                          };
-
+                              DocumentId = documentId,
+                              Fileid= fileid
+            };
+           
+        
             var request = new HttpRequestMessage
                           {
                               RequestUri =

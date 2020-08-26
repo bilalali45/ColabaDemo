@@ -70,6 +70,7 @@ namespace DocumentManagement.API.Controllers
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"document {view.docId} is viewed by {userProfileId}");
+            logger.LogInformation(message: $"request.FileId = {view.fileId}");
             var model = new AdminFileViewModel
             {
                 docId = view.docId,
