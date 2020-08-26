@@ -120,7 +120,7 @@ ul {
       font: 500 #{fontSize('sm') + '/1.2'} fontFamily('base');
       background-color: color('primary');
       text-transform: uppercase;
-      min-width: 80px;
+      min-width: 85px;
 
       &.secondry {
         background-color: color('secondry');
