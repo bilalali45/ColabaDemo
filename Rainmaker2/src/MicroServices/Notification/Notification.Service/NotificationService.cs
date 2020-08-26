@@ -78,6 +78,7 @@ namespace Notification.Service
                         notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
                         notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusListEnum.Created;
                         notificationRecepientMedium.SentTextJson = String.Empty;
+                        notificationRecepientMedium.TrackingState = TrackingState.Added;
 
                         notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
                     }
