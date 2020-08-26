@@ -87,7 +87,7 @@ export const NeedListView = () => {
      return arr;
   }
 
-  const alterNeedListArray = async (arr: NeedList[]) => {
+  const alterNeedListArray = async (arr: NeedList[], id?: string) => {
     for(let i = 0; i < arr.length; i++){
       for(let k = 0; k < arr[i].files.length; k++){
         if(arr[i].files[k].byteProStatus === "Not synchronized"){
@@ -111,6 +111,8 @@ export const NeedListView = () => {
 
   const FileSyncToLosHandler = async (id: string) => {
    console.log('FileSyncToLosHandler',id)
+
+   setShowConfirmBox(true)
   }
 
   const checkIsDocumentDraft = async (id: string) => {
