@@ -22,7 +22,9 @@ export class NeedListEndpoints {
         emailLogs: (id: string, requestId: string, docId: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}&requestId=${requestId}&docId=${docId}`,
       emailLogsDoc: (id: string, docName: string) =>
-        `/api/Documentmanagement/Document/GetEmailLog?id=${id}&docName=${docName}`
+        `/api/Documentmanagement/Document/GetEmailLog?id=${id}&docName=${docName}`,
+      checkIsByteProAuto: () => 
+      `/api/Documentmanagement/Document/GetEmailLog`
     }
   };
 
@@ -30,7 +32,8 @@ export class NeedListEndpoints {
     documents: {
       renameMCU: () => '/api/documentmanagement/document/mcurename',
       accept: () => '/api/Documentmanagement/document/AcceptDocument',
-      reject: () => '/api/Documentmanagement/document/RejectDocument'
+      reject: () => '/api/Documentmanagement/document/RejectDocument',
+      fileSyncToLos: () => 'api/LosIntegration/Document/SendToExternalOriginator'
     }
   };
 

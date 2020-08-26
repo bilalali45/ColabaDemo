@@ -6,7 +6,8 @@ export enum NeedListActionsType {
     SetLoanInfo = "SET_LOAN_INFO",
     SetNeedListTableDATA = "SET_NEEDLIST_TABLE_DATA",
     SetTemplateIds = "SET_TEMPLATE_IDS",
-    SetIsDraft = "SET_IS_DRAFT"
+    SetIsDraft = "SET_IS_DRAFT",
+    SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO"
 }
 
 export type NeedListType = {
@@ -20,7 +21,8 @@ export type NeedListActionPayload = {
     [NeedListActionsType.SetLoanInfo]: LoanApplication[],
     [NeedListActionsType.SetNeedListTableDATA]: NeedList[],
     [NeedListActionsType.SetTemplateIds]: string[],
-    [NeedListActionsType.SetIsDraft]: string
+    [NeedListActionsType.SetIsDraft]: string,
+    [NeedListActionsType.SetIsByteProAuto]: string
 }
 
 export type NeedListActions = ActionMap<NeedListActionPayload>[keyof ActionMap<NeedListActionPayload>];
@@ -47,6 +49,11 @@ export const needListReducer = (state: NeedListType | {}, { type, payload }: Act
                 ...state,
                 isDraft: payload
             }
+        case NeedListActionsType.SetIsByteProAuto:
+            return{
+                ...state,
+                isByteProAuto: payload
+            }    
         default:
             return state;
     }

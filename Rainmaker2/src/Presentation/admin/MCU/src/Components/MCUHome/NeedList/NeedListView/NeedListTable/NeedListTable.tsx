@@ -18,7 +18,16 @@ type NeedListProps = {
   documentSortClick: boolean;
   statusSortClick: boolean;
   deleteRequestSent: boolean;
+  isByteProAuto: boolean;
+  FilesSyncToLos: Function;
+  showConfirmBox: boolean;
 };
+
+export const Sync = "Synchronized";
+export const notSync = "Not synchronized";
+export const SyncError = "Error";
+export const ReadyToSync = "Ready to Sync";
+export const Synchronizing = "Synchronizing";
 
 export const NeedListTable = ({
   needList,
@@ -29,7 +38,10 @@ export const NeedListTable = ({
   sortStatusTitle,
   documentSortClick,
   statusSortClick,
-  deleteRequestSent
+  deleteRequestSent,
+  isByteProAuto,
+  FilesSyncToLos,
+  showConfirmBox
 }: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
@@ -42,7 +54,7 @@ export const NeedListTable = ({
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          {renderSyncToLos(item.files)}
+          { !isByteProAuto && renderSyncToLos(item.files)}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -270,16 +282,10 @@ export const NeedListTable = ({
   };
 
   const renderSyncToLos = (data: NeedListDocuments[]) => {
+  
     if (data === null || data.length === 0) {
-      return (
-        <div className="td">
-          <span className="block-element">
-            <a>
-              <em className="icon-refresh default"></em>
-            </a>
-          </span>{' '}
-        </div>
-      );
+      return <div className="td"></div> 
+        
     } else {
       return (
         <div className="td">
@@ -289,6 +295,7 @@ export const NeedListTable = ({
                 <a>
                   <em className="icon-refresh default"></em>
                 </a>
+               {' '} {item.byteProStatusText}
               </span>
             );
           })}
@@ -364,6 +371,31 @@ export const NeedListTable = ({
       );
   };
 
+  const renderSyncToLosTitle = () => {
+    if(isByteProAuto){
+      return <></>
+    }else{
+      return (
+               <div className="th">
+              <a  onClick={(e) => FilesSyncToLos()} >
+                <em className="icon-refresh"></em>
+              </a>{' '}
+              sync to LOS
+            </div>
+        )
+    }
+    
+  }
+
+  const renderSyncToLosConfirmationBox = () => {
+    if(!showConfirmBox) {
+      return '';
+    }else{
+      return <div>Are you ready to sync selected document</div>
+    }  
+  }
+
+  
   if (!needList) {
     return (
       <div className="loader-widget">
@@ -374,6 +406,8 @@ export const NeedListTable = ({
     );
   }
 
+  console.log('isByteProAuto',isByteProAuto)
+
   return (
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
@@ -382,16 +416,13 @@ export const NeedListTable = ({
             {renderDocumentTitle()}
             {renderStatusTitle()}
             <div className="th">File Name</div>
-            <div className="th">
-              <a href="javascript:;">
-                <em className="icon-refresh"></em>
-              </a>{' '}
-              sync to LOS
-            </div>
+            {renderSyncToLosTitle()}
+            
             <div className="th options">&nbsp;</div>
             <div className="th th-options">&nbsp;</div>
           </div>
           {needList && renderNeedList(needList)}
+          {renderSyncToLosConfirmationBox()}
         </div>
       </div>
     </div>

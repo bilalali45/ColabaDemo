@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
+import {useHistory} from 'react-router-dom';
 import {NeedListViewHeader} from './NeedListViewHeader/NeedListViewHeader';
 import {NeedListTable} from './NeedListTable/NeedListTable';
 import {NeedList} from '../../../../Entities/Models/NeedList';
@@ -10,7 +11,7 @@ import {sortList} from '../../../../Utils/helpers/Sort';
 import {Template} from '../../../../Entities/Models/Template';
 import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
-import {useHistory} from 'react-router-dom';
+import { NeedListAlertBox } from "../NeedListView/NeedListAlertBox/NeedListAlertBox";
 
 export const NeedListView = () => {
   const [toggle, setToggle] = useState(true);
@@ -30,11 +31,13 @@ export const NeedListView = () => {
   const currentTemplate: Template[] = templateManager?.currentTemplate;
   const isDraftStore: boolean = needListManager?.isDraft;
   const templateIds: boolean = needListManager?.templateIds;
+  const isByteProAuto: boolean = needListManager?.isByteProAuto;
   const [deleteRequestSent, setDeleteRequestSent] = useState<boolean>(false);
-
+  const [showConfirmBox, setShowConfirmBox] = useState<boolean>(false);
   useEffect(() => {
     fetchNeedList(true, true);
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
+    checkIsByteProAuto();
   }, []);
 
   useEffect(() => {
@@ -50,24 +53,68 @@ export const NeedListView = () => {
    
     if (LocalDB.getLoanAppliationId()) {
       if (fetchNew) {
-        let res: NeedList | undefined = await NeedListActions.getNeedList(
+        let res: NeedList[] | undefined = await NeedListActions.getNeedList(
           LocalDB.getLoanAppliationId(),
           status
         );
-        dispatch({
-          type: NeedListActionsType.SetNeedListTableDATA,
-          payload: res
-        });
-        if (res) {
-          return res;
+        if(res){
+          let data = await updateNeedListArray(res)
+          dispatch({
+            type: NeedListActionsType.SetNeedListTableDATA,
+            payload: data
+          });
+          return data;
         }
+      
       }
     }
   };
+
+  const updateNeedListArray = async (arr: NeedList[]) => {
+     for(let i = 0; i < arr.length; i++){
+        for(let k = 0; k < arr[i].files.length; k++){
+          if(arr[i].files[k].byteProStatus === "Synchronized"){
+            arr[i].files[k].byteProStatusText = 'Synced'
+          }else if(arr[i].files[k].byteProStatus === "Not synchronized"){
+            arr[i].files[k].byteProStatusText = 'Not Synced'
+          }else{
+            arr[i].files[k].byteProStatusText = ''
+          }
+        }
+     }
+     return arr;
+  }
+
+  const alterNeedListArray = async (arr: NeedList[]) => {
+    for(let i = 0; i < arr.length; i++){
+      for(let k = 0; k < arr[i].files.length; k++){
+        if(arr[i].files[k].byteProStatus === "Not synchronized"){
+          arr[i].files[k].byteProStatusText = 'Ready to Sync';
+          arr[i].files[k].byteProStatus = 'Ready to Sync';
+        }
+      }
+   }
+   return arr;
+  }
+
+  const FilesSyncToLos = async () => {
+    let data = await alterNeedListArray(needListData)
+    dispatch({
+      type: NeedListActionsType.SetNeedListTableDATA,
+      payload: data
+    });
+    setShowConfirmBox(true)
+  }
+
   const checkIsDocumentDraft = async (id: string) => {
     let res: any = await TemplateActions.isDocumentDraft(id);
     dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: res});
   };
+
+  const checkIsByteProAuto = async () => {
+   // let res: any = await NeedListActions.checkIsByteProAuto();
+    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: false})
+  }
 
   const deleteNeedListDoc = async (
     id: string,
@@ -217,6 +264,8 @@ export const NeedListView = () => {
     deleteNeedListDoc(id, requestId, docId);
   };
 
+  
+
   return (
     <div className="need-list-view">
       <NeedListViewHeader
@@ -236,7 +285,11 @@ export const NeedListView = () => {
         documentSortClick={docSort}
         statusSortClick={statusSort}
         deleteRequestSent={deleteRequestSent}
+        isByteProAuto = {isByteProAuto}
+        FilesSyncToLos = {FilesSyncToLos}
+        showConfirmBox = {showConfirmBox}
       />
+      <NeedListAlertBox/>
     </div>
   );
 };
