@@ -74,9 +74,11 @@ export const NeedListView = () => {
      for(let i = 0; i < arr.length; i++){
         for(let k = 0; k < arr[i].files.length; k++){
           if(arr[i].files[k].byteProStatus === "Synchronized"){
-            arr[i].files[k].byteProStatusText = 'Synced'
+            arr[i].files[k].byteProStatusText = 'Synced';
+            arr[i].files[k].byteProStatusClassName = "synced";
           }else if(arr[i].files[k].byteProStatus === "Not synchronized"){
             arr[i].files[k].byteProStatusText = 'Not Synced'
+            arr[i].files[k].byteProStatusClassName = "not_Synced";
           }else{
             arr[i].files[k].byteProStatusText = ''
           }
@@ -91,6 +93,7 @@ export const NeedListView = () => {
         if(arr[i].files[k].byteProStatus === "Not synchronized"){
           arr[i].files[k].byteProStatusText = 'Ready to Sync';
           arr[i].files[k].byteProStatus = 'Ready to Sync';
+          arr[i].files[k].byteProStatusClassName = "readyto_Sync";
         }
       }
    }
@@ -112,7 +115,9 @@ export const NeedListView = () => {
   };
 
   const checkIsByteProAuto = async () => {
-   // let res: any = await NeedListActions.checkIsByteProAuto();
+    let res: any = await NeedListActions.checkIsByteProAuto();
+    console.log('checkIsByteProAuto', res.syncToBytePro)
+    let isAuto = res.syncToBytePro != 2 ? true : false;
     dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: false})
   }
 

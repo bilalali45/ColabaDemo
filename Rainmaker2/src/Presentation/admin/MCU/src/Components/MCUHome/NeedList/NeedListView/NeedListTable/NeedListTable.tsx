@@ -295,7 +295,7 @@ export const NeedListTable = ({
             return (
               <span key={item.id} className="block-element c-filename">
                 <a>
-                  <em className="icon-refresh default"></em>
+                  <em className={"icon-refresh "+item.byteProStatusClassName}></em>
                 </a>
                {' '} {item.byteProStatusText}
               </span>

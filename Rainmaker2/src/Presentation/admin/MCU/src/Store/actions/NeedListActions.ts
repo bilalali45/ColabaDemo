@@ -55,7 +55,7 @@ export class NeedListActions {
     let url = Endpoints.NeedListManager.GET.documents.checkIsByteProAuto();
     try {
       let res: any = await http.get(url);
-      return res;
+      return res.data;
     } catch (error) {
       console.log(error);
     }

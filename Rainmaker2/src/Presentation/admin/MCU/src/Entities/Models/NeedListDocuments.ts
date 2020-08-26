@@ -7,6 +7,7 @@ export class NeedListDocuments {
     public status: string;
     public isRead: boolean;
     public byteProStatusText: string = '';
+    public byteProStatusClassName = '';
     
     constructor(id: string, clientName: string, fileUploadedOn:  string, mcuName: string, byteProStatus: string, status: string, isRead: boolean) {
         this.id = id;
