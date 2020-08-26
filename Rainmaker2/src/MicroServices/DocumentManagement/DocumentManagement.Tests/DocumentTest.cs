@@ -382,7 +382,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "");
+            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "abc15d1fe456051af2eeb768");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
@@ -519,7 +519,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "", "aaa25d1fe456051af2eeb72d");
+            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "aaa25d1fe456051af2eeb72d", "aaa25d1fe456051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
@@ -783,7 +783,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d","Salary Slip");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -915,7 +915,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "", "Salary Slip");
+            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -1454,11 +1454,15 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<Entity.ByteProLog>> mockCollectionByteProLog = new Mock<IMongoCollection<Entity.ByteProLog>>();
 
             mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
-            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.ByteProLog>("ByteProLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionByteProLog.Object);
 
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mockCollectionByteProLog.Setup(s => s.InsertOneAsync(It.IsAny<Entity.ByteProLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            
             //Act
             IDocumentService service = new DocumentService(mock.Object, null, null); ;
             bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4",true,1,1);

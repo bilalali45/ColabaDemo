@@ -162,7 +162,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message: $"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
             _logger.LogInformation(message: $"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
             _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
-
+            _logger.LogInformation($"FileId={file.Id} is getting from SendFileToExternalOriginator");
             var sendDocumentRequest = new SendDocumentRequest
                                       {
                                           LoanApplicationId = request.LoanApplicationId,

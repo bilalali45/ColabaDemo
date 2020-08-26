@@ -117,7 +117,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<bool> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
+        public async Task<string> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
         {
             bool isStarted = false;
 
@@ -160,7 +160,7 @@ namespace DocumentManagement.Service
             }
 
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-
+            var fileId = ObjectId.GenerateNewId();
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(id) },
@@ -227,8 +227,8 @@ namespace DocumentManagement.Service
             }, new BsonDocument()
             {
                 { "$push", new BsonDocument()
-                    {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", ObjectId.GenerateNewId() }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false } }   }
+                    {   
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false } }   }
                     }
                 },
                 { "$set", new BsonDocument()
@@ -258,9 +258,14 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
             }
-
             await rainmakerService.UpdateLoanInfo(null, id, authHeader);
-            return result.ModifiedCount == 1;
+            if (result.ModifiedCount==1)
+            {
+                return fileId.ToString();
+            }
+
+               
+            return null;
         }
 
         public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
@@ -358,7 +363,11 @@ namespace DocumentManagement.Service
                         @"{
                             ""$unwind"": ""$requests.documents.files""
                         }",
-
+                         @"{
+                            ""$match"": {
+                                ""requests.documents.files.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
 
                         @"{
                             ""$project"": {
