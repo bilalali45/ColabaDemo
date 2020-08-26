@@ -46,9 +46,10 @@ export const Notification: FunctionComponent<NotificationProps> = ({
   ) => {
     //Prevent unecessary API call
     if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
-      readAllNotificationsForDocument(loanApplicationId);
+      (async () => {
+        await readAllNotificationsForDocument(loanApplicationId);
+      })();
     }
-
     window.open(link, '_self');
   };
 
