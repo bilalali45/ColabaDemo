@@ -80,3 +80,12 @@ export const AlertForNoData: FunctionComponent = () => {
     </div>
   );
 };
+
+export const NotifyLoading: FunctionComponent = () => {
+  return (
+    <div className="notify-loading">
+      <span className="notify-loading--circle"></span>
+      <span className="notify-loading--circle-bold"></span>
+    </div>
+  );
+};

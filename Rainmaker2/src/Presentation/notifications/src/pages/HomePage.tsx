@@ -10,7 +10,7 @@ import {SignalRHub, Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {Notifications} from '../features/Notifications';
-import {Header, BellIcon, ConfirmDeleteAll} from './_HomePage';
+import {Header, BellIcon, ConfirmDeleteAll, NotifyLoading} from './_HomePage';
 import {NotificationType, TimersType} from '../lib/type';
 import {LocalDB} from '../Utils/LocalDB';
 
@@ -256,7 +256,6 @@ export const HomePage: FunctionComponent = () => {
         const auth = LocalDB.getAuthToken();
 
         if (auth) {
-          //SignalRHub.signalRHubResume(signalREventRegister);
           SignalRHub.configureHubConnection(
             window.envConfig.API_BASE_URL + '/serverhub',
             LocalDB.getAuthToken() || '',
@@ -337,23 +336,29 @@ export const HomePage: FunctionComponent = () => {
             }
             onDeleteAll={() => setConfimDeleteAll(true)}
           />
+
           {confirmDeleteAll === true && (
             <ConfirmDeleteAll
               onYes={deleteAllNotifications}
               onNo={() => setConfimDeleteAll(false)}
             />
           )}
-          <Notifications
-            timers={timers || []}
-            removeNotification={removeNotification}
-            receivedNewNotification={receivedNewNotification}
-            notificationsVisible={notificationsVisible}
-            notifications={notifications}
-            getFetchNotifications={() => getFetchNotifications(lastId)}
-            setTimers={setTimers}
-            readAllNotificationsForDocument={readAllNotificationsForDocument}
-            setReceivedNewNotification={setReceivedNewNotification}
-          />
+
+          {lastId === -1 ? (
+            <NotifyLoading />
+          ) : (
+            <Notifications
+              timers={timers || []}
+              removeNotification={removeNotification}
+              receivedNewNotification={receivedNewNotification}
+              notificationsVisible={notificationsVisible}
+              notifications={notifications}
+              getFetchNotifications={() => getFetchNotifications(lastId)}
+              setTimers={setTimers}
+              readAllNotificationsForDocument={readAllNotificationsForDocument}
+              setReceivedNewNotification={setReceivedNewNotification}
+            />
+          )}
         </div>
       )}
     </div>
