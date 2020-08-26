@@ -15,6 +15,10 @@ namespace DocumentManagement.API.Controllers
     public class SettingController : ControllerBase
     {
         private readonly IByteProService byteProService;
+        public SettingController(IByteProService byteProService)
+        {
+            this.byteProService = byteProService;
+        }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetTenantSetting()
         {

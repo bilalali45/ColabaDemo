@@ -252,15 +252,14 @@ export class FileUpload {
       let lastCopy = copyNumber[copyNumber.length - 1];
       lastCopy++;
       let ext = type.split("/")[1];
-      debugger
-      if (exts.indexOf(ext)) {
+      if (exts.includes(ext)) {
         ext = 'jpeg';
       }
       return newName + "-0" + lastCopy + "." + ext;
     } else {
       count++;
       let ext = name.split(".")[1];
-      if (exts.indexOf(ext)) {
+      if (exts.includes(ext)) {
         ext = 'jpeg';
       }
       return newName + "-0" + count + "." + ext;
