@@ -110,7 +110,7 @@ namespace Rainmaker.API.Controllers
             return Ok(await loanApplicationService.PostLoanApplication(model.loanApplicationId, model.isDraft, userProfileId,opportunityService));
         }
 
-        //[Authorize(Roles = "MCU")]
+        [Authorize(Roles = "MCU")]
         [HttpPost("[action]")]
         public async Task<IActionResult> SendBorrowerEmail([FromBody]SendBorrowerEmailModel model)
         {
