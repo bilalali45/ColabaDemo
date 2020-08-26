@@ -118,6 +118,7 @@ namespace Rainmaker.API.Controllers
             data.Add(FillKey.CustomEmailHeader, "");
             data.Add(FillKey.CustomEmailFooter, "");
             data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
+            data.Add(FillKey.FromEmail, model.fromEmailAddress);
 
             await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
             return Ok();
