@@ -70,7 +70,7 @@ namespace Notification.Service
                     notificationRecepient.TrackingState = TrackingState.Added;
                     notificationObject.NotificationRecepients.Add(notificationRecepient);
                     notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
-                    if (await IsUserSubscribedToMedium(userId, tenantId, setting.NotificationMediumId, model.NotificationType))
+                    if (await IsUserSubscribedToMedium(item, tenantId, setting.NotificationMediumId, model.NotificationType))
                     {
                         NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
                         notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
