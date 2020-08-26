@@ -18,7 +18,7 @@ namespace DocumentManagement.Service
         Task<bool> RejectDocument(string id, string requestId, string docId,string message,int userId, string userName, IEnumerable<string> authHeader);
         Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId);
 
-        Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
+        Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId, bool isUploaded, int userId, int tenantId);
 
         Task<bool> DeleteFile(int loanApplicationId, string fileId);
     }

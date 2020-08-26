@@ -1402,13 +1402,13 @@ namespace DocumentManagement.Tests
             Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
 
         }
-
+        /*
         [Fact]
         public async Task TestUpdateByteProStatusControllerTrue()
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.UpdateByteProStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            mock.Setup(x => x.UpdateByteProStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(true);
           
             var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
 
@@ -1446,7 +1446,7 @@ namespace DocumentManagement.Tests
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
         }
-
+        */
         [Fact]
         public async Task TestUpdateByteProStatusService()
         {
@@ -1461,7 +1461,7 @@ namespace DocumentManagement.Tests
 
             //Act
             IDocumentService service = new DocumentService(mock.Object, null, null); ;
-            bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4");
+            bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4",true,1,1);
 
             //Assert
             Assert.True(result);

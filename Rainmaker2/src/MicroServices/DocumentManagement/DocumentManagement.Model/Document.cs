@@ -218,6 +218,8 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string fileId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        public bool isUploaded { get; set; }
     }
 
     public class DeleteFile
