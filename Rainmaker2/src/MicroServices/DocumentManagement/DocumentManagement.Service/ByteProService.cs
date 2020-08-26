@@ -1,4 +1,5 @@
-﻿using DocumentManagement.Model;
+﻿using DocumentManagement.Entity;
+using DocumentManagement.Model;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -72,6 +73,22 @@ namespace DocumentManagement.Service
             FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
 
             return fileViewDTO;
+        }
+        public async Task<Tenant> GetTenantSetting(int tenantId)
+        {
+            Tenant tenant = null;
+            IMongoCollection<Entity.Tenant> collection = mongoService.db.GetCollection<Entity.Tenant>("Tenant");
+            using var asyncCursor = await collection.FindAsync(new BsonDocument() {
+                { "tenantId",tenantId }
+            });
+            if(await asyncCursor.MoveNextAsync())
+            {
+                if(asyncCursor.Current?.Count()>0)
+                {
+                    tenant = asyncCursor.Current.First();
+                }
+            }
+            return tenant;
         }
         //public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
         //{
