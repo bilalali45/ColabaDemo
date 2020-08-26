@@ -80,7 +80,7 @@ export class FileDropper extends Component<{getDroppedFiles: Function, parent: H
         e.preventDefault();
         if (this.props.parent) {
             this.props.parent.classList.remove('drag-enter')
-            this.setState(state => ({dragPreview: true}))
+            this.setState(state => ({dragPreview: false}))
         }
         return false;
     }
@@ -113,7 +113,7 @@ export class FileDropper extends Component<{getDroppedFiles: Function, parent: H
                 onDragOver={(e) => this.ondragover(e)}
                 onDrop={(e) => this.onDrop(e)}>
 {this.state.dragPreview===true?(
-                    <div className="drag-preview">
+                    <div style={{zIndex: 1}} className="drag-preview">
                         <div className="drag-preview-wrap">
                             <div className="drag-preview-icon">
                                 <img src={FileuploadPreviewIcon} alt="" />

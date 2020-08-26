@@ -32,7 +32,7 @@ export const AlertBox = ({ hideAlert, triedSelected, navigateUrl, isBrowserBack 
             dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
             dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: triedSelected });
         
-            if((isBrowserBack || !navigateUrl) && !triedSelected) {
+            if((isBrowserBack || (!navigateUrl && !triedSelected))) {
                 history.goBack();
             }else if (navigateUrl) {
                 history.push(navigateUrl)

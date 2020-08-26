@@ -88,9 +88,13 @@ export class DocumentUploadActions {
         break;
       }
       var newName = f.name.replace(/\s/g,'');
-     
+      var ext = newName.split('.')[1];
+      let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
+      if (exts.includes(ext)) {
+        newName = `${newName.split('.')[0]}.jpeg`;
+      }
       var countArray = FileUpload.checkName(prevFiles, f);
-    
+
       if (countArray[0] != 0) {
         newName = FileUpload.updateName(f.name, f.type, countArray).replace(/\s/g,'');;
       }
