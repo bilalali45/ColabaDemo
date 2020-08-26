@@ -63,7 +63,7 @@ export class NeedListActions {
   }
 
   static async fileSyncToLos (
-    LoanApplicationId: string,
+    LoanApplicationId: number,
     DocumentLoanApplicationId: string,
     RequestId: string,
     DocumentId: string,
@@ -71,7 +71,7 @@ export class NeedListActions {
   ){
     let url = Endpoints.NeedListManager.POST.documents.fileSyncToLos();
     try {
-      let res = await http.post(url, {
+      let res: any = await http.post(url, {
         LoanApplicationId,
         DocumentLoanApplicationId,
         RequestId,
@@ -80,6 +80,7 @@ export class NeedListActions {
       });
       return res.status;
     } catch (error) {
+      debugger
       console.log(error);
     }
   }

@@ -25,6 +25,8 @@ type NeedListProps = {
   FilesSyncToLos: Function;
   showConfirmBox: boolean;
   FileSyncToLos: Function;
+  postToBytePro: Function;
+  synchronizing: boolean;
 };
 
 export const Sync = "Synchronized";
@@ -46,7 +48,10 @@ export const NeedListTable = ({
   isByteProAuto,
   FilesSyncToLos,
   FileSyncToLos,
-  showConfirmBox
+  showConfirmBox,
+  postToBytePro,
+  synchronizing
+
 }: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
@@ -393,20 +398,24 @@ export const NeedListTable = ({
     
   }
 
-  const renderSyncToLosConfirmationBox = () => { //apex
+  const renderSyncToLosConfirmationBox = () => {
     if(!showConfirmBox) {
       return '';
     }else{
       return (<div className="sync-alert">
         <div className="sync-alert-wrap">
           <div className="icon"><img src={sycLOSIcon} alt="" /></div>
-          <div className="msg">Are you ready to sync selected document</div>
+    <div className="msg">{synchronizing != true ? "Are you ready to sync selected document" : "Synchronization in process..."}</div>
           <div className="btn-wrap">          
-          <button className="btn btn-primary btn-sm">
-            Sync
-            {/* <Spinner animation="border" role="status">
+          <button onClick= {()=> postToBytePro()} className="btn btn-primary btn-sm">
+            {synchronizing != true
+            ? 
+            "Sync" 
+            : 
+            <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
-        </Spinner> */}
+        </Spinner>
+        }
           </button>
           
           </div>

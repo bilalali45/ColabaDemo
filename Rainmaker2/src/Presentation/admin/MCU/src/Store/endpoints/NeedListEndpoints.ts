@@ -33,7 +33,7 @@ export class NeedListEndpoints {
       renameMCU: () => '/api/documentmanagement/document/mcurename',
       accept: () => '/api/Documentmanagement/document/AcceptDocument',
       reject: () => '/api/Documentmanagement/document/RejectDocument',
-      fileSyncToLos: () => 'api/LosIntegration/Document/SendToExternalOriginator'
+      fileSyncToLos: () => '/api/LosIntegration/Document/SendFileToExternalOriginator'
     }
   };
 
