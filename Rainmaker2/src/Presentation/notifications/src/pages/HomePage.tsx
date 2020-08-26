@@ -294,6 +294,11 @@ export const HomePage: FunctionComponent = () => {
         setNotifications(() => clonedNotifications);
       });
 
+      SignalRHub.hubConnection.on('NotificationSeen', () => {
+        console.log('NotificationSeen event received');
+        getUnseenNotificationsCount();
+      });
+
       SignalRHub.hubConnection.onclose(() => {
         const auth = LocalDB.getAuthToken();
 
