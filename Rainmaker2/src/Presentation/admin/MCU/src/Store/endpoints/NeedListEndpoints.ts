@@ -24,7 +24,7 @@ export class NeedListEndpoints {
       emailLogsDoc: (id: string, docName: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}&docName=${docName}`,
       checkIsByteProAuto: () => 
-      `/api/Documentmanagement/Document/GetEmailLog`
+      `/api/documentmanagement/setting/GetTenantSetting`
     }
   };
 
