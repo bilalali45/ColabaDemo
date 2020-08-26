@@ -296,7 +296,7 @@ export const NeedListTable = ({
           {data.map((item: NeedListDocuments) => {
             return (
               <span key={item.id} className="block-element c-filename">
-                <a onClick ={() => FileSyncToLos(item.id)} >
+                <a  onClick ={() => FileSyncToLos(item.id, item.byteProStatusText)} >
                   <em className={"icon-refresh "+item.byteProStatusClassName}></em>
                 </a>
                {' '} {item.byteProStatusText}

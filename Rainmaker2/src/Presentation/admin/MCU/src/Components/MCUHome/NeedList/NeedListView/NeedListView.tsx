@@ -88,9 +88,15 @@ export const NeedListView = () => {
   }
 
   const alterNeedListArray = async (arr: NeedList[], id?: string) => {
+   
     for(let i = 0; i < arr.length; i++){
       for(let k = 0; k < arr[i].files.length; k++){
-        if(arr[i].files[k].byteProStatus === "Not synchronized"){
+        if(id != undefined && id === arr[i].files[k].id && arr[i].files[k].byteProStatusText != 'Synced'){
+          arr[i].files[k].byteProStatusText = 'Ready to Sync';
+          arr[i].files[k].byteProStatus = 'Ready to Sync';
+          arr[i].files[k].byteProStatusClassName = "readyto_Sync";
+          break;
+        }else if(id === undefined && arr[i].files[k].byteProStatus === "Not synchronized"){
           arr[i].files[k].byteProStatusText = 'Ready to Sync';
           arr[i].files[k].byteProStatus = 'Ready to Sync';
           arr[i].files[k].byteProStatusClassName = "readyto_Sync";
@@ -109,10 +115,17 @@ export const NeedListView = () => {
     setShowConfirmBox(true)
   }
 
-  const FileSyncToLosHandler = async (id: string) => {
+  const FileSyncToLosHandler = async (id: string, txt: string) => {
    console.log('FileSyncToLosHandler',id)
-
-   setShowConfirmBox(true)
+   let data = await alterNeedListArray(needListData, id)
+   dispatch({
+    type: NeedListActionsType.SetNeedListTableDATA,
+    payload: data
+  });
+  if(txt != 'Synced'){
+    setShowConfirmBox(true)
+  }
+   
   }
 
   const checkIsDocumentDraft = async (id: string) => {
