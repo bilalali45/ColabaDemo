@@ -104,3 +104,21 @@ export const Notification: FunctionComponent<NotificationProps> = ({
     </div>
   );
 };
+
+export const NewNotificationToss: FunctionComponent<{
+  showToss: boolean;
+  handleScrollToTop: () => void;
+}> = ({showToss, handleScrollToTop}) => {
+  return showToss === true ? (
+    <div className="notify-toast">
+      <div
+        className="notify-toast-alert animated fadeIn"
+        onClick={handleScrollToTop}
+      >
+        See New Notifications
+      </div>
+    </div>
+  ) : (
+    <></>
+  );
+};

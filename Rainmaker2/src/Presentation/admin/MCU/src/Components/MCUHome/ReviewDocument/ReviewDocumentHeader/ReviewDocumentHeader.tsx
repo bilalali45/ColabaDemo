@@ -14,7 +14,8 @@ export const ReviewDocumentHeader = ({
   previousDocument,
   perviousDocumentButtonDisabled,
   nextDocumentButtonDisabled,
-  documentDetail
+  documentDetail,
+  haveDocuments,
 }: {
   doc: boolean;
   id: string | null;
@@ -27,6 +28,7 @@ export const ReviewDocumentHeader = ({
   perviousDocumentButtonDisabled: boolean;
   nextDocumentButtonDisabled: boolean;
   documentDetail: boolean;
+  haveDocuments?:boolean;
 }) => {
   return (
     <div
@@ -68,7 +70,8 @@ export const ReviewDocumentHeader = ({
             }`}
         >
           {/* <button className="btn btn-primary">Activity Log</button> */}
-          {/* <Dropdown>
+          {haveDocuments===false ? (
+          <Dropdown>
             <Dropdown.Toggle
               size="lg"
               variant="primary"
@@ -82,7 +85,8 @@ export const ReviewDocumentHeader = ({
                 <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
               </Dropdown.Menu>
             )}
-          </Dropdown> */}
+          </Dropdown>):null
+          }
           <button className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>
           </button>
