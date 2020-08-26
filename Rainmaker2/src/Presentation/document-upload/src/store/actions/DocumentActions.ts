@@ -16,7 +16,7 @@ export class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
-      console.log(res);
+
       let d = res.data.map((d: DocumentRequest, i: number) => {
         let {
           id,
@@ -36,8 +36,7 @@ export class DocumentActions {
           files,
           isRejected
         );
-        console.log("------d-----", d);
-        // doc.files = null;
+
         if (doc.files === null || doc.files === undefined) {
           doc.files = [];
         }
@@ -52,7 +51,7 @@ export class DocumentActions {
             "done"
           );
         });
-        // doc.files = [];
+
         return doc;
       });
       return d;
