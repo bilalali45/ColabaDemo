@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {NeedList} from '../../../../../Entities/Models/NeedList';
-import {NeedListDocuments} from '../../../../../Entities/Models/NeedListDocuments';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { NeedList } from '../../../../../Entities/Models/NeedList';
+import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments';
 import Spinner from 'react-bootstrap/Spinner';
-import {truncate} from '../../../../../Utils/helpers/TruncateString';
-import {toTitleCase} from 'rainsoft-js';
-import {LocalDB} from '../../../../../Utils/LocalDB';
-import {DocumentStatus} from '../../../../../Entities/Types/Types';
+import { truncate } from '../../../../../Utils/helpers/TruncateString';
+import { toTitleCase } from 'rainsoft-js';
+import { LocalDB } from '../../../../../Utils/LocalDB';
+import { DocumentStatus } from '../../../../../Entities/Types/Types';
 
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
@@ -64,7 +64,7 @@ export const NeedListTable = ({
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          { !isByteProAuto && renderSyncToLos(item.files)}
+          {!isByteProAuto && renderSyncToLos(item.files)}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -202,19 +202,19 @@ export const NeedListTable = ({
                 <em className="zmdi zmdi-close"></em>
               </button>
             ) : (
-              <button
-                onClick={() => {
-                  setCurrentItem(data);
-                  setConfirmDelete(true);
-                }}
-                className="btn btn-delete btn-sm"
-              >
-                <em className="zmdi zmdi-close"></em>
-              </button>
-            )
+                  <button
+                    onClick={() => {
+                      setCurrentItem(data);
+                      setConfirmDelete(true);
+                    }}
+                    className="btn btn-delete btn-sm"
+                  >
+                    <em className="zmdi zmdi-close"></em>
+                  </button>
+                )
           ) : (
-            ''
-          )}
+              ''
+            )}
         </div>
       );
     }
@@ -236,7 +236,7 @@ export const NeedListTable = ({
         <div className="td ">
           {data.map((file: NeedListDocuments, index) => {
             const pendingReview = status === DocumentStatus.PENDING_REVIEW;
-            const {mcuName, clientName, isRead} = file;
+            const { mcuName, clientName, isRead } = file;
 
             return (
               <span key={index} className="block-element c-filename">
@@ -263,26 +263,26 @@ export const NeedListTable = ({
                     </span>
                   </React.Fragment>
                 ) : (
-                  <span
-                    title={clientName}
-                    className={
-                      isRead === false
-                        ? 'block-element-child td-filename filename-by-mcu filename-p'
-                        : 'block-element-child td-filename filename-by-mcu'
-                    }
-                  >
-                    <a
-                      href="javascript:void"
-                      onClick={() =>
-                        pendingReview
-                          ? reviewClickHandler(documentIndex, index)
-                          : detailClickHandler(documentIndex, index)
+                    <span
+                      title={clientName}
+                      className={
+                        isRead === false
+                          ? 'block-element-child td-filename filename-by-mcu filename-p'
+                          : 'block-element-child td-filename filename-by-mcu'
                       }
                     >
-                      {truncate(clientName, 47)}
-                    </a>
-                  </span>
-                )}
+                      <a
+                        href="javascript:void"
+                        onClick={() =>
+                          pendingReview
+                            ? reviewClickHandler(documentIndex, index)
+                            : detailClickHandler(documentIndex, index)
+                        }
+                      >
+                        {truncate(clientName, 47)}
+                      </a>
+                    </span>
+                  )}
               </span>
             );
           })}
@@ -292,21 +292,21 @@ export const NeedListTable = ({
   };
 
   const renderSyncToLos = (data: NeedListDocuments[]) => {
-  
+
     if (data === null || data.length === 0) {
-      return <div className="td"></div> 
-        
+      return <div className="td"></div>
+
     } else {
       return (
         <div className="td">
           {data.map((item: NeedListDocuments) => {
             return (
               <span key={item.id} className="block-element c-filename">
-                <a onClick ={() => FileSyncToLos(item.id, item.byteProStatusText)}>
-                  {item.byteProStatusClassName=="synced"?<img src={syncedIcon} className={item.byteProStatusClassName} alt="" />:<em className={"icon-refresh "+item.byteProStatusClassName}></em>
-          }
-          </a>
-               {' '} {item.byteProStatusText}
+                <a onClick={() => FileSyncToLos(item.id, item.byteProStatusText)}>
+                  {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
+                  }
+                </a>
+                {' '} {item.byteProStatusText}
               </span>
             );
           })}
@@ -383,49 +383,56 @@ export const NeedListTable = ({
   };
 
   const renderSyncToLosTitle = () => {
-    if(isByteProAuto){
+    if (isByteProAuto) {
       return <></>
-    }else{
+    } else {
       return (
-               <div className="th">
-              <a  onClick={(e) => FilesSyncToLos()} >
-                <em className="icon-refresh"></em>
-              </a>{' '}
+        <div className="th">
+          <a onClick={(e) => FilesSyncToLos()} >
+            <em className="icon-refresh"></em>
+          </a>{' '}
               sync to LOS
-            </div>
-        )
+        </div>
+      )
     }
-    
+
   }
 
   const renderSyncToLosConfirmationBox = () => {
-    if(!showConfirmBox) {
+    if (!showConfirmBox) {
       return '';
-    }else{
+    } else {
       return (<div className="sync-alert">
-        <div className="sync-alert-wrap">
+        {/* <div className="sync-alert-wrap">
           <div className="icon"><img src={sycLOSIcon} alt="" /></div>
-    <div className="msg">{synchronizing != true ? "Are you ready to sync selected document" : "Synchronization in process..."}</div>
-          <div className="btn-wrap">          
-          <button onClick= {()=> postToBytePro()} className="btn btn-primary btn-sm">
-            {synchronizing != true
-            ? 
-            "Sync" 
-            : 
-            <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-        }
-          </button>
-          
+          <div className="msg">{synchronizing != true ? "Are you ready to sync selected document" : "Synchronization in process..."}</div>
+          <div className="btn-wrap">
+            <button onClick={() => postToBytePro()} className="btn btn-primary btn-sm">
+              {synchronizing != true
+                ?
+                "Sync"
+                :
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              }
+            </button>
+
+          </div>
+        </div> */}
+        <div className="sync-alert-wrap success">
+
+          <div className="msg">Synchronization completed</div>
+          <div className="close-wrap">
+            <span className="close-btn"><em className="zmdi zmdi-close"></em></span>
           </div>
         </div>
-        
-        </div>)
-    }  
+
+      </div>)
+    }
   }
 
-  
+
   if (!needList) {
     return (
       <div className="loader-widget">
@@ -436,7 +443,7 @@ export const NeedListTable = ({
     );
   }
 
-  console.log('isByteProAuto',isByteProAuto)
+  console.log('isByteProAuto', isByteProAuto)
 
   return (
     <div className="need-list-table" id="NeedListTable">
@@ -447,7 +454,7 @@ export const NeedListTable = ({
             {renderStatusTitle()}
             <div className="th">File Name</div>
             {renderSyncToLosTitle()}
-            
+
             <div className="th options">&nbsp;</div>
             <div className="th th-options">&nbsp;</div>
           </div>
