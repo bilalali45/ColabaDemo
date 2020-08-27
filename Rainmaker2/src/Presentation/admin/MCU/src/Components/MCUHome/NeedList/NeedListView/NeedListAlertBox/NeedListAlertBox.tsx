@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
+import { NeedList } from '../../../../../Entities/Models/NeedList';
 
-export const NeedListAlertBox = () => {
+type NeedListAlertProps = {
+    showFailedToSyncBox: boolean;
+    needList: NeedList;
+}
+
+export const NeedListAlertBox = ({showFailedToSyncBox, needList} : NeedListAlertProps) => {
     return (
         <Modal
-        show={false}
+        show={showFailedToSyncBox}
         // onHide={handleClose}
         backdrop="static"
         keyboard={true}
