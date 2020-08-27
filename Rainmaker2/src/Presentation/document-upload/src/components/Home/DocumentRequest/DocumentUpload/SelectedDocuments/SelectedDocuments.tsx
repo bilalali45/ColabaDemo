@@ -403,7 +403,10 @@ export const SelectedDocuments = ({
         </div>
         {!!currentDoc && location.pathname.includes('view') && (
           <DocumentView
-            hideViewer={() => setCurrentDoc(null)}
+            hideViewer={() => {
+              setCurrentDoc(null);
+              history.goBack();
+            }}
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}

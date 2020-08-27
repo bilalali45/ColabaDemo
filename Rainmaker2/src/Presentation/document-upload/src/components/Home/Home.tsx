@@ -27,7 +27,6 @@ export class Home extends Component {
   }
 
   setParams = (props: any) => {
-    console.log("Props", props);
     const { loanApplicationId } = props.match.params;
     if (!isNaN(loanApplicationId)) {
       ParamsService.storeParams(loanApplicationId);
