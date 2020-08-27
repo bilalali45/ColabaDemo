@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,13 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await byteProService.GetTenantSetting(tenantId);
             return Ok(setting);
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetTenantSetting(TenantSetting setting)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            await byteProService.SetTenantSetting(tenantId,setting);
+            return Ok();
         }
     }
 }
