@@ -25,7 +25,8 @@ export class NeedListActions {
       status
     );
     try {
-      let res: AxiosResponse<NeedList> = await http.get<NeedList>(url);
+      let res: AxiosResponse<NeedList[]> = await http.get<NeedList[]>(url);
+      
       return res.data;
     } catch (error) {
       console.log(error);
@@ -46,6 +47,40 @@ export class NeedListActions {
       });
       return res.status;
     } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async checkIsByteProAuto(){
+    let url = Endpoints.NeedListManager.GET.documents.checkIsByteProAuto();
+    try {
+      let res: any = await http.get(url);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  
+  }
+
+  static async fileSyncToLos (
+    LoanApplicationId: number,
+    DocumentLoanApplicationId: string,
+    RequestId: string,
+    DocumentId: string,
+    FileId: string
+  ){
+    let url = Endpoints.NeedListManager.POST.documents.fileSyncToLos();
+    try {
+      let res: any = await http.post(url, {
+        LoanApplicationId,
+        DocumentLoanApplicationId,
+        RequestId,
+        DocumentId,
+        FileId
+      });
+      return res.status;
+    } catch (error) {
+      debugger
       console.log(error);
     }
   }

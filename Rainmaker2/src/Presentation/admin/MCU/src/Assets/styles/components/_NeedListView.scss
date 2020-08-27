@@ -11,3 +11,52 @@
     }
 
 }
+
+
+
+.sync-alert {
+    background: color('colorWhite');
+    max-width: 557px;
+    min-height: 68px;
+    position: fixed;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.19);
+    padding:1px 15px;
+    &-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        padding-left: 77px;
+        padding-right: 80px;
+        min-height: 67px;
+        .icon {
+            max-width: 77px;
+            position: absolute;
+    left: 0;
+    top: 0;
+        }
+        .msg {
+            font:  400 #{fontSize("nr")-1 + "/1.2"} fontFamily("base");
+            color: color('colorBlack');
+        }
+        .btn-wrap {
+            position: absolute;
+            right: 0;
+    top: 0;
+    height: 67px;
+    display: flex;
+    align-items: center;
+    .btn {
+        min-width: 70px;
+    }
+    .spinner-border {
+        width: 16px;
+        height: 16px;
+    }
+        }
+    }
+}
