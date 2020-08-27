@@ -115,6 +115,21 @@ namespace Notification.API.Controllers
             return Ok();
         }
         [HttpGet("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> GetTenantSetting()
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            return Ok(await _notificationService.GetTenantSetting(tenantId));
+        }
+        [HttpPost("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> SetTenantSetting(TenantSettingModel model)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            await _notificationService.SetTenantSetting(tenantId,model);
+            return Ok();
+        }
+        [HttpGet("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> TestSignalR()
         {

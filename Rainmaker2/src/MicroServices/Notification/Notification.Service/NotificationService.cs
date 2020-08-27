@@ -231,5 +231,20 @@ namespace Notification.Service
 
             return new NotificationMediumModel() { id = result.Id, payload = !String.IsNullOrEmpty(result.SentTextJson) ? JObject.Parse(result.SentTextJson) : new JObject(), status = result.NotificationRecepient.StatusListEnum.Name };
         }
+
+        public async Task<TenantSettingModel> GetTenantSetting(int tenantId)
+        {
+            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            return new TenantSettingModel() { deliveryModeId=setting.DeliveryModeId};
+        }
+
+        public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
+        {
+            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            setting.TrackingState = TrackingState.Modified;
+            setting.DeliveryModeId = model.deliveryModeId;
+            Uow.Repository<TenantSetting>().Update(setting);
+            await Uow.SaveChangesAsync();
+        }
     }
 }
