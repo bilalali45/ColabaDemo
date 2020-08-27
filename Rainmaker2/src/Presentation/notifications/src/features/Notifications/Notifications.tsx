@@ -3,8 +3,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
 import {Notification, NewNotificationToss} from './_Notifications';
-import {NotificationType, TimersType} from '../lib/type';
-import {AlertForNoData} from '../pages/_HomePage';
+import {NotificationType, TimersType} from '../../lib/type';
+import {AlertForNoData} from '../../pages/_HomePage';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -84,7 +84,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
               return (
                 <Notification
-                   key={index}
+                  key={index}
                   removeNotification={() => removeNotification(id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}

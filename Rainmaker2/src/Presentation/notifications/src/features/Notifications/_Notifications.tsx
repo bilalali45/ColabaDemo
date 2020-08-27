@@ -1,9 +1,9 @@
 import React, {FunctionComponent} from 'react';
 import {Link} from 'react-router-dom';
 
-import {NotificationType, TimersType} from '../lib/type';
-import {formatDateTime} from '../lib/utils';
-import {SVGDocument, SVGClose, SVGCalender} from '../SVGIcons';
+import {NotificationType, TimersType} from '../../lib/type';
+import {formatDateTime} from '../../lib/utils';
+import {SVGDocument, SVGClose, SVGCalender} from '../../SVGIcons';
 
 interface NotificationProps {
   removeNotification: () => void;
@@ -49,7 +49,7 @@ export const Notification: FunctionComponent<NotificationProps> = ({
       readAllNotificationsForDocument(loanApplicationId);
     }
 
-    window.open(link, '_self');
+    window.open(link, '_blank');
   };
 
   return (
