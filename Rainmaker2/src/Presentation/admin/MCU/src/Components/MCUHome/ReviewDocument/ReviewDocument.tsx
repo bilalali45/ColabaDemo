@@ -43,7 +43,7 @@ export const ReviewDocument = () => {
     false
   );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
-
+  const [haveDocuments, setHaveDocuments] = useState(false);
   const {state: AppState, dispatch} = useContext(Store);
   const {needListManager} = AppState;
   const {needList} = needListManager as Pick<NeedListType, 'needList'>;
@@ -387,6 +387,15 @@ export const ReviewDocument = () => {
   };
 
   useEffect(() => {
+    //apex
+    if (!!currentDocument && currentDocument.files && currentDocument.files.length){
+      setHaveDocuments(true);
+    } 
+    else {
+      setHaveDocuments(false)
+    }
+
+
     window.addEventListener('keydown', onMoveArrowKeys);
 
     return () => {
@@ -475,6 +484,7 @@ export const ReviewDocument = () => {
       className="review-document"
     >
       <ReviewDocumentHeader
+        haveDocuments={haveDocuments}
         doc={currentDocument?.docName === typeIdId.typeId || false}
         id={typeIdId.id}
         typeId={typeIdId.typeId}
