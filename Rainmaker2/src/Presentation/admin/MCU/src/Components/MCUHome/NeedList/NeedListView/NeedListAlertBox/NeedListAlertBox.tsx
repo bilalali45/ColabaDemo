@@ -1,19 +1,61 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
 import { NeedList } from '../../../../../Entities/Models/NeedList';
 import errorIcon from '../../../../../Assets/images/error-icon.svg';
 type NeedListAlertProps = {
     showFailedToSyncBox: boolean;
-    needList: NeedList;
+    needList: any;
+    syncAgain: Function;
+    handleClose: Function;
 }
 
-export const NeedListAlertBox = ({showFailedToSyncBox, needList} : NeedListAlertProps) => {
+export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, handleClose} : NeedListAlertProps) => {
+
+   const renderFailedSyncList = () => {
+     let arr =  getFailedList();
+    if(arr.length > 0){
+        return (
+            <Fragment>
+           {arr.map((item: any) => {
+            return (
+           <li>
+            <h5>{item.docName}</h5>
+            {item.fileList.map((item2: any) => {
+                return <p>{item2}</p>
+            })}
+            
+           </li>
+            )
+           })}
+
+            </Fragment>
+            
+            )
+    }
+    }
+
+  const getFailedList = () => {
+      let newListArray = [];
+      let docName = '';
+      for(let i = 0; i < needList?.length; i++){
+        docName = needList[i].docName;
+        let files = [];
+        for(let k = 0; k < needList[i].files.length; k++){
+          if( needList[i].files[k].byteProStatus === "sync failed"){
+            files.push(needList[i].files[k].clientName)         
+          }
+        }
+        if(files.length > 0){
+            newListArray.push({ docName: docName, fileList:  files } )
+        }
+     }
+   return newListArray;
+  }
     return (
         <Modal
         show={showFailedToSyncBox}
-        //show={true} 
-        // onHide={handleClose}
+        onHide={handleClose}
         backdrop="static"
         keyboard={true}
         className="modal-alert sync-error-alert"
@@ -39,58 +81,14 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList} : NeedListAlert
 
       <h4>Documents that have failed to sync</h4>
       <ul>
-          <li>
-              <h5>Bank Statement</h5>
-              <p>Bank-statement-Jan-to-Mar-2020-1.jpg</p>
-              <p>Bank-statement-Jan-to-Mar-2020-1.jpg</p>
-              <p>Bank-statement-Jan-to-Mar-2020-1.jpg</p>
-          </li>
-
-          <li>
-              <h5>Personal Tax Return</h5>
-              <p>Personal Tax Returns.pdf</p>
-          </li>
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
-
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
-
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
-
-
-          <li>
-              <h5>Alimony Income Verification</h5>
-              <p>Income Verification.pdf</p>
-          </li>
+        {renderFailedSyncList()}
       </ul>
 
   </div>
         </Modal.Body>
         <Modal.Footer>
-        <p className="text-center">
-      
-              <Button  variant="primary">
+        <p className="text-center"> 
+              <Button onClick={() => syncAgain()}  variant="primary">
                 {"Sync again"} 
               </Button>
             </p>

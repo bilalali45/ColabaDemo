@@ -128,7 +128,7 @@ namespace ByteWebConnector.API.Controllers
                 _logger.LogInformation($"byteProSession = {byteProSession}");
                 ApiResponse documentResponse = SendDocumentToByte(documentUploadModel,
                                                                   byteProSession);
-                _logger.LogInformation($"byteProSession = {documentResponse.ToJson()}");
+               // _logger.LogInformation($"byteProSession = {documentResponse.ToJson()}");
                 return documentResponse;
 
                 #endregion
@@ -349,12 +349,13 @@ namespace ByteWebConnector.API.Controllers
                                    MissingMemberHandling = MissingMemberHandling.Ignore
                                };
 
-                _logger.LogInformation($"byteDocumentResponse= {documentResponse.Result}");
+                //_logger.LogInformation($"byteDocumentResponse= {documentResponse.Result}");
                 DocumentUploadResponse document =
                     JsonConvert.DeserializeObject<DocumentUploadResponse>(documentResponse.Result,
                                                                           settings);
                 if (document != null)
                 {
+                    _logger.LogInformation($"byteDocumentResponse Deserialized");
                     document.ExtOriginatorId = 1;
                 }
 

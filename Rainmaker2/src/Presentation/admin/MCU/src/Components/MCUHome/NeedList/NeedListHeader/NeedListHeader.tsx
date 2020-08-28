@@ -30,7 +30,7 @@ export const NeedListHeader = () => {
         <button onClick={redirectToTemplate} className="btn btn-secondry">
           <em className="icon-record"></em> Manage Template
         </button>
-        <button className="btn btn-primary" >
+        <button disabled = {true} className="btn btn-primary" >
           <em className="icon-edit"></em> Post to Byte Pro
         </button>
       </div>
