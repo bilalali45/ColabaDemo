@@ -143,10 +143,10 @@ namespace LosIntegration.API.Controllers
             var categories = getCategoriesResponse.ResponseObject;
 
             var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
-                                         .Single(predicate: dt => dt.DocTypeId == document.TypeId);
+                                         .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
 
             var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType).SingleOrDefault();
+                                     .GetByteDocTypeMappingWithDetails(docType: documentType?.DocType).SingleOrDefault();
             var byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
             var byteDocCategoryMapping = _byteDocCategoryMappingService
                                          .GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10)
@@ -566,7 +566,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation(message: $"result={result} ");
+            //_logger.LogInformation(message: $"result={result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
