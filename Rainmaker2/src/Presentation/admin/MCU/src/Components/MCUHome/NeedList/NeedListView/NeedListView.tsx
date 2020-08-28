@@ -158,7 +158,6 @@ export const NeedListView = () => {
   }
 
   const FilesSyncToLosHandler = async (status: string) => {
-debugger
     if(status === 'readyto_Sync'){
       let data = await updateSyncStatusToNotSync(needListData);
       dispatch({
