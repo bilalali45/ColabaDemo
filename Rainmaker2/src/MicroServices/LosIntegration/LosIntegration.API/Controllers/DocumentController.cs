@@ -566,7 +566,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation(message: $"result={result} ");
+            //_logger.LogInformation(message: $"result={result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
