@@ -455,6 +455,7 @@ namespace DocumentManagement.Tests
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
             Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
             Mock<INotificationService> mockNotificationService = new Mock<INotificationService>();
+            Mock<IByteProService> mockByteProService = new Mock<IByteProService>();
 
             string filePath = Path.GetTempFileName();
             MemoryStream ms = new MemoryStream();
@@ -485,6 +486,11 @@ namespace DocumentManagement.Tests
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
             mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
+            mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+            Tenant tenant = new Tenant();
+            tenant.syncToBytePro = (int)SyncToBytePro.Auto;
+            tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
+            mockByteProService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenant);
 
             FileOrderModel model = new FileOrderModel
             {
@@ -508,7 +514,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>(), Mock.Of<ILosIntegrationService>(), mockNotificationService.Object, Mock.Of<IRainmakerService>(), null);
+            FileController controller = new FileController(mockfileservice.Object, mockfileencryptorfacotry.Object, mockftpclient.Object, mocksettingservice.Object, mockKeyStoreService.Object, mockconfiguration.Object, Mock.Of<ILogger<FileController>>(), Mock.Of<ILosIntegrationService>(), mockNotificationService.Object, Mock.Of<IRainmakerService>(), mockByteProService.Object);
             controller.ControllerContext = context;
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
