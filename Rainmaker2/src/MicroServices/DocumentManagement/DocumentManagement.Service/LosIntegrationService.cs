@@ -93,7 +93,7 @@ namespace DocumentManagement.Service
                           {
                               RequestUri =
                                   new Uri(uriString: _configuration[key: "LosIntegration:Url"] +
-                                                     "/api/LosIntegration/Document/SendDocumentToExternalOriginator"),
+                                                     "/api/LosIntegration/Document/SendFileToExternalOriginator"),
                               Method = HttpMethod.Post,
                               Content = new StringContent(content: content.ToJson(),
                                                           encoding: Encoding.UTF8,
