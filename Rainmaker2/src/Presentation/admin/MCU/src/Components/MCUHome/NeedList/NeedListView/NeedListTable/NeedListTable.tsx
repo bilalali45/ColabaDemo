@@ -27,13 +27,10 @@ type NeedListProps = {
   FileSyncToLos: Function;
   postToBytePro: Function;
   synchronizing: boolean;
+  syncSuccess: boolean;
+  closeSyncCompletedBox: Function;
+  syncTitleClass: string;
 };
-
-export const Sync = "Synchronized";
-export const notSync = "Not synchronized";
-export const SyncError = "Error";
-export const ReadyToSync = "Ready to Sync";
-export const Synchronizing = "Synchronizing";
 
 export const NeedListTable = ({
   needList,
@@ -50,7 +47,10 @@ export const NeedListTable = ({
   FileSyncToLos,
   showConfirmBox,
   postToBytePro,
-  synchronizing
+  synchronizing,
+  syncSuccess,
+  closeSyncCompletedBox,
+  syncTitleClass
 
 }: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -389,7 +389,7 @@ export const NeedListTable = ({
       return (
         <div className="th">
           <a onClick={(e) => FilesSyncToLos()} >
-            <em className="icon-refresh"></em>
+            <em className={"icon-refresh "+syncTitleClass}></em>
           </a>{' '}
               sync to LOS
         </div>
@@ -399,15 +399,16 @@ export const NeedListTable = ({
   }
 
   const renderSyncToLosConfirmationBox = () => {
-    if (!showConfirmBox) {
+    if (!showConfirmBox && !syncSuccess) {
       return '';
-    } else {
-      return (<div className="sync-alert">
-        {/* <div className="sync-alert-wrap">
+    } else if(showConfirmBox && !syncSuccess) {
+      return (
+      <div className="sync-alert">
+         <div className="sync-alert-wrap">
           <div className="icon"><img src={sycLOSIcon} alt="" /></div>
           <div className="msg">{synchronizing != true ? "Are you ready to sync selected document" : "Synchronization in process..."}</div>
           <div className="btn-wrap">
-            <button onClick={() => postToBytePro()} className="btn btn-primary btn-sm">
+            <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
               {synchronizing != true
                 ?
                 "Sync"
@@ -419,16 +420,23 @@ export const NeedListTable = ({
             </button>
 
           </div>
-        </div> */}
+        </div> 
+        
+
+      </div>
+      )
+    } else if(!showConfirmBox && syncSuccess){
+      return (
+        <div className="sync-alert">
         <div className="sync-alert-wrap success">
 
-          <div className="msg">Synchronization completed</div>
-          <div className="close-wrap">
-            <span className="close-btn"><em className="zmdi zmdi-close"></em></span>
-          </div>
+        <div className="msg">Synchronization completed</div>
+        <div onClick={() => closeSyncCompletedBox()} className="close-wrap">
+        <span className="close-btn"><em className="zmdi zmdi-close"></em></span>
         </div>
-
-      </div>)
+        </div>
+        </div>
+      )
     }
   }
 

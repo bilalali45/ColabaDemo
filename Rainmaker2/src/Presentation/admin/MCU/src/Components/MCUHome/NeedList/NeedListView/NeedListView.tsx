@@ -13,6 +13,15 @@ import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import { NeedListAlertBox } from "../NeedListView/NeedListAlertBox/NeedListAlertBox";
 
+export const Sync = "Synchronized";
+export const SyncTxt = "Synced";
+export const notSync = "Not synchronized";
+export const notSyncTxt = "Not Synced";
+export const SyncError = "Error";
+export const SyncErrorTxt = "Sync failed";
+export const ReadyToSync = "Ready to Sync";
+export const Synchronizing = "Synchronizing";
+
 export const NeedListView = () => {
   const [toggle, setToggle] = useState(true);
   const [sortArrow, setSortArrow] = useState('desc');
@@ -36,8 +45,11 @@ export const NeedListView = () => {
   const [showConfirmBox, setShowConfirmBox] = useState<boolean>(false);
   const [synchronizing, setSynchronizing] = useState<boolean>(false);
   const [showFailedToSyncBox, setShowFailedToSyncBox] = useState<boolean>(false);
-  //const [isError, setIsError] = useState<boolean>(false);
+  const [syncSuccess, setsyncSuccess] = useState<boolean>(false);
+  const [syncTitleClass, setSyncTitleClass] = useState<string>('not_Synced');
+
   var isError = false;
+
   useEffect(() => {
     fetchNeedList(true, true);
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
@@ -77,14 +89,20 @@ export const NeedListView = () => {
   const updateNeedListArray = async (arr: NeedList[]) => {
      for(let i = 0; i < arr.length; i++){
         for(let k = 0; k < arr[i].files.length; k++){
-          if(arr[i].files[k].byteProStatus === "Synchronized"){
-            arr[i].files[k].byteProStatusText = 'Synced';
+          if(arr[i].files[k].byteProStatus === Sync){
+
+            arr[i].files[k].byteProStatusText = SyncTxt;
             arr[i].files[k].byteProStatusClassName = "synced";
-          }else if(arr[i].files[k].byteProStatus === "Not synchronized"){
-            arr[i].files[k].byteProStatusText = 'Not Synced'
+
+          }else if(arr[i].files[k].byteProStatus === notSync){
+
+            arr[i].files[k].byteProStatusText = notSyncTxt
             arr[i].files[k].byteProStatusClassName = "not_Synced";
+
           }else{
-            arr[i].files[k].byteProStatusText = ''
+            arr[i].files[k].byteProStatusText = SyncErrorTxt
+            arr[i].files[k].byteProStatusClassName = "sync_error";
+            arr[i].files[k].byteProStatus = SyncError;
           }
         }
      }
@@ -95,14 +113,14 @@ export const NeedListView = () => {
    
     for(let i = 0; i < arr.length; i++){
       for(let k = 0; k < arr[i].files.length; k++){
-        if(id != undefined && id === arr[i].files[k].id && arr[i].files[k].byteProStatusText != 'Synced'){
-          arr[i].files[k].byteProStatusText = 'Ready to Sync';
-          arr[i].files[k].byteProStatus = 'Ready to Sync';
+        if(id != undefined && id === arr[i].files[k].id && arr[i].files[k].byteProStatusText != SyncTxt){
+          arr[i].files[k].byteProStatusText = ReadyToSync;
+          arr[i].files[k].byteProStatus = ReadyToSync;
           arr[i].files[k].byteProStatusClassName = "readyto_Sync";
           break;
-        }else if(id === undefined && arr[i].files[k].byteProStatus === "Not synchronized"){
-          arr[i].files[k].byteProStatusText = 'Ready to Sync';
-          arr[i].files[k].byteProStatus = 'Ready to Sync';
+        }else if(id === undefined && arr[i].files[k].byteProStatus === notSync){
+          arr[i].files[k].byteProStatusText = ReadyToSync;
+          arr[i].files[k].byteProStatus = ReadyToSync;
           arr[i].files[k].byteProStatusClassName = "readyto_Sync";
         }
       }
@@ -110,13 +128,14 @@ export const NeedListView = () => {
    return arr;
   }
 
-  const updateSyncStatusToSynchronizing = async () => {
+  const updateSyncStatusToSynchronizing = async (synAgain: boolean) => {
     let arr = needListData;
+    let chkVar = synAgain ? "sync failed" : "Ready to Sync";
     for(let i = 0; i < arr.length; i++){
       for(let k = 0; k < arr[i].files.length; k++){
-      if( arr[i].files[k].byteProStatus === "Ready to Sync"){
-          arr[i].files[k].byteProStatusText = 'Synchronizing';
-          arr[i].files[k].byteProStatus = 'Synchronizing';
+      if( arr[i].files[k].byteProStatus === chkVar){
+          arr[i].files[k].byteProStatusText = Synchronizing;
+          arr[i].files[k].byteProStatus = Synchronizing;
           arr[i].files[k].byteProStatusClassName = "readyto_Sync";
         }
       }
@@ -125,16 +144,17 @@ export const NeedListView = () => {
   }
 
   const FilesSyncToLosHandler = async () => {
+   
     let data = await updateSyncStatusToReady(needListData)
     dispatch({
       type: NeedListActionsType.SetNeedListTableDATA,
       payload: data
     });
     setShowConfirmBox(true)
+    setSyncTitleClass('readyto_Sync')
   }
 
   const FileSyncToLosHandler = async (id: string, txt: string) => {
-   console.log('FileSyncToLosHandler',id)
    let data = await updateSyncStatusToReady(needListData, id)
    dispatch({
     type: NeedListActionsType.SetNeedListTableDATA,
@@ -146,9 +166,9 @@ export const NeedListView = () => {
    
   }
 
-  const postToByteProHandler = async () => { 
+  const postToByteProHandler = async (synAgain: boolean) => { 
     let loanApplicationId = parseInt(LocalDB.getLoanAppliationId());
-    let data = await updateSyncStatusToSynchronizing();
+    let data = await updateSyncStatusToSynchronizing(synAgain);
     dispatch({
     type: NeedListActionsType.SetNeedListTableDATA,
     payload: data
@@ -174,7 +194,6 @@ export const NeedListView = () => {
           arr[i].files[k].byteProStatusText = 'Sync failed';
           arr[i].files[k].byteProStatus = 'sync failed';
           arr[i].files[k].byteProStatusClassName = "sync_error";
-          //setIsError(true)
           isError = true;
          }
          dispatch({
@@ -187,7 +206,13 @@ export const NeedListView = () => {
   }
   setSynchronizing(false);
   setShowConfirmBox(false);
-  if(isError) setShowFailedToSyncBox(true);
+  if(isError) {
+    setShowFailedToSyncBox(true);
+    setSyncTitleClass('sync_error')
+  }else{
+    setsyncSuccess(true)
+    setSyncTitleClass('synced')
+  }
   }
 
   const filePostToBytePro = async (
@@ -197,7 +222,6 @@ export const NeedListView = () => {
     DocumentId: string,
     FileId: string
     ) => {
-      debugger
     let res = await NeedListActions.fileSyncToLos(
       LoanApplicationId,
       DocumentLoanApplicationId,
@@ -368,7 +392,20 @@ export const NeedListView = () => {
     deleteNeedListDoc(id, requestId, docId);
   };
 
-  
+  const syncAgain = () => {
+    postToByteProHandler(true);
+    setShowFailedToSyncBox(false);
+  }
+
+  const handleClose = () => {
+    setShowFailedToSyncBox(false)
+    updateNeedListArray(needListData)
+  }
+
+  const closeSyncCompletedBoxhandler = () => {
+    setsyncSuccess(false);
+    setShowConfirmBox(false);
+  }
 
   return (
     <div className="need-list-view">
@@ -395,11 +432,13 @@ export const NeedListView = () => {
         FileSyncToLos = {FileSyncToLosHandler}
         postToBytePro = {postToByteProHandler}
         synchronizing = {synchronizing}
+        syncSuccess = {syncSuccess}
+        closeSyncCompletedBox = {closeSyncCompletedBoxhandler}
+        syncTitleClass = {syncTitleClass}
       />
-      <NeedListAlertBox 
-      showFailedToSyncBox = {showFailedToSyncBox}
-      needList = {needListData}
-      />
+    {
+    showFailedToSyncBox &&  <NeedListAlertBox showFailedToSyncBox = {showFailedToSyncBox} needList = {needListData} syncAgain = {syncAgain} handleClose = {handleClose} />
+     } 
     </div>
   );
 };
