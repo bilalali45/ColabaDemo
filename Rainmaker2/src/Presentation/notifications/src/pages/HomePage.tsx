@@ -145,7 +145,7 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [http]);
 
-  const onCDeleteAllNotifications = async () => {
+  const onCDeleteAllNotifications = async (isSignalREvent: boolean = true) => {
     try {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
@@ -200,7 +200,7 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [notificationsVisible, notifications, http]);
 
-  const readAllNotificationsForDocument = async (loanApplicationId: string) => {
+  const readAllNotificationsForDocument = async (loanApplicationId: string, isSignalREvent: boolean = true) => {
     try {
       if (!notifications) return;
 
@@ -267,6 +267,19 @@ export const HomePage: FunctionComponent = () => {
         getUnseenNotificationsCount();
       });
 
+      SignalRHub.hubConnection.on('NotificationRead', (ids : any) => {
+        debugger
+        readAllNotificationsForDocument(ids, true)
+      });
+
+      SignalRHub.hubConnection.on('NotificationDelete', (id : any) => {
+        removeNotification(id, true);
+      });
+
+      SignalRHub.hubConnection.on('NotificationDeleteAll', () => {
+        onCDeleteAllNotifications(true);
+      });
+      
       SignalRHub.hubConnection.onclose(() => {
         const auth = LocalDB.getAuthToken();
 
@@ -289,7 +302,7 @@ export const HomePage: FunctionComponent = () => {
     );
   }, [getFetchNotifications, getUnseenNotificationsCount]);
 
-  const removeNotification = (id: number) => {
+  const removeNotification = (id: number, isSignalREvent: boolean = true) => {
     try {
       if (!!timers && timers.length > 0) {
         if (timers.some((timer) => timer.id === id)) {

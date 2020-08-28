@@ -80,7 +80,6 @@ export class NeedListActions {
       });
       return res.status;
     } catch (error) {
-      debugger
       console.log(error);
     }
   }
