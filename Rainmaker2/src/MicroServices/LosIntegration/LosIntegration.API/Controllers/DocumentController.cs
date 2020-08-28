@@ -143,10 +143,10 @@ namespace LosIntegration.API.Controllers
             var categories = getCategoriesResponse.ResponseObject;
 
             var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
-                                         .Single(predicate: dt => dt.DocTypeId == document.TypeId);
+                                         .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
 
             var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType).SingleOrDefault();
+                                     .GetByteDocTypeMappingWithDetails(docType: documentType?.DocType).SingleOrDefault();
             var byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
             var byteDocCategoryMapping = _byteDocCategoryMappingService
                                          .GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10)
