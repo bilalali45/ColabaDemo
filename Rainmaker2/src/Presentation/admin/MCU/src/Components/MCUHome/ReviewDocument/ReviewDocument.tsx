@@ -1,23 +1,23 @@
-import React, {useEffect, useCallback, useState, useContext} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
-import {Http} from 'rainsoft-js';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Http } from 'rainsoft-js';
 import Axios from 'axios';
-import {DocumentView} from 'rainsoft-rc';
+import { DocumentView } from 'rainsoft-rc';
 import _ from 'lodash';
 
-import {ReviewDocumentHeader} from './ReviewDocumentHeader/ReviewDocumentHeader';
-import {ReviewDocumentStatement} from './ReviewDocumentStatement/ReviewDocumentStatement';
-import {NeedListEndpoints} from '../../../Store/endpoints/NeedListEndpoints';
-import {LocalDB} from '../../../Utils/LocalDB';
+import { ReviewDocumentHeader } from './ReviewDocumentHeader/ReviewDocumentHeader';
+import { ReviewDocumentStatement } from './ReviewDocumentStatement/ReviewDocumentStatement';
+import { NeedListEndpoints } from '../../../Store/endpoints/NeedListEndpoints';
+import { LocalDB } from '../../../Utils/LocalDB';
 import emptyIcon from '../../../Assets/images/empty-icon.svg';
-import {Store} from '../../../Store/Store';
+import { Store } from '../../../Store/Store';
 import {
   NeedListType,
   NeedListActionsType
 } from '../../../Store/reducers/NeedListReducer';
-import {NeedList} from '../../../Entities/Models/NeedList';
-import {DocumentStatus} from '../../../Entities/Types/Types';
-import {timeout} from '../../../Utils/helpers/Delay';
+import { NeedList } from '../../../Entities/Models/NeedList';
+import { DocumentStatus } from '../../../Entities/Types/Types';
+import { timeout } from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -43,14 +43,14 @@ export const ReviewDocument = () => {
     false
   );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
-
-  const {state: AppState, dispatch} = useContext(Store);
-  const {needListManager} = AppState;
-  const {needList} = needListManager as Pick<NeedListType, 'needList'>;
+  const [haveDocuments, setHaveDocuments] = useState(false);
+  const { state: AppState, dispatch } = useContext(Store);
+  const { needListManager } = AppState;
+  const { needList } = needListManager as Pick<NeedListType, 'needList'>;
 
   const history = useHistory();
   const location = useLocation();
-  const {state} = location;
+  const { state } = location;
 
   const goBack = () => {
     history.goBack();
@@ -59,7 +59,7 @@ export const ReviewDocument = () => {
   const [blobData, setBlobData] = useState<any>();
 
   const documentsForReviewArrayIndexes = () =>
-    _.keys(_.pickBy(needList, {status: DocumentStatus.PENDING_REVIEW}));
+    _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
@@ -106,7 +106,7 @@ export const ReviewDocument = () => {
       if (index === currentFileIndex || loading === true) return;
 
       if (currentDocument) {
-        const {id, requestId, docId} = currentDocument;
+        const { id, requestId, docId } = currentDocument;
 
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
@@ -125,12 +125,12 @@ export const ReviewDocument = () => {
   );
 
   const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
-    setTypeIdId({id, typeId: typeIdOrDocName});
+    setTypeIdId({ id, typeId: typeIdOrDocName });
   }, []);
 
   const changeCurrentDocument = useCallback(
     (nextDocument: NeedList, nextIndex: number, fromHeader: boolean) => {
-      const {id, requestId, docId, files} = nextDocument;
+      const { id, requestId, docId, files } = nextDocument;
 
       const nextDocIndex = needList.findIndex(
         (document, index) =>
@@ -146,7 +146,7 @@ export const ReviewDocument = () => {
       setCurrentDocument(() => nextDocument);
       setNavigationIndex(() => nextIndex);
       setCurrentFileIndex(0);
-      setTypeIdId({id: null, typeId: null});
+      setTypeIdId({ id: null, typeId: null });
 
       if (!!files && files.length > 0) {
         setClientName(files[0].clientName);
@@ -246,7 +246,7 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const {id, requestId, docId} = currentDocument;
+          const { id, requestId, docId } = currentDocument;
 
           const http = new Http();
 
@@ -289,7 +289,7 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const {id, requestId, docId} = currentDocument;
+          const { id, requestId, docId } = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
 
@@ -387,6 +387,15 @@ export const ReviewDocument = () => {
   };
 
   useEffect(() => {
+    //apex
+    if (!!currentDocument && currentDocument.files && currentDocument.files.length) {
+      setHaveDocuments(true);
+    }
+    else {
+      setHaveDocuments(false)
+    }
+
+
     window.addEventListener('keydown', onMoveArrowKeys);
 
     return () => {
@@ -419,7 +428,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const {currentDocumentIndex, documentDetail, fileIndex} = state as any;
+        const { currentDocumentIndex, documentDetail, fileIndex } = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -451,14 +460,14 @@ export const ReviewDocument = () => {
         !!fileIndex && setCurrentFileIndex(fileIndex);
         setDocumentDetail(() => documentDetail);
 
-        const {id, requestId, docId, files, typeId, docName} = doc;
+        const { id, requestId, docId, files, typeId, docName } = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
           setClientName(files[fileIndex || 0].clientName);
 
           getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
         } else {
-          setTypeIdId({id, typeId: !!typeId ? typeId : docName});
+          setTypeIdId({ id, typeId: !!typeId ? typeId : docName });
         }
       } catch (error) {
         console.log('error', error);
@@ -474,66 +483,65 @@ export const ReviewDocument = () => {
       data-component="ReviewDocument"
       className="review-document"
     >
-      <ReviewDocumentHeader
-        doc={currentDocument?.docName === typeIdId.typeId || false}
-        id={typeIdId.id}
-        typeId={typeIdId.typeId}
-        hideNextPreviousNavigation={
-          documentDetail || documentsForReviewArrayIndexes().length === 1
-        }
-        buttonsEnabled={!loading}
-        onClose={goBack}
-        nextDocument={() => navigateDocument(needList, 'next', true)}
-        previousDocument={() => navigateDocument(needList, 'back', true)}
-        perviousDocumentButtonDisabled={
-          previousDocumentButtonDisabled || acceptRejectLoading
-        }
-        nextDocumentButtonDisabled={
-          nextDocumentButtonDisabled || acceptRejectLoading
-        }
-        documentDetail={documentDetail}
-      />
+      {!!currentDocument && (
+        <ReviewDocumentHeader
+          haveDocuments={haveDocuments}
+          id={currentDocument.id}
+          requestId={currentDocument.requestId}
+          docId={currentDocument.docId}
+          hideNextPreviousNavigation={
+            documentDetail || documentsForReviewArrayIndexes().length === 1
+          }
+          buttonsEnabled={!loading}
+          onClose={goBack}
+          nextDocument={() => navigateDocument(needList, 'next', true)}
+          previousDocument={() => navigateDocument(needList, 'back', true)}
+          perviousDocumentButtonDisabled={
+            previousDocumentButtonDisabled || acceptRejectLoading
+          }
+          nextDocumentButtonDisabled={
+            nextDocumentButtonDisabled || acceptRejectLoading
+          }
+          documentDetail={documentDetail}
+        />
+      )}
       <div className="review-document-body">
         <div className="row">
           {!!currentDocument &&
-          currentDocument.files &&
-          currentDocument.files.length ? (
-            <div className="review-document-body--content col-md-8">
-              <div className="doc-view-mcu">
-                <DocumentView
-                  loading={loading}
-                  id={currentDocument.id}
-                  requestId={currentDocument.requestId}
-                  docId={currentDocument.docId}
-                  clientName={clientName}
-                  blobData={blobData}
-                  hideViewer={() => {}}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="no-preview">
-              <div className="no-preview--wrap">
-                <div className="clearfix">
-                  <img src={emptyIcon} alt="No preview available" />
+            currentDocument.files &&
+            currentDocument.files.length ? (
+              <div className="review-document-body--content col-md-8">
+                <div className="doc-view-mcu">
+                  <DocumentView
+                    loading={loading}
+                    id={currentDocument.id}
+                    requestId={currentDocument.requestId}
+                    docId={currentDocument.docId}
+                    clientName={clientName}
+                    blobData={blobData}
+                    hideViewer={() => { }}
+                  />
                 </div>
-                <h2>Nothing In {currentDocument?.docName}</h2>
-                <p>No file submitted yet</p>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="no-preview">
+                <div className="no-preview--wrap">
+                  <div className="clearfix">
+                    <img src={emptyIcon} alt="No preview available" />
+                  </div>
+                  <h2>Nothing In {currentDocument?.docName}</h2>
+                  <p>No file submitted yet</p>
+                </div>
+              </div>
+            )}
           {/* review-document-body--content */}
           {!!currentDocument &&
             currentDocument.files &&
             currentDocument.files.length > 0 && (
               <aside className="review-document-body--aside col-md-4">
                 <ReviewDocumentStatement
-                        doc={currentDocument?.docName === typeIdId.typeId || false}
-                        id={typeIdId.id}
-                        typeId={typeIdId.typeId}
-                  typeIdAndIdForActivityLogs={setTypeIdAndIdForActivityLogs}
                   moveNextFile={moveNextFile}
-                  currentDocument={!!currentDocument ? currentDocument : null}
+                  currentDocument={currentDocument}
                   currentFileIndex={currentFileIndex}
                   acceptDocument={() => acceptDocument(needList)}
                   rejectDocument={(rejectMessage: string) =>

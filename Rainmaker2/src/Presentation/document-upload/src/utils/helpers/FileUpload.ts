@@ -112,7 +112,6 @@ export class FileUpload {
             });
             const hex = bytes.join("").toUpperCase();
             mimeType = this.getMimetype(hex);
-            console.log(mimeType);
             resolve(mimeType);
           }
         } catch (error) {

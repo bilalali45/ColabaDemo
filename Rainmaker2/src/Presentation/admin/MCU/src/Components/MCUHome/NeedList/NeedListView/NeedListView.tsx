@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
+import {useHistory} from 'react-router-dom';
 import {NeedListViewHeader} from './NeedListViewHeader/NeedListViewHeader';
 import {NeedListTable} from './NeedListTable/NeedListTable';
 import {NeedList} from '../../../../Entities/Models/NeedList';
@@ -10,7 +11,7 @@ import {sortList} from '../../../../Utils/helpers/Sort';
 import {Template} from '../../../../Entities/Models/Template';
 import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
-import {useHistory} from 'react-router-dom';
+import { NeedListAlertBox } from "../NeedListView/NeedListAlertBox/NeedListAlertBox";
 
 export const NeedListView = () => {
   const [toggle, setToggle] = useState(true);
@@ -30,11 +31,17 @@ export const NeedListView = () => {
   const currentTemplate: Template[] = templateManager?.currentTemplate;
   const isDraftStore: boolean = needListManager?.isDraft;
   const templateIds: boolean = needListManager?.templateIds;
+  const isByteProAuto: boolean = needListManager?.isByteProAuto;
   const [deleteRequestSent, setDeleteRequestSent] = useState<boolean>(false);
-
+  const [showConfirmBox, setShowConfirmBox] = useState<boolean>(false);
+  const [synchronizing, setSynchronizing] = useState<boolean>(false);
+  const [showFailedToSyncBox, setShowFailedToSyncBox] = useState<boolean>(false);
+  //const [isError, setIsError] = useState<boolean>(false);
+  var isError = false;
   useEffect(() => {
     fetchNeedList(true, true);
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
+    checkIsByteProAuto();
   }, []);
 
   useEffect(() => {
@@ -50,24 +57,168 @@ export const NeedListView = () => {
    
     if (LocalDB.getLoanAppliationId()) {
       if (fetchNew) {
-        let res: NeedList | undefined = await NeedListActions.getNeedList(
+        let res: NeedList[] | undefined = await NeedListActions.getNeedList(
           LocalDB.getLoanAppliationId(),
           status
         );
-        dispatch({
-          type: NeedListActionsType.SetNeedListTableDATA,
-          payload: res
-        });
-        if (res) {
-          return res;
+        if(res){
+          let data = await updateNeedListArray(res)
+          dispatch({
+            type: NeedListActionsType.SetNeedListTableDATA,
+            payload: data
+          });
+          return data;
         }
+      
       }
     }
   };
+
+  const updateNeedListArray = async (arr: NeedList[]) => {
+     for(let i = 0; i < arr.length; i++){
+        for(let k = 0; k < arr[i].files.length; k++){
+          if(arr[i].files[k].byteProStatus === "Synchronized"){
+            arr[i].files[k].byteProStatusText = 'Synced';
+            arr[i].files[k].byteProStatusClassName = "synced";
+          }else if(arr[i].files[k].byteProStatus === "Not synchronized"){
+            arr[i].files[k].byteProStatusText = 'Not Synced'
+            arr[i].files[k].byteProStatusClassName = "not_Synced";
+          }else{
+            arr[i].files[k].byteProStatusText = ''
+          }
+        }
+     }
+     return arr;
+  }
+
+  const updateSyncStatusToReady = async (arr: NeedList[], id?: string) => {
+   
+    for(let i = 0; i < arr.length; i++){
+      for(let k = 0; k < arr[i].files.length; k++){
+        if(id != undefined && id === arr[i].files[k].id && arr[i].files[k].byteProStatusText != 'Synced'){
+          arr[i].files[k].byteProStatusText = 'Ready to Sync';
+          arr[i].files[k].byteProStatus = 'Ready to Sync';
+          arr[i].files[k].byteProStatusClassName = "readyto_Sync";
+          break;
+        }else if(id === undefined && arr[i].files[k].byteProStatus === "Not synchronized"){
+          arr[i].files[k].byteProStatusText = 'Ready to Sync';
+          arr[i].files[k].byteProStatus = 'Ready to Sync';
+          arr[i].files[k].byteProStatusClassName = "readyto_Sync";
+        }
+      }
+   }
+   return arr;
+  }
+
+  const updateSyncStatusToSynchronizing = async () => {
+    let arr = needListData;
+    for(let i = 0; i < arr.length; i++){
+      for(let k = 0; k < arr[i].files.length; k++){
+      if( arr[i].files[k].byteProStatus === "Ready to Sync"){
+          arr[i].files[k].byteProStatusText = 'Synchronizing';
+          arr[i].files[k].byteProStatus = 'Synchronizing';
+          arr[i].files[k].byteProStatusClassName = "readyto_Sync";
+        }
+      }
+   }
+   return arr;
+  }
+
+  const FilesSyncToLosHandler = async () => {
+    let data = await updateSyncStatusToReady(needListData)
+    dispatch({
+      type: NeedListActionsType.SetNeedListTableDATA,
+      payload: data
+    });
+    setShowConfirmBox(true)
+  }
+
+  const FileSyncToLosHandler = async (id: string, txt: string) => {
+   console.log('FileSyncToLosHandler',id)
+   let data = await updateSyncStatusToReady(needListData, id)
+   dispatch({
+    type: NeedListActionsType.SetNeedListTableDATA,
+    payload: data
+  });
+  if(txt != 'Synced'){
+    setShowConfirmBox(true)
+  }
+   
+  }
+
+  const postToByteProHandler = async () => { 
+    let loanApplicationId = parseInt(LocalDB.getLoanAppliationId());
+    let data = await updateSyncStatusToSynchronizing();
+    dispatch({
+    type: NeedListActionsType.SetNeedListTableDATA,
+    payload: data
+    });
+    setSynchronizing(true);
+   
+   let arr = needListData;
+   for(let i = 0; i < arr.length; i++){
+     for(let k = 0; k < arr[i].files.length; k++){
+     if( arr[i].files[k].byteProStatus === "Synchronizing"){
+       let sync = await filePostToBytePro(
+         loanApplicationId,
+         arr[i].id,
+         arr[i].requestId,
+         arr[i].docId,
+         arr[i].files[k].id
+         )
+         if(sync === 200){
+          arr[i].files[k].byteProStatusText = 'Synced';
+          arr[i].files[k].byteProStatus = 'Synchronized';
+          arr[i].files[k].byteProStatusClassName = "synced";
+         }else{
+          arr[i].files[k].byteProStatusText = 'Sync failed';
+          arr[i].files[k].byteProStatus = 'sync failed';
+          arr[i].files[k].byteProStatusClassName = "sync_error";
+          //setIsError(true)
+          isError = true;
+         }
+         dispatch({
+          type: NeedListActionsType.SetNeedListTableDATA,
+          payload: arr
+          });
+       }
+     }
+    
+  }
+  setSynchronizing(false);
+  setShowConfirmBox(false);
+  if(isError) setShowFailedToSyncBox(true);
+  }
+
+  const filePostToBytePro = async (
+    LoanApplicationId: number,
+    DocumentLoanApplicationId: string,
+    RequestId: string,
+    DocumentId: string,
+    FileId: string
+    ) => {
+      debugger
+    let res = await NeedListActions.fileSyncToLos(
+      LoanApplicationId,
+      DocumentLoanApplicationId,
+      RequestId,
+      DocumentId,
+      FileId
+      )
+      return res;
+  }
+
   const checkIsDocumentDraft = async (id: string) => {
     let res: any = await TemplateActions.isDocumentDraft(id);
     dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: res});
   };
+
+  const checkIsByteProAuto = async () => {
+    let res: any = await NeedListActions.checkIsByteProAuto();
+    console.log('checkIsByteProAuto', res.syncToBytePro)
+    let isAuto = res.syncToBytePro != 2 ? true : false;
+    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: false})
+  }
 
   const deleteNeedListDoc = async (
     id: string,
@@ -115,7 +266,7 @@ export const NeedListView = () => {
   };
 
   const togglerHandler = (pending: boolean) => {
-   
+    setShowConfirmBox(false)
     if (pending) {
       fetchNeedList(pending, true).then((data) => {
         dispatch({
@@ -217,6 +368,8 @@ export const NeedListView = () => {
     deleteNeedListDoc(id, requestId, docId);
   };
 
+  
+
   return (
     <div className="need-list-view">
       <NeedListViewHeader
@@ -236,6 +389,16 @@ export const NeedListView = () => {
         documentSortClick={docSort}
         statusSortClick={statusSort}
         deleteRequestSent={deleteRequestSent}
+        isByteProAuto = {isByteProAuto}
+        FilesSyncToLos = {FilesSyncToLosHandler}
+        showConfirmBox = {showConfirmBox}
+        FileSyncToLos = {FileSyncToLosHandler}
+        postToBytePro = {postToByteProHandler}
+        synchronizing = {synchronizing}
+      />
+      <NeedListAlertBox 
+      showFailedToSyncBox = {showFailedToSyncBox}
+      needList = {needListData}
       />
     </div>
   );

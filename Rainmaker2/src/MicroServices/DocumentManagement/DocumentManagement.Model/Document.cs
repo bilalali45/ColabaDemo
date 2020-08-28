@@ -9,6 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace DocumentManagement.Model
 {
+    public class TenantSetting
+    {
+        public int syncToBytePro { get; set; }
+        public int autoSyncToBytePro { get; set; }
+    }
     public class DocumentDetailQuery
     {
         [BsonId]

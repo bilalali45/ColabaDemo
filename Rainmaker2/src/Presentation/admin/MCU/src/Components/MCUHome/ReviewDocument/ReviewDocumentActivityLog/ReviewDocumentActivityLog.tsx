@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {Http} from 'rainsoft-js';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Http } from 'rainsoft-js';
 import _ from 'lodash';
 
 import {
@@ -7,19 +7,16 @@ import {
   LogType,
   EmailLogsType
 } from '../../../../Entities/Types/Types';
-import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
-import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
+import { ActivityLogFormat } from '../../../../Utils/helpers/DateFormat';
+import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints';
 
 export const ReviewDocumentActivityLog = ({
-  doc,
   id,
-  typeId,
   requestId,
   docId
 }: {
   doc?: boolean;
   id?: string | null;
-  typeId?: string | null;
   requestId?: string | null;
   docId?: string | null;
 }) => {
@@ -61,10 +58,8 @@ export const ReviewDocumentActivityLog = ({
     try {
       const http = new Http();
 
-      const {data} = await http.get<ActivityLogType[]>(
-        doc
-          ? NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
-          : NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
+      const { data } = await http.get<ActivityLogType[]>(
+        NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
       );
 
       setActivityLogs(data);
@@ -202,10 +197,8 @@ export const ReviewDocumentActivityLog = ({
     try {
       const http = new Http();
 
-      const {data} = await http.get<EmailLogsType[]>(
-        doc
-          ? NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
-          : NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
+      const { data } = await http.get<EmailLogsType[]>(
+        NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
       );
 
       setEmailLogs(data);
@@ -273,7 +266,7 @@ export const ReviewDocumentActivityLog = ({
         <div
           className={'vertical-tabs--wrap activity-log ' + checkActiveTab(1)}
           data-step="1"
-          style={{width: `${getWidthSection}px`}}
+          style={{ width: `${getWidthSection}px` }}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">
@@ -348,7 +341,7 @@ export const ReviewDocumentActivityLog = ({
         <div
           className={'vertical-tabs--wrap email-log ' + checkActiveTab(2)}
           data-step="2"
-          style={{width: `${sectionRef?.current?.offsetWidth}px`}}
+          style={{ width: `${sectionRef?.current?.offsetWidth}px` }}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">

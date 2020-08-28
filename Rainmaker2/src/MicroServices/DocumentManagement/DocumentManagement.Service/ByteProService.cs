@@ -90,6 +90,23 @@ namespace DocumentManagement.Service
             }
             return tenant;
         }
+        public async Task SetTenantSetting(int tenantId, TenantSetting setting)
+        {
+            IMongoCollection<Entity.Tenant> collection = mongoService.db.GetCollection<Entity.Tenant>("Tenant");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument() {
+                { "tenantId",tenantId }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "syncToBytePro", setting.syncToBytePro },
+                        { "autoSyncToBytePro", setting.autoSyncToBytePro }
+                    }
+                }
+            });
+            if (result.ModifiedCount <= 0)
+                throw new Exception("Unable to update settings");
+        }
         //public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
         //{
         //    IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");

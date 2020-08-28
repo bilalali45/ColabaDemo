@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DocumentManagement.Entity
 {
-   public  class Tenant
+    public class Tenant
     {
       [BsonId]
       [BsonRepresentation(BsonType.ObjectId)]

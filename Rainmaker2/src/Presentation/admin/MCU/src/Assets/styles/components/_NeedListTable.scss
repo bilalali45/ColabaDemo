@@ -2,6 +2,45 @@
     border-spacing:2px 8px;
     padding:0;
     position:relative;
+    .icon-refresh
+    {
+        cursor: pointer;
+        &.readyto_Sync{
+        &::before{
+            color:rgba(color('sucsess'),0.5);
+        }
+    }
+        &.not_Synced{
+            &::before{
+                color:color('statusDefault');
+            }
+        }
+        &.sync_error{
+            &::before{
+                color:color('colorRed');
+            }
+        }
+        
+
+        &.synced{
+            cursor: pointer;
+        &::before{
+        color:color('sucsess');
+       
+    }
+
+    }
+}
+
+
+    .synced{
+        &::before{
+        color:color('sucsess');
+     
+    }
+
+    }
+
 
     thead{
         border: none;

@@ -105,24 +105,16 @@ const Footer = ({
 };
 
 export const ReviewDocumentStatement = ({
-  typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
   currentFileIndex,
   acceptDocument,
   rejectDocument,
   documentViewLoading,
-  doc,
-  id,
-  typeId,
   fileViewd
 }: {
-  doc: boolean;
-  id: string | null;
-  typeId: string | null;
-  typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void;
   moveNextFile: Function;
-  currentDocument: NeedList | null;
+  currentDocument: NeedList;
   currentFileIndex: number;
   acceptDocument: () => void;
   rejectDocument: (rejectMessage: string) => void;
@@ -174,12 +166,9 @@ export const ReviewDocumentStatement = ({
       NeedListEndpoints.GET.documents.files(id, requestId, docId)
     );
 
-    const { typeId, docName, files, userName } = data[0];
+    const { files, userName } = data[0];
 
-  console.log('currentDocument', currentDocument);
-
-
-    typeIdAndIdForActivityLogs(id, typeId || docName);
+    console.log('currentDocument', currentDocument);
 
     setDocumentFiles(files);
     setUsername(userName);
@@ -292,24 +281,22 @@ export const ReviewDocumentStatement = ({
     >
       <header className="document-statement--header">
 
-        <h2 title={currentDocument?.docName}>{currentDocument?.docName}</h2>
+        <h2 title={currentDocument.docName}>{currentDocument.docName}</h2>
         <Dropdown>
-            <Dropdown.Toggle
-              size="lg"
-              variant="primary"
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
-              Activity Log
+          <Dropdown.Toggle
+            size="lg"
+            variant="primary"
+            className="mcu-dropdown-toggle no-caret"
+            id="dropdown-basic"
+          >
+            Activity Log
             </Dropdown.Toggle>
-            {id !== null && typeId !== null && (
-              <Dropdown.Menu>
-                <ReviewDocumentActivityLog  doc={doc} id={id} typeId={typeId} requestId={currentDocument?.requestId!} docId={currentDocument?.docId!} />
-                
-                    
-              </Dropdown.Menu>
-            )}
-          </Dropdown>
+          {currentDocument.id !== null && (
+            <Dropdown.Menu>
+              <ReviewDocumentActivityLog id={currentDocument.id} requestId={currentDocument.requestId!} docId={currentDocument.docId} />
+            </Dropdown.Menu>
+          )}
+        </Dropdown>
       </header>
       {!!loading ? (
         <div
@@ -345,16 +332,16 @@ export const ReviewDocumentStatement = ({
                       clientName: string,
                       loadingFile?: boolean
                     ) => {
-                      moveNextFile(index, fileId, clientName, loadingFile).then(async() => {
+                      moveNextFile(index, fileId, clientName, loadingFile).then(async () => {
                         setCurrentFileName(clientName);
                         if (currentDocument) {
                           await requestDocumentFiles(currentDocument);
                         }
                       });
-                      
+
                     }}
-                    requestId={currentDocument?.requestId!}
-                    docId={currentDocument?.docId!}
+                    requestId={currentDocument.requestId}
+                    docId={currentDocument.docId}
                     fileId={file.fileId}
                     mcuName={file.mcuName}
                     clientName={file.clientName}
