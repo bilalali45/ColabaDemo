@@ -12,6 +12,8 @@ import {Template} from '../../../../Entities/Models/Template';
 import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import { NeedListAlertBox } from "../NeedListView/NeedListAlertBox/NeedListAlertBox";
+import { findIndex } from 'lodash';
+import { NeedListDocuments } from '../../../../Entities/Models/NeedListDocuments';
 
 export const Sync = "Synchronized";
 export const SyncTxt = "Synced";
@@ -110,7 +112,6 @@ export const NeedListView = () => {
   }
 
   const updateSyncStatusToReady = async (arr: NeedList[], id?: string) => {
-   
     for(let i = 0; i < arr.length; i++){
       for(let k = 0; k < arr[i].files.length; k++){
         if(id != undefined && id === arr[i].files[k].id && arr[i].files[k].byteProStatusText != SyncTxt){
@@ -122,6 +123,19 @@ export const NeedListView = () => {
           arr[i].files[k].byteProStatusText = ReadyToSync;
           arr[i].files[k].byteProStatus = ReadyToSync;
           arr[i].files[k].byteProStatusClassName = "readyto_Sync";
+        }
+      }
+   }
+   return arr;
+  }
+
+  const updateSyncStatusToNotSync = async (arr: NeedList[]) => {
+    for(let i = 0; i < arr.length; i++){
+      for(let k = 0; k < arr[i].files.length; k++){
+         if(arr[i].files[k].byteProStatus === ReadyToSync){
+          arr[i].files[k].byteProStatusText = notSyncTxt;
+          arr[i].files[k].byteProStatus = notSync;
+          arr[i].files[k].byteProStatusClassName = "not_Synced";
         }
       }
    }
@@ -143,7 +157,18 @@ export const NeedListView = () => {
    return arr;
   }
 
-  const FilesSyncToLosHandler = async () => {
+  const FilesSyncToLosHandler = async (status: string) => {
+debugger
+    if(status === 'readyto_Sync'){
+      let data = await updateSyncStatusToNotSync(needListData);
+      dispatch({
+        type: NeedListActionsType.SetNeedListTableDATA,
+        payload: data
+      });
+      setSyncTitleClass('not_Synced')
+      setShowConfirmBox(false)
+      return;
+    }
    
     let data = await updateSyncStatusToReady(needListData)
     dispatch({
@@ -155,15 +180,52 @@ export const NeedListView = () => {
   }
 
   const FileSyncToLosHandler = async (id: string, txt: string) => {
+    if(txt === SyncTxt) return;
+    if(txt === ReadyToSync){
+      for(let i = 0; i < needListData.length; i++){
+        for(let k = 0; k < needListData[i].files.length; k++){
+          if(id === needListData[i].files[k].id){
+            needListData[i].files[k].byteProStatusText = notSyncTxt;
+            needListData[i].files[k].byteProStatus = notSync;
+            needListData[i].files[k].byteProStatusClassName = "not_Synced";
+          }
+        }
+     }
+     dispatch({
+      type: NeedListActionsType.SetNeedListTableDATA,
+      payload: needListData
+    });
+
+     let isSelected = checkIsAnyItemSelected();
+    if( isSelected === 0){
+      setsyncSuccess(false)
+      setShowConfirmBox(false)
+      return;
+    }
+     return ;
+    }
    let data = await updateSyncStatusToReady(needListData, id)
    dispatch({
     type: NeedListActionsType.SetNeedListTableDATA,
     payload: data
   });
-  if(txt != 'Synced'){
+  if(txt != SyncTxt){
+    setsyncSuccess(false)
     setShowConfirmBox(true)
   }
-   
+  }
+
+  const checkIsAnyItemSelected = () => {
+    let count = 0;
+    for(let i = 0; i < needListData.length; i++){
+      for(let k = 0; k < needListData[i].files.length; k++){
+        if(needListData[i].files[k].byteProStatus === ReadyToSync){
+          count++;
+          return count;
+        }
+      }
+   }
+   return count;
   }
 
   const postToByteProHandler = async (synAgain: boolean) => { 

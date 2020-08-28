@@ -388,7 +388,7 @@ export const NeedListTable = ({
     } else {
       return (
         <div className="th">
-          <a onClick={(e) => FilesSyncToLos()} >
+          <a onClick={(e) => FilesSyncToLos(syncTitleClass)} >
             <em className={"icon-refresh "+syncTitleClass}></em>
           </a>{' '}
               sync to LOS
