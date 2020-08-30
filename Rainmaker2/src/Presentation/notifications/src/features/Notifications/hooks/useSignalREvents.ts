@@ -1,15 +1,15 @@
-import {useEffect, MutableRefObject, Dispatch, SetStateAction} from 'react';
+import {useEffect, Dispatch, SetStateAction, useRef} from 'react';
 import {SignalRHub} from 'rainsoft-js';
 import {cloneDeep} from 'lodash';
 
 import {NotificationType} from '../../../lib/type';
 import {LocalDB} from '../../../Utils/LocalDB';
 
-interface UseSignalREvents {
+interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
   getUnseenNotificationsCount: () => void;
-  notificationsRef: MutableRefObject<NotificationType[] | null>;
-  notificationsVisibleRef: MutableRefObject<boolean>;
+  notifications: NotificationType[] | null;
+  notificationsVisible: boolean;
   setUnSeenNotificationsCount: Dispatch<SetStateAction<number>>;
   setReceivedNewNotification: Dispatch<SetStateAction<boolean>>;
   setNotifications: Dispatch<SetStateAction<NotificationType[] | null>>;
@@ -18,12 +18,20 @@ interface UseSignalREvents {
 export const useSignalREvents = ({
   getFetchNotifications,
   getUnseenNotificationsCount,
-  notificationsRef,
-  notificationsVisibleRef,
+  notifications,
+  notificationsVisible,
   setUnSeenNotificationsCount,
   setReceivedNewNotification,
   setNotifications
-}: UseSignalREvents): void => {
+}: UseSignalREventsProps): void => {
+  const notificationsVisibleRef = useRef(notificationsVisible);
+  const notificationsRef = useRef(notifications);
+
+  useEffect(() => {
+    notificationsVisibleRef.current = notificationsVisible;
+    notificationsRef.current = notifications;
+  });
+
   useEffect(() => {
     const signalREventRegister = async () => {
       if (SignalRHub.hubConnection.connectionState === 'Connected') {
@@ -39,8 +47,7 @@ export const useSignalREvents = ({
           JSON.parse(notification) as NotificationType
         );
 
-        notificationsVisibleRef.current === false &&
-          setUnSeenNotificationsCount((count) => count + 1);
+        setUnSeenNotificationsCount((count) => (count < 0 ? 1 : count + 1));
 
         notificationsVisibleRef.current === true &&
           setReceivedNewNotification(() => true);
@@ -77,8 +84,6 @@ export const useSignalREvents = ({
       SignalRHub.hubConnection.on(
         'NotificationDelete',
         (deletedNotificationId: number) => {
-          console.log('delete event fired', deletedNotificationId);
-
           if (!notificationsRef.current) return;
 
           const clonedNotifications = cloneDeep(notificationsRef.current);
@@ -88,6 +93,33 @@ export const useSignalREvents = ({
           );
 
           setNotifications(() => filteredNotifications);
+        }
+      );
+
+      SignalRHub.hubConnection.on('NotificationDeleteAll', () => {
+        if (!notificationsRef.current) return;
+
+        setNotifications([]);
+      });
+
+      SignalRHub.hubConnection.on(
+        'NotificationRead',
+        (readNotificationIds: number[]) => {
+          if (!notificationsRef.current) return;
+
+          const clonedNotifications = cloneDeep(notificationsRef.current);
+
+          readNotificationIds.forEach((readNotificationId) => {
+            const notification = clonedNotifications.find(
+              (notification) => notification.id === readNotificationId
+            );
+
+            if (notification) {
+              notification.status = 'Read';
+            }
+          });
+
+          setNotifications(clonedNotifications);
         }
       );
 
@@ -112,8 +144,6 @@ export const useSignalREvents = ({
       signalREventRegister
     );
   }, [
-    notificationsRef,
-    notificationsVisibleRef,
     setNotifications,
     setReceivedNewNotification,
     setUnSeenNotificationsCount,

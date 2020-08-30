@@ -1,13 +1,10 @@
-import {Dispatch, SetStateAction} from 'react';
 import {Http} from 'rainsoft-js';
-import {cloneDeep} from 'lodash';
 
 import {NotificationType} from '../../../lib/type';
 
 interface UseReadAllNotificationsForDocumentProps {
   notifications: NotificationType[] | null;
   http: Http;
-  setNotifications: Dispatch<SetStateAction<NotificationType[] | null>>;
 }
 
 export const useReadAllNotificationsForDocument = (
@@ -15,7 +12,7 @@ export const useReadAllNotificationsForDocument = (
 ): {
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
 } => {
-  const {notifications, http, setNotifications} = props;
+  const {notifications, http} = props;
 
   const readAllNotificationsForDocument = async (loanApplicationId: string) => {
     try {
@@ -30,26 +27,12 @@ export const useReadAllNotificationsForDocument = (
         .map((notification) => notification.id);
 
       if (documentIds.length > 0) {
-        const {data: readDocumentIds} = await http.put<
-          number[],
-          {ids: number[]}
-        >('/api/Notification/notification/Read', {
-          ids: documentIds
-        });
-
-        const clonedNotifications = cloneDeep(notifications);
-
-        readDocumentIds.forEach((id) => {
-          const notificationIndex = clonedNotifications.findIndex(
-            (notification) => notification.id === id
-          );
-
-          if (notificationIndex !== -1) {
-            clonedNotifications[notificationIndex].status = 'Read';
+        await http.put<number[], {ids: number[]}>(
+          '/api/Notification/notification/Read',
+          {
+            ids: documentIds
           }
-        });
-
-        setNotifications(clonedNotifications);
+        );
       }
     } catch (error) {
       console.warn(error);

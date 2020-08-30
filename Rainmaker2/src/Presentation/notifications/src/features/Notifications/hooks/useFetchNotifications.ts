@@ -1,7 +1,7 @@
 import React, {useCallback, useState, useRef, useEffect} from 'react';
+import {Http} from 'rainsoft-js';
 
 import {NotificationType} from '../../../lib/type';
-import {Http} from 'rainsoft-js';
 
 export const useFetchNotifications = (
   http: Http
@@ -9,7 +9,6 @@ export const useFetchNotifications = (
   getFetchNotifications: (lastId: number) => Promise<void>;
   notifications: NotificationType[] | null;
   lastId: number;
-  notificationsRef: React.MutableRefObject<NotificationType[] | null>;
   setNotifications: React.Dispatch<
     React.SetStateAction<NotificationType[] | null>
   >;
@@ -69,7 +68,6 @@ export const useFetchNotifications = (
     getFetchNotifications,
     notifications,
     lastId,
-    notificationsRef,
     setNotifications
   };
 };

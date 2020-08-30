@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, SetStateAction, Dispatch} from 'react';
 
 interface UseHandleClickOutsideProps {
   refContainerSidebar: React.RefObject<HTMLDivElement>;
-  setNotificationsVisible: (value: React.SetStateAction<boolean>) => void;
-  setReceivedNewNotification: (value: React.SetStateAction<boolean>) => void;
-  setConfimDeleteAll: (value: React.SetStateAction<boolean>) => void;
+  setNotificationsVisible: React.Dispatch<SetStateAction<boolean>>;
+  setReceivedNewNotification: Dispatch<SetStateAction<boolean>>;
+  setConfimDeleteAll: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useHandleClickOutside = ({

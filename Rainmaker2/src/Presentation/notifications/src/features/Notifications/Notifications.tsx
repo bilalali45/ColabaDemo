@@ -14,7 +14,7 @@ interface NotificationsProps {
   receivedNewNotification: boolean;
   removeNotification: (id: number) => void;
   setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>;
-  readAllNotificationsForDocument: (loanApplicationId: string) => void;
+  readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
   setReceivedNewNotification: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

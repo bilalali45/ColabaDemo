@@ -30,26 +30,26 @@ export const HomePage: FunctionComponent = () => {
   const [timers, setTimers] = useState<TimersType[]>();
   const [confirmDeleteAll, setConfimDeleteAll] = useState(false);
 
+  useEffect(() => {
+    lastIdRef.current = lastId;
+    notificationsVisibleRef.current = notificationsVisible;
+    unSeenNotificationsCountRef.current = unSeenNotificationsCount;
+  });
+
   useHandleClickOutside({
     refContainerSidebar,
     setNotificationsVisible,
     setReceivedNewNotification,
     setConfimDeleteAll
   });
+
   const {
     setNotifications,
     notifications,
     getFetchNotifications,
-    lastId,
-    notificationsRef
+    lastId
   } = useFetchNotifications(http);
   const lastIdRef = useRef(lastId);
-
-  useEffect(() => {
-    lastIdRef.current = lastId;
-    notificationsVisibleRef.current = notificationsVisible;
-    unSeenNotificationsCountRef.current = unSeenNotificationsCount;
-  });
 
   const openEffect = useCallback(() => {
     setNotifyClass(
@@ -108,13 +108,11 @@ export const HomePage: FunctionComponent = () => {
     http,
     notifications,
     setNotifications,
-    notificationsVisible,
-    setUnSeenNotificationsCount
+    notificationsVisible
   });
 
   const {readAllNotificationsForDocument} = useReadAllNotificationsForDocument({
     http,
-    setNotifications,
     notifications
   });
 
@@ -123,8 +121,8 @@ export const HomePage: FunctionComponent = () => {
     getUnseenNotificationsCount,
     setUnSeenNotificationsCount,
     setNotifications,
-    notificationsRef,
-    notificationsVisibleRef,
+    notifications,
+    notificationsVisible,
     setReceivedNewNotification
   });
 
