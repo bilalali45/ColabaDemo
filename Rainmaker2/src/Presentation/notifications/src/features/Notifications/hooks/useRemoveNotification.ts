@@ -3,11 +3,13 @@ import {Http} from 'rainsoft-js';
 import {cloneDeep} from 'lodash';
 
 import {TimersType, NotificationType} from '../../../lib/type';
+import {Params} from '../reducers/useNotificationsReducer';
 
 interface UseRemoveNotificationProps {
+  notifications: NotificationType[] | null | undefined;
   timers: TimersType[] | undefined;
   http: Http;
-  setNotifications: Dispatch<SetStateAction<NotificationType[] | null>>;
+  dispatch: Dispatch<Params>;
   setTimers: Dispatch<SetStateAction<TimersType[] | undefined>>;
 }
 
@@ -16,9 +18,10 @@ export const useRemoveNotification = (
 ): {
   removeNotification: (id: number) => void;
 } => {
-  const {timers, http, setNotifications, setTimers} = props;
+  const {timers, http, dispatch, notifications, setTimers} = props;
 
   const removeNotification = (id: number) => {
+    if (!notifications) return;
     try {
       if (!!timers && timers.length > 0) {
         if (timers.some((timer) => timer.id === id)) {
@@ -30,9 +33,14 @@ export const useRemoveNotification = (
             id
           });
 
-          setNotifications((prevNotifications) =>
-            prevNotifications!.filter((notification) => notification.id !== id)
+          const filteredNotifications = notifications.filter(
+            (notification) => notification.id !== id
           );
+
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: filteredNotifications}
+          });
         }, 5000);
 
         const clonedTimeers = cloneDeep(timers);
@@ -44,9 +52,14 @@ export const useRemoveNotification = (
             id
           });
 
-          setNotifications((prevNotifications) =>
-            prevNotifications!.filter((notification) => notification.id !== id)
+          const filteredNotifications = notifications.filter(
+            (notification) => notification.id !== id
           );
+
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: filteredNotifications}
+          });
         }, 5000);
 
         setTimers(() => [{id, timer}]);

@@ -1,17 +1,14 @@
-import React, {useEffect, SetStateAction, Dispatch} from 'react';
+import React, {useEffect, Dispatch} from 'react';
+import {Params} from '../reducers/useNotificationsReducer';
 
 interface UseHandleClickOutsideProps {
   refContainerSidebar: React.RefObject<HTMLDivElement>;
-  setNotificationsVisible: React.Dispatch<SetStateAction<boolean>>;
-  setReceivedNewNotification: Dispatch<SetStateAction<boolean>>;
-  setConfimDeleteAll: Dispatch<SetStateAction<boolean>>;
+  dispatch: React.Dispatch<Params>;
 }
 
 export const useHandleClickOutside = ({
   refContainerSidebar,
-  setNotificationsVisible,
-  setReceivedNewNotification,
-  setConfimDeleteAll
+  dispatch
 }: UseHandleClickOutsideProps): void => {
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -19,9 +16,14 @@ export const useHandleClickOutside = ({
         refContainerSidebar.current &&
         !refContainerSidebar.current.contains(event.target)
       ) {
-        setNotificationsVisible(() => false);
-        setReceivedNewNotification(() => false);
-        setConfimDeleteAll(() => false);
+        dispatch({
+          type: 'UPDATE_STATE',
+          payload: {
+            notificationsVisible: false,
+            receivedNewNotification: false,
+            confirmDeleteAll: false
+          }
+        });
       }
     };
 
@@ -44,10 +46,5 @@ export const useHandleClickOutside = ({
 
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [
-    refContainerSidebar,
-    setConfimDeleteAll,
-    setNotificationsVisible,
-    setReceivedNewNotification
-  ]);
+  }, [dispatch, refContainerSidebar]);
 };

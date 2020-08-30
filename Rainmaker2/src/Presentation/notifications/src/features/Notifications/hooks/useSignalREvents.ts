@@ -1,18 +1,17 @@
-import {useEffect, Dispatch, SetStateAction, useRef} from 'react';
+import {useEffect, Dispatch, useRef} from 'react';
 import {SignalRHub} from 'rainsoft-js';
 import {cloneDeep} from 'lodash';
 
 import {NotificationType} from '../../../lib/type';
 import {LocalDB} from '../../../Utils/LocalDB';
+import {Params} from '../reducers/useNotificationsReducer';
 
 interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
   getUnseenNotificationsCount: () => void;
-  notifications: NotificationType[] | null;
-  notificationsVisible: boolean;
-  setUnSeenNotificationsCount: Dispatch<SetStateAction<number>>;
-  setReceivedNewNotification: Dispatch<SetStateAction<boolean>>;
-  setNotifications: Dispatch<SetStateAction<NotificationType[] | null>>;
+  notifications: NotificationType[] | null | undefined;
+  notificationsVisible: boolean | undefined;
+  dispatch: Dispatch<Params>;
 }
 
 export const useSignalREvents = ({
@@ -20,9 +19,7 @@ export const useSignalREvents = ({
   getUnseenNotificationsCount,
   notifications,
   notificationsVisible,
-  setUnSeenNotificationsCount,
-  setReceivedNewNotification,
-  setNotifications
+  dispatch
 }: UseSignalREventsProps): void => {
   const notificationsVisibleRef = useRef(notificationsVisible);
   const notificationsRef = useRef(notifications);
@@ -47,12 +44,21 @@ export const useSignalREvents = ({
           JSON.parse(notification) as NotificationType
         );
 
-        setUnSeenNotificationsCount((count) => (count < 0 ? 1 : count + 1));
+        dispatch({
+          type: 'INCREMEMNT_UNSEEN_COUNTER',
+          payload: {unSeenNotificationsCount: 1}
+        });
 
         notificationsVisibleRef.current === true &&
-          setReceivedNewNotification(() => true);
+          dispatch({
+            type: 'UPDATE_STATE',
+            payload: {receivedNewNotification: true}
+          });
 
-        setNotifications(() => clonedNotifications);
+        dispatch({
+          type: 'RESET_NOTIFICATIONS',
+          payload: {notifications: clonedNotifications}
+        });
       });
 
       SignalRHub.hubConnection.on(
@@ -74,10 +80,14 @@ export const useSignalREvents = ({
             }
           });
 
-          setUnSeenNotificationsCount(
-            (count) => count - notificationIds.length
-          );
-          setNotifications(() => clonedNotifications);
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: clonedNotifications}
+          });
+          dispatch({
+            type: 'DECREMEMNT_UNSEEN_COUNTER',
+            payload: {unSeenNotificationsCount: notificationIds.length}
+          });
         }
       );
 
@@ -92,14 +102,17 @@ export const useSignalREvents = ({
             (notification) => notification.id !== deletedNotificationId
           );
 
-          setNotifications(() => filteredNotifications);
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: filteredNotifications}
+          });
         }
       );
 
       SignalRHub.hubConnection.on('NotificationDeleteAll', () => {
         if (!notificationsRef.current) return;
 
-        setNotifications([]);
+        dispatch({type: 'RESET_NOTIFICATIONS', payload: {notifications: []}});
       });
 
       SignalRHub.hubConnection.on(
@@ -119,7 +132,10 @@ export const useSignalREvents = ({
             }
           });
 
-          setNotifications(clonedNotifications);
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: clonedNotifications}
+          });
         }
       );
 
@@ -143,11 +159,5 @@ export const useSignalREvents = ({
       accessToken,
       signalREventRegister
     );
-  }, [
-    setNotifications,
-    setReceivedNewNotification,
-    setUnSeenNotificationsCount,
-    getFetchNotifications,
-    getUnseenNotificationsCount
-  ]);
+  }, [dispatch, getFetchNotifications, getUnseenNotificationsCount]);
 };

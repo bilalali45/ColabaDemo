@@ -1,17 +1,16 @@
-import React, {useCallback, useState, useRef, useEffect} from 'react';
+import {useCallback, useState, useRef, useEffect, Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
 import {NotificationType} from '../../../lib/type';
+import {Params} from '../reducers/useNotificationsReducer';
 
 export const useFetchNotifications = (
-  http: Http
+  http: Http,
+  dispatch: Dispatch<Params>,
+  notifications: NotificationType[] | null | undefined
 ): {
   getFetchNotifications: (lastId: number) => Promise<void>;
-  notifications: NotificationType[] | null;
   lastId: number;
-  setNotifications: React.Dispatch<
-    React.SetStateAction<NotificationType[] | null>
-  >;
 } => {
   /**
    * This is last Id of notification inside notifications array on every API hit.
@@ -19,9 +18,7 @@ export const useFetchNotifications = (
    * -1 is the default value
    */
   const [lastId, setLastId] = useState(-1);
-  const [notifications, setNotifications] = useState<NotificationType[] | null>(
-    null
-  );
+
   const notificationsRef = useRef(notifications);
 
   useEffect(() => {
@@ -37,37 +34,41 @@ export const useFetchNotifications = (
 
         if (response.length > 0) {
           setLastId(response[response.length - 1].id);
-
-          setNotifications((prevNotifications) => {
-            /**
-             * We are reseting notifications list to 10 notifications on following two conditions
-             * 1. if we just logged in
-             * 2. if SignalR connection Reset
-             */
-            return lastId === -1
-              ? [...response]
-              : prevNotifications!.concat(response);
-          });
+          /**
+           * We are reseting notifications list to 10 notifications on following two conditions
+           * 1. if we just logged in
+           * 2. if SignalR connection Reset
+           */
+          lastId === -1
+            ? dispatch({
+                type: 'RESET_NOTIFICATIONS',
+                payload: {notifications: [...response]}
+              })
+            : dispatch({
+                type: 'APPEND_NOTIFICATIONS',
+                payload: {notifications: response}
+              });
         } else {
           /**
            * 1. !notificationsRef.current will be true if we are fetching notifications only for the first time
            * 2. lastId=== -1 will be true if we are fetching notifications only for the first time
            */
           if (!notificationsRef.current && lastId === -1) {
-            setNotifications([]);
+            dispatch({
+              type: 'RESET_NOTIFICATIONS',
+              payload: {notifications: []}
+            });
           }
         }
       } catch (error) {
         console.warn('error', error);
       }
     },
-    [http]
+    [dispatch, http]
   );
 
   return {
     getFetchNotifications,
-    notifications,
-    lastId,
-    setNotifications
+    lastId
   };
 };

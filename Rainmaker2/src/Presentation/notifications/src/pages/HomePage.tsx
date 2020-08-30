@@ -17,18 +17,25 @@ import {useNotificationSeen} from '../features/Notifications/hooks/useNotificati
 import {useSignalREvents} from '../features/Notifications/hooks/useSignalREvents';
 import {useReadAllNotificationsForDocument} from '../features/Notifications/hooks/useReadAllNotificationsForDocument';
 import {useRemoveNotification} from '../features/Notifications/hooks/useRemoveNotification';
+import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
 
 export const HomePage: FunctionComponent = () => {
-  const [notificationsVisible, setNotificationsVisible] = useState(false);
-  const notificationsVisibleRef = useRef(notificationsVisible);
-  const [unSeenNotificationsCount, setUnSeenNotificationsCount] = useState(0);
-  const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
-  const [receivedNewNotification, setReceivedNewNotification] = useState(false);
   const http = useMemo(() => new Http(), []);
-  const [notifyClass, setNotifyClass] = useState('close');
-  const refContainerSidebar = useRef<HTMLDivElement>(null);
   const [timers, setTimers] = useState<TimersType[]>();
-  const [confirmDeleteAll, setConfimDeleteAll] = useState(false);
+
+  const {state, dispatch} = useNotificationsReducer();
+  const {
+    notifications,
+    notifyClass,
+    confirmDeleteAll,
+    receivedNewNotification,
+    notificationsVisible,
+    unSeenNotificationsCount
+  } = state;
+
+  const notificationsVisibleRef = useRef(notificationsVisible);
+  const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
+  const refContainerSidebar = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     lastIdRef.current = lastId;
@@ -38,35 +45,43 @@ export const HomePage: FunctionComponent = () => {
 
   useHandleClickOutside({
     refContainerSidebar,
-    setNotificationsVisible,
-    setReceivedNewNotification,
-    setConfimDeleteAll
+    dispatch
   });
 
-  const {
-    setNotifications,
-    notifications,
-    getFetchNotifications,
-    lastId
-  } = useFetchNotifications(http);
+  const {getFetchNotifications, lastId} = useFetchNotifications(
+    http,
+    dispatch,
+    notifications
+  );
   const lastIdRef = useRef(lastId);
 
   const openEffect = useCallback(() => {
-    setNotifyClass(
-      notificationsVisible ? 'animated slideOutRight' : 'animated slideInRight'
-    );
-  }, [notificationsVisible]);
+    dispatch({
+      type: 'UPDATE_STATE',
+      payload: {
+        notifyClass: notificationsVisible
+          ? 'animated slideOutRight'
+          : 'animated slideInRight'
+      }
+    });
+  }, [dispatch, notificationsVisible]);
 
   const toggleNotificationSidebar = () => {
     if (notificationsVisible === false) {
       openEffect();
 
-      setNotificationsVisible(!notificationsVisible);
+      dispatch({
+        type: 'UPDATE_STATE',
+        payload: {notificationsVisible: !notificationsVisible}
+      });
     } else {
       openEffect();
 
       setTimeout(() => {
-        setNotificationsVisible(!notificationsVisible);
+        dispatch({
+          type: 'UPDATE_STATE',
+          payload: {notificationsVisible: !notificationsVisible}
+        });
       }, 10);
     }
   };
@@ -77,18 +92,23 @@ export const HomePage: FunctionComponent = () => {
         '/api/Notification/notification/GetCount'
       );
 
-      setUnSeenNotificationsCount(data);
+      dispatch({
+        type: 'UPDATE_STATE',
+        payload: {unSeenNotificationsCount: data}
+      });
     } catch (error) {
       console.warn(error);
     }
-  }, [http]);
+  }, [dispatch, http]);
 
   const onCDeleteAllNotifications = async () => {
     try {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
-      setNotifications([]);
-      setUnSeenNotificationsCount(0);
+      dispatch({
+        type: 'RESET_NOTIFICATIONS',
+        payload: {notifications: [], unSeenNotificationsCount: 0}
+      });
     } catch (error) {
       console.warn('error', error);
     }
@@ -98,7 +118,7 @@ export const HomePage: FunctionComponent = () => {
     try {
       await onCDeleteAllNotifications();
 
-      setConfimDeleteAll(false);
+      dispatch({type: 'UPDATE_STATE', payload: {confirmDeleteAll: false}});
     } catch (error) {
       console.warn(error);
     }
@@ -107,7 +127,7 @@ export const HomePage: FunctionComponent = () => {
   useNotificationSeen({
     http,
     notifications,
-    setNotifications,
+    dispatch,
     notificationsVisible
   });
 
@@ -119,16 +139,15 @@ export const HomePage: FunctionComponent = () => {
   useSignalREvents({
     getFetchNotifications,
     getUnseenNotificationsCount,
-    setUnSeenNotificationsCount,
-    setNotifications,
     notifications,
     notificationsVisible,
-    setReceivedNewNotification
+    dispatch
   });
 
   const {removeNotification} = useRemoveNotification({
+    notifications,
     http,
-    setNotifications,
+    dispatch,
     setTimers,
     timers
   });
@@ -145,7 +164,7 @@ export const HomePage: FunctionComponent = () => {
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
         onClick={toggleNotificationSidebar}
-        notificationsCounter={unSeenNotificationsCount}
+        notificationsCounter={unSeenNotificationsCount!}
       />
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
@@ -155,12 +174,22 @@ export const HomePage: FunctionComponent = () => {
               notifications.length > 0 &&
               confirmDeleteAll === false
             }
-            onDeleteAll={() => setConfimDeleteAll(true)}
+            onDeleteAll={() =>
+              dispatch({
+                type: 'UPDATE_STATE',
+                payload: {confirmDeleteAll: true}
+              })
+            }
           />
           {confirmDeleteAll === true && (
             <ConfirmDeleteAll
               onYes={deleteAllNotifications}
-              onNo={() => setConfimDeleteAll(false)}
+              onNo={() =>
+                dispatch({
+                  type: 'UPDATE_STATE',
+                  payload: {confirmDeleteAll: false}
+                })
+              }
             />
           )}
           {!notifications ? (
@@ -169,13 +198,13 @@ export const HomePage: FunctionComponent = () => {
             <Notifications
               timers={timers || []}
               removeNotification={removeNotification}
-              receivedNewNotification={receivedNewNotification}
+              receivedNewNotification={receivedNewNotification!}
               notificationsVisible={notificationsVisible}
               notifications={notifications}
               getFetchNotifications={() => getFetchNotifications(lastId)}
               setTimers={setTimers}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
-              setReceivedNewNotification={setReceivedNewNotification}
+              dispatch={dispatch}
             />
           )}
         </div>

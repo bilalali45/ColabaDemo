@@ -1,10 +1,17 @@
-import React, {FunctionComponent, useState, useEffect, createRef} from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  createRef,
+  Dispatch
+} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
 import {Notification, NewNotificationToss} from './_Notifications';
 import {NotificationType, TimersType} from '../../lib/type';
 import {AlertForNoData} from '../../pages/_HomePage';
+import {Params} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -15,7 +22,7 @@ interface NotificationsProps {
   removeNotification: (id: number) => void;
   setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
-  setReceivedNewNotification: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: Dispatch<Params>;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = ({
@@ -27,7 +34,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   removeNotification,
   setTimers,
   readAllNotificationsForDocument,
-  setReceivedNewNotification
+  dispatch
 }) => {
   const [showToss, setShowToss] = useState(false); //apex false
   const notificationRef = createRef<HTMLDivElement>();
@@ -36,13 +43,13 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     if (receivedNewNotification === true && notificationsVisible === true) {
       setShowToss(true);
 
-      receivedNewNotification === true && setReceivedNewNotification(false);
+      receivedNewNotification === true &&
+        dispatch({
+          type: 'UPDATE_STATE',
+          payload: {receivedNewNotification: false}
+        });
     }
-  }, [
-    receivedNewNotification,
-    notificationsVisible,
-    setReceivedNewNotification
-  ]);
+  }, [dispatch, receivedNewNotification, notificationsVisible]);
 
   const clearTimeOut = (id: number, timers: TimersType[]) => {
     const timer = timers.find((timer) => timer.id === id);

@@ -2,16 +2,17 @@ import {useEffect, Dispatch} from 'react';
 import {NotificationType} from '../../../lib/type';
 import {Http} from 'rainsoft-js';
 import _ from 'lodash';
+import {Params} from '../reducers/useNotificationsReducer';
 
 interface UseEffectNotificationSeen {
-  notificationsVisible: boolean;
-  notifications: NotificationType[] | null;
+  notificationsVisible: boolean | undefined;
+  notifications: NotificationType[] | null | undefined;
   http: Http;
-  setNotifications: Dispatch<React.SetStateAction<NotificationType[] | null>>;
+  dispatch: Dispatch<Params>;
 }
 
 export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
-  const {notifications, setNotifications, notificationsVisible, http} = props;
+  const {notifications, dispatch, notificationsVisible, http} = props;
 
   useEffect(() => {
     if (!notifications) return;
@@ -39,11 +40,14 @@ export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
             ids: unseenNotificationIds
           });
 
-          setNotifications(() => clonedNotifications);
+          dispatch({
+            type: 'RESET_NOTIFICATIONS',
+            payload: {notifications: clonedNotifications}
+          });
         }
       } catch (error) {
         console.warn(error);
       }
     }
-  }, [notificationsVisible, notifications, http, setNotifications]);
+  }, [dispatch, notificationsVisible, notifications, http]);
 };
