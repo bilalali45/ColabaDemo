@@ -17,7 +17,6 @@ import {
   useReadAllNotificationsForDocument,
   useRemoveNotification
 } from '../features/Notifications/hooks';
-
 import {
   useNotificationsReducer,
   ACTIONS

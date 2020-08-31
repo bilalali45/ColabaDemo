@@ -68,10 +68,10 @@ export const useSignalREvents = ({
 
           const clonedNotifications = cloneDeep(notificationsRef.current);
 
-          notificationIds.forEach((SeenNotificationId) => {
+          notificationIds.forEach((seenNotificationId) => {
             if (notificationsRef.current) {
               const notification = clonedNotifications.find(
-                (notification) => notification.id === SeenNotificationId
+                (notification) => notification.id === seenNotificationId
               );
 
               if (notification) {

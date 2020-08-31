@@ -79,11 +79,20 @@ export const useNotificationsReducer = (): {
           ...state,
           notifications: [...state.notifications, ...payload.notifications]
         };
-      case ACTIONS.RESET_NOTIFICATIONS:
+      case ACTIONS.RESET_NOTIFICATIONS: {
+        if (payload.notifications?.length === 0) {
+          return {
+            ...state,
+            notifications: [...payload.notifications],
+            confirmDeleteAll: false
+          };
+        }
+
         return {
           ...state,
           notifications: [...payload.notifications]
         };
+      }
       case ACTIONS.INCREMEMNT_UNSEEN_COUNTER:
         return {
           ...state,
