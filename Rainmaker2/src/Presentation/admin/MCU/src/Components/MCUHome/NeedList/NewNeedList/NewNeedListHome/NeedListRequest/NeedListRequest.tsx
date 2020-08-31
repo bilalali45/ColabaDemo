@@ -1,19 +1,18 @@
-import React, {useState, useContext, useEffect, ChangeEvent} from 'react';
-import {AddDocument} from '../../../../TemplateManager/AddDocument/AddDocument';
+import React, { useState, useContext, useEffect, ChangeEvent, useRef } from 'react';
+import { AddDocument } from '../../../../TemplateManager/AddDocument/AddDocument';
 
-import {clear} from 'console';
-import {NeedListRequestItem} from './NeedListRequestItem/NeedListRequestItem';
-import {Document} from '../../../../../../Entities/Models/Document';
-import {DocumentRequest} from '../../../../../../Entities/Models/DocumentRequest';
-import {TemplateDocument} from '../../../../../../Entities/Models/TemplateDocument';
-import {Template} from '../../../../../../Entities/Models/Template';
-import {NeedListSelect} from '../../../NeedListSelect/NeedListSelect';
+import { NeedListRequestItem } from './NeedListRequestItem/NeedListRequestItem';
+import { Document } from '../../../../../../Entities/Models/Document';
+import { DocumentRequest } from '../../../../../../Entities/Models/DocumentRequest';
+import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument';
+import { Template } from '../../../../../../Entities/Models/Template';
+import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg';
-import {nameTest} from '../../../Add/Home/AddNeedListHome';
+import { nameTest } from '../../../Add/Home/AddNeedListHome';
 import Spinner from 'react-bootstrap/Spinner';
-import {isDocumentDraftType} from '../../../../../../Store/reducers/TemplatesReducer';
-import {CustomDocuments} from '../../../../TemplateManager/AddDocument/SelectedDocumentType/CustomDocuments/CustomDocuments';
+import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
+import { CustomDocuments } from '../../../../TemplateManager/AddDocument/SelectedDocumentType/CustomDocuments/CustomDocuments';
 
 export const MyTemplate = 'MCU Template';
 export const TenantTemplate = 'Tenant Template';
@@ -64,6 +63,8 @@ export const NeedListRequest = ({
   const [templateNameError, setTemplateNameError] = useState<string>();
   const [requestHit, setRequestHit] = useState<boolean>(false);
 
+  const documentContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setLoaderVisible(false);
   }, []);
@@ -76,7 +77,7 @@ export const NeedListRequest = ({
 
   const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
     let {
-      target: {value}
+      target: { value }
     } = e;
     changeTemplateName(e);
     setTemplateNameError('');
@@ -125,7 +126,7 @@ export const NeedListRequest = ({
       <>
         <div className="m-template">
           <div className="MT-groupList">
-            <div className="list-wrap my-temp-list">
+            <div ref={documentContainerRef} className="list-wrap my-temp-list">
               <ul>
                 {documentList?.map((d: TemplateDocument) => {
                   return (
@@ -135,7 +136,15 @@ export const NeedListRequest = ({
                       // isSelected={currentDocument?.docName?.toLowerCase() === d?.docName?.toLowerCase()}
                       changeDocument={changeDocument}
                       document={d}
-                      removeDocumentFromList={removeDocumentFromList}
+                      removeDocumentFromList={(d: TemplateDocument) => {
+                        removeDocumentFromList(d)
+                        setTimeout(() => {
+                          if (documentContainerRef?.current) {
+                            documentContainerRef.current.scrollTo(0, 0);
+                          }
+                        }, 100);
+                      }
+                      }
                     />
                   );
                 })}
@@ -155,7 +164,7 @@ export const NeedListRequest = ({
             onKeyDown={(e: any) => {
               let {
                 keyCode,
-                target: {value}
+                target: { value }
               } = e;
               if (keyCode === 13) {
                 if (!value?.trim()?.length) {
@@ -165,7 +174,7 @@ export const NeedListRequest = ({
               }
             }}
             maxLength={50}
-            style={{border: templateNameError && '1px solid red'}}
+            style={{ border: templateNameError && '1px solid red' }}
             value={templateName}
             onChange={validateTemplateName}
             className="form-control"
@@ -215,7 +224,14 @@ export const NeedListRequest = ({
         <div className="btn-add-new-Temp">
           <AddDocument
             needList={documentList}
-            addDocumentToList={addDocumentToList}
+            addDocumentToList={(d: TemplateDocument) => {
+              addDocumentToList(d);
+              setTimeout(() => {
+                if (documentContainerRef?.current) {
+                  documentContainerRef.current.scrollTo(0, documentContainerRef.current.clientHeight);
+                }
+              }, 100);
+            }}
             setLoaderVisible={setLoaderVisible}
             popoverplacement="right-end"
           />
@@ -237,44 +253,44 @@ export const NeedListRequest = ({
           </Spinner>
         </div>
       ) : (
-        <div className="listWrap-templates">
-          {renderDocumentList()}
+          <div className="listWrap-templates">
+            {renderDocumentList()}
 
-          {/* Remove Message */}
-        </div>
-      )}
+            {/* Remove Message */}
+          </div>
+        )}
 
       {requestHit ? (
         <div className="left-footer text-center alert alert-success">
           Template has been created.
         </div>
       ) : (
-        <div className="left-footer">
-          {showSaveAsTemplate ? (
-            <>{renderSaveAsTemplate()}</>
-          ) : (
-            <div className="btn-wrap">
-              <NeedListSelect
-                showButton={false}
-                templateList={templateList?.filter((t: Template) => t.name)}
-                addTemplatesDocuments={addTemplatesDocuments}
-                viewSaveDraft={viewSaveDraft}
-                fetchTemplateDocs={fetchTemplateDocs}
-              />
-              {showSaveAsTemplateLink ? (
-                <a
-                  onClick={toggleSaveAsTemplate}
-                  className="btn-link link-primary"
-                >
-                  Save as template
-                </a>
-              ) : (
-                ''
+          <div className="left-footer">
+            {showSaveAsTemplate ? (
+              <>{renderSaveAsTemplate()}</>
+            ) : (
+                <div className="btn-wrap">
+                  <NeedListSelect
+                    showButton={false}
+                    templateList={templateList?.filter((t: Template) => t.name)}
+                    addTemplatesDocuments={addTemplatesDocuments}
+                    viewSaveDraft={viewSaveDraft}
+                    fetchTemplateDocs={fetchTemplateDocs}
+                  />
+                  {showSaveAsTemplateLink ? (
+                    <a
+                      onClick={toggleSaveAsTemplate}
+                      className="btn-link link-primary"
+                    >
+                      Save as template
+                    </a>
+                  ) : (
+                      ''
+                    )}
+                </div>
               )}
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
     </div>
   );
 };
