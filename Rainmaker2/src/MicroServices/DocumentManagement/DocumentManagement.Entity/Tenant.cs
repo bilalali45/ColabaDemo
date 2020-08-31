@@ -6,12 +6,14 @@ using System.Text;
 
 namespace DocumentManagement.Entity
 {
-   public  class Tenant
+    public class Tenant
     {
       [BsonId]
       [BsonRepresentation(BsonType.ObjectId)]
       public string id { get; set; }
       public int tenantId { get; set; }
-      public string emailTemplate { get; set; }   
+      public string emailTemplate { get; set; }
+      public int syncToBytePro { get; set; }
+      public int autoSyncToBytePro { get; set; }
     }
 }

@@ -1,20 +1,21 @@
 import React, {FunctionComponent} from 'react';
-import {SVGToggle} from '../SVGIcons';
+
+import {SVGToggle, SVGNoBell, SVGBellSleep} from '../assets/icons/SVGIcons';
 
 interface HeaderProps {
-  handleClear: () => void;
-  clearAllDisplay: boolean;
+  onDeleteAll: () => void;
+  showClearAllButton: boolean;
 }
 
 export const Header: FunctionComponent<HeaderProps> = ({
-  handleClear,
-  clearAllDisplay
+  onDeleteAll,
+  showClearAllButton
 }) => {
   return (
     <div className="notify-header">
       <h2>Notifications</h2>
-      {clearAllDisplay && (
-        <button className="notify-btn-clear" onClick={handleClear}>
+      {showClearAllButton === true && (
+        <button className="notify-btn-clear" onClick={onDeleteAll}>
           Clear all <SVGToggle />
         </button>
       )}
@@ -36,6 +37,56 @@ export const BellIcon: FunctionComponent<{
           </React.Fragment>
         )}
       </button>
+    </div>
+  );
+};
+
+interface AlertForRemoveProps {
+  onYes: () => void;
+  onNo: () => void;
+}
+
+export const ConfirmDeleteAll: FunctionComponent<AlertForRemoveProps> = ({
+  onYes,
+  onNo
+}) => {
+  return (
+    <div className="notify-alert-msg">
+      <div className="notify-alert-msg--wrap">
+        <SVGNoBell />
+        <h4>Are you sure you want to remove all notifications?</h4>
+        <p>
+          <button onClick={onNo} className="btn-notify secondry">
+            No
+          </button>
+          <button onClick={onYes} className="btn-notify primary">
+            Yes
+          </button>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export const AlertForNoData: FunctionComponent = () => {
+  return (
+    <div className="notify-alert-msg">
+      <div className="notify-alert-msg--wrap">
+        <SVGBellSleep />
+        <h4>No Notifications Yet</h4>
+        <p>
+          Stay tuned! Notifications about loan applications will show up here.{' '}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export const LoadingSpinner: FunctionComponent = () => {
+  return (
+    <div className="notify-loading">
+      <span className="notify-loading--circle"></span>
+      <span className="notify-loading--circle-bold"></span>
     </div>
   );
 };

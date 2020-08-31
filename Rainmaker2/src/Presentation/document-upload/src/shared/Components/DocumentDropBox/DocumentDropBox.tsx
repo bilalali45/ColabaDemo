@@ -1,11 +1,11 @@
 import React, { useState, ChangeEvent, useRef, useEffect, DragEvent, Component } from 'react';
 import DocUploadIcon from '../../../assets/images/upload-doc-icon.svg';
+import FileuploadPreviewIcon from '../../../assets/images/fileupload-preview-icon.svg';
 import { FileUpload } from '../../../utils/helpers/FileUpload';
 
 type DocumentDropBoxPropsType = { getFiles: Function, setFileInput: Function };
 
 export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxPropsType) => {
-
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -50,11 +50,18 @@ export const DocumentDropBox = ({ getFiles, setFileInput }: DocumentDropBoxProps
     )
 }
 
+type FileDropperState = {
+    dragPreview: boolean,
+}
+export class FileDropper extends Component<{ getDroppedFiles: Function, parent: HTMLDivElement | null, FileDropperState?: object }> {
 
-export class FileDropper extends Component<{ getDroppedFiles: Function, parent: HTMLDivElement | null }> {
+    state: FileDropperState = {
+        dragPreview: false,
+    };
 
     getDroppedFile(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
+        e.stopPropagation();
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
             let { files } = e.dataTransfer;
             this.props.getDroppedFiles(files);
@@ -62,17 +69,26 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
     }
 
     onDragEnter(e: any) {
+        
         e.preventDefault();
         if (this.props.parent) {
+            console.log(e.target.classList);
             this.props.parent.classList.add('drag-enter')
+            this.props.parent.classList.add('dragableArea')
+            this.setState(state => ({ dragPreview: true }))
         }
         return false;
     }
 
     onDragLeave(e: any) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.props.parent) {
             this.props.parent.classList.remove('drag-enter')
+            this.setState(state => ({ dragPreview: false }))
+            if(e.target.id==="file-dropper"){
+                this.props.parent.classList.remove('dragableArea')
+            }
         }
         return false;
     }
@@ -80,8 +96,11 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
     onDrop(e: any) {
 
         e.preventDefault();
+        e.stopPropagation();
         if (this.props.parent) {
             this.props.parent.classList.remove('drag-enter')
+            this.props.parent.classList.remove('dragableArea')
+            this.setState(state => ({ dragPreview: false }))
             this.getDroppedFile(e);
         }
         return false;
@@ -89,8 +108,10 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
 
     ondragover(e: any) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.props.parent) {
             this.props.parent.classList.add('drag-enter')
+            this.setState(state => ({ dragPreview: true }))
         }
         return false;
     }
@@ -102,6 +123,19 @@ export class FileDropper extends Component<{ getDroppedFiles: Function, parent: 
                 onDragLeave={(e) => this.onDragLeave(e)}
                 onDragOver={(e) => this.ondragover(e)}
                 onDrop={(e) => this.onDrop(e)}>
+                {this.state.dragPreview === true ? (
+                    <div style={{ zIndex: 1 }} className="drag-preview">
+                        <div className="drag-preview-wrap">
+                            <div className="drag-preview-icon">
+                                <img src={FileuploadPreviewIcon} alt="" />
+                            </div>
+                            <div className="drag-preview-content">
+                                Drop Your Files Here
+                            </div>
+                        </div>
+
+                    </div>) : null
+                }
                 {this.props.children}
             </div>
         )

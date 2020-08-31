@@ -64,19 +64,21 @@ namespace Notification.Service
             {
                 foreach (var item in reciepient)
                 {
-                    NotificationRecepient notificationRecepient = new NotificationRecepient();
-                    notificationRecepient.RecipientId = item;
-                    notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unseen;
-                    notificationRecepient.TrackingState = TrackingState.Added;
-                    notificationObject.NotificationRecepients.Add(notificationRecepient);
-                    notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
-                    if (await IsUserSubscribedToMedium(userId, tenantId, setting.NotificationMediumId, model.NotificationType))
+                    if (await IsUserSubscribedToMedium(item, tenantId, setting.NotificationMediumId, model.NotificationType))
                     {
+                        NotificationRecepient notificationRecepient = new NotificationRecepient();
+                        notificationRecepient.RecipientId = item;
+                        notificationRecepient.StatusId = (byte)Notification.Common.StatusListEnum.Unseen;
+                        notificationRecepient.TrackingState = TrackingState.Added;
+                        notificationObject.NotificationRecepients.Add(notificationRecepient);
+                        notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
+                    
                         NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
                         notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
                         notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
                         notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusListEnum.Created;
                         notificationRecepientMedium.SentTextJson = String.Empty;
+                        notificationRecepientMedium.TrackingState = TrackingState.Added;
 
                         notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
                     }
@@ -228,6 +230,21 @@ namespace Notification.Service
                 .FirstOrDefaultAsync();
 
             return new NotificationMediumModel() { id = result.Id, payload = !String.IsNullOrEmpty(result.SentTextJson) ? JObject.Parse(result.SentTextJson) : new JObject(), status = result.NotificationRecepient.StatusListEnum.Name };
+        }
+
+        public async Task<TenantSettingModel> GetTenantSetting(int tenantId)
+        {
+            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            return new TenantSettingModel() { deliveryModeId=setting.DeliveryModeId};
+        }
+
+        public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
+        {
+            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            setting.TrackingState = TrackingState.Modified;
+            setting.DeliveryModeId = model.deliveryModeId;
+            Uow.Repository<TenantSetting>().Update(setting);
+            await Uow.SaveChangesAsync();
         }
     }
 }

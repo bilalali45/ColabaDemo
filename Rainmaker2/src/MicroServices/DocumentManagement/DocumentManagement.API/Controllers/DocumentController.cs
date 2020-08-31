@@ -185,7 +185,7 @@ namespace DocumentManagement.API.Controllers
 
             return NotFound();
         }
-
+        /*
         [HttpPost(template:"[action]")]
         public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
         {
@@ -197,7 +197,7 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             return NotFound();
         }
-
+        */
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {

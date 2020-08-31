@@ -79,7 +79,7 @@ export class FileUpload {
 
   static removeSpecialChars(text: string) {
     // return RemoveSpecialChars(text);
-     return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+    return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {
@@ -112,7 +112,6 @@ export class FileUpload {
             });
             const hex = bytes.join("").toUpperCase();
             mimeType = this.getMimetype(hex);
-            console.log(mimeType);
             resolve(mimeType);
           }
         } catch (error) {
@@ -149,8 +148,8 @@ export class FileUpload {
 
   static getExtension(file, splitBy) {
     if (splitBy === "dot") {
-      let splitData = file.clientName.split(".");  
-      return splitData[splitData.length-1];
+      let splitData = file.clientName.split(".");
+      return splitData[splitData.length - 1];
     } else {
       return file?.type.split("/")[1];
     }
@@ -183,16 +182,16 @@ export class FileUpload {
     let num = splitData[splitData.length - 1];
     splitData[splitData.length - 1] = '';
     splitData.pop();
-    let actualName = splitData.join('-').replace(/\s/g,'');
+    let actualName = splitData.join('-').replace(/\s/g, '');
 
     if (numberTest.test(num)) {
       return actualName + "," + num;
     }
     else {
-      let f = fileName.replace(/\s/g,'');
+      let f = fileName.replace(/\s/g, '');
       return f;
     }
-   
+
     ;
   }
 
@@ -212,7 +211,7 @@ export class FileUpload {
     let uploadingFileName = FileUpload.splitDataByType(
       FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),
       "-"
-    ).replace(/\s/g,'');
+    ).replace(/\s/g, '');
     if (uploadingFileName.includes(",")) {
       uploadingFileName = uploadingFileName.split(",")[0];
     }
@@ -240,6 +239,8 @@ export class FileUpload {
   };
 
   static updateName(name, type, countDetail) {
+    let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
+
     let newName = FileUpload.splitDataByType(this.removeDefaultExt(name), "-");
     if (newName.includes(",")) {
       newName = newName.split(",")[0];
@@ -249,10 +250,18 @@ export class FileUpload {
     if (copyNumber.length > 0) {
       let lastCopy = copyNumber[copyNumber.length - 1];
       lastCopy++;
-      return newName + "-0" + lastCopy + "." + type.split("/")[1];
+      let ext = type.split("/")[1];
+      if (exts.includes(ext)) {
+        ext = 'jpeg';
+      }
+      return newName + "-0" + lastCopy + "." + ext;
     } else {
       count++;
-      return newName + "-0" + count + "." + name.split(".")[1];
+      let ext = name.split(".")[1];
+      if (exts.includes(ext)) {
+        ext = 'jpeg';
+      }
+      return newName + "-0" + count + "." + ext;
     }
   }
 }

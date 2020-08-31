@@ -160,7 +160,7 @@ export const UploadedDocumentsTable = () => {
             <img src={DocUploadIcon} alt="Your don't have any files!" />
           </div>
           <label className="inputno-document--text">
-            Your don't have any uploaded files.
+            You don't have any uploaded files.
             <br />
             Go to{" "}
             <a tabIndex={-1} onClick={loanHomeHandler}>

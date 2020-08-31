@@ -9,6 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace DocumentManagement.Model
 {
+    public class TenantSetting
+    {
+        public int syncToBytePro { get; set; }
+        public int autoSyncToBytePro { get; set; }
+    }
     public class DocumentDetailQuery
     {
         [BsonId]
@@ -218,6 +223,8 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]
         public string fileId { get; set; }
+        [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
+        public bool isUploaded { get; set; }
     }
 
     public class DeleteFile

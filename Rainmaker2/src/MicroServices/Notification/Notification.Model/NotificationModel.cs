@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Notification.Model
 {
+    public class TenantSettingModel
+    {
+        public short deliveryModeId { get; set; }
+    }
     public class NotificationRead
     {
         public List<long> ids { get; set; }

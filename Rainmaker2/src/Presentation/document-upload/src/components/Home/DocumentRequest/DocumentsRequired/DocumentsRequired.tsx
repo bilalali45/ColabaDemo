@@ -94,6 +94,7 @@ export const DocumentsRequired = () => {
           {pendingDocs.map((pd: any) => {
             return (
               <li
+                key={pd?.docId}
                 onClick={() => {
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
                     setshowAlert(false);

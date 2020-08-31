@@ -4,9 +4,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
 
 export const ReviewDocumentHeader = ({
-  doc,
   id,
-  typeId,
+  docId,
+  requestId,
   hideNextPreviousNavigation,
   buttonsEnabled,
   onClose,
@@ -14,11 +14,12 @@ export const ReviewDocumentHeader = ({
   previousDocument,
   perviousDocumentButtonDisabled,
   nextDocumentButtonDisabled,
-  documentDetail
+  documentDetail,
+  haveDocuments,
 }: {
-  doc: boolean;
   id: string | null;
-  typeId: string | null;
+  docId: string,
+  requestId: string
   hideNextPreviousNavigation: boolean;
   buttonsEnabled: boolean;
   onClose: () => void;
@@ -27,6 +28,7 @@ export const ReviewDocumentHeader = ({
   perviousDocumentButtonDisabled: boolean;
   nextDocumentButtonDisabled: boolean;
   documentDetail: boolean;
+  haveDocuments?: boolean;
 }) => {
   return (
     <div
@@ -68,21 +70,23 @@ export const ReviewDocumentHeader = ({
             }`}
         >
           {/* <button className="btn btn-primary">Activity Log</button> */}
-          {/* <Dropdown>
-            <Dropdown.Toggle
-              size="lg"
-              variant="primary"
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
-              Activity Log
+          {haveDocuments === false ? (
+            <Dropdown>
+              <Dropdown.Toggle
+                size="lg"
+                variant="primary"
+                className="mcu-dropdown-toggle no-caret"
+                id="dropdown-basic"
+              >
+                Activity Log
             </Dropdown.Toggle>
-            {id !== null && typeId !== null && (
-              <Dropdown.Menu>
-                <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
-              </Dropdown.Menu>
-            )}
-          </Dropdown> */}
+              {id !== null && (
+                <Dropdown.Menu>
+                  <ReviewDocumentActivityLog requestId={requestId} docId={docId} id={id} />
+                </Dropdown.Menu>
+              )}
+            </Dropdown>) : null
+          }
           <button className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>
           </button>

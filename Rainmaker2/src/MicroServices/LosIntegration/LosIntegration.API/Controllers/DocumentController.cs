@@ -143,10 +143,10 @@ namespace LosIntegration.API.Controllers
             var categories = getCategoriesResponse.ResponseObject;
 
             var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
-                                         .Single(predicate: dt => dt.DocTypeId == document.TypeId);
+                                         .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
 
             var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType).SingleOrDefault();
+                                     .GetByteDocTypeMappingWithDetails(docType: documentType?.DocType).SingleOrDefault();
             var byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
             var byteDocCategoryMapping = _byteDocCategoryMappingService
                                          .GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10)
@@ -162,7 +162,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message: $"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
             _logger.LogInformation(message: $"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
             _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
-
+            _logger.LogInformation($"FileId={file.Id} is getting from SendFileToExternalOriginator");
             var sendDocumentRequest = new SendDocumentRequest
                                       {
                                           LoanApplicationId = request.LoanApplicationId,
@@ -179,8 +179,45 @@ namespace LosIntegration.API.Controllers
                                               byteDocTypeMapping?.ByteDoctypeName ?? "Other", // mapping required
                                           MediaType = documentResponse.Content.Headers.ContentType.MediaType
                                       };
-            var byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
-            if (byteDocumentResponse == null) return BadRequest(error: "External originator document response null");
+            DocumentResponse byteDocumentResponse=null;
+            try
+            {
+                byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
+                if (byteDocumentResponse == null) return BadRequest(error: "External originator document response null");
+                #region UpdateByteProStatus
+
+                var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest() { 
+                    DocumentId=request.DocumentId,
+                    DocumentLoanApplicationId=request.DocumentLoanApplicationId,
+                    FileId=request.FileId,
+                    RequestId=document.RequestId,
+                    isUploaded=true
+                });
+
+                if (!updateByteProStatusResponse.IsSuccessStatusCode)
+                    throw new Exception(message: "Unable to Update Status in Document Management");
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+                #region UpdateByteProStatus
+
+                var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest()
+                {
+                    DocumentId = request.DocumentId,
+                    DocumentLoanApplicationId = request.DocumentLoanApplicationId,
+                    FileId = request.FileId,
+                    RequestId = document.RequestId,
+                    isUploaded = false
+                });
+
+                if (!updateByteProStatusResponse.IsSuccessStatusCode)
+                    throw new Exception(message: "Unable to Update Status in Document Management");
+
+                #endregion
+                throw;
+            }
 
             #endregion
 
@@ -202,14 +239,7 @@ namespace LosIntegration.API.Controllers
 
             #endregion
 
-            #region UpdateByteProStatus
-
-            var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: request);
-
-            if (!updateByteProStatusResponse.IsSuccessStatusCode)
-                throw new Exception(message: "Unable to Update Status in Document Management");
-
-            #endregion
+           
 
             return Ok();
         }
@@ -258,7 +288,7 @@ namespace LosIntegration.API.Controllers
         }
 
 
-        private HttpResponseMessage UpdateByteStatusInDocumentManagement(SendFileToExternalOriginatorRequest request)
+        private HttpResponseMessage UpdateByteStatusInDocumentManagement(UpdateByteStatusRequest request)
         {
             var url =
                 $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/BytePro/UpdateByteProStatus";
@@ -536,7 +566,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation(message: $"result={result} ");
+            //_logger.LogInformation(message: $"result={result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)

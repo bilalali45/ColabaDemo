@@ -27,6 +27,8 @@ const Footer = ({
   status?: string;
   acceptRejectEnabled: boolean;
 }) => {
+
+
   const rejectAndCloseRejectPopUp = () => {
     rejectDocument();
   };
@@ -103,32 +105,21 @@ const Footer = ({
 };
 
 export const ReviewDocumentStatement = ({
-  typeIdAndIdForActivityLogs,
   moveNextFile,
   currentDocument,
   currentFileIndex,
   acceptDocument,
   rejectDocument,
   documentViewLoading,
-  doc,
-  id,
-  typeId,
+  fileViewd
 }: {
-  doc: boolean;
-  id: string | null;
-  typeId: string | null;
-  typeIdAndIdForActivityLogs: (id: string, typeIdOrDocName: string) => void;
-  moveNextFile: (
-    index: number,
-    fileId: string,
-    clientName: string,
-    loading?: boolean
-  ) => void;
-  currentDocument: NeedList | null;
+  moveNextFile: Function;
+  currentDocument: NeedList;
   currentFileIndex: number;
   acceptDocument: () => void;
   rejectDocument: (rejectMessage: string) => void;
   documentViewLoading: boolean;
+  fileViewd: boolean;
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -175,9 +166,9 @@ export const ReviewDocumentStatement = ({
       NeedListEndpoints.GET.documents.files(id, requestId, docId)
     );
 
-    const { typeId, docName, files, userName } = data[0];
+    const { files, userName } = data[0];
 
-    typeIdAndIdForActivityLogs(id, typeId || docName);
+    console.log('currentDocument', currentDocument);
 
     setDocumentFiles(files);
     setUsername(userName);
@@ -266,6 +257,12 @@ export const ReviewDocumentStatement = ({
   }, [currentDocument]);
 
   useEffect(() => {
+    if (currentDocument) {
+      requestDocumentFiles(currentDocument);
+    }
+  }, [fileViewd]);
+
+  useEffect(() => {
     // Set reject document message when document changed.
     setRejectDocumentMessage(
       `Hi ${currentDocument!.userName}, please submit the ${
@@ -284,22 +281,22 @@ export const ReviewDocumentStatement = ({
     >
       <header className="document-statement--header">
 
-        <h2 title={currentDocument?.docName}>{currentDocument?.docName}</h2>
+        <h2 title={currentDocument.docName}>{currentDocument.docName}</h2>
         <Dropdown>
-            <Dropdown.Toggle
-              size="lg"
-              variant="primary"
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
-              Activity Log
+          <Dropdown.Toggle
+            size="lg"
+            variant="primary"
+            className="mcu-dropdown-toggle no-caret"
+            id="dropdown-basic"
+          >
+            Activity Log
             </Dropdown.Toggle>
-            {id !== null && typeId !== null && (
-              <Dropdown.Menu>
-                <ReviewDocumentActivityLog doc={doc} id={id} typeId={typeId} />
-              </Dropdown.Menu>
-            )}
-          </Dropdown>
+          {currentDocument.id !== null && (
+            <Dropdown.Menu>
+              <ReviewDocumentActivityLog id={currentDocument.id} requestId={currentDocument.requestId!} docId={currentDocument.docId} />
+            </Dropdown.Menu>
+          )}
+        </Dropdown>
       </header>
       {!!loading ? (
         <div
@@ -335,15 +332,16 @@ export const ReviewDocumentStatement = ({
                       clientName: string,
                       loadingFile?: boolean
                     ) => {
-                      await moveNextFile(index, fileId, clientName, loadingFile);
-                      setCurrentFileName(clientName);
-                      if (currentDocument) {
-                        await requestDocumentFiles(currentDocument);
-                      }
-                      
+                      moveNextFile(index, fileId, clientName, loadingFile).then(async () => {
+                        setCurrentFileName(clientName);
+                        if (currentDocument) {
+                          await requestDocumentFiles(currentDocument);
+                        }
+                      });
+
                     }}
-                    requestId={currentDocument?.requestId!}
-                    docId={currentDocument?.docId!}
+                    requestId={currentDocument.requestId}
+                    docId={currentDocument.docId}
                     fileId={file.fileId}
                     mcuName={file.mcuName}
                     clientName={file.clientName}

@@ -13,6 +13,7 @@ import { DocumentUploadActions } from "../../../../../store/actions/DocumentUplo
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { update } from "lodash";
+import { useLocation, useHistory } from "react-router-dom";
 //import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 
 interface SelectedDocumentsType {
@@ -55,6 +56,9 @@ export const SelectedDocuments = ({
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const location = useLocation();
+  const history = useHistory();
+
   useEffect(() => {
     setFileInput(inputRef.current);
     disableSubmitBtn();
@@ -94,6 +98,7 @@ export const SelectedDocuments = ({
       clientName,
       file: document.file,
     });
+    history.push(`${location.pathname}/${clientName}/view`);
   };
 
   const getSubmittedDocumentForView = async (id, requestId, docId, fileId) => {
@@ -131,41 +136,41 @@ export const SelectedDocuments = ({
     setSubBtnPressed(false);
     try {
       fetchUploadedDocuments();
-      let docs = await DocumentActions.getPendingDocuments(
-        Auth.getLoanAppliationId()
-      );
-      if (docs) {
-        if (docs?.length) {
-          dispatch({
-            type: DocumentsActionType.FetchPendingDocs,
-            payload: docs,
-          });
-          let currentDoc = docs.find((d) => d.docId === currentSelected.docId);
-          dispatch({
-            type: DocumentsActionType.SetCurrentDoc,
-            payload: currentDoc,
-          });
-        }
-      }
-      let current = currentSelected;
-      let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
-        if (p.docId === currentSelected.docId) {
-          // p.resubmittedNewFiles = true;
-          current = p;
-          return p;
-        }
-        return p;
-      });
+      // let docs = await DocumentActions.getPendingDocuments(
+      //   Auth.getLoanAppliationId()
+      // );
+      // if (docs) {
+      //   if (docs?.length) {
+      //     dispatch({
+      //       type: DocumentsActionType.FetchPendingDocs,
+      //       payload: docs,
+      //     });
+      //     let currentDoc = docs.find((d) => d.docId === currentSelected.docId);
+      //     dispatch({
+      //       type: DocumentsActionType.SetCurrentDoc,
+      //       payload: currentDoc,
+      //     });
+      //   }
+      // }
+      // let current = currentSelected;
+      // let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
+      //   if (p.docId === currentSelected.docId) {
+      //     // p.resubmittedNewFiles = true;
+      //     current = p;
+      //     return p;
+      //   }
+      //   return p;
+      // });
 
-      current.files = selectedFiles.filter(
-        (f: Document) => f.uploadStatus !== "failed"
-      );
-      dispatch({
-        type: DocumentsActionType.FetchPendingDocs,
-        payload: updatedPendingDocs,
-      });
-      dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
-    } catch (error) {}
+      // current.files = selectedFiles.filter(
+      //   (f: Document) => f.uploadStatus !== "failed"
+      // );
+      // dispatch({
+      //   type: DocumentsActionType.FetchPendingDocs,
+      //   payload: updatedPendingDocs,
+      // });
+      // dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -173,7 +178,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -206,13 +211,6 @@ export const SelectedDocuments = ({
       if (file.file && f.clientName === file.clientName) {
         f.focused = focus;
         nextInd = i + 1;
-        // if (shouldMoveFocus) {
-        //   // debugger
-        //   selectedFiles[i + 1].focused = true;
-        //   console.log('dsskdjflksjdflksjfd');
-        //   console.log(selectedFiles[i + 1]);
-        //   console.log('dsskdjflksjdflksjfd');
-        // }
         return f;
       }
       // debugger
@@ -226,7 +224,6 @@ export const SelectedDocuments = ({
       return f;
     });
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
-    // moveFocus(updatedFiles, selectedFiles[nextInd])
   };
 
   const moveFocus = (previousFiles: Document[], fileToFocus: Document) => {
@@ -297,9 +294,9 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          data
+        );
       if (docs?.length) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
@@ -308,7 +305,7 @@ export const SelectedDocuments = ({
       }
       setDoneVisible(false);
       setDoneHit(false);
-     await fetchUploadedDocuments();
+      await fetchUploadedDocuments();
     }
   };
 
@@ -344,6 +341,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
+                  key={f.clientName + index}
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   disableSubmitButton={setBtnDisabled}
@@ -379,19 +377,19 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -399,13 +397,16 @@ export const SelectedDocuments = ({
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
-        {!!currentDoc && (
+        {!!currentDoc && location.pathname.includes('view') && (
           <DocumentView
-            hideViewer={() => setCurrentDoc(null)}
+            hideViewer={() => {
+              setCurrentDoc(null);
+              history.goBack();
+            }}
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
@@ -466,18 +467,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );

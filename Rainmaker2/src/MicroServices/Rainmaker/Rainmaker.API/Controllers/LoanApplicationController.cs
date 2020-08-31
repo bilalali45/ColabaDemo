@@ -30,7 +30,9 @@ namespace Rainmaker.API.Controllers
         private readonly IOpportunityService opportunityService;
         private readonly IActivityService activityService;
         private readonly IWorkQueueService workQueueService;
-        public LoanApplicationController(ILoanApplicationService loanApplicationService,ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService)
+        private readonly IUserProfileService userProfileService;
+
+        public LoanApplicationController(ILoanApplicationService loanApplicationService,ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService)
         {
             this.loanApplicationService = loanApplicationService;
             this.commonService = commonService;
@@ -38,6 +40,7 @@ namespace Rainmaker.API.Controllers
             this.opportunityService = opportunityService;
             this.activityService = activityService;
             this.workQueueService = workQueueService;
+            this.userProfileService = userProfileService;
         }
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
@@ -111,16 +114,32 @@ namespace Rainmaker.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SendBorrowerEmail([FromBody]SendBorrowerEmailModel model)
         {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             var activityEnumType = (ActivityForType)model.activityForId;
+            var busnessUnitId = loanApplication.BusinessUnitId.ToInt();
 
-            var data = new Dictionary<FillKey, string>();
-            data.Add(FillKey.CustomEmailHeader, "");
-            data.Add(FillKey.CustomEmailFooter, "");
-            data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
+            var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+            EmailAccount emailAccount = null;
 
-            await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
-            return Ok();
+            if(userProfile != null)
+                if (userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails
+                                          .SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+
+            if (emailAccount != null)
+            {
+                var data = new Dictionary<FillKey, string>();
+                data.Add(FillKey.CustomEmailHeader, "");
+                data.Add(FillKey.CustomEmailFooter, "");
+                data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
+                data.Add(FillKey.FromEmail, emailAccount.Email);
+
+                await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
+                return Ok();
+            }
+            else
+                return Ok();
         }
 
         private async Task SendLoanApplicationActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype)

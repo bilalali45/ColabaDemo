@@ -2,6 +2,7 @@ import { Actions, ActionMap } from "./reducers";
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 import { FileUpload } from "../../utils/helpers/FileUpload";
+import { Document } from "../../entities/Models/Document";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',

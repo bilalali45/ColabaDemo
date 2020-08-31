@@ -1,6 +1,7 @@
 import { NeedListDocuments } from './NeedListDocuments'
 
 export class NeedList {
+    
     public id: string;
     public requestId: string;
     public docName: string
@@ -11,6 +12,7 @@ export class NeedList {
     public userName: string;
 
     constructor(id: string, requestId: string, docName: string, docId: string, status: string, files: NeedListDocuments[], typeId: string, userName: string) {
+       
         this.id = id;
         this.requestId = requestId;
         this.docName = docName;

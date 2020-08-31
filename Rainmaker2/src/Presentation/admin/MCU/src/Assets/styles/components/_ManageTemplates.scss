@@ -657,8 +657,12 @@
                 .others-doc-input-wrap {
                 border-top: 1px solid color('border');
                 padding: 20px 15px;
-                min-height: 97px;
-                padding-bottom: 5px;
+                min-height: 95px;
+                padding-bottom: 1px;
+                .error {
+        padding-top: 3px;
+        margin-bottom:0;
+                }                
                 .title-wrap {
                     h3 {
                         font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  

@@ -51,7 +51,7 @@ export class DocumentUploadActions {
         }
       );
     } catch (error) {
-      console.log('-------------->Upload errors------------>',error)
+      console.log('-------------->Upload errors------------>', error)
     }
   }
 
@@ -87,12 +87,16 @@ export class DocumentUploadActions {
         setFileLimitError({ value: true });
         break;
       }
-      var newName = f.name.replace(/\s/g,'');
-     
+      var newName = f.name.replace(/\s/g, '');
+      var ext = newName.split('.')[1];
+      let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
+      if (exts.includes(ext)) {
+        newName = `${newName.split('.')[0]}.jpeg`;
+      }
       var countArray = FileUpload.checkName(prevFiles, f);
-    
+
       if (countArray[0] != 0) {
-        newName = FileUpload.updateName(f.name, f.type, countArray).replace(/\s/g,'');;
+        newName = FileUpload.updateName(f.name, f.type, countArray).replace(/\s/g, '');
       }
 
       const selectedFile = new Document(
@@ -116,7 +120,20 @@ export class DocumentUploadActions {
       }
 
       selectedFile.editName = true;
+      
+      allSelectedFiles.forEach((f: Document, i: number) => {
+
+        let fName = FileUpload.removeDefaultExt(f.clientName);
+        let sfName = FileUpload.removeDefaultExt(selectedFile.clientName);
+        if (fName === sfName) {
+          selectedFile.clientName = `new${sfName}.${selectedFile.file?.type.split('/')[1]}`
+        }
+      })
+
+      console.log(selectedFile);
       allSelectedFiles.push(selectedFile);
+
+
       // }
 
       if (counter === 0) {

@@ -6,7 +6,20 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DocumentManagement.Model
 {
-     public class ActivityLogDTO
+    public enum SyncToBytePro
+    {
+        Off=0,
+        Auto=1,
+        Manual=2
+    }
+
+    public enum AutoSyncToBytePro
+    {
+        OnSubmit=0,
+        OnDone=1,
+        OnAccept=2
+    }
+    public class ActivityLogDTO
     {
         public string id { get; set; }
         public int userId { get; set; }

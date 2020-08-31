@@ -459,8 +459,9 @@ namespace DocumentManagement.Service
             });
             return fileViewDTO;
         }
-        public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
+        public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId, bool isUploaded, int userId, int tenantId)
         {
+            var status = isUploaded ? ByteProStatus.Synchronized : ByteProStatus.Error;
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
@@ -469,7 +470,7 @@ namespace DocumentManagement.Service
             {
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files.$[file].byteProStatus", ByteProStatus.Synchronized}
+                        { "requests.$[request].documents.$[document].files.$[file].byteProStatus", status}
 
                     }
                 }
@@ -483,7 +484,10 @@ namespace DocumentManagement.Service
                 }
 
             });
-
+            
+            IMongoCollection<Entity.ByteProLog> collectionBytePro = mongoService.db.GetCollection<Entity.ByteProLog>("ByteProLog");
+            await collectionBytePro.InsertOneAsync(new ByteProLog() {id=ObjectId.GenerateNewId().ToString(),loanId=id,requestId=requestId,docId=docId,fileId=fileId,status=status,tenantId=tenantId,userId=userId,updatedOn=DateTime.UtcNow });
+            
             return result.ModifiedCount == 1;
         }
         public async Task<bool> DeleteFile(int loanApplicationId, string fileId)
