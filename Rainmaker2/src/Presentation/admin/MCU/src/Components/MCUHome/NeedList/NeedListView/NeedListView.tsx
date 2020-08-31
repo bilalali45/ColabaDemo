@@ -302,7 +302,7 @@ export const NeedListView = () => {
     let res: any = await NeedListActions.checkIsByteProAuto();
     console.log('checkIsByteProAuto', res.syncToBytePro)
     let isAuto = res.syncToBytePro != 2 ? true : false;
-    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto})
+    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: false})
   }
 
   const deleteNeedListDoc = async (
