@@ -41,7 +41,7 @@ namespace Identity
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
-                         .WriteTo.Console()
+                         //.WriteTo.Console()
                          .WriteTo.Async(configure: x => x.File(path: @"\Logs\log.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
