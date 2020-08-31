@@ -1,10 +1,16 @@
-import React, {FunctionComponent, useState, useEffect, createRef} from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  createRef,
+  Dispatch
+} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import _ from 'lodash';
 
 import {Notification, NewNotificationToss} from './_Notifications';
-import {NotificationType, TimersType} from '../lib/type';
-import {AlertForNoData} from '../pages/_HomePage';
+import {NotificationType, TimersType} from '../../lib/type';
+import {AlertForNoData} from '../../pages/_HomePage';
+import {Params, ACTIONS} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -13,9 +19,8 @@ interface NotificationsProps {
   notificationsVisible: boolean;
   receivedNewNotification: boolean;
   removeNotification: (id: number) => void;
-  setTimers: React.Dispatch<React.SetStateAction<TimersType[] | undefined>>;
-  readAllNotificationsForDocument: (loanApplicationId: string) => void;
-  setReceivedNewNotification: React.Dispatch<React.SetStateAction<boolean>>;
+  readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
+  dispatch: Dispatch<Params>;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = ({
@@ -25,9 +30,8 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   notificationsVisible,
   receivedNewNotification,
   removeNotification,
-  setTimers,
   readAllNotificationsForDocument,
-  setReceivedNewNotification
+  dispatch
 }) => {
   const [showToss, setShowToss] = useState(false); //apex false
   const notificationRef = createRef<HTMLDivElement>();
@@ -36,13 +40,13 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     if (receivedNewNotification === true && notificationsVisible === true) {
       setShowToss(true);
 
-      receivedNewNotification === true && setReceivedNewNotification(false);
+      receivedNewNotification === true &&
+        dispatch({
+          type: ACTIONS.UPDATE_STATE,
+          payload: {receivedNewNotification: false}
+        });
     }
-  }, [
-    receivedNewNotification,
-    notificationsVisible,
-    setReceivedNewNotification
-  ]);
+  }, [dispatch, receivedNewNotification, notificationsVisible]);
 
   const clearTimeOut = (id: number, timers: TimersType[]) => {
     const timer = timers.find((timer) => timer.id === id);
@@ -50,10 +54,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     if (timer) {
       clearTimeout(timer.timer);
 
-      const clonedTimers = _.cloneDeep(timers);
-      const filtredTiemrs = clonedTimers.filter((timer) => timer.id !== id);
-
-      setTimers(filtredTiemrs);
+      dispatch({type: ACTIONS.RESET_DELETE_TIMERS, payload: {timerId: id}});
     }
   };
 
@@ -84,7 +85,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
               return (
                 <Notification
-                   key={index}
+                  key={index}
                   removeNotification={() => removeNotification(id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}
