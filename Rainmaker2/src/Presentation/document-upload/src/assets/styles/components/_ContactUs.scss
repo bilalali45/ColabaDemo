@@ -76,6 +76,7 @@
                 display: block;
                 position: relative;
                 padding-left: 9px;
+                min-height: 20px;
                 &:hover {
                     text-decoration: none;
                 }
@@ -88,6 +89,7 @@
                     color: color('primary');
                     position: absolute;
                     left: -15px;
+                    top: 4px;
 
                     @include media-breakpoint-down(md) {
                         left: 0;
