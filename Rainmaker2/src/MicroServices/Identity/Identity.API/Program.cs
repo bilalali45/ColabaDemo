@@ -42,7 +42,7 @@ namespace Identity
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
                          //.WriteTo.Console()
-                         .WriteTo.Async(configure: x => x.File(path: @"\Logs\log.log",
+                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-log.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                                        )
