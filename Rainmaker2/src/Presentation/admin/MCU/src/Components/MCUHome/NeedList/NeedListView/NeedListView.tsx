@@ -199,6 +199,7 @@ export const NeedListView = () => {
     if( isSelected === 0){
       setsyncSuccess(false)
       setShowConfirmBox(false)
+      setSyncTitleClass('not_Synced')
       return;
     }
      return ;
@@ -301,6 +302,7 @@ export const NeedListView = () => {
   const checkIsByteProAuto = async () => {
     let res: any = await NeedListActions.checkIsByteProAuto();
     console.log('checkIsByteProAuto', res.syncToBytePro)
+    
     let isAuto = res.syncToBytePro != 2 ? true : false;
     dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto})
   }
@@ -456,6 +458,7 @@ export const NeedListView = () => {
   const syncAgain = () => {
     postToByteProHandler(true);
     setShowFailedToSyncBox(false);
+    setShowConfirmBox(true)
   }
 
   const handleClose = () => {
