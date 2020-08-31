@@ -305,8 +305,8 @@ export const NeedListTable = ({
                 <a onClick={() => FileSyncToLos(item.id, item.byteProStatusText)}>
                   {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
                   }
-                </a>
-                {' '} {item.byteProStatusText}
+                </a>{' '} 
+                {item.byteProStatusClassName == "synced" ?item.byteProStatusText:<span className="txt-stl" onClick={() => FileSyncToLos(item.id, item.byteProStatusText)}>{' '} {item.byteProStatusText}</span>}
               </span>
             );
           })}
@@ -391,7 +391,7 @@ export const NeedListTable = ({
           <a onClick={(e) => FilesSyncToLos(syncTitleClass)} >
             <em className={"icon-refresh "+syncTitleClass}></em>
           </a>{' '}
-              sync to LOS
+              <span className="txt-stl" onClick={(e) => FilesSyncToLos(syncTitleClass)}>sync to LOS</span>
         </div>
       )
     }
@@ -406,7 +406,7 @@ export const NeedListTable = ({
       <div className="sync-alert">
          <div className="sync-alert-wrap">
           <div className="icon"><img src={sycLOSIcon} alt="" /></div>
-          <div className="msg">{synchronizing != true ? "Are you ready to sync selected document" : "Synchronization in process..."}</div>
+          <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
           <div className="btn-wrap">
             <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
               {synchronizing != true
@@ -467,8 +467,9 @@ export const NeedListTable = ({
             <div className="th th-options">&nbsp;</div>
           </div>
           {needList && renderNeedList(needList)}
-          {renderSyncToLosConfirmationBox()}
+         
         </div>
+        {renderSyncToLosConfirmationBox()}
       </div>
     </div>
   );
