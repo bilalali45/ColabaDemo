@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 import {NotificationType, TimersType} from '../../lib/type';
 import {formatDateTime} from '../../lib/utils';
-import {SVGDocument, SVGClose, SVGCalender} from '../../SVGIcons';
+import {SVGDocument, SVGClose, SVGCalender} from '../../assets/icons/SVGIcons';
 
 interface NotificationProps {
   removeNotification: () => void;

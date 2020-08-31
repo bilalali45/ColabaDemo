@@ -1,5 +1,5 @@
 import React, {useEffect, Dispatch} from 'react';
-import {Params} from '../reducers/useNotificationsReducer';
+import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
 
 interface UseHandleClickOutsideProps {
   refContainerSidebar: React.RefObject<HTMLDivElement>;
@@ -17,7 +17,7 @@ export const useHandleClickOutside = ({
         !refContainerSidebar.current.contains(event.target)
       ) {
         dispatch({
-          type: 'UPDATE_STATE',
+          type: ACTIONS.UPDATE_STATE,
           payload: {
             notificationsVisible: false,
             receivedNewNotification: false,

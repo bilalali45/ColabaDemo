@@ -1,12 +1,17 @@
-import {NotificationType} from '../../../lib/type';
+import {NotificationType, TimersType} from '../../../lib/type';
 import {useReducer, Dispatch} from 'react';
 
-const UPDATE_STATE = 'UPDATE_STATE';
-const ADD_NEW_NOTIFICATIONS = 'ADD_NEW_NOTIFICATIONS';
-const APPEND_NOTIFICATIONS = 'APPEND_NOTIFICATIONS';
-const RESET_NOTIFICATIONS = 'RESET_NOTIFICATIONS';
-const INCREMEMNT_UNSEEN_COUNTER = 'INCREMEMNT_UNSEEN_COUNTER';
-const DECREMEMNT_UNSEEN_COUNTER = 'DECREMEMNT_UNSEEN_COUNTER';
+export enum ACTIONS {
+  UPDATE_STATE = 'UPDATE_STATE',
+  ADD_NEW_NOTIFICATIONS = 'ADD_NEW_NOTIFICATIONS',
+  APPEND_NOTIFICATIONS = 'APPEND_NOTIFICATIONS',
+  RESET_NOTIFICATIONS = 'RESET_NOTIFICATIONS',
+  INCREMEMNT_UNSEEN_COUNTER = 'INCREMEMNT_UNSEEN_COUNTER',
+  DECREMEMNT_UNSEEN_COUNTER = 'DECREMEMNT_UNSEEN_COUNTER',
+  ADD_DELETE_TIMER = 'ADD_DELETE_TIMER',
+  RESET_DELETE_TIMERS = 'RESET_DELETE_TIMERS',
+  REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
+}
 
 interface StateType {
   notificationsVisible: boolean;
@@ -15,6 +20,7 @@ interface StateType {
   confirmDeleteAll: boolean;
   unSeenNotificationsCount: number;
   notifyClass: string;
+  timers: TimersType[] | undefined;
 }
 
 interface UpdateParams {
@@ -25,6 +31,10 @@ interface UpdateParams {
   confirmDeleteAll: boolean;
   unSeenNotificationsCount: number;
   notifyClass: string;
+  timers: TimersType[];
+  timer: TimersType;
+  timerId: number;
+  notificationId: number;
 }
 
 export interface Params {
@@ -38,7 +48,8 @@ export const initialState: StateType = {
   receivedNewNotification: false,
   confirmDeleteAll: false,
   unSeenNotificationsCount: 0,
-  notifyClass: 'close'
+  notifyClass: 'close',
+  timers: []
 };
 
 export const useNotificationsReducer = (): {
@@ -52,38 +63,63 @@ export const useNotificationsReducer = (): {
     const {type, payload} = action;
 
     switch (type) {
-      case UPDATE_STATE:
+      case ACTIONS.UPDATE_STATE:
         return {
           ...state,
           ...payload
         };
-      case ADD_NEW_NOTIFICATIONS:
+      case ACTIONS.ADD_NEW_NOTIFICATIONS:
         return {
           ...state,
           notifications: [payload.notification!, ...state.notifications]
         };
-      case APPEND_NOTIFICATIONS:
+      case ACTIONS.APPEND_NOTIFICATIONS:
         return {
           ...state,
           notifications: [...state.notifications, ...payload.notifications]
         };
-      case RESET_NOTIFICATIONS:
+      case ACTIONS.RESET_NOTIFICATIONS:
         return {
           ...state,
           notifications: [...payload.notifications]
         };
-      case INCREMEMNT_UNSEEN_COUNTER:
+      case ACTIONS.INCREMEMNT_UNSEEN_COUNTER:
         return {
           ...state,
           unSeenNotificationsCount:
             state.unSeenNotificationsCount! + payload.unSeenNotificationsCount!
         };
-      case DECREMEMNT_UNSEEN_COUNTER:
+      case ACTIONS.DECREMEMNT_UNSEEN_COUNTER:
         return {
           ...state,
           unSeenNotificationsCount:
             state.unSeenNotificationsCount! - payload.unSeenNotificationsCount!
         };
+      case ACTIONS.ADD_DELETE_TIMER:
+        return {
+          ...state,
+          timers: [...state.timers, payload.timer!]
+        };
+      case ACTIONS.RESET_DELETE_TIMERS: {
+        const timers = state.timers?.filter(
+          (timer) => timer.id !== payload.timerId
+        );
+
+        return {
+          ...state,
+          timers: [...timers]
+        };
+      }
+      case ACTIONS.REMOVE_NOTIFICATION: {
+        const notifications = state.notifications?.filter(
+          (notification) => notification.id !== payload.notificationId
+        );
+
+        return {
+          ...state,
+          notifications: [...notifications]
+        };
+      }
       default:
         return state;
     }

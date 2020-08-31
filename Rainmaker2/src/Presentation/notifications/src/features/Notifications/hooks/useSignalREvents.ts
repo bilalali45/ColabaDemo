@@ -4,7 +4,7 @@ import {cloneDeep} from 'lodash';
 
 import {NotificationType} from '../../../lib/type';
 import {LocalDB} from '../../../Utils/LocalDB';
-import {Params} from '../reducers/useNotificationsReducer';
+import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
 
 interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
@@ -45,18 +45,18 @@ export const useSignalREvents = ({
         );
 
         dispatch({
-          type: 'INCREMEMNT_UNSEEN_COUNTER',
+          type: ACTIONS.INCREMEMNT_UNSEEN_COUNTER,
           payload: {unSeenNotificationsCount: 1}
         });
 
         notificationsVisibleRef.current === true &&
           dispatch({
-            type: 'UPDATE_STATE',
+            type: ACTIONS.UPDATE_STATE,
             payload: {receivedNewNotification: true}
           });
 
         dispatch({
-          type: 'RESET_NOTIFICATIONS',
+          type: ACTIONS.RESET_NOTIFICATIONS,
           payload: {notifications: clonedNotifications}
         });
       });
@@ -81,11 +81,11 @@ export const useSignalREvents = ({
           });
 
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
+            type: ACTIONS.RESET_NOTIFICATIONS,
             payload: {notifications: clonedNotifications}
           });
           dispatch({
-            type: 'DECREMEMNT_UNSEEN_COUNTER',
+            type: ACTIONS.DECREMEMNT_UNSEEN_COUNTER,
             payload: {unSeenNotificationsCount: notificationIds.length}
           });
         }
@@ -103,7 +103,7 @@ export const useSignalREvents = ({
           );
 
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
+            type: ACTIONS.RESET_NOTIFICATIONS,
             payload: {notifications: filteredNotifications}
           });
         }
@@ -112,7 +112,10 @@ export const useSignalREvents = ({
       SignalRHub.hubConnection.on('NotificationDeleteAll', () => {
         if (!notificationsRef.current) return;
 
-        dispatch({type: 'RESET_NOTIFICATIONS', payload: {notifications: []}});
+        dispatch({
+          type: ACTIONS.RESET_NOTIFICATIONS,
+          payload: {notifications: []}
+        });
       });
 
       SignalRHub.hubConnection.on(
@@ -133,7 +136,7 @@ export const useSignalREvents = ({
           });
 
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
+            type: ACTIONS.RESET_NOTIFICATIONS,
             payload: {notifications: clonedNotifications}
           });
         }

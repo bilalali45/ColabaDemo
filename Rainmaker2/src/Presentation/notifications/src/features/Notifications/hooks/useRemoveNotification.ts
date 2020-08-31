@@ -1,16 +1,14 @@
-import {Dispatch, SetStateAction} from 'react';
+import {Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
-import {cloneDeep} from 'lodash';
 
 import {TimersType, NotificationType} from '../../../lib/type';
-import {Params} from '../reducers/useNotificationsReducer';
+import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
 
 interface UseRemoveNotificationProps {
   notifications: NotificationType[] | null | undefined;
   timers: TimersType[] | undefined;
   http: Http;
   dispatch: Dispatch<Params>;
-  setTimers: Dispatch<SetStateAction<TimersType[] | undefined>>;
 }
 
 export const useRemoveNotification = (
@@ -18,7 +16,7 @@ export const useRemoveNotification = (
 ): {
   removeNotification: (id: number) => void;
 } => {
-  const {timers, http, dispatch, notifications, setTimers} = props;
+  const {timers, http, dispatch, notifications} = props;
 
   const removeNotification = (id: number) => {
     if (!notifications) return;
@@ -33,36 +31,32 @@ export const useRemoveNotification = (
             id
           });
 
-          const filteredNotifications = notifications.filter(
-            (notification) => notification.id !== id
-          );
-
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
-            payload: {notifications: filteredNotifications}
+            type: ACTIONS.REMOVE_NOTIFICATION,
+            payload: {notificationId: id}
           });
         }, 5000);
 
-        const clonedTimeers = cloneDeep(timers);
-        clonedTimeers!.push({id, timer});
-        setTimers(clonedTimeers);
+        dispatch({
+          type: ACTIONS.ADD_DELETE_TIMER,
+          payload: {timer: {id, timer}}
+        });
       } else {
         const timer = setTimeout(async () => {
           await http.put('/api/Notification/notification/Delete', {
             id
           });
 
-          const filteredNotifications = notifications.filter(
-            (notification) => notification.id !== id
-          );
-
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
-            payload: {notifications: filteredNotifications}
+            type: ACTIONS.REMOVE_NOTIFICATION,
+            payload: {notificationId: id}
           });
         }, 5000);
 
-        setTimers(() => [{id, timer}]);
+        dispatch({
+          type: ACTIONS.ADD_DELETE_TIMER,
+          payload: {timer: {id, timer}}
+        });
       }
     } catch (error) {
       console.warn(error);

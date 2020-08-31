@@ -1,5 +1,4 @@
 import React, {
-  useState,
   useEffect,
   FunctionComponent,
   useRef,
@@ -10,18 +9,19 @@ import {Http} from 'rainsoft-js';
 
 import {Notifications} from '../features/Notifications/Notifications';
 import {Header, BellIcon, ConfirmDeleteAll, LoadingSpinner} from './_HomePage';
-import {TimersType} from '../lib/type';
 import {useFetchNotifications} from '../features/Notifications/hooks/useFetchNotifications';
 import {useHandleClickOutside} from '../features/Notifications/hooks/useHandleClickOutside';
 import {useNotificationSeen} from '../features/Notifications/hooks/useNotificationSeen';
 import {useSignalREvents} from '../features/Notifications/hooks/useSignalREvents';
 import {useReadAllNotificationsForDocument} from '../features/Notifications/hooks/useReadAllNotificationsForDocument';
 import {useRemoveNotification} from '../features/Notifications/hooks/useRemoveNotification';
-import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
+import {
+  useNotificationsReducer,
+  ACTIONS
+} from '../features/Notifications/reducers/useNotificationsReducer';
 
 export const HomePage: FunctionComponent = () => {
   const http = useMemo(() => new Http(), []);
-  const [timers, setTimers] = useState<TimersType[]>();
 
   const {state, dispatch} = useNotificationsReducer();
   const {
@@ -30,7 +30,8 @@ export const HomePage: FunctionComponent = () => {
     confirmDeleteAll,
     receivedNewNotification,
     notificationsVisible,
-    unSeenNotificationsCount
+    unSeenNotificationsCount,
+    timers
   } = state;
 
   const notificationsVisibleRef = useRef(notificationsVisible);
@@ -57,7 +58,7 @@ export const HomePage: FunctionComponent = () => {
 
   const openEffect = useCallback(() => {
     dispatch({
-      type: 'UPDATE_STATE',
+      type: ACTIONS.UPDATE_STATE,
       payload: {
         notifyClass: notificationsVisible
           ? 'animated slideOutRight'
@@ -71,7 +72,7 @@ export const HomePage: FunctionComponent = () => {
       openEffect();
 
       dispatch({
-        type: 'UPDATE_STATE',
+        type: ACTIONS.UPDATE_STATE,
         payload: {notificationsVisible: !notificationsVisible}
       });
     } else {
@@ -79,7 +80,7 @@ export const HomePage: FunctionComponent = () => {
 
       setTimeout(() => {
         dispatch({
-          type: 'UPDATE_STATE',
+          type: ACTIONS.UPDATE_STATE,
           payload: {notificationsVisible: !notificationsVisible}
         });
       }, 10);
@@ -93,7 +94,7 @@ export const HomePage: FunctionComponent = () => {
       );
 
       dispatch({
-        type: 'UPDATE_STATE',
+        type: ACTIONS.UPDATE_STATE,
         payload: {unSeenNotificationsCount: data}
       });
     } catch (error) {
@@ -106,8 +107,8 @@ export const HomePage: FunctionComponent = () => {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
       dispatch({
-        type: 'RESET_NOTIFICATIONS',
-        payload: {notifications: [], unSeenNotificationsCount: 0}
+        type: ACTIONS.RESET_NOTIFICATIONS,
+        payload: {notifications: []}
       });
     } catch (error) {
       console.warn('error', error);
@@ -118,7 +119,10 @@ export const HomePage: FunctionComponent = () => {
     try {
       await onCDeleteAllNotifications();
 
-      dispatch({type: 'UPDATE_STATE', payload: {confirmDeleteAll: false}});
+      dispatch({
+        type: ACTIONS.UPDATE_STATE,
+        payload: {confirmDeleteAll: false}
+      });
     } catch (error) {
       console.warn(error);
     }
@@ -148,7 +152,6 @@ export const HomePage: FunctionComponent = () => {
     notifications,
     http,
     dispatch,
-    setTimers,
     timers
   });
 
@@ -176,7 +179,7 @@ export const HomePage: FunctionComponent = () => {
             }
             onDeleteAll={() =>
               dispatch({
-                type: 'UPDATE_STATE',
+                type: ACTIONS.UPDATE_STATE,
                 payload: {confirmDeleteAll: true}
               })
             }
@@ -186,7 +189,7 @@ export const HomePage: FunctionComponent = () => {
               onYes={deleteAllNotifications}
               onNo={() =>
                 dispatch({
-                  type: 'UPDATE_STATE',
+                  type: ACTIONS.UPDATE_STATE,
                   payload: {confirmDeleteAll: false}
                 })
               }
@@ -202,7 +205,6 @@ export const HomePage: FunctionComponent = () => {
               notificationsVisible={notificationsVisible}
               notifications={notifications}
               getFetchNotifications={() => getFetchNotifications(lastId)}
-              setTimers={setTimers}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
               dispatch={dispatch}
             />

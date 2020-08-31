@@ -1,8 +1,8 @@
 import {useEffect, Dispatch} from 'react';
 import {NotificationType} from '../../../lib/type';
 import {Http} from 'rainsoft-js';
-import _ from 'lodash';
-import {Params} from '../reducers/useNotificationsReducer';
+import {cloneDeep} from 'lodash';
+import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
 
 interface UseEffectNotificationSeen {
   notificationsVisible: boolean | undefined;
@@ -19,7 +19,7 @@ export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
 
     if (notificationsVisible) {
       try {
-        const clonedNotifications = _.cloneDeep(notifications);
+        const clonedNotifications = cloneDeep(notifications);
 
         const unseenNotificationIds = clonedNotifications
           .filter((notification) => notification.status === 'Unseen')
@@ -41,7 +41,7 @@ export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
           });
 
           dispatch({
-            type: 'RESET_NOTIFICATIONS',
+            type: ACTIONS.RESET_NOTIFICATIONS,
             payload: {notifications: clonedNotifications}
           });
         }
