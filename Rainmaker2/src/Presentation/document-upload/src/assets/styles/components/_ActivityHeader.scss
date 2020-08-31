@@ -1,5 +1,33 @@
-.activityHeader{
-    h1{
-        color: #f00;
+.activityHeader {
+    .sub-header-wrap {
+        padding-top: 35px;
+        padding-bottom: 35px;
+        .breadcrmubs {
+            a {
+                color: color("primary");
+                font-size: fontSize("nr");
+                font-weight: 500;
+                i{
+                    margin-right: 5px;
+                    font-size: fontSize("nr")+4;
+                    vertical-align: text-bottom;
+                }
+                &:hover {
+                    color: color("base");
+                    text-decoration: none;
+                }
+            }
+        }
+        .action-doc-upload {
+           a {
+            color: color("primary");
+            font-size: fontSize("nr");
+            font-weight: 500;
+            &:hover {
+                color: color("base");
+                text-decoration: none;
+            }
+           } 
+        }
     }
 }

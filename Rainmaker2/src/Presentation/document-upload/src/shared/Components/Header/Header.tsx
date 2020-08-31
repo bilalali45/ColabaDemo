@@ -13,12 +13,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 const Header = () => {
 
     const history = useHistory();
-    // console.log('his', useLocation());
     const logout = () => {
         UserActions.logout();
         window.open('http://localhost:5000/app', '_self');
         // history.push('/login')
     }
+
 
     return (
         <header className="header-main">
@@ -36,16 +36,13 @@ const Header = () => {
                             </div>
 
                             <div className="s-account pull-right">
-
-                                <a className="d-name d-none d-sm-block" href="/Dashboard">
+                       
+                                <Dropdown className="userdropdown">
+                                <Dropdown.Toggle id="dname"  className="d-name d-none d-sm-block" as="a">
                                     Hello,
                                     Muhammad Usman
-                    </a>
-                                <Dropdown className="userdropdown">
-                                    <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="a">
-                                        <span>MU</span>
                                     </Dropdown.Toggle>
-
+                                    <Dropdown.Toggle id="dropdownMenuButton" className="hd-shorname" as="span"></Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item href="/Dashboard">Dashboard</Dropdown.Item>
                                         <Dropdown.Item href="/Account/ManagePassword">Change Password</Dropdown.Item>

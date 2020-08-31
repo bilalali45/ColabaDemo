@@ -9,7 +9,6 @@ class ErrorBoundary extends Component {
     }
 
     componentDidCatch() {
-        let url = Endpoints.loan.DELETE.deleteLoanApplication(3);
         // log the error or push it through a service
     }
 

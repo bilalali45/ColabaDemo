@@ -1,55 +1,136 @@
-.DocumentStatus{
+.DocumentStatus {
+    min-height: calc(100% - 15px);
+    position: relative;
 
-    &.box-wrap{
-        padding: 15px 25px;
-    }
+    &.hasData {
+        background-image: url("../../images/doc-request.png");
+        background-image: url("../../images/doc-request.svg");
+        background-position: center right;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: color('colorWhite');
 
-    &--header{
-        border-bottom: 1px solid color('border');
-        padding-bottom: 15px;
-        display: block;
-        margin-bottom: 10px;
-        p{
-            margin: 0px;
+        @include media-breakpoint-down(lg) {
+            // background-position: 112% 43px;
+            // background-size: 65%;
         }
-        
-    }
 
-    &--count{
-        color: color('primary');
-        font: bolder #{fontSize('md')+'/18px'} fontFamily('heading');
-    }
-   
-    &--get-link{
-        padding: 18px 0;
-        display: block;
-        font: 500 #{fontSize('nr')+'/'+fontSize('nr')} fontFamily('heading');
-        text-transform: uppercase;
-        .tt-svg{
-            @include transition(all 0.5s ease-out);
-        }
-        &:hover{
-            text-decoration: none;
-            color:color('colordarkblue');
-            .tt-svg{
-                @include transform(translateX(10px));
-                svg path{
-                    fill: color('colordarkblue');
-                }
+        @include media-breakpoint-down(md) {
+            // background-position: 106% 69px;
+            // background-size: 58%;
+           
+
+            .box-wrap--header,
+            .box-wrap--body {
+                position: relative;
+                z-index: 585;
+            }
+
+            .box-wrap--footer {
+                z-index: 585;
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                background:rgba(color('colorWhite'),0.9);
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
             }
         }
+
+        .box-wrap--body {
+            max-width: 400px;
+            min-height: 385px;
+
+            @include media-breakpoint-down(lg) {
+                max-width: 310px;
+            }
+
+            @include media-breakpoint-down(md) {
+                max-width: 100%;
+            }
+        }
+
     }
 
-    &--left-side{
-
+    .overlay-DocumentStatus {
+        //background: rgba(color('colorWhite'), 0.80);
     }
 
-    &--right-side{
-        svg{
-            margin-bottom: 10px;
+    .list {
+        li {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             max-width: 100%;
+
+            @include media-breakpoint-down(md) {
+                font-size: fontSize("nr")-1;
+                max-width: 100%
+            }
+
         }
     }
 
-    
+
+    &.box-wrap {
+        padding: 20px 20px;
+
+    }
+
+    .box-wrap {
+        &--body {
+            padding-bottom: 50px;
+            min-height: 390px;
+
+        }
+
+        &--footer {
+            @extend .clearfix;
+            position: absolute;
+            width: 100%;
+            bottom: 20px;
+            right: 0;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+    }
+
+
+
+    &--count {
+        color: color("primary");
+        font: bolder #{fontSize("md") + "/18px"} fontFamily("heading");
+    }
+
+    &.empty {
+        background: color('colorWhite') !important;
+
+        .edc-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 345px;
+            padding-top: 50px;
+
+            .eds-img {
+                text-align: center;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+
+            .eds-txt {
+                text-align: center;
+                padding-top: 20px;
+            }
+        }
+
+    }
 }

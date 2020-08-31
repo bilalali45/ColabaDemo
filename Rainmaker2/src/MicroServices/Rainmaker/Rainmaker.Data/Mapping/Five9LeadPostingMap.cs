@@ -36,7 +36,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.CreatedOnUtc).HasColumnName(@"CreatedOnUtc").HasColumnType("datetime").IsRequired(false);
 
             // Foreign keys
-            builder.HasOne(a => a.Opportunity).WithMany().OnDelete(DeleteBehavior.SetNull); // FK_Five9LeadPosting_Opportunity
+            builder.HasOne(a => a.Opportunity).WithOne(b => b.Five9LeadPosting).HasForeignKey<Five9LeadPosting>(c => c.Id).OnDelete(DeleteBehavior.SetNull); // FK_Five9LeadPosting_Opportunity
             InitializePartial();
         }
         partial void InitializePartial();

@@ -26,7 +26,7 @@ namespace KeyStore.Service
                 string keyString = line.Substring(0,pos);
                 string valueString = line.Substring(pos+1);
                 if (keyString == key)
-                    return AESCryptography.Decrypt(valueString);
+                    return AESCryptography.Decrypt(valueString,AESCryptography.AesKey256);
             }
             return null;
         }

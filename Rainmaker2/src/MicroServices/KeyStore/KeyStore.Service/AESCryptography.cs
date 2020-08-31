@@ -6,14 +6,14 @@ namespace KeyStore.Service
 {
     public partial class AESCryptography
     {
-        public static string Encrypt(string text)
+        public static string Encrypt(string text,string key)
         {
             // AesCryptoServiceProvider
             using AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 256;
             aes.IV = Encoding.UTF8.GetBytes(AesIV256);
-            aes.Key = Encoding.UTF8.GetBytes(AesKey256);
+            aes.Key = Encoding.UTF8.GetBytes(key);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 
@@ -32,14 +32,14 @@ namespace KeyStore.Service
         /// <summary>
         /// AES decryption
         /// </summary>
-        public static string Decrypt(string text)
+        public static string Decrypt(string text,string key)
         {
             // AesCryptoServiceProvider
             using AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 256;
             aes.IV = Encoding.UTF8.GetBytes(AesIV256);
-            aes.Key = Encoding.UTF8.GetBytes(AesKey256);
+            aes.Key = Encoding.UTF8.GetBytes(key);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 

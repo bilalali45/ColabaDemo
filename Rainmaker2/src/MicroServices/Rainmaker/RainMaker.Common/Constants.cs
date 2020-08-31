@@ -1181,6 +1181,16 @@ namespace RainMaker.Common
         public const string EncompassLoanFolder = "EncompassLoanFolder";
         public const string EncompassLoanTemplatePath = "EncompassLoanTemplatePath";
 
+        public const string ByteProUserName = "ByteProUserName";
+        public const string ByteProPassword = "ByteProPassword";
+        public const string ByteProApiUserName = "ByteProApiUserName";
+        public const string ByteProApiPassword = "ByteProApiPassword";
+        public const string ByteCompanyCode = "ByteCompanyCode";
+        public const string ByteProUserNo = "ByteProUserNo";
+        public const string ByteAuthKey = "ByteAuthKey";
+        public const string ByteApiAuthKey = "ByteApiAuthKey";
+        public const string ByteApiUrl = "ByteApiUrl";
+
         public const string MaxPointFeeValue = "MaxPointFee";
         public const string ForgotTokenExpiry = "ForgotTokenExpiry";
         public const string LeadGenErrorLocationLicense = "LeadGen.Error.LocationLicense";
@@ -1530,7 +1540,9 @@ namespace RainMaker.Common
         LoanApplicationStart = 15,
         LoanApplicationSubmitted = 16,
         EmailLoOnLoanApplicationStart = 17,
-        EmailLoOnLoanApplicationSubmitted = 18
+        EmailLoOnLoanApplicationSubmitted = 18,
+        LoanApplicationDocumentRequestActivity = 19,
+        LoanApplicationDocumentRejectActivity = 20
     }
 
 
@@ -2004,7 +2016,9 @@ namespace RainMaker.Common
         [Description("Application Started")]
         ApplicationStarted = 12,
         [Description("Application Submitted")]
-        ApplicationSubmitted = 13
+        ApplicationSubmitted = 13,
+        [Description("Document Upload")]
+        DocumentUpload = 50
     }
     public enum Months
     {

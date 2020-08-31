@@ -1,8 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Rainmaker.Model
 {
     public class LoanSummary
+    {
+        public string Url { get; set; }
+        public string Name { get; set; }
+        public string LoanPurpose { get; set; }
+        public string PropertyType { get; set; }
+        public string StateName { get; set; }
+        public string CountyName { get; set; }
+        public string CityName { get; set; }
+        public string StreetAddress { get; set; }
+        public string ZipCode { get; set; }
+        public decimal? LoanAmount { get; set; }
+        public string CountryName { get; set; }
+        public string UnitNumber { get; set; }
+    }
+
+    public class AdminLoanSummary
     {
         public string LoanPurpose { get; set; }
         public string PropertyType { get; set; }
@@ -12,8 +30,19 @@ namespace Rainmaker.Model
         public string StreetAddress { get; set; }
         public string ZipCode { get; set; }
         public decimal? LoanAmount { get; set; }
+        public string CountryName { get; set; }
+        public string UnitNumber { get; set; }
+        public string Status { get; set; }
+        public List<string> Borrowers { get; set; }
+        public string LoanNumber { get; set; }
+        public DateTime? ExpectedClosingDate { get; set; }
+        public decimal? PopertyValue { get; set; }
+        public decimal? Rate { get; set; }
+        public string LoanProgram { get; set; }
+        public string LockStatus { get; set; }
+        public DateTime? LockDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
     }
-
     public class LoanOfficer
     {
         public string FirstName { get; set; }
@@ -23,5 +52,11 @@ namespace Rainmaker.Model
         public string WebUrl { get; set; }
         public string NMLS { get; set; }
         public string Photo { get; set; }
+    }
+
+    public class PostModel
+    {
+        public int? userId { get; set; }
+        public string userName { get; set; }
     }
 }

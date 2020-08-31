@@ -1,0 +1,19 @@
+@mixin borderRadius($r1: null, $r2: null, $r3: null, $r4: null) {
+    @if $r2==false {
+        border-radius: $r1;
+    } @else {
+        @if $r1 {
+            border-top-left-radius: $r1;
+        }
+        @if $r2 {
+            border-top-right-radius: $r2;
+        }
+        @if $r3 {
+            border-bottom-right-radius: $r3;
+        }
+        @if $r4 {
+            border-bottom-left-radius: $r4;
+        }
+    }
+}
+//  @include borderRadius(6,false); 

@@ -10,4 +10,12 @@ obj
 packages
 .vs
 package-lock.json
+.vscode
+TestResults
 node_modules
+TestResults
+build
+dist
+yarn.lock
+*.log
+/Rainmaker2/src/Solutions/AllProjects.sln

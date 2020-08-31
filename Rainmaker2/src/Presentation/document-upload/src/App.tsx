@@ -1,33 +1,127 @@
-import React from 'react';
-import './App.scss';
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import { Home } from './components/Home/Home';
-import Header from './shared/Components/Header/Header';
-import Footer from './shared/Components/Footer/Footer';
-import DummyLogin from './components/DummyLogin/DummyLoging';
-import { StoreProvider } from './store/store';
-import { Loading } from './components/Loading/Loading';
+import React, { useEffect, useState } from "react";
+import "./App.scss";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import { Home } from "./components/Home/Home";
+import { StoreProvider } from "./store/store";
+import { RainsoftRcHeader, RainsoftRcFooter } from "rainsoft-rc";
+import { UserActions } from "./store/actions/UserActions";
+import ImageAssets from "./utils/image_assets/ImageAssets";
+import { ParamsService } from "./utils/ParamsService";
+import { Authorized } from "./shared/Components/Authorized/Authorized";
+import { FooterContents } from "./utils/header_footer_utils/FooterContent";
+import HeaderContent from "./utils/header_footer_utils/HeaderContent";
+import { Auth } from "./services/auth/Auth";
+import { LaonActions } from "./store/actions/LoanActions";
+import IdleTimer from "react-idle-timer";
+// import Header from "./shared/Components/Header/Header";
 
+const mvcDashBoardUrl = `Dashboard`;
+// const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
+
+declare global {
+  interface Window {
+    envConfig: any;
+  }
+}
+window.envConfig = window.envConfig || {};
 
 const App = () => {
-
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [expListnerAdded, setExpListnerAdded] = useState(false);
+  const [footerText, setFooterText] = useState("");
+  const tokenData: any = UserActions.getUserInfo();
+  const displayName = " " + tokenData?.FirstName + " " + tokenData?.LastName;
   const history = useHistory();
-  console.log(history);
-  
+  useEffect(() => {
+    console.log("Document Management App Version", "0.1.3");
+    authenticate();
+    // component unmount
+    return () => {
+      Auth.removeAuth();
+    };
+  }, []);
+
+  const authenticate = async () => {
+    let isAuth = await UserActions.authorize();
+    if (isAuth) {
+      setAuthenticated(Boolean(isAuth));
+      getFooterText();
+      addExpiryListener();
+      keepAliveParentApp();
+    } else {
+      Auth.removeAuth();
+      window.open("/Account/LogOff", "_self");
+    }
+  };
+
+  const getFooterText = async () => {
+    let applicationId = Auth.getLoanAppliationId();
+    let footerText = await LaonActions.getFooter(applicationId);
+    setFooterText(footerText);
+  };
+
+  const addExpiryListener = () => {
+    if (Auth.getUserPayload()) {
+      console.log("addExpiryListener called from APP tsx");
+      UserActions.addExpiryListener(Auth.getUserPayload());
+      // setExpListnerAdded(true);
+    }
+  };
+
+  const keepAliveParentApp = () => {
+    if (process.env.NODE_ENV === "production") {
+      setInterval(() => {
+        UserActions.refreshParentApp();
+      }, 60 * 1000);
+    }
+  };
+
+  const onIdle = (e) => {
+    console.log("Idle time meet");
+    window.onbeforeunload = null;
+    Auth.removeAuth();
+    window.open("/Account/LogOff", "_self");
+  };
+
+  console.log("Application is ", authenticated);
+  if (!authenticated) {
+    return null;
+  }
 
   return (
     <div className="app">
       <StoreProvider>
-        <Router>
+        <IdleTimer
+          element={document}
+          onIdle={onIdle}
+          debounce={250}
+          timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
+        />
+        <RainsoftRcHeader
+          logoSrc={ImageAssets.header.logoheader}
+          displayName={UserActions.getUserName()}
+          // displayNameOnClick={HeaderContent.gotoDashboardHandler}
+          options={HeaderContent.headerDropdowmMenu}
+        />
+        <Router basename="/LoanPortal">
           <Switch>
-            {/* <Route path="/login" component={DummyLogin} /> */}
-            <Route exact path="/" component={Loading} />
-            <Route path="/home" component={Home} />
+            <Authorized
+              path="/:navigation/:loanApplicationId"
+              component={Home}
+            />
+            <Authorized path="/:loanApplicationId" component={Home} />
           </Switch>
         </Router>
+        <RainsoftRcFooter content={footerText} />
       </StoreProvider>
     </div>
   );
-}
+};
 
 export default App;

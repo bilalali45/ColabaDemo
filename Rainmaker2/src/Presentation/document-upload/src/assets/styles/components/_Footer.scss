@@ -1,53 +1,49 @@
 .mainfooter {
-    font-size: 14px;
-    background: #fff;
-    padding-top: 55px;
-    color: #4d4d4d;
+    font-size: fontSize('sm');
+    padding-top: 20px;
+    color: color('gray2');
     line-height: 25px;
-    border-top: 1px solid #eeeeee;
     padding-bottom: 20px;
-    -webkit-text-stroke: 0.001px;
-    -webkit-text-stroke: 0.001px rgba(177, 177, 177, 0.01);
-    text-shadow: #757575 0px 0px 0px;
-    h2 {
-        font-size: 18px;
-        margin: 0;
-        padding: 0;
-    }
-    address {
-        position: relative;
-        font-size: 14px;
-        line-height: 25px;
-        margin: 16px 0 25px;
-        padding: 0 0 0 23px;
-        i {
-            position: absolute;
-            left: 0;
-            top: 5px;
-        }
-    }
-    .footer-phone {
-        position: relative;
-        padding-left: 23px;
+
+//     h2 {
+//         font-size: 18px;
+//         margin: 0;
+//         padding: 0;
+//     }
+//     address {
+//         position: relative;
+//         font-size: 14px;
+//         line-height: 25px;
+//         margin: 16px 0 25px;
+//         padding: 0 0 0 23px;
+//         i {
+//             position: absolute;
+//             left: 0;
+//             top: 5px;
+//         }
+//     }
+//     .footer-phone {
+//         position: relative;
+//         padding-left: 23px;
         
-        i {
-            position: absolute;
-            left: 0;
-            top: 5px;
-        }
-        a {
-            color: #4d4d4d;
-        }
-    }
-  .copyright-text {
-        border-top: none;
-        padding: 0;
-        font-size: 14px;
-        line-height: 25px;
-        p {
-            margin-bottom: 30px;
-        }
-    }
+//         i {
+//             position: absolute;
+//             left: 0;
+//             top: 5px;
+//         }
+//         a {
+//             color: #4d4d4d;
+//         }
+//     }
+//   .copyright-text {
+//         border-top: none;
+//         padding: 0;
+//         font-size: 14px;
+//         line-height: 25px;
+//         p {
+//             margin-bottom: 30px;
+//         }
+//     }
 
 }
 .bg-shape {

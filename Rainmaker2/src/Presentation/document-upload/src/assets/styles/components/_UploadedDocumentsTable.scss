@@ -1,0 +1,72 @@
+.UploadedDocumentsTable{
+    overflow: auto;
+    @include media-breakpoint-down(lg) {
+        font-size: fontSize("nr")-1;
+    }
+    @include media-breakpoint-down(md) {
+        font-size: fontSize("nr")-2;
+    }
+    .block-element{
+        margin-bottom: 10px;
+        display: block !important;
+        white-space: nowrap;
+    }
+
+    .table{
+        margin-bottom: 40px;
+
+        thead > tr > th, 
+        tbody > tr > td {
+            padding-left: 20px !important;
+        }
+
+        thead{
+            font-weight: 500;
+            th{
+                font-weight: 500;
+            }
+        }
+        tbody{
+            font-weight: 400;
+        }
+
+        td,th{
+            border-top: 0px;
+        }
+        th{
+            border-bottom: 1px solid color('border');
+        }
+
+        
+        
+        .doc-name{
+            padding-left: 25px;
+            position: relative;
+            display: block;
+            max-width: 450px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        
+            .fa-file{
+                position: absolute;
+                top: 0px;
+                left: 5px;
+                @include media-breakpoint-down(lg) {
+                    top: 2px;
+                }
+            }
+        }
+
+        .link-filename {
+            max-width: 350px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            @include media-breakpoint-down(md) {
+                max-width: 310px;
+            }
+        }
+    } 
+}

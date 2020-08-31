@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using KeyStore.API.Helpers;
 using KeyStore.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace KeyStore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddScoped<IKeyStore,KeyStore.Service.KeyStore>();
             services.AddControllers();
         }
@@ -40,8 +42,11 @@ namespace KeyStore.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
+            }
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

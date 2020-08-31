@@ -1,50 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
-import { Activity } from './Activity/Activity'
-import { DocumentRequest } from './DocumentRequest/DocumentRequest'
-import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
+import React, { useEffect, useState, Component } from "react";
+import {
+  Switch,
+  Route,
+  useLocation,
+  useHistory,
+  Redirect,
+  useParams,
+} from "react-router-dom";
+import { Activity } from "./Activity/Activity";
+import { UploadedDocuments } from "./UploadedDocuments/UploadedDocuments";
+import { Http } from "../../services/http/Http";
+import ActivityHeader from "./AcitivityHeader/ActivityHeader";
+import { LoanApplication } from "../../entities/Models/LoanApplication";
+import { UserActions } from "../../store/actions/UserActions";
+import { RainsoftRcHeader, RainsoftRcFooter } from "rainsoft-rc";
+import { DocumentsStatus } from "./Activity/DocumentsStatus/DocumentsStatus";
+import { DocumentRequest } from "./DocumentRequest/DocumentRequest";
+import ImageAssets from "../../utils/image_assets/ImageAssets";
+import { PageNotFound } from "../../shared/Errors/PageNotFound";
+import { Authorized } from "../../shared/Components/Authorized/Authorized";
+import { ParamsService } from "../../utils/ParamsService";
 
-import { Http } from '../../services/http/Http'
-import { Auth } from '../../services/auth/Auth'
-import { Store } from '../../store/store'
+export class Home extends Component {
+  componentDidMount() {
+    this.setParams(this.props);
+  }
 
-import ActivityHeader from './AcitivityHeader/ActivityHeader'
-import { LoanApplication } from '../../entities/Models/LoanApplication'
-import { UserActions } from '../../store/actions/UserActions'
-import Header from '../../shared/Components/Header/Header'
-import Footer from '../../shared/Components/Footer/Footer'
-const httpClient = new Http();
+  setParams = (props: any) => {
+    const { loanApplicationId } = props.match.params;
+    if (!isNaN(loanApplicationId)) {
+      ParamsService.storeParams(loanApplicationId);
+    } else {
+      window.open("/404", "_self");
+    }
+  };
 
-export const Home = () => {
-    const location = useLocation();
-    const history = useHistory();
-
-    const [authenticated, setAuthenticated] = useState<boolean>(false);
-
-
-    useEffect(() => {
-        console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
-        console.log('in here!!!', location);
-        if(!Auth.checkAuth()) {
-            history.push('/loading');
-        }
-        if (location.pathname === '/') {
-            history.push('/home/activity');
-        }
-    }, [])
-
-    httpClient.get('/home');
-
+  render() {
     return (
-        <div>
-            <Header></Header>
-            <ActivityHeader />
+      <div>
+        <ActivityHeader {...this.props} />
+        <main className="page-content">
+          <div className="container">
             <Switch>
-                <Route path="/home/activity" component={Activity} />
-                <Route path="/home/documentsRequest" component={DocumentRequest} />
-                <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
+              <Redirect
+                exact
+                from={"/:loanApplicationId"}
+                to={"/activity/:loanApplicationId"}
+              />
+              <Authorized
+                path="/activity/:loanApplicationId"
+                component={Activity}
+              />
+              <Authorized
+                path="/documentsRequest/:loanApplicationId"
+                component={DocumentRequest}
+              />
+              <Authorized
+                path="/uploadedDocuments/:loanApplicationId"
+                component={UploadedDocuments}
+              />
+              <Route path="/404" component={PageNotFound} />
+              <Redirect exact from={"*"} to={"/404"} />
             </Switch>
-            <Footer></Footer>
-        </div>
-    )
+          </div>
+        </main>
+      </div>
+    );
+  }
 }

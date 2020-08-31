@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KeyStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Keystore/[controller]")]
     [ApiController]
     public class KeyStoreController : Controller
     {
@@ -18,9 +18,12 @@ namespace KeyStore.API.Controllers
             this.keyStore = keyStore;
         }
         [HttpGet]
-        public IActionResult Get(string key)
+        public string Get(string key)
         {
-            return Ok(new { key = keyStore.Get(key) });
+            var keyData = keyStore.Get(key);
+            if (string.IsNullOrEmpty(keyData))
+                throw new Exception("unable to get key");
+            return keyData;
         }
     }
 }

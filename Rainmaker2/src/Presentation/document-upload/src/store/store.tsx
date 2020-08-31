@@ -2,20 +2,27 @@ import React, { createContext, useReducer, ReactFragment } from 'react'
 import { authReducer } from './reducers/aauthReducer';
 import { userReducer } from './reducers/userReducer';
 import { mainReducer } from './reducers/reducers';
-import { Http } from '../services/http/Http';
+import { Http } from 'rainsoft-js';
+import { ContactUs } from '../entities/Models/ContactU';
+import { LoanType } from './reducers/loanReducer';
+import { DocumentsType } from './reducers/documentReducer';
+import { Auth } from '../services/auth/Auth';
 
 const httpClient = new Http();
+let baseUrl : any = window.envConfig.API_BASE_URL; 
+let auth = Auth.getAuth();
 
-httpClient.setBaseUrl('http://localhost:5000');
+httpClient.setBaseUrl(baseUrl);
+if(auth) httpClient.setAuth(auth)
 
 export type InitialStateType = {
-    auth: {} | null,
-    user: {} | null
+    loan: LoanType | {}
+    documents: DocumentsType | {}
 }
 
 export const initialState = {
-    auth: {},
-    user: {}
+    loan: {},
+    documents: {}
 };
 
 const Store = createContext<{
