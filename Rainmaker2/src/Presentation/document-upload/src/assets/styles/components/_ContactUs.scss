@@ -67,7 +67,8 @@
         > li {
             padding: 0px 0;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            line-height: 1.2;
 
             a {
                 color: color("light-purple");
@@ -75,6 +76,10 @@
                 display: block;
                 position: relative;
                 padding-left: 9px;
+                min-height: 20px;
+                a {
+                    padding:0;
+                }
                 &:hover {
                     text-decoration: none;
                 }
@@ -87,6 +92,7 @@
                     color: color('primary');
                     position: absolute;
                     left: -15px;
+                    top: 4px;
 
                     @include media-breakpoint-down(md) {
                         left: 0;

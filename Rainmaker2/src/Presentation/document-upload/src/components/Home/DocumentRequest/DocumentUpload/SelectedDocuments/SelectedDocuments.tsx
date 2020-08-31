@@ -136,40 +136,7 @@ export const SelectedDocuments = ({
     setSubBtnPressed(false);
     try {
       fetchUploadedDocuments();
-      // let docs = await DocumentActions.getPendingDocuments(
-      //   Auth.getLoanAppliationId()
-      // );
-      // if (docs) {
-      //   if (docs?.length) {
-      //     dispatch({
-      //       type: DocumentsActionType.FetchPendingDocs,
-      //       payload: docs,
-      //     });
-      //     let currentDoc = docs.find((d) => d.docId === currentSelected.docId);
-      //     dispatch({
-      //       type: DocumentsActionType.SetCurrentDoc,
-      //       payload: currentDoc,
-      //     });
-      //   }
-      // }
-      // let current = currentSelected;
-      // let updatedPendingDocs = pendingDocs.map((p: DocumentRequest) => {
-      //   if (p.docId === currentSelected.docId) {
-      //     // p.resubmittedNewFiles = true;
-      //     current = p;
-      //     return p;
-      //   }
-      //   return p;
-      // });
-
-      // current.files = selectedFiles.filter(
-      //   (f: Document) => f.uploadStatus !== "failed"
-      // );
-      // dispatch({
-      //   type: DocumentsActionType.FetchPendingDocs,
-      //   payload: updatedPendingDocs,
-      // });
-      // dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: current });
+      
     } catch (error) { }
   };
 
