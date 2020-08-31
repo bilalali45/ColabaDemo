@@ -1,16 +1,16 @@
 import React, {FunctionComponent} from 'react';
 import {Link} from 'react-router-dom';
 
-import {NotificationType, TimersType} from '../lib/type';
-import {formatDateTime} from '../lib/utils';
-import {SVGDocument, SVGClose, SVGCalender} from '../SVGIcons';
+import {NotificationType, TimersType} from '../../lib/type';
+import {formatDateTime} from '../../lib/utils';
+import {SVGDocument, SVGClose, SVGCalender} from '../../assets/icons/SVGIcons';
 
 interface NotificationProps {
   removeNotification: () => void;
   notification: NotificationType;
   timers: TimersType[];
   clearTimeOut: (id: number, timers: TimersType[]) => void;
-  readAllNotificationsForDocument: (loanApplicationId: string) => void;
+  readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
 }
 
 export const Notification: FunctionComponent<NotificationProps> = ({
@@ -39,17 +39,20 @@ export const Notification: FunctionComponent<NotificationProps> = ({
     }
   } = notification;
 
-  const readDocumentsAndOpenLink = (
+  const readDocumentsAndOpenLink = async (
     loanApplicationId: string,
     link: string,
     notificationStatus: string
   ) => {
-    //Prevent unecessary API call
-    if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
-      (async () => {
+    try {
+      //Prevent unecessary API call
+      if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
         await readAllNotificationsForDocument(loanApplicationId);
-      })();
+      }
+    } catch (error) {
+      console.warn(error);
     }
+
     window.open(link, '_self');
   };
 

@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {SVGToggle, SVGNoBell, SVGBellSleep} from '../SVGIcons';
+
+import {SVGToggle, SVGNoBell, SVGBellSleep} from '../assets/icons/SVGIcons';
 
 interface HeaderProps {
   onDeleteAll: () => void;

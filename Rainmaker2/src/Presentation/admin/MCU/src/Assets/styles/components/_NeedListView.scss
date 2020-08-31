@@ -10,6 +10,10 @@
     }
 }
 
+.txt-stl {
+    cursor: pointer;
+}
+
 .sync-alert {
     background: color("colorWhite");
     max-width: 557px;
@@ -40,6 +44,8 @@
             min-height: 68px;
             .msg {
                 width: 100%;
+                font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+                color:color('sucsess');
             }
             .close-wrap {
                 position: absolute;

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 
-export const SVGCalender = () => {
+export const SVGCalender: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ export const SVGCalender = () => {
   );
 };
 
-export const SVGClose = () => {
+export const SVGClose: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@ export const SVGClose = () => {
   );
 };
 
-export const SVGToggle = () => {
+export const SVGToggle: FunctionComponent = () => {
   return (
     <svg
       id="Component_14_1"
@@ -90,7 +90,7 @@ export const SVGToggle = () => {
   );
 };
 
-export const SVGDocument = () => {
+export const SVGDocument: FunctionComponent = () => {
   return (
     <svg
       id="Group_1003"
@@ -176,7 +176,7 @@ export const SVGDocument = () => {
   );
 };
 
-export const SVGNoBell = () => {
+export const SVGNoBell: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -247,7 +247,7 @@ export const SVGNoBell = () => {
             transform="translate(1147.5 316.5)"
             fill="none"
             stroke="#2c9ef5"
-            stroke-width="4"
+            strokeWidth="4"
           />
           <line
             id="Line_97"
@@ -256,7 +256,7 @@ export const SVGNoBell = () => {
             transform="translate(1163 301) rotate(90)"
             fill="none"
             stroke="#2c9ef5"
-            stroke-width="4"
+            strokeWidth="4"
           />
         </g>
       </g>
@@ -264,7 +264,7 @@ export const SVGNoBell = () => {
   );
 };
 
-export const SVGBellSleep = () => {
+export const SVGBellSleep: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
