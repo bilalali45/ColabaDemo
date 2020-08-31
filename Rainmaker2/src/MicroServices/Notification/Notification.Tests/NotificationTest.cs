@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Moq;
+using Notification.API;
 using Notification.API.Controllers;
 using Notification.Data;
 using Notification.Entity.Models;
@@ -121,14 +123,23 @@ namespace Notification.Tests
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+            Mock<IHubContext<ServerHub, IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub, IClientHub>>();
+            Mock<IClientHub> clientHub = new Mock<IClientHub>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+            var notificationController = new NotificationController(mockUserProfileService.Object, mockHubContext.Object, Mock.Of<IRedisService>());
 
             NotificationRead notificationRead = new NotificationRead();
             notificationRead.ids = new List<long> {10};
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            List<long> lstRead = new List<long>();
+            lstRead.Add(1);
+
+            mockUserProfileService.Setup(x => x.Read(It.IsAny<List<long>>(), It.IsAny<int>())).ReturnsAsync(lstRead);
+
+            mockHubContext.Setup(x => x.Clients.Clients(It.IsAny<IReadOnlyList<string>>())).Returns(clientHub.Object);
 
             var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -145,13 +156,16 @@ namespace Notification.Tests
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
-
-            var httpContext = new Mock<HttpContext>();
+            Mock<IHubContext<ServerHub,IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub,IClientHub>>();
+               var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
+            Mock<IClientHub> clientHub = new Mock<IClientHub>();
+
+            mockHubContext.Setup(x => x.Clients.Clients(It.IsAny<IReadOnlyList<string>>())).Returns(clientHub.Object);
             var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+            var notificationController = new NotificationController(mockUserProfileService.Object, mockHubContext.Object, Mock.Of<IRedisService>());
 
             notificationController.ControllerContext = context;
 
@@ -169,9 +183,19 @@ namespace Notification.Tests
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+            Mock<IHubContext<ServerHub, IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub, IClientHub>>();
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+            Mock<IClientHub> clientHub = new Mock<IClientHub>();
 
+            mockHubContext.Setup(x => x.Clients.Clients(It.IsAny<IReadOnlyList<string>>())).Returns(clientHub.Object);
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var notificationController = new NotificationController(mockUserProfileService.Object, mockHubContext.Object, Mock.Of<IRedisService>());
+
+            notificationController.ControllerContext = context;
             //Act
             IActionResult result = await notificationController.DeleteAll();
             //Assert
@@ -469,7 +493,19 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
 
-            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+            Mock<IHubContext<ServerHub, IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub, IClientHub>>();
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            Mock<IClientHub> clientHub = new Mock<IClientHub>();
+
+            mockHubContext.Setup(x => x.Clients.Clients(It.IsAny<IReadOnlyList<string>>())).Returns(clientHub.Object);
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            var notificationController = new NotificationController(mockUserProfileService.Object, mockHubContext.Object, Mock.Of<IRedisService>());
+
+            notificationController.ControllerContext = context;
 
             NotificationSeen notificationSeen = new NotificationSeen();
             List<long> ids = new List<long>();
