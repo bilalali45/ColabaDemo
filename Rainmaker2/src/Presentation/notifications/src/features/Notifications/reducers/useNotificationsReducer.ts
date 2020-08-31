@@ -1,5 +1,6 @@
-import {NotificationType, TimersType} from '../../../lib/type';
 import {useReducer, Dispatch} from 'react';
+
+import {NotificationType, TimersType} from '../../../lib/type';
 
 export enum ACTIONS {
   UPDATE_STATE = 'UPDATE_STATE',

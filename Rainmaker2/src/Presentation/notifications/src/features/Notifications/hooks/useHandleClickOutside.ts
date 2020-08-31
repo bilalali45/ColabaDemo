@@ -1,9 +1,10 @@
 import React, {useEffect, Dispatch} from 'react';
+
 import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
 
 interface UseHandleClickOutsideProps {
   refContainerSidebar: React.RefObject<HTMLDivElement>;
-  dispatch: React.Dispatch<Params>;
+  dispatch: Dispatch<Params>;
 }
 
 export const useHandleClickOutside = ({

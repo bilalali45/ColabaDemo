@@ -1,4 +1,5 @@
 import React, {FunctionComponent} from 'react';
+
 import {SVGToggle, SVGNoBell, SVGBellSleep} from '../assets/icons/SVGIcons';
 
 interface HeaderProps {

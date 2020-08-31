@@ -1,8 +1,9 @@
 import {useEffect, Dispatch} from 'react';
-import {NotificationType} from '../../../lib/type';
 import {Http} from 'rainsoft-js';
 import {cloneDeep} from 'lodash';
+
 import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {NotificationType} from '../../../lib/type';
 
 interface UseEffectNotificationSeen {
   notificationsVisible: boolean | undefined;

@@ -9,12 +9,15 @@ import {Http} from 'rainsoft-js';
 
 import {Notifications} from '../features/Notifications/Notifications';
 import {Header, BellIcon, ConfirmDeleteAll, LoadingSpinner} from './_HomePage';
-import {useFetchNotifications} from '../features/Notifications/hooks/useFetchNotifications';
-import {useHandleClickOutside} from '../features/Notifications/hooks/useHandleClickOutside';
-import {useNotificationSeen} from '../features/Notifications/hooks/useNotificationSeen';
-import {useSignalREvents} from '../features/Notifications/hooks/useSignalREvents';
-import {useReadAllNotificationsForDocument} from '../features/Notifications/hooks/useReadAllNotificationsForDocument';
-import {useRemoveNotification} from '../features/Notifications/hooks/useRemoveNotification';
+import {
+  useFetchNotifications,
+  useHandleClickOutside,
+  useNotificationSeen,
+  useSignalREvents,
+  useReadAllNotificationsForDocument,
+  useRemoveNotification
+} from '../features/Notifications/hooks';
+
 import {
   useNotificationsReducer,
   ACTIONS
