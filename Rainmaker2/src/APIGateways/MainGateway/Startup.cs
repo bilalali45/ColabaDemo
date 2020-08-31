@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using IdentityServer4.AccessTokenValidation;
 using MainGateway.Middleware;
 using MainGateway.Services;
@@ -130,8 +131,7 @@ namespace MainGateway
             });
             app.Use(async (context, next) =>
             {
-                await next();
-                try
+                context.Response.OnStarting((state) =>
                 {
                     if (!context.WebSockets.IsWebSocketRequest)
                     {
@@ -141,10 +141,9 @@ namespace MainGateway
                             context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
                         context.Response.Headers.Remove("Server");
                     }
-                }
-                catch
-                {
-                }
+                    return Task.CompletedTask;
+                },null);
+                await next();
             });
             app.UseWebSockets();
             app.UseOcelot().Wait();
