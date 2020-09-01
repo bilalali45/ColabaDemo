@@ -2,13 +2,13 @@ import {Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
 import {TimersType, NotificationType} from '../../../lib/type';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseRemoveNotificationProps {
   notifications: NotificationType[] | null | undefined;
   timers: TimersType[] | undefined;
   http: Http;
-  dispatch: Dispatch<Params>;
+  dispatch: Dispatch<Actions>;
 }
 
 export const useRemoveNotification = (
@@ -32,14 +32,14 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.DELETE_NOTIFICATION,
-            payload: {notificationId: id}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: id
           });
         }, 5000);
 
         dispatch({
-          type: ACTIONS.ADD_DELETE_TIMER,
-          payload: {timer: {id, timer}}
+          type: 'ADD_DELETE_TIMER',
+          timer: {id, timer}
         });
       } else {
         const timer = setTimeout(async () => {
@@ -48,14 +48,14 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.DELETE_NOTIFICATION,
-            payload: {notificationId: id}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: id
           });
         }, 5000);
 
         dispatch({
-          type: ACTIONS.ADD_DELETE_TIMER,
-          payload: {timer: {id, timer}}
+          type: 'ADD_DELETE_TIMER',
+          timer: {id, timer}
         });
       }
     } catch (error) {

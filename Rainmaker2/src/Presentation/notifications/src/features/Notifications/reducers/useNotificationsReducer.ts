@@ -1,125 +1,75 @@
 import {useReducer, Dispatch} from 'react';
-
-import {NotificationType, TimersType} from '../../../lib/type';
 import {cloneDeep} from 'lodash';
 
-export enum ACTIONS {
-  UPDATE_STATE = 'UPDATE_STATE',
-  APPEND_NOTIFICATIONS = 'APPEND_NOTIFICATIONS',
-  RESET_NOTIFICATIONS = 'RESET_NOTIFICATIONS',
-  DECREMEMNT_UNSEEN_COUNTER = 'DECREMEMNT_UNSEEN_COUNTER',
-  ADD_DELETE_TIMER = 'ADD_DELETE_TIMER',
-  RESET_DELETE_TIMERS = 'RESET_DELETE_TIMERS',
-  DELETE_NOTIFICATION = 'DELETE_NOTIFICATION',
-  RECEIVED_NOTIFICATION = 'RECEIVED_NOTIFICATION',
-  SEEN_NOTIFICATIONS = 'SEEN_NOTIFICATIONS',
-  READ_NOTIFICATIONS = 'READ_NOTIFICATIONS'
-}
+import {NotificationType, TimersType} from '../../../lib/type';
 
-interface StateType {
-  notificationsVisible: boolean;
+interface State {
   notifications: NotificationType[] | null;
-  receivedNewNotification: boolean;
   confirmDeleteAll: boolean;
   unSeenNotificationsCount: number;
-  notifyClass: string;
   timers: TimersType[];
-  showToss: boolean;
-  notificationIds: number[];
-}
-
-interface UpdateParams {
   notificationsVisible: boolean;
-  notifications: NotificationType[];
-  notification: NotificationType;
   receivedNewNotification: boolean;
-  confirmDeleteAll: boolean;
-  unSeenNotificationsCount: number;
-  notifyClass: string;
-  timers: TimersType[];
-  timer: TimersType;
-  timerId: number;
-  notificationId: number;
   showToss: boolean;
-  notificationIds: number[];
+  notifyClass: string;
 }
 
-export interface Params {
-  type: string;
-  payload: Partial<UpdateParams>;
-}
-
-export const initialState: StateType = {
-  notificationsVisible: false,
+const initialState: State = {
   notifications: null,
-  receivedNewNotification: false,
   confirmDeleteAll: false,
   unSeenNotificationsCount: 0,
-  notifyClass: 'close',
   timers: [],
+  notificationsVisible: false,
+  receivedNewNotification: false,
   showToss: false,
-  notificationIds: []
+  notifyClass: 'close'
 };
 
-export const useNotificationsReducer = (): {
-  state: Partial<StateType>;
-  dispatch: Dispatch<Params>;
-} => {
-  const reducer = (
-    state: Partial<StateType> = initialState,
-    action: Params
-  ): Partial<StateType> => {
-    const {type, payload} = action;
+export type Actions =
+  | {type: 'RESET_NOTIFICATIONS'; notifications: NotificationType[]}
+  | {type: 'UPDATE_STATE'; state: Partial<State>}
+  | {type: 'APPEND_NOTIFICATIONS'; notifications: NotificationType[]}
+  | {type: 'ADD_DELETE_TIMER'; timer: TimersType}
+  | {type: 'RESET_DELETE_TIMERS'; timerId: number}
+  | {type: 'DELETE_NOTIFICATION'; notificationId: number}
+  | {type: 'RECEIVED_NOTIFICATION'; notification: NotificationType}
+  | {
+      type: 'SEEN_OR_READ_NOTIFICATIONS';
+      notificationIds: number[];
+      updateType: string;
+    }
+  | {type: 'RESET_DELETE_TIMERS'; timerId: number};
 
-    switch (type) {
-      case ACTIONS.UPDATE_STATE:
-        return {
-          ...state,
-          ...payload
-        };
-      case ACTIONS.APPEND_NOTIFICATIONS:
-        return {
-          ...state,
-          notifications: [...state.notifications, ...payload.notifications]
-        };
-      case ACTIONS.RESET_NOTIFICATIONS: {
-        if (payload.notifications?.length === 0) {
+export const useNotificationsReducer = (): {
+  state: State;
+  dispatch: Dispatch<Actions>;
+} => {
+  const reducer = (state: State = initialState, action: Actions): State => {
+    switch (action.type) {
+      case 'APPEND_NOTIFICATIONS':
+      case 'RESET_NOTIFICATIONS': {
+        if (action.notifications.length === 0) {
           return {
             ...state,
-            notifications: [...payload.notifications],
+            notifications: [...action.notifications],
             confirmDeleteAll: false
           };
         }
-
         return {
           ...state,
-          notifications: [...payload.notifications]
+          notifications: !state.notifications
+            ? [...action.notifications]
+            : [...state.notifications, ...action.notifications]
         };
       }
-      case ACTIONS.DECREMEMNT_UNSEEN_COUNTER:
+      case 'ADD_DELETE_TIMER':
         return {
           ...state,
-          unSeenNotificationsCount:
-            state.unSeenNotificationsCount! - payload.unSeenNotificationsCount!
+          timers: [...state.timers, action.timer]
         };
-      case ACTIONS.ADD_DELETE_TIMER:
-        return {
-          ...state,
-          timers: [...state.timers, payload.timer!]
-        };
-      case ACTIONS.RESET_DELETE_TIMERS: {
-        const timers = state.timers?.filter(
-          (timer) => timer.id !== payload.timerId
-        );
-
-        return {
-          ...state,
-          timers: [...timers]
-        };
-      }
-      case ACTIONS.DELETE_NOTIFICATION: {
-        const notifications = state.notifications?.filter(
-          (notification) => notification.id !== payload.notificationId
+      case 'DELETE_NOTIFICATION': {
+        const notifications = state.notifications!.filter(
+          (notification) => notification.id !== action.notificationId
         );
 
         return {
@@ -127,36 +77,35 @@ export const useNotificationsReducer = (): {
           notifications: [...notifications]
         };
       }
-      case ACTIONS.RECEIVED_NOTIFICATION: {
-        const notificationsVisible = state.notificationsVisible;
-
-        if (notificationsVisible) {
+      case 'RECEIVED_NOTIFICATION': {
+        if (state.notificationsVisible) {
           return {
             ...state,
-            unSeenNotificationsCount: state.unSeenNotificationsCount! + 1,
+            unSeenNotificationsCount: state.unSeenNotificationsCount + 1,
             receivedNewNotification: true,
-            notifications: [payload.notification!, ...state.notifications]
+            notifications: [action.notification, ...state.notifications]
           };
         }
 
         return {
           ...state,
-          unSeenNotificationsCount: state.unSeenNotificationsCount! + 1,
-          notifications: [payload.notification!, ...state.notifications]
+          unSeenNotificationsCount: state.unSeenNotificationsCount + 1,
+          notifications: [action.notification, ...state.notifications]
         };
       }
-      case ACTIONS.SEEN_NOTIFICATIONS: {
-        const {notificationIds} = payload;
+      case 'SEEN_OR_READ_NOTIFICATIONS': {
+        const {notificationIds} = action;
 
         const clonedNotifications = cloneDeep(state.notifications);
 
-        notificationIds!.forEach((seenNotificationId) => {
+        notificationIds.forEach((readNotificationId) => {
           const notification = clonedNotifications!.find(
-            (notification) => notification.id === seenNotificationId
+            (notification) => notification.id === readNotificationId
           );
 
           if (notification) {
-            notification.status = 'Seen';
+            notification.status =
+              action.updateType === 'Read' ? 'Read' : 'Seen';
           }
         });
 
@@ -164,36 +113,33 @@ export const useNotificationsReducer = (): {
           ...state,
           notifications: [...clonedNotifications],
           unSeenNotificationsCount:
-            state.unSeenNotificationsCount! - notificationIds!.length
+            state.unSeenNotificationsCount - notificationIds.length
         };
       }
-      case ACTIONS.READ_NOTIFICATIONS: {
-        const {notificationIds} = payload;
-
-        const clonedNotifications = cloneDeep(state.notifications);
-
-        notificationIds!.forEach((readNotificationId) => {
-          const notification = clonedNotifications!.find(
-            (notification) => notification.id === readNotificationId
-          );
-
-          if (notification) {
-            notification.status = 'Read';
-          }
-        });
+      case 'RESET_DELETE_TIMERS': {
+        const filteredTimers = state.timers.filter(
+          (timer) => timer.id !== action.timerId
+        );
 
         return {
           ...state,
-          notifications: [...clonedNotifications]
+          timers: [...filteredTimers]
         };
       }
-
+      case 'UPDATE_STATE':
+        return {
+          ...state,
+          ...action.state
+        };
       default:
         return state;
     }
   };
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer<React.Reducer<State, Actions>>(
+    reducer,
+    initialState
+  );
 
   return {state, dispatch};
 };

@@ -2,11 +2,11 @@ import {useCallback, useState, useRef, useEffect, Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
 import {NotificationType} from '../../../lib/type';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {Actions} from '../reducers/useNotificationsReducer';
 
 export const useFetchNotifications = (
   http: Http,
-  dispatch: Dispatch<Params>,
+  dispatch: Dispatch<Actions>,
   notifications: NotificationType[] | null | undefined
 ): {
   getFetchNotifications: (lastId: number) => Promise<void>;
@@ -41,12 +41,12 @@ export const useFetchNotifications = (
            */
           lastId === -1
             ? dispatch({
-                type: ACTIONS.RESET_NOTIFICATIONS,
-                payload: {notifications: [...response]}
+                type: 'RESET_NOTIFICATIONS',
+                notifications: [...response]
               })
             : dispatch({
-                type: ACTIONS.APPEND_NOTIFICATIONS,
-                payload: {notifications: response}
+                type: 'APPEND_NOTIFICATIONS',
+                notifications: response
               });
         } else {
           /**
@@ -55,8 +55,8 @@ export const useFetchNotifications = (
            */
           if (!notificationsRef.current && lastId === -1) {
             dispatch({
-              type: ACTIONS.RESET_NOTIFICATIONS,
-              payload: {notifications: []}
+              type: 'RESET_NOTIFICATIONS',
+              notifications: []
             });
           }
         }

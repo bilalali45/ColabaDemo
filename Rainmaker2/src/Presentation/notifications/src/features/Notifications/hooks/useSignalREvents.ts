@@ -3,14 +3,14 @@ import {SignalRHub} from 'rainsoft-js';
 
 import {NotificationType} from '../../../lib/type';
 import {LocalDB} from '../../../Utils/LocalDB';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
   getUnseenNotificationsCount: () => void;
   notifications: NotificationType[] | null | undefined;
   notificationsVisible: boolean | undefined;
-  dispatch: Dispatch<Params>;
+  dispatch: Dispatch<Actions>;
 }
 
 export const useSignalREvents = ({
@@ -38,8 +38,8 @@ export const useSignalREvents = ({
         if (!notificationsRef.current) return;
 
         dispatch({
-          type: ACTIONS.RECEIVED_NOTIFICATION,
-          payload: {notification: JSON.parse(notification) as NotificationType}
+          type: 'RECEIVED_NOTIFICATION',
+          notification: JSON.parse(notification) as NotificationType
         });
       });
 
@@ -49,8 +49,9 @@ export const useSignalREvents = ({
           if (!notificationsRef.current) return;
 
           dispatch({
-            type: ACTIONS.SEEN_NOTIFICATIONS,
-            payload: {notificationIds}
+            type: 'SEEN_OR_READ_NOTIFICATIONS',
+            notificationIds,
+            updateType: 'Seen'
           });
         }
       );
@@ -61,8 +62,8 @@ export const useSignalREvents = ({
           if (!notificationsRef.current) return;
 
           dispatch({
-            type: ACTIONS.DELETE_NOTIFICATION,
-            payload: {notificationId: deletedNotificationId}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: deletedNotificationId
           });
         }
       );
@@ -71,19 +72,20 @@ export const useSignalREvents = ({
         if (!notificationsRef.current) return;
 
         dispatch({
-          type: ACTIONS.RESET_NOTIFICATIONS,
-          payload: {notifications: []}
+          type: 'RESET_NOTIFICATIONS',
+          notifications: []
         });
       });
 
       SignalRHub.hubConnection.on(
         'NotificationRead',
-        (readNotificationIds: number[]) => {
+        (notificationIds: number[]) => {
           if (!notificationsRef.current) return;
 
           dispatch({
-            type: ACTIONS.READ_NOTIFICATIONS,
-            payload: {notificationIds: readNotificationIds}
+            type: 'SEEN_OR_READ_NOTIFICATIONS',
+            notificationIds,
+            updateType: 'Read'
           });
         }
       );

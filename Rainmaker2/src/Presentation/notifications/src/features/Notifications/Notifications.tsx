@@ -7,7 +7,7 @@ import {
   AlertForNoData
 } from './_Notifications';
 import {NotificationType, TimersType} from '../../lib/type';
-import {Params, ACTIONS} from './reducers/useNotificationsReducer';
+import {Actions} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -18,7 +18,7 @@ interface NotificationsProps {
   removeNotification: (id: number) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
   showToss: boolean;
-  dispatch: Dispatch<Params>;
+  dispatch: Dispatch<Actions>;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = ({
@@ -32,20 +32,19 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   showToss,
   dispatch
 }) => {
-  // const [showToss, setShowToss] = useState(false); //apex false
   const notificationRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (receivedNewNotification === true && notificationsVisible === true) {
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {showToss: true}
+        type: 'UPDATE_STATE',
+        state: {showToss: true}
       });
 
       receivedNewNotification === true &&
         dispatch({
-          type: ACTIONS.UPDATE_STATE,
-          payload: {receivedNewNotification: false}
+          type: 'UPDATE_STATE',
+          state: {receivedNewNotification: false}
         });
     }
   }, [dispatch, receivedNewNotification, notificationsVisible]);
@@ -56,15 +55,15 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     if (timer) {
       clearTimeout(timer.timer);
 
-      dispatch({type: ACTIONS.RESET_DELETE_TIMERS, payload: {timerId: id}});
+      dispatch({type: 'RESET_DELETE_TIMERS', timerId: id});
     }
   };
 
   const handleScrollToTop = () => {
     !!notificationRef.current && notificationRef.current.scrollTo(0, 0);
     dispatch({
-      type: ACTIONS.UPDATE_STATE,
-      payload: {showToss: false}
+      type: 'UPDATE_STATE',
+      state: {showToss: false}
     });
   };
 

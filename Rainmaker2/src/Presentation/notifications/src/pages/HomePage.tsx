@@ -17,10 +17,7 @@ import {
   useReadAllNotificationsForDocument,
   useRemoveNotification
 } from '../features/Notifications/hooks';
-import {
-  useNotificationsReducer,
-  ACTIONS
-} from '../features/Notifications/reducers/useNotificationsReducer';
+import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
 
 export const HomePage: FunctionComponent = () => {
   const http = useMemo(() => new Http(), []);
@@ -61,8 +58,8 @@ export const HomePage: FunctionComponent = () => {
 
   const openEffect = useCallback(() => {
     dispatch({
-      type: ACTIONS.UPDATE_STATE,
-      payload: {
+      type: 'UPDATE_STATE',
+      state: {
         notifyClass: notificationsVisible
           ? 'animated slideOutRight'
           : 'animated slideInRight'
@@ -75,16 +72,16 @@ export const HomePage: FunctionComponent = () => {
       openEffect();
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {notificationsVisible: !notificationsVisible}
+        type: 'UPDATE_STATE',
+        state: {notificationsVisible: !notificationsVisible}
       });
     } else {
       openEffect();
 
       setTimeout(() => {
         dispatch({
-          type: ACTIONS.UPDATE_STATE,
-          payload: {notificationsVisible: !notificationsVisible}
+          type: 'UPDATE_STATE',
+          state: {notificationsVisible: !notificationsVisible}
         });
       }, 10);
     }
@@ -97,8 +94,8 @@ export const HomePage: FunctionComponent = () => {
       );
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {unSeenNotificationsCount: data}
+        type: 'UPDATE_STATE',
+        state: {unSeenNotificationsCount: data}
       });
     } catch (error) {
       console.warn(error);
@@ -110,8 +107,8 @@ export const HomePage: FunctionComponent = () => {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
       dispatch({
-        type: ACTIONS.RESET_NOTIFICATIONS,
-        payload: {notifications: []}
+        type: 'RESET_NOTIFICATIONS',
+        notifications: []
       });
     } catch (error) {
       console.warn('error', error);
@@ -123,8 +120,8 @@ export const HomePage: FunctionComponent = () => {
       await onCDeleteAllNotifications();
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {confirmDeleteAll: false}
+        type: 'UPDATE_STATE',
+        state: {confirmDeleteAll: false}
       });
     } catch (error) {
       console.warn(error);
@@ -181,8 +178,8 @@ export const HomePage: FunctionComponent = () => {
             }
             onDeleteAll={() =>
               dispatch({
-                type: ACTIONS.UPDATE_STATE,
-                payload: {confirmDeleteAll: true, showToss: false}
+                type: 'UPDATE_STATE',
+                state: {confirmDeleteAll: true, showToss: false}
               })
             }
           />
@@ -191,8 +188,8 @@ export const HomePage: FunctionComponent = () => {
               onYes={deleteAllNotifications}
               onNo={() =>
                 dispatch({
-                  type: ACTIONS.UPDATE_STATE,
-                  payload: {confirmDeleteAll: false}
+                  type: 'UPDATE_STATE',
+                  state: {confirmDeleteAll: false}
                 })
               }
             />
