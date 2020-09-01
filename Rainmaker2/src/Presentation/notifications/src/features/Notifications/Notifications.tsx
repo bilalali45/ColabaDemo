@@ -1,15 +1,12 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useEffect,
-  createRef,
-  Dispatch
-} from 'react';
+import React, {FunctionComponent, useEffect, createRef, Dispatch} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import {Notification, NewNotificationToss} from './_Notifications';
+import {
+  Notification,
+  NewNotificationToss,
+  AlertForNoData
+} from './_Notifications';
 import {NotificationType, TimersType} from '../../lib/type';
-import {AlertForNoData} from '../../pages/_HomePage';
 import {Params, ACTIONS} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {
@@ -20,6 +17,7 @@ interface NotificationsProps {
   receivedNewNotification: boolean;
   removeNotification: (id: number) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
+  showToss: boolean;
   dispatch: Dispatch<Params>;
 }
 
@@ -31,14 +29,18 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
   receivedNewNotification,
   removeNotification,
   readAllNotificationsForDocument,
+  showToss,
   dispatch
 }) => {
-  const [showToss, setShowToss] = useState(false); //apex false
+  // const [showToss, setShowToss] = useState(false); //apex false
   const notificationRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (receivedNewNotification === true && notificationsVisible === true) {
-      setShowToss(true);
+      dispatch({
+        type: ACTIONS.UPDATE_STATE,
+        payload: {showToss: true}
+      });
 
       receivedNewNotification === true &&
         dispatch({
@@ -60,7 +62,10 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
 
   const handleScrollToTop = () => {
     !!notificationRef.current && notificationRef.current.scrollTo(0, 0);
-    setShowToss(false);
+    dispatch({
+      type: ACTIONS.UPDATE_STATE,
+      payload: {showToss: false}
+    });
   };
 
   return notifications.length > 0 ? (
@@ -81,12 +86,10 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
             style={{overflow: 'initial'}}
           >
             {notifications.map((notification, index) => {
-              const {id} = notification;
-
               return (
                 <Notification
                   key={index}
-                  removeNotification={() => removeNotification(id)}
+                  removeNotification={() => removeNotification(notification.id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}
                   notification={notification}

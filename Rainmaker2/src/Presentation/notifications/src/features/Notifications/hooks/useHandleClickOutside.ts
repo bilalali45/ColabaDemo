@@ -20,6 +20,7 @@ export const useHandleClickOutside = ({
         dispatch({
           type: ACTIONS.UPDATE_STATE,
           payload: {
+            showToss: false,
             notificationsVisible: false,
             receivedNewNotification: false,
             confirmDeleteAll: false

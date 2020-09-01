@@ -32,7 +32,7 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.REMOVE_NOTIFICATION,
+            type: ACTIONS.DELETE_NOTIFICATION,
             payload: {notificationId: id}
           });
         }, 5000);
@@ -48,7 +48,7 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.REMOVE_NOTIFICATION,
+            type: ACTIONS.DELETE_NOTIFICATION,
             payload: {notificationId: id}
           });
         }, 5000);

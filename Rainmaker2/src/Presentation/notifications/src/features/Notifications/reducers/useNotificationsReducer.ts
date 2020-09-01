@@ -1,17 +1,19 @@
 import {useReducer, Dispatch} from 'react';
 
 import {NotificationType, TimersType} from '../../../lib/type';
+import {cloneDeep} from 'lodash';
 
 export enum ACTIONS {
   UPDATE_STATE = 'UPDATE_STATE',
-  ADD_NEW_NOTIFICATIONS = 'ADD_NEW_NOTIFICATIONS',
   APPEND_NOTIFICATIONS = 'APPEND_NOTIFICATIONS',
   RESET_NOTIFICATIONS = 'RESET_NOTIFICATIONS',
-  INCREMEMNT_UNSEEN_COUNTER = 'INCREMEMNT_UNSEEN_COUNTER',
   DECREMEMNT_UNSEEN_COUNTER = 'DECREMEMNT_UNSEEN_COUNTER',
   ADD_DELETE_TIMER = 'ADD_DELETE_TIMER',
   RESET_DELETE_TIMERS = 'RESET_DELETE_TIMERS',
-  REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
+  DELETE_NOTIFICATION = 'DELETE_NOTIFICATION',
+  RECEIVED_NOTIFICATION = 'RECEIVED_NOTIFICATION',
+  SEEN_NOTIFICATIONS = 'SEEN_NOTIFICATIONS',
+  READ_NOTIFICATIONS = 'READ_NOTIFICATIONS'
 }
 
 interface StateType {
@@ -21,7 +23,9 @@ interface StateType {
   confirmDeleteAll: boolean;
   unSeenNotificationsCount: number;
   notifyClass: string;
-  timers: TimersType[] | undefined;
+  timers: TimersType[];
+  showToss: boolean;
+  notificationIds: number[];
 }
 
 interface UpdateParams {
@@ -36,6 +40,8 @@ interface UpdateParams {
   timer: TimersType;
   timerId: number;
   notificationId: number;
+  showToss: boolean;
+  notificationIds: number[];
 }
 
 export interface Params {
@@ -50,7 +56,9 @@ export const initialState: StateType = {
   confirmDeleteAll: false,
   unSeenNotificationsCount: 0,
   notifyClass: 'close',
-  timers: []
+  timers: [],
+  showToss: false,
+  notificationIds: []
 };
 
 export const useNotificationsReducer = (): {
@@ -68,11 +76,6 @@ export const useNotificationsReducer = (): {
         return {
           ...state,
           ...payload
-        };
-      case ACTIONS.ADD_NEW_NOTIFICATIONS:
-        return {
-          ...state,
-          notifications: [payload.notification!, ...state.notifications]
         };
       case ACTIONS.APPEND_NOTIFICATIONS:
         return {
@@ -93,12 +96,6 @@ export const useNotificationsReducer = (): {
           notifications: [...payload.notifications]
         };
       }
-      case ACTIONS.INCREMEMNT_UNSEEN_COUNTER:
-        return {
-          ...state,
-          unSeenNotificationsCount:
-            state.unSeenNotificationsCount! + payload.unSeenNotificationsCount!
-        };
       case ACTIONS.DECREMEMNT_UNSEEN_COUNTER:
         return {
           ...state,
@@ -120,7 +117,7 @@ export const useNotificationsReducer = (): {
           timers: [...timers]
         };
       }
-      case ACTIONS.REMOVE_NOTIFICATION: {
+      case ACTIONS.DELETE_NOTIFICATION: {
         const notifications = state.notifications?.filter(
           (notification) => notification.id !== payload.notificationId
         );
@@ -130,6 +127,67 @@ export const useNotificationsReducer = (): {
           notifications: [...notifications]
         };
       }
+      case ACTIONS.RECEIVED_NOTIFICATION: {
+        const notificationsVisible = state.notificationsVisible;
+
+        if (notificationsVisible) {
+          return {
+            ...state,
+            unSeenNotificationsCount: state.unSeenNotificationsCount! + 1,
+            receivedNewNotification: true,
+            notifications: [payload.notification!, ...state.notifications]
+          };
+        }
+
+        return {
+          ...state,
+          unSeenNotificationsCount: state.unSeenNotificationsCount! + 1,
+          notifications: [payload.notification!, ...state.notifications]
+        };
+      }
+      case ACTIONS.SEEN_NOTIFICATIONS: {
+        const {notificationIds} = payload;
+
+        const clonedNotifications = cloneDeep(state.notifications);
+
+        notificationIds!.forEach((seenNotificationId) => {
+          const notification = clonedNotifications!.find(
+            (notification) => notification.id === seenNotificationId
+          );
+
+          if (notification) {
+            notification.status = 'Seen';
+          }
+        });
+
+        return {
+          ...state,
+          notifications: [...clonedNotifications],
+          unSeenNotificationsCount:
+            state.unSeenNotificationsCount! - notificationIds!.length
+        };
+      }
+      case ACTIONS.READ_NOTIFICATIONS: {
+        const {notificationIds} = payload;
+
+        const clonedNotifications = cloneDeep(state.notifications);
+
+        notificationIds!.forEach((readNotificationId) => {
+          const notification = clonedNotifications!.find(
+            (notification) => notification.id === readNotificationId
+          );
+
+          if (notification) {
+            notification.status = 'Read';
+          }
+        });
+
+        return {
+          ...state,
+          notifications: [...clonedNotifications]
+        };
+      }
+
       default:
         return state;
     }

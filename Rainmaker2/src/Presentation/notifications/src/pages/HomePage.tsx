@@ -33,7 +33,8 @@ export const HomePage: FunctionComponent = () => {
     receivedNewNotification,
     notificationsVisible,
     unSeenNotificationsCount,
-    timers
+    timers,
+    showToss
   } = state;
 
   const notificationsVisibleRef = useRef(notificationsVisible);
@@ -133,7 +134,6 @@ export const HomePage: FunctionComponent = () => {
   useNotificationSeen({
     http,
     notifications,
-    dispatch,
     notificationsVisible
   });
 
@@ -182,7 +182,7 @@ export const HomePage: FunctionComponent = () => {
             onDeleteAll={() =>
               dispatch({
                 type: ACTIONS.UPDATE_STATE,
-                payload: {confirmDeleteAll: true}
+                payload: {confirmDeleteAll: true, showToss: false}
               })
             }
           />
@@ -208,6 +208,7 @@ export const HomePage: FunctionComponent = () => {
               notifications={notifications}
               getFetchNotifications={() => getFetchNotifications(lastId)}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
+              showToss={showToss || false}
               dispatch={dispatch}
             />
           )}

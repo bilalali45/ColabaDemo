@@ -3,7 +3,12 @@ import {Link} from 'react-router-dom';
 
 import {NotificationType, TimersType} from '../../lib/type';
 import {formatDateTime} from '../../lib/utils';
-import {SVGDocument, SVGClose, SVGCalender} from '../../assets/icons/SVGIcons';
+import {
+  SVGDocument,
+  SVGClose,
+  SVGCalender,
+  SVGBellSleep
+} from '../../assets/icons/SVGIcons';
 
 interface NotificationProps {
   removeNotification: () => void;
@@ -124,5 +129,19 @@ export const NewNotificationToss: FunctionComponent<{
     </div>
   ) : (
     <></>
+  );
+};
+
+export const AlertForNoData: FunctionComponent = () => {
+  return (
+    <div className="notify-alert-msg">
+      <div className="notify-alert-msg--wrap">
+        <SVGBellSleep />
+        <h4>No Notifications Yet</h4>
+        <p>
+          Stay tuned! Notifications about loan applications will show up here.{' '}
+        </p>
+      </div>
+    </div>
   );
 };
