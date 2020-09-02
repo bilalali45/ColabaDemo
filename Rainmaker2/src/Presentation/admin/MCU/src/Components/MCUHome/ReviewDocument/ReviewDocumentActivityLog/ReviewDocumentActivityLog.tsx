@@ -229,22 +229,9 @@ export const ReviewDocumentActivityLog = ({
 
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
-    const emailText = emailLog.emailText.split('<br />');
-
+    
     return (
-      <React.Fragment>
-        <h6>{emailText[0]}</h6>
-        <p>{emailText[1]}</p>
-        <ul>
-          {emailText.map((text, index) => {
-            if (index > 1 && index < emailText.length - 1) {
-              return <li>{text}</li>;
-            }
-          })}
-        </ul>
-        <br />
-        <p>{emailText[emailText.length - 1]}</p>
-      </React.Fragment>
+      <div dangerouslySetInnerHTML={{ __html: emailLog.emailText }}></div>
     );
   };
 
