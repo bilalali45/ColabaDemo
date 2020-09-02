@@ -15,6 +15,7 @@ namespace ByteWebConnector.API
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ConfigureLogging();
             CreateHost(args: args);
         }
@@ -38,7 +39,7 @@ namespace ByteWebConnector.API
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
-                         //.WriteTo.Console()
+                         .WriteTo.Console()
                          .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-log.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)

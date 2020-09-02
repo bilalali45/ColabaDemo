@@ -302,7 +302,7 @@ namespace RainMaker.Common.Extensions
 
             if (int.Parse(num) >= 11 && int.Parse(num) <= 20) return suffix;
 
-            num = num.ToCharArray()[num.ToCharArray().Length - 1].ToString(CultureInfo.InvariantCulture);
+            num = num[num.Length - 1].ToString(CultureInfo.InvariantCulture);
             switch (num)
             {
                 case "1":
