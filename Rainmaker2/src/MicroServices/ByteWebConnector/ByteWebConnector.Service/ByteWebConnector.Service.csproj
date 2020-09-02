@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Extensions\Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Library\ServiceCallHelper\ServiceCallHelper.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.Data\ByteWebConnector.Data.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.Entity\ByteWebConnector.Entity.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.Model\ByteWebConnector.Model.csproj" />
+  </ItemGroup>
+
+</Project>

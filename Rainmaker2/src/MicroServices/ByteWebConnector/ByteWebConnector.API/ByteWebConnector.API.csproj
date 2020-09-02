@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\LosIntegration\LosIntegration.API\LosIntegration.API.csproj" />
-    <ProjectReference Include="..\..\Rainmaker\Rainmaker.API\Rainmaker.API.csproj" />
-    <ProjectReference Include="..\..\Rainmaker\Rainmaker.Service\Rainmaker.Service.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.Data\ByteWebConnector.Data.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.Service\ByteWebConnector.Service.csproj" />
   </ItemGroup>
 
 
