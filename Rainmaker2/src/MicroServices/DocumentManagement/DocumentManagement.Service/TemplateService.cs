@@ -242,7 +242,8 @@ namespace DocumentManagement.Service
                                 ""docTypeId"": ""$categoryDocument._id"",
                                 ""docType"": ""$categoryDocument.name"",
                                 ""docMessage"": ""$categoryDocument.message"",
-                                ""messages"": ""$categoryDocument.messages""
+                                ""messages"": ""$categoryDocument.messages"",
+                                ""isCommonlyUsed"": ""$categoryDocument.isCommonlyUsed""
                             }
                         }"
            ));
@@ -274,7 +275,7 @@ namespace DocumentManagement.Service
                         }
 
                         cdtm.documents.Add(new DocumentTypeModel()
-                            {docTypeId = query.docTypeId, docType = query.docType,docMessage = docMessage });
+                            {docTypeId = query.docTypeId, docType = query.docType,docMessage = docMessage,isCommonlyUsed = query.isCommonlyUsed ?? false});
                     }
                    
                 }
