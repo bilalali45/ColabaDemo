@@ -89,7 +89,10 @@ namespace ByteWebConnector.API.Controllers
         [HttpPost]
         public ApiResponse SendDocument([FromBody] SendDocumentRequest request)
         {
+
             _logger.LogInformation($"Start");
+            _logger.LogInformation(message: $"DocSync  ByteWebConnector  SendDocument uploadEmbeddedDoc start ");
+            _logger.LogInformation(message: $"DocSync  SendDocument uploadEmbeddedDoc request  {request.FileData} ");
             var loanApplication = _loanApplicationService
                                   .GetLoanApplicationWithDetails(id: request.LoanApplicationId,
                                                                  includes: null)
@@ -111,24 +114,24 @@ namespace ByteWebConnector.API.Controllers
                 }
                 _logger.LogInformation($"loanApplication.Id = {loanApplication.Id}");
                 var documentUploadModel = new DocumentUploadRequest
-                                          {
-                                              FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
-                                              DocumentCategory = request.DocumentCategory,
-                                              DocumentExension = request.DocumentExension,
-                                              DocumentName = request.DocumentName,
-                                              DocumentStatus = request.DocumentStatus,
-                                              DocumentType = request.DocumentType,
-                                              DocumentData = request.FileData.ToBase64String(0,
+                {
+                    FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
+                    DocumentCategory = request.DocumentCategory,
+                    DocumentExension = request.DocumentExension,
+                    DocumentName = request.DocumentName,
+                    DocumentStatus = request.DocumentStatus,
+                    DocumentType = request.DocumentType,
+                    DocumentData = request.FileData.ToBase64String(0,
                                                                                              request.FileData.Length)
-                                          };
+                };
 
                 #region BytePro API Call
                 _logger.LogInformation($"Start GetByteProSession();");
                 string byteProSession = GetByteProSession();
                 _logger.LogInformation($"byteProSession = {byteProSession}");
-                ApiResponse documentResponse = SendDocumentToByte(documentUploadModel,
+                ApiResponse documentResponse =  SendDocumentToByte(documentUploadModel,
                                                                   byteProSession);
-               // _logger.LogInformation($"byteProSession = {documentResponse.ToJson()}");
+                // _logger.LogInformation($"byteProSession = {documentResponse.ToJson()}");
                 return documentResponse;
 
                 #endregion
@@ -137,6 +140,8 @@ namespace ByteWebConnector.API.Controllers
             {
                 return null;
             }
+
+            return null;
         }
         // POST api/<DocumentController>
         //[Route(template: "[action]")]
@@ -246,14 +251,14 @@ namespace ByteWebConnector.API.Controllers
                                                int fileDataId)
         {
             HttpWebRequest request =
-                (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId + "/" + documentId);
+                (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId + "/" + documentId);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add("Session",
                                 byteProSession);
             request.Accept = "application/json";
             String test = String.Empty;
-            using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 Stream dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
@@ -286,7 +291,7 @@ namespace ByteWebConnector.API.Controllers
                 _logger.LogInformation($"userName = {userName}");
                 _logger.LogInformation($"password = {password}");
                 _logger.LogInformation($"authKey = {authKey}");
-                
+
 
                 _apiUrl = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteApiUrl).Result;
                 _logger.LogInformation($"_apiUrl = {_apiUrl}");
@@ -295,7 +300,7 @@ namespace ByteWebConnector.API.Controllers
                                                                             chain,
                                                                             sslPolicyErrors) => true;
 
-                HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "auth/ ");
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "auth/ ");
                 request.Method = "GET";
                 request.ContentType = "application/json";
                 request.Headers.Add("authorizationKey",
@@ -306,7 +311,7 @@ namespace ByteWebConnector.API.Controllers
                                     password);
                 request.Accept = "application/json";
                 String test = String.Empty;
-                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     Stream dataStream = response.GetResponseStream();
                     StreamReader reader = new StreamReader(dataStream);
@@ -331,6 +336,14 @@ namespace ByteWebConnector.API.Controllers
         private ApiResponse SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
                                                string session)
         {
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentCategory {documentUploadRequest.DocumentCategory} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :FileDataId {documentUploadRequest.FileDataId} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentType {documentUploadRequest.DocumentType} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentCategory {documentUploadRequest.DocumentCategory} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentStatus {documentUploadRequest.DocumentStatus} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentExension {documentUploadRequest.DocumentExension} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte uploadEmbeddedDoc :DocumentName {documentUploadRequest.DocumentName} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentData {documentUploadRequest.DocumentData} ");
             var respone = new ApiResponse();
             try
             {
@@ -340,19 +353,24 @@ namespace ByteWebConnector.API.Controllers
                                                             {
                                                                 NullValueHandling = NullValueHandling.Ignore
                                                             });
-                //string output = JsonConvert.SerializeObject(loanInfo);
-                Task<string> documentResponse = Send(output,
+                //string output = JsonConvert.SerializeObject(loanInfo);                
+
+                Task<string> documentResponse =  Send(output,
                                                      session);
                 var settings = new JsonSerializerSettings
-                               {
-                                   NullValueHandling = NullValueHandling.Ignore,
-                                   MissingMemberHandling = MissingMemberHandling.Ignore
-                               };
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
 
-                //_logger.LogInformation($"byteDocumentResponse= {documentResponse.Result}");
+
+
+              var response   = documentResponse.Result;
+                _logger.LogInformation(message: $"DocSync SendDocumentToByte uploadEmbeddedDoc Resposne = { response  }");
                 DocumentUploadResponse document =
-                    JsonConvert.DeserializeObject<DocumentUploadResponse>(documentResponse.Result,
+                    JsonConvert.DeserializeObject<DocumentUploadResponse>(response,
                                                                           settings);
+                _logger.LogInformation(message: $"DocSync  SendDocumentToByte Deserialize    { document}");
                 if (document != null)
                 {
                     _logger.LogInformation($"byteDocumentResponse Deserialized");
@@ -361,13 +379,16 @@ namespace ByteWebConnector.API.Controllers
 
                 respone.Status = ApiResponse.ApiResponseStatus.Success;
                 respone.Data = document.ToJson();
+                _logger.LogInformation(message: $"DocSync  SendDocumentToByte respone      { respone.Data}");
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(message: $"DocSync SendDocumentToByte Exception    { ex.Message}");
+                _logger.LogInformation($"byteDocumentResponse Deserialized");
                 respone.Status = ApiResponse.ApiResponseStatus.Fail;
                 respone.Message = ex.Message;
             }
-
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte finished :  {respone} ");
             return respone;
         }
 
@@ -375,14 +396,14 @@ namespace ByteWebConnector.API.Controllers
         private List<EmbeddedDoc> GetAllByteDocuments(string session,
                                                       int fileDataId)
         {
-            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_apiUrl + "Document/" + fileDataId);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add("Session",
                                 session);
             request.Accept = "application/json";
             String test = String.Empty;
-            using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 Stream dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
@@ -414,20 +435,25 @@ namespace ByteWebConnector.API.Controllers
                 };
                 using (var client = new HttpClient(clientHandler))
                 {
-                    var request = new HttpRequestMessage()
-                                  {
-                                      RequestUri = new Uri(_apiUrl + "Document/"),
-                                      Method = HttpMethod.Post,
-                                      Content = new StringContent(output,
+                   var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(_apiUrl + "Document/"),
+                        Method = HttpMethod.Post,
+                        Content = new StringContent(output,
                                                                   Encoding.UTF8,
                                                                   "application/json")
-                                  };
+                    };
                     request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     request.Headers.Add("Session",
                                         session);
                     request.Headers.Accept.Clear();
                     request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                    _logger.LogInformation(message: $"DocSync Send    :DocumentData {_apiUrl + "Document/"} ");
                     HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+
+                    _logger.LogInformation(message: $"DocSync Send     :DocumentData {response.Content} ");
                     response.EnsureSuccessStatusCode();
                     var resp = await response.Content.ReadAsStringAsync();
                     return resp;
