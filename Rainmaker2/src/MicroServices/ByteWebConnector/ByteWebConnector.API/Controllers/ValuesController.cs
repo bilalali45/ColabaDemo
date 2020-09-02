@@ -2,6 +2,7 @@
 using System.Linq;
 using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ClientModels;
+using ByteWebConnector.Service.DbServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.IdentityModel.Tokens;
@@ -14,11 +15,28 @@ namespace ByteWebConnector.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ISettingService _settingService;
+
+
+        public ValuesController(ISettingService settingService)
+        {
+            _settingService = settingService;
+        }
+
+
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IEnumerable<string> DBConnTest()
+        {
+            var byteProSettings = _settingService.GetByteProSettings();
+            return null;
         }
 
         [HttpGet]
