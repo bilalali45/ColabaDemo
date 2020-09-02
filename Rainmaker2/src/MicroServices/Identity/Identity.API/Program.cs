@@ -85,6 +85,7 @@ namespace Identity
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {
