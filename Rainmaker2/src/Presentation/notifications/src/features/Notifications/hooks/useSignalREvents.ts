@@ -2,24 +2,26 @@ import {useEffect, Dispatch, useRef} from 'react';
 import {SignalRHub} from 'rainsoft-js';
 
 import {NotificationType} from '../../../lib/type';
-import {LocalDB} from '../../../Utils/LocalDB';
+import {LocalDB} from '../../../lib/localStorage';
 import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
   getUnseenNotificationsCount: () => void;
-  notifications: NotificationType[] | null | undefined;
-  notificationsVisible: boolean | undefined;
+  notifications: NotificationType[] | null;
+  notificationsVisible: boolean;
   dispatch: Dispatch<Actions>;
 }
 
-export const useSignalREvents = ({
-  getFetchNotifications,
-  getUnseenNotificationsCount,
-  notifications,
-  notificationsVisible,
-  dispatch
-}: UseSignalREventsProps): void => {
+export const useSignalREvents = (props: UseSignalREventsProps): void => {
+  const {
+    getFetchNotifications,
+    getUnseenNotificationsCount,
+    notifications,
+    notificationsVisible,
+    dispatch
+  } = props;
+
   const notificationsVisibleRef = useRef(notificationsVisible);
   const notificationsRef = useRef(notifications);
 

@@ -21,17 +21,18 @@ interface NotificationsProps {
   dispatch: Dispatch<Actions>;
 }
 
-export const Notifications: FunctionComponent<NotificationsProps> = ({
-  timers,
-  notifications,
-  getFetchNotifications,
-  notificationsVisible,
-  receivedNewNotification,
-  removeNotification,
-  readAllNotificationsForDocument,
-  showToss,
-  dispatch
-}) => {
+export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
+  const {
+    timers,
+    notifications,
+    getFetchNotifications,
+    notificationsVisible,
+    receivedNewNotification,
+    removeNotification,
+    readAllNotificationsForDocument,
+    showToss,
+    dispatch
+  } = props;
   const notificationRef = createRef<HTMLDivElement>();
 
   useEffect(() => {

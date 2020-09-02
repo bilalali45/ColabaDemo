@@ -7,10 +7,11 @@ interface UseHandleClickOutsideProps {
   dispatch: Dispatch<Actions>;
 }
 
-export const useHandleClickOutside = ({
-  refContainerSidebar,
-  dispatch
-}: UseHandleClickOutsideProps): void => {
+export const useHandleClickOutside = (
+  props: UseHandleClickOutsideProps
+): void => {
+  const {refContainerSidebar, dispatch} = props;
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (

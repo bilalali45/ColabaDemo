@@ -4,14 +4,20 @@ import {Http} from 'rainsoft-js';
 import {NotificationType} from '../../../lib/type';
 import {Actions} from '../reducers/useNotificationsReducer';
 
+interface UseFetchNotificationsProps {
+  http: Http;
+  dispatch: Dispatch<Actions>;
+  notifications: NotificationType[] | null;
+}
+
 export const useFetchNotifications = (
-  http: Http,
-  dispatch: Dispatch<Actions>,
-  notifications: NotificationType[] | null | undefined
+  props: UseFetchNotificationsProps
 ): {
   getFetchNotifications: (lastId: number) => Promise<void>;
   lastId: number;
 } => {
+  const {http, dispatch, notifications} = props;
+
   /**
    * This is last Id of notification inside notifications array on every API hit.
    * This needs to be send with API Call to fetch previous notifications on scroll.

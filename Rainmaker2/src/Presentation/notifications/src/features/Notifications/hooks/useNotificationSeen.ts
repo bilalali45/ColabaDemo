@@ -4,8 +4,8 @@ import {Http} from 'rainsoft-js';
 import {NotificationType} from '../../../lib/type';
 
 interface UseEffectNotificationSeen {
-  notificationsVisible: boolean | undefined;
-  notifications: NotificationType[] | null | undefined;
+  notificationsVisible: boolean;
+  notifications: NotificationType[] | null;
   http: Http;
 }
 

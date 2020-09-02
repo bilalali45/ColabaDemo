@@ -4,21 +4,21 @@ import {Http} from 'rainsoft-js';
 import {TimersType, NotificationType} from '../../../lib/type';
 import {Actions} from '../reducers/useNotificationsReducer';
 
-interface UseRemoveNotificationProps {
-  notifications: NotificationType[] | null | undefined;
-  timers: TimersType[] | undefined;
+interface UseDeleteNotificationProps {
+  notifications: NotificationType[] | null;
+  timers: TimersType[];
   http: Http;
   dispatch: Dispatch<Actions>;
 }
 
-export const useRemoveNotification = (
-  props: UseRemoveNotificationProps
+export const useDeleteNotification = (
+  props: UseDeleteNotificationProps
 ): {
-  removeNotification: (id: number) => void;
+  deleteNotification: (id: number) => void;
 } => {
   const {timers, http, dispatch, notifications} = props;
 
-  const removeNotification = (id: number) => {
+  const deleteNotification = (id: number) => {
     if (!notifications) return;
     try {
       if (!!timers && timers.length > 0) {
@@ -63,5 +63,5 @@ export const useRemoveNotification = (
     }
   };
 
-  return {removeNotification};
+  return {deleteNotification};
 };

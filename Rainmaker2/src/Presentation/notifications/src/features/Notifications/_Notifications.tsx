@@ -18,13 +18,15 @@ interface NotificationProps {
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
 }
 
-export const Notification: FunctionComponent<NotificationProps> = ({
-  removeNotification,
-  clearTimeOut,
-  timers,
-  notification,
-  readAllNotificationsForDocument
-}) => {
+export const Notification: FunctionComponent<NotificationProps> = (props) => {
+  const {
+    removeNotification,
+    clearTimeOut,
+    timers,
+    notification,
+    readAllNotificationsForDocument
+  } = props;
+
   const {
     status,
     id,

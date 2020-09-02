@@ -3,7 +3,7 @@ import {Http} from 'rainsoft-js';
 import {NotificationType} from '../../../lib/type';
 
 interface UseReadAllNotificationsForDocumentProps {
-  notifications: NotificationType[] | null | undefined;
+  notifications: NotificationType[] | null;
   http: Http;
 }
 

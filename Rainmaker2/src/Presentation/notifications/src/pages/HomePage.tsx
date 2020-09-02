@@ -15,7 +15,7 @@ import {
   useNotificationSeen,
   useSignalREvents,
   useReadAllNotificationsForDocument,
-  useRemoveNotification
+  useDeleteNotification
 } from '../features/Notifications/hooks';
 import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
 
@@ -34,27 +34,24 @@ export const HomePage: FunctionComponent = () => {
     showToss
   } = state;
 
-  const notificationsVisibleRef = useRef(notificationsVisible);
-  const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
   const refContainerSidebar = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    lastIdRef.current = lastId;
-    notificationsVisibleRef.current = notificationsVisible;
-    unSeenNotificationsCountRef.current = unSeenNotificationsCount;
-  });
 
   useHandleClickOutside({
     refContainerSidebar,
     dispatch
   });
 
-  const {getFetchNotifications, lastId} = useFetchNotifications(
+  const {getFetchNotifications, lastId} = useFetchNotifications({
     http,
     dispatch,
     notifications
-  );
+  });
+
   const lastIdRef = useRef(lastId);
+
+  useEffect(() => {
+    lastIdRef.current = lastId;
+  });
 
   const openEffect = useCallback(() => {
     dispatch({
@@ -147,7 +144,7 @@ export const HomePage: FunctionComponent = () => {
     dispatch
   });
 
-  const {removeNotification} = useRemoveNotification({
+  const {deleteNotification} = useDeleteNotification({
     notifications,
     http,
     dispatch,
@@ -199,13 +196,13 @@ export const HomePage: FunctionComponent = () => {
           ) : (
             <Notifications
               timers={timers || []}
-              removeNotification={removeNotification}
+              removeNotification={deleteNotification}
               receivedNewNotification={receivedNewNotification!}
               notificationsVisible={notificationsVisible}
               notifications={notifications}
               getFetchNotifications={() => getFetchNotifications(lastId)}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
-              showToss={showToss || false}
+              showToss={showToss}
               dispatch={dispatch}
             />
           )}
