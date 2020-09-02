@@ -33,53 +33,37 @@ namespace ByteWebConnector.Tests
         [Fact]
         public async Task TestSendDocumentController()
         {
-            //    //Arrangs
-            //    Mock<ILoanApplicationService> mockLoanApplicationService = new Mock<ILoanApplicationService>();
-            //    //Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            //    //Mock<IConfigurationSection> oneSectionMock = new Mock<IConfigurationSection>();
-            //    //oneSectionMock.Setup(s => s.Value).Returns("image/jpeg");
+            //Arrange
+            Mock<ILoanApplicationService> mockLoanApplicationService = new Mock<ILoanApplicationService>();
 
-            //    LoanApplication loanApplication = new LoanApplication();
-            //    loanApplication.Id = 1;
-            //    loanApplication.EncompassNumber = "abc";
+            LoanApplication loanApplication = new LoanApplication();
+            loanApplication.Id = 1;
+            loanApplication.EncompassNumber = "abc";
 
-            //    List<LoanApplication> loanApplications = new List<LoanApplication>();
-            //    loanApplications.Add(loanApplication);
+            List<LoanApplication> loanApplications = new List<LoanApplication>();
+            loanApplications.Add(loanApplication);
 
-            //    mockLoanApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntity?>())).Returns(loanApplications);
-            //    string[] lstMediaTypesToBeWrappedInPdf = new string[1];
-            //    lstMediaTypesToBeWrappedInPdf[0] = "image/jpeg";
-            //    //IConfigurationSection configurationSection ;
-            //    //configurationSection.GetSection($"MediaTypesToBeWrappedInPdf");
-            //    //mockConfiguration.Setup(x => x.GetSection(It.IsAny<string>()).Get<string[]>()).Returns(lstMediaTypesToBeWrappedInPdf);
+            mockLoanApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntity?>())).Returns(loanApplications);
+            string[] lstMediaTypesToBeWrappedInPdf = new string[1];
+            lstMediaTypesToBeWrappedInPdf[0] = "image/jpeg";
 
+            var mockConfiguration = new Mock<IConfiguration>();
 
-            //    //mockConfiguration.SetupGet(x => x.GetSection(It.IsAny<string>()).Get<string[]>()).Returns(lstMediaTypesToBeWrappedInPdf);
+            var configurationSection = new Mock<IConfigurationSection>();
+            //configurationSection.Setup(a => a.Get<string[]>()).Returns(lstMediaTypesToBeWrappedInPdf);
 
-            //    // mockConfiguration.SetupGet(x => x.GetSection(It.IsAny<string>()).Get<string[]>()).Returns(lstMediaTypesToBeWrappedInPdf);
-            //    //mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("image/jpeg");
+            //mockConfiguration.Setup(a => a.GetSection(It.Is<string>(s => s == "MediaTypesToBeWrappedInPdf"))).Returns(configurationSection.Object);
+            //var controller = new DocumentController(mockLoanApplicationService.Object, null, null, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>());
 
-            //    var mockConfiguration = new Mock<IConfiguration>();
+            //Act
+            SendDocumentRequest sendDocumentRequest = new SendDocumentRequest();
+            sendDocumentRequest.LoanApplicationId = 1;
+            sendDocumentRequest.MediaType = "image/jpeg";
+            sendDocumentRequest.DocumentExension = "jpeg";
+            //ApiResponse result = controller.SendDocument(sendDocumentRequest);
 
-            //    var configurationSection = new Mock<IConfigurationSection>();
-            //    configurationSection.Setup(a => a.Value).Returns("image/jpeg");
-
-            //    //var configurationSection = new Mock<IConfigurationSection>();
-            //    //configurationSection.SetupGet(m => m[It.Is<string>(s => s == "image/jpeg")]).Returns("image/jpeg");
-
-            //    mockConfiguration.Setup(a => a.GetSection(It.Is<string>(s => s == "MediaTypesToBeWrappedInPdf"))).Returns(configurationSection.Object);
-            //    var controller = new DocumentController(mockLoanApplicationService.Object, null, null, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>());
-
-            //    //Act
-            //    SendDocumentRequest sendDocumentRequest = new SendDocumentRequest();
-            //    sendDocumentRequest.LoanApplicationId = 1;
-            //    sendDocumentRequest.MediaType = "image/jpeg";
-            //    sendDocumentRequest.DocumentExension = "jpeg";
-            //    ApiResponse result =  controller.SendDocument(sendDocumentRequest);
-
-            //    //Assert
-            //    Assert.NotNull(result);
-
+            //Assert
+            //Assert.NotNull(result);
         }
         [Fact]
         public async Task TestDeleteController()
@@ -204,7 +188,6 @@ namespace ByteWebConnector.Tests
             //Act
             DocumentAddedRequest documentAddedRequest = new DocumentAddedRequest();
             documentAddedRequest.FileDataId = 1;
-
             
             //var expected = "response content";
             //var expectedBytes = Encoding.UTF8.GetBytes(expected);
@@ -212,10 +195,10 @@ namespace ByteWebConnector.Tests
             //responseStream.Write(expectedBytes, 0, expectedBytes.Length);
             //responseStream.Seek(0, SeekOrigin.Begin);
 
-            //var response = new Mock<HttpWebResponse>();
+            //var response = new Mock<IHttpWebResponse>();
             //response.Setup(c => c.GetResponseStream()).Returns(responseStream);
 
-            //var request = new Mock<HttpWebRequest>();
+            //var request = new Mock<IHttpWebRequest>();
             //request.Setup(c => c.GetResponse()).Returns(response.Object);
 
             //var factory = new Mock<IHttpWebRequestFactory>();
@@ -228,7 +211,7 @@ namespace ByteWebConnector.Tests
 
             //string actual;
 
-            //using (var httpWebResponse = (HttpWebResponse)actualRequest.GetResponse())
+            //using (var httpWebResponse = actualRequest.GetResponse())
             //{
             //    using (var streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
             //    {

@@ -15,6 +15,7 @@ namespace DocumentManagement.API
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             ThreadPool.SetMaxThreads(1000, 1000);
@@ -84,6 +85,7 @@ namespace DocumentManagement.API
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {

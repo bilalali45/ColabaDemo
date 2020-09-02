@@ -27,14 +27,7 @@ export const ReviewDocument = () => {
   const [documentDetail, setDocumentDetail] = useState(false);
   const [fileViewd, setFileViewd] = useState(false);
 
-  const [typeIdId, setTypeIdId] = useState<{
-    id: string | null;
-    typeId: string | null;
-  }>({
-    id: null,
-    typeId: null
-  });
-  const [clientName, setClientName] = useState('');
+    const [clientName, setClientName] = useState('');
   const [
     previousDocumentButtonDisabled,
     setPreviousDocumentButtonDisabled
@@ -124,10 +117,6 @@ export const ReviewDocument = () => {
     ]
   );
 
-  const setTypeIdAndIdForActivityLogs = useCallback((id, typeIdOrDocName) => {
-    setTypeIdId({ id, typeId: typeIdOrDocName });
-  }, []);
-
   const changeCurrentDocument = useCallback(
     (nextDocument: NeedList, nextIndex: number, fromHeader: boolean) => {
       const { id, requestId, docId, files } = nextDocument;
@@ -146,7 +135,6 @@ export const ReviewDocument = () => {
       setCurrentDocument(() => nextDocument);
       setNavigationIndex(() => nextIndex);
       setCurrentFileIndex(0);
-      setTypeIdId({ id: null, typeId: null });
 
       if (!!files && files.length > 0) {
         setClientName(files[0].clientName);
@@ -466,8 +454,6 @@ export const ReviewDocument = () => {
           setClientName(files[fileIndex || 0].clientName);
 
           getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
-        } else {
-          setTypeIdId({ id, typeId: !!typeId ? typeId : docName });
         }
       } catch (error) {
         console.log('error', error);
