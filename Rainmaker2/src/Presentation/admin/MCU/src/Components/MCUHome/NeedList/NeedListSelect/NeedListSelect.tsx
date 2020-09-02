@@ -9,6 +9,9 @@ import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer
 import { TemplateActions } from "../../../../Store/actions/TemplateActions";
 import { LocalDB } from "../../../../Utils/LocalDB";
 import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from "react-bootstrap/Popover";
+
 
 type NeedListSelectType = {
   templateList: Template[],
@@ -27,11 +30,9 @@ export const NeedListSelect = ({
 
   const [idArray, setIdArray] = useState<String[]>([]);
   const [templateList, setTemplateList] = useState<Template[]>([]);
-
   const { state, dispatch } = useContext(Store);
-
   const location = useLocation();
-
+  
   let myTemplateContainerRef = useRef<HTMLUListElement>(null);
   let tenantTemplateContainerRef = useRef<HTMLUListElement>(null);
 
@@ -87,22 +88,28 @@ export const NeedListSelect = ({
 
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
+
     return (
       <>
         <h3>My Templates</h3>
-
         <ul className="checklist" ref={myTemplateContainerRef}>
           {
             templateList?.map((t: Template) => {
-
               if (t?.type === MyTemplate) {
-
-                return <li key={t?.id}><label className="text-ellipsis"><input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id}><label className="text-ellipsis">
+                  
+                  <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
-                }} id={t.id} type="checkbox" /> {t?.name}</label></li>
+                }} id={t.id} type="checkbox" /> {t?.name}
+                </label>
+              
+                
+                </li>
               }
             })
           }
+
+
         </ul>
       </>
     );

@@ -8,6 +8,12 @@
             padding: 10px 15px;
         }
     }
+
+    .table-responsive{
+        @include mediaCustom($min:1024px,$max:null){
+            overflow: hidden;
+        }
+    }
 }
 
 .txt-stl {

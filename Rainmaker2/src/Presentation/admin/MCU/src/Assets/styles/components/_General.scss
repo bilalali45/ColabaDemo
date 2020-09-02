@@ -136,9 +136,10 @@ ul {
 }
 .btn {
     border-radius: 0px;
-    font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
     padding: 8px 25px;
-    text-transform: capitalize;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 
     &.disabled,
     &:disabled {
@@ -169,7 +170,7 @@ ul {
     &-sm,
     &-group-sm>& {
         padding: 6px 15px;
-        font: 400 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
         line-height: 1.5;
         border-radius: 0;
     }
@@ -454,14 +455,14 @@ ul {
     display: table-row;
 }
 .table-responsive {
-    padding: 5px;
+    //padding: 5px;
 }
 
 .mcu-dropdown-toggle {
     
     & + .dropdown-menu,
     .dropdown-menu{
-        width: 290px;
+        width: 300px;
         border-radius: 0px;
         font-family: fontFamily('heading');
         font-size: fontSize('sm');
@@ -673,7 +674,7 @@ ul {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: lighten($color: color('toggleDefaultKnob'), $amount: 10%);
+        background-color: color('toggleDefaultKnobBg');
         -webkit-transition: .4s;
         transition: .4s;
 
@@ -703,7 +704,7 @@ ul {
 
 .btn-sm, .btn-group-sm > .btn, .btn-group-sm > .btn {
     padding: 5px 10px;
-    font: 400 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
+    font: 500 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
     border-radius: 0;
     letter-spacing: normal;
 }
@@ -906,8 +907,8 @@ label.error{
             margin-left: 4px;
         }
     }
-
 }
+
 
 .modal{    
 

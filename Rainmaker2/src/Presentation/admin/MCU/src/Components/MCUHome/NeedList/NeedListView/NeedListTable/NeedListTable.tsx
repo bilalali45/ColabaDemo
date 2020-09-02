@@ -169,7 +169,7 @@ export const NeedListTable = ({
         <div className="td options">
           <button
             onClick={() => reviewClickHandler(index)}
-            className="btn btn-secondry btn-sm"
+            className="btn btn-primary btn-sm"
           >
             Review
           </button>
@@ -180,7 +180,7 @@ export const NeedListTable = ({
         <div className="td options">
           <button
             onClick={() => detailClickHandler(index)}
-            className="btn btn-default btn-sm"
+            className="btn btn-secondry btn-sm"
           >
             Details
           </button>
