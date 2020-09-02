@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { Home } from "./components/Home/Home";
 import { StoreProvider } from "./store/store";
 import { RainsoftRcHeader, RainsoftRcFooter } from "rainsoft-rc";
 import { UserActions } from "./store/actions/UserActions";
 import ImageAssets from "./utils/image_assets/ImageAssets";
-import { ParamsService } from "./utils/ParamsService";
 import { Authorized } from "./shared/Components/Authorized/Authorized";
-import { FooterContents } from "./utils/header_footer_utils/FooterContent";
 import HeaderContent from "./utils/header_footer_utils/HeaderContent";
 import { Auth } from "./services/auth/Auth";
 import { LaonActions } from "./store/actions/LoanActions";
 import IdleTimer from "react-idle-timer";
-// import Header from "./shared/Components/Header/Header";
-
-const mvcDashBoardUrl = `Dashboard`;
-// const mvcDashBoardUrlHttps = 'https://qatx.rainsoftfn.com/Dashboard';
 
 declare global {
   interface Window {
@@ -33,11 +21,7 @@ window.envConfig = window.envConfig || {};
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const [expListnerAdded, setExpListnerAdded] = useState(false);
   const [footerText, setFooterText] = useState("");
-  const tokenData: any = UserActions.getUserInfo();
-  const displayName = " " + tokenData?.FirstName + " " + tokenData?.LastName;
-  const history = useHistory();
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
     authenticate();

@@ -21,7 +21,7 @@ namespace Notification.API
     [Authorize(Roles ="MCU")]
     public class ServerHub : Hub<IClientHub>
     {
-        public static readonly ClientConnection<int> _clientConnections = ClientConnection<int>.Current;
+        public static ClientConnection<int> _clientConnections = ClientConnection<int>.Current;
         
         public ServerHub()
         {
