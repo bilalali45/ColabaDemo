@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TrackableEntities.Common.Core;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
 using Xunit;
@@ -469,7 +470,7 @@ namespace Notification.Tests
             Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
             List<int> lstAssignedUsers = new List<int>();
             lstAssignedUsers.Add(1);
-            mockRainmakerService.Setup(x=>x.GetAssignedUsers(It.IsAny<int>())).ReturnsAsync(lstAssignedUsers);
+            mockRainmakerService.Setup(x => x.GetAssignedUsers(It.IsAny<int>())).ReturnsAsync(lstAssignedUsers);
 
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, mockRainmakerService.Object, Mock.Of<ITemplateService>());
 
@@ -485,7 +486,7 @@ namespace Notification.Tests
             long res = await notificationService.Add(notificationModel, 1, 1, model);
 
             // Assert
-            Assert.Equal(2, res);
+            Assert.Equal(2,res);
         }
         [Fact]
         public async Task TestSeenController()
@@ -690,5 +691,113 @@ namespace Notification.Tests
             //Act
             await notificationService.GetCount(1);
         }
+        [Fact]
+        public async Task TestGetTenantSettingController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            TenantSettingModel tenantSettingModel = new TenantSettingModel();
+            tenantSettingModel.deliveryModeId = 1;
+
+            mockUserProfileService.Setup(x=>x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenantSettingModel);
+
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+
+            notificationController.ControllerContext = context;
+
+            //Act
+            IActionResult result = await notificationController.GetTenantSetting();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestGetTenantSettingService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            TenantSetting app = new TenantSetting()
+            {
+                Id = 1,
+                NotificationTypeId = 1
+            };
+            dataContext.Set<TenantSetting>().Add(app);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            await notificationService.GetTenantSetting(1 , 1);
+        }
+        [Fact]
+        public async Task TestSetTenantSettingController()
+        {
+            //Arrange
+            Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            mockUserProfileService.Setup(x => x.SetTenantSetting(It.IsAny<int>(),It.IsAny<TenantSettingModel>()));
+
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
+
+            notificationController.ControllerContext = context;
+
+            //Act
+            TenantSettingModel tenantSettingModel = new TenantSettingModel();
+            tenantSettingModel.deliveryModeId = 1;
+            IActionResult result = await notificationController.SetTenantSetting(tenantSettingModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestSetTenantSettingService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            TenantSetting app = new TenantSetting()
+            {
+                Id = 2,
+                TrackingState = TrackingState.Modified,
+                DeliveryModeId = 1,
+                TenantId = 6
+            };
+            dataContext.Set<TenantSetting>().Add(app);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            TenantSettingModel tenantSettingModel = new TenantSettingModel();
+            tenantSettingModel.deliveryModeId = 1;
+            await notificationService.SetTenantSetting(6, tenantSettingModel);
+        }
+       
     }
 }
