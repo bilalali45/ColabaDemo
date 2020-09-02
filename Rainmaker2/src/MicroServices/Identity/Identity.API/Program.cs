@@ -15,6 +15,7 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12;
             ThreadPool.SetMaxThreads(1000, 1000);
