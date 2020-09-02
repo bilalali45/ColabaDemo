@@ -7,8 +7,8 @@
 
     .addnewTemplate-btn {        
         padding: 5px 15px;
-        font: 400 #{fontSize('nr')-1+'/'+1} fontFamily('base');
-        text-transform: none;
+        font: 500 #{fontSize('sm')+'/'+1} fontFamily('base');
+        text-transform: uppercase;
 
         @include media-breakpoint-down(lg) {
             padding: 3px 5px 3px;
@@ -159,6 +159,7 @@
                                             align-items: center;
                                             cursor: pointer;
                                             position: relative;
+                                            text-transform: capitalize;
                                             
                                             p{
                                                 white-space: nowrap;
@@ -564,15 +565,21 @@
         max-width: 100%;
         border-radius: 0;
         min-width: 590px;
-        @include media-breakpoint-down(lg) {
-            min-width: 450px;
-        }
-    }
-    .popover {
         margin-top: 71px !important;
         margin-left: 3px !important;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
         border: none;
+        @include media-breakpoint-down(lg) {
+            min-width: 450px;
+        }
+        .popover-body{
+            .pop-detail-doc--body{
+                h4{
+                    font: 500 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');
+                    text-transform: uppercase;
+                }
+            }
+        }
     }
 
     .popup-add-doc {

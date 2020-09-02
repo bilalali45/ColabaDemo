@@ -26,6 +26,10 @@
             }
         }
 
+        .btn{
+            font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        }
+
     }
 
     &-body{

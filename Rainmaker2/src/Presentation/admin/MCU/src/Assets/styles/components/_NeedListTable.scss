@@ -73,6 +73,12 @@
                     color: currentColor;
                 }
             }
+            &:nth-child(4n){
+                color:color('needListTableSYNCColor');
+                a{
+                    color: currentColor;
+                }
+            }
             .block-element{
                 &:last-child{
                    height: auto;

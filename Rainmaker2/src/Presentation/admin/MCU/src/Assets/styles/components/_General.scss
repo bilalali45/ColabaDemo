@@ -232,10 +232,11 @@ ul {
  
     }
 
-           .btn-text{
-               &.d-text {
-            text-transform: initial;
-            float: left;
+    .btn-text{
+        &.d-text {
+            text-transform: uppercase;
+            display: inline-block;
+            vertical-align: middle;
     
             & + .btn-icon {
                 margin-left: 15px;
@@ -462,7 +463,7 @@ ul {
     
     & + .dropdown-menu,
     .dropdown-menu{
-        width: 300px;
+        width: 295px;
         border-radius: 0px;
         font-family: fontFamily('heading');
         font-size: fontSize('sm');
@@ -520,6 +521,7 @@ ul {
                 padding-left: 5px;
                 padding-top: 2px;
                 padding-bottom: 2px;
+                text-transform: capitalize;
             }
         }
 
@@ -531,6 +533,11 @@ ul {
             a{
                 display: block;
                 padding: 10px 0;
+            }
+            .btn{
+                font-family: fontFamily('base');
+                font-size: fontSize('sm');
+                font-weight: 500;
             }
         }
         .btn-block{
@@ -706,7 +713,7 @@ ul {
     padding: 5px 10px;
     font: 500 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
     border-radius: 0;
-    letter-spacing: normal;
+    letter-spacing: 1px;
 }
 
 @mixin placeholder($color: color('input')) {

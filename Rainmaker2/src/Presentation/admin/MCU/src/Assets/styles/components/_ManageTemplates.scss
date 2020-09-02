@@ -6,8 +6,8 @@
 
     .addnewTemplate-btn {
         padding: 3px 10px 3px;
-        font: 400 #{fontSize('nr')-1+'/'+1} fontFamily('base');
-        text-transform: none;
+        font: 500 #{fontSize('sm')+'/'+1} fontFamily('base');
+        text-transform: uppercase;
 
         @include media-breakpoint-down(lg) {
             padding: 3px 3px 3px;
