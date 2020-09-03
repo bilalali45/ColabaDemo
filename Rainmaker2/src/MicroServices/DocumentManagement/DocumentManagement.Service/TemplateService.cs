@@ -112,14 +112,14 @@ namespace DocumentManagement.Service
 
             return templateModels;
         }
-        public async Task<List<TemplateDTO>> GetDocument(string Id)
+        public async Task<List<TemplateDTO>> GetDocument(string id)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
                 @"{""$match"": {
 
-                  ""_id"": " + new ObjectId(Id).ToJson() + @"
+                  ""_id"": " + new ObjectId(id).ToJson() + @"
                             }
                         }",
                         @"{
@@ -163,13 +163,13 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<bool> RenameTemplate(string templateid, int tenantid, string newname, int userProfileId)
+        public async Task<bool> RenameTemplate(string id, int tenantid, string newname, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(templateid) },
+                { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantid}
                 ,{ "userId", userProfileId}
             }, new BsonDocument()

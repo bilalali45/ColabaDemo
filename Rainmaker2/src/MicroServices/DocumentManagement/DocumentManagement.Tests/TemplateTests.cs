@@ -273,7 +273,7 @@ namespace DocumentManagement.Tests
             GetTemplateDocuments moGetTemplateDocuments = new GetTemplateDocuments();
             moGetTemplateDocuments.id = "5eb25acde519051af2eeb111";
             //Act
-            List<TemplateDTO> dto = await service.GetDocument(Id:moGetTemplateDocuments.id);
+            List<TemplateDTO> dto = await service.GetDocument(id:moGetTemplateDocuments.id);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(4, dto.Count);
