@@ -5,7 +5,7 @@ import {get} from 'lodash';
 
 import {LocalDB} from '../lib/localStorage';
 import {Endpoints} from '../actions/Endpoints';
-import {AuthorizeType} from '../lib/type';
+import {AuthorizeType} from '../lib/types';
 
 const http = new Http();
 const cookies = new Cookies();

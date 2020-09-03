@@ -1,7 +1,7 @@
 import {useReducer, Dispatch} from 'react';
 import {cloneDeep} from 'lodash';
 
-import {NotificationType, TimersType} from '../../../lib/type';
+import {NotificationType, TimersType} from '../../../lib/types';
 import {
   RESET_NOTIFICATIONS,
   UPDATE_STATE,

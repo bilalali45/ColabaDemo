@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {Http} from 'rainsoft-js';
 
-import {NotificationType} from '../../../lib/type';
+import {NotificationType} from '../../../lib/types';
 
 interface UseEffectNotificationSeen {
   notificationsVisible: boolean;

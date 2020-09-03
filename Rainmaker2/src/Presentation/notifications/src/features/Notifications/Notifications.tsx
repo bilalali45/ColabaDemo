@@ -6,7 +6,7 @@ import {
   NewNotificationToss,
   AlertForNoData
 } from './_Notifications';
-import {NotificationType, TimersType} from '../../lib/type';
+import {NotificationType, TimersType} from '../../lib/types';
 import {Actions} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {

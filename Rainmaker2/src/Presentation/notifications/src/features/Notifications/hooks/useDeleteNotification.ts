@@ -1,7 +1,7 @@
 import {Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
-import {TimersType, NotificationType} from '../../../lib/type';
+import {TimersType, NotificationType} from '../../../lib/types';
 import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseDeleteNotificationProps {

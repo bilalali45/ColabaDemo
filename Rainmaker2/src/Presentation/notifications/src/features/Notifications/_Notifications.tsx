@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {Link} from 'react-router-dom';
 
-import {NotificationType, TimersType} from '../../lib/type';
+import {NotificationType, TimersType} from '../../lib/types';
 import {formatDateTime} from '../../lib/utils';
 import {
   SVGDocument,

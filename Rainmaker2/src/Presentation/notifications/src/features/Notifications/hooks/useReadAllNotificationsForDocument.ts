@@ -1,6 +1,6 @@
 import {Http} from 'rainsoft-js';
 
-import {NotificationType} from '../../../lib/type';
+import {NotificationType} from '../../../lib/types';
 
 interface UseReadAllNotificationsForDocumentProps {
   notifications: NotificationType[] | null;

@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import {Http} from 'rainsoft-js';
 
 import {ApplicationEnv} from './appEnv';
-import {PayloadType} from './type';
+import {PayloadType} from './types';
 
 const cookies = new Cookies();
 const httpClient = new Http();

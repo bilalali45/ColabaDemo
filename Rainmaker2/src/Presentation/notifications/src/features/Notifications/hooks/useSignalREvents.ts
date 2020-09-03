@@ -1,7 +1,7 @@
 import {useEffect, Dispatch, useRef} from 'react';
 import {SignalRHub} from 'rainsoft-js';
 
-import {NotificationType} from '../../../lib/type';
+import {NotificationType} from '../../../lib/types';
 import {LocalDB} from '../../../lib/localStorage';
 import {Actions} from '../reducers/useNotificationsReducer';
 

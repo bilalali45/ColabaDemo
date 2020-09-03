@@ -1,7 +1,7 @@
 import {useCallback, useState, useRef, useEffect, Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
-import {NotificationType} from '../../../lib/type';
+import {NotificationType} from '../../../lib/types';
 import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseFetchNotificationsProps {

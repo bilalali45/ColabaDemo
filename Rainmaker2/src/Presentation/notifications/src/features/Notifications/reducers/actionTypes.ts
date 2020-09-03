@@ -1,4 +1,4 @@
-import {NotificationType, TimersType} from '../../../lib/type';
+import {NotificationType, TimersType} from '../../../lib/types';
 import {State} from './useNotificationsReducer';
 
 export interface RESET_NOTIFICATIONS {
