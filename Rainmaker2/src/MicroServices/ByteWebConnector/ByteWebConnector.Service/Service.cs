@@ -224,17 +224,6 @@ namespace ByteWebConnector.Service
             return (await Uow.Repository<TEntity>().Query(dynamicFilter).ToListAsync()).Any();
         }
         
-        //public async Task<string> PrepareErrorMessageAsync(string key, bool isAddServerError = false)
-        //{
-        //    string msg = await services.GetRequiredService<ICommonService>().GetResourceByNameAsync(key);
-
-        //    if (isAddServerError)
-        //        msg += (!string.IsNullOrWhiteSpace(Message)) ? ": " + Message : "";
-
-        //    Message = "";
-
-        //    return msg;
-        //}
         public virtual void Attach(TEntity item)
             => Repository.Attach(item);
 
@@ -332,33 +321,6 @@ namespace ByteWebConnector.Service
             return Repository.GetCustomRepository<T>();
         }
         
-        //public virtual async Task<bool> IsNullAsync(TEntity entity, string errorMsg = null)
-        //{
-        //    if (entity == null)
-        //    {
-
-        //        Message = (errorMsg == null) ? "The Record no more exists" : await services.GetRequiredService<ICommonService>().GetResourceByNameAsync(errorMsg.Trim());
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public virtual async Task<bool> IsSystemAsync(TEntity entity, string errorMsg = null)
-        //{
-        //    System.Reflection.PropertyInfo isSystemProperty = typeof(TEntity).GetProperty("IsSystem");
-
-        //    if (isSystemProperty != null)
-        //    {
-        //        var isSystem = (bool)isSystemProperty.GetValue(entity);
-        //        if (isSystem)
-        //        {
-        //            Message = (errorMsg == null) ? "System record can not modify or delete" : await services.GetRequiredService<ICommonService>().GetResourceByNameAsync(errorMsg.Trim());
-        //            return true;
-        //        }
-        //    }
-
-        //    return false;
-        //}
         
         virtual public async Task<TEntity> GetByNameAsync(string name)
         {
@@ -380,53 +342,6 @@ namespace ByteWebConnector.Service
             else
                 return null;
         }
-
-        //virtual public async Task<List<RainMaker.Common.ItemSelectionList>> GetAllDropDownValuesAsync()
-        //{
-        //    var dynamicFilter = new DynamicLinQFilter { Filter = "IsDeleted!=true" };
-
-        //    var records = await GetDynamicColumnsAsync(dynamicFilter);
-
-        //    var queryDropDownList = new List<QueryTemplate.QueryDropDown>();
-
-        //    foreach (dynamic item in records)
-        //    {
-        //        queryDropDownList.Add(new QueryTemplate.QueryDropDown { Id = item.Id, Name = item.Name, IsActive = item.IsActive });
-        //    }
-
-        //    return queryDropDownList.GetListForDropDown(x => x.Name, x => x.Id, x => x.IsActive);
-        //}
-
-        //virtual public async Task<List<RainMaker.Common.ItemSelectionList>> GetActiveDropDownValuesAsync()
-        //{
-        //    var dynamicFilter = new DynamicLinQFilter { Filter = "IsActive!=false AND IsDeleted!=true" };
-
-        //    var records = await GetDynamicColumnsAsync(dynamicFilter);
-
-        //    var queryDropDownList = new List<QueryTemplate.QueryDropDown>();
-
-        //    foreach (dynamic item in records)
-        //    {
-        //        queryDropDownList.Add(new QueryTemplate.QueryDropDown { Id = item.Id, Name = item.Name, IsActive = item.IsActive });
-        //    }
-
-        //    return queryDropDownList.GetListForDropDown(x => x.Name, x => x.Id, x => x.IsActive);
-        //}
-
-        //virtual public async Task<List<QueryTemplate.QueryDropDown>> GetQueryDropDownAsync(string filter)
-        //{
-        //    var dynamicFilter = new DynamicLinQFilter { Filter = filter };
-
-        //    var records = await GetDynamicColumnsAsync(dynamicFilter);
-
-        //    var queryDropDownList = new List<QueryTemplate.QueryDropDown>();
-
-        //    foreach (dynamic item in records)
-        //    {
-        //        queryDropDownList.Add(new QueryTemplate.QueryDropDown { Id = item.Id, Name = item.Name, IsActive = item.IsActive });
-        //    }
-        //    return queryDropDownList;
-        //}
 
         virtual protected async Task<List<dynamic>> GetDynamicColumnsAsync(DynamicLinQFilter dynamicFilter, string columns = "new(Id,Name,IsActive)")
         {

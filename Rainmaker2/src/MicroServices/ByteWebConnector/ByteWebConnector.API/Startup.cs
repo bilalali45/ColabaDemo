@@ -53,7 +53,7 @@ namespace ByteWebConnector.API
 
             
             services.AddScoped<ISettingService, SettingService>();
-            
+            services.AddScoped<ByteWebConnector.Service.InternalServices.IRainmakerService, ByteWebConnector.Service.InternalServices.RainmakerService>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             #region HttpClientDependencies
 
@@ -81,7 +81,6 @@ namespace ByteWebConnector.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

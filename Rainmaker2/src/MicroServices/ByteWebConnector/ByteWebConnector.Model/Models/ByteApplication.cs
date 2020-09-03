@@ -6,10 +6,6 @@ namespace ByteWebConnector.Model.Models
     [DataContract]
     public class ByteApplication
     {
-        //[DataMember(Name = "Borrower")]
-        //public ByteBorrower Borrower { get; set; }
-        //[DataMember(Name = "CoBorrower")]
-        //public ByteCoBorrower CoBorrower { get; set; }
         [DataMember]
         public long ApplicationId { get; set; }
         [DataMember]
@@ -49,64 +45,4 @@ namespace ByteWebConnector.Model.Models
 
        
     }
-
-    //[DataContract(Name = "Borrower")]
-    //public class ByteBorrower
-    //{
-    //    [DataMember]
-    //    public long FileDataID { get; set; }
-    //    [DataMember]
-    //    public int? BorrowerID { get; set; }
-    //    //[DataMember(Name = "Borrower")]
-    //    //public Bor Borrower { get; set; }
-    //    //[DataMember]
-    //    //public List<Residence> Residences { get; set; }
-    //    //[DataMember]
-    //    //public List<Employer> Employers { get; set; }
-    //    //[DataMember]
-    //    //public List<Income> Incomes { get; set; }
-    //    //[DataMember]
-    //    //public List<Asset> Assets { get; set; }
-    //    //[DataMember]
-    //    //public List<REO> REOs { get; set; }
-    //    //[DataMember]
-    //    //public List<Debt> Debts { get; set; }
-    //    //[DataMember]
-    //    //public List<object> CreditAliases { get; set; }
-    //    //[DataMember]
-    //    //public List<object> Expenses { get; set; }
-    //    //[DataMember]
-    //    //public List<object> Gifts { get; set; }
-
-    //}
-    //[DataContract(Name = "CoBorrower")]
-    //public class ByteCoBorrower
-    //{
-    //    [DataMember]
-    //    public long FileDataID { get; set; }
-    //    [DataMember]
-    //    public int? BorrowerID { get; set; }
-
-    //    //[DataMember(Name = "Borrower")]
-    //    //public Bor Borrower { get; set; }
-    //    //[DataMember]
-    //    //public List<Residence> Residences { get; set; }
-    //    //[DataMember]
-    //    //public List<Employer> Employers { get; set; }
-    //    //[DataMember]
-    //    //public List<Income> Incomes { get; set; }
-    //    //[DataMember]
-    //    //public List<Asset> Assets { get; set; }
-    //    //[DataMember]
-    //    //public List<REO> REOs { get; set; }
-    //    //[DataMember]
-    //    //public List<Debt> Debts { get; set; }
-    //    //[DataMember]
-    //    //public List<object> CreditAliases { get; set; }
-    //    //[DataMember]
-    //    //public List<object> Expenses { get; set; }
-    //    //[DataMember]
-    //    //public List<object> Gifts { get; set; }
-
-    //}
 }

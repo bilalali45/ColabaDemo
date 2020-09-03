@@ -10,6 +10,7 @@ using ByteWebConnector.Model.Models.ServiceRequestModels.Rainmaker.LoanApplicati
 using ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanApplication;
 using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using ServiceCallHelper;
 
@@ -18,22 +19,37 @@ namespace ByteWebConnector.Service.InternalServices
     public class RainmakerService : IRainmakerService
     {
         private readonly string _baseUrl;
-        private readonly HttpClient _httpClient;
+        private readonly  HttpClient _httpClient;
         private readonly HttpRequest _request;
+<<<<<<< HEAD
+=======
+        private readonly ServiceDiscovery _serviceDiscovery;
+        private readonly IConfiguration _configuration;
+>>>>>>> d6b4fc6454a9920eb9dfd25b89a26ccb1ae20d2d
 
         public RainmakerService(IHttpContextAccessor httpContextAccessor,
                                 HttpClient httpClient,
-                                IOptions<ServiceDiscovery> serviceDiscovery)
+                                IOptions<ServiceDiscovery> serviceDiscovery,
+                                IConfiguration configuration)
         {
             _httpClient = httpClient;
+<<<<<<< HEAD
             _baseUrl = serviceDiscovery.Value.RainMaker.Url;
+=======
+            _configuration = configuration;
+            _baseUrl = _configuration["ServiceAddress:RainMaker:Url"];//serviceDiscovery.Value;            
+            _serviceDiscovery = serviceDiscovery.Value;            
+>>>>>>> d6b4fc6454a9920eb9dfd25b89a26ccb1ae20d2d
             _request = httpContextAccessor.HttpContext.Request;
         }
 
 
         public CallResponse<GetLoanApplicationResponse> GetLoanApplication(int loanApplicationId)
         {
-            return _httpClient.Get<GetLoanApplicationResponse>(endPoint: $"{_baseUrl}/api/RainMaker/LoanApplication/GetByLoanApplicationId?id={loanApplicationId}",
+       
+
+
+            return _httpClient.Get<GetLoanApplicationResponse>(endPoint: $"{_baseUrl}/api/RainMaker/LoanApplication/GetLoanApplication?id={loanApplicationId}",                                                                    
                                                                     request: _request,
                                                                     attachBearerTokenFromCurrentRequest: true
                                                                    );

@@ -31,7 +31,7 @@ namespace ByteWebConnector.Tests
     public class DocumentTest
     {
         [Fact]
-        public async Task TestSendDocumentController()
+        public  async  Task  TestSendDocumentController()
         {
             //Arrange
             Mock<ILoanApplicationService> mockLoanApplicationService = new Mock<ILoanApplicationService>();

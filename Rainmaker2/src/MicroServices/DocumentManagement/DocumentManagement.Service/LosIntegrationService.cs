@@ -15,8 +15,6 @@ namespace DocumentManagement.Service
 
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        
-        //private readonly IMongoService _mongoService;
 
         #endregion
 

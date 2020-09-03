@@ -176,25 +176,12 @@ namespace DocumentManagement.API.Controllers
                                                                 authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
             {
-                //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 
             return NotFound();
         }
-        /*
-        [HttpPost(template:"[action]")]
-        public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
-        {
-            var docQuery = await documentService.UpdateByteProStatus(id: updateByteProStatus.id,
-                                                                requestId: updateByteProStatus.requestId,
-                                                                docId: updateByteProStatus.docId,
-                                                                fileId: updateByteProStatus.fileId);
-            if (docQuery)
-                return Ok();
-            return NotFound();
-        }
-        */
+       
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {

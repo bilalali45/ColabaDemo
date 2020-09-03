@@ -64,7 +64,7 @@ namespace Rainmaker.Model.Borrower
 
             #region Borrower
 
-            //entity.LoanContact.TrackingState = TrackingState.Modified;
+         
             entity.NoOfDependent = NoOfDependent;
             entity.DependentAge = DependentAge;
 
@@ -85,7 +85,7 @@ namespace Rainmaker.Model.Borrower
             foreach (var ethnicInfoItem in EthnicityInfo)
             {
                 var ethnicityBinder = new LoanContactEthnicityBinder();
-                //ethnicityBinder.LoanContactId = entity.LoanContactId.Value;
+            
                 ethnicityBinder.EthnicityDetailId = ethnicInfoItem.EthnicDetailId;
                 ethnicityBinder.EthnicityId = ethnicInfoItem.EthnicId.Value;
                 ethnicityBinder.TrackingState = TrackingState.Added;
@@ -109,7 +109,7 @@ namespace Rainmaker.Model.Borrower
             foreach (var raceInfoItem in RaceInfo)
             {
                 var raceBinder = new LoanContactRaceBinder();
-                //raceBinder.LoanContactId = entity.LoanContactId.Value;
+              
                 raceBinder.RaceDetailId = raceInfoItem.RaceDetailId;
                 raceBinder.RaceId = raceInfoItem.RaceId.Value;
                 raceBinder.TrackingState = TrackingState.Added;
@@ -243,17 +243,7 @@ namespace Rainmaker.Model.Borrower
                     : //Is any part of the down payment borrowed?
                     Handle42Case();
                     break;
-                //case 43:////Are you obligated to pay alimony, child support, or separate maintenance?
-                //    if (questionResponse.AnswerText == QuestionAnswerEnum.Yes.ToInt().ToString())
-                //    {
-                //        questionResponse.AnswerText = "1";
-                //    }
-                //    else if (questionResponse.AnswerText == QuestionAnswerEnum.No.ToInt().ToString())
-                //    {
-                //        questionResponse.AnswerText = "0";
-                //    }
-
-                //    break;
+               
                 case (int) DeclarationQuestionEnum.DeclarationsJIndicator: //Are you a US citizen?
                     Handle44Case(borrowerQuestionResponse.QuestionResponse,
                                  entity);
@@ -283,30 +273,15 @@ namespace Rainmaker.Model.Borrower
 
                     break;
 
-                //case 45:
-                //    if (questionResponse.AnswerText == null)
-                //    {
-                //        questionResponse.AnswerText = "0";
-                //    }
-
-                //    break;
-                //case 47:
-                //    if (questionResponse.AnswerText == null)
-                //    {
-                //        questionResponse.AnswerText = "0";
-                //    }
-                //    break;
+               
                 case (int) DeclarationQuestionEnum.PriorPropertyUsageType
                     : //What type of property did you own? Select the choice that fits best.
-                    //var question47Response = Request.Params[$"Question_{47}"];
                     Handle49Case(HomeownerPastThreeYearsIndicator.ToString(),
                                  borrowerQuestionResponse.QuestionResponse,
                                  entity);
                     break;
                 case (int) DeclarationQuestionEnum.PriorPropertyTitleType
-                    : //What was your status on the title of that property?
-                    //var questionResponse47 = Request.Params[$"Question_{47}"];
-                    Handle50Case(HomeownerPastThreeYearsIndicator.ToString(),
+                    : Handle50Case(HomeownerPastThreeYearsIndicator.ToString(),
                                  borrowerQuestionResponse.QuestionResponse,
                                  entity);
                     break;
@@ -326,7 +301,7 @@ namespace Rainmaker.Model.Borrower
             {
                 questionResponse.AnswerText = null;
                 questionResponse.AnswerText = "";
-                //QuestionResponse47 = "";
+             
             }
         }
 
@@ -337,8 +312,6 @@ namespace Rainmaker.Model.Borrower
         {
             if (question47Response == QuestionAnswerEnum.Yes.ToInt().ToString())
             {
-                //questionResponse.AnswerText = null;
-                //questionResponse.AnswerText = Request.Params[$"question_{DeclarationQuestionEnum.PriorPropertyTitleType.ToInt()}"];
                 //do nothing
             }
             else
@@ -354,8 +327,6 @@ namespace Rainmaker.Model.Borrower
         {
             if (question47Response == QuestionAnswerEnum.Yes.ToInt().ToString())
             {
-                //questionResponse.AnswerText = null;
-                //questionResponse.AnswerText = Request.Params[$"question_{DeclarationQuestionEnum.PriorPropertyUsageType.ToInt()}"];
                 //do nothing 
             }
             else
@@ -364,43 +335,6 @@ namespace Rainmaker.Model.Borrower
                 questionResponse.AnswerText = "";
             }
         }
-
-
-        private void Handle46Case(object todo,
-                                  QuestionResponse questionResponse,
-                                  RainMaker.Entity.Models.Borrower entity)
-        {
-            //var borrowerLiabilitydb = entity.BorrowerLiabilities.FirstOrDefault();
-            //if (questionResponse.AnswerText == QuestionAnswerEnum.Yes.ToInt().ToString())
-            //{
-
-            //    if (borrowerLiabilitydb != null)
-            //    {
-            //        borrowerLiabilitydb.TrackingState = TrackingState.Modified;
-            //        var mapLaibility = model.GetBorrowerLiabilityEntity();
-            //        mapLaibility.MapEntityProperties(borrowerLiabilitydb);
-            //        entity.BorrowerLiabilities.Add(model.GetBorrowerLiabilityEntity());
-            //        borrowerLiabilitydb.BorrowerId = model.borrowerId;
-            //        entity.TrackingState = TrackingState.Modified;
-            //        _questionSectionService.Uow.RepositoryAsync<BorrowerLiability>().Update(borrowerLiabilitydb);
-            //    }
-            //    else
-            //    {
-            //        borrower.BorrowerLiabilities.Add(model.GetBorrowerLiabilityEntity());
-            //        _questionSectionService.Uow.RepositoryAsync<BorrowerLiability>().InsertRange(borrower.BorrowerLiabilities);
-
-            //    }
-            //}
-            //else
-            //{
-            //    if (borrowerLiabilitydb != null)
-            //    {
-            //        _questionSectionService.Uow.RepositoryAsync<BorrowerLiability>().Delete(borrowerLiabilitydb);
-            //    }
-
-            //}
-        }
-
 
         private void Hanlde57Case(string question44Response,
                                   string question54Response,
@@ -421,9 +355,6 @@ namespace Rainmaker.Model.Borrower
                 }
                 else
                 {
-                    //borrower.LoanContact.ResidencyStateId = null;
-                    //borrower.LoanContact.ResidencyTypeId = null;
-                    //_questionSectionService.Uow.RepositoryAsync<LoanContact>().Update(borrower.LoanContact);
                     questionResponse.AnswerText = "0";
                 }
 
@@ -479,46 +410,7 @@ namespace Rainmaker.Model.Borrower
 
         private void Handle42Case()
         {
-            //    var borrowerAssetDb = borrower.BorrowerAssets.FirstOrDefault();
-            //    if (questionResponse.AnswerText == QuestionAnswerEnum.Yes.ToInt().ToString())
-            //    {
-            //        questionResponse.AnswerText = QuestionAnswerEnum.Yes.ToInt().ToString();
-
-            //        if (model.DownPaymentBorrowed.Amount.HasValue())
-            //        {
-
-            //            if (borrowerAssetDb != null)
-            //            {
-            //                borrowerAssetDb.ObjectState = ObjectState.Modified;
-            //                var borrowerAsset = model.GetBorrowerAssetEntity();
-            //                borrowerAsset.MapEntityProperties(borrowerAssetDb);
-            //                _questionSectionService.Uow.RepositoryAsync<BorrowerAsset>()
-            //                    .Update(borrowerAssetDb);
-            //                _questionSectionService.Uow.RepositoryAsync<Entity.Models.Borrower>()
-            //                    .Update(borrower);
-            //            }
-            //            else
-            //            {
-            //                var borrowerAsset = model.GetBorrowerAssetEntity();
-            //                borrower.BorrowerAssets.Add(borrowerAsset);
-            //                _questionSectionService.Uow.RepositoryAsync<BorrowerAsset>()
-            //                    .InsertRange(borrower.BorrowerAssets);
-            //                _questionSectionService.Uow.RepositoryAsync<Entity.Models.Borrower>()
-            //                    .Update(borrower);
-            //            }
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        if (borrowerAssetDb != null)
-            //        {
-            //            _questionSectionService.Uow.RepositoryAsync<BorrowerAsset>()
-            //                .Delete(borrowerAssetDb);
-            //        }
-
-            //    }
-            //}
+            // implementation will be added later
         }
     }
 }
