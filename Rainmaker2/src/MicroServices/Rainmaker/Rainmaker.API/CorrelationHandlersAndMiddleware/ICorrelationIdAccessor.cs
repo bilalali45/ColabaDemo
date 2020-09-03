@@ -1,4 +1,4 @@
-﻿namespace Identity.CorrelationHandlersAndMiddleware
+﻿namespace RainMaker.API.CorrelationHandlersAndMiddleware
 {
 
     public interface ICorrelationIdAccessor

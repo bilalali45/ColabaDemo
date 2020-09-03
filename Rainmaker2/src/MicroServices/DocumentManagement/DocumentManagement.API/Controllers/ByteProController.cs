@@ -25,7 +25,6 @@ namespace DocumentManagement.API.Controllers
             ISettingService settingService,
             IKeyStoreService keyStoreService,
             ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService,
             IByteProService byteProService,
             IAdminDashboardService adminDashboardService,
             ITemplateService templateService
@@ -37,7 +36,6 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
-            this.rainmakerService = rainmakerService;
             this.byteProService = byteProService;
             this.adminDashboardService = adminDashboardService;
             this.templateService = templateService;
@@ -53,7 +51,6 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
-        private readonly IRainmakerService rainmakerService;
         private readonly IByteProService byteProService;
         private readonly IAdminDashboardService adminDashboardService;
         private readonly ITemplateService templateService;
