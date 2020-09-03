@@ -33,7 +33,7 @@ namespace ServiceCallHelper
                                              string endPoint,
                                              string bearerToken = null)
         {
-            if (!bearerToken.HasValue())
+            if (bearerToken.HasValue())
                 httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",
                                                     parameter: bearerToken);
@@ -70,7 +70,8 @@ namespace ServiceCallHelper
 
             return Post<T>(httpClient: httpClient,
                            endPoint: endPoint,
-                           content: token);
+                           content: content,
+                           bearerToken: token);
         }
 
 
@@ -79,7 +80,7 @@ namespace ServiceCallHelper
                                               string content,
                                               string bearerToken = null)
         {
-            if (!bearerToken.HasValue())
+            if (bearerToken.HasValue())
                 httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",
                                                     parameter: bearerToken);
