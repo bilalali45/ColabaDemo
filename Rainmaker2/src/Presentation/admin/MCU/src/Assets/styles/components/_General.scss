@@ -137,7 +137,7 @@ ul {
 .btn {
     border-radius: 0px;
     font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
-    padding: 8px 25px;
+    padding: 8px 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
 
@@ -898,9 +898,10 @@ label.error{
     }
 
     &-text{
-        font: 500 #{fontSize('nr')+'/0.8'} fontFamily('base'); 
+        font: 400 #{fontSize('sm')+'/0.8'} fontFamily('base'); 
         white-space: nowrap;
-        padding:10px 15px;
+        padding:0px 15px;
+        align-self: inherit;
         -webkit-animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
                 animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
     }
