@@ -10,8 +10,6 @@ namespace Extensions.ExtensionClasses
         {
             var ms = new StringWriter();
             ds.WriteXml(ms,XmlWriteMode.WriteSchema);
-            //ds.GetXml();
-           
             
             return Convert.ToString(ms);
           

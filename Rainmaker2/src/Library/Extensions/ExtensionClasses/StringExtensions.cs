@@ -20,10 +20,6 @@ namespace Extensions.ExtensionClasses
             }
             return result;
         }
-      
-    
-
-      
         public static int ToInt(this string value)
         {
             try
@@ -187,7 +183,6 @@ namespace Extensions.ExtensionClasses
         public static string PascalToDisplayString(this string str)
         {
             var result = new StringBuilder();
-            //string result = string.Empty;
             char[] letters = str.ToCharArray();
             foreach (char c in letters)
                 if (c.ToString(CultureInfo.InvariantCulture) != c.ToString(CultureInfo.InvariantCulture).ToLower())

@@ -12,7 +12,7 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace MainGateway
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
