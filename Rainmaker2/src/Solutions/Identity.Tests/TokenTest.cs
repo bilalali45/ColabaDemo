@@ -94,7 +94,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -151,7 +151,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -208,7 +208,7 @@ namespace Identity.Tests
             httpContext.Setup(x => x.User).Returns(claimsPrincipal);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -263,7 +263,7 @@ namespace Identity.Tests
             httpContext.Setup(x => x.User).Returns(claimsPrincipal);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -346,7 +346,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -430,7 +430,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
