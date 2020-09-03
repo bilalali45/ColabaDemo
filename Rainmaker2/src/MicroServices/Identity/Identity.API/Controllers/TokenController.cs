@@ -22,13 +22,11 @@ namespace Identity.Controllers
 
         public TokenController(IHttpClientFactory clientFactory,
                                IConfiguration configuration,
-                               ITokenService tokenService,
-                               ILogger<TokenController> logger)
+                               ITokenService tokenService)
         {
             _clientFactory = clientFactory;
             _configuration = configuration;
             _tokenService = tokenService;
-            _logger = logger;
         }
 
         #endregion
@@ -37,8 +35,6 @@ namespace Identity.Controllers
 
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<TokenController> _logger;
-
         private readonly ITokenService _tokenService;
 
         #endregion
