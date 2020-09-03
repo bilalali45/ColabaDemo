@@ -20,16 +20,13 @@ namespace ByteWebConnector.Service.InternalServices
         private readonly string _baseUrl;
         private readonly HttpClient _httpClient;
         private readonly HttpRequest _request;
-        private readonly ServiceDiscovery _serviceDiscovery;
-
 
         public RainmakerService(IHttpContextAccessor httpContextAccessor,
                                 HttpClient httpClient,
                                 IOptions<ServiceDiscovery> serviceDiscovery)
         {
             _httpClient = httpClient;
-            _baseUrl = _serviceDiscovery.RainMaker.Url;
-            _serviceDiscovery = serviceDiscovery.Value;
+            _baseUrl = serviceDiscovery.Value.RainMaker.Url;
             _request = httpContextAccessor.HttpContext.Request;
         }
 
