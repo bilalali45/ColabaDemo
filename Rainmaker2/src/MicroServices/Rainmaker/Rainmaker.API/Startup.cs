@@ -102,7 +102,8 @@ namespace Rainmaker.API
                         SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                         MaxConnectionsPerServer = int.MaxValue
                     })
-                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
+                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor();  //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
