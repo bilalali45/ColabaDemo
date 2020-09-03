@@ -21,7 +21,7 @@ namespace Notification.API
     [Authorize(Roles ="MCU")]
     public class ServerHub : Hub<IClientHub>
     {
-        public static ClientConnection<int> _clientConnections = ClientConnection<int>.Current;
+        public static readonly ClientConnection<int> _clientConnections = ClientConnection<int>.Current;
         
         public ServerHub()
         {
@@ -39,12 +39,12 @@ namespace Notification.API
         }
 
 
-        public override Task OnDisconnectedAsync(Exception ex)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
             _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId);
-            return base.OnDisconnectedAsync(ex);
+            return base.OnDisconnectedAsync(exception);
         }
 
         #endregion

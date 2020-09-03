@@ -291,9 +291,9 @@ namespace Notification.Service
 
         public virtual async Task<bool> HardDeleteAsync<TKey>(TKey keyValue, CancellationToken cancellationToken = default)
             => await Repository.HardDeleteAsync(keyValue, cancellationToken);
-        public virtual void HardDelete(TEntity entity)
+        public virtual void HardDelete(TEntity item)
         {
-            Repository.HardDelete(entity);
+            Repository.HardDelete(item);
         }
 
         public void SoftDelete(TEntity item)

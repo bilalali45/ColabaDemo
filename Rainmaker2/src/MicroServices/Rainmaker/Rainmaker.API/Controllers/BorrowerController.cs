@@ -124,6 +124,7 @@ namespace Rainmaker.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new System.NotSupportedException();
         }
 
 
@@ -131,6 +132,7 @@ namespace Rainmaker.API.Controllers
         [HttpDelete(template: "{id}")]
         public void Delete(int id)
         {
+            throw new System.NotSupportedException();
         }
     }
 }
