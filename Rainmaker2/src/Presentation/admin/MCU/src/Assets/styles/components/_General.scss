@@ -546,6 +546,7 @@ ul {
         }
 
         .addneedlist-popover{
+            min-width: 380px;
             &-title{
                 font: 500 #{fontSize('nr')+'/'+1} fontFamily('base');
             }
