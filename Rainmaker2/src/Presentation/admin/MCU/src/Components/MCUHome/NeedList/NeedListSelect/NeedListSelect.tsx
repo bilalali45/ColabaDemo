@@ -43,7 +43,21 @@ export const NeedListSelect = ({
   const selectedIds: string[] = needListManager?.templateIds || [];
 
   const [show, setShow] = useState<boolean>(false);
-    
+  const [showPopover, setShowPopover] = useState<boolean>(false);
+  const [target, setTarget] = useState(null);
+  const ref = useRef(null);
+
+  const displayPopover = (event:any) => {
+    console.log(event.target,"apex");
+    setShowPopover(true);
+    setTarget(event.target);
+  };
+
+  const hidePopover = (event:any) => {
+    console.log(event.target,"apex");
+    setShowPopover(false);
+    setTarget(event.target);
+  };
 
   useEffect(() => {
     if (!templates) {
@@ -86,24 +100,26 @@ export const NeedListSelect = ({
 
   }
 
+
+
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
 
     return (
       <>
+      <div ref={ref}>
         <h3>My Templates</h3>
+        
         <ul className="checklist" ref={myTemplateContainerRef}>
           {
             templateList?.map((t: Template) => {
               if (t?.type === MyTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis">
+                return <li key={t?.id} onMouseEnter={(e)=>{displayPopover(e)}} onMouseOut={(e)=>{hidePopover(e)}}><label className="text-ellipsis">
                   
                   <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t?.id);
                 }} id={t.id} type="checkbox" /> {t?.name}
                 </label>
-              
-                
                 </li>
               }
             })
@@ -111,6 +127,20 @@ export const NeedListSelect = ({
 
 
         </ul>
+        <Overlay
+        show={showPopover}
+        target={target}
+        placement="right"
+        container={ref.current}
+      >
+        <Popover id="popover-contained" className="addneedlist-popover">
+          <Popover.Title as="h3">Popover bottom</Popover.Title>
+          <Popover.Content>
+            <strong>Holy guacamole!</strong> Check this info.
+          </Popover.Content>
+        </Popover>
+      </Overlay>
+      </div>
       </>
     );
   };
