@@ -12,15 +12,12 @@ namespace MainGateway.Middleware
 {
     public class InputFilter
     {
-        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
         private readonly RequestDelegate _next;
 
 
-        public InputFilter(RequestDelegate next,
-                           ILogger<RequestResponseLoggingMiddleware> logger)
+        public InputFilter(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
 

@@ -1,74 +1,93 @@
-import axios from 'axios';
-import {LocalDB} from '../Utils/LocalDB';
 import {Http} from 'rainsoft-js';
-import {Endpoints} from '../actions/Endpoints';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
+import {get} from 'lodash';
+
+import {LocalDB} from '../lib/localStorage';
+import {Endpoints} from '../actions/Endpoints';
+import {AuthorizeType} from '../lib/types';
+
 const http = new Http();
 const cookies = new Cookies();
 
 export class UserActions {
-  static async authenticate() {
-    const credentials = {
-      userName: LocalDB.getLoginDevUserName(),
-      password: LocalDB.getLoginDevPassword(),
-      employee: true
-    };
+  static async authenticate(): Promise<{
+    token: any;
+    refreshToken: any;
+  } | null> {
+    try {
+      const credentials = {
+        userName: LocalDB.getLoginDevUserName(),
+        password: LocalDB.getLoginDevPassword(),
+        employee: true
+      };
 
-    let res: any = await http.post(
-      Endpoints.User.POST.authorize(),
-      credentials
-    );
-    if (!res.data.data) {
+      const authorizeResponse = await http.post<
+        AuthorizeType,
+        typeof credentials
+      >(Endpoints.User.POST.authorize(), credentials);
+
+      const {token, refreshToken} = get(authorizeResponse, 'data.data');
+
+      if (token && refreshToken) {
+        LocalDB.storeTokenPayload(UserActions.decodeJwt(token));
+        return {token, refreshToken};
+      }
       return null;
-    }
-    let {token, refreshToken} = res.data.data;
-    if (token && refreshToken) {
-      LocalDB.storeTokenPayload(UserActions.decodeJwt(token));
-      return {token, refreshToken};
+    } catch (error) {
+      console.warn(error);
+
+      return null;
     }
   }
 
-  static async refreshToken() {
+  static async refreshToken(): Promise<boolean | undefined> {
     try {
       if (!LocalDB.checkAuth()) {
         return;
       }
-      let res: any = await http.post(Endpoints.User.POST.refreshToken(), {
+
+      const refreshTokenResponse = await http.post<
+        AuthorizeType,
+        AuthorizeType
+      >(Endpoints.User.POST.refreshToken(), {
         token: LocalDB.getAuthToken(),
         refreshToken: LocalDB.getRefreshToken()
       });
 
-      if (res?.data?.data?.token && res?.data?.data?.refreshToken) {
-        LocalDB.storeAuthTokens(
-          res.data.data.token,
-          res.data.data.refreshToken
-        );
-        let payload = UserActions.decodeJwt(res.data.data.token);
-        LocalDB.storeTokenPayload(payload);
-        UserActions.addExpiryListener();
-        http.setAuth(res.data.data.token);
-        return true;
-      }
-      console.log('Refresh token fail.');
-      LocalDB.removeAuth();
-      //window.open("/Login/LogOff", "_self");
-      window.top.location.href = '/Login/LogOff';
+      const {token, refreshToken} = get(refreshTokenResponse, 'data.data');
 
-      return false;
+      if (!token || !refreshToken) {
+        console.log('Refresh token fail.');
+        LocalDB.removeAuth();
+        window.top.location.href = '/Login/LogOff';
+
+        return false;
+      }
+
+      LocalDB.storeAuthTokens(token, refreshToken);
+
+      const payload = UserActions.decodeJwt(token);
+      LocalDB.storeTokenPayload(payload);
+      UserActions.addExpiryListener();
+      http.setAuth(token);
+
+      return true;
     } catch (error) {
       setTimeout(() => {
         UserActions.refreshToken();
       }, 10 * 1000);
+
       return false;
     }
   }
 
-  static async authorize() {
-    let isAuth = LocalDB.checkAuth();
+  static async authorize(): Promise<boolean> {
+    const isAuth = LocalDB.checkAuth();
+
     if (isAuth === 'token expired') {
       console.log('Refresh token called from authorize');
-      let res: any = await UserActions.refreshToken();
+      const res: any = await UserActions.refreshToken();
       if (res) {
         return true;
       } else {
@@ -78,7 +97,7 @@ export class UserActions {
 
     if (!isAuth) {
       if (process.env.NODE_ENV === 'development') {
-        let tokens: any = await UserActions.authenticate();
+        const tokens: any = await UserActions.authenticate();
         if (tokens?.token) {
           LocalDB.storeAuthTokens(tokens.token, tokens.refreshToken);
           http.setAuth(tokens.token);
@@ -88,8 +107,8 @@ export class UserActions {
         }
       }
 
-      let notificationToken = cookies.get('NotificationToken');
-      let notificationRefreshToken = cookies.get('NotificationRefreshToken');
+      const notificationToken = cookies.get('NotificationToken');
+      const notificationRefreshToken = cookies.get('NotificationRefreshToken');
       console.log(
         'Cache token values in authorize NotificationToken',
         notificationToken,
@@ -101,7 +120,7 @@ export class UserActions {
         LocalDB.storeAuthTokens(notificationToken, notificationRefreshToken);
         LocalDB.storeTokenPayload(UserActions.decodeJwt(notificationToken));
         http.setAuth(notificationToken);
-        let isAuth = LocalDB.checkAuth();
+        const isAuth = LocalDB.checkAuth();
         console.log('Cache token check Auth', isAuth);
         if (isAuth === 'token expired' || !isAuth) {
           console.log('Cache token is not valid');
@@ -122,14 +141,14 @@ export class UserActions {
     }
   }
 
-  static addExpiryListener() {
+  static addExpiryListener(): void {
     const payload = LocalDB.getUserPayload();
     console.log('in listener added');
     if (payload != undefined) {
-      let expiry = payload.exp;
-      let currentTime = Date.now();
-      let expiryTime = expiry * 1000;
-      let time = expiryTime - currentTime;
+      const expiry = payload.exp;
+      const currentTime = Date.now();
+      const expiryTime = expiry * 1000;
+      const time = expiryTime - currentTime;
       if (time < 1) {
         console.log(
           'Refresh token called from addExpiryListener in case of < 1'
@@ -150,10 +169,10 @@ export class UserActions {
     }
   }
 
-  static decodeJwt(token: any) {
+  static decodeJwt(token: string): string | undefined {
     try {
       if (token) {
-        let decoded = jwt_decode(token);
+        const decoded = jwt_decode<string>(token);
         return decoded;
       }
     } catch (error) {

@@ -21,22 +21,26 @@ namespace Notification.API.CorrelationHandlersAndMiddleware
             //var dd = context.Request.Headers.ToJson();
             try
             {
-                var header = context.Request.Headers["CorrelationId"];
-                string sessionId;
-
-                if (header.Count > 0)
+                if (!context.WebSockets.IsWebSocketRequest)
                 {
-                    sessionId = header[0];
-                }
-                else
-                {
-                    sessionId = Guid.NewGuid().ToString();
-                }
+                    var header = context.Request.Headers["CorrelationId"];
+                    string sessionId;
 
-                context.Items["CorrelationId"] = sessionId;
+                    if (header.Count > 0)
+                    {
+                        sessionId = header[0];
+                    }
+                    else
+                    {
+                        sessionId = Guid.NewGuid().ToString();
+                    }
+
+                    context.Items["CorrelationId"] = sessionId;
+                }
             }
             catch
             {
+                // this exception can be ignored as correlation id is only for logging
             }
             await _next(context);
         }

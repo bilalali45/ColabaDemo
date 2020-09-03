@@ -39,12 +39,12 @@ namespace Notification.API
         }
 
 
-        public override Task OnDisconnectedAsync(Exception ex)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
             _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId);
-            return base.OnDisconnectedAsync(ex);
+            return base.OnDisconnectedAsync(exception);
         }
 
         #endregion

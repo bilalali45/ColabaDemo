@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,6 +90,7 @@ namespace ByteWebConnector.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -99,6 +101,7 @@ namespace ByteWebConnector.API.Controllers
         [HttpDelete(template: "{id}")]
         public void Delete(int id)
         {
+            throw new NotSupportedException();
         }
 
         #endregion

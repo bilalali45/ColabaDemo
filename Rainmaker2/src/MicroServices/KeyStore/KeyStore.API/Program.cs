@@ -16,6 +16,7 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ServicePointManager.DefaultConnectionLimit = 1000;
             ThreadPool.SetMaxThreads(1000, 1000);
             ThreadPool.SetMinThreads(1000, 1000);
@@ -84,6 +85,7 @@ namespace Identity
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                        .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {

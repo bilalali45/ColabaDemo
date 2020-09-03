@@ -13,16 +13,16 @@ using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ByteApi;
 using ByteWebConnector.API.Models.ClientModels.Document;
 using ByteWebConnector.API.Models.Document;
+using ByteWebConnector.Service.DbServices;
+using ByteWebConnector.Service.InternalServices;
+using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RainMaker.Common;
-using RainMaker.Common.Extensions;
-using RainMaker.Entity.Models;
-using Rainmaker.Service;
-using RainMaker.Service;
+
+
+
 using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -33,32 +33,35 @@ namespace ByteWebConnector.API.Controllers
     [ApiController]
     public class DocumentController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly HttpClient _httpClient;
+        
 
         #region Constructor
 
-        public DocumentController(ILoanApplicationService loanApplicationService,
-                                  ICommonService commonService,
+        public DocumentController(
                                   HttpClient httpClient,
                                   IConfiguration configuration,
-                                  ILogger<DocumentController> logger)
+                                  ILogger<DocumentController> logger,
+                                  ISettingService settingService,
+                                  IRainmakerService rainmakerService)
         {
-            _loanApplicationService = loanApplicationService;
-            _commonService = commonService;
             _httpClient = httpClient;
             _configuration = configuration;
             _logger = logger;
+            _settingService = settingService;
+            _rainmakerService = rainmakerService;
         }
 
         #endregion
 
         #region Private Fields
 
-        private readonly ILoanApplicationService _loanApplicationService;
-        private readonly ICommonService _commonService;
+        
         private string _apiUrl;
         private readonly ILogger<DocumentController> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
+        private readonly ISettingService _settingService;
+        private readonly IRainmakerService _rainmakerService;
 
         #endregion
 
@@ -90,10 +93,16 @@ namespace ByteWebConnector.API.Controllers
         public ApiResponse SendDocument([FromBody] SendDocumentRequest request)
         {
             _logger.LogInformation($"Start");
-            var loanApplication = _loanApplicationService
-                                  .GetLoanApplicationWithDetails(id: request.LoanApplicationId,
-                                                                 includes: null)
-                                  .SingleOrDefault();
+            _logger.LogInformation(message: $"DocSync  ByteWebConnector  SendDocument uploadEmbeddedDoc start ");
+            _logger.LogInformation(message: $"DocSync  SendDocument uploadEmbeddedDoc request  {request.FileData} ");
+            //var loanApplication = _loanApplicationService
+            //                      .GetLoanApplicationWithDetails(id: request.LoanApplicationId,
+            //                                                     includes: null)
+            //                      .SingleOrDefault();
+
+            var getLoanApplicationResponse = _rainmakerService.GetLoanApplication(loanApplicationId: request.LoanApplicationId);
+            var loanApplication = getLoanApplicationResponse.ResponseObject;
+
 
             _logger.LogInformation($"loanApplication found= {loanApplication.HasValue()}");
             if (loanApplication != null)
@@ -137,6 +146,8 @@ namespace ByteWebConnector.API.Controllers
             {
                 return null;
             }
+
+            return null;
         }
         // POST api/<DocumentController>
         //[Route(template: "[action]")]
@@ -151,6 +162,7 @@ namespace ByteWebConnector.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
 
@@ -277,50 +289,43 @@ namespace ByteWebConnector.API.Controllers
         {
             try
             {
-                var userName = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteProApiUserName)
-                                             .Result;
-                var password = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteProApiPassword)
-                                             .Result;
-                var authKey = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteApiAuthKey).Result;
+                var byteProSettings = _settingService.GetByteProSettings();
 
-                _logger.LogInformation($"userName = {userName}");
-                _logger.LogInformation($"password = {password}");
-                _logger.LogInformation($"authKey = {authKey}");
-                
+                _logger.LogInformation(message: $"byteProSettings = {byteProSettings.ToJson()}");
 
-                _apiUrl = _commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.ByteApiUrl).Result;
-                _logger.LogInformation($"_apiUrl = {_apiUrl}");
+                var baseUrl = byteProSettings.ByteApiUrl;
+                _logger.LogInformation(message: $"_apiUrl = {baseUrl}");
                 ServicePointManager.ServerCertificateValidationCallback += (sender,
                                                                             certificate,
                                                                             chain,
                                                                             sslPolicyErrors) => true;
 
-                HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_apiUrl + "auth/ ");
+                var request = (HttpWebRequest)WebRequest.Create(requestUriString: baseUrl + "auth/ ");
                 request.Method = "GET";
                 request.ContentType = "application/json";
-                request.Headers.Add("authorizationKey",
-                                    authKey);
-                request.Headers.Add("username",
-                                    userName);
-                request.Headers.Add("password",
-                                    password);
+                request.Headers.Add(name: "authorizationKey",
+                                    value: byteProSettings.ByteApiAuthKey);
+                request.Headers.Add(name: "username",
+                                    value: byteProSettings.ByteApiUserName);
+                request.Headers.Add(name: "password",
+                                    value: byteProSettings.ByteApiPassword);
                 request.Accept = "application/json";
-                String test = String.Empty;
-                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
+                var test = string.Empty;
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
+                    var dataStream = response.GetResponseStream();
+                    var reader = new StreamReader(stream: dataStream);
                     test = reader.ReadToEnd();
                     reader.Close();
                     dataStream.Close();
                 }
 
-                return test.Replace("\"",
-                                    "");
+                return test.Replace(oldValue: "\"",
+                                    newValue: "");
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(ex.InnerException != null
+                throw new ArgumentException(message: ex.InnerException != null
                                                 ? ex.InnerException.Message
                                                 : "Error in BytePro Connection, Please try again later.");
             }
@@ -331,6 +336,14 @@ namespace ByteWebConnector.API.Controllers
         private ApiResponse SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
                                                string session)
         {
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentCategory {documentUploadRequest.DocumentCategory} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :FileDataId {documentUploadRequest.FileDataId} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentType {documentUploadRequest.DocumentType} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentCategory {documentUploadRequest.DocumentCategory} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentStatus {documentUploadRequest.DocumentStatus} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentExension {documentUploadRequest.DocumentExension} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte uploadEmbeddedDoc :DocumentName {documentUploadRequest.DocumentName} ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte :DocumentData {documentUploadRequest.DocumentData} ");
             var respone = new ApiResponse();
             try
             {
@@ -349,10 +362,14 @@ namespace ByteWebConnector.API.Controllers
                                    MissingMemberHandling = MissingMemberHandling.Ignore
                                };
 
-                //_logger.LogInformation($"byteDocumentResponse= {documentResponse.Result}");
+
+
+              var response   = documentResponse.Result;
+                _logger.LogInformation(message: $"DocSync SendDocumentToByte uploadEmbeddedDoc Resposne = { response  }");
                 DocumentUploadResponse document =
-                    JsonConvert.DeserializeObject<DocumentUploadResponse>(documentResponse.Result,
+                    JsonConvert.DeserializeObject<DocumentUploadResponse>(response,
                                                                           settings);
+                _logger.LogInformation(message: $"DocSync  SendDocumentToByte Deserialize    { document}");
                 if (document != null)
                 {
                     _logger.LogInformation($"byteDocumentResponse Deserialized");
@@ -361,13 +378,16 @@ namespace ByteWebConnector.API.Controllers
 
                 respone.Status = ApiResponse.ApiResponseStatus.Success;
                 respone.Data = document.ToJson();
+                _logger.LogInformation(message: $"DocSync  SendDocumentToByte respone      { respone.Data}");
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(message: $"DocSync SendDocumentToByte Exception    { ex.Message}");
+                _logger.LogInformation($"byteDocumentResponse Deserialized");
                 respone.Status = ApiResponse.ApiResponseStatus.Fail;
                 respone.Message = ex.Message;
             }
-
+            _logger.LogInformation(message: $"DocSync SendDocumentToByte finished :  {respone} ");
             return respone;
         }
 
@@ -427,6 +447,9 @@ namespace ByteWebConnector.API.Controllers
                                         session);
                     request.Headers.Accept.Clear();
                     request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                    _logger.LogInformation(message: $"DocSync Send    :DocumentData {_apiUrl + "Document/"} ");
                     HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
                     var resp = await response.Content.ReadAsStringAsync();

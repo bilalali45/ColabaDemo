@@ -1,27 +1,19 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-import { userInfo, loadavg } from "os";
 import { LaonActions } from "../../../../store/actions/LoanActions";
 import { Store } from "../../../../store/store";
 import { LoanActionsType } from "../../../../store/reducers/loanReducer";
 import { ContactUs as ContactUsModal } from "../../../../entities/Models/ContactU";
-import {
-  SVGtel,
-  SVGmail,
-  SVGinternet,
-} from "../../../../shared/Components/Assets/SVG";
 import { MaskPhone } from "rainsoft-js";
 import { Auth } from "../../../../services/auth/Auth";
 import { Loader } from "../../../../shared/Components/Assets/loader";
 
 export const ContactUs = ({}) => {
   const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
-  const [lOPhotoSrc, setLOPhotoSrc] = useState<string>();
   const { state, dispatch } = useContext(Store);
 
   const laon: any = state.loan;
   const LO = laon.loanOfficer;
   const LOImage = laon.loImage;
-  const LOphotoRef: any = useRef();
 
   useEffect(() => {
     if (!LO) {
@@ -41,7 +33,10 @@ export const ContactUs = ({}) => {
       Auth.getLoanAppliationId()
     );
     if (loanOfficer) {
-      let src: any = await LaonActions.getLOPhoto(loanOfficer.photo, loanApplicationId);
+      let src: any = await LaonActions.getLOPhoto(
+        loanOfficer.photo,
+        loanApplicationId
+      );
       dispatch({
         type: LoanActionsType.FetchLoanOfficer,
         payload: loanOfficer,

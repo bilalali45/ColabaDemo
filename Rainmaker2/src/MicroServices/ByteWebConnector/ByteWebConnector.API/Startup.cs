@@ -6,6 +6,9 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using ByteWebConnector.API.CorrelationHandlersAndMiddleware;
+using ByteWebConnector.Data;
+using ByteWebConnector.Service.DbServices;
+using LosIntegration.API.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,9 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Rainmaker.API.Helpers;
-using Rainmaker.Service;
-using RainMaker.Service;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -42,13 +42,18 @@ namespace ByteWebConnector.API
                 throw new Exception("Unable to load key store");
             }
             services.AddControllers();
-            services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
+
+            #region BWC Context
+
+            services.AddDbContext<BwcContext>(options => options.UseSqlServer(Configuration["BWCConnString"]));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
-            services.AddScoped<IUnitOfWork<RainMaker.Data.RainMakerContext>, UnitOfWork<RainMaker.Data.RainMakerContext>>();
+            services.AddScoped<IUnitOfWork<BwcContext>, UnitOfWork<BwcContext>>();
+
+            #endregion
+
+            
             services.AddScoped<ISettingService, SettingService>();
-            services.AddScoped<IStringResourceService, StringResourceService>();
-            services.AddScoped<ILoanApplicationService, LoanApplicationService>();
-            services.AddScoped<ICommonService, CommonService>();
+            services.AddScoped<ByteWebConnector.Service.InternalServices.IRainmakerService, ByteWebConnector.Service.InternalServices.RainmakerService>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             #region HttpClientDependencies
 
@@ -60,7 +65,7 @@ namespace ByteWebConnector.API
                                                                   MaxConnectionsPerServer = int.MaxValue
                                                               })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
-            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
@@ -70,6 +75,7 @@ namespace ByteWebConnector.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

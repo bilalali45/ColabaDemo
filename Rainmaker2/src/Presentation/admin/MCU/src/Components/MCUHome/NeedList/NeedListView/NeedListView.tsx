@@ -119,7 +119,6 @@ export const NeedListView = () => {
      return arr;
   }
 
-
   const syncAll = (arr: NeedList[]) => {
     for (const doc of arr) {
       for (const file of doc.files) {

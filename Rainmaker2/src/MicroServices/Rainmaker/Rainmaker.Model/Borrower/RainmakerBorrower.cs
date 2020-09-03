@@ -73,11 +73,14 @@ namespace Rainmaker.Model.Borrower
             #region Ethnicity
 
             //entity.LoanContact.LoanContactEthnicityBinders delete all
-            entity.LoanContact.LoanContactEthnicityBinders.Select(selector: loanContactEthnicityBinder =>
+            if (entity.LoanContact.LoanContactEthnicityBinders != null)
             {
-                return loanContactEthnicityBinder.TrackingState =
-                    TrackingState.Deleted;
-            }).ToList();
+                entity.LoanContact.LoanContactEthnicityBinders.ToList().ForEach(loanContactEthnicityBinder =>
+                {
+                    loanContactEthnicityBinder.TrackingState =
+                        TrackingState.Deleted;
+                });
+            }
 
             foreach (var ethnicInfoItem in EthnicityInfo)
             {
@@ -94,11 +97,14 @@ namespace Rainmaker.Model.Borrower
             #region Race
 
             //entity.LoanContact.LoanContactRaceBinders delete all
-            entity.LoanContact.LoanContactRaceBinders.Select(selector: loanContactRaceBinder =>
+            if (entity.LoanContact.LoanContactRaceBinders != null)
             {
-                return loanContactRaceBinder.TrackingState =
-                    TrackingState.Deleted;
-            }).ToList();
+                entity.LoanContact.LoanContactRaceBinders.ToList().ForEach(loanContactRaceBinder =>
+                {
+                    loanContactRaceBinder.TrackingState =
+                        TrackingState.Deleted;
+                });
+            }
 
             foreach (var raceInfoItem in RaceInfo)
             {

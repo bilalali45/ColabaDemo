@@ -347,14 +347,14 @@ namespace DocumentManagement.Service
             var response = await _httpClient.SendAsync(request);
             }
 
-        public async Task<int> GetLoanApplicationId(string loanId)
+        public async Task<int> GetLoanApplicationId(string loanApplicationId)
         {
             IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
 
             using var asyncCursorRequest = collectionRequest.Aggregate(
                 PipelineDefinition<Entity.Request, BsonDocument>.Create(
                     @"{""$match"": {
-                    ""_id"": " + new ObjectId(loanId).ToJson() + @"
+                    ""_id"": " + new ObjectId(loanApplicationId).ToJson() + @"
                             }
                         }", @"{
                             ""$project"": {
@@ -363,18 +363,18 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            int loanApplicationId = -1;
+            int loanId = -1;
             if (await asyncCursorRequest.MoveNextAsync())
             {
                 foreach (var current in asyncCursorRequest.Current)
                 {
                     LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
-                    loanApplicationId = query.loanApplicationId;
+                    loanId = query.loanApplicationId;
                 }
 
 
             }
-            return loanApplicationId;
+            return loanId;
         }
     }
 }

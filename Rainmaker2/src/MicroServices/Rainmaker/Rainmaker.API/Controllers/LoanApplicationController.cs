@@ -91,6 +91,7 @@ namespace Rainmaker.API.Controllers
             }
             catch
             {
+                // this exception can be ignored
             }
             if (imageData == null)
             {

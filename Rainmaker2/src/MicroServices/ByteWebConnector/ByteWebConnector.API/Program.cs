@@ -15,6 +15,7 @@ namespace ByteWebConnector.API
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ConfigureLogging();
             CreateHost(args: args);
         }
@@ -83,6 +84,7 @@ namespace ByteWebConnector.API
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<ByteWebConnector.API.Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {
