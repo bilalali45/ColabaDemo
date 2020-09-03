@@ -109,7 +109,7 @@ namespace ByteWebConnector.Tests
                 BaseAddress = new Uri("http://test.com/"),
             };
 
-            var controller = new DocumentController(null, null, httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null ,null );
 
             controller.ControllerContext = context;
 
@@ -165,7 +165,7 @@ namespace ByteWebConnector.Tests
                 BaseAddress = new Uri("http://test.com/"),
             };
 
-            var controller = new DocumentController(null, null, httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>());
+            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null,null);
 
             controller.ControllerContext = context;
 
@@ -184,7 +184,7 @@ namespace ByteWebConnector.Tests
             Mock<ICommonService> mockCommonService = new Mock<ICommonService>();
             mockCommonService.Setup(x => x.GetSettingValueByKeyAsync<string>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>())).ReturnsAsync("http://localhost:8080/");
            
-            var controller = new DocumentController(null, mockCommonService.Object, null, null, Mock.Of<ILogger<DocumentController>>());
+            //var controller = new DocumentController(null, mockCommonService.Object, null, null, Mock.Of<ILogger<DocumentController>>());
             //Act
             DocumentAddedRequest documentAddedRequest = new DocumentAddedRequest();
             documentAddedRequest.FileDataId = 1;

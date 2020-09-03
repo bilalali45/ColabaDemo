@@ -43,8 +43,9 @@ export const DocumentUpload = () => {
     if (fileInput?.value) {
       fileInput.value = "";
     }
-    fileInput?.click();
+
     if (fileInput) {
+      fileInput.click();
       fileInput.onchange = async (e: any) => {
         let files = e?.target?.files;
         if (files) {

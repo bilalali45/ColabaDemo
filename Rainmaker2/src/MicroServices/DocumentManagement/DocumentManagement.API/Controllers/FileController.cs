@@ -166,13 +166,15 @@ namespace DocumentManagement.API.Controllers
                                      if (files.Count > 0)
                                      {
 
-
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been started :fileid {fileid} is getting from submit file");
                                          await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
                                                                                  id,
                                                                                  requestId,
                                                                                  docId,
                                                                                  fileid,
                                                                                  auth);
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been finished :fileid {fileid} is getting from submit file");
+
                                      }
                                  }
                              }
