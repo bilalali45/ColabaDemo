@@ -143,9 +143,9 @@ namespace DocumentManagement.API.Controllers
                              int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
                              await notificationService.DocumentsSubmitted(loanApplicationId, auth);
                          }
-                         catch (Exception e)
+                         catch
                          {
-
+                             // this exception can be ignored
                          }
 
                          try
@@ -179,8 +179,9 @@ namespace DocumentManagement.API.Controllers
                                  }
                              }
                          }
-                         catch (Exception e)
+                         catch
                          {
+                             // this exception can be ignored
                          }
 
 
