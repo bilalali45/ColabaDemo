@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace ServiceCallHelper
 {
-    public class Call
+    public static class Call
     {
         #region GetHelpers
 

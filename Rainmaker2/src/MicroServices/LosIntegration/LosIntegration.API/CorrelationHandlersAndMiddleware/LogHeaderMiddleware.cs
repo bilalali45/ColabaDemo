@@ -37,6 +37,7 @@ namespace LosIntegration.API.CorrelationHandlersAndMiddleware
             }
             catch
             {
+                // this exception can be ignored as correlation id is only for logging
             }
             await _next(context);
         }

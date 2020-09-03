@@ -1,29 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Authentication;
-using System.Text;
-using System.Threading.Tasks;
-using Identity.CorrelationHandlersAndMiddleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using Rainmaker.API.CorrelationHandlersAndMiddleware;
 using Rainmaker.API.Helpers;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
+using RainMaker.API.CorrelationHandlersAndMiddleware;
 using RainMaker.Service;
 using RainMaker.Service.Helpers;
+using System;
+using System.Net.Http;
+using System.Security.Authentication;
+using System.Text;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -101,7 +94,8 @@ namespace Rainmaker.API
                         SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                         MaxConnectionsPerServer = int.MaxValue
                     })
-                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
+                    .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor();  //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
@@ -112,6 +106,7 @@ namespace Rainmaker.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

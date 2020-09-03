@@ -103,7 +103,7 @@ namespace Notification.API
                         MaxConnectionsPerServer = int.MaxValue
                     })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
-            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor();  //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
@@ -113,6 +113,7 @@ namespace Notification.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

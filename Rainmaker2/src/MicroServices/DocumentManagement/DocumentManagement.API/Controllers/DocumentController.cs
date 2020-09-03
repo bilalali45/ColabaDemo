@@ -24,8 +24,7 @@ namespace DocumentManagement.API.Controllers
             IFtpClient ftpClient,
             ISettingService settingService,
             IKeyStoreService keyStoreService,
-            ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService)
+            ILogger<DocumentController> logger)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -33,7 +32,6 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
-            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -46,7 +44,6 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
-        private readonly IRainmakerService rainmakerService;
 
         #endregion
 
