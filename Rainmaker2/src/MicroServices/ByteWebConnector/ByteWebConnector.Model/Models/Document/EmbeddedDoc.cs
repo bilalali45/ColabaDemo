@@ -1,6 +1,4 @@
-﻿// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ByteWebConnector.Model.Models.Document
 {

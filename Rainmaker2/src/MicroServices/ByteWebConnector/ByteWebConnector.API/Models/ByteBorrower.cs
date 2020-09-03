@@ -96,8 +96,7 @@ namespace ByteWebConnector.API.Models
         public string TitleHeld { get; set; }
         [DataMember]
         public string CitizenResidencyType { get; set; }
-        //public int _USCitizen { get; set; }
-        //public int _ResidentAlien { get; set; }
+     
         [DataMember]
         public string EthnicityOtherHispanicOrLatinoDesc { get; set; }
         [DataMember]
@@ -106,7 +105,7 @@ namespace ByteWebConnector.API.Models
         public string RaceOtherAsianDesc { get; set; }
         [DataMember]
         public string RaceOtherPacificIslanderDesc { get; set; }
-        //public int DemographicInfoProvidedMethod { get; set; }
+     
         [DataMember]
         public string Race2 { get; set; }
         [DataMember]
@@ -215,135 +214,6 @@ namespace ByteWebConnector.API.Models
                }
                if (raceMap != null)
                     raceMaps.Add(raceMap); 
-
-               #region OldCode
-
-               //switch (raceString.Trim())
-               //{
-               //    case "AmericanIndian":
-               //    {
-               //        const int americanIndianOrAlaskaNative = (int)RaceEnum.AmericanIndianOrAlaskaNative;
-               //        ids.Add(americanIndianOrAlaskaNative);
-               //        raceDictionary.Add(americanIndianOrAlaskaNative, new List<int>());
-               //        break;
-               //    }
-               //    case "Asian":
-               //    {
-               //        const int asian = (int) RaceEnum.Asian;
-               //        ids.Add(asian);
-               //        List<int> childList = new List<int>();
-               //        foreach (string s in raceStrings)
-               //        {
-               //                switch (s.Trim())
-               //                {
-               //                    case "AsianIndian":
-               //                        {
-               //                            const int asianIndian = (int)RaceDetailEnum.AsianIndian;
-               //                            childList.Add(asianIndian);
-               //                            break;
-               //                        }
-               //                    case "Chinese":
-               //                        {
-               //                            const int chinese = (int)RaceDetailEnum.Chinese;
-               //                            childList.Add(chinese);
-               //                            break;
-               //                        }
-               //                    case "Filipino":
-               //                        {
-               //                            const int filipino = (int)RaceDetailEnum.Filipino;
-               //                            childList.Add(filipino);
-               //                            break;
-               //                        }
-               //                    case "Japanese":
-               //                        {
-               //                            const int japanese = (int)RaceDetailEnum.Japanese;
-               //                            childList.Add(japanese);
-               //                            break;
-               //                        }
-               //                    case "Korean":
-               //                        {
-               //                            const int korean = (int)RaceDetailEnum.Korean;
-               //                            childList.Add(korean);
-               //                            break;
-               //                        }
-               //                    case "Vietnamese":
-               //                        {
-               //                            const int vietnamese = (int)RaceDetailEnum.Vietnamese;
-               //                            childList.Add(vietnamese);
-               //                            break;
-               //                        }
-               //                    case "OtherAsian":
-               //                        {
-               //                            const int otherAsian = (int)RaceDetailEnum.OtherAsian;
-               //                            childList.Add(otherAsian);
-               //                            break;
-               //                        }
-               //                }
-               //        }
-               //        raceDictionary.Add(asian, childList);
-               //        break;
-               //    }
-               //    case "Black":
-               //    {
-               //        const int black = (int)RaceEnum.BlackOrAfricanAmerican;
-               //        ids.Add(black);
-               //        raceDictionary.Add(black, new List<int>());
-               //        break;
-               //    }
-               //    case "PacificIslander":
-               //    {
-               //        const int pacificIslander = (int)RaceEnum.NativeHawaiianOrOtherPacificIslander;
-               //        ids.Add(pacificIslander);
-               //        List<int> childList = new List<int>();
-               //        foreach (string s in raceStrings)
-               //        {
-               //            switch (s.Trim())
-               //            {
-               //                case "NativeHawaiian":
-               //                {
-               //                    const int nativeHawaiian = (int)RaceDetailEnum.NativeHawaiian;
-               //                    childList.Add(nativeHawaiian);
-               //                    break;
-               //                }
-               //                case "GuamanianOrChamorro":
-               //                {
-               //                    const int guamanianOrChamorro = (int)RaceDetailEnum.GuamanianOrChamorro;
-               //                    childList.Add(guamanianOrChamorro);
-               //                    break;
-               //                }
-               //                case "Samoan":
-               //                {
-               //                    const int samoan = (int)RaceDetailEnum.Samoan;
-               //                    childList.Add(samoan);
-               //                    break;
-               //                }
-               //                case "OtherPacificIslander":
-               //                {
-               //                    const int otherPacificIslander = (int)RaceDetailEnum.OtherPacificIslander;
-               //                    childList.Add(otherPacificIslander);
-               //                    break;
-               //                }
-               //            }
-               //        }
-               //        raceDictionary.Add(pacificIslander, childList);
-               //        break;
-               //    }
-               //    case "White":
-               //    {
-               //        const int white = (int)RaceEnum.White;
-               //        ids.Add(white);
-               //        raceDictionary.Add(white, new List<int>());
-               //        break;
-               //    }
-               //    case "IDoNotWishToFurnish":
-               //    {
-               //        const int doNotWishToProvideThisInformation = (int)RaceEnum.DoNotWishToProvideThisInformation;
-               //        ids.Add(doNotWishToProvideThisInformation);
-               //        raceDictionary.Add(doNotWishToProvideThisInformation, new List<int>());
-               //        break;
-               //    }
-
-               #endregion
 
             }
             

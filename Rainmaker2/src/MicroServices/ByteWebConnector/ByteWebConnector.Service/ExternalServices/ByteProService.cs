@@ -93,7 +93,7 @@ namespace ByteWebConnector.Service.ExternalServices
                                                                    {
                                                                        NullValueHandling = NullValueHandling.Ignore
                                                                    });
-                //string output = JsonConvert.SerializeObject(loanInfo);
+             
                 var documentResponse = Send(output: input,
                                             session: session);
                 var settings = new JsonSerializerSettings

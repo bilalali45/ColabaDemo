@@ -25,8 +25,6 @@ namespace LosIntegration.API.Controllers
             _clientFactory = clientFactory;
             _configuration = configuration;
             _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion

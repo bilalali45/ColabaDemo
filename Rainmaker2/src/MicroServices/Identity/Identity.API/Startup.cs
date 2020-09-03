@@ -31,13 +31,6 @@ namespace Identity
 
             services.AddControllers().AddNewtonsoftJson();
             ;
-            //services.AddIdentityServer(x =>
-            //        {
-            //            x.IssuerUri = "none";
-            //        })
-            //        .AddDeveloperSigningCredential()
-            //        .AddInMemoryApiResources(Config.GetAllApiResources())
-            //        .AddInMemoryClients(Config.GetClients(Configuration));
 
             #region HttpClientDependencies
 
@@ -72,8 +65,6 @@ namespace Identity
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-            //app.UseIdentityServer();
-            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(configure: endpoints =>
