@@ -1,14 +1,21 @@
 import jwt_decode from 'jwt-decode';
 import Cookies from 'universal-cookie';
-import {ApplicationEnv} from './helpers/AppEnv';
 import {Http} from 'rainsoft-js';
+
+import {ApplicationEnv} from './appEnv';
+import {PayloadType} from './types';
+
 const cookies = new Cookies();
 const httpClient = new Http();
-let baseUrl: any = window.envConfig.API_BASE_URL;
+const baseUrl: any = window.envConfig.API_BASE_URL;
 httpClient.setBaseUrl(baseUrl);
 
 export class LocalDB {
-  static getCredentials() {
+  static getCredentials(): {
+    userName: string | null;
+    password: string | null;
+    employee: boolean;
+  } {
     const credentials = {
       userName: LocalDB.getLoginDevUserName(),
       password: LocalDB.getLoginDevPassword(),
@@ -19,43 +26,47 @@ export class LocalDB {
   }
 
   //#region Local DB get methods
-  static getAuthToken() {
+  static getAuthToken(): string | null {
     return this.decodeString(localStorage.getItem('notificationToken'));
   }
 
-  static getRefreshToken() {
+  static getRefreshToken(): string | null {
     return this.decodeString(localStorage.getItem('notificationRefreshToken'));
   }
 
-  static getLoginDevUserName() {
+  static getLoginDevUserName(): string | null {
     return localStorage.getItem('devusername');
   }
 
-  static getLoginDevPassword() {
+  static getLoginDevPassword(): string | null {
     return localStorage.getItem('devuserpassword');
   }
 
-  static getUserPayload() {
-    let payload = this.decodeString(
+  static getUserPayload(): any {
+    const payload = this.decodeString(
       localStorage.getItem('notificationPayload')
     );
+
     if (payload) {
       return JSON.parse(payload);
     }
+
+    return null;
   }
 
   //#endregion
 
   //#region Local DB Post Methods
-  static storeTokenPayload(payload: any) {
+  static storeTokenPayload(payload: PayloadType | string | undefined): void {
     if (!payload) return;
+
     localStorage.setItem(
       'notificationPayload',
       this.encodeString(JSON.stringify(payload))
     );
   }
 
-  static storeAuthTokens(token: string, refreshToken: string) {
+  static storeAuthTokens(token: string, refreshToken: string): void {
     localStorage.setItem('notificationToken', this.encodeString(token));
     localStorage.setItem(
       'notificationRefreshToken',
@@ -64,8 +75,8 @@ export class LocalDB {
   }
 
   public static checkAuth(): boolean | string {
-    let notificationToken = cookies.get('NotificationToken');
-    let auth = this.getAuthToken();
+    const notificationToken = cookies.get('NotificationToken');
+    const auth = this.getAuthToken();
     if (!auth) {
       return false;
     }
@@ -77,10 +88,10 @@ export class LocalDB {
       }
     }
 
-    let payload = this.getUserPayload();
+    const payload = this.getUserPayload();
     if (payload) {
-      let expiry = new Date(payload.exp * 1000);
-      let currentDate = new Date(Date.now());
+      const expiry = new Date(payload.exp * 1000);
+      const currentDate = new Date(Date.now());
       if (currentDate < expiry) {
         return true;
       } else {
@@ -92,14 +103,14 @@ export class LocalDB {
     return true;
   }
 
-  public static storeItem(name: string, data: string) {
+  public static storeItem(name: string, data: string): void {
     localStorage.setItem(name, this.encodeString(data));
   }
   //#endregion
 
   //#region Remove Auth
-  static removeAuth() {
-    let items = [
+  static removeAuth(): void {
+    const items = [
       'notificationToken',
       'notificationPayload',
       'notificationRefreshToken'
@@ -111,14 +122,14 @@ export class LocalDB {
   //#endregion
 
   //#region Encode Decode
-  public static encodeString(value: string) {
+  public static encodeString(value: string): string {
     // Encode the String
     //const currentDate = Date.toString();
     const string = value + '|' + ApplicationEnv.Encode_Key;
     return btoa(unescape(encodeURIComponent(string)));
   }
 
-  public static decodeString(value?: string | null) {
+  public static decodeString(value?: string | null): string | null {
     // Decode the String
     if (!value) {
       return '';

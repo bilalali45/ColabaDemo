@@ -1,17 +1,23 @@
 import {useCallback, useState, useRef, useEffect, Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
-import {NotificationType} from '../../../lib/type';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {NotificationType} from '../../../lib/types';
+import {Actions} from '../reducers/useNotificationsReducer';
+
+interface UseFetchNotificationsProps {
+  http: Http;
+  dispatch: Dispatch<Actions>;
+  notifications: NotificationType[] | null;
+}
 
 export const useFetchNotifications = (
-  http: Http,
-  dispatch: Dispatch<Params>,
-  notifications: NotificationType[] | null | undefined
+  props: UseFetchNotificationsProps
 ): {
   getFetchNotifications: (lastId: number) => Promise<void>;
   lastId: number;
 } => {
+  const {http, dispatch, notifications} = props;
+
   /**
    * This is last Id of notification inside notifications array on every API hit.
    * This needs to be send with API Call to fetch previous notifications on scroll.
@@ -41,12 +47,12 @@ export const useFetchNotifications = (
            */
           lastId === -1
             ? dispatch({
-                type: ACTIONS.RESET_NOTIFICATIONS,
-                payload: {notifications: [...response]}
+                type: 'RESET_NOTIFICATIONS',
+                notifications: [...response]
               })
             : dispatch({
-                type: ACTIONS.APPEND_NOTIFICATIONS,
-                payload: {notifications: response}
+                type: 'APPEND_NOTIFICATIONS',
+                notifications: response
               });
         } else {
           /**
@@ -55,8 +61,8 @@ export const useFetchNotifications = (
            */
           if (!notificationsRef.current && lastId === -1) {
             dispatch({
-              type: ACTIONS.RESET_NOTIFICATIONS,
-              payload: {notifications: []}
+              type: 'RESET_NOTIFICATIONS',
+              notifications: []
             });
           }
         }
