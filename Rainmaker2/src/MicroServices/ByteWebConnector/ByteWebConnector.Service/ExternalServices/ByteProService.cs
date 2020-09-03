@@ -19,7 +19,6 @@ namespace ByteWebConnector.Service.ExternalServices
 {
     public class ByteProService : IByteProService
     {
-        private readonly HttpClient _httpClient;
         private readonly ILogger<ByteProService> _logger;
         private readonly ISettingService _settingService;
         private string _baseUrl;
@@ -27,12 +26,10 @@ namespace ByteWebConnector.Service.ExternalServices
 
         public ByteProService(ILogger<ByteProService> logger,
                               string baseUrl,
-                              HttpClient httpClient,
                               ISettingService settingService)
         {
             _logger = logger;
             _baseUrl = baseUrl;
-            _httpClient = httpClient;
             _settingService = settingService;
         }
 

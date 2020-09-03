@@ -94,7 +94,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -151,7 +151,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -208,7 +208,7 @@ namespace Identity.Tests
             httpContext.Setup(x => x.User).Returns(claimsPrincipal);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -263,7 +263,7 @@ namespace Identity.Tests
             httpContext.Setup(x => x.User).Returns(claimsPrincipal);
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -346,7 +346,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -430,7 +430,7 @@ namespace Identity.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object, Mock.Of<ILogger<TokenController>>());
+            var controller = new TokenController(httpClientFactory.Object, mockConfiguration.Object, mockTokenService.Object);
 
             controller.ControllerContext = context;
 
@@ -461,7 +461,7 @@ namespace Identity.Tests
                               };
 
             //Act
-            ITokenService tokenService = new TokenService(mockConfiguration.Object, null, mockKeyStoreService.Object);
+            ITokenService tokenService = new TokenService(mockConfiguration.Object, mockKeyStoreService.Object);
             JwtSecurityToken result = await tokenService.GenerateAccessToken(usersClaims);
 
             //Assert
@@ -470,7 +470,7 @@ namespace Identity.Tests
         [Fact]
         public async Task TestGenerateRefreshTokenService()
         {
-            ITokenService tokenService = new TokenService(null, null, null);
+            ITokenService tokenService = new TokenService(null, null);
             string result = tokenService.GenerateRefreshToken();
         }
         [Fact]
@@ -481,7 +481,7 @@ namespace Identity.Tests
             mockKeyStoreService.Setup(x => x.GetJwtSecurityKeyAsync()).ReturnsAsync("this_is_our_supper_long_security_key_for_token_vortex$rainsoft");
          
             //Act
-            ITokenService tokenService = new TokenService(null, null, mockKeyStoreService.Object);
+            ITokenService tokenService = new TokenService( null, mockKeyStoreService.Object);
             ClaimsPrincipal result = await tokenService.GetPrincipalFromExpiredToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNQ1UiLCJVc2VyUHJvZmlsZUlkIjoiNjMxMCIsIlVzZXJOYW1lIjoiZGFuaXNoIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImRhbmlzaCIsIkZpcnN0TmFtZSI6IkRhbmlzaCIsIkxhc3ROYW1lIjoiRmFpeiIsIlRlbmFudElkIjoiMSIsIkVtcGxveWVlSWQiOiI2NyIsImV4cCI6MTU5ODg1OTExMiwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.9FJGVJoTkB_hQ-P9aorzjgdkZ82dYnGcexCy-bpQYdg");
 
             //Assert

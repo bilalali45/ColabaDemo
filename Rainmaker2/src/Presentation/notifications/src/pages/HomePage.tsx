@@ -15,12 +15,9 @@ import {
   useNotificationSeen,
   useSignalREvents,
   useReadAllNotificationsForDocument,
-  useRemoveNotification
+  useDeleteNotification
 } from '../features/Notifications/hooks';
-import {
-  useNotificationsReducer,
-  ACTIONS
-} from '../features/Notifications/reducers/useNotificationsReducer';
+import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
 
 export const HomePage: FunctionComponent = () => {
   const http = useMemo(() => new Http(), []);
@@ -33,35 +30,33 @@ export const HomePage: FunctionComponent = () => {
     receivedNewNotification,
     notificationsVisible,
     unSeenNotificationsCount,
-    timers
+    timers,
+    showToss
   } = state;
 
-  const notificationsVisibleRef = useRef(notificationsVisible);
-  const unSeenNotificationsCountRef = useRef(unSeenNotificationsCount);
   const refContainerSidebar = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    lastIdRef.current = lastId;
-    notificationsVisibleRef.current = notificationsVisible;
-    unSeenNotificationsCountRef.current = unSeenNotificationsCount;
-  });
 
   useHandleClickOutside({
     refContainerSidebar,
     dispatch
   });
 
-  const {getFetchNotifications, lastId} = useFetchNotifications(
+  const {getFetchNotifications, lastId} = useFetchNotifications({
     http,
     dispatch,
     notifications
-  );
+  });
+
   const lastIdRef = useRef(lastId);
+
+  useEffect(() => {
+    lastIdRef.current = lastId;
+  });
 
   const openEffect = useCallback(() => {
     dispatch({
-      type: ACTIONS.UPDATE_STATE,
-      payload: {
+      type: 'UPDATE_STATE',
+      state: {
         notifyClass: notificationsVisible
           ? 'animated slideOutRight'
           : 'animated slideInRight'
@@ -74,16 +69,16 @@ export const HomePage: FunctionComponent = () => {
       openEffect();
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {notificationsVisible: !notificationsVisible}
+        type: 'UPDATE_STATE',
+        state: {notificationsVisible: !notificationsVisible}
       });
     } else {
       openEffect();
 
       setTimeout(() => {
         dispatch({
-          type: ACTIONS.UPDATE_STATE,
-          payload: {notificationsVisible: !notificationsVisible}
+          type: 'UPDATE_STATE',
+          state: {notificationsVisible: !notificationsVisible}
         });
       }, 10);
     }
@@ -96,8 +91,8 @@ export const HomePage: FunctionComponent = () => {
       );
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {unSeenNotificationsCount: data}
+        type: 'UPDATE_STATE',
+        state: {unSeenNotificationsCount: data}
       });
     } catch (error) {
       console.warn(error);
@@ -109,8 +104,8 @@ export const HomePage: FunctionComponent = () => {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
       dispatch({
-        type: ACTIONS.RESET_NOTIFICATIONS,
-        payload: {notifications: []}
+        type: 'RESET_NOTIFICATIONS',
+        notifications: []
       });
     } catch (error) {
       console.warn('error', error);
@@ -122,8 +117,8 @@ export const HomePage: FunctionComponent = () => {
       await onCDeleteAllNotifications();
 
       dispatch({
-        type: ACTIONS.UPDATE_STATE,
-        payload: {confirmDeleteAll: false}
+        type: 'UPDATE_STATE',
+        state: {confirmDeleteAll: false}
       });
     } catch (error) {
       console.warn(error);
@@ -133,7 +128,6 @@ export const HomePage: FunctionComponent = () => {
   useNotificationSeen({
     http,
     notifications,
-    dispatch,
     notificationsVisible
   });
 
@@ -150,7 +144,7 @@ export const HomePage: FunctionComponent = () => {
     dispatch
   });
 
-  const {removeNotification} = useRemoveNotification({
+  const {deleteNotification} = useDeleteNotification({
     notifications,
     http,
     dispatch,
@@ -181,8 +175,8 @@ export const HomePage: FunctionComponent = () => {
             }
             onDeleteAll={() =>
               dispatch({
-                type: ACTIONS.UPDATE_STATE,
-                payload: {confirmDeleteAll: true}
+                type: 'UPDATE_STATE',
+                state: {confirmDeleteAll: true, showToss: false}
               })
             }
           />
@@ -191,8 +185,8 @@ export const HomePage: FunctionComponent = () => {
               onYes={deleteAllNotifications}
               onNo={() =>
                 dispatch({
-                  type: ACTIONS.UPDATE_STATE,
-                  payload: {confirmDeleteAll: false}
+                  type: 'UPDATE_STATE',
+                  state: {confirmDeleteAll: false}
                 })
               }
             />
@@ -202,12 +196,13 @@ export const HomePage: FunctionComponent = () => {
           ) : (
             <Notifications
               timers={timers || []}
-              removeNotification={removeNotification}
+              removeNotification={deleteNotification}
               receivedNewNotification={receivedNewNotification!}
               notificationsVisible={notificationsVisible}
               notifications={notifications}
               getFetchNotifications={() => getFetchNotifications(lastId)}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
+              showToss={showToss}
               dispatch={dispatch}
             />
           )}
