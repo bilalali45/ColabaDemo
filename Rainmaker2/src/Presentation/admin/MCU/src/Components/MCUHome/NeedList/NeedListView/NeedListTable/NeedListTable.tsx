@@ -251,7 +251,7 @@ export const NeedListTable = ({
                       }
                     >
                       <a
-                        href="javascript:void"
+                        href="#"
                         onClick={() =>
                           pendingReview
                             ? reviewClickHandler(documentIndex, index)
@@ -272,7 +272,7 @@ export const NeedListTable = ({
                       }
                     >
                       <a
-                        href="javascript:void"
+                        href="#"
                         onClick={() =>
                           pendingReview
                             ? reviewClickHandler(documentIndex, index)

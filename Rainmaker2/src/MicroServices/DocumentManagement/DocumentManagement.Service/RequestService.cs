@@ -704,7 +704,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            while (await asyncCursor.MoveNextAsync())
+            if (await asyncCursor.MoveNextAsync())
             {
                 string emailTemplate = string.Empty;
                 if (asyncCursor.Current.Count() > 0)

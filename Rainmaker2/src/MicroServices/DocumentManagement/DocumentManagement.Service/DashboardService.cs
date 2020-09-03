@@ -257,7 +257,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            while (await asyncCursor.MoveNextAsync())
+            if (await asyncCursor.MoveNextAsync())
             {
                 string footerText = string.Empty;
                 if (asyncCursor.Current.Count() > 0)
