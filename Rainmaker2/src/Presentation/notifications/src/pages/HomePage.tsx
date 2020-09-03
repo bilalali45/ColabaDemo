@@ -99,26 +99,12 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [dispatch, http]);
 
-  const onCDeleteAllNotifications = async () => {
+  const deleteAllNotifications = async () => {
     try {
       await http.put('/api/Notification/notification/DeleteAll', null);
 
       dispatch({
-        type: 'RESET_NOTIFICATIONS',
-        notifications: []
-      });
-    } catch (error) {
-      console.warn('error', error);
-    }
-  };
-
-  const deleteAllNotifications = async () => {
-    try {
-      await onCDeleteAllNotifications();
-
-      dispatch({
-        type: 'UPDATE_STATE',
-        state: {confirmDeleteAll: false}
+        type: 'DELETE_ALL_NOTIFICATIONS'
       });
     } catch (error) {
       console.warn(error);
@@ -159,6 +145,21 @@ export const HomePage: FunctionComponent = () => {
     }
   }, [notifications, getFetchNotifications]);
 
+  const onDeleteAll = (): void =>
+    dispatch({
+      type: 'UPDATE_STATE',
+      state: {confirmDeleteAll: true, showToss: false}
+    });
+
+  const cancelDeleteAllNotifications = (): void =>
+    dispatch({
+      type: 'UPDATE_STATE',
+      state: {confirmDeleteAll: false}
+    });
+
+  const showClearAllButton: boolean =
+    !!notifications && notifications.length > 0 && confirmDeleteAll === false;
+
   return (
     <div className={`notify`} ref={refContainerSidebar}>
       <BellIcon
@@ -168,27 +169,13 @@ export const HomePage: FunctionComponent = () => {
       {!!notificationsVisible && (
         <div className={`notify-dropdown ${notifyClass}`}>
           <Header
-            showClearAllButton={
-              !!notifications &&
-              notifications.length > 0 &&
-              confirmDeleteAll === false
-            }
-            onDeleteAll={() =>
-              dispatch({
-                type: 'UPDATE_STATE',
-                state: {confirmDeleteAll: true, showToss: false}
-              })
-            }
+            showClearAllButton={showClearAllButton}
+            onDeleteAll={onDeleteAll}
           />
           {confirmDeleteAll === true && (
             <ConfirmDeleteAll
               onYes={deleteAllNotifications}
-              onNo={() =>
-                dispatch({
-                  type: 'UPDATE_STATE',
-                  state: {confirmDeleteAll: false}
-                })
-              }
+              onNo={cancelDeleteAllNotifications}
             />
           )}
           {!notifications ? (
