@@ -1,24 +1,24 @@
 import {Dispatch} from 'react';
 import {Http} from 'rainsoft-js';
 
-import {TimersType, NotificationType} from '../../../lib/type';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {TimersType, NotificationType} from '../../../lib/types';
+import {Actions} from '../reducers/useNotificationsReducer';
 
-interface UseRemoveNotificationProps {
-  notifications: NotificationType[] | null | undefined;
-  timers: TimersType[] | undefined;
+interface UseDeleteNotificationProps {
+  notifications: NotificationType[] | null;
+  timers: TimersType[];
   http: Http;
-  dispatch: Dispatch<Params>;
+  dispatch: Dispatch<Actions>;
 }
 
-export const useRemoveNotification = (
-  props: UseRemoveNotificationProps
+export const useDeleteNotification = (
+  props: UseDeleteNotificationProps
 ): {
-  removeNotification: (id: number) => void;
+  deleteNotification: (id: number) => void;
 } => {
   const {timers, http, dispatch, notifications} = props;
 
-  const removeNotification = (id: number) => {
+  const deleteNotification = (id: number) => {
     if (!notifications) return;
     try {
       if (!!timers && timers.length > 0) {
@@ -32,14 +32,14 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.REMOVE_NOTIFICATION,
-            payload: {notificationId: id}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: id
           });
         }, 5000);
 
         dispatch({
-          type: ACTIONS.ADD_DELETE_TIMER,
-          payload: {timer: {id, timer}}
+          type: 'ADD_DELETE_TIMER',
+          timer: {id, timer}
         });
       } else {
         const timer = setTimeout(async () => {
@@ -48,14 +48,14 @@ export const useRemoveNotification = (
           });
 
           dispatch({
-            type: ACTIONS.REMOVE_NOTIFICATION,
-            payload: {notificationId: id}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: id
           });
         }, 5000);
 
         dispatch({
-          type: ACTIONS.ADD_DELETE_TIMER,
-          payload: {timer: {id, timer}}
+          type: 'ADD_DELETE_TIMER',
+          timer: {id, timer}
         });
       }
     } catch (error) {
@@ -63,5 +63,5 @@ export const useRemoveNotification = (
     }
   };
 
-  return {removeNotification};
+  return {deleteNotification};
 };

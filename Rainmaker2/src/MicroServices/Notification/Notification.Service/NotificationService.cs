@@ -234,16 +234,21 @@ namespace Notification.Service
 
         public async Task<TenantSettingModel> GetTenantSetting(int tenantId)
         {
-            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
-            return new TenantSettingModel() { deliveryModeId=setting.DeliveryModeId};
+            var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            return new TenantSettingModel() { deliveryModeId=tenantSetting.DeliveryModeId,queueTimeout=setting.QueueTimeInMinute};
         }
 
         public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
         {
-            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            tenantSetting.TrackingState = TrackingState.Modified;
+            tenantSetting.DeliveryModeId = model.deliveryModeId;
+            Uow.Repository<TenantSetting>().Update(tenantSetting);
+            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
             setting.TrackingState = TrackingState.Modified;
-            setting.DeliveryModeId = model.deliveryModeId;
-            Uow.Repository<TenantSetting>().Update(setting);
+            setting.QueueTimeInMinute = model.queueTimeout;
+            Uow.Repository<Setting>().Update(setting);
             await Uow.SaveChangesAsync();
         }
     }
