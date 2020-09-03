@@ -20,10 +20,6 @@ namespace RainMaker.API.CorrelationHandlersAndMiddleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            //context.Request.Headers.TryGetValue("CorrelationId",
-            //                                    out StringValues value);
-
-            //var dd = context.Request.Headers.ToJson();
             try
             {
                 var header = context.Request.Headers["CorrelationId"];

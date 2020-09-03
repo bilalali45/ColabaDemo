@@ -30,14 +30,7 @@ namespace LosIntegration.Service
 
             // @formatter:on 
 
-            //if (includes.HasValue)
-            //    mappings = ProcessIncludes(query: mappings,
-            //                               includes: includes.Value);
-
             return byteDocTypeMappings.ToList();
         }
-
-
-    
     }
 }

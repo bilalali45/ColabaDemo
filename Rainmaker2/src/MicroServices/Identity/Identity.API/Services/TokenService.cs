@@ -44,7 +44,6 @@ namespace Identity.Services
                                              claims: claims
                                             );
 
-            //return new JwtSecurityTokenHandler().WriteToken(token);
             return token;
         }
 

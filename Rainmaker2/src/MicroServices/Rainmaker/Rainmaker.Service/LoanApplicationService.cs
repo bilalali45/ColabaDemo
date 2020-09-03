@@ -248,7 +248,7 @@ namespace Rainmaker.Service
                                                                    x.Logo
                                                                })
                                         .FirstOrDefaultAsync();
-            //var nmls = (await Uow.Repository<Branch>().Query(x => x.Id == 1).FirstOrDefaultAsync()).NmlsNo;
+            
             return new LoanOfficer
                    {
                        Email = businessUnit.Email,

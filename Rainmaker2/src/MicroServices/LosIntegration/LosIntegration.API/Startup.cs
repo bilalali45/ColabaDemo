@@ -39,8 +39,6 @@ namespace LosIntegration.API
             services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();
-            //services.AddScoped<ISettingService, SettingService>();
-            //services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddScoped<IMappingService, MappingService>();
             services.AddScoped<IByteDocTypeMappingService, ByteDocTypeMappingService>();
             services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
@@ -70,8 +68,6 @@ namespace LosIntegration.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-           // app.UseHttpsRedirection();
 
             app.UseRouting();
 
