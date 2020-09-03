@@ -23,7 +23,6 @@ namespace MainGateway
 {
     public class Startup
     {
-        private static HttpClient httpClient = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -48,29 +47,9 @@ namespace MainGateway
                                          builder =>
                                          {
                                              var itemArray = Configuration.GetSection("AllowedOrigins").GetChildren().Select(c => c.Value).ToArray();
-                                             //builder.WithOrigins(itemArray).AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("Content-Disposition", "Content-Length");
                                              builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                          });
             });
-
-
-
-            #region IdentityServer4 Authentication
-
-            //var authenticationProviderKey = "TestKey";
-            //Action<IdentityServerAuthenticationOptions> opt = o =>
-            //{
-            //    o.Authority = "http://localhost:5010";
-            //    o.ApiName = "SampleService";
-            //    o.SupportedTokens = SupportedTokens.Both;
-            //    o.RequireHttpsMetadata = false;
-            //};
-
-            //services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            //        .AddIdentityServerAuthentication(authenticationProviderKey, opt);
-
-            #endregion
-
 
             #region JWT
 

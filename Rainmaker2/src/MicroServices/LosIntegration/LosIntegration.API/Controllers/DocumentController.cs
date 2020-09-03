@@ -459,6 +459,7 @@ namespace LosIntegration.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
 
