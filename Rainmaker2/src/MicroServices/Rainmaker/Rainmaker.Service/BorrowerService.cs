@@ -31,8 +31,8 @@ namespace Rainmaker.Service
         }
 
 
-        public List<Borrower> GetBorrowerWithDetails(string firstName = null,
-                                                     string lastName = null,
+        public List<Borrower> GetBorrowerWithDetails(string firstName = "",
+                                                     string lastName = "",
                                                      string email = "",
                                                      int? loanApplicationId = null,
                                                      string encompassId = "",
