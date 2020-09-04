@@ -86,7 +86,7 @@ export const HomePage: FunctionComponent = () => {
           type: ACTIONS.UPDATE_STATE,
           payload: {notificationsVisible: !notificationsVisible}
         });
-      }, 10);
+      }, 500);
     }
   };
 
@@ -210,6 +210,7 @@ export const HomePage: FunctionComponent = () => {
               getFetchNotifications={() => getFetchNotifications(lastId)}
               readAllNotificationsForDocument={readAllNotificationsForDocument}
               dispatch={dispatch}
+              DeleteAll={confirmDeleteAll}
             />
           )}
         </div>
