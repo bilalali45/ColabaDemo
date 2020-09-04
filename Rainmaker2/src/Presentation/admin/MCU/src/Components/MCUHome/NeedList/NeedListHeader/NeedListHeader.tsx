@@ -8,11 +8,16 @@ export const NeedListHeader = () => {
   const redirectToTemplate = () => {
     history.push(`/templateManager/${LocalDB.getLoanAppliationId()}`);
   };
+
+  const redirectToMVC = () => {
+
+    window.top.location.href = document.referrer
+  };
   
   return (
     <div className="need-list-header">
       <div className="need-list-header--left">
-        <a href="#" className="btn btn-back" onClick={history.goBack}>
+        <a href="#" className="btn btn-back" onClick={redirectToMVC}>
           <em className="zmdi zmdi-arrow-left"></em> Back
         </a>
       </div>
