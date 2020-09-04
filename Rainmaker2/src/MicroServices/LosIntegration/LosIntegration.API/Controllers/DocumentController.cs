@@ -47,8 +47,6 @@ namespace LosIntegration.API.Controllers
             _byteDocCategoryMappingService = byteDocCategoryMappingService;
             _byteDocStatusMappingService = byteDocStatusMappingService;
             _httpClient = clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -252,7 +250,6 @@ namespace LosIntegration.API.Controllers
         [HttpPost]
         public async Task<IActionResult> SendDocumentToExternalOriginator([FromBody] SendDocumentToExternalOriginatorRequest request)
         {
-            var tenantId = "1";
             _httpClient.DefaultRequestHeaders.Authorization
                 = new AuthenticationHeaderValue(scheme: "Bearer",
                                                 parameter: Request

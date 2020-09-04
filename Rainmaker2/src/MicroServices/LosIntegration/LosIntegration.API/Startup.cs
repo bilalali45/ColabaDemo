@@ -32,10 +32,7 @@ namespace LosIntegration.API
         {
             services.AddControllers();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();

@@ -123,10 +123,8 @@ namespace Rainmaker.API.Controllers
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
             EmailAccount emailAccount = null;
 
-            if(userProfile != null)
-                if (userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails
-                                          .SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+            if(userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
             if (emailAccount != null)
             {
@@ -183,7 +181,7 @@ namespace Rainmaker.API.Controllers
             }
             else
             {
-                throw new Exception("Activity not found for Business unit");
+                throw new RainMakerException("Activity not found for Business unit");
             }
         }
 
