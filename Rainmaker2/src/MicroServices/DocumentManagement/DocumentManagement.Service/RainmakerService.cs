@@ -92,7 +92,7 @@ namespace DocumentManagement.Service
             {
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<LoanApplicationModel>(await resp.Content.ReadAsStringAsync());
             }
-            throw new Exception("Unable to get loan info");
+            throw new DocumentManagementException("Unable to get loan info");
         }
 
         public async Task UpdateLoanInfo(int? loanApplicationId,string id, IEnumerable<string> authHeader)

@@ -143,8 +143,6 @@ namespace ByteWebConnector.Service.ExternalServices
                 dataStream.Close();
                 return embeddedDocList;
             }
-
-            return null;
         }
 
 
@@ -207,8 +205,6 @@ namespace ByteWebConnector.Service.ExternalServices
                 dataStream.Close();
                 return embeddedDoc;
             }
-
-            return null;
         }
     }
 }

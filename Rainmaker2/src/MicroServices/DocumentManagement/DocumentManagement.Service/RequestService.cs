@@ -345,7 +345,7 @@ namespace DocumentManagement.Service
                             userId = request.userId,
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
-                            activity = string.Format(ActivityStatus.RerequestedBy, request.userName),
+                            activity = ActivityStatus.RerequestedBy,
                             typeId = string.IsNullOrEmpty(item.typeId)?null:item.typeId,
                             docId = item.docId,
                             docName = item.displayName,

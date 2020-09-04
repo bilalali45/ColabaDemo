@@ -22,7 +22,7 @@ namespace KeyStore.API.Controllers
         {
             var keyData = keyStore.Get(key);
             if (string.IsNullOrEmpty(keyData))
-                throw new Exception("unable to get key");
+                throw new KeyStoreException("unable to get key");
             return keyData;
         }
     }

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ByteWebConnector.API.Utility
 {
-    public   class Helper
+    public static class Helper
     {
         public static List<byte[]> WrapImagesInPdf(List<byte[]> intput)
         {
