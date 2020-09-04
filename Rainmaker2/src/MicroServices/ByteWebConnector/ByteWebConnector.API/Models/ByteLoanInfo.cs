@@ -1,4 +1,4 @@
-﻿using LosIntegration.API.Models.ClientModels;
+﻿using ByteWebConnector.Model.Models.ServiceRequestModels;
 
 namespace ByteWebConnector.API.Models
 {
