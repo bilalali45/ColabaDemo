@@ -103,6 +103,7 @@
         .modal-header {
             display: block;
             position: relative;
+            padding: 25px 25px 10px;
             .close {
                 display: block;
                 position: absolute;
@@ -146,7 +147,7 @@
         }
         .modal-body {
             display: block;
-            padding: 25px 20px;
+            padding: 25px;
             .sync-modal-alert-body {
                 h4 {
                     font: 500 #{fontSize("nr")-1 + "/1"} fontFamily("base");
