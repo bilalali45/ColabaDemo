@@ -10384,10 +10384,10 @@ raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
-rainsoft-js@^1.0.38:
-  version "1.0.38"
-  resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.38.tgz#0fc10ac83144e1b181af80227cd12f22594412fb"
-  integrity sha512-+xLFNb0dupdp4qmMfCbuxjEaBasIuSnQaf4HYAAJ0/O0eDSQpGy2hZkcoSmkhsCNneoEXM4N0PobeX+tZ8OAcw==
+rainsoft-js@^1.0.41:
+  version "1.0.41"
+  resolved "https://registry.yarnpkg.com/rainsoft-js/-/rainsoft-js-1.0.41.tgz#50bf74887040d13d3cb4145914263d3a2e9bf9fd"
+  integrity sha512-GQ9TZjBCK3e+M5s65MAJY/Doi56f1nNEO/UgB+QbfR3XGjSfu0hSTjc2Dx/DCU7ifT4G3168mS8nkoLJ1R0uBA==
   dependencies:
     "@microsoft/signalr" "^3.1.7"
     "@types/jest" "^24.9.1"
