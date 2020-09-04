@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ByteWebConnector.API.ExtensionMethods;
 using ByteWebConnector.API.Models;
-using LosIntegration.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ByteBorrower = ByteWebConnector.API.Models.ByteBorrower;
