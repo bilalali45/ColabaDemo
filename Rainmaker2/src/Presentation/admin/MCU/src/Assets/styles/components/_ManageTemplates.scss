@@ -492,6 +492,7 @@
     }
     .popup-add-doc-row {
         min-height: 390px;
+
         &--left {
             border-right: 1px solid color("border");
             .list-doc-cat {
@@ -502,12 +503,14 @@
                         font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                     } 
                     color: color('heading');
-                    text-transform: uppercase;
+                    text-transform: capitalize;
                     padding: 12px 15px;
                     cursor: pointer;
                     &.active,&:hover {
-                        background: rgba(color('primary'), 0.08);
+                        background: color('listHoverBg');
+                        border: 2px solid #fff;
                         color: color('primary');
+                        box-sizing: border-box;;
                     }
                 }
                 ul {
@@ -528,7 +531,7 @@
                         padding: 8px 15px;
                         cursor: pointer;
                         &.active,&:hover {
-                            background: rgba(color('primary'), 0.08);
+                            background: color('listHoverBg');
                             color: color('primary');
                         }
                     }
@@ -578,6 +581,10 @@
                        height: 39px;
                        padding: 10px 15px;
                        padding-right: 40px;
+                       &::placeholder{
+                            color: #CCCCCC;
+                            font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+                       }
                    }
                    .s-icon {
                     position: absolute;
@@ -621,8 +628,9 @@
                         text-transform: capitalize;
                         padding: 8px 15px;
                         cursor: pointer;
+                        
                         &.active,&:hover {
-                            background: rgba(color('primary'), 0.08);
+                            background: color('listHoverBg');
                             color: color('primary');
                         } 
                         
