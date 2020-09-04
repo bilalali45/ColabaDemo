@@ -17,7 +17,6 @@ declare global {
     envConfig: any;
   }
 }
-window.envConfig = window.envConfig || {};
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
