@@ -121,7 +121,6 @@ export const DocumentsStatus = () => {
   if (pendingDocs.length == 0) {
     return renderNoPendingDocs();
   }
-
   return (
     <div className="DocumentStatus hasData box-wrap">
       <div className="overlay-DocumentStatus">
@@ -130,7 +129,7 @@ export const DocumentsStatus = () => {
           <p>
             You have{" "}
             <span className="DocumentStatus--count">{pendingDocs.length}</span>{" "}
-            items to complete
+            {pendingDocs.length == 1 ?"item":"items"} to complete
           </p>
         </div>
         <div className="box-wrap--body clearfix">

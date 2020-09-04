@@ -21,7 +21,7 @@ export const TemplateHeader = () => {
 
   return (
     <section className="MTheader">
-      <h2>Manage Templates</h2>
+      <h2>Manage Document Templates</h2>
 
       <Link
         title="Close"
