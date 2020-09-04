@@ -299,7 +299,7 @@ namespace ByteWebConnector.API.Controllers
                                                                             certificate,
                                                                             chain,
                                                                             sslPolicyErrors) => true;
-
+                _apiUrl = baseUrl;
                 var request = (HttpWebRequest)WebRequest.Create(requestUriString: baseUrl + "auth/ ");
                 request.Method = "GET";
                 request.ContentType = "application/json";

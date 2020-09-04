@@ -69,12 +69,12 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
         }
-
-        [Authorize(Roles = "MCU")]
+   
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetLoanApplication([FromQuery] string encompassNumber)
+        public async Task<IActionResult> GetLoanApplication([FromQuery] string encompassNumber = null, [FromQuery] int? id = null )
         {
-           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: encompassNumber).SingleOrDefault();
+           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(id: id,encompassNumber: encompassNumber).SingleOrDefault();
             return Ok(loanApplication);
         }
 
