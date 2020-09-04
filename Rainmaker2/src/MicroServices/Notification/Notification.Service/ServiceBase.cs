@@ -18,7 +18,7 @@ namespace Notification.Service
     {
         protected readonly ITrackableRepository<TEntity> Repository;
         protected readonly IServiceProvider services;
-        public ServiceBase(IUnitOfWork<TDbContext> previousUow, IServiceProvider services)
+        protected ServiceBase(IUnitOfWork<TDbContext> previousUow, IServiceProvider services)
         {
             this.services = services;
             this.Uow = previousUow;

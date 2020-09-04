@@ -37,7 +37,7 @@ namespace Rainmaker.Service
             return await Repository
                          .Query(query: x =>
                                     x.Opportunity.OpportunityLeadBinders
-                                     .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault().Customer
+                                     .FirstOrDefault(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).Customer
                                      .UserId == userProfileId && x.Id == loanApplicationId)
                          .Include(navigationPropertyPath: x => x.PropertyInfo)
                          .ThenInclude(navigationPropertyPath: x => x.PropertyType)
@@ -192,8 +192,7 @@ namespace Rainmaker.Service
         {
             return await Repository.Query(query: x =>
                                               x.Opportunity.OpportunityLeadBinders
-                                               .Where(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).FirstOrDefault()
-                                               .Customer.UserId == userProfileId && x.Id == loanApplicationId &&
+                                               .FirstOrDefault(y => y.OwnTypeId == (int) OwnTypeEnum.PrimaryContact).Customer.UserId == userProfileId && x.Id == loanApplicationId &&
                                               x.BusinessUnit.Id == businessUnitId)
                                    .Include(navigationPropertyPath: x => x.Opportunity)
                                    .ThenInclude(navigationPropertyPath: x => x.Owner)
@@ -214,13 +213,12 @@ namespace Rainmaker.Service
                                                new LoanOfficer
                                                {
                                                    Email = x.Opportunity.Owner.EmployeeBusinessUnitEmails
-                                                            .Where(y => y.BusinessUnitId == businessUnitId).FirstOrDefault()
-                                                            .EmailAccount.Email,
+                                                            .FirstOrDefault(y => y.BusinessUnitId == businessUnitId).EmailAccount.Email,
                                                    FirstName = x.Opportunity.Owner.Contact.FirstName,
                                                    LastName = x.Opportunity.Owner.Contact.LastName,
                                                    NMLS = x.Opportunity.Owner.NmlsNo,
                                                    Phone = x.Opportunity.Owner.EmployeePhoneBinders
-                                                            .Where(y => y.TypeId == 3).FirstOrDefault().CompanyPhoneInfo.Phone,
+                                                            .FirstOrDefault(y => y.TypeId == 3).CompanyPhoneInfo.Phone,
                                                    Photo = x.Opportunity.Owner.Photo,
                                                    WebUrl = x.BusinessUnit.WebUrl + "/lo/" +
                                                             x.Opportunity.Owner.CmsName
@@ -234,7 +232,7 @@ namespace Rainmaker.Service
             var businessUnit = await Uow.Repository<BusinessUnit>()
                                         .Query(query: x =>
                                                    x.Id == businessUnitId &&
-                                                   x.BusinessUnitPhones.Where(y => y.TypeId == 3).Count() > 0)
+                                                   x.BusinessUnitPhones.Count(y => y.TypeId == 3) > 0)
                                         .Include(navigationPropertyPath: x => x.EmailAccount)
                                         .Include(navigationPropertyPath: x => x.BusinessUnitPhones)
                                         .ThenInclude(navigationPropertyPath: x => x.CompanyPhoneInfo)
@@ -275,19 +273,16 @@ namespace Rainmaker.Service
                                      .Select(selector: x => new PostModel
                                                             {
                                                                 userId = x.Opportunity.OpportunityLeadBinders
-                                                                          .Where(y => y.OwnTypeId ==
+                                                                          .First(y => y.OwnTypeId ==
                                                                                       (int) OwnTypeEnum
-                                                                                          .PrimaryContact).First()
-                                                                          .Customer.UserId,
+                                                                                          .PrimaryContact).Customer.UserId,
                                                                 userName =
                                                                     x.Opportunity.OpportunityLeadBinders
-                                                                     .Where(y => y.OwnTypeId ==
-                                                                                 (int) OwnTypeEnum.PrimaryContact)
-                                                                     .First().Customer.Contact.FirstName + " " +
+                                                                     .First(y => y.OwnTypeId ==
+                                                                                 (int) OwnTypeEnum.PrimaryContact).Customer.Contact.FirstName + " " +
                                                                     x.Opportunity.OpportunityLeadBinders
-                                                                     .Where(y => y.OwnTypeId ==
-                                                                                 (int) OwnTypeEnum.PrimaryContact)
-                                                                     .First().Customer.Contact.LastName
+                                                                     .First(y => y.OwnTypeId ==
+                                                                                 (int) OwnTypeEnum.PrimaryContact).Customer.Contact.LastName
                                                             }).FirstOrDefaultAsync();
             if (!isDraft)
                 await ChangeStatus(loanApplicationId: loanApplicationId,

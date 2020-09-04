@@ -68,34 +68,7 @@ namespace DocumentManagement.Service
                     mediaType: "application/json")
             };
             request.Headers.Add("Authorization", authHeader);
-            var resp = await _httpClient.SendAsync(request);
-            if (resp.IsSuccessStatusCode)
-            {
-                IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
-
-                using var asyncCursorRequest = collectionRequest.Aggregate(
-                    PipelineDefinition<Entity.Request, BsonDocument>.Create(
-                        @"{""$match"": {
-                  ""loanApplicationId"": " + loanApplicationId + @"
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1
-                            }
-                        }"
-                    ));
-              
-                string loanId = string.Empty;
-                if (await asyncCursorRequest.MoveNextAsync())
-                {
-                   
-                    foreach (var current in asyncCursorRequest.Current)
-                    {
-                        LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
-                        loanId = query._id;
-                    }
-                }
-            }
+            await _httpClient.SendAsync(request);
         }
         public async Task<LoanApplicationModel> GetByLoanApplicationId(int loanApplicationId,
             IEnumerable<string> authHeader)

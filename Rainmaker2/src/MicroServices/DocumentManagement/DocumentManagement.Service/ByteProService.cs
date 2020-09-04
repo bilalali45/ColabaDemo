@@ -81,12 +81,9 @@ namespace DocumentManagement.Service
             using var asyncCursor = await collection.FindAsync(new BsonDocument() {
                 { "tenantId",tenantId }
             });
-            if(await asyncCursor.MoveNextAsync())
+            if (await asyncCursor.MoveNextAsync() && asyncCursor.Current?.Count() > 0)
             {
-                if(asyncCursor.Current?.Count()>0)
-                {
-                    tenant = asyncCursor.Current.First();
-                }
+                tenant = asyncCursor.Current.First();
             }
             return tenant;
         }
@@ -107,6 +104,6 @@ namespace DocumentManagement.Service
             if (result.ModifiedCount <= 0)
                 throw new Exception("Unable to update settings");
         }
-       
+
     }
 }

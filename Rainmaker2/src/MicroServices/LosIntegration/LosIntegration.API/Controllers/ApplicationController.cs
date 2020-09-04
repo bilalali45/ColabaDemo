@@ -74,8 +74,6 @@ namespace LosIntegration.API.Controllers
             if (callResponse.IsSuccessStatusCode)
                 return Ok();
             return BadRequest();
-
-            //return null;
         }
 
         #endregion

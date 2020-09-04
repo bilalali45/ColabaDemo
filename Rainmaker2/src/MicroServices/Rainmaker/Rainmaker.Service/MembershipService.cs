@@ -72,7 +72,7 @@ namespace Rainmaker.Service
                                   .Include(x=>x.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
                                   .ToList();
 
-            if (query.Count() > 1)
+            if (query.Count > 1)
                 throw new Exception(message: "Multiple users found.");
 
             return query.FirstOrDefault();

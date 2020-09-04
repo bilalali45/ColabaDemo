@@ -167,8 +167,8 @@ namespace Notification.Service
                     .Include(x => x.NotificationRecepient).ThenInclude(x=>x.NotificationRecepientStatusLogs).FirstOrDefaultAsync();
 
                 result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
-                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
-                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count() >= 1 ? 
+                    .Count(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen) >= 1 ? 
                     result.NotificationRecepient.NotificationRecepientStatusLogs
                         .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
                                     && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x => x.UpdatedOn)
@@ -213,8 +213,8 @@ namespace Notification.Service
                 .ThenInclude(x=>x.NotificationRecepientStatusLogs)
                 .FirstOrDefaultAsync();
             result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
-                .Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
-                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count()>=1 ? 
+                .Count(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
+                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen)>=1 ? 
                 result.NotificationRecepient.NotificationRecepientStatusLogs
                     .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
                                 && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x=>x.UpdatedOn)

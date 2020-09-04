@@ -18,10 +18,7 @@ namespace DocumentManagement.Service
         public MongoService(IConfiguration config, ILogger<MongoService> logger, HttpClient httpClient)
         {
             var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key=DocumentManagementCS").Result;
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             var mongoConnectionUrl = new MongoUrl(csResponse.Content.ReadAsStringAsync().Result);
             var mongoClientSettings = MongoClientSettings.FromUrl(mongoConnectionUrl);
             mongoClientSettings.ClusterConfigurator = cb =>

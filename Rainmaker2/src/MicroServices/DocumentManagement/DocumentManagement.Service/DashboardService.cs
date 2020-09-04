@@ -85,7 +85,7 @@ namespace DocumentManagement.Service
                     {
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {
@@ -162,7 +162,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
-                    if (query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Count() > 0)
+                    if (query.files?.Count(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted) > 0)
                     {
                         DashboardDTO dto = new DashboardDTO();
                         dto.id = query.id;
@@ -174,7 +174,7 @@ namespace DocumentManagement.Service
                         {
                             if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                             {
-                                dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                                dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                             }
                             else
                             {
@@ -234,10 +234,10 @@ namespace DocumentManagement.Service
             if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count() > 0)
             {
                 string status = asyncCursor1.Current.First()["status"].ToString();
-                statuses.Where(x => x.id == status).First().isCurrentStep = true;
+                statuses.First(x => x.id == status).isCurrentStep = true;
             }
             else
-                statuses.Where(x => x.order == 3).First().isCurrentStep = true;
+                statuses.First(x => x.order == 3).isCurrentStep = true;
             return statuses.OrderBy(x => x.order).ToList();
         }
 
