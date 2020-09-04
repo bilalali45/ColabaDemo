@@ -165,7 +165,7 @@
         line-height: 1.2;
         font-family: fontFamily("base");
         border: none;
-        text-transform: uppercase;
+        text-transform: capitalize;
         color: color('heading');
         white-space: nowrap;
         border-bottom: 1px solid color('border');

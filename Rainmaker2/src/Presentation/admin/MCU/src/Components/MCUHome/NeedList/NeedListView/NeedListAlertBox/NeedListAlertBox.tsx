@@ -59,7 +59,6 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
         backdrop="static"
         keyboard={true}
         className="modal-alert sync-error-alert"
-
         centered
     >
         <Modal.Header closeButton>
@@ -74,7 +73,6 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
             </div>
         
         </Modal.Header>
-
         <Modal.Body>
   
   <div className="sync-modal-alert-body">
@@ -83,16 +81,13 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
       <ul>
         {renderFailedSyncList()}
       </ul>
-
-  </div>
-        </Modal.Body>
-        <Modal.Footer>
-        <p className="text-center"> 
+      <p className="text-center"> 
               <Button onClick={() => syncAgain()}  variant="primary">
                 {"Sync again"} 
               </Button>
             </p>
-        </Modal.Footer>
+  </div>
+        </Modal.Body>
     </Modal>
     )
 }
