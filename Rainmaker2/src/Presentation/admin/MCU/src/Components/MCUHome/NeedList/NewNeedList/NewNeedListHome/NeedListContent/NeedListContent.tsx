@@ -130,7 +130,7 @@ export const NeedListContent = ({
       {renderTitleInputText()}
 
       <div className="mainbody">
-        <p>Include a message to the borrower</p>
+        <p>Add or edit details for this document</p>
         <div className="editer-wrap">
           <TextArea
             placeholderValue={'Type your message'}

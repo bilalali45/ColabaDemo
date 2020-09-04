@@ -12,10 +12,13 @@ export const Header: FunctionComponent<HeaderProps> = ({
   showClearAllButton
 }) => {
   return (
-    <div className="notify-header">
+    <div className="notify-header ">
       <h2>Notifications</h2>
       {showClearAllButton === true && (
-        <button className="notify-btn-clear" onClick={onDeleteAll}>
+        <button
+          className="notify-btn-clear animated1 fadeIn"
+          onClick={onDeleteAll}
+        >
           Clear all <SVGToggle />
         </button>
       )}
@@ -51,7 +54,7 @@ export const ConfirmDeleteAll: FunctionComponent<AlertForRemoveProps> = ({
   onNo
 }) => {
   return (
-    <div className="notify-alert-msg">
+    <div className="notify-alert-msg animated1 fadeIn">
       <div className="notify-alert-msg--wrap">
         <SVGNoBell />
         <h4>Are you sure you want to remove all notifications?</h4>
@@ -70,7 +73,7 @@ export const ConfirmDeleteAll: FunctionComponent<AlertForRemoveProps> = ({
 
 export const AlertForNoData: FunctionComponent = () => {
   return (
-    <div className="notify-alert-msg">
+    <div className="notify-alert-msg animated1 fadeIn">
       <div className="notify-alert-msg--wrap">
         <SVGBellSleep />
         <h4>No Notifications Yet</h4>
