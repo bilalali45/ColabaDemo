@@ -151,9 +151,9 @@
                                             position: relative;
                                             p{
                                                 white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            vertical-align: middle;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                vertical-align: middle;
                                                 margin-bottom: 0;
                                             }
                                             &:hover,
@@ -201,13 +201,16 @@
                                                 position: absolute;
                                                 right: 15px;
                                                 .lbtn {
-                                                    font: 400 #{fontSize('sm')+'/'+"1"} fontFamily('base');
+                                                    font: 500 #{fontSize('sm')+'/'+"1"} fontFamily('base');
                                                     color: color('colorWhite');
                                                     width: 42px;
                                                     height: 24px;
                                                     text-align: center;
+                                                    text-transform: uppercase;
                                                     border:none;
                                                     border-radius: 0;
+                                                    letter-spacing: 1px;
+
                                                     &:active,&:hover {
                                                         outline: none;
                                                         opacity: 0.9;
@@ -490,61 +493,61 @@
     .popup-add-doc-row {
         min-height: 390px;
         &--left {
-        border-right: 1px solid color("border");
-        .list-doc-cat {
-            margin-right: -15px;
-            .listAll {
-                font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
-                @include media-breakpoint-down(md) {
-                    font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
-                } 
-                color: color('heading');
-                text-transform: uppercase;
-                padding: 12px 15px;
-                cursor: pointer;
-                &.active,&:hover {
-                    background: rgba(color('primary'), 0.08);
-                    color: color('primary');
-                }
-            }
-            ul {
-                margin-top: 15px;
-                &.ul-list-doc-cat{
-                    max-height: 351px;
-                    overflow: auto;
-                    @include scrollbar(6,6)
-                }
-                
-                li {
-                    font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+            border-right: 1px solid color("border");
+            .list-doc-cat {
+                margin-right: -15px;
+                .listAll {
+                    font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
                     @include media-breakpoint-down(md) {
                         font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                     } 
                     color: color('heading');
-                    text-transform: capitalize;
-                    padding: 8px 15px;
+                    text-transform: uppercase;
+                    padding: 12px 15px;
                     cursor: pointer;
                     &.active,&:hover {
                         background: rgba(color('primary'), 0.08);
                         color: color('primary');
                     }
                 }
-            }
-            .listOther {
-                font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
-                @include media-breakpoint-down(md) {
-                    font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
-                } 
-                    color: color('heading');
-                    text-transform: capitalize;
-                    padding:8px 15px;
-                    cursor: pointer;
-                    &.active,&:hover {
-                        background: rgba(color('primary'), 0.08);
-                        color: color('primary');
+                ul {
+                    margin-top: 15px;
+                    &.ul-list-doc-cat{
+                        max-height: 351px;
+                        overflow: auto;
+                        @include scrollbar(6,6)
                     }
+                    
+                    li {
+                        font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base'); 
+                        @include media-breakpoint-down(md) {
+                            font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                        } 
+                        color: color('verticalTabsText');
+                        text-transform: capitalize;
+                        padding: 8px 15px;
+                        cursor: pointer;
+                        &.active,&:hover {
+                            background: rgba(color('primary'), 0.08);
+                            color: color('primary');
+                        }
+                    }
+                }
+                .listOther {
+                    font: 400 #{fontSize('nr')+'/'+"1.2"} fontFamily('base');  
+                    @include media-breakpoint-down(md) {
+                        font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
+                    } 
+                        color: color('heading');
+                        text-transform: capitalize;
+                        padding:8px 15px;
+                        cursor: pointer;
+                        &.active,&:hover {
+                            background: rgba(color('primary'), 0.08);
+                            color: color('primary');
+                        }
+                }
             }
-        }
     }
 
     &--right{
@@ -588,8 +591,9 @@
                 padding-bottom: 0;
                    h4{
                     font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base'); 
+                    text-transform: uppercase;
                     @include media-breakpoint-down(md) {
-                        font: 500 #{fontSize('sm')-1+'/'+"1.2"} fontFamily('base'); 
+                        font: 500 #{fontSize('sm')+'/'+"1.2"} fontFamily('base'); 
                     }
                     color: color('colorBlack'); 
                     // text-transform: uppercase; 

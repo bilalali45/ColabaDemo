@@ -134,9 +134,12 @@ export const NeedListSelect = ({
         container={ref.current}
       >
         <Popover id="popover-contained" className="addneedlist-popover">
-          <Popover.Title as="h3">Popover bottom</Popover.Title>
+          <Popover.Title as="h3" class="addneedlist-popover-title">Popover bottom</Popover.Title>
           <Popover.Content>
-            <strong>Holy guacamole!</strong> Check this info.
+            <span className="addneedlist-popover--list">Earnest Money Deposit</span>
+            <span className="addneedlist-popover--list">Financial statements</span>
+            <span className="addneedlist-popover--list">Profit and Loss Statement</span>
+            <span className="addneedlist-popover--list">Form 1099 (Miscellaneous Income)</span>
           </Popover.Content>
         </Popover>
       </Overlay>
