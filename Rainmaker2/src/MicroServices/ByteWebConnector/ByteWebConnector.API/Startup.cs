@@ -81,7 +81,6 @@ namespace ByteWebConnector.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

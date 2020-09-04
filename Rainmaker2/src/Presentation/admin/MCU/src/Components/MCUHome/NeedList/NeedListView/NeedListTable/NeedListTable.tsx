@@ -64,7 +64,7 @@ export const NeedListTable = ({
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          {!isByteProAuto && renderSyncToLos(item.files)}
+          {!isByteProAuto && renderSyncToLos(item.files, item.index)}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -75,6 +75,7 @@ export const NeedListTable = ({
       );
     });
   };
+  
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
     if (data) {
@@ -291,22 +292,23 @@ export const NeedListTable = ({
     }
   };
 
-  const renderSyncToLos = (data: NeedListDocuments[]) => {
+  const renderSyncToLos = (data: NeedListDocuments[], index: number) => {
 
     if (data === null || data.length === 0) {
       return <div className="td"></div>
 
     } else {
       return (
-        <div className="td">
+        <div id={String(index)} className="td">
           {data.map((item: NeedListDocuments) => {
+            
             return (
-              <span key={item.id} className="block-element c-filename">
-                <a onClick={() => FileSyncToLos(item.id, item.byteProStatusText)}>
+              <span id={String(item.index)} key={item.index} className="block-element c-filename">
+                <a onClick={() => FileSyncToLos(item)}>
                   {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
                   }
                 </a>{' '} 
-                {item.byteProStatusClassName == "synced" ?item.byteProStatusText:<span className="txt-stl" onClick={() => FileSyncToLos(item.id, item.byteProStatusText)}>{' '} {item.byteProStatusText}</span>}
+                {item.byteProStatusClassName == "synced" ?item.byteProStatusText:<span className="txt-stl" onClick={() => FileSyncToLos(item)}>{' '} {item.byteProStatusText}</span>}
               </span>
             );
           })}

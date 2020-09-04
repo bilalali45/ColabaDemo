@@ -47,8 +47,6 @@ namespace LosIntegration.API.Controllers
             _byteDocCategoryMappingService = byteDocCategoryMappingService;
             _byteDocStatusMappingService = byteDocStatusMappingService;
             _httpClient = clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -252,7 +250,6 @@ namespace LosIntegration.API.Controllers
         [HttpPost]
         public async Task<IActionResult> SendDocumentToExternalOriginator([FromBody] SendDocumentToExternalOriginatorRequest request)
         {
-            var tenantId = "1";
             _httpClient.DefaultRequestHeaders.Authorization
                 = new AuthenticationHeaderValue(scheme: "Bearer",
                                                 parameter: Request
@@ -489,7 +486,7 @@ namespace LosIntegration.API.Controllers
                     $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
                 var httpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
 
-                //var apiResponse = JsonConvert.DeserializeObject(value: result);
+  
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var result = httpResponseMessage.Content.ReadAsStringAsync().Result;
@@ -572,7 +569,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            //_logger.LogInformation(message: $"result={result} ");
+            
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");

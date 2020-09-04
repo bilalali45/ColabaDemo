@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ByteWebConnector.API.ExtensionMethods;
 using ByteWebConnector.API.Models;
-using LosIntegration.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ByteBorrower = ByteWebConnector.API.Models.ByteBorrower;
@@ -27,8 +26,6 @@ namespace ByteWebConnector.API.Controllers
             _clientFactory = clientFactory;
             _configuration = configuration;
             _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -78,8 +75,6 @@ namespace ByteWebConnector.API.Controllers
             if (callResponse.IsSuccessStatusCode)
                 return Ok();
             return BadRequest();
-
-            //return null;
         }
 
         #endregion

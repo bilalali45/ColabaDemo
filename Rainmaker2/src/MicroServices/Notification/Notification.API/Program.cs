@@ -15,7 +15,7 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace Notification.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

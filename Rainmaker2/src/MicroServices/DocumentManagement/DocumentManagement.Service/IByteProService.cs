@@ -12,6 +12,5 @@ namespace DocumentManagement.Service
         Task<FileViewDTO> View(AdminFileViewModel model, int tenantId);
         Task<Tenant> GetTenantSetting(int tenantId);
         Task SetTenantSetting(int tenantId, TenantSetting setting);
-        //Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId);
     }
 }

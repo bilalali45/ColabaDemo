@@ -68,63 +68,7 @@ namespace DocumentManagement.Service
                     mediaType: "application/json")
             };
             request.Headers.Add("Authorization", authHeader);
-            var resp = await _httpClient.SendAsync(request);
-            if (resp.IsSuccessStatusCode)
-            {
-                IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
-
-                using var asyncCursorRequest = collectionRequest.Aggregate(
-                    PipelineDefinition<Entity.Request, BsonDocument>.Create(
-                        @"{""$match"": {
-                  ""loanApplicationId"": " + loanApplicationId + @"
-                            }
-                        }", @"{
-                            ""$project"": {
-                                ""_id"": 1
-                            }
-                        }"
-                    ));
-              
-                string loanId = string.Empty;
-                if (await asyncCursorRequest.MoveNextAsync())
-                {
-                   
-                    foreach (var current in asyncCursorRequest.Current)
-                    {
-                        LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
-                        loanId = query._id;
-                    }
-
-                    //insert emaillog
-
-                    //IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
-
-                    //using var asyncCursorEmailLog = collection.Aggregate(
-                    //PipelineDefinition<Entity.EmailLog, BsonDocument>.Create(
-                    //    @"{""$match"": {
-                    //    ""loanId"": " + new ObjectId(loanId).ToJson() + @"
-                    //        }
-                    //    }", @"{
-                    //        ""$project"": {
-                    //            ""_id"": 1
-                    //        }
-                    //    }"
-                    //));
-
-                    //string message = ActivityStatus.RequestedBy;
-
-                    //if (await asyncCursorEmailLog.MoveNextAsync())
-                    //{
-                    //    foreach (var current in asyncCursorEmailLog.Current)
-                    //    {
-                    //        message = ActivityStatus.RerequestedBy;
-                    //    }
-                    //}
-
-                    //Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), userId = userId, userName = userName, dateTime = DateTime.UtcNow, emailText = emailBody, loanId = loanId, message = message };
-                    //await collection.InsertOneAsync(emailLog);
-                }
-            }
+            await _httpClient.SendAsync(request);
         }
         public async Task<LoanApplicationModel> GetByLoanApplicationId(int loanApplicationId,
             IEnumerable<string> authHeader)

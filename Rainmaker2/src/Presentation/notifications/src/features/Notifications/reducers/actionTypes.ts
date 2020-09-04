@@ -41,3 +41,7 @@ export interface RECEIVED_NOTIFICATION {
   type: 'RECEIVED_NOTIFICATION';
   notification: NotificationType;
 }
+
+export interface DELETE_ALL_NOTIFICATIONS {
+  type: 'DELETE_ALL_NOTIFICATIONS';
+}

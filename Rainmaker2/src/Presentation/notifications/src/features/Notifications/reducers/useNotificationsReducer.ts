@@ -10,7 +10,8 @@ import {
   RESET_DELETE_TIMERS,
   DELETE_NOTIFICATION,
   RECEIVED_NOTIFICATION,
-  SEEN_OR_READ_NOTIFICATIONS
+  SEEN_OR_READ_NOTIFICATIONS,
+  DELETE_ALL_NOTIFICATIONS
 } from './actionTypes';
 
 export interface State {
@@ -44,7 +45,8 @@ export type Actions =
   | DELETE_NOTIFICATION
   | RECEIVED_NOTIFICATION
   | SEEN_OR_READ_NOTIFICATIONS
-  | RESET_DELETE_TIMERS;
+  | RESET_DELETE_TIMERS
+  | DELETE_ALL_NOTIFICATIONS;
 
 const readOrSeenNotification = (
   state: State,
@@ -194,6 +196,12 @@ export const useNotificationsReducer = (): {
         return {
           ...state,
           ...resetDeleteTimers(state, action)
+        };
+      case 'DELETE_ALL_NOTIFICATIONS':
+        return {
+          ...state,
+          notifications: [],
+          confirmDeleteAll: false
         };
       case 'UPDATE_STATE':
         return {

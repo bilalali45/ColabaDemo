@@ -10,6 +10,7 @@ export class NeedList {
     public files: NeedListDocuments[] = [];
     public typeId: string;
     public userName: string;
+    public index : number = 0;
 
     constructor(id: string, requestId: string, docName: string, docId: string, status: string, files: NeedListDocuments[], typeId: string, userName: string) {
        

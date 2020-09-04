@@ -20,20 +20,14 @@ namespace DocumentManagement.Service
         {
             var ftpKey = config["File:FtpKey"];
             var ftpKeyResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}");
-            if (!ftpKeyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
+            ftpKeyResponse.EnsureSuccessStatusCode();
             return await ftpKeyResponse.Content.ReadAsStringAsync();
         }
         public async Task<string> GetFileKey()
         {
             var key = config["File:Key"];
             var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}");
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key from key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             return await csResponse.Content.ReadAsStringAsync();
         }
     }

@@ -1,5 +1,5 @@
-﻿using System;
-using LosIntegration.API.Models.ClientModels;
+﻿using ByteWebConnector.Model.Models.ServiceRequestModels;
+using System;
 
 namespace ByteWebConnector.API.Models
 {
