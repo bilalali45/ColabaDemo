@@ -1,6 +1,4 @@
-﻿using LosIntegration.API.Models.ClientModels;
-
-namespace ByteWebConnector.API.Models
+﻿namespace ByteWebConnector.API.Models
 {
     public class ByteParties
     {

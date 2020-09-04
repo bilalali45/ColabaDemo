@@ -37,10 +37,7 @@ namespace Rainmaker.API
         public void ConfigureServices(IServiceCollection services)
         {
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(AsyncHelper.RunSync(()=> csResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<RainMaker.Data.RainMakerContext>, UnitOfWork<RainMaker.Data.RainMakerContext>>();
@@ -62,10 +59,7 @@ namespace Rainmaker.API
                                                       );
             
             var keyResponse= AsyncHelper.RunSync(()=> httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            if (!keyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(()=>keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 

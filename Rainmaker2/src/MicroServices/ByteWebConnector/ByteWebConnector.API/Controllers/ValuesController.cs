@@ -34,15 +34,14 @@ namespace ByteWebConnector.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public IEnumerable<string> DBConnTest()
+        public void DBConnTest()
         {
-            var byteProSettings = _settingService.GetByteProSettings();
-            return null;
+            _settingService.GetByteProSettings();
         }
 
         [HttpGet]
         [Route("TestImageWrap")]
-        public IEnumerable<string> TestImageWrap()
+        public void TestImageWrap()
         {
             var imageBytes = System.IO.File.ReadAllBytes(@"C:\Users\user\Downloads\Foo.jpg");
 
@@ -51,7 +50,6 @@ namespace ByteWebConnector.API.Controllers
             System.IO.File.WriteAllBytes(@"C:\Users\user\Downloads\Foo.pdf", pdfBytes.First());
 
 
-            return null;
         }
 
         // GET api/<ValuesController>/5

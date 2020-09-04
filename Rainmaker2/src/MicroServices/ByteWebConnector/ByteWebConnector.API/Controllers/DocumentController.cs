@@ -395,50 +395,42 @@ namespace ByteWebConnector.API.Controllers
                 return embeddedDocList;
             }
 
-            return null;
         }
 
 
         private async Task<string> Send(string output,
                                         string session)
         {
-            try
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender,
+                                                                       cert,
+                                                                       chain,
+                                                                       sslPolicyErrors) =>
             {
-                HttpClientHandler clientHandler = new HttpClientHandler();
-                clientHandler.ServerCertificateCustomValidationCallback = (sender,
-                                                                           cert,
-                                                                           chain,
-                                                                           sslPolicyErrors) =>
-                {
-                    return true;
-                };
-                using (var client = new HttpClient(clientHandler))
-                {
-                    var request = new HttpRequestMessage()
-                                  {
-                                      RequestUri = new Uri(_apiUrl + "Document/"),
-                                      Method = HttpMethod.Post,
-                                      Content = new StringContent(output,
-                                                                  Encoding.UTF8,
-                                                                  "application/json")
-                                  };
-                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    request.Headers.Add("Session",
-                                        session);
-                    request.Headers.Accept.Clear();
-                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                return true;
+            };
+            using (var client = new HttpClient(clientHandler))
+            {
+                var request = new HttpRequestMessage()
+                              {
+                                  RequestUri = new Uri(_apiUrl + "Document/"),
+                                  Method = HttpMethod.Post,
+                                  Content = new StringContent(output,
+                                                              Encoding.UTF8,
+                                                              "application/json")
+                              };
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                request.Headers.Add("Session",
+                                    session);
+                request.Headers.Accept.Clear();
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
-                    _logger.LogInformation(message: $"DocSync Send    :DocumentData {_apiUrl + "Document/"} ");
-                    HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
-                    response.EnsureSuccessStatusCode();
-                    var resp = await response.Content.ReadAsStringAsync();
-                    return resp;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
+                _logger.LogInformation(message: $"DocSync Send    :DocumentData {_apiUrl + "Document/"} ");
+                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                var resp = await response.Content.ReadAsStringAsync();
+                return resp;
             }
         }
 

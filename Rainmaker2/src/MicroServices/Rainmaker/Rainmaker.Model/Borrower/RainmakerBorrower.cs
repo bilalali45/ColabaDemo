@@ -262,14 +262,11 @@ namespace Rainmaker.Model.Borrower
                     break;
                 case (int) DeclarationQuestionEnum.AlimonyChildSupportObligationIndicator
                     : //Are you obligated to pay alimony, child support, or separate maintenance?
-                    //Handle46Case(TODO,TODO,TODO);
                     break;
                 case (int) DeclarationQuestionEnum.HomeownerPastThreeYearsIndicator
                     : //Have you had an ownership interest in a property in the last three years?
-
                     Handle47Case(IntentToOccupyIndicator.ToString(),
-                                 borrowerQuestionResponse.QuestionResponse,
-                                 entity);
+                                 borrowerQuestionResponse.QuestionResponse);
 
                     break;
 
@@ -277,13 +274,11 @@ namespace Rainmaker.Model.Borrower
                 case (int) DeclarationQuestionEnum.PriorPropertyUsageType
                     : //What type of property did you own? Select the choice that fits best.
                     Handle49Case(HomeownerPastThreeYearsIndicator.ToString(),
-                                 borrowerQuestionResponse.QuestionResponse,
-                                 entity);
+                                 borrowerQuestionResponse.QuestionResponse);
                     break;
                 case (int) DeclarationQuestionEnum.PriorPropertyTitleType
                     : Handle50Case(HomeownerPastThreeYearsIndicator.ToString(),
-                                 borrowerQuestionResponse.QuestionResponse,
-                                 entity);
+                                 borrowerQuestionResponse.QuestionResponse);
                     break;
             }
 
@@ -292,8 +287,7 @@ namespace Rainmaker.Model.Borrower
 
 
         private void Handle47Case(string question45Answer,
-                                  QuestionResponse questionResponse,
-                                  RainMaker.Entity.Models.Borrower entity)
+                                  QuestionResponse questionResponse)
         {
 
 
@@ -307,8 +301,7 @@ namespace Rainmaker.Model.Borrower
 
 
         private void Handle50Case(string question47Response,
-                                  QuestionResponse questionResponse,
-                                  RainMaker.Entity.Models.Borrower entity)
+                                  QuestionResponse questionResponse)
         {
             if (question47Response == QuestionAnswerEnum.Yes.ToInt().ToString())
             {
@@ -322,8 +315,7 @@ namespace Rainmaker.Model.Borrower
 
 
         private void Handle49Case(string question47Response,
-                                  QuestionResponse questionResponse,
-                                  RainMaker.Entity.Models.Borrower entity)
+                                  QuestionResponse questionResponse)
         {
             if (question47Response == QuestionAnswerEnum.Yes.ToInt().ToString())
             {
@@ -410,6 +402,7 @@ namespace Rainmaker.Model.Borrower
 
         private void Handle42Case()
         {
+            // implementation will be added later
         }
     }
 }
