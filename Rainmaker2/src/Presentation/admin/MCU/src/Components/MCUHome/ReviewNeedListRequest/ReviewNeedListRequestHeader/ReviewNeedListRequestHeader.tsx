@@ -75,7 +75,10 @@ export const ReviewNeedListRequestHeader = ({
           className="modal-alert"
           centered
         >
-          <Modal.Header>
+          <div className="close-wrap">
+          <button onClick={handleClose} type="button" className="close"><span aria-hidden="true">×</span><span className="sr-only">Close</span></button>
+          </div>
+          <Modal.Header> 
             {/* <Modal.Title></Modal.Title> */}
           </Modal.Header>
 
