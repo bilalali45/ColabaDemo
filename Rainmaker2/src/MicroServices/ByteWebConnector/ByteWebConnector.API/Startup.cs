@@ -37,10 +37,7 @@ namespace ByteWebConnector.API
         public void ConfigureServices(IServiceCollection services)
         {
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             services.AddControllers();
 
             #region BWC Context

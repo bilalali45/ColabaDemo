@@ -79,7 +79,7 @@ export class FileUpload {
 
   static removeSpecialChars(text: string) {
     // return RemoveSpecialChars(text);
-    return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+    return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {

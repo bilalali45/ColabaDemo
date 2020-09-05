@@ -228,7 +228,7 @@ namespace DocumentManagement.Tests
             controller.ControllerContext = context;
 
 
-            await Assert.ThrowsAsync<Exception>(async () => { await controller.Rename(model); });
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Rename(model); });
 
         }
         [Fact]
@@ -655,7 +655,7 @@ namespace DocumentManagement.Tests
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
 
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
 
         [Fact]
@@ -745,7 +745,7 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
         [Fact]
         public async Task TestSubmitIsStartedTrueService()
@@ -940,7 +940,7 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
         [Fact]
         public async Task TestSubmitService()
@@ -1083,7 +1083,7 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<Exception>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
 
         private static void AddText(FileStream fs, string value)

@@ -73,7 +73,7 @@ namespace Rainmaker.Service
                                   .ToList();
 
             if (query.Count > 1)
-                throw new Exception(message: "Multiple users found.");
+                throw new RainMakerException("Multiple users found.");
 
             return query.FirstOrDefault();
         }

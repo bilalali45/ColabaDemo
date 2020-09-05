@@ -238,7 +238,7 @@ namespace DocumentManagement.Model
 
     public class ArrayRegularExpressionAttribute : ValidationAttribute
     {
-        private string regex;
+        private readonly string regex;
 
         public ArrayRegularExpressionAttribute(string regex)
         {

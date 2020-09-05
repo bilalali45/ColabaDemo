@@ -682,7 +682,7 @@ namespace DocumentManagement.Tests
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
 
-            await Assert.ThrowsAsync<Exception>(async () => await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName));
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName));
           }
         [Fact]
         public async Task TestGetCategoryDocumentService()

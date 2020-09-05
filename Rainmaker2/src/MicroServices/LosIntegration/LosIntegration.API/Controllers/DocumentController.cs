@@ -195,7 +195,7 @@ namespace LosIntegration.API.Controllers
                 });
 
                 if (!updateByteProStatusResponse.IsSuccessStatusCode)
-                    throw new Exception(message: "Unable to Update Status in Document Management");
+                    throw new LosIntegrationException("Unable to Update Status in Document Management");
 
                 #endregion
             }
@@ -214,7 +214,7 @@ namespace LosIntegration.API.Controllers
                 });
 
                 if (!updateByteProStatusResponse.IsSuccessStatusCode)
-                    throw new Exception(message: "Unable to Update Status in Document Management");
+                    throw new LosIntegrationException("Unable to Update Status in Document Management");
 
                 #endregion
                 throw;
@@ -546,7 +546,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message: $"DocSync GetFileDataFromDocumentManagement :documentResponse {documentResponse} ");
 
             if (!documentResponse.IsSuccessStatusCode)
-                throw new Exception(message: "Unable to load Document from Document Management");
+                throw new LosIntegrationException(message: "Unable to load Document from Document Management");
 
             return documentResponse;
         }
@@ -565,7 +565,7 @@ namespace LosIntegration.API.Controllers
                                    $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
 
             if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
-                throw new Exception(message: "Unable to Upload Document to External Originator");
+                throw new LosIntegrationException(message: "Unable to Upload Document to External Originator");
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
@@ -575,7 +575,7 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
-                throw new Exception(message: "Unable to deserialize External Originator document ");
+                throw new LosIntegrationException("Unable to deserialize External Originator document ");
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status } ");
             DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
             return documentResponse;

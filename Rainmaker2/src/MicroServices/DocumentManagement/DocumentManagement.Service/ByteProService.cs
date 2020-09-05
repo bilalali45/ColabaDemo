@@ -102,7 +102,7 @@ namespace DocumentManagement.Service
                 }
             });
             if (result.ModifiedCount <= 0)
-                throw new Exception("Unable to update settings");
+                throw new DocumentManagementException("Unable to update settings");
         }
 
     }

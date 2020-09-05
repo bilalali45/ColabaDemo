@@ -322,7 +322,7 @@ namespace DocumentManagement.Service
                 bsonElements.Add("docName", docName);
             }
             else {
-                throw new Exception("typeId and docName both can't be null");
+                throw new DocumentManagementException("typeId and docName both can't be null");
             }
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

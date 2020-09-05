@@ -789,6 +789,12 @@ namespace Notification.Tests
             };
             dataContext.Set<TenantSetting>().Add(app);
 
+            Setting setting = new Setting()
+            {
+                TenantId = 6
+            };
+            dataContext.Set<Setting>().Add(setting);
+
             dataContext.SaveChanges();
 
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
