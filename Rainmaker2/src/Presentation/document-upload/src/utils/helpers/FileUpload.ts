@@ -13,7 +13,7 @@ import { split } from "lodash";
 export class FileUpload {
   static allowedSize = ApplicationEnv.MaxFileSize; //in mbs
 
-  static nameTest = /^[ A-Za-z0-9-\s]*$/i;
+  static nameTest = /^[ A-Za-z0-9-\s.]*$/i;
 
   static todayDate = (): string => DateFormatWithMoment(new Date().toString());
   static PNG = {
