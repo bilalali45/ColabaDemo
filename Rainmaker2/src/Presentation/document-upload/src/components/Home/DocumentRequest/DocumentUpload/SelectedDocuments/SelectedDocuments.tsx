@@ -48,6 +48,8 @@ export const SelectedDocuments = ({
     false
   );
 
+  const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
+
   const documents: any = state.documents;
   const pendingDocs: any = documents.pendingDocs;
   const currentSelected: any = documents.currentDoc;
@@ -62,6 +64,11 @@ export const SelectedDocuments = ({
   useEffect(() => {
     setFileInput(inputRef.current);
     disableSubmitBtn();
+    console.log('in here', currentSelected);
+    let curentFileIndex = pendingDocs.findIndex((pd: DocumentRequest) => pd?.docId === currentSelected?.docId);
+    console.log(currentDocIndex);
+    setCurrentDocIndex(curentFileIndex);
+
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
@@ -265,8 +272,13 @@ export const SelectedDocuments = ({
           data
         );
       if (docs?.length) {
+        let indForCurrentDoc = currentDocIndex;
+        if(currentDocIndex === pendingDocs.length - 1) {
+          setCurrentDocIndex(0);
+          indForCurrentDoc = 0;
+        }
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[indForCurrentDoc] });
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
