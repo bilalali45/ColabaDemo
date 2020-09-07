@@ -38,7 +38,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
         setIsValid(true);
         if (value?.length > 49) {
             setIsValid(false);
-            setDocNameError('Only 50 chars allowed'); 
+            // setDocNameError('Only 50 chars allowed'); 
             
         }
 

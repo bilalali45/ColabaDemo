@@ -49,6 +49,7 @@
                 max-width: 450px;
                 display: inline-block;
                 vertical-align: middle;
+                padding-right: 5px;
             }
         }
         p {
@@ -67,8 +68,8 @@
         }
         &--alert{
             color: $danger;
-            font: 500 #{fontSize("xs") + "/17px"} fontFamily("base");
-            padding: 0 5px;
+            font: 500 #{fontSize("sm") + "/18px"} fontFamily("base");
+            padding: 1px 0px 0;
             text-transform: uppercase;
         }
     }

@@ -149,9 +149,9 @@ export const NeedListContent = ({
             }}
             maxLengthValue={500}
           />
-                  <div className="input-chrac">
+                  {/* <div className="input-chrac">
           <span>{docMessage?.length || 0}</span><span>/</span><span>500</span>
-        </div>
+        </div> */}
         </div>
       </div>
 

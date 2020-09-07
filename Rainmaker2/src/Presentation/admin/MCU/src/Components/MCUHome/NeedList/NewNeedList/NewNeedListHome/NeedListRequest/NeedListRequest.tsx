@@ -83,7 +83,7 @@ export const NeedListRequest = ({
     setTemplateNameError('');
 
     if (value?.length > 49) {
-      setTemplateNameError('Only 50 chars allowed');
+      // setTemplateNameError('Only 50 chars allowed');
       return;
     }
 
