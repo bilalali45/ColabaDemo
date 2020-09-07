@@ -95,11 +95,11 @@ namespace DocumentManagement.API.Controllers
             foreach (var file in files)
             {
                 if (file.Length > setting.maxFileSize)
-                    throw new Exception(message: "File size exceeded limit");
+                    throw new DocumentManagementException("File size exceeded limit");
                 if (file.FileName.Length > setting.maxFileNameSize)
-                    throw new Exception(message: "File Name size exceeded limit");
+                    throw new DocumentManagementException("File Name size exceeded limit");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                    throw new Exception(message: "This file type is not allowed for uploading");
+                    throw new DocumentManagementException("This file type is not allowed for uploading");
             }
             // save
             List<string> fileId = new List<string>();
@@ -128,9 +128,8 @@ namespace DocumentManagement.API.Controllers
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
                     if (String.IsNullOrEmpty(docQuery))
-                        throw new Exception("unable to update file in mongo");
+                        throw new DocumentManagementException("unable to update file in mongo");
                     fileId.Add(docQuery);
-
                 }
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
@@ -218,7 +217,22 @@ namespace DocumentManagement.API.Controllers
                                                   tenantId: tenantId,
                                                   authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
+            {
+                var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+#pragma warning disable 4014
+                Task.Run(async () =>
+#pragma warning restore 4014
+                {
+                    Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                    if (tenant.syncToBytePro == (int) SyncToBytePro.Auto &&
+                        tenant.autoSyncToBytePro == (int) AutoSyncToBytePro.OnDone)
+                    {
+                        await byteProService.UploadFiles(model.id, model.requestId, model.docId, auth);
+                    }
+                });
                 return Ok();
+            }
+
             return NotFound();
         }
 
@@ -230,7 +244,7 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await settingService.GetSetting();
             if (model.fileName.Length > setting.maxFileNameSize)
-                throw new Exception(message: "File Name size exceeded limit");
+                throw new DocumentManagementException("File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
                                                     userProfileId: userProfileId, tenantId);
             if (docQuery)

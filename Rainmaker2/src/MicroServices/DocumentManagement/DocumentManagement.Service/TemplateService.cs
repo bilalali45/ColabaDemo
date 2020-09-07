@@ -252,7 +252,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
-                    var cdtm = CategoryDocumentTypeModel.Where(x => x.catId == query.id).FirstOrDefault();
+                    var cdtm = CategoryDocumentTypeModel.FirstOrDefault(x => x.catId == query.id);
                     if(cdtm==null)
                     {
                         cdtm = new CategoryDocumentTypeModel();
@@ -267,7 +267,7 @@ namespace DocumentManagement.Service
                         string docMessage = String.Empty;
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {
@@ -322,7 +322,7 @@ namespace DocumentManagement.Service
                 bsonElements.Add("docName", docName);
             }
             else {
-                throw new Exception("typeId and docName both can't be null");
+                throw new DocumentManagementException("typeId and docName both can't be null");
             }
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

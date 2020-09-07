@@ -33,6 +33,7 @@ namespace ServiceCallHelper
                                              string endPoint,
                                              string bearerToken = null)
         {
+
             if (bearerToken.HasValue())
                 httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",

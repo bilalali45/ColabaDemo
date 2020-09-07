@@ -27,15 +27,7 @@
         public string Notes { get; set; }
         public string ContactNmlsid { get; set; }
         public string CompanyNMLSID { get; set; }
-        //public string LockToUser { get; set; }
-        //public string CompanyEIN { get; set; }
-        //public string MobilePhoneSMSGateway { get; set; }
-        //public string CompanyLicenseNo { get; set; }
-        //public string SyncData { get; set; }
-        //public DateTime EAndOPolicyExpirationDate { get; set; }
-        //public string LicensingAgencyCode { get; set; }
-        //public string EMail2 { get; set; }
-        //public string EMail3 { get; set; }
+       
         public long FileDataId { get; set; }
 
 
@@ -68,14 +60,7 @@
             partiesEntity.ContactNmlsid = this.ContactNmlsid;
             partiesEntity.CompanyNMLSID = this.CompanyNMLSID;
             partiesEntity.FileDataId = this.FileDataId;
-            //var partiesEntity = new PartiesEntity
-            //                    {
-            //                        InterviewerName = this.FirstName,
-            //                        NmlsLoanOriginatorId = this.ContactNmlsid,
-            //                        InterviewerPhoneNumber = this.WorkPhone,
-            //                        InterviewerEmail = this.EMail,
-            //                        FileDataId = this.FileDataId
-            //                    };
+          
             return partiesEntity;
             
         }

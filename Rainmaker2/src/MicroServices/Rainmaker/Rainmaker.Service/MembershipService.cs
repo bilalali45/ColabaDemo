@@ -53,18 +53,14 @@ namespace Rainmaker.Service
         {
             try
             {
-                //return Uow.Repository<UserProfile>().Query(x => x.UserName.ToLower().Trim() == userName.ToLower().Trim() && x.IsActive != false && x.IsDeleted != true)
-                //          .Include(x => x.Customers)
-                //          .Select().FirstOrDefault();
-
+               
                 return Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
-                                 //.Include(navigationPropertyPath: x => x.Customers)
                                  .Include(navigationPropertyPath: x => x.Customers).ThenInclude(customer=>customer.Contact)
                                  .FirstOrDefault();
             }
             catch (ArgumentException)
             {
-                throw new Exception();
+                throw new RainMakerException("Unable to get user from repository");
             }
         }
 
@@ -76,8 +72,8 @@ namespace Rainmaker.Service
                                   .Include(x=>x.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
                                   .ToList();
 
-            if (query.Count() > 1)
-                throw new Exception(message: "Multiple users found.");
+            if (query.Count > 1)
+                throw new RainMakerException("Multiple users found.");
 
             return query.FirstOrDefault();
         }

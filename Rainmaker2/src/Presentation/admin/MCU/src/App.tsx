@@ -38,8 +38,6 @@ const App = () => {
     let isAuth = await UserActions.authorize();
     setAuthenticated(Boolean(isAuth));
     console.log("After Authorize");
-    const accessToken: string = LocalDB.getAuthToken() || '';
-    SignalRHub.configureHubConnection(hubUrl, accessToken, eventsRegister);
     UserActions.addExpiryListener();
     UserActions.keepAliveParentApp();
   };
@@ -52,25 +50,6 @@ const App = () => {
     window.top.location.href = "/Login/LogOff";
   };
 
-
-  const eventsRegister = () => {
-    console.log('signalR eventsRegister on Client', SignalRHub.hubConnection)
-    SignalRHub.hubConnection.on('TestSignalR', (data: string) => {
-      console.log(`TestSignalR`,data);
-    }); 
-    SignalRHub.hubConnection.on('SendNotification', (data: any) => {
-      console.log('Notification comes from SignalR on Client',data)
-    }); 
-    
-    SignalRHub.hubConnection.onclose((e: any) => {
-      console.log(`SignalR disconnected on Client`,e);
-      const auth = LocalDB.getAuthToken();
-      if(auth){
-        SignalRHub.signalRHubResume();
-      }
-    });
-
-  };
 
   console.log("Authorize User is authenticated", authenticated);
   if (!authenticated) {

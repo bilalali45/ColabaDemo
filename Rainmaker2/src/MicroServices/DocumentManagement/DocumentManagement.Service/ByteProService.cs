@@ -14,9 +14,15 @@ namespace DocumentManagement.Service
     public class ByteProService : IByteProService
     {
         private readonly IMongoService mongoService;
-        public ByteProService(IMongoService mongoService)
+        private readonly IRainmakerService rainmakerService;
+        private readonly ILosIntegrationService losIntegrationService;
+        public ByteProService(IMongoService mongoService,
+            IRainmakerService rainmakerService,
+            ILosIntegrationService losIntegrationService)
         {
             this.mongoService = mongoService;
+            this.rainmakerService = rainmakerService;
+            this.losIntegrationService = losIntegrationService;
         }
 
         public async Task<FileViewDTO> View(AdminFileViewModel model, int tenantId)
@@ -81,12 +87,9 @@ namespace DocumentManagement.Service
             using var asyncCursor = await collection.FindAsync(new BsonDocument() {
                 { "tenantId",tenantId }
             });
-            if(await asyncCursor.MoveNextAsync())
+            if (await asyncCursor.MoveNextAsync() && asyncCursor.Current?.Count() > 0)
             {
-                if(asyncCursor.Current?.Count()>0)
-                {
-                    tenant = asyncCursor.Current.First();
-                }
+                tenant = asyncCursor.Current.First();
             }
             return tenant;
         }
@@ -105,34 +108,67 @@ namespace DocumentManagement.Service
                 }
             });
             if (result.ModifiedCount <= 0)
-                throw new Exception("Unable to update settings");
+                throw new DocumentManagementException("Unable to update settings");
         }
-        //public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId)
-        //{
-        //    IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
-        //    UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
-        //    {
-        //        { "_id", BsonObjectId.Create(id) }
-        //    }, new BsonDocument()
-        //    {
-        //        { "$set", new BsonDocument()
-        //            {
-        //                { "requests.$[request].documents.$[document].files.$[file].byteProStatus", ByteProStatus.Synchronized}
 
-        //            }
-        //        }
-        //    }, new UpdateOptions()
-        //    {
-        //        ArrayFilters = new List<ArrayFilterDefinition>()
-        //        {
-        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
-        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}"),
-        //            new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
-        //        }
+        public async Task UploadFiles(string id, string requestId, string docId, List<string> auth)
+        {
+            int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-        //    });
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
 
-        //    return result.ModifiedCount == 1;
-        //}
+                  ""_id"": " + new ObjectId(id).ToJson() + @" 
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.files.byteProStatus"": """ + ByteProStatus.NotSynchronized + @"""
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""fileId"": ""$requests.documents.files.id"",
+                            }
+                             } "
+
+                ));
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    FileIdModel model = BsonSerializer.Deserialize<FileIdModel>(current);
+                    await losIntegrationService.SendFilesToBytePro(loanApplicationId,
+                        id,
+                        requestId,
+                        docId,
+                        model.fileId,
+                        auth);
+                }
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace ByteWebConnector.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -39,8 +39,8 @@ namespace ByteWebConnector.API
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
-                         .WriteTo.Console()
-                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-log.log",
+                         //.WriteTo.Console()
+                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-serviceLog-.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                                        )
@@ -84,6 +84,7 @@ namespace ByteWebConnector.API
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<ByteWebConnector.API.Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {

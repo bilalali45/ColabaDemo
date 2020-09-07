@@ -69,12 +69,12 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
         }
-
-        [Authorize(Roles = "MCU")]
+   
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetLoanApplication([FromQuery] string encompassNumber)
+        public IActionResult GetLoanApplication([FromQuery] string encompassNumber = null, [FromQuery] int? id = null )
         {
-           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: encompassNumber).SingleOrDefault();
+           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(id: id,encompassNumber: encompassNumber).SingleOrDefault();
             return Ok(loanApplication);
         }
 
@@ -123,10 +123,8 @@ namespace Rainmaker.API.Controllers
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
             EmailAccount emailAccount = null;
 
-            if(userProfile != null)
-                if (userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails
-                                          .SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+            if(userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
             if (emailAccount != null)
             {
@@ -183,7 +181,7 @@ namespace Rainmaker.API.Controllers
             }
             else
             {
-                throw new Exception("Activity not found for Business unit");
+                throw new RainMakerException("Activity not found for Business unit");
             }
         }
 

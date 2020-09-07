@@ -112,7 +112,7 @@ namespace DocumentManagement.Service
                 ));
             // if loan application does not exists create loan application
             Entity.Request request = new Entity.Request();
-            string id = string.Empty;
+          
             if (await asyncCursorRequest.MoveNextAsync())
             {
                 int loanApplicationId = -1;
@@ -120,7 +120,6 @@ namespace DocumentManagement.Service
                 {
                     LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
                     loanApplicationId = query.loanApplicationId;
-                    id = query._id;
                 }
 
                 if (loanApplicationId != model.loanApplicationId)
@@ -137,7 +136,6 @@ namespace DocumentManagement.Service
                         userName = custUserName,
                         requests = new List<Entity.Request>() { }
                     };
-                    id = loanApplicationModel.id;
                     await collectionLoanApplication.InsertOneAsync(loanApplicationModel);
                 }
             }
@@ -347,7 +345,7 @@ namespace DocumentManagement.Service
                             userId = request.userId,
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
-                            activity = string.Format(ActivityStatus.RerequestedBy, request.userName),
+                            activity = ActivityStatus.RerequestedBy,
                             typeId = string.IsNullOrEmpty(item.typeId)?null:item.typeId,
                             docId = item.docId,
                             docName = item.displayName,
@@ -590,7 +588,7 @@ namespace DocumentManagement.Service
                     {
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {
@@ -669,7 +667,7 @@ namespace DocumentManagement.Service
                     {
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            dto.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {

@@ -89,7 +89,7 @@ namespace DocumentManagement.Service
                     }
                 }
                 else
-                    throw new Exception("Ftp Stream is null");
+                    throw new DocumentManagementException("Ftp Stream is null");
             }
             finally
             { 

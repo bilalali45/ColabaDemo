@@ -16,7 +16,7 @@ namespace Identity.Models
         }
 
 
-        public class ApiResponseStatus
+        public static class ApiResponseStatus
         {
             public static string Success => "Success";
             public static string NotFound => "NotFound";

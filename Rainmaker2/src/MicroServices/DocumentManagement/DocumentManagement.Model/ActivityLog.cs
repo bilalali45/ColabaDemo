@@ -19,6 +19,12 @@ namespace DocumentManagement.Model
         OnDone=1,
         OnAccept=2
     }
+    [BsonNoId]
+    public class FileIdModel
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string fileId { get; set; }
+    }
     public class ActivityLogDTO
     {
         public string id { get; set; }

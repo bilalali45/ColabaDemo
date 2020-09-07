@@ -40,10 +40,7 @@ namespace Notification.API
         {
             services.AddSignalR();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=NotificationCS"));
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<Notification.Data.NotificationContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<Notification.Data.NotificationContext>, UnitOfWork<Notification.Data.NotificationContext>>();
@@ -53,10 +50,7 @@ namespace Notification.API
             services.AddSingleton<IRedisService, RedisService>();
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            if (!keyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(() => keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -122,8 +116,6 @@ namespace Notification.API
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseAuthentication();

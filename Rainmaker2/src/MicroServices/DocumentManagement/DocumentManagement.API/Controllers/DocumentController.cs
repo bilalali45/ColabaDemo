@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,8 @@ namespace DocumentManagement.API.Controllers
             IFtpClient ftpClient,
             ISettingService settingService,
             IKeyStoreService keyStoreService,
-            ILogger<DocumentController> logger)
+            ILogger<DocumentController> logger,
+            IByteProService byteProService)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -32,6 +34,7 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
+            this.byteProService = byteProService;
         }
 
         #endregion
@@ -44,6 +47,7 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
+        private readonly IByteProService byteProService;
 
         #endregion
 
@@ -132,7 +136,7 @@ namespace DocumentManagement.API.Controllers
             string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             var setting = await settingService.GetSetting();
             if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
-                throw new Exception(message: "File Name size exceeded limit");
+                throw new DocumentManagementException("File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
             var docQuery = await documentService.McuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,
@@ -149,6 +153,7 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> AcceptDocument(AcceptDocumentModel acceptDocumentModel)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             logger.LogInformation($"document {acceptDocumentModel.docId} is accepted by {userProfileId}");
             var docQuery = await documentService.AcceptDocument(id: acceptDocumentModel.id,
@@ -157,7 +162,22 @@ namespace DocumentManagement.API.Controllers
                                                                 userName: userName,
                                                                 authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
+            {
+                var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+#pragma warning disable 4014
+                Task.Run(async () =>
+#pragma warning restore 4014
+                {
+                        Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                        if (tenant.syncToBytePro == (int)SyncToBytePro.Auto &&
+                            tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnAccept)
+                        {
+                            await byteProService.UploadFiles(acceptDocumentModel.id, acceptDocumentModel.requestId, acceptDocumentModel.docId, auth);
+                        }
+                    });
                 return Ok();
+            }
+
             return NotFound();
         }
 
@@ -176,25 +196,12 @@ namespace DocumentManagement.API.Controllers
                                                                 authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
             {
-                //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 
             return NotFound();
         }
-        /*
-        [HttpPost(template:"[action]")]
-        public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
-        {
-            var docQuery = await documentService.UpdateByteProStatus(id: updateByteProStatus.id,
-                                                                requestId: updateByteProStatus.requestId,
-                                                                docId: updateByteProStatus.docId,
-                                                                fileId: updateByteProStatus.fileId);
-            if (docQuery)
-                return Ok();
-            return NotFound();
-        }
-        */
+       
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {

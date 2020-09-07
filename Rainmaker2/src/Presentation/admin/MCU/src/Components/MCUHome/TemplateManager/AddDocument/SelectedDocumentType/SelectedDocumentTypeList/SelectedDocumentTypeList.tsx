@@ -57,9 +57,11 @@ export const SelectedDocumentTypeList = ({
   let usedDocs = location.pathname.includes('newNeedList')
     ? needList
     : templateDocuments;
+
+    console.log(currentCategoryDocuments?.catName);
   return (
     <div className="active-docs">
-     {term? <ul
+     {currentCategoryDocuments?.catName !=='Commonly Used' || term? <ul
         className={
           currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
         }
