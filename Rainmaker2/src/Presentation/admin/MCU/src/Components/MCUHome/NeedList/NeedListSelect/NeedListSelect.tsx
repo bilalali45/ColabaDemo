@@ -214,7 +214,7 @@ export const NeedListSelect = ({
               Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
-            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 

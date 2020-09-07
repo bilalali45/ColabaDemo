@@ -1,7 +1,7 @@
 $color:(
     primary             :       #4484F4,
     primary-text        :       #ffffff,
-    secondry            :       #7E829E,
+    secondry            :       #5D617E,
     secondry-text       :       #ffffff,
     border              :       #E7E7E7,//#E5E5E5, 
     base                :       #4E4E4E, 
@@ -29,6 +29,7 @@ $color:(
     //Manage Templates
     listalertbg         :       #F2F1F2,
     listalert           :       #101111,
+    listHoverBg         :       #F6F6F6,
 
     //Table Strip Color
     tableStripBg        :       #F6F6F6,
@@ -51,7 +52,7 @@ $color:(
     docSnipetBg             :       #F9F9F9,
     docSnipetBorder         :       #DDDDDD,
     docSnipetText           :       #A7A7A7,
-    docSnipetBgActive       :       #EEF7FF,
+    docSnipetBgActive       :       #F9F9F9,
     docSnipetBorderActive   :       #AAD7FF,
     docSnipetSuccess        :       #00AD46,
     docSnipetFailed         :       #FF5652,
@@ -107,7 +108,7 @@ $rotate-plus-resolution:        10px;
 // Bootstrap Variables
 $grid-gutter-width:           30px !default;
 $primary:       #4484F4 !default;
-$secondary:     #7E829E !default;
+$secondary:     #5D617E !default;
 $danger:        #FF5652 !default;
 
 // Private

@@ -170,7 +170,7 @@
                                             }
                                             &:hover,
                                             &.active {
-                                                background: rgba(color('primary'), 0.08);
+                                                background: color('listHoverBg');
                                                 color: color('primary');
                                                 .BTNclose {
                                                     display: block;
@@ -263,6 +263,11 @@
                 margin-left: -30px;
                 padding: 15px 30px;
                 margin-bottom: 0;
+
+                .btn{
+                    letter-spacing: 0;
+                    color: color('primary');
+                }
 
                 .btn-wrap{
                     display: flex;
@@ -566,7 +571,7 @@
         max-width: 100%;
         border-radius: 0;
         min-width: 590px;
-        margin-top: 71px !important;
+        margin-top: 78px !important;
         margin-left: 3px !important;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
         border: none;
