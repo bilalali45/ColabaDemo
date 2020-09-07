@@ -60,7 +60,7 @@ namespace Rainmaker.Service
             }
             catch (ArgumentException)
             {
-                throw new Exception();
+                throw new RainMakerException("Unable to get user from repository");
             }
         }
 
