@@ -21,6 +21,13 @@ namespace DocumentManagement.Model
             public string id { get; set; }
             public string type { get; set; }
             public string name { get; set; }
+            public List<DocumentTypes> docs { get; set; }
+        }
+        [BsonNoId]
+        public class DocumentTypes
+        {
+            public string typeId { get; set; }
+            public string docName { get; set; }
         }
 
         public class InsertTemplateModel
@@ -37,6 +44,10 @@ namespace DocumentManagement.Model
             public string id { get; set; }
             public string type { get; set; }
             public string name { get; set; }
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string typeId { get; set; }
+            public string typeName { get; set; }
+            public string docName { get; set; }
         }
         public class DocumentTypeModel
         {
