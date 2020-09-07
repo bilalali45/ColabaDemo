@@ -144,7 +144,7 @@ namespace DocumentManagement.Service
 
                         @"{
                             ""$match"": {
-                                ""requests.documents.files.byteProStatus"": " + ByteProStatus.NotSynchronized + @"
+                                ""requests.documents.files.byteProStatus"": """ + ByteProStatus.NotSynchronized + @"""
                             }
                         }",
 

@@ -168,13 +168,13 @@ namespace DocumentManagement.API.Controllers
                 Task.Run(async () =>
 #pragma warning restore 4014
                 {
-                    Tenant tenant = await byteProService.GetTenantSetting(tenantId);
-                    if (tenant.syncToBytePro == (int)SyncToBytePro.Auto &&
-                        tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnAccept)
-                    {
-                        await byteProService.UploadFiles(acceptDocumentModel.id, acceptDocumentModel.requestId, acceptDocumentModel.docId, auth);
-                    }
-                });
+                        Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                        if (tenant.syncToBytePro == (int)SyncToBytePro.Auto &&
+                            tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnAccept)
+                        {
+                            await byteProService.UploadFiles(acceptDocumentModel.id, acceptDocumentModel.requestId, acceptDocumentModel.docId, auth);
+                        }
+                    });
                 return Ok();
             }
 
