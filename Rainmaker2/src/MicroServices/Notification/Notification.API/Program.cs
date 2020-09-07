@@ -15,10 +15,11 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace Notification.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             ThreadPool.SetMaxThreads(1000, 1000);
@@ -46,7 +47,7 @@ namespace Notification.API
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
                          //.WriteTo.Console()
-                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-log.log",
+                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-serviceLog-.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                                        )
@@ -88,6 +89,7 @@ namespace Notification.API
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {

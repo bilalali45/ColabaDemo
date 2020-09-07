@@ -1,26 +1,27 @@
 import {useEffect, Dispatch, useRef} from 'react';
 import {SignalRHub} from 'rainsoft-js';
-import {cloneDeep} from 'lodash';
 
-import {NotificationType} from '../../../lib/type';
-import {LocalDB} from '../../../Utils/LocalDB';
-import {Params, ACTIONS} from '../reducers/useNotificationsReducer';
+import {NotificationType} from '../../../lib/types';
+import {LocalDB} from '../../../lib/localStorage';
+import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseSignalREventsProps {
   getFetchNotifications: (lastId: number) => void;
   getUnseenNotificationsCount: () => void;
-  notifications: NotificationType[] | null | undefined;
-  notificationsVisible: boolean | undefined;
-  dispatch: Dispatch<Params>;
+  notifications: NotificationType[] | null;
+  notificationsVisible: boolean;
+  dispatch: Dispatch<Actions>;
 }
 
-export const useSignalREvents = ({
-  getFetchNotifications,
-  getUnseenNotificationsCount,
-  notifications,
-  notificationsVisible,
-  dispatch
-}: UseSignalREventsProps): void => {
+export const useSignalREvents = (props: UseSignalREventsProps): void => {
+  const {
+    getFetchNotifications,
+    getUnseenNotificationsCount,
+    notifications,
+    notificationsVisible,
+    dispatch
+  } = props;
+
   const notificationsVisibleRef = useRef(notificationsVisible);
   const notificationsRef = useRef(notifications);
 
@@ -38,26 +39,9 @@ export const useSignalREvents = ({
       SignalRHub.hubConnection.on('SendNotification', (notification: any) => {
         if (!notificationsRef.current) return;
 
-        const clonedNotifications = cloneDeep(notificationsRef.current);
-
-        clonedNotifications.unshift(
-          JSON.parse(notification) as NotificationType
-        );
-
         dispatch({
-          type: ACTIONS.INCREMEMNT_UNSEEN_COUNTER,
-          payload: {unSeenNotificationsCount: 1}
-        });
-
-        notificationsVisibleRef.current === true &&
-          dispatch({
-            type: ACTIONS.UPDATE_STATE,
-            payload: {receivedNewNotification: true}
-          });
-
-        dispatch({
-          type: ACTIONS.RESET_NOTIFICATIONS,
-          payload: {notifications: clonedNotifications}
+          type: 'RECEIVED_NOTIFICATION',
+          notification: JSON.parse(notification) as NotificationType
         });
       });
 
@@ -66,27 +50,10 @@ export const useSignalREvents = ({
         (notificationIds: number[]) => {
           if (!notificationsRef.current) return;
 
-          const clonedNotifications = cloneDeep(notificationsRef.current);
-
-          notificationIds.forEach((seenNotificationId) => {
-            if (notificationsRef.current) {
-              const notification = clonedNotifications.find(
-                (notification) => notification.id === seenNotificationId
-              );
-
-              if (notification) {
-                notification.status = 'Seen';
-              }
-            }
-          });
-
           dispatch({
-            type: ACTIONS.RESET_NOTIFICATIONS,
-            payload: {notifications: clonedNotifications}
-          });
-          dispatch({
-            type: ACTIONS.DECREMEMNT_UNSEEN_COUNTER,
-            payload: {unSeenNotificationsCount: notificationIds.length}
+            type: 'SEEN_OR_READ_NOTIFICATIONS',
+            notificationIds,
+            updateType: 'Seen'
           });
         }
       );
@@ -96,15 +63,9 @@ export const useSignalREvents = ({
         (deletedNotificationId: number) => {
           if (!notificationsRef.current) return;
 
-          const clonedNotifications = cloneDeep(notificationsRef.current);
-
-          const filteredNotifications = clonedNotifications.filter(
-            (notification) => notification.id !== deletedNotificationId
-          );
-
           dispatch({
-            type: ACTIONS.RESET_NOTIFICATIONS,
-            payload: {notifications: filteredNotifications}
+            type: 'DELETE_NOTIFICATION',
+            notificationId: deletedNotificationId
           });
         }
       );
@@ -113,31 +74,20 @@ export const useSignalREvents = ({
         if (!notificationsRef.current) return;
 
         dispatch({
-          type: ACTIONS.RESET_NOTIFICATIONS,
-          payload: {notifications: []}
+          type: 'RESET_NOTIFICATIONS',
+          notifications: []
         });
       });
 
       SignalRHub.hubConnection.on(
         'NotificationRead',
-        (readNotificationIds: number[]) => {
+        (notificationIds: number[]) => {
           if (!notificationsRef.current) return;
 
-          const clonedNotifications = cloneDeep(notificationsRef.current);
-
-          readNotificationIds.forEach((readNotificationId) => {
-            const notification = clonedNotifications.find(
-              (notification) => notification.id === readNotificationId
-            );
-
-            if (notification) {
-              notification.status = 'Read';
-            }
-          });
-
           dispatch({
-            type: ACTIONS.RESET_NOTIFICATIONS,
-            payload: {notifications: clonedNotifications}
+            type: 'SEEN_OR_READ_NOTIFICATIONS',
+            notificationIds,
+            updateType: 'Read'
           });
         }
       );

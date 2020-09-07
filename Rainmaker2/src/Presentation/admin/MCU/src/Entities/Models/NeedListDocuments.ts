@@ -8,6 +8,7 @@ export class NeedListDocuments {
     public isRead: boolean;
     public byteProStatusText: string = '';
     public byteProStatusClassName = '';
+    public index = 0;
     
     constructor(id: string, clientName: string, fileUploadedOn:  string, mcuName: string, byteProStatus: string, status: string, isRead: boolean) {
         this.id = id;

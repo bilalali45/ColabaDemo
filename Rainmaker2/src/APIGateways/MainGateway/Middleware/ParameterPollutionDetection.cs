@@ -10,15 +10,12 @@ namespace MainGateway.Middleware
 {
     public class ParameterPollutionDetection
     {
-        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
         private readonly RequestDelegate _next;
 
 
-        public ParameterPollutionDetection(RequestDelegate next,
-                                           ILogger<RequestResponseLoggingMiddleware> logger)
+        public ParameterPollutionDetection(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
 

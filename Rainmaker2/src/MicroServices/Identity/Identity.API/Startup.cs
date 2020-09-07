@@ -31,13 +31,6 @@ namespace Identity
 
             services.AddControllers().AddNewtonsoftJson();
             ;
-            //services.AddIdentityServer(x =>
-            //        {
-            //            x.IssuerUri = "none";
-            //        })
-            //        .AddDeveloperSigningCredential()
-            //        .AddInMemoryApiResources(Config.GetAllApiResources())
-            //        .AddInMemoryClients(Config.GetClients(Configuration));
 
             #region HttpClientDependencies
 
@@ -49,7 +42,7 @@ namespace Identity
                         MaxConnectionsPerServer = int.MaxValue
                     })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
-            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
@@ -72,8 +65,6 @@ namespace Identity
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-            //app.UseIdentityServer();
-            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(configure: endpoints =>

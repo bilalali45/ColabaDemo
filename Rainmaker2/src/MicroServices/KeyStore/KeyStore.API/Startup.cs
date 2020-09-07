@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using KeyStore.API.CorrelationHandlersAndMiddleware;
 using KeyStore.API.Helpers;
 using KeyStore.Service;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace KeyStore.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -46,7 +48,6 @@ namespace KeyStore.API
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

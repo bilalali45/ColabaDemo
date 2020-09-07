@@ -194,23 +194,6 @@ namespace DocumentManagement.Service
                                                                     {
                                                                         { "id", BsonObjectId.Create(docId) }
                                                                     }
-                                                                    //,
-                                                                    //new BsonDocument()
-                                                                    //{
-                                                                    //    {
-                                                                    //        "$or",new BsonArray()
-                                                                    //        {
-                                                                    //            new BsonDocument()
-                                                                    //            {
-                                                                    //                { "status", DocumentStatus.BorrowerTodo}
-                                                                    //            },
-                                                                    //            new BsonDocument()
-                                                                    //            {
-                                                                    //                { "status", DocumentStatus.Started}
-                                                                    //            }
-                                                                    //        }
-                                                                    //    }
-                                                                    //}
                                                                 }
                                                             }
                                                         }

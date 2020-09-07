@@ -14,14 +14,11 @@ namespace Identity.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        private readonly IHttpClientFactory _clientFactory;
 
         public TokenService(IConfiguration configuration,
-                            IHttpClientFactory clientFactory,
                             IKeyStoreService keyStoreService)
         {
             _configuration = configuration;
-            this._clientFactory = clientFactory;
             _keyStoreService = keyStoreService;
         }
         public async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims)
@@ -47,7 +44,6 @@ namespace Identity.Services
                                              claims: claims
                                             );
 
-            //return new JwtSecurityTokenHandler().WriteToken(token);
             return token;
         }
 
@@ -93,7 +89,7 @@ namespace Identity.Services
         }
 
 
-        public static Dictionary<string, List<TokenPair>> RefreshTokens= RefreshTokens = new Dictionary<string, List<TokenPair>>();
+        public static readonly Dictionary<string, List<TokenPair>> RefreshTokens= RefreshTokens = new Dictionary<string, List<TokenPair>>();
         private readonly IKeyStoreService _keyStoreService;
     }
 

@@ -95,11 +95,11 @@ namespace DocumentManagement.API.Controllers
             foreach (var file in files)
             {
                 if (file.Length > setting.maxFileSize)
-                    throw new Exception(message: "File size exceeded limit");
+                    throw new DocumentManagementException("File size exceeded limit");
                 if (file.FileName.Length > setting.maxFileNameSize)
-                    throw new Exception(message: "File Name size exceeded limit");
+                    throw new DocumentManagementException("File Name size exceeded limit");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                    throw new Exception(message: "This file type is not allowed for uploading");
+                    throw new DocumentManagementException("This file type is not allowed for uploading");
             }
             // save
             List<string> fileId = new List<string>();
@@ -128,9 +128,8 @@ namespace DocumentManagement.API.Controllers
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
                     System.IO.File.Delete(path: filePath);
                     if (String.IsNullOrEmpty(docQuery))
-                        throw new Exception("unable to update file in mongo");
+                        throw new DocumentManagementException("unable to update file in mongo");
                     fileId.Add(docQuery);
-
                 }
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
@@ -143,9 +142,9 @@ namespace DocumentManagement.API.Controllers
                              int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
                              await notificationService.DocumentsSubmitted(loanApplicationId, auth);
                          }
-                         catch (Exception e)
+                         catch
                          {
-
+                             // this exception can be ignored
                          }
 
                          try
@@ -166,19 +165,22 @@ namespace DocumentManagement.API.Controllers
                                      if (files.Count > 0)
                                      {
 
-
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been started :fileid {fileid} is getting from submit file");
                                          await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
                                                                                  id,
                                                                                  requestId,
                                                                                  docId,
                                                                                  fileid,
                                                                                  auth);
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been finished :fileid {fileid} is getting from submit file");
+
                                      }
                                  }
                              }
                          }
-                         catch (Exception e)
+                         catch
                          {
+                             // this exception can be ignored
                          }
 
 
@@ -227,7 +229,7 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await settingService.GetSetting();
             if (model.fileName.Length > setting.maxFileNameSize)
-                throw new Exception(message: "File Name size exceeded limit");
+                throw new DocumentManagementException("File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
                                                     userProfileId: userProfileId, tenantId);
             if (docQuery)

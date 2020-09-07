@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,6 @@ namespace LosIntegration.API.Controllers
             _clientFactory = clientFactory;
             _configuration = configuration;
             _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -75,8 +74,6 @@ namespace LosIntegration.API.Controllers
             if (callResponse.IsSuccessStatusCode)
                 return Ok();
             return BadRequest();
-
-            //return null;
         }
 
         #endregion
@@ -88,6 +85,7 @@ namespace LosIntegration.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -98,6 +96,7 @@ namespace LosIntegration.API.Controllers
         [HttpDelete(template: "{id}")]
         public void Delete(int id)
         {
+            throw new NotSupportedException();
         }
 
         #endregion

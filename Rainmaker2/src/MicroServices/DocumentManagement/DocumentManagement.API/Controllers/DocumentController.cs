@@ -24,8 +24,7 @@ namespace DocumentManagement.API.Controllers
             IFtpClient ftpClient,
             ISettingService settingService,
             IKeyStoreService keyStoreService,
-            ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService)
+            ILogger<DocumentController> logger)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -33,7 +32,6 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
-            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -46,7 +44,6 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
-        private readonly IRainmakerService rainmakerService;
 
         #endregion
 
@@ -135,7 +132,7 @@ namespace DocumentManagement.API.Controllers
             string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             var setting = await settingService.GetSetting();
             if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
-                throw new Exception(message: "File Name size exceeded limit");
+                throw new DocumentManagementException("File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
             var docQuery = await documentService.McuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,
@@ -179,25 +176,12 @@ namespace DocumentManagement.API.Controllers
                                                                 authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
             {
-                //await rainmakerService.SendBorrowerEmail(rejectDocumentModel.loanApplicationId, rejectDocumentModel.message, (int)ActivityForType.LoanApplicationDocumentRejectActivity, userProfileId,userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 return Ok();
             }
 
             return NotFound();
         }
-        /*
-        [HttpPost(template:"[action]")]
-        public async Task<IActionResult> UpdateByteProStatus(UpdateByteProStatus updateByteProStatus)
-        {
-            var docQuery = await documentService.UpdateByteProStatus(id: updateByteProStatus.id,
-                                                                requestId: updateByteProStatus.requestId,
-                                                                docId: updateByteProStatus.docId,
-                                                                fileId: updateByteProStatus.fileId);
-            if (docQuery)
-                return Ok();
-            return NotFound();
-        }
-        */
+       
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> GetDocumentsByTemplateIds(GetDocumentsByTemplateIds getDocumentsByTemplateIds)
         {

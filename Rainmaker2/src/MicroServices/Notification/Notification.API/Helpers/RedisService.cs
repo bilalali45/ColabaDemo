@@ -59,9 +59,11 @@ namespace Notification.Service
                             await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
                         }
                     }
-                    catch {
+                    catch 
+                    {
+                        // this exception can be ignored
                     }
-                    
+
                     Thread.Sleep(60000);
                 }
             }

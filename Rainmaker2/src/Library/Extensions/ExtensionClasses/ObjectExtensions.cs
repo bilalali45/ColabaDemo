@@ -27,7 +27,7 @@ namespace Extensions.ExtensionClasses
         public static bool IsPrimitive(this Type type)
         {
             if (type == typeof(String)) return true;
-            return (type.IsValueType & type.IsPrimitive);
+            return (type.IsValueType && type.IsPrimitive);
         }
 
         /// <summary>

@@ -55,24 +55,29 @@ exports.FormatAmountByCountry = function (amount) {
     })();
 };
 exports.toTitleCase = function (str) {
-    var _a, _b;
     if (str) {
-        str = str.replace(/\s+/g, ' ').trim();
-        var sentence = str === null || str === void 0 ? void 0 : str.toLowerCase().split(" ");
-        for (var i = 0; i <= sentence.length; i++) {
-            if (sentence[i] != undefined && sentence[i] != "") {
-                sentence[i] = ((_a = sentence[i][0]) === null || _a === void 0 ? void 0 : _a.toUpperCase()) + ((_b = sentence[i]) === null || _b === void 0 ? void 0 : _b.slice(1));
-            }
-            else {
-                sentence.splice(i, 1);
-            }
-        }
-        var sen = sentence.join(" ");
-        console.log('sen', sen);
-        return sen;
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     }
     else {
-        console.log(str);
+        return "";
     }
-    return "";
 };
+// if (str) {
+//     str = str.replace(/\s+/g,' ').trim();
+//     let sentence = str?.toLowerCase().split(" ");
+//     for (var i = 0; i <= sentence.length; i++) {
+//       if(sentence[i] != undefined && sentence[i] != ""){
+//         sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
+//       }else{
+//         sentence.splice(i,1)
+//       }
+//     }
+//     let sen = sentence.join(" ");
+//     console.log('sen', sen)
+//     return sen
+//   }else {
+//     console.log(str);
+//   }
+//   return "";

@@ -112,14 +112,14 @@ namespace DocumentManagement.Service
 
             return templateModels;
         }
-        public async Task<List<TemplateDTO>> GetDocument(string Id)
+        public async Task<List<TemplateDTO>> GetDocument(string id)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
                 @"{""$match"": {
 
-                  ""_id"": " + new ObjectId(Id).ToJson() + @"
+                  ""_id"": " + new ObjectId(id).ToJson() + @"
                             }
                         }",
                         @"{
@@ -163,13 +163,13 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<bool> RenameTemplate(string templateid, int tenantid, string newname, int userProfileId)
+        public async Task<bool> RenameTemplate(string id, int tenantid, string newname, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(templateid) },
+                { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantid}
                 ,{ "userId", userProfileId}
             }, new BsonDocument()
@@ -252,7 +252,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
-                    var cdtm = CategoryDocumentTypeModel.Where(x => x.catId == query.id).FirstOrDefault();
+                    var cdtm = CategoryDocumentTypeModel.FirstOrDefault(x => x.catId == query.id);
                     if(cdtm==null)
                     {
                         cdtm = new CategoryDocumentTypeModel();
@@ -267,7 +267,7 @@ namespace DocumentManagement.Service
                         string docMessage = String.Empty;
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {
@@ -322,7 +322,7 @@ namespace DocumentManagement.Service
                 bsonElements.Add("docName", docName);
             }
             else {
-                throw new Exception("typeId and docName both can't be null");
+                throw new DocumentManagementException("typeId and docName both can't be null");
             }
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

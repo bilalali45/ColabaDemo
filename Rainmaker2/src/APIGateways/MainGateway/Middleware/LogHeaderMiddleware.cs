@@ -18,10 +18,6 @@ namespace MainGateway.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            //context.Request.Headers.TryGetValue("CorrelationId",
-            //                                    out StringValues value);
-
-            //var dd = context.Request.Headers.ToJson();
             try
             {
                 var header = context.Request.Headers["CorrelationId"];
@@ -51,6 +47,7 @@ namespace MainGateway.Middleware
             }
             catch
             {
+                // this exception can be ignored as correlation id is only for logging
             }
             await _next(context);
         }

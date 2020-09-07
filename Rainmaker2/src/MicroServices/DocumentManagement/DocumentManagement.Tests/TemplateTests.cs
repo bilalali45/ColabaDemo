@@ -273,7 +273,7 @@ namespace DocumentManagement.Tests
             GetTemplateDocuments moGetTemplateDocuments = new GetTemplateDocuments();
             moGetTemplateDocuments.id = "5eb25acde519051af2eeb111";
             //Act
-            List<TemplateDTO> dto = await service.GetDocument(Id:moGetTemplateDocuments.id);
+            List<TemplateDTO> dto = await service.GetDocument(id:moGetTemplateDocuments.id);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(4, dto.Count);
@@ -682,7 +682,7 @@ namespace DocumentManagement.Tests
             AddDocumentModel addDocumentModel = new AddDocumentModel();
             addDocumentModel.templateId = "5efdbf22a74aa7454c4becef";
 
-            await Assert.ThrowsAsync<Exception>(async () => await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName));
+            await Assert.ThrowsAsync<DocumentManagementException>(async () => await templateService.AddDocument(addDocumentModel.templateId, 1, 1, addDocumentModel.typeId, addDocumentModel.docName));
           }
         [Fact]
         public async Task TestGetCategoryDocumentService()

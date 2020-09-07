@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions; //using System.Data.Entity.Core.Objects;
-
-//using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Extensions.ExtensionClasses
 {
 
     public static class PredicateBuilder
     {
-        //private static readonly MethodInfo asNonUnicodeMethodInfo =
-        //            typeof(EntityFunctions).GetMethod("AsNonUnicode");
-        //private static readonly MethodInfo stringEqualityMethodInfo =
-        //            typeof(string).GetMethod("op_Equality");
-
         public static Expression<Func<TEntity, bool>> In<TEntity>(
                     IEnumerable<int> source,
                     Expression<Func<TEntity, int>> expression)
@@ -27,12 +20,7 @@ namespace Extensions.ExtensionClasses
             {
                 var fragment = Expression.Equal(
                     expression.Body,
-                    //Expression.Call(null,
-                    //    asNonUnicodeMethodInfo,
                         Expression.Constant(value, typeof(int))
-                        //,
-                    //false,
-                    //stringEqualityMethodInfo);
                     );
                 predicate = predicate == null ? fragment : Expression.OrElse(predicate, fragment);
             }

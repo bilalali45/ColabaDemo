@@ -100,7 +100,7 @@ namespace DocumentManagement.Service
             }
             if (pending)
             {
-                result = result.Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
+                result = result.Where(x=>x.status!=DocumentStatus.Completed).Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
                     .OrderBy(x => x.order).ThenByDescending(x=>x.x.createdOn).Select(x => x.x).ToList();
             }
             else

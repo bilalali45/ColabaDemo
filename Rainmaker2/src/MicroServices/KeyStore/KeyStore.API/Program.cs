@@ -16,6 +16,7 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
+            Environment.CurrentDirectory = AppContext.BaseDirectory;
             ServicePointManager.DefaultConnectionLimit = 1000;
             ThreadPool.SetMaxThreads(1000, 1000);
             ThreadPool.SetMinThreads(1000, 1000);
@@ -42,7 +43,7 @@ namespace Identity
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
                          //.WriteTo.Console()
-                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-log.log",
+                         .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-serviceLog-.log",
                                                                retainedFileCountLimit: 7,
                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                                        )
@@ -84,6 +85,7 @@ namespace Identity
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
+                        .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {

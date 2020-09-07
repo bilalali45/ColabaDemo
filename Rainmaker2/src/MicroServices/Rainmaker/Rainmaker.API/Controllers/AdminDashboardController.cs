@@ -39,7 +39,7 @@ namespace Rainmaker.API.Controllers
             }
             else
             {
-                var result = await sitemapService.GetSystemAdminMenu();
+                var result = await sitemapService.GetMenu(userProfileId);
                 return Ok(result);
             }
                

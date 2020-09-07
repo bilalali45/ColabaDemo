@@ -5,14 +5,7 @@ namespace Extensions.ExtensionClasses
 {
     public static class IntExtensions
     {
-        public static bool Tobool(this int value)
-        {
-            if (value == 0)
-                return false;
-            return true;
-        }
-
-        public static bool? ToBoolean(this int value)
+        public static bool ToBoolean(this int value)
         {
             if (value == 0)
                 return false;
