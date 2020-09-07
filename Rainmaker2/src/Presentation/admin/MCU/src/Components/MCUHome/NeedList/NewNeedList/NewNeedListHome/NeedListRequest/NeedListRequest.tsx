@@ -262,7 +262,7 @@ export const NeedListRequest = ({
 
       {requestHit ? (
         <div className="left-footer text-center alert alert-success">
-          Template has been created.
+          New template has been created.
         </div>
       ) : (
           <div className="left-footer">
