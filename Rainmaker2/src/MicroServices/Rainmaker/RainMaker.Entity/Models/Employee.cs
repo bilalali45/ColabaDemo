@@ -57,6 +57,8 @@ namespace RainMaker.Entity.Models
         public string Profile { get; set; } // Profile
         public string CmsName { get; set; } // CmsName (length: 50)
 
+
+        public string EmailTag { get; set; } // EmailTag (length: 100)
         // Reverse navigation
 
         /// <summary>

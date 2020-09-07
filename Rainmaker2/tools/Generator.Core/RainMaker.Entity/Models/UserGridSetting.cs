@@ -24,7 +24,7 @@ namespace RainMaker.Entity.Models
         public int Id { get; set; } // Id (Primary key)
         public int? UserId { get; set; } // UserId
         public string GridName { get; set; } // GridName (length: 300)
-        public string Setting { get; set; } // Setting (length: 2000)
+        public string Setting { get; set; } // Setting
 
         // Foreign keys
 

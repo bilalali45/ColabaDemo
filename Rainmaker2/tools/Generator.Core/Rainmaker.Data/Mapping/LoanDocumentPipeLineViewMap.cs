@@ -29,6 +29,10 @@ namespace RainMaker.Data.Mapping
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedNever();
             builder.Property(x => x.OpportunityId).HasColumnName(@"OpportunityId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.OwnerId).HasColumnName(@"OwnerId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LoanCoordinatorId).HasColumnName(@"LoanCoordinatorId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.PreProcessorId).HasColumnName(@"PreProcessorId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LoanProcessorId).HasColumnName(@"LoanProcessorId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.ByteLoanNumber).HasColumnName(@"ByteLoanNumber").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(50);
             builder.Property(x => x.ApplicationStatus).HasColumnName(@"ApplicationStatus").HasColumnType("nvarchar").IsRequired().HasMaxLength(150).ValueGeneratedNever();
@@ -39,6 +43,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.DocumentRemaining).HasColumnName(@"DocumentRemaining").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.DocumentOutstanding).HasColumnName(@"DocumentOutstanding").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.DocumentCompleted).HasColumnName(@"DocumentCompleted").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.ModifiedOnUtc).HasColumnName(@"ModifiedOnUtc").HasColumnType("datetime").IsRequired(false);
             InitializePartial();
         }
         partial void InitializePartial();
