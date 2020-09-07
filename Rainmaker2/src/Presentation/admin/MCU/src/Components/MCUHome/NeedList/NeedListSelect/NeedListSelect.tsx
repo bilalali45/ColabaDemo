@@ -186,7 +186,7 @@ export const NeedListSelect = ({
         fetchTemplateDocs(idArray);
         addTemplatesDocuments(idArray);
         setShow(false);
-      }} className="btn btn-primary btn-block">Add Selected</button>
+      }} className="btn btn-primary btn-block"><span className="btn-text d-text">Add Selected</span></button> //zedit
     } else {
 
       if (idArray.length > 0) {
