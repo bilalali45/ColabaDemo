@@ -112,17 +112,23 @@ namespace DocumentManagement.Tests
 
             List<BsonDocument> list = new List<BsonDocument>()
             { new BsonDocument
-                    {
-                        { "_id" , BsonString.Empty },
-                        { "name" ,"MCU Template1"},
-                        { "type" , BsonString.Empty }
-                    }
+                {
+                     { "_id" , BsonString.Empty },
+                     { "name" ,"MCU Template1"},
+                     { "type" , BsonString.Empty },
+                     { "typeId",BsonString.Empty },
+                     { "typeName" , BsonString.Empty},
+                     { "docName" , "Credit Report"}
+                 }
             ,  new BsonDocument
              {
-                        { "_id" , BsonString.Empty },
-                        { "name" , BsonString.Empty },
-                        { "type" ,  "MCU Template" }
-                    }
+                    { "_id" , BsonString.Empty },
+                     { "name" ,"Test Template" },
+                     { "type" ,  "MCU Template" },
+                     { "typeId",BsonString.Empty },
+                     { "typeName" , BsonString.Empty},
+                     { "docName" , "Credit Report"}
+                }
             };
 
             mockCursorMCU.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
@@ -147,13 +153,12 @@ namespace DocumentManagement.Tests
             
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(6, dto.Count);
-            Assert.Equal("MCU Template1", dto[0].name);
-            Assert.Equal("MCU Template", dto[1].type);
-            Assert.Equal("MCU Template1", dto[2].name);
-            Assert.Equal("MCU Template", dto[3].type);
-            Assert.Equal("MCU Template1", dto[4].name);
-            Assert.Equal("MCU Template", dto[5].type);
+            Assert.Equal("Credit Report", dto[0].docs[0].docName);
+            Assert.Equal("Credit Report", dto[0].docs[1].docName);
+            Assert.Equal("Credit Report", dto[0].docs[2].docName);
+            Assert.Equal("Credit Report", dto[0].docs[3].docName);
+            Assert.Equal("Credit Report", dto[0].docs[4].docName);
+            Assert.Equal("Credit Report", dto[0].docs[5].docName);
         }
 
         [Fact]
