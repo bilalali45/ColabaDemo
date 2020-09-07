@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Auth } from "../../services/auth/Auth";
 import { UserActions } from "../../store/actions/UserActions";
 import { useHistory } from "react-router-dom";
 
 export const Loading = () => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-
   const history = useHistory();
 
   const isAuthenticated = async () => {
@@ -15,7 +13,6 @@ export const Loading = () => {
       isAuthenticated = await UserActions.authenticate();
       if (isAuthenticated && isAuthenticated.token !== undefined) {
         Auth.saveAuth(isAuthenticated.token);
-        setAuthenticated(true);
         setTimeout(() => {
           history.push(`/home/activity/${Auth.getLoanAppliationId()}`);
         }, 0);
