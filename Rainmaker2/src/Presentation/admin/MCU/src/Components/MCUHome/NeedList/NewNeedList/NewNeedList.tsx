@@ -430,7 +430,7 @@ export const NewNeedList = () => {
       str = emailTemplate
         .replace('{user}', borrowername)
         .replace('{documents}', documentNames)
-        .replace('{mcu}', mcuName);
+        // .replace('{mcu}', mcuName); because we will provide Business Unit Name from BE while emailing
       enableBrowserPrompt();
       setDefaultEmail(str);
       dispatch({
