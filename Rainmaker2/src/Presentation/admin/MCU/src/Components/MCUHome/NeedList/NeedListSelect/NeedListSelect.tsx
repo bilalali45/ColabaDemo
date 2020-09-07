@@ -168,7 +168,7 @@ export const NeedListSelect = ({
           {
             templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
