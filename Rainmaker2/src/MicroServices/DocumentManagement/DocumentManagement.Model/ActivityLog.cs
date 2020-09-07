@@ -19,6 +19,11 @@ namespace DocumentManagement.Model
         OnDone=1,
         OnAccept=2
     }
+
+    public class FileIdModel
+    {
+        public string fileId { get; set; }
+    }
     public class ActivityLogDTO
     {
         public string id { get; set; }

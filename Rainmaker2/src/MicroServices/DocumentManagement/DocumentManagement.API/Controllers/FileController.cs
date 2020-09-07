@@ -217,7 +217,22 @@ namespace DocumentManagement.API.Controllers
                                                   tenantId: tenantId,
                                                   authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
+            {
+                var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+#pragma warning disable 4014
+                Task.Run(async () =>
+#pragma warning restore 4014
+                {
+                    Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                    if (tenant.syncToBytePro == (int) SyncToBytePro.Auto &&
+                        tenant.autoSyncToBytePro == (int) AutoSyncToBytePro.OnDone)
+                    {
+                        await byteProService.UploadFiles(model.id, model.requestId, model.docId, auth);
+                    }
+                });
                 return Ok();
+            }
+
             return NotFound();
         }
 
