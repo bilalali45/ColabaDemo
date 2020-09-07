@@ -32,7 +32,7 @@ export const NeedListSelect = ({
   const [templateList, setTemplateList] = useState<Template[]>([]);
   const { state, dispatch } = useContext(Store);
   const location = useLocation();
-  
+
   let myTemplateContainerRef = useRef<HTMLUListElement>(null);
   let tenantTemplateContainerRef = useRef<HTMLUListElement>(null);
 
@@ -47,14 +47,19 @@ export const NeedListSelect = ({
   const [target, setTarget] = useState(null);
   const ref = useRef(null);
 
-  const displayPopover = (event:any) => {
-    console.log(event.target,"apex");
+  const [docs, setDocs] = useState<any[]>([]);
+  const [templateName, setTemplateName] = useState<string>("");
+
+  const displayPopover = (event: any, docs: any[],name:string) => {
+    console.log(event.target, "apex");
+    setTemplateName(name)
+    setDocs(docs)
     setShowPopover(true);
     setTarget(event.target);
   };
 
-  const hidePopover = (event:any) => {
-    console.log(event.target,"apex");
+  const hidePopover = (event: any) => {
+    console.log(event.target, "apex");
     setShowPopover(false);
     setTarget(event.target);
   };
@@ -64,7 +69,7 @@ export const NeedListSelect = ({
       fetchTemplatesList();
     }
 
-    
+
   }, [!templates])
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export const NeedListSelect = ({
   }, [selectedIds?.length]);
 
   useEffect(() => {
-    if(myTemplateContainerRef?.current && tenantTemplateContainerRef?.current) {
+    if (myTemplateContainerRef?.current && tenantTemplateContainerRef?.current) {
       myTemplateContainerRef?.current.scrollTo(0, 0);
       tenantTemplateContainerRef?.current.scrollTo(0, 0);
     }
@@ -107,43 +112,49 @@ export const NeedListSelect = ({
 
     return (
       <>
-      <div ref={ref}>
-        <h3>My Templates</h3>
-        
-        <ul className="checklist" ref={myTemplateContainerRef}>
-          {
-            templateList?.map((t: Template) => {
-              if (t?.type === MyTemplate) {
-                return <li key={t?.id} onMouseEnter={(e)=>{displayPopover(e)}} onMouseOut={(e)=>{hidePopover(e)}}><label className="text-ellipsis">
-                  
-                  <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
-                  updateIdsList(e, t?.id);
-                }} id={t.id} type="checkbox" /> {t?.name}
-                </label>
-                </li>
-              }
-            })
-          }
+        <div ref={ref}>
+          <h3>My Templates</h3>
+
+          <ul className="checklist" ref={myTemplateContainerRef}>
+            {
+              templateList?.map((t: Template) => {
+                if (t?.type === MyTemplate) {
+                  return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis">
+
+                    <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
+                      updateIdsList(e, t?.id);
+                    }} id={t.id} type="checkbox" /> {t?.name}
+                  </label>
+                  </li>
+                }
+              })
+            }
 
 
-        </ul>
-        <Overlay
-        show={showPopover}
-        target={target}
-        placement="right"
-        container={ref.current}
-      >
-        <Popover id="popover-contained" className="addneedlist-popover">
-          <Popover.Title as="h3" class="addneedlist-popover-title">Popover bottom</Popover.Title>
-          <Popover.Content>
-            <span className="addneedlist-popover--list">Earnest Money Deposit</span>
-            <span className="addneedlist-popover--list">Financial statements</span>
-            <span className="addneedlist-popover--list">Profit and Loss Statement</span>
-            <span className="addneedlist-popover--list">Form 1099 (Miscellaneous Income)</span>
-          </Popover.Content>
-        </Popover>
-      </Overlay>
-      </div>
+          </ul>
+          <Overlay
+            show={showPopover}
+            target={target}
+            placement="right"
+            container={ref.current}
+          >
+            <Popover id="popover-contained" className="addneedlist-popover">
+          <Popover.Title as="h3" class="addneedlist-popover-title">{templateName}</Popover.Title>
+              <Popover.Content>
+
+                {docs.map((d: any) => {
+                  return (
+                    <span className="addneedlist-popover--list">{d.docName}</span>
+                  )
+
+                })
+
+                }
+
+              </Popover.Content>
+            </Popover>
+          </Overlay>
+        </div>
       </>
     );
   };
