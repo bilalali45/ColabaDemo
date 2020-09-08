@@ -13,7 +13,6 @@ using Rainmaker.Service.Helpers;
 using RainMaker.API.CorrelationHandlersAndMiddleware;
 using RainMaker.Service;
 using RainMaker.Service.Helpers;
-using System;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Text;

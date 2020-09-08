@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // FollowUpActivityBinder
-    
+
     public partial class FollowUpActivityBinder : URF.Core.EF.Trackable.Entity
     {
         public int FollowUpId { get; set; } // FollowUpId (Primary key)

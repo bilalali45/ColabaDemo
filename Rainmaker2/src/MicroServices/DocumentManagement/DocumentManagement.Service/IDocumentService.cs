@@ -1,8 +1,6 @@
-﻿using System;
+﻿using DocumentManagement.Model;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using DocumentManagement.Model;
 
 namespace DocumentManagement.Service
 {

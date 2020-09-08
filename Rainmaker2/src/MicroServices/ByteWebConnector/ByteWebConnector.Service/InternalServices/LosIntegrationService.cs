@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using ByteWebConnector.Model.Configuration;
+﻿using ByteWebConnector.Model.Configuration;
 using ByteWebConnector.Model.Models.Document;
 using ByteWebConnector.Model.Models.ServiceRequestModels.Document;
 using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using ServiceCallHelper;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ByteWebConnector.Service.InternalServices
 {

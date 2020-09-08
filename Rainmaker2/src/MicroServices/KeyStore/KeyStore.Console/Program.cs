@@ -1,5 +1,4 @@
 ﻿using KeyStore.Service;
-using System;
 
 namespace KeyStore.Console
 {

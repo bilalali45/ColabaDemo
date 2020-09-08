@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // SystemEvent
-    
+
     public partial class SystemEvent : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.IO;
-
-namespace DocumentManagement.Model
+﻿namespace DocumentManagement.Model
 {
     public class ApiResponse
     {

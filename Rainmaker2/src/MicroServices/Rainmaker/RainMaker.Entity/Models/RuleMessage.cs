@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // RuleMessage
-    
+
     public partial class RuleMessage : URF.Core.EF.Trackable.Entity
     {
         public int MessageId { get; set; } // MessageId (Primary key)

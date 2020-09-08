@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ByteWebConnector.API.ExtensionMethods;
+using ByteWebConnector.API.Models.ClientModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using ByteWebConnector.API.ExtensionMethods;
-using ByteWebConnector.API.Models;
-using ByteWebConnector.API.Models.ClientModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

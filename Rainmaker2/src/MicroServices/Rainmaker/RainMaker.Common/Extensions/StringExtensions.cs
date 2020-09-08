@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Quartz;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Security.Cryptography;
-using System.Web;
-using Quartz;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RainMaker.Common.Extensions

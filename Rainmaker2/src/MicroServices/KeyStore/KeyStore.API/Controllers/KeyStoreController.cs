@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KeyStore.Service;
-using Microsoft.AspNetCore.Http;
+﻿using KeyStore.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KeyStore.API.Controllers

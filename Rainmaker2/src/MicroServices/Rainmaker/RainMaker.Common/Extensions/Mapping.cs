@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace RainMaker.Common.Extensions
 {
-   public static class Mapping
+    public static class Mapping
     {
         
        public static  void Map<T,TK>(this T source, TK destination)  where T :class

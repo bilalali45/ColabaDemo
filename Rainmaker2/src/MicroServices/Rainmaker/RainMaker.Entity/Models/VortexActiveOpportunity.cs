@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // VortexActiveOpportunity
-    
+
     public partial class VortexActiveOpportunity : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Notification.Model;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Notification.API
 {

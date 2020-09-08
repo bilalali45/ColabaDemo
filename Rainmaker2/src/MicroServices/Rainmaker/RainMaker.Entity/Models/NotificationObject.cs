@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // notification_object
-    
+
     public partial class NotificationObject : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

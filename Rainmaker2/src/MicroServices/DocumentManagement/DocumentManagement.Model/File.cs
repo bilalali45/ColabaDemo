@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentManagement.Model
 {

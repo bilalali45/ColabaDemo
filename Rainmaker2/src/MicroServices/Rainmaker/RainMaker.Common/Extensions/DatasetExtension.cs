@@ -4,7 +4,7 @@ using System.IO;
 
 namespace RainMaker.Common.Extensions
 {
-   public static class DatasetExtension
+    public static class DatasetExtension
     {
         public static string ToXml(this DataSet ds)
         {

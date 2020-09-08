@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using LosIntegration.Data;
+﻿using LosIntegration.Data;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using URF.Core.Abstractions;
 
 namespace LosIntegration.Service

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ByteWebConnector.Model.Models;
+﻿using ByteWebConnector.Model.Models;
 using ByteWebConnector.Model.Models.Document;
 using ByteWebConnector.Model.Models.ServiceRequestModels.BytePro;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ByteWebConnector.Service.ExternalServices
 {

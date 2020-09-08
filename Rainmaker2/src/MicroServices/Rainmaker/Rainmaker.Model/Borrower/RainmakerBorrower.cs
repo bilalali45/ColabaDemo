@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RainMaker.Common;
+﻿using RainMaker.Common;
 using RainMaker.Common.Extensions;
 using RainMaker.Entity.Models;
+using System.Collections.Generic;
+using System.Linq;
 using TrackableEntities.Common.Core;
-using Twilio.Http;
-using URF.Core.EF.Trackable;
 
 namespace Rainmaker.Model.Borrower
 {

@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using TrackableEntities.Common.Core;
 using TrackableEntities.EF.Core;
 using URF.Core.Abstractions;
 using URF.Core.Abstractions.Trackable;
 using URF.Core.EF.Factories;
-using System.Linq;
 
 namespace URF.Core.EF
 {

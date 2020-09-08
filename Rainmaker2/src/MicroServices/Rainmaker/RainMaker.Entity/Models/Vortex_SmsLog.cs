@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // SMSLog
-    
+
     public partial class Vortex_SmsLog : URF.Core.EF.Trackable.Entity
     {
         public long Id { get; set; } // Id

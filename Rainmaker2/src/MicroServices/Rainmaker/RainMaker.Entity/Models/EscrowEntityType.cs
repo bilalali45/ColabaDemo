@@ -14,9 +14,6 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // EscrowEntityType
     ///<summary>
     /// This table stores list of Taxes and insurance like
@@ -27,7 +24,7 @@ namespace RainMaker.Entity.Models
     /// Home owners Insurance
     /// Other Insurance
     ///</summary>
-    
+
     public partial class EscrowEntityType : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

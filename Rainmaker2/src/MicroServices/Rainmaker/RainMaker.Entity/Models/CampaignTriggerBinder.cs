@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // CampaignTriggerBinder
-    
+
     public partial class CampaignTriggerBinder : URF.Core.EF.Trackable.Entity
     {
         public int CampaignTriggerId { get; set; } // CampaignTriggerId (Primary key)

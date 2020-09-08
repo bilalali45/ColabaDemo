@@ -8,11 +8,11 @@
 // the code is regenerated.
 //------------------------------------------------------------------------------
 
-using System.Linq;
 using LosIntegration.Data.Mapping;
 using LosIntegration.Entity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Linq;
 
 namespace LosIntegration.Data
 {

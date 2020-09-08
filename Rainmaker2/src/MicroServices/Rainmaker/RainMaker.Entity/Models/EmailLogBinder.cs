@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // EmailLogBinder
-    
+
     public partial class EmailLogBinder : URF.Core.EF.Trackable.Entity
     {
         public int EmailLogId { get; set; } // EmailLogId (Primary key)

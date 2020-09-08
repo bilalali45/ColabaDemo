@@ -1,9 +1,7 @@
 ﻿
 
-using System.Collections.Generic;
 using ByteWebConnector.Entity.Models;
-using Extensions.ExtensionClasses;
-using URF.Core.Abstractions;
+using System.Collections.Generic;
 
 namespace ByteWebConnector.Service.DbServices
 {

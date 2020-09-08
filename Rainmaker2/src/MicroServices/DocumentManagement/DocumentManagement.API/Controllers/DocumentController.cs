@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using DocumentManagement.Entity;
+﻿using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {

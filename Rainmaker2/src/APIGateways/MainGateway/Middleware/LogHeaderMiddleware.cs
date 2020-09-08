@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
+using System;
+using System.Threading.Tasks;
 
 namespace MainGateway.Middleware
 {

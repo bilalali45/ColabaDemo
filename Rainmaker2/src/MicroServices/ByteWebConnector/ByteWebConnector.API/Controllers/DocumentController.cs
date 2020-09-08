@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ByteWebConnector.API.ExtensionMethods;
+﻿using ByteWebConnector.API.ExtensionMethods;
 using ByteWebConnector.API.Models;
 using ByteWebConnector.API.Models.ByteApi;
 using ByteWebConnector.API.Models.ClientModels.Document;
@@ -20,9 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-
-
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

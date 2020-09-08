@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // VortexAgentStatusView
-    
+
     public partial class Vortex_VortexAgentStatusView : URF.Core.EF.Trackable.Entity
     {
         public long Id { get; set; } // Id (Primary key)

@@ -1,9 +1,5 @@
-﻿using DocumentManagement.Entity;
-using DocumentManagement.Model;
-using MongoDB.Bson;
-using System;
+﻿using DocumentManagement.Model;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.Service

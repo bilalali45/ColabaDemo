@@ -1,9 +1,7 @@
-﻿using System;
+﻿using RainMaker.Entity.Models;
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using RainMaker.Entity.Models;
-using TimeZone = System.TimeZone;
 
 namespace RainMaker.Common
 {

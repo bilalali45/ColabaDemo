@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ByteWebConnector.Data;
+﻿using ByteWebConnector.Data;
 using ByteWebConnector.Entity.Models;
 using Extensions.ExtensionClasses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using URF.Core.Abstractions;
 
 namespace ByteWebConnector.Service.DbServices

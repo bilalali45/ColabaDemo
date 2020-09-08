@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using ByteWebConnector.API.Models.ClientModels;
+﻿using ByteWebConnector.API.Models.ClientModels;
+using System.Runtime.Serialization;
 
 namespace ByteWebConnector.API.Models
 {
