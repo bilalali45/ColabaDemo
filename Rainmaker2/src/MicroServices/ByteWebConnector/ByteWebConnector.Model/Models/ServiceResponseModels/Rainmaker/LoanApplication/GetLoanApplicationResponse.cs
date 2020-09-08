@@ -60,6 +60,8 @@ namespace ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanAppl
         public byte[] LoanApplicationFlowState { get; set; } // LoanApplicationFlowState
         public string EncompassId { get; set; } // EncompassId (length: 50)
         public string EncompassNumber { get; set; } // EncompassNumber (length: 50)
+        public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
+        public bool? PostToEncompass { get; set; } // PostToEncompass
         public int? ModifiedBy { get; set; } // ModifiedBy
         public DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
         public int? CreatedBy { get; set; } // CreatedBy
