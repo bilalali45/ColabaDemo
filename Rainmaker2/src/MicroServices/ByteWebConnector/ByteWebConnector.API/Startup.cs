@@ -52,7 +52,8 @@ namespace ByteWebConnector.API
                     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
                                                               {
                                                                   SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
-                                                                  MaxConnectionsPerServer = int.MaxValue
+                                                                  MaxConnectionsPerServer = int.MaxValue,
+                                                                  ServerCertificateCustomValidationCallback = (a,b,c,d)=>true
                                                               })
                     .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
             services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));

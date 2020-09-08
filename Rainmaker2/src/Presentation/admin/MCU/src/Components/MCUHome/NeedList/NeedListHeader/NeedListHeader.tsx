@@ -11,7 +11,13 @@ export const NeedListHeader = () => {
 
   const redirectToMVC = () => {
 
-    window.top.location.href = document.referrer
+    const portalReferralUrl = LocalDB.getPortalReferralUrl()
+
+    console.log('portalReferralUrl',portalReferralUrl)
+
+    if(portalReferralUrl){
+      window.top.location.href = portalReferralUrl
+    }
   };
   
   return (

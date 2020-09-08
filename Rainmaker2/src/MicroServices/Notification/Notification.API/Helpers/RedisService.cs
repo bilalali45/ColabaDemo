@@ -61,9 +61,8 @@ namespace Notification.Service
                     {
                         // this exception can be ignored
                     }
-
-                    Thread.Sleep(60000);
                 }
+                Thread.Sleep(60000);
             }
         }
 
