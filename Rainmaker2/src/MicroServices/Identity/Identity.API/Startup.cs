@@ -30,7 +30,7 @@ namespace Identity
             services.AddTransient<IKeyStoreService, KeyStoreService>();
 
             services.AddControllers().AddNewtonsoftJson();
-            ;
+            
 
             #region HttpClientDependencies
 

@@ -62,7 +62,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.Photo).HasColumnName(@"Photo").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(500);
             builder.Property(x => x.Profile).HasColumnName(@"Profile").HasColumnType("nvarchar(max)").IsRequired(false);
             builder.Property(x => x.CmsName).HasColumnName(@"CmsName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(50);
-
+            builder.Property(x => x.EmailTag).HasColumnName(@"EmailTag").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(100);
             // Foreign keys
             builder.HasOne(a => a.Branch).WithMany(b => b.Employees).HasForeignKey(c => c.BranchId).OnDelete(DeleteBehavior.SetNull); // FK_Employee_Branch
             builder.HasOne(a => a.Contact).WithMany(b => b.Employees).HasForeignKey(c => c.ContactId); // FK_Employee_Contact
