@@ -213,7 +213,7 @@ namespace DocumentManagement.Service
 
             return templateModels;
         }
-        public async Task<List<TemplateDTO>> GetDocument(string id)
+        public async Task<List<TemplateDto>> GetDocument(string id)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
@@ -249,13 +249,13 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            List<TemplateDTO> result = new List<TemplateDTO>();
+            List<TemplateDto> result = new List<TemplateDto>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                     TemplateDocumentQuery query = BsonSerializer.Deserialize<TemplateDocumentQuery>(current);
-                    TemplateDTO dto = new TemplateDTO();
+                    TemplateDto dto = new TemplateDto();
                     dto.docId = query.docId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.typeId = query.typeId;

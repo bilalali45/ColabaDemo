@@ -10,6 +10,7 @@ import { DocumentStatus } from '../../../../../Entities/Types/Types';
 
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
+import loadingIcon from '../../../../../Assets/images/loading.svg';
 
 type NeedListProps = {
   needList: NeedList | null | undefined;
@@ -91,7 +92,7 @@ export const NeedListTable = ({
       return (
         <div className="td">
           <span className="f-normal" title={toTitleCase(name)}>
-            <strong>{toTitleCase(name)}</strong>
+          <i className="far fa-file text-primary"></i> <strong>{toTitleCase(name)}</strong>
           </span>
         </div>
       );
@@ -99,7 +100,7 @@ export const NeedListTable = ({
       return (
         <div className="td">
           <span className="f-normal" title={toTitleCase(name)}>
-            {toTitleCase(name)}
+          <i className="far fa-file"></i> {toTitleCase(name)}
           </span>
         </div>
       );
@@ -137,8 +138,7 @@ export const NeedListTable = ({
         <div>
           <div className="list-remove-alert">
             <span className="list-remove-text">
-              {/* Are you sure want to delete this Document? */}
-              Remove this document from needs list?
+              Remove this document from Needs List?
             </span>
             <div className="list-remove-options">
               <button
@@ -162,7 +162,6 @@ export const NeedListTable = ({
       </>
     );
   };
-
   const renderButton = (data: NeedList, index: number) => {
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === 'Pending review') {
@@ -170,7 +169,7 @@ export const NeedListTable = ({
         <div className="td options">
           <button
             onClick={() => reviewClickHandler(index)}
-            className="btn btn-secondry btn-sm"
+            className="btn btn-primary btn-sm"
           >
             Review
           </button>
@@ -181,7 +180,7 @@ export const NeedListTable = ({
         <div className="td options">
           <button
             onClick={() => detailClickHandler(index)}
-            className="btn btn-default btn-sm"
+            className="btn btn-secondry btn-sm"
           >
             Details
           </button>
@@ -220,7 +219,6 @@ export const NeedListTable = ({
       );
     }
   };
-
   const renderFile = (
     data: NeedListDocuments[] | null,
     status: string,
@@ -316,7 +314,6 @@ export const NeedListTable = ({
       );
     }
   };
-
   const reviewClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
@@ -324,7 +321,6 @@ export const NeedListTable = ({
       documentDetail: false
     });
   };
-
   const detailClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
@@ -332,7 +328,6 @@ export const NeedListTable = ({
       documentDetail: true
     });
   };
-
   const renderDocumentTitle = () => {
     if (documentSortClick)
       return (
@@ -383,7 +378,6 @@ export const NeedListTable = ({
         </div>
       );
   };
-
   const renderSyncToLosTitle = () => {
     if (isByteProAuto) {
       return <></>
@@ -391,52 +385,50 @@ export const NeedListTable = ({
       return (
         <div className="th">
           <a onClick={(e) => FilesSyncToLos(syncTitleClass)} >
-            <em className={"icon-refresh "+syncTitleClass}></em>
+            <em className={"icon-refresh " + syncTitleClass}></em>
           </a>{' '}
-              <span className="txt-stl" onClick={(e) => FilesSyncToLos(syncTitleClass)}>sync to LOS</span>
+          <span className="txt-stl" onClick={(e) => FilesSyncToLos(syncTitleClass)}>sync to LOS</span>
         </div>
       )
     }
 
   }
-
   const renderSyncToLosConfirmationBox = () => {
     if (!showConfirmBox && !syncSuccess) {
       return '';
-    } else if(showConfirmBox && !syncSuccess) {
-      return (
-      <div className="sync-alert">
-         <div className="sync-alert-wrap">
-          <div className="icon"><img src={sycLOSIcon} alt="" /></div>
-          <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
-          <div className="btn-wrap">
-            <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
-              {synchronizing != true
-                ?
-                "Sync"
-                :
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              }
-            </button>
-
-          </div>
-        </div> 
-        
-
-      </div>
-      )
-    } else if(!showConfirmBox && syncSuccess){
+    } else if (showConfirmBox && !syncSuccess) {
       return (
         <div className="sync-alert">
-        <div className="sync-alert-wrap success">
+          <div className="sync-alert-wrap">
+            <div className="icon"><img src={sycLOSIcon} alt="" /></div>
+            <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
+            <div className="btn-wrap">
+              <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
+                {synchronizing != true
+                  ? <>
+                    Sync                   
+                    </>
+                  :
+                  <div className="spinning-loader"><img src={loadingIcon}/></div>
+                }
+              </button>
 
-        <div className="msg">Synchronization completed</div>
-        <div onClick={() => closeSyncCompletedBox()} className="close-wrap">
-        <span className="close-btn"><em className="zmdi zmdi-close"></em></span>
+            </div>
+          </div>
+
+
         </div>
-        </div>
+      )
+    } else if (!showConfirmBox && syncSuccess) {
+      return (
+        <div className="sync-alert">
+          <div className="sync-alert-wrap success">
+
+            <div className="msg">Synchronization completed</div>
+            <div onClick={() => closeSyncCompletedBox()} className="close-wrap">
+              <span className="close-btn"><em className="zmdi zmdi-close"></em></span>
+            </div>
+          </div>
         </div>
       )
     }
@@ -469,7 +461,7 @@ export const NeedListTable = ({
             <div className="th th-options">&nbsp;</div>
           </div>
           {needList && renderNeedList(needList)}
-         
+
         </div>
         {renderSyncToLosConfirmationBox()}
       </div>

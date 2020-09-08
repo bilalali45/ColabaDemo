@@ -28,7 +28,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            List<AdminDashboardDTO> list = new List<AdminDashboardDTO>() { { new AdminDashboardDTO() { docId = "1" } } };
+            List<AdminDashboardDto> list = new List<AdminDashboardDto>() { { new AdminDashboardDto() { docId = "1" } } };
 
             mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
 
@@ -49,7 +49,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<AdminDashboardDTO>;
+            var content = (result as OkObjectResult).Value as List<AdminDashboardDto>;
             Assert.Single(content);
             Assert.Equal("1", content[0].docId);
         }
@@ -220,7 +220,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1 ,true);
+            List<AdminDashboardDto> dto = await service.GetDocument(1, 1 ,true);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(6, dto.Count);
@@ -333,7 +333,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<AdminDashboardDTO> dto = await service.GetDocument(1, 1, false);
+            List<AdminDashboardDto> dto = await service.GetDocument(1, 1, false);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(6, dto.Count);

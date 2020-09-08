@@ -80,7 +80,7 @@ export const HomePage: FunctionComponent = () => {
           type: 'UPDATE_STATE',
           state: {notificationsVisible: !notificationsVisible}
         });
-      }, 10);
+      }, 500);
     }
   };
 
@@ -191,6 +191,7 @@ export const HomePage: FunctionComponent = () => {
               readAllNotificationsForDocument={readAllNotificationsForDocument}
               showToss={showToss}
               dispatch={dispatch}
+              deleteAll={confirmDeleteAll}
             />
           )}
         </div>

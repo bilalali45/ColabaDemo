@@ -83,7 +83,7 @@ export const NeedListRequest = ({
     setTemplateNameError('');
 
     if (value?.length > 49) {
-      setTemplateNameError('Only 50 chars allowed');
+      // setTemplateNameError('Only 50 chars allowed');
       return;
     }
 
@@ -262,7 +262,7 @@ export const NeedListRequest = ({
 
       {requestHit ? (
         <div className="left-footer text-center alert alert-success">
-          Template has been created.
+          New template has been created.
         </div>
       ) : (
           <div className="left-footer">

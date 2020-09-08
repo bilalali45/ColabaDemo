@@ -844,7 +844,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
-            List<DraftDocumentDTO> list = new List<DraftDocumentDTO>() { { new DraftDocumentDTO()
+            List<DraftDocumentDto> list = new List<DraftDocumentDto>() { { new DraftDocumentDto()
             {
                 message = "Hi Mark",
                 typeId = "5ebc18cba5d847268075ad4f",
@@ -873,7 +873,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DraftDocumentDTO>;
+            var content = (result as OkObjectResult).Value as List<DraftDocumentDto>;
             Assert.Single(content);
             Assert.Equal("Hi Mark", content[0].message);
             Assert.Equal("5ebc18cba5d847268075ad4f", content[0].typeId);
@@ -1013,7 +1013,7 @@ namespace DocumentManagement.Tests
             var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
 
             //Act
-            List<DraftDocumentDTO> dto = await service.GetDraft(14, 1);
+            List<DraftDocumentDto> dto = await service.GetDraft(14, 1);
 
             //Assert
             Assert.NotNull(dto);

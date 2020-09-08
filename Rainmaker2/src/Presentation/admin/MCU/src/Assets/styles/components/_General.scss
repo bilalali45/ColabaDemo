@@ -136,9 +136,10 @@ ul {
 }
 .btn {
     border-radius: 0px;
-    font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
-    padding: 8px 25px;
-    text-transform: capitalize;
+    font: 500 #{fontSize("nr") + "/1.2"} fontFamily("base");
+    padding: 8px 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 
     &.disabled,
     &:disabled {
@@ -169,7 +170,7 @@ ul {
     &-sm,
     &-group-sm>& {
         padding: 6px 15px;
-        font: 400 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
         line-height: 1.5;
         border-radius: 0;
     }
@@ -231,10 +232,11 @@ ul {
  
     }
 
-           .btn-text{
-               &.d-text {
-            text-transform: initial;
-            float: left;
+    .btn-text{
+        &.d-text {
+            text-transform: uppercase;
+            display: inline-block;
+            vertical-align: middle;
     
             & + .btn-icon {
                 margin-left: 15px;
@@ -454,18 +456,44 @@ ul {
     display: table-row;
 }
 .table-responsive {
-    padding: 5px;
+    //padding: 5px;
 }
+
+.dropdown-menu{
+    border:1px solid color('border');
+    box-shadow: 0 0 8px 0 rgba($color: #000000, $alpha: 0.03);
+
+    .popover{
+        border:1px solid color('border');
+        box-shadow: 0 0 8px 0 rgba($color: #000000, $alpha: 0.03);
+
+        &-header{
+            text-transform: capitalize;
+            font: 500 #{fontSize('nr')+'/'+1} fontFamily('base');
+        }
+        
+        .addneedlist-popover--list{
+            color: color('base');
+
+            & + .addneedlist-popover--list{
+                margin-top: 6px;
+            }
+        }
+    }
+}
+
+
 
 .mcu-dropdown-toggle {
     
     & + .dropdown-menu,
     .dropdown-menu{
-        width: 290px;
+        width: 295px;
         border-radius: 0px;
         font-family: fontFamily('heading');
         font-size: fontSize('sm');
         font-weight: 400;
+        color: color('base');
         
         &.padding{
             padding: 20px;
@@ -484,6 +512,14 @@ ul {
             font-size: fontSize('sm') ;
             font-weight: 500;
             margin-bottom: 10px;
+        }
+        >*{
+            > h3 {
+                font-family: fontFamily('heading');
+                font-size: fontSize('sm') ;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
         }
 
         input{
@@ -509,16 +545,38 @@ ul {
             line-height: 1;
         }
 
+        .addneedlist-popover{
+            min-width: 395px;
+            min-height: 150px;
+            &-title{
+                font: 500 #{fontSize('nr')+'/'+1} fontFamily('base');
+            }
+            &--list{
+                display: block;
+            }
+            .popover-header{
+                background: transparent;
+                border: none;
+                padding: 20px 20px 10px;
+            }
+            .popover-body{
+                padding: 0 20px 20px;
+                color: color('base');
+            }
+        }
+
         .checklist{
             @extend .list-style-none;
             margin-bottom: 25px;
-            max-height: 100px;
+            max-height: 190px;
             overflow-y: auto;
             margin-left: -5px;
             label {
                 padding-left: 5px;
                 padding-top: 2px;
                 padding-bottom: 2px;
+                //text-transform: capitalize;
+                cursor: pointer;
             }
         }
 
@@ -530,6 +588,12 @@ ul {
             a{
                 display: block;
                 padding: 10px 0;
+            }
+            .btn{
+                font-family: fontFamily('base');
+                font-size: fontSize('sm');
+                font-weight: 500;
+                text-transform: uppercase !important;
             }
         }
         .btn-block{
@@ -673,7 +737,7 @@ ul {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: lighten($color: color('toggleDefaultKnob'), $amount: 10%);
+        background-color: color('toggleDefaultKnobBg');
         -webkit-transition: .4s;
         transition: .4s;
 
@@ -703,9 +767,9 @@ ul {
 
 .btn-sm, .btn-group-sm > .btn, .btn-group-sm > .btn {
     padding: 5px 10px;
-    font: 400 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
+    font: 500 #{fontSize('sm')+'/'+'16px'} fontFamily('base'); 
     border-radius: 0;
-    letter-spacing: normal;
+    letter-spacing: 1px;
 }
 
 @mixin placeholder($color: color('input')) {
@@ -890,9 +954,10 @@ label.error{
     }
 
     &-text{
-        font: 500 #{fontSize('nr')+'/0.8'} fontFamily('base'); 
+        font: 400 #{fontSize('sm')+'/0.8'} fontFamily('base'); 
         white-space: nowrap;
-        padding:10px 15px;
+        padding:0px 15px;
+        align-self: inherit;
         -webkit-animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
                 animation: slide-out-bottom 0.5s cubic-bezier(.215, .61, .355, 1) forwards;
     }
@@ -906,8 +971,8 @@ label.error{
             margin-left: 4px;
         }
     }
-
 }
+
 
 .modal{    
 
@@ -926,6 +991,16 @@ label.error{
         .modal-content{
             max-width: 500px;
             min-height: 200px;
+        }
+
+        .close-wrap {
+            .close {
+                position: absolute;
+                right: 10px;
+                top: 5px;
+                cursor: pointer;
+                z-index: 7588;
+            }
         }
         .modal-header{
             border-bottom: none;
@@ -988,4 +1063,8 @@ label.error{
 .btn-primary:not(:disabled):not(.disabled).active:focus, 
 .show > .btn-primary.dropdown-toggle:focus{
     box-shadow: none;
+}
+
+.spinning-loader img {
+    width: 20px;
 }

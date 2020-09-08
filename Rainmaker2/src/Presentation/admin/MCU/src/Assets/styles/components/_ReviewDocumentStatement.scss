@@ -15,12 +15,22 @@
         h2{
             @extend .text-ellipsis;
         }
+        .vertical-tabs{
+            &--content{
+                table > thead > tr > th,
+                table > tbody > tr > td{
+                    &:last-child{
+                        width: 150px;
+                    }
+                }
+            }
+        }
     }
 
     &--body{
         padding: 20px;
         overflow-y: auto;
-        height: calc(100% - 76px);
+        height: calc(100% - 92px);
         margin-right: 0px;
         position: relative;
     }    

@@ -11,7 +11,13 @@ export const NeedListHeader = () => {
 
   const redirectToMVC = () => {
 
-    window.top.location.href = document.referrer
+    const portalReferralUrl = LocalDB.getPortalReferralUrl()
+
+    console.log('portalReferralUrl',portalReferralUrl)
+
+    if(portalReferralUrl){
+      window.top.location.href = portalReferralUrl
+    }
   };
   
   return (
@@ -23,8 +29,11 @@ export const NeedListHeader = () => {
       </div>
       <div className="need-list-header--right">
         <button onClick={redirectToTemplate} className="btn btn-secondry">
-          <em className="icon-record"></em> Manage Template
-        </button>        
+          <em className="icon-record"></em> Manage Document Template
+        </button>
+        {/* <button disabled = {true} className="btn btn-primary" >
+          <em className="icon-edit"></em> Post to Byte Pro
+        </button> */}
       </div>
     </div>
   );

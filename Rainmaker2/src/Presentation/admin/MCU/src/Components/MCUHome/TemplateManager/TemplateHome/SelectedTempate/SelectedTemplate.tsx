@@ -259,7 +259,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
                                             setNewNameText(value);
                                             if (!value?.length || value?.length > 49) {
-                                                setNameError('Only 50 chars allowed');
+                                                // setNameError('Only 50 chars allowed');
                                                 return;
                                             }
 

@@ -3,6 +3,10 @@
   .notification-list {
     position: relative;
     margin-bottom: 2px;
+    transition: all 0.5s ease;
+    &:hover {
+      background: rgba(color('primary'), 0.05); 
+    }
 
     a {
       text-decoration: none;

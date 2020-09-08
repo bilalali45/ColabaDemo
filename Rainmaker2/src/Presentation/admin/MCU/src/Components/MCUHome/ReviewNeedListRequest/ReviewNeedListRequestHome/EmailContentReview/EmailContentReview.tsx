@@ -189,7 +189,7 @@ export const EmailContentReview = ({
   return (
     <div className="mcu-panel-body--content">
       <div className="mcu-panel-body padding">
-        <h3 className="text-ellipsis" title={'Review email to ' + borrowername}>
+        <h3 className="text-ellipsis mcu-panel-body--content-heading" title={'Review email to ' + borrowername}>
           Review email to {borrowername}
         </h3>
         <p>If you'd like, you can customize this email.</p>

@@ -61,10 +61,10 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string docMessage { get; set; }
         public bool isRejected { get; set; }
-        public List<FileDTO> files { get; set; }
+        public List<FileDto> files { get; set; }
     }
 
-    public class FileDTO
+    public class FileDto
     {
         public string id { get; set; }
         public string clientName { get; set; }
@@ -93,7 +93,7 @@ namespace DocumentManagement.Model
         public string typeId { get; set; }
         public string userName { get; set; }
     }
-    public class AdminDashboardDTO
+    public class AdminDashboardDto
     {
         public string id { get; set; }
         public string requestId { get; set; }
@@ -101,12 +101,12 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string status { get; set; }
         public DateTime? createdOn { get; set; }
-        public List<AdminFileDTO> files { get; set; }
+        public List<AdminFileDto> files { get; set; }
         public string typeId { get; set; }
         public string userName { get; set; }
     }
 
-    public class AdminFileDTO
+    public class AdminFileDto
     {
         public string id { get; set; }
         public string clientName { get; set; }
@@ -131,7 +131,7 @@ namespace DocumentManagement.Model
         public string requestId { get; set; }
     }
 
-    public class FileViewDTO
+    public class FileViewDto
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -179,7 +179,7 @@ namespace DocumentManagement.Model
 
         public List<RequestFile> files { get; set; }
     }
-    public class TemplateDTO
+    public class TemplateDto
     {
 
         public string docId { get; set; }
