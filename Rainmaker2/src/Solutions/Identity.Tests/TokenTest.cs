@@ -468,7 +468,7 @@ namespace Identity.Tests
             Assert.NotNull(result);
         }
         [Fact]
-        public async Task TestGenerateRefreshTokenService()
+        public void TestGenerateRefreshTokenService()
         {
             ITokenService tokenService = new TokenService(null, null);
             string result = tokenService.GenerateRefreshToken();
