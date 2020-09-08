@@ -48,6 +48,9 @@ namespace RainMaker.Entity.Models
         public System.DateTime? LastLoginOnUtc { get; set; } // LastLoginOnUtc
         public System.DateTime? LastLogoutOnUtc { get; set; } // LastLogoutOnUtc
         public int? BusinessUnitId { get; set; } // BusinessUnitId
+        public int? FailedPasswordAttemptCount { get; set; } // FailedPasswordAttemptCount
+        public bool? IsLockedOut { get; set; } // IsLockedOut
+        public System.DateTime? LastLockedOutDateUtc { get; set; } // LastLockedOutDateUtc
 
         // Reverse navigation
 
@@ -120,23 +123,6 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Vortex_UserSetting> Vortex_UserSettings { get; set; } // UserSetting.FK_Vortex.UserSetting_UserProfile
 
-        // Foreign keys
-
-        /// <summary>
-        /// Parent BusinessUnit pointed by [UserProfile].([BusinessUnitId]) (FK_UserProfile_BusinessUnit)
-        /// </summary>
-        public virtual BusinessUnit BusinessUnit { get; set; } // FK_UserProfile_BusinessUnit
-
-        /// <summary>
-        /// Parent EntityType pointed by [UserProfile].([EntityRefTypeId]) (FK_UserProfile_EntityRefType)
-        /// </summary>
-        public virtual EntityType EntityRefType { get; set; } // FK_UserProfile_EntityRefType
-
-        /// <summary>
-        /// Parent EntityType pointed by [UserProfile].([EntityTypeId]) (FK_UserProfile_EntityType)
-        /// </summary>
-        public virtual EntityType EntityType_EntityTypeId { get; set; } // FK_UserProfile_EntityType
-
         public UserProfile()
         {
             DisplayOrder = 0;
@@ -145,6 +131,7 @@ namespace RainMaker.Entity.Models
             EntityTypeId = 151;
             IsDeleted = false;
             IsSystemAdmin = false;
+            IsLockedOut = false;
             Acls = new System.Collections.Generic.HashSet<Acl>();
             Vortex_ActivityLogs = new System.Collections.Generic.HashSet<Vortex_ActivityLog>();
             AuditTrails = new System.Collections.Generic.HashSet<AuditTrail>();

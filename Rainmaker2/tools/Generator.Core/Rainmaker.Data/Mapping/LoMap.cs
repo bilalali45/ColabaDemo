@@ -18,22 +18,17 @@ namespace RainMaker.Data.Mapping
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using RainMaker.Entity.Models;
 
-    // UserGridSetting
+    // Los
     
-    public partial class UserGridSettingMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<UserGridSetting>
+    public partial class LoMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<Lo>
     {
-        public void Configure(EntityTypeBuilder<UserGridSetting> builder)
+        public void Configure(EntityTypeBuilder<Lo> builder)
         {
-            builder.ToTable("UserGridSetting", "dbo");
+            builder.ToTable("Los", "dbo");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.GridName).HasColumnName(@"GridName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(300);
-            builder.Property(x => x.Setting).HasColumnName(@"Setting").HasColumnType("nvarchar(max)").IsRequired(false);
-
-            // Foreign keys
-            builder.HasOne(a => a.UserProfile).WithMany(b => b.UserGridSettings).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.SetNull); // FK_UserGridSetting_UserProfile
+            builder.Property(x => x.Name).HasColumnName(@"Name").HasColumnType("nvarchar").IsRequired().HasMaxLength(250);
             InitializePartial();
         }
         partial void InitializePartial();

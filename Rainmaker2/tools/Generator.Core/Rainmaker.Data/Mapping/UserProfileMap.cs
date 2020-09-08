@@ -54,11 +54,9 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.LastLoginOnUtc).HasColumnName(@"LastLoginOnUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.LastLogoutOnUtc).HasColumnName(@"LastLogoutOnUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.BusinessUnitId).HasColumnName(@"BusinessUnitId").HasColumnType("int").IsRequired(false);
-
-            // Foreign keys
-            builder.HasOne(a => a.BusinessUnit).WithMany(b => b.UserProfiles).HasForeignKey(c => c.BusinessUnitId).OnDelete(DeleteBehavior.SetNull); // FK_UserProfile_BusinessUnit
-            builder.HasOne(a => a.EntityRefType).WithMany(b => b.UserProfiles_EntityRefTypeId).HasForeignKey(c => c.EntityRefTypeId).OnDelete(DeleteBehavior.SetNull); // FK_UserProfile_EntityRefType
-            builder.HasOne(a => a.EntityType_EntityTypeId).WithMany(b => b.UserProfiles_EntityTypeId).HasForeignKey(c => c.EntityTypeId).OnDelete(DeleteBehavior.SetNull); // FK_UserProfile_EntityType
+            builder.Property(x => x.FailedPasswordAttemptCount).HasColumnName(@"FailedPasswordAttemptCount").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.IsLockedOut).HasColumnName(@"IsLockedOut").HasColumnType("bit").IsRequired(false);
+            builder.Property(x => x.LastLockedOutDateUtc).HasColumnName(@"LastLockedOutDateUtc").HasColumnType("datetime").IsRequired(false);
             InitializePartial();
         }
         partial void InitializePartial();

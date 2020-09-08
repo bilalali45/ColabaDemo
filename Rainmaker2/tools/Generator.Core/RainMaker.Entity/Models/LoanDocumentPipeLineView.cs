@@ -23,6 +23,10 @@ namespace RainMaker.Entity.Models
     {
         public int Id { get; set; } // Id (Primary key)
         public int? OpportunityId { get; set; } // OpportunityId
+        public int? OwnerId { get; set; } // OwnerId
+        public int? LoanCoordinatorId { get; set; } // LoanCoordinatorId
+        public int? PreProcessorId { get; set; } // PreProcessorId
+        public int? LoanProcessorId { get; set; } // LoanProcessorId
         public int? StatusId { get; set; } // StatusId
         public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
         public string ApplicationStatus { get; set; } // ApplicationStatus (Primary key) (length: 150)
@@ -33,6 +37,7 @@ namespace RainMaker.Entity.Models
         public int? DocumentRemaining { get; set; } // DocumentRemaining
         public int? DocumentOutstanding { get; set; } // DocumentOutstanding
         public int? DocumentCompleted { get; set; } // DocumentCompleted
+        public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
 
         public LoanDocumentPipeLineView()
         {
