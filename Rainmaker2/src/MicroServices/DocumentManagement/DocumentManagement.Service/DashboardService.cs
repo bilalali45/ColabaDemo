@@ -95,7 +95,7 @@ namespace DocumentManagement.Service
                     {
                         dto.docMessage = query.docMessage;
                     }
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDto()
                     {
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -184,7 +184,7 @@ namespace DocumentManagement.Service
                         {
                             dto.docMessage = query.docMessage;
                         }
-                        dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDTO()
+                        dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDto()
                         {
                             clientName = x.clientName,
                             fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
@@ -259,7 +259,7 @@ namespace DocumentManagement.Service
             if (await asyncCursor.MoveNextAsync())
             {
                 string footerText = string.Empty;
-                if (asyncCursor.Current.Count() > 0)
+                if (asyncCursor.Current.Any())
                 {
                     FooterQuery query = BsonSerializer.Deserialize<FooterQuery>(asyncCursor.Current.First());
                     footerText = query.footerText;

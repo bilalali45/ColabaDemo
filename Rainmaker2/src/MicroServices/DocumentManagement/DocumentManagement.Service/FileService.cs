@@ -251,7 +251,7 @@ namespace DocumentManagement.Service
             return null;
         }
 
-        public async Task<FileViewDTO> View(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        public async Task<FileViewDto> View(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -304,7 +304,7 @@ namespace DocumentManagement.Service
 
 
             await asyncCursor.MoveNextAsync();
-            FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+            FileViewDto fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
 
             IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
 
@@ -315,7 +315,7 @@ namespace DocumentManagement.Service
         }
 
 
-        public async Task<List<FileViewDTO>> GetFileByDocId(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        public async Task<List<FileViewDto>> GetFileByDocId(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -361,16 +361,16 @@ namespace DocumentManagement.Service
                              } "
 
 ));
-            List<FileViewDTO> fileViewDTO = new List<FileViewDTO>();
+            List<FileViewDto> fileViewDTO = new List<FileViewDto>();
             if (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                    
-                    FileViewDTO query = BsonSerializer.Deserialize<FileViewDTO>(current.ToJson());
+                    FileViewDto query = BsonSerializer.Deserialize<FileViewDto>(current.ToJson());
 
                     
-                    fileViewDTO.Add(new FileViewDTO
+                    fileViewDTO.Add(new FileViewDto
                     {
                         id = query.id,
                         loanApplicationId = query.loanApplicationId

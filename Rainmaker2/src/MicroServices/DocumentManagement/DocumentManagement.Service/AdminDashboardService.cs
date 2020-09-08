@@ -20,7 +20,7 @@ namespace DocumentManagement.Service
             this.activityLogService = activityLogService;
             this.rainmakerService = rainmakerService;
         }
-        public async Task<List<AdminDashboardDTO>> GetDocument(int loanApplicationId, int tenantId, bool pending)
+        public async Task<List<AdminDashboardDto>> GetDocument(int loanApplicationId, int tenantId, bool pending)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -68,13 +68,13 @@ namespace DocumentManagement.Service
                         }"
                 ));
 
-            List<AdminDashboardDTO> result = new List<AdminDashboardDTO>();
+            List<AdminDashboardDto> result = new List<AdminDashboardDto>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                     AdminDashboardQuery query = BsonSerializer.Deserialize<AdminDashboardQuery>(current);
-                    AdminDashboardDTO dto = new AdminDashboardDTO();
+                    AdminDashboardDto dto = new AdminDashboardDto();
                     dto.id = query.id;
                     dto.docId = query.docId;
                     dto.requestId = query.requestId;
@@ -83,7 +83,7 @@ namespace DocumentManagement.Service
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     dto.status = query.status;
                     dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value,DateTimeKind.Utc) : null;
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status!=FileStatus.Deleted).Select(x => new AdminFileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status!=FileStatus.Deleted).Select(x => new AdminFileDto()
                     {
                         isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         id = x.id,

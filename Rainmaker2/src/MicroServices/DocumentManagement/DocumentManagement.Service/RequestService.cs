@@ -61,7 +61,7 @@ namespace DocumentManagement.Service
 
             ftpClient.Setup(hostIp: setting.ftpServer,
                             userName: setting.ftpUser,
-                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                            password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
             var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: memoryStream,
                                                                                               password: await keyStoreService.GetFileKey());
@@ -523,11 +523,11 @@ namespace DocumentManagement.Service
             return true;
         }
 
-        public async Task<List<DraftDocumentDTO>> GetDraft(int loanApplicationId, int tenantId)
+        public async Task<List<DraftDocumentDto>> GetDraft(int loanApplicationId, int tenantId)
         {
             IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
             IMongoCollection<Entity.Request> collectionDocumentDraft = mongoService.db.GetCollection<Entity.Request>("Request");
-            List<DraftDocumentDTO> result = new List<DraftDocumentDTO>();
+            List<DraftDocumentDto> result = new List<DraftDocumentDto>();
             using var asyncCursor = collectionRequest.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
               @"{""$match"": {
                   ""loanApplicationId"": " + loanApplicationId + @" 
@@ -578,7 +578,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
-                    DraftDocumentDTO dto = new DraftDocumentDTO();
+                    DraftDocumentDto dto = new DraftDocumentDto();
                     dto.message = query.message;
                     dto.typeId = query.typeId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
@@ -655,7 +655,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursorDocumentDraft.Current)
                 {
                     DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
-                    DraftDocumentDTO dto = new DraftDocumentDTO();
+                    DraftDocumentDto dto = new DraftDocumentDto();
                     dto.message = query.message;
                     dto.typeId = query.typeId;
                     dto.docId = query.docId;

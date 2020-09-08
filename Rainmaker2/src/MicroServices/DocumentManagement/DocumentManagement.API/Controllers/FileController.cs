@@ -90,7 +90,7 @@ namespace DocumentManagement.API.Controllers
 
             ftpClient.Setup(hostIp: setting.ftpServer,
                             userName: setting.ftpUser,
-                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                            password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
             foreach (var file in files)
             {
@@ -298,7 +298,7 @@ namespace DocumentManagement.API.Controllers
 
             ftpClient.Setup(hostIp: setting.ftpServer,
                             userName: setting.ftpUser,
-                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                            password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,

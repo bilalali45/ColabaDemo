@@ -31,7 +31,7 @@ namespace DocumentManagement.Model
         public string userName { get; set; }
     }
 
-    public class DocumendDTO
+    public class DocumentDto
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -40,11 +40,11 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string typeId { get; set; }
         public string requestId { get; set; }
-        public  List<DocumentFileDTO> files { get; set; }
+        public  List<DocumentFileDto> files { get; set; }
         public string userName { get; set; }
     }
 
-    public class DocumentFileDTO
+    public class DocumentFileDto
     {
         public string fileId { get; set; }
         public string clientName { get; set; }

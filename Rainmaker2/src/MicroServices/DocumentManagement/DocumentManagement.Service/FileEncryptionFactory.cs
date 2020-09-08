@@ -7,7 +7,7 @@
             switch(name)
             {
                 case "AES":
-                    return new AESFileEncryptor();
+                    return new AesFileEncryptor();
             }
             throw new DocumentManagementException($"{name} File encryptor not found");
         }
