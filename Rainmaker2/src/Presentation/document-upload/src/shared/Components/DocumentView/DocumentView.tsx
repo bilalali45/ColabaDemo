@@ -9,8 +9,6 @@ import FileViewer from "react-file-viewer";
 import printJS from "print-js";
 
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
-import { DocumentActions } from "../../../store/actions/DocumentActions";
-//import { Auth as Storage } from "../../../services/auth/Auth";
 import { Loader } from "../Assets/loader";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
