@@ -94,10 +94,13 @@ namespace ByteWebConnector.API.Controllers
         {
             _logger.LogInformation($"Start");
             _logger.LogInformation(message: $"DocSync  ByteWebConnector  SendDocument uploadEmbeddedDoc start ");
-            _logger.LogInformation(message: $"DocSync  SendDocument uploadEmbeddedDoc request  {request.FileData} ");
 
             var getLoanApplicationResponse = _rainmakerService.GetLoanApplication(loanApplicationId: request.LoanApplicationId);
             var loanApplication = getLoanApplicationResponse.ResponseObject;
+
+            _logger.LogInformation(message: $"DocSync  getLoanApplicationResponse.Content = {getLoanApplicationResponse.HttpResponseMessage.Content.ReadAsStringAsync().Result} ");
+            _logger.LogInformation(message: $"DocSync  loanApplication = {loanApplication.ToJson()} ");
+
 
             _logger.LogInformation($"loanApplication found= {loanApplication.HasValue()}");
             if (loanApplication != null)
@@ -114,7 +117,7 @@ namespace ByteWebConnector.API.Controllers
                 _logger.LogInformation($"loanApplication.Id = {loanApplication.Id}");
                 var documentUploadModel = new DocumentUploadRequest
                                           {
-                                              FileDataId = Convert.ToInt64(loanApplication.EncompassNumber),
+                                              FileDataId = Convert.ToInt64(loanApplication.ByteLoanNumber),
                                               DocumentCategory = request.DocumentCategory,
                                               DocumentExension = request.DocumentExension,
                                               DocumentName = request.DocumentName,
@@ -409,6 +412,10 @@ namespace ByteWebConnector.API.Controllers
             {
                 return true;
             };
+
+
+            _logger.LogInformation($"DocSync ByteApiDocument Content = {output.ToJson()}");
+
             using (var client = new HttpClient(clientHandler))
             {
                 var request = new HttpRequestMessage()
