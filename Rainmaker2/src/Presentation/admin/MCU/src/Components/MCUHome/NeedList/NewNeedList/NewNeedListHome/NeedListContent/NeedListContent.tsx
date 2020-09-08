@@ -130,7 +130,7 @@ export const NeedListContent = ({
       {renderTitleInputText()}
 
       <div className="mainbody">
-        <p>Include a message to the borrower</p>
+        <p>Add or edit details for this document</p>
         <div className="editer-wrap">
           <TextArea
             placeholderValue={'Type your message'}
@@ -149,9 +149,9 @@ export const NeedListContent = ({
             }}
             maxLengthValue={500}
           />
-                  <div className="input-chrac">
+                  {/* <div className="input-chrac">
           <span>{docMessage?.length || 0}</span><span>/</span><span>500</span>
-        </div>
+        </div> */}
         </div>
       </div>
 

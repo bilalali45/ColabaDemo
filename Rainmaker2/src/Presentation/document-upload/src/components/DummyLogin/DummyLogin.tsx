@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { Http } from "../../services/http/Http";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Auth } from "../../services/auth/Auth";
 import { AuthActions } from "../../store/actions/User";
 import { Store } from "../../store/store";

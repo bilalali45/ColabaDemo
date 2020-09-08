@@ -1,6 +1,7 @@
 .Doc-upload {
     margin-right: -5px;
     position: relative;
+    min-height: 100%;
     &.drag-enter{
         // border: 2px dashed #ebebeb;
         &:after {
@@ -10,7 +11,7 @@
         }
     }
     &.dragableArea {
-        .file-drop-box-wrap,.Doc-head-wrap {
+        .file-drop-box-wrap,.Doc-head-wrap,.empty-uploader {
             pointer-events: none;
          
         }
@@ -28,7 +29,7 @@
     }
     
     .empty-uploader {
-            height: 425px;
+            height: 330px;
             .upload-note {
                 color: color("light-purple");
                                 font: 500 #{fontSize("xs") + 1 + "/17px"} fontFamily("base");
@@ -49,6 +50,7 @@
                 max-width: 450px;
                 display: inline-block;
                 vertical-align: middle;
+                padding-right: 5px;
             }
         }
         p {
@@ -67,13 +69,13 @@
         }
         &--alert{
             color: $danger;
-            font: 500 #{fontSize("xs") + "/17px"} fontFamily("base");
-            padding: 0 5px;
+            font: 500 #{fontSize("sm") + "/18px"} fontFamily("base");
+            padding: 1px 0px 0;
             text-transform: uppercase;
         }
     }
     .file-drop-box {
-        min-height: 415px;
+        min-height: 480px;
         width: 100%;
         &.havefooter {
             height: 345px;

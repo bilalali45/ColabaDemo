@@ -199,7 +199,7 @@ a[href],a[tabindex]{
         position: relative;
         padding-left: 20px;
         color: color('colorBlack');
-        text-transform: capitalize;
+        text-transform: initial;
 
         &::before {
             content: "";

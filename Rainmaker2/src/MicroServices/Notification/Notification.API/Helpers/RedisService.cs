@@ -24,9 +24,9 @@ namespace Notification.Service
         }
         public async Task Run()
         {
-            using (IServiceScope scope = serviceProvider.CreateScope())
+            while (true) 
             {
-                while (true)
+                using (IServiceScope scope = serviceProvider.CreateScope())
                 {
                     try
                     {

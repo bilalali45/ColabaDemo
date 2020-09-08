@@ -19,6 +19,7 @@ interface NotificationsProps {
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
   showToss: boolean;
   dispatch: Dispatch<Actions>;
+  deleteAll: boolean;
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
@@ -31,7 +32,8 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
     removeNotification,
     readAllNotificationsForDocument,
     showToss,
-    dispatch
+    dispatch,
+    deleteAll
   } = props;
   const notificationRef = createRef<HTMLDivElement>();
 
@@ -69,12 +71,14 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
   };
 
   return notifications.length > 0 ? (
-    <section className="notify-content">
+    <section
+      className={`notify-content ${deleteAll ? '' : ' animated2 fadeIn'}`}
+    >
       <NewNotificationToss
         showToss={showToss}
         handleScrollToTop={handleScrollToTop}
       />
-      <div className="notify-body" id="notification-ul" ref={notificationRef}>
+      <div className="notify-body " id="notification-ul" ref={notificationRef}>
         <div className="notification-ul">
           <InfiniteScroll
             dataLength={notifications.length}

@@ -12,7 +12,7 @@ export const NeedList = () => {
             <NeedListHeader/>
 
             <div className="container-mcu">
-                <div className="block padding">                    
+                <div className="block">                    
                     <NeedListView/>
                 </div>                
             </div>            

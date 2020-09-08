@@ -26,6 +26,10 @@
             }
         }
 
+        .btn{
+            font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        }
+
     }
 
     &-body{
@@ -35,8 +39,13 @@
             ul {
             list-style: disc;
             padding-left: 20px;
+            color: color('primary');
             li{
                 list-style: disc; 
+                margin-bottom: 10px;
+                a{
+                    color: color('base');
+                }
             }
         }
         }
@@ -69,6 +78,9 @@
                 min-height: 70vh;
                 height: calc(100vh - 250px);
                 overflow-y: auto;
+            }
+            &-heading{
+                margin-bottom: 20px;
             }
         }
         &--aside{

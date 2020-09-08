@@ -106,13 +106,14 @@ namespace DocumentManagement.API.Controllers
             foreach (var formFile in files)
                 if (formFile.Length > 0)
                 {
-                    logger.LogInformation($"uploading file {formFile.FileName}");
+                    logger.LogInformation($"DocSync uploading file {formFile.FileName}");
                     var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
+                    logger.LogInformation($"DocSync filePath {filePath}");
                     // upload to ftp
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 localFile: filePath);
-
+                    logger.LogInformation($"DocSync After UploadAsync");
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
                                                             id: id,
@@ -126,17 +127,25 @@ namespace DocumentManagement.API.Controllers
                                                             tenantId: tenantId,
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
+                    logger.LogInformation($"DocSync After Submit into Mongo");
                     System.IO.File.Delete(path: filePath);
+                    logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
                         throw new DocumentManagementException("unable to update file in mongo");
                     fileId.Add(docQuery);
+                    logger.LogInformation($"DocSync docQuery is not empty");
                 }
+            logger.LogInformation($"DocSync Before Request header Select");
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+            logger.LogInformation($"DocSync After Request header Select");
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            logger.LogInformation($"DocSync ipAddress ={ipAddress}" );
+
 #pragma warning disable 4014
             Task.Run(async () =>
 #pragma warning restore 4014
                      {
+                         logger.LogInformation($"DocSync Task.Run Start ");
                          try
                          {
                              int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
@@ -146,12 +155,14 @@ namespace DocumentManagement.API.Controllers
                          {
                              // this exception can be ignored
                          }
-
+                         logger.LogInformation($"DocSync Before SendFilesToBytePro ");
                          try
                          {
                              Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                             logger.LogInformation($"DocSync tenant ={tenant}");
                              if (tenant.syncToBytePro == (int)SyncToBytePro.Auto && tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnSubmit)
                              {
+                                 logger.LogInformation($"DocSync if check = true");
                                  foreach (var fileid in fileId)
                                  {
                                      FileViewModel fileViewModel = new FileViewModel();
@@ -160,7 +171,7 @@ namespace DocumentManagement.API.Controllers
                                      fileViewModel.docId = docId;
                                      fileViewModel.fileId = fileid;
                                      var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
-                                     logger.LogInformation(message: $"fileid {fileid} is getting from submit file");
+                                     logger.LogInformation(message: $"DocSync fileid {fileid} is getting from submit file");
 
                                      if (files.Count > 0)
                                      {

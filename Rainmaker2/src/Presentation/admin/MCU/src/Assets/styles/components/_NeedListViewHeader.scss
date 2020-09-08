@@ -1,12 +1,14 @@
 .need-list-view-header{
     display: flex;
     justify-content: space-between;
-    padding: 0 15px;
+    padding: 25px 30px;
+    border-bottom: 1px solid color('border');
 
     .h2{
-        font: 500 21px/1.2 fontFamily("base");
+        font: 500 #{fontSize('xmd')}/1.2 fontFamily("base");
         padding-right: 40px;
         vertical-align: middle;
+        text-transform: uppercase;
     }
 
     &--left{

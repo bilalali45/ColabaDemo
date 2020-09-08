@@ -176,7 +176,6 @@ export const NewNeedList = () => {
   const changeDocument = (d: TemplateDocument) => {
      
     let index = allDocuments.findIndex((doc) => doc.localId === d?.localId);
-    console.log(index);
     if(index === allDocuments.length - 1) {
       index = 0;
     }

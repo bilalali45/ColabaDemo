@@ -9,6 +9,9 @@ import { TemplateActionsType } from "../../../../Store/reducers/TemplatesReducer
 import { TemplateActions } from "../../../../Store/actions/TemplateActions";
 import { LocalDB } from "../../../../Utils/LocalDB";
 import { NeedListActionsType } from "../../../../Store/reducers/NeedListReducer";
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from "react-bootstrap/Popover";
+
 
 type NeedListSelectType = {
   templateList: Template[],
@@ -27,9 +30,7 @@ export const NeedListSelect = ({
 
   const [idArray, setIdArray] = useState<String[]>([]);
   const [templateList, setTemplateList] = useState<Template[]>([]);
-
   const { state, dispatch } = useContext(Store);
-
   const location = useLocation();
 
   let myTemplateContainerRef = useRef<HTMLUListElement>(null);
@@ -42,14 +43,33 @@ export const NeedListSelect = ({
   const selectedIds: string[] = needListManager?.templateIds || [];
 
   const [show, setShow] = useState<boolean>(false);
-    
+  const [showPopover, setShowPopover] = useState<boolean>(false);
+  const [target, setTarget] = useState(null);
+  const ref = useRef(null);
+
+  const [docs, setDocs] = useState<any[]>([]);
+  const [templateName, setTemplateName] = useState<string>("");
+
+  const displayPopover = (event: any, docs: any[],name:string) => {
+    console.log(event.target, "apex");
+    setTemplateName(name)
+    setDocs(docs)
+    setShowPopover(true);
+    setTarget(event.target);
+  };
+
+  const hidePopover = (event: any) => {
+    console.log(event.target, "apex");
+    setShowPopover(false);
+    setTarget(event.target);
+  };
 
   useEffect(() => {
     if (!templates) {
       fetchTemplatesList();
     }
 
-    
+
   }, [!templates])
 
   useEffect(() => {
@@ -57,7 +77,7 @@ export const NeedListSelect = ({
   }, [selectedIds?.length]);
 
   useEffect(() => {
-    if(myTemplateContainerRef?.current && tenantTemplateContainerRef?.current) {
+    if (myTemplateContainerRef?.current && tenantTemplateContainerRef?.current) {
       myTemplateContainerRef?.current.scrollTo(0, 0);
       tenantTemplateContainerRef?.current.scrollTo(0, 0);
     }
@@ -85,25 +105,56 @@ export const NeedListSelect = ({
 
   }
 
+
+
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
+
     return (
       <>
-        <h3>My Templates</h3>
+        <div ref={ref}>
+          <h3>My Templates</h3>
 
-        <ul className="checklist" ref={myTemplateContainerRef}>
-          {
-            templateList?.map((t: Template) => {
+          <ul className="checklist" ref={myTemplateContainerRef}>
+            {
+              templateList?.map((t: Template) => {
+                if (t?.type === MyTemplate) {
+                  return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis">
 
-              if (t?.type === MyTemplate) {
+                    <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
+                      updateIdsList(e, t?.id);
+                    }} id={t.id} type="checkbox" /> {t?.name}
+                  </label>
+                  </li>
+                }
+              })
+            }
 
-                return <li key={t?.id}><label className="text-ellipsis"><input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
-                  updateIdsList(e, t?.id);
-                }} id={t.id} type="checkbox" /> {t?.name}</label></li>
-              }
-            })
-          }
-        </ul>
+
+          </ul>
+          <Overlay
+            show={showPopover}
+            target={target}
+            placement="right"
+            container={ref.current}
+          >
+            <Popover id="popover-contained" className="addneedlist-popover">
+          <Popover.Title as="h3" class="addneedlist-popover-title">{templateName}</Popover.Title>
+              <Popover.Content>
+
+                {docs.map((d: any) => {
+                  return (
+                    <span className="addneedlist-popover--list">{d.docName}</span>
+                  )
+
+                })
+
+                }
+
+              </Popover.Content>
+            </Popover>
+          </Overlay>
+        </div>
       </>
     );
   };
@@ -117,7 +168,7 @@ export const NeedListSelect = ({
           {
             templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
@@ -135,7 +186,7 @@ export const NeedListSelect = ({
         fetchTemplateDocs(idArray);
         addTemplatesDocuments(idArray);
         setShow(false);
-      }} className="btn btn-primary btn-block">Add Selected</button>
+      }} className="btn btn-primary btn-block"><span className="btn-text d-text">Add Selected</span></button> //zedit
     } else {
 
       if (idArray.length > 0) {
@@ -163,7 +214,7 @@ export const NeedListSelect = ({
               Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
-            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', color: '#2C9EF5', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 
