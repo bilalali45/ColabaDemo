@@ -58,7 +58,6 @@ export const SelectedDocumentTypeList = ({
     ? needList
     : templateDocuments;
 
-    console.log(currentCategoryDocuments?.catName);
   return (
     <div className="active-docs">
      {currentCategoryDocuments?.catName !=='Commonly Used' || term? <ul
@@ -101,7 +100,7 @@ export const SelectedDocumentTypeList = ({
         }
       >
         {documentList &&
-          documentList?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
+          filterUsedDocs(usedDocs)?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
             return (
               <li
                 title={dl?.docType}
