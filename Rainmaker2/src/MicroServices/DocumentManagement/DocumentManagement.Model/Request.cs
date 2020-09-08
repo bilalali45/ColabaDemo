@@ -75,13 +75,13 @@ namespace DocumentManagement.Model
         public int loanApplicationId { get; set; }
     }
 
-    public class DraftDTO
+    public class DraftDto
     {
         public string message { get; set; }
-        public List<DraftDocumentDTO> draftDocument { get; set; }
+        public List<DraftDocumentDto> draftDocument { get; set; }
     }
 
-    public class DraftDocumentDTO
+    public class DraftDocumentDto
     {
         public string typeId { get; set; }
         public string docName { get; set; }

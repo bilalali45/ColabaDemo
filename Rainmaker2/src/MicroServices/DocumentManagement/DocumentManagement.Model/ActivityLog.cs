@@ -24,7 +24,7 @@ namespace DocumentManagement.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string fileId { get; set; }
     }
-    public class ActivityLogDTO
+    public class ActivityLogDto
     {
         public string id { get; set; }
         public int userId { get; set; }

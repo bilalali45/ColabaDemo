@@ -2,7 +2,7 @@
 
 namespace DocumentManagement.Model
 {
-    public class mcuRenameModel
+    public class McuRenameModel
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFailed)]
         [RegularExpression(@"^[A-Fa-f\d]{24}$", ErrorMessage = ValidationMessages.ValidationFailed)]

@@ -21,7 +21,7 @@ namespace DocumentManagement.Service
             this.activityLogService = activityLogService;
             this.rainmakerService = rainmakerService;
         }
-        public async Task<List<DocumendDTO>> GetFiles(string id, string requestId, string docId)
+        public async Task<List<DocumentDto>> GetFiles(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -69,7 +69,7 @@ namespace DocumentManagement.Service
                 ));
 
 
-            List<DocumendDTO> result = new List<DocumendDTO>();
+            List<DocumentDto> result = new List<DocumentDto>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
@@ -77,8 +77,8 @@ namespace DocumentManagement.Service
                     var c = current.ToJson();
                     DocumentDetailQuery query = BsonSerializer.Deserialize<DocumentDetailQuery>(current);
 
-                    DocumendDTO dto = new DocumendDTO();
-                    dto.files = new List<DocumentFileDTO>();
+                    DocumentDto dto = new DocumentDto();
+                    dto.files = new List<DocumentFileDto>();
                     dto.id = query.id;
                     dto.docId = query.docId;
                     dto.typeId = query.typeId;
@@ -86,7 +86,7 @@ namespace DocumentManagement.Service
                     dto.requestId = query.requestId;
                     dto.userName = query.userName;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDTO()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDto()
                     {
                         isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         fileId = x.id,
@@ -100,7 +100,7 @@ namespace DocumentManagement.Service
 
             return result;
         }
-        public async Task<List<ActivityLogDTO>> GetActivityLog(string id, string requestId, string docId)
+        public async Task<List<ActivityLogDto>> GetActivityLog(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
             string match =  @"{""$match"": {
@@ -130,12 +130,12 @@ namespace DocumentManagement.Service
                 ));
 
 
-            List<ActivityLogDTO> result = new List<ActivityLogDTO>();
+            List<ActivityLogDto> result = new List<ActivityLogDto>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    ActivityLogDTO dto = new ActivityLogDTO();
+                    ActivityLogDto dto = new ActivityLogDto();
                     ActivityLogQuery query = BsonSerializer.Deserialize<ActivityLogQuery>(current);
                     dto.userId = query.userId;
                     dto.userName = query.userName;
@@ -225,7 +225,7 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<List<EmailLogDTO>> GetEmailLog(string id,string requestId,string docId)
+        public async Task<List<EmailLogDto>> GetEmailLog(string id,string requestId,string docId)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
@@ -251,12 +251,12 @@ namespace DocumentManagement.Service
                            } "
                 ));
 
-            List<EmailLogDTO> result = new List<EmailLogDTO>();
+            List<EmailLogDto> result = new List<EmailLogDto>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    EmailLogDTO dto = new EmailLogDTO();
+                    EmailLogDto dto = new EmailLogDto();
                     EmailLogQuery query = BsonSerializer.Deserialize<EmailLogQuery>(current);
                     dto.userId = query.userId;
                     dto.userName = query.userName;
@@ -379,7 +379,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<FileViewDTO> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        public async Task<FileViewDto> View(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -431,7 +431,7 @@ namespace DocumentManagement.Service
 
 
             await asyncCursor.MoveNextAsync();
-            FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+            FileViewDto fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
 
             IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
 
