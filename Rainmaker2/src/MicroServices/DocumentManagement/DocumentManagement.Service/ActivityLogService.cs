@@ -31,7 +31,7 @@ namespace DocumentManagement.Service
                 bsonElements.Add("activity",
                                  activity);
 
-                UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+                 await collection.UpdateOneAsync(new BsonDocument()
                                                                       {
                                                                           {"_id", new ObjectId(activityId)}
                                                                       },

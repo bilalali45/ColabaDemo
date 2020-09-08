@@ -340,7 +340,7 @@ namespace DocumentManagement.Tests
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
             mockconfiguration.Setup(x => x["KeyStore:Url"]).Returns("http://test.com");
             mockconfiguration.Setup(x => x["File:FtpKey"]).Returns("FtpKey");
-            FileViewDTO fileViewDTO = new FileViewDTO();
+            FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.serverName = "a69ad17f-7505-492d-a92e-f32967cecff8.enc";
             fileViewDTO.encryptionKey = "FileKey";
             fileViewDTO.encryptionAlgorithm = "AES";
@@ -480,8 +480,8 @@ namespace DocumentManagement.Tests
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
             mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
  
-            List<FileViewDTO> fileViewDTOs = new List<FileViewDTO>();
-            FileViewDTO fileViewDTO = new FileViewDTO();
+            List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
+            FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace DocumentManagement.Service
 {
-    public class AESFileEncryptor : IFileEncryptor
+    public class AesFileEncryptor : IFileEncryptor
     {
         public Stream DecrypeFile(string inputFile, string password, string originalFileName)
         {

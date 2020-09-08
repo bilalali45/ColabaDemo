@@ -23,7 +23,7 @@ namespace DocumentManagement.Service
             this.losIntegrationService = losIntegrationService;
         }
 
-        public async Task<FileViewDTO> View(AdminFileViewModel model, int tenantId)
+        public async Task<FileViewDto> View(AdminFileViewModel model, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -74,7 +74,7 @@ namespace DocumentManagement.Service
                 ));
 
             await asyncCursor.MoveNextAsync();
-            FileViewDTO fileViewDTO = BsonSerializer.Deserialize<FileViewDTO>(asyncCursor.Current.FirstOrDefault());
+            FileViewDto fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
 
             return fileViewDTO;
         }
