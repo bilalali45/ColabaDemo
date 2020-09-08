@@ -68,12 +68,18 @@ export const NeedListRequest = ({
   useEffect(() => {
     setLoaderVisible(false);
   }, []);
+  console.log(documentList.length);
+  useEffect(() => {
+    setShowSaveAsTemplate(false);
+  }, [documentList.length === 0])
 
   const toggleSaveAsTemplate = () => {
     setShowSaveAsTemplate(!showSaveAsTemplate);
     setTemplateNameError('');
     setTemplateName('');
   };
+
+
 
   const validateTemplateName = (e: ChangeEvent<HTMLInputElement>) => {
     let {
