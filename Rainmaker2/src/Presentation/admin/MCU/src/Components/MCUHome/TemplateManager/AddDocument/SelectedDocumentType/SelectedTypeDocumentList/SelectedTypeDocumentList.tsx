@@ -23,7 +23,6 @@ export const SelectedTypeDocumentList = ({
   needList
 }: SelectedTypeType) => {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {};
-  console.log('lskdjflksjdf alskdfjaldskjf  needList', needList);
   return (
     <div>
       <div className="s-wrap">

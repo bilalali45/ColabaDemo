@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using LosIntegration.API.Models.ClientModels;
+﻿using LosIntegration.API.Models.ClientModels;
+using System.Runtime.Serialization;
 
 namespace LosIntegration.API.Models
 {

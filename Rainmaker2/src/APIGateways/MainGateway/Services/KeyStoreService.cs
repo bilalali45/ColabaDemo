@@ -1,12 +1,11 @@
-﻿using System;
+﻿using MainGateway.Helpers;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
-using MainGateway.Helpers;
-using Microsoft.Extensions.Configuration;
 
 namespace MainGateway.Services
 {
-   
+
 
     public class KeyStoreService : IKeyStoreService
     {

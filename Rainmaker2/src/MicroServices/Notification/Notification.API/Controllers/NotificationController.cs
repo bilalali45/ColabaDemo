@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json.Linq;
 using Notification.Entity.Models;
 using Notification.Model;
 using Notification.Service;
+using System;
+using System.Threading.Tasks;
 
 namespace Notification.API.Controllers
 {

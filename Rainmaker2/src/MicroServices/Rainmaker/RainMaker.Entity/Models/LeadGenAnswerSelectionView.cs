@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // LeadGenAnswerSelectionView
-    
+
     public partial class LeadGenAnswerSelectionView : URF.Core.EF.Trackable.Entity
     {
         public int? QuestionGroupId { get; set; } // QuestionGroupId

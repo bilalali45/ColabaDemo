@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Elasticsearch.Net;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -13,6 +7,10 @@ using Notification.API;
 using Notification.Entity.Models;
 using Notification.Model;
 using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Notification.Service
 {
@@ -26,9 +24,9 @@ namespace Notification.Service
         }
         public async Task Run()
         {
-            using (IServiceScope scope = serviceProvider.CreateScope())
+            while (true) 
             {
-                while (true)
+                using (IServiceScope scope = serviceProvider.CreateScope())
                 {
                     try
                     {

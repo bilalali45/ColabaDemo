@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RainMaker.Common.Extensions;
 using RainMaker.Data;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
 namespace Rainmaker.Service

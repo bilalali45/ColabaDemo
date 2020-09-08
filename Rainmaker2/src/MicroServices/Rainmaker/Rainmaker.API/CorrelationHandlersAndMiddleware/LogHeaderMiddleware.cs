@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-using RainMaker.Common.Extensions;
 
 namespace RainMaker.API.CorrelationHandlersAndMiddleware
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LosIntegration.API.Models.LoanApplication
+﻿namespace LosIntegration.API.Models.LoanApplication
 {
     public class LoanApplicationResponse
     {

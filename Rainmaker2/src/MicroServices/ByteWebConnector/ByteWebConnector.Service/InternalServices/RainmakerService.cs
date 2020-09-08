@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using ByteWebConnector.Model.Configuration;
-using ByteWebConnector.Model.Models.Document;
+﻿using ByteWebConnector.Model.Models.Document;
 using ByteWebConnector.Model.Models.ServiceRequestModels.Document;
-using ByteWebConnector.Model.Models.ServiceRequestModels.Rainmaker.LoanApplication;
 using ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanApplication;
 using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using ServiceCallHelper;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ByteWebConnector.Service.InternalServices
 {

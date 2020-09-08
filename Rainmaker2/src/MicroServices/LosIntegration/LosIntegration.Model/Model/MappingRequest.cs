@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LosIntegration.Model.Model
+﻿namespace LosIntegration.Model.Model
 {
     public class MappingRequest
     {

@@ -14,6 +14,7 @@ import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { update } from "lodash";
 import { useLocation, useHistory } from "react-router-dom";
+import { Rename } from "../../../../../utils/helpers/rename";
 //import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 
 interface SelectedDocumentsType {
@@ -64,9 +65,8 @@ export const SelectedDocuments = ({
   useEffect(() => {
     setFileInput(inputRef.current);
     disableSubmitBtn();
-    console.log('in here', currentSelected);
+
     let curentFileIndex = pendingDocs.findIndex((pd: DocumentRequest) => pd?.docId === currentSelected?.docId);
-    console.log(currentDocIndex);
     setCurrentDocIndex(curentFileIndex);
 
   }, [selectedFiles, selectedFiles.length, currentSelected]);
@@ -166,6 +166,7 @@ export const SelectedDocuments = ({
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
+        // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
         f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
         f.editName = !f.editName;
         return f;

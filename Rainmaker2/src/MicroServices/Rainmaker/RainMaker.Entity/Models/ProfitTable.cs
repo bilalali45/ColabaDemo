@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // ProfitTable
-    
+
     public partial class ProfitTable : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

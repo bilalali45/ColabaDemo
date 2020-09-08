@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LosIntegration.API.ExtensionMethods;
+using LosIntegration.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using LosIntegration.API.ExtensionMethods;
-using LosIntegration.API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

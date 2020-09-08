@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // TeamMember
-    
+
     public partial class TeamMember : URF.Core.EF.Trackable.Entity
     {
         public int TeamId { get; set; } // TeamId (Primary key)

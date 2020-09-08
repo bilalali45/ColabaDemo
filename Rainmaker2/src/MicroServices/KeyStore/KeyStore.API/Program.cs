@@ -1,7 +1,3 @@
-using System;
-using System.Net;
-using System.Reflection;
-using System.Threading;
 using KeyStore.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +5,10 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
+using System;
+using System.Net;
+using System.Reflection;
+using System.Threading;
 
 namespace Identity
 {

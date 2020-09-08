@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Extensions.ExtensionClasses
 {
-   public static class DatasetExtension
+    public static class DatasetExtension
     {
         public static string ToXml(this DataSet ds)
         {

@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // NotificationRecepientStatusLog
-    
+
     public partial class NotificationRecepientStatusLogMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<NotificationRecepientStatusLog>
     {
         public void Configure(EntityTypeBuilder<NotificationRecepientStatusLog> builder)

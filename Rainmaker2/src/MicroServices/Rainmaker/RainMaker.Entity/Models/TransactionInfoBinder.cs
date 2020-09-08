@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // TransactionInfoBinder
-    
+
     public partial class TransactionInfoBinder : URF.Core.EF.Trackable.Entity
     {
         public int LoanApplicationId { get; set; } // LoanApplicationId (Primary key)

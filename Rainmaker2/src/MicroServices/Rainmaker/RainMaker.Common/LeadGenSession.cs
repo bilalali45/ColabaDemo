@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RainMaker.Common.Extensions;
 using RainMaker.Entity.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace RainMaker.Common
 {

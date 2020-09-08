@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // TaxCityBinder
-    
+
     public partial class TaxCityBinder : URF.Core.EF.Trackable.Entity
     {
         public int PropertyTaxId { get; set; } // PropertyTaxId (Primary key)

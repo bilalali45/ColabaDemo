@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Rainmaker.Model;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Common;
-using RainMaker.Common.FTP;
+using RainMaker.Common.Extensions;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
-using RainMaker.Common.Extensions;
-using Rainmaker.Model.LoanApplication;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using TrackableEntities.Common.Core;
 
 

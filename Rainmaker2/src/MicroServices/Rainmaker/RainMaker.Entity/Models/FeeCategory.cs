@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // FeeCategory
-    
+
     public partial class FeeCategory : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

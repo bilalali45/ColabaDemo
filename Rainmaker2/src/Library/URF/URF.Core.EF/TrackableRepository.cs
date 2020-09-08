@@ -1,6 +1,5 @@
-﻿using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using TrackableEntities.Common.Core;
 using TrackableEntities.EF.Core;
 using URF.Core.Abstractions;

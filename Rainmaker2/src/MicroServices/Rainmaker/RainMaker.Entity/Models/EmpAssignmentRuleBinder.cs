@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // EmpAssignmentRuleBinder
-    
+
     public partial class EmpAssignmentRuleBinder : URF.Core.EF.Trackable.Entity
     {
         public int RuleId { get; set; } // RuleId (Primary key)

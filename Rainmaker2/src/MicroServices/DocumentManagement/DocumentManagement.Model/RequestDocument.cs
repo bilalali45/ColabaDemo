@@ -1,13 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
-   public class RequestDocument
+    public class RequestDocument
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }

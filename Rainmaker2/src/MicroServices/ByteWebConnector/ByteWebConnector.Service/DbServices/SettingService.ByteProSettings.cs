@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ByteWebConnector.Entity.Models;
+using System.Collections.Generic;
 using System.Linq;
-using ByteWebConnector.Entity.Models;
 
 namespace ByteWebConnector.Service.DbServices
 {

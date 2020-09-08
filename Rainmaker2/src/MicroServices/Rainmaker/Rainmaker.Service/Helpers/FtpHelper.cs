@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Rainmaker.Service.Helpers;
+using RainMaker.Common;
+using RainMaker.Common.Extensions;
+using RainMaker.Common.FTP;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using RainMaker.Common;
-using RainMaker.Common.FTP;
 using System.Net;
-using System;
-using RainMaker.Common.Extensions;
 using System.Threading.Tasks;
-using Rainmaker.Service.Helpers;
 
 namespace RainMaker.Service.Helpers
 {
