@@ -38,6 +38,10 @@ export class LocalDB {
     }
   }
 
+  static getPortalReferralUrl(){
+    return localStorage.getItem("PortalReferralUrl");    
+  }
+
   static getLoanAppliationId() {
     return (
       this.decodeString(window.sessionStorage.getItem("loanApplicationId")) ||

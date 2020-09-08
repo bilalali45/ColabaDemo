@@ -130,7 +130,7 @@ namespace ByteWebConnector.Service.ExternalServices
             request.Headers.Add(name: "Session",
                                 value: session);
             request.Accept = "application/json";
-            var test = string.Empty;
+           
             using (var response = (HttpWebResponse) request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
@@ -192,7 +192,7 @@ namespace ByteWebConnector.Service.ExternalServices
             request.Headers.Add(name: "Session",
                                 value: byteProSession);
             request.Accept = "application/json";
-            var test = string.Empty;
+            
             using (var response = (HttpWebResponse) request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();

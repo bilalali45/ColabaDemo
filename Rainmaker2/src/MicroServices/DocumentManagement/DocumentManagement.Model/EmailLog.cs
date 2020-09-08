@@ -5,7 +5,7 @@ using System;
 namespace DocumentManagement.Model
 {
 
-    public class EmailLogDTO
+    public class EmailLogDto
     {
 
         public string id { get; set; }

@@ -8,7 +8,7 @@ namespace DocumentManagement.Service
     public interface ITemplateService
     {
         Task<List<TemplateModel>> GetTemplates(int tenantId, int userProfileId);
-        Task<List<TemplateDTO>> GetDocument(string id);
+        Task<List<TemplateDto>> GetDocument(string id);
         Task<bool> RenameTemplate(string  id, int tenantid, string newname,int userProfileId);
         Task<bool> DeleteDocument(string id, int tenantid, string documentid, int userProfileId);
         Task<bool> DeleteTemplate(string templateId,int tenantId, int userProfileId);

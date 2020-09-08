@@ -60,7 +60,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<DocumendDTO> list = new List<DocumendDTO>() { { new DocumendDTO()
+            List<DocumentDto> list = new List<DocumentDto>() { { new DocumentDto()
             {
                 id="5eb25d1fe519051af2eeb72d",
                 requestId = "abc15d1fe456051af2eeb768",
@@ -85,7 +85,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DocumendDTO>;
+            var content = (result as OkObjectResult).Value as List<DocumentDto>;
             Assert.Single(content);
             Assert.Equal("5eb25d1fe519051af2eeb72d", content[0].id);
             Assert.Equal("abc15d1fe456051af2eeb768", content[0].requestId);
@@ -99,7 +99,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<ActivityLogDTO> list = new List<ActivityLogDTO>() { { new ActivityLogDTO()
+            List<ActivityLogDto> list = new List<ActivityLogDto>() { { new ActivityLogDto()
             {
                 id="5f046210f50dc78d7b0c059c",
                 userId=3842,
@@ -128,7 +128,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<ActivityLogDTO>;
+            var content = (result as OkObjectResult).Value as List<ActivityLogDto>;
             Assert.Single(content);
             Assert.Equal("5f046210f50dc78d7b0c059c", content[0].id);
             Assert.Equal("abc15d1fe456051af2eeb768", content[0].typeId);
@@ -245,7 +245,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<DocumendDTO> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
+            List<DocumentDto> dto = await service.GetFiles("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "aaa25d1fe456051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
@@ -382,7 +382,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "abc15d1fe456051af2eeb768");
+            List<ActivityLogDto> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "abc15d1fe456051af2eeb768", "abc15d1fe456051af2eeb768");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
@@ -519,7 +519,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<ActivityLogDTO> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "aaa25d1fe456051af2eeb72d", "aaa25d1fe456051af2eeb72d");
+            List<ActivityLogDto> dto = await service.GetActivityLog("5eb25d1fe519051af2eeb72d", "aaa25d1fe456051af2eeb72d", "aaa25d1fe456051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(8, dto.Count);
@@ -627,7 +627,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            List<EmailLogDTO> list = new List<EmailLogDTO>() { { new EmailLogDTO()
+            List<EmailLogDto> list = new List<EmailLogDto>() { { new EmailLogDto()
             {
                 id="5f046210f50dc78d7b0c059c",
                 userId=3842,
@@ -652,7 +652,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<EmailLogDTO>;
+            var content = (result as OkObjectResult).Value as List<EmailLogDto>;
             Assert.Single(content);
             Assert.Equal("5f046210f50dc78d7b0c059c", content[0].id);
             Assert.Equal("abc", content[0].userName);
@@ -783,7 +783,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object,mockActivityLogService.Object,null);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
+            List<EmailLogDto> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -915,7 +915,7 @@ namespace DocumentManagement.Tests
 
             var service = new DocumentService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<EmailLogDTO> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
+            List<EmailLogDto> dto = await service.GetEmailLog("5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d", "5eb25d1fe519051af2eeb72d");
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(9, dto.Count);
@@ -951,7 +951,7 @@ namespace DocumentManagement.Tests
 
             var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(), null);
             documentController.ControllerContext = context;
-            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            McuRenameModel mcuRenameModel = new McuRenameModel();
             mcuRenameModel.id = "1";
             mcuRenameModel.requestId = "1";
             mcuRenameModel.docId = "1";
@@ -990,7 +990,7 @@ namespace DocumentManagement.Tests
 
             var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(), null);
             documentController.ControllerContext = context;
-            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            McuRenameModel mcuRenameModel = new McuRenameModel();
             mcuRenameModel.id = "1";
             mcuRenameModel.requestId = "1";
             mcuRenameModel.docId = "1";
@@ -1026,7 +1026,7 @@ namespace DocumentManagement.Tests
 
             var documentController = new DocumentController(mock.Object, null, null, mocksettingservice.Object, null, Mock.Of<ILogger<DocumentController>>(), null);
             documentController.ControllerContext = context;
-            mcuRenameModel mcuRenameModel = new mcuRenameModel();
+            McuRenameModel mcuRenameModel = new McuRenameModel();
             mcuRenameModel.id = "1";
             mcuRenameModel.requestId = "1";
             mcuRenameModel.docId = "1";
@@ -1297,7 +1297,7 @@ namespace DocumentManagement.Tests
             var mockFileEcryptor = new Mock<IFileEncryptor>();
             Mock<IFileEncryptionFactory> mockFileEncryptorFacotry = new Mock<IFileEncryptionFactory>(MockBehavior.Strict);
         
-            FileViewDTO fileViewDTO = new FileViewDTO();
+            FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.serverName = "a69ad17f-7505-492d-a92e-f32967cecff8.enc";
             fileViewDTO.encryptionKey = "FileKey";
             fileViewDTO.encryptionAlgorithm = "AES";

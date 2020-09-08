@@ -7,7 +7,7 @@ namespace DocumentManagement.Service
 {
     public interface IByteProService
     {
-        Task<FileViewDTO> View(AdminFileViewModel model, int tenantId);
+        Task<FileViewDto> View(AdminFileViewModel model, int tenantId);
         Task<Tenant> GetTenantSetting(int tenantId);
         Task SetTenantSetting(int tenantId, TenantSetting setting);
         Task UploadFiles(string id, string requestId, string docId, List<string> auth);

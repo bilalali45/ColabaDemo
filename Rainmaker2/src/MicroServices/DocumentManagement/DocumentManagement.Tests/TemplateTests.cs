@@ -190,7 +190,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<ITemplateService> mock = new Mock<ITemplateService>();
-            List<TemplateDTO> list = new List<TemplateDTO>() { { new TemplateDTO() { docId = "5eb257a3e519051af2eeb477", docName = "Salary Slip" } } };
+            List<TemplateDto> list = new List<TemplateDto>() { { new TemplateDto() { docId = "5eb257a3e519051af2eeb477", docName = "Salary Slip" } } };
 
             mock.Setup(x => x.GetDocument(It.IsAny<string>())).ReturnsAsync(list);
 
@@ -209,7 +209,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<TemplateDTO>;
+            var content = (result as OkObjectResult).Value as List<TemplateDto>;
             Assert.Single(content);
             Assert.Equal("5eb257a3e519051af2eeb477", content[0].docId);
             Assert.Equal("Salary Slip", content[0].docName);
@@ -278,7 +278,7 @@ namespace DocumentManagement.Tests
             GetTemplateDocuments moGetTemplateDocuments = new GetTemplateDocuments();
             moGetTemplateDocuments.id = "5eb25acde519051af2eeb111";
             //Act
-            List<TemplateDTO> dto = await service.GetDocument(id:moGetTemplateDocuments.id);
+            List<TemplateDto> dto = await service.GetDocument(id:moGetTemplateDocuments.id);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(4, dto.Count);

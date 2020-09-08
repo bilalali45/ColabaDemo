@@ -36,7 +36,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     const hanldeChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
-        if (value?.length > 49) {
+        if (value?.length > 50) {
             setIsValid(false);
             // setDocNameError('Only 50 chars allowed'); 
             

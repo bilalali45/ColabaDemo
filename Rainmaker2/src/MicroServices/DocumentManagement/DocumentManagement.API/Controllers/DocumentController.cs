@@ -108,7 +108,7 @@ namespace DocumentManagement.API.Controllers
 
             ftpClient.Setup(hostIp: setting.ftpServer,
                             userName: setting.ftpUser,
-                            password: AESCryptography.Decrypt(text: setting.ftpPassword,
+                            password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
@@ -126,7 +126,7 @@ namespace DocumentManagement.API.Controllers
         #region Post
 
         [HttpPost(template: "[action]")]
-        public async Task<IActionResult> McuRename(mcuRenameModel mcuRenameModel)
+        public async Task<IActionResult> McuRename(McuRenameModel mcuRenameModel)
 
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
