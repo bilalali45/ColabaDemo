@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Enums
 {
-    public enum RaceEnum
+    public enum Race
     {
         AmericanIndianOrAlaskaNative = 1,
         Asian = 2,
@@ -10,7 +10,7 @@
         DoNotWishToProvideThisInformation = 6
     }
 
-    public enum RaceDetailEnum
+    public enum RaceDetail
     {
         AsianIndian = 1,
         Chinese = 2,

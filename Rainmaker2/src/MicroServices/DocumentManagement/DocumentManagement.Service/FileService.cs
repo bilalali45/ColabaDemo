@@ -93,7 +93,7 @@ namespace DocumentManagement.Service
 
             foreach (var item in model.files)
             {
-                UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+                await collection.UpdateOneAsync(new BsonDocument()
                 {
                     { "_id", BsonObjectId.Create(model.id) },
                     { "tenantId", tenantId},
