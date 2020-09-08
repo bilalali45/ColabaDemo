@@ -1,9 +1,14 @@
 import React, {FunctionComponent} from 'react';
 import {Link} from 'react-router-dom';
 
-import {NotificationType, TimersType} from '../../lib/type';
+import {NotificationType, TimersType} from '../../lib/types';
 import {formatDateTime} from '../../lib/utils';
-import {SVGDocument, SVGClose, SVGCalender} from '../../assets/icons/SVGIcons';
+import {
+  SVGDocument,
+  SVGClose,
+  SVGCalender,
+  SVGBellSleep
+} from '../../assets/icons/SVGIcons';
 
 interface NotificationProps {
   removeNotification: () => void;
@@ -13,13 +18,15 @@ interface NotificationProps {
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
 }
 
-export const Notification: FunctionComponent<NotificationProps> = ({
-  removeNotification,
-  clearTimeOut,
-  timers,
-  notification,
-  readAllNotificationsForDocument
-}) => {
+export const Notification: FunctionComponent<NotificationProps> = (props) => {
+  const {
+    removeNotification,
+    clearTimeOut,
+    timers,
+    notification,
+    readAllNotificationsForDocument
+  } = props;
+
   const {
     status,
     id,
@@ -124,5 +131,19 @@ export const NewNotificationToss: FunctionComponent<{
     </div>
   ) : (
     <></>
+  );
+};
+
+export const AlertForNoData: FunctionComponent = () => {
+  return (
+    <div className="notify-alert-msg">
+      <div className="notify-alert-msg--wrap">
+        <SVGBellSleep />
+        <h4>No Notifications Yet</h4>
+        <p>
+          Stay tuned! Notifications about loan applications will show up here.{' '}
+        </p>
+      </div>
+    </div>
   );
 };

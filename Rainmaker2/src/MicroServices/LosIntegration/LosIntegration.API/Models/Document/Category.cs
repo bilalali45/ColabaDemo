@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace LosIntegration.API.Models.Document
 {
@@ -15,6 +12,8 @@ namespace LosIntegration.API.Models.Document
         public string DocType { get; set; }
         [DataMember(Name = "docMessage")]
         public string DocMessage { get; set; }
+        [DataMember(Name = "isCommonlyUsed")]
+        public bool isCommonlyUsed { get; set; }
     }
     [DataContract]
     public class DocumentCategory

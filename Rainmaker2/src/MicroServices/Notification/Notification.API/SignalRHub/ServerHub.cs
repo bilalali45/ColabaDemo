@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Notification.Model;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Notification.API
 {
@@ -39,12 +38,12 @@ namespace Notification.API
         }
 
 
-        public override Task OnDisconnectedAsync(Exception ex)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
             _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId);
-            return base.OnDisconnectedAsync(ex);
+            return base.OnDisconnectedAsync(exception);
         }
 
         #endregion

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Rainmaker.Service.Helpers;
+using RainMaker.Common;
+using RainMaker.Common.Extensions;
+using RainMaker.Common.FTP;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using RainMaker.Common;
-using RainMaker.Common.FTP;
 using System.Net;
-using System;
-using RainMaker.Common.Extensions;
 using System.Threading.Tasks;
-using Rainmaker.Service.Helpers;
 
 namespace RainMaker.Service.Helpers
 {
@@ -17,7 +17,7 @@ namespace RainMaker.Service.Helpers
         public string FtpUser { get; private set; }
         public string FtpPass { get; private set; }
         private FtpClient Ftp { get; set; }
-        private ICommonService commonService;
+        private readonly ICommonService commonService;
         public FtpHelper(ICommonService commonService)
         {
             this.commonService = commonService;
@@ -158,7 +158,7 @@ namespace RainMaker.Service.Helpers
                 }
                 catch (WebException)
                 {
-
+                    //Web exception ignored
                 }
             }
 
@@ -206,11 +206,6 @@ namespace RainMaker.Service.Helpers
             {
                 Console.WriteLine("FTP ERROR: {0}", ex.Message);
                 return null;
-            }
-
-            finally
-            {
-                reqFtp = null;
             }
         }
     }

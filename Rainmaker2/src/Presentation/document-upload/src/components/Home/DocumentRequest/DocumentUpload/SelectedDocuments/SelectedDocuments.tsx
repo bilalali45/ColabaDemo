@@ -14,6 +14,7 @@ import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { update } from "lodash";
 import { useLocation, useHistory } from "react-router-dom";
+import { Rename } from "../../../../../utils/helpers/rename";
 //import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 
 interface SelectedDocumentsType {
@@ -48,6 +49,8 @@ export const SelectedDocuments = ({
     false
   );
 
+  const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
+
   const documents: any = state.documents;
   const pendingDocs: any = documents.pendingDocs;
   const currentSelected: any = documents.currentDoc;
@@ -62,6 +65,10 @@ export const SelectedDocuments = ({
   useEffect(() => {
     setFileInput(inputRef.current);
     disableSubmitBtn();
+
+    let curentFileIndex = pendingDocs.findIndex((pd: DocumentRequest) => pd?.docId === currentSelected?.docId);
+    setCurrentDocIndex(curentFileIndex);
+
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
@@ -159,6 +166,7 @@ export const SelectedDocuments = ({
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
+        // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
         f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
         f.editName = !f.editName;
         return f;
@@ -265,8 +273,13 @@ export const SelectedDocuments = ({
           data
         );
       if (docs?.length) {
+        let indForCurrentDoc = currentDocIndex;
+        if(currentDocIndex === pendingDocs.length - 1) {
+          setCurrentDocIndex(0);
+          indForCurrentDoc = 0;
+        }
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[0] });
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[indForCurrentDoc] });
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }

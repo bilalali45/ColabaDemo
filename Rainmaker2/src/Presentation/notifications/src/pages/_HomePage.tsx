@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 
-import {SVGToggle, SVGNoBell, SVGBellSleep} from '../assets/icons/SVGIcons';
+import {SVGToggle, SVGNoBell} from '../assets/icons/SVGIcons';
 
 interface HeaderProps {
   onDeleteAll: () => void;
@@ -65,20 +65,6 @@ export const ConfirmDeleteAll: FunctionComponent<AlertForRemoveProps> = ({
           <button onClick={onYes} className="btn-notify primary">
             Yes
           </button>
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export const AlertForNoData: FunctionComponent = () => {
-  return (
-    <div className="notify-alert-msg animated1 fadeIn">
-      <div className="notify-alert-msg--wrap">
-        <SVGBellSleep />
-        <h4>No Notifications Yet</h4>
-        <p>
-          Stay tuned! Notifications about loan applications will show up here.{' '}
         </p>
       </div>
     </div>

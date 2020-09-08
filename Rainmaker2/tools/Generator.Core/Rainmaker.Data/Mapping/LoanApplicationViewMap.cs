@@ -32,6 +32,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.BusinessUnitId).HasColumnName(@"BusinessUnitId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.EncompassNumber).HasColumnName(@"EncompassNumber").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(50);
+            builder.Property(x => x.ByteLoanNumber).HasColumnName(@"ByteLoanNumber").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(50);
             builder.Property(x => x.StateName).HasColumnName(@"StateName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(200);
             builder.Property(x => x.CountyName).HasColumnName(@"CountyName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(200);
             builder.Property(x => x.CityName).HasColumnName(@"CityName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(200);

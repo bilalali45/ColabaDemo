@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Employee
-    
+
     public partial class Employee : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -57,6 +54,8 @@ namespace RainMaker.Entity.Models
         public string Profile { get; set; } // Profile
         public string CmsName { get; set; } // CmsName (length: 50)
 
+
+        public string EmailTag { get; set; } // EmailTag (length: 100)
         // Reverse navigation
 
         /// <summary>

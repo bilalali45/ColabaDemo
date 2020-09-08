@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Notification.Data;
 using Notification.Entity.Models;
 using Notification.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 
@@ -167,8 +165,8 @@ namespace Notification.Service
                     .Include(x => x.NotificationRecepient).ThenInclude(x=>x.NotificationRecepientStatusLogs).FirstOrDefaultAsync();
 
                 result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
-                    .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
-                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count() >= 1 ? 
+                    .Count(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted 
+                                && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen) >= 1 ? 
                     result.NotificationRecepient.NotificationRecepientStatusLogs
                         .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
                                     && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x => x.UpdatedOn)
@@ -213,8 +211,8 @@ namespace Notification.Service
                 .ThenInclude(x=>x.NotificationRecepientStatusLogs)
                 .FirstOrDefaultAsync();
             result.NotificationRecepient.StatusId = result.NotificationRecepient.NotificationRecepientStatusLogs
-                .Where(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
-                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).Count()>=1 ? 
+                .Count(x=>x.StatusId!= (byte)Notification.Common.StatusListEnum.Deleted
+                          && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen)>=1 ? 
                 result.NotificationRecepient.NotificationRecepientStatusLogs
                     .Where(x => x.StatusId != (byte)Notification.Common.StatusListEnum.Deleted
                                 && x.StatusId != (byte)Notification.Common.StatusListEnum.Unseen).OrderByDescending(x=>x.UpdatedOn)
@@ -234,16 +232,21 @@ namespace Notification.Service
 
         public async Task<TenantSettingModel> GetTenantSetting(int tenantId)
         {
-            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
-            return new TenantSettingModel() { deliveryModeId=setting.DeliveryModeId};
+            var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            return new TenantSettingModel() { deliveryModeId=tenantSetting.DeliveryModeId,queueTimeout=setting.QueueTimeInMinute};
         }
 
         public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
         {
-            var setting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
+            tenantSetting.TrackingState = TrackingState.Modified;
+            tenantSetting.DeliveryModeId = model.deliveryModeId;
+            Uow.Repository<TenantSetting>().Update(tenantSetting);
+            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
             setting.TrackingState = TrackingState.Modified;
-            setting.DeliveryModeId = model.deliveryModeId;
-            Uow.Repository<TenantSetting>().Update(setting);
+            setting.QueueTimeInMinute = model.queueTimeout;
+            Uow.Repository<Setting>().Update(setting);
             await Uow.SaveChangesAsync();
         }
     }

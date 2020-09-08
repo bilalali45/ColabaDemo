@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // LoanApplicationView
-    
+
     public partial class LoanApplicationView : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

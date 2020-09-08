@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // TenantSettings
-    
+
     public partial class TenantSettingMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TenantSetting>
     {
         public void Configure(EntityTypeBuilder<TenantSetting> builder)

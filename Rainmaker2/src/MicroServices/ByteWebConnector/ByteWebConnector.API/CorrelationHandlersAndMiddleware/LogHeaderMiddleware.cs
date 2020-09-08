@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
 {
@@ -15,10 +15,6 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            //context.Request.Headers.TryGetValue("CorrelationId",
-            //                                    out StringValues value);
-
-            //var dd = context.Request.Headers.ToJson();
             try
             {
                 var header = context.Request.Headers["CorrelationId"];
@@ -37,6 +33,7 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             }
             catch
             {
+                // this exception can be ignored as correlation id is only for logging
             }
             await _next(context);
         }

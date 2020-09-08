@@ -197,7 +197,7 @@ namespace DocumentManagement.Service
                     GetTemplateModel dto;
                     if (result.Any(x => x.id == query.id))
                     {
-                        dto = result.Where(x => x.id == query.id).First();
+                        dto = result.First(x => x.id == query.id);
                     }
                     else
                     {
@@ -214,7 +214,7 @@ namespace DocumentManagement.Service
                     dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
                     if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                     {
-                        dto1.docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                        dto1.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                     }
                     else
                     {

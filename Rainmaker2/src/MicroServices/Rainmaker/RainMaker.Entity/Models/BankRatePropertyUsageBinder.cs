@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BankRatePropertyUsageBinder
-    
+
     public partial class BankRatePropertyUsageBinder : URF.Core.EF.Trackable.Entity
     {
         public int BankRateProductId { get; set; } // BankRateProductId (Primary key)

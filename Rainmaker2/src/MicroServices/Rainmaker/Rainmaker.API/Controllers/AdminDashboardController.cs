@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rainmaker.Model;
 using Rainmaker.Service;
+using System.Threading.Tasks;
 
 namespace Rainmaker.API.Controllers
 {
@@ -39,7 +35,7 @@ namespace Rainmaker.API.Controllers
             }
             else
             {
-                var result = await sitemapService.GetSystemAdminMenu();
+                var result = await sitemapService.GetMenu(userProfileId);
                 return Ok(result);
             }
                

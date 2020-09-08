@@ -1,12 +1,12 @@
-﻿using System;
+﻿using RainMaker.Common.Extensions;
+using RainMaker.Common.FTP;
+using RainMaker.Entity.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using RainMaker.Common.FTP;
-using RainMaker.Entity.Models;
-using RainMaker.Common.Extensions;
 using System.Threading.Tasks;
 
 namespace RainMaker.Common.Email

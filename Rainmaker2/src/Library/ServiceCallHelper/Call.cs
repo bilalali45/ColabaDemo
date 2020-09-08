@@ -1,13 +1,13 @@
-﻿using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using Extensions.ExtensionClasses;
+﻿using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace ServiceCallHelper
 {
-    public class Call
+    public static class Call
     {
         #region GetHelpers
 
@@ -33,7 +33,8 @@ namespace ServiceCallHelper
                                              string endPoint,
                                              string bearerToken = null)
         {
-            if (!bearerToken.HasValue())
+
+            if (bearerToken.HasValue())
                 httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",
                                                     parameter: bearerToken);
@@ -70,7 +71,8 @@ namespace ServiceCallHelper
 
             return Post<T>(httpClient: httpClient,
                            endPoint: endPoint,
-                           content: token);
+                           content: content,
+                           bearerToken: token);
         }
 
 
@@ -79,7 +81,7 @@ namespace ServiceCallHelper
                                               string content,
                                               string bearerToken = null)
         {
-            if (!bearerToken.HasValue())
+            if (bearerToken.HasValue())
                 httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue(scheme: "Bearer",
                                                     parameter: bearerToken);

@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // StatusListEnum
-    
+
     public partial class StatusListEnumMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<StatusListEnum>
     {
         public void Configure(EntityTypeBuilder<StatusListEnum> builder)

@@ -40,13 +40,12 @@ export const NewNeedList = () => {
   ] = useState<TemplateDocument | null>(null);
   const [allDocuments, setAllDocuments] = useState<TemplateDocument[]>([]);
   const [draftDocuments, setDraftDocuments] = useState<TemplateDocument[]>([]);
-  const [customDocuments, setCustomDocuments] = useState<TemplateDocument[]>(
-    []
-  );
+  const [customDocuments, setCustomDocuments] = useState<TemplateDocument[]>([]);
   const { state, dispatch } = useContext(Store);
   const [templateName, setTemplateName] = useState<string>('');
   const [showReview, setShowReview] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
+  const [currentDocumentIndex, setCurrentDocumentIndex] = useState<number>(0);
 
   const templateManager: any = state?.templateManager;
   const needListManager: any = state?.needListManager;
@@ -174,7 +173,15 @@ export const NewNeedList = () => {
     }
   };
 
-  const changeDocument = (d: TemplateDocument) => setCurrentDocument(d);
+  const changeDocument = (d: TemplateDocument) => {
+     
+    let index = allDocuments.findIndex((doc) => doc.localId === d?.localId);
+    if(index === allDocuments.length - 1) {
+      index = 0;
+    }
+    setCurrentDocumentIndex(index);
+    setCurrentDocument(d);
+  };
 
   const changeTemplateName = (e: ChangeEvent<HTMLInputElement>) =>
     setTemplateName(e.target.value);
@@ -366,7 +373,7 @@ export const NewNeedList = () => {
     let filter = (pre: TemplateDocument[]) => {
       let updatedDocList = pre.filter((d: TemplateDocument) => d.localId !== doc?.localId);
       if (updatedDocList?.length) {
-        setCurrentDocument(updatedDocList[0]);
+        setCurrentDocument(updatedDocList[currentDocumentIndex]);
       }
       return updatedDocList;
     };
@@ -422,7 +429,7 @@ export const NewNeedList = () => {
       str = emailTemplate
         .replace('{user}', borrowername)
         .replace('{documents}', documentNames)
-        .replace('{mcu}', mcuName);
+        // .replace('{mcu}', mcuName); because we will provide Business Unit Name from BE while emailing
       enableBrowserPrompt();
       setDefaultEmail(str);
       dispatch({

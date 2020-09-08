@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Notification.Model
 {
     public class TenantSettingModel
     {
         public short deliveryModeId { get; set; }
+        public int queueTimeout { get; set; }
     }
     public class NotificationRead
     {

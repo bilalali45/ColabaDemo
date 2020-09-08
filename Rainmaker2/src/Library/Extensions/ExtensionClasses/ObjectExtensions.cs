@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Newtonsoft.Json;
 
 namespace Extensions.ExtensionClasses
 {
@@ -27,7 +27,7 @@ namespace Extensions.ExtensionClasses
         public static bool IsPrimitive(this Type type)
         {
             if (type == typeof(String)) return true;
-            return (type.IsValueType & type.IsPrimitive);
+            return (type.IsValueType && type.IsPrimitive);
         }
 
         /// <summary>

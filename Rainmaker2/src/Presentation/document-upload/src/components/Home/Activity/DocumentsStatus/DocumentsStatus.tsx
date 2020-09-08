@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { DocumentActions } from "../../../../store/actions/DocumentActions";
 import { Endpoints } from "../../../../store/endpoints/Endpoints";
 import { Auth } from "../../../../services/auth/Auth";
@@ -7,7 +7,6 @@ import IconEmptyDocRequest from "../../../../assets/images/empty-doc-req-icon.sv
 import IconDoneDocRequest from "../../../../assets/images/done-doc-req-icon.svg";
 import { Store } from "../../../../store/store";
 import { DocumentsActionType } from "../../../../store/reducers/documentReducer";
-import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Loader } from "../../../../shared/Components/Assets/loader";
 
 export const DocumentsStatus = () => {
@@ -37,7 +36,6 @@ export const DocumentsStatus = () => {
       Auth.getLoanAppliationId()
     );
     if (docsPending) {
-
       dispatch({
         type: DocumentsActionType.FetchPendingDocs,
         payload: docsPending,

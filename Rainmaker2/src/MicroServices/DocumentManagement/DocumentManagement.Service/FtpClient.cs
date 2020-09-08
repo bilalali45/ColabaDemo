@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.Service
@@ -89,7 +87,7 @@ namespace DocumentManagement.Service
                     }
                 }
                 else
-                    throw new Exception("Ftp Stream is null");
+                    throw new DocumentManagementException("Ftp Stream is null");
             }
             finally
             { 

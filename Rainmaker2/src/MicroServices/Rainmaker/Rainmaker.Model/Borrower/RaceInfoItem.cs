@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Rainmaker.Model.Borrower
+﻿namespace Rainmaker.Model.Borrower
 {
     public class RaceInfoItem
     {

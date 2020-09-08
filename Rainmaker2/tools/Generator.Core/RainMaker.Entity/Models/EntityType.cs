@@ -70,14 +70,6 @@ namespace RainMaker.Entity.Models
         /// Child ThirdPartyCodes where [ThirdPartyCode].[EntityRefTypeId] point to this entity (FK_ThirdPartyCode_EntityType)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<ThirdPartyCode> ThirdPartyCodes { get; set; } // ThirdPartyCode.FK_ThirdPartyCode_EntityType
-        /// <summary>
-        /// Child UserProfiles where [UserProfile].[EntityRefTypeId] point to this entity (FK_UserProfile_EntityRefType)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<UserProfile> UserProfiles_EntityRefTypeId { get; set; } // UserProfile.FK_UserProfile_EntityRefType
-        /// <summary>
-        /// Child UserProfiles where [UserProfile].[EntityTypeId] point to this entity (FK_UserProfile_EntityType)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<UserProfile> UserProfiles_EntityTypeId { get; set; } // UserProfile.FK_UserProfile_EntityType
 
         public EntityType()
         {
@@ -95,8 +87,6 @@ namespace RainMaker.Entity.Models
             Notes_EntityTypeId = new System.Collections.Generic.HashSet<Note>();
             SetupTables = new System.Collections.Generic.HashSet<SetupTable>();
             ThirdPartyCodes = new System.Collections.Generic.HashSet<ThirdPartyCode>();
-            UserProfiles_EntityRefTypeId = new System.Collections.Generic.HashSet<UserProfile>();
-            UserProfiles_EntityTypeId = new System.Collections.Generic.HashSet<UserProfile>();
             InitializePartial();
         }
 

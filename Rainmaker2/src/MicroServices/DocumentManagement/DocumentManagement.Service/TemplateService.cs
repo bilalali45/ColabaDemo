@@ -6,7 +6,6 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static DocumentManagement.Model.Template;
 using TemplateDocument = DocumentManagement.Entity.TemplateDocument;
@@ -25,7 +24,6 @@ namespace DocumentManagement.Service
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
             List<TemplateModel> templateModels = new List<TemplateModel>();
-
             //MCU template
             using var asyncCursorMCU = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
            @"{""$match"": {
@@ -33,24 +31,59 @@ namespace DocumentManagement.Service
                   ""userId"": " + userProfileId + @",
                   ""isActive"":true
                             }
+                        }",@"{
+                            ""$unwind"":{ ""path"": ""$documentTypes"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""documentTypes.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documents""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documents"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
                         }", @"{
                             ""$project"": {
                                 ""_id"": 1,
                                 ""name"": ""$name"",
-                                ""type"":""" + TemplateType.MCUTemplate + @"""
+                                ""type"":""" + TemplateType.MCUTemplate + @""",
+                                ""typeId"": ""$documentTypes.typeId"",
+                                ""typeName"": ""$documents.name"",
+                                ""docName"":""$documentTypes.docName""
                             }
                         }"
            ));
+           
             while (await asyncCursorMCU.MoveNextAsync())
             {
                 foreach (var current in asyncCursorMCU.Current)
                 {
                     TemplateQuery query = BsonSerializer.Deserialize<TemplateQuery>(current);
-                    TemplateModel dto = new TemplateModel();
-                    dto.id = query.id;
-                    dto.name = query.name;
-                    dto.type = query.type;
-                    templateModels.Add(dto);
+                    TemplateModel dto;
+                    if (templateModels.Any(x => x.id == query.id))
+                    {
+                        dto = templateModels.First(x => x.id == query.id);
+                    }
+                    else
+                    {
+                        dto = new TemplateModel();
+                        dto.id = query.id;
+                        dto.name = query.name;
+                        dto.type = query.type;
+                        dto.docs = new List<DocumentTypes>();
+                        templateModels.Add(dto);
+                    }
+                    if (query.typeId == null && query.docName == null)
+                        continue;
+                    DocumentTypes dto1 = new DocumentTypes();
+                    dto1.typeId = query.typeId;
+                    dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    dto.docs.Add(dto1);
                 }
             }
 
@@ -62,10 +95,29 @@ namespace DocumentManagement.Service
                   ""isActive"":true
                             }
                         }", @"{
+                            ""$unwind"":{ ""path"": ""$documentTypes"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""documentTypes.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documents""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documents"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
                             ""$project"": {
                                 ""_id"": 1,
                                 ""name"": ""$name"",
-                                ""type"":""" + TemplateType.TenantTemplate + @"""
+                                ""type"":""" + TemplateType.TenantTemplate + @""",
+                                ""typeId"": ""$documentTypes.typeId"",
+                                ""typeName"": ""$documents.name"",
+                                ""docName"":""$documentTypes.docName""
                             }
                         }"
            ));
@@ -74,11 +126,26 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursorTenant.Current)
                 {
                     TemplateQuery query = BsonSerializer.Deserialize<TemplateQuery>(current);
-                    TemplateModel dto = new TemplateModel();
-                    dto.id = query.id;
-                    dto.name = query.name;
-                    dto.type = query.type;
-                    templateModels.Add(dto);
+                    TemplateModel dto;
+                    if (templateModels.Any(x => x.id == query.id))
+                    {
+                        dto = templateModels.First(x => x.id == query.id);
+                    }
+                    else
+                    {
+                        dto = new TemplateModel();
+                        dto.id = query.id;
+                        dto.name = query.name;
+                        dto.type = query.type;
+                        dto.docs = new List<DocumentTypes>();
+                        templateModels.Add(dto);
+                    }
+                    if (query.typeId == null && query.docName == null)
+                        continue;
+                    DocumentTypes dto1 = new DocumentTypes();
+                    dto1.typeId = query.typeId;
+                    dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    dto.docs.Add(dto1);
                 }
             }
 
@@ -90,10 +157,29 @@ namespace DocumentManagement.Service
                   ""isActive"":true
                             }
                         }", @"{
+                            ""$unwind"":{ ""path"": ""$documentTypes"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""documentTypes.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documents""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documents"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
                             ""$project"": {
                                 ""_id"": 1,
                                 ""name"": ""$name"",
-                                ""type"":""" + TemplateType.SystemTemplate + @"""
+                                ""type"":""" + TemplateType.SystemTemplate + @""",
+                                ""typeId"": ""$documentTypes.typeId"",
+                                ""typeName"": ""$documents.name"",
+                                ""docName"":""$documentTypes.docName""
                             }
                         }"
           ));
@@ -102,24 +188,39 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     TemplateQuery query = BsonSerializer.Deserialize<TemplateQuery>(current);
-                    TemplateModel dto = new TemplateModel();
-                    dto.id = query.id;
-                    dto.name = query.name;
-                    dto.type = query.type;
-                    templateModels.Add(dto);
+                    TemplateModel dto;
+                    if (templateModels.Any(x => x.id == query.id))
+                    {
+                        dto = templateModels.First(x => x.id == query.id);
+                    }
+                    else
+                    {
+                        dto = new TemplateModel();
+                        dto.id = query.id;
+                        dto.name = query.name;
+                        dto.type = query.type;
+                        dto.docs = new List<DocumentTypes>();
+                        templateModels.Add(dto);
+                    }
+                    if (query.typeId == null && query.docName == null)
+                        continue;
+                    DocumentTypes dto1 = new DocumentTypes();
+                    dto1.typeId = query.typeId;
+                    dto1.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                    dto.docs.Add(dto1);
                 }
             }
 
             return templateModels;
         }
-        public async Task<List<TemplateDTO>> GetDocument(string Id)
+        public async Task<List<TemplateDTO>> GetDocument(string id)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Template, BsonDocument>.Create(
                 @"{""$match"": {
 
-                  ""_id"": " + new ObjectId(Id).ToJson() + @"
+                  ""_id"": " + new ObjectId(id).ToJson() + @"
                             }
                         }",
                         @"{
@@ -163,13 +264,13 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<bool> RenameTemplate(string templateid, int tenantid, string newname, int userProfileId)
+        public async Task<bool> RenameTemplate(string id, int tenantid, string newname, int userProfileId)
         {
             IMongoCollection<Entity.Template> collection = mongoService.db.GetCollection<Entity.Template>("Template");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
             {
-                { "_id", BsonObjectId.Create(templateid) },
+                { "_id", BsonObjectId.Create(id) },
                 { "tenantId", tenantid}
                 ,{ "userId", userProfileId}
             }, new BsonDocument()
@@ -242,7 +343,8 @@ namespace DocumentManagement.Service
                                 ""docTypeId"": ""$categoryDocument._id"",
                                 ""docType"": ""$categoryDocument.name"",
                                 ""docMessage"": ""$categoryDocument.message"",
-                                ""messages"": ""$categoryDocument.messages""
+                                ""messages"": ""$categoryDocument.messages"",
+                                ""isCommonlyUsed"": ""$categoryDocument.isCommonlyUsed""
                             }
                         }"
            ));
@@ -251,7 +353,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     CategoryDocumentQuery query = BsonSerializer.Deserialize<CategoryDocumentQuery>(current);
-                    var cdtm = CategoryDocumentTypeModel.Where(x => x.catId == query.id).FirstOrDefault();
+                    var cdtm = CategoryDocumentTypeModel.FirstOrDefault(x => x.catId == query.id);
                     if(cdtm==null)
                     {
                         cdtm = new CategoryDocumentTypeModel();
@@ -266,7 +368,7 @@ namespace DocumentManagement.Service
                         string docMessage = String.Empty;
                         if (query.messages?.Any(x => x.tenantId == tenantId) == true)
                         {
-                            docMessage = query.messages.Where(x => x.tenantId == tenantId).First().message;
+                            docMessage = query.messages.First(x => x.tenantId == tenantId).message;
                         }
                         else
                         {
@@ -274,7 +376,7 @@ namespace DocumentManagement.Service
                         }
 
                         cdtm.documents.Add(new DocumentTypeModel()
-                            {docTypeId = query.docTypeId, docType = query.docType,docMessage = docMessage });
+                            {docTypeId = query.docTypeId, docType = query.docType,docMessage = docMessage,isCommonlyUsed = query.isCommonlyUsed ?? false});
                     }
                    
                 }
@@ -321,7 +423,7 @@ namespace DocumentManagement.Service
                 bsonElements.Add("docName", docName);
             }
             else {
-                throw new Exception("typeId and docName both can't be null");
+                throw new DocumentManagementException("typeId and docName both can't be null");
             }
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

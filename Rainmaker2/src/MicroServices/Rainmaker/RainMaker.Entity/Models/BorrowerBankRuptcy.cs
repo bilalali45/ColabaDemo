@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BorrowerBankRuptcy
-    
+
     public partial class BorrowerBankRuptcy : URF.Core.EF.Trackable.Entity
     {
         public int BorrowerId { get; set; } // BorrowerId (Primary key)

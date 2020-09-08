@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentManagement.API.Helpers;
-using DocumentManagement.Entity;
-using DocumentManagement.Model;
+﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Bson.IO;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {

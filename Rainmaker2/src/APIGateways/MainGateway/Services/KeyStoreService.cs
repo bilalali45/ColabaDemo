@@ -1,12 +1,11 @@
-﻿using System;
+﻿using MainGateway.Helpers;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
-using MainGateway.Helpers;
-using Microsoft.Extensions.Configuration;
 
 namespace MainGateway.Services
 {
-   
+
 
     public class KeyStoreService : IKeyStoreService
     {
@@ -26,10 +25,7 @@ namespace MainGateway.Services
         {
             var httpClient = _clientFactory.CreateClient();
             var jwtKeyResponse = await httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT");
-            if (!jwtKeyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("jwt key not found");
-            }
+            jwtKeyResponse.EnsureSuccessStatusCode();
             return await jwtKeyResponse.Content.ReadAsStringAsync();
         }
 
@@ -37,12 +33,7 @@ namespace MainGateway.Services
         {
             var httpClient = _clientFactory.CreateClient();
             var jwtKeyResponse = AsyncHelper.RunSync(() =>  httpClient.GetAsync($"{_configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-
-            if (!jwtKeyResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("jwt key not found");
-            }
-
+            jwtKeyResponse.EnsureSuccessStatusCode();
             var result = AsyncHelper.RunSync(()=> jwtKeyResponse.Content.ReadAsStringAsync());
 
             return result;

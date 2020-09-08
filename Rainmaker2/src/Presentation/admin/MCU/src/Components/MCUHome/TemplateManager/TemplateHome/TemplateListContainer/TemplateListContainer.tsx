@@ -19,11 +19,13 @@ export const TemplateListContainer = ({
   setLoaderVisible,
   listContainerElRef,
 }: TemplateListContainerType) => {
+
   const { state, dispatch } = useContext(Store);
 
   const templateManager: any = state.templateManager;
   const templates: Template[] = templateManager?.templates;
   const currentTemplate: Template = templateManager?.currentTemplate;
+
 
   useEffect(() => {
     if (!templates) {
@@ -55,7 +57,7 @@ export const TemplateListContainer = ({
     });
   };
 
-  const fetchTemplatesList = async () => {
+  const fetchTemplatesList = async (currTempInd: number = 0) => {
     setLoaderVisible(true);
     let newTemplates: any = await TemplateActions.fetchTemplates();
     if (newTemplates) {
@@ -65,7 +67,7 @@ export const TemplateListContainer = ({
       });
       dispatch({
         type: TemplateActionsType.SetCurrentTemplate,
-        payload: newTemplates[0],
+        payload: newTemplates[currTempInd],
       });
     }
     setLoaderVisible(false);
@@ -78,7 +80,11 @@ export const TemplateListContainer = ({
     setLoaderVisible(true);
     let isDeleted = await TemplateActions.deleteTemplate(templateId);
     if (isDeleted) {
-      fetchTemplatesList();
+      let currentTemplateInd = templates.findIndex(t => t.id === templateId);
+      if(currentTemplateInd === templates.filter(t => t.type === MyTemplate).length - 1) {
+        currentTemplateInd = 0;
+      }
+      fetchTemplatesList(currentTemplateInd);
     }
     setLoaderVisible(false);
   };

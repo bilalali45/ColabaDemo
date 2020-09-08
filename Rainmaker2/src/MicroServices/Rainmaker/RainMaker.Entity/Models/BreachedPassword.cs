@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BreachedPassword
-    
+
     public partial class BreachedPassword : URF.Core.EF.Trackable.Entity
     {
         public long Id { get; set; } // Id (Primary key)

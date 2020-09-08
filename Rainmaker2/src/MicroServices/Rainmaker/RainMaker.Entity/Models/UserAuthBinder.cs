@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // UserAuthBinder
-    
+
     public partial class UserAuthBinder : URF.Core.EF.Trackable.Entity
     {
         public int UserProfileId { get; set; } // UserProfileId (Primary key)

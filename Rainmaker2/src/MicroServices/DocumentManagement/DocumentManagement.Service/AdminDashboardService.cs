@@ -1,12 +1,10 @@
-﻿using DocumentManagement.Entity;
-using DocumentManagement.Model;
+﻿using DocumentManagement.Model;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.Service
@@ -100,7 +98,7 @@ namespace DocumentManagement.Service
             }
             if (pending)
             {
-                result = result.Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
+                result = result.Where(x=>x.status!=DocumentStatus.Completed).Select(x => new { order = x.status == DocumentStatus.PendingReview ? 0 : 1, x })
                     .OrderBy(x => x.order).ThenByDescending(x=>x.x.createdOn).Select(x => x.x).ToList();
             }
             else

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using LosIntegration.Data;
+﻿using LosIntegration.Data;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using URF.Core.Abstractions;
 
 namespace LosIntegration.Service
@@ -36,10 +36,6 @@ namespace LosIntegration.Service
 
             // @formatter:on 
 
-            //if (includes.HasValue)
-            //    mappings = ProcessIncludes(query: mappings,
-            //                               includes: includes.Value);
-
             return mappings.ToList();
         }
 
@@ -55,13 +51,7 @@ namespace LosIntegration.Service
            
             mappings = mappings.Where(predicate: mapping => mapping.RMEntityName == rmEntityName);
             
-
-
             // @formatter:on 
-
-            //if (includes.HasValue)
-            //    mappings = ProcessIncludes(query: mappings,
-            //                               includes: includes.Value);
 
             return mappings.ToList();
         }

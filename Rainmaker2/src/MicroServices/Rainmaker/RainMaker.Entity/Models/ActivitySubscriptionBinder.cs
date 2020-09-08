@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // ActivitySubscriptionBinder
-    
+
     public partial class ActivitySubscriptionBinder : URF.Core.EF.Trackable.Entity
     {
         public int ActivityId { get; set; } // ActivityId (Primary key)

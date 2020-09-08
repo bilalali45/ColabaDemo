@@ -1,9 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using ByteWebConnector.API.Models;
+﻿using ByteWebConnector.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
 {
@@ -25,11 +25,11 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             catch (Exception ex)
             {
                 _logger.LogError(ex,$"Something went wrong");
-                await HandleExceptionAsync(httpContext, ex);
+                await HandleExceptionAsync(httpContext);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

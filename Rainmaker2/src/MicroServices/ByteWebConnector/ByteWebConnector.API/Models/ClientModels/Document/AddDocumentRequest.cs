@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ByteWebConnector.API.Models.Document;
+﻿using ByteWebConnector.API.Models.Document;
+using System.Collections.Generic;
 
 namespace ByteWebConnector.API.Models.ClientModels.Document
 {

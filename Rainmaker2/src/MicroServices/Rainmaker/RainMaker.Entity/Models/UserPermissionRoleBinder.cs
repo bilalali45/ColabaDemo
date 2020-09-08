@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // UserPermissionRoleBinder
-    
+
     public partial class UserPermissionRoleBinder : URF.Core.EF.Trackable.Entity
     {
         public int RoleId { get; set; } // RoleId (Primary key)

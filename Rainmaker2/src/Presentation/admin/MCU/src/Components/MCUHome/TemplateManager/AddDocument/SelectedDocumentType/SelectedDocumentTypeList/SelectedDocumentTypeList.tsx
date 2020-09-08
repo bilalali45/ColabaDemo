@@ -57,9 +57,10 @@ export const SelectedDocumentTypeList = ({
   let usedDocs = location.pathname.includes('newNeedList')
     ? needList
     : templateDocuments;
+
   return (
     <div className="active-docs">
-      <ul
+     {currentCategoryDocuments?.catName !=='Commonly Used' || term? <ul
         className={
           currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
         }
@@ -92,6 +93,40 @@ export const SelectedDocumentTypeList = ({
             );
           })}
       </ul>
+      :
+      <ul
+        className={
+          currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
+        }
+      >
+        {documentList &&
+          filterUsedDocs(usedDocs)?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
+            return (
+              <li
+                title={dl?.docType}
+                key={dl.docTypeId}
+                onClick={async () => {
+                  setRemoveDocName(dl?.docTypeId);
+                  setRequestSent(true);
+                  await addNewDoc(dl, 'typeId');
+                  setRequestSent(false);
+                  // setVisible(false);
+                }}
+              >
+                {dl?.docType}
+                {requestSent && removeDocName === dl.docTypeId ? (
+                  <span>
+                    <Spinner size="sm" animation="border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  </span>
+                ) : (
+                  ''
+                )}
+              </li>
+            );
+          })}
+      </ul>}
       {!documentList.length && term && (
         <div className="doc-notfound">
           <p>No Results Found for “{term?.toLowerCase()}”</p>

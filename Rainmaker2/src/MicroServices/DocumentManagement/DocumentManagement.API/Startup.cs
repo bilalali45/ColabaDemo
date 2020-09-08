@@ -1,7 +1,3 @@
-using System;
-using System.Net.Http;
-using System.Security.Authentication;
-using System.Text;
 using DocumentManagement.API.CorrelationHandlersAndMiddleware;
 using DocumentManagement.API.Helpers;
 using DocumentManagement.Service;
@@ -12,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.Http;
+using System.Security.Authentication;
+using System.Text;
 using ExceptionMiddleware = DocumentManagement.API.Helpers.ExceptionMiddleware;
 
 namespace DocumentManagement.API
@@ -73,7 +72,7 @@ namespace DocumentManagement.API
             #endregion
 
             var keyResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            if (!keyResponse.IsSuccessStatusCode) throw new Exception(message: "Unable to load key store");
+            keyResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(func: () => keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -99,12 +98,11 @@ namespace DocumentManagement.API
         public void Configure(IApplicationBuilder app,
                               IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
                 app.UseMiddleware<ExceptionMiddleware>();
-
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseAuthentication();

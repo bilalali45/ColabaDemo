@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace DocumentManagement.Model
 {
@@ -18,6 +17,12 @@ namespace DocumentManagement.Model
         OnSubmit=0,
         OnDone=1,
         OnAccept=2
+    }
+    [BsonNoId]
+    public class FileIdModel
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string fileId { get; set; }
     }
     public class ActivityLogDTO
     {

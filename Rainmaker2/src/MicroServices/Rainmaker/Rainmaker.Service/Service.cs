@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using RainMaker.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 using URF.Core.Abstractions.Trackable;
-using System.Linq.Dynamic.Core;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace RainMaker.Service
 {

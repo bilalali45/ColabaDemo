@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KeyStore.Service;
-using Microsoft.AspNetCore.Http;
+﻿using KeyStore.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KeyStore.API.Controllers
@@ -22,7 +17,7 @@ namespace KeyStore.API.Controllers
         {
             var keyData = keyStore.Get(key);
             if (string.IsNullOrEmpty(keyData))
-                throw new Exception("unable to get key");
+                throw new KeyStoreException("unable to get key");
             return keyData;
         }
     }

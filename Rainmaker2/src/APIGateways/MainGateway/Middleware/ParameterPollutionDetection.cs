@@ -1,24 +1,20 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 
 namespace MainGateway.Middleware
 {
     public class ParameterPollutionDetection
     {
-        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
         private readonly RequestDelegate _next;
 
 
-        public ParameterPollutionDetection(RequestDelegate next,
-                                           ILogger<RequestResponseLoggingMiddleware> logger)
+        public ParameterPollutionDetection(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
 

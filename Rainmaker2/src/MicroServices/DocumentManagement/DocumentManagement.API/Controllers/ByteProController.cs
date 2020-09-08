@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using DocumentManagement.Model;
+﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -25,7 +21,6 @@ namespace DocumentManagement.API.Controllers
             ISettingService settingService,
             IKeyStoreService keyStoreService,
             ILogger<DocumentController> logger,
-            IRainmakerService rainmakerService,
             IByteProService byteProService,
             IAdminDashboardService adminDashboardService,
             ITemplateService templateService
@@ -37,7 +32,6 @@ namespace DocumentManagement.API.Controllers
             this.settingService = settingService;
             this.keyStoreService = keyStoreService;
             this.logger = logger;
-            this.rainmakerService = rainmakerService;
             this.byteProService = byteProService;
             this.adminDashboardService = adminDashboardService;
             this.templateService = templateService;
@@ -53,7 +47,6 @@ namespace DocumentManagement.API.Controllers
         private readonly ISettingService settingService;
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
-        private readonly IRainmakerService rainmakerService;
         private readonly IByteProService byteProService;
         private readonly IAdminDashboardService adminDashboardService;
         private readonly ITemplateService templateService;

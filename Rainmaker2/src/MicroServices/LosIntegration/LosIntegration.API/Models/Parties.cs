@@ -29,18 +29,7 @@ namespace LosIntegration.API.Models
         public string Notes { get; set; }
         public string ContactNmlsid { get; set; }
         public string CompanyNMLSID { get; set; }
-        //public string LockToUser { get; set; }
-        //public string CompanyEIN { get; set; }
-        //public string MobilePhoneSMSGateway { get; set; }
-        //public string CompanyLicenseNo { get; set; }
-        //public string SyncData { get; set; }
-        //public DateTime EAndOPolicyExpirationDate { get; set; }
-        //public string LicensingAgencyCode { get; set; }
-        //public string EMail2 { get; set; }
-        //public string EMail3 { get; set; }
         public long FileDataId { get; set; }
-
-
         public PartiesEntity GetRainmakerParties()
         {
             var partiesEntity = new PartiesEntity

@@ -1,16 +1,13 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useEffect,
-  createRef,
-  Dispatch
-} from 'react';
+import React, {FunctionComponent, useEffect, createRef, Dispatch} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import {Notification, NewNotificationToss} from './_Notifications';
-import {NotificationType, TimersType} from '../../lib/type';
-import {AlertForNoData} from '../../pages/_HomePage';
-import {Params, ACTIONS} from './reducers/useNotificationsReducer';
+import {
+  Notification,
+  NewNotificationToss,
+  AlertForNoData
+} from './_Notifications';
+import {NotificationType, TimersType} from '../../lib/types';
+import {Actions} from './reducers/useNotificationsReducer';
 
 interface NotificationsProps {
   timers: TimersType[];
@@ -20,32 +17,37 @@ interface NotificationsProps {
   receivedNewNotification: boolean;
   removeNotification: (id: number) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
-  dispatch: Dispatch<Params>;
-  DeleteAll: boolean;
+  showToss: boolean;
+  dispatch: Dispatch<Actions>;
+  deleteAll: boolean;
 }
 
-export const Notifications: FunctionComponent<NotificationsProps> = ({
-  timers,
-  notifications,
-  getFetchNotifications,
-  notificationsVisible,
-  receivedNewNotification,
-  removeNotification,
-  readAllNotificationsForDocument,
-  dispatch,
-  DeleteAll
-}) => {
-  const [showToss, setShowToss] = useState(false); //apex false
+export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
+  const {
+    timers,
+    notifications,
+    getFetchNotifications,
+    notificationsVisible,
+    receivedNewNotification,
+    removeNotification,
+    readAllNotificationsForDocument,
+    showToss,
+    dispatch,
+    deleteAll
+  } = props;
   const notificationRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (receivedNewNotification === true && notificationsVisible === true) {
-      setShowToss(true);
+      dispatch({
+        type: 'UPDATE_STATE',
+        state: {showToss: true}
+      });
 
       receivedNewNotification === true &&
         dispatch({
-          type: ACTIONS.UPDATE_STATE,
-          payload: {receivedNewNotification: false}
+          type: 'UPDATE_STATE',
+          state: {receivedNewNotification: false}
         });
     }
   }, [dispatch, receivedNewNotification, notificationsVisible]);
@@ -56,18 +58,21 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
     if (timer) {
       clearTimeout(timer.timer);
 
-      dispatch({type: ACTIONS.RESET_DELETE_TIMERS, payload: {timerId: id}});
+      dispatch({type: 'RESET_DELETE_TIMERS', timerId: id});
     }
   };
 
   const handleScrollToTop = () => {
     !!notificationRef.current && notificationRef.current.scrollTo(0, 0);
-    setShowToss(false);
+    dispatch({
+      type: 'UPDATE_STATE',
+      state: {showToss: false}
+    });
   };
 
   return notifications.length > 0 ? (
     <section
-      className={`notify-content ${DeleteAll ? '' : ' animated2 fadeIn'}`}
+      className={`notify-content ${deleteAll ? '' : ' animated2 fadeIn'}`}
     >
       <NewNotificationToss
         showToss={showToss}
@@ -85,12 +90,10 @@ export const Notifications: FunctionComponent<NotificationsProps> = ({
             style={{overflow: 'initial'}}
           >
             {notifications.map((notification, index) => {
-              const {id} = notification;
-
               return (
                 <Notification
                   key={index}
-                  removeNotification={() => removeNotification(id)}
+                  removeNotification={() => removeNotification(notification.id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}
                   notification={notification}

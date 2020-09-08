@@ -1,19 +1,16 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
 {
     public class RequestHandler : DelegatingHandler
     {
         private readonly ICorrelationIdAccessor _correlationIdAccessor;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RequestHandler(ICorrelationIdAccessor correlationIdAccessor, IHttpContextAccessor httpContextAccessor)
+        public RequestHandler(ICorrelationIdAccessor correlationIdAccessor)
         {
             this._correlationIdAccessor = correlationIdAccessor;
-            this._httpContextAccessor = httpContextAccessor;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using ByteWebConnector.API.ExtensionMethods;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using ByteWebConnector.API.ExtensionMethods;
-using ByteWebConnector.API.Models;
-using LosIntegration.API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using ByteBorrower = ByteWebConnector.API.Models.ByteBorrower;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,8 +25,6 @@ namespace ByteWebConnector.API.Controllers
             _clientFactory = clientFactory;
             _configuration = configuration;
             _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -77,8 +74,6 @@ namespace ByteWebConnector.API.Controllers
             if (callResponse.IsSuccessStatusCode)
                 return Ok();
             return BadRequest();
-
-            //return null;
         }
 
         #endregion
@@ -90,6 +85,7 @@ namespace ByteWebConnector.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -100,6 +96,7 @@ namespace ByteWebConnector.API.Controllers
         [HttpDelete(template: "{id}")]
         public void Delete(int id)
         {
+            throw new NotSupportedException();
         }
 
         #endregion

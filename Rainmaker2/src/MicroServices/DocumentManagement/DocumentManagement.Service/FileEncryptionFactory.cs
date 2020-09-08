@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DocumentManagement.Service
+﻿namespace DocumentManagement.Service
 {
     public class FileEncryptionFactory : IFileEncryptionFactory
     {
@@ -13,7 +9,7 @@ namespace DocumentManagement.Service
                 case "AES":
                     return new AESFileEncryptor();
             }
-            throw new Exception($"{name} File encryptor not found");
+            throw new DocumentManagementException($"{name} File encryptor not found");
         }
     }
 }

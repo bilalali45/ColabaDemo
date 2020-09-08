@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Rainmaker.Model;
 using RainMaker.Entity.Models;
-using Rainmaker.Model;
 using RainMaker.Service;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Rainmaker.Service
 {

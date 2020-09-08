@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BorrowerAccountBinder
-    
+
     public partial class BorrowerAccountBinder : URF.Core.EF.Trackable.Entity
     {
         public int BorrowerAccountId { get; set; } // BorrowerAccountId (Primary key)

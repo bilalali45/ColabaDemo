@@ -1,16 +1,15 @@
-using System;
-using System.Net.Http;
-using System.Security.Authentication;
 using LosIntegration.API.CorrelationHandlersAndMiddleware;
 using LosIntegration.API.Helpers;
+using LosIntegration.Service;
+using LosIntegration.Service.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using LosIntegration.Service;
-using LosIntegration.Service.Interface;
-using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Security.Authentication;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -32,15 +31,10 @@ namespace LosIntegration.API
         {
             services.AddControllers();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
-            if (!csResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Unable to load key store");
-            }
+            csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();
-            //services.AddScoped<ISettingService, SettingService>();
-            //services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddScoped<IMappingService, MappingService>();
             services.AddScoped<IByteDocTypeMappingService, ByteDocTypeMappingService>();
             services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
@@ -55,7 +49,7 @@ namespace LosIntegration.API
                     MaxConnectionsPerServer = int.MaxValue
                 })
                 .AddHttpMessageHandler<RequestHandler>(); //Override SendAsync method 
-            services.AddTransient(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
+            services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
@@ -65,12 +59,11 @@ namespace LosIntegration.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-           // app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -14,11 +14,8 @@
 
 namespace Notification.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // NotificationObject
-    
+
     public partial class NotificationObject : URF.Core.EF.Trackable.Entity
     {
         public long Id { get; set; } // Id (Primary key)

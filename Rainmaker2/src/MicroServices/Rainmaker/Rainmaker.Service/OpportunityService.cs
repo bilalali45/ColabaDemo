@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RainMaker.Data;
+﻿using RainMaker.Data;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
+using System;
 using URF.Core.Abstractions;
 
 namespace Rainmaker.Service

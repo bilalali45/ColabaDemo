@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using DocumentManagement.Entity;
+﻿using DocumentManagement.Entity;
 using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DocumentManagement.API.Controllers
 {
@@ -95,24 +95,25 @@ namespace DocumentManagement.API.Controllers
             foreach (var file in files)
             {
                 if (file.Length > setting.maxFileSize)
-                    throw new Exception(message: "File size exceeded limit");
+                    throw new DocumentManagementException("File size exceeded limit");
                 if (file.FileName.Length > setting.maxFileNameSize)
-                    throw new Exception(message: "File Name size exceeded limit");
+                    throw new DocumentManagementException("File Name size exceeded limit");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                    throw new Exception(message: "This file type is not allowed for uploading");
+                    throw new DocumentManagementException("This file type is not allowed for uploading");
             }
             // save
             List<string> fileId = new List<string>();
             foreach (var formFile in files)
                 if (formFile.Length > 0)
                 {
-                    logger.LogInformation($"uploading file {formFile.FileName}");
+                    logger.LogInformation($"DocSync uploading file {formFile.FileName}");
                     var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
+                    logger.LogInformation($"DocSync filePath {filePath}");
                     // upload to ftp
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 localFile: filePath);
-
+                    logger.LogInformation($"DocSync After UploadAsync");
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
                                                             id: id,
@@ -126,33 +127,42 @@ namespace DocumentManagement.API.Controllers
                                                             tenantId: tenantId,
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
+                    logger.LogInformation($"DocSync After Submit into Mongo");
                     System.IO.File.Delete(path: filePath);
+                    logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
-                        throw new Exception("unable to update file in mongo");
+                        throw new DocumentManagementException("unable to update file in mongo");
                     fileId.Add(docQuery);
-
+                    logger.LogInformation($"DocSync docQuery is not empty");
                 }
+            logger.LogInformation($"DocSync Before Request header Select");
             var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+            logger.LogInformation($"DocSync After Request header Select");
             string ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            logger.LogInformation($"DocSync ipAddress ={ipAddress}" );
+
 #pragma warning disable 4014
             Task.Run(async () =>
 #pragma warning restore 4014
                      {
+                         logger.LogInformation($"DocSync Task.Run Start ");
                          try
                          {
                              int loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
                              await notificationService.DocumentsSubmitted(loanApplicationId, auth);
                          }
-                         catch (Exception e)
+                         catch
                          {
-
+                             // this exception can be ignored
                          }
-
+                         logger.LogInformation($"DocSync Before SendFilesToBytePro ");
                          try
                          {
                              Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                             logger.LogInformation($"DocSync tenant ={tenant}");
                              if (tenant.syncToBytePro == (int)SyncToBytePro.Auto && tenant.autoSyncToBytePro == (int)AutoSyncToBytePro.OnSubmit)
                              {
+                                 logger.LogInformation($"DocSync if check = true");
                                  foreach (var fileid in fileId)
                                  {
                                      FileViewModel fileViewModel = new FileViewModel();
@@ -161,24 +171,27 @@ namespace DocumentManagement.API.Controllers
                                      fileViewModel.docId = docId;
                                      fileViewModel.fileId = fileid;
                                      var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
-                                     logger.LogInformation(message: $"fileid {fileid} is getting from submit file");
+                                     logger.LogInformation(message: $"DocSync fileid {fileid} is getting from submit file");
 
                                      if (files.Count > 0)
                                      {
 
-
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been started :fileid {fileid} is getting from submit file");
                                          await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
                                                                                  id,
                                                                                  requestId,
                                                                                  docId,
                                                                                  fileid,
                                                                                  auth);
+                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been finished :fileid {fileid} is getting from submit file");
+
                                      }
                                  }
                              }
                          }
-                         catch (Exception e)
+                         catch
                          {
+                             // this exception can be ignored
                          }
 
 
@@ -215,7 +228,22 @@ namespace DocumentManagement.API.Controllers
                                                   tenantId: tenantId,
                                                   authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
+            {
+                var auth = Request.Headers["Authorization"].Select(x => x.ToString()).ToList();
+#pragma warning disable 4014
+                Task.Run(async () =>
+#pragma warning restore 4014
+                {
+                    Tenant tenant = await byteProService.GetTenantSetting(tenantId);
+                    if (tenant.syncToBytePro == (int) SyncToBytePro.Auto &&
+                        tenant.autoSyncToBytePro == (int) AutoSyncToBytePro.OnDone)
+                    {
+                        await byteProService.UploadFiles(model.id, model.requestId, model.docId, auth);
+                    }
+                });
                 return Ok();
+            }
+
             return NotFound();
         }
 
@@ -227,7 +255,7 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await settingService.GetSetting();
             if (model.fileName.Length > setting.maxFileNameSize)
-                throw new Exception(message: "File Name size exceeded limit");
+                throw new DocumentManagementException("File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
                                                     userProfileId: userProfileId, tenantId);
             if (docQuery)

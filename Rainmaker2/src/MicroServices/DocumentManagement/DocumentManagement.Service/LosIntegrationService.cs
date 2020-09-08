@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 
 namespace DocumentManagement.Service
 {
@@ -15,8 +15,6 @@ namespace DocumentManagement.Service
 
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        
-        //private readonly IMongoService _mongoService;
 
         #endregion
 

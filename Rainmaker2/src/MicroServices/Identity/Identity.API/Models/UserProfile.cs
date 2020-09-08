@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Identity.Models
 {
@@ -56,10 +56,6 @@ namespace Identity.Models
 
         [JsonProperty("passwordFormatId")]
         public long PasswordFormatId { get; set; }
-
-        //[JsonProperty("passwordSalt")]
-        //[JsonConverter(typeof(ParseStringConverter))]
-        //public long PasswordSalt { get; set; }
 
         [JsonProperty("entityRefTypeId")]
         public long EntityRefTypeId { get; set; }

@@ -19,7 +19,7 @@ namespace RainMaker.Data.Mapping
     using RainMaker.Entity.Models;
 
     // AccountType
-    
+
     public partial class AccountTypeMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<AccountType>
     {
         public void Configure(EntityTypeBuilder<AccountType> builder)

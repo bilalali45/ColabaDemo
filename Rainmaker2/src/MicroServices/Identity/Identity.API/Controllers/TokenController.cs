@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Identity.Models;
+using Identity.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Identity.Models;
-using Identity.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Identity.Controllers
 {
@@ -22,13 +21,11 @@ namespace Identity.Controllers
 
         public TokenController(IHttpClientFactory clientFactory,
                                IConfiguration configuration,
-                               ITokenService tokenService,
-                               ILogger<TokenController> logger)
+                               ITokenService tokenService)
         {
             _clientFactory = clientFactory;
             _configuration = configuration;
             _tokenService = tokenService;
-            _logger = logger;
         }
 
         #endregion
@@ -37,8 +34,6 @@ namespace Identity.Controllers
 
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<TokenController> _logger;
-
         private readonly ITokenService _tokenService;
 
         #endregion
@@ -46,13 +41,6 @@ namespace Identity.Controllers
         #region Action Methods
 
         #region Get
-
-        //[Route(template: "[action]")]
-        //[HttpGet]
-        //public string RefreshTokensState()
-        //{
-        //    return TokenService.RefreshTokens.ToJson();
-        //}
 
         #endregion
 
@@ -75,7 +63,6 @@ namespace Identity.Controllers
             var user = await GetUser(userName: username);
             if (user == null || tokenPair == null)
             {
-                //return BadRequest();
 
                 response.Status = ApiResponse.ApiResponseStatus.Fail;
                 response.Message = "Bad request";
@@ -115,20 +102,20 @@ namespace Identity.Controllers
             var response = new ApiResponse();
             var username = User.Identity.Name;
 
-            //var user = _usersDb.Users.SingleOrDefault(u => u.Username == username);
+           
             var user = await GetUser(userName: username);
             if (user == null)
             {
-                //return BadRequest();
+    
                 response.Status = ApiResponse.ApiResponseStatus.Fail;
                 response.Message = "Bad request";
                 return Ok(value: response);
             }
 
-            //user.RefreshToken = null;
+
             TokenService.RefreshTokens.Remove(key: username);
 
-            //await _usersDb.SaveChangesAsync();
+
             response.Status = ApiResponse.ApiResponseStatus.Success;
             response.Message = "Token revoked";
             return Ok(value: response);
@@ -139,9 +126,6 @@ namespace Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Authorize(GenerateTokenRequest request)
         {
-            //_logger.LogInformation(request.ToJson());
-            //Request.Headers.TryGetValue(key: "CorrelationId",
-            //                            value: out var value);
 
             var response = new ApiResponse();
 
@@ -149,8 +133,6 @@ namespace Identity.Controllers
                                                  password: request.Password,
                                                  employee: request.Employee);
 
-            //if (user == null || !_passwordHasher.VerifyIdentityV3Hash(password,
-            //                                                          user.Password)) return BadRequest();
             if (userProfile == null)
             {
                 response.Status = ApiResponse.ApiResponseStatus.Fail;
@@ -160,15 +142,6 @@ namespace Identity.Controllers
             }
 
             #region Claims
-
-            //var usersClaims = new[]
-            //                  {
-            //                      new Claim(type: ClaimTypes.Name,
-            //                                value: userProfile.Username),
-            //                      new Claim(type: ClaimTypes.NameIdentifier,
-            //                                value: userProfile.Id.ToString())
-            //                  };
-
             //add claims
 
             var contact = userProfile.Customers.Any() ? userProfile.Customers.First().Contact : userProfile.Employees.First().Contact;
@@ -199,15 +172,6 @@ namespace Identity.Controllers
 
             var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims);
             var refreshToken = _tokenService.GenerateRefreshToken();
-
-            //userProfile.RefreshToken = refreshToken;
-            //await _usersDb.SaveChangesAsync();
-
-            //return new ObjectResult(value: new
-            //                               {
-            //                                   token = jwtToken,
-            //                                   refreshToken
-            //                               });
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
 
             if (!TokenService.RefreshTokens.ContainsKey(key: userProfile.UserName)) TokenService.RefreshTokens[key: userProfile.UserName] = new List<TokenPair>();

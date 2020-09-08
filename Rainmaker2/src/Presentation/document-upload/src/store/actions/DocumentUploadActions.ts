@@ -6,8 +6,8 @@ import { FileUpload } from "../../utils/helpers/FileUpload";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { ApplicationEnv } from "../../utils/helpers/AppEnv";
+import { Rename } from "../../utils/helpers/rename";
 
-//const http = new Http();
 const http = new Http();
 
 export class DocumentUploadActions {
@@ -87,21 +87,10 @@ export class DocumentUploadActions {
         setFileLimitError({ value: true });
         break;
       }
-      var newName = f.name.replace(/\s/g, '');
-      var ext = newName.split('.')[1];
-      let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
-      if (exts.includes(ext)) {
-        newName = `${newName.split('.')[0]}.jpeg`;
-      }
-      var countArray = FileUpload.checkName(prevFiles, f);
 
-      if (countArray[0] != 0) {
-        newName = FileUpload.updateName(f.name, f.type, countArray).replace(/\s/g, '');
-      }
-
-      const selectedFile = new Document(
+      let  selectedFile = new Document(
         "",
-        newName,
+        FileUpload.removeSpecialChars(f.name),
         FileUpload.todayDate(),
         0,
         0,
@@ -109,6 +98,9 @@ export class DocumentUploadActions {
         "pending",
         f
       );
+
+      selectedFile = Rename.rename(allSelectedFiles, selectedFile);
+
       if (!FileUpload.isSizeAllowed(f)) {
         selectedFile.notAllowedReason = "FileSize";
         selectedFile.notAllowed = true;
@@ -120,21 +112,9 @@ export class DocumentUploadActions {
       }
 
       selectedFile.editName = true;
-      
-      allSelectedFiles.forEach((f: Document, i: number) => {
 
-        let fName = FileUpload.removeDefaultExt(f.clientName);
-        let sfName = FileUpload.removeDefaultExt(selectedFile.clientName);
-        if (fName === sfName) {
-          selectedFile.clientName = `new${sfName}.${selectedFile.file?.type.split('/')[1]}`
-        }
-      })
-
-      console.log(selectedFile);
       allSelectedFiles.push(selectedFile);
 
-
-      // }
 
       if (counter === 0) {
         selectedFile.focused = true;

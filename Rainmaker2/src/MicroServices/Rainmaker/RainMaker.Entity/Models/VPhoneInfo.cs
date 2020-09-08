@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // vPhoneInfo
-    
+
     public partial class VPhoneInfo : URF.Core.EF.Trackable.Entity
     {
         public long? RNo { get; set; } // RNo

@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // MbsRate
-    
+
     public partial class MbsRate : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

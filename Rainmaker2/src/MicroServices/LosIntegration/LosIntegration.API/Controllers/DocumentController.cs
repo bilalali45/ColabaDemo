@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using LosIntegration.API.ExtensionMethods;
+﻿using LosIntegration.API.ExtensionMethods;
 using LosIntegration.API.Models;
 using LosIntegration.API.Models.ClientModels.Document;
 using LosIntegration.API.Models.ClientModels.LoanApplication;
@@ -20,6 +12,14 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceCallHelper;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using AddDocumentRequest = LosIntegration.API.Models.Document.AddDocumentRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -47,8 +47,6 @@ namespace LosIntegration.API.Controllers
             _byteDocCategoryMappingService = byteDocCategoryMappingService;
             _byteDocStatusMappingService = byteDocStatusMappingService;
             _httpClient = clientFactory.CreateClient(name: "clientWithCorrelationId");
-            //_tokenService = tokenService;
-            //_logger = logger;
         }
 
         #endregion
@@ -110,7 +108,7 @@ namespace LosIntegration.API.Controllers
                                                   tenantId: tenantId);
 
             var fileData = await documentResponse.Content.ReadAsByteArrayAsync();
-
+            _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :fileData {fileData} ");
             if (fileData == null) return BadRequest(error: "FileData is Null");
 
             #endregion
@@ -137,6 +135,7 @@ namespace LosIntegration.API.Controllers
                                                                          $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
                                                                          request: Request,
                                                                          attachBearerTokenFromCurrentRequest: true);
+            _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :getCategoriesResponse {getCategoriesResponse} ");
 
             if (!getCategoriesResponse.HttpResponseMessage.IsSuccessStatusCode)
                 return BadRequest(error: "Unable to get all document categories from DocumentManagement");
@@ -184,6 +183,7 @@ namespace LosIntegration.API.Controllers
             {
                 byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
                 if (byteDocumentResponse == null) return BadRequest(error: "External originator document response null");
+                _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :byteDocumentResponse {byteDocumentResponse} ");
                 #region UpdateByteProStatus
 
                 var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest() { 
@@ -195,12 +195,13 @@ namespace LosIntegration.API.Controllers
                 });
 
                 if (!updateByteProStatusResponse.IsSuccessStatusCode)
-                    throw new Exception(message: "Unable to Update Status in Document Management");
+                    throw new LosIntegrationException("Unable to Update Status in Document Management");
 
                 #endregion
             }
             catch (Exception e)
             {
+                _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :Exception {e.Message} ");
                 #region UpdateByteProStatus
 
                 var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest()
@@ -213,7 +214,7 @@ namespace LosIntegration.API.Controllers
                 });
 
                 if (!updateByteProStatusResponse.IsSuccessStatusCode)
-                    throw new Exception(message: "Unable to Update Status in Document Management");
+                    throw new LosIntegrationException("Unable to Update Status in Document Management");
 
                 #endregion
                 throw;
@@ -249,7 +250,6 @@ namespace LosIntegration.API.Controllers
         [HttpPost]
         public async Task<IActionResult> SendDocumentToExternalOriginator([FromBody] SendDocumentToExternalOriginatorRequest request)
         {
-            var tenantId = "1";
             _httpClient.DefaultRequestHeaders.Authorization
                 = new AuthenticationHeaderValue(scheme: "Bearer",
                                                 parameter: Request
@@ -456,6 +456,7 @@ namespace LosIntegration.API.Controllers
         public void Put(int id,
                         [FromBody] string value)
         {
+            throw new NotSupportedException();
         }
 
 
@@ -485,7 +486,7 @@ namespace LosIntegration.API.Controllers
                     $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
                 var httpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
 
-                //var apiResponse = JsonConvert.DeserializeObject(value: result);
+  
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var result = httpResponseMessage.Content.ReadAsStringAsync().Result;
@@ -542,8 +543,10 @@ namespace LosIntegration.API.Controllers
                                    .GetAsync(requestUri:
                                              $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/view?id={documentLoanApplicationId}&requestId={requestId}&docId={documentId}&fileId={fileId}&tenantId={tenantId}")
                                    .Result;
+            _logger.LogInformation(message: $"DocSync GetFileDataFromDocumentManagement :documentResponse {documentResponse} ");
+
             if (!documentResponse.IsSuccessStatusCode)
-                throw new Exception(message: "Unable to load Document from Document Management");
+                throw new LosIntegrationException(message: "Unable to load Document from Document Management");
 
             return documentResponse;
         }
@@ -557,20 +560,23 @@ namespace LosIntegration.API.Controllers
                                       content: new StringContent(content: sendDocumentRequest.ToJsonString(),
                                                                  encoding: Encoding.UTF8,
                                                                  mediaType: "application/json")).Result;
-
+           
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
 
             if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
-                throw new Exception(message: "Unable to Upload Document to External Originator");
+                throw new LosIntegrationException(message: "Unable to Upload Document to External Originator");
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            //_logger.LogInformation(message: $"result={result} ");
+            
+            _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
+            _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
-                throw new Exception(message: "Unable to deserialize External Originator document ");
+                throw new LosIntegrationException("Unable to deserialize External Originator document ");
+            _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status } ");
             DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
             return documentResponse;
         }

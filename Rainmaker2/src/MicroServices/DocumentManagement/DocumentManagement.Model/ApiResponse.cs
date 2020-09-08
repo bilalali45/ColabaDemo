@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.IO;
-
-namespace DocumentManagement.Model
+﻿namespace DocumentManagement.Model
 {
     public class ApiResponse
     {
@@ -10,7 +8,7 @@ namespace DocumentManagement.Model
         public string Code { get; set; }
          
 
-        public class ApiResponseStatus
+        public static class ApiResponseStatus
         {
             public static string Success => "Success";
             public static string NotFound => "NotFound";

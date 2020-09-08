@@ -1,26 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MainGateway.Middleware
 {
     public class InputFilter
     {
-        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
         private readonly RequestDelegate _next;
 
 
-        public InputFilter(RequestDelegate next,
-                           ILogger<RequestResponseLoggingMiddleware> logger)
+        public InputFilter(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
 

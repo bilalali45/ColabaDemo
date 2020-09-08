@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-using RainMaker.Common.Extensions;
-
-namespace Identity.CorrelationHandlersAndMiddleware
+namespace RainMaker.API.CorrelationHandlersAndMiddleware
 {
     public class LogHeaderMiddleware
     {
@@ -20,10 +15,6 @@ namespace Identity.CorrelationHandlersAndMiddleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            //context.Request.Headers.TryGetValue("CorrelationId",
-            //                                    out StringValues value);
-
-            //var dd = context.Request.Headers.ToJson();
             try
             {
                 var header = context.Request.Headers["CorrelationId"];
@@ -41,6 +32,7 @@ namespace Identity.CorrelationHandlersAndMiddleware
             }
             catch
             {
+                // this exception can be ignored as correlation id is only for logging
             }
             await _next(context);
         }

@@ -2,7 +2,6 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {LocalDB} from '../../../../Utils/LocalDB';
 
-
 export const NeedListHeader = () => {
   const history = useHistory();
 
@@ -11,14 +10,10 @@ export const NeedListHeader = () => {
   };
 
   const redirectToMVC = () => {
-    const loanApplicationId = LocalDB.getLoanAppliationId();
-    //window.open("/Admin/Loanapplication", "_self");
-    window.top.location.href =
-      '/Admin/Loanapplication/Edit/' + loanApplicationId;
+
+    window.top.location.href = document.referrer
   };
-
   
-
   return (
     <div className="need-list-header">
       <div className="need-list-header--left">

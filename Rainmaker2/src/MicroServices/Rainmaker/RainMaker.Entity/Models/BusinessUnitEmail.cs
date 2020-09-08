@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BusinessUnitEmail
-    
+
     public partial class BusinessUnitEmail : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

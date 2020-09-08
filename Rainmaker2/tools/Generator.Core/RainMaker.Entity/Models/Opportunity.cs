@@ -133,6 +133,10 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<OtpTracing> OtpTracings { get; set; } // OtpTracing.FK_OtpTracing_Opportunity
         /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[OpportunityId] point to this entity (FK_TeamRoleLog_Opportunity)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_Opportunity
+        /// <summary>
         /// Child ThirdPartyLeads where [ThirdPartyLead].[OpportunityId] point to this entity (FK_ThirdPartyLead_Opportunity)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<ThirdPartyLead> ThirdPartyLeads { get; set; } // ThirdPartyLead.FK_ThirdPartyLead_Opportunity
@@ -261,6 +265,7 @@ namespace RainMaker.Entity.Models
             OpportunityPropertyTaxes = new System.Collections.Generic.HashSet<OpportunityPropertyTax>();
             OpportunityStatusLogs = new System.Collections.Generic.HashSet<OpportunityStatusLog>();
             OtpTracings = new System.Collections.Generic.HashSet<OtpTracing>();
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             ThirdPartyLeads = new System.Collections.Generic.HashSet<ThirdPartyLead>();
             InitializePartial();
         }

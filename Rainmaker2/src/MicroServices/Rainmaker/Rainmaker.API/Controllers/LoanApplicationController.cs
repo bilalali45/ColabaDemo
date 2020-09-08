@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Rainmaker.Model;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
 using RainMaker.Common;
-using RainMaker.Common.FTP;
+using RainMaker.Common.Extensions;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
-using RainMaker.Common.Extensions;
-using Rainmaker.Model.LoanApplication;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using TrackableEntities.Common.Core;
 
 
@@ -69,12 +66,12 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
         }
-
-        [Authorize(Roles = "MCU")]
+   
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetLoanApplication([FromQuery] string encompassNumber)
+        public IActionResult GetLoanApplication([FromQuery] string encompassNumber = null, [FromQuery] int? id = null )
         {
-           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(encompassNumber: encompassNumber).SingleOrDefault();
+           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(id: id,encompassNumber: encompassNumber).SingleOrDefault();
             return Ok(loanApplication);
         }
 
@@ -91,6 +88,7 @@ namespace Rainmaker.API.Controllers
             }
             catch
             {
+                // this exception can be ignored
             }
             if (imageData == null)
             {
@@ -122,10 +120,8 @@ namespace Rainmaker.API.Controllers
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
             EmailAccount emailAccount = null;
 
-            if(userProfile != null)
-                if (userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails
-                                          .SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+            if(userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
             if (emailAccount != null)
             {
@@ -134,7 +130,7 @@ namespace Rainmaker.API.Controllers
                 data.Add(FillKey.CustomEmailFooter, "");
                 data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
                 data.Add(FillKey.FromEmail, emailAccount.Email);
-
+                data.Add(FillKey.EmailTag, userProfile.Employees.SingleOrDefault().EmailTag);
                 await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
                 return Ok();
             }
@@ -182,7 +178,7 @@ namespace Rainmaker.API.Controllers
             }
             else
             {
-                throw new Exception("Activity not found for Business unit");
+                throw new RainMakerException("Activity not found for Business unit");
             }
         }
 
