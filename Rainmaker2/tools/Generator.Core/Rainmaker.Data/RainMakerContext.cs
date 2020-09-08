@@ -182,6 +182,7 @@ namespace RainMaker.Data
         //public virtual DbSet<LendingTreeQuote> LendingTreeQuotes { get; set; } // LendingTreeQuote
         //public virtual DbSet<LendingTreeScore> LendingTreeScores { get; set; } // LendingTreeScore
         //public virtual DbSet<LiabilityType> LiabilityTypes { get; set; } // LiabilityType
+        //public virtual DbSet<Lo> Loes { get; set; } // Los
         //public virtual DbSet<LoanApplication> LoanApplications { get; set; } // LoanApplication
         //public virtual DbSet<LoanApplicationFee> LoanApplicationFees { get; set; } // LoanApplicationFee
         //public virtual DbSet<LoanApplicationView> LoanApplicationViews { get; set; } // LoanApplicationView
@@ -191,6 +192,7 @@ namespace RainMaker.Data
         //public virtual DbSet<LoanDocType> LoanDocTypes { get; set; } // LoanDocType
         //public virtual DbSet<LoanDocument> LoanDocuments { get; set; } // LoanDocument
         //public virtual DbSet<LoanDocumentPipeLine> LoanDocumentPipeLines { get; set; } // LoanDocumentPipeLine
+        //public virtual DbSet<LoanDocumentPipeLineView> LoanDocumentPipeLineViews { get; set; } // LoanDocumentPipeLineView
         //public virtual DbSet<LoanDocumentStatusList> LoanDocumentStatusLists { get; set; } // LoanDocumentStatusList
         //public virtual DbSet<LoanDocumentSubType> LoanDocumentSubTypes { get; set; } // LoanDocumentSubType
         //public virtual DbSet<LoanDocumentType> LoanDocumentTypes { get; set; } // LoanDocumentType
@@ -214,6 +216,8 @@ namespace RainMaker.Data
         //public virtual DbSet<LockStatusCause> LockStatusCauses { get; set; } // LockStatusCause
         //public virtual DbSet<LockStatusList> LockStatusLists { get; set; } // LockStatusList
         //public virtual DbSet<LogItem> LogItems { get; set; } // LogItem
+        //public virtual DbSet<LosLoanApplicationBinder> LosLoanApplicationBinders { get; set; } // LosLoanApplicationBinder
+        //public virtual DbSet<LosSyncLog> LosSyncLogs { get; set; } // LosSyncLog
         //public virtual DbSet<MaritalStatusList> MaritalStatusLists { get; set; } // MaritalStatusList
         //public virtual DbSet<MaritalStatusType> MaritalStatusTypes { get; set; } // MaritalStatusType
         //public virtual DbSet<MarksmanLead> MarksmanLeads { get; set; } // MarksmanLead
@@ -340,6 +344,7 @@ namespace RainMaker.Data
         //public virtual DbSet<TaxCountyBinder> TaxCountyBinders { get; set; } // TaxCountyBinder
         //public virtual DbSet<Team> Teams { get; set; } // Team
         //public virtual DbSet<TeamMember> TeamMembers { get; set; } // TeamMember
+        //public virtual DbSet<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog
         //public virtual DbSet<Template> Templates { get; set; } // Template
         //public virtual DbSet<TemplateAttachment> TemplateAttachments { get; set; } // TemplateAttachment
         //public virtual DbSet<TemplateForm> TemplateForms { get; set; } // TemplateForm
@@ -582,6 +587,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LendingTreeQuoteMap());
             modelBuilder.ApplyConfiguration(new LendingTreeScoreMap());
             modelBuilder.ApplyConfiguration(new LiabilityTypeMap());
+            modelBuilder.ApplyConfiguration(new LoMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationFeeMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationViewMap());
@@ -591,6 +597,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LoanDocTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentPipeLineMap());
+            modelBuilder.ApplyConfiguration(new LoanDocumentPipeLineViewMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentStatusListMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentSubTypeMap());
             modelBuilder.ApplyConfiguration(new LoanDocumentTypeMap());
@@ -614,6 +621,8 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LockStatusCauseMap());
             modelBuilder.ApplyConfiguration(new LockStatusListMap());
             modelBuilder.ApplyConfiguration(new LogItemMap());
+            modelBuilder.ApplyConfiguration(new LosLoanApplicationBinderMap());
+            modelBuilder.ApplyConfiguration(new LosSyncLogMap());
             modelBuilder.ApplyConfiguration(new MaritalStatusListMap());
             modelBuilder.ApplyConfiguration(new MaritalStatusTypeMap());
             modelBuilder.ApplyConfiguration(new MarksmanLeadMap());
@@ -740,6 +749,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new TaxCountyBinderMap());
             modelBuilder.ApplyConfiguration(new TeamMap());
             modelBuilder.ApplyConfiguration(new TeamMemberMap());
+            modelBuilder.ApplyConfiguration(new TeamRoleLogMap());
             modelBuilder.ApplyConfiguration(new TemplateMap());
             modelBuilder.ApplyConfiguration(new TemplateAttachmentMap());
             modelBuilder.ApplyConfiguration(new TemplateFormMap());

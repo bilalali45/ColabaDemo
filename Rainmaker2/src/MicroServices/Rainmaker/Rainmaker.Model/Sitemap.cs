@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Rainmaker.Model
+﻿namespace Rainmaker.Model
 {
     public class Sitemap
     {

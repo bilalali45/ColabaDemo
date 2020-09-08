@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RainMaker.Common.Util;
+using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using RainMaker.Common.Util;
 
 namespace RainMaker.Common.FTP
 {

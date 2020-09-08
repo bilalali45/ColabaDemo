@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RainMaker.Entity.Models;
+﻿using RainMaker.Entity.Models;
 using RainMaker.Service;
+using System.Collections.Generic;
 
 namespace Rainmaker.Service
 {

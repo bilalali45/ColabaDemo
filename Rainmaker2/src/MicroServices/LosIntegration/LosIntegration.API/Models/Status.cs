@@ -1,5 +1,5 @@
-﻿using System;
-using LosIntegration.API.Models.ClientModels;
+﻿using LosIntegration.API.Models.ClientModels;
+using System;
 
 namespace LosIntegration.API.Models
 {

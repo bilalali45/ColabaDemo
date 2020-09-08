@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BranchPhoneBinder
-    
+
     public partial class BranchPhoneBinder : URF.Core.EF.Trackable.Entity
     {
         public int BranchId { get; set; } // BranchId (Primary key)

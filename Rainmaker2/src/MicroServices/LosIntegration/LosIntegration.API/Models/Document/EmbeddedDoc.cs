@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LosIntegration.API.Models.Document
+﻿namespace LosIntegration.API.Models.Document
 {
     public class EmbeddedDoc
     {

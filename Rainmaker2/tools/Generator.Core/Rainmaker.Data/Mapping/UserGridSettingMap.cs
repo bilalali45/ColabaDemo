@@ -30,7 +30,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.GridName).HasColumnName(@"GridName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(300);
-            builder.Property(x => x.Setting).HasColumnName(@"Setting").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(2000);
+            builder.Property(x => x.Setting).HasColumnName(@"Setting").HasColumnType("nvarchar(max)").IsRequired(false);
 
             // Foreign keys
             builder.HasOne(a => a.UserProfile).WithMany(b => b.UserGridSettings).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.SetNull); // FK_UserGridSetting_UserProfile

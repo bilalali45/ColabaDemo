@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // LogItem
-    
+
     public partial class LogItem : URF.Core.EF.Trackable.Entity
     {
         public System.Guid EventId { get; set; } // EventId (Primary key)

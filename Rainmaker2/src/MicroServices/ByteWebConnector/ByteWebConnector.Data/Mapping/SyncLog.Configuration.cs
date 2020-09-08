@@ -8,16 +8,9 @@
 // the code is regenerated.
 //------------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Data.Common;
-using System.Collections.Generic;
+using ByteWebConnector.Entity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ByteWebConnector.Entity.Models;
 
 
 

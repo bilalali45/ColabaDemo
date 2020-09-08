@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ByteWebConnector.Model.Models.Document;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ByteWebConnector.Model.Models.Document;
 
 namespace ByteWebConnector.Service.InternalServices
 {

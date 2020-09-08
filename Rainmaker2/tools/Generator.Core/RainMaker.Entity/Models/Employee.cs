@@ -56,6 +56,7 @@ namespace RainMaker.Entity.Models
         public string Photo { get; set; } // Photo (length: 500)
         public string Profile { get; set; } // Profile
         public string CmsName { get; set; } // CmsName (length: 50)
+        public string EmailTag { get; set; } // EmailTag (length: 100)
 
         // Reverse navigation
 
@@ -140,6 +141,10 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TeamMember> TeamMembers { get; set; } // TeamMember.FK_TeamMember_Employee
         /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[EmployeeId] point to this entity (FK_TeamRoleLog_Employee)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_Employee
+        /// <summary>
         /// Child Vortex_FollowUps where [FollowUp].[EmployeeId] point to this entity (FK_FollowUp_Employee)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Vortex_FollowUp> Vortex_FollowUps { get; set; } // FollowUp.FK_FollowUp_Employee
@@ -207,6 +212,7 @@ namespace RainMaker.Entity.Models
             QuoteResults = new System.Collections.Generic.HashSet<QuoteResult>();
             Subordinates = new System.Collections.Generic.HashSet<Subordinate>();
             TeamMembers = new System.Collections.Generic.HashSet<TeamMember>();
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             Vortex_VoiceMailAssignments = new System.Collections.Generic.HashSet<Vortex_VoiceMailAssignment>();
             Vortex_VoiceMailReadBies = new System.Collections.Generic.HashSet<Vortex_VoiceMailReadBy>();
             InitializePartial();

@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // DeviceType
-    
+
     public partial class Vortex_DeviceType : URF.Core.EF.Trackable.Entity
     {
         public short Id { get; set; } // Id (Primary key)

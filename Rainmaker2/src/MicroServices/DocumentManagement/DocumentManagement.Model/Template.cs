@@ -1,10 +1,8 @@
 ﻿using DocumentManagement.Entity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DocumentManagement.Model
 {
@@ -21,6 +19,13 @@ namespace DocumentManagement.Model
             public string id { get; set; }
             public string type { get; set; }
             public string name { get; set; }
+            public List<DocumentTypes> docs { get; set; }
+        }
+        [BsonNoId]
+        public class DocumentTypes
+        {
+            public string typeId { get; set; }
+            public string docName { get; set; }
         }
 
         public class InsertTemplateModel
@@ -37,6 +42,10 @@ namespace DocumentManagement.Model
             public string id { get; set; }
             public string type { get; set; }
             public string name { get; set; }
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string typeId { get; set; }
+            public string typeName { get; set; }
+            public string docName { get; set; }
         }
         public class DocumentTypeModel
         {

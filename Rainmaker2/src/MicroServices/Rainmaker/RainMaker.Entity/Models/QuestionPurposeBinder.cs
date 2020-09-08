@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // QuestionPurposeBinder
-    
+
     public partial class QuestionPurposeBinder : URF.Core.EF.Trackable.Entity
     {
         public int QuestionId { get; set; } // QuestionId (Primary key)

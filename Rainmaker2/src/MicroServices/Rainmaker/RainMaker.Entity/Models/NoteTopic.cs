@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // NoteTopic
-    
+
     public partial class NoteTopic : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

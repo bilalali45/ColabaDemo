@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // UserInRole
-    
+
     public partial class UserInRole : URF.Core.EF.Trackable.Entity
     {
         public int UserId { get; set; } // UserId (Primary key)

@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // NoteDepartmentBinder
-    
+
     public partial class NoteDepartmentBinder : URF.Core.EF.Trackable.Entity
     {
         public int DepartmentId { get; set; } // DepartmentId (Primary key)

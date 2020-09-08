@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // CustomerTypeBinder
-    
+
     public partial class CustomerTypeBinder : URF.Core.EF.Trackable.Entity
     {
         public int CustomerId { get; set; } // CustomerId (Primary key)

@@ -8,14 +8,6 @@
 // the code is regenerated.
 //------------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Data.Common;
-using System.Collections.Generic;
-
 namespace ByteWebConnector.Entity.Models
 {
     public partial class Setting : URF.Core.EF.Trackable.Entity {

@@ -1,9 +1,6 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
-using System.Text;
-using DocumentManagement.Entity;
-using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model

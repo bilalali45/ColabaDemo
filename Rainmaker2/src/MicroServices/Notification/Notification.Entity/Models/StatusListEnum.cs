@@ -14,11 +14,8 @@
 
 namespace Notification.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // StatusListEnum
-    
+
     public partial class StatusListEnum : URF.Core.EF.Trackable.Entity
     {
         public byte Id { get; set; } // Id (Primary key)

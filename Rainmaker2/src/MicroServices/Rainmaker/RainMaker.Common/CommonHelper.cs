@@ -1,15 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
+using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Net;
-using RainMaker.Common.Extensions;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace RainMaker.Common
 {

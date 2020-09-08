@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Notification.Model;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Notification.Model;
 
 namespace Notification.Service
 {

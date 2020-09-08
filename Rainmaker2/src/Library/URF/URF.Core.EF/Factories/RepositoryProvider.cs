@@ -1,8 +1,8 @@
 ﻿#region
 
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 using URF.Core.Abstractions.Trackable;

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Identity.Helpers;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Identity.Helpers;
-using Microsoft.Extensions.Configuration;
 
 namespace Identity.Services
 {
-   
+
 
     public class KeyStoreService : IKeyStoreService
     {

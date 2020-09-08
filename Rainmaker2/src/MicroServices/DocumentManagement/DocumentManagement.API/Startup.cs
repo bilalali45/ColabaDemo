@@ -1,7 +1,3 @@
-using System;
-using System.Net.Http;
-using System.Security.Authentication;
-using System.Text;
 using DocumentManagement.API.CorrelationHandlersAndMiddleware;
 using DocumentManagement.API.Helpers;
 using DocumentManagement.Service;
@@ -12,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.Http;
+using System.Security.Authentication;
+using System.Text;
 using ExceptionMiddleware = DocumentManagement.API.Helpers.ExceptionMiddleware;
 
 namespace DocumentManagement.API

@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using DocumentManagement.Model;
+﻿using DocumentManagement.Model;
 using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using static DocumentManagement.Model.Template;
 
 namespace DocumentManagement.API.Controllers

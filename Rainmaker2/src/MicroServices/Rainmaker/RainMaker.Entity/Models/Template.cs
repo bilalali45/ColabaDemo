@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Template
-    
+
     public partial class Template : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

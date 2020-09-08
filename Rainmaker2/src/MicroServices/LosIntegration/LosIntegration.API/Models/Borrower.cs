@@ -1,9 +1,9 @@
-﻿using System;
+﻿using LosIntegration.API.Enums;
+using LosIntegration.API.Models.ClientModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using LosIntegration.API.Enums;
-using LosIntegration.API.Models.ClientModels;
 
 namespace LosIntegration.API.Models
 {

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using ByteWebConnector.Model.Models;
+﻿using ByteWebConnector.Model.Models;
 using ByteWebConnector.Model.Models.Document;
 using ByteWebConnector.Model.Models.ServiceRequestModels.BytePro;
 using ByteWebConnector.Model.Models.ServiceResponseModels.BytePro;
@@ -14,6 +6,14 @@ using ByteWebConnector.Service.DbServices;
 using Extensions.ExtensionClasses;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ByteWebConnector.Service.ExternalServices
 {

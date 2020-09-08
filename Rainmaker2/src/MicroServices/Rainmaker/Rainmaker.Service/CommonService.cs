@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using RainMaker.Common;
 using RainMaker.Common.Caching;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RainMaker.Service
 {

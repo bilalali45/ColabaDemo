@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ByteWebConnector.API.Enums;
+using ByteWebConnector.API.Models.ClientModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using ByteWebConnector.API.Enums;
-using ByteWebConnector.API.Models.ClientModels;
 
 namespace ByteWebConnector.API.Models
 {

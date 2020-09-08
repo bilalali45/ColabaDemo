@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RainMaker.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using RainMaker.Common;
 using RainMaker.Data;
-using URF.Core.Abstractions;
-using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using URF.Core.EF;
-using Microsoft.EntityFrameworkCore;
+using RainMaker.Entity.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using URF.Core.Abstractions;
+using URF.Core.EF;
 
 namespace RainMaker.Service
 {
