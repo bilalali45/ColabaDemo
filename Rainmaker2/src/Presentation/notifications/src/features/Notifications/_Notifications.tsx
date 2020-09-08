@@ -83,7 +83,7 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
       ) : (
         <div>
           <Link
-            className="n-wrap animated2 fadeIn"
+            className="n-wrap"
             onClick={() =>
               readDocumentsAndOpenLink(loanApplicationId, link, status)
             }
