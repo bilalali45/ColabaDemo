@@ -1,6 +1,7 @@
 .Doc-upload {
     margin-right: -5px;
     position: relative;
+    min-height: 100%;
     &.drag-enter{
         // border: 2px dashed #ebebeb;
         &:after {
@@ -10,7 +11,7 @@
         }
     }
     &.dragableArea {
-        .file-drop-box-wrap,.Doc-head-wrap {
+        .file-drop-box-wrap,.Doc-head-wrap,.empty-uploader {
             pointer-events: none;
          
         }
@@ -74,7 +75,7 @@
         }
     }
     .file-drop-box {
-        min-height: 415px;
+        min-height: 480px;
         width: 100%;
         &.havefooter {
             height: 345px;
