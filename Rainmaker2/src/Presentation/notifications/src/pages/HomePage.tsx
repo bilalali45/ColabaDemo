@@ -191,7 +191,7 @@ export const HomePage: FunctionComponent = () => {
               readAllNotificationsForDocument={readAllNotificationsForDocument}
               showToss={showToss}
               dispatch={dispatch}
-              DeleteAll={confirmDeleteAll}
+              deleteAll={confirmDeleteAll}
             />
           )}
         </div>
