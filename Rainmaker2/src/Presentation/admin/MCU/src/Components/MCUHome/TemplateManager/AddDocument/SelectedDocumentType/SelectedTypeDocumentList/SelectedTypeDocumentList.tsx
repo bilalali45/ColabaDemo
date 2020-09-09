@@ -6,6 +6,7 @@ import {CategoryDocument} from '../../../../../../Entities/Models/CategoryDocume
 import SearchIcon from '../../../../../../Assets/images/search-icon.svg';
 import {CustomDocuments} from '../CustomDocuments/CustomDocuments';
 import {TemplateDocument} from '../../../../../../Entities/Models/TemplateDocument';
+import { useLocation } from 'react-router-dom';
 
 type SelectedTypeType = {
   setVisible: Function;
@@ -23,6 +24,8 @@ export const SelectedTypeDocumentList = ({
   needList
 }: SelectedTypeType) => {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {};
+
+  const location = useLocation();
   return (
     <div>
       <div className="s-wrap">
@@ -34,7 +37,7 @@ export const SelectedTypeDocumentList = ({
         addNewDoc={addNewDoc}
         needList={needList}
       />
-      {selectedCatDocs?.catName === 'Other' && (
+      {!location?.pathname?.includes('templateManager') && selectedCatDocs?.catName === 'Other' && (
         <CustomDocuments setVisible={setVisible} addDocToTemplate={addNewDoc} />
       )}
     </div>
