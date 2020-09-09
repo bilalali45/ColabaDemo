@@ -448,7 +448,7 @@ export const NeedListTable = ({
   }
 
   console.log('isByteProAuto', isByteProAuto)
-
+  console.log('isByteProAuto', needList)
   return (
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
@@ -462,11 +462,12 @@ export const NeedListTable = ({
             <div className="th options">&nbsp;</div>
             <div className="th th-options">&nbsp;</div>
           </div>
-          {needList && needList?.length && renderNeedList(needList)}
+
+          {needList && renderNeedList(needList)}
 
         </div>
         
-        {!needList || needList?.length === 0 && 
+        {needList.length === 0 && 
             <div className="no-preview">
               <div>
                 <div className="icon-wrap">
