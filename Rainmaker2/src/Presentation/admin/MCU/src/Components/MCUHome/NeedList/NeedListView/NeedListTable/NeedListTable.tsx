@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { NeedList } from '../../../../../Entities/Models/NeedList';
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments';
@@ -58,16 +58,27 @@ export const NeedListTable = ({
 }: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
+  const [syncErrorFound, setSyncErrorFound] = useState(false)
 
+  
+  useEffect(() => {
+    if(!needList || needList.length === 0) return 
+
+    const syncErrorFound = needList.some((item:NeedList) => item.files.some(file => file.byteProStatusClassName.includes('sync_error')))
+   
+    setSyncErrorFound(syncErrorFound)
+    
+  },[syncErrorFound,needList])
+  
   const history = useHistory();
-  const renderNeedList = (data: any) => {
+  const renderNeedList = (data: any) => {   
     return data.map((item: NeedList, index: number) => {
       return (
         <div key={index} className="tr row-shadow">
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          {!isByteProAuto && renderSyncToLos(item.files, item.index)}
+          {!isByteProAuto && renderSyncToLos(item.files, item.index, )}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -386,10 +397,10 @@ export const NeedListTable = ({
     } else {
       return (
         <div className="th">
-          <a onClick={(e) => FilesSyncToLos(syncTitleClass)} >
+          <a onClick={() => syncErrorFound===true ? FilesSyncToLos(syncTitleClass) : {}} >
             <em className={"icon-refresh " + syncTitleClass}></em>
           </a>{' '}
-          <span className="txt-stl" onClick={(e) => FilesSyncToLos(syncTitleClass)}>sync to LOS</span>
+          <span className="txt-stl" onClick={() => syncErrorFound===true ? FilesSyncToLos(syncTitleClass) : {}}>sync to LOS</span>
         </div>
       )
     }
@@ -405,7 +416,7 @@ export const NeedListTable = ({
             <div className="icon"><img src={sycLOSIcon} alt="" /></div>
             <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
             <div className="btn-wrap">
-              <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
+              <button onClick={() => synchronizing=== false ? postToBytePro(false) : {}} className="btn btn-primary btn-sm">
                 {synchronizing != true
                   ? <>
                     Sync                   
