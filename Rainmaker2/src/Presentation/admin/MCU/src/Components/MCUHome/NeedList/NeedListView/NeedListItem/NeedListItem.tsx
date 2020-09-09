@@ -10,7 +10,9 @@ interface NeedListItemProps {
 export const NeedListItem: FunctionComponent<
   NeedListDocumentType & NeedListItemProps
 > = (props) => {
+
   const { docName, status, files, toDocumentReview, index } = props;
+  
   let statusBullet;
 
   if (status === "Pending review") {
