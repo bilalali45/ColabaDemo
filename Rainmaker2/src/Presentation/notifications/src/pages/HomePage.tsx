@@ -31,7 +31,8 @@ export const HomePage: FunctionComponent = () => {
     notificationsVisible,
     unSeenNotificationsCount,
     timers,
-    showToss
+    showToss,
+    isNewNotification
   } = state;
 
   const refContainerSidebar = useRef<HTMLDivElement>(null);
@@ -192,6 +193,7 @@ export const HomePage: FunctionComponent = () => {
               showToss={showToss}
               dispatch={dispatch}
               deleteAll={confirmDeleteAll}
+              isNewNotification={isNewNotification}
             />
           )}
         </div>

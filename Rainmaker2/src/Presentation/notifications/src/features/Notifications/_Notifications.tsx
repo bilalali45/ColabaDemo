@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent,useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
 import {NotificationType, TimersType} from '../../lib/types';
@@ -16,6 +16,7 @@ interface NotificationProps {
   timers: TimersType[];
   clearTimeOut: (id: number, timers: TimersType[]) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
+  isNewNotification:number
 }
 
 export const Notification: FunctionComponent<NotificationProps> = (props) => {
@@ -24,7 +25,8 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
     clearTimeOut,
     timers,
     notification,
-    readAllNotificationsForDocument
+    readAllNotificationsForDocument,
+    isNewNotification
   } = props;
 
   const {
@@ -63,13 +65,28 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
     window.open(link, '_self');
   };
 
+  const [animationclass, setAnimationclass] = useState("animated1 fadeIn");
+
+
+  // if (timerid) {
+  //   clearTimeout(timerid);
+  // }
+
+  useEffect(() => {
+  }, []);
+  
+  const timerid = setTimeout(() => {
+    setAnimationclass("")
+  }, 8000);
+
+
   return (
     <div
-      className={`notification-list animated1 fadeIn ${
+      className={`notification-list  ${isNewNotification > 0 && isNewNotification===id ? animationclass:""}  ${
         ['Unseen', 'Unread', 'Seen'].includes(notification.status)
-          ? 'unSeenList'
+          ? `unSeenList`
           : ''
-      }`}
+      } `}
     >
       {timers.some((timer) => timer.id === notification.id) ? (
         <div className="notification-list-item-remove animated2 fadeIn">
