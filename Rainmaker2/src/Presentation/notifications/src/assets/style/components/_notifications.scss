@@ -208,7 +208,7 @@ ul {
     top: 60px;
     color: color("primary-text");
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 0;
     box-shadow: 0px 5px 10px rgba(color('colorBlack'), 0.30);
     font: 400 #{fontSize('nr') + '/1.2'} fontFamily('heading');
 

@@ -123,7 +123,7 @@ export const LoanProgress = () => {
       let liclass = "completed-icon";
       liclass =
         l.status == statusText.CURRENT
-          ? "current-icon"
+          ? "current-icon1"
           : l.status == statusText.UPCOMMING
           ? "upcoming-icon"
           : "completed-icon";
@@ -141,7 +141,8 @@ export const LoanProgress = () => {
             ) : l.status == statusText.COMPLETED ? (
               <i className="zmdi zmdi-check"></i>
             ) : l.status == statusText.CURRENT ? (
-              <i className="zmdi zmdi-male-alt"></i>
+              // { <i className="zmdi zmdi-male-alt"></i>}
+              <i className="zmdi zmdi-check"></i>
             ) : (
               <span>{step}</span>
             )}
@@ -164,7 +165,7 @@ export const LoanProgress = () => {
         <div
           className={
             index == currentItem.order - 1
-              ? "lp-wrap current-step"
+              ? "lp-wrap current-step1"
               : index > currentItem?.order - 1
               ? "lp-wrap upcoming-step"
               : "lp-wrap"
