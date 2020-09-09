@@ -15,7 +15,7 @@ import emptyIcon from './../../../../../Assets/images/empty-icon.svg';
 
 
 type NeedListProps = {
-  needList: NeedList | null | undefined;
+  needList: NeedList | null | undefined | any;
   deleteDocument: Function;
   sortDocumentTitle: Function;
   documentTitleArrow: string;
@@ -462,11 +462,11 @@ export const NeedListTable = ({
             <div className="th options">&nbsp;</div>
             <div className="th th-options">&nbsp;</div>
           </div>
-          {needList && renderNeedList(needList)}
+          {needList && needList?.length && renderNeedList(needList)}
 
         </div>
         
-        {!needList && 
+        {!needList || needList?.length === 0 && 
             <div className="no-preview">
               <div>
                 <div className="icon-wrap">
