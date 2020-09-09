@@ -562,6 +562,8 @@ ul {
             .popover-body{
                 padding: 0 20px 20px;
                 color: color('base');
+                max-height: 195px;
+                overflow: hidden;
             }
         }
 

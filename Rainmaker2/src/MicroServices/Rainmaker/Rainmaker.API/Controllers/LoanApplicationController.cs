@@ -29,7 +29,7 @@ namespace Rainmaker.API.Controllers
         private readonly IWorkQueueService workQueueService;
         private readonly IUserProfileService userProfileService;
 
-        public LoanApplicationController(ILoanApplicationService loanApplicationService,ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService)
+        public LoanApplicationController(ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService)
         {
             this.loanApplicationService = loanApplicationService;
             this.commonService = commonService;
@@ -50,11 +50,11 @@ namespace Rainmaker.API.Controllers
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLOInfo(int loanApplicationId)
-        {   
+        {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             int businessUnitId = (await loanApplicationService.GetByLoanApplicationId(loanApplicationId)).BusinessUnitId.Value;
-            Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId,businessUnitId,userProfileId);
-            if(lo==null || lo.FirstName==null)
+            Rainmaker.Model.LoanOfficer lo = await loanApplicationService.GetLOInfo(loanApplicationId, businessUnitId, userProfileId);
+            if (lo == null || lo.FirstName == null)
             {
                 lo = await loanApplicationService.GetDbaInfo(businessUnitId);
             }
@@ -66,12 +66,12 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId));
         }
-   
+
         [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
-        public IActionResult GetLoanApplication([FromQuery] string encompassNumber = null, [FromQuery] int? id = null )
+        public IActionResult GetLoanApplication([FromQuery] string encompassNumber = null, [FromQuery] int? id = null)
         {
-           var loanApplication =   loanApplicationService.GetLoanApplicationWithDetails(id: id,encompassNumber: encompassNumber).SingleOrDefault();
+            var loanApplication = loanApplicationService.GetLoanApplicationWithDetails(id: id, encompassNumber: encompassNumber).SingleOrDefault();
             return Ok(loanApplication);
         }
 
@@ -102,15 +102,15 @@ namespace Rainmaker.API.Controllers
 
         [Authorize(Roles = "MCU")]
         [HttpPost("[action]")]
-        public async Task<IActionResult> PostLoanApplication([FromBody]PostLoanApplicationModel model)
+        public async Task<IActionResult> PostLoanApplication([FromBody] PostLoanApplicationModel model)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            return Ok(await loanApplicationService.PostLoanApplication(model.loanApplicationId, model.isDraft, userProfileId,opportunityService));
+            return Ok(await loanApplicationService.PostLoanApplication(model.loanApplicationId, model.isDraft, userProfileId, opportunityService));
         }
 
         [Authorize(Roles = "MCU")]
         [HttpPost("[action]")]
-        public async Task<IActionResult> SendBorrowerEmail([FromBody]SendBorrowerEmailModel model)
+        public async Task<IActionResult> SendBorrowerEmail([FromBody] SendBorrowerEmailModel model)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
@@ -120,8 +120,8 @@ namespace Rainmaker.API.Controllers
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
             EmailAccount emailAccount = null;
 
-            if(userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                    emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+            if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
             if (emailAccount != null)
             {
@@ -130,7 +130,7 @@ namespace Rainmaker.API.Controllers
                 data.Add(FillKey.CustomEmailFooter, "");
                 data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
                 data.Add(FillKey.FromEmail, emailAccount.Email);
-                data.Add(FillKey.EmailTag, userProfile.Employees.SingleOrDefault().EmailTag);
+                data.Add(FillKey.EmailTag, String.IsNullOrEmpty(userProfile.Employees.SingleOrDefault().EmailTag) ? String.Empty : userProfile.Employees.SingleOrDefault().EmailTag);
                 await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
                 return Ok();
             }
@@ -146,7 +146,7 @@ namespace Rainmaker.API.Controllers
                 var rnd = new Random();
 
                 var random = rnd.Next(100, 1000);
-                
+
                 var witem = new WorkQueue
                 {
                     CampaignId = null,
@@ -171,7 +171,7 @@ namespace Rainmaker.API.Controllers
                     var keySymbol = EmailTemplateKeys.GetKeySymbol(key.Key);
 
                     if (!string.IsNullOrEmpty(keySymbol))
-                        witem.WorkQueueKeyValues.Add(new WorkQueueKeyValue { KeyName = keySymbol, Value = key.Value, TrackingState = TrackingState.Added});
+                        witem.WorkQueueKeyValues.Add(new WorkQueueKeyValue { KeyName = keySymbol, Value = key.Value, TrackingState = TrackingState.Added });
                 }
                 workQueueService.Insert(witem);
                 await workQueueService.SaveChangesAsync();

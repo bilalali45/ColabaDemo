@@ -74,7 +74,6 @@ namespace DocumentManagement.Service
             {
                 foreach (var current in asyncCursor.Current)
                 {
-                    var c = current.ToJson();
                     DocumentDetailQuery query = BsonSerializer.Deserialize<DocumentDetailQuery>(current);
 
                     DocumentDto dto = new DocumentDto();
@@ -438,7 +437,7 @@ namespace DocumentManagement.Service
             ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
             await viewLogCollection.InsertOneAsync(viewLog);
             // mark as read
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            await collection.UpdateOneAsync(new BsonDocument()
             {
                 { "_id", BsonObjectId.Create(model.id) }
             }, new BsonDocument()
