@@ -562,7 +562,7 @@ ul {
             .popover-body{
                 padding: 0 20px 20px;
                 color: color('base');
-                max-height: 760px;
+                max-height: calc(100vh - 210px);
                 overflow: hidden;
             }
         }
