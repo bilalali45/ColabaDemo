@@ -20,7 +20,6 @@ interface NotificationsProps {
   showToss: boolean;
   dispatch: Dispatch<Actions>;
   deleteAll: boolean;
-  isNewNotification:number
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
@@ -34,8 +33,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
     readAllNotificationsForDocument,
     showToss,
     dispatch,
-    deleteAll,
-    isNewNotification
+    deleteAll
   } = props;
   const notificationRef = createRef<HTMLDivElement>();
 
@@ -91,18 +89,19 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
             className="InfiniteScroll"
             style={{overflow: 'initial'}}
           >
-            {notifications.map((notification, index) => {
+            {notifications.map((notification) => {
+              const {id} = notification;
+
               return (
                 <Notification
-                  key={index}
-                  removeNotification={() => removeNotification(notification.id)}
+                  key={id}
+                  removeNotification={() => removeNotification(id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}
                   notification={notification}
                   readAllNotificationsForDocument={
                     readAllNotificationsForDocument
                   }
-                  isNewNotification={isNewNotification}
                 />
               );
             })}

@@ -23,7 +23,6 @@ export interface State {
   receivedNewNotification: boolean;
   showToss: boolean;
   notifyClass: string;
-  isNewNotification:number
 }
 
 const initialState: State = {
@@ -34,8 +33,7 @@ const initialState: State = {
   notificationsVisible: false,
   receivedNewNotification: false,
   showToss: false,
-  notifyClass: 'close',
-  isNewNotification: 0
+  notifyClass: 'close'
 };
 
 export type Actions =
@@ -112,7 +110,6 @@ const receivedNotification = (
       unSeenNotificationsCount: number;
       receivedNewNotification: boolean;
       notifications: NotificationType[];
-      isNewNotification: number
     }
   | {
       unSeenNotificationsCount: number;
@@ -123,14 +120,13 @@ const receivedNotification = (
     return {
       unSeenNotificationsCount: state.unSeenNotificationsCount + 1,
       receivedNewNotification: true,
-      notifications: [action.notification, ...state.notifications],
-      isNewNotification: action.notification.id
+      notifications: [action.notification, ...state.notifications]
     };
   }
 
   return {
     unSeenNotificationsCount: state.unSeenNotificationsCount + 1,
-    notifications: [action.notification, ...state.notifications],
+    notifications: [action.notification, ...state.notifications]
   };
 };
 

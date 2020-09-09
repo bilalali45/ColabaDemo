@@ -1,4 +1,4 @@
-import React, {FunctionComponent,useState,useEffect} from 'react';
+import React, {FunctionComponent} from 'react';
 import {Link} from 'react-router-dom';
 
 import {NotificationType, TimersType} from '../../lib/types';
@@ -16,7 +16,6 @@ interface NotificationProps {
   timers: TimersType[];
   clearTimeOut: (id: number, timers: TimersType[]) => void;
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
-  isNewNotification:number
 }
 
 export const Notification: FunctionComponent<NotificationProps> = (props) => {
@@ -25,8 +24,7 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
     clearTimeOut,
     timers,
     notification,
-    readAllNotificationsForDocument,
-    isNewNotification
+    readAllNotificationsForDocument
   } = props;
 
   const {
@@ -65,24 +63,9 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
     window.open(link, '_self');
   };
 
-  const [animationclass, setAnimationclass] = useState("animated1 fadeIn");
-
-
-  // if (timerid) {
-  //   clearTimeout(timerid);
-  // }
-
-  useEffect(() => {
-  }, []);
-  
-  const timerid = setTimeout(() => {
-    setAnimationclass("")
-  }, 8000);
-
-
   return (
     <div
-      className={`notification-list  ${isNewNotification > 0 && isNewNotification===id ? animationclass:""}  ${
+      className={`notification-list animated1 fadeIn  ${
         ['Unseen', 'Unread', 'Seen'].includes(notification.status)
           ? `unSeenList`
           : ''
@@ -111,12 +94,12 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
             </div>
             <div className="n-content">
               <div className="n-cat" title={'Document Submission'}>
-                {`${notificationType}`}
+                {notificationType}
               </div>
               <h4 className="n-title">{name}</h4>
               <p className="n-address">
                 {address} {!!unitNumber && `# ${unitNumber}`}{' '}
-                {(!!address || !!unitNumber) && '<br />'}
+                {(!!address || !!unitNumber) && <br />}
                 {city}, {state} {zipCode}
               </p>
               <div className="n-date">
