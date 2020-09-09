@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Http } from 'rainsoft-js';
 import _ from 'lodash';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs'
 
 import {
   ActivityLogType,
@@ -288,6 +290,9 @@ export const ReviewDocumentActivityLog = ({
               </div>
             </header>
             <section className="vertical-tabs--body padding">
+
+            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+              <Tab eventKey="activityLog" title="Activity Log">
               <table className="table table-noborder">
                 <thead>
                   <tr>
@@ -318,13 +323,22 @@ export const ReviewDocumentActivityLog = ({
                   </tbody>
                 </table>
               </div>
-            </section>
-            <footer className="vertical-tabs--footer">
+              
+              <footer className="vertical-tabs--footer">
               <h2>
                 <span>Message to borrower</span>
               </h2>
               {activityLogs.length > 0 && activityLogs[logIndex].message}
             </footer>
+              </Tab>
+              <Tab eventKey="profile" title="Email Sent">
+                Profile
+              </Tab>
+            </Tabs>
+
+              
+            </section>
+            
           </div>
         </div>
 

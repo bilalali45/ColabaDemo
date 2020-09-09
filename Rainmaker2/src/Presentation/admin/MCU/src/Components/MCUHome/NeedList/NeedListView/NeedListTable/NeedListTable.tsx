@@ -11,6 +11,8 @@ import { DocumentStatus } from '../../../../../Entities/Types/Types';
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
 import loadingIcon from '../../../../../Assets/images/loading.svg';
+import emptyIcon from './../../../../../Assets/images/empty-icon.svg';
+
 
 type NeedListProps = {
   needList: NeedList | null | undefined;
@@ -463,6 +465,20 @@ export const NeedListTable = ({
           {needList && renderNeedList(needList)}
 
         </div>
+        
+        {!needList && 
+            <div className="no-preview">
+              <div>
+                <div className="icon-wrap">
+                  <img src={emptyIcon} alt="" />
+                </div>
+                <h2>Nothing</h2>
+                <p>You have not added any document</p>
+              </div>
+          </div>
+        }
+        
+        
         {renderSyncToLosConfirmationBox()}
       </div>
     </div>
