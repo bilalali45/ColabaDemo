@@ -317,7 +317,7 @@ export const NeedListView = () => {
 
   const checkIsByteProAuto = async () => {
     let res: any = await NeedListActions.checkIsByteProAuto();
-    let isAuto = res.syncToBytePro != 2 ? true : false;
+    let isAuto = res?.syncToBytePro != 2 ? true : false;
     dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto});
   };
   //new comment
