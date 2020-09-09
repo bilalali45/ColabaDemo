@@ -46,7 +46,7 @@ export const ReviewDocument = () => {
   const { state } = location;
 
   const goBack = () => {
-    history.goBack();
+    history.push(`/needlist/${LocalDB.getLoanAppliationId()}`)
   };
 
   const [blobData, setBlobData] = useState<any>();

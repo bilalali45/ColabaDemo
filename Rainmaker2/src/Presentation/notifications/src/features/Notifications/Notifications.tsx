@@ -20,6 +20,7 @@ interface NotificationsProps {
   showToss: boolean;
   dispatch: Dispatch<Actions>;
   deleteAll: boolean;
+  isNewNotification:number
 }
 
 export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
@@ -33,7 +34,8 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
     readAllNotificationsForDocument,
     showToss,
     dispatch,
-    deleteAll
+    deleteAll,
+    isNewNotification
   } = props;
   const notificationRef = createRef<HTMLDivElement>();
 
@@ -100,6 +102,7 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
                   readAllNotificationsForDocument={
                     readAllNotificationsForDocument
                   }
+                  isNewNotification={isNewNotification}
                 />
               );
             })}
