@@ -288,7 +288,7 @@ namespace DocumentManagement.Service
 
                     //update document message
 
-                    UpdateResult resultDraft = await collectionDraft.UpdateOneAsync(new BsonDocument()
+                    await collectionDraft.UpdateOneAsync(new BsonDocument()
                     {
                         { "_id", BsonObjectId.Create(loanApplication.id) }
                     }, new BsonDocument()
@@ -314,7 +314,7 @@ namespace DocumentManagement.Service
                     {
                         IMongoCollection<Entity.Request> collectionDraftStatus = mongoService.db.GetCollection<Entity.Request>("Request");
 
-                        UpdateResult resultDraftStatus = await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
+                         await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
                          {
                              { "_id", BsonObjectId.Create(loanApplication.id) }
                          }, new BsonDocument()
@@ -412,7 +412,7 @@ namespace DocumentManagement.Service
 
             IMongoCollection<Entity.Request> collectionDeleteDraftRequest = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            UpdateResult resultDeleteDraftRequest = await collectionDeleteDraftRequest.UpdateOneAsync(new BsonDocument()
+            await collectionDeleteDraftRequest.UpdateOneAsync(new BsonDocument()
             {
                 { "loanApplicationId", loanApplication.loanApplicationId}
             }
@@ -438,7 +438,7 @@ namespace DocumentManagement.Service
 
             if (documentBsonArray.Count > 0)
             {
-                UpdateResult result = await collectionInsertRequest.UpdateOneAsync(new BsonDocument()
+                await collectionInsertRequest.UpdateOneAsync(new BsonDocument()
                         {
                             { "loanApplicationId", loanApplication.loanApplicationId}
                         }, new BsonDocument()
@@ -491,7 +491,7 @@ namespace DocumentManagement.Service
                     {
                         IMongoCollection<Entity.Request> collectionDraftStatus = mongoService.db.GetCollection<Entity.Request>("Request");
 
-                        UpdateResult resultDraftStatus = await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
+                        await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
                          {
                              { "_id", BsonObjectId.Create(query._id) }
                          }, new BsonDocument()
@@ -703,7 +703,7 @@ namespace DocumentManagement.Service
             if (await asyncCursor.MoveNextAsync())
             {
                 string emailTemplate = string.Empty;
-                if (asyncCursor.Current.Count() > 0)
+                if (asyncCursor.Current.Any())
                 {
                     EmailTemplateQuery query = BsonSerializer.Deserialize<EmailTemplateQuery>(asyncCursor.Current.First());
                     emailTemplate = query.emailTemplate;

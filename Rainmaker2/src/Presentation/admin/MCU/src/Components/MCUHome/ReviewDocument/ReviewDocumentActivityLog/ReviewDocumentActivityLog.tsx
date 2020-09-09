@@ -210,18 +210,22 @@ export const ReviewDocumentActivityLog = ({
   }, []);
 
   const renderEmailLogs = (emailLogs: EmailLogsType[]) => {
+    const style = {
+      marginTop: 0
+    }
     return emailLogs.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
           <div className="d-flex justify-content-between">
-            <h6>
+            {/* <h6>
               {emailLog.message ? `${emailLog.message}:` : 'Requested by:'}
-            </h6>
+            </h6> */}
+            <h2 style={style}>{emailLog.userName}</h2>
             <time className="vertical-tabs--list-time">
               {ActivityLogFormat(emailLog.dateTime)}
             </time>
           </div>
-          <h2>{emailLog.userName}</h2>
+          
         </a>
       </li>
     ));

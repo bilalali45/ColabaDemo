@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\ByteWebConnector.Data\ByteWebConnector.Data.csproj" />
     <ProjectReference Include="..\ByteWebConnector.Service\ByteWebConnector.Service.csproj" />
   </ItemGroup>

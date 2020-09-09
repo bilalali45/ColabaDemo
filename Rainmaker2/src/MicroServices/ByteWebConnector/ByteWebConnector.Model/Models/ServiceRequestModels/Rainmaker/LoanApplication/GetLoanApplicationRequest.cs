@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ByteWebConnector.Model.Models.ServiceRequestModels.Rainmaker.LoanApplication
+﻿namespace ByteWebConnector.Model.Models.ServiceRequestModels.Rainmaker.LoanApplication
 {
     public class GetLoanApplicationRequest
     {

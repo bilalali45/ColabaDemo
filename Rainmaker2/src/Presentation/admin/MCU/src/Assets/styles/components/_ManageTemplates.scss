@@ -554,6 +554,7 @@
 
                 .listAll {
                     font: 500 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base');
+                    border    : 2px solid #fff;
 
                     @include media-breakpoint-down(md) {
                         font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base');
@@ -567,7 +568,6 @@
                     &.active,
                     &:hover {
                         background: color('listHoverBg');
-                        border    : 2px solid #fff;
                         color     : color('primary');
                         box-sizing: border-box;
                         ;
@@ -706,15 +706,19 @@
 
                             li {
                                 font: 400 #{fontSize('nr')-1+'/'+"1.2"} fontFamily('base');
+                                color           : color('heading');
+                                //text-transform: capitalize;
+                                padding         : 8px 15px;
+                                cursor          : pointer;
+                                vertical-align: middle;
+                                min-height: 33px;
+                                line-height: 18px;
 
                                 @include media-breakpoint-down(md) {
                                     font: 400 #{fontSize('sm')+'/'+"1.2"} fontFamily('base');
                                 }
 
-                                color           : color('heading');
-                                //text-transform: capitalize;
-                                padding         : 8px 15px;
-                                cursor          : pointer;
+                                
 
                                 &.active,
                                 &:hover {

@@ -167,6 +167,11 @@ namespace Extensions.ExtensionClasses
             return text;
         }
 
+        public static bool HasValue(this string input)
+        {
+            return (!input.IsEmptyOrNullWithTrim());
+        }
+
 
         public static bool IsEmptyOrNullWithTrim(this string text)
         {

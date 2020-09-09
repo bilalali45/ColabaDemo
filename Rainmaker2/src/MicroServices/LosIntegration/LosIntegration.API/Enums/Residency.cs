@@ -2,7 +2,7 @@
 
 namespace LosIntegration.API.Enums
 {
-    public enum ResidencyStateEnum
+    public enum ResidencyState
     {
         [Description("US Citizen")]
         UsCitizen = 1,
