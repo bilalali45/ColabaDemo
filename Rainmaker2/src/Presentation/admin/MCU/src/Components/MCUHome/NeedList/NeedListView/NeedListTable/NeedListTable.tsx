@@ -4,7 +4,7 @@ import { NeedList } from '../../../../../Entities/Models/NeedList';
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments';
 import Spinner from 'react-bootstrap/Spinner';
 import { truncate } from '../../../../../Utils/helpers/TruncateString';
-import { toTitleCase } from 'rainsoft-js';
+// import { toTitleCase } from 'rainsoft-js';
 import { LocalDB } from '../../../../../Utils/LocalDB';
 import { DocumentStatus } from '../../../../../Entities/Types/Types';
 
@@ -78,7 +78,14 @@ export const NeedListTable = ({
       );
     });
   };
-  
+
+  const toTitleCase = (str: string) => {
+    return str.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
+      return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
+    });
+  }
+
+
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
     if (data) {
@@ -94,7 +101,7 @@ export const NeedListTable = ({
       return (
         <div className="td">
           <span className="f-normal" title={toTitleCase(name)}>
-          <i className="far fa-file text-primary"></i> <strong>{toTitleCase(name)}</strong>
+            <i className="far fa-file text-primary"></i> <strong>{toTitleCase(name)}</strong>
           </span>
         </div>
       );
@@ -102,7 +109,7 @@ export const NeedListTable = ({
       return (
         <div className="td">
           <span className="f-normal" title={toTitleCase(name)}>
-          <i className="far fa-file"></i> {toTitleCase(name)}
+            <i className="far fa-file"></i> {toTitleCase(name)}
           </span>
         </div>
       );
@@ -301,14 +308,14 @@ export const NeedListTable = ({
       return (
         <div id={String(index)} className="td">
           {data.map((item: NeedListDocuments) => {
-            
+
             return (
               <span id={String(item.index)} key={item.index} className="block-element c-filename">
                 <a onClick={() => FileSyncToLos(item)}>
                   {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
                   }
-                </a>{' '} 
-                {item.byteProStatusClassName == "synced" ?item.byteProStatusText:<span className="txt-stl" onClick={() => FileSyncToLos(item)}>{' '} {item.byteProStatusText}</span>}
+                </a>{' '}
+                {item.byteProStatusClassName == "synced" ? item.byteProStatusText : <span className="txt-stl" onClick={() => FileSyncToLos(item)}>{' '} {item.byteProStatusText}</span>}
               </span>
             );
           })}
@@ -408,10 +415,10 @@ export const NeedListTable = ({
               <button onClick={() => postToBytePro(false)} className="btn btn-primary btn-sm">
                 {synchronizing != true
                   ? <>
-                    Sync                   
+                    Sync
                     </>
                   :
-                  <div className="spinning-loader"><img src={loadingIcon}/></div>
+                  <div className="spinning-loader"><img src={loadingIcon} /></div>
                 }
               </button>
 
@@ -466,20 +473,20 @@ export const NeedListTable = ({
           {needList && renderNeedList(needList)}
 
         </div>
-        
-        {needList.length === 0 && 
-            <div className="no-preview">
-              <div>
-                <div className="icon-wrap">
-                  <img src={emptyIcon} alt="" />
-                </div>
-                <h2>Nothing In Need List</h2>
-                <p>No document Request yet</p>
+
+        {needList.length === 0 &&
+          <div className="no-preview">
+            <div>
+              <div className="icon-wrap">
+                <img src={emptyIcon} alt="" />
               </div>
+              <h2>Nothing In Need List</h2>
+              <p>No document Request yet</p>
+            </div>
           </div>
         }
-        
-        
+
+
         {renderSyncToLosConfirmationBox()}
       </div>
     </div>
