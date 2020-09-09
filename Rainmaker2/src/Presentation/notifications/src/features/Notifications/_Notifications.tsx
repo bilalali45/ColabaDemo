@@ -98,7 +98,8 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
               </div>
               <h4 className="n-title">{name}</h4>
               <p className="n-address">
-                {address} {!!unitNumber && `# ${unitNumber}`} <br />
+                {address} {!!unitNumber && `# ${unitNumber}`}{' '}
+                {(!!address || !!unitNumber) && '<br />'}
                 {city}, {state} {zipCode}
               </p>
               <div className="n-date">
