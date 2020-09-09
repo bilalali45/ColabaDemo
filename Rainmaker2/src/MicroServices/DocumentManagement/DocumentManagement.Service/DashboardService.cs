@@ -236,7 +236,7 @@ namespace DocumentManagement.Service
                 statuses.First(x => x.id == status).isCurrentStep = true;
             }
             else
-                statuses.First(x => x.order == 3).isCurrentStep = true;
+                statuses.First(x => x.order == 2).isCurrentStep = true;
             return statuses.OrderBy(x => x.order).ToList();
         }
 
