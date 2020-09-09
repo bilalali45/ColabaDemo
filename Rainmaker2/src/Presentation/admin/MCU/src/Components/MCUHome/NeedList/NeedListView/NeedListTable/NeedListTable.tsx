@@ -472,8 +472,8 @@ export const NeedListTable = ({
                 <div className="icon-wrap">
                   <img src={emptyIcon} alt="" />
                 </div>
-                <h2>Nothing</h2>
-                <p>You have not added any document</p>
+                <h2>Nothing In Need List</h2>
+                <p>No document Request yet</p>
               </div>
           </div>
         }
