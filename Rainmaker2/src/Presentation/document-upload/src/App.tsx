@@ -17,7 +17,6 @@ declare global {
     envConfig: any;
   }
 }
-window.envConfig = window.envConfig || {};
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -40,7 +39,9 @@ const App = () => {
       keepAliveParentApp();
     } else {
       Auth.removeAuth();
-      window.open("/Account/LogOff", "_self");
+      if (window.open) {
+        window.open("/Account/LogOff", "_self");
+      }
     }
   };
 
@@ -70,7 +71,9 @@ const App = () => {
     console.log("Idle time meet");
     window.onbeforeunload = null;
     Auth.removeAuth();
-    window.open("/Account/LogOff", "_self");
+    if (window.open) {
+      window.open("/Account/LogOff", "_self");
+    }
   };
 
   console.log("Application is ", authenticated);
@@ -85,7 +88,7 @@ const App = () => {
           element={document}
           onIdle={onIdle}
           debounce={250}
-          timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
+          timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
         />
         <RainsoftRcHeader
           logoSrc={ImageAssets.header.logoheader}
@@ -96,7 +99,7 @@ const App = () => {
         <Router basename="/LoanPortal">
           <Switch>
             <Authorized
-              path="/:navigation/:loanApplicationId"
+              path="/"
               component={Home}
             />
             <Authorized path="/:loanApplicationId" component={Home} />

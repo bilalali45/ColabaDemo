@@ -147,7 +147,7 @@ const ActivityHeader = (props) => {
   };
 
   return (
-    <div className="activityHeader">
+    <div data-testid="activity-header" className="activityHeader">
       <section className="compo-loan-status">
         <LoanStatus />
       </section>

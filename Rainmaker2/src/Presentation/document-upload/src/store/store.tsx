@@ -6,7 +6,7 @@ import { DocumentsType } from "./reducers/documentReducer";
 import { Auth } from "../services/auth/Auth";
 
 const httpClient = new Http();
-let baseUrl: any = window.envConfig.API_BASE_URL;
+let baseUrl: any = window?.envConfig?.API_BASE_URL;
 let auth = Auth.getAuth();
 
 httpClient.setBaseUrl(baseUrl);

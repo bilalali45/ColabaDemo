@@ -8,23 +8,28 @@ import { PageNotFound } from "../../shared/Errors/PageNotFound";
 import { Authorized } from "../../shared/Components/Authorized/Authorized";
 import { ParamsService } from "../../utils/ParamsService";
 
-export class Home extends Component {
+export class Home extends Component<any> {
   componentDidMount() {
     this.setParams(this.props);
   }
 
   setParams = (props: any) => {
-    const { loanApplicationId } = props.match.params;
+    const { loanApplicationId } = props?.match?.params;
     if (!isNaN(loanApplicationId)) {
       ParamsService.storeParams(loanApplicationId);
     } else {
-      window.open("/404", "_self");
+      if (window?.open) {
+        window?.open("/404", "_self");
+      }
     }
   };
 
   render() {
+
+    console.log('in here reached ----------------------------------------')
+
     return (
-      <div>
+      <div data-testid="activity">
         <ActivityHeader {...this.props} />
         <main className="page-content">
           <div className="container">
