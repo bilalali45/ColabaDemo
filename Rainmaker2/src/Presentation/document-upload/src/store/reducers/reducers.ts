@@ -15,6 +15,8 @@ export type ActionMap<M extends { [index: string]: any }> = {
     }
 };
 
+export type Actions = AuthActions | UserActions | LoanActions | DocumentsActions;
+
 export const mainReducer = ({loan, documents} : InitialStateType  , action: Actions) => ({
     // auth: authReducer(auth, action),
     // user: userReducer(user, action),
@@ -22,4 +24,3 @@ export const mainReducer = ({loan, documents} : InitialStateType  , action: Acti
     documents: documentsReducer(documents, action)
 });
 
-export type Actions = AuthActions | UserActions | LoanActions | DocumentsActions;
