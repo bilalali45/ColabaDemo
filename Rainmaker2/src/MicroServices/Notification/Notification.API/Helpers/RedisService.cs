@@ -106,7 +106,7 @@ namespace Notification.Service
                 {
                     foreach (var medium in recep.NotificationRecepientMediums)
                     {
-                        if (medium.NotificationMediumid == (int) Notification.Common.NotificationMediumEnum.InApp)
+                        if (medium.NotificationMediumid == (int) Notification.Common.NotificationMedium.InApp)
                         {
                             NotificationMediumModel model = new NotificationMediumModel()
                             {

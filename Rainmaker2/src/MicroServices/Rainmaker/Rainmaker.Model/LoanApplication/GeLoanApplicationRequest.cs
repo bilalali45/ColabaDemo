@@ -3,6 +3,6 @@
     public  class GeLoanApplicationRequest
     {
         
-        public string EncompassNumber;
+        public string EncompassNumber { get; set; }
     }
 }

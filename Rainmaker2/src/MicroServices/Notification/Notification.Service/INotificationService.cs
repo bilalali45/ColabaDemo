@@ -16,9 +16,9 @@ namespace Notification.Service
         Task DeleteAll();
         Task<NotificationMediumModel> Undelete(long id);
         Task<int> GetCount(int userProfileId);
+        Task<TenantSettingModel> GetTenantSetting(int tenantId);
         Task<TenantSetting> GetTenantSetting(int tenantId, int notificationType);
         Task<Setting> GetSetting(int tenantId);
-        Task<TenantSettingModel> GetTenantSetting(int tenantId);
         Task SetTenantSetting(int tenantId, TenantSettingModel model);
     }
 }

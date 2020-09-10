@@ -23,9 +23,9 @@ namespace Notification.Service
         {
             INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             NotificationObject notificationObject = await notificationService.GetByIdForTemplate(notificationId);
-            switch ((NotificationTypeEnum)notificationObject.NotificationTypeId)
+            switch ((Common.NotificationType)notificationObject.NotificationTypeId)
             {
-                case NotificationTypeEnum.DocumentSubmission:
+                case Common.NotificationType.DocumentSubmission:
                     await DocumentSubmissionTemplate(notificationObject);
                     break;
             }
@@ -35,9 +35,9 @@ namespace Notification.Service
         {
             foreach (var template in notificationObject.NotificationType.NotificationTemplates)
             {
-                switch ((NotificationMediumEnum)template.NotificationMediumId)
+                switch ((Common.NotificationMedium)template.NotificationMediumId)
                 {
-                    case NotificationMediumEnum.InApp:
+                    case Common.NotificationMedium.InApp:
                         await DocumentSubmissionTemplate_InApp(notificationObject, template);
                         break;
                 }
