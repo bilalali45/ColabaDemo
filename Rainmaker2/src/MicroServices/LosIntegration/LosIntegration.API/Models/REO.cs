@@ -1,6 +1,6 @@
 ﻿namespace LosIntegration.API.Models
 {
-    public class REO
+    public class Reo
     {
         public int AppNo { get; set; }
         public int Reoid { get; set; }
