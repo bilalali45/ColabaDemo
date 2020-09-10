@@ -1,12 +1,12 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace LosIntegration.API
 {
@@ -43,7 +43,8 @@ namespace LosIntegration.API
                                                                retainedFileCountLimit: 7,
                                                                rollOnFileSizeLimit: true,
                                                                fileSizeLimitBytes: 256 * 1024 * 1024,
-                                                               outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
+                                                               outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}",
+                                                               rollingInterval: RollingInterval.Day)
                                        )
                          .WriteTo.Elasticsearch(options: ConfigureElasticSink(configuration: configuration,
                                                                               environment: environment))
@@ -85,7 +86,7 @@ namespace LosIntegration.API
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args: args)
-                .UseWindowsService()
+                       .UseWindowsService()
                        .ConfigureWebHostDefaults(configure: webBuilder => { webBuilder.UseStartup<Startup>(); })
                        .ConfigureAppConfiguration(configureDelegate: configuration =>
                        {
