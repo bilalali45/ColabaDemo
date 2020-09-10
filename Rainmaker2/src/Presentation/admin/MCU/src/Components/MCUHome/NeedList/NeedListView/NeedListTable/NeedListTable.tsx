@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FunctionComponent } from 'react';
 import { useHistory } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
+
 import { NeedList } from '../../../../../Entities/Models/NeedList';
 import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments';
-import Spinner from 'react-bootstrap/Spinner';
 import { truncate } from '../../../../../Utils/helpers/TruncateString';
-// import { toTitleCase } from 'rainsoft-js';
 import { LocalDB } from '../../../../../Utils/LocalDB';
 import { DocumentStatus } from '../../../../../Entities/Types/Types';
-
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
 import loadingIcon from '../../../../../Assets/images/loading.svg';
 import emptyIcon from './../../../../../Assets/images/empty-icon.svg';
-
 
 type NeedListProps = {
   needList: NeedList | null | undefined | any;
@@ -35,42 +33,44 @@ type NeedListProps = {
   syncTitleClass: string;
 };
 
-export const NeedListTable = ({
-  needList,
-  deleteDocument,
-  sortDocumentTitle,
-  documentTitleArrow,
-  statusTitleArrow,
-  sortStatusTitle,
-  documentSortClick,
-  statusSortClick,
-  deleteRequestSent,
-  isByteProAuto,
-  FilesSyncToLos,
-  FileSyncToLos,
-  showConfirmBox,
-  postToBytePro,
-  synchronizing,
-  syncSuccess,
-  closeSyncCompletedBox,
-  syncTitleClass
+export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
+ const  {
+    needList,
+    deleteDocument,
+    sortDocumentTitle,
+    documentTitleArrow,
+    statusTitleArrow,
+    sortStatusTitle,
+    documentSortClick,
+    statusSortClick,
+    deleteRequestSent,
+    isByteProAuto,
+    FilesSyncToLos,
+    FileSyncToLos,
+    showConfirmBox,
+    postToBytePro,
+    synchronizing,
+    syncSuccess,
+    closeSyncCompletedBox,
+    syncTitleClass
+  } = props
 
-}: NeedListProps) => {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
-  const [syncErrorFound, setSyncErrorFound] = useState(false)
-
+  const [syncButtonEnabled, setsyncButtonEnabled] = useState(false)
+  const history = useHistory();
   
   useEffect(() => {
     if(!needList || needList.length === 0) return 
-
-    const syncErrorFound = needList.some((item:NeedList) => item.files.some(file => file.byteProStatusClassName.includes('sync_error')))
-   
-    setSyncErrorFound(syncErrorFound)
     
-  },[syncErrorFound,needList])
+    const fileNotSyncedOrSyncFailed = needList.some((document:NeedList) => document.files.some(uploadedFile => ['sync_error','not_Synced'].includes(uploadedFile.byteProStatusClassName)))
+
+    //Only enable sync button if there is a file with sync failed or it never synced.
+    if(fileNotSyncedOrSyncFailed===true){
+      setsyncButtonEnabled(true)
+    }
+  },[syncButtonEnabled,needList])
   
-  const history = useHistory();
   const renderNeedList = (data: any) => {   
     return data.map((item: NeedList, index: number) => {
       return (
@@ -95,7 +95,6 @@ export const NeedListTable = ({
       return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
     });
   }
-
 
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
@@ -125,6 +124,7 @@ export const NeedListTable = ({
         </div>
       );
   };
+
   const renderStatus = (status: string) => {
     let cssClass = '';
     switch (status) {
@@ -152,6 +152,7 @@ export const NeedListTable = ({
       </div>
     );
   };
+
   const deleteDocAlert = (data: NeedList, index: number) => {
     return (
       <>
@@ -182,6 +183,7 @@ export const NeedListTable = ({
       </>
     );
   };
+
   const renderButton = (data: NeedList, index: number) => {
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === 'Pending review') {
@@ -239,6 +241,7 @@ export const NeedListTable = ({
       );
     }
   };
+
   const renderFile = (
     data: NeedListDocuments[] | null,
     status: string,
@@ -334,6 +337,7 @@ export const NeedListTable = ({
       );
     }
   };
+
   const reviewClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
@@ -341,6 +345,7 @@ export const NeedListTable = ({
       documentDetail: false
     });
   };
+
   const detailClickHandler = (index: number, fileIndex?: number) => {
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
@@ -348,6 +353,7 @@ export const NeedListTable = ({
       documentDetail: true
     });
   };
+
   const renderDocumentTitle = () => {
     if (documentSortClick)
       return (
@@ -373,6 +379,7 @@ export const NeedListTable = ({
         </div>
       );
   };
+
   const renderStatusTitle = () => {
     if (statusSortClick)
       return (
@@ -398,21 +405,22 @@ export const NeedListTable = ({
         </div>
       );
   };
+
   const renderSyncToLosTitle = () => {
     if (isByteProAuto) {
       return <></>
     } else {
       return (
         <div className="th">
-          <a onClick={() => syncErrorFound===true ? FilesSyncToLos(syncTitleClass) : {}} >
+          <a onClick={() => syncButtonEnabled===true ? FilesSyncToLos(syncTitleClass) : {}} >
             <em className={"icon-refresh " + syncTitleClass}></em>
           </a>{' '}
-          <span className="txt-stl" onClick={() => syncErrorFound===true ? FilesSyncToLos(syncTitleClass) : {}}>sync to LOS</span>
+          <span className="txt-stl" onClick={() => syncButtonEnabled===true ? FilesSyncToLos(syncTitleClass) : {}}>sync to LOS</span>
         </div>
       )
     }
-
   }
+
   const renderSyncToLosConfirmationBox = () => {
     if (!showConfirmBox && !syncSuccess) {
       return '';
@@ -465,8 +473,6 @@ export const NeedListTable = ({
     );
   }
 
-  console.log('isByteProAuto', isByteProAuto)
-  console.log('isByteProAuto', needList)
   return (
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
