@@ -8,7 +8,7 @@ export const DocumentRequest = () => {
     const { state, dispatch } = useContext(Store);
     const { pendingDocs, currentDoc }: any = state.documents;
     let pendingDocsCount = pendingDocs ? pendingDocs.length : 0;
-    
+     
     return (
         <main className="dr-upload">
             <section className="dr-upload--header">
@@ -16,7 +16,7 @@ export const DocumentRequest = () => {
                     <article className="col-sm-12">
                         <div className="dr-head">
                             <h2 className="heading-h2">Task List</h2>
-                            {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> items to complete</p> : ''}
+                            {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> {pendingDocsCount == 1 ?"item":"items"} to complete</p> : ''}
                         </div>
                     </article>
                 </div>

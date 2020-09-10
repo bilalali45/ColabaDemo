@@ -76,7 +76,7 @@ namespace DocumentManagement.Service
             using var asyncCursorStatus = collection.Aggregate(
                 PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
                     @"{""$match"": {
-                  ""order"": " + 4 + @"
+                  ""order"": " + 3 + @"
                             }
                         }", @"{
                             ""$project"": {
@@ -206,7 +206,7 @@ namespace DocumentManagement.Service
             using var asyncCursorStatus = collection.Aggregate(
                 PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
                     @"{""$match"": {
-                  ""order"": " + 4 + @"
+                  ""order"": " + 3 + @"
                             }
                         }", @"{
                             ""$project"": {

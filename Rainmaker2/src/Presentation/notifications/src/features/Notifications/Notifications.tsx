@@ -89,11 +89,13 @@ export const Notifications: FunctionComponent<NotificationsProps> = (props) => {
             className="InfiniteScroll"
             style={{overflow: 'initial'}}
           >
-            {notifications.map((notification, index) => {
+            {notifications.map((notification) => {
+              const {id} = notification;
+
               return (
                 <Notification
-                  key={index}
-                  removeNotification={() => removeNotification(notification.id)}
+                  key={id}
+                  removeNotification={() => removeNotification(id)}
                   clearTimeOut={clearTimeOut}
                   timers={timers}
                   notification={notification}
