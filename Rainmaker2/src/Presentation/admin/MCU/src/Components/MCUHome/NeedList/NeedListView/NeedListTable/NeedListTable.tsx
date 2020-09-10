@@ -431,7 +431,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
             <div className="icon"><img src={sycLOSIcon} alt="" /></div>
             <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
             <div className="btn-wrap">
-              <button onClick={() => synchronizing=== false ? postToBytePro(false) : {}} className="btn btn-primary btn-sm">
+              <button disabled={synchronizing} onClick={() => synchronizing=== false ? postToBytePro(false) : {}} className="btn btn-primary btn-sm">
                 {synchronizing != true
                   ? <>
                     Sync
