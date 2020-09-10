@@ -38,7 +38,7 @@ namespace ByteWebConnector.API
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
-                         //.WriteTo.Console()
+                         .WriteTo.Console()
                          .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-serviceLog-.log",
                                                                retainedFileCountLimit: 7,
                                                                rollOnFileSizeLimit: true,
