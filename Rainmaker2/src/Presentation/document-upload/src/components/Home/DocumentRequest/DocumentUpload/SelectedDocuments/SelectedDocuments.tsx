@@ -103,12 +103,12 @@ export const SelectedDocuments = ({
   };
 
   const getSubmittedDocumentForView = async (id, requestId, docId, fileId) => {
-    const response = (await DocumentActions.getSubmittedDocumentForView({
+    const response = await DocumentActions.getSubmittedDocumentForView({
       id,
       requestId,
       docId,
       fileId,
-    })) as any;
+    });
     setBlobData(response);
   };
   const clearBlob = () => {
