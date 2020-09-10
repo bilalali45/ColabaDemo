@@ -235,7 +235,7 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.FileSubmitted, clientName));
             }
-            if (result.ModifiedCount == 1 && isStarted == false)
+            if (result.ModifiedCount == 1 && !isStarted)
             {
                 string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
 

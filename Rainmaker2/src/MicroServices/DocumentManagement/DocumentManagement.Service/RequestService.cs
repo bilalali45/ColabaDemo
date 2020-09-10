@@ -109,7 +109,6 @@ namespace DocumentManagement.Service
                         }"
                 ));
             // if loan application does not exists create loan application
-            Entity.Request request = new Entity.Request();
           
             if (await asyncCursorRequest.MoveNextAsync())
             {
