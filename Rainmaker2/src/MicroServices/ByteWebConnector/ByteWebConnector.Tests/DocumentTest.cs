@@ -1,30 +1,21 @@
 ﻿using ByteWebConnector.API.Controllers;
-using ByteWebConnector.API.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Rainmaker.Service;
-using RainMaker.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using ByteWebConnector.API.Models.ClientModels.Document;
-using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
 using ByteWebConnector.API.ExtensionMethods;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using Moq;
 using Moq.Protected;
-using System.Threading;
+using System;
 using System.Net;
-using ByteWebConnector.API.Models.Document;
-using RainMaker.Service;
-using System.IO;
-using HttpWebAdapters;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+using DeleteRequest = ByteWebConnector.API.Models.Document.DeleteRequest;
 
 namespace ByteWebConnector.Tests
 {
@@ -79,9 +70,11 @@ namespace ByteWebConnector.Tests
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var userProfile = new UserProfile();
-            userProfile.Id = 1;
-            userProfile.UserName = "rainsoft";
+            var userProfile = new
+            {
+                Id = 1,
+                UserName = "rainsoft"
+            };
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -135,9 +128,11 @@ namespace ByteWebConnector.Tests
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var userProfile = new UserProfile();
-            userProfile.Id = 1;
-            userProfile.UserName = "rainsoft";
+            var userProfile = new
+            {
+                Id = 1,
+                UserName = "rainsoft"
+            };
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 

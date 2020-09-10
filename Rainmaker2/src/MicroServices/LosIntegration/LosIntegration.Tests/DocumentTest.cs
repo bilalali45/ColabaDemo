@@ -1,5 +1,4 @@
 ﻿using LosIntegration.API.Controllers;
-using LosIntegration.API.Models;
 using LosIntegration.API.Models.Document;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
@@ -11,8 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using Moq.Protected;
-using RainMaker.Entity.Models;
-using ServiceCallHelper;
 using System;
 using System.Collections.Generic;
 using System.Net;
