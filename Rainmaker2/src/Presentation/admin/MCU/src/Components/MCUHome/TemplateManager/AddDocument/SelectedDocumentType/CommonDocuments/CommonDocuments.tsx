@@ -45,7 +45,7 @@ export const CommonDocuments = ({
   };
 
   return (
-    <div>
+    <div className="common-wrap">
       <div className="s-wrap">
         <input
           maxLength={255}

@@ -749,6 +749,14 @@
                             }
                         }
                     }
+.common-wrap {
+   .active-docs {
+       ul {
+        max-height: 294px; 
+       }
+   } 
+}
+
 
                     .add-custom-doc {
                         .others-doc-list {
