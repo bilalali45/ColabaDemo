@@ -27,7 +27,7 @@ namespace DocumentManagement.Model
         public string typeName { get; set; }
         public List<RequestFile> files { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
-        public string requestId;
+        public string requestId { get; set; }
         public string userName { get; set; }
     }
 

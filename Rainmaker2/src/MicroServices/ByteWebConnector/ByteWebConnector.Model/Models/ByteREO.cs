@@ -1,6 +1,6 @@
 ﻿namespace ByteWebConnector.Model.Models
 {
-    public class ByteREO
+    public class ByteReo
     {
         public int AppNo { get; set; }
         public int Reoid { get; set; }
@@ -36,9 +36,9 @@
         public long FileDataId { get; set; }
 
 
-        public ByteREO GetBorrowerReo()
+        public ByteReo GetBorrowerReo()
         {
-            var byteReo = new ByteREO();
+            var byteReo = new ByteReo();
             byteReo.AppNo = this.AppNo;
             byteReo.Reoid = this.Reoid;
             byteReo.BorrowerId = this.BorrowerId;

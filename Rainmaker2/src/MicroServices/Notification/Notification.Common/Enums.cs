@@ -1,24 +1,22 @@
-﻿using System;
-
-namespace Notification.Common
+﻿namespace Notification.Common
 {
-    public enum NotificationTypeEnum
+    public enum NotificationType
     {
         DocumentSubmission=1
     }
-    public enum DeliveryModeEnum
+    public enum DeliveryMode
     {
         Express=1,
         Queued=2,
         Off=3
     }
 
-    public enum NotificationMediumEnum
+    public enum NotificationMedium
     {
         InApp=1
     }
 
-    public enum StatusListEnum
+    public enum StatusList
     {
         Created=1,
         Delivered=2,

@@ -31,7 +31,7 @@ namespace Rainmaker.Service
         public async Task<UserProfile> GetUserProfile(int userProfileId)
         {
             return await Uow.Repository<UserProfile>().Query(query: ss => ss.IsActive
-                                                                          && ss.IsDeleted == false
+                                                                          && !ss.IsDeleted
                                                                           && ss.Id == userProfileId)
                             .FirstOrDefaultAsync();
         }
