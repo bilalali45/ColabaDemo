@@ -63,11 +63,15 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   useEffect(() => {
     if(!needList || needList.length === 0) return 
     
+    const allDocumentsHaveAtLeastOneFile = needList.some((document:NeedList) => document.files.length > 0)
+
     const fileNotSyncedOrSyncFailed = needList.some((document:NeedList) => document.files.some(uploadedFile => ['sync_error','not_Synced'].includes(uploadedFile.byteProStatusClassName)))
 
     //Only enable sync button if there is a file with sync failed or it never synced.
-    if(fileNotSyncedOrSyncFailed===true){
+    if(fileNotSyncedOrSyncFailed===true && allDocumentsHaveAtLeastOneFile===true){
       setsyncButtonEnabled(true)
+    }else{
+     syncButtonEnabled===true && setsyncButtonEnabled(false)
     }
   },[syncButtonEnabled,needList])
   
