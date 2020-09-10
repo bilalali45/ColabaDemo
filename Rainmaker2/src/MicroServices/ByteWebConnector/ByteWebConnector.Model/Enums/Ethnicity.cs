@@ -1,14 +1,14 @@
 ﻿namespace ByteWebConnector.Model.Enums
 {
 
-    public enum EthnicityEnum
+    public enum Ethnicity
     {
         HispanicOrLatino = 1,
         NotHispanicOrLatino = 2,
         DoNotWishToProvideThisInformation = 3
     }
 
-    public enum EthnicityDetailEnum
+    public enum EthnicityDetail
     {
         Mexican = 1,
         PuertoRican = 2,

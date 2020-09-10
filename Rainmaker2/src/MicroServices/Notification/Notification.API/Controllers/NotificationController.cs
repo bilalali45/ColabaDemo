@@ -34,13 +34,13 @@ namespace Notification.API.Controllers
             model.userId = userProfileId;
             model.tenantId = tenantId;
             TenantSetting setting = await _notificationService.GetTenantSetting(tenantId,model.NotificationType);
-            if (setting.DeliveryModeId == (short) Notification.Common.DeliveryModeEnum.Express)
+            if (setting.DeliveryModeId == (short) Notification.Common.DeliveryMode.Express)
             {
                 long id = await _notificationService.Add(model, userProfileId, tenantId,setting);
                 await _redisService.SendNotification(id);
                 return Ok(id);
             }
-            else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryModeEnum.Queued)
+            else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryMode.Queued)
             {
                 await _redisService.InsertInCache(model);
             }

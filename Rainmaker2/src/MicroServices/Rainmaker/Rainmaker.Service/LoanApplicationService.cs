@@ -232,7 +232,7 @@ namespace Rainmaker.Service
             var businessUnit = await Uow.Repository<BusinessUnit>()
                                         .Query(query: x =>
                                                    x.Id == businessUnitId &&
-                                                   x.BusinessUnitPhones.Count(y => y.TypeId == 3) > 0)
+                                                   x.BusinessUnitPhones.Any(y => y.TypeId == 3))
                                         .Include(navigationPropertyPath: x => x.EmailAccount)
                                         .Include(navigationPropertyPath: x => x.BusinessUnitPhones)
                                         .ThenInclude(navigationPropertyPath: x => x.CompanyPhoneInfo)

@@ -32,7 +32,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
             TenantSetting tenantSetting = new TenantSetting();
-            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Express;
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryMode.Express;
             mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
             var notificationController = new NotificationController(mockUserProfileService.Object,null,Mock.Of<IRedisService>());
 
@@ -68,7 +68,7 @@ namespace Notification.Tests
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
             TenantSetting tenantSetting = new TenantSetting();
-            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Queued;
+            tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryMode.Queued;
             mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
             var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
@@ -481,7 +481,7 @@ namespace Notification.Tests
             notificationModel.CustomTextJson = "";
 
             TenantSetting model = new TenantSetting();
-            model.DeliveryModeId = (short)Notification.Common.DeliveryModeEnum.Express;
+            model.DeliveryModeId = (short)Notification.Common.DeliveryMode.Express;
             model.NotificationMediumId = 1;
             long res = await notificationService.Add(notificationModel, 1, 1, model);
 

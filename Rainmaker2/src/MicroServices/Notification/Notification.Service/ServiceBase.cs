@@ -115,17 +115,17 @@ namespace Notification.Service
 
         virtual public async Task<bool> IsExistsAsync(Dictionary<string, string> dic)
         {
-            string query = "";
+            System.Text.StringBuilder query = new System.Text.StringBuilder();
             var dynamicFilter = new DynamicLinQFilter();
             int a = 0;
             foreach (KeyValuePair<string, string> str in dic)
             {
-                if (a > 0) query += " And ";
-                query += str.Key + "= @" + a.ToString(CultureInfo.InvariantCulture);
+                if (a > 0) query.Append(" And ");
+                query.Append(str.Key + "= @" + a.ToString(CultureInfo.InvariantCulture));
                 dynamicFilter.Predicates.Add(str.Value);
                 a++;
             }
-            dynamicFilter.Filter = query;
+            dynamicFilter.Filter = query.ToString();
             return (await Uow.Repository<TEntity>().Query(dynamicFilter).ToListAsync()).Any();
         }
 
@@ -259,6 +259,11 @@ namespace Notification.Service
         public virtual IQueryable<TEntity> Query()
             => Repository.Query();
 
+        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> query)
+        {
+            return Repository.Query(query);
+        }
+
         public virtual IQueryable<TEntity> Queryable()
             => Repository.Queryable();
 
@@ -298,11 +303,6 @@ namespace Notification.Service
         public void SoftDelete(TEntity item)
         {
             Repository.SoftDelete(item);
-        }
-
-        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> query)
-        {
-            return Repository.Query(query);
         }
 
         public IQueryable<TEntity> Query(DynamicLinQFilter dynamicQuery, Expression<Func<TEntity, bool>> query = null)

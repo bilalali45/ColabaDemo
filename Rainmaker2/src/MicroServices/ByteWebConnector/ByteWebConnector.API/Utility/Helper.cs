@@ -28,7 +28,6 @@ namespace ByteWebConnector.API.Utility
                 graph.DrawImage(image, 170, 100);
 
                 string pdfFilename1 = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
-                string pdfFilename = $"\\tempfiles\\{Guid.NewGuid().ToString()}.pdf";
 
                 pdf.Save(pdfFilename1);
                 pdfbyte.Add(File.ReadAllBytes(pdfFilename1));

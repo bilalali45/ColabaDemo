@@ -12,7 +12,6 @@ import {Template} from '../../../../Entities/Models/Template';
 import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import {NeedListAlertBox} from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
-import {findIndex} from 'lodash';
 import {NeedListDocuments} from '../../../../Entities/Models/NeedListDocuments';
 
 export const Sync = 'Synchronized';
