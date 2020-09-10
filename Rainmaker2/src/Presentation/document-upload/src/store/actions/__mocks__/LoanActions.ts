@@ -7,17 +7,18 @@ export class LaonActions {
     static async getLoanApplication(loanApplicationId: string) {
         return Promise.resolve({
 
-            loanPurpose: 'No Loan Purpose',
-            propertyType: 'No Property Type',
-            propertyAddress: 'No Property Address',
-            loanAmount: 45645,
-            country: '',
-            county: 'No County',
-            city: 'Dallas',
-            state: 'TX',
-            street: 'Abc Street 124',
-            zipCode: 45682,
-            unitNumber: 654654654658
+            cityName: "Houston",
+            countryName: null,
+            countyName: null,
+            loanAmount: 288000,
+            loanPurpose: "Purchase a home",
+            name: "Shehroz Riyaz",
+            propertyType: "Single Family Detached",
+            stateName: "Texas",
+            streetAddress: "Street 2",
+            unitNumber: "52",
+            url: "http://qa.RainsoftFn.com",
+            zipCode: "77098"
         })
     }
 
@@ -30,7 +31,7 @@ export class LaonActions {
     }
 
     static async getLoanProgressStatus(loanApplicationId: string) {
-        
+
     }
 }
 

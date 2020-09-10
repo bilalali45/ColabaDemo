@@ -61,6 +61,7 @@ export const DocumentsStatus = () => {
   };
 
   const renderNoPendingDocs = () => {
+    console.log('-----------------------------------------------------------------------------------------------------------------------', pendingDocs)
     return (
       <div className="DocumentStatus box-wrap empty">
         <div className="box-wrap--header clearfix">
@@ -73,7 +74,7 @@ export const DocumentsStatus = () => {
                 <img src={IconEmptyDocRequest} alt="" />
               </div>
               <div className="eds-txt">
-                <p>You have 0 tasks to complete.</p>
+                <p data-testid="pending-docs-length">You have 0 tasks to complete.</p>
               </div>
             </div>
           </div>
@@ -124,7 +125,7 @@ export const DocumentsStatus = () => {
       <div className="overlay-DocumentStatus">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2"> Task List</h2>
-          <p>
+          <p data-testid="borrower-pending-docs">
             You have{" "}
             <span className="DocumentStatus--count">{pendingDocs.length}</span>{" "}
             {pendingDocs.length == 1 ?"item":"items"} to complete
@@ -135,7 +136,7 @@ export const DocumentsStatus = () => {
             {pendingDocs.map((item: any, index: any) => {
               if (index < 8)
                 return (
-                  <li title={item.docName} key={index}>
+                  <li data-testid="borrower-pending-doc" title={item.docName} key={index}>
                     {" "}
                     {item.docName}{" "}
                   </li>

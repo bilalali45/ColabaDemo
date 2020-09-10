@@ -3,10 +3,9 @@ import { render, waitFor, waitForDomChange, waitForElement, waitForElementToBeRe
 import App from './App';
 import { MockLocalStorage } from './test_utilities/LocalStoreMock';
 import { MockEnvConfig } from './test_utilities/EnvConfigMock';
-import { Home } from './components/Home/Home';
 import { MemoryRouter } from 'react-router-dom';
-import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { FormatAmountByCountry } from 'rainsoft-js';
 
 jest.mock('axios');
 jest.mock('./store/actions/UserActions');
@@ -22,33 +21,21 @@ beforeEach(() => {
 
 test('Should render borrower name in the header', async () => {
 
-  const { getByText, getByTestId } = render(<App />, { wrapper: MemoryRouter });
-  await act(async () => {
-  })
+  const { getByText } = render(<App />, { wrapper: MemoryRouter });
+
+  await waitForDomChange();
   const header = getByText('Hello, John Doe');
 
-  expect(header).toHaveClass('d-name d-none d-sm-block dropdown-toggle');
+  expect(header).toBeInTheDocument();
 
 });
 
+test('Should convert a number into US currency seperated by comma', async () => {
 
-test('Should render activity header', async () => {
+  const amount = 32094802;
+  
+  const formatted = FormatAmountByCountry(amount);
 
-  const { getByTestId } = render(<App />, { wrapper: MemoryRouter });
-  await waitForDomChange();
-  const activityHeader = getByTestId('activity-header');
-  expect(activityHeader).toHaveTextContent('Dashboard');
-  expect(activityHeader).toHaveClass('activityHeader');
-
-});
-
-test('Should render loan status', async () => {
-
-  const { getByTestId } = render(<App />, { wrapper: MemoryRouter });
- 
-  await waitForDomChange();
-  const loan = getByTestId('loanStatus');
-  expect(loan).toHaveTextContent('45,645');
+  expect(formatted).toEqual('32,094,802');
 
 });
-
