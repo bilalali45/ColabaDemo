@@ -1,14 +1,9 @@
 import React, {useEffect, useCallback, useState, useRef} from 'react';
-import {Http} from 'rainsoft-js';
 import Spinner from 'react-bootstrap/Spinner';
-// ../../../../../../Assets/images/editicon.svg
 import EditIcon from '../../../../../../Assets/images/editicon.svg';
 import {TemplateDocument} from '../../../../../../Entities/Models/TemplateDocument';
-import {useHistory} from 'react-router-dom';
-import {TextArea} from '../../../../../../Shared/components/TextArea';
 import {errorText} from '../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview';
 import {isDocumentDraftType} from '../../../../../../Store/reducers/TemplatesReducer';
-import {debug} from 'console';
 
 type NeedListContentType = {
   document: TemplateDocument | null;
@@ -31,14 +26,12 @@ export const NeedListContent = ({
   const [isValid, setIsValid] = useState<boolean>(false);
   const [docMessage, setDocMessage] = useState<string | undefined>();
 
-  const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}\s]*$/i;
   useEffect(() => {
     setDoc(document);
     setDocName(document?.docName);
     let m = document?.docMessage?.replace(/<br\s*[\/]?>/gi, '\n');
     setDocMessage(m);
   }, [document]);
-
 
   const toggleRename = () => {
     seteditTitleview(!editTitleview);
@@ -71,7 +64,7 @@ export const NeedListContent = ({
                       }, 0);
                     }}
                     onBlur={(e) => {
-                      if(!e.target.value) return;
+                      if (!e.target.value) return;
                       setDocName(e.target.value);
 
                       let updatedDoc = {
@@ -149,7 +142,7 @@ export const NeedListContent = ({
             }}
             maxLengthValue={500}
           />
-                  {/* <div className="input-chrac">
+          {/* <div className="input-chrac">
           <span>{docMessage?.length || 0}</span><span>/</span><span>500</span>
         </div> */}
         </div>
