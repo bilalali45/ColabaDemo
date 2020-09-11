@@ -65,7 +65,9 @@ namespace MainGateway
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
                          //.WriteTo.Debug()
-                         //.WriteTo.Console()
+#if DEBUG
+                         .WriteTo.Console()
+#endif
                          .WriteTo.Async(configure: x => x.File(path: $"Logs\\{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-serviceLog-.log",
                                                                retainedFileCountLimit: 7,
                                                                rollOnFileSizeLimit: true,
