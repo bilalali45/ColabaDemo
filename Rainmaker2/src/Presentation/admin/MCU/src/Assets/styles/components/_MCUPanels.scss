@@ -46,7 +46,7 @@
  resize: none;
  height: 350px;
  border:1px solid color('border');
- font: 400 #{fontSize("nr")+"/1.2"} fontFamily("base");
+ font-size: fontSize("nr");
  &:focus {
      outline: none;
      border:1px solid color('border');
