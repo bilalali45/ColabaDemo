@@ -187,7 +187,6 @@ const seedData = [
 
 export class DocumentActions {
     static async getPendingDocuments(loanApplicationId: string) {
-        console.log('---------------==================================0===================================0==========')
         let d = seedData.map((d: any, i: number) => {
             let {
                 id,
@@ -230,7 +229,7 @@ export class DocumentActions {
     }
 
     static async getSubmittedDocuments(loanApplicationId: string) {
-
+        return [];
     }
 
     static async getSubmittedDocumentForView(params: any) {
@@ -238,6 +237,7 @@ export class DocumentActions {
     }
 
     static async finishDocument(loanApplicationId: string, data: {}) {
+        return [];
 
     }
 }

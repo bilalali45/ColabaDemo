@@ -86,7 +86,6 @@ export class FileDropper extends Component<{
   onDragEnter(e: any) {
     e.preventDefault();
     if (this.props.parent) {
-      console.log(e.target.classList);
       this.props.parent.classList.add("drag-enter");
       this.props.parent.classList.add("dragableArea");
       this.setState((state) => ({ dragPreview: true }));

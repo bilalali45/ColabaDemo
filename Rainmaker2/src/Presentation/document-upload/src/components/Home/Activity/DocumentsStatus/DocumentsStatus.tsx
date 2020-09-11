@@ -61,7 +61,6 @@ export const DocumentsStatus = () => {
   };
 
   const renderNoPendingDocs = () => {
-    console.log('-----------------------------------------------------------------------------------------------------------------------', pendingDocs)
     return (
       <div className="DocumentStatus box-wrap empty">
         <div className="box-wrap--header clearfix">
@@ -146,7 +145,7 @@ export const DocumentsStatus = () => {
         </div>
         <div className="box-wrap--footer clearfix">
           {/* <button className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
-          <button onClick={getStarted} className="btn btn-primary">
+          <button data-testid="get-started" onClick={getStarted} className="btn btn-primary">
             Get Started <em className="zmdi zmdi-arrow-right"></em>
           </button>
         </div>

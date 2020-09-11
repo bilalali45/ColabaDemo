@@ -10,19 +10,22 @@ import { FormatAmountByCountry } from 'rainsoft-js';
 jest.mock('axios');
 jest.mock('./store/actions/UserActions');
 jest.mock('./store/actions/LoanActions');
+jest.mock('./store/actions/DocumentActions');
 jest.mock('./services/auth/Auth');
 
 beforeEach(() => {
   MockEnvConfig();
   MockLocalStorage();
-  const history = createMemoryHistory()
-  history.push('/');
+
 });
 
 test('Should render borrower name in the header', async () => {
-
-  const { getByText } = render(<App />, { wrapper: MemoryRouter });
-
+  const { getByText } = render(
+    <MemoryRouter initialEntries={['/loanportal/3']}>
+      <App />
+    </MemoryRouter>
+  );
+  const history = createMemoryHistory()
   await waitForDomChange();
   const header = getByText('Hello, John Doe');
 
@@ -33,7 +36,7 @@ test('Should render borrower name in the header', async () => {
 test('Should convert a number into US currency seperated by comma', async () => {
 
   const amount = 32094802;
-  
+
   const formatted = FormatAmountByCountry(amount);
 
   expect(formatted).toEqual('32,094,802');

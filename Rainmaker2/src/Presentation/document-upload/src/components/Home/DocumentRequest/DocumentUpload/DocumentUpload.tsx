@@ -77,7 +77,7 @@ export const DocumentUpload = () => {
         {currentDoc && (
           <div className="Doc-head-wrap">
             <h2 title={docTitle}>
-              <span className="text-ellipsis">{docTitle}</span>
+              <span data-testid="selected-doc-title" className="text-ellipsis">{docTitle}</span>
               {currentDoc?.isRejected && (
                 <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
               )}

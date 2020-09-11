@@ -7,7 +7,6 @@ export function toTitleCase(str: string | undefined) {
     }
     return sentence.join(" ");
   }else {
-    console.log(str);
   }
   return "";
 }

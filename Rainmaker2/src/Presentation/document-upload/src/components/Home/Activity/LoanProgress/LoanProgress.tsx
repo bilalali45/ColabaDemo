@@ -135,7 +135,7 @@ export const LoanProgress = () => {
           data-index={activeindex}
           className={liclass + activeindex}
         >
-          <a onClick={(e) => handleSelect(i, e)}>
+          <a data-testid="steps-icon" onClick={(e) => handleSelect(i, e)}>
             {i == totallist - 1 && l.status == statusText.UPCOMMING ? (
               <i className="zmdi zmdi-flag"></i>
             ) : l.status == statusText.COMPLETED ? (
@@ -158,7 +158,7 @@ export const LoanProgress = () => {
   return (
     <div className="LoanProgress box-wrap">
       <div className="box-wrap--header">
-        <h2 className="heading-h2"> Your Loan Progress </h2>
+        <h2 data-testid="loan-progress" className="heading-h2"> Your Loan Progress </h2>
       </div>
       <div className="box-wrap--body">
         <div

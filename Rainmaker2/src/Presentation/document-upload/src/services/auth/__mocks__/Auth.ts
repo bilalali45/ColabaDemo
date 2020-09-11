@@ -14,6 +14,10 @@ export class Auth  {
     static getLoanAppliationId() {
         return 3;
     }
+    
+    static setLoanAppliationId(value) {
+        
+    }
 
     static removeAuth() {
         

@@ -26,8 +26,6 @@ export class Home extends Component<any> {
 
   render() {
 
-    console.log('in here reached ----------------------------------------')
-
     return (
       <div data-testid="activity">
         <ActivityHeader {...this.props} />

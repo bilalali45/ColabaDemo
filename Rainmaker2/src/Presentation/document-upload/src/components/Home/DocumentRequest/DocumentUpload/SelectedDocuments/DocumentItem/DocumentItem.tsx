@@ -86,8 +86,6 @@ export const DocumentItem = ({
       }
 
       toggleFocus(file, true);
-      console.log(filename)
-      debugger
       changeName(file, filename);
     }
   }

@@ -17,7 +17,7 @@ export class DocumentActions {
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
 
-      let d = res.data.map((d: DocumentRequest, i: number) => {
+      let d = res?.data?.map((d: DocumentRequest, i: number) => {
         let {
           id,
           requestId,

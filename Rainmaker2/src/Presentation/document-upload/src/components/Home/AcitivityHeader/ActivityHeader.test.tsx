@@ -9,6 +9,7 @@ import { createMemoryHistory } from 'history'
 jest.mock('axios');
 jest.mock('../../../store/actions/UserActions');
 jest.mock('../../../store/actions/LoanActions');
+jest.mock('../../../store/actions/DocumentActions');
 jest.mock('../../../services/auth/Auth');
 
 beforeEach(() => {
@@ -20,7 +21,11 @@ beforeEach(() => {
 
 describe('Activity Header', () => {
     test('should render with class name "activityHeader" ', async () => {
-        const { getByTestId } = render(<App />, { wrapper: MemoryRouter });
+        const { getByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
 
         await waitForDomChange();
 
@@ -30,7 +35,11 @@ describe('Activity Header', () => {
     });
 
     test('should render navigation links', async () => {
-        const { getByTestId } = render(<App />, { wrapper: MemoryRouter });
+        const { getByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
 
         await waitForDomChange();
 
@@ -41,22 +50,19 @@ describe('Activity Header', () => {
     });
 
     test('should redirect to link clicked', async () => {
-        const { getByTestId } = render(<App />, { wrapper: MemoryRouter });
+        const { getByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
 
         await waitForDomChange();
 
         const activityHeader = getByTestId('activity-header');
         const rightNav = getByTestId('right-nav');
-        const leftNav = getByTestId('left-nav');
 
         fireEvent.click(rightNav);
         expect(activityHeader).toHaveTextContent('Loan Center');
-      
-    });
-    
-    
-})
 
-// console.log('=======================================', window?.location?.pathname);
-// expect(activityHeader).toHaveTextContent('Document Request');
-// console.log('=======================================', window?.location?.pathname);
+    });
+})

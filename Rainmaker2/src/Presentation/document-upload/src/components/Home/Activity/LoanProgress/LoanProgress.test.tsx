@@ -5,7 +5,6 @@ import { createMemoryHistory } from 'history'
 import { MockEnvConfig } from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import App from '../../../../App';
-import { Console } from 'console';
 
 
 jest.mock('axios');
@@ -19,8 +18,8 @@ beforeEach(() => {
     MockLocalStorage();
 });
 
-describe('Documents Status', () => {
-    test('should render DocumentsStatus" ', async () => {
+describe('Loan Progress', () => {
+    test('should render LoanProgress" ', async () => {
         const { getByTestId } = render(
             <MemoryRouter initialEntries={['/loanportal/activity/3']}>
                 <App />
@@ -30,13 +29,12 @@ describe('Documents Status', () => {
         await waitForDomChange();
 
 
-        const pendingDocs = getByTestId('borrower-pending-docs');
+        const loanProgress = getByTestId('loan-progress');
 
-        expect(pendingDocs).toHaveTextContent('You have 3 items to complete');
-
+        expect(loanProgress).toHaveTextContent('Your Loan Progress');
     });
 
-    test('should show the list of pending documents" ', async () => {
+    test('should show color blue for the completed steps" ', async () => {
         const { getAllByTestId } = render(
             <MemoryRouter initialEntries={['/loanportal/activity/3']}>
                 <App />
@@ -45,29 +43,12 @@ describe('Documents Status', () => {
 
         await waitForDomChange();
 
-        const pendingDocs = getAllByTestId('borrower-pending-doc');
 
-        expect(pendingDocs[0]).toHaveTextContent('Alimony Income Verification');
-        expect(pendingDocs[1]).toHaveTextContent('Bank Statement');
-        expect(pendingDocs[2]).toHaveTextContent('Salary Slip');
+        const stepIcons = getAllByTestId('steps-icon');
 
-    });
-    
-    test('should render Get Started button" ', async () => {
-        const { getByTestId } = render(
-            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
-                <App />
-            </MemoryRouter>
-        );
-
-        await waitForDomChange();
-
-        const getStartedBtn = getByTestId('get-started');
-        fireEvent.click(getStartedBtn);
-     
-        const documentsRequest = getByTestId('selected-doc-title');
-        expect(documentsRequest).toHaveTextContent('Alimony Income Verification');
-
+        expect(stepIcons[0].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
+        expect(stepIcons[1].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
+        expect(stepIcons[2].innerHTML).toBe('<i class="zmdi zmdi-male-alt"></i>');
     });
 
 })

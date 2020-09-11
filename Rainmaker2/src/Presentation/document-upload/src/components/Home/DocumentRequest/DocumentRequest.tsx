@@ -10,7 +10,7 @@ export const DocumentRequest = () => {
     let pendingDocsCount = pendingDocs ? pendingDocs.length : 0;
     
     return (
-        <main className="dr-upload">
+        <main className="dr-upload" data-testid="task-list">
             <section className="dr-upload--header">
                 <div className="row">
                     <article className="col-sm-12">

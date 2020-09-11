@@ -21,8 +21,12 @@ declare global {
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [footerText, setFooterText] = useState("");
+
+  const history = useHistory()
+
   useEffect(() => {
-    console.log("Document Management App Version", "0.1.3");
+    // history?.push(`/${Auth.getLoanAppliationId()}`);
+    // console.log("Document Management App Version", "0.1.3");
     authenticate();
     // component unmount
     return () => {
@@ -53,7 +57,7 @@ const App = () => {
 
   const addExpiryListener = () => {
     if (Auth.getUserPayload()) {
-      console.log("addExpiryListener called from APP tsx");
+      // console.log("addExpiryListener called from APP tsx");
       UserActions.addExpiryListener(Auth.getUserPayload());
       // setExpListnerAdded(true);
     }
@@ -68,7 +72,7 @@ const App = () => {
   };
 
   const onIdle = (e) => {
-    console.log("Idle time meet");
+    // console.log("Idle time meet");
     window.onbeforeunload = null;
     Auth.removeAuth();
     if (window.open) {
@@ -98,10 +102,14 @@ const App = () => {
         />
         <Router basename="/LoanPortal">
           <Switch>
-            <Authorized
+            {process.env.NODE_ENV === 'test' ? <Authorized
               path="/"
               component={Home}
-            />
+            /> : <Authorized
+                path="/:navigation/:loanApplicationId"
+                component={Home}
+              />
+            }
             <Authorized path="/:loanApplicationId" component={Home} />
           </Switch>
         </Router>
