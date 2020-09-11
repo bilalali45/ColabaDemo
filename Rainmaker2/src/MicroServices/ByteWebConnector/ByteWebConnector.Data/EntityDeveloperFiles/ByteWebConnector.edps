@@ -4,11 +4,11 @@
     <Connection ConnectionString="Data Source=rsserver1;Initial Catalog=ByteWebConnector;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=test123" Provider="System.Data.SqlClient" />
     <Generation>
       <GeneratedFiles>
-        <File Name="Context.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Data" />
-        <File Name="Setting.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Entity\Models" />
-        <File Name="SyncLog.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Entity\Models" />
-        <File Name="Setting.Configuration.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Data\Mapping" />
-        <File Name="SyncLog.Configuration.cs" DestinationFolder="D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Data\Mapping" />
+        <File Name="BwcContext.cs" DestinationFolder="..\..\ByteWebConnector.Data" />
+        <File Name="Setting.cs" DestinationFolder="..\..\ByteWebConnector.Entity\Models" />
+        <File Name="SyncLog.cs" DestinationFolder="..\..\ByteWebConnector.Entity\Models" />
+        <File Name="Setting.Configuration.cs" DestinationFolder="..\..\ByteWebConnector.Data\Mapping" />
+        <File Name="SyncLog.Configuration.cs" DestinationFolder="..\..\ByteWebConnector.Data\Mapping" />
       </GeneratedFiles>
     </Generation>
     <DatabaseFirstNamingRules>
@@ -38,14 +38,14 @@
           <OutputInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
             <Project />
             <ProjectFolder />
-            <DestinationFolder>D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Entity\Models</DestinationFolder>
+            <DestinationFolder>..\..\ByteWebConnector.Entity\Models</DestinationFolder>
           </OutputInfo>
         </ed:Property>
         <ed:Property Name="ContextOutput" Type="EntityDeveloper.TemplateEngine.OutputInfo, EntityDeveloper.Common, Version=6.6.872.0, Culture=neutral, PublicKeyToken=09af7300eec23701">
           <OutputInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
             <Project />
             <ProjectFolder />
-            <DestinationFolder>D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Data</DestinationFolder>
+            <DestinationFolder>..\..\ByteWebConnector.Data</DestinationFolder>
           </OutputInfo>
         </ed:Property>
         <ed:Property Name="FilePerClass" Type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -97,7 +97,7 @@
           <OutputInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
             <Project />
             <ProjectFolder />
-            <DestinationFolder>D:\work\Rainmaker2\Rainmaker2\src\MicroServices\ByteWebConnector\ByteWebConnector.Data\Mapping</DestinationFolder>
+            <DestinationFolder>..\..\ByteWebConnector.Data\Mapping</DestinationFolder>
           </OutputInfo>
         </ed:Property>
       </Template>

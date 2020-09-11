@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MicroServices\ByteWebConnector\ByteWebConnector.API\ByteWebConnector.API.csproj" />
-    <ProjectReference Include="..\..\MicroServices\Rainmaker\Rainmaker.Service\Rainmaker.Service.csproj" />
+    <ProjectReference Include="..\ByteWebConnector.API\ByteWebConnector.API.csproj" />
   </ItemGroup>
 
 </Project>

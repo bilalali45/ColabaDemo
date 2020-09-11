@@ -11,7 +11,8 @@ import {
   DELETE_NOTIFICATION,
   RECEIVED_NOTIFICATION,
   SEEN_OR_READ_NOTIFICATIONS,
-  DELETE_ALL_NOTIFICATIONS
+  DELETE_ALL_NOTIFICATIONS,
+  RESET_ON_CONNECT
 } from './actionTypes';
 
 export interface State {
@@ -46,7 +47,8 @@ export type Actions =
   | RECEIVED_NOTIFICATION
   | SEEN_OR_READ_NOTIFICATIONS
   | RESET_DELETE_TIMERS
-  | DELETE_ALL_NOTIFICATIONS;
+  | DELETE_ALL_NOTIFICATIONS
+  | RESET_ON_CONNECT;
 
 const readOrSeenNotification = (
   state: State,
@@ -207,6 +209,11 @@ export const useNotificationsReducer = (): {
         return {
           ...state,
           ...action.state
+        };
+      case 'RESET_ON_CONNECT':
+        return {
+          ...state,
+          notifications: action.notifications
         };
       default:
         return state;

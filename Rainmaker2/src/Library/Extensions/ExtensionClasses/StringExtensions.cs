@@ -279,21 +279,21 @@ namespace Extensions.ExtensionClasses
             var wordItems = wordsArray.Length == 1 ? wordsArray[0] : wordsArray[0] + ' ' + wordsArray[1];
 
             var splitedWords = wordItems.Split(' ').ToList();
-            var name = "";
+            StringBuilder name = new StringBuilder();
 
             foreach (var wr in splitedWords)
                 if (splitedWords.Count == 1)
                 {
-                    name += wr[index: 0].ToString().ToUpper();
+                    name.Append(wr[index: 0].ToString().ToUpper());
                     if (wr.Length >= 2)
-                        name += wr[index: 1].ToString().ToUpper();
+                        name.Append(wr[index: 1].ToString().ToUpper());
                 }
                 else
                 {
-                    name += wr[index: 0].ToString().ToUpper();
+                    name.Append(wr[index: 0].ToString().ToUpper());
                 }
 
-            return name;
+            return name.ToString();
         }
     }
 }

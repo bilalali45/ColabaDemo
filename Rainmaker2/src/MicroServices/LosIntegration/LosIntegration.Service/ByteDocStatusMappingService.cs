@@ -9,9 +9,9 @@ using URF.Core.Abstractions;
 
 namespace LosIntegration.Service
 {
-    public class ByteDocStatusMappingService : ServiceBase<Context, ByteDocStatusMapping>, IByteDocStatusMappingService
+    public class ByteDocStatusMappingService : ServiceBase<LosIntegrationContext, ByteDocStatusMapping>, IByteDocStatusMappingService
     {
-        public ByteDocStatusMappingService(IUnitOfWork<Context> previousUow,
+        public ByteDocStatusMappingService(IUnitOfWork<LosIntegrationContext> previousUow,
                                          IServiceProvider services) : base(previousUow: previousUow,
                                                                            services: services)
         {

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { DocumentActions } from "../../../../store/actions/DocumentActions";
+
 import Lpstep1 from "../../../../assets/images/lp-step1.svg";
 import Lpstep2 from "../../../../assets/images/lp-step2.svg";
 import Lpstep3 from "../../../../assets/images/lp-step3.svg";
@@ -10,14 +10,16 @@ import { LaonActions, statusText } from "../../../../store/actions/LoanActions";
 import { LoanProgress as LoanProgressModel } from "../../../../entities/Models/LoanProgress";
 import { Loader } from "../../../../shared/Components/Assets/loader";
 import { Auth } from "../../../../services/auth/Auth";
-type Props = {
-  //userName: string,
-};
+import { Store } from "../../../../store/store";
+import { LoanType } from "../../../../store/reducers/loanReducer";
 
 export const LoanProgress = () => {
-  const [loanProgress, setLoanProgress] = useState<LoanProgressModel[]>([]);
-  const [currentItem, setCurrentItem] = useState<LoanProgressModel>();
   const [index, setIndex] = useState(0);
+
+  const {state, dispatch} = useContext(Store)
+  const { loan } = state;
+  const { loanProgress } = loan as Pick<LoanType, 'loanProgress'>;
+  const [currentItem, setCurrentItem] = useState<LoanProgressModel>();
 
   const loanProgressImages = [
     {
@@ -42,32 +44,38 @@ export const LoanProgress = () => {
     },
   ];
 
-  useEffect(() => {
-    if (!loanProgress.length) {
-      fetchLoanProgress();
-    }
-    let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
-    setCurrentItem(activeStep);
-  });
-
-  useEffect(() => {
-    let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
-    if (activeStep) {
-      let a = activeStep.order - 1;
-      setIndex(a);
-    }
-  }, [currentItem]);
-
   const fetchLoanProgress = async () => {
     let applicationId = Auth.getLoanAppliationId();
 
     let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(
       applicationId ? applicationId : "1"
     );
+    
     if (loanProgress) {
-      setLoanProgress(loanProgress);
+      dispatch({type:'FETCH_LOAN_PROGRESS', payload: loanProgress})
+      let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
+      console.log('activeStep', activeStep)
+      setCurrentItem(() => activeStep);
     }
   };
+
+  useEffect(() => {
+    if(loanProgress?.length) return
+
+      fetchLoanProgress();
+  },[loanProgress]);
+
+  useEffect(() => {
+    if(!!currentItem || !loanProgress) return
+
+    let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
+    
+    setCurrentItem(() => activeStep);
+    if (activeStep) {
+      let a = activeStep.order - 1;
+      setIndex(a);
+    }
+  }, [currentItem, loanProgress]);
 
   function handleSelect(selectedIndex: any, e: any) {
     setIndex(selectedIndex);
@@ -98,7 +106,7 @@ export const LoanProgress = () => {
   };
 
   const renderCarouselItems = () => {
-    return loanProgress.map((l: any, i: number) => {
+    return loanProgress?.map((l: any, i: number) => {
       return (
         <Carousel.Item key={l.name}>
           <div className="lp-list">
@@ -117,9 +125,9 @@ export const LoanProgress = () => {
   };
 
   const renderCarouselList = () => {
-    var totallist = loanProgress.length;
+    var totallist = loanProgress?.length || 0;
     var id = index;
-    return loanProgress.map((l: any, i: number) => {
+    return loanProgress?.map((l: any, i: number) => {
       let liclass = "completed-icon";
       liclass =
         l.status == statusText.CURRENT
