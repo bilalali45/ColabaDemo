@@ -37,7 +37,7 @@ namespace RainmakerTest
 
             mock.Setup(x => x.GetLoanSummary(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(obj);
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null,null, null, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null,null, null, null, null,null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -195,7 +195,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -225,7 +225,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -256,7 +256,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -471,7 +471,7 @@ namespace RainmakerTest
 
             mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
 
-            LoanApplicationController controller = new LoanApplicationController(mock.Object, mockcommonservice.Object, mockftpservice.Object,null, null, null, null);
+            LoanApplicationController controller = new LoanApplicationController(mock.Object, mockcommonservice.Object, mockftpservice.Object,null, null, null, null, null);
        
 
             //Act
@@ -498,7 +498,7 @@ namespace RainmakerTest
 
             mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
 
-            LoanApplicationController controller = new LoanApplicationController(mock.Object, mockcommonservice.Object, mockftpservice.Object, null, null, null, null);
+            LoanApplicationController controller = new LoanApplicationController(mock.Object, mockcommonservice.Object, mockftpservice.Object, null, null, null, null, null);
 
             //Act
             string result = await controller.GetPhoto(It.IsAny<string>()
@@ -607,7 +607,7 @@ namespace RainmakerTest
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
-            LoanApplicationController loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null);
+            LoanApplicationController loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null);
 
             loanApplicationController.ControllerContext = context;
             PostLoanApplicationModel model = new PostLoanApplicationModel()
@@ -798,7 +798,7 @@ namespace RainmakerTest
             //Arrange
             Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
 
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null);
 
             GetLoanApplicationModel getLoanApplicationModel = new GetLoanApplicationModel();
             getLoanApplicationModel.loanApplicationId = 1;
@@ -819,7 +819,7 @@ namespace RainmakerTest
             Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
             Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
-            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, mockUserProfileService.Object);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, mockUserProfileService.Object, null);
 
             LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
             loanApplicationModel.BusinessUnitId = 1;
@@ -829,7 +829,7 @@ namespace RainmakerTest
             SendBorrowerEmailModel sendBorrowerEmailModel = new SendBorrowerEmailModel();
             sendBorrowerEmailModel.loanApplicationId = 1;
             sendBorrowerEmailModel.emailBody = "Email sent";
-            sendBorrowerEmailModel.activityForId = (int)ActivityForType.LoanApplicationDocumentRejectActivity;
+            sendBorrowerEmailModel.activityForId = (int)ActivityForType.DocumentSyncFailureActivity;
             var activityEnumType = (ActivityForType)sendBorrowerEmailModel.activityForId;
 
             mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);

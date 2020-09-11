@@ -927,7 +927,7 @@ namespace RainMaker.Common
         public const string VortexConfigurationGrid = "VortexConfigurationGrid";
         public const string OfficeHolidayGrid = "OfficeHolidayGrid";
         public const string VortexUserSessionGrid = "VortexUserSessionGrid";
-
+        public const string SupportTeam = "SupportTeam";
     }
 
     public static class SystemSettingKeys
@@ -1540,7 +1540,7 @@ namespace RainMaker.Common
         EmailLoOnLoanApplicationStart = 17,
         EmailLoOnLoanApplicationSubmitted = 18,
         LoanApplicationDocumentRequestActivity = 19,
-        LoanApplicationDocumentRejectActivity = 20
+        DocumentSyncFailureActivity = 20
     }
 
 

@@ -5,6 +5,7 @@ using LosIntegration.API.Models.ClientModels.LoanApplication;
 using LosIntegration.API.Models.Document;
 using LosIntegration.API.Models.LoanApplication;
 using LosIntegration.Entity.Models;
+using LosIntegration.Service;
 using LosIntegration.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -38,7 +40,7 @@ namespace LosIntegration.API.Controllers
                                   ILogger<DocumentController> logger,
                                   IByteDocTypeMappingService byteDocTypeMappingService,
                                   IByteDocCategoryMappingService byteDocCategoryMappingService,
-                                  IByteDocStatusMappingService byteDocStatusMappingService)
+                                  IByteDocStatusMappingService byteDocStatusMappingService, IRainmakerService rainmakerService)
         {
             _configuration = configuration;
             _mappingService = mappingService;
@@ -47,6 +49,7 @@ namespace LosIntegration.API.Controllers
             _byteDocCategoryMappingService = byteDocCategoryMappingService;
             _byteDocStatusMappingService = byteDocStatusMappingService;
             _httpClient = clientFactory.CreateClient(name: "clientWithCorrelationId");
+            _rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -60,7 +63,7 @@ namespace LosIntegration.API.Controllers
         private readonly IByteDocTypeMappingService _byteDocTypeMappingService;
         private readonly IByteDocCategoryMappingService _byteDocCategoryMappingService;
         private readonly IByteDocStatusMappingService _byteDocStatusMappingService;
-
+        private readonly IRainmakerService _rainmakerService;
         #endregion
 
         #region Action Methods
@@ -163,35 +166,37 @@ namespace LosIntegration.API.Controllers
             _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
             _logger.LogInformation($"FileId={file.Id} is getting from SendFileToExternalOriginator");
             var sendDocumentRequest = new SendDocumentRequest
-                                      {
-                                          LoanApplicationId = request.LoanApplicationId,
-                                          FileData = fileData,
-                                          DocumentCategory =
+            {
+                LoanApplicationId = request.LoanApplicationId,
+                FileData = fileData,
+                DocumentCategory =
                                               byteDocCategoryMapping?.ByteDocCategoryName ?? "MISC", // mapping required
-                                          DocumentExension =
+                DocumentExension =
                                               Path.GetExtension(path: file.ClientName).Replace(oldValue: ".",
                                                                                                newValue: "") ?? "",
-                                          DocumentName = Path.GetFileNameWithoutExtension(path: file.ClientName),
-                                          DocumentStatus =
+                DocumentName = Path.GetFileNameWithoutExtension(path: file.ClientName),
+                DocumentStatus =
                                               byteDocStatusMapping?.ByteDocStatusName ?? "0", // mapping required
-                                          DocumentType =
+                DocumentType =
                                               byteDocTypeMapping?.ByteDoctypeName ?? "Other", // mapping required
-                                          MediaType = documentResponse.Content.Headers.ContentType.MediaType
-                                      };
-            DocumentResponse byteDocumentResponse=null;
+                MediaType = documentResponse.Content.Headers.ContentType.MediaType,
+                TenantId = Convert.ToInt32(tenantId)
+            };
+            DocumentResponse byteDocumentResponse = null;
             try
             {
-                byteDocumentResponse = SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
+                byteDocumentResponse = await SendDocumentToExternalOriginator(sendDocumentRequest: sendDocumentRequest);
                 if (byteDocumentResponse == null) return BadRequest(error: "External originator document response null");
                 _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :byteDocumentResponse {byteDocumentResponse} ");
                 #region UpdateByteProStatus
 
-                var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest() { 
-                    DocumentId=request.DocumentId,
-                    DocumentLoanApplicationId=request.DocumentLoanApplicationId,
-                    FileId=request.FileId,
-                    RequestId=document.RequestId,
-                    isUploaded=true
+                var updateByteProStatusResponse = UpdateByteStatusInDocumentManagement(request: new UpdateByteStatusRequest()
+                {
+                    DocumentId = request.DocumentId,
+                    DocumentLoanApplicationId = request.DocumentLoanApplicationId,
+                    FileId = request.FileId,
+                    RequestId = document.RequestId,
+                    isUploaded = true
                 });
 
                 if (!updateByteProStatusResponse.IsSuccessStatusCode)
@@ -240,7 +245,7 @@ namespace LosIntegration.API.Controllers
 
             #endregion
 
-           
+
 
             return Ok();
         }
@@ -266,7 +271,7 @@ namespace LosIntegration.API.Controllers
             var Document = getAllFilesByLaonId.FirstOrDefault(x => x.DocId == request.DocumentId);
             if (Document != null)
             {
-                Document.Files = Document.Files.Where(x => x.ByteProStatus != $"{_configuration[key: "ByteProStatus:Key"]}" ).ToList();
+                Document.Files = Document.Files.Where(x => x.ByteProStatus != $"{_configuration[key: "ByteProStatus:Key"]}").ToList();
                 foreach (var file in Document.Files)
                 {
                     var sendFileToExternalOriginatorRequest = new SendFileToExternalOriginatorRequest();
@@ -276,9 +281,9 @@ namespace LosIntegration.API.Controllers
                     sendFileToExternalOriginatorRequest.DocumentId = request.DocumentId;
                     sendFileToExternalOriginatorRequest.FileId = file.Id;
                     sendFileToExternalOriginatorRequest.LoanApplicationId = request.LoanApplicationId;
-                    await  SendFileToExternalOriginator(sendFileToExternalOriginatorRequest);
+                    await SendFileToExternalOriginator(sendFileToExternalOriginatorRequest);
 
-                  
+
                 }
 
                 return Ok();
@@ -314,9 +319,9 @@ namespace LosIntegration.API.Controllers
             var fileIds = new List<string>();
             //--Get LoanApplication Id from rm by externalLoan Application Id
             var loanApplicationRequestContent = new GeLoanApplicationRequest
-                                                {
-                                                    EncompassNumber = request.FileDataId.ToString()
-                                                }.ToJsonString();
+            {
+                EncompassNumber = request.FileDataId.ToString()
+            }.ToJsonString();
             var token = Request
                         .Headers[key: "Authorization"].ToString()
                         .Replace(oldValue: "Bearer ",
@@ -342,9 +347,9 @@ namespace LosIntegration.API.Controllers
                 {
                     var loanApplicationId = loanApplicationResponseModel.Id;
                     var getDocumentRequestContent = new GetDocumentsRequest
-                                                    {
-                                                        LoanApplicationId = loanApplicationId
-                                                    }.ToJsonString();
+                    {
+                        LoanApplicationId = loanApplicationId
+                    }.ToJsonString();
                     _logger.LogInformation(message: $"LoanApplicationId = {loanApplicationResponseModel.Id}");
                     var getDocumentsUrl =
                         $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments?loanApplicationId={loanApplicationResponseModel.Id}&pending={false}";
@@ -374,10 +379,10 @@ namespace LosIntegration.API.Controllers
                     {
                         // -- gey newly added file from BWC
                         var documentDataRequest = new GetDocumentDataRequest
-                                                  {
-                                                      FileDataId = request.FileDataId,
-                                                      DocumentId = Convert.ToInt32(value: fileIdAbsentOnRm)
-                                                  };
+                        {
+                            FileDataId = request.FileDataId,
+                            DocumentId = Convert.ToInt32(value: fileIdAbsentOnRm)
+                        };
                         var documentDataResult =
                             _httpClient.PostAsync(requestUri:
                                                   $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/GetDocumentDataFromByte",
@@ -392,27 +397,27 @@ namespace LosIntegration.API.Controllers
 
                             // push newly added file to DOC management
                             var uploadFileRequestContent = new UploadFileRequest
-                                                           {
-                                                               LoanApplicationId = loanApplicationId,
-                                                               DocumentType =
+                            {
+                                LoanApplicationId = loanApplicationId,
+                                DocumentType =
                                                                    embeddedDocModel
                                                                        .DocumentType, // GetRainmakerTypeFromMapping(embeddedDocModel.DocumentType),
-                                                               FileName = embeddedDocModel.DocumentName + "." +
+                                FileName = embeddedDocModel.DocumentName + "." +
                                                                           embeddedDocModel.DocumentExension,
-                                                               FileData = embeddedDocModel.DocumentData
-                                                           }.ToJsonString();
+                                FileData = embeddedDocModel.DocumentData
+                            }.ToJsonString();
                             _logger.LogInformation(message: $"uploadFileRequestContent = {uploadFileRequestContent}");
                             var url =
                                 $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/Documentmanagement/request/UploadFile";
                             var uploadFileRequestMessage = new HttpRequestMessage
-                                                           {
-                                                               Content =
+                            {
+                                Content =
                                                                    new StringContent(content: uploadFileRequestContent,
                                                                                      encoding: Encoding.UTF8,
                                                                                      mediaType: "application/json"),
-                                                               Method = HttpMethod.Post,
-                                                               RequestUri = new Uri(uriString: url)
-                                                           };
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri(uriString: url)
+                            };
                             var uploadFileHttpResponse =
                                 _httpClient.SendAsync(request: uploadFileRequestMessage).Result;
                             if (uploadFileHttpResponse.IsSuccessStatusCode)
@@ -486,7 +491,7 @@ namespace LosIntegration.API.Controllers
                     $"{_configuration[key: "ServiceAddress:RainMaker:Url"]}/api/rainmaker/LoanApplication/GetLoanApplication?encompassNumber={request.ExtOriginatorLoanApplicationId.ToString()}";
                 var httpResponseMessage = _httpClient.GetAsync(requestUri: uri).Result;
 
-  
+
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var result = httpResponseMessage.Content.ReadAsStringAsync().Result;
@@ -496,21 +501,21 @@ namespace LosIntegration.API.Controllers
                                                    .Value<int>();
 
                     var content = new DeleteFileRequest
-                                  {
-                                      LoanApplicationId = loanApplicationId,
-                                      FileId = mapping.RMEnittyId
-                                  }.ToJsonString();
+                    {
+                        LoanApplicationId = loanApplicationId,
+                        FileId = mapping.RMEnittyId
+                    }.ToJsonString();
 
                     var url =
                         $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/document/DeleteFile";
                     var delRequest = new HttpRequestMessage
-                                     {
-                                         Content = new StringContent(content: content,
+                    {
+                        Content = new StringContent(content: content,
                                                                      encoding: Encoding.UTF8,
                                                                      mediaType: "application/json"),
-                                         Method = HttpMethod.Delete,
-                                         RequestUri = new Uri(uriString: url)
-                                     };
+                        Method = HttpMethod.Delete,
+                        RequestUri = new Uri(uriString: url)
+                    };
                     var csResponse = _httpClient.SendAsync(request: delRequest).Result;
                     if (csResponse.IsSuccessStatusCode)
                     {
@@ -552,34 +557,51 @@ namespace LosIntegration.API.Controllers
         }
 
 
-        private DocumentResponse SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)
+        private async Task<DocumentResponse> SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)
         {
+            
             var externalOriginatorSendDocumentResponse =
                 _httpClient.PostAsync(requestUri:
                                       $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
                                       content: new StringContent(content: sendDocumentRequest.ToJsonString(),
                                                                  encoding: Encoding.UTF8,
                                                                  mediaType: "application/json")).Result;
-           
+
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
 
             if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
+            {
+                await _rainmakerService.SendEmailSuppotTeam(sendDocumentRequest.LoanApplicationId, sendDocumentRequest.TenantId, DateTime.Now.ToString(), externalOriginatorSendDocumentResponse.ReasonPhrase, (int)HttpStatusCode.InternalServerError, sendDocumentRequest.DocumentCategory, sendDocumentRequest.DocumentName, sendDocumentRequest.DocumentExension, Request.Headers["Authorization"].Select(x => x.ToString()));
+                _logger.LogInformation(message:
+                                      $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
+
                 throw new LosIntegrationException(message: "Unable to Upload Document to External Originator");
-            _logger.LogInformation(message:
-                                   $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
+            }
+
             var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-            
+
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
             _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
             _logger.LogInformation(message: "Deserialize Successfully");
             if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
+            {
+                #region SendEmail in case of sync fail 
+
+                await _rainmakerService.SendEmailSuppotTeam(sendDocumentRequest.LoanApplicationId, sendDocumentRequest.TenantId, DateTime.Now.ToString(), apiResponse.Message, (int)HttpStatusCode.InternalServerError, sendDocumentRequest.DocumentCategory, sendDocumentRequest.DocumentName, sendDocumentRequest.DocumentExension, Request.Headers["Authorization"].Select(x => x.ToString()));
+
+                #endregion
+                _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status } ");
+
                 throw new LosIntegrationException("Unable to deserialize External Originator document ");
-            _logger.LogInformation(message: $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status } ");
-            DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
+            }
+             DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
             return documentResponse;
+         
         }
+
+
 
         #endregion
     }
