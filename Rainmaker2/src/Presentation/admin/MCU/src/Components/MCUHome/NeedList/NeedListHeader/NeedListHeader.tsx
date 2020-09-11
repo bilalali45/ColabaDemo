@@ -28,7 +28,7 @@ export const NeedListHeader = () => {
         </a>
       </div>
       <div className="need-list-header--right">
-        <button onClick={redirectToTemplate} className="btn btn-secondry">
+        <button onClick={redirectToTemplate} className="btn btn-primary">
           <em className="icon-record"></em> Manage Document Template
         </button>
         {/* <button disabled = {true} className="btn btn-primary" >
