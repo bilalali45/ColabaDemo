@@ -9,16 +9,16 @@ using URF.Core.Abstractions;
 
 namespace LosIntegration.Service
 {
-    public class MappingService : ServiceBase<Context, Mapping>, IMappingService
+    public class MappingService : ServiceBase<LosIntegrationContext, _Mapping>, IMappingService
     {
-        public MappingService(IUnitOfWork<Context> previousUow,
+        public MappingService(IUnitOfWork<LosIntegrationContext> previousUow,
                               IServiceProvider services) : base(previousUow: previousUow,
                                                                 services: services)
         {
         }
 
 
-        public List<Mapping> GetMappingWithDetails(string extOriginatorEntityId = "",
+        public List<_Mapping> GetMappingWithDetails(string extOriginatorEntityId = "",
                                                    string extOriginatorEntityName = "",
                                                    string rmEnittyId = "",
                                                    string rmEntityName = "",
@@ -41,8 +41,8 @@ namespace LosIntegration.Service
         }
 
 
-        public List<Mapping> GetMapping(List<string> rmEnittyIds,
-                                        string rmEntityName )
+        public List<_Mapping> GetMapping(List<string> rmEnittyIds,
+                                                string rmEntityName )
         {
             var mappings = Repository.Query().AsQueryable();
 

@@ -55,9 +55,9 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings= new List<Mapping>();
+            List<_Mapping> mappings= new List<_Mapping>();
 
-            Mapping mapping = new Mapping();
+            _Mapping mapping = new _Mapping();
             mapping.RMEnittyId = "1";
             mappings.Add(mapping);
 
@@ -117,7 +117,7 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings = new List<Mapping>();
+            List<_Mapping> mappings = new List<_Mapping>();
 
             mockMappingService.Setup(x => x.GetMappingWithDetails(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>())).Returns(mappings);
 
@@ -175,9 +175,9 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings = new List<Mapping>();
+            List<_Mapping> mappings = new List<_Mapping>();
 
-            Mapping mapping = new Mapping();
+            _Mapping mapping = new _Mapping();
             mapping.RMEnittyId = "1";
             mappings.Add(mapping);
 

@@ -1,24 +1,34 @@
-﻿using LosIntegration.Data;
-using LosIntegration.Entity.Models;
-using LosIntegration.Service.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Extensions.ExtensionClasses;
+using LosIntegration.Data;
+using LosIntegration.Entity.Models;
+using LosIntegration.Service.Interface;
+using Microsoft.EntityFrameworkCore;
 using URF.Core.Abstractions;
 
 namespace LosIntegration.Service
 {
-    public class ByteDocTypeMappingService : ServiceBase<Context, ByteDocTypeMapping>, IByteDocTypeMappingService
+    public class ByteDocTypeMappingService : ServiceBase<LosIntegrationContext, ByteDocTypeMapping>, IByteDocTypeMappingService
     {
-        public ByteDocTypeMappingService(IUnitOfWork<Context> previousUow,
+        [Flags]
+        public enum RelatedEntity
+        {
+            ByteDocCategoryMapping = 1 << 0,
+        }
+
+
+        public ByteDocTypeMappingService(IUnitOfWork<LosIntegrationContext> previousUow,
                                          IServiceProvider services) : base(previousUow: previousUow,
                                                                            services: services)
         {
         }
 
 
-        public List<ByteDocTypeMapping> GetByteDocTypeMappingWithDetails( int? id = null, string docType = "")
+        public List<ByteDocTypeMapping> GetByteDocTypeMappingWithDetails(int? id = null,
+                                                                         string docType = "",
+                                                                         RelatedEntity? includes = null)
         {
             var byteDocTypeMappings = Repository.Query().AsQueryable();
 
@@ -26,12 +36,26 @@ namespace LosIntegration.Service
 
             if (id.HasValue) byteDocTypeMappings = byteDocTypeMappings.Where(predicate: byteDocTypeMapping => byteDocTypeMapping.Id == id);
             if (docType.HasValue()) byteDocTypeMappings = byteDocTypeMappings.Where(predicate: byteDocTypeMapping => byteDocTypeMapping.RmDocTypeName == docType);
-      
+
 
 
             // @formatter:on 
 
+            if (includes.HasValue)
+                byteDocTypeMappings = ProcessIncludes(query: byteDocTypeMappings,
+                                                      includes: includes.Value);
+
             return byteDocTypeMappings.ToList();
+        }
+
+
+        public IQueryable<ByteDocTypeMapping> ProcessIncludes(IQueryable<ByteDocTypeMapping> query,
+                                                              RelatedEntity includes)
+        {
+            // @formatter:off 
+            if (includes.HasFlag(flag: RelatedEntity.ByteDocCategoryMapping)) query = query.Include(navigationPropertyPath: byteDocTypeMapping => byteDocTypeMapping.ByteDocCategoryMapping);
+            // @formatter:on 
+            return query;
         }
     }
 }
