@@ -193,6 +193,7 @@ export const EmailContentReview = ({
           Review email to {borrowername}
         </h3>
         <p>If you'd like, you can customize this email.</p>
+        <div className="t-wrap">
         <TextArea
           focus={true}
           textAreaValue={emailBody}
@@ -203,6 +204,7 @@ export const EmailContentReview = ({
           placeholderValue={'Type your message'}
           rows={20}
         />
+        </div>
       </div>
       {sendRequestButton()}
     </div>
