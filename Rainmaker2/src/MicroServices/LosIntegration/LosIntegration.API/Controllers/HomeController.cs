@@ -34,28 +34,28 @@ namespace LosIntegration.API.Controllers
         }
 
 
-        [HttpGet(template: "[action]")]
-        [Route(template: "/")]
-        public async Task<string> Test()
-        {
-            var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: "Brokerage Statements - Two Months",
-                                                                       includes: ByteDocTypeMappingService.RelatedEntity.ByteDocCategoryMapping)
-                                     .SingleOrDefault();
+        //[HttpGet(template: "[action]")]
+        //[Route(template: "/")]
+        //public async Task<string> Test()
+        //{
+        //    var byteDocTypeMapping = _byteDocTypeMappingService
+        //                             .GetByteDocTypeMappingWithDetails(docType: "Brokerage Statements - Two Months",
+        //                                                               includes: ByteDocTypeMappingService.RelatedEntity.ByteDocCategoryMapping)
+        //                             .SingleOrDefault();
 
-            //var mapping = new Mapping
-            //              {
-            //                  RMEnittyId = "test",
-            //                  RMEntityName = "File",
-            //                  ExtOriginatorEntityId = "test",
-            //                  ExtOriginatorEntityName = "Document",
-            //                  ExtOriginatorId = 1
-            //              };
+        //    var mapping = new Mapping
+        //    {
+        //        RMEnittyId = "test",
+        //        RMEntityName = "File",
+        //        ExtOriginatorEntityId = "test",
+        //        ExtOriginatorEntityName = "Document",
+        //        ExtOriginatorId = 1
+        //    };
 
-            //_mappingService.Insert(item: mapping);
-            await _byteDocTypeMappingService.SaveChangesAsync();
+        //     _mappingService.Insert(item: mapping);
+        //    await _mappingService.SaveChangesAsync();
 
-            return "test";
-        }
+        //    return "test";
+        //}
     }
 }

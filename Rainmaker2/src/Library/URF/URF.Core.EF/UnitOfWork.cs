@@ -31,7 +31,7 @@ namespace URF.Core.EF
         public int CurrentUserId { get; set; }
         public virtual async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
         {
-            IEnumerable<ITrackable> entities = DataContext.ChangeTracker.Entries().Select(x=>x.Entity).OfType<ITrackable>().ToList();
+            IEnumerable<ITrackable> entities = DataContext.ChangeTracker.Entries().Select(x=>x.Entity).OfType<ITrackable>().Where(x=>x.TrackingState!=TrackingState.Unchanged).ToList();
             DataContext.ApplyChanges(entities);
             int ret = await DataContext.SaveChangesAsync(acceptAllChangesOnSuccess,cancellationToken);
             if(acceptAllChangesOnSuccess)
