@@ -287,7 +287,7 @@ namespace DocumentManagement.Service
                     mediaType: "application/json")
             };
             request.Headers.Add("Authorization", authHeader);
-            var response = await _httpClient.SendAsync(request);
+            await _httpClient.SendAsync(request);
             }
 
         public async Task<int> GetLoanApplicationId(string loanApplicationId)

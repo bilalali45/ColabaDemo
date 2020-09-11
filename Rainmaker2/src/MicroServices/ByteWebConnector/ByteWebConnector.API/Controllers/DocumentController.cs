@@ -48,7 +48,7 @@ namespace ByteWebConnector.API.Controllers
             _httpClient = httpClient;
             _configuration = configuration;
             _logger = logger;
-            _settingService = settingService;
+            ISettingService _settingService = settingService;
             _rainmakerService = rainmakerService;
             ByteProSettings = _settingService.GetByteProSettings();
         }
@@ -67,7 +67,6 @@ namespace ByteWebConnector.API.Controllers
         private readonly ILogger<DocumentController> _logger;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        private readonly ISettingService _settingService;
         private readonly IRainmakerService _rainmakerService;
 
         #endregion
@@ -270,7 +269,7 @@ namespace ByteWebConnector.API.Controllers
             request.Headers.Add(name: "Session",
                                 value: byteProSession);
             request.Accept = "application/json";
-            var test = string.Empty;
+          
             using (var response = (HttpWebResponse) request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
@@ -414,7 +413,7 @@ namespace ByteWebConnector.API.Controllers
             request.Headers.Add(name: "Session",
                                 value: session);
             request.Accept = "application/json";
-            var test = string.Empty;
+          
             using (var response = (HttpWebResponse) request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
@@ -482,14 +481,14 @@ namespace ByteWebConnector.API.Controllers
             request.Headers.Add(name: "Session",
                                 value: byteSession);
             request.Accept = "application/json";
-            var test = string.Empty;
+           
             try
             {
                 using (var response = (HttpWebResponse) request.GetResponse())
                 {
                     var dataStream = response.GetResponseStream();
                     var reader = new StreamReader(stream: dataStream);
-                    var responseString = reader.ReadToEnd();
+                    reader.ReadToEnd();
                     reader.Close();
                     dataStream.Close();
                     if (response.StatusCode != HttpStatusCode.OK)

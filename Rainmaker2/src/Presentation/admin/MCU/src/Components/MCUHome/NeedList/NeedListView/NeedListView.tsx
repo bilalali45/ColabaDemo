@@ -361,6 +361,7 @@ export const NeedListView = () => {
 
   const togglerHandler = (pending: boolean) => {
     setShowConfirmBox(false);
+    setSyncTitleClass('not_Synced')
     if (pending) {
       fetchNeedList(pending, true).then((data) => {
         dispatch({

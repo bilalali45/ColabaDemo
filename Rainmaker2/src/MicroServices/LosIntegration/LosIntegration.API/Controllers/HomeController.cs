@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
-using LosIntegration.Entity.Models;
+using LosIntegration.Data;
 using LosIntegration.Service;
 using LosIntegration.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using URF.Core.Abstractions;
 
 namespace LosIntegration.API.Controllers
 {
@@ -11,18 +11,14 @@ namespace LosIntegration.API.Controllers
     [Route(template: "api/LosIntegration/[controller]")]
     public class HomeController : Controller
     {
-        private readonly IByteDocCategoryMappingService _byteDocCategoryMappingService;
         private readonly IByteDocTypeMappingService _byteDocTypeMappingService;
-        private readonly IMappingService _mappingService;
-
+        private readonly IUnitOfWork<LosIntegrationContext> _unitOfWork;
 
         public HomeController(IByteDocTypeMappingService byteDocTypeMappingService,
-                              IMappingService mappingService,
-                              IByteDocCategoryMappingService byteDocCategoryMappingService)
+                              IUnitOfWork<LosIntegrationContext> unitOfWork)
         {
             _byteDocTypeMappingService = byteDocTypeMappingService;
-            _mappingService = mappingService;
-            _byteDocCategoryMappingService = byteDocCategoryMappingService;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -34,28 +30,20 @@ namespace LosIntegration.API.Controllers
         }
 
 
-        //[HttpGet(template: "[action]")]
-        //[Route(template: "/")]
-        //public async Task<string> Test()
-        //{
-        //    var byteDocTypeMapping = _byteDocTypeMappingService
-        //                             .GetByteDocTypeMappingWithDetails(docType: "Brokerage Statements - Two Months",
-        //                                                               includes: ByteDocTypeMappingService.RelatedEntity.ByteDocCategoryMapping)
-        //                             .SingleOrDefault();
+        [HttpGet(template: "[action]")]
+        [Route(template: "/")]
+        public string Test()
+        {
+            var byteDocTypeMapping = _byteDocTypeMappingService
+                                     .GetByteDocTypeMappingWithDetails(docType: "Brokerage Statements - Two Months",
+                                                                       includes: ByteDocTypeMappingService
+                                                                                 .RelatedEntity.ByteDocCategoryMapping)
+                                     .SingleOrDefault();
 
-        //    var mapping = new Mapping
-        //    {
-        //        RMEnittyId = "test",
-        //        RMEntityName = "File",
-        //        ExtOriginatorEntityId = "test",
-        //        ExtOriginatorEntityName = "Document",
-        //        ExtOriginatorId = 1
-        //    };
+            //var dd = _byteDocTypeMappingService.SaveChangesAsync().Result;
+            var dd = _unitOfWork.SaveChangesAsync().Result;
 
-        //     _mappingService.Insert(item: mapping);
-        //    await _mappingService.SaveChangesAsync();
-
-        //    return "test";
-        //}
+            return "test";
+        }
     }
 }

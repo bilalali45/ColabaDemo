@@ -10,7 +10,7 @@ using URF.Core.Abstractions;
 
 namespace LosIntegration.Service
 {
-    public class ByteDocTypeMappingService : ServiceBase<Context, ByteDocTypeMapping>, IByteDocTypeMappingService
+    public class ByteDocTypeMappingService : ServiceBase<LosIntegrationContext, ByteDocTypeMapping>, IByteDocTypeMappingService
     {
         [Flags]
         public enum RelatedEntity
@@ -19,7 +19,7 @@ namespace LosIntegration.Service
         }
 
 
-        public ByteDocTypeMappingService(IUnitOfWork<Context> previousUow,
+        public ByteDocTypeMappingService(IUnitOfWork<LosIntegrationContext> previousUow,
                                          IServiceProvider services) : base(previousUow: previousUow,
                                                                            services: services)
         {
@@ -49,8 +49,8 @@ namespace LosIntegration.Service
         }
 
 
-        private IQueryable<ByteDocTypeMapping> ProcessIncludes(IQueryable<ByteDocTypeMapping> query,
-                                                               RelatedEntity includes)
+        public IQueryable<ByteDocTypeMapping> ProcessIncludes(IQueryable<ByteDocTypeMapping> query,
+                                                              RelatedEntity includes)
         {
             // @formatter:off 
             if (includes.HasFlag(flag: RelatedEntity.ByteDocCategoryMapping)) query = query.Include(navigationPropertyPath: byteDocTypeMapping => byteDocTypeMapping.ByteDocCategoryMapping);

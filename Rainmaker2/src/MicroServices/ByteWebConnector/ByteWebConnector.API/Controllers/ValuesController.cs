@@ -30,6 +30,13 @@ namespace ByteWebConnector.API.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        // GET api/<ValuesController>/5
+        [HttpGet("{ id}")]
+        public string Get(int id)
+        {
+            return "value";
+        }
+
         [HttpGet]
         [Route("[action]")]
         public void DBConnTest()
@@ -50,12 +57,6 @@ namespace ByteWebConnector.API.Controllers
 
         }
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{ id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
         [Route("borrower")]
         // POST api/<ValuesController>
         [HttpPost]

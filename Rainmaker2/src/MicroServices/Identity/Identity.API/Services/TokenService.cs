@@ -64,9 +64,6 @@ namespace Identity.Services
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             //signing credentials
-            var signingCredentials =
-                new SigningCredentials(key: symmetricSecurityKey,
-                                       algorithm: SecurityAlgorithms.HmacSha256Signature);
 
             var tokenValidationParameters = new TokenValidationParameters
             {

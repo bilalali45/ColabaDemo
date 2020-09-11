@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.Service
@@ -446,9 +447,9 @@ namespace DocumentManagement.Service
                 {
                     var ftpReader = new StreamReader(_ftpStream);
                     /* Store the Raw Response */
-                    string directoryRaw = null;
+                    StringBuilder directoryRaw = new StringBuilder();
                     /* Read Each Line of the Response and Append a Pipe to Each Line for Easy Parsing */
-                    try { while (ftpReader.Peek() != -1) { directoryRaw += await ftpReader.ReadLineAsync() + "|"; } }
+                    try { while (ftpReader.Peek() != -1) { directoryRaw.Append(await ftpReader.ReadLineAsync() + "|"); } }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                     /* Resource Cleanup */
                     ftpReader.Close();
@@ -458,9 +459,9 @@ namespace DocumentManagement.Service
                     /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
                     try
                     {
-                        if (directoryRaw != null)
+                        if (directoryRaw.Length > 0)
                         {
-                            string[] directoryList = directoryRaw.Split("|".ToCharArray());
+                            string[] directoryList = directoryRaw.ToString().Split("|".ToCharArray());
                             return directoryList;
                         }
                         Console.WriteLine("Ftp Stream is null");
@@ -504,9 +505,9 @@ namespace DocumentManagement.Service
                 {
                     var ftpReader = new StreamReader(_ftpStream);
                     /* Store the Raw Response */
-                    string directoryRaw = null;
+                    StringBuilder directoryRaw = new StringBuilder();
                     /* Read Each Line of the Response and Append a Pipe to Each Line for Easy Parsing */
-                    try { while (ftpReader.Peek() != -1) { directoryRaw += await ftpReader.ReadLineAsync() + "|"; } }
+                    try { while (ftpReader.Peek() != -1) { directoryRaw.Append(await ftpReader.ReadLineAsync() + "|"); } }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                     /* Resource Cleanup */
                     ftpReader.Close();
@@ -516,9 +517,9 @@ namespace DocumentManagement.Service
                     /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
                     try
                     {
-                        if (directoryRaw != null)
+                        if (directoryRaw.Length > 0)
                         {
-                            string[] directoryList = directoryRaw.Split("|".ToCharArray());
+                            string[] directoryList = directoryRaw.ToString().Split("|".ToCharArray());
                             return directoryList;
                         }
                         Console.WriteLine("Ftp Stream is null");

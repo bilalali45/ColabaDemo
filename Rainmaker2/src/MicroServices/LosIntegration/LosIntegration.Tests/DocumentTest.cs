@@ -1,5 +1,4 @@
 ﻿using LosIntegration.API.Controllers;
-using LosIntegration.API.Models;
 using LosIntegration.API.Models.Document;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service.Interface;
@@ -11,8 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using Moq.Protected;
-using RainMaker.Entity.Models;
-using ServiceCallHelper;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -58,9 +55,9 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings= new List<Mapping>();
+            List<_Mapping> mappings= new List<_Mapping>();
 
-            Mapping mapping = new Mapping();
+            _Mapping mapping = new _Mapping();
             mapping.RMEnittyId = "1";
             mappings.Add(mapping);
 
@@ -120,7 +117,7 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings = new List<Mapping>();
+            List<_Mapping> mappings = new List<_Mapping>();
 
             mockMappingService.Setup(x => x.GetMappingWithDetails(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>())).Returns(mappings);
 
@@ -178,9 +175,9 @@ namespace LosIntegration.Tests
 
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            List<Mapping> mappings = new List<Mapping>();
+            List<_Mapping> mappings = new List<_Mapping>();
 
-            Mapping mapping = new Mapping();
+            _Mapping mapping = new _Mapping();
             mapping.RMEnittyId = "1";
             mappings.Add(mapping);
 
