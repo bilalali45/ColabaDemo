@@ -1,10 +1,4 @@
 "use strict";
-// import {
-//     HubConnection,
-//     HubConnectionBuilder,
-//     LogLevel,
-//     HttpTransportType
-//   } from '@microsoft/signalr';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,54 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.SignalRHub = void 0;
-//   export class SignalRHub {
-//     public static hubConnection: any;
-//     static configureHubConnection = async (hubUrl: string, accessToken: string, eventsRegister: Function) => {
-//       SignalRHub.hubConnection = new HubConnectionBuilder()
-//         .withUrl(hubUrl, {
-//         skipNegotiation: true,
-//         transport: HttpTransportType.WebSockets,
-//         accessTokenFactory: () => {
-//           if (accessToken) {
-//             return accessToken;
-//           }
-//           return '';
-//          }
-//         })
-//         .configureLogging(LogLevel.Trace)
-//         .build();
-//       await SignalRHub.hubStart();
-//         eventsRegister();
-//     };
-//     static hubStart = async () => {
-//       try {
-//         await SignalRHub.hubConnection.start();
-//         console.log('SignalR Connection start successful!');
-//       } catch (err) {
-//         console.log(err);
-//         SignalRHub.signalRHubResume();
-//       }
-//     };
-//     static hubStop = async () => {
-//       try {
-//         SignalRHub.hubConnection.stop();
-//         console.log('SignalR Connection stop successful!');
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     };
-//    static signalRHubResume = async () => {
-//     try{
-//       setTimeout(()=> {
-//         console.log("SignalR Hub Resume");
-//         SignalRHub.hubStart();
-//       },3000)  
-//     }
-//     catch (err) {
-//       console.log(err);
-//     } 
-//     };
-//   }
 var signalr_1 = require("@microsoft/signalr");
 var SignalRHub = /** @class */ (function () {
     function SignalRHub() {
