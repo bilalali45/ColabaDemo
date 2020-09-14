@@ -33,8 +33,9 @@ namespace Rainmaker.API.Controllers
         private readonly IWorkQueueService workQueueService;
         private readonly IUserProfileService userProfileService;
         private readonly IEmployeeService _employeeService;
-        private readonly ILogger _logger;
-        public LoanApplicationController(ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService, IEmployeeService employeeService, ILogger logger)
+      
+        private readonly ILogger<LoanApplication> _logger;
+        public LoanApplicationController(ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService, IEmployeeService employeeService, ILogger<LoanApplication> logger)
         {
             this.loanApplicationService = loanApplicationService;
             this.commonService = commonService;
@@ -250,43 +251,50 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> SendEmailSuppotTeam([FromBody] SendEmailSuppotTeam model)
 
         {
-
-            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {model.ToJson()}");
-            var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
-            StringBuilder email = new StringBuilder();
-            string commaseperated = ",";
-            
-            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {loanApplication.BusinessUnitId.ToString()}");
-            var employee = await _employeeService.GetEmployeeEmailByRoleName(GridNames.SupportTeam);
-            for (int i = 0; i < employee.Count; i++)
+            try
             {
-                if (i == employee.Count - 1)
+
+                _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {model.ToJson()}");
+                var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
+                StringBuilder email = new StringBuilder();
+                string commaseperated = ",";
+
+                _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {loanApplication.BusinessUnitId.ToString()}");
+                var employee = await _employeeService.GetEmployeeEmailByRoleName(GridNames.SupportTeam);
+                for (int i = 0; i < employee.Count; i++)
                 {
-                    commaseperated = string.Empty;
+                    if (i == employee.Count - 1)
+                    {
+                        commaseperated = string.Empty;
+                    }
+                    email.Append(employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
+                        .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount.Email + commaseperated);
+
                 }
-                email.Append(employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
-                    .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount.Email + commaseperated);
-       
+
+                _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {email.ToString()}");
+
+                model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName + "." + model.DocumentExension.Replace("jpeg", "jpg") + "</p></td> </tr> </table> ";
+                // model.EmailBody = "<tablestyle='width:100%'><tr><td><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;'>HiRainMakersupportteam,</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;'>Documentsthathavefailedtosync</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>BankStatement</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>Bank-statement-Jan-to-Mar-2020-1.jpg<br/>Bank-statement-Jan-to-Mar-2020-2.jpg<br/>Bank-statement-Jan-to-Mar-2020-3.jpg</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>PersonalTaxReturn</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>PersonalTaxReturns.pdf</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>AlimonyIncomeVerification</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>IncomeVerification.pdf</p></td></tr></table><hrstyle='border-top:1pxsolid#E5E5E5;margin-bottom:25px;'/><tablestyle='width:100%;border:none'><tr><td><spanstyle='font-size:11px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#7E829E;text-transform:uppercase;display:block;'>Error</span><spanstyle='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#4E4E4E;text-transform:uppercase;display:block;margin-bottom:10px;'>401:Unauthorized</span><astyle='line-height:1.4;text-decoration:none;color:#4484F4;font-size:12px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;display:block;'href='https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1'>https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1</a></td></tr></table></td></tr></tbody></table>";
+                var data = new Dictionary<FillKey, string>();
+                data.Add(FillKey.CustomEmailHeader, "");
+                data.Add(FillKey.CustomEmailFooter, "");
+                data.Add(FillKey.EmailBody, model.EmailBody.Replace(Environment.NewLine, "<br/>"));
+                data.Add(FillKey.LoanApplicationId, model.loanApplicationId.ToString());
+                data.Add(FillKey.TenantId, model.TenantId.ToString());
+                data.Add(FillKey.ActivityDate, CommonHelper.DateFormat(model.ErrorDate.ToString()));
+                data.Add(FillKey.ErrorCode, ((int)HttpStatusCode.InternalServerError).ToString() + ":" + HttpStatusCode.InternalServerError.ToString());
+                data.Add(FillKey.ErrorUrl, model.Url);
+                await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ((int)HttpStatusCode.InternalServerError).ToString(), model.DocumentName, ActivityForType.DocumentSyncFailureActivity, email.ToString());
+
+
+                return Ok();
             }
-
-            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {email.ToString()}");
-
-            model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName+"."+model.DocumentExension.Replace("jpeg","jpg") + "</p></td> </tr> </table> ";
-            // model.EmailBody = "<tablestyle='width:100%'><tr><td><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;'>HiRainMakersupportteam,</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;'>Documentsthathavefailedtosync</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>BankStatement</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>Bank-statement-Jan-to-Mar-2020-1.jpg<br/>Bank-statement-Jan-to-Mar-2020-2.jpg<br/>Bank-statement-Jan-to-Mar-2020-3.jpg</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>PersonalTaxReturn</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>PersonalTaxReturns.pdf</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>AlimonyIncomeVerification</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>IncomeVerification.pdf</p></td></tr></table><hrstyle='border-top:1pxsolid#E5E5E5;margin-bottom:25px;'/><tablestyle='width:100%;border:none'><tr><td><spanstyle='font-size:11px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#7E829E;text-transform:uppercase;display:block;'>Error</span><spanstyle='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#4E4E4E;text-transform:uppercase;display:block;margin-bottom:10px;'>401:Unauthorized</span><astyle='line-height:1.4;text-decoration:none;color:#4484F4;font-size:12px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;display:block;'href='https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1'>https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1</a></td></tr></table></td></tr></tbody></table>";
-            var data = new Dictionary<FillKey, string>();
-            data.Add(FillKey.CustomEmailHeader, "");
-            data.Add(FillKey.CustomEmailFooter, "");
-            data.Add(FillKey.EmailBody, model.EmailBody.Replace(Environment.NewLine, "<br/>"));
-            data.Add(FillKey.LoanApplicationId, model.loanApplicationId.ToString());
-            data.Add(FillKey.TenantId, model.TenantId.ToString());
-            data.Add(FillKey.ActivityDate, CommonHelper.DateFormat(model.ErrorDate.ToString()));
-            data.Add(FillKey.ErrorCode, ((int)HttpStatusCode.InternalServerError).ToString() + ":" + HttpStatusCode.InternalServerError.ToString());
-            data.Add(FillKey.ErrorUrl, model.Url);
-            await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ((int)HttpStatusCode.InternalServerError).ToString(), model.DocumentName, ActivityForType.DocumentSyncFailureActivity, email.ToString());
-
-
-            return Ok();
-
+            catch (Exception ex)
+            {
+                _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam Exception  {ex.Message}");
+                throw new RainMakerException("Activity not found for Support email");
+            }
         }
     }
 }
