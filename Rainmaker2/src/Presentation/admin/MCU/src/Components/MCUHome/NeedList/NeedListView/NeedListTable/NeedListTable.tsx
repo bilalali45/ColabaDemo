@@ -11,6 +11,7 @@ import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
 import loadingIcon from '../../../../../Assets/images/loading.svg';
 import emptyIcon from './../../../../../Assets/images/empty-icon.svg';
+import { toTitleCase } from 'rainsoft-js';
 
 type NeedListProps = {
   needList: NeedList | null | undefined | any;
@@ -94,11 +95,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     });
   };
 
-  const toTitleCase = (str: string) => {
-    return str.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
-      return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
-    });
-  }
+  
 
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
