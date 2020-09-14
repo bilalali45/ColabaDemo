@@ -560,7 +560,8 @@ namespace LosIntegration.API.Controllers
                                       content: new StringContent(content: sendDocumentRequest.ToJsonString(),
                                                                  encoding: Encoding.UTF8,
                                                                  mediaType: "application/json")).Result;
-           
+
+
             _logger.LogInformation(message:
                                    $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
 
