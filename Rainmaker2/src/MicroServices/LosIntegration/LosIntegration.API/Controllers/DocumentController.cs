@@ -313,10 +313,6 @@ namespace LosIntegration.API.Controllers
         {
             var fileIds = new List<string>();
             //--Get LoanApplication Id from rm by externalLoan Application Id
-            var loanApplicationRequestContent = new GeLoanApplicationRequest
-                                                {
-                                                    EncompassNumber = request.FileDataId.ToString()
-                                                }.ToJsonString();
             var token = Request
                         .Headers[key: "Authorization"].ToString()
                         .Replace(oldValue: "Bearer ",
@@ -341,10 +337,6 @@ namespace LosIntegration.API.Controllers
                 if (loanApplicationResponseModel != null)
                 {
                     var loanApplicationId = loanApplicationResponseModel.Id;
-                    var getDocumentRequestContent = new GetDocumentsRequest
-                                                    {
-                                                        LoanApplicationId = loanApplicationId
-                                                    }.ToJsonString();
                     _logger.LogInformation(message: $"LoanApplicationId = {loanApplicationResponseModel.Id}");
                     var getDocumentsUrl =
                         $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/admindashboard/GetDocuments?loanApplicationId={loanApplicationResponseModel.Id}&pending={false}";
