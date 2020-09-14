@@ -43,17 +43,21 @@
         h2 {
             font: 500 #{fontSize("xmd") + "/1.2"} fontFamily("heading");
             @include media-breakpoint-down(md) {
-                font: 500 #{fontSize("xmd")-1 + "/1.2"} fontFamily("heading");
+                font: 500 #{fontSize("xmd")-2 + "/1.2"} fontFamily("heading");
             }
             text-transform: uppercase;
             color: color("heading");
             margin-top: 0;
             margin-bottom: 5px;
             span{
-                max-width: 465px;
+                max-width: 490px;
                 display: inline-block;
                 vertical-align: middle;
                 padding-right: 5px;
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
+
             }
         }
         p {
@@ -75,6 +79,10 @@
             font: 500 #{fontSize("sm") + "/18px"} fontFamily("base");
             padding: 1px 0px 0;
             text-transform: uppercase;
+
+            @include media-breakpoint-down(lg) {
+                font: 500 #{fontSize("sm") - 2 + "/18px"} fontFamily("base");
+            }
         }
     }
     .file-drop-box {

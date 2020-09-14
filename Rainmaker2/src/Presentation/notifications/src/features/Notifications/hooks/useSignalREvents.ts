@@ -33,6 +33,13 @@ export const useSignalREvents = (props: UseSignalREventsProps): void => {
   useEffect(() => {
     const signalREventRegister = async () => {
       if (SignalRHub.hubConnection.connectionState === 'Connected') {
+        //this dispatch will remove all delete notifications timers
+        //this is added because of delete notification unusual behavior Ticket Number 1149
+        dispatch({
+          type: 'UPDATE_STATE',
+          state: {timers: []}
+        });
+
         Promise.all([getFetchNotifications(-1), getUnseenNotificationsCount()]);
       }
 

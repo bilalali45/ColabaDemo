@@ -45,3 +45,8 @@ export interface RECEIVED_NOTIFICATION {
 export interface DELETE_ALL_NOTIFICATIONS {
   type: 'DELETE_ALL_NOTIFICATIONS';
 }
+
+export interface RESET_ON_CONNECT {
+  type: 'RESET_ON_CONNECT';
+  notifications: NotificationType[];
+}

@@ -4,6 +4,7 @@ import EditIcon from '../../../../../../Assets/images/editicon.svg';
 import {TemplateDocument} from '../../../../../../Entities/Models/TemplateDocument';
 import {errorText} from '../../../../ReviewNeedListRequest/ReviewNeedListRequestHome/EmailContentReview/EmailContentReview';
 import {isDocumentDraftType} from '../../../../../../Store/reducers/TemplatesReducer';
+import {TextArea} from '../../../../../../Shared/components/TextArea';
 
 type NeedListContentType = {
   document: TemplateDocument | null;
