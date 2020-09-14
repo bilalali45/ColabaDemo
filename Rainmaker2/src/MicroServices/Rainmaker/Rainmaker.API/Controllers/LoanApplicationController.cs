@@ -250,8 +250,8 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> SendEmailSuppotTeam([FromBody] SendEmailSuppotTeam model)
 
         {
-            
 
+            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {model.ToJson()}");
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             StringBuilder email = new StringBuilder();
             string commaseperated = ",";
