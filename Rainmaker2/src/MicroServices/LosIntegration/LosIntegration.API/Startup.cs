@@ -39,6 +39,8 @@ namespace LosIntegration.API
             services.AddScoped<IByteDocTypeMappingService, ByteDocTypeMappingService>();
             services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
             services.AddScoped<IByteDocStatusMappingService, ByteDocStatusMappingService>();
+            services.AddScoped<IRainmakerService, RainmakerService>();
+
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();
@@ -52,7 +54,7 @@ namespace LosIntegration.API
             services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
-
+         
             #endregion
         }
 

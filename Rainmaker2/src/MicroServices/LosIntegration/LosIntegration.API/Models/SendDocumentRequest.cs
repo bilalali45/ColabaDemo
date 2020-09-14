@@ -12,5 +12,6 @@
         public string DocumentStatus { get; set; }
         public string DocumentType { get; set; }
         public string MediaType { get; set; }
+        public int TenantId { get; set; }
     }
 }
