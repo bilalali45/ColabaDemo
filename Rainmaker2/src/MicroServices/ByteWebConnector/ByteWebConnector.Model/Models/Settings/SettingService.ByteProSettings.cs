@@ -18,6 +18,7 @@ namespace ByteWebConnector.Model.Models.Settings
             BytePassword = settings.Single(predicate: s => s.Name == "BytePassword").Value;
             ByteUserName = settings.Single(predicate: s => s.Name == "ByteUserName").Value;
             ByteUserNo = settings.Single(predicate: s => s.Name == "ByteUserNo").Value;
+            ByteConnectionName = settings.Single(predicate: s => s.Name == "ByteConnectionName").Value;
         }
 
 
@@ -30,5 +31,6 @@ namespace ByteWebConnector.Model.Models.Settings
         public string BytePassword { get; set; }
         public string ByteUserName { get; set; }
         public string ByteUserNo { get; set; }
+        public string ByteConnectionName { get; set; }
     }
 }

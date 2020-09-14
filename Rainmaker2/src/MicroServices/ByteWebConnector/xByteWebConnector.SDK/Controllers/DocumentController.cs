@@ -5,16 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 using ByteWebConnector.SDK.Models;
 using ByteWebConnector.SDK.Models.ControllerModels.Document.Response;
 using LOSAutomation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ByteWebConnector.SDK.Controllers
 {
-    [Route(template: "api/ByteWebConnectorSdk/[controller]")]
-    [ApiController]
-    public class DocumentController : ControllerBase
+    //[Route(template: "api/ByteWebConnectorSdk/[controller]")]
+    public class DocumentController : ApiController
     {
 
         public IEnumerable<string> Get()
