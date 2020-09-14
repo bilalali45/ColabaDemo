@@ -136,7 +136,7 @@ export const SelectedDocuments = ({
     }
     setSubBtnPressed(false);
     try {
-      fetchUploadedDocuments();
+      Promise.resolve(fetchUploadedDocuments());
     } catch (error) {}
   };
 
@@ -179,30 +179,20 @@ export const SelectedDocuments = ({
       if (file.file && f.clientName === file.clientName) {
         f.focused = focus;
         nextInd = i + 1;
-        return f;
       }
       // debugger
       return f;
     });
-    updatedFiles = updatedFiles.map((f: Document, i: number) => {
+    let updatedFilesWithFocus = updatedFiles.map((f: Document, i: number) => {
       if (i === nextInd) {
         f.focused = true;
-        return f;
       }
       return f;
     });
-    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
-  };
-
-  const moveFocus = (previousFiles: Document[], fileToFocus: Document) => {
-    let updatedFiles = previousFiles.map((f: Document) => {
-      if (f.clientName === fileToFocus.clientName) {
-        f.focused = true;
-        return fileToFocus;
-      }
-      return f;
+    dispatch({
+      type: DocumentsActionType.AddFileToDoc,
+      payload: updatedFilesWithFocus,
     });
-    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
   const deleteDoc = (fileName: string) => {
@@ -367,7 +357,7 @@ export const SelectedDocuments = ({
               </a>
             )}
 
-            {!(ApplicationEnv.MaxDocumentCount >= selectedFiles.length) ? (
+            {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
                 Only {ApplicationEnv.MaxDocumentCount} files can be uploaded per
                 document. Please contact us if you'd like to upload more files.
