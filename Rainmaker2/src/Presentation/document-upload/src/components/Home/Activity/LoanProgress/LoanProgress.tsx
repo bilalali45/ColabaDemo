@@ -54,7 +54,6 @@ export const LoanProgress = () => {
     if (loanProgress) {
       dispatch({type:'FETCH_LOAN_PROGRESS', payload: loanProgress})
       let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
-      console.log('activeStep', activeStep)
       setCurrentItem(() => activeStep);
     }
   };

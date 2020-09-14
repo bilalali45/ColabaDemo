@@ -50,8 +50,8 @@ describe('Loan Progress', () => {
         expect(stepIcons[1].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
         expect(stepIcons[2].innerHTML).toBe('<i class="zmdi zmdi-male-alt"></i>');
     });
-    
-    test('should move two the clicked step" ', async () => {
+
+    test('should move to the clicked step" ', async () => {
         const { getByTestId, getAllByTestId } = render(
             <MemoryRouter initialEntries={['/loanportal/activity/3']}>
                 <App />
@@ -64,6 +64,8 @@ describe('Loan Progress', () => {
         const stepIcons = getAllByTestId('steps-icon');
         const loanProgress = getByTestId('loan-progress');
 
+
+
         fireEvent.click(stepIcons[0]);
         expect(loanProgress).toHaveTextContent('Fill out application');
         await waitForDomChange();
@@ -71,7 +73,7 @@ describe('Loan Progress', () => {
         fireEvent.click(stepIcons[1]);
         expect(loanProgress).toHaveTextContent('Review and submit application');
         await waitForDomChange()
-        
+
         fireEvent.click(stepIcons[2]);
         expect(loanProgress).toHaveTextContent('Application received');
     });

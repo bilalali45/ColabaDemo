@@ -80,7 +80,7 @@ const App = () => {
     }
   };
 
-  console.log("Application is ", authenticated);
+  // console.log("Application is ", authenticated);
   if (!authenticated) {
     return null;
   }

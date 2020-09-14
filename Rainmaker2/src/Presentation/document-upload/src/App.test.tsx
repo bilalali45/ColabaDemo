@@ -16,7 +16,6 @@ jest.mock('./services/auth/Auth');
 beforeEach(() => {
   MockEnvConfig();
   MockLocalStorage();
-
 });
 
 test('Should render borrower name in the header', async () => {
@@ -25,7 +24,7 @@ test('Should render borrower name in the header', async () => {
       <App />
     </MemoryRouter>
   );
-  const history = createMemoryHistory()
+  // const history = createMemoryHistory()
   await waitForDomChange();
   const header = getByText('Hello, John Doe');
 

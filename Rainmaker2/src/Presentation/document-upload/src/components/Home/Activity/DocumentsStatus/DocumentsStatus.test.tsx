@@ -32,7 +32,7 @@ describe('Documents Status', () => {
 
         const pendingDocs = getByTestId('borrower-pending-docs');
 
-        expect(pendingDocs).toHaveTextContent('You have 3 items to complete');
+        expect(pendingDocs).toHaveTextContent('You have 4 items to complete');
 
     });
 
