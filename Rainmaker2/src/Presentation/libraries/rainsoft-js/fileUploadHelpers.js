@@ -67,7 +67,6 @@ exports.GetActualMimeType = function (file) {
                     });
                     var hex = bytes_1.join("").toUpperCase();
                     mimeType = getMimetype(hex);
-                    console.log(mimeType);
                     resolve(mimeType);
                 }
             }

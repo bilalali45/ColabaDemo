@@ -67,7 +67,6 @@ const PNG = {
             });
             const hex = bytes.join("").toUpperCase();
             mimeType = getMimetype(hex);
-            console.log(mimeType);
             resolve(mimeType);
           }
         } catch (error) {
