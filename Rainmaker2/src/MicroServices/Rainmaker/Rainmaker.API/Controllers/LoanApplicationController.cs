@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Rainmaker.Model;
 using Rainmaker.Service;
 using Rainmaker.Service.Helpers;
@@ -32,7 +33,8 @@ namespace Rainmaker.API.Controllers
         private readonly IWorkQueueService workQueueService;
         private readonly IUserProfileService userProfileService;
         private readonly IEmployeeService _employeeService;
-        public LoanApplicationController(ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService, IEmployeeService employeeService)
+        private readonly ILogger _logger;
+        public LoanApplicationController(ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IOpportunityService opportunityService, IActivityService activityService, IWorkQueueService workQueueService, IUserProfileService userProfileService, IEmployeeService employeeService, ILogger logger)
         {
             this.loanApplicationService = loanApplicationService;
             this.commonService = commonService;
@@ -42,6 +44,7 @@ namespace Rainmaker.API.Controllers
             this.workQueueService = workQueueService;
             this.userProfileService = userProfileService;
             this._employeeService = employeeService;
+            this._logger = logger;
         }
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
@@ -222,6 +225,8 @@ namespace Rainmaker.API.Controllers
                     if (!string.IsNullOrEmpty(keySymbol))
                         witem.WorkQueueKeyValues.Add(new WorkQueueKeyValue { KeyName = keySymbol, Value = key.Value, TrackingState = TrackingState.Added });
                 }
+                _logger.LogInformation(message: $"DocSync SendEmailSupportActivityEmail  {witem.ToJson()}");
+
                 workQueueService.Insert(witem);
                 await workQueueService.SaveChangesAsync();
             }
@@ -245,11 +250,13 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> SendEmailSuppotTeam([FromBody] SendEmailSuppotTeam model)
 
         {
+            
 
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             StringBuilder email = new StringBuilder();
             string commaseperated = ",";
-
+            
+            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {loanApplication.BusinessUnitId.ToString()}");
             var employee = await _employeeService.GetEmployeeEmailByRoleName(GridNames.SupportTeam);
             for (int i = 0; i < employee.Count; i++)
             {
@@ -262,6 +269,7 @@ namespace Rainmaker.API.Controllers
        
             }
 
+            _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {email.ToString()}");
 
             model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName+"."+model.DocumentExension.Replace("jpeg","jpg") + "</p></td> </tr> </table> ";
             // model.EmailBody = "<tablestyle='width:100%'><tr><td><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;'>HiRainMakersupportteam,</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;'>Documentsthathavefailedtosync</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>BankStatement</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>Bank-statement-Jan-to-Mar-2020-1.jpg<br/>Bank-statement-Jan-to-Mar-2020-2.jpg<br/>Bank-statement-Jan-to-Mar-2020-3.jpg</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>PersonalTaxReturn</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>PersonalTaxReturns.pdf</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>AlimonyIncomeVerification</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>IncomeVerification.pdf</p></td></tr></table><hrstyle='border-top:1pxsolid#E5E5E5;margin-bottom:25px;'/><tablestyle='width:100%;border:none'><tr><td><spanstyle='font-size:11px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#7E829E;text-transform:uppercase;display:block;'>Error</span><spanstyle='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#4E4E4E;text-transform:uppercase;display:block;margin-bottom:10px;'>401:Unauthorized</span><astyle='line-height:1.4;text-decoration:none;color:#4484F4;font-size:12px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;display:block;'href='https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1'>https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1</a></td></tr></table></td></tr></tbody></table>";
