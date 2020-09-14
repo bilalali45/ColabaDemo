@@ -50,10 +50,20 @@ const seedLoanStatus = {
     zipCode: "77098"
 }
 
+const seedLoanOfficer = {
+    firstName: 'John',
+    lastName: 'Doe',
+    phone: '123456789',
+    email: 'john@doe.com',
+    webUrl: 'http://www.johndoe.com',
+    nmls: '8290348',
+    photo: 'nophoto'
+}
+
 
 export class LaonActions {
     static async getLoanOfficer(loanApplicationId: string) {
-
+        return Promise.resolve(seedLoanOfficer)
     }
 
     static async getLoanApplication(loanApplicationId: string) {

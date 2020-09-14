@@ -54,7 +54,7 @@ export const ContactUs = ({}) => {
   );
 
   return (
-    <div className="ContactUs box-wrap">
+    <div data-testid="contact-us" className="ContactUs box-wrap">
       <div className="box-wrap--header">
         <h2 className="heading-h2"> Contact Us </h2>
       </div>
@@ -112,13 +112,13 @@ export const ContactUs = ({}) => {
               <li>
                 <a
                   title={loanOfficer.webUrl?.split("/")[2]}
-                  href={"http://" + loanOfficer.webUrl?.split("/")[2]}
+                  href={"http://" + loanOfficer?.webUrl?.split("/")[2]}
                   target="_blank"
                 >
                   <span>
                     <i className="zmdi zmdi-globe-alt"></i>
                     <span>
-                      {loanOfficer.webUrl?.split("/")[2].toLocaleLowerCase()}
+                      {loanOfficer.webUrl?.split("/")[2]?.toLocaleLowerCase()}
                     </span>
                   </span>
                 </a>

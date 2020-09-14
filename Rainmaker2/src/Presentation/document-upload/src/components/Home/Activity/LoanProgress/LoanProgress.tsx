@@ -156,9 +156,9 @@ export const LoanProgress = () => {
   }
 
   return (
-    <div className="LoanProgress box-wrap">
+    <div data-testid="loan-progress" className="LoanProgress box-wrap">
       <div className="box-wrap--header">
-        <h2 data-testid="loan-progress" className="heading-h2"> Your Loan Progress </h2>
+        <h2 className="heading-h2"> Your Loan Progress </h2>
       </div>
       <div className="box-wrap--body">
         <div
