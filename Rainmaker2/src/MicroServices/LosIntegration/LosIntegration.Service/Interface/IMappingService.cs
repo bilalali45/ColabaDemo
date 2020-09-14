@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace LosIntegration.Service.Interface
 {
-    public interface IMappingService : IServiceBase<Mapping>
+    public interface IMappingService : IServiceBase<_Mapping>
     {
          
 
 
-        List<Mapping> GetMappingWithDetails(string extOriginatorEntityId="",
+        List<_Mapping> GetMappingWithDetails(string extOriginatorEntityId="",
                                             string extOriginatorEntityName = "",
                                             string rmEnittyId = "",
                                             string rmEntityName = "",
@@ -17,7 +17,7 @@ namespace LosIntegration.Service.Interface
 
    
 
-        List<Mapping> GetMapping(List<string> rmEnittyIds,
+        List<_Mapping> GetMapping(List<string> rmEnittyIds,
                                  string rmEntityName );
     }
 }

@@ -46,6 +46,11 @@ namespace RainMaker.Service.Helpers
         {
             await Ftp.UploadAsync(remoteFile, localFile);
         }
+        public async Task Upload(string localFile, string remoteDirectory, string fileName)
+        {
+            var remoteFile = remoteDirectory + "/" + fileName;
+            await Ftp.UploadAsync(remoteFile, localFile);
+        }
 
         public async Task<bool> Exists(string remoteFile)
         {
@@ -55,12 +60,7 @@ namespace RainMaker.Service.Helpers
         {
             await Ftp.CreateDirectoryAsync(newDirectory);
         }
-        public async Task Upload(string localFile, string remoteDirectory, string fileName)
-        {
-            var remoteFile = remoteDirectory + "/" + fileName;
-            await Ftp.UploadAsync(remoteFile, localFile);
-        }
-
+   
         public async Task UploadString(Stream localFile, string remoteDirectory, string fileName, bool closeStream = true)
         {
             var status = await CheckFtpFolder(remoteDirectory);

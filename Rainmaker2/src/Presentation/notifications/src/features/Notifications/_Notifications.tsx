@@ -65,11 +65,11 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
 
   return (
     <div
-      className={`notification-list animated1 fadeIn ${
+      className={`notification-list animated1 fadeIn  ${
         ['Unseen', 'Unread', 'Seen'].includes(notification.status)
-          ? 'unSeenList'
+          ? `unSeenList`
           : ''
-      }`}
+      } `}
     >
       {timers.some((timer) => timer.id === notification.id) ? (
         <div className="notification-list-item-remove animated2 fadeIn">
@@ -83,7 +83,7 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
       ) : (
         <div>
           <Link
-            className="n-wrap animated2 fadeIn"
+            className="n-wrap"
             onClick={() =>
               readDocumentsAndOpenLink(loanApplicationId, link, status)
             }
@@ -94,11 +94,12 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
             </div>
             <div className="n-content">
               <div className="n-cat" title={'Document Submission'}>
-                {`${notificationType}`}
+                {notificationType}
               </div>
               <h4 className="n-title">{name}</h4>
               <p className="n-address">
-                {address} {!!unitNumber && `# ${unitNumber}`} <br />
+                {address} {!!unitNumber && `# ${unitNumber}`}{' '}
+                {(!!address || !!unitNumber) && <br />}
                 {city}, {state} {zipCode}
               </p>
               <div className="n-date">

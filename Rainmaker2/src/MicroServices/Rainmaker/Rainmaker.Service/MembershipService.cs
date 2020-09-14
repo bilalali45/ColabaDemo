@@ -54,7 +54,7 @@ namespace Rainmaker.Service
             try
             {
                
-                return Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
+                return Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && !userProfile.IsDeleted)
                                  .Include(navigationPropertyPath: x => x.Customers).ThenInclude(customer=>customer.Contact)
                                  .FirstOrDefault();
             }
@@ -67,7 +67,7 @@ namespace Rainmaker.Service
 
         public UserProfile GetEmployeeUser(string userName)
         {
-            var query = Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && userProfile.IsDeleted != true)
+            var query = Repository.Query(query: userProfile => userProfile.UserName.ToLower().Trim() == userName.ToLower().Trim() && userProfile.IsActive && !userProfile.IsDeleted)
                                   .Include(navigationPropertyPath: userProfile => userProfile.Employees).ThenInclude(employee => employee.Contact)
                                   .Include(x=>x.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeePhoneBinders).ThenInclude(navigationPropertyPath: employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo)
                                   .ToList();

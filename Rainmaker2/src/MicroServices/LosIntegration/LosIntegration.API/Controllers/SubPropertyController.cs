@@ -22,7 +22,7 @@ namespace LosIntegration.API.Controllers
                                      IConfiguration configuration
                                   )
         {
-            _clientFactory = clientFactory;
+            IHttpClientFactory _clientFactory = clientFactory;
             _configuration = configuration;
             _httpClient = _clientFactory.CreateClient(name: "clientWithCorrelationId");
         }
@@ -104,12 +104,8 @@ namespace LosIntegration.API.Controllers
         #endregion
 
         #region Private Variables
-
-        private readonly IHttpClientFactory _clientFactory;
-
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-
         #endregion
     }
 

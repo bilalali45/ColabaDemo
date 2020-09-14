@@ -525,7 +525,9 @@
 
             .mainbody {
                 padding-bottom: 70px;
-
+p {
+    font-size: fontSize("nr");
+}
                 .editer-wrap {
 
                     .editer,
@@ -535,7 +537,7 @@
                         border    : 1px solid color('border');
                         padding   : 10px;
                         resize    : none;
-
+                        font-size: fontSize("nr");
                         @include media-breakpoint-down(md) {
                             min-height: 250px;
                         }

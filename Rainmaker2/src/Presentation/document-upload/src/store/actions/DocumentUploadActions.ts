@@ -18,7 +18,7 @@ export class DocumentUploadActions {
     loanApplicationId: string
   ) {
     try {
-      let res = await http.fetch(
+      await http.fetch(
         {
           method: http.methods.POST,
           url: http.createUrl(
@@ -51,7 +51,7 @@ export class DocumentUploadActions {
         }
       );
     } catch (error) {
-      console.log('-------------->Upload errors------------>', error)
+      console.log("-------------->Upload errors------------>", error);
     }
   }
 
@@ -88,7 +88,7 @@ export class DocumentUploadActions {
         break;
       }
 
-      let  selectedFile = new Document(
+      let selectedFile = new Document(
         "",
         FileUpload.removeSpecialChars(f.name),
         FileUpload.todayDate(),
@@ -115,7 +115,6 @@ export class DocumentUploadActions {
 
       allSelectedFiles.push(selectedFile);
 
-
       if (counter === 0) {
         selectedFile.focused = true;
       } else {
@@ -134,7 +133,7 @@ export class DocumentUploadActions {
     prevFiles: Document[],
     dispatch: Function
   ) {
-    prevFiles.filter((f) => {
+    prevFiles = prevFiles.filter((f) => {
       if (f?.clientName.split(".")[0] !== fileName) {
         return f;
       }

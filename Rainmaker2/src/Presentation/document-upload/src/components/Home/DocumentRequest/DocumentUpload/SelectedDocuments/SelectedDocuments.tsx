@@ -12,10 +12,7 @@ import { DocumentRequest } from "../../../../../entities/Models/DocumentRequest"
 import { DocumentUploadActions } from "../../../../../store/actions/DocumentUploadActions";
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
-import { update } from "lodash";
 import { useLocation, useHistory } from "react-router-dom";
-import { Rename } from "../../../../../utils/helpers/rename";
-//import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -45,9 +42,6 @@ export const SelectedDocuments = ({
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const [doneHit, setDoneHit] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-  const [filesLimitErrorVisible, setFilesLimitErrorVisible] = useState<boolean>(
-    false
-  );
 
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
@@ -55,7 +49,6 @@ export const SelectedDocuments = ({
   const pendingDocs: any = documents.pendingDocs;
   const currentSelected: any = documents.currentDoc;
   const selectedFiles = currentSelected.files || [];
-  const docTitle = currentSelected ? currentSelected.docName : "";
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,9 +59,10 @@ export const SelectedDocuments = ({
     setFileInput(inputRef.current);
     disableSubmitBtn();
 
-    let curentFileIndex = pendingDocs.findIndex((pd: DocumentRequest) => pd?.docId === currentSelected?.docId);
+    let curentFileIndex = pendingDocs.findIndex(
+      (pd: DocumentRequest) => pd?.docId === currentSelected?.docId
+    );
     setCurrentDocIndex(curentFileIndex);
-
   }, [selectedFiles, selectedFiles.length, currentSelected]);
 
   useEffect(() => {
@@ -109,12 +103,12 @@ export const SelectedDocuments = ({
   };
 
   const getSubmittedDocumentForView = async (id, requestId, docId, fileId) => {
-    const response = (await DocumentActions.getSubmittedDocumentForView({
+    const response = await DocumentActions.getSubmittedDocumentForView({
       id,
       requestId,
       docId,
       fileId,
-    })) as any;
+    });
     setBlobData(response);
   };
   const clearBlob = () => {
@@ -143,8 +137,7 @@ export const SelectedDocuments = ({
     setSubBtnPressed(false);
     try {
       fetchUploadedDocuments();
-      
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -152,7 +145,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-        newName.toLowerCase()
+          newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -269,17 +262,20 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-          Auth.getLoanAppliationId(),
-          data
-        );
+        Auth.getLoanAppliationId(),
+        data
+      );
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
-        if(currentDocIndex === pendingDocs.length - 1) {
+        if (currentDocIndex === pendingDocs.length - 1) {
           setCurrentDocIndex(0);
           indForCurrentDoc = 0;
         }
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: docs[indForCurrentDoc] });
+        dispatch({
+          type: DocumentsActionType.SetCurrentDoc,
+          payload: docs[indForCurrentDoc],
+        });
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
@@ -299,7 +295,7 @@ export const SelectedDocuments = ({
     }
   };
 
-  const checkFocus = (f: Document, index: number) => {
+  const checkFocus = (file: Document, index: number) => {
     let foundIndx = selectedFiles.filter(
       (f: Document) => f.uploadStatus === "done" || f.editName === false
     ).length;
@@ -357,31 +353,31 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-                <a className="addmoreDoc disabled">
-                  {" "}
+              <a className="addmoreDoc disabled">
+                {" "}
                 Add more files
-                  <input
-                    type="file"
-                    accept={FileUpload.allowedExtensions}
-                    id="inputFile"
-                    ref={inputRef}
-                    multiple
-                    style={{ display: "none" }}
-                  />
-                </a>
-              )}
+                <input
+                  type="file"
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef}
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </a>
+            )}
 
-            {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
+            {!(ApplicationEnv.MaxDocumentCount >= selectedFiles.length) ? (
               <p className="text-danger">
                 Only {ApplicationEnv.MaxDocumentCount} files can be uploaded per
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </div>
         </div>
-        {!!currentDoc && location.pathname.includes('view') && (
+        {!!currentDoc && location.pathname.includes("view") && (
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
@@ -447,18 +443,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-            <div className="doc-submit-wrap">
-              {!doneHit && (
-                <button
-                  disabled={btnDisabled || subBtnPressed}
-                  className="btn btn-primary"
-                  onClick={uploadFiles}
-                >
-                  Submit
-                </button>
-              )}
-            </div>
-          )}
+          <div className="doc-submit-wrap">
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -38,7 +38,7 @@ namespace Identity.Services
             var token = new JwtSecurityToken(
                                              issuer: "rainsoftfn",
                                              audience: "readers",
-                                             expires: DateTime.Now.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
+                                             expires: DateTime.UtcNow.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
                                              signingCredentials: signingCredentials,
                                              claims: claims
                                             );
@@ -64,9 +64,6 @@ namespace Identity.Services
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
             //signing credentials
-            var signingCredentials =
-                new SigningCredentials(key: symmetricSecurityKey,
-                                       algorithm: SecurityAlgorithms.HmacSha256Signature);
 
             var tokenValidationParameters = new TokenValidationParameters
             {

@@ -76,7 +76,7 @@ namespace DocumentManagement.Service
             using var asyncCursorStatus = collection.Aggregate(
                 PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
                     @"{""$match"": {
-                  ""order"": " + 4 + @"
+                  ""order"": " + 3 + @"
                             }
                         }", @"{
                             ""$project"": {
@@ -109,7 +109,6 @@ namespace DocumentManagement.Service
                         }"
                 ));
             // if loan application does not exists create loan application
-            Entity.Request request = new Entity.Request();
           
             if (await asyncCursorRequest.MoveNextAsync())
             {
@@ -206,7 +205,7 @@ namespace DocumentManagement.Service
             using var asyncCursorStatus = collection.Aggregate(
                 PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
                     @"{""$match"": {
-                  ""order"": " + 4 + @"
+                  ""order"": " + 3 + @"
                             }
                         }", @"{
                             ""$project"": {

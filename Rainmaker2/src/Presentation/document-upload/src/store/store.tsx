@@ -19,7 +19,7 @@ export type InitialStateType = {
 
 export const initialState = {
   loan: {},
-  documents: {},
+  documents: {}
 };
 
 const Store = createContext<{
@@ -31,7 +31,7 @@ const Store = createContext<{
 });
 
 const StoreProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(mainReducer, initialState);
+  const [state, dispatch] = useReducer(mainReducer, initialState );
 
   return (
     <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>

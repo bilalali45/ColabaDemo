@@ -4,8 +4,8 @@ namespace ByteWebConnector.Model.Models.ServiceRequestModels
 {
     public class BorrowerEntity
     {
-        public int? BorrowerId;
-        public long FileDataId;
+        public int? BorrowerId { get; set; }
+        public long FileDataId { get; set; }
         public string CellPhone { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

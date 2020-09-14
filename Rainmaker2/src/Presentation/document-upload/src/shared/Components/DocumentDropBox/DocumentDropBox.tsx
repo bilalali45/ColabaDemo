@@ -139,7 +139,7 @@ export class FileDropper extends Component<{
         onDrop={(e) => this.onDrop(e)}
       >
         {this.state.dragPreview === true ? (
-          <div style={{ zIndex: 1 }} className="drag-preview">
+          <div style={{ zIndex: 1 }} className="drag-preview animated fadeIn">
             <div className="drag-preview-wrap">
               <div className="drag-preview-icon">
                 <img src={FileuploadPreviewIcon} alt="" />

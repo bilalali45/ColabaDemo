@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { LaonActions } from "../../../../store/actions/LoanActions";
 import { Store } from "../../../../store/store";
 import { LoanActionsType } from "../../../../store/reducers/loanReducer";
@@ -7,7 +7,7 @@ import { MaskPhone } from "rainsoft-js";
 import { Auth } from "../../../../services/auth/Auth";
 import { Loader } from "../../../../shared/Components/Assets/loader";
 
-export const ContactUs = ({}) => {
+export const ContactUs = () => {
   const [loanOfficer, setLoanOfficer] = useState<ContactUsModal>();
   const { state, dispatch } = useContext(Store);
 
@@ -27,19 +27,19 @@ export const ContactUs = ({}) => {
 
   const fetchLoanOfficer = async () => {
     let loanApplicationId = Auth.getLoanAppliationId();
-    let loanOfficer:
+    let currentLoanOfficer:
       | ContactUsModal
       | undefined = await LaonActions.getLoanOfficer(
       Auth.getLoanAppliationId()
     );
-    if (loanOfficer) {
+    if (currentLoanOfficer) {
       let src: any = await LaonActions.getLOPhoto(
-        loanOfficer.photo,
+        currentLoanOfficer.photo,
         loanApplicationId
       );
       dispatch({
         type: LoanActionsType.FetchLoanOfficer,
-        payload: loanOfficer,
+        payload: currentLoanOfficer,
       });
       dispatch({ type: LoanActionsType.FetchLOImage, payload: { src } });
       // setLOPhotoSrc(src);

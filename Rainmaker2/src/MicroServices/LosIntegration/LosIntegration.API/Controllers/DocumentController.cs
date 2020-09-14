@@ -224,7 +224,7 @@ namespace LosIntegration.API.Controllers
 
             #region SaveMapping
 
-            var mapping = new Mapping
+            var mapping = new _Mapping
                           {
                               RMEnittyId = request.FileId,
                               RMEntityName = "File",
@@ -425,8 +425,8 @@ namespace LosIntegration.API.Controllers
                                 //-- update mapping
                                 if (uploadFileResponseModel != null)
                                 {
-                                    var mapping = new Mapping
-                                                  {
+                                    var mapping = new _Mapping
+                                    {
                                                       RMEnittyId =
                                                           uploadFileResponseModel
                                                               .FileId, // comes from doc management after upload

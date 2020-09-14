@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<efcore context-namespace="ByteWebConnector.Data" namespace="ByteWebConnector.Entity.Models" p1:name="Context" p1:Guid="73c84af1-2265-4de1-a2a3-372c0cc7b71c" p1:EntityBase="URF.Core.EF.Trackable.Entity" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+<efcore context-namespace="ByteWebConnector.Data" namespace="ByteWebConnector.Entity.Models" p1:name="BwcContext" p1:Guid="73c84af1-2265-4de1-a2a3-372c0cc7b71c" p1:EntityBase="URF.Core.EF.Trackable.Entity" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
   <class name="Setting" entity-set="Settings" table="Setting" schema="dbo" p1:Guid="5045dee6-1493-4266-bf65-a7bd88dc828a">
     <id name="Id" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="205028b1-50ac-4420-bec7-3213dd336db9">
       <column name="Id" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />

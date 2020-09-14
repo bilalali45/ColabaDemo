@@ -41,7 +41,6 @@ namespace MainGateway
                 options.AddDefaultPolicy(
                                          builder =>
                                          {
-                                             var itemArray = Configuration.GetSection("AllowedOrigins").GetChildren().Select(c => c.Value).ToArray();
                                              builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                          });
             });

@@ -26,16 +26,20 @@ export const useFetchNotifications = (
   const [lastId, setLastId] = useState(-1);
 
   const notificationsRef = useRef(notifications);
+  const lastIdRef = useRef(lastId);
 
   useEffect(() => {
     notificationsRef.current = notifications;
+    lastIdRef.current = lastId;
   });
 
   const getFetchNotifications = useCallback(
-    async (lastId: number) => {
+    async (lastIdParam: number) => {
       try {
         const {data: response} = await http.get<NotificationType[]>(
-          `/api/Notification/notification/GetPaged?pageSize=10&lastId=${lastId}&mediumId=1`
+          `/api/Notification/notification/GetPaged?pageSize=10&lastId=${
+            lastIdParam || lastIdRef.current
+          }&mediumId=1`
         );
 
         if (response.length > 0) {
@@ -45,9 +49,10 @@ export const useFetchNotifications = (
            * 1. if we just logged in
            * 2. if SignalR connection Reset
            */
-          lastId === -1
+
+          lastIdParam === -1
             ? dispatch({
-                type: 'RESET_NOTIFICATIONS',
+                type: 'RESET_ON_CONNECT',
                 notifications: [...response]
               })
             : dispatch({
@@ -59,7 +64,7 @@ export const useFetchNotifications = (
            * 1. !notificationsRef.current will be true if we are fetching notifications only for the first time
            * 2. lastId=== -1 will be true if we are fetching notifications only for the first time
            */
-          if (!notificationsRef.current && lastId === -1) {
+          if (!notificationsRef.current && lastIdRef.current === -1) {
             dispatch({
               type: 'RESET_NOTIFICATIONS',
               notifications: []

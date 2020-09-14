@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useEffect, ChangeEvent} from 'react';
+import React, {useState, Fragment, ChangeEvent} from 'react';
 
 type TextAreaType = {
   textAreaValue?: string;
@@ -15,18 +15,15 @@ type TextAreaType = {
 
 export const TextArea = ({
   textAreaValue,
-  rows=20,
+  rows = 20,
   placeholderValue,
   onBlurHandler = () => {},
   onChangeHandler = () => {},
-  isValid,
-  errorText,
   focus,
   maxLengthValue = 3000,
   onKeyDown = () => {}
 }: TextAreaType) => {
   const [isTextValid, setIsTextValid] = useState<boolean>(false);
-  // const regex = /^[ A-Za-z0-9-,.!@#$%^&*()_+=`~{}|[\s]*$/i;
   const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
 
   const checkIfValid = (e: ChangeEvent<HTMLTextAreaElement>) => {

@@ -32,9 +32,9 @@ namespace LosIntegration.API
             services.AddControllers();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
             csResponse.EnsureSuccessStatusCode();
-            services.AddDbContext<LosIntegration.Data.Context>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
+            services.AddDbContext<LosIntegration.Data.LosIntegrationContext>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
-            services.AddScoped<IUnitOfWork<LosIntegration.Data.Context>, UnitOfWork<LosIntegration.Data.Context>>();
+            services.AddScoped<IUnitOfWork<LosIntegration.Data.LosIntegrationContext>, UnitOfWork<LosIntegration.Data.LosIntegrationContext>>();
             services.AddScoped<IMappingService, MappingService>();
             services.AddScoped<IByteDocTypeMappingService, ByteDocTypeMappingService>();
             services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
