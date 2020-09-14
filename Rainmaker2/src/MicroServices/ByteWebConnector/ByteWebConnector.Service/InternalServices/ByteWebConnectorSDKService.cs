@@ -38,7 +38,7 @@ namespace ByteWebConnector.Service.InternalServices
             var content = new SdkSendDocumentRequest(byteProSettings: byteProSettings,
                                                      documentUploadRequest: documentUploadRequest);
 
-            return _httpClient.Post<SendSdkDocumentResponse>(endPoint: $"{_baseUrl}/api/Document/SendSdkDocument",
+            return _httpClient.Post<SendSdkDocumentResponse>(endPoint: $"{_baseUrl}/api/ByteWebConnectorSdk/Document/SendSdkDocument",
                                                              content: content.ToJson(),
                                                              request: _request,
                                                              attachBearerTokenFromCurrentRequest: true);

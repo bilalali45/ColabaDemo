@@ -21,12 +21,13 @@ namespace ByteWebConnector.SDK.Controllers
         {
             return new string[] { "value1", "value2" };
         }
-        
+
         public string Get(int id)
         {
             return "value";
         }
-
+        [Route(template: "[action]")]
+        [HttpPost]
         public SendSdkDocumentResponse SendSdkDocument([FromBody] SdkSendDocumentRequest sdkSendDocumentRequest)
         {
             try
@@ -46,22 +47,36 @@ namespace ByteWebConnector.SDK.Controllers
 
                 int index = file.AddCollectionObject("EmbeddedDoc");
                 SDKEmbeddedDoc embeddedDoc = file.GetCollectionObject("EmbeddedDoc", index) as SDKEmbeddedDoc;
-                embeddedDoc.SetFieldValue("FileExtension", documentUploadRequest.DocumentExension); 
-                embeddedDoc.SetFieldValue("DocumentCategoryCode", documentUploadRequest.DocumentCategory);
-                embeddedDoc.SetFieldValue("DocumentTypeCode", documentUploadRequest.DocumentType);
-                embeddedDoc.SetFieldValue("Status", documentUploadRequest.DocumentStatus);
-                embeddedDoc.SetFieldValue("Description", documentUploadRequest.DocumentName);
-                MemoryStream stream = GenerateStreamFromString(documentUploadRequest.DocumentData);
-                if (embeddedDoc != null) embeddedDoc.LoadFromStream(stream);
+                if (embeddedDoc != null)
+                {
+                    string fileNameAndPath = Path.GetTempPath() + documentUploadRequest.DocumentName + "." +
+                                               documentUploadRequest.DocumentExension;
+                    embeddedDoc.SetFieldValue("FileExtension",
+                                              documentUploadRequest.DocumentExension);
+                    embeddedDoc.SetFieldValue("DocumentCategoryCode",
+                                              documentUploadRequest.DocumentCategory);
+                    embeddedDoc.SetFieldValue("DocumentTypeCode",
+                                              documentUploadRequest.DocumentType);
+                    embeddedDoc.SetFieldValue("Status",
+                                              documentUploadRequest.DocumentStatus);
+                    embeddedDoc.SetFieldValue("Description",
+                                              documentUploadRequest.DocumentName);
+                    System.IO.File.WriteAllBytes(fileNameAndPath,
+                                                 Convert.FromBase64String(documentUploadRequest.DocumentData));
+                    //MemoryStream stream = GenerateStreamFromString(documentUploadRequest.DocumentData);
+
+                    embeddedDoc.LoadFromFile(fileNameAndPath);
+                }
+
                 file.Save();
-                return new SendSdkDocumentResponse(){Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Success};
+                return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Success };
             }
             catch (Exception e)
             {
                 
-
+                return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Error };
             }
-            return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Error };
+            
         }
 
 

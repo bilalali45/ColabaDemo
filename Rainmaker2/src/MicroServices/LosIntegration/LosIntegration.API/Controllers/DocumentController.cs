@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using LosIntegration.Service;
 using AddDocumentRequest = LosIntegration.API.Models.Document.AddDocumentRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -144,12 +145,24 @@ namespace LosIntegration.API.Controllers
             var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
                                          .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
 
-            var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: documentType?.DocType).SingleOrDefault();
-            var byteDocCategoryId = byteDocTypeMapping?.ByteDocCategoryId;
-            var byteDocCategoryMapping = _byteDocCategoryMappingService
-                                         .GetByteDocCategoryMappingWithDetails(id: byteDocCategoryId ?? 10)
-                                         .SingleOrDefault();
+            ByteDocTypeMapping byteDocTypeMapping= null;
+            if (documentType?.DocType != null )
+            {
+                byteDocTypeMapping = _byteDocTypeMappingService
+                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType, includes: ByteDocTypeMappingService.RelatedEntity.ByteDocCategoryMapping).SingleOrDefault();
+                _logger.LogInformation(message: $"DocSync DocType Mapping  {documentType.DocType} => {byteDocTypeMapping?.ByteDoctypeName} ");
+
+            }
+
+            if (byteDocTypeMapping == null)
+            {
+                _logger.LogInformation(message: $"DocSync DocType Mapping  NOT Found reverting to fail safe Type ");
+                byteDocTypeMapping = _byteDocTypeMappingService
+                                     .GetByteDocTypeMappingWithDetails(docType: "Other", includes: ByteDocTypeMappingService.RelatedEntity.ByteDocCategoryMapping).Single();
+            }
+
+            var byteDocCategoryMapping = byteDocTypeMapping.ByteDocCategoryMapping;
+
             var byteDocStatusMapping = _byteDocStatusMappingService
                                        .GetByteDocStatusMappingWithDetails(status: document.Status).SingleOrDefault();
 
@@ -157,7 +170,7 @@ namespace LosIntegration.API.Controllers
 
             #region SendDocumentToExternalOriginator
 
-            _logger.LogInformation(message: $"DocumentCategory={byteDocCategoryMapping?.ByteDocCategoryName}");
+            _logger.LogInformation(message: $"DocumentCategory={byteDocCategoryMapping.ByteDocCategoryName}");
             _logger.LogInformation(message: $"DocumentStatus={byteDocStatusMapping?.ByteDocStatusName}");
             _logger.LogInformation(message: $"DocumentType={byteDocTypeMapping?.ByteDoctypeName}");
             _logger.LogInformation($"MediaType={documentResponse.Content.Headers.ContentType.MediaType}");
@@ -166,11 +179,8 @@ namespace LosIntegration.API.Controllers
                                       {
                                           LoanApplicationId = request.LoanApplicationId,
                                           FileData = fileData,
-                                          DocumentCategory =
-                                              byteDocCategoryMapping?.ByteDocCategoryName ?? "MISC", // mapping required
-                                          DocumentExension =
-                                              Path.GetExtension(path: file.ClientName).Replace(oldValue: ".",
-                                                                                               newValue: "") ?? "",
+                                          DocumentCategory = byteDocCategoryMapping?.ByteDocCategoryName ?? "MISC", // mapping required
+                                          DocumentExension = !string.IsNullOrEmpty(file.ClientName) ? Path.GetExtension(path: file.ClientName).Replace(".","") :"",
                                           DocumentName = Path.GetFileNameWithoutExtension(path: file.ClientName),
                                           DocumentStatus =
                                               byteDocStatusMapping?.ByteDocStatusName ?? "0", // mapping required
