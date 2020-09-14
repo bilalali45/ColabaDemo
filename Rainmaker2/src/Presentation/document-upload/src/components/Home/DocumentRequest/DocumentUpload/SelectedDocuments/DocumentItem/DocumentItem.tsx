@@ -228,7 +228,7 @@ export const DocumentItem = ({
             onBlur={onBlur}
           />
         ) : (
-            <p> {file.clientName}</p>
+            <p title={file.clientName}> {file.clientName}</p>
           )}
       </div>
     )
