@@ -171,7 +171,7 @@ namespace ByteWebConnector.API.Controllers
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadModel).ResponseObject;
 
-                var apiResponse = new ApiResponse() { Status = sdkDocumentResponse.Status };
+                var apiResponse = new ApiResponse() { Status = sdkDocumentResponse.Status,Data = sdkDocumentResponse.Data};
 
                 return apiResponse;
 

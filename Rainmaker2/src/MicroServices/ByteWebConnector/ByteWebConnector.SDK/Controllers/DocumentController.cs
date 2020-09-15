@@ -9,6 +9,8 @@ using ByteWebConnector.SDK.Models;
 using ByteWebConnector.SDK.Models.ControllerModels.Document.Response;
 using LOSAutomation;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Xceed.Pdf;
 
 namespace ByteWebConnector.SDK.Controllers
 {
@@ -26,6 +28,10 @@ namespace ByteWebConnector.SDK.Controllers
         {
             return "value";
         }
+
+
+        private static SDKSession _sessionStatic;
+
         [Route(template: "[action]")]
         [HttpPost]
         public SendSdkDocumentResponse SendSdkDocument([FromBody] SdkSendDocumentRequest sdkSendDocumentRequest)
@@ -35,13 +41,32 @@ namespace ByteWebConnector.SDK.Controllers
                 var byteProSettings = sdkSendDocumentRequest.ByteProSettings;
                 var documentUploadRequest = sdkSendDocumentRequest.DocumentUploadRequest;
 
+                SDKApplication application = null;
+
+                SDKSession session = _sessionStatic;
+                if (session != null)
+                {
+                    try
+                    {
+                        application = session.GetApplication();
+                    }
+                    catch (Exception e)
+                    {
+                        session = null;
+                    }
+                }
+
+                if (application == null)
+                {
+                    session = new SDKSession();
+                    string sessionDataFolder = session.DataFolder;
+                    session.Login(byteProSettings.ByteUserName, byteProSettings.BytePassword, byteProSettings.ByteConnectionName);
+                    session.Authorize(byteProSettings.ByteCompanyCode, byteProSettings.ByteUserNo, byteProSettings.ByteAuthKey);
+                    _sessionStatic = session;
+                    application = session.GetApplication();
+                }
 
 
-                SDKSession session = new SDKSession();
-                string sessionDataFolder = session.DataFolder;
-                session.Login(byteProSettings.ByteUserName, byteProSettings.BytePassword, byteProSettings.ByteConnectionName);
-                session.Authorize(byteProSettings.ByteCompanyCode, byteProSettings.ByteUserNo, byteProSettings.ByteAuthKey);
-                var application = session.GetApplication();
 
                 SDKFile file = application.OpenFile(documentUploadRequest.FileName, false);
 
@@ -69,14 +94,25 @@ namespace ByteWebConnector.SDK.Controllers
                 }
 
                 file.Save();
-                return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Success };
+                object documentId = null;
+                SDKEmbeddedDoc sdkEmbeddedDoc = file.GetCollectionObject("EmbeddedDoc", index) as SDKEmbeddedDoc;
+                if (sdkEmbeddedDoc != null)
+                {
+                   documentId = sdkEmbeddedDoc.GetField("EmbeddedDocID");
+                }
+                EmbedDocumentResponse documentResponse = new EmbedDocumentResponse()
+                {
+                    DocumentId = Convert.ToInt64(documentId),
+                    ExtOriginatorId = 1
+                };
+                return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Success,Data = JsonConvert.SerializeObject(documentResponse) };
             }
             catch (Exception e)
             {
-                
+
                 return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Error };
             }
-            
+
         }
 
 
