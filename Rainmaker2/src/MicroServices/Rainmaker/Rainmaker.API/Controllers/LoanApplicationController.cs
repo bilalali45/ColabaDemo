@@ -131,19 +131,19 @@ namespace Rainmaker.API.Controllers
             if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
                 emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
-            if (emailAccount != null)
+            //if (emailAccount != null)
             {
                 var data = new Dictionary<FillKey, string>();
                 data.Add(FillKey.CustomEmailHeader, "");
                 data.Add(FillKey.CustomEmailFooter, "");
                 data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
-                data.Add(FillKey.FromEmail, emailAccount.Email);
+                data.Add(FillKey.FromEmail, emailAccount == null ? "" : emailAccount.Email);
                 data.Add(FillKey.EmailTag, String.IsNullOrEmpty(userProfile.Employees.SingleOrDefault().EmailTag) ? String.Empty : userProfile.Employees.SingleOrDefault().EmailTag);
                 await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
                 return Ok();
             }
-            else
-                return Ok();
+            //else
+                //return Ok();
         }
 
         private async Task SendLoanApplicationActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype)
@@ -260,7 +260,7 @@ namespace Rainmaker.API.Controllers
                 string commaseperated = ",";
 
                 _logger.LogInformation(message: $"DocSync SendEmailSuppotTeam  {loanApplication.BusinessUnitId.ToString()}");
-                var employee = await _employeeService.GetEmployeeEmailByRoleName(GridNames.SupportTeam);
+                var employee = await _employeeService.GetEmployeeEmailByRoleName(Constants.SupportTeamRoleName);
                 for (int i = 0; i < employee.Count; i++)
                 {
                     if (i == employee.Count - 1)

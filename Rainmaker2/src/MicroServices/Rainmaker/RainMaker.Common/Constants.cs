@@ -772,6 +772,9 @@ namespace RainMaker.Common
         public const string BottomHeading1 = "Reviews.Heading.Bottom1";
         public const string BottomHeading2 = "Reviews.Heading.Bottom2";
 
+        //support role name
+        public const string SupportTeamRoleName = "SupportTeam";
+
     }
     public static class AuthorizePermissions
     {
@@ -927,7 +930,6 @@ namespace RainMaker.Common
         public const string VortexConfigurationGrid = "VortexConfigurationGrid";
         public const string OfficeHolidayGrid = "OfficeHolidayGrid";
         public const string VortexUserSessionGrid = "VortexUserSessionGrid";
-        public const string SupportTeam = "SupportTeam";
     }
 
     public static class SystemSettingKeys
