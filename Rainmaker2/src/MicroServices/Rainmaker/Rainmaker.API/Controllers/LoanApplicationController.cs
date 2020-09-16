@@ -213,10 +213,15 @@ namespace Rainmaker.API.Controllers
                     if (i == employee.Count - 1)
                     {
                         commaseperated = string.Empty;
+                    } var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
+                        .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+                    if (emailAccount != null) {
+                        email.Append(emailAccount.Email + commaseperated);
                     }
-                    email.Append(employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
-                        .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount.Email + commaseperated);
-
+                    else
+                    {
+                        email.Append(string.Empty);
+                    }
                 }
 
                 _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  {email.ToString()}");
