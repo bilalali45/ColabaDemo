@@ -102,7 +102,7 @@ namespace ByteWebConnector.Tests
                 BaseAddress = new Uri("http://test.com/"),
             };
 
-            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null ,null );
+            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null ,null,null );
 
             controller.ControllerContext = context;
 
@@ -160,7 +160,7 @@ namespace ByteWebConnector.Tests
                 BaseAddress = new Uri("http://test.com/"),
             };
 
-            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null,null);
+            var controller = new DocumentController(httpClient, mockConfiguration.Object, Mock.Of<ILogger<DocumentController>>(),null,null,null);
 
             controller.ControllerContext = context;
 

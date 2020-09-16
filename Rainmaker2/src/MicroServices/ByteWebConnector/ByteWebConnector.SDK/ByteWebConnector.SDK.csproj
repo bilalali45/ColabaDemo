@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.7" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.6.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ByteBase">
+      <HintPath>..\..\..\Library\ByteProSDK\ByteBase.dll</HintPath>
+    </Reference>
+    <Reference Include="LOSAutomation">
+      <HintPath>..\..\..\Library\ByteProSDK\LOSAutomation.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Editors">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.Editors.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Grid">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.Grid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Grid.Reporting">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.Grid.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Pdf">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.UI">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Validation">
+      <HintPath>..\..\..\Library\ByteProSDK\Xceed.Validation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
