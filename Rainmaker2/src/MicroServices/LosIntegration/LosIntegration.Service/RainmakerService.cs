@@ -41,7 +41,7 @@ namespace LosIntegration.Service
             await _httpClient.SendAsync(request);
         }
 
-        public async Task SendEmailSuppotTeam(  int loanApplicationId, int TenantId, string ErrorDate, string EmailBody, int ErrorCode, string DocumentCategory,   string DocumentName, string DocumentExension, IEnumerable<string> authHeader)
+        public async Task SendEmailSupportTeam(  int loanApplicationId, int TenantId, string ErrorDate, string EmailBody, int ErrorCode, string DocumentCategory,   string DocumentName, string DocumentExension, IEnumerable<string> authHeader)
         {
             var content = new
             {
@@ -58,7 +58,7 @@ namespace LosIntegration.Service
 
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(_configuration[key: "ServiceAddress:RainMaker:Url"] + "/api/rainmaker/LoanApplication/SendEmailSuppotTeam"),
+                RequestUri = new Uri(_configuration[key: "ServiceAddress:RainMaker:Url"] + "/api/rainmaker/LoanApplication/SendEmailSupportTeam"),
                 Method = HttpMethod.Post,
                 Content = new StringContent(content: content.ToJson(),
                     encoding: Encoding.UTF8,

@@ -599,7 +599,7 @@ namespace LosIntegration.API.Controllers
 
             if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
             {
-                await _rainmakerService.SendEmailSuppotTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
+                await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
                                                             TenantId: sendDocumentRequest.TenantId,
                                                             ErrorDate: DateTime.Now.ToString(),
                                                             EmailBody: externalOriginatorSendDocumentResponse
@@ -630,7 +630,7 @@ namespace LosIntegration.API.Controllers
             {
                 #region SendEmail in case of sync fail
 
-                await _rainmakerService.SendEmailSuppotTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
+                await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
                                                             TenantId: sendDocumentRequest.TenantId,
                                                             ErrorDate: DateTime.Now.ToString(),
                                                             EmailBody: apiResponse.Message,

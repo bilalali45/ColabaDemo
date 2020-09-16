@@ -36,7 +36,7 @@ namespace Rainmaker.Model
         public int? completedDocuments { get; set; }
     }
 
-    public class SendEmailSuppotTeam
+    public class SendEmailSupportTeam
     {
      
         public int loanApplicationId { get; set; }
