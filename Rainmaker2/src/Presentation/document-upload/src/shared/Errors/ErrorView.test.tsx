@@ -5,9 +5,9 @@ import { ErrorView } from "../Errors/ErrorView";
 beforeEach(() => {});
 
 describe("Error View", () => {
-  test('should render with id "error-view" ', async () => {
+  test('should render with text "Something went wrong..." ', async () => {
     const { getByTestId } = render(<ErrorView />);
     const errorViewDiv = getByTestId("error-view");
-    expect(errorViewDiv).toContainHTML("Please try");
+    expect(errorViewDiv).toHaveTextContent("Something went wrong...");
   });
 });
