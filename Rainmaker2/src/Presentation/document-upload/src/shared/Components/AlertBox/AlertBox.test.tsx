@@ -16,6 +16,7 @@ describe("Alert View", () => {
     const btnYes = getByTestId("btnyes");
     fireEvent.click(btnYes);
     expect(btnYes).toHaveClass("btn btn-secondary");
+    expect(btnYes).toHaveTextContent('Yes');
   });
 
   test("When click on No button", async () => {
@@ -23,5 +24,6 @@ describe("Alert View", () => {
     const btnNo = getByTestId("btnno");
     fireEvent.click(btnNo);
     expect(btnNo).toHaveClass("btn btn-primary");
+    expect(btnNo).toHaveTextContent('No');
   });
 });
