@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using LosIntegration.API.ExtensionMethods;
+﻿using LosIntegration.API.ExtensionMethods;
 using LosIntegration.API.Models;
 using LosIntegration.API.Models.ClientModels.Document;
-using LosIntegration.API.Models.ClientModels.LoanApplication;
 using LosIntegration.API.Models.Document;
 using LosIntegration.API.Models.LoanApplication;
 using LosIntegration.Entity.Models;
@@ -22,6 +12,15 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceCallHelper;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using AddDocumentRequest = LosIntegration.API.Models.Document.AddDocumentRequest;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -156,7 +155,7 @@ namespace LosIntegration.API.Controllers
                 byteDocTypeMapping = _byteDocTypeMappingService
                                      .GetByteDocTypeMappingWithDetails(docType: documentType.DocType,
                                                                        includes: ByteDocTypeMappingService
-                                                                                 .RelatedEntity.ByteDocCategoryMapping)
+                                                                                 .RelatedEntities.ByteDocCategoryMapping)
                                      .SingleOrDefault();
                 _logger.LogInformation(message:
                                        $"DocSync DocType Mapping  {documentType.DocType} => {byteDocTypeMapping?.ByteDoctypeName} ");
@@ -168,7 +167,7 @@ namespace LosIntegration.API.Controllers
                 byteDocTypeMapping = _byteDocTypeMappingService
                                      .GetByteDocTypeMappingWithDetails(docType: "Other",
                                                                        includes: ByteDocTypeMappingService
-                                                                                 .RelatedEntity.ByteDocCategoryMapping)
+                                                                                 .RelatedEntities.ByteDocCategoryMapping)
                                      .Single();
             }
 

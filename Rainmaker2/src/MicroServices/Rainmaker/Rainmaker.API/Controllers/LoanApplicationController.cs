@@ -227,7 +227,6 @@ namespace Rainmaker.API.Controllers
                 _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  {email.ToString()}");
 
                 model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName + "." + model.DocumentExension.Replace("jpeg", "jpg") + "</p></td> </tr> </table> ";
-                // model.EmailBody = "<tablestyle='width:100%'><tr><td><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;'>HiRainMakersupportteam,</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;'>Documentsthathavefailedtosync</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>BankStatement</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>Bank-statement-Jan-to-Mar-2020-1.jpg<br/>Bank-statement-Jan-to-Mar-2020-2.jpg<br/>Bank-statement-Jan-to-Mar-2020-3.jpg</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>PersonalTaxReturn</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>PersonalTaxReturns.pdf</p><h2style='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;text-transform:uppercase;margin-bottom:0;'>AlimonyIncomeVerification</h2><pstyle='font-size:13px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#000000;margin-bottom:25px;margin-top:5px'>IncomeVerification.pdf</p></td></tr></table><hrstyle='border-top:1pxsolid#E5E5E5;margin-bottom:25px;'/><tablestyle='width:100%;border:none'><tr><td><spanstyle='font-size:11px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#7E829E;text-transform:uppercase;display:block;'>Error</span><spanstyle='font-size:14px;font-weight:500;font-family:'Rubik',Arial,Helvetica,sans-serif;color:#4E4E4E;text-transform:uppercase;display:block;margin-bottom:10px;'>401:Unauthorized</span><astyle='line-height:1.4;text-decoration:none;color:#4484F4;font-size:12px;font-weight:normal;font-family:'Rubik',Arial,Helvetica,sans-serif;display:block;'href='https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1'>https://qa.rainsoftfn.com/Admin/LoanApplication/DocumentManagement?loanApplicationId=39&tenantId=1</a></td></tr></table></td></tr></tbody></table>";
                 var data = new Dictionary<FillKey, string>();
                 data.Add(FillKey.CustomEmailHeader, "");
                 data.Add(FillKey.CustomEmailFooter, "");
@@ -237,7 +236,7 @@ namespace Rainmaker.API.Controllers
                 data.Add(FillKey.ActivityDate, CommonHelper.DateFormat(model.ErrorDate.ToString()));
                 data.Add(FillKey.ErrorCode, ((int)HttpStatusCode.InternalServerError).ToString() + ":" + HttpStatusCode.InternalServerError.ToString());
                 data.Add(FillKey.ErrorUrl, model.Url);
-                await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ((int)HttpStatusCode.InternalServerError).ToString(), model.DocumentName, ActivityForType.DocumentSyncFailureActivity, email.ToString());
+                await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ActivityForType.DocumentSyncFailureActivity, email.ToString());
 
 
                 return Ok();
@@ -249,7 +248,7 @@ namespace Rainmaker.API.Controllers
             }
         }
 
-        private async Task SendEmailSupportActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, string ErrorCode, string DocumentName, ActivityForType emailtype, string emailAddress)
+        private async Task SendEmailSupportActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype, string emailAddress)
         {
 
             var activity = await activityService.GetCustomerActivity(businessUnitId, emailtype);
