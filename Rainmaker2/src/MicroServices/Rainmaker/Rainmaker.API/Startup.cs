@@ -53,6 +53,8 @@ namespace Rainmaker.API
             services.AddScoped<IWorkQueueService, WorkQueueService>();
             services.AddScoped<IBorrowerService, BorrowerService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+         
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       );
@@ -93,6 +95,8 @@ namespace Rainmaker.API
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
 
             #endregion
+
+        
 
         }
 

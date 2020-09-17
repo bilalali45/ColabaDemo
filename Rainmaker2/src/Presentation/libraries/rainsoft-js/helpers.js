@@ -55,29 +55,7 @@ exports.FormatAmountByCountry = function (amount) {
     })();
 };
 exports.toTitleCase = function (str) {
-    if (str) {
-        return str.replace(/\w\S*/g, function (txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    }
-    else {
-        return "";
-    }
+    return str.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
+        return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
+    });
 };
-// if (str) {
-//     str = str.replace(/\s+/g,' ').trim();
-//     let sentence = str?.toLowerCase().split(" ");
-//     for (var i = 0; i <= sentence.length; i++) {
-//       if(sentence[i] != undefined && sentence[i] != ""){
-//         sentence[i] = sentence[i][0]?.toUpperCase() + sentence[i]?.slice(1);
-//       }else{
-//         sentence.splice(i,1)
-//       }
-//     }
-//     let sen = sentence.join(" ");
-//     console.log('sen', sen)
-//     return sen
-//   }else {
-//     console.log(str);
-//   }
-//   return "";

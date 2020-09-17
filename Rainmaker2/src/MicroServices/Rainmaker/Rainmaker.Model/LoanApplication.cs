@@ -35,4 +35,18 @@ namespace Rainmaker.Model
         public int? outstandingDocuments { get; set; }
         public int? completedDocuments { get; set; }
     }
+
+    public class SendEmailSupportTeam
+    {
+     
+        public int loanApplicationId { get; set; }
+        public string EmailBody { get; set; }
+        public int TenantId { get; set; }
+        public string ErrorDate { get; set; }
+        public string ErrorCode { get; set; }
+        public string DocumentName { get; set; }
+        public string DocumentCategory { get; set; }
+        public string DocumentExension { get; set; }
+        public string Url { get; set; }
+    }
 }

@@ -6,6 +6,7 @@ taskkill /IM "Identity.exe" /F
 taskkill /IM "LosIntegration.API.exe" /F
 taskkill /IM "Notification.API.exe" /F
 taskkill /IM "Rainmaker.API.exe" /F
+taskkill /IM "ByteWebConnector.SDK.exe" /F
 
 timeout 1
 
