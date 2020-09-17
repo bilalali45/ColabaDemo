@@ -117,7 +117,7 @@ namespace Rainmaker.API.Controllers
             var activityEnumType = (ActivityForType)model.activityForId;
             var busnessUnitId = loanApplication.BusinessUnitId.ToInt();
 
-            var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+            var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount);
             EmailAccount emailAccount = null;
 
             if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())

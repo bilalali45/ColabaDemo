@@ -16,7 +16,7 @@ namespace Rainmaker.Service
     public class LoanApplicationService : ServiceBase<RainMakerContext, LoanApplication>, ILoanApplicationService
     {
         [Flags]
-        public enum RelatedEntity
+        public enum RelatedEntities
         {
             Borrowers = 1 << 0
         }
@@ -157,7 +157,7 @@ namespace Rainmaker.Service
 
         public List<LoanApplication> GetLoanApplicationWithDetails(int? id = null,
                                                                    string encompassNumber = "",
-                                                                   RelatedEntity? includes = null)
+                                                                   RelatedEntities? includes = null)
         {
             var loanApplications = Repository.Query().AsQueryable();
 
@@ -177,10 +177,10 @@ namespace Rainmaker.Service
 
 
         private IQueryable<LoanApplication> ProcessIncludes(IQueryable<LoanApplication> query,
-                                                            RelatedEntity includes)
+                                                            RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag: RelatedEntity.Borrowers)) query = query.Include(navigationPropertyPath: loanApplication => loanApplication.Borrowers);
+            if (includes.HasFlag(flag: RelatedEntities.Borrowers)) query = query.Include(navigationPropertyPath: loanApplication => loanApplication.Borrowers);
             // @formatter:on 
             return query;
         }

@@ -483,7 +483,7 @@ namespace ByteWebConnector.API.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 _logger.LogInformation(message: $"DocSync Byte request failed");
                 return false;

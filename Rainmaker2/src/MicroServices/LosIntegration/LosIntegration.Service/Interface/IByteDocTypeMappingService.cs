@@ -8,10 +8,10 @@ namespace LosIntegration.Service.Interface
     {
         List<ByteDocTypeMapping> GetByteDocTypeMappingWithDetails(int? id = null,
                                                                   string docType = "",
-                                                                  ByteDocTypeMappingService.RelatedEntity? includes = null);
+                                                                  ByteDocTypeMappingService.RelatedEntities? includes = null);
 
 
         IQueryable<ByteDocTypeMapping> ProcessIncludes(IQueryable<ByteDocTypeMapping> query,
-                                                       ByteDocTypeMappingService.RelatedEntity includes);
+                                                       ByteDocTypeMappingService.RelatedEntities includes);
     }
 }
