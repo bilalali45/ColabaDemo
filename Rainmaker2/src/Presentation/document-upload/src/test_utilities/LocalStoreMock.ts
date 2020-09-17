@@ -1,16 +1,5 @@
 const localStorageMock = (function () {
-    var store: { [key: string]: string } = {
-        ["rain-planner-users"]: JSON.stringify([
-            {
-                email: "kane@wood.com",
-                password: "kane123",
-                firstName: "john",
-                lastName: "doe",
-                todoList: [],
-                selectedList: null,
-            },
-        ]),
-    };
+    var store: { [key: string]: string } = {};
     return {
         getItem: function (key: string) {
             return store[key];

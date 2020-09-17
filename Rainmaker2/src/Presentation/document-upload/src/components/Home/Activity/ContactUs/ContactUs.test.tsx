@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
 import { MockEnvConfig } from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import App from '../../../../App';
@@ -36,7 +35,4 @@ describe('Contact Us', () => {
         expect(contactUs).toHaveTextContent('john@doe.com');
         expect(contactUs).toHaveTextContent('www.johndoe.com');
     });
-
-  
-
 })

@@ -24,7 +24,7 @@ test('Should render borrower name in the header', async () => {
       <App />
     </MemoryRouter>
   );
-  // const history = createMemoryHistory()
+
   await waitForDomChange();
   const header = getByText('Hello, John Doe');
 

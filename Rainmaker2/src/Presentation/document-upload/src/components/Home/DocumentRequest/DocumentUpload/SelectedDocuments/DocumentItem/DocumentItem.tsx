@@ -91,6 +91,7 @@ export const DocumentItem = ({
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    console.log('in here -- -----  - - - -  - - -- -- - - -- - - -', event.target.innerHTML);
     if (nameExists === true || validFilename === false || filename === "") {
       return event.preventDefault()
     }
@@ -216,6 +217,7 @@ export const DocumentItem = ({
       <div className="title">
         {file.editName ? (
           <input
+            data-testid="file-item-rename-input"
             ref={txtInput}
             style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
             maxLength={250}
@@ -234,7 +236,7 @@ export const DocumentItem = ({
 
   const renderAllowedFile = () => {
     return (
-      <li className="doc-li">
+      <li className="doc-li" data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={
