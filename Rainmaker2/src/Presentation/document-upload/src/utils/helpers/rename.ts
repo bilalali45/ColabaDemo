@@ -4,7 +4,6 @@ export class Rename {
     
     static rename(files, file) {
 
-
         let fileName = this.removeExt(file.clientName).toLowerCase();
         let fileExt = this.getExt(file.file);
 
