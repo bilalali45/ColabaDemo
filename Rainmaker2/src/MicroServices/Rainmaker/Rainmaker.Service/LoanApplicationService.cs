@@ -137,7 +137,7 @@ namespace Rainmaker.Service
                                                                                           ? ""
                                                                                           : y.LoanContact.LastName))
                                                                           .ToList(),
-                                                              LoanNumber = x.LoanNumber,
+                                                              LoanNumber = x.ByteFileName,
                                                               ExpectedClosingDate = x.ExpectedClosingDate,
                                                               PopertyValue = x.PropertyInfo.PropertyValue,
                                                               LoanProgram = x.Product.AliasName,
