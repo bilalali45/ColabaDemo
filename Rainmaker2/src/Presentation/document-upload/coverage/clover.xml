@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1600349479460" clover="3.2.0">
-  <project timestamp="1600349479460" name="All files">
-    <metrics statements="1439" coveredstatements="579" conditionals="640" coveredconditionals="192" methods="385" coveredmethods="122" elements="2464" coveredelements="893" complexity="0" loc="1439" ncloc="1439" packages="37" files="65" classes="65"/>
+<coverage generated="1600433141064" clover="3.2.0">
+  <project timestamp="1600433141064" name="All files">
+    <metrics statements="1392" coveredstatements="636" conditionals="618" coveredconditionals="205" methods="380" coveredmethods="156" elements="2390" coveredelements="997" complexity="0" loc="1392" ncloc="1392" packages="37" files="65" classes="65"/>
     <package name="src">
       <metrics statements="75" coveredstatements="31" conditionals="46" coveredconditionals="7" methods="25" coveredmethods="8"/>
       <file name="App.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\App.tsx">
         <metrics statements="37" coveredstatements="31" conditionals="14" coveredconditionals="7" methods="9" coveredmethods="8"/>
         <line num="21" count="7" type="stmt"/>
-        <line num="22" count="54" type="stmt"/>
-        <line num="23" count="54" type="stmt"/>
-        <line num="25" count="54" type="stmt"/>
-        <line num="27" count="54" type="stmt"/>
-        <line num="30" count="18" type="stmt"/>
-        <line num="32" count="18" type="stmt"/>
-        <line num="33" count="18" type="stmt"/>
-        <line num="37" count="54" type="stmt"/>
-        <line num="38" count="18" type="stmt"/>
-        <line num="39" count="18" type="cond" truecount="1" falsecount="1"/>
-        <line num="40" count="18" type="stmt"/>
-        <line num="41" count="18" type="stmt"/>
-        <line num="42" count="18" type="stmt"/>
-        <line num="43" count="18" type="stmt"/>
+        <line num="22" count="51" type="stmt"/>
+        <line num="23" count="51" type="stmt"/>
+        <line num="25" count="51" type="stmt"/>
+        <line num="27" count="51" type="stmt"/>
+        <line num="30" count="17" type="stmt"/>
+        <line num="32" count="17" type="stmt"/>
+        <line num="33" count="17" type="stmt"/>
+        <line num="37" count="51" type="stmt"/>
+        <line num="38" count="17" type="stmt"/>
+        <line num="39" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="17" type="stmt"/>
+        <line num="41" count="17" type="stmt"/>
+        <line num="42" count="17" type="stmt"/>
+        <line num="43" count="17" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
         <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="52" count="54" type="stmt"/>
-        <line num="53" count="18" type="stmt"/>
-        <line num="54" count="18" type="stmt"/>
-        <line num="55" count="18" type="stmt"/>
-        <line num="58" count="54" type="stmt"/>
-        <line num="59" count="18" type="cond" truecount="1" falsecount="1"/>
-        <line num="61" count="18" type="stmt"/>
-        <line num="66" count="54" type="stmt"/>
-        <line num="67" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="51" type="stmt"/>
+        <line num="53" count="17" type="stmt"/>
+        <line num="54" count="17" type="stmt"/>
+        <line num="55" count="17" type="stmt"/>
+        <line num="58" count="51" type="stmt"/>
+        <line num="59" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="17" type="stmt"/>
+        <line num="66" count="51" type="stmt"/>
+        <line num="67" count="17" type="cond" truecount="1" falsecount="1"/>
         <line num="68" count="0" type="stmt"/>
         <line num="69" count="0" type="stmt"/>
-        <line num="74" count="54" type="stmt"/>
-        <line num="76" count="18" type="stmt"/>
-        <line num="77" count="18" type="stmt"/>
-        <line num="78" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="74" count="51" type="stmt"/>
+        <line num="76" count="17" type="stmt"/>
+        <line num="77" count="17" type="stmt"/>
+        <line num="78" count="17" type="cond" truecount="1" falsecount="1"/>
         <line num="79" count="0" type="stmt"/>
-        <line num="84" count="54" type="cond" truecount="2" falsecount="0"/>
-        <line num="85" count="18" type="stmt"/>
-        <line num="88" count="36" type="stmt"/>
+        <line num="84" count="51" type="cond" truecount="2" falsecount="0"/>
+        <line num="85" count="17" type="stmt"/>
+        <line num="88" count="34" type="stmt"/>
       </file>
       <file name="index.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\index.tsx">
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -108,14 +108,14 @@
       <metrics statements="8" coveredstatements="6" conditionals="4" coveredconditionals="2" methods="3" coveredmethods="3"/>
       <file name="Home.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\components\Home\Home.tsx">
         <metrics statements="8" coveredstatements="6" conditionals="4" coveredconditionals="2" methods="3" coveredmethods="3"/>
-        <line num="13" count="18" type="stmt"/>
-        <line num="16" count="18" type="stmt"/>
-        <line num="17" count="18" type="stmt"/>
-        <line num="18" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="13" count="17" type="stmt"/>
+        <line num="16" count="17" type="stmt"/>
+        <line num="17" count="17" type="stmt"/>
+        <line num="18" count="17" type="cond" truecount="1" falsecount="1"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="21" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="21" count="17" type="cond" truecount="1" falsecount="1"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="29" count="55" type="stmt"/>
+        <line num="29" count="52" type="stmt"/>
       </file>
     </package>
     <package name="src.components.Home.AcitivityHeader">
@@ -123,32 +123,32 @@
       <file name="ActivityHeader.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\components\Home\AcitivityHeader\ActivityHeader.tsx">
         <metrics statements="76" coveredstatements="56" conditionals="34" coveredconditionals="22" methods="17" coveredmethods="8"/>
         <line num="9" count="7" type="stmt"/>
-        <line num="10" count="170" type="stmt"/>
-        <line num="11" count="170" type="stmt"/>
-        <line num="12" count="170" type="stmt"/>
-        <line num="13" count="170" type="stmt"/>
-        <line num="14" count="170" type="stmt"/>
-        <line num="15" count="170" type="stmt"/>
-        <line num="16" count="170" type="stmt"/>
-        <line num="19" count="170" type="stmt"/>
-        <line num="20" count="170" type="stmt"/>
-        <line num="21" count="170" type="stmt"/>
-        <line num="22" count="170" type="stmt"/>
-        <line num="24" count="170" type="cond" truecount="2" falsecount="0"/>
-        <line num="26" count="170" type="stmt"/>
-        <line num="28" count="170" type="stmt"/>
-        <line num="29" count="35" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="164" type="stmt"/>
+        <line num="11" count="164" type="stmt"/>
+        <line num="12" count="164" type="stmt"/>
+        <line num="13" count="164" type="stmt"/>
+        <line num="14" count="164" type="stmt"/>
+        <line num="15" count="164" type="stmt"/>
+        <line num="16" count="164" type="stmt"/>
+        <line num="19" count="164" type="stmt"/>
+        <line num="20" count="164" type="stmt"/>
+        <line num="21" count="164" type="stmt"/>
+        <line num="22" count="164" type="stmt"/>
+        <line num="24" count="164" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="164" type="stmt"/>
+        <line num="28" count="164" type="stmt"/>
+        <line num="29" count="34" type="cond" truecount="2" falsecount="0"/>
         <line num="30" count="13" type="stmt"/>
         <line num="31" count="13" type="stmt"/>
         <line num="32" count="13" type="stmt"/>
         <line num="33" count="13" type="stmt"/>
-        <line num="36" count="35" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="34" type="cond" truecount="2" falsecount="0"/>
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="39" count="1" type="stmt"/>
         <line num="40" count="1" type="stmt"/>
-        <line num="43" count="35" type="cond" truecount="2" falsecount="0"/>
-        <line num="44" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="34" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="48" count="3" type="stmt"/>
         <line num="49" count="3" type="stmt"/>
         <line num="50" count="3" type="cond" truecount="2" falsecount="0"/>
@@ -156,26 +156,26 @@
         <line num="52" count="2" type="stmt"/>
         <line num="54" count="1" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
-        <line num="58" count="4" type="stmt"/>
-        <line num="59" count="4" type="stmt"/>
-        <line num="60" count="4" type="stmt"/>
-        <line num="61" count="4" type="stmt"/>
-        <line num="66" count="170" type="stmt"/>
-        <line num="67" count="35" type="stmt"/>
-        <line num="72" count="170" type="stmt"/>
-        <line num="74" count="93" type="stmt"/>
-        <line num="75" count="93" type="cond" truecount="1" falsecount="1"/>
-        <line num="76" count="93" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="3" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="66" count="164" type="stmt"/>
+        <line num="67" count="34" type="stmt"/>
+        <line num="72" count="164" type="stmt"/>
+        <line num="74" count="87" type="stmt"/>
+        <line num="75" count="87" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="87" type="cond" truecount="1" falsecount="1"/>
         <line num="77" count="0" type="stmt"/>
-        <line num="79" count="93" type="stmt"/>
-        <line num="85" count="170" type="stmt"/>
-        <line num="86" count="96" type="stmt"/>
-        <line num="88" count="96" type="cond" truecount="1" falsecount="1"/>
+        <line num="79" count="87" type="stmt"/>
+        <line num="85" count="164" type="stmt"/>
+        <line num="86" count="90" type="stmt"/>
+        <line num="88" count="90" type="cond" truecount="1" falsecount="1"/>
         <line num="89" count="0" type="stmt"/>
-        <line num="93" count="170" type="stmt"/>
+        <line num="93" count="164" type="stmt"/>
         <line num="95" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="96" count="0" type="stmt"/>
-        <line num="100" count="170" type="stmt"/>
+        <line num="100" count="164" type="stmt"/>
         <line num="101" count="0" type="stmt"/>
         <line num="102" count="0" type="stmt"/>
         <line num="103" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -187,15 +187,15 @@
         <line num="109" count="0" type="stmt"/>
         <line num="110" count="0" type="stmt"/>
         <line num="113" count="0" type="stmt"/>
-        <line num="118" count="170" type="stmt"/>
-        <line num="119" count="170" type="cond" truecount="2" falsecount="0"/>
+        <line num="118" count="164" type="stmt"/>
+        <line num="119" count="164" type="cond" truecount="2" falsecount="0"/>
         <line num="120" count="113" type="stmt"/>
         <line num="126" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="127" count="0" type="stmt"/>
         <line num="129" count="0" type="stmt"/>
-        <line num="137" count="57" type="stmt"/>
+        <line num="137" count="51" type="stmt"/>
         <line num="140" count="0" type="stmt"/>
-        <line num="152" count="170" type="stmt"/>
+        <line num="152" count="164" type="stmt"/>
         <line num="171" count="3" type="stmt"/>
         <line num="190" count="0" type="stmt"/>
       </file>
@@ -330,24 +330,24 @@
       <file name="LoanStatus.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\components\Home\Activity\LoanStatus\LoanStatus.tsx">
         <metrics statements="19" coveredstatements="19" conditionals="14" coveredconditionals="11" methods="4" coveredmethods="4"/>
         <line num="15" count="7" type="stmt"/>
-        <line num="17" count="175" type="stmt"/>
-        <line num="18" count="175" type="stmt"/>
-        <line num="20" count="175" type="stmt"/>
-        <line num="21" count="175" type="stmt"/>
-        <line num="22" count="175" type="stmt"/>
-        <line num="23" count="36" type="cond" truecount="2" falsecount="0"/>
-        <line num="24" count="18" type="stmt"/>
-        <line num="27" count="36" type="cond" truecount="2" falsecount="0"/>
-        <line num="28" count="18" type="stmt"/>
-        <line num="32" count="175" type="stmt"/>
-        <line num="33" count="18" type="stmt"/>
-        <line num="34" count="18" type="cond" truecount="1" falsecount="1"/>
-        <line num="35" count="18" type="stmt"/>
-        <line num="40" count="175" type="cond" truecount="2" falsecount="0"/>
-        <line num="41" count="123" type="stmt"/>
-        <line num="44" count="52" type="stmt"/>
-        <line num="45" count="104" type="cond" truecount="2" falsecount="2"/>
-        <line num="48" count="52" type="stmt"/>
+        <line num="17" count="168" type="stmt"/>
+        <line num="18" count="168" type="stmt"/>
+        <line num="20" count="168" type="stmt"/>
+        <line num="21" count="168" type="stmt"/>
+        <line num="22" count="168" type="stmt"/>
+        <line num="23" count="34" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="17" type="stmt"/>
+        <line num="27" count="34" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="17" type="stmt"/>
+        <line num="32" count="168" type="stmt"/>
+        <line num="33" count="17" type="stmt"/>
+        <line num="34" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="17" type="stmt"/>
+        <line num="40" count="168" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="118" type="stmt"/>
+        <line num="44" count="50" type="stmt"/>
+        <line num="45" count="100" type="cond" truecount="2" falsecount="2"/>
+        <line num="48" count="50" type="stmt"/>
       </file>
     </package>
     <package name="src.components.Home.DocumentRequest">
@@ -720,65 +720,65 @@
       <file name="UploadedDocuments.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\components\Home\UploadedDocuments\UploadedDocuments.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="7" type="stmt"/>
-        <line num="5" count="14" type="stmt"/>
+        <line num="5" count="11" type="stmt"/>
       </file>
     </package>
     <package name="src.components.Home.UploadedDocuments.UploadedDocumentsTable">
-      <metrics statements="52" coveredstatements="43" conditionals="19" coveredconditionals="14" methods="19" coveredmethods="15"/>
+      <metrics statements="52" coveredstatements="37" conditionals="19" coveredconditionals="11" methods="19" coveredmethods="12"/>
       <file name="UploadedDocumentsTable.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\components\Home\UploadedDocuments\UploadedDocumentsTable\UploadedDocumentsTable.tsx">
-        <metrics statements="52" coveredstatements="43" conditionals="19" coveredconditionals="14" methods="19" coveredmethods="15"/>
+        <metrics statements="52" coveredstatements="37" conditionals="19" coveredconditionals="11" methods="19" coveredmethods="12"/>
         <line num="25" count="7" type="stmt"/>
-        <line num="26" count="24" type="stmt"/>
-        <line num="27" count="24" type="stmt"/>
-        <line num="29" count="24" type="stmt"/>
-        <line num="31" count="24" type="stmt"/>
-        <line num="32" count="24" type="stmt"/>
-        <line num="34" count="24" type="stmt"/>
-        <line num="35" count="7" type="stmt"/>
-        <line num="38" count="24" type="stmt"/>
-        <line num="39" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="40" count="5" type="stmt"/>
-        <line num="43" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="44" count="5" type="stmt"/>
-        <line num="52" count="24" type="stmt"/>
-        <line num="53" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="26" count="19" type="stmt"/>
+        <line num="27" count="19" type="stmt"/>
+        <line num="29" count="19" type="stmt"/>
+        <line num="31" count="19" type="stmt"/>
+        <line num="32" count="19" type="stmt"/>
+        <line num="34" count="19" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
+        <line num="38" count="19" type="stmt"/>
+        <line num="39" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="43" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="52" count="19" type="stmt"/>
+        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="54" count="0" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="60" count="24" type="stmt"/>
-        <line num="61" count="76" type="stmt"/>
-        <line num="64" count="304" type="stmt"/>
-        <line num="66" count="304" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="91" count="24" type="stmt"/>
-        <line num="92" count="76" type="stmt"/>
-        <line num="95" count="304" type="stmt"/>
-        <line num="105" count="24" type="stmt"/>
-        <line num="106" count="76" type="stmt"/>
-        <line num="108" count="19" type="stmt"/>
-        <line num="110" count="76" type="cond" truecount="1" falsecount="1"/>
-        <line num="111" count="76" type="stmt"/>
-        <line num="112" count="304" type="stmt"/>
-        <line num="114" count="76" type="stmt"/>
-        <line num="129" count="24" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="60" count="19" type="stmt"/>
+        <line num="61" count="60" type="stmt"/>
+        <line num="64" count="240" type="stmt"/>
+        <line num="66" count="240" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="91" count="19" type="stmt"/>
+        <line num="92" count="60" type="stmt"/>
+        <line num="95" count="240" type="stmt"/>
+        <line num="105" count="19" type="stmt"/>
+        <line num="106" count="60" type="stmt"/>
+        <line num="108" count="15" type="stmt"/>
+        <line num="110" count="60" type="cond" truecount="1" falsecount="1"/>
+        <line num="111" count="60" type="stmt"/>
+        <line num="112" count="240" type="stmt"/>
+        <line num="114" count="60" type="stmt"/>
+        <line num="129" count="19" type="stmt"/>
         <line num="130" count="0" type="stmt"/>
-        <line num="133" count="24" type="stmt"/>
-        <line num="134" count="19" type="cond" truecount="3" falsecount="1"/>
-        <line num="135" count="19" type="stmt"/>
-        <line num="149" count="24" type="stmt"/>
+        <line num="133" count="19" type="stmt"/>
+        <line num="134" count="15" type="cond" truecount="3" falsecount="1"/>
+        <line num="135" count="15" type="stmt"/>
+        <line num="149" count="19" type="stmt"/>
         <line num="150" count="0" type="stmt"/>
-        <line num="169" count="24" type="stmt"/>
-        <line num="170" count="1" type="stmt"/>
-        <line num="176" count="1" type="stmt"/>
-        <line num="179" count="24" type="stmt"/>
+        <line num="169" count="19" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
+        <line num="176" count="0" type="stmt"/>
+        <line num="179" count="19" type="stmt"/>
         <line num="180" count="0" type="stmt"/>
         <line num="181" count="0" type="stmt"/>
-        <line num="184" count="24" type="stmt"/>
+        <line num="184" count="19" type="stmt"/>
         <line num="185" count="0" type="stmt"/>
         <line num="186" count="0" type="stmt"/>
         <line num="187" count="0" type="stmt"/>
         <line num="188" count="0" type="stmt"/>
-        <line num="191" count="24" type="stmt"/>
+        <line num="191" count="19" type="stmt"/>
       </file>
     </package>
     <package name="src.components.Loading">
@@ -861,32 +861,32 @@
       </file>
       <file name="LoanApplication.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\entities\Models\LoanApplication.ts">
         <metrics statements="26" coveredstatements="25" conditionals="6" coveredconditionals="3" methods="3" coveredmethods="3"/>
-        <line num="29" count="18" type="stmt"/>
-        <line num="30" count="18" type="stmt"/>
-        <line num="31" count="18" type="stmt"/>
-        <line num="32" count="18" type="stmt"/>
-        <line num="33" count="18" type="stmt"/>
-        <line num="34" count="18" type="stmt"/>
-        <line num="35" count="18" type="stmt"/>
-        <line num="36" count="18" type="stmt"/>
-        <line num="37" count="18" type="stmt"/>
-        <line num="38" count="18" type="stmt"/>
-        <line num="39" count="18" type="stmt"/>
-        <line num="43" count="104" type="cond" truecount="1" falsecount="1"/>
+        <line num="29" count="17" type="stmt"/>
+        <line num="30" count="17" type="stmt"/>
+        <line num="31" count="17" type="stmt"/>
+        <line num="32" count="17" type="stmt"/>
+        <line num="33" count="17" type="stmt"/>
+        <line num="34" count="17" type="stmt"/>
+        <line num="35" count="17" type="stmt"/>
+        <line num="36" count="17" type="stmt"/>
+        <line num="37" count="17" type="stmt"/>
+        <line num="38" count="17" type="stmt"/>
+        <line num="39" count="17" type="stmt"/>
+        <line num="43" count="100" type="cond" truecount="1" falsecount="1"/>
         <line num="44" count="0" type="stmt"/>
-        <line num="46" count="104" type="stmt"/>
-        <line num="50" count="18" type="stmt"/>
-        <line num="51" count="18" type="stmt"/>
-        <line num="52" count="18" type="stmt"/>
-        <line num="53" count="18" type="stmt"/>
-        <line num="54" count="18" type="stmt"/>
-        <line num="55" count="18" type="stmt"/>
-        <line num="56" count="18" type="stmt"/>
-        <line num="57" count="18" type="cond" truecount="1" falsecount="1"/>
-        <line num="58" count="18" type="stmt"/>
-        <line num="59" count="18" type="cond" truecount="1" falsecount="1"/>
-        <line num="60" count="18" type="stmt"/>
-        <line num="61" count="18" type="stmt"/>
+        <line num="46" count="100" type="stmt"/>
+        <line num="50" count="17" type="stmt"/>
+        <line num="51" count="17" type="stmt"/>
+        <line num="52" count="17" type="stmt"/>
+        <line num="53" count="17" type="stmt"/>
+        <line num="54" count="17" type="stmt"/>
+        <line num="55" count="17" type="stmt"/>
+        <line num="56" count="17" type="stmt"/>
+        <line num="57" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="17" type="stmt"/>
+        <line num="59" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="60" count="17" type="stmt"/>
+        <line num="61" count="17" type="stmt"/>
       </file>
       <file name="LoanProgress.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\entities\Models\LoanProgress.ts">
         <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -915,15 +915,15 @@
       </file>
     </package>
     <package name="src.services.auth">
-      <metrics statements="49" coveredstatements="0" conditionals="20" coveredconditionals="0" methods="18" coveredmethods="0"/>
+      <metrics statements="49" coveredstatements="4" conditionals="20" coveredconditionals="1" methods="18" coveredmethods="2"/>
       <file name="Auth.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\services\auth\Auth.ts">
-        <metrics statements="49" coveredstatements="0" conditionals="20" coveredconditionals="0" methods="18" coveredmethods="0"/>
-        <line num="5" count="0" type="stmt"/>
+        <metrics statements="49" coveredstatements="4" conditionals="20" coveredconditionals="1" methods="18" coveredmethods="2"/>
+        <line num="5" count="1" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
@@ -961,8 +961,8 @@
         <line num="111" count="0" type="stmt"/>
         <line num="117" count="0" type="stmt"/>
         <line num="118" count="0" type="stmt"/>
-        <line num="123" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="124" count="0" type="stmt"/>
+        <line num="123" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="124" count="1" type="stmt"/>
         <line num="126" count="0" type="stmt"/>
         <line num="127" count="0" type="stmt"/>
         <line num="128" count="0" type="stmt"/>
@@ -994,72 +994,72 @@
       </file>
     </package>
     <package name="src.shared.Components.AlertBox">
-      <metrics statements="22" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="4" coveredmethods="0"/>
+      <metrics statements="22" coveredstatements="11" conditionals="10" coveredconditionals="0" methods="4" coveredmethods="3"/>
       <file name="AlertBox.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Components\AlertBox\AlertBox.tsx">
-        <metrics statements="22" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="16" count="7" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
+        <metrics statements="22" coveredstatements="11" conditionals="10" coveredconditionals="0" methods="4" coveredmethods="3"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="30" count="0" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="35" count="0" type="stmt"/>
         <line num="39" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
+        <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="49" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
       </file>
     </package>
     <package name="src.shared.Components.Assets">
-      <metrics statements="32" coveredstatements="18" conditionals="10" coveredconditionals="5" methods="16" coveredmethods="2"/>
+      <metrics statements="32" coveredstatements="32" conditionals="10" coveredconditionals="9" methods="16" coveredmethods="16"/>
       <file name="SVG.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Components\Assets\SVG.tsx">
-        <metrics statements="30" coveredstatements="16" conditionals="4" coveredconditionals="2" methods="15" coveredmethods="1"/>
-        <line num="31" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="32" count="2" type="stmt"/>
-        <line num="59" count="7" type="cond" truecount="0" falsecount="2"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="67" count="7" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="79" count="7" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="87" count="7" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="106" count="7" type="stmt"/>
-        <line num="107" count="0" type="stmt"/>
-        <line num="131" count="7" type="stmt"/>
-        <line num="132" count="0" type="stmt"/>
-        <line num="150" count="7" type="stmt"/>
-        <line num="151" count="0" type="stmt"/>
-        <line num="158" count="7" type="stmt"/>
-        <line num="159" count="0" type="stmt"/>
-        <line num="172" count="7" type="stmt"/>
-        <line num="173" count="0" type="stmt"/>
-        <line num="182" count="7" type="stmt"/>
-        <line num="183" count="0" type="stmt"/>
-        <line num="190" count="7" type="stmt"/>
-        <line num="191" count="0" type="stmt"/>
-        <line num="198" count="7" type="stmt"/>
-        <line num="199" count="0" type="stmt"/>
-        <line num="206" count="7" type="stmt"/>
-        <line num="207" count="0" type="stmt"/>
-        <line num="214" count="7" type="stmt"/>
-        <line num="215" count="0" type="stmt"/>
+        <metrics statements="30" coveredstatements="30" conditionals="4" coveredconditionals="4" methods="15" coveredmethods="15"/>
+        <line num="7" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="20" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="28" count="8" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="40" count="8" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="48" count="8" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="67" count="8" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="92" count="8" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="111" count="8" type="stmt"/>
+        <line num="112" count="1" type="stmt"/>
+        <line num="119" count="8" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
+        <line num="133" count="8" type="stmt"/>
+        <line num="134" count="1" type="stmt"/>
+        <line num="143" count="8" type="stmt"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="151" count="8" type="stmt"/>
+        <line num="152" count="1" type="stmt"/>
+        <line num="159" count="8" type="stmt"/>
+        <line num="160" count="1" type="stmt"/>
+        <line num="167" count="8" type="stmt"/>
+        <line num="168" count="1" type="stmt"/>
+        <line num="175" count="8" type="stmt"/>
+        <line num="176" count="1" type="stmt"/>
       </file>
       <file name="loader.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Components\Assets\loader.tsx">
-        <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="3" methods="1" coveredmethods="1"/>
-        <line num="10" count="7" type="stmt"/>
-        <line num="12" count="338" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="6" coveredconditionals="5" methods="1" coveredmethods="1"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="12" count="335" type="stmt"/>
       </file>
     </package>
     <package name="src.shared.Components.Authorized">
@@ -1067,9 +1067,9 @@
       <file name="Authorized.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Components\Authorized\Authorized.tsx">
         <metrics statements="5" coveredstatements="4" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="2"/>
         <line num="6" count="7" type="stmt"/>
-        <line num="8" count="96" type="stmt"/>
-        <line num="9" count="96" type="cond" truecount="1" falsecount="1"/>
-        <line num="10" count="96" type="stmt"/>
+        <line num="8" count="90" type="stmt"/>
+        <line num="9" count="90" type="cond" truecount="1" falsecount="1"/>
+        <line num="10" count="90" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
       </file>
     </package>
@@ -1198,41 +1198,41 @@
       </file>
     </package>
     <package name="src.shared.Errors">
-      <metrics statements="9" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="5"/>
       <file name="ErrorBoundary.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Errors\ErrorBoundary.tsx">
-        <metrics statements="5" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="16" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
       </file>
       <file name="ErrorView.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Errors\ErrorView.tsx">
-        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
       </file>
       <file name="PageNotFound.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\shared\Errors\PageNotFound.tsx">
-        <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.store">
-      <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="1"/>
+      <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
       <file name="store.tsx" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\store.tsx">
-        <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="1"/>
-        <line num="8" count="7" type="stmt"/>
-        <line num="9" count="7" type="stmt"/>
-        <line num="10" count="7" type="stmt"/>
-        <line num="12" count="7" type="stmt"/>
-        <line num="13" count="7" type="cond" truecount="1" falsecount="1"/>
-        <line num="20" count="7" type="stmt"/>
-        <line num="25" count="7" type="stmt"/>
+        <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="8" type="stmt"/>
+        <line num="25" count="8" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="33" count="7" type="stmt"/>
-        <line num="34" count="138" type="stmt"/>
-        <line num="36" count="138" type="stmt"/>
+        <line num="33" count="8" type="stmt"/>
+        <line num="34" count="134" type="stmt"/>
+        <line num="36" count="134" type="stmt"/>
       </file>
     </package>
     <package name="src.store.actions">
@@ -1304,24 +1304,24 @@
         <line num="87" count="0" type="stmt"/>
         <line num="88" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="104" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="103" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="104" count="0" type="stmt"/>
         <line num="105" count="0" type="stmt"/>
-        <line num="106" count="0" type="stmt"/>
-        <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="108" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="109" count="0" type="stmt"/>
         <line num="110" count="0" type="stmt"/>
-        <line num="111" count="0" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="116" count="0" type="stmt"/>
-        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="119" count="0" type="stmt"/>
-        <line num="121" count="0" type="stmt"/>
-        <line num="123" count="0" type="stmt"/>
-        <line num="125" count="0" type="stmt"/>
-        <line num="136" count="0" type="stmt"/>
-        <line num="137" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="138" count="0" type="stmt"/>
-        <line num="141" count="0" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="117" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="118" count="0" type="stmt"/>
+        <line num="120" count="0" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="135" count="0" type="stmt"/>
+        <line num="136" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="140" count="0" type="stmt"/>
       </file>
       <file name="LoanActions.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\actions\LoanActions.ts">
         <metrics statements="36" coveredstatements="0" conditionals="11" coveredconditionals="0" methods="8" coveredmethods="0"/>
@@ -1512,8 +1512,8 @@
       </file>
       <file name="documentReducer.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\reducers\documentReducer.ts">
         <metrics statements="13" coveredstatements="6" conditionals="9" coveredconditionals="4" methods="2" coveredmethods="1"/>
-        <line num="31" count="7" type="stmt"/>
-        <line num="32" count="102" type="cond" truecount="4" falsecount="1"/>
+        <line num="31" count="8" type="stmt"/>
+        <line num="32" count="100" type="cond" truecount="4" falsecount="1"/>
         <line num="34" count="13" type="stmt"/>
         <line num="40" count="14" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
@@ -1523,22 +1523,22 @@
         <line num="51" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
-        <line num="61" count="18" type="stmt"/>
-        <line num="67" count="57" type="stmt"/>
+        <line num="61" count="17" type="stmt"/>
+        <line num="67" count="56" type="stmt"/>
       </file>
       <file name="loanReducer.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\reducers\loanReducer.ts">
         <metrics statements="7" coveredstatements="7" conditionals="5" coveredconditionals="5" methods="1" coveredmethods="1"/>
-        <line num="34" count="7" type="stmt"/>
-        <line num="35" count="102" type="cond" truecount="5" falsecount="0"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="100" type="cond" truecount="5" falsecount="0"/>
         <line num="37" count="13" type="stmt"/>
         <line num="43" count="13" type="stmt"/>
-        <line num="49" count="18" type="stmt"/>
+        <line num="49" count="17" type="stmt"/>
         <line num="54" count="13" type="stmt"/>
-        <line num="60" count="45" type="stmt"/>
+        <line num="60" count="44" type="stmt"/>
       </file>
       <file name="reducers.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\reducers\reducers.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="20" count="102" type="stmt"/>
+        <line num="20" count="100" type="stmt"/>
       </file>
       <file name="userReducer.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\store\reducers\userReducer.ts">
         <metrics statements="4" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -1553,8 +1553,8 @@
       <file name="EnvConfigMock.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\test_utilities\EnvConfigMock.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="7" type="stmt"/>
-        <line num="2" count="19" type="stmt"/>
-        <line num="6" count="19" type="stmt"/>
+        <line num="2" count="18" type="stmt"/>
+        <line num="6" count="18" type="stmt"/>
       </file>
       <file name="LocalStoreMock.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\test_utilities\LocalStoreMock.ts">
         <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
@@ -1566,9 +1566,9 @@
         <line num="22" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
         <line num="30" count="7" type="stmt"/>
-        <line num="31" count="19" type="stmt"/>
-        <line num="32" count="19" type="stmt"/>
-        <line num="33" count="19" type="stmt"/>
+        <line num="31" count="18" type="stmt"/>
+        <line num="32" count="18" type="stmt"/>
+        <line num="33" count="18" type="stmt"/>
       </file>
     </package>
     <package name="src.utils">
@@ -1601,142 +1601,95 @@
       </file>
     </package>
     <package name="src.utils.helpers">
-      <metrics statements="124" coveredstatements="29" conditionals="53" coveredconditionals="6" methods="25" coveredmethods="5"/>
+      <metrics statements="77" coveredstatements="56" conditionals="31" coveredconditionals="14" methods="20" coveredmethods="18"/>
       <file name="AppEnv.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\utils\helpers\AppEnv.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="2" count="7" type="stmt"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="4" count="7" type="stmt"/>
+        <line num="2" count="9" type="stmt"/>
+        <line num="3" count="9" type="stmt"/>
+        <line num="4" count="9" type="stmt"/>
       </file>
       <file name="DateFormat.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\utils\helpers\DateFormat.ts">
-        <metrics statements="3" coveredstatements="3" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="3" count="8" type="stmt"/>
-        <line num="7" count="309" type="cond" truecount="2" falsecount="0"/>
-        <line num="11" count="309" type="stmt"/>
+        <line num="7" count="247" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="247" type="stmt"/>
+        <line num="11" count="247" type="stmt"/>
       </file>
       <file name="FileUpload.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\utils\helpers\FileUpload.ts">
-        <metrics statements="100" coveredstatements="22" conditionals="42" coveredconditionals="3" methods="18" coveredmethods="4"/>
-        <line num="14" count="7" type="stmt"/>
-        <line num="16" count="7" type="stmt"/>
-        <line num="18" count="7" type="stmt"/>
-        <line num="19" count="7" type="stmt"/>
-        <line num="23" count="7" type="stmt"/>
-        <line num="27" count="7" type="stmt"/>
-        <line num="31" count="7" type="stmt"/>
-        <line num="35" count="7" type="stmt"/>
-        <line num="39" count="7" type="stmt"/>
-        <line num="43" count="7" type="stmt"/>
-        <line num="47" count="7" type="stmt"/>
-        <line num="54" count="7" type="stmt"/>
-        <line num="57" count="0" type="cond" truecount="0" falsecount="12"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="74" count="0" type="stmt"/>
-        <line num="76" count="0" type="stmt"/>
-        <line num="82" count="1" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
+        <metrics statements="52" coveredstatements="33" conditionals="20" coveredconditionals="5" methods="13" coveredmethods="11"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
+        <line num="18" count="8" type="stmt"/>
+        <line num="19" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="27" count="8" type="stmt"/>
+        <line num="31" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
+        <line num="39" count="8" type="stmt"/>
+        <line num="43" count="8" type="stmt"/>
+        <line num="47" count="8" type="stmt"/>
+        <line num="54" count="8" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="58" count="1" type="cond" truecount="1" falsecount="11"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="82" count="2" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
         <line num="99" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
+        <line num="100" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="101" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
         <line num="104" count="0" type="stmt"/>
-        <line num="105" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="105" count="0" type="stmt"/>
         <line num="106" count="0" type="stmt"/>
-        <line num="107" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="110" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="112" count="1" type="stmt"/>
         <line num="113" count="0" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="118" count="0" type="stmt"/>
-        <line num="122" count="0" type="stmt"/>
-        <line num="123" count="0" type="stmt"/>
-        <line num="128" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="132" count="0" type="stmt"/>
-        <line num="136" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
-        <line num="150" count="208" type="cond" truecount="1" falsecount="1"/>
-        <line num="151" count="208" type="stmt"/>
-        <line num="152" count="208" type="stmt"/>
-        <line num="154" count="0" type="stmt"/>
-        <line num="159" count="208" type="stmt"/>
-        <line num="160" count="208" type="cond" truecount="2" falsecount="0"/>
-        <line num="161" count="65" type="stmt"/>
-        <line num="163" count="143" type="stmt"/>
-        <line num="168" count="1" type="stmt"/>
-        <line num="179" count="0" type="stmt"/>
-        <line num="180" count="0" type="stmt"/>
-        <line num="181" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="182" count="0" type="stmt"/>
-        <line num="183" count="0" type="stmt"/>
-        <line num="184" count="0" type="stmt"/>
-        <line num="185" count="0" type="stmt"/>
-        <line num="187" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="188" count="0" type="stmt"/>
-        <line num="191" count="0" type="stmt"/>
-        <line num="192" count="0" type="stmt"/>
-        <line num="199" count="0" type="stmt"/>
-        <line num="207" count="7" type="stmt"/>
-        <line num="208" count="0" type="stmt"/>
-        <line num="209" count="0" type="stmt"/>
-        <line num="210" count="0" type="stmt"/>
-        <line num="211" count="0" type="stmt"/>
-        <line num="215" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="216" count="0" type="stmt"/>
-        <line num="220" count="0" type="stmt"/>
-        <line num="222" count="0" type="stmt"/>
-        <line num="226" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="227" count="0" type="stmt"/>
-        <line num="228" count="0" type="stmt"/>
-        <line num="230" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="231" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="232" count="0" type="stmt"/>
-        <line num="236" count="0" type="stmt"/>
-        <line num="237" count="0" type="stmt"/>
-        <line num="238" count="0" type="stmt"/>
-        <line num="242" count="0" type="stmt"/>
-        <line num="244" count="0" type="stmt"/>
-        <line num="245" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="246" count="0" type="stmt"/>
-        <line num="248" count="0" type="stmt"/>
-        <line num="249" count="0" type="stmt"/>
-        <line num="250" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="251" count="0" type="stmt"/>
-        <line num="252" count="0" type="stmt"/>
-        <line num="253" count="0" type="stmt"/>
-        <line num="254" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="255" count="0" type="stmt"/>
-        <line num="257" count="0" type="stmt"/>
-        <line num="259" count="0" type="stmt"/>
-        <line num="260" count="0" type="stmt"/>
-        <line num="261" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="262" count="0" type="stmt"/>
-        <line num="264" count="0" type="stmt"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="123" count="1" type="stmt"/>
+        <line num="127" count="212" type="cond" truecount="2" falsecount="0"/>
+        <line num="128" count="211" type="stmt"/>
+        <line num="129" count="211" type="stmt"/>
+        <line num="131" count="1" type="stmt"/>
+        <line num="136" count="210" type="stmt"/>
+        <line num="137" count="210" type="cond" truecount="2" falsecount="0"/>
+        <line num="138" count="66" type="stmt"/>
+        <line num="140" count="144" type="stmt"/>
+        <line num="145" count="2" type="stmt"/>
       </file>
       <file name="rename.ts" path="C:\Work\Rainmaker2\Rainmaker2\src\Presentation\document-upload\src\utils\helpers\rename.ts">
-        <metrics statements="18" coveredstatements="1" conditionals="8" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="11" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
+        <metrics statements="18" coveredstatements="16" conditionals="8" coveredconditionals="6" methods="6" coveredmethods="6"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="26" count="6" type="stmt"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="28" count="6" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="36" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.image_assets">

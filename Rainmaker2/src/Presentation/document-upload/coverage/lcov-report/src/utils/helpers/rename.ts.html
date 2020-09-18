@@ -22,30 +22,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/20</span>
+                <span class='fraction'>18/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>6/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.56% </span>
+                <span class="strong">88.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/18</span>
+                <span class='fraction'>16/18</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,90 +97,87 @@
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export class Rename {
     
     static readonly counterPrefix = '-copy-' 
     
-<span class="fstat-no" title="function not covered" >    st</span>atic rename(files, file) {
+    static rename(files, file) {
 &nbsp;
+        let fileName = this.removeExt(file.clientName).toLowerCase();
+        let fileExt = this.getExt(file.file);
 &nbsp;
-        let fileName = <span class="cstat-no" title="statement not covered" >this.removeExt(file.clientName).toLowerCase();</span>
-        let fileExt = <span class="cstat-no" title="statement not covered" >this.getExt(file.file);</span>
-&nbsp;
-        let filesFiltered = <span class="cstat-no" title="statement not covered" >files.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >this.removeExt(f.clientName).includes(fileName) &amp;&amp; this.removeCounterPart(this.removeExt(f.clientName)) === fileName)</span>;</span>
+        let filesFiltered = files.filter(f =&gt; this.removeExt(f.clientName).includes(fileName) &amp;&amp; this.removeCounterPart(this.removeExt(f.clientName)) === fileName);
         
-<span class="cstat-no" title="statement not covered" >        if (filesFiltered.length) {</span>
-<span class="cstat-no" title="statement not covered" >            file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length}.${fileExt}`;</span>
-            let f = <span class="cstat-no" title="statement not covered" >files.find(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.clientName === file.clientName)</span>;</span>
-<span class="cstat-no" title="statement not covered" >            if(f) {</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (filesFiltered.length) {
+            file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length}.${fileExt}`;
+            let f = files.find(f =&gt; f.clientName === file.clientName);
+            <span class="missing-if-branch" title="if path not taken" >I</span>if(f) {
 <span class="cstat-no" title="statement not covered" >                file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length + 1}.${fileExt}`;</span>
             }
         } else {
 <span class="cstat-no" title="statement not covered" >            file.clientName = `${fileName}.${fileExt}`</span>
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return file; </span>
+        return file; 
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic removeExt(name) {
-        let dotParts = <span class="cstat-no" title="statement not covered" >name.split('.');</span>
-<span class="cstat-no" title="statement not covered" >        dotParts.pop();</span>
-<span class="cstat-no" title="statement not covered" >        return this.removeCounterPart(dotParts.join('.').toLowerCase());</span>
+    static removeExt(name) {
+        let dotParts = name.split('.');
+        dotParts.pop();
+        return this.removeCounterPart(dotParts.join('.').toLowerCase());
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic getExt(file) {
-<span class="cstat-no" title="statement not covered" >        return file.type.split('/')[1];</span>
+    static getExt(file) {
+        return file.type.split('/')[1];
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic removeCounterPart(name) {
-<span class="cstat-no" title="statement not covered" >        if (name.includes(this.counterPrefix)) {</span>
-<span class="cstat-no" title="statement not covered" >            return name.substr(0, name.search(this.counterPrefix));</span>
+    static removeCounterPart(name) {
+        if (name.includes(this.counterPrefix)) {
+            return name.substr(0, name.search(this.counterPrefix));
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return name;</span>
+        return name;
     }
 }</pre></td></tr></table></pre>
 
@@ -189,7 +186,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Sep 17 2020 18:31:19 GMT+0500 (Pakistan Standard Time)
+                at Fri Sep 18 2020 17:45:40 GMT+0500 (Pakistan Standard Time)
             </div>
         </div>
         <script src="..\..\..\prettify.js"></script>

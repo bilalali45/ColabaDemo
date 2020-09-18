@@ -98,7 +98,6 @@ export class DocumentUploadActions {
         "pending",
         f
       );
-debugger
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
 
       if (!FileUpload.isSizeAllowed(f)) {
