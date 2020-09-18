@@ -20,3 +20,4 @@ yarn.lock
 *.log
 /Rainmaker2/src/Solutions/AllProjects.sln
 coverage
+/Rainmaker2/src/Presentation/document-upload/coverage
