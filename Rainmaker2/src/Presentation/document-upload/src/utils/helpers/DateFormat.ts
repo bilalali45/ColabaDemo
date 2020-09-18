@@ -7,6 +7,6 @@ export const DateFormatWithMoment = (
   const formatString = shortFormat
     ? "MMM DD, YYYY hh:mm A"
     : "MMMM DD, YYYY hh:mm A";
-
-  return moment(date).format(formatString);
+   let res = moment(date).format(formatString);
+  return res;
 };
