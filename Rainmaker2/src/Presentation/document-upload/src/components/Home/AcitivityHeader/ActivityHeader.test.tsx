@@ -36,7 +36,7 @@ describe('Activity Header', () => {
 
     test('should render navigation links', async () => {
         const { getByTestId } = render(
-            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+            <MemoryRouter initialEntries={['/loanportal/activity/74']}>
                 <App />
             </MemoryRouter>
         );
@@ -51,7 +51,7 @@ describe('Activity Header', () => {
 
     test('should redirect to link clicked', async () => {
         const { getByTestId } = render(
-            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+            <MemoryRouter initialEntries={['/loanportal/activity/74']}>
                 <App />
             </MemoryRouter>
         );
@@ -60,6 +60,7 @@ describe('Activity Header', () => {
 
         const activityHeader = getByTestId('activity-header');
         const rightNav = getByTestId('right-nav');
+        const leftNav = getByTestId('left-nav');
 
         fireEvent.click(rightNav);
         expect(activityHeader).toHaveTextContent('Loan Center');
