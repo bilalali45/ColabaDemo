@@ -111,16 +111,16 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (count > 0)
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>
-            <i className="far fa-file text-primary"></i> <strong>{toTitleCase(name)}</strong>
+          <span className="f-normal" title={name}>
+            <i className="far fa-file text-primary"></i> <strong>{name}</strong>
           </span>
         </div>
       );
     else
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>
-            <i className="far fa-file"></i> {toTitleCase(name)}
+          <span className="f-normal" title={name}>
+            <i className="far fa-file"></i> {name}
           </span>
         </div>
       );
