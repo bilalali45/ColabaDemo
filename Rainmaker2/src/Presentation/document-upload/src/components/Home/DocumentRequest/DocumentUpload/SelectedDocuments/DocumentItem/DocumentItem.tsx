@@ -91,22 +91,26 @@ export const DocumentItem = ({
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    console.log('in here -- -----  - - - -  - - -- -- - - -- - - -', event.target.innerHTML);
+    console.log('in here -- blubn4rwrbrbbrbrrbbrbrbrrrb -----  - - - -  - - -- -- - - -- - - -', filename);
     if (nameExists === true || validFilename === false || filename === "") {
+      // console.log('================== fileName', filename);
+      // console.log('================== file', file);
+      // console.log('================== validFileName', validFilename);
+      // console.log('================== nameExists', nameExists);
       return event.preventDefault()
     }
-
+    
     toggleFocus(file, true);
 
     changeName(file, filename);
   }
 
   useEffect(() => {
-    setFilename(
-      FileUpload.removeSpecialChars(
-        FileUpload.removeDefaultExt(file.clientName)
-      )
+    let name =  FileUpload.removeSpecialChars(
+      FileUpload.removeDefaultExt(file.clientName)
     );
+    setFilename(name);
+        console.log('========================================', name)
   }, [file]);
 
   useEffect(() => {

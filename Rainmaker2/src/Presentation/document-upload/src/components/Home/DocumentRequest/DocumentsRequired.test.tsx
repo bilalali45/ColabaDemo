@@ -32,44 +32,42 @@ const createMockFile = (name, size, mimeType) => {
 }
 
 describe('Document Request File Upload', () => {
-    test('Should add a new file into list" ', async (done) => {
-        await act(async () => {
-            const { getByTestId, getAllByTestId } = render(
-                <MemoryRouter initialEntries={['/loanportal/activity/3']}>
-                    <App />
-                </MemoryRouter>
-            );
+    test('Should add a new file into list" ', async () => {
+        const { getByTestId, getAllByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
 
-            await waitForDomChange();
+        await waitForDomChange();
 
-            FileUpload.isFileAllowed = jest.fn(() => Promise.resolve(true));
-            FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
-            FileUpload.isSizeAllowed = jest.fn(() => true);
+        FileUpload.isFileAllowed = jest.fn(() => Promise.resolve(true));
+        FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
+        FileUpload.isSizeAllowed = jest.fn(() => true);
 
-            const getStartedBtn = getByTestId('get-started');
+        const getStartedBtn = getByTestId('get-started');
 
-            fireEvent.click(getStartedBtn);
+        fireEvent.click(getStartedBtn);
 
-            const input = getByTestId('file-input');
-                
-            const file = createMockFile('test.jpg', 30000, 'image/jpeg');
+        const input = getByTestId('file-input');
+        const file = createMockFile('test.jpg', 30000, 'image/jpeg');
+
+        await waitFor(() => {
             fireEvent.change(input, { target: { files: [file] } });
-            await waitForDomChange();
-
-            const renameInput: any = getByTestId('file-item-rename-input');
-            fireEvent.blur(renameInput);
-            const files = getAllByTestId('file-item');
-            expect(files).toHaveLength(2);
-            // expect(renameInput).not.toBeInTheDocument();
-
-
-            expect(files[1]).toHaveTextContent('test.jpeg');
-
-
-            done();
         })
 
 
+        const renameInput: any = getByTestId('file-item-rename-input');
+        fireEvent.blur(renameInput);
+        expect(renameInput).not.toBeInTheDocument();
+        const files = getAllByTestId('file-item');
+        await waitFor(() => {
+
+            expect(files).toHaveLength(2);
+            console.log(files[1].innerHTML);
+            expect(files[1]).toHaveTextContent('test.jpeg');
+
+        })
     });
 
 

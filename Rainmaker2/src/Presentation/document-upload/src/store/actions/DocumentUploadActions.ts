@@ -122,7 +122,7 @@ export class DocumentUploadActions {
       }
       counter++;
     }
-    console.log(allSelectedFiles);
+    // console.log(allSelectedFiles);
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
       payload: allSelectedFiles,

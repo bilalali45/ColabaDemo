@@ -70,6 +70,8 @@ export const DocumentUpload = () => {
   };
 
   const filesChange = (e: any) =>  {
+    console.log('changed called again again againagain');
+    setFilesInInput([]);
     setFilesInInput(e.target.files);
   }
 

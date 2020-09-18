@@ -143,12 +143,14 @@ export const SelectedDocuments = ({
   };
 
   const fileAlreadyExists = (file, newName) => {
+    
     var alreadyExist = selectedFiles.find(
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
         newName.toLowerCase()
     );
+    console.log('already exists', alreadyExist)
     if (alreadyExist) {
       return true;
     }
@@ -176,6 +178,10 @@ export const SelectedDocuments = ({
     focus: boolean,
     shouldMoveFocus?: boolean
   ) => {
+
+    console.log('in here -- ---++++++++++++++++++++++++++++++++++++++=--  - - - -  - - -- -- - - -- - - -', file);
+
+
     let nextInd = 0;
     let updatedFiles = selectedFiles.map((f: Document, i: number) => {
       if (file.file && f.clientName === file.clientName) {
@@ -191,7 +197,6 @@ export const SelectedDocuments = ({
       }
       return f;
     });
-    console.log('in here -- -----  - - - -  - - -- -- - - -- - - -', updatedFiles[1]);
 
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
