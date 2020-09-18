@@ -16,7 +16,8 @@ node_modules
 TestResults
 build
 dist
+coverage
 yarn.lock
 *.log
 /Rainmaker2/src/Solutions/AllProjects.sln
-coverage
+
