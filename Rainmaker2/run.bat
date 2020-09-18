@@ -48,5 +48,8 @@ start Notification.API.exe
 cd %workingDir%\src\MicroServices\Rainmaker\Rainmaker.API\bin\Debug\netcoreapp3.1\
 start Rainmaker.API.exe
 
-timeout 1
+cd %workingDir%\src\MicroServices\ByteWebConnector\ByteWebConnector.SDK\bin\Debug\net472\
+start ByteWebConnector.SDK.exe --urls="http://localhost:5070"
+
+timeout 3
 
