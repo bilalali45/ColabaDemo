@@ -153,8 +153,6 @@ namespace ByteWebConnector.API.Controllers
                 FileDataResponse fileData = GetFileData(ByteSession,
                                                 loanApplication.ByteLoanNumber);
                 documentUploadModel.FileName = fileData.FileName;
-                //var documentResponse = SendDocumentToByte(documentUploadRequest: documentUploadModel,
-                //                                          session: ByteSession);
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadModel).ResponseObject;
 
