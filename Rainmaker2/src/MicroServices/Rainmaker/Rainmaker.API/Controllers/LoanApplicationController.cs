@@ -296,5 +296,31 @@ namespace Rainmaker.API.Controllers
                 throw new RainMakerException("Activity not found for Support email");
             }
         }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("[action]")]
+        public async Task<string> GetBanner(int loanApplicationId)
+        {
+            string photo = await loanApplicationService.GetBanner(loanApplicationId);
+            var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder) + "/" + photo;
+            Stream imageData = await ftp.DownloadStream(remoteFilePath);
+            using MemoryStream ms = new MemoryStream();
+            await imageData.CopyToAsync(ms);
+            imageData.Close();
+            return Convert.ToBase64String(ms.ToArray());
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("[action]")]
+        public async Task<string> GetFavIcon(int loanApplicationId)
+        {
+            string photo = await loanApplicationService.GetFavIcon(loanApplicationId);
+            var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder) + "/" + photo;
+            Stream imageData = await ftp.DownloadStream(remoteFilePath);
+            using MemoryStream ms = new MemoryStream();
+            await imageData.CopyToAsync(ms);
+            imageData.Close();
+            return Convert.ToBase64String(ms.ToArray());
+        }
     }
 }
