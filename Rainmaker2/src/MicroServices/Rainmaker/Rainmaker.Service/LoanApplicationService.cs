@@ -398,5 +398,17 @@ namespace Rainmaker.Service
             await Uow.SaveChangesAsync();
             
         }
+
+        public async Task<string> GetBanner(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.BusinessUnit)
+                .Select(x => x.BusinessUnit.Banner).FirstAsync();
+        }
+
+        public async Task<string> GetFavIcon(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.BusinessUnit)
+                .Select(x => x.BusinessUnit.FavIcon).FirstAsync();
+        }
     }
 }
