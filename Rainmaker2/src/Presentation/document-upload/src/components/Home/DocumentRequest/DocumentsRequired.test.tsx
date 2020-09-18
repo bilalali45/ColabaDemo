@@ -51,15 +51,16 @@ describe('Document Request File Upload', () => {
 
         const input = getByTestId('file-input');
         const file = createMockFile('test.jpg', 30000, 'image/jpeg');
+        
+        fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {
-            fireEvent.change(input, { target: { files: [file] } });
+            const renameInput: any = getByTestId('file-item-rename-input');
+            fireEvent.blur(renameInput);
+            expect(renameInput).not.toBeInTheDocument();
         })
 
 
-        const renameInput: any = getByTestId('file-item-rename-input');
-        fireEvent.blur(renameInput);
-        expect(renameInput).not.toBeInTheDocument();
         const files = getAllByTestId('file-item');
         await waitFor(() => {
 

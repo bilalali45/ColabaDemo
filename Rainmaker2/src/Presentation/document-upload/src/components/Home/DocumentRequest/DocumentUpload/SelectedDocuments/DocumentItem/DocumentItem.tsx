@@ -155,6 +155,7 @@ export const DocumentItem = ({
           <ul className="editable-actions">
             <li>
               <button
+                data-testid="name-save-btn"
                 onClick={(e) => {
                   if (nameExists === true || validFilename === false || filename === "") {
                     return e.preventDefault()
