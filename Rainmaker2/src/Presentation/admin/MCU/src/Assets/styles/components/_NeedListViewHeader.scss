@@ -22,9 +22,17 @@
             font: 500 13px/1.2 fontFamily("base");
             vertical-align: middle;
             margin-bottom: 0;
-            color: color('primary');
+            
             strong{
                 font-weight: 500;
+            }
+
+            &.switch {
+                .slider {
+                    &::before{
+                        background-color: color('primary');
+                    }
+                }
             }
         }
     }
