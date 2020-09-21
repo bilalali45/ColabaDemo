@@ -74,6 +74,10 @@ export class LocalDB {
     );
   }
 
+  static getPortalReferralUrl(): string | null {
+    return localStorage.getItem('PortalReferralUrl');
+  }
+
   static setPortalReferralUrl(portalReferralUrl: string): void {
     localStorage.setItem('PortalReferralUrl', portalReferralUrl);
   }

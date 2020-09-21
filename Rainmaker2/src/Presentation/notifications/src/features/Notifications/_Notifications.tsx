@@ -63,7 +63,10 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
       console.warn(error);
     }
 
-    LocalDB.setPortalReferralUrl(window.location.href)
+    if(!LocalDB.getPortalReferralUrl() || LocalDB.getPortalReferralUrl() != window.location.href){
+      LocalDB.setPortalReferralUrl(window.location.href)
+    }
+    
     window.open(link, '_self');
   });
 
