@@ -75,7 +75,7 @@ export class LaonActions {
     }
 
     static async getFooter(loanApplicationId: string) {
-
+        return Promise.resolve('Copyright 2002 – 2020. All rights reserved. American Heritage Capital, LP. NMLS 277676')
     }
 
     static async getLoanProgressStatus(loanApplicationId: string) {
