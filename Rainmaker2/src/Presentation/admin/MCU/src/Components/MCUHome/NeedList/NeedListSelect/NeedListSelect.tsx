@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, ChangeEvent, useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Template } from "../../../../Entities/Models/Template";
-import { MyTemplate, TenantTemplate } from "../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer";
+import { MyTemplate, TenantTemplate, SystemTemplate } from "../../TemplateManager/TemplateHome/TemplateListContainer/TemplateListContainer";
 import { Link, useLocation } from "react-router-dom";
 import { TemplateDocument } from "../../../../Entities/Models/TemplateDocument";
 import { Store } from "../../../../Store/Store";
@@ -170,7 +170,7 @@ export const NeedListSelect = ({
         <ul className="checklist" ref={tenantTemplateContainerRef}>
           {
             templateList?.map((t: Template) => {
-              if (t?.type === TenantTemplate) {
+              if (t?.type === TenantTemplate || t?.type === SystemTemplate) {
                 return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs, t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
@@ -227,7 +227,7 @@ export const NeedListSelect = ({
             
             <h2>Select a need list Template</h2>
             {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
-            {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
+            {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate || t.type === SystemTemplate))}
             <div className="external-link">
               {StartListButton()}
             </div>
