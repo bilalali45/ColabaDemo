@@ -50,7 +50,7 @@ export const NeedListSelect = ({
   const [docs, setDocs] = useState<any[]>([]);
   const [templateName, setTemplateName] = useState<string>("");
 
-  const displayPopover = (event: any, docs: any[],name:string) => {
+  const displayPopover = (event: any, docs: any[], name: string) => {
     console.log(event.target, "apex");
     setTemplateName(name)
     setDocs(docs)
@@ -112,14 +112,14 @@ export const NeedListSelect = ({
 
     return (
       <>
-        <div ref={ref}>
+        <div>
           <h3>My Templates</h3>
 
           <ul className="checklist" ref={myTemplateContainerRef}>
             {
               templateList?.map((t: Template) => {
                 if (t?.type === MyTemplate) {
-                  return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis">
+                  return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs, t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis">
 
                     <input autoFocus checked={idArray.includes(t?.id)} onChange={(e) => {
                       updateIdsList(e, t?.id);
@@ -132,33 +132,36 @@ export const NeedListSelect = ({
 
 
           </ul>
-          <Overlay
-            show={showPopover}
-            target={target}
-            placement="right"
-            container={ref.current}
-          >
-            <Popover id="popover-contained" className="addneedlist-popover">
-          <Popover.Title as="h3" class="addneedlist-popover-title">{templateName}</Popover.Title>
-              <Popover.Content>
-
-                {docs.map((d: any) => {
-                  return (
-                    <span className="addneedlist-popover--list">{d.docName}</span>
-                  )
-
-                })
-
-                }
-
-              </Popover.Content>
-            </Popover>
-          </Overlay>
+          {renderDocsPopover()}
         </div>
       </>
     );
   };
+  const renderDocsPopover = () => {
+ return ( <Overlay
+  show={showPopover}
+  target={target}
+  placement="right"
+  container={ref.current}
+>
+  <Popover id="popover-contained" className="addneedlist-popover">
+<Popover.Title as="h3" class="addneedlist-popover-title">{templateName}</Popover.Title>
+    <Popover.Content>
 
+      {docs.map((d: any) => {
+        return (
+          <span className="addneedlist-popover--list">{d.docName}</span>
+        )
+
+      })
+
+      }
+
+    </Popover.Content>
+  </Popover>
+</Overlay>
+)
+}
   const TemplatesByTenant = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
     return (
@@ -168,13 +171,14 @@ export const NeedListSelect = ({
           {
             templateList?.map((t: Template) => {
               if (t?.type === TenantTemplate) {
-                return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs,t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
+                return <li key={t?.id} onMouseEnter={(e) => { displayPopover(e, t.docs, t.name) }} onMouseOut={(e) => { hidePopover(e) }}><label className="text-ellipsis"><input checked={idArray.includes(t?.id)} onChange={(e) => {
                   updateIdsList(e, t.id);
                 }} id={t.id} type="checkbox" /> {t.name}</label></li>
               }
             })
           }
         </ul>
+        {renderDocsPopover()}
       </>
     );
   }
@@ -208,6 +212,7 @@ export const NeedListSelect = ({
   const displayAddButton = () => {
     return (
       <>
+
         <Dropdown onToggle={() => setShow(!show)} show={show}>
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
@@ -218,15 +223,18 @@ export const NeedListSelect = ({
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 
-          <Dropdown.Menu className="padding" show={show}>
+          <Dropdown.Menu className="padding" show={show} ref={ref}>
+            
             <h2>Select a need list Template</h2>
             {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
             {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
             <div className="external-link">
               {StartListButton()}
             </div>
+            
           </Dropdown.Menu>
         </Dropdown>
+        
       </>
     )
   }
