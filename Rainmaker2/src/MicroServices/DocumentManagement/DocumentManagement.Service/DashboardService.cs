@@ -220,23 +220,7 @@ namespace DocumentManagement.Service
                     }
                 }
             }
-            IMongoCollection<Entity.LoanApplication> collection1 = mongoService.db.GetCollection<Entity.LoanApplication>("Request");
-            using var asyncCursor1 = await collection1.FindAsync(new BsonDocument() {
-                {"loanApplicationId",loanApplicationId },
-                {"tenantId",tenantId },
-                {"userId",userProfileId }
-            }, new FindOptions<Entity.LoanApplication, BsonDocument>()
-            {
-                Projection = new BsonDocument() { {"status", 1 }
-            }
-            });
-            if (await asyncCursor1.MoveNextAsync() && asyncCursor1.Current?.Count() > 0)
-            {
-                string status = asyncCursor1.Current.First()["status"].ToString();
-                statuses.First(x => x.id == status).isCurrentStep = true;
-            }
-            else
-                statuses.First(x => x.order == 2).isCurrentStep = true;
+            statuses.First(x => x.order == 3).isCurrentStep = true;
             return statuses.OrderBy(x => x.order).ToList();
         }
 
