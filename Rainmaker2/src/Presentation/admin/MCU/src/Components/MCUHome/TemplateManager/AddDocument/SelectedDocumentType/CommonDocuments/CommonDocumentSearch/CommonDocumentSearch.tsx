@@ -5,7 +5,7 @@ export const CommonDocumentSearch = () => {
     return (
         <div>
             <div className="s-wrap">
-                <input type="name" placeholder="Enter follow up name..." />
+                <input type="name" placeholder="Enter document name…" />
             </div>
             <CommonDocumentSearchResults />
         </div>

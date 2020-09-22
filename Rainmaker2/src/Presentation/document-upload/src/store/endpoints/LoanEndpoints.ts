@@ -11,6 +11,9 @@ export class LoanEndpoints {
     loanProgressStatus: (loanApplicationId: string) =>
       `/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=${loanApplicationId}`,
     getFooter: (loanApplicationId: string) => `/api/Documentmanagement/dashboard/GetFooterText?loanApplicationId=${loanApplicationId}`,
+    getCompanyLogoSrc: (loanApplicationId: string) => `/api/Rainmaker/LoanApplication/GetBanner?loanApplicationId=${loanApplicationId}`,
+    getCompanyFavIconSrc: (loanApplicationId: string) => `/api/Rainmaker/LoanApplication/GetFavIcon?loanApplicationId=${loanApplicationId}`
+  
   };
 
   static POST = {};

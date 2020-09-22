@@ -50,12 +50,17 @@
             margin-top: 0;
             margin-bottom: 5px;
             span{
-                max-width: 490px;
+                max-width: 100%;
                 display: inline-block;
                 vertical-align: middle;
                 padding-right: 5px;
                 @include media-breakpoint-down(lg) {
                     max-width: 100%;
+                }
+                &.d-title-head {
+                    @include media-breakpoint-down(lg) {
+                        font-size: fontSize("xmd") - 2;
+                    }
                 }
 
             }
