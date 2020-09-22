@@ -134,7 +134,7 @@ export const NeedListSelect = ({
                     onMouseEnter={(e) => {
                       displayPopover(e, t.docs, t.name);
                     }}
-                    onMouseOut={(e) => {
+                    onMouseLeave={(e) => {
                       hidePopover(e);
                     }}
                   >
@@ -203,7 +203,7 @@ export const NeedListSelect = ({
                   onMouseEnter={(e) => {
                     displayPopover(e, t.docs, t.name);
                   }}
-                  onMouseOut={(e) => {
+                  onMouseLeave={(e) => {
                     hidePopover(e);
                   }}
                 >
