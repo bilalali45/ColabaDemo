@@ -150,7 +150,6 @@ export const SelectedDocuments = ({
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
         newName.toLowerCase()
     );
-    console.log('already exists', alreadyExist)
     if (alreadyExist) {
       return true;
     }
@@ -178,9 +177,6 @@ export const SelectedDocuments = ({
     focus: boolean,
     shouldMoveFocus?: boolean
   ) => {
-
-    console.log('in here -- ---++++++++++++++++++++++++++++++++++++++=--  - - - -  - - -- -- - - -- - - -', file);
-
 
     let nextInd = 0;
     let updatedFiles = selectedFiles.map((f: Document, i: number) => {

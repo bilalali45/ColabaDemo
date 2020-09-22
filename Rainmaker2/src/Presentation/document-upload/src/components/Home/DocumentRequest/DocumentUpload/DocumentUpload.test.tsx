@@ -7,12 +7,21 @@ import { MockEnvConfig } from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import App from '../../../../App';
 import { FileUpload } from '../../../../utils/helpers/FileUpload';
+// import { DocumentUploadActions } from '../../../../store/actions/__mocks__/DocumentUploadActions';
+import { DocumentRequest } from '../../../../entities/Models/DocumentRequest';
+import { Document } from '../../../../entities/Models/Document';
+import { DocumentsActionType } from '../../../../store/reducers/documentReducer';
+import { DocumentUploadActions } from '../../../../store/actions/DocumentUploadActions';
 
 jest.mock('axios');
 jest.mock('../../../../store/actions/UserActions');
 jest.mock('../../../../store/actions/LoanActions');
 jest.mock('../../../../store/actions/DocumentActions');
+// jest.mock('../../../../store/actions/DocumentUploadActions');
 jest.mock('../../../../services/auth/Auth');
+
+
+let uploadPercent = 0;
 
 beforeEach(() => {
 
@@ -25,9 +34,31 @@ beforeEach(() => {
     MockEnvConfig();
     MockLocalStorage();
 
-    FileUpload.isFileAllowed = jest.fn(() => Promise.resolve(true));
     FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
     FileUpload.isSizeAllowed = jest.fn(() => true);
+
+     const submitDocuments = (currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string) => {
+
+        let p = Math.floor(uploadPercent * 100);
+        let files: any = currentSelected.files;
+        let updatedFiles = files.map((f: Document) => {
+          if (f.clientName === file.clientName) {
+            f.uploadProgress = p;
+            if (p === 100) {
+              f.uploadStatus = "done";
+            }
+            return f;
+          }
+          return f;
+        });
+        dispatchProgress({
+          type: DocumentsActionType.AddFileToDoc,
+          payload: updatedFiles,
+        });
+    
+      }
+    
+      DocumentUploadActions.submitDocuments = jest.fn((a,b,c,d) =>Promise.resolve(submitDocuments(a,b,c,d)))
 });
 
 const createMockFile = (name, size, mimeType) => {
@@ -271,7 +302,7 @@ describe('Document Request File Upload', () => {
             expect(submitBtn).toBeEnabled();
             expect(saveBtn).not.toBeInTheDocument();
         })
-        
+
         fireEvent.doubleClick(fileContainer);
         await waitFor(() => {
             renameInput = getByTestId('file-item-rename-input');
@@ -282,25 +313,24 @@ describe('Document Request File Upload', () => {
 
     });
 
-    test('Should upload files on submit click" ', async () => {
+    test('Should start uploading files and show progress for each file on submit click" ', async () => {
+
         const { getByTestId, getAllByTestId } = render(
             <MemoryRouter initialEntries={['/loanportal/activity/3']}>
                 <App />
             </MemoryRouter>
         );
 
-        console.log('in here  you where --------------------------- --------------- ', window.location.pathname);
-        
+        uploadPercent = 0.8;
         await waitFor(() => {
             const getStartedBtn = getByTestId('get-started');
-            console.log('in here  you where --------------------------- --------------- ', window.location.pathname);
             fireEvent.click(getStartedBtn);
         })
-        
+
         const input = getByTestId('file-input');
         const file = createMockFile('sample.pdf', 110000, 'application/pdf');
         fireEvent.change(input, { target: { files: [file] } });
-        
+
         await waitFor(() => {
             const saveBtn: any = getByTestId('name-save-btn');
             fireEvent.click(saveBtn);
@@ -309,10 +339,56 @@ describe('Document Request File Upload', () => {
 
         const files = getAllByTestId('file-item');
         const submitBtn = getByTestId('submit-button');
+
         fireEvent.click(submitBtn);
+
         await waitFor(() => {
-            expect(files).toHaveLength(2);
+            const progressBar: any = getByTestId('upload-progress-bar');
+            expect(progressBar).toHaveStyle("width: 80%");
+            const delBtn: any = getByTestId('file-remove-btn-1');
+            expect(delBtn).toBeInTheDocument();
         })
+
+    });
+
+    test('Should upload files on submit click" ', async () => {
+        
+        uploadPercent = 1;
+
+        const { getByTestId, getAllByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+
+        await waitFor(() => {
+            const getStartedBtn = getByTestId('get-started');
+            fireEvent.click(getStartedBtn);
+        })
+
+        const input = getByTestId('file-input');
+        const file = createMockFile('sample.pdf', 110000, 'application/pdf');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            const saveBtn: any = getByTestId('name-save-btn');
+            fireEvent.click(saveBtn);
+            expect(saveBtn).not.toBeInTheDocument();
+        })
+
+        const files = getAllByTestId('file-item');
+
+        const submitBtn = getByTestId('submit-button');
+        fireEvent.click(submitBtn);
+
+        expect(files).toHaveLength(2);
+
+        let allDoneIcons = getAllByTestId('done-upload');
+        await waitFor(() => {
+            expect(allDoneIcons[1]).toContainHTML('<i class="zmdi zmdi-check"></i>')
+
+        });
 
     });
 

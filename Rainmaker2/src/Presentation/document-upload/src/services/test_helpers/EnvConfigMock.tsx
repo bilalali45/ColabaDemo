@@ -4,5 +4,4 @@ export const MockEnvConfig = () => {
     IDLE_TIMER: "10", // Must be in minutes
   };
   Object.defineProperty(window, "envConfig", { value: envConfig });
-  console.log("================================= window", window);
 };

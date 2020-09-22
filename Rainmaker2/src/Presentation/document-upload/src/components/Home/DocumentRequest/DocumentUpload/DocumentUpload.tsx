@@ -36,7 +36,6 @@ export const DocumentUpload = () => {
   useEffect(() => {
 
     if (filesInInput?.length) {
-      console.log('in hereyou know', filesInInput[0].name, filesInInput[0].type);
       let updatedFiles = selectedfiles?.filter((sf) => sf !== toRemoveFile);
       DocumentUploadActions.updateFiles(
         filesInInput,
@@ -70,7 +69,6 @@ export const DocumentUpload = () => {
   };
 
   const filesChange = (e: any) =>  {
-    console.log('changed called again again againagain');
     setFilesInInput([]);
     setFilesInInput(e.target.files);
   }
