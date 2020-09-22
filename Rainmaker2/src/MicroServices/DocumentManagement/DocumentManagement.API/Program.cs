@@ -1,13 +1,13 @@
-using System;
-using System.Net;
-using System.Reflection;
-using System.Threading;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
+using System;
+using System.Net;
+using System.Reflection;
+using System.Threading;
 
 namespace DocumentManagement.API
 {
@@ -22,21 +22,26 @@ namespace DocumentManagement.API
                                      completionPortThreads: 1000);
             ThreadPool.SetMinThreads(workerThreads: 1000,
                                      completionPortThreads: 1000);
-            ConfigureLogging();
+            ConfigureLogging(args);
             CreateHost(args: args);
         }
 
 
-        private static void ConfigureLogging()
+        private static void ConfigureLogging(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT");
+            var environment = string.Empty;
+            foreach (var arg in args)
+            {
+                if (arg.Contains("--environment="))
+                {
+                    environment = arg.Replace("--environment=", "");
+                    break;
+                }
+            }
             var configuration = new ConfigurationBuilder()
                                 .AddJsonFile(path: "appsettings.json",
                                              optional: false,
                                              reloadOnChange: true)
-                                .AddJsonFile(
-                                             path: $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                             optional: true)
                                 .Build();
             Log.Logger = new LoggerConfiguration()
                          .Enrich.WithCorrelationIdHeader(headerKey: "CorrelationId")
@@ -99,9 +104,6 @@ namespace DocumentManagement.API
                            configuration.AddJsonFile(path: "appsettings.json",
                                                      optional: false,
                                                      reloadOnChange: true);
-                           configuration.AddJsonFile(
-                                                     path: $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                                     optional: true);
                        })
                        .UseSerilog();
         }

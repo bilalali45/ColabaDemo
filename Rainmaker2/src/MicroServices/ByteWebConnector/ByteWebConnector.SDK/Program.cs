@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace ByteWebConnector.SDK
@@ -14,23 +17,31 @@ namespace ByteWebConnector.SDK
     {
         public static void Main(string[] args)
         {
+            var isService = !(Debugger.IsAttached || args.Contains("--console"));
+#if DEBUG
+            isService = false;
+#endif
             Environment.CurrentDirectory = AppContext.BaseDirectory;
-            ConfigureLogging();
-            CreateHost(args: args);
+            ConfigureLogging(args);
+            CreateHost(args: args,isService);
         }
 
 
-        private static void ConfigureLogging()
+        private static void ConfigureLogging(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT");
+            var environment = string.Empty;
+            foreach (var arg in args)
+            {
+                if (arg.Contains("--environment="))
+                {
+                    environment = arg.Replace("--environment=", "");
+                    break;
+                }
+            }
             var configuration = new ConfigurationBuilder()
                                 .AddJsonFile(path: "appsettings.json",
                                              optional: false,
                                              reloadOnChange: true)
-                                .AddJsonFile(
-                                             path:
-                                             $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                             optional: true)
                                 .Build();
             Log.Logger = new LoggerConfiguration()
                          .Enrich.WithCorrelationIdHeader(headerKey: "CorrelationId")
@@ -68,11 +79,19 @@ namespace ByteWebConnector.SDK
                 };
         }
 
-        private static void CreateHost(string[] args)
+        private static void CreateHost(string[] args, bool isService)
         {
             try
             {
-                CreateWebHostBuilder(args: args).Build().Run();
+                IWebHost host = CreateWebHostBuilder(args: args).Build();
+                if (isService)
+                {
+                    host.RunAsService();
+                }
+                else
+                {
+                    host.Run();
+                }
             }
             catch (Exception ex)
             {
@@ -90,10 +109,6 @@ namespace ByteWebConnector.SDK
                     configuration.AddJsonFile(path: "appsettings.json",
                                               optional: false,
                                               reloadOnChange: true);
-                    configuration.AddJsonFile(
-                                              path:
-                                              $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                              optional: true);
                     configuration.AddJsonFile(path: Path.Combine(path1: "Configuration",
                                                                  path2: "serviceDiscovery.json"),
                                               optional: true,
