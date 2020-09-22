@@ -45,10 +45,10 @@ export class FileUpload {
   };
 
   static allowedFileTypes = [
-    FileUpload.PNG.type,
-    FileUpload.JPEG.type,
-    FileUpload.JPG.type,
-    FileUpload.PDF.type,
+    FileUpload?.PNG.type,
+    FileUpload?.JPEG.type,
+    FileUpload?.JPG.type,
+    FileUpload?.PDF.type,
   ];
 
   static allowedExtensions = FileUpload.allowedFileTypes.join(",");
@@ -128,10 +128,10 @@ export class FileUpload {
 
   static getExtension(file, splitBy) {
     if (splitBy === "dot") {
-      let splitData = file.clientName.split(".");
-      return splitData[splitData.length - 1];
+      let splitData = file?.clientName?.split(".");
+      return splitData[splitData?.length - 1];
     } else {
-      return file?.type.split("/")[1];
+      return file?.type?.split("/")[1];
     }
   }
 

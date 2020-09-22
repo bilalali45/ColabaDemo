@@ -9,7 +9,10 @@ import { Authorized } from "../../shared/Components/Authorized/Authorized";
 import { ParamsService } from "../../utils/ParamsService";
 
 export class Home extends Component<any> {
+  
   componentDidMount() {
+    console.log('in here -------------------------------- -  sdfs homemememem         - ')
+
     this.setParams(this.props);
   }
 

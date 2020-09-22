@@ -41,6 +41,7 @@ export const DocumentDropBox = ({
               Drop it here or <span>upload</span>
             </label>
             <input
+              data-testid="file-input"
               ref={inputRef}
               type="file"
               name="file"

@@ -11,48 +11,15 @@ import { Rename } from "../../utils/helpers/rename";
 const http = new Http();
 
 export class DocumentUploadActions {
-  static async submitDocuments(
+  
+    static async submitDocuments(
     currentSelected: DocumentRequest,
     file: Document,
     dispatchProgress: Function,
     loanApplicationId: string
   ) {
     try {
-      await http.fetch(
-        {
-          method: http.methods.POST,
-          url: http.createUrl(
-            http.baseUrl,
-            Endpoints.documents.POST.submitDocuments()
-          ),
-          cancelToken: file.uploadReqCancelToken.token,
-          data: DocumentUploadActions.prepareFormData(currentSelected, file),
-          onUploadProgress: (e) => {
-            let p = Math.floor((e.loaded / e.total) * 100);
-            let files: any = currentSelected.files;
-            let updatedFiles = files.map((f: Document) => {
-              if (f.clientName === file.clientName) {
-                f.uploadProgress = p;
-                if (p === 100) {
-                  f.uploadStatus = "done";
-                }
-                return f;
-              }
-              return f;
-            });
-            dispatchProgress({
-              type: DocumentsActionType.AddFileToDoc,
-              payload: updatedFiles,
-            });
-          },
-        },
-        {
-          Authorization: `Bearer ${Auth.getAuth()}`,
-        }
-      );
-    } catch (error) {
-      console.log("-------------->Upload errors------------>", error);
-    }
+     
   }
 
   static prepareFormData(currentSelected: DocumentRequest, file: Document) {
@@ -98,6 +65,7 @@ export class DocumentUploadActions {
         "pending",
         f
       );
+
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
 
       if (!FileUpload.isSizeAllowed(f)) {

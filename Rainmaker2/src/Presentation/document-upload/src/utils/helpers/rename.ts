@@ -29,7 +29,7 @@ export class Rename {
     }
 
     static getExt(file) {
-        return file.type.split('/')[1];
+        return file?.type?.split('/')[1];
     }
 
     static removeCounterPart(name) {

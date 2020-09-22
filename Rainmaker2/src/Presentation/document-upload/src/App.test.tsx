@@ -1,35 +1,19 @@
-import React from 'react';
-import { render, waitFor, waitForDomChange, waitForElement, waitForElementToBeRemoved, wait } from '@testing-library/react';
-import App from './App';
-import { MockLocalStorage } from './test_utilities/LocalStoreMock';
-import { MockEnvConfig } from './test_utilities/EnvConfigMock';
-import { MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history'
-import { FormatAmountByCountry } from 'rainsoft-js';
-
-jest.mock('axios');
-jest.mock('./store/actions/UserActions');
-jest.mock('./store/actions/LoanActions');
-jest.mock('./store/actions/DocumentActions');
-jest.mock('./services/auth/Auth');
-
-beforeEach(() => {
-  MockEnvConfig();
-  MockLocalStorage();
-});
-
-test('Should render borrower name in the header', async () => {
-  const { getByText } = render(
-    <MemoryRouter initialEntries={['/loanportal/3']}>
-      <App />
-    </MemoryRouter>
-  );
-  // const history = createMemoryHistory()
-  await waitForDomChange();
-  const header = getByText('Hello, John Doe');
-
-  expect(header).toBeInTheDocument();
-
+import React from "react";
+import { render } from "@testing-library/react";
+import App from "./App";
+import { BeforeStartConfiguration } from "./services/test_helpers/BeforeStart";
+import { FormatAmountByCountry } from "rainsoft-js";
+debugger;
+test("renders learn react link", () => {
+  debugger;
+  beforeEach(() => {
+    console.log("=======================window", window);
+    BeforeStartConfiguration();
+  });
+  console.log("=======================window", window);
+  const { getByText } = render(<App />);
+  const linkElement = getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
 });
 
 test('Should convert a number into US currency seperated by comma', async () => {
