@@ -48,6 +48,7 @@ describe('Loan Progress', () => {
 
         expect(stepIcons[0].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
         expect(stepIcons[1].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
+        // expect(stepIcons[2].innerHTML).toBe('<i class="zmdi zmdi-male-alt"></i>');
         expect(stepIcons[2].innerHTML).toBe('<i class="zmdi zmdi-check"></i>');
     });
 

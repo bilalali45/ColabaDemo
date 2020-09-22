@@ -86,6 +86,10 @@ export class LocalDB {
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;
       }
+      if (decodeCacheToken.exp > decodeAuth.exp) {
+        console.log('Cache token is going to validate');
+        return false;
+      }
     }
 
     const payload = this.getUserPayload();

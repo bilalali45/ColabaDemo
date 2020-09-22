@@ -50,7 +50,7 @@ export const ContactUs = () => {
     return <Loader containerHeight={"153px"} />;
   }
   const ContactAvatar = () => (
-    <img src={`data:image/jpeg;base64,${LOImage?.src}`} />
+    <img alt="contact us user image" src={`data:image/jpeg;base64,${LOImage?.src}` } />
   );
 
   return (

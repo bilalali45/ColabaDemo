@@ -185,6 +185,163 @@ const seedData = [
     },
 ]
 
+const uploadedDocsMock = [
+    {
+        "id": "5f5b6c1a6a7e982768be410c",
+        "requestId": "5f5b6c1a6a7e982768be410d",
+        "docId": "5f5b6c1a6a7e982768be4122",
+        "docName": "Rental Agreement",
+        "docMessage": "Lease or rental agreement",
+        "isRejected": false,
+        "files": [
+            {
+                "id": "5f5b6d006a7e982768be413b",
+                "clientName": "4 - copy.png",
+                "fileUploadedOn": "2020-09-11T12:26:40.041Z",
+                "size": 56790,
+                "order": 0
+            },
+            {
+                "id": "5f5b6d006a7e982768be413e",
+                "clientName": "images.jpeg",
+                "fileUploadedOn": "2020-09-11T12:26:40.964Z",
+                "size": 7825,
+                "order": 0
+            }
+        ]
+    },
+    {
+        "id": "5f5b6c1a6a7e982768be410c",
+        "requestId": "5f5b6c1a6a7e982768be410d",
+        "docId": "5f5b6c1a6a7e982768be412a",
+        "docName": "W-2s - Last Two years",
+        "docMessage": "Most recent and prior year W-2 forms from all applicants in the workforce",
+        "isRejected": false,
+        "files": [
+            {
+                "id": "5f61bd4a58033e4040a3848d",
+                "clientName": "payslip-02 -  .png",
+                "fileUploadedOn": "2020-09-16T07:22:50.804Z",
+                "size": 19785,
+                "order": 0
+            }
+        ]
+    },
+    {
+        "id": "5f5b6c1a6a7e982768be410c",
+        "requestId": "5f5b6c1a6a7e982768be410d",
+        "docId": "5f5b6c1a6a7e982768be4126",
+        "docName": "Tax Returns with Schedules (Business - Two Years)",
+        "docMessage": "Most recent two years business tax returns filed with the IRS",
+        "isRejected": false,
+        "files": [
+            {
+                "id": "5f5b6d0c6a7e982768be4141",
+                "clientName": "3 - copy.png",
+                "fileUploadedOn": "2020-09-11T12:26:52.951Z",
+                "size": 70400,
+                "order": 0
+            },
+            
+            {
+                "id": "5f5b6d116a7e982768be4146",
+                "clientName": "7mb.pdf",
+                "fileUploadedOn": "2020-09-11T12:26:57.138Z",
+                "size": 7475073,
+                "order": 0
+            },
+            {
+                "id": "5f5b6d126a7e982768be4148",
+                "clientName": "index.jpeg",
+                "fileUploadedOn": "2020-09-11T12:26:58.012Z",
+                "size": 11070,
+                "order": 0
+            }
+        ]
+    },
+    {
+        "id": "5f5b6c1a6a7e982768be410c",
+        "requestId": "5f60b2e658033e4040a383d1",
+        "docId": "5f60b2e658033e4040a383d2",
+        "docName": "Bank Statements - Two Months",
+        "docMessage": "Checking & Savings account statements - most recent two months or most recent quarter",
+        "isRejected": false,
+        "files": [
+            {
+                "id": "5f60ae6258033e4040a383bc",
+                "clientName": "3 - copy.png",
+                "fileUploadedOn": "2020-09-15T12:06:58.441Z",
+                "size": 70400,
+                "order": 0
+            },
+            {
+                "id": "5f60ae6358033e4040a383bf",
+                "clientName": "3.png",
+                "fileUploadedOn": "2020-09-15T12:06:59.151Z",
+                "size": 70400,
+                "order": 0
+            },
+            {
+                "id": "5f60ae6358033e4040a383c1",
+                "clientName": "4 - copy.png",
+                "fileUploadedOn": "2020-09-15T12:06:59.899Z",
+                "size": 56790,
+                "order": 0
+            },
+            {
+                "id": "5f60ae6558033e4040a383c3",
+                "clientName": "error-log.png",
+                "fileUploadedOn": "2020-09-15T12:07:01.227Z",
+                "size": 170857,
+                "order": 0
+            },
+            {
+                "id": "5f60ae6558033e4040a383c5",
+                "clientName": "images.jpeg",
+                "fileUploadedOn": "2020-09-15T12:07:01.808Z",
+                "size": 7825,
+                "order": 0
+            },
+            {
+                "id": "5f60aede58033e4040a383c7",
+                "clientName": "error.png",
+                "fileUploadedOn": "2020-09-15T12:09:02.653Z",
+                "size": 97596,
+                "order": 0
+            },
+            {
+                "id": "5f60aedf58033e4040a383c9",
+                "clientName": "error-log-copy-1.png",
+                "fileUploadedOn": "2020-09-15T12:09:03.639Z",
+                "size": 170857,
+                "order": 0
+            },
+            {
+                "id": "5f60aee058033e4040a383cb",
+                "clientName": "images-copy-1.jpeg",
+                "fileUploadedOn": "2020-09-15T12:09:04.528Z",
+                "size": 7825,
+                "order": 0
+            },
+            {
+                "id": "5f60b23e58033e4040a383cd",
+                "clientName": "4.png",
+                "fileUploadedOn": "2020-09-15T12:23:26.161Z",
+                "size": 56790,
+                "order": 0
+            },
+            {
+                "id": "5f60b27c58033e4040a383cf",
+                "clientName": "images-copy-2.jpeg",
+                "fileUploadedOn": "2020-09-15T12:24:28.85Z",
+                "size": 7825,
+                "order": 0
+            }
+        
+        ]
+    }
+]
+
 export class DocumentActions {
     static async getPendingDocuments(loanApplicationId: string) {
         let d = seedData.map((d: any, i: number) => {
@@ -229,7 +386,8 @@ export class DocumentActions {
     }
 
     static async getSubmittedDocuments(loanApplicationId: string) {
-        return [];
+        let d = uploadedDocsMock.map((r) => r);
+        return d;
     }
 
     static async getSubmittedDocumentForView(params: any) {
