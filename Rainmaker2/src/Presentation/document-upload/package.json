@@ -36,7 +36,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
+    "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
     "test-coverage": "react-scripts test --verbose --silent --coverage . --coverageDirectory='coverage'",
     "eject": "react-scripts eject"
   },

@@ -99,18 +99,18 @@ export const DocumentItem = ({
       // console.log('================== nameExists', nameExists);
       return event.preventDefault()
     }
-    
+
     toggleFocus(file, true);
 
     changeName(file, filename);
   }
 
   useEffect(() => {
-    let name =  FileUpload.removeSpecialChars(
+    let name = FileUpload.removeSpecialChars(
       FileUpload.removeDefaultExt(file.clientName)
     );
     setFilename(name);
-        console.log('========================================', name)
+    console.log('========================================', name)
   }, [file]);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export const DocumentItem = ({
   };
 
   const deleteDOChandeler = () => {
-    file.uploadReqCancelToken.cancel();
+    file?.uploadReqCancelToken?.cancel();
     deleteDoc(file.clientName);
     setNameExists(false);
   };
@@ -176,7 +176,7 @@ export const DocumentItem = ({
               <ul className="readable-actions">
                 {file.file && !file.uploadProgress && (
                   <li>
-                    <a onClick={EditTitle} title="Rename" tabIndex={-1}>
+                    <a data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
                       {<DocEditIcon />}
                     </a>
                   </li>
@@ -195,6 +195,7 @@ export const DocumentItem = ({
                 {file.file && file.uploadProgress < 100 && (
                   <li>
                     <a
+                      data-testid={`file-remove-btn-${indexKey}`}
                       title="Cancel"
                       onClick={() => deleteDOChandeler()}
                       tabIndex={-1}
@@ -253,7 +254,7 @@ export const DocumentItem = ({
             <div className="doc-icon">
               <i className={file.docLogo}></i>
             </div>
-            <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
+            <div data-testid={`file-container-${indexKey}`} onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
               {!validFilename && (
                 <div className="dl-info">
@@ -286,7 +287,7 @@ export const DocumentItem = ({
 
   const renderSizeNotAllowed = () => {
     return (
-      <li className="doc-li item-error">
+      <li data-testid="size-not-allowed-item" className="doc-li item-error">
         <div className="noneditable doc-liWrap">
           <div className="doc-icon">
             <img src={erroricon} alt="" />
@@ -334,7 +335,7 @@ export const DocumentItem = ({
 
   const renderTypeIsNotAllowed = () => {
     return (
-      <li className="doc-li item-error">
+      <li className="doc-li item-error" data-testid="type-not-allowed-item">
         <div className="noneditable doc-liWrap">
           <div className="doc-icon">
             <img src={erroricon} alt="" />
@@ -364,6 +365,7 @@ export const DocumentItem = ({
               </li>
               <li>
                 <a
+                  data-testid={`file-remove-btn-${indexKey}`}
                   onClick={() => deleteDoc(file.clientName)}
                   tabIndex={-1}
                   title="Remove"

@@ -448,6 +448,7 @@ export const SelectedDocuments = ({
             <div className="doc-submit-wrap">
               {!doneHit && (
                 <button
+                  data-testid="submit-button"
                   disabled={btnDisabled || subBtnPressed}
                   className="btn btn-primary"
                   onClick={uploadFiles}
