@@ -13,7 +13,7 @@ namespace Rainmaker.Service
     public class BorrowerService : ServiceBase<RainMakerContext, Borrower>, IBorrowerService
     {
         [Flags]
-        public enum RelatedEntity
+        public enum RelatedEntities
         {
             LoanContact = 1 << 0,
             LoanContact_Ethnicity = 1 << 1,
@@ -36,7 +36,7 @@ namespace Rainmaker.Service
                                                      string email = "",
                                                      int? loanApplicationId = null,
                                                      string encompassId = "",
-                                                     RelatedEntity? includes = null)
+                                                     RelatedEntities? includes = null)
         {
             var borrowers = Repository.Query().AsQueryable();
 
@@ -57,15 +57,15 @@ namespace Rainmaker.Service
 
 
         private IQueryable<Borrower> ProcessIncludes(IQueryable<Borrower> query,
-                                                     RelatedEntity includes)
+                                                     RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact))                         query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact);
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Ethnicity))               query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(navigationPropertyPath:ethnicityBinder => ethnicityBinder.Ethnicity);
-            if (includes.HasFlag(flag:RelatedEntity.LoanApplication))                     query = query.Include(navigationPropertyPath:borrower => borrower.LoanApplication);
-            if (includes.HasFlag(flag:RelatedEntity.LoanContact_Race))                    query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactRaceBinders).ThenInclude(navigationPropertyPath:raceBinder => raceBinder.Race);
-            if (includes.HasFlag(flag: RelatedEntity.BorrowerQuestionResponses))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses);
-            if (includes.HasFlag(flag: RelatedEntity.BorrowerQuestionResponses_QuestionResponse))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses).ThenInclude(borrowerQuestionResponse=>borrowerQuestionResponse.QuestionResponse);
+            if (includes.HasFlag(flag:RelatedEntities.LoanContact))                         query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact);
+            if (includes.HasFlag(flag:RelatedEntities.LoanContact_Ethnicity))               query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactEthnicityBinders).ThenInclude(navigationPropertyPath:ethnicityBinder => ethnicityBinder.Ethnicity);
+            if (includes.HasFlag(flag:RelatedEntities.LoanApplication))                     query = query.Include(navigationPropertyPath:borrower => borrower.LoanApplication);
+            if (includes.HasFlag(flag:RelatedEntities.LoanContact_Race))                    query = query.Include(navigationPropertyPath:borrower => borrower.LoanContact).ThenInclude(navigationPropertyPath:loanContact => loanContact.LoanContactRaceBinders).ThenInclude(navigationPropertyPath:raceBinder => raceBinder.Race);
+            if (includes.HasFlag(flag: RelatedEntities.BorrowerQuestionResponses))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses);
+            if (includes.HasFlag(flag: RelatedEntities.BorrowerQuestionResponses_QuestionResponse))          query = query.Include(navigationPropertyPath: borrower => borrower.BorrowerQuestionResponses).ThenInclude(borrowerQuestionResponse=>borrowerQuestionResponse.QuestionResponse);
             // @formatter:on 
             return query;
         }

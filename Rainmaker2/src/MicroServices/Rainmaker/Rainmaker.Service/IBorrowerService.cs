@@ -15,6 +15,6 @@ namespace Rainmaker.Service
         string email = "",
         int? loanApplicationId = null,
         string encompassId = "",
-        BorrowerService.RelatedEntity? includes = null);
+        BorrowerService.RelatedEntities? includes = null);
     }
 }

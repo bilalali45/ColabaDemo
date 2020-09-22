@@ -28,22 +28,5 @@ namespace LosIntegration.API.Controllers
         {
             return "LosIntegration.API is running";
         }
-
-
-        [HttpGet(template: "[action]")]
-        [Route(template: "/")]
-        public string Test()
-        {
-            var byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: "Brokerage Statements - Two Months",
-                                                                       includes: ByteDocTypeMappingService
-                                                                                 .RelatedEntity.ByteDocCategoryMapping)
-                                     .SingleOrDefault();
-
-            //var dd = _byteDocTypeMappingService.SaveChangesAsync().Result;
-            var dd = _unitOfWork.SaveChangesAsync().Result;
-
-            return "test";
-        }
     }
 }
