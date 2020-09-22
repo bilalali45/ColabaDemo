@@ -233,8 +233,23 @@ namespace LosIntegration.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogInformation(message: $"DocSync SendFileToExternalOriginator :Exception {e.Message} ");
+                _logger.LogInformation(message: $"DocSync1 SendFileToExternalOriginator :Exception {e.Message} ");
+                #region SendEmail in case of sync fail
 
+                await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
+                                                            TenantId: sendDocumentRequest.TenantId,
+                                                            ErrorDate: DateTime.Now.ToString(),
+                                                            EmailBody: e.Message,
+                                                            ErrorCode: (int)HttpStatusCode.InternalServerError,
+                                                            DocumentCategory: sendDocumentRequest.DocumentCategory,
+                                                            DocumentName: sendDocumentRequest.DocumentName,
+                                                            DocumentExension: sendDocumentRequest.DocumentExension,
+                                                            authHeader: Request
+                                                                        .Headers[key: "Authorization"]
+                                                                        .Select(selector: x => x.ToString()));
+           
+              
+                #endregion
                 #region UpdateByteProStatus
 
                 var updateByteProStatusResponse =
@@ -587,71 +602,73 @@ namespace LosIntegration.API.Controllers
 
         private async Task<DocumentResponse> SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)
         {
-            var externalOriginatorSendDocumentResponse =
-                _httpClient.PostAsync(requestUri:
-                                      $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
-                                      content: new StringContent(content: sendDocumentRequest.ToJsonString(),
-                                                                 encoding: Encoding.UTF8,
-                                                                 mediaType: "application/json")).Result;
-
-            _logger.LogInformation(message:
-                                   $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
-
-            if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
-            {
-                await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
-                                                            TenantId: sendDocumentRequest.TenantId,
-                                                            ErrorDate: DateTime.Now.ToString(),
-                                                            EmailBody: externalOriginatorSendDocumentResponse
-                                                                .ReasonPhrase,
-                                                            ErrorCode: (int) HttpStatusCode.InternalServerError,
-                                                            DocumentCategory: sendDocumentRequest.DocumentCategory,
-                                                            DocumentName: sendDocumentRequest.DocumentName,
-                                                            DocumentExension: sendDocumentRequest.DocumentExension,
-                                                            authHeader: Request
-                                                                        .Headers[key: "Authorization"]
-                                                                        .Select(selector: x => x.ToString()));
-
-                throw new LosIntegrationException(message: "Unable to Upload Document to External Originator");
-            }
-
-            _logger.LogInformation(message:
-                                   $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
-
-            var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
-
-            _logger.LogInformation(message:
-                                   $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
-            _logger.LogInformation(message:
-                                   $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
-            _logger.LogInformation(message: "Deserialize Successfully");
-            if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
-            {
-                #region SendEmail in case of sync fail
-
-                await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
-                                                            TenantId: sendDocumentRequest.TenantId,
-                                                            ErrorDate: DateTime.Now.ToString(),
-                                                            EmailBody: apiResponse.Message,
-                                                            ErrorCode: (int) HttpStatusCode.InternalServerError,
-                                                            DocumentCategory: sendDocumentRequest.DocumentCategory,
-                                                            DocumentName: sendDocumentRequest.DocumentName,
-                                                            DocumentExension: sendDocumentRequest.DocumentExension,
-                                                            authHeader: Request
-                                                                        .Headers[key: "Authorization"]
-                                                                        .Select(selector: x => x.ToString()));
-
-                #endregion
+            
+                var externalOriginatorSendDocumentResponse =
+                    _httpClient.PostAsync(requestUri:
+                                          $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
+                                          content: new StringContent(content: sendDocumentRequest.ToJsonString(),
+                                                                     encoding: Encoding.UTF8,
+                                                                     mediaType: "application/json")).Result;
 
                 _logger.LogInformation(message:
-                                       $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status} ");
+                                       $"externalOriginatorSendDocumentResponse = {externalOriginatorSendDocumentResponse}");
 
-                throw new LosIntegrationException(message: "Unable to deserialize External Originator document ");
-            }
+                if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
+                {
+                    await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
+                                                                TenantId: sendDocumentRequest.TenantId,
+                                                                ErrorDate: DateTime.Now.ToString(),
+                                                                EmailBody: externalOriginatorSendDocumentResponse
+                                                                    .ReasonPhrase,
+                                                                ErrorCode: (int)HttpStatusCode.InternalServerError,
+                                                                DocumentCategory: sendDocumentRequest.DocumentCategory,
+                                                                DocumentName: sendDocumentRequest.DocumentName,
+                                                                DocumentExension: sendDocumentRequest.DocumentExension,
+                                                                authHeader: Request
+                                                                            .Headers[key: "Authorization"]
+                                                                            .Select(selector: x => x.ToString()));
 
-            DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
-            return documentResponse;
+                    throw new LosIntegrationException(message: "Unable to Upload Document to External Originator");
+                }
+
+                _logger.LogInformation(message:
+                                       $"externalOriginatorSendDocumentResponse.IsSuccessStatusCode = {externalOriginatorSendDocumentResponse.IsSuccessStatusCode}");
+
+                var result = externalOriginatorSendDocumentResponse.Content.ReadAsStringAsync().Result;
+
+                _logger.LogInformation(message:
+                                       $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
+                _logger.LogInformation(message:
+                                       $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
+                _logger.LogInformation(message: "Deserialize Successfully");
+                if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
+                {
+                    #region SendEmail in case of sync fail
+
+                    await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
+                                                                TenantId: sendDocumentRequest.TenantId,
+                                                                ErrorDate: DateTime.Now.ToString(),
+                                                                EmailBody: apiResponse.Message,
+                                                                ErrorCode: (int)HttpStatusCode.InternalServerError,
+                                                                DocumentCategory: sendDocumentRequest.DocumentCategory,
+                                                                DocumentName: sendDocumentRequest.DocumentName,
+                                                                DocumentExension: sendDocumentRequest.DocumentExension,
+                                                                authHeader: Request
+                                                                            .Headers[key: "Authorization"]
+                                                                            .Select(selector: x => x.ToString()));
+
+                    #endregion
+
+                   
+                    throw new LosIntegrationException(message: "Unable to deserialize External Originator document ");
+                }
+                _logger.LogInformation(message:
+                                          $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status} ");
+
+                DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
+                return documentResponse;
+            
         }
 
         #endregion
