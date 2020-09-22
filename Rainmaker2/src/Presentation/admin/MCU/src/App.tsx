@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-  useLocation
-} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {SignalRHub} from 'rainsoft-js';
 import IdleTimer from 'react-idle-timer';
 
@@ -30,9 +24,6 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const hubUrl: string = baseUrl + '/serverhub';
 
-  const history = useHistory();
-  const location = useLocation();
-
   useEffect(() => {
     console.log('MCU App Version', '0.0.1');
     authenticate();
@@ -46,9 +37,6 @@ const App = () => {
     '******************************************',
     window.location.pathname
   );
-  if (!location.pathname.includes('needList')) {
-    history.push('documentManagement/needList/3');
-  }
 
   const authenticate = async () => {
     console.log('Before Authorize');
@@ -89,8 +77,8 @@ const App = () => {
         {/* <RainMakerSidebar /> */}
         <main className="main-layout">
           <StoreProvider>
-            <Switch>
-              <Router basename="/DocumentManagement">
+            <Router basename="/DocumentManagement">
+              <Switch>
                 {process.env.NODE_ENV === 'test' ? (
                   <Authorized path="/" component={MCUHome} />
                 ) : (
@@ -106,8 +94,8 @@ const App = () => {
                 />
 
                 <RainMakerFooter />
-              </Router>
-            </Switch>
+              </Switch>
+            </Router>
           </StoreProvider>
         </main>
       </section>
