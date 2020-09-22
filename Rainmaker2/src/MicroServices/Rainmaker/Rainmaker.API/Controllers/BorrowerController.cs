@@ -65,17 +65,17 @@ namespace Rainmaker.API.Controllers
             var loanApplication = _loanApplicationService
                                   .GetLoanApplicationWithDetails(encompassNumber: rainmakerBorrowerModel.FileDataId,
                                                                  includes: LoanApplicationService
-                                                                           .RelatedEntity.Borrowers)
+                                                                           .RelatedEntities.Borrowers)
                                   .SingleOrDefault();
 
             var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId: rainmakerBorrowerModel.FileDataId,
                                                                          firstName: firstName,
                                                                          email: email,
                                                                          // @formatter:off
-                                                                         includes: BorrowerService.RelatedEntity.LoanContact_Ethnicity |
-                                                                                   BorrowerService.RelatedEntity.LoanContact_Race |
-                                                                                   BorrowerService.RelatedEntity.LoanApplication|
-                                                                                   BorrowerService.RelatedEntity.BorrowerQuestionResponses_QuestionResponse
+                                                                         includes: BorrowerService.RelatedEntities.LoanContact_Ethnicity |
+                                                                                   BorrowerService.RelatedEntities.LoanContact_Race |
+                                                                                   BorrowerService.RelatedEntities.LoanApplication|
+                                                                                   BorrowerService.RelatedEntities.BorrowerQuestionResponses_QuestionResponse
                                                                          // @formatter:on
                                                                         )
                                                  .SingleOrDefault();

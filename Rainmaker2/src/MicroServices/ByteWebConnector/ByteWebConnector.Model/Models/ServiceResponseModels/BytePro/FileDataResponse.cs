@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ByteWebConnector.Model.Models.ServiceResponseModels.BytePro
+﻿namespace ByteWebConnector.Model.Models.ServiceResponseModels.BytePro
 {
     public class FileDataResponse
     {
