@@ -44,7 +44,8 @@ const mockInitialSelectedFile = {
     name: "0 4.jpg",
     size: 101691,
     type: "image/jpeg",
-    webkitRelativePath: ""
+    webkitRelativePath: "",
+    slice: jest.fn()
 }
 
 const mockFile = {
@@ -56,6 +57,17 @@ const mockFile2 = {
         clientName: 'payslip-copy-1.pdf',     
         type: 'application/pdf',        
          }
+const createMockFile = (name, size, mimeType) => {
+            let range = '';
+            for (let i = 0; i < size; i++) {
+                range += 'a';
+            }
+           let blob: any = new Blob([range], { type: mimeType });
+           blob.lastModified = 1600081543628;
+           blob.lastModifiedDate = 'Mon Sep 14 2020 16:05:43 GMT+0500 (Pakistan Standard Time)';
+           blob.name = name;
+            return blob;
+}
 
 beforeEach(() => {
     const history = createMemoryHistory();
@@ -82,13 +94,16 @@ test('should rename same name file which are already exist', async () => {
    });
 
 test('should file type allowed for upload', async () => {
-    const isTypeAllowed = await FileUpload.isTypeAllowed(mockInitialSelectedFile);
+    const file =  createMockFile('sample.pdf', 30000, 'application/pdf');
+    console.log('---------->', file)
+    console.log('///////',file.type)
+    const isTypeAllowed = await FileUpload.isTypeAllowed(file);
     expect(isTypeAllowed).toEqual(true);
 });
 
 test('should file size allowed for upload', async () => {
-    const isTypeAllowed = await FileUpload.isSizeAllowed(mockInitialSelectedFile);
-    expect(isTypeAllowed).toEqual(true);
+    const isSizeAllowed = await FileUpload.isSizeAllowed(mockInitialSelectedFile);
+    expect(isSizeAllowed).toEqual(true);
 });
 
 test('should return valid extension of given file when split by "."', async () => {

@@ -37,7 +37,14 @@ export const MCUHome = () => {
           from="/:loanApplicationId"
           to="/needList/:loanApplicationId"
         />
-        <Authorized path="/needList/:loanApplicationId" component={NeedList} />
+        {process.env.NODE_ENV === 'test' ? (
+          <Authorized path="/" component={NeedList} />
+        ) : (
+          <Authorized
+            path="/needList/:loanApplicationId"
+            component={NeedList}
+          />
+        )}
         <Authorized
           path="/newNeedList/:loanApplicationId"
           component={NewNeedList}

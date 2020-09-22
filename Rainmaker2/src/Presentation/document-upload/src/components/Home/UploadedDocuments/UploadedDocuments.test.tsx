@@ -117,20 +117,20 @@ describe('Uploaded Documents', () => {
 
     });
 
-    // test('should open file viewer onClick', async () => {
-    //   const { getByTestId, getAllByTestId } = render(
-    //     <MemoryRouter >
-    //       <App/>
-    //     </MemoryRouter>
-    // );
-    // await waitForDomChange();
+    test('should open file viewer onClick', async () => {
+      const { getByText, getAllByTestId } = render(
+        <MemoryRouter >
+          <App/>
+        </MemoryRouter>
+    );
+    await waitForDomChange();
     
-    // const allDocFiles = getAllByTestId('doc-file-link');
-    // fireEvent.click(allDocFiles[0]);
+    const allDocFiles = getAllByTestId('doc-file-link');
+    fireEvent.click(allDocFiles[0]);
    
-    // const fileViewer = getByTestId('file-viewer-header');
-    // expect(fileViewer).toHaveTextContent('images-copy-2.jpeg')
+    const fileViewer = getByText((content, element) => element.className === "document-view--header")
+    expect(fileViewer).toBeDefined();
     
 
-    // });
+    });
 });
