@@ -248,8 +248,7 @@ namespace LosIntegration.API.Controllers
                                                                         .Headers[key: "Authorization"]
                                                                         .Select(selector: x => x.ToString()));
            
-                throw new LosIntegrationException(message: "Exception occur ");
-
+              
                 #endregion
                 #region UpdateByteProStatus
 
@@ -603,8 +602,7 @@ namespace LosIntegration.API.Controllers
 
         private async Task<DocumentResponse> SendDocumentToExternalOriginator(SendDocumentRequest sendDocumentRequest)
         {
-            try
-            {
+            
                 var externalOriginatorSendDocumentResponse =
                     _httpClient.PostAsync(requestUri:
                                           $"{_configuration[key: "ServiceAddress:ByteWebConnector:Url"]}/api/ByteWebConnector/Document/SendDocument",
@@ -670,13 +668,7 @@ namespace LosIntegration.API.Controllers
 
                 DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
                 return documentResponse;
-            }
-            catch
-            {
-                throw;
-
-
-            }
+            
         }
 
         #endregion
