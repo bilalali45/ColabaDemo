@@ -9,7 +9,7 @@ namespace Notification.API
         {
         }
 
-        public static readonly Dictionary<T, HashSet<string>> _connections =
+        public static Dictionary<T, HashSet<string>> _connections =
             new Dictionary<T, HashSet<string>>();
         
         public int Count

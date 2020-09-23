@@ -13,7 +13,7 @@ namespace Rainmaker.Service
     public class UserProfileService : ServiceBase<RainMakerContext, UserProfile>, IUserProfileService
     {
         [Flags]
-        public enum RelatedEntity
+        public enum RelatedEntities
         {
             Employees = 1 << 0,
             Employees_EmployeeBusinessUnitEmails_EmailAccount = 1 << 1
@@ -38,7 +38,7 @@ namespace Rainmaker.Service
 
 
         public async Task<UserProfile> GetUserProfileEmployeeDetail(int? id = null,
-                                                          RelatedEntity? includes = null)
+                                                          RelatedEntities? includes = null)
         {
             var userProfiles = Repository.Query().AsQueryable();
 
@@ -58,11 +58,11 @@ namespace Rainmaker.Service
 
 
         private IQueryable<UserProfile> ProcessIncludes(IQueryable<UserProfile> query,
-                                                        RelatedEntity includes)
+                                                        RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag:RelatedEntity.Employees)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees);
-            if (includes.HasFlag(flag:RelatedEntity.Employees_EmployeeBusinessUnitEmails_EmailAccount)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees).ThenInclude(navigationPropertyPath:employee=>employee.EmployeeBusinessUnitEmails).ThenInclude(navigationPropertyPath:employeeBusinessUnitEmail=>employeeBusinessUnitEmail.EmailAccount);
+            if (includes.HasFlag(flag:RelatedEntities.Employees)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees);
+            if (includes.HasFlag(flag:RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees).ThenInclude(navigationPropertyPath:employee=>employee.EmployeeBusinessUnitEmails).ThenInclude(navigationPropertyPath:employeeBusinessUnitEmail=>employeeBusinessUnitEmail.EmailAccount);
 
             // @formatter:on 
             return query;

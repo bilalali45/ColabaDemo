@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using ByteWebConnector.Model.Models;
-using ByteWebConnector.Model.Models.ByteApi;
+﻿using ByteWebConnector.Model.Models.ByteApi;
 using ByteWebConnector.Model.Models.ByteSDK;
 using ByteWebConnector.Model.Models.ServiceResponseModels.ByteWebConnectorSDK;
 using ByteWebConnector.Service.DbServices;
@@ -8,6 +6,7 @@ using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using ServiceCallHelper;
+using System.Net.Http;
 
 namespace ByteWebConnector.Service.InternalServices
 {

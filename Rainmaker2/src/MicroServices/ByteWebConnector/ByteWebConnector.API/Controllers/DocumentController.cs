@@ -68,7 +68,6 @@ namespace ByteWebConnector.API.Controllers
 
         #region Private Fields
 
-        //private string _apiUrl;
         private readonly ILogger<DocumentController> _logger;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
@@ -147,18 +146,6 @@ namespace ByteWebConnector.API.Controllers
                 #region BytePro API Call
 
                 _logger.LogInformation(message: "Start GetByteProSession();");
-                //if (string.IsNullOrEmpty(ByteSession))
-                //{
-                //    ByteSession = GetByteProSession();
-                //}
-                //else
-                //{
-                //    bool isValid = ValidateByteSession(ByteSession).Result;
-                //    if (!isValid)
-                //    {
-                //        ByteSession = GetByteProSession();
-                //    }
-                //}
 
                 ByteSession = ByteSession.HasValue() ? ByteSession : GetByteProSession();
                 if (!ValidateByteSession(byteSession: ByteSession)) ByteSession = GetByteProSession();
@@ -166,8 +153,6 @@ namespace ByteWebConnector.API.Controllers
                 FileDataResponse fileData = GetFileData(ByteSession,
                                                 loanApplication.ByteLoanNumber);
                 documentUploadModel.FileName = fileData.FileName;
-                //var documentResponse = SendDocumentToByte(documentUploadRequest: documentUploadModel,
-                //                                          session: ByteSession);
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadModel).ResponseObject;
 
@@ -280,8 +265,6 @@ namespace ByteWebConnector.API.Controllers
         {
             try
             {
-                //var byteProSettings = _settingService.GetByteProSettings();
-
                 _logger.LogInformation(message: $"byteProSettings = {ByteProSettings.ToJson()}");
 
                 var baseUrl = ByteProSettings.ByteApiUrl;
@@ -290,8 +273,8 @@ namespace ByteWebConnector.API.Controllers
                                                                             certificate,
                                                                             chain,
                                                                             sslPolicyErrors) => true;
-                //_apiUrl = baseUrl;
-                var request = (HttpWebRequest)WebRequest.Create(requestUriString: baseUrl + "auth/ ");
+
+                var request = (HttpWebRequest) WebRequest.Create(requestUriString: baseUrl + "auth/ ");
                 request.Method = "GET";
                 request.ContentType = "application/json";
                 request.Headers.Add(name: "authorizationKey",
@@ -488,7 +471,7 @@ namespace ByteWebConnector.API.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 _logger.LogInformation(message: $"DocSync Byte request failed");
                 return false;
