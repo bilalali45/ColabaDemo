@@ -10,13 +10,28 @@ namespace DocumentManagement.Service
 {
     public class MongoService : IMongoService
     {
+        private static object lockObject = new object();
+        private static volatile string connectionString = string.Empty;
         public IMongoDatabase db { get; set; }
         public IMongoClient client { get; set; }
         public MongoService(IConfiguration config, ILogger<MongoService> logger, HttpClient httpClient)
         {
-            var csResponse = httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key=DocumentManagementCS").Result;
-            csResponse.EnsureSuccessStatusCode();
-            var mongoConnectionUrl = new MongoUrl(csResponse.Content.ReadAsStringAsync().Result);
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                lock (lockObject)
+                {
+                    if (string.IsNullOrEmpty(connectionString))
+                    {
+                        var csResponse = httpClient
+                            .GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key=DocumentManagementCS")
+                            .Result;
+                        csResponse.EnsureSuccessStatusCode();
+                        connectionString = csResponse.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            }
+
+            var mongoConnectionUrl = new MongoUrl(connectionString);
             var mongoClientSettings = MongoClientSettings.FromUrl(mongoConnectionUrl);
             mongoClientSettings.ClusterConfigurator = cb =>
             {
