@@ -9,7 +9,7 @@ import {
   SVGCalender,
   SVGBellSleep
 } from '../../assets/icons/SVGIcons';
-import { LocalDB } from '../../lib/localStorage';
+import {LocalDB} from '../../lib/localStorage';
 
 interface NotificationProps {
   removeNotification: () => void;
@@ -54,7 +54,7 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
     e: any
   ) => {
     try {
-      e.preventDefault()
+      e.preventDefault();
       //Prevent unecessary API call
       if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
         await readAllNotificationsForDocument(loanApplicationId);
@@ -63,12 +63,15 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
       console.warn(error);
     }
 
-    if(!LocalDB.getPortalReferralUrl() || LocalDB.getPortalReferralUrl() != window.location.href){
-      LocalDB.setPortalReferralUrl(window.location.href)
+    if (
+      !LocalDB.getPortalReferralUrl() ||
+      LocalDB.getPortalReferralUrl() != window.location.href
+    ) {
+      LocalDB.setPortalReferralUrl(window.location.href);
     }
-    
+
     window.open(link, '_self');
-  });
+  };
 
   return (
     <div
