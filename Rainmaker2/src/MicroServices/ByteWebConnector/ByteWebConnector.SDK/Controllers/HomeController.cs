@@ -6,7 +6,7 @@ namespace ByteWebConnector.SDK.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        [Route(template: "[action]")]
+        [Route(template: "/")]
         public string Index()
         {
             return "ByteWebConnectorSdk micro service is running";
