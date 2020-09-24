@@ -16,7 +16,7 @@ export const TemplateHome = () => {
     // }
 
     return (
-        <section className="MT-CWrap">
+        <section data-testid="template-home" className="MT-CWrap">
             <div className="container-mcu">
                 <div className="row">
                     <div className="col-sm-4">

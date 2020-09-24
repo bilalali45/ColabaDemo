@@ -13,7 +13,7 @@ export class LocalDB {
   }
 
   static getLoanAppliationId() {
-    return 81;
+    return 3;
   }
 
   static removeAuth() {}

@@ -2,7 +2,7 @@ import { DocumentRequest } from "../../../entities/Models/DocumentRequest";
 import { Document } from "../../../entities/Models/Document";
 import { FileUpload } from "../../../utils/helpers/FileUpload";
 
-const seedData = [
+export const seedData = [
     {
         "id": "5f3e259db821542b2841e37b",
         "requestId": "5f450c0860b6782ac07de6ed",
@@ -342,46 +342,50 @@ const uploadedDocsMock = [
     }
 ]
 
+export const getPendingDocs = (seedData) => {
+    let d = seedData.map((d: any, i: number) => {
+        let {
+            id,
+            requestId,
+            docId,
+            docName,
+            docMessage,
+            files,
+            isRejected,
+        } = d;
+        let doc = new DocumentRequest(
+            id,
+            requestId,
+            docId,
+            docName,
+            docMessage,
+            files,
+            isRejected
+        );
+
+        if (doc.files === null || doc.files === undefined) {
+            doc.files = [];
+        }
+        doc.files = doc.files.map((f: Document) => {
+            return new Document(
+                f.id,
+                f.clientName,
+                f.fileUploadedOn,
+                f.size,
+                f.order,
+                FileUpload.getDocLogo(f, "dot"),
+                "done"
+            );
+        });
+
+        return doc;
+    });
+    return d;
+}
+
 export class DocumentActions {
     static async getPendingDocuments(loanApplicationId: string) {
-        let d = seedData.map((d: any, i: number) => {
-            let {
-                id,
-                requestId,
-                docId,
-                docName,
-                docMessage,
-                files,
-                isRejected,
-            } = d;
-            let doc = new DocumentRequest(
-                id,
-                requestId,
-                docId,
-                docName,
-                docMessage,
-                files,
-                isRejected
-            );
-
-            if (doc.files === null || doc.files === undefined) {
-                doc.files = [];
-            }
-            doc.files = doc.files.map((f: Document) => {
-                return new Document(
-                    f.id,
-                    f.clientName,
-                    f.fileUploadedOn,
-                    f.size,
-                    f.order,
-                    FileUpload.getDocLogo(f, "dot"),
-                    "done"
-                );
-            });
-
-            return doc;
-        });
-        return d;
+        return getPendingDocs(seedData);
 
     }
 
@@ -395,7 +399,7 @@ export class DocumentActions {
     }
 
     static async finishDocument(loanApplicationId: string, data: {}) {
-        return [];
+        return seedData.filter((d: any, i: any) => i !== 0);
 
     }
 }
