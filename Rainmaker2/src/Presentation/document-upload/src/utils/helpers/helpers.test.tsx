@@ -95,8 +95,6 @@ test('should rename same name file which are already exist', async () => {
 
 test('should file type allowed for upload', async () => {
     const file =  createMockFile('sample.pdf', 30000, 'application/pdf');
-    console.log('---------->', file)
-    console.log('///////',file.type)
     const isTypeAllowed = await FileUpload.isTypeAllowed(file);
     expect(isTypeAllowed).toEqual(true);
 });

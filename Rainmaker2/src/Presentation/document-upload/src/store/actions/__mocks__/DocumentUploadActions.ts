@@ -1,25 +1,37 @@
 import { Http } from "rainsoft-js";
-import { DocumentRequest } from "../../entities/Models/DocumentRequest";
-import { Document } from "../../entities/Models/Document";
-import { DocumentsActionType } from "../reducers/documentReducer";
-import { FileUpload } from "../../utils/helpers/FileUpload";
-import { Auth } from "../../services/auth/Auth";
-import { Endpoints } from "../endpoints/Endpoints";
-import { ApplicationEnv } from "../../utils/helpers/AppEnv";
-import { Rename } from "../../utils/helpers/rename";
+import { Document } from "../../../entities/Models/Document";
+import { DocumentRequest } from "../../../entities/Models/DocumentRequest";
+import { ApplicationEnv } from "../../../utils/helpers/AppEnv";
+import { FileUpload } from "../../../utils/helpers/FileUpload";
+import { Rename } from "../../../utils/helpers/rename";
+import { DocumentsActionType } from "../../reducers/documentReducer";
+
 
 const http = new Http();
 
 export class DocumentUploadActions {
-  
-    static async submitDocuments(
-    currentSelected: DocumentRequest,
-    file: Document,
-    dispatchProgress: Function,
-    loanApplicationId: string
-  ) {
-    try {
-     
+
+  static percent : any = 0.1;
+
+  static async submitDocuments(currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string) {
+
+    let p = Math.floor(this.percent * 100);
+    let files: any = currentSelected.files;
+    let updatedFiles = files.map((f: Document) => {
+      if (f.clientName === file.clientName) {
+        f.uploadProgress = p;
+        if (p === 100) {
+          f.uploadStatus = "done";
+        }
+        return f;
+      }
+      return f;
+    });
+    dispatchProgress({
+      type: DocumentsActionType.AddFileToDoc,
+      payload: updatedFiles,
+    });
+
   }
 
   static prepareFormData(currentSelected: DocumentRequest, file: Document) {

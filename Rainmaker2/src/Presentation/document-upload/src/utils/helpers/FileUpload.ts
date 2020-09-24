@@ -86,7 +86,6 @@ export class FileUpload {
   }
 
   static getActualMimeType(file): Promise<string> {
-    console.log('--------->file------->', file)
     return new Promise((resolve, reject) => {
       const filereader = new FileReader();
       let mimeType = "";
@@ -95,7 +94,6 @@ export class FileUpload {
         try {
           if (e.target.readyState === FileReader.DONE) {
             const uint = new Uint8Array(e.target.result);
-            console.log('e.target.result',e.target.result)
             let bytes: any = [];
             uint.forEach((byte) => {
               if (byte) {
@@ -104,7 +102,6 @@ export class FileUpload {
             });
             const hex = bytes.join("").toUpperCase();
             mimeType = this.getMimetype(hex);
-            console.log('<-------mimeType----->', mimeType,'<------>',hex)
             resolve(mimeType);
           }
         } catch (error) {
@@ -118,7 +115,6 @@ export class FileUpload {
 
   static async isTypeAllowed(file) {
     const result = this.allowedFileTypes.includes(await this.getActualMimeType(file));
-    console.log('this.allowedFileTypes ------ =as= a-gf=a-d =adsadf asfas=fd=======asfadsf =', result)
     return result;
   }
 
