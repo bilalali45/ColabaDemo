@@ -15,19 +15,24 @@ beforeEach(() => {
   MockLocalStorage();
 });
 
-test('renders learn react link', async () => {
-  const {getByText, getByTestId} = render(
-    <MemoryRouter initialEntries={['/DocumentManagement']}>
-      <App />
-    </MemoryRouter>
-  );
+// test('renders learn react link', async () => {
+//   const {getByText, getByTestId} = render(
+//     <MemoryRouter initialEntries={['/DocumentManagement']}>
+//       <App />
+//     </MemoryRouter>
+//   );
 
-  await waitForDomChange();
+//   console.log(
+//     window.location.pathname,
+//     ' ===================================================================== '
+//   );
 
-  // const linkElement = getByText('Manage Document Template');
-  // expect(linkElement).toBeInTheDocument();
+//   await waitForDomChange();
 
-  // fireEvent.click(linkElement);
+//   const linkElement = getByText('Manage Document Template');
+//   expect(linkElement).toBeInTheDocument();
 
-  // expect(getByTestId('tempate-manager')).toHaveTextContent('Add Documents');
-});
+//   fireEvent.click(linkElement);
+
+//   expect(getByTestId('tempate-manager')).toHaveTextContent('Add Documents');
+// });
