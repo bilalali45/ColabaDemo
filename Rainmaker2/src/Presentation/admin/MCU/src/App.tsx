@@ -33,10 +33,10 @@ const App = () => {
     };
   }, []);
 
-  console.log(
-    '******************************************',
-    window.location.pathname
-  );
+  // console.log(
+  //   '******************************************',
+  //   window.location.pathname
+  // );
 
   const authenticate = async () => {
     console.log('Before Authorize');
@@ -63,7 +63,7 @@ const App = () => {
   if (!authenticated) {
     return null;
   }
-  console.log('Node Env ++++++++++++++++++++++', process.env.NODE_ENV);
+  // console.log('Node Env ++++++++++++++++++++++', process.env.NODE_ENV);
   return (
     <div className="App">
       <IdleTimer

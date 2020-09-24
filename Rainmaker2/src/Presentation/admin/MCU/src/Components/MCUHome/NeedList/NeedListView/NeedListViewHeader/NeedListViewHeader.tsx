@@ -45,12 +45,12 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                     }
                 </div>
             </div>
-            <div className="need-list-view-header--right">
+            <div className="need-list-view-header--right" data-testid="needListSwitchLabel">
                 <label><strong>All</strong></label>
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                    <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} />
+                    <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} data-testid="needListSwitch"/>
                     <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;

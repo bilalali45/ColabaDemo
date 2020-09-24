@@ -150,7 +150,6 @@ export const SelectedDocuments = ({
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
         newName.toLowerCase()
     );
-    console.log('already exists', alreadyExist)
     if (alreadyExist) {
       return true;
     }
@@ -178,9 +177,6 @@ export const SelectedDocuments = ({
     focus: boolean,
     shouldMoveFocus?: boolean
   ) => {
-
-    console.log('in here -- ---++++++++++++++++++++++++++++++++++++++=--  - - - -  - - -- -- - - -- - - -', file);
-
 
     let nextInd = 0;
     let updatedFiles = selectedFiles.map((f: Document, i: number) => {
@@ -264,6 +260,7 @@ export const SelectedDocuments = ({
           Auth.getLoanAppliationId(),
           data
         );
+        console.log(docs?.length, '======================= {} +++++++++++++++++++++++++++++++ {} +++++++++++ {}', docs);
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -435,6 +432,7 @@ export const SelectedDocuments = ({
                     {"I'LL Come Back"}
                   </button>
                   <button
+
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >

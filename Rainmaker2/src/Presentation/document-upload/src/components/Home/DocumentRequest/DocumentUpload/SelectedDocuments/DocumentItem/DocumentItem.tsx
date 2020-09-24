@@ -91,12 +91,8 @@ export const DocumentItem = ({
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    console.log('in here -- blubn4rwrbrbbrbrrbbrbrbrrrb -----  - - - -  - - -- -- - - -- - - -', filename);
     if (nameExists === true || validFilename === false || filename === "") {
-      // console.log('================== fileName', filename);
-      // console.log('================== file', file);
-      // console.log('================== validFileName', validFilename);
-      // console.log('================== nameExists', nameExists);
+    
       return event.preventDefault()
     }
 
@@ -110,7 +106,6 @@ export const DocumentItem = ({
       FileUpload.removeDefaultExt(file.clientName)
     );
     setFilename(name);
-    console.log('========================================', name)
   }, [file]);
 
   useEffect(() => {
@@ -206,7 +201,7 @@ export const DocumentItem = ({
                 )}
                 {file.uploadStatus === "done" && (
                   <li>
-                    <a title="Uploaded" className="icon-uploaded" tabIndex={-1}>
+                    <a data-testid="done-upload" title="Uploaded" className="icon-uploaded" tabIndex={-1}>
                       <i className="zmdi zmdi-check"></i>
                     </a>
                   </li>
@@ -277,6 +272,7 @@ export const DocumentItem = ({
         )}
         {file.file && file.uploadProgress < 100 && file.uploadProgress > 0 && (
           <div
+            data-testid="upload-progress-bar"
             className="progress-upload"
             style={{ width: file.uploadProgress + "%" }}
           ></div>
