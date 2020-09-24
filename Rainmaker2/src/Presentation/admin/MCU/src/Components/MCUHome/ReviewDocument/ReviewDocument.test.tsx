@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, waitForDomChange, fireEvent} from '@testing-library/react';
+import {render, waitForDomChange, fireEvent, waitFor} from '@testing-library/react';
 import App from '../../../App';
 import {MemoryRouter} from 'react-router-dom';
 import {MockEnvConfig} from '../../../test_utilities/EnvConfigMock';
@@ -36,9 +36,11 @@ beforeEach(() => {
         const allDetailsBtn = getAllByTestId('needList-detailBtnts');
         fireEvent.click(allDetailsBtn[0]);
            
-        
-         const reviewHeader = getByTestId('testId');
-         expect(reviewHeader).toHaveTextContent('No file submitted yet');
+        await waitFor(()=> {
+          const reviewHeader = getByTestId('testId');
+          expect(reviewHeader).toHaveTextContent('No file submitted yet');
+        })
+         
 
       });
   });
