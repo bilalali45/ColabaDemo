@@ -122,7 +122,7 @@ const NeedList = [
     typeId: "5f473aa0cca0a5d1c96798dd",
     userName: "Taruf Ali"
   },
-   {
+  {
     createdOn: "2020-09-17T11:27:27.092Z",
     docId: "5f63481f37de0c1490a36b61",
     docName: "Retirement Account Statements",
@@ -144,15 +144,15 @@ const NeedList = [
         mcuName: "",
         status: null,
       }
-    ], 
-        id: "5f58c63b603a2d64b4a27d79",
-        requestId: "5f63481f37de0c1490a36b58",
-        status: "Completed",
-        typeId: "5eec89a26ecaea4247963d25",
-        userName: "Taruf Ali"
-      
+    ],
+    id: "5f58c63b603a2d64b4a27d79",
+    requestId: "5f63481f37de0c1490a36b58",
+    status: "Completed",
+    typeId: "5eec89a26ecaea4247963d25",
+    userName: "Taruf Ali"
+
   },
-   {
+  {
     createdOn: "2020-09-17T11:27:27.092Z",
     docId: "5f63481f37de0c1490a36b65",
     docName: "Government Issued Identification",
@@ -180,6 +180,16 @@ const NeedList = [
     status: "Started",
     typeId: "5f47439dcca0a5d1c971083c",
     userName: "Taruf Ali"
+  }, {
+    createdOn: "2020-08-27T05:43:02.972Z",
+    docId: "5f4747e69775875638e774ad",
+    docName: "Work Visa - Work Permit",
+    files: [],
+    id: "5f4747e69775875638e774a3",
+    requestId: "5f4747e69775875638e774a4",
+    status: "Borrower to do",
+    typeId: "5f47441ecca0a5d1c9719720",
+    userName: "Taruf Ali",
   }
 ]
 
@@ -196,7 +206,7 @@ export class NeedListActions {
   static async getNeedList(loanApplicationId: string, status: boolean) {
     try {
       if (status) {
-        return Promise.resolve(NeedList.filter(needList=> needList.status !=="Completed"));
+        return Promise.resolve(NeedList.filter(needList => needList.status !== "Completed"));
       }
       else {
         return Promise.resolve(NeedList);
