@@ -148,7 +148,7 @@ export const TemplateListContainer = ({
             <div className="list-wrap tenant-temp-list">
               <ul>
                 {templates
-                  ?.filter((t: any) => t?.type === TenantTemplate)
+                  ?.filter((t: any) => t?.type === TenantTemplate || t?.type === SystemTemplate)
                   .map((t: any) => {
                     return TenantListItem(t);
                   })}

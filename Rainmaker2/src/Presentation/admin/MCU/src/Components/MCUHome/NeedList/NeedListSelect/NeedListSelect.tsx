@@ -131,8 +131,8 @@ export const NeedListSelect = ({
                 return (
                   <li
                     key={t?.id}
-                    onMouseEnter={(e) => {
-                      displayPopover(e, t.docs, t.name);
+                    onMouseEnter={(e:any) => {
+                       displayPopover(e, t.docs, t.name);
                     }}
                     onMouseLeave={(e) => {
                       hidePopover(e);
@@ -169,7 +169,7 @@ export const NeedListSelect = ({
         container={ref.current}
       >
         <Popover id="popover-contained" className="addneedlist-popover">
-          <Popover.Title as="h3" class="addneedlist-popover-title">
+          <Popover.Title as="h3" className="addneedlist-popover-title">
             {templateName}
           </Popover.Title>
           <Popover.Content>
@@ -200,7 +200,7 @@ export const NeedListSelect = ({
               return (
                 <li
                   key={t?.id}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={(e:any) => {
                     displayPopover(e, t.docs, t.name);
                   }}
                   onMouseLeave={(e) => {
