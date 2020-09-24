@@ -20,36 +20,34 @@ import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
+  console.log('------------------------------- Review Document--------------------------------------')
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [documentDetail, setDocumentDetail] = useState(false);
   const [fileViewd, setFileViewd] = useState(false);
-
-    const [clientName, setClientName] = useState('');
-  const [
-    previousDocumentButtonDisabled,
-    setPreviousDocumentButtonDisabled
-  ] = useState(true);
-  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(
-    false
-  );
+  const [clientName, setClientName] = useState('');
+  const [previousDocumentButtonDisabled, setPreviousDocumentButtonDisabled] = useState(true);
+  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(false);
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
   const [haveDocuments, setHaveDocuments] = useState(false);
   const { state: AppState, dispatch } = useContext(Store);
   const { needListManager } = AppState;
   const { needList } = needListManager as Pick<NeedListType, 'needList'>;
-
+  const [blobData, setBlobData] = useState<any>();
+  
   const history = useHistory();
   const location = useLocation();
   const { state } = location;
 
   const goBack = () => {
+    console.log('Going Back---------------------------->')
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`)
   };
 
-  const [blobData, setBlobData] = useState<any>();
+ 
+  
 
   const documentsForReviewArrayIndexes = () =>
     _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
@@ -463,8 +461,12 @@ export const ReviewDocument = () => {
     }
   }, [getDocumentForView, state, location.state]);
 
+
+  
+
   return (
     <div
+    data-testid="testId"
       id="ReviewDocument"
       data-component="ReviewDocument"
       className="review-document"

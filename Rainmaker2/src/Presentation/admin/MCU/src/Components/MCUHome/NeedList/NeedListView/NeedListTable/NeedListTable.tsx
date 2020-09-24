@@ -111,16 +111,16 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (count > 0)
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>
-            <i className="far fa-file text-primary"></i> <strong>{toTitleCase(name)}</strong>
+          <span className="f-normal" title={name}>
+            <i className="far fa-file text-primary"></i> <strong>{name}</strong>
           </span>
         </div>
       );
     else
       return (
         <div className="td">
-          <span className="f-normal" title={toTitleCase(name)}>
-            <i className="far fa-file"></i> {toTitleCase(name)}
+          <span className="f-normal" title={name}>
+            <i className="far fa-file"></i> {name}
           </span>
         </div>
       );
@@ -190,7 +190,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (data.status === 'Pending review') {
       return (
         <div className="td options">
-          <button
+          <button data-testid = "needList-reviewBtnts"
             onClick={() => reviewClickHandler(index)}
             className="btn btn-primary btn-sm"
           >
@@ -201,9 +201,9 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     } else {
       return (
         <div className="td options">
-          <button
+          <button data-testid = "needList-detailBtnts"
             onClick={() => detailClickHandler(index)}
-            className="btn btn-secondry btn-sm"
+            className="btn btn-secondry btn-sm" 
           >
             Details
           </button>
@@ -348,6 +348,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   };
 
   const detailClickHandler = (index: number, fileIndex?: number) => {
+    console.log('----------------Click detailClickHandler-------------',LocalDB.getLoanAppliationId(),'---------',index,'-------', fileIndex)
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
       fileIndex: fileIndex ? fileIndex : null,

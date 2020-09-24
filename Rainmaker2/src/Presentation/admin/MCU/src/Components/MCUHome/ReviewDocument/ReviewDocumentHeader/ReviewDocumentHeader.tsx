@@ -30,8 +30,9 @@ export const ReviewDocumentHeader = ({
   documentDetail: boolean;
   haveDocuments?: boolean;
 }) => {
+  console.log('----------------------------ReviewDocumentHeader------------------------------a')
   return (
-    <div
+    <div data-testid = "review-headerts"
       id="ReviewDocumentHeader"
       data-component="ReviewDocumentHeader"
       className="review-document-header"
