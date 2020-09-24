@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId, act, waitForElementToBeRemoved, wait } from '@testing-library/react'
+import { render, cleanup, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId, act, waitForElementToBeRemoved, wait, getByText } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 
@@ -12,6 +12,9 @@ import { DocumentRequest } from '../../../../entities/Models/DocumentRequest';
 import { Document } from '../../../../entities/Models/Document';
 import { DocumentsActionType } from '../../../../store/reducers/documentReducer';
 import { DocumentUploadActions } from '../../../../store/actions/DocumentUploadActions';
+import { seedData, getPendingDocs } from '../../../../store/actions/__mocks__/DocumentActions';
+import { DocumentActions } from '../../../../store/actions/DocumentActions';
+
 
 jest.mock('axios');
 jest.mock('../../../../store/actions/UserActions');
@@ -37,28 +40,28 @@ beforeEach(() => {
     FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
     FileUpload.isSizeAllowed = jest.fn(() => true);
 
-     const submitDocuments = (currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string) => {
+    const submitDocuments = (currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string) => {
 
         let p = Math.floor(uploadPercent * 100);
         let files: any = currentSelected.files;
         let updatedFiles = files.map((f: Document) => {
-          if (f.clientName === file.clientName) {
-            f.uploadProgress = p;
-            if (p === 100) {
-              f.uploadStatus = "done";
+            if (f.clientName === file.clientName) {
+                f.uploadProgress = p;
+                if (p === 100) {
+                    f.uploadStatus = "done";
+                }
+                return f;
             }
             return f;
-          }
-          return f;
         });
         dispatchProgress({
-          type: DocumentsActionType.AddFileToDoc,
-          payload: updatedFiles,
+            type: DocumentsActionType.AddFileToDoc,
+            payload: updatedFiles,
         });
-    
-      }
-    
-      DocumentUploadActions.submitDocuments = jest.fn((a,b,c,d) =>Promise.resolve(submitDocuments(a,b,c,d)))
+
+    }
+
+    DocumentUploadActions.submitDocuments = jest.fn((a, b, c, d) => Promise.resolve(submitDocuments(a, b, c, d)))
 });
 
 const createMockFile = (name, size, mimeType) => {
@@ -74,6 +77,44 @@ const createMockFile = (name, size, mimeType) => {
 }
 
 describe('Document Request File Upload', () => {
+
+    test('Should add a new file into list" ', async () => {
+        const { getByTestId, getAllByTestId } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+        await waitForDomChange();
+
+        FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
+        FileUpload.isSizeAllowed = jest.fn(() => true);
+
+        const getStartedBtn = getByTestId('get-started');
+
+        fireEvent.click(getStartedBtn);
+
+        const input = getByTestId('file-input');
+        const file = createMockFile('test.jpg', 30000, 'image/jpeg');
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            const renameInput: any = getByTestId('file-item-rename-input');
+            fireEvent.blur(renameInput);
+            expect(renameInput).not.toBeInTheDocument();
+        })
+
+
+        const files = getAllByTestId('file-item');
+        await waitFor(() => {
+
+            expect(files).toHaveLength(2);
+            expect(files[1]).toHaveTextContent('test.jpeg');
+
+        })
+    });
+
     test('Should save the file name on save button click" ', async () => {
         const { getByTestId, getAllByTestId } = render(
             <MemoryRouter initialEntries={['/loanportal/activity/3']}>
@@ -352,7 +393,7 @@ describe('Document Request File Upload', () => {
     });
 
     test('Should upload files on submit click" ', async () => {
-        
+
         uploadPercent = 1;
 
         const { getByTestId, getAllByTestId } = render(
@@ -390,6 +431,121 @@ describe('Document Request File Upload', () => {
 
         });
 
+    });
+
+    test('Should hide submit button after files are uploaded and instead show I\'m done button" ', async () => {
+
+        uploadPercent = 1;
+
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+
+        await waitFor(() => {
+            const getStartedBtn = getByTestId('get-started');
+            fireEvent.click(getStartedBtn);
+        })
+
+        const input = getByTestId('file-input');
+        const file = createMockFile('sample.pdf', 110000, 'application/pdf');
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            const saveBtn: any = getByTestId('name-save-btn');
+            fireEvent.click(saveBtn);
+            expect(saveBtn).not.toBeInTheDocument();
+        })
+
+        const files = getAllByTestId('file-item');
+
+        const submitBtn = getByTestId('submit-button');
+        fireEvent.click(submitBtn);
+
+        expect(files).toHaveLength(2);
+
+        let allDoneIcons = getAllByTestId('done-upload');
+        await waitFor(() => {
+            expect(allDoneIcons[1]).toContainHTML('<i class="zmdi zmdi-check"></i>')
+
+        });
+
+        expect(submitBtn).not.toBeInTheDocument();
+
+        expect(getByText('I\'M Done')).toBeInTheDocument();
+
+    });
+
+    test('Should show I\'m done button if all files have been submitted" ', async () => {
+
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+
+        await waitFor(() => {
+            const getStartedBtn = getByTestId('get-started');
+            fireEvent.click(getStartedBtn);
+        })
+
+        expect(getByText('I\'M Done')).toBeInTheDocument();
+
+    });
+
+    test('Should remove the selected doc from pending documents on I\'m done button click" ', async () => {
+
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+
+        await waitFor(() => {
+            const getStartedBtn = getByTestId('get-started');
+            fireEvent.click(getStartedBtn);
+        })
+        const doneBtn = getByText('I\'M Done');
+
+        expect(doneBtn).toBeInTheDocument();
+
+        fireEvent.click(doneBtn);
+
+
+
+        await waitFor(() => {
+            const selectedDocTitle = getByTestId('selected-doc-title');
+            expect(selectedDocTitle).not.toHaveTextContent('Alimony Income Verification');
+            expect(selectedDocTitle).toHaveTextContent('Bank Statement');
+        })
+    });
+
+    test('Should move to the next document on I\'ll Come Back button click" ', async () => {
+
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <App />
+            </MemoryRouter>
+        );
+
+
+        await waitFor(() => {
+            const getStartedBtn = getByTestId('get-started');
+            fireEvent.click(getStartedBtn);
+        })
+        const illComBackBtn = getByText('I\'LL Come Back');
+
+        expect(illComBackBtn).toBeInTheDocument();
+
+        fireEvent.click(illComBackBtn);
+
+        await waitFor(() => {
+            expect(getByTestId('selected-doc-title')).toHaveTextContent('Bank Statement');
+        })
     });
 
 })

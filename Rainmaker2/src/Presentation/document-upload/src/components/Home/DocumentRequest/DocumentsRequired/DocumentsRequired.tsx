@@ -91,9 +91,10 @@ export const DocumentsRequired = () => {
     if (pendingDocs) {
       return (
         <ul>
-          {pendingDocs.map((pd: any) => {
+          {pendingDocs.map((pd: any, i: number) => {
             return (
               <li
+                data-testid={`pending-doc-${i}`}
                 key={pd?.docId}
                 onClick={() => {
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
@@ -126,8 +127,9 @@ export const DocumentsRequired = () => {
     }
     return "";
   };
-
+  console.log('in here  ------------------------- ----------------------- ', pendingDocs?.length);
   if (pendingDocs?.length === 0) {
+    console.log('in here yyoiu adsfj 9u, 149-04--=====================4234 234=24=23=4=    =', pendingDocs);
     return <Redirect to={`/activity/${Auth.getLoanAppliationId()}`} />;
   }
 
