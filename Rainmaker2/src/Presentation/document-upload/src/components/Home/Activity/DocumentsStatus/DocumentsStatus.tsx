@@ -84,7 +84,7 @@ export const DocumentsStatus = () => {
 
   const renderCompletedDocs = () => {
     return (
-      <div className="DocumentStatus box-wrap empty">
+      <div data-testid="complete-pending-docs" className="DocumentStatus box-wrap empty">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2">Task List</h2>
         </div>

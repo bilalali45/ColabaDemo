@@ -71,8 +71,8 @@ export const TemplateListContainer = ({
       });
     }
     setLoaderVisible(false);
-    if (listContainerElRef?.current) {
-      listContainerElRef.current.scrollTo(0, 0);
+    if (listContainerElRef?.current && listContainerElRef?.current?.scrollTo) {
+      listContainerElRef?.current?.scrollTo(0, 0);
     }
   };
 
@@ -160,10 +160,13 @@ export const TemplateListContainer = ({
     );
   };
 
-  if (!templates) return <Loader containerHeight={"100%"} />;
+  if (!templates) {
+    console.log('in no templates');
+    return <Loader containerHeight={"100%"} />
+  }
 
   return (
-    <div className="TL-container">
+    <div data-testid="template-list-container" className="TL-container">
       <div className="head-TLC">
         <h4>Templates</h4>
 
@@ -183,9 +186,7 @@ export const TemplateListContainer = ({
       </div>
 
       <div className="listWrap-templates">
-        {/* My Templates */}
         {MyTemplates()}
-
         {TemplatesByTenant()}
       </div>
     </div>
