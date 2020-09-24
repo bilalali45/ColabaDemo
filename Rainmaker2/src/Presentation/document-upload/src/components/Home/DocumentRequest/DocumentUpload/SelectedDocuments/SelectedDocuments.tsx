@@ -260,6 +260,7 @@ export const SelectedDocuments = ({
           Auth.getLoanAppliationId(),
           data
         );
+        console.log(docs?.length, '======================= {} +++++++++++++++++++++++++++++++ {} +++++++++++ {}', docs);
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -431,6 +432,7 @@ export const SelectedDocuments = ({
                     {"I'LL Come Back"}
                   </button>
                   <button
+
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >
