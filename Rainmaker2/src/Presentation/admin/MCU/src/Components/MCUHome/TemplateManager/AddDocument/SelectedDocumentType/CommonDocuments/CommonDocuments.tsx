@@ -52,7 +52,7 @@ export const CommonDocuments = ({
           autoFocus={true}
           onChange={handleSearch}
           type="name"
-          placeholder="Enter follow up name..."
+          placeholder="Enter document name…"
         />
         <div className="s-icon">
           <img src={SearchIcon} alt="" />

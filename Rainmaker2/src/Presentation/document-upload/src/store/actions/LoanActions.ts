@@ -63,6 +63,28 @@ export class LaonActions {
     }
   }
 
+  static async getCompanyLogoSrc(loanApplicationId: string) {
+    try {
+      let res: any = await http.get(
+        Endpoints.loan.GET.getCompanyLogoSrc(loanApplicationId)
+      );
+      return res.data;
+    } catch (error) {
+      console.log("error.response", error);
+    }
+  }
+
+  static async getCompanyFavIconSrc(loanApplicationId: string) {
+    try {
+      let res: any = await http.get(
+        Endpoints.loan.GET.getCompanyFavIconSrc(loanApplicationId)
+      );
+      return res.data;
+    } catch (error) {
+      console.log("error.response", error);
+    }
+  }
+
   static async getLoanProgressStatus(loanApplicationId: string) {
     try {
       let res: AxiosResponse<LoanProgress[]> = await http.get<LoanProgress[]>(

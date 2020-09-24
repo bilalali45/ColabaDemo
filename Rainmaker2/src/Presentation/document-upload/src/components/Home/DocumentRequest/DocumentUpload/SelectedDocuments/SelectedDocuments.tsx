@@ -43,6 +43,7 @@ export const SelectedDocuments = ({
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [doneVisible, setDoneVisible] = useState<boolean>(false);
   const [doneHit, setDoneHit] = useState<boolean>(false);
+  const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
 
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
@@ -71,8 +72,10 @@ export const SelectedDocuments = ({
     if (selectedFiles.length < ApplicationEnv.MaxDocumentCount) {
       setFileLimitError({ value: false });
     }
-    hasSubmitted();
-  }, [selectedFiles, selectedFiles.length]);
+    if (!uploadingFiles) {
+      hasSubmitted();
+    }
+  }, [selectedFiles, selectedFiles.length, uploadingFiles]);
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -120,6 +123,7 @@ export const SelectedDocuments = ({
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
+    setUploadingFiles(true);
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
         try {
@@ -137,6 +141,7 @@ export const SelectedDocuments = ({
       }
     }
     setSubBtnPressed(false);
+    setUploadingFiles(false);
     try {
       Promise.resolve(fetchUploadedDocuments());
     } catch (error) { }
@@ -260,7 +265,6 @@ export const SelectedDocuments = ({
           Auth.getLoanAppliationId(),
           data
         );
-        console.log(docs?.length, '======================= {} +++++++++++++++++++++++++++++++ {} +++++++++++ {}', docs);
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -446,7 +450,6 @@ export const SelectedDocuments = ({
             <div className="doc-submit-wrap">
               {!doneHit && (
                 <button
-                  data-testid="submit-button"
                   disabled={btnDisabled || subBtnPressed}
                   className="btn btn-primary"
                   onClick={uploadFiles}

@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Security.Authentication;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
+using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Security.Authentication;
 
 namespace MainGateway
 {
@@ -20,7 +20,7 @@ namespace MainGateway
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
             //configure logging first
-            ConfigureLogging();
+            ConfigureLogging(args);
 
             //then create the host, so that if the host fails we can log errors
             CreateHost(args: args);
@@ -47,16 +47,21 @@ namespace MainGateway
         }
 
 
-        private static void ConfigureLogging()
+        private static void ConfigureLogging(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT");
+            var environment = string.Empty;
+            foreach (var arg in args)
+            {
+                if (arg.Contains("--environment="))
+                {
+                    environment = arg.Replace("--environment=", "");
+                    break;
+                }
+            }
             var configuration = new ConfigurationBuilder()
                                 .AddJsonFile(path: "appsettings.json",
                                              optional: false,
                                              reloadOnChange: true)
-                                .AddJsonFile(
-                                             path: $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                             optional: true)
                                 .Build();
 
             Log.Logger = new LoggerConfiguration()

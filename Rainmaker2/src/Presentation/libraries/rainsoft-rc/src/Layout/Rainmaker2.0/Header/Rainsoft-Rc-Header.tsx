@@ -20,7 +20,7 @@ export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsTy
                             <div className="navbar-header h-logo">
                                 <a className="logo-link" href="/">
 
-                                    <img alt="Texas Trust Home Loans - Mortgage Lender in Texas " src={logoSrc} className="d-none d-sm-block" />
+                                    <img alt="" src={logoSrc} className="d-none d-sm-block" />
                                 </a>
                             </div>
 

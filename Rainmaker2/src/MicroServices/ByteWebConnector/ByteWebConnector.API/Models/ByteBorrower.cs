@@ -372,11 +372,11 @@ namespace ByteWebConnector.API.Models
             // Residency State
             if (residencyType == "PermanentResidentAlien")
             {
-                residencyStateId = (int)ResidencyStateEnum.PermanentResident;
+                residencyStateId = (int)ResidencyState.PermanentResident;
             }
             else if (residencyType == "USCitizen")
             {
-                residencyStateId = (int)ResidencyStateEnum.UsCitizen;
+                residencyStateId = (int)ResidencyState.UsCitizen;
             }
             else
             {
