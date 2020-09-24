@@ -189,13 +189,8 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === 'Pending review') {
       return (
-<<<<<<< HEAD
         <div className="td options"  data-testid="actionButton"> 
-          <button
-=======
-        <div className="td options">
           <button data-testid = "needList-reviewBtnts"
->>>>>>> 760ae367b31c29ae66ef9474b1b711b45fa03176
             onClick={() => reviewClickHandler(index)}
             className="btn btn-primary btn-sm"
           >
@@ -205,13 +200,9 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     } else {
       return (
-<<<<<<< HEAD
         <div className="td options" data-testid="actionButton">
-          <button
-=======
-        <div className="td options">
+         
           <button data-testid = "needList-detailBtnts"
->>>>>>> 760ae367b31c29ae66ef9474b1b711b45fa03176
             onClick={() => detailClickHandler(index)}
             className="btn btn-secondry btn-sm" 
           >

@@ -394,7 +394,6 @@ export class NeedListActions {
 
   static async getNeedList(loanApplicationId: string, status: boolean) {
     try {
-<<<<<<< HEAD
       if (status) {
         return Promise.resolve(NeedList.filter(needList => needList.status !== "Completed"));
       }
@@ -402,9 +401,7 @@ export class NeedListActions {
         return Promise.resolve(NeedList);
       }
 
-=======
       return Promise.resolve(NeedListMockApplictionId3);
->>>>>>> 760ae367b31c29ae66ef9474b1b711b45fa03176
     } catch (error) {
       console.log(error);
     }
