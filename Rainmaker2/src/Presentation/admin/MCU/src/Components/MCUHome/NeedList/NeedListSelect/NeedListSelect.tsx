@@ -163,7 +163,7 @@ export const NeedListSelect = ({
   const renderDocsPopover = () => {
     return (
       <Overlay
-        show={true}
+        show={showPopover}
         target={target}
         placement="right"
         container={ref.current}
