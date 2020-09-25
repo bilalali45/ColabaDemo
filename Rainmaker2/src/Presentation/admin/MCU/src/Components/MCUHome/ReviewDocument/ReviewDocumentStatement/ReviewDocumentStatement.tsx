@@ -11,6 +11,7 @@ import { DocumentStatus } from '../../../../Entities/Types/Types';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
+import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
 
 const Footer = ({
   acceptDocument,
@@ -160,12 +161,13 @@ export const ReviewDocumentStatement = ({
   const requestDocumentFiles = async (currentDocument: NeedList) => {
     const { id, requestId, docId } = currentDocument;
 
-    const http = new Http();
+   const data = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
+       // const http = new Http();
 
-    const { data } = await http.get<DocumentFileType[]>(
-      NeedListEndpoints.GET.documents.files(id, requestId, docId)
-    );
-
+    // const { data } = await http.get<DocumentFileType[]>(
+    //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
+    // );
+   debugger
     const { files, userName } = data[0];
 
     console.log('currentDocument', currentDocument);

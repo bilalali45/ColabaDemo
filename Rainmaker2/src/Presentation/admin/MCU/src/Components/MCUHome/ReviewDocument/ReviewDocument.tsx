@@ -18,6 +18,8 @@ import {
 import { NeedList } from '../../../Entities/Models/NeedList';
 import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
+import { ReviewDocumentActions } from '../../../Store/actions/ReviewDocumentActions';
+import { NeedListActions } from '../../../Store/actions/__mocks__/NeedListActions';
 
 export const ReviewDocument = () => {
   console.log('------------------------------- Review Document--------------------------------------')
@@ -56,24 +58,20 @@ export const ReviewDocument = () => {
     async (id, requestId, docId, fileId) => {
       try {
         setLoading(true);
+        let response = await ReviewDocumentActions.getDocumentForView(id, requestId, docId, fileId)
+        // const http = new Http();
 
-        const http = new Http();
+        // const authToken = LocalDB.getAuthToken();
 
-        const authToken = LocalDB.getAuthToken();
+        // const url = NeedListEndpoints.GET.documents.view(id,requestId,docId,fileId
+        // );
 
-        const url = NeedListEndpoints.GET.documents.view(
-          id,
-          requestId,
-          docId,
-          fileId
-        );
-
-        const response = await Axios.get(http.createUrl(http.baseUrl, url), {
-          responseType: 'arraybuffer',
-          headers: {
-            Authorization: `Bearer ${authToken}`
-          }
-        });
+        // const response = await Axios.get(http.createUrl(http.baseUrl, url), {
+        //   responseType: 'arraybuffer',
+        //   headers: {
+        //     Authorization: `Bearer ${authToken}`
+        //   }
+        // });
 
         setBlobData(response);
         setFileViewd(true);
@@ -233,14 +231,14 @@ export const ReviewDocument = () => {
           setAcceptRejectLoading(true);
 
           const { id, requestId, docId } = currentDocument;
+         await ReviewDocumentActions.acceptDocument(id, requestId, docId);
+          // const http = new Http();
 
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.accept(), {
-            id,
-            requestId,
-            docId
-          });
+          // await http.post(NeedListEndpoints.POST.documents.accept(), {
+          //   id,
+          //   requestId,
+          //   docId
+          // });
 
           setAcceptRejectLoading(false);
 
@@ -278,7 +276,7 @@ export const ReviewDocument = () => {
           const { id, requestId, docId } = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
-
+        //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
           const http = new Http();
 
           await http.post(NeedListEndpoints.POST.documents.reject(), {
