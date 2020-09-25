@@ -9,6 +9,7 @@ import {
   SVGCalender,
   SVGBellSleep
 } from '../../assets/icons/SVGIcons';
+import {LocalDB} from '../../lib/localStorage';
 
 interface NotificationProps {
   removeNotification: () => void;
@@ -49,15 +50,24 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
   const readDocumentsAndOpenLink = async (
     loanApplicationId: string,
     link: string,
-    notificationStatus: string
+    notificationStatus: string,
+    e: any
   ) => {
     try {
+      e.preventDefault();
       //Prevent unecessary API call
       if (['Unseen', 'Unread', 'Seen'].includes(notificationStatus)) {
         await readAllNotificationsForDocument(loanApplicationId);
       }
     } catch (error) {
       console.warn(error);
+    }
+
+    if (
+      !LocalDB.getPortalReferralUrl() ||
+      LocalDB.getPortalReferralUrl() != window.location.href
+    ) {
+      LocalDB.setPortalReferralUrl(window.location.href);
     }
 
     window.open(link, '_self');
@@ -84,10 +94,10 @@ export const Notification: FunctionComponent<NotificationProps> = (props) => {
         <div>
           <Link
             className="n-wrap"
-            onClick={() =>
-              readDocumentsAndOpenLink(loanApplicationId, link, status)
+            onClick={(e) =>
+              readDocumentsAndOpenLink(loanApplicationId, link, status, e)
             }
-            to="#"
+            to={link}
           >
             <div className="n-icon">
               <SVGDocument />

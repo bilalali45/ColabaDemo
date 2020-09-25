@@ -79,7 +79,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderNeedList = (data: any) => {   
     return data.map((item: NeedList, index: number) => {
       return (
-        <div key={index} className="tr row-shadow">
+        <div key={index} className="tr row-shadow" data-testid="needList">
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
@@ -149,7 +149,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     }
     return (
       <div className="td">
-        <span className={cssClass}></span> {toTitleCase(status)}
+        <span data-testid="needListStatus" className={cssClass}></span> {toTitleCase(status)}
       </div>
     );
   };
@@ -189,10 +189,10 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     let count = data.files != null ? data.files.length : data.files;
     if (data.status === 'Pending review') {
       return (
-        <div className="td options">
+        <div className="td options"  data-testid="actionButton"> 
           <button data-testid = "needList-reviewBtnts"
             onClick={() => reviewClickHandler(index)}
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm nl-btn"
           >
             Review
           </button>
@@ -200,10 +200,11 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     } else {
       return (
-        <div className="td options">
+        <div className="td options" data-testid="actionButton">
+         
           <button data-testid = "needList-detailBtnts"
             onClick={() => detailClickHandler(index)}
-            className="btn btn-secondry btn-sm" 
+            className="btn btn-secondry btn-sm nl-btn"
           >
             Details
           </button>
@@ -250,19 +251,19 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   ) => {
     if (data === null || data.length === 0) {
       return (
-        <div className="td">
+        <div className="td" data-testid="need-list-files">
           <span className="block-element">No file submitted yet</span>
         </div>
       );
     } else {
       return (
-        <div className="td ">
+        <div className="td " data-testid="need-list-files">
           {data.map((file: NeedListDocuments, index) => {
             const pendingReview = status === DocumentStatus.PENDING_REVIEW;
             const { mcuName, clientName, isRead } = file;
 
             return (
-              <span key={index} className="block-element c-filename">
+              <span key={index} className="block-element c-filename" >
                 {mcuName ? (
                   <React.Fragment>
                     <span
@@ -317,15 +318,15 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderSyncToLos = (data: NeedListDocuments[], index: number) => {
 
     if (data === null || data.length === 0) {
-      return <div className="td"></div>
+      return <div data-testid="sync-status" className="td" ></div>
 
     } else {
       return (
-        <div id={String(index)} className="td">
+        <div data-testid="sync-status" id={String(index)} className="td">
           {data.map((item: NeedListDocuments) => {
 
             return (
-              <span id={String(item.index)} key={item.index} className="block-element c-filename">
+              <span id={String(item.index)} key={item.index} className="block-element c-filename" >
                 <a onClick={() => FileSyncToLos(item)}>
                   {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
                   }

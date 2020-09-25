@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 	 <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
+    <UserSecretsId>5b80c1d2-70e1-46b1-9b2e-b17b8746e1e9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

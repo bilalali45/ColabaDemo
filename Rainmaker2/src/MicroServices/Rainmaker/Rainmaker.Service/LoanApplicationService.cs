@@ -16,7 +16,7 @@ namespace Rainmaker.Service
     public class LoanApplicationService : ServiceBase<RainMakerContext, LoanApplication>, ILoanApplicationService
     {
         [Flags]
-        public enum RelatedEntity
+        public enum RelatedEntities
         {
             Borrowers = 1 << 0
         }
@@ -137,7 +137,7 @@ namespace Rainmaker.Service
                                                                                           ? ""
                                                                                           : y.LoanContact.LastName))
                                                                           .ToList(),
-                                                              LoanNumber = x.LoanNumber,
+                                                              LoanNumber = x.ByteFileName,
                                                               ExpectedClosingDate = x.ExpectedClosingDate,
                                                               PopertyValue = x.PropertyInfo.PropertyValue,
                                                               LoanProgram = x.Product.AliasName,
@@ -157,7 +157,7 @@ namespace Rainmaker.Service
 
         public List<LoanApplication> GetLoanApplicationWithDetails(int? id = null,
                                                                    string encompassNumber = "",
-                                                                   RelatedEntity? includes = null)
+                                                                   RelatedEntities? includes = null)
         {
             var loanApplications = Repository.Query().AsQueryable();
 
@@ -177,10 +177,10 @@ namespace Rainmaker.Service
 
 
         private IQueryable<LoanApplication> ProcessIncludes(IQueryable<LoanApplication> query,
-                                                            RelatedEntity includes)
+                                                            RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag: RelatedEntity.Borrowers)) query = query.Include(navigationPropertyPath: loanApplication => loanApplication.Borrowers);
+            if (includes.HasFlag(flag: RelatedEntities.Borrowers)) query = query.Include(navigationPropertyPath: loanApplication => loanApplication.Borrowers);
             // @formatter:on 
             return query;
         }
@@ -284,80 +284,8 @@ namespace Rainmaker.Service
                                                                      .First(y => y.OwnTypeId ==
                                                                                  (int) OwnTypeEnum.PrimaryContact).Customer.Contact.LastName
                                                             }).FirstOrDefaultAsync();
-            if (!isDraft)
-                await ChangeStatus(loanApplicationId: loanApplicationId,
-                                   userProfileId: userProfileId,
-                                   _opportunityservice: opportunityService);
             return postModel;
         }
-
-
-        private async Task ChangeStatus(int loanApplicationId,
-                                        int userProfileId,
-                                        IOpportunityService _opportunityservice)
-        {
-            var loanApplication = await Uow.Repository<LoanApplication>().Query(query: x => x.Id == loanApplicationId)
-                                           .FirstOrDefaultAsync();
-
-            var lockStatusId = EnumLockStatusList.Float.ToInt();
-            var statusId = StatusListEnum.DocumentUpload.ToInt();
-
-            var opportunity = await _opportunityservice.GetByIdAsync(id: loanApplication.OpportunityId.Value);
-            OpportunityStatusLog statuslog = null;
-            OpportunityLockStatusLog lockStatusLog = null;
-
-            if (opportunity != null)
-            {
-                //status log
-                if (statusId != opportunity.StatusId)
-                {
-                    statuslog = new OpportunityStatusLog
-                                {
-                                    StatusId = statusId,
-                                    DatetimeUtc = DateTime.UtcNow,
-                                    OpportunityId = opportunity.Id,
-                                    IsActive = true,
-                                    StatusCauseId = null,
-                                    ModifiedBy = userProfileId,
-                                    ModifiedOnUtc = DateTime.UtcNow,
-                                    CreatedBy = userProfileId,
-                                    CreatedOnUtc = DateTime.UtcNow,
-                                    EntityTypeId = Constants.GetEntityType(t: typeof(OpportunityStatusLog))
-                                };
-                    _opportunityservice.InsertOpportunityStatusLog(opportunityStatusLog: statuslog);
-                }
-
-                //Lock Status Log
-                if (lockStatusId != opportunity.LockStatusId)
-                {
-                    lockStatusLog = new OpportunityLockStatusLog
-                                    {
-                                        LockStatusId = lockStatusId,
-                                        LockCauseId = null,
-                                        DatetimeUtc = DateTime.UtcNow,
-                                        OpportunityId = opportunity.Id,
-                                        IsActive = true,
-                                        ModifiedBy = userProfileId,
-                                        ModifiedOnUtc = DateTime.UtcNow,
-                                        CreatedBy = userProfileId,
-                                        CreatedOnUtc = DateTime.UtcNow,
-                                        EntityTypeId = Constants.GetEntityType(t: typeof(OpportunityLockStatusLog))
-                                    };
-                    _opportunityservice.InsertOpportunityLockStatusLog(opportunityLockStatusLog: lockStatusLog);
-                }
-
-                opportunity.StatusId = statusId;
-                opportunity.StatusCauseId = null;
-                opportunity.LockStatusId = lockStatusId;
-                opportunity.LockCauseId = null;
-                opportunity.ModifiedBy = CurrentUserId;
-                opportunity.ModifiedOnUtc = DateTime.UtcNow;
-                opportunity.TpId = null;
-                _opportunityservice.Update(item: opportunity);
-                await _opportunityservice.SaveChangesAsync();
-            }
-        }
-
 
         public async Task<LoanApplicationModel> GetByLoanApplicationId(int loanId)
         {
@@ -397,6 +325,18 @@ namespace Rainmaker.Service
           
             await Uow.SaveChangesAsync();
             
+        }
+
+        public async Task<string> GetBanner(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.BusinessUnit)
+                .Select(x => x.BusinessUnit.Banner).FirstAsync();
+        }
+
+        public async Task<string> GetFavIcon(int loanApplicationId)
+        {
+            return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.BusinessUnit)
+                .Select(x => x.BusinessUnit.FavIcon).FirstAsync();
         }
     }
 }

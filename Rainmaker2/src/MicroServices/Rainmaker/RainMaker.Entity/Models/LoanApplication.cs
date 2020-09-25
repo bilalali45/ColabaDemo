@@ -79,6 +79,7 @@ namespace RainMaker.Entity.Models
         public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
         public int? CreatedBy { get; set; } // CreatedBy
         public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
+        public string ByteFileName { get; set; } // ByteFileName (length: 50)
 
         // Reverse navigation
 

@@ -11,22 +11,29 @@ import HeaderContent from "./utils/header_footer_utils/HeaderContent";
 import { Auth } from "./services/auth/Auth";
 import { LaonActions } from "./store/actions/LoanActions";
 import IdleTimer from "react-idle-timer";
-
+import logoHeaderSrc from './assets/images/texasWhiteHeader.png';
 declare global {
   interface Window {
     envConfig: any;
   }
 }
+window.envConfig = window.envConfig || {};
+function getFaviconEl() {
+  return document.getElementById("favicon");
+}
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [footerText, setFooterText] = useState("");
+  const [companyLogoSrc, setcompanyLogoSrc] = useState("");
+  const [favIconSrc, setfavIconSrc] = useState("");
+
 
   const history = useHistory()
 
   useEffect(() => {
-    // history?.push(`/${Auth.getLoanAppliationId()}`);
-    // console.log("Document Management App Version", "0.1.3");
+    console.log("Document Management App Version", "0.1.3");
+    console.log('Logo Src',logoHeaderSrc)
     authenticate();
     // component unmount
     return () => {
@@ -38,6 +45,8 @@ const App = () => {
     let isAuth = await UserActions.authorize();
     if (isAuth) {
       setAuthenticated(Boolean(isAuth));
+      getCompanyLogoSrc();
+      setFavIcon();
       getFooterText();
       addExpiryListener();
       keepAliveParentApp();
@@ -54,6 +63,24 @@ const App = () => {
     let footerText = await LaonActions.getFooter(applicationId);
     setFooterText(footerText);
   };
+
+  const getCompanyLogoSrc = async () => {
+    let applicationId = Auth.getLoanAppliationId();
+    let logoSrc = await LaonActions.getCompanyLogoSrc(applicationId);
+    let logo =`data:image/png;base64,${logoSrc}`
+    setcompanyLogoSrc(logo);
+  }
+
+  const setFavIcon = async  () => {
+    let applicationId = Auth.getLoanAppliationId();
+    const favicon:any = getFaviconEl(); // Accessing favicon element
+    let favIconSrc = await LaonActions.getCompanyFavIconSrc(applicationId);
+    let logo =`data:image/png;base64,${favIconSrc}`
+    if(favicon){
+      favicon.href=logo;
+    }
+  }
+
 
   const addExpiryListener = () => {
     if (Auth.getUserPayload()) {
@@ -95,7 +122,7 @@ const App = () => {
           timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
         />
         <RainsoftRcHeader
-          logoSrc={ImageAssets.header.logoheader}
+          logoSrc={companyLogoSrc}
           displayName={UserActions.getUserName()}
           // displayNameOnClick={HeaderContent.gotoDashboardHandler}
           options={HeaderContent.headerDropdowmMenu}
