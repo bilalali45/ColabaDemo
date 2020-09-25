@@ -166,13 +166,10 @@ export const ReviewDocumentStatement = ({
     //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
     // );
     const { files, userName } = data[0];
-
-    console.log('currentDocument', currentDocument);
-
     setDocumentFiles(files);
     setUsername(userName);
     setMcuNamesUpdated(
-      files.map((file) => {
+      files.map((file: any) => {
         return {
           fileId: file.fileId,
           mcuName:

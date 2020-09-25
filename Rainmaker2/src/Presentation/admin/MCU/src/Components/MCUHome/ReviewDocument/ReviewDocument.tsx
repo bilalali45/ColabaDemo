@@ -281,9 +281,8 @@ export const ReviewDocument = () => {
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
         //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.reject(), {
+        
+          await Http.post(NeedListEndpoints.POST.documents.reject(), {
             loanApplicationId,
             id,
             requestId,
