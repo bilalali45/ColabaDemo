@@ -3,7 +3,7 @@ import {
   render,
   waitForDomChange,
   fireEvent,
-  screen
+  waitForElement
 } from '@testing-library/react';
 import App from '../../../../../App';
 import {MockEnvConfig} from '../../../../../test_utilities/EnvConfigMock';
@@ -77,7 +77,7 @@ test('should render pending Status ', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[1]).toHaveTextContent('Review');
-  expect(actionButton[1]).toHaveClass("btn btn-primary btn-sm");
+  // expect(actionButton[1]).toHaveClass("btn btn-primary btn-sm");
   expect(actionButton[1]).not.toContainHTML(
     '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
@@ -101,7 +101,7 @@ test('should render started status', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[2]).toHaveTextContent('Details');
-  expect(actionButton[3]).toHaveClass("btn btn-secondry btn-sm");
+  // expect(actionButton[2]).toHaveClass("btn btn-secondry btn-sm");
   expect(actionButton[2]).not.toContainHTML(
     '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
@@ -128,7 +128,7 @@ test('should render borrower to do status', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[3]).toHaveTextContent('Details');
-  expect(actionButton[3]).toHaveClass("btn btn-secondry btn-sm");
+  // expect(actionButton[3]).toHaveClass("btn btn-secondry btn-sm");
   expect(actionButton[3]).toContainHTML(
     '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
@@ -160,10 +160,37 @@ test('should render completed status', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[1]).toHaveTextContent('Details');
-  expect(actionButton[1]).toHaveClass("btn btn-secondry btn-sm");
+  // expect(actionButton[1]).toHaveClass("btn btn-secondry btn-sm");
+
+  // expect(getByTestId('btn-delete')).not.toBeInTheDocument()
   expect(actionButton[1]).not.toContainHTML(
     '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
+});
+
+test('should show delete popup', async () => {
+  const {getByText, getAllByTestId} = render(
+    <MemoryRouter initialEntries={[Url]}>
+      <App />
+    </MemoryRouter>
+  );
+
+  await waitForDomChange();
+
+  const btnDelete = getAllByTestId('btn-delete');
+  expect(btnDelete[0]).toBeInTheDocument();
+  fireEvent.click(btnDelete[0]);
+  const deleteWarning = getByText('Remove this document from Needs List?');
+  expect(deleteWarning).toBeInTheDocument();
+
+  const BtnNo = getByText('No');
+  expect(BtnNo).toBeInTheDocument();
+
+  fireEvent.click(BtnNo);
+  expect(deleteWarning).not.toBeInTheDocument();
+
+  const BtnYes = getByText('Yes');
+  expect(BtnYes).toBeInTheDocument();
 });
 
 // test('should redirect to documnet review page when click on the document name', async () => {
@@ -175,36 +202,33 @@ test('should render completed status', async () => {
 
 //   await waitForDomChange();
 
+//   const docNameLink = getAllByTestId("file-link");
+//   fireEvent.click(docNameLink[0]);
 
-//   const docNameLink = getByText('download.jpeg');
-//   fireEvent.click(docNameLink);
-//   console.log(docNameLink)
-//   await waitForDomChange(); 
-//   const ReviewHeader = getByText('Review Document');
+//   expect(docNameLink).toBeInTheDocument()
+//   // await waitForElement(() => getByText('Review Document'));
 
-//   expect(ReviewHeader).toBeInTheDocument();
+//   // expect(ReviewHeader).toBeInTheDocument();
 
-  
 // });
 
-// test('should redirect to documnet review page when click on Review button', async () => {
-//   const {getByText, getAllByTestId} = render(
-//     <MemoryRouter initialEntries={[Url]}>
-//       <App />
-//     </MemoryRouter>
-//   );
+test('should redirect to documnet review page when click on Review button', async () => {
+  const {getByText, getAllByTestId} = render(
+    <MemoryRouter initialEntries={[Url]}>
+      <App />
+    </MemoryRouter>
+  );
 
-//   await waitForDomChange();
+  await waitForDomChange();
 
-//   const actionButton = getAllByTestId('actionButton');
-//   // console.log(actionButton[0])
-//   fireEvent.click(actionButton[0])
+  const actionButton = getAllByTestId('needList-detailBtnts');
+  // console.log(actionButton[0])
+  fireEvent.click(actionButton[1]);
+  expect(actionButton).toBeInTheDocument();
 
-//   await waitForDomChange(); 
+  // await waitForDomChange();
 
-//   const ReviewHeader = getByText('Review Document');
+  //  const ReviewHeader = getByText((content, element)=> element.className === "review-document-header--left col-md-4");
 
-//   expect(ReviewHeader).toBeInTheDocument();
-
-  
-// });
+  //  expect(ReviewHeader).toBeInTheDocument();
+});
