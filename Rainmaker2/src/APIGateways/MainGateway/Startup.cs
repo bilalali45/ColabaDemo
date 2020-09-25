@@ -10,7 +10,6 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 

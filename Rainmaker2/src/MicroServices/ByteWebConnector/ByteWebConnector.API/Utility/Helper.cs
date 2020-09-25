@@ -26,10 +26,10 @@ namespace ByteWebConnector.API.Utility
 
                 graph.DrawImage(image, 0, 0);
 
-                string pdfFilename1 = Path.Combine(@"D:\", Guid.NewGuid() + ".pdf");
+                string pdfFilename1 = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
 
                 pdf.Save(pdfFilename1);
-                // pdfbyte.Add(File.ReadAllBytes(pdfFilename1));
+                pdfbyte.Add(File.ReadAllBytes(pdfFilename1));
             }
             return pdfbyte;
         }

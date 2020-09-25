@@ -18,9 +18,9 @@ namespace Rainmaker.Service
 
         public async Task<List<Model.Sitemap>> GetMenu(int userProfileId)
         {
-            var permission = await Uow.Repository<UserProfile>().Query(x => x.Id == userProfileId && x.IsActive == true)
+            var permission = await Uow.Repository<UserProfile>().Query(x => x.Id == userProfileId && x.IsActive)
                             .Include(x => x.UserInRoles).ThenInclude(x => x.UserRole).ThenInclude(x => x.UserPermissionRoleBinders).ThenInclude(x => x.UserPermission)
-                            .SelectMany(x => x.UserInRoles.Where(y => y.UserRole.IsActive == true).Select(y => y.UserRole))
+                            .SelectMany(x => x.UserInRoles.Where(y => y.UserRole.IsActive).Select(y => y.UserRole))
                             .SelectMany(x => x.UserPermissionRoleBinders.Where(z => z.UserPermission.IsActive  && !z.UserPermission.IsDeleted).Select(d => d.UserPermission))
                             .Select(x => x.Id)
                             .ToListAsync();

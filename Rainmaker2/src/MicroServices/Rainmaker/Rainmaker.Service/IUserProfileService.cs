@@ -8,6 +8,6 @@ namespace Rainmaker.Service
     {
         Task<UserProfile> GetUserProfile(int userProfileId);
         Task<UserProfile> GetUserProfileEmployeeDetail(int? id = null,
-                                                           UserProfileService.RelatedEntity? includes = null);
+                                                           UserProfileService.RelatedEntities? includes = null);
     }
 }

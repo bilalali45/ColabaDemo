@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ByteWebConnector.SDK.Controllers
 {
@@ -10,7 +6,7 @@ namespace ByteWebConnector.SDK.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        [Route(template: "[action]")]
+        [Route(template: "/")]
         public string Index()
         {
             return "ByteWebConnectorSdk micro service is running";

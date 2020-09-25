@@ -1,5 +1,4 @@
-﻿using ByteWebConnector.Model.Models;
-using ByteWebConnector.Model.Models.ByteApi;
+﻿using ByteWebConnector.Model.Models.ByteApi;
 using ByteWebConnector.Model.Models.ServiceResponseModels.ByteWebConnectorSDK;
 using ServiceCallHelper;
 

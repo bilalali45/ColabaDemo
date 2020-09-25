@@ -31,9 +31,7 @@ namespace DocumentManagement.Service
             bool exists = false;
             try
             {
-                using (await request.GetResponseAsync())
-                {
-                }
+                using (await request.GetResponseAsync());
                 exists = true;
             }
             catch (WebException ex)
