@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { Children } from 'react';
 import {
   render,
   waitForDomChange,
   fireEvent,
-  waitForElement
+  waitForElement,
+  waitFor
 } from '@testing-library/react';
 import App from '../../../../../App';
 import {MockEnvConfig} from '../../../../../test_utilities/EnvConfigMock';
 import {MockLocalStorage} from '../../../../../test_utilities/LocalStoreMock';
 import {MemoryRouter} from 'react-router-dom';
+import { getByText } from '@testing-library/react';
 
 jest.mock('axios');
 jest.mock('../../../../../Store/actions/UserActions');
 jest.mock('../../../../../Store/actions/NeedListActions');
+jest.mock('../../../../../Store/actions/ReviewDocumentActions');
 jest.mock('../../../../../Utils/LocalDB');
 
 const Url = '/DocumentManagement/needList/3';
@@ -101,7 +104,7 @@ test('should render started status', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[2]).toHaveTextContent('Details');
-  // expect(actionButton[2]).toHaveClass("btn btn-secondry btn-sm");
+  expect(actionButton[2].children[0]).toHaveClass("btn btn-secondry btn-sm nl-btn");
   expect(actionButton[2]).not.toContainHTML(
     '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
@@ -128,9 +131,9 @@ test('should render borrower to do status', async () => {
 
   const actionButton = getAllByTestId('actionButton');
   expect(actionButton[3]).toHaveTextContent('Details');
-  // expect(actionButton[3]).toHaveClass("btn btn-secondry btn-sm");
+  expect(actionButton[3].children[0]).toHaveClass("btn btn-secondry btn-sm nl-btn");
   expect(actionButton[3]).toContainHTML(
-    '<button class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
+    '<button data-testid="btn-delete" class="btn btn-delete btn-sm"><em class="zmdi zmdi-close"></em></button>'
   );
 });
 
@@ -186,31 +189,33 @@ test('should show delete popup', async () => {
   const BtnNo = getByText('No');
   expect(BtnNo).toBeInTheDocument();
 
+  const BtnYes = getByText('Yes');
+  expect(BtnYes).toBeInTheDocument();
+
   fireEvent.click(BtnNo);
   expect(deleteWarning).not.toBeInTheDocument();
 
-  const BtnYes = getByText('Yes');
-  expect(BtnYes).toBeInTheDocument();
+  
 });
 
-// test('should redirect to documnet review page when click on the document name', async () => {
-//   const {getByText, getAllByTestId} = render(
-//     <MemoryRouter initialEntries={[Url]}>
-//       <App />
-//     </MemoryRouter>
-//   );
+test('should redirect to documnet review page when click on the document name', async () => {
+  const {getByTestId, getAllByTestId} = render(
+    <MemoryRouter initialEntries={[Url]}>
+      <App />
+    </MemoryRouter>
+  );
 
-//   await waitForDomChange();
+  await waitForDomChange();
 
-//   const docNameLink = getAllByTestId("file-link");
-//   fireEvent.click(docNameLink[0]);
+  const docNameLink = getAllByTestId("file-link");
+  fireEvent.click(docNameLink[0]);
 
-//   expect(docNameLink).toBeInTheDocument()
-//   // await waitForElement(() => getByText('Review Document'));
+  await waitFor(() => {
+    let reviewHeader = getByTestId('review-headerts');
+    expect(reviewHeader).toHaveTextContent('Review Document');
+  })
 
-//   // expect(ReviewHeader).toBeInTheDocument();
-
-// });
+});
 
 test('should redirect to documnet review page when click on Review button', async () => {
   const {getByText, getAllByTestId} = render(
@@ -220,15 +225,12 @@ test('should redirect to documnet review page when click on Review button', asyn
   );
 
   await waitForDomChange();
+  const detailBtns=  getAllByTestId('needList-detailBtnts');      
+          fireEvent.click(detailBtns[0]);
 
-  const actionButton = getAllByTestId('needList-detailBtnts');
-  // console.log(actionButton[0])
-  fireEvent.click(actionButton[1]);
-  expect(actionButton).toBeInTheDocument();
-
-  // await waitForDomChange();
-
-  //  const ReviewHeader = getByText((content, element)=> element.className === "review-document-header--left col-md-4");
-
-  //  expect(ReviewHeader).toBeInTheDocument();
+          await waitFor(() => {
+            
+           
+            expect(getByText('Document Details'));
+          })
 });
