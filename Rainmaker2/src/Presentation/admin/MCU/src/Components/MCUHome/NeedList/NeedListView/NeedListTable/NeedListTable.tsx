@@ -35,7 +35,7 @@ type NeedListProps = {
 };
 
 export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
- const  {
+  const {
     needList,
     deleteDocument,
     sortDocumentTitle,
@@ -60,30 +60,30 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const [currentItem, setCurrentItem] = useState<NeedList | null>(null);
   const [syncButtonEnabled, setsyncButtonEnabled] = useState(false)
   const history = useHistory();
-  
-  useEffect(() => {
-    if(!needList || needList.length === 0) return 
-    
-    const allDocumentsHaveAtLeastOneFile = needList.some((document:NeedList) => document.files.length > 0)
 
-    const fileNotSyncedOrSyncFailed = needList.some((document:NeedList) => document.files.some(uploadedFile => ['sync_error','not_Synced'].includes(uploadedFile.byteProStatusClassName)))
+  useEffect(() => {
+    if (!needList || needList.length === 0) return
+
+    const allDocumentsHaveAtLeastOneFile = needList.some((document: NeedList) => document.files.length > 0)
+
+    const fileNotSyncedOrSyncFailed = needList.some((document: NeedList) => document.files.some(uploadedFile => ['sync_error', 'not_Synced'].includes(uploadedFile.byteProStatusClassName)))
 
     //Only enable sync button if there is a file with sync failed or it never synced.
-    if(fileNotSyncedOrSyncFailed===true && allDocumentsHaveAtLeastOneFile===true){
+    if (fileNotSyncedOrSyncFailed === true && allDocumentsHaveAtLeastOneFile === true) {
       setsyncButtonEnabled(true)
-    }else{
-     syncButtonEnabled===true && setsyncButtonEnabled(false)
+    } else {
+      syncButtonEnabled === true && setsyncButtonEnabled(false)
     }
-  },[syncButtonEnabled,needList])
-  
-  const renderNeedList = (data: any) => {   
+  }, [syncButtonEnabled, needList])
+
+  const renderNeedList = (data: any) => {
     return data.map((item: NeedList, index: number) => {
       return (
         <div key={index} className="tr row-shadow">
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          {!isByteProAuto && renderSyncToLos(item.files, item.index, )}
+          {!isByteProAuto && renderSyncToLos(item)}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -95,7 +95,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     });
   };
 
-  
+
 
   const renderDocName = (name: string, data: NeedListDocuments[] | null) => {
     let count = 0;
@@ -314,25 +314,26 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     }
   };
 
-  const renderSyncToLos = (data: NeedListDocuments[], index: number) => {
+  const renderSyncToLos = ({ files, index, status }: NeedList) => {
 
-    if (data === null || data.length === 0) {
+    if (files === null || files.length === 0) {
       return <div className="td"></div>
 
     } else {
       return (
         <div id={String(index)} className="td">
-          {data.map((item: NeedListDocuments) => {
-
-            return (
-              <span id={String(item.index)} key={item.index} className="block-element c-filename">
-                <a onClick={() => FileSyncToLos(item)}>
-                  {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
-                  }
-                </a>{' '}
-                {item.byteProStatusClassName == "synced" ? item.byteProStatusText : <span className="txt-stl" onClick={() => FileSyncToLos(item)}>{' '} {item.byteProStatusText}</span>}
-              </span>
-            );
+          {files.map((item: NeedListDocuments) => {
+            // if (status === 'Started' && files.length) {
+              return (
+                <span id={String(item.index)} key={item.index} className="block-element c-filename">
+                  <a onClick={() => status === 'Completed' && files.length && FileSyncToLos(item)}>
+                    {item.byteProStatusClassName == "synced" ? <img src={syncedIcon} className={item.byteProStatusClassName} alt="" /> : <em className={"icon-refresh " + item.byteProStatusClassName}></em>
+                    }
+                  </a>{' '}
+                  {item.byteProStatusClassName == "synced" ? item.byteProStatusText : <span className="txt-stl" onClick={() => status === 'Completed' && files.length && FileSyncToLos(item)}>{' '} {item.byteProStatusText}</span>}
+                </span>
+              );
+            // }
           })}
         </div>
       );
@@ -413,10 +414,10 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     } else {
       return (
         <div className="th">
-          <a onClick={() => syncButtonEnabled===true ? FilesSyncToLos(syncTitleClass) : {}} >
+          <a onClick={() => syncButtonEnabled === true ? FilesSyncToLos(syncTitleClass) : {}} >
             <em className={"icon-refresh " + syncTitleClass}></em>
           </a>{' '}
-          <span className="txt-stl" onClick={() => syncButtonEnabled===true ? FilesSyncToLos(syncTitleClass) : {}}>sync to LOS</span>
+          <span className="txt-stl" onClick={() => syncButtonEnabled === true ? FilesSyncToLos(syncTitleClass) : {}}>sync to LOS</span>
         </div>
       )
     }
@@ -432,7 +433,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
             <div className="icon"><img src={sycLOSIcon} alt="" /></div>
             <div className="msg">{synchronizing != true ? "Are you ready to sync the selected documents?" : "Synchronization in process..."}</div>
             <div className="btn-wrap">
-              <button disabled={synchronizing} onClick={() => synchronizing=== false ? postToBytePro(false) : {}} className="btn btn-primary btn-sm">
+              <button disabled={synchronizing} onClick={() => synchronizing === false ? postToBytePro(false) : {}} className="btn btn-primary btn-sm">
                 {synchronizing != true
                   ? <>
                     Sync
