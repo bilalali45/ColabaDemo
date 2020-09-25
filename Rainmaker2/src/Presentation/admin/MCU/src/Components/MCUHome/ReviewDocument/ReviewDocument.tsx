@@ -1,26 +1,28 @@
-import React, { useEffect, useCallback, useState, useContext } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Http } from 'rainsoft-js';
+import React, {useEffect, useCallback, useState, useContext} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import {Http} from 'rainsoft-js';
 import Axios from 'axios';
-import { DocumentView } from 'rainsoft-rc';
+import {DocumentView} from 'rainsoft-rc';
 import _ from 'lodash';
 
-import { ReviewDocumentHeader } from './ReviewDocumentHeader/ReviewDocumentHeader';
-import { ReviewDocumentStatement } from './ReviewDocumentStatement/ReviewDocumentStatement';
-import { NeedListEndpoints } from '../../../Store/endpoints/NeedListEndpoints';
-import { LocalDB } from '../../../Utils/LocalDB';
+import {ReviewDocumentHeader} from './ReviewDocumentHeader/ReviewDocumentHeader';
+import {ReviewDocumentStatement} from './ReviewDocumentStatement/ReviewDocumentStatement';
+import {NeedListEndpoints} from '../../../Store/endpoints/NeedListEndpoints';
+import {LocalDB} from '../../../Utils/LocalDB';
 import emptyIcon from '../../../Assets/images/empty-icon.svg';
-import { Store } from '../../../Store/Store';
+import {Store} from '../../../Store/Store';
 import {
   NeedListType,
   NeedListActionsType
 } from '../../../Store/reducers/NeedListReducer';
-import { NeedList } from '../../../Entities/Models/NeedList';
-import { DocumentStatus } from '../../../Entities/Types/Types';
-import { timeout } from '../../../Utils/helpers/Delay';
+import {NeedList} from '../../../Entities/Models/NeedList';
+import {DocumentStatus} from '../../../Entities/Types/Types';
+import {timeout} from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
-  console.log('------------------------------- Review Document--------------------------------------')
+  console.log(
+    '------------------------------- Review Document--------------------------------------'
+  );
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -28,36 +30,36 @@ export const ReviewDocument = () => {
   const [documentDetail, setDocumentDetail] = useState(false);
   const [fileViewd, setFileViewd] = useState(false);
   const [clientName, setClientName] = useState('');
-  const [previousDocumentButtonDisabled, setPreviousDocumentButtonDisabled] = useState(true);
-  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(false);
+  const [
+    previousDocumentButtonDisabled,
+    setPreviousDocumentButtonDisabled
+  ] = useState(true);
+  const [nextDocumentButtonDisabled, setNextDocumentButtonDisabled] = useState(
+    false
+  );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
   const [haveDocuments, setHaveDocuments] = useState(false);
-  const { state: AppState, dispatch } = useContext(Store);
-  const { needListManager } = AppState;
-  const { needList } = needListManager as Pick<NeedListType, 'needList'>;
+  const {state: AppState, dispatch} = useContext(Store);
+  const {needListManager} = AppState;
+  const {needList} = needListManager as Pick<NeedListType, 'needList'>;
   const [blobData, setBlobData] = useState<any>();
-  
+
   const history = useHistory();
   const location = useLocation();
-  const { state } = location;
+  const {state} = location;
 
   const goBack = () => {
-    console.log('Going Back---------------------------->')
-    history.push(`/needlist/${LocalDB.getLoanAppliationId()}`)
+    console.log('Going Back---------------------------->');
+    history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
 
- 
-  
-
   const documentsForReviewArrayIndexes = () =>
-    _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
+    _.keys(_.pickBy(needList, {status: DocumentStatus.PENDING_REVIEW}));
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
       try {
         setLoading(true);
-
-        const http = new Http();
 
         const authToken = LocalDB.getAuthToken();
 
@@ -68,7 +70,7 @@ export const ReviewDocument = () => {
           fileId
         );
 
-        const response = await Axios.get(http.createUrl(http.baseUrl, url), {
+        const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
           responseType: 'arraybuffer',
           headers: {
             Authorization: `Bearer ${authToken}`
@@ -97,7 +99,7 @@ export const ReviewDocument = () => {
       if (index === currentFileIndex || loading === true) return;
 
       if (currentDocument) {
-        const { id, requestId, docId } = currentDocument;
+        const {id, requestId, docId} = currentDocument;
 
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
@@ -117,7 +119,7 @@ export const ReviewDocument = () => {
 
   const changeCurrentDocument = useCallback(
     (nextDocument: NeedList, nextIndex: number, fromHeader: boolean) => {
-      const { id, requestId, docId, files } = nextDocument;
+      const {id, requestId, docId, files} = nextDocument;
 
       const nextDocIndex = needList.findIndex(
         (document, index) =>
@@ -232,11 +234,9 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const { id, requestId, docId } = currentDocument;
+          const {id, requestId, docId} = currentDocument;
 
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.accept(), {
+          await Http.post(NeedListEndpoints.POST.documents.accept(), {
             id,
             requestId,
             docId
@@ -275,13 +275,11 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const { id, requestId, docId } = currentDocument;
+          const {id, requestId, docId} = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
 
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.reject(), {
+          await Http.post(NeedListEndpoints.POST.documents.reject(), {
             loanApplicationId,
             id,
             requestId,
@@ -374,13 +372,15 @@ export const ReviewDocument = () => {
 
   useEffect(() => {
     //apex
-    if (!!currentDocument && currentDocument.files && currentDocument.files.length) {
+    if (
+      !!currentDocument &&
+      currentDocument.files &&
+      currentDocument.files.length
+    ) {
       setHaveDocuments(true);
+    } else {
+      setHaveDocuments(false);
     }
-    else {
-      setHaveDocuments(false)
-    }
-
 
     window.addEventListener('keydown', onMoveArrowKeys);
 
@@ -414,7 +414,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const { currentDocumentIndex, documentDetail, fileIndex } = state as any;
+        const {currentDocumentIndex, documentDetail, fileIndex} = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -446,7 +446,7 @@ export const ReviewDocument = () => {
         !!fileIndex && setCurrentFileIndex(fileIndex);
         setDocumentDetail(() => documentDetail);
 
-        const { id, requestId, docId, files, typeId, docName } = doc;
+        const {id, requestId, docId, files, typeId, docName} = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
           setClientName(files[fileIndex || 0].clientName);
@@ -461,12 +461,9 @@ export const ReviewDocument = () => {
     }
   }, [getDocumentForView, state, location.state]);
 
-
-  
-
   return (
     <div
-    data-testid="testId"
+      data-testid="testId"
       id="ReviewDocument"
       data-component="ReviewDocument"
       className="review-document"
@@ -496,32 +493,32 @@ export const ReviewDocument = () => {
       <div className="review-document-body">
         <div className="row">
           {!!currentDocument &&
-            currentDocument.files &&
-            currentDocument.files.length ? (
-              <div className="review-document-body--content col-md-8">
-                <div className="doc-view-mcu">
-                  <DocumentView
-                    loading={loading}
-                    id={currentDocument.id}
-                    requestId={currentDocument.requestId}
-                    docId={currentDocument.docId}
-                    clientName={clientName}
-                    blobData={blobData}
-                    hideViewer={() => { }}
-                  />
-                </div>
+          currentDocument.files &&
+          currentDocument.files.length ? (
+            <div className="review-document-body--content col-md-8">
+              <div className="doc-view-mcu">
+                <DocumentView
+                  loading={loading}
+                  id={currentDocument.id}
+                  requestId={currentDocument.requestId}
+                  docId={currentDocument.docId}
+                  clientName={clientName}
+                  blobData={blobData}
+                  hideViewer={() => {}}
+                />
               </div>
-            ) : (
-              <div className="no-preview">
-                <div className="no-preview--wrap">
-                  <div className="clearfix">
-                    <img src={emptyIcon} alt="No preview available" />
-                  </div>
-                  <h2>Nothing In {currentDocument?.docName}</h2>
-                  <p>No file submitted yet</p>
+            </div>
+          ) : (
+            <div className="no-preview">
+              <div className="no-preview--wrap">
+                <div className="clearfix">
+                  <img src={emptyIcon} alt="No preview available" />
                 </div>
+                <h2>Nothing In {currentDocument?.docName}</h2>
+                <p>No file submitted yet</p>
               </div>
-            )}
+            </div>
+          )}
           {/* review-document-body--content */}
           {!!currentDocument &&
             currentDocument.files &&

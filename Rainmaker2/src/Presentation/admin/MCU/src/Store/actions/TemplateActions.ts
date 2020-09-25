@@ -1,12 +1,10 @@
-import { Endpoints } from "../endpoints/Endpoints";
-import axios, { AxiosResponse } from "axios";
-import { LocalDB } from "../../Utils/LocalDB";
-import { Http } from "rainsoft-js";
-import { Template } from "../../Entities/Models/Template";
-import { CategoryDocument } from "../../Entities/Models/CategoryDocument";
-import { debug } from "console";
-
-const http = new Http();
+import {Endpoints} from '../endpoints/Endpoints';
+import axios, {AxiosResponse} from 'axios';
+import {LocalDB} from '../../Utils/LocalDB';
+import {Http} from 'rainsoft-js';
+import {Template} from '../../Entities/Models/Template';
+import {CategoryDocument} from '../../Entities/Models/CategoryDocument';
+import {debug} from 'console';
 
 let fetchTemplateDocumentCancelToken = axios.CancelToken.source();
 
@@ -14,7 +12,7 @@ export class TemplateActions {
   static async fetchTemplates() {
     let url = Endpoints.TemplateManager.GET.templates();
     try {
-      let res: AxiosResponse<Template[]> = await http.get<Template[]>(url);
+      let res: AxiosResponse<Template[]> = await Http.get<Template[]>(url);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -25,7 +23,7 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.GET.categoryDocuments();
 
     try {
-      let res: AxiosResponse<CategoryDocument[]> = await http.get<
+      let res: AxiosResponse<CategoryDocument[]> = await Http.get<
         CategoryDocument[]
       >(url);
       return res.data;
@@ -40,13 +38,13 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.GET.templateDocuments(id);
 
     try {
-      let res = await http.fetch(
+      let res = await Http.fetch(
         {
-          url: http.createUrl(http.baseUrl, url),
-          cancelToken: fetchTemplateDocumentCancelToken.token,
+          url: Http.createUrl(Http.baseUrl, url),
+          cancelToken: fetchTemplateDocumentCancelToken.token
         },
         {
-          Authorization: `Bearer ${LocalDB.getAuthToken()}`,
+          Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
       return res.data;
@@ -58,7 +56,7 @@ export class TemplateActions {
   static async fetchEmailTemplate() {
     let url = Endpoints.TemplateManager.GET.getEmailTemplate();
     try {
-      let res = await http.get(url)
+      let res = await Http.get(url);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -70,21 +68,21 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.POST.insertTemplate();
     let template = {
       name
-    }
+    };
     try {
-      let res = await http.post(url, template);
+      let res = await Http.post(url, template);
       return res.data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   static async renameTemplate(templateId: string, name: string) {
     let url = Endpoints.TemplateManager.POST.renameTemplate();
     try {
-      let res = await http.post(url, {
+      let res = await Http.post(url, {
         id: templateId,
-        name,
+        name
       });
       return true;
     } catch (error) {
@@ -95,17 +93,17 @@ export class TemplateActions {
   static async deleteTemplate(templateId: string) {
     let url = Endpoints.TemplateManager.DELETE.template();
     try {
-      let res: any = await http.fetch(
+      let res: any = await Http.fetch(
         {
-          url: http.createUrl(http.baseUrl, url),
-          method: "DELETE",
+          url: Http.createUrl(Http.baseUrl, url),
+          method: 'DELETE',
           data: {
-            templateId,
-          },
+            templateId
+          }
         },
         {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${http.auth}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
       return true;
@@ -122,10 +120,10 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.POST.addDocument();
     let document = {
       templateId,
-      [type]: docTypeOrName,
+      [type]: docTypeOrName
     };
     try {
-      let res = await http.post(url, document);
+      let res = await Http.post(url, document);
       return true;
     } catch (error) {
       console.log(error);
@@ -135,18 +133,18 @@ export class TemplateActions {
   static async deleteTemplateDocument(templateId: string, documentId: string) {
     let url = Endpoints.TemplateManager.DELETE.deleteTemplateDocument();
     try {
-      let res: any = await http.fetch(
+      let res: any = await Http.fetch(
         {
-          url: http.createUrl(http.baseUrl, url),
-          method: "DELETE",
+          url: Http.createUrl(Http.baseUrl, url),
+          method: 'DELETE',
           data: {
             id: templateId,
-            documentId,
-          },
+            documentId
+          }
         },
         {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${http.auth}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
       return res?.status;
@@ -156,9 +154,11 @@ export class TemplateActions {
   }
 
   static async isDocumentDraft(loanApplicationId: string) {
-    let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(loanApplicationId);
+    let url = Endpoints.DocumentManager.GET.documents.isDocumentDraft(
+      loanApplicationId
+    );
     try {
-      let res: any = await http.get(url);
+      let res: any = await Http.get(url);
       return {
         requestId: res?.data?.requestId
       };
