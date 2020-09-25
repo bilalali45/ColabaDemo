@@ -59,7 +59,7 @@ namespace ByteWebConnector.API.Controllers
         // POST api/<BorrowerController>
         [Route(template: "update")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ByteREO byteReo)
+        public async Task<IActionResult> PostAsync(ByteReo byteReo)
         {
             var borrowerReo = byteReo.GetBorrowerReo();
 

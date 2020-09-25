@@ -44,6 +44,7 @@ namespace ByteWebConnector.API
             
             services.AddScoped<ISettingService, SettingService>();
             services.AddScoped<ByteWebConnector.Service.InternalServices.IRainmakerService, ByteWebConnector.Service.InternalServices.RainmakerService>();
+            services.AddScoped<ByteWebConnector.Service.InternalServices.IByteWebConnectorSdkService, ByteWebConnector.Service.InternalServices.ByteWebConnectorSdkService>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             #region HttpClientDependencies
 

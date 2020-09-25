@@ -8,6 +8,9 @@ namespace DocumentManagement.Service
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration config;
+        private static object lockObject = new object();
+        private static volatile string FtpKey=string.Empty;
+        private static volatile string FileKey=string.Empty;
         public KeyStoreService(HttpClient httpClient, IConfiguration config)
         {
             this.httpClient = httpClient;
@@ -15,17 +18,31 @@ namespace DocumentManagement.Service
         }
         public async Task<string> GetFtpKey()
         {
+            if (!string.IsNullOrEmpty(FtpKey))
+                return FtpKey;
             var ftpKey = config["File:FtpKey"];
             var ftpKeyResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={ftpKey}");
             ftpKeyResponse.EnsureSuccessStatusCode();
-            return await ftpKeyResponse.Content.ReadAsStringAsync();
+            ftpKey = await ftpKeyResponse.Content.ReadAsStringAsync();
+            lock (lockObject)
+            {
+                FtpKey = ftpKey;
+            }
+            return ftpKey;
         }
         public async Task<string> GetFileKey()
         {
+            if (!string.IsNullOrEmpty(FileKey))
+                return FileKey;
             var key = config["File:Key"];
             var csResponse = await httpClient.GetAsync($"{config["KeyStore:Url"]}/api/keystore/keystore?key={key}");
             csResponse.EnsureSuccessStatusCode();
-            return await csResponse.Content.ReadAsStringAsync();
+            key = await csResponse.Content.ReadAsStringAsync();
+            lock (lockObject)
+            {
+                FileKey = key;
+            }
+            return key;
         }
     }
 }

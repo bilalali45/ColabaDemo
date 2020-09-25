@@ -24,7 +24,10 @@ test('renders learn react link', async () => {
     </MemoryRouter>
   );
 
-  await waitForDomChange();
+//   console.log(
+//     window.location.pathname,
+//     ' ===================================================================== '
+//   );
 
   const linkElement = getByTestId('template-link');
   await waitFor(() => {

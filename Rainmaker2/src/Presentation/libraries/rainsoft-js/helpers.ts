@@ -62,7 +62,10 @@ export const FormatAmountByCountry = (amount: number) =>                        
 }
 
 export const toTitleCase = (str: string | undefined) => {  
-        return str.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
+    if(!str){
+        return "";
+    }
+     return str?.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
           return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
         });   
 }

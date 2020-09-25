@@ -1,12 +1,12 @@
-using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace ByteWebConnector.API
 {
@@ -15,22 +15,26 @@ namespace ByteWebConnector.API
         public static void Main(string[] args)
         {
             Environment.CurrentDirectory = AppContext.BaseDirectory;
-            ConfigureLogging();
+            ConfigureLogging(args);
             CreateHost(args: args);
         }
 
 
-        private static void ConfigureLogging()
+        private static void ConfigureLogging(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT");
+            var environment = string.Empty;
+            foreach (var arg in args)
+            {
+                if (arg.Contains("--environment="))
+                {
+                    environment = arg.Replace("--environment=", "");
+                    break;
+                }
+            }
             var configuration = new ConfigurationBuilder()
                                 .AddJsonFile(path: "appsettings.json",
                                              optional: false,
                                              reloadOnChange: true)
-                                .AddJsonFile(
-                                             path:
-                                             $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                             optional: true)
                                 .Build();
             Log.Logger = new LoggerConfiguration()
                          .Enrich.WithCorrelationIdHeader(headerKey: "CorrelationId")
@@ -95,10 +99,6 @@ namespace ByteWebConnector.API
                            configuration.AddJsonFile(path: "appsettings.json",
                                                      optional: false,
                                                      reloadOnChange: true);
-                           configuration.AddJsonFile(
-                                                     path:
-                                                     $"appsettings.{Environment.GetEnvironmentVariable(variable: "ASPNETCORE_ENVIRONMENT")}.json",
-                                                     optional: true);
                            configuration.AddJsonFile(path: Path.Combine(path1: "Configuration",
                                                                         path2: "serviceDiscovery.json"),
                                                      optional: true,

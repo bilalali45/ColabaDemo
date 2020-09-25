@@ -54,6 +54,7 @@ namespace Rainmaker.API
             services.AddScoped<IBorrowerService, BorrowerService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+         
             services.AddControllers().AddNewtonsoftJson(options =>
                                                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                                       );

@@ -1,6 +1,5 @@
 export class UserActions {
   static authorize() {
-    console.log('+++++++++++++++++++');
     return Promise.resolve(true);
   }
 

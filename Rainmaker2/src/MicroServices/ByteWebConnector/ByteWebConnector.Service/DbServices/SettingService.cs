@@ -4,6 +4,7 @@ using Extensions.ExtensionClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ByteWebConnector.Model.Models.Settings;
 using URF.Core.Abstractions;
 
 namespace ByteWebConnector.Service.DbServices

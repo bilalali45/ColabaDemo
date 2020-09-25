@@ -260,6 +260,11 @@ namespace ByteWebConnector.Service
         public virtual IQueryable<TEntity> Query()
             => Repository.Query();
 
+        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> query)
+        {
+            return Repository.Query(query);
+        }
+
         public virtual IQueryable<TEntity> Queryable() 
             => Repository.Queryable();
 
@@ -299,11 +304,6 @@ namespace ByteWebConnector.Service
         public void SoftDelete(TEntity item)
         {
             Repository.SoftDelete(item);
-        }
-
-        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> query)
-        {
-            return Repository.Query(query);
         }
 
         public IQueryable<TEntity> Query(DynamicLinQFilter dynamicQuery, Expression<Func<TEntity, bool>> query = null)
