@@ -72,7 +72,7 @@ namespace LosIntegration.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(),null,null,null, null);
+            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(),null,null,null);
 
             controller.ControllerContext = context;
             //Act
@@ -130,7 +130,7 @@ namespace LosIntegration.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(), null, null, null, null);
+            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(), null, null, null);
 
             controller.ControllerContext = context;
             //Act
@@ -192,7 +192,7 @@ namespace LosIntegration.Tests
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(), null, null, null, null);
+            var controller = new DocumentController(httpClientFactory.Object, mockConfiguration.Object, mockMappingService.Object, Mock.Of<ILogger<DocumentController>>(), null, null, null);
 
             controller.ControllerContext = context;
             //Act

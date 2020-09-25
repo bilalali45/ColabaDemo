@@ -4,7 +4,7 @@ import {Http} from 'rainsoft-js';
 import {Endpoints} from '../endpoints/Endpoints';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
-const http = new Http();
+
 const cookies = new Cookies();
 
 export class UserActions {
@@ -15,7 +15,7 @@ export class UserActions {
       employee: true
     };
 
-    let res: any = await http.post(
+    let res: any = await Http.post(
       Endpoints.User.POST.authorize(),
       credentials
     );
@@ -34,7 +34,7 @@ export class UserActions {
       if (!LocalDB.checkAuth()) {
         return;
       }
-      let res: any = await http.post(Endpoints.User.POST.refreshToken(), {
+      let res: any = await Http.post(Endpoints.User.POST.refreshToken(), {
         token: LocalDB.getAuthToken(),
         refreshToken: LocalDB.getRefreshToken()
       });
@@ -47,7 +47,7 @@ export class UserActions {
         let payload = UserActions.decodeJwt(res.data.data.token);
         LocalDB.storeTokenPayload(payload);
         UserActions.addExpiryListener();
-        http.setAuth(res.data.data.token);
+        //http.setAuth(res.data.data.token);
         return true;
       }
       console.log('Refresh token fail.');
@@ -81,7 +81,7 @@ export class UserActions {
         let tokens: any = await UserActions.authenticate();
         if (tokens?.token) {
           LocalDB.storeAuthTokens(tokens.token, tokens.refreshToken);
-          http.setAuth(tokens.token);
+          //http.setAuth(tokens.token);
           return true;
         } else {
           return false;
@@ -100,7 +100,7 @@ export class UserActions {
         console.log('Cache token values exist');
         LocalDB.storeAuthTokens(Rainmaker2Token, Rainmaker2RefreshToken);
         LocalDB.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        http.setAuth(Rainmaker2Token);
+        //http.setAuth(Rainmaker2Token);
         let isAuth = LocalDB.checkAuth();
         console.log('Cache token check Auth', isAuth);
         if (isAuth === 'token expired' || !isAuth) {
@@ -117,7 +117,7 @@ export class UserActions {
         return false;
       }
     } else {
-      http.setAuth(LocalDB.getAuthToken() || '');
+      //http.setAuth(LocalDB.getAuthToken() || '');
       return true;
     }
   }

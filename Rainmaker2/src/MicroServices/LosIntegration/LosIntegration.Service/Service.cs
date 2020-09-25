@@ -262,6 +262,10 @@ namespace LosIntegration.Service
         public virtual IQueryable<TEntity> Query()
             => Repository.Query();
 
+        public IQueryable<TEntity> Query(DynamicLinQFilter dynamicQuery, Expression<Func<TEntity, bool>> query = null)
+        {
+            return Repository.Query(dynamicQuery, query);
+        }
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> query)
         {
             return Repository.Query(query);
@@ -306,11 +310,6 @@ namespace LosIntegration.Service
         public void SoftDelete(TEntity item)
         {
             Repository.SoftDelete(item);
-        }
-
-        public IQueryable<TEntity> Query(DynamicLinQFilter dynamicQuery, Expression<Func<TEntity, bool>> query = null)
-        {
-            return Repository.Query(dynamicQuery,query);
         }
 
         IRepository<T> IRepository<TEntity>.GetRepository<T>()
