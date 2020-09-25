@@ -6,15 +6,15 @@ import { FileUpload } from "../../../utils/helpers/FileUpload";
 import { Rename } from "../../../utils/helpers/rename";
 import { DocumentsActionType } from "../../reducers/documentReducer";
 
-
-const http = new Http();
-
 export class DocumentUploadActions {
+  static percent: any = 0.1;
 
-  static percent : any = 0.1;
-
-  static async submitDocuments(currentSelected: DocumentRequest, file: Document, dispatchProgress: Function, loanApplicationId: string) {
-
+  static async submitDocuments(
+    currentSelected: DocumentRequest,
+    file: Document,
+    dispatchProgress: Function,
+    loanApplicationId: string
+  ) {
     let p = Math.floor(this.percent * 100);
     let files: any = currentSelected.files;
     let updatedFiles = files.map((f: Document) => {
@@ -31,7 +31,6 @@ export class DocumentUploadActions {
       type: DocumentsActionType.AddFileToDoc,
       payload: updatedFiles,
     });
-
   }
 
   static prepareFormData(currentSelected: DocumentRequest, file: Document) {

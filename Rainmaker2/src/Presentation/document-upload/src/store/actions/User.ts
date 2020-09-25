@@ -1,11 +1,9 @@
 import { Http } from "rainsoft-js";
 import { Auth } from "../../services/auth/Auth";
 
-const httpClient = new Http();
-
 export class AuthActions {
   static async login(payload: any) {
-    const res: any = await httpClient.post("/login", {
+    const res: any = await Http.post("/login", {
       email: Auth.getLoginUserName(),
       password: Auth.getLoginPassword(),
     });
