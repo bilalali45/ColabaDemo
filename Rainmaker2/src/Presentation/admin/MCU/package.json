@@ -33,7 +33,7 @@
     "react-idle-timer": "^4.2.12",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2",
+    "typescript": "~3.8.0",
     "universal-cookie": "^4.0.3",
     "uuid": "^8.3.0"
   },
