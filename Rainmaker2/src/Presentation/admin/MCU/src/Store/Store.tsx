@@ -4,7 +4,7 @@ import {TemplateType} from './reducers/TemplatesReducer';
 import {Http} from 'rainsoft-js';
 import {LocalDB} from '../Utils/LocalDB';
 import {NeedListType} from './reducers/NeedListReducer';
-const baseUrl: any = window.envConfig.API_BASE_URL;
+const baseUrl: any = window?.envConfig?.API_BASE_URL;
 const httpClient = new Http(baseUrl, 'token');
 
 //let auth = LocalDB.getAuthToken();s

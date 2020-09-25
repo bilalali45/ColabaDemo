@@ -378,27 +378,28 @@ export class NeedListActions {
     }
   }
 
-  // static async getNeedList(loanApplicationId: string, status: boolean) {
-  //   try {
-  //     if (status) {
-  //       return Promise.resolve(NeedList.filter(needList=> needList.status !=="Completed"));
-  //     }
-  //     else {
-  //       return Promise.resolve(NeedList);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-
   static async getNeedList(loanApplicationId: string, status: boolean) {
     try {
-      return Promise.resolve(NeedListMockApplictionId3);
+      if (status) {
+        return Promise.resolve(NeedList.filter(needList=> needList.status !=="Completed"));
+      }
+      else {
+        return Promise.resolve(NeedList);
+      }
     } catch (error) {
       console.log(error);
     }
   }
+
+
+  // static async getNeedList(loanApplicationId: string, status: boolean) {
+  //   try {
+
+  //     return Promise.resolve(NeedListMockApplictionId3);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   static async deleteNeedListDocument(
     id: string,
