@@ -165,6 +165,7 @@ export const ReviewDocumentStatement = ({
     // const { data } = await http.get<DocumentFileType[]>(
     //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
     // );
+   
     const { files, userName } = data[0];
     setDocumentFiles(files);
     setUsername(userName);

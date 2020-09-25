@@ -381,14 +381,6 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   };
 
   const detailClickHandler = (index: number, fileIndex?: number) => {
-    console.log(
-      '----------------Click detailClickHandler-------------',
-      LocalDB.getLoanAppliationId(),
-      '---------',
-      index,
-      '-------',
-      fileIndex
-    );
     history.push(`/ReviewDocument/${LocalDB.getLoanAppliationId()}`, {
       currentDocumentIndex: index,
       fileIndex: fileIndex ? fileIndex : null,

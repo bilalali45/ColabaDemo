@@ -22,9 +22,7 @@ import { ReviewDocumentActions } from '../../../Store/actions/ReviewDocumentActi
 import { NeedListActions } from '../../../Store/actions/__mocks__/NeedListActions';
 
 export const ReviewDocument = () => {
-  console.log(
-    '------------------------------- Review Document--------------------------------------'
-  );
+
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(false);

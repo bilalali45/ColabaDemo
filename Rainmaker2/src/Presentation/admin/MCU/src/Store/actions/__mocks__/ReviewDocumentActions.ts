@@ -46,6 +46,6 @@ export class ReviewDocumentActions {
        }
 
     static async requestDocumentFiles(id: string, requestId: string, docId: string){     
-        return Promise.resolve(mockFiles);  
+        return mockFiles;  
     }
 }

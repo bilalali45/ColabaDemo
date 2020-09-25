@@ -22,7 +22,7 @@ beforeEach(() => {
   });
 
   describe('REVIEW DOCUMENT', () => {
-      test('Should render Document Details text when clictk on Details button', async ()=> {
+      test('Should render Document Details text and close button when clictk on Details button of list item.', async ()=> {
         const {getByTestId, getByText, getAllByTestId } = render(
             <MemoryRouter initialEntries={[Url]} >
                <App/>
@@ -31,14 +31,68 @@ beforeEach(() => {
 
            await waitForDomChange()
 
-          const detailBtns: any = getAllByTestId('needList-detailBtnts');
-          console.log('------detailBtns-----------',detailBtns)        
+          const detailBtns: any = getAllByTestId('needList-detailBtnts');     
           fireEvent.click(detailBtns[0]);
 
           await waitFor(() => {
             let reviewHeader = getByTestId('review-headerts');
-            expect(reviewHeader).toHaveTextContent('Document Details');
+            let reviewHeaderCloseBtn = getByTestId('review-closeBtnTs');
+            expect(reviewHeader).toHaveTextContent('Document Detail');
+            expect(reviewHeaderCloseBtn).toBeInTheDocument();
           })
+      });
+      
+      test('Should render file viewer with viewer header detail', async () => {
+        const {getByTestId, getByText, getAllByTestId } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
 
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-detailBtnts');     
+         fireEvent.click(detailBtns[0]);
+
+        await waitFor(() => {
+          const fileViewer = getByText((content, element) => element.className === "document-view--header")
+          expect(fileViewer).toBeDefined();
+        })    
+      })
+
+      test('Should render file viewer with zoomIn, zoomOut and fitToScreen', async () => {
+        const {getByTestId, getByText, getAllByTestId } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-detailBtnts');     
+         fireEvent.click(detailBtns[0]);
+
+        await waitFor(() => {
+          const fileViewer = getByText((content, element) => element.className === "document-view--floating-options")
+          expect(fileViewer).toBeDefined();
+        });    
+      });
+
+      test('Should render Activity log section', async () => {
+        const {getByTestId, getByText, getAllByTestId } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-detailBtnts');     
+         fireEvent.click(detailBtns[0]);
+
+        await waitFor(() => {
+          const fileViewer = getByText((content, element) => element.className === "document-statement--header")
+          expect(fileViewer).toBeDefined();
+        });    
       });
   });
