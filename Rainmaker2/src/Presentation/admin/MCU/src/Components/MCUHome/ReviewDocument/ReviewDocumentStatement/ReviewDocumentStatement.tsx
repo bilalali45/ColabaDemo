@@ -167,7 +167,6 @@ export const ReviewDocumentStatement = ({
     // const { data } = await http.get<DocumentFileType[]>(
     //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
     // );
-   debugger
     const { files, userName } = data[0];
 
     console.log('currentDocument', currentDocument);

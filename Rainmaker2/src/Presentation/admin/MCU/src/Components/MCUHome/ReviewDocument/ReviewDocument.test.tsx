@@ -30,14 +30,15 @@ beforeEach(() => {
            );
 
            await waitForDomChange()
-          //  console.log(document.body.innerHTML);
-          let btn = getByText('Manage Document Template');
-          
-          fireEvent.click(btn);
-         // await waitFor(() => {
-            let con = getByTestId('template-home');
-            console.log('c=-========-============', con.innerHTML);
-         // })
+
+          const detailBtns: any = getAllByTestId('needList-detailBtnts');
+          console.log('------detailBtns-----------',detailBtns)        
+          fireEvent.click(detailBtns[0]);
+
+          await waitFor(() => {
+            let reviewHeader = getByTestId('review-headerts');
+            expect(reviewHeader).toHaveTextContent('Document Details');
+          })
 
       });
   });
