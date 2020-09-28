@@ -276,7 +276,7 @@ export const NeedListSelect = ({
             </Dropdown.Toggle>
           }
 
-          <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown">
+          <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown" ref={ref}>
             <h2>Select a need list Template</h2>
             {MyTemplates(
               templates?.filter((t: Template) => t.type === MyTemplate)
