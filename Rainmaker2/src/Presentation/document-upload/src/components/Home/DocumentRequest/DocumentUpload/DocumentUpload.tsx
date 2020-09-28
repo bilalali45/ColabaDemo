@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, Fragment } from "react";
+import React, { useState, useContext, useRef, Fragment, useEffect } from "react";
 
 import {
   DocumentDropBox,
@@ -14,9 +14,13 @@ export const DocumentUpload = () => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [fileLimitError, setFileLimitError] = useState({ value: false });
   const [showAlert, setshowAlert] = useState<boolean>(false);
+  const [filesInInput, setFilesInInput] = useState<File[]>([]);
+  const [toRemoveFile, setToRemoveFile] = useState<Document>();
+
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
+  
 
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc?.docMessage
@@ -29,9 +33,24 @@ export const DocumentUpload = () => {
     setFileInput(fileInputEl);
   };
 
+  useEffect(() => {
+
+    if (filesInInput?.length) {
+      let updatedFiles = selectedfiles?.filter((sf) => sf !== toRemoveFile);
+      DocumentUploadActions.updateFiles(
+        filesInInput,
+        updatedFiles,
+        dispatch,
+        setFileLimitError
+      );
+    }
+
+  }, [fileInput?.files])
+
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
+
     let files =
-      selectedfiles.filter(
+      selectedfiles?.filter(
         (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
       ).length > 0;
 
@@ -46,20 +65,13 @@ export const DocumentUpload = () => {
 
     if (fileInput) {
       fileInput.click();
-      fileInput.onchange = async (e: any) => {
-        let files = e?.target?.files;
-        if (files) {
-          let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
-          DocumentUploadActions.updateFiles(
-            files,
-            updatedFiles,
-            dispatch,
-            setFileLimitError
-          );
-        }
-      };
     }
   };
+
+  const filesChange = (e: any) =>  {
+    setFilesInInput([]);
+    setFilesInInput(e.target.files);
+  }
 
   return (
     <section className="Doc-upload" ref={parentRef}>
@@ -77,7 +89,7 @@ export const DocumentUpload = () => {
         {currentDoc && (
           <div className="Doc-head-wrap">
             <h2 title={docTitle}>
-              <span className="text-ellipsis d-title-head">{docTitle}</span>
+                          <span data-testid="selected-doc-title" className="text-ellipsis d-title-head">{docTitle}</span>
               {currentDoc?.isRejected && (
                 <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
               )}
@@ -106,15 +118,16 @@ export const DocumentUpload = () => {
                 setFileInput={getFileInput}
               />
             ) : (
-              <>
-                <SelectedDocuments
-                  fileLimitError={fileLimitError}
-                  setFileLimitError={setFileLimitError}
-                  addMore={showFileExplorer}
-                  setFileInput={getFileInput}
-                />
-              </>
-            )}
+                <>
+                  <SelectedDocuments
+                    filesChange={filesChange}
+                    fileLimitError={fileLimitError}
+                    setFileLimitError={setFileLimitError}
+                    addMore={showFileExplorer}
+                    setFileInput={getFileInput}
+                  />
+                </>
+              )}
           </Fragment>
         )}
       </FileDropper>

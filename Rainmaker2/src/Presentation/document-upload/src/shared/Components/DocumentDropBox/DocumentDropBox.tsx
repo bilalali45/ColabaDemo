@@ -41,6 +41,7 @@ export const DocumentDropBox = ({
               Drop it here or <span>upload</span>
             </label>
             <input
+              data-testid="file-input"
               ref={inputRef}
               type="file"
               name="file"
@@ -86,7 +87,6 @@ export class FileDropper extends Component<{
   onDragEnter(e: any) {
     e.preventDefault();
     if (this.props.parent) {
-      console.log(e.target.classList);
       this.props.parent.classList.add("drag-enter");
       this.props.parent.classList.add("dragableArea");
       this.setState((state) => ({ dragPreview: true }));

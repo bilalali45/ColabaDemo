@@ -1,15 +1,13 @@
-import { Http } from "rainsoft-js";
-import { AxiosResponse } from "axios";
-import { LoanApplication } from "../../Entities/Models/LoanApplication";
-import { Endpoints } from "../endpoints/Endpoints";
-import { NeedList } from "../../Entities/Models/NeedList";
-
-const http = new Http();
+import {Http} from 'rainsoft-js';
+import {AxiosResponse} from 'axios';
+import {LoanApplication} from '../../Entities/Models/LoanApplication';
+import {Endpoints} from '../endpoints/Endpoints';
+import {NeedList} from '../../Entities/Models/NeedList';
 
 export class NeedListActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
     try {
-      let result: AxiosResponse<LoanApplication> = await http.get<
+      let result: AxiosResponse<LoanApplication> = await Http.get<
         LoanApplication
       >(Endpoints.NeedListManager.GET.loan.info(loanApplicationId));
 
@@ -25,8 +23,8 @@ export class NeedListActions {
       status
     );
     try {
-      let res: AxiosResponse<NeedList[]> = await http.get<NeedList[]>(url);
-      
+      let res: AxiosResponse<NeedList[]> = await Http.get<NeedList[]>(url);
+
       return res.data;
     } catch (error) {
       console.log(error);
@@ -40,10 +38,10 @@ export class NeedListActions {
   ) {
     let url = Endpoints.NeedListManager.PUT.documents.deleteDoc();
     try {
-      let res = await http.put(url, {
+      let res = await Http.put(url, {
         id,
         requestId,
-        docId,
+        docId
       });
       return res.status;
     } catch (error) {
@@ -51,27 +49,26 @@ export class NeedListActions {
     }
   }
 
-  static async checkIsByteProAuto(){
+  static async checkIsByteProAuto() {
     let url = Endpoints.NeedListManager.GET.documents.checkIsByteProAuto();
     try {
-      let res: any = await http.get(url);
+      let res: any = await Http.get(url);
       return res.data;
     } catch (error) {
       console.log(error);
     }
-  
   }
 
-  static async fileSyncToLos (
+  static async fileSyncToLos(
     LoanApplicationId: number,
     DocumentLoanApplicationId: string,
     RequestId: string,
     DocumentId: string,
     FileId: string
-  ){
+  ) {
     let url = Endpoints.NeedListManager.POST.documents.fileSyncToLos();
     try {
-      let res: any = await http.post(url, {
+      let res: any = await Http.post(url, {
         LoanApplicationId,
         DocumentLoanApplicationId,
         RequestId,

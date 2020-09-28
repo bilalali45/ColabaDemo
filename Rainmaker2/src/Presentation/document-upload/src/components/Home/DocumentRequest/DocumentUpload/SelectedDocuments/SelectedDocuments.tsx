@@ -19,6 +19,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  filesChange: Function
 }
 
 interface ViewDocumentType {
@@ -35,6 +36,7 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
+  filesChange
 }: SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -146,6 +148,7 @@ export const SelectedDocuments = ({
   };
 
   const fileAlreadyExists = (file, newName) => {
+    
     var alreadyExist = selectedFiles.find(
       (f) =>
         f !== file &&
@@ -179,6 +182,7 @@ export const SelectedDocuments = ({
     focus: boolean,
     shouldMoveFocus?: boolean
   ) => {
+
     let nextInd = 0;
     let updatedFiles = selectedFiles.map((f: Document, i: number) => {
       if (file.file && f.clientName === file.clientName) {
@@ -194,6 +198,7 @@ export const SelectedDocuments = ({
       }
       return f;
     });
+
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
       payload: updatedFilesWithFocus,
@@ -331,6 +336,7 @@ export const SelectedDocuments = ({
           <div className="addmore-wrap">
             {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? (
               <a
+                data-testid="add-more-btn"
                 className="addmoreDoc"
                 onClick={(e) => {
                   addMore(e);
@@ -339,6 +345,8 @@ export const SelectedDocuments = ({
                 {" "}
                 Add more files
                 <input
+                  onChange={(e) => filesChange(e)}
+                  data-testid="file-input"
                   type="file"
                   accept={FileUpload.allowedExtensions}
                   id="inputFile"
@@ -428,6 +436,7 @@ export const SelectedDocuments = ({
                     {"I'LL Come Back"}
                   </button>
                   <button
+
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >

@@ -1,120 +1,150 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { OutgoingHttpHeaders } from 'http';
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { OutgoingHttpHeaders } from "http";
 
-type HTTPMethod = AxiosRequestConfig['method'];
+type HTTPMethod = AxiosRequestConfig["method"];
 
 type CommonHTTPMethods<T> = {
-    GET: T,
-    POST: T,
-    PUT: T,
-    DELETE: T
+  GET: T;
+  POST: T;
+  PUT: T;
+  DELETE: T;
 };
 
 type ReqConfig<T> = {
+  method: HTTPMethod;
+  url: string;
+  data?: T;
+  headers: any;
+};
+
+export class Http {
+  private static instance: Http | null = null;
+  public static baseUrl: string = "";
+  public static authKey: string = "";
+
+  static methods: CommonHTTPMethods<HTTPMethod> = {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+  };
+
+  constructor(baseUrl: string = "", authKey: string = "") {
+    if (!Http.instance) {
+      Http.baseUrl = baseUrl;
+      Http.authKey = authKey;
+      Http.instance = this;
+    } else {
+      return Http.instance;
+    }
+  }
+
+  static async get<T>(url: string, customHeader?: OutgoingHttpHeaders) {
+    return this.createRequest<T>(this.methods.GET, url, customHeader);
+  }
+
+  static async post<T, R>(
+    url: string,
+    data: R,
+    customHeader?: OutgoingHttpHeaders
+  ) {
+    return this.createRequest<T>(this.methods.POST, url, data, customHeader);
+  }
+
+  static async put<T, R>(
+    url: string,
+    data: R,
+    customHeader?: OutgoingHttpHeaders
+  ) {
+    return this.createRequest<T>(this.methods.PUT, url, data, customHeader);
+  }
+
+  static async delete<T, R>(
+    url: string,
+    data?: R,
+    customHeader?: OutgoingHttpHeaders
+  ) {
+    return this.createRequest<T>(this.methods.DELETE, url, data, customHeader);
+  }
+
+  static async fetch(
+    config: AxiosRequestConfig,
+    headers?: OutgoingHttpHeaders
+  ) {
+    return axios.request({
+      ...config,
+      headers: headers,
+    });
+  }
+
+  static createUrl(baseUrl: string, url: string) {
+    return `${baseUrl}${url}`;
+  }
+
+  static async createRequest<T, R = any>(
+    reqType: HTTPMethod,
+    url: string,
+    data?: R,
+    customHeader?: OutgoingHttpHeaders
+  ): Promise<AxiosResponse<T>> {
+    try {
+      let res = await axios.request<T>(
+        this.getConfig<R>(reqType, url, data, customHeader)
+      );
+      return res;
+    } catch (error) {
+      if (
+        error?.response?.data?.name === "TokenExpiredError" ||
+        error?.response?.data?.name === "JsonWebTokenError" ||
+        error?.response?.data === "Could not login" ||
+        error?.response?.status === 401
+      ) {
+      }
+
+      return new Promise((_, reject) => {
+        reject(error);
+      });
+    }
+  }
+
+  private static getConfig<T>(
     method: HTTPMethod,
     url: string,
     data?: T,
-    headers: any
-}
+    customHeader: OutgoingHttpHeaders = {}
+  ): ReqConfig<T> {
+    let completeUrl = this.createUrl(Http.baseUrl, url);
 
-
-
-export class Http {
-    private static instance: Http | null = null;
-    public baseUrl: string = '';
-    public auth: string  = '';
-
-    public methods: CommonHTTPMethods<HTTPMethod> = {
-        GET: 'GET',
-        POST: 'POST',
-        PUT: 'PUT',
-        DELETE: 'DELETE'
+    let headers: OutgoingHttpHeaders = customHeader;
+    //let auth = Auth.getAuth();
+    if (!url.includes("login") || !url.includes("authorize")) {
+      headers["Authorization"] = `Bearer ${this.decodeString(
+        localStorage.getItem(this.authKey)
+      )}`;
     }
 
-    constructor() { 
-        if (!Http.instance) {
-            Http.instance = this;
-        } else {
-            return Http.instance;
-        }
+    let config: ReqConfig<T> = {
+      method,
+      url: completeUrl,
+      headers,
+    };
+
+    if (data) {
+      config.data = data;
     }
+    return config;
+  }
 
-    async get<T>(url: string) {
-        return this.createRequest<T>(this.methods.GET, url);
+  private static decodeString(value?: string | null) {
+    // Decode the String
+    if (!value) {
+      return "";
     }
-
-    async post<T, R>(url: string, data: R) {
-        return this.createRequest<T>(this.methods.POST, url, data);
+    try {
+      const decodedString = atob(value);
+      return decodedString.split("|")[0];
+    } catch {
+      return null;
     }
-
-    async put<T, R>(url: string, data: R) {
-        return this.createRequest<T>(this.methods.PUT, url, data);
-    }
-
-    async delete<T, R>(url: string, data?: R) {
-        return this.createRequest<T>(this.methods.DELETE, url, data);
-    }
-
-    async fetch(config: AxiosRequestConfig, headers?: OutgoingHttpHeaders) {
-        return axios.request({
-            ...config,
-            headers: headers
-        });
-    }
-
-    setBaseUrl(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
-
-    setAuth(auth: string){
-        this.auth = auth;
-    }
-    createUrl(baseUrl: string, url: string) {
-        return `${baseUrl}${url}`
-    }
-
-    private async createRequest<T, R = any>(reqType: HTTPMethod, url: string, data?: R): Promise<AxiosResponse<T>> {
-
-        try {
-            let res = await axios.request<T>(this.getFonfig<R>(reqType, url, data));
-            return res;
-        } catch (error) {
-            if (
-                error?.response?.data?.name === 'TokenExpiredError'
-                || error?.response?.data?.name === 'JsonWebTokenError'
-                || error?.response?.data === 'Could not login'
-                || error?.response?.status === 401
-            ) {
-
-            }
-            
-
-            return new Promise((_, reject) => {
-                reject(error);
-            });
-        }
-    }
-
-    private getFonfig<T>(method: HTTPMethod, url: string, data?: T): ReqConfig<T> {
-        let completeUrl = this.createUrl(this.baseUrl, url);
-
-        let headers: OutgoingHttpHeaders = {}
-        //let auth = Auth.getAuth();
-        if (this.auth && (!url.includes('login') || !url.includes('authorize'))) {
-            headers['Authorization'] = `Bearer ${this.auth}`;
-        }
-
-        let config: ReqConfig<T> = {
-            method,
-            url: completeUrl,
-            headers,
-        }
-
-
-        if (data) {
-            config.data = data;
-        }
-        return config;
-    }
-
+  }
 }

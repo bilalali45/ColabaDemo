@@ -6,9 +6,8 @@ import {ApplicationEnv} from './appEnv';
 import {PayloadType} from './types';
 
 const cookies = new Cookies();
-const httpClient = new Http();
 const baseUrl: any = window.envConfig.API_BASE_URL;
-httpClient.setBaseUrl(baseUrl);
+const httpClient = new Http(baseUrl, 'notificationToken');
 
 export class LocalDB {
   static getCredentials(): {
@@ -92,6 +91,10 @@ export class LocalDB {
       const decodeCacheToken: any = jwt_decode(notificationToken);
       const decodeAuth: any = jwt_decode(auth);
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
+        return false;
+      }
+      if (decodeCacheToken.exp > decodeAuth.exp) {
+        console.log('Cache token is going to validate');
         return false;
       }
     }

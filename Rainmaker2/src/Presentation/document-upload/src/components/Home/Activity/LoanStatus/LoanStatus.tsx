@@ -46,7 +46,7 @@ export const LoanStatus = () => {
     }
 
     return (
-        <section className="row">
+        <section className="row" data-testid="loanStatus">
             <div className="container">
                 <div className="LoanStatus nbox-wrap">
                     <div className="nbox-wrap--body">

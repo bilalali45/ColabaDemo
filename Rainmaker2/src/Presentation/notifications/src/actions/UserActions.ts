@@ -7,7 +7,6 @@ import {LocalDB} from '../lib/localStorage';
 import {Endpoints} from '../actions/Endpoints';
 import {AuthorizeType} from '../lib/types';
 
-const http = new Http();
 const cookies = new Cookies();
 
 export class UserActions {
@@ -22,7 +21,7 @@ export class UserActions {
         employee: true
       };
 
-      const authorizeResponse = await http.post<
+      const authorizeResponse = await Http.post<
         AuthorizeType,
         typeof credentials
       >(Endpoints.User.POST.authorize(), credentials);
@@ -47,7 +46,7 @@ export class UserActions {
         return;
       }
 
-      const refreshTokenResponse = await http.post<
+      const refreshTokenResponse = await Http.post<
         AuthorizeType,
         AuthorizeType
       >(Endpoints.User.POST.refreshToken(), {
@@ -70,7 +69,6 @@ export class UserActions {
       const payload = UserActions.decodeJwt(token);
       LocalDB.storeTokenPayload(payload);
       UserActions.addExpiryListener();
-      http.setAuth(token);
 
       return true;
     } catch (error) {
@@ -100,7 +98,6 @@ export class UserActions {
         const tokens: any = await UserActions.authenticate();
         if (tokens?.token) {
           LocalDB.storeAuthTokens(tokens.token, tokens.refreshToken);
-          http.setAuth(tokens.token);
           return true;
         } else {
           return false;
@@ -119,7 +116,6 @@ export class UserActions {
         console.log('Cache token values exist');
         LocalDB.storeAuthTokens(notificationToken, notificationRefreshToken);
         LocalDB.storeTokenPayload(UserActions.decodeJwt(notificationToken));
-        http.setAuth(notificationToken);
         const isAuth = LocalDB.checkAuth();
         console.log('Cache token check Auth', isAuth);
         if (isAuth === 'token expired' || !isAuth) {
@@ -136,7 +132,6 @@ export class UserActions {
         return false;
       }
     } else {
-      http.setAuth(LocalDB.getAuthToken() || '');
       return true;
     }
   }

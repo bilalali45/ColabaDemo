@@ -64,8 +64,8 @@ export const UploadedDocumentsTable = () => {
           const { clientName, id: fileId } = item;
 
           return (
-            <span className="block-element" key={index}>
-              <Link
+            <span data-testid='doc-file' className="block-element" key={index}>
+              <Link data-testid='doc-file-link'
                 to="#"
                 className="link-filename"
                 title={clientName}
@@ -93,7 +93,7 @@ export const UploadedDocumentsTable = () => {
       <td>
         {data.map((item: Document, index: number) => {
           return (
-            <span className="block-element" key={index}>
+            <span data-testid='added-date' className="block-element" key={index}>
               {DateFormatWithMoment(item.fileUploadedOn, true)}
             </span>
           );
@@ -103,23 +103,17 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderUploadedDocs = (data) => {
-    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, [
-      "asc",
-    ]);
+    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, ["asc",]);
 
     return sortedUploadedDocuments.map(
       (item: UploadedDocuments, index: number) => {
         if (!item?.files?.length) return;
         const { files, docId, requestId, id } = item;
-        const sortedFiles = _.orderBy(
-          files,
-          (file) => new Date(file.fileUploadedOn),
-          ["desc"]
-        );
+        const sortedFiles = _.orderBy(files,(file) => new Date(file.fileUploadedOn),["desc"]);
 
         return (
           <tr key={index}>
-            <td>
+            <td data-testid='doc-type'>
               <span className="doc-name" title={item.docName}>
                 <em className="far fa-file"></em> {item.docName}
               </span>
@@ -139,8 +133,8 @@ export const UploadedDocumentsTable = () => {
   const renderTable = (data) => {
     if (!data || data?.length === 0) return;
     return (
-      <table className="table  table-striped">
-        <thead>
+      <table  data-testid='uploaded-docs-head' className="table  table-striped">
+        <thead >
           <tr>
             <th>Documents</th>
             <th>File Name</th>

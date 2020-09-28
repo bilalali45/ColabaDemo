@@ -3,7 +3,7 @@ import { UploadedDocumentsTable } from "./UploadedDocumentsTable/UploadedDocumen
 
 export const UploadedDocuments = () => {
   return (
-    <div className="UploadedDocuments box-wrap">
+    <div data-testid="uploaded-documents" className="UploadedDocuments box-wrap">
       <div className="box-wrap--header">
         <h2>Uploaded Documents</h2>
       </div>

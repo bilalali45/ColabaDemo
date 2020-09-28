@@ -45,10 +45,10 @@ export class FileUpload {
   };
 
   static allowedFileTypes = [
-    FileUpload.PNG.type,
-    FileUpload.JPEG.type,
-    FileUpload.JPG.type,
-    FileUpload.PDF.type,
+    FileUpload?.PNG.type,
+    FileUpload?.JPEG.type,
+    FileUpload?.JPG.type,
+    FileUpload?.PDF.type,
   ];
 
   static allowedExtensions = FileUpload.allowedFileTypes.join(",");
@@ -78,21 +78,11 @@ export class FileUpload {
   }
 
   static removeSpecialChars(text: string) {
-    // return RemoveSpecialChars(text);
     return text.replace(/[`–~!@#$%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi, "");
   }
 
   static getFileSize(file) {
     return GetFileSize(file);
-    // let size = file.size || file.file?.size;
-    // if (size) {
-    //   let inKbs = size / 1000;
-    //   if (inKbs > 1000) {
-    //     return `${(inKbs / 1000).toFixed(2)}mb(s)`;
-    //   }
-    //   return `${inKbs.toFixed(2)}kb(s)`;
-    // }
-    // return `${0}kbs`;
   }
 
   static getActualMimeType(file): Promise<string> {
@@ -118,40 +108,26 @@ export class FileUpload {
           reject(error);
         }
       };
-
       const blob = file.slice(0, 4);
       filereader.readAsArrayBuffer(blob);
     });
   }
 
-  static async isFileAllowed(file) {
-    return (await this.isTypeAllowed(file)) && this.isSizeAllowed(file);
-  }
-
   static async isTypeAllowed(file) {
-    const result = this.allowedFileTypes.includes(
-      // await this.getActualMimeType(file)
-      await GetActualMimeType(file)
-    );
+    const result = this.allowedFileTypes.includes(await this.getActualMimeType(file));
     return result;
   }
 
   static isSizeAllowed(file) {
     return IsSizeAllowed(file, this.allowedSize);
-    // if (!file) return null;
-
-    // if (file.size / 1000 / 1000 < this.allowedSize) {
-    //   return true;
-    // }
-    // return false;
   }
 
   static getExtension(file, splitBy) {
     if (splitBy === "dot") {
-      let splitData = file.clientName.split(".");
-      return splitData[splitData.length - 1];
+      let splitData = file?.clientName?.split(".");
+      return splitData[splitData?.length - 1];
     } else {
-      return file?.type.split("/")[1];
+      return file?.type?.split("/")[1];
     }
   }
 
@@ -175,93 +151,94 @@ export class FileUpload {
     // return onlyName != "" ? onlyName : fileName;
   }
 
-  static splitDataByType(fileName: string, type: string) {
-    let numberTest = /^[0-9]/;
-    let splitData = fileName.split("-");
-    if (splitData.length == 1) return fileName;
-    let num = splitData[splitData.length - 1];
-    splitData[splitData.length - 1] = '';
-    splitData.pop();
-    let actualName = splitData.join('-').replace(/\s/g, '');
+  // static async isFileAllowed(file) {
+  //   return (await this.isTypeAllowed(file)) && this.isSizeAllowed(file);
+  // }
 
-    if (numberTest.test(num)) {
-      return actualName + "," + num;
-    }
-    else {
-      let f = fileName.replace(/\s/g, '');
-      return f;
-    }
+  // static sortByDate(array: any[]) {
+  //   return SortByDate(array, "fileUploadedOn");
+  // }
 
-    ;
-  }
+  // static splitDataByType(fileName: string, type: string) {
+  //   let numberTest = /^[0-9]/;
+  //   let splitData = fileName.split("-");
+  //   if (splitData.length == 1) return fileName;
+  //   let num = splitData[splitData.length - 1];
+  //   splitData[splitData.length - 1] = '';
+  //   splitData.pop();
+  //   let actualName = splitData.join('-').replace(/\s/g, '');
 
-  static sortByDate(array: any[]) {
-    return SortByDate(array, "fileUploadedOn");
-    // return array.sort((a, b) => {
-    //   let first = new Date(a.fileUploadedOn);
-    //   let second = new Date(b.fileUploadedOn);
-    //   return first > second ? -1 : first < second ? 1 : 0;
-    //});
-  }
+  //   if (numberTest.test(num)) {
+  //     return actualName + "," + num;
+  //   }
+  //   else {
+  //     let f = fileName.replace(/\s/g, '');
+  //     return f;
+  //   }
 
-  static checkName = (prevFiles, file) => {
-    let count = 0;
-    let numberCount: any = [];
-    let countDetail: any = [];
-    let uploadingFileName = FileUpload.splitDataByType(
-      FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),
-      "-"
-    ).replace(/\s/g, '');
-    if (uploadingFileName.includes(",")) {
-      uploadingFileName = uploadingFileName.split(",")[0];
-    }
+  //   ;
+  // }
 
-    // prevFiles.find(i => this.removeDefaultExt(i.clientName) === this.removeSpecialChars(this.removeDefaultExt(file.name)))
-    for (let i = 0; i < prevFiles.length; i++) {
-      let dataCount;
-      let uploadedFileName = FileUpload.splitDataByType(
-        FileUpload.removeDefaultExt(prevFiles[i].clientName),
-        "-"
-      );
-      if (uploadedFileName.includes(",")) {
-        dataCount = Number(uploadedFileName.split(",")[1]);
-        uploadedFileName = uploadedFileName.split(",")[0];
-      }
-      if (uploadingFileName === uploadedFileName) {
-        if (dataCount) numberCount.push(dataCount);
-        count++;
-      }
-    }
+  
 
-    countDetail.push(count);
-    countDetail.push(numberCount.sort());
-    return countDetail;
-  };
+  // static checkName = (prevFiles, file) => {
+  //   let count = 0;
+  //   let numberCount: any = [];
+  //   let countDetail: any = [];
+  //   let uploadingFileName = FileUpload.splitDataByType(
+  //     FileUpload.removeSpecialChars(FileUpload.removeDefaultExt(file.name)),
+  //     "-"
+  //   ).replace(/\s/g, '');
+  //   if (uploadingFileName.includes(",")) {
+  //     uploadingFileName = uploadingFileName.split(",")[0];
+  //   }
 
-  static updateName(name, type, countDetail) {
-    let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
+  //   // prevFiles.find(i => this.removeDefaultExt(i.clientName) === this.removeSpecialChars(this.removeDefaultExt(file.name)))
+  //   for (let i = 0; i < prevFiles.length; i++) {
+  //     let dataCount;
+  //     let uploadedFileName = FileUpload.splitDataByType(
+  //       FileUpload.removeDefaultExt(prevFiles[i].clientName),
+  //       "-"
+  //     );
+  //     if (uploadedFileName.includes(",")) {
+  //       dataCount = Number(uploadedFileName.split(",")[1]);
+  //       uploadedFileName = uploadedFileName.split(",")[0];
+  //     }
+  //     if (uploadingFileName === uploadedFileName) {
+  //       if (dataCount) numberCount.push(dataCount);
+  //       count++;
+  //     }
+  //   }
 
-    let newName = FileUpload.splitDataByType(this.removeDefaultExt(name), "-");
-    if (newName.includes(",")) {
-      newName = newName.split(",")[0];
-    }
-    let count = countDetail[0];
-    let copyNumber = countDetail[1];
-    if (copyNumber.length > 0) {
-      let lastCopy = copyNumber[copyNumber.length - 1];
-      lastCopy++;
-      let ext = type.split("/")[1];
-      if (exts.includes(ext)) {
-        ext = 'jpeg';
-      }
-      return newName + "-0" + lastCopy + "." + ext;
-    } else {
-      count++;
-      let ext = name.split(".")[1];
-      if (exts.includes(ext)) {
-        ext = 'jpeg';
-      }
-      return newName + "-0" + count + "." + ext;
-    }
-  }
+  //   countDetail.push(count);
+  //   countDetail.push(numberCount.sort());
+  //   return countDetail;
+  // };
+
+  // static updateName(name, type, countDetail) {
+  //   let exts = ['jfif', 'pjpeg', 'pjp', 'pjpg'];
+
+  //   let newName = FileUpload.splitDataByType(this.removeDefaultExt(name), "-");
+  //   if (newName.includes(",")) {
+  //     newName = newName.split(",")[0];
+  //   }
+  //   let count = countDetail[0];
+  //   let copyNumber = countDetail[1];
+  //   if (copyNumber.length > 0) {
+  //     let lastCopy = copyNumber[copyNumber.length - 1];
+  //     lastCopy++;
+  //     let ext = type.split("/")[1];
+  //     if (exts.includes(ext)) {
+  //       ext = 'jpeg';
+  //     }
+  //     return newName + "-0" + lastCopy + "." + ext;
+  //   } else {
+  //     count++;
+  //     let ext = name.split(".")[1];
+  //     if (exts.includes(ext)) {
+  //       ext = 'jpeg';
+  //     }
+  //     return newName + "-0" + count + "." + ext;
+  //   }
+  // }
 }
