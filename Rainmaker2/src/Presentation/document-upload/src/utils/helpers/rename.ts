@@ -4,14 +4,15 @@ export class Rename {
     
     static rename(files, file) {
 
-        let fileName = this.removeExt(file.clientName).toLowerCase();
+
+        let fileName = this.removeExt(file.clientName);
         let fileExt = this.getExt(file.file);
 
-        let filesFiltered = files.filter(f => this.removeExt(f.clientName).includes(fileName) && this.removeCounterPart(this.removeExt(f.clientName)) === fileName);
+        let filesFiltered = files.filter(f => this.removeExt(f.clientName).toLowerCase().includes(fileName.toLowerCase()) && this.removeCounterPart(this.removeExt(f.clientName)).toLowerCase() === fileName.toLowerCase());
         
         if (filesFiltered.length) {
             file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length}.${fileExt}`;
-            let f = files.find(f => f.clientName === file.clientName);
+            let f = files.find(f => f.clientName.toLowerCase() === file.clientName.toLowerCase());
             if(f) {
                 file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length + 1}.${fileExt}`;
             }
@@ -25,7 +26,7 @@ export class Rename {
     static removeExt(name) {
         let dotParts = name.split('.');
         dotParts.pop();
-        return this.removeCounterPart(dotParts.join('.').toLowerCase());
+        return this.removeCounterPart(dotParts.join('.'));
     }
 
     static getExt(file) {

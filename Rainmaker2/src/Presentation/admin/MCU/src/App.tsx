@@ -66,12 +66,12 @@ const App = () => {
   // console.log('Node Env ++++++++++++++++++++++', process.env.NODE_ENV);
   return (
     <div className="App">
-      <IdleTimer
+      {process.env.NODE_ENV !== 'test' && <IdleTimer
         element={document}
         onIdle={onIdle}
         debounce={250}
         timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
-      />
+      />}
       {/* <RainMakerHeader /> */}
       <section className="d-layout">
         {/* <RainMakerSidebar /> */}
@@ -87,6 +87,7 @@ const App = () => {
                     component={MCUHome}
                   />
                 )}
+
                 <Authorized
                   exact
                   path="/:loanApplicationId"

@@ -23,7 +23,7 @@ export const NewTemplate = ({ setLoaderVisible }: NewTemplateType) => {
 
 
     return (
-        <section className="add-newTemp-wrap">
+        <section data-testid="new-template-container" className="add-newTemp-wrap">
 
             <div className="empty-wrap">
 

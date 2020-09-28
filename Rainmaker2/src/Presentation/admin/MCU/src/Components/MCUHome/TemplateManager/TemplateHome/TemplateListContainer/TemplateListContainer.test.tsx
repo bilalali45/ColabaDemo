@@ -34,8 +34,10 @@ describe('Template List Container', () => {
             expect(getByTestId('template-list-container')).toHaveTextContent('Add new template');
         });
     })
-    
-    test('Should render Template List Container', async () => {
+
+
+
+    test('Should show a new template on "Add New Template" click', async () => {
         const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
@@ -43,14 +45,45 @@ describe('Template List Container', () => {
                 </MemoryRouter>
             </StoreProvider>
         );
+
         await waitFor(() => {
             let newTempBtn = getByTestId('template-list-container');
             fireEvent.click(newTempBtn);
         });
+
         await waitFor(() => {
-            expect(getByTestId('template-list-container')).toHaveTextContent('Add new template');
+            let tempNameInput = getByTestId('new-template-input');
+            expect(getByTestId('new-template-container')).toHaveTextContent('Add documents after template is created');
+            expect(tempNameInput).toBeInTheDocument();
+            expect(tempNameInput).toHaveFocus();
         })
     })
 
+    test('Should add a new template on "Add New Template" click', async () => {
+        const { getByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <TemplateManager></TemplateManager>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+        let newTempBtn: any = null;
+        await waitFor(() => {
+            newTempBtn = getByTestId('template-list-container');
+        });
+
+        fireEvent.click(newTempBtn);
+        let tempNameInput: any = null;
+        await waitFor(() => {
+            tempNameInput = getByTestId('new-template-input');
+        });
+        fireEvent.blur(tempNameInput);
+
+        await waitFor(() => {
+            expect(getByTestId('new-template-container')).toHaveTextContent('Add documents after template is created');
+
+        })
+
+    });
 })
 

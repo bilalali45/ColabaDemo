@@ -2,6 +2,7 @@
 
 using ByteWebConnector.Entity.Models;
 using System.Collections.Generic;
+using ByteWebConnector.Model.Models.Settings;
 
 namespace ByteWebConnector.Service.DbServices
 {
@@ -11,6 +12,6 @@ namespace ByteWebConnector.Service.DbServices
                                             string tag = null);
 
 
-        SettingService.ByteProSettings GetByteProSettings();
+        ByteProSettings GetByteProSettings();
     }
 }

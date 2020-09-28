@@ -8,8 +8,6 @@ import { isFunction } from "util";
 import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
 
-const http = new Http();
-
 export const statusText = {
   COMPLETED: "COMPLETED",
   CURRENT: "CURRENT STEP",
@@ -18,7 +16,7 @@ export const statusText = {
 export class LaonActions {
   static async getLoanOfficer(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<ContactUs> = await http.get<ContactUs>(
+      let res: AxiosResponse<ContactUs> = await Http.get<ContactUs>(
         Endpoints.loan.GET.officer(loanApplicationId)
       );
       return new ContactUs().fromJson(res.data);
@@ -32,7 +30,7 @@ export class LaonActions {
 
   static async getLoanApplication(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<LoanApplication> = await http.get<LoanApplication>(
+      let res: AxiosResponse<LoanApplication> = await Http.get<LoanApplication>(
         Endpoints.loan.GET.info(loanApplicationId)
       );
       return new LoanApplication().fromJson(res.data);
@@ -43,7 +41,7 @@ export class LaonActions {
 
   static async getLOPhoto(lOPhotoId: string = "", loanApplicationId: string) {
     try {
-      let res: any = await http.get(
+      let res: any = await Http.get(
         Endpoints.loan.GET.getLOPhoto(lOPhotoId, loanApplicationId)
       );
       return res.data;
@@ -54,8 +52,30 @@ export class LaonActions {
 
   static async getFooter(loanApplicationId: string) {
     try {
-      let res: any = await http.get(
+      let res: any = await Http.get(
         Endpoints.loan.GET.getFooter(loanApplicationId)
+      );
+      return res.data;
+    } catch (error) {
+      console.log("error.response", error);
+    }
+  }
+
+  static async getCompanyLogoSrc(loanApplicationId: string) {
+    try {
+      let res: any = await Http.get(
+        Endpoints.loan.GET.getCompanyLogoSrc(loanApplicationId)
+      );
+      return res.data;
+    } catch (error) {
+      console.log("error.response", error);
+    }
+  }
+
+  static async getCompanyFavIconSrc(loanApplicationId: string) {
+    try {
+      let res: any = await Http.get(
+        Endpoints.loan.GET.getCompanyFavIconSrc(loanApplicationId)
       );
       return res.data;
     } catch (error) {
@@ -65,7 +85,7 @@ export class LaonActions {
 
   static async getLoanProgressStatus(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<LoanProgress[]> = await http.get<LoanProgress[]>(
+      let res: AxiosResponse<LoanProgress[]> = await Http.get<LoanProgress[]>(
         Endpoints.loan.GET.loanProgressStatus(loanApplicationId)
       );
       return attachStatus(res.data);

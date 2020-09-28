@@ -240,10 +240,11 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             <div className="T-head">
                 <div className="T-head-flex">
                     <div className="titleWrap">
-                        {editTitleview || currentTemplate === null ?
+                        {editTitleview || currentTemplate === null || !currentTemplate ?
                             <>
                                 <p className="editable">
                                     <input
+                                        data-testid="new-template-input"
                                         maxLength={50}
                                         autoFocus
                                         onFocus={(e: any) => {
@@ -275,7 +276,10 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                                                 setNewNameText(e.target.value);
                                             }
                                         }}
-                                        onBlur={() => renameTemplate(newNameText)} />
+                                        onBlur={() => {
+                                            renameTemplate(newNameText);
+
+                                        }} />
                                     {addRequestSent ?
                                         <div className="rename-spinner">
                                             <Spinner size="sm" animation="border" role="status">

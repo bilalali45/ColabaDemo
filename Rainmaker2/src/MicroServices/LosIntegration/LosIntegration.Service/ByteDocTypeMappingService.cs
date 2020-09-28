@@ -13,7 +13,7 @@ namespace LosIntegration.Service
     public class ByteDocTypeMappingService : ServiceBase<LosIntegrationContext, ByteDocTypeMapping>, IByteDocTypeMappingService
     {
         [Flags]
-        public enum RelatedEntity
+        public enum RelatedEntities
         {
             ByteDocCategoryMapping = 1 << 0,
         }
@@ -28,7 +28,7 @@ namespace LosIntegration.Service
 
         public List<ByteDocTypeMapping> GetByteDocTypeMappingWithDetails(int? id = null,
                                                                          string docType = "",
-                                                                         RelatedEntity? includes = null)
+                                                                         RelatedEntities? includes = null)
         {
             var byteDocTypeMappings = Repository.Query().AsQueryable();
 
@@ -50,10 +50,10 @@ namespace LosIntegration.Service
 
 
         public IQueryable<ByteDocTypeMapping> ProcessIncludes(IQueryable<ByteDocTypeMapping> query,
-                                                              RelatedEntity includes)
+                                                              RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag: RelatedEntity.ByteDocCategoryMapping)) query = query.Include(navigationPropertyPath: byteDocTypeMapping => byteDocTypeMapping.ByteDocCategoryMapping);
+            if (includes.HasFlag(flag: RelatedEntities.ByteDocCategoryMapping)) query = query.Include(navigationPropertyPath: byteDocTypeMapping => byteDocTypeMapping.ByteDocCategoryMapping);
             // @formatter:on 
             return query;
         }

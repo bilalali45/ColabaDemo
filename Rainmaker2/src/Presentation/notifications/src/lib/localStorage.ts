@@ -6,9 +6,8 @@ import {ApplicationEnv} from './appEnv';
 import {PayloadType} from './types';
 
 const cookies = new Cookies();
-const httpClient = new Http();
 const baseUrl: any = window.envConfig.API_BASE_URL;
-httpClient.setBaseUrl(baseUrl);
+const httpClient = new Http(baseUrl, 'notificationToken');
 
 export class LocalDB {
   static getCredentials(): {
@@ -72,6 +71,14 @@ export class LocalDB {
       'notificationRefreshToken',
       this.encodeString(refreshToken)
     );
+  }
+
+  static getPortalReferralUrl(): string | null {
+    return localStorage.getItem('PortalReferralUrl');
+  }
+
+  static setPortalReferralUrl(portalReferralUrl: string): void {
+    localStorage.setItem('PortalReferralUrl', portalReferralUrl);
   }
 
   public static checkAuth(): boolean | string {
