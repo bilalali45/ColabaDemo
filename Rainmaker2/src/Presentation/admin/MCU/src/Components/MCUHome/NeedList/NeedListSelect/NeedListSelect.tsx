@@ -68,8 +68,6 @@ export const NeedListSelect = ({
     if (!templates) {
       fetchTemplatesList();
     }
-
-
   }, [!templates])
 
   useEffect(() => {
@@ -83,7 +81,6 @@ export const NeedListSelect = ({
     }
   }, [show === true, location.pathname, templates]);
 
-
   useEffect(() => {
     setTemplateList(templates);
   }, [templates?.length])
@@ -96,20 +93,15 @@ export const NeedListSelect = ({
   }
 
   const updateIdsList = ({ target: { checked } }: ChangeEvent<HTMLInputElement>, id: string) => {
-
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
     } else {
       setIdArray((pre: any) => pre?.filter((idOld: any) => idOld !== id));
     }
-
   }
-
-
 
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
-
     return (
       <>
         <div ref={ref}>
@@ -204,13 +196,12 @@ export const NeedListSelect = ({
 
   }
 
-
   const displayAddButton = () => {
     return (
       <>
-        <Dropdown onToggle={() => setShow(!show)} show={show}>
+        <Dropdown onToggle={() => setShow(!show)} show={show} data-testid="addTemplate">
           {showButton ?
-            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
               Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
@@ -218,7 +209,7 @@ export const NeedListSelect = ({
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>}
 
-          <Dropdown.Menu className="padding" show={show}>
+          <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown">
             <h2>Select a need list Template</h2>
             {MyTemplates(templates?.filter((t: Template) => t.type === MyTemplate))}
             {TemplatesByTenant(templates?.filter((t: Template) => t.type === TenantTemplate))}
@@ -230,7 +221,6 @@ export const NeedListSelect = ({
       </>
     )
   }
-
 
   return displayAddButton();
 };
