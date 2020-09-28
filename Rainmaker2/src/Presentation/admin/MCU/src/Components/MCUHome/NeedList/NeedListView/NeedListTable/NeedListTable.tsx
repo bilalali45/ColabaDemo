@@ -471,10 +471,10 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       return '';
     } else if (showConfirmBox && !syncSuccess) {
       return (
-        <div className="sync-alert">
-          <div className="sync-alert-wrap">
+        <div className="sync-alert" >
+          <div className="sync-alert-wrap" data-testid="sync-alert">
             <div className="icon">
-              <img src={sycLOSIcon} alt="" />
+              <img src={sycLOSIcon} alt="syncLosIcon" />
             </div>
             <div className="msg">
               {synchronizing != true
@@ -531,7 +531,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     <div className="need-list-table" id="NeedListTable">
       <div className="table-responsive">
         <div className="need-list-table table">
-          <div className="tr">
+          <div className="tr" data-testid="needlist-table-header">
             {renderDocumentTitle()}
             {renderStatusTitle()}
             <div className="th">File Name</div>
