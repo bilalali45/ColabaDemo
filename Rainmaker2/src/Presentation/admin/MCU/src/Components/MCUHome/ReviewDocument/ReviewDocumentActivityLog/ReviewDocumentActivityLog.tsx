@@ -9,6 +9,7 @@ import {
 } from '../../../../Entities/Types/Types';
 import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
 import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
+import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
 
 export const ReviewDocumentActivityLog = ({
   id,
@@ -56,10 +57,8 @@ export const ReviewDocumentActivityLog = ({
 
   const getActivityLogs = useCallback(async (id, docId, requestId) => {
     try {
-      const {data} = await Http.get<ActivityLogType[]>(
-        NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
-      );
-
+      ///const {data} = await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
+      const data = await ReviewDocumentActions.getActivityLogs(id, docId, requestId);
       setActivityLogs(data);
     } catch (error) {
       console.log(error);
@@ -106,7 +105,7 @@ export const ReviewDocumentActivityLog = ({
     (activityLogs: ActivityLogType[]) => {
       return activityLogs.map((activityLog: ActivityLogType, index: number) => {
         return (
-          <li
+          <li data-testid="activity-log-list"
             className={`${index === logIndex && 'active'}`}
             key={activityLog.dateTime}
           >
@@ -244,7 +243,7 @@ export const ReviewDocumentActivityLog = ({
   }, [getEmailLogs, id, docId, requestId]);
 
   return (
-    <section ref={sectionRef} className="vertical-tabs" id="verticalTab">
+    <section data-testid="logDetail-section" ref={sectionRef} className="vertical-tabs" id="verticalTab">
       <div className="vertical-tabs--data" style={tabDataStyle}>
         {/* Activity Log */}
         <div

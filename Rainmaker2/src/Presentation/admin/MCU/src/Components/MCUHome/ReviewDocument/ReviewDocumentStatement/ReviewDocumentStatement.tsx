@@ -284,6 +284,7 @@ export const ReviewDocumentStatement = ({
             variant="primary"
             className="mcu-dropdown-toggle no-caret"
             id="dropdown-basic"
+            data-testid="activity-logBtn"
           >
             Activity Log
           </Dropdown.Toggle>

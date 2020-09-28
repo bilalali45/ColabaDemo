@@ -4,7 +4,7 @@ import { Endpoints } from "../endpoints/Endpoints";
 import { NeedList } from "../../Entities/Models/NeedList";
 import { NeedListEndpoints } from "../endpoints/NeedListEndpoints";
 import { LocalDB } from "../../Utils/LocalDB";
-import { DocumentFileType } from "../../Entities/Types/Types";
+import { ActivityLogType, DocumentFileType } from "../../Entities/Types/Types";
 
 
 const authToken = LocalDB.getAuthToken();
@@ -46,6 +46,11 @@ export class ReviewDocumentActions {
       );
       return data; 
   }
+
+  static async getActivityLogs(id: string, docId: string, requestId: string){
+    const { data } =  await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
+    return data;
+}
    
 
 }
