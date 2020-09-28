@@ -74,6 +74,14 @@ export class LocalDB {
     );
   }
 
+  static getPortalReferralUrl(): string | null {
+    return localStorage.getItem('PortalReferralUrl');
+  }
+
+  static setPortalReferralUrl(portalReferralUrl: string): void {
+    localStorage.setItem('PortalReferralUrl', portalReferralUrl);
+  }
+
   public static checkAuth(): boolean | string {
     const notificationToken = cookies.get('NotificationToken');
     const auth = this.getAuthToken();

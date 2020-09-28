@@ -521,6 +521,13 @@ ul {
                 margin-bottom: 10px;
             }
         }
+        label {
+            input{
+                &[type=checkbox]{
+pointer-events: none;
+                }
+            }
+        }
 
         input{
             vertical-align: middle;

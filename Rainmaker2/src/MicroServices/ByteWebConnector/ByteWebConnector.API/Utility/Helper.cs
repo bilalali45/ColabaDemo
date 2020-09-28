@@ -13,19 +13,18 @@ namespace ByteWebConnector.API.Utility
             List<byte[]> pdfbyte = new List<byte[]>();
             foreach (var item in intput)
             {
-
                 PdfDocument pdf = new PdfDocument();
 
                 PdfPage pdfPage = pdf.AddPage();
 
                 XGraphics graph = XGraphics.FromPdfPage(pdfPage);
-             
-                XImage image = XImage.FromStream(()=> new MemoryStream(item));
 
+                XImage image = XImage.FromStream(() => new MemoryStream(item));
 
-                pdfPage.Width = image.PixelWidth + 100;
-                pdfPage.Height = image.PixelHeight + 100;
-                graph.DrawImage(image, 170, 100);
+                pdfPage.Width = image.PointWidth;
+                pdfPage.Height = image.PointHeight;
+
+                graph.DrawImage(image, 0, 0);
 
                 string pdfFilename1 = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
 

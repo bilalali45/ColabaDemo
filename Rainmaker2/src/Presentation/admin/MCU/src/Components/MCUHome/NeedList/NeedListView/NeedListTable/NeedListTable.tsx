@@ -192,7 +192,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         <div className="td options">
           <button
             onClick={() => reviewClickHandler(index)}
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm nl-btn"
           >
             Review
           </button>
@@ -203,7 +203,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         <div className="td options">
           <button
             onClick={() => detailClickHandler(index)}
-            className="btn btn-secondry btn-sm"
+            className="btn btn-secondry btn-sm nl-btn"
           >
             Details
           </button>

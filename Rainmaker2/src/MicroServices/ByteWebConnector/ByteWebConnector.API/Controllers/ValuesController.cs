@@ -146,7 +146,7 @@ namespace ByteWebConnector.API.Controllers
         }
         [Route("reo")]
         [HttpPost]
-        public void Post(ByteREO request)
+        public void Post(ByteReo request)
         {
             throw new NotSupportedException();
         }
