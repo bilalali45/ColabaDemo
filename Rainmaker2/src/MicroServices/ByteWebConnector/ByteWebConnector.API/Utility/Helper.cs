@@ -29,7 +29,7 @@ namespace ByteWebConnector.API.Utility
                 string pdfFilename1 = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
 
                 pdf.Save(pdfFilename1);
-                // pdfbyte.Add(File.ReadAllBytes(pdfFilename1));
+                pdfbyte.Add(File.ReadAllBytes(pdfFilename1));
             }
             return pdfbyte;
         }

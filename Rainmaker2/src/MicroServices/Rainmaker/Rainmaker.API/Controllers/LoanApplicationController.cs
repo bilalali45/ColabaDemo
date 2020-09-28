@@ -202,39 +202,44 @@ namespace Rainmaker.API.Controllers
             try
             {
 
-                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  {model.ToJson()}");
+                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam model {model.ToJson()}");
                 var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
                 StringBuilder email = new StringBuilder();
                 string commaseperated = ",";
 
-                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  {loanApplication.BusinessUnitId.ToString()}");
+                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  BusinessUnitId {loanApplication.BusinessUnitId.ToString()}");
                 var employee = await _employeeService.GetEmployeeEmailByRoleName(Constants.SupportTeamRoleName);
                 for (int i = 0; i < employee.Count; i++)
                 {
                     if (i == employee.Count - 1)
                     {
                         commaseperated = string.Empty;
-                    } var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
-                        .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
-                    if (emailAccount != null) {
-                        email.Append(emailAccount.Email + commaseperated);
                     }
-                    else
+                    if (employee[i].EmployeeBusinessUnitEmails != null)
                     {
-                        email.Append(string.Empty);
+                        var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
+                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+                        if (emailAccount != null)
+                        {
+                            email.Append(emailAccount.Email + commaseperated);
+                        }
+                        else
+                        {
+                            email.Append(string.Empty);
+                        }
                     }
                 }
 
-                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam  {email.ToString()}");
+                _logger.LogInformation(message: $"DocSync SendEmailSupportTeam email {email.ToString()}");
 
-                model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: 500; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName + "." + model.DocumentExension.Replace("jpeg", "jpg") + "</p></td> </tr> </table> ";
+                model.EmailBody = "<table style='width:100%'> <tr> <td> <h2 style='font-size: 14px; font-weight: bold; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;'>Hi RainMaker support team,</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;'>Documents that have failed to sync</p> <h2 style='font-size: 14px; font-weight: bold; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000; text-transform: uppercase;margin-bottom: 0;'>" + model.DocumentCategory + "</h2> <p style='font-size: 13px; font-weight: normal; font-family: 'Rubik', Arial, Helvetica, sans-serif; color: #000000;margin-bottom: 25px;margin-top:5px'>" + model.DocumentName + "." + model.DocumentExension.Replace("jpeg", "jpg") + "</p></td> </tr> </table> ";
                 var data = new Dictionary<FillKey, string>();
                 data.Add(FillKey.CustomEmailHeader, "");
                 data.Add(FillKey.CustomEmailFooter, "");
                 data.Add(FillKey.EmailBody, model.EmailBody.Replace(Environment.NewLine, "<br/>"));
                 data.Add(FillKey.LoanApplicationId, model.loanApplicationId.ToString());
                 data.Add(FillKey.TenantId, model.TenantId.ToString());
-                data.Add(FillKey.ActivityDate, CommonHelper.DateFormat(model.ErrorDate.ToString()));
+                data.Add(FillKey.ActivityDate, model.ErrorDate==null?string.Empty:CommonHelper.DateFormat(model.ErrorDate.ToString()));
                 data.Add(FillKey.ErrorCode, ((int)HttpStatusCode.InternalServerError).ToString() + ":" + HttpStatusCode.InternalServerError.ToString());
                 data.Add(FillKey.ErrorUrl, model.Url);
                 await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ActivityForType.DocumentSyncFailureActivity, email.ToString());

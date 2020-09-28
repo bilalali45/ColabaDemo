@@ -387,8 +387,9 @@ namespace RainMaker.Common
         public static string DateFormat(string dateFormate )
             {
         
-            DateTime date = Convert.ToDateTime(dateFormate);
-            var _date= date.ToString("MMM") + " " + date.ToString("dd") + ", " + date.ToString("yyyy") + " AT " + date.ToString("hh:mm");
+            DateTime date = DateTime.SpecifyKind(Convert.ToDateTime(dateFormate), DateTimeKind.Utc);
+           
+            var _date= date.ToString("MMM") + " " + date.ToString("dd") + ", " + date.ToString("yyyy") + " AT " + date.ToString("hh:mm") + " " + date.ToString("tt");
             return _date;
         }
     }
