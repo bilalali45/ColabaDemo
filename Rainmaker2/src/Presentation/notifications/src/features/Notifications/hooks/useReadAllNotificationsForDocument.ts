@@ -4,7 +4,6 @@ import {NotificationType} from '../../../lib/types';
 
 interface UseReadAllNotificationsForDocumentProps {
   notifications: NotificationType[] | null;
-  http: Http;
 }
 
 export const useReadAllNotificationsForDocument = (
@@ -12,7 +11,7 @@ export const useReadAllNotificationsForDocument = (
 ): {
   readAllNotificationsForDocument: (loanApplicationId: string) => Promise<void>;
 } => {
-  const {notifications, http} = props;
+  const {notifications} = props;
 
   const readAllNotificationsForDocument = async (loanApplicationId: string) => {
     try {
@@ -27,7 +26,7 @@ export const useReadAllNotificationsForDocument = (
         .map((notification) => notification.id);
 
       if (documentIds.length > 0) {
-        await http.put<number[], {ids: number[]}>(
+        await Http.put<number[], {ids: number[]}>(
           '/api/Notification/notification/Read',
           {
             ids: documentIds

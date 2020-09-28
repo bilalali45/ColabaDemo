@@ -9,6 +9,7 @@ jest.mock('axios');
 jest.mock('./Store/actions/UserActions');
 jest.mock('./Store/actions/NeedListActions');
 jest.mock('./Utils/LocalDB');
+jest.mock('./Store/actions/ReviewDocumentActions');
 
 beforeEach(() => {
   MockEnvConfig();

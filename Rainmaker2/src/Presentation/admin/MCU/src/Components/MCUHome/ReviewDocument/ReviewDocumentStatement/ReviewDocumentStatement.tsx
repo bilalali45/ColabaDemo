@@ -1,16 +1,17 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { Http } from 'rainsoft-js';
+import React, {useEffect, useCallback, useState, useRef} from 'react';
+import {Http} from 'rainsoft-js';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { DocumentSnipet } from './DocumentSnipet/DocumentSnipet';
-import { DocumentFileType, FileType } from '../../../../Entities/Types/Types';
-import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints';
-import { NeedList } from '../../../../Entities/Models/NeedList';
-import { DocumentStatus } from '../../../../Entities/Types/Types';
+import {DocumentSnipet} from './DocumentSnipet/DocumentSnipet';
+import {DocumentFileType, FileType} from '../../../../Entities/Types/Types';
+import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
+import {NeedList} from '../../../../Entities/Models/NeedList';
+import {DocumentStatus} from '../../../../Entities/Types/Types';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
+import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
 
 const Footer = ({
   acceptDocument,
@@ -18,7 +19,7 @@ const Footer = ({
   setRejectPopup,
   rejectModalOpen,
   status,
-  acceptRejectEnabled,
+  acceptRejectEnabled
 }: {
   acceptDocument: () => void;
   rejectDocument: () => void;
@@ -27,8 +28,6 @@ const Footer = ({
   status?: string;
   acceptRejectEnabled: boolean;
 }) => {
-
-
   const rejectAndCloseRejectPopUp = () => {
     rejectDocument();
   };
@@ -125,7 +124,7 @@ export const ReviewDocumentStatement = ({
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [mcuNamesUpdated, setMcuNamesUpdated] = useState<
-    { fileId: string; mcuName: string }[]
+    {fileId: string; mcuName: string}[]
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
@@ -160,18 +159,18 @@ export const ReviewDocumentStatement = ({
   const requestDocumentFiles = async (currentDocument: NeedList) => {
     const { id, requestId, docId } = currentDocument;
 
-    const http = new Http();
+   const data = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
+       // const http = new Http();
 
-    const { data } = await http.get<DocumentFileType[]>(
-      NeedListEndpoints.GET.documents.files(id, requestId, docId)
-    );
-
+    // const { data } = await http.get<DocumentFileType[]>(
+    //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
+    // );
+   
     const { files, userName } = data[0];
-
     setDocumentFiles(files);
     setUsername(userName);
     setMcuNamesUpdated(
-      files.map((file) => {
+      files.map((file: any) => {
         return {
           fileId: file.fileId,
           mcuName:
@@ -264,7 +263,7 @@ export const ReviewDocumentStatement = ({
     // Set reject document message when document changed.
     setRejectDocumentMessage(
       `Hi ${currentDocument!.userName}, please submit the ${
-      currentDocument!.docName
+        currentDocument!.docName
       } again.`
     );
 
@@ -278,7 +277,6 @@ export const ReviewDocumentStatement = ({
       className="document-statement"
     >
       <header className="document-statement--header">
-
         <h2 title={currentDocument.docName}>{currentDocument.docName}</h2>
         <Dropdown>
           <Dropdown.Toggle
@@ -286,12 +284,17 @@ export const ReviewDocumentStatement = ({
             variant="primary"
             className="mcu-dropdown-toggle no-caret"
             id="dropdown-basic"
+            data-testid="activity-logBtn"
           >
             Activity Log
-            </Dropdown.Toggle>
+          </Dropdown.Toggle>
           {currentDocument.id !== null && (
             <Dropdown.Menu>
-              <ReviewDocumentActivityLog id={currentDocument.id} requestId={currentDocument.requestId!} docId={currentDocument.docId} />
+              <ReviewDocumentActivityLog
+                id={currentDocument.id}
+                requestId={currentDocument.requestId!}
+                docId={currentDocument.docId}
+              />
             </Dropdown.Menu>
           )}
         </Dropdown>
@@ -311,86 +314,87 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
-          <div className="document-statement--body-footer">
-            <section
-              ref={documentStateBodyRef}
-              className="document-statement--body"
-              style={checkDialog()}
-            >
-              {/* <h3>Documents</h3> */}
-              {!!documentFiles && documentFiles.length ? (
-                documentFiles.map((file, index) => (
-                  <DocumentSnipet
-                    key={index}
-                    id={currentDocument?.id!}
-                    index={index}
-                    moveNextFile={async (
-                      index: number,
-                      fileId: string,
-                      clientName: string,
-                      loadingFile?: boolean
-                    ) => {
-                      moveNextFile(index, fileId, clientName, loadingFile).then(async () => {
+        <div className="document-statement--body-footer">
+          <section
+            ref={documentStateBodyRef}
+            className="document-statement--body"
+            style={checkDialog()}
+          >
+            {/* <h3>Documents</h3> */}
+            {!!documentFiles && documentFiles.length ? (
+              documentFiles.map((file, index) => (
+                <DocumentSnipet
+                  key={index}
+                  id={currentDocument?.id!}
+                  index={index}
+                  moveNextFile={async (
+                    index: number,
+                    fileId: string,
+                    clientName: string,
+                    loadingFile?: boolean
+                  ) => {
+                    moveNextFile(index, fileId, clientName, loadingFile).then(
+                      async () => {
                         setCurrentFileName(clientName);
                         if (currentDocument) {
                           await requestDocumentFiles(currentDocument);
                         }
-                      });
-
-                    }}
-                    requestId={currentDocument.requestId}
-                    docId={currentDocument.docId}
-                    fileId={file.fileId}
-                    mcuName={file.mcuName}
-                    clientName={file.clientName}
-                    isCurrent={currentFileName === file.clientName}
-                    currentFileIndex={currentFileIndex}
-                    uploadedOn={file.fileUploadedOn}
-                    isRead={file.isRead}
-                    username={username}
-                    allowFileRenameMCU={allowFileRenameMCU}
-                    getMcuNameUpdated={getMcuNameUpdated}
-                  />
-                ))
-              ) : (
-                  <span>No file submitted yet</span>
-                )}
-              {rejectDocumentModal && (
-                <div className="dialogbox">
-                  <div className="dialogbox-backdrop"></div>
-                  <div className="dialogbox-slideup">
-                    <h2 className="h2">Request this document again.</h2>
-                    <p>
-                      Let the borrower know what you need to mark it as complete
+                      }
+                    );
+                  }}
+                  requestId={currentDocument.requestId}
+                  docId={currentDocument.docId}
+                  fileId={file.fileId}
+                  mcuName={file.mcuName}
+                  clientName={file.clientName}
+                  isCurrent={currentFileName === file.clientName}
+                  currentFileIndex={currentFileIndex}
+                  uploadedOn={file.fileUploadedOn}
+                  isRead={file.isRead}
+                  username={username}
+                  allowFileRenameMCU={allowFileRenameMCU}
+                  getMcuNameUpdated={getMcuNameUpdated}
+                />
+              ))
+            ) : (
+              <span>No file submitted yet</span>
+            )}
+            {rejectDocumentModal && (
+              <div className="dialogbox">
+                <div className="dialogbox-backdrop"></div>
+                <div className="dialogbox-slideup">
+                  <h2 className="h2">Request this document again.</h2>
+                  <p>
+                    Let the borrower know what you need to mark it as complete
                   </p>
-                    <textarea
-                      style={{
-                        borderColor:
-                          rejectDocumentMessage.trim() === '' ? 'red' : ''
-                      }}
-                      className="form-control"
-                      rows={6}
-                      value={rejectDocumentMessage}
-                      onChange={onChangeTextArea}
-                      maxLength={255}
-                    />
-                    {rejectDocumentMessage.trim() === '' && (
-                      <div style={{ color: 'red' }}>This field is required.</div>
-                    )}
-                  </div>
+                  <textarea
+                    style={{
+                      borderColor:
+                        rejectDocumentMessage.trim() === '' ? 'red' : ''
+                    }}
+                    className="form-control"
+                    rows={6}
+                    value={rejectDocumentMessage}
+                    onChange={onChangeTextArea}
+                    maxLength={255}
+                  />
+                  {rejectDocumentMessage.trim() === '' && (
+                    <div style={{color: 'red'}}>This field is required.</div>
+                  )}
                 </div>
-              )}
-            </section>
-            <Footer
-              status={currentDocument?.status}
-              acceptDocument={acceptDocument}
-              rejectDocument={validateAndRejectDocument}
-              setRejectPopup={setRejectPopup}
-              rejectModalOpen={rejectDocumentModal}
-              acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
-            />
-          </div>
-        )}
+              </div>
+            )}
+          </section>
+          <Footer
+            status={currentDocument?.status}
+            acceptDocument={acceptDocument}
+            rejectDocument={validateAndRejectDocument}
+            setRejectPopup={setRejectPopup}
+            rejectModalOpen={rejectDocumentModal}
+            acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
+          />
+        </div>
+      )}
     </div>
   );
 };

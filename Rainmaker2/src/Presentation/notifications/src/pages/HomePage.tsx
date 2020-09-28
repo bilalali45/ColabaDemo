@@ -20,8 +20,6 @@ import {
 import {useNotificationsReducer} from '../features/Notifications/reducers/useNotificationsReducer';
 
 export const HomePage: FunctionComponent = () => {
-  const http = useMemo(() => new Http(), []);
-
   const {state, dispatch} = useNotificationsReducer();
   const {
     notifications,
@@ -42,7 +40,6 @@ export const HomePage: FunctionComponent = () => {
   });
 
   const {getFetchNotifications, lastId} = useFetchNotifications({
-    http,
     dispatch,
     notifications
   });
@@ -86,7 +83,7 @@ export const HomePage: FunctionComponent = () => {
 
   const getUnseenNotificationsCount = useCallback(async () => {
     try {
-      const {data} = await http.get<number>(
+      const {data} = await Http.get<number>(
         '/api/Notification/notification/GetCount'
       );
 
@@ -97,11 +94,11 @@ export const HomePage: FunctionComponent = () => {
     } catch (error) {
       console.warn(error);
     }
-  }, [dispatch, http]);
+  }, [dispatch]);
 
   const deleteAllNotifications = async () => {
     try {
-      await http.put('/api/Notification/notification/DeleteAll', null);
+      await Http.put('/api/Notification/notification/DeleteAll', null);
 
       dispatch({
         type: 'DELETE_ALL_NOTIFICATIONS'
@@ -112,13 +109,11 @@ export const HomePage: FunctionComponent = () => {
   };
 
   useNotificationSeen({
-    http,
     notifications,
     notificationsVisible
   });
 
   const {readAllNotificationsForDocument} = useReadAllNotificationsForDocument({
-    http,
     notifications
   });
 
@@ -132,7 +127,6 @@ export const HomePage: FunctionComponent = () => {
 
   const {deleteNotification} = useDeleteNotification({
     notifications,
-    http,
     dispatch,
     timers
   });

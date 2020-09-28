@@ -5,7 +5,6 @@ import { Http } from "rainsoft-js";
 import Cookies from "universal-cookie";
 import axios from "axios";
 const cookies = new Cookies();
-const http = new Http();
 
 export class UserActions {
   static async authenticate() {
@@ -15,7 +14,7 @@ export class UserActions {
       employee: false,
     };
 
-    let res: any = await http.post(
+    let res: any = await Http.post(
       Endpoints.user.POST.authorize(),
       credentials
     );
@@ -34,7 +33,7 @@ export class UserActions {
       if (!Auth.checkAuth()) {
         return;
       }
-      let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
+      let res: any = await Http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken(),
       });
@@ -45,7 +44,6 @@ export class UserActions {
         let payload = UserActions.decodeJwt(res.data.data.token);
         Auth.storeTokenPayload(payload);
         UserActions.addExpiryListener(payload);
-        http.setAuth(res.data.data.token);
         return true;
       }
       // console.log("Refresh token fail.");
@@ -89,7 +87,6 @@ export class UserActions {
         if (tokens.token) {
           Auth.saveAuth(tokens.token);
           Auth.saveRefreshToken(tokens.refreshToken);
-          http.setAuth(tokens.token);
           return true;
         } else {
           return false;
@@ -109,7 +106,6 @@ export class UserActions {
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
         Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        http.setAuth(Rainmaker2Token);
         let isAuth = Auth.checkAuth();
         // console.log("Cache token check Auth", isAuth);
         if (isAuth === "token expired" || !isAuth) {

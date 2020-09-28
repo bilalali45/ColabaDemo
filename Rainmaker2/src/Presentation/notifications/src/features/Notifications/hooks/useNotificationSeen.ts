@@ -6,11 +6,10 @@ import {NotificationType} from '../../../lib/types';
 interface UseEffectNotificationSeen {
   notificationsVisible: boolean;
   notifications: NotificationType[] | null;
-  http: Http;
 }
 
 export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
-  const {notifications, notificationsVisible, http} = props;
+  const {notifications, notificationsVisible} = props;
 
   useEffect(() => {
     if (!notifications) return;
@@ -22,7 +21,7 @@ export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
           .map((notification) => notification.id);
 
         if (unseenNotificationIds.length > 0) {
-          http.put('/api/Notification/notification/Seen', {
+          Http.put('/api/Notification/notification/Seen', {
             ids: unseenNotificationIds
           });
         }
@@ -30,5 +29,5 @@ export const useNotificationSeen = (props: UseEffectNotificationSeen): void => {
         console.warn(error);
       }
     }
-  }, [notificationsVisible, notifications, http]);
+  }, [notificationsVisible, notifications]);
 };

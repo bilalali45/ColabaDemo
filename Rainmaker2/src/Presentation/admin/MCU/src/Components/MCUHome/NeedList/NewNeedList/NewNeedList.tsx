@@ -46,7 +46,6 @@ export const NewNeedList = () => {
   const [showReview, setShowReview] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
   const [currentDocumentIndex, setCurrentDocumentIndex] = useState<number>(0);
-
   const templateManager: any = state?.templateManager;
   const needListManager: any = state?.needListManager;
   const isDocumentDraft = templateManager?.isDocumentDraft;
@@ -105,7 +104,7 @@ export const NewNeedList = () => {
       fetchCurrentCatDocs();
     }
 
-    setAllDocuments(selectedTemplateDocuments);
+    setAllDocuments(selectedTemplateDocuments); 
 
     if (selectedTemplateDocuments?.length && currentDocument === null) {
       setCurrentDocument(selectedTemplateDocuments[0]);

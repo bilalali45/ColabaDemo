@@ -87,7 +87,7 @@ export const ReviewDocumentHeader = ({
               )}
             </Dropdown>) : null
           }
-          <button className="btn btn-close" onClick={onClose}>
+          <button data-testid="review-closeBtnTs" className="btn btn-close" onClick={onClose}>
             <em className="zmdi zmdi-close"></em>
           </button>
         </div>

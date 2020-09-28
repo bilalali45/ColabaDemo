@@ -4,12 +4,13 @@ import {TemplateType} from './reducers/TemplatesReducer';
 import {Http} from 'rainsoft-js';
 import {LocalDB} from '../Utils/LocalDB';
 import {NeedListType} from './reducers/NeedListReducer';
-const httpClient = new Http();
-let baseUrl: any = window?.envConfig?.API_BASE_URL;
-let auth = LocalDB.getAuthToken();
+const baseUrl: any = window?.envConfig?.API_BASE_URL;
+const httpClient = new Http(baseUrl, 'token');
 
-httpClient.setBaseUrl(baseUrl);
-if (auth) httpClient.setAuth(auth);
+//let auth = LocalDB.getAuthToken();s
+
+//httpClient.setBaseUrl(baseUrl);
+//if (auth) httpClient.setAuth(auth);
 
 export type InitialStateType = {
   user: {

@@ -50,67 +50,57 @@ exports.__esModule = true;
 exports.Http = void 0;
 var axios_1 = require("axios");
 var Http = /** @class */ (function () {
-    function Http() {
-        this.baseUrl = '';
-        this.auth = '';
-        this.methods = {
-            GET: 'GET',
-            POST: 'POST',
-            PUT: 'PUT',
-            DELETE: 'DELETE'
-        };
+    function Http(baseUrl, authKey) {
+        if (baseUrl === void 0) { baseUrl = ""; }
+        if (authKey === void 0) { authKey = ""; }
         if (!Http.instance) {
+            Http.baseUrl = baseUrl;
+            Http.authKey = authKey;
             Http.instance = this;
         }
         else {
             return Http.instance;
         }
     }
-    Http.prototype.get = function (url) {
+    Http.get = function (url, customHeader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.GET, url)];
+                return [2 /*return*/, this.createRequest(this.methods.GET, url, customHeader)];
             });
         });
     };
-    Http.prototype.post = function (url, data) {
+    Http.post = function (url, data, customHeader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.POST, url, data)];
+                return [2 /*return*/, this.createRequest(this.methods.POST, url, data, customHeader)];
             });
         });
     };
-    Http.prototype.put = function (url, data) {
+    Http.put = function (url, data, customHeader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.PUT, url, data)];
+                return [2 /*return*/, this.createRequest(this.methods.PUT, url, data, customHeader)];
             });
         });
     };
-    Http.prototype["delete"] = function (url, data) {
+    Http["delete"] = function (url, data, customHeader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.DELETE, url, data)];
+                return [2 /*return*/, this.createRequest(this.methods.DELETE, url, data, customHeader)];
             });
         });
     };
-    Http.prototype.fetch = function (config, headers) {
+    Http.fetch = function (config, headers) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, axios_1["default"].request(__assign(__assign({}, config), { headers: headers }))];
             });
         });
     };
-    Http.prototype.setBaseUrl = function (baseUrl) {
-        this.baseUrl = baseUrl;
-    };
-    Http.prototype.setAuth = function (auth) {
-        this.auth = auth;
-    };
-    Http.prototype.createUrl = function (baseUrl, url) {
+    Http.createUrl = function (baseUrl, url) {
         return "" + baseUrl + url;
     };
-    Http.prototype.createRequest = function (reqType, url, data) {
+    Http.createRequest = function (reqType, url, data, customHeader) {
         var _a, _b, _c, _d, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
             var res, error_1;
@@ -118,16 +108,16 @@ var Http = /** @class */ (function () {
                 switch (_g.label) {
                     case 0:
                         _g.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].request(this.getFonfig(reqType, url, data))];
+                        return [4 /*yield*/, axios_1["default"].request(this.getConfig(reqType, url, data, customHeader))];
                     case 1:
                         res = _g.sent();
                         return [2 /*return*/, res];
                     case 2:
                         error_1 = _g.sent();
-                        if (((_b = (_a = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.name) === 'TokenExpiredError'
-                            || ((_d = (_c = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.name) === 'JsonWebTokenError'
-                            || ((_e = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _e === void 0 ? void 0 : _e.data) === 'Could not login'
-                            || ((_f = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _f === void 0 ? void 0 : _f.status) === 401) {
+                        if (((_b = (_a = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.name) === "TokenExpiredError" ||
+                            ((_d = (_c = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.name) === "JsonWebTokenError" ||
+                            ((_e = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _e === void 0 ? void 0 : _e.data) === "Could not login" ||
+                            ((_f = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _f === void 0 ? void 0 : _f.status) === 401) {
                         }
                         return [2 /*return*/, new Promise(function (_, reject) {
                                 reject(error_1);
@@ -137,12 +127,13 @@ var Http = /** @class */ (function () {
             });
         });
     };
-    Http.prototype.getFonfig = function (method, url, data) {
-        var completeUrl = this.createUrl(this.baseUrl, url);
-        var headers = {};
+    Http.getConfig = function (method, url, data, customHeader) {
+        if (customHeader === void 0) { customHeader = {}; }
+        var completeUrl = this.createUrl(Http.baseUrl, url);
+        var headers = customHeader;
         //let auth = Auth.getAuth();
-        if (this.auth && (!url.includes('login') || !url.includes('authorize'))) {
-            headers['Authorization'] = "Bearer " + this.auth;
+        if (!url.includes("login") || !url.includes("authorize")) {
+            headers["Authorization"] = "Bearer " + this.decodeString(localStorage.getItem(this.authKey));
         }
         var config = {
             method: method,
@@ -154,7 +145,28 @@ var Http = /** @class */ (function () {
         }
         return config;
     };
+    Http.decodeString = function (value) {
+        // Decode the String
+        if (!value) {
+            return "";
+        }
+        try {
+            var decodedString = atob(value);
+            return decodedString.split("|")[0];
+        }
+        catch (_a) {
+            return null;
+        }
+    };
     Http.instance = null;
+    Http.baseUrl = "";
+    Http.authKey = "";
+    Http.methods = {
+        GET: "GET",
+        POST: "POST",
+        PUT: "PUT",
+        DELETE: "DELETE"
+    };
     return Http;
 }());
 exports.Http = Http;
