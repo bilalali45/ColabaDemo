@@ -5,7 +5,6 @@ import {NotificationType} from '../../../lib/types';
 import {Actions} from '../reducers/useNotificationsReducer';
 
 interface UseFetchNotificationsProps {
-  http: Http;
   dispatch: Dispatch<Actions>;
   notifications: NotificationType[] | null;
 }
@@ -16,7 +15,7 @@ export const useFetchNotifications = (
   getFetchNotifications: (lastId: number) => Promise<void>;
   lastId: number;
 } => {
-  const {http, dispatch, notifications} = props;
+  const {dispatch, notifications} = props;
 
   /**
    * This is last Id of notification inside notifications array on every API hit.
@@ -36,7 +35,7 @@ export const useFetchNotifications = (
   const getFetchNotifications = useCallback(
     async (lastIdParam: number) => {
       try {
-        const {data: response} = await http.get<NotificationType[]>(
+        const {data: response} = await Http.get<NotificationType[]>(
           `/api/Notification/notification/GetPaged?pageSize=10&lastId=${
             lastIdParam || lastIdRef.current
           }&mediumId=1`
@@ -75,7 +74,7 @@ export const useFetchNotifications = (
         console.warn('error', error);
       }
     },
-    [dispatch, http]
+    [dispatch]
   );
 
   return {

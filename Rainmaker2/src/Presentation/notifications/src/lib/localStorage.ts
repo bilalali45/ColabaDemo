@@ -6,9 +6,8 @@ import {ApplicationEnv} from './appEnv';
 import {PayloadType} from './types';
 
 const cookies = new Cookies();
-const httpClient = new Http();
 const baseUrl: any = window.envConfig.API_BASE_URL;
-httpClient.setBaseUrl(baseUrl);
+const httpClient = new Http(baseUrl, 'notificationToken');
 
 export class LocalDB {
   static getCredentials(): {
