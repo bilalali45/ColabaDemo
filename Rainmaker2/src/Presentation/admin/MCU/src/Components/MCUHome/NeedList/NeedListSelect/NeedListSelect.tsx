@@ -79,11 +79,7 @@ export const NeedListSelect = ({
     if (!templates) {
       fetchTemplatesList();
     }
-<<<<<<< HEAD
-  }, [!templates])
-=======
   }, [!templates]);
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
 
   useEffect(() => {
     setIdArray(selectedIds || []);
@@ -108,28 +104,18 @@ export const NeedListSelect = ({
     if (newTemplates) {
       dispatch({type: TemplateActionsType.SetTemplates, payload: newTemplates});
     }
-<<<<<<< HEAD
-  }
-
-  const updateIdsList = ({ target: { checked } }: ChangeEvent<HTMLInputElement>, id: string) => {
-=======
   };
 
   const updateIdsList = (
     {target: {checked}}: ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
     if (checked) {
       setIdArray([...idArray, ...selectedIds, id]);
     } else {
       setIdArray((pre: any) => pre?.filter((idOld: any) => idOld !== id));
     }
-<<<<<<< HEAD
-  }
-=======
   };
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
 
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
@@ -278,17 +264,11 @@ export const NeedListSelect = ({
         );
       }
     }
-<<<<<<< HEAD
-
-  }
-=======
   };
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
 
   const displayAddButton = () => {
     return (
       <>
-<<<<<<< HEAD
         <Dropdown onToggle={() => setShow(!show)} show={show} data-testid="addTemplate">
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
@@ -296,37 +276,11 @@ export const NeedListSelect = ({
             </Dropdown.Toggle> :
 
             <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
-=======
-        <Dropdown onToggle={() => setShow(!show)} show={show}>
-          {showButton ? (
-            <Dropdown.Toggle
-              size="sm"
-              variant="primary"
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
-              Add{' '}
-              <span className="btn-icon-right">
-                <em className="zmdi zmdi-plus"></em>
-              </span>
-            </Dropdown.Toggle>
-          ) : (
-            <Dropdown.Toggle
-              size="sm"
-              style={{background: 'none', border: 'none', outline: 'none'}}
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>
           )}
 
-<<<<<<< HEAD
           <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown">
-=======
-          <Dropdown.Menu className="padding" show={show} ref={ref}>
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
             <h2>Select a need list Template</h2>
             {MyTemplates(
               templates?.filter((t: Template) => t.type === MyTemplate)
@@ -341,13 +295,8 @@ export const NeedListSelect = ({
           </Dropdown.Menu>
         </Dropdown>
       </>
-<<<<<<< HEAD
     )
   }
-=======
-    );
-  };
->>>>>>> abc5d3b396af644dee4a1c7c9121f0b93c8a176f
 
   return displayAddButton();
 };
