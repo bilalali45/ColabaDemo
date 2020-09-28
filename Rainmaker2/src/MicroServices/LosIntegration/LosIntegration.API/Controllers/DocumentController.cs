@@ -195,7 +195,7 @@ namespace LosIntegration.API.Controllers
                                               ? Path.GetExtension(path: file.ClientName).Replace(oldValue: ".",
                                                                                                  newValue: "")
                                               : "",
-                                          DocumentName = Path.GetFileNameWithoutExtension(path: file.ClientName),
+                                          DocumentName = Path.GetFileNameWithoutExtension(path: !string.IsNullOrEmpty(file.McuName) ? file.McuName : file.ClientName),
                                           DocumentStatus =
                                               byteDocStatusMapping?.ByteDocStatusName ?? "0", // mapping required
                                           DocumentType =
