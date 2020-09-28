@@ -30,8 +30,6 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
             <div className="need-list-view-header--left">
                 <span className="h2">Needs List</span>
                 <div className="btn-group">
-
-                    {/* {displayAddButton()} */}
                     {!isDocumentDraft ? null : isDocumentDraft?.requestId ?
                         <button onClick={() => viewSaveDraft()} className="btn btn-secondry btn-sm">View Saved Draft</button>
                         :
