@@ -278,7 +278,7 @@ export const NeedListSelect = ({
             <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>
-          )}
+          }
 
           <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown">
             <h2>Select a need list Template</h2>
