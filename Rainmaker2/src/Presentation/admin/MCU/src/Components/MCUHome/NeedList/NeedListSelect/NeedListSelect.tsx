@@ -60,17 +60,13 @@ export const NeedListSelect = ({
   const [templateName, setTemplateName] = useState<string>('');
 
   const displayPopover = (event: any, docs: any[], name: string) => {
-    console.log(event.target, 'apex');
-    //if (docs.length > 0) {
     setTemplateName(name);
     setDocs(docs);
     setShowPopover(true);
     setTarget(event.target);
-    //}
   };
 
   const hidePopover = (event: any) => {
-    console.log(event.target, 'apex');
     setShowPopover(false);
     setTarget(event.target);
   };

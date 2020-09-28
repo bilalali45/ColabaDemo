@@ -130,7 +130,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
 
     const renderPopOverContent = () => {
         return (
-            <div className="popup-add-doc">
+            <div data-testid="popup-add-doc" className="popup-add-doc">
                 <div className="popup-add-doc-row row">
                     <div className="col-sm-5 col-md-5  col-lg-4 popup-add-doc-row--left">
                         <DocumentTypes
@@ -165,7 +165,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
         <div className="Compo-add-document" ref={mainContainerRef}  >
 
             <div className="add-doc-link-wrap" >
-                <div ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
+                <div data-testid="add-doc-btn" ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
                     <button className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
                         <span className="btn-text">Add document</span>
                         <span className="btn-icon">

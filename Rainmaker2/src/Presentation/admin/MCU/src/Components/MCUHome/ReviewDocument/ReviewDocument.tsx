@@ -20,7 +20,6 @@ import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
 
 export const ReviewDocument = () => {
-  console.log('------------------------------- Review Document--------------------------------------')
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
   const [navigationIndex, setNavigationIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -42,7 +41,6 @@ export const ReviewDocument = () => {
   const { state } = location;
 
   const goBack = () => {
-    console.log('Going Back---------------------------->')
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`)
   };
 

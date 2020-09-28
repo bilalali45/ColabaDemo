@@ -24,11 +24,6 @@ test('renders learn react link', async () => {
     </MemoryRouter>
   );
 
-//   console.log(
-//     window.location.pathname,
-//     ' ===================================================================== '
-//   );
-
   const linkElement = getByTestId('template-link');
   await waitFor(() => {
     expect(linkElement).toBeInTheDocument();
@@ -38,7 +33,7 @@ test('renders learn react link', async () => {
 
   await waitFor(() => {
     let templateHeader = getByTestId('tempate-header');
-    console.log(templateHeader.innerHTML);
     expect(templateHeader).toHaveTextContent('Manage Document Templates');
   })
+  
 });

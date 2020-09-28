@@ -1,10 +1,10 @@
-import React, {useContext, useState} from 'react';
-import {Document} from '../../../../../../Entities/Models/Document';
-import {TemplateActions} from '../../../../../../Store/actions/TemplateActions';
-import {Store} from '../../../../../../Store/Store';
-import {TemplateDocument} from '../../../../../../Entities/Models/TemplateDocument';
+import React, { useContext, useState } from 'react';
+import { Document } from '../../../../../../Entities/Models/Document';
+import { TemplateActions } from '../../../../../../Store/actions/TemplateActions';
+import { Store } from '../../../../../../Store/Store';
+import { TemplateDocument } from '../../../../../../Entities/Models/TemplateDocument';
 import Spinner from 'react-bootstrap/Spinner';
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 type SelectedTypeType = {
   setVisible: Function;
@@ -23,7 +23,7 @@ export const SelectedDocumentTypeList = ({
 }: SelectedTypeType) => {
   const [requestSent, setRequestSent] = useState<boolean>(false);
   const [removeDocName, setRemoveDocName] = useState<string>();
-  const {state, dispatch} = useContext(Store);
+  const { state, dispatch } = useContext(Store);
 
   const templateManager: any = state?.templateManager;
   const templateDocuments: any = templateManager?.templateDocuments;
@@ -60,7 +60,7 @@ export const SelectedDocumentTypeList = ({
 
   return (
     <div className="active-docs">
-     {currentCategoryDocuments?.catName !=='Commonly Used' || term? <ul
+      {currentCategoryDocuments?.catName !== 'Commonly Used' || term ? <ul
         className={
           currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
         }
@@ -69,6 +69,7 @@ export const SelectedDocumentTypeList = ({
           filterUsedDocs(usedDocs)?.map((dl) => {
             return (
               <li
+                data-testid="doc-item"
                 title={dl?.docType}
                 key={dl.docTypeId}
                 onClick={async () => {
@@ -87,46 +88,47 @@ export const SelectedDocumentTypeList = ({
                     </Spinner>
                   </span>
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </li>
             );
           })}
       </ul>
-      :
-      <ul
-        className={
-          currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
-        }
-      >
-        {documentList &&
-          filterUsedDocs(usedDocs)?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
-            return (
-              <li
-                title={dl?.docType}
-                key={dl.docTypeId}
-                onClick={async () => {
-                  setRemoveDocName(dl?.docTypeId);
-                  setRequestSent(true);
-                  await addNewDoc(dl, 'typeId');
-                  setRequestSent(false);
-                  // setVisible(false);
-                }}
-              >
-                {dl?.docType}
-                {requestSent && removeDocName === dl.docTypeId ? (
-                  <span>
-                    <Spinner size="sm" animation="border" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </Spinner>
-                  </span>
-                ) : (
-                  ''
-                )}
-              </li>
-            );
-          })}
-      </ul>}
+        :
+        <ul
+          className={
+            currentCategoryDocuments?.catName == 'Other' ? 'other-ul' : ''
+          }
+        >
+          {documentList &&
+            filterUsedDocs(usedDocs)?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
+              return (
+                <li
+                  data-testid="doc-item"
+                  title={dl?.docType}
+                  key={dl.docTypeId}
+                  onClick={async () => {
+                    setRemoveDocName(dl?.docTypeId);
+                    setRequestSent(true);
+                    await addNewDoc(dl, 'typeId');
+                    setRequestSent(false);
+                    // setVisible(false);
+                  }}
+                >
+                  {dl?.docType}
+                  {requestSent && removeDocName === dl.docTypeId ? (
+                    <span>
+                      <Spinner size="sm" animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </Spinner>
+                    </span>
+                  ) : (
+                      ''
+                    )}
+                </li>
+              );
+            })}
+        </ul>}
       {!documentList.length && term && (
         <div className="doc-notfound">
           <p>No Results Found for “{term?.toLowerCase()}”</p>

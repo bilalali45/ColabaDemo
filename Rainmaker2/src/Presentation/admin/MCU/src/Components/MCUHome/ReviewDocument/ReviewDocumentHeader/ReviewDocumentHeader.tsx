@@ -30,7 +30,6 @@ export const ReviewDocumentHeader = ({
   documentDetail: boolean;
   haveDocuments?: boolean;
 }) => {
-  console.log('----------------------------ReviewDocumentHeader------------------------------a')
   return (
     <div data-testid = "review-headerts"
       id="ReviewDocumentHeader"

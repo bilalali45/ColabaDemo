@@ -168,8 +168,6 @@ export const ReviewDocumentStatement = ({
 
     const { files, userName } = data[0];
 
-    console.log('currentDocument', currentDocument);
-
     setDocumentFiles(files);
     setUsername(userName);
     setMcuNamesUpdated(

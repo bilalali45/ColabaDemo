@@ -161,7 +161,6 @@ export const TemplateListContainer = ({
   };
 
   if (!templates) {
-    console.log('in no templates');
     return <Loader containerHeight={"100%"} />
   }
 
@@ -171,6 +170,7 @@ export const TemplateListContainer = ({
         <h4>Templates</h4>
 
         <div
+          data-testid="add-new-template-btn"
           className="btn-add-new-Temp"
           onClick={() => {
             clearOld();

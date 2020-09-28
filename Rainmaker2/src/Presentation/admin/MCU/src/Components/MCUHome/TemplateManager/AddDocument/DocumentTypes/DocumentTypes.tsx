@@ -38,7 +38,7 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
                 {
                     documentTypeItems?.map((p: CategoryDocument) => {
                         return (
-                            <li key={p.catId} className={currentCategoryDocuments?.catId === p?.catId ? 'active' : ''} onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
+                            <li data-testid='doc-cat' key={p.catId} className={currentCategoryDocuments?.catId === p?.catId ? 'active' : ''} onClick={() => changeCurrentDocType(p?.catId)}>{p?.catName}</li>
                         )
                     })
                 }

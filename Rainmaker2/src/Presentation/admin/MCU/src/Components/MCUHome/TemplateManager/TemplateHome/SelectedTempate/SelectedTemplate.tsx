@@ -99,7 +99,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }
 
     const addDocumentToList = async (doc: Document, type: string) => {
-        
+
         try {
             let success = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
             if (success) {
@@ -133,13 +133,14 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
             let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
             dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
             if (listContainerElRef?.current) {
-                listContainerElRef.current.scrollTo(0, listContainerElRef.current?.children[0]?.clientHeight + 40);
+                if (typeof listContainerElRef?.current?.scrollTo === 'function') {
+                    listContainerElRef?.current?.scrollTo(0, listContainerElRef?.current?.children[0]?.clientHeight + 40);
+                }
             }
         }
     }
 
     const renameTemplate = async (value: string) => {
-
         // if (!nameTest.test(value.trim())) {
         //     return;
         // }
@@ -210,7 +211,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
                     {
                         templateDocuments?.map((td: TemplateDocument) => {
                             return (
-                                <li key={td.docId}>
+                                <li data-testid="temp-doc" key={td.docId}>
                                     <p title={td.docName}>{td?.docName}
                                         {
                                             ((currentTemplate?.type === MyTemplate)) &&
@@ -236,6 +237,8 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }
 
     const renderTitleInputText = () => {
+
+
         return (
             <div className="T-head">
                 <div className="T-head-flex">
@@ -312,10 +315,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     if (!templates) return <Loader containerHeight={"100%"} />;
 
     return (
-        <section className="veiw-SelectedTemplate">
+        <section data-testid="selected-template-container" className="veiw-SelectedTemplate">
 
             {renderTitleInputText()}
-
             {(templates && !currentTemplate || templateDocuments?.length === 0) ?
                 <NewTemplate
                     setLoaderVisible={setLoaderVisible} /> : currentTemplate && templateDocuments?.length ? renderDocumentList() : <Loader containerHeight={"100%"} />}
