@@ -111,6 +111,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LosIntegration.Tests", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.SDK", "..\MicroServices\ByteWebConnector\ByteWebConnector.SDK\ByteWebConnector.SDK.csproj", "{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Milestone", "Milestone", "{5A4954DC-5017-4829-8F29-603B3AC7C1A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.API", "..\MicroServices\Milestone\Milestone.API\Milestone.API.csproj", "{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -293,6 +297,10 @@ Global
 		{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,6 +357,8 @@ Global
 		{6026ED2B-E9CA-47EB-AF65-5A4485327EAA} = {22F48F21-2A1F-474C-B7BA-F62DEB0A211C}
 		{CD420909-12FB-4945-806C-7B590579AEAE} = {72A77178-843D-45F0-BCA5-50B97D4EDE30}
 		{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
+		{5A4954DC-5017-4829-8F29-603B3AC7C1A4} = {E0FB9C7C-9C8F-4C2E-95DD-E025A45C520F}
+		{CC9F4AC7-A434-481C-AAB0-FCCA329A578C} = {5A4954DC-5017-4829-8F29-603B3AC7C1A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E56FE89-36B5-422C-B211-A1E23C5F0D3E}
