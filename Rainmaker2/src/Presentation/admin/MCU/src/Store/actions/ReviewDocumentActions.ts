@@ -6,12 +6,10 @@ import { NeedListEndpoints } from "../endpoints/NeedListEndpoints";
 import { LocalDB } from "../../Utils/LocalDB";
 import { ActivityLogType, DocumentFileType } from "../../Entities/Types/Types";
 
-
-const authToken = LocalDB.getAuthToken();
-
 export class ReviewDocumentActions {
    static async getDocumentForView(id: string, requestId: string, docId: string,fileId: string){
     const url = NeedListEndpoints.GET.documents.view(id,requestId,docId,fileId);
+    const authToken = LocalDB.getAuthToken();
     const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
         responseType: 'arraybuffer',
         headers: {
