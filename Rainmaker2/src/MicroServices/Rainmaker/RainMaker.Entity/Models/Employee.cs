@@ -111,10 +111,6 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanCoordinatorId { get; set; } // Opportunity.FK_Opportunity_Employee2
         /// <summary>
-        /// Child Opportunities where [Opportunity].[LoanOfficerId] point to this entity (FK_Opportunity_Employee1)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanOfficerId { get; set; } // Opportunity.FK_Opportunity_Employee1
-        /// <summary>
         /// Child Opportunities where [Opportunity].[LoanProcessorId] point to this entity (FK_Opportunity_Employee4)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanProcessorId { get; set; } // Opportunity.FK_Opportunity_Employee4
@@ -199,7 +195,6 @@ namespace RainMaker.Entity.Models
             Notifications = new System.Collections.Generic.HashSet<Notification>();
             OppAssignLogs = new System.Collections.Generic.HashSet<OppAssignLog>();
             Opportunities_LoanCoordinatorId = new System.Collections.Generic.HashSet<Opportunity>();
-            Opportunities_LoanOfficerId = new System.Collections.Generic.HashSet<Opportunity>();
             Opportunities_LoanProcessorId = new System.Collections.Generic.HashSet<Opportunity>();
             Opportunities_OwnerId = new System.Collections.Generic.HashSet<Opportunity>();
             Opportunities_PreProcessorId = new System.Collections.Generic.HashSet<Opportunity>();
