@@ -28,7 +28,7 @@ type NeedListSelectType = {
   viewSaveDraft: Function;
   showButton: boolean;
   fetchTemplateDocs: Function;
-  drop:any;
+  drop?:any;
 };
 
 export const NeedListSelect = ({

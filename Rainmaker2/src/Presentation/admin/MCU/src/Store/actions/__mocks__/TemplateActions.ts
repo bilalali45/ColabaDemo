@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Http } from "rainsoft-js";
 import { debug } from "console";
 
-const http = new Http();
+//const http = new Http();
 
 const mockTemplates: any = [
     // {
