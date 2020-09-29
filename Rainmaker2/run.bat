@@ -51,5 +51,7 @@ start Rainmaker.API.exe
 cd %workingDir%\src\MicroServices\ByteWebConnector\ByteWebConnector.SDK\bin\Debug\net472\
 start ByteWebConnector.SDK.exe --urls="http://localhost:5070"
 
+cd %workingDir%
+
 timeout 3
 

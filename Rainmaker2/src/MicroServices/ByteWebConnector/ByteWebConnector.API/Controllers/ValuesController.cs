@@ -48,11 +48,11 @@ namespace ByteWebConnector.API.Controllers
         [Route("TestImageWrap")]
         public void TestImageWrap()
         {
-            var imageBytes = System.IO.File.ReadAllBytes(@"C:\Users\user\Downloads\Foo.jpg");
+            var imageBytes = System.IO.File.ReadAllBytes(@"D:\delme\in.jpg");
 
            var pdfBytes =  Utility.Helper.WrapImagesInPdf(new List<byte[]> { imageBytes });
 
-            System.IO.File.WriteAllBytes(@"C:\Users\user\Downloads\Foo.pdf", pdfBytes.First());
+            System.IO.File.WriteAllBytes($"D:\\delme\\{Guid.NewGuid()}.pdf", pdfBytes.First());
 
 
         }
