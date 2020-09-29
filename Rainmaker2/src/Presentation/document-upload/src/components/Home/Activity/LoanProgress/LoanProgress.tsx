@@ -54,7 +54,6 @@ export const LoanProgress = () => {
     if (loanProgress) {
       dispatch({type:'FETCH_LOAN_PROGRESS', payload: loanProgress})
       let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
-      console.log('activeStep', activeStep)
       setCurrentItem(() => activeStep);
     }
   };
@@ -143,7 +142,7 @@ export const LoanProgress = () => {
           data-index={activeindex}
           className={liclass + activeindex}
         >
-          <a onClick={(e) => handleSelect(i, e)}>
+          <a data-testid="steps-icon" onClick={(e) => handleSelect(i, e)}>
             {i == totallist - 1 && l.status == statusText.UPCOMMING ? (
               <i className="zmdi zmdi-flag"></i>
             ) : l.status == statusText.COMPLETED ? (
@@ -165,7 +164,7 @@ export const LoanProgress = () => {
   }
 
   return (
-    <div className="LoanProgress box-wrap">
+    <div data-testid="loan-progress" className="LoanProgress box-wrap">
       <div className="box-wrap--header">
         <h2 className="heading-h2"> Your Loan Status </h2>
       </div>

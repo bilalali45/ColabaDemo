@@ -83,11 +83,11 @@ const ActivityHeader = (props) => {
   }, [selectedFiles]);
 
   useEffect(() => {
-      window.onpopstate = backHandler; 
-    
-    if(location.pathname.includes('view')) {
-      window.onpopstate = () => {};
-    } 
+    window.onpopstate = backHandler;
+
+    if (location.pathname.includes('view')) {
+      window.onpopstate = () => { };
+    }
   }, [location?.pathname, selectedFiles])
 
   const showAlertPopup = (e) => {
@@ -98,27 +98,29 @@ const ActivityHeader = (props) => {
   };
 
   let backHandler = async (event) => {
-        event.preventDefault();
-        let files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
-        if (files) {
-          let cur = currentDoc;
-          history.push(location.pathname);
-          setTimeout(() => {
-            dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: cur });
-            setbrowserBack(() => {
-              setshowAlert(true);
-              return true
-            });
-          }, 0);
-          return;
-        }
-        // setbrowserBack(false);
-      };
+    event.preventDefault();
+    let files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
+    if (files) {
+      let cur = currentDoc;
+      history.push(location.pathname);
+      setTimeout(() => {
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: cur });
+        setbrowserBack(() => {
+          setshowAlert(true);
+          return true
+        });
+      }, 0);
+      return;
+    }
+    // setbrowserBack(false);
+  };
 
   const renderLeftNav = () => {
     if (leftNav === "Dashboard") {
       return (
         <a
+          data-testid='left-nav'
+
           tabIndex={-1}
           onClick={() => {
             if (showAlert) {
@@ -134,6 +136,7 @@ const ActivityHeader = (props) => {
     }
     return (
       <Link
+        data-testid='left-nav'
         onClick={() => setCurrentUrl(leftNavUrl)}
         to={{
           pathname: showAlert ? location.pathname : leftNavUrl,
@@ -147,7 +150,7 @@ const ActivityHeader = (props) => {
   };
 
   return (
-    <div className="activityHeader">
+    <div data-testid="activity-header" className="activityHeader">
       <section className="compo-loan-status">
         <LoanStatus />
       </section>
@@ -164,6 +167,7 @@ const ActivityHeader = (props) => {
                 <div className="col-6 text-right">
                   <div className="action-doc-upload">
                     <Link
+                      data-testid='right-nav'
                       onClick={() => setCurrentUrl(rightNavUrl)}
                       to={{
                         pathname: showAlert ? location.pathname : rightNavUrl,

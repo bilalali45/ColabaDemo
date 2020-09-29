@@ -2,7 +2,7 @@ import React from "react";
 
 export const SVGopenLock = () => {
   return (
-    <svg
+    <svg data-testid="SVGopenLock"
       xmlns="http://www.w3.org/2000/svg"
       width="30.637"
       height="40.25"

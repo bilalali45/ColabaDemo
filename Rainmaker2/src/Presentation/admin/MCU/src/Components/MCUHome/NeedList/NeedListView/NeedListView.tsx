@@ -1,18 +1,18 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {useHistory} from 'react-router-dom';
-import {NeedListViewHeader} from './NeedListViewHeader/NeedListViewHeader';
-import {NeedListTable} from './NeedListTable/NeedListTable';
-import {NeedList} from '../../../../Entities/Models/NeedList';
-import {NeedListActions} from '../../../../Store/actions/NeedListActions';
-import {LocalDB} from '../../../../Utils/LocalDB';
-import {Store} from '../../../../Store/Store';
-import {NeedListActionsType} from '../../../../Store/reducers/NeedListReducer';
-import {sortList} from '../../../../Utils/helpers/Sort';
-import {Template} from '../../../../Entities/Models/Template';
-import {TemplateActions} from '../../../../Store/actions/TemplateActions';
-import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
-import {NeedListAlertBox} from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
-import {NeedListDocuments} from '../../../../Entities/Models/NeedListDocuments';
+import React, { useEffect, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { NeedListViewHeader } from './NeedListViewHeader/NeedListViewHeader';
+import { NeedListTable } from './NeedListTable/NeedListTable';
+import { NeedList } from '../../../../Entities/Models/NeedList';
+import { NeedListActions } from '../../../../Store/actions/NeedListActions';
+import { LocalDB } from '../../../../Utils/LocalDB';
+import { Store } from '../../../../Store/Store';
+import { NeedListActionsType } from '../../../../Store/reducers/NeedListReducer';
+import { sortList } from '../../../../Utils/helpers/Sort';
+import { Template } from '../../../../Entities/Models/Template';
+import { TemplateActions } from '../../../../Store/actions/TemplateActions';
+import { TemplateActionsType } from '../../../../Store/reducers/TemplatesReducer';
+import { NeedListAlertBox } from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
+import { NeedListDocuments } from '../../../../Entities/Models/NeedListDocuments';
 
 export const Sync = 'Synchronized';
 export const SyncTxt = 'Synced';
@@ -34,7 +34,7 @@ export const NeedListView = () => {
   const [docSort, setDocSort] = useState(false);
   const [statusSort, setStatusSort] = useState(false);
 
-  const {state, dispatch} = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const history = useHistory();
 
   const needListManager: any = state?.needListManager;
@@ -120,8 +120,10 @@ export const NeedListView = () => {
 
   const syncAll = (arr: NeedList[]) => {
     for (const doc of arr) {
-      for (const file of doc.files) {
-        syncSingle(file);
+      if (doc.status === 'Completed' && doc?.files?.length) {
+        for (const file of doc.files) {
+          syncSingle(file);
+        }
       }
     }
     return arr;
@@ -179,6 +181,10 @@ export const NeedListView = () => {
       return;
     }
 
+    const nonFilesDoc = needListData.filter((needListItem: NeedList) => needListItem.status === 'Completed');
+    if(!nonFilesDoc.length) {
+      return;
+    }
     let data = await syncAll(needListData);
     dispatch({
       type: NeedListActionsType.SetNeedListTableDATA,
@@ -289,6 +295,9 @@ export const NeedListView = () => {
     } else {
       setsyncSuccess(true);
       setSyncTitleClass('synced');
+      setTimeout(() => {
+        setsyncSuccess(false);
+      }, 10000);
     }
   };
 
@@ -311,13 +320,13 @@ export const NeedListView = () => {
 
   const checkIsDocumentDraft = async (id: string) => {
     let res: any = await TemplateActions.isDocumentDraft(id);
-    dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: res});
+    dispatch({ type: TemplateActionsType.SetIsDocumentDraft, payload: res });
   };
 
   const checkIsByteProAuto = async () => {
     let res: any = await NeedListActions.checkIsByteProAuto();
     let isAuto = res?.syncToBytePro != 2 ? true : false;
-    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto});
+    dispatch({ type: NeedListActionsType.SetIsByteProAuto, payload: isAuto });
   };
   //new comment
   const deleteNeedListDoc = async (
@@ -433,12 +442,12 @@ export const NeedListView = () => {
   };
 
   const addTemplatesDocuments = (idArray: string[]) => {
-    dispatch({type: NeedListActionsType.SetTemplateIds, payload: idArray});
+    dispatch({ type: NeedListActionsType.SetTemplateIds, payload: idArray });
     history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
   };
 
   const viewSaveDraftHandler = () => {
-    dispatch({type: NeedListActionsType.SetIsDraft, payload: true});
+    dispatch({ type: NeedListActionsType.SetIsDraft, payload: true });
     history.push(`/newNeedList/${LocalDB.getLoanAppliationId()}`);
   };
 

@@ -86,14 +86,13 @@ export const DocumentItem = ({
       }
 
       toggleFocus(file, true);
-      console.log(filename)
-      debugger
       changeName(file, filename);
     }
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (nameExists === true || validFilename === false || filename === "") {
+    
       return event.preventDefault()
     }
 
@@ -103,11 +102,10 @@ export const DocumentItem = ({
   }
 
   useEffect(() => {
-    setFilename(
-      FileUpload.removeSpecialChars(
-        FileUpload.removeDefaultExt(file.clientName)
-      )
+    let name = FileUpload.removeSpecialChars(
+      FileUpload.removeDefaultExt(file.clientName)
     );
+    setFilename(name);
   }, [file]);
 
   useEffect(() => {
@@ -140,7 +138,7 @@ export const DocumentItem = ({
   };
 
   const deleteDOChandeler = () => {
-    file.uploadReqCancelToken.cancel();
+    file?.uploadReqCancelToken?.cancel();
     deleteDoc(file.clientName);
     setNameExists(false);
   };
@@ -152,6 +150,7 @@ export const DocumentItem = ({
           <ul className="editable-actions">
             <li>
               <button
+                data-testid="name-save-btn"
                 onClick={(e) => {
                   if (nameExists === true || validFilename === false || filename === "") {
                     return e.preventDefault()
@@ -172,7 +171,7 @@ export const DocumentItem = ({
               <ul className="readable-actions">
                 {file.file && !file.uploadProgress && (
                   <li>
-                    <a onClick={EditTitle} title="Rename" tabIndex={-1}>
+                    <a data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
                       {<DocEditIcon />}
                     </a>
                   </li>
@@ -191,6 +190,7 @@ export const DocumentItem = ({
                 {file.file && file.uploadProgress < 100 && (
                   <li>
                     <a
+                      data-testid={`file-remove-btn-${indexKey}`}
                       title="Cancel"
                       onClick={() => deleteDOChandeler()}
                       tabIndex={-1}
@@ -201,7 +201,7 @@ export const DocumentItem = ({
                 )}
                 {file.uploadStatus === "done" && (
                   <li>
-                    <a title="Uploaded" className="icon-uploaded" tabIndex={-1}>
+                    <a data-testid="done-upload" title="Uploaded" className="icon-uploaded" tabIndex={-1}>
                       <i className="zmdi zmdi-check"></i>
                     </a>
                   </li>
@@ -218,6 +218,7 @@ export const DocumentItem = ({
       <div className="title">
         {file.editName ? (
           <input
+            data-testid="file-item-rename-input"
             ref={txtInput}
             style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
             maxLength={250}
@@ -236,7 +237,7 @@ export const DocumentItem = ({
 
   const renderAllowedFile = () => {
     return (
-      <li className="doc-li">
+      <li className="doc-li" data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={
@@ -248,7 +249,7 @@ export const DocumentItem = ({
             <div className="doc-icon">
               <i className={file.docLogo}></i>
             </div>
-            <div onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
+            <div data-testid={`file-container-${indexKey}`} onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
               {!validFilename && (
                 <div className="dl-info">
@@ -271,6 +272,7 @@ export const DocumentItem = ({
         )}
         {file.file && file.uploadProgress < 100 && file.uploadProgress > 0 && (
           <div
+            data-testid="upload-progress-bar"
             className="progress-upload"
             style={{ width: file.uploadProgress + "%" }}
           ></div>
@@ -281,7 +283,7 @@ export const DocumentItem = ({
 
   const renderSizeNotAllowed = () => {
     return (
-      <li className="doc-li item-error">
+      <li data-testid="size-not-allowed-item" className="doc-li item-error">
         <div className="noneditable doc-liWrap">
           <div className="doc-icon">
             <img src={erroricon} alt="" />
@@ -329,7 +331,7 @@ export const DocumentItem = ({
 
   const renderTypeIsNotAllowed = () => {
     return (
-      <li className="doc-li item-error">
+      <li className="doc-li item-error" data-testid="type-not-allowed-item">
         <div className="noneditable doc-liWrap">
           <div className="doc-icon">
             <img src={erroricon} alt="" />
@@ -359,6 +361,7 @@ export const DocumentItem = ({
               </li>
               <li>
                 <a
+                  data-testid={`file-remove-btn-${indexKey}`}
                   onClick={() => deleteDoc(file.clientName)}
                   tabIndex={-1}
                   title="Remove"

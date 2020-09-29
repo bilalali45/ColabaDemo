@@ -5,12 +5,13 @@
   "homepage": "/loanportal",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
+    "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.39",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "apollo-cache-inmemory": "^1.6.6",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "global": "^4.4.0",
@@ -19,7 +20,7 @@
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "print-js": "^1.0.63",
-    "rainsoft-js": "^1.0.43",
+    "rainsoft-js": "^1.0.47",
     "rainsoft-rc": "^1.0.18",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -36,7 +37,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
+    "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
+    "test-coverage": "react-scripts test --verbose --silent --coverage . --coverageDirectory='coverage'",
+    "test-debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -60,6 +64,7 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "^4.14.157",
     "@types/react-router-dom": "^5.1.5",
-    "@types/universal-cookie": "^2.2.0"
+    "@types/universal-cookie": "^2.2.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }

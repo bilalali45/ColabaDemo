@@ -1,6 +1,6 @@
-import jwt_decode from "jwt-decode";
-import Cookies from "universal-cookie";
-import { ApplicationEnv } from "./helpers/AppEnv";
+import jwt_decode from 'jwt-decode';
+import Cookies from 'universal-cookie';
+import {ApplicationEnv} from './helpers/AppEnv';
 const cookies = new Cookies();
 
 export class LocalDB {
@@ -8,7 +8,7 @@ export class LocalDB {
     const credentials = {
       userName: LocalDB.getLoginDevUserName(),
       password: LocalDB.getLoginDevPassword(),
-      employee: true,
+      employee: true
     };
 
     return credentials;
@@ -16,42 +16,42 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken() {
-    return this.decodeString(localStorage.getItem("token"));
+    return this.decodeString(localStorage.getItem('token'));
   }
 
   static getRefreshToken() {
-    return this.decodeString(localStorage.getItem("refreshToken"));
+    return this.decodeString(localStorage.getItem('refreshToken'));
   }
 
   static getLoginDevUserName() {
-    return localStorage.getItem("devusername");
+    return localStorage.getItem('devusername');
   }
 
   static getLoginDevPassword() {
-    return localStorage.getItem("devuserpassword");
+    return localStorage.getItem('devuserpassword');
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(localStorage.getItem("payload"));
+    let payload = this.decodeString(localStorage.getItem('payload'));
     if (payload) {
       return JSON.parse(payload);
     }
   }
 
-  static getPortalReferralUrl(){
-    return localStorage.getItem("PortalReferralUrl");    
+  static getPortalReferralUrl() {
+    return localStorage.getItem('PortalReferralUrl');
   }
 
   static getLoanAppliationId() {
     return (
-      this.decodeString(window.sessionStorage.getItem("loanApplicationId")) ||
-      ""
+      this.decodeString(window.sessionStorage.getItem('loanApplicationId')) ||
+      ''
     );
   }
 
   static setLoanAppliationId(loanApplicationId: string) {
     window.sessionStorage.setItem(
-      "loanApplicationId",
+      'loanApplicationId',
       this.encodeString(loanApplicationId)
     );
   }
@@ -61,16 +61,16 @@ export class LocalDB {
   //#region Local DB Post Methods
   static storeTokenPayload(payload: any) {
     if (!payload) return;
-    localStorage.setItem("payload", this.encodeString(JSON.stringify(payload)));
+    localStorage.setItem('payload', this.encodeString(JSON.stringify(payload)));
   }
 
   static storeAuthTokens(token: string, refreshToken: string) {
-    localStorage.setItem("token", this.encodeString(token));
-    localStorage.setItem("refreshToken", this.encodeString(refreshToken));
+    localStorage.setItem('token', this.encodeString(token));
+    localStorage.setItem('refreshToken', this.encodeString(refreshToken));
   }
 
   public static checkAuth(): boolean | string {
-    let rainmaker2Token = cookies.get("Rainmaker2Token");
+    let rainmaker2Token = cookies.get('Rainmaker2Token');
     let auth = this.getAuthToken();
     if (!auth) {
       return false;
@@ -79,6 +79,10 @@ export class LocalDB {
       const decodeCacheToken: any = jwt_decode(rainmaker2Token);
       const decodeAuth: any = jwt_decode(auth);
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
+        return false;
+      }
+      if (decodeCacheToken.exp > decodeAuth.exp) {
+        console.log('Cache token is going to validate');
         return false;
       }
     }
@@ -90,7 +94,7 @@ export class LocalDB {
       if (currentDate < expiry) {
         return true;
       } else {
-        return "token expired";
+        return 'token expired';
         // return false;
         // Auth.removeAuth();
       }
@@ -105,7 +109,7 @@ export class LocalDB {
 
   //#region Remove Auth
   static removeAuth() {
-    let items = ["token", "payload", "refreshToken"];
+    let items = ['token', 'payload', 'refreshToken'];
     for (const item of items) {
       localStorage.removeItem(item);
     }
@@ -116,18 +120,18 @@ export class LocalDB {
   public static encodeString(value: string) {
     // Encode the String
     //const currentDate = Date.toString();
-    const string = value + "|" + ApplicationEnv.Encode_Key;
+    const string = value + '|' + ApplicationEnv.Encode_Key;
     return btoa(unescape(encodeURIComponent(string)));
   }
 
   public static decodeString(value?: string | null) {
     // Decode the String
     if (!value) {
-      return "";
+      return '';
     }
     try {
       const decodedString = atob(value);
-      return decodedString.split("|")[0];
+      return decodedString.split('|')[0];
     } catch {
       return null;
     }

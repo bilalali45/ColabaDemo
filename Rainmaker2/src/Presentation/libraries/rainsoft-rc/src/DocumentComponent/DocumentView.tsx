@@ -139,7 +139,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   return (
     <div className='document-view' id='screen'>
-      <div className='document-view--header'>
+      <div data-testid="file-viewer-header" className='document-view--header'>
         <div className='document-view--header---options'>
           <ul>
             {!!documentParams.filePath && (

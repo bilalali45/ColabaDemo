@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Http } from 'rainsoft-js';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
+import {Http} from 'rainsoft-js';
 import _ from 'lodash';
 
 import {
@@ -7,8 +7,9 @@ import {
   LogType,
   EmailLogsType
 } from '../../../../Entities/Types/Types';
-import { ActivityLogFormat } from '../../../../Utils/helpers/DateFormat';
-import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints';
+import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
+import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
+import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
 
 export const ReviewDocumentActivityLog = ({
   id,
@@ -56,12 +57,8 @@ export const ReviewDocumentActivityLog = ({
 
   const getActivityLogs = useCallback(async (id, docId, requestId) => {
     try {
-      const http = new Http();
-
-      const { data } = await http.get<ActivityLogType[]>(
-        NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId)
-      );
-
+      ///const {data} = await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
+      const data = await ReviewDocumentActions.getActivityLogs(id, docId, requestId);
       setActivityLogs(data);
     } catch (error) {
       console.log(error);
@@ -108,7 +105,7 @@ export const ReviewDocumentActivityLog = ({
     (activityLogs: ActivityLogType[]) => {
       return activityLogs.map((activityLog: ActivityLogType, index: number) => {
         return (
-          <li
+          <li data-testid="activity-log-list"
             className={`${index === logIndex && 'active'}`}
             key={activityLog.dateTime}
           >
@@ -195,9 +192,7 @@ export const ReviewDocumentActivityLog = ({
 
   const getEmailLogs = useCallback(async (id, docId, requestId) => {
     try {
-      const http = new Http();
-
-      const { data } = await http.get<EmailLogsType[]>(
+      const {data} = await Http.get<EmailLogsType[]>(
         NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
       );
 
@@ -212,7 +207,7 @@ export const ReviewDocumentActivityLog = ({
   const renderEmailLogs = (emailLogs: EmailLogsType[]) => {
     const style = {
       marginTop: 0
-    }
+    };
     return emailLogs.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
         <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
@@ -225,7 +220,6 @@ export const ReviewDocumentActivityLog = ({
               {ActivityLogFormat(emailLog.dateTime)}
             </time>
           </div>
-          
         </a>
       </li>
     ));
@@ -233,10 +227,8 @@ export const ReviewDocumentActivityLog = ({
 
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
-    
-    return (
-      <div dangerouslySetInnerHTML={{ __html: emailLog.emailText }}></div>
-    );
+
+    return <div dangerouslySetInnerHTML={{__html: emailLog.emailText}}></div>;
   };
 
   useEffect(() => {
@@ -251,13 +243,13 @@ export const ReviewDocumentActivityLog = ({
   }, [getEmailLogs, id, docId, requestId]);
 
   return (
-    <section ref={sectionRef} className="vertical-tabs" id="verticalTab">
+    <section data-testid="logDetail-section" ref={sectionRef} className="vertical-tabs" id="verticalTab">
       <div className="vertical-tabs--data" style={tabDataStyle}>
         {/* Activity Log */}
         <div
           className={'vertical-tabs--wrap activity-log ' + checkActiveTab(1)}
           data-step="1"
-          style={{ width: `${getWidthSection}px` }}
+          style={{width: `${getWidthSection}px`}}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">
@@ -288,9 +280,6 @@ export const ReviewDocumentActivityLog = ({
               </div>
             </header>
             <section className="vertical-tabs--body padding">
-
-              
-
               <table className="table table-noborder">
                 <thead>
                   <tr>
@@ -335,7 +324,7 @@ export const ReviewDocumentActivityLog = ({
         <div
           className={'vertical-tabs--wrap email-log ' + checkActiveTab(2)}
           data-step="2"
-          style={{ width: `${sectionRef?.current?.offsetWidth}px` }}
+          style={{width: `${sectionRef?.current?.offsetWidth}px`}}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">

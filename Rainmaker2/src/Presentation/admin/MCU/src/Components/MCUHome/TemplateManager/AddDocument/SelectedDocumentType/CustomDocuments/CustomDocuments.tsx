@@ -23,7 +23,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
     useEffect(() => {
         if (!nameTest.test(docName)) {
-            setDocNameError('Document name cannot contain any special characters');
+            // setDocNameError('Document name cannot contain any special characters');
         } else if(isValid) {
             setDocNameError('')
         }
@@ -46,9 +46,9 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     }
 
     const addDoc = async () => {
-        if (!nameTest.test(docName)) {
-            return;
-        }
+        // if (!nameTest.test(docName)) {
+        //     return;
+        // }
 
         if (!docName.trim()?.length) {
             setDocNameError('Document name cannot be empty');

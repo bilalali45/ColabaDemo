@@ -148,10 +148,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     };
   }, [onEscapeKeyPressed]);
 
-  console.log(
-    "-------------------------------------------------------------",
-    blobData
-  );
+  
   const removeOverflow = () => {
     document.body.removeAttribute("style");
   };

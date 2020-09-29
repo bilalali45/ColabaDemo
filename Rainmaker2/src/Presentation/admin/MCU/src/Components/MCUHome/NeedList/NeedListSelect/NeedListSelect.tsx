@@ -60,17 +60,13 @@ export const NeedListSelect = ({
   const [templateName, setTemplateName] = useState<string>('');
 
   const displayPopover = (event: any, docs: any[], name: string) => {
-    console.log(event.target, 'apex');
-    //if (docs.length > 0) {
     setTemplateName(name);
     setDocs(docs);
     setShowPopover(true);
     setTarget(event.target);
-    //}
   };
 
   const hidePopover = (event: any) => {
-    console.log(event.target, 'apex');
     setShowPopover(false);
     setTarget(event.target);
   };
@@ -119,7 +115,6 @@ export const NeedListSelect = ({
 
   const MyTemplates = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
-
     return (
       <>
         <div>
@@ -270,31 +265,18 @@ export const NeedListSelect = ({
   const displayAddButton = () => {
     return (
       <>
-        <Dropdown onToggle={() => setShow(!show)} show={show}>
-          {showButton ? (
-            <Dropdown.Toggle
-              size="sm"
-              variant="primary"
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
-              Add{' '}
-              <span className="btn-icon-right">
-                <em className="zmdi zmdi-plus"></em>
-              </span>
-            </Dropdown.Toggle>
-          ) : (
-            <Dropdown.Toggle
-              size="sm"
-              style={{background: 'none', border: 'none', outline: 'none'}}
-              className="mcu-dropdown-toggle no-caret"
-              id="dropdown-basic"
-            >
+        <Dropdown onToggle={() => setShow(!show)} show={show} data-testid="addTemplate">
+          {showButton ?
+            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+              Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
+            </Dropdown.Toggle> :
+
+            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>
-          )}
+          }
 
-          <Dropdown.Menu className="padding" show={show} ref={ref}>
+          <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown" ref={ref}>
             <h2>Select a need list Template</h2>
             {MyTemplates(
               templates?.filter((t: Template) => t.type === MyTemplate)
@@ -309,8 +291,8 @@ export const NeedListSelect = ({
           </Dropdown.Menu>
         </Dropdown>
       </>
-    );
-  };
+    )
+  }
 
   return displayAddButton();
 };
