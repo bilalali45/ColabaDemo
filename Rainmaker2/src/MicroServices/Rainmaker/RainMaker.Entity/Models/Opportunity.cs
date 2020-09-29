@@ -62,7 +62,6 @@ namespace RainMaker.Entity.Models
         public System.DateTime? LeadCreatedOnUtc { get; set; } // LeadCreatedOnUtc
         public int? MaxHopCount { get; set; } // MaxHopCount
         public int? LeadGroupId { get; set; } // LeadGroupId
-        public int? LoanOfficerId { get; set; } // LoanOfficerId
         public int? LoanCoordinatorId { get; set; } // LoanCoordinatorId
         public int? PreProcessorId { get; set; } // PreProcessorId
         public int? LoanProcessorId { get; set; } // LoanProcessorId
@@ -159,11 +158,6 @@ namespace RainMaker.Entity.Models
         /// Parent Employee pointed by [Opportunity].([LoanCoordinatorId]) (FK_Opportunity_Employee2)
         /// </summary>
         public virtual Employee LoanCoordinator { get; set; } // FK_Opportunity_Employee2
-
-        /// <summary>
-        /// Parent Employee pointed by [Opportunity].([LoanOfficerId]) (FK_Opportunity_Employee1)
-        /// </summary>
-        public virtual Employee LoanOfficer { get; set; } // FK_Opportunity_Employee1
 
         /// <summary>
         /// Parent Employee pointed by [Opportunity].([LoanProcessorId]) (FK_Opportunity_Employee4)

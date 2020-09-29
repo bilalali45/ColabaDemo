@@ -28,6 +28,7 @@ type NeedListSelectType = {
   viewSaveDraft: Function;
   showButton: boolean;
   fetchTemplateDocs: Function;
+  drop?:any;
 };
 
 export const NeedListSelect = ({
@@ -35,7 +36,8 @@ export const NeedListSelect = ({
   addTemplatesDocuments,
   viewSaveDraft,
   showButton = false,
-  fetchTemplateDocs
+  fetchTemplateDocs,
+  drop
 }: NeedListSelectType) => {
   const [idArray, setIdArray] = useState<String[]>([]);
   const [templateList, setTemplateList] = useState<Template[]>([]);
@@ -265,7 +267,7 @@ export const NeedListSelect = ({
   const displayAddButton = () => {
     return (
       <>
-        <Dropdown onToggle={() => setShow(!show)} show={show} data-testid="addTemplate">
+        <Dropdown onToggle={() => setShow(!show)} show={show} drop="up" data-testid="addTemplate">
           {showButton ?
             <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
               Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
