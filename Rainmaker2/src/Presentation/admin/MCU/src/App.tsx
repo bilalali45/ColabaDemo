@@ -88,9 +88,10 @@ const App = () => {
                   component={MCUHome}
                 />
 
-                <RainMakerFooter />
+                
               </Switch>
             </Router>
+            <RainMakerFooter />
           </StoreProvider>
         </main>
       </section>
