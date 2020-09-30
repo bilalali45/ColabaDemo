@@ -282,6 +282,7 @@ export const NeedListRequest = ({
                     addTemplatesDocuments={addTemplatesDocuments}
                     viewSaveDraft={viewSaveDraft}
                     fetchTemplateDocs={fetchTemplateDocs}
+                    dropType="up"
                   />
                   {showSaveAsTemplateLink ? (
                     <a

@@ -39,6 +39,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                             templateList={templateList}
                             addTemplatesDocuments={addTemplatesDocuments}
                             viewSaveDraft={viewSaveDraft}
+                            dropType="down"
                         />
                     }
                 </div>
