@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef,useLayoutEffect } from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
 import { LoanStatus } from "../Activity/LoanStatus/LoanStatus";
+import { LoanStatusMobile } from "../Activity/LoanStatus/LoanStatus-mobile";
 import { Store } from "../../../store/store";
 import { AlertBox } from "../../../shared/Components/AlertBox/AlertBox";
 import { Auth } from "../../../services/auth/Auth";
 import { debug } from "console";
 import { DocumentsActionType } from "../../../store/reducers/documentReducer";
 const ActivityHeader = (props) => {
+  const [ismobile, setIsmobile] = useState(false);
   const [leftNav, setLeftNav] = useState("");
   const [showAlert, setshowAlert] = useState(false);
   const [rightNav, setRightNav] = useState("");
@@ -84,11 +86,34 @@ const ActivityHeader = (props) => {
 
   useEffect(() => {
     window.onpopstate = backHandler;
-
     if (location.pathname.includes('view')) {
       window.onpopstate = () => { };
     }
   }, [location?.pathname, selectedFiles])
+
+
+
+
+    const useWindowSize = () => {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+      function updateSize() {
+        setSize([window.innerWidth, window.innerHeight]);
+      }
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  }
+
+  const [width, height] = useWindowSize();
+  
+  useEffect(() => {
+    width > 767 ?setIsmobile(false):setIsmobile(true);
+    console.log("ismobile:"+ismobile);
+  }, [width, height])
+
 
   const showAlertPopup = (e) => {
 
@@ -152,7 +177,7 @@ const ActivityHeader = (props) => {
   return (
     <div data-testid="activity-header" className="activityHeader">
       <section className="compo-loan-status">
-        <LoanStatus />
+       {ismobile?<LoanStatusMobile />:<LoanStatus />}
       </section>
       <section ref={activityHeadeRef} className="row-subheader">
         <div className="row">
