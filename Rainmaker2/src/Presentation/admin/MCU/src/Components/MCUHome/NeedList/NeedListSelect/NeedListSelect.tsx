@@ -122,7 +122,11 @@ export const NeedListSelect = ({
         <div>
           <h3>My Templates</h3>
 
-          <ul className="checklist" ref={myTemplateContainerRef}>
+          <ul className="checklist" ref={myTemplateContainerRef} 
+          onScroll={(e) => {
+                      hidePopover(e);
+                    }}
+                    >
             {templateList?.map((t: Template) => {
               if (t?.type === MyTemplate) {
                 return (
@@ -131,6 +135,9 @@ export const NeedListSelect = ({
                     onMouseEnter={(e:any) => {
                        displayPopover(e, t.docs, t.name);
                     }}
+                    onMouseMove={(e:any) => {
+                      displayPopover(e, t.docs, t.name);
+                   }}
                     onMouseLeave={(e) => {
                       hidePopover(e);
                     }}
@@ -191,7 +198,9 @@ export const NeedListSelect = ({
     return (
       <>
         <h3>Templates by Tenants</h3>
-        <ul className="checklist" ref={tenantTemplateContainerRef}>
+        <ul className="checklist" ref={tenantTemplateContainerRef}           onScroll={(e) => {
+                      hidePopover(e);
+                    }}>
           {templateList?.map((t: Template) => {
             if (t?.type === TenantTemplate || t?.type === SystemTemplate) {
               return (
@@ -200,6 +209,9 @@ export const NeedListSelect = ({
                   onMouseEnter={(e:any) => {
                     displayPopover(e, t.docs, t.name);
                   }}
+                  onMouseMove={(e:any) => {
+                    displayPopover(e, t.docs, t.name);
+                 }}
                   onMouseLeave={(e) => {
                     hidePopover(e);
                   }}
