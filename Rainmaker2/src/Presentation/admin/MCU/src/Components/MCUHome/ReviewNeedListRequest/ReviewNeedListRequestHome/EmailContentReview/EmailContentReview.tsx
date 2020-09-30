@@ -29,17 +29,14 @@ export const EmailContentReview = ({
   setHash,
   defaultEmail
 }: emailContentReviewProps) => {
+
   const setDeafultText = () => {
     let str: string = '';
-    let payload = LocalDB.getUserPayload();
-    let mcuName = payload?.FirstName + ' ' + payload?.LastName;
-    let documentNames = documentsName
-      ? documentsName?.split(',').join(' \r\n')
-      : '';
+    //let documentNames = documentsName ? documentsName?.split(',').join(' \r\n') : '';
     if (emailTemplate) {
       str = emailTemplate
         .replace('{user}', borrowername)
-        .replace('{documents}', documentNames)
+        .replace('{documents}', documentsName ? documentsName: '');
         // .replace('{mcu}', mcuName); because we will provide Business Unit Name from BE while emailing
       hashDocuments();
       enableBrowserPrompt();
