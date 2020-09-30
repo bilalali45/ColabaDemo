@@ -20,5 +20,16 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\Milestone.Data\Milestone.Data.csproj" />
+    <ProjectReference Include="..\Milestone.Entity\Milestone.Entity.csproj" />
+    <ProjectReference Include="..\Milestone.Model\Milestone.Model.csproj" />
+    <ProjectReference Include="..\Milestone.Service\Milestone.Service.csproj" />
+  </ItemGroup>
+
 
 </Project>

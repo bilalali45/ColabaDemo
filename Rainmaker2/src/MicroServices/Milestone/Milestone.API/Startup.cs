@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +17,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Milestone.API.CorrelationHandlersAndMiddleware;
 using Milestone.API.Helpers;
+using Milestone.Data;
+using URF.Core.Abstractions;
+using URF.Core.EF;
+using URF.Core.EF.Factories;
 
 namespace Milestone.API
 {
@@ -32,12 +37,11 @@ namespace Milestone.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=MilestoneCS"));
             csResponse.EnsureSuccessStatusCode();
-            //services.AddDbContext<Notification.Data.NotificationContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
-            //services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
-            //services.AddScoped<IUnitOfWork<Notification.Data.NotificationContext>, UnitOfWork<Notification.Data.NotificationContext>>();
+            services.AddDbContext<MilestoneContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
+            services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
+            services.AddScoped<IUnitOfWork<MilestoneContext>, UnitOfWork<MilestoneContext>>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             csResponse.EnsureSuccessStatusCode();

@@ -4,4 +4,14 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\Milestone.Data\Milestone.Data.csproj" />
+    <ProjectReference Include="..\Milestone.Entity\Milestone.Entity.csproj" />
+    <ProjectReference Include="..\Milestone.Model\Milestone.Model.csproj" />
+  </ItemGroup>
+
 </Project>
