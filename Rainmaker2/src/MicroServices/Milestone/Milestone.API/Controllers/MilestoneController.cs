@@ -43,5 +43,17 @@ namespace Milestone.API.Controllers
             await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
             return Ok();
         }
+        [Authorize(Roles = "Customer")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMilestoneForBorrowerDashboard(int loanApplicationId)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
+                Request.Headers["Authorization"].Select(x => x.ToString()));
+            if (milestone <= 0)
+                return Ok("");
+            var status = await _milestoneService.GetMilestoneForBorrowerDashboard(milestone,tenantId);
+            return Ok(status);
+        }
     }
 }

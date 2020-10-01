@@ -20,7 +20,7 @@ namespace Rainmaker.API.Controllers
         {
             _loanApplicationService = loanApplicationService;
         }
-        [Authorize(Roles = "MCU")]
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneId(int loanApplicationId)
         {

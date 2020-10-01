@@ -4,6 +4,16 @@ using System.Text;
 
 namespace Milestone.Model
 {
+    public enum MilestoneType
+    {
+        Timeline=1,
+        Special=2
+    }
+    public class MilestoneForBorrowerDashboard
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+    }
     public class MilestoneModel
     {
         public int Id { get; set; }
