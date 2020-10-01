@@ -18,6 +18,7 @@ export const LoanStatus = () => {
     const { state, dispatch } = useContext(Store);
 
     const loan: any = state.loan;
+    const {isMobile} = loan;
     let info = loan.loanInfo;
     useEffect(() => {
         if (!info) {
@@ -43,6 +44,14 @@ export const LoanStatus = () => {
 
     const formattedAddress = () => {
         return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
+    }
+
+    console.log('in ============================================= ', isMobile)
+
+    if(isMobile?.value) {
+        return <div>
+            <h1>Rendring Mobile View</h1>
+        </div>
     }
 
     return (

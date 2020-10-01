@@ -1,8 +1,8 @@
-import React, { useEffect, useState,useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect, useContext } from "react";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { Home } from "./components/Home/Home";
-import { StoreProvider } from "./store/store";
+import { Store, StoreProvider } from "./store/store";
 import { RainsoftRcHeader, RainsoftRcFooter } from "rainsoft-rc";
 import { UserActions } from "./store/actions/UserActions";
 import ImageAssets from "./utils/image_assets/ImageAssets";
@@ -12,11 +12,12 @@ import { Auth } from "./services/auth/Auth";
 import { LaonActions } from "./store/actions/LoanActions";
 import IdleTimer from "react-idle-timer";
 import logoHeaderSrc from './assets/images/texasWhiteHeader.png';
+import { LoanActionsType } from "./store/reducers/loanReducer";
 declare global {
   interface Window {
     envConfig: any;
-    isMobile:any;
-    width:any
+    isMobile: any;
+    width: any
   }
 }
 window.envConfig = window.envConfig || {};
@@ -30,42 +31,46 @@ const App = () => {
   const [companyLogoSrc, setcompanyLogoSrc] = useState("");
   const [favIconSrc, setfavIconSrc] = useState("");
 
+  const {state, dispatch} = useContext(Store)
 
-  
   const useWindowSize = () => {
     const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    function updateSize() {
-      setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize(); 
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-  return size;
-}
+    useLayoutEffect(() => {
+      function updateSize() {
+        setSize([window.innerWidth, window.innerHeight]);
+      }
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  }
 
-let TRUTHY_VALUES = [true, 'true', 1];
-const getBoolean=(a) => {
-    return TRUTHY_VALUES.some(function(t) {
-        return t === a;
+  let TRUTHY_VALUES = [true, 'true', 1];
+  const getBoolean = (a) => {
+    return TRUTHY_VALUES.some(function (t) {
+      return t === a;
     });
-}
+  }
   const [width, height] = useWindowSize();
   useEffect(() => {
-    let Mobile = width <= 767;
-    sessionStorage.setItem('isMobile', String(Mobile));
+    let isMobile = width <= 767;
+    sessionStorage.setItem('isMobile', String(isMobile));
     sessionStorage.setItem('width', String(width));
-   // window.isMobile = sessionStorage.getItem("isMobile")
-   // alert("useeffect"+ window.isMobile)
-    console.log("ismobile:"+window.isMobile,typeof(window.isMobile));
+
+    dispatch({type: LoanActionsType.SetIsMobile, payload: {value: isMobile}})
+
+
+    // window.isMobile = sessionStorage.getItem("isMobile")
+    // alert("useeffect"+ window.isMobile)
+    console.log("ismobile:" + window.isMobile, typeof (window.isMobile));
   }, [width, height])
 
   const history = useHistory()
 
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
-    console.log('Logo Src',logoHeaderSrc)
+    console.log('Logo Src', logoHeaderSrc)
     authenticate();
     // component unmount
     return () => {
@@ -99,17 +104,17 @@ const getBoolean=(a) => {
   const getCompanyLogoSrc = async () => {
     let applicationId = Auth.getLoanAppliationId();
     let logoSrc = await LaonActions.getCompanyLogoSrc(applicationId);
-    let logo =`data:image/png;base64,${logoSrc}`
+    let logo = `data:image/png;base64,${logoSrc}`
     setcompanyLogoSrc(logo);
   }
 
-  const setFavIcon = async  () => {
+  const setFavIcon = async () => {
     let applicationId = Auth.getLoanAppliationId();
-    const favicon:any = getFaviconEl(); // Accessing favicon element
+    const favicon: any = getFaviconEl(); // Accessing favicon element
     let favIconSrc = await LaonActions.getCompanyFavIconSrc(applicationId);
-    let logo =`data:image/png;base64,${favIconSrc}`
-    if(favicon){
-      favicon.href=logo;
+    let logo = `data:image/png;base64,${favIconSrc}`
+    if (favicon) {
+      favicon.href = logo;
     }
   }
 
@@ -146,34 +151,32 @@ const getBoolean=(a) => {
 
   return (
     <div className="app">
-      <StoreProvider>
-        <IdleTimer
-          element={document}
-          onIdle={onIdle}
-          debounce={250}
-          timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
-        />
-        <RainsoftRcHeader
-          logoSrc={companyLogoSrc}
-          displayName={UserActions.getUserName()}
-          // displayNameOnClick={HeaderContent.gotoDashboardHandler}
-          options={HeaderContent.headerDropdowmMenu}
-        />
-        <Router basename="/LoanPortal">
-          <Switch>
-            {process.env.NODE_ENV === 'test' ? <Authorized
-              path="/"
+      <IdleTimer
+        element={document}
+        onIdle={onIdle}
+        debounce={250}
+        timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
+      />
+      <RainsoftRcHeader
+        logoSrc={companyLogoSrc}
+        displayName={UserActions.getUserName()}
+        // displayNameOnClick={HeaderContent.gotoDashboardHandler}
+        options={HeaderContent.headerDropdowmMenu}
+      />
+      <Router basename="/LoanPortal">
+        <Switch>
+          {process.env.NODE_ENV === 'test' ? <Authorized
+            path="/"
+            component={Home}
+          /> : <Authorized
+              path="/:navigation/:loanApplicationId"
               component={Home}
-            /> : <Authorized
-                path="/:navigation/:loanApplicationId"
-                component={Home}
-              />
-            }
-            <Authorized path="/:loanApplicationId" component={Home} />
-          </Switch>
-        </Router>
-        <RainsoftRcFooter content={footerText} />
-      </StoreProvider>
+            />
+          }
+          <Authorized path="/:loanApplicationId" component={Home} />
+        </Switch>
+      </Router>
+      <RainsoftRcFooter content={footerText} />
     </div>
   );
 };
