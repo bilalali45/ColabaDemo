@@ -20,6 +20,15 @@ namespace Milestone.Service
         {
         }
 
+        public async Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId)
+        {
+            return await Repository.Query(x=>x.Id==milestone).Include(x => x.TenantMilestones)
+                .Select(x => 
+                    (!x.TenantMilestones.Any(y => y.TenantId == tenantId) 
+                     || string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).McuName)) ? 
+                        x.McuName : x.TenantMilestones.First(y => y.TenantId == tenantId).McuName
+                ).FirstOrDefaultAsync();
+        }
         public async Task<List<MilestoneModel>> GetAllMilestones(int tenantId)
         {
             return await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x=>x.Order)

@@ -51,8 +51,20 @@ namespace Milestone.API.Controllers
             int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
                 Request.Headers["Authorization"].Select(x => x.ToString()));
             if (milestone <= 0)
-                return Ok("");
+                return Ok(new MilestoneForBorrowerDashboard());
             var status = await _milestoneService.GetMilestoneForBorrowerDashboard(milestone,tenantId);
+            return Ok(status);
+        }
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMilestoneForMcuDashboard(int loanApplicationId)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
+                Request.Headers["Authorization"].Select(x => x.ToString()));
+            if (milestone <= 0)
+                return Ok("");
+            var status = await _milestoneService.GetMilestoneForMcuDashboard(milestone, tenantId);
             return Ok(status);
         }
     }

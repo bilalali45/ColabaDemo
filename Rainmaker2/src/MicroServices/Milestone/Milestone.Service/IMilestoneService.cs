@@ -8,5 +8,6 @@ namespace Milestone.Service
     {
         Task<List<MilestoneModel>> GetAllMilestones(int tenantId);
         Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int milestoneId, int tenantId);
+        Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId);
     }
 }
