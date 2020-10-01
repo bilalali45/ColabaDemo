@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef,useLayoutEffect } from "react";
+import React, { useState, useEffect, useContext, useRef, } from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
 import { LoanStatus } from "../Activity/LoanStatus/LoanStatus";
 import { LoanStatusMobile } from "../Activity/LoanStatus/LoanStatus-mobile";
@@ -91,29 +91,16 @@ const ActivityHeader = (props) => {
     }
   }, [location?.pathname, selectedFiles])
 
-
-
-
-    const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      function updateSize() {
-        setSize([window.innerWidth, window.innerHeight]);
-      }
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  }
-
-  const [width, height] = useWindowSize();
-  
+  const [mobile, setMobile] = useState(window.isMobile);
   useEffect(() => {
-    width > 767 ?setIsmobile(false):setIsmobile(true);
-    console.log("ismobile:"+ismobile);
-  }, [width, height])
-
+    
+    return () => {
+      setMobile(window.isMobile)
+      alert(window.width)
+    };
+    
+  }, [])
+  
 
   const showAlertPopup = (e) => {
 
@@ -177,7 +164,7 @@ const ActivityHeader = (props) => {
   return (
     <div data-testid="activity-header" className="activityHeader">
       <section className="compo-loan-status">
-       {ismobile?<LoanStatusMobile />:<LoanStatus />}
+       {mobile=="true"?<LoanStatusMobile />:<LoanStatus />}
       </section>
       <section ref={activityHeadeRef} className="row-subheader">
         <div className="row">

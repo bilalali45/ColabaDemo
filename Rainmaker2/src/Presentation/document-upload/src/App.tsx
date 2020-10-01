@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useLayoutEffect } from "react";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { Home } from "./components/Home/Home";
@@ -15,6 +15,8 @@ import logoHeaderSrc from './assets/images/texasWhiteHeader.png';
 declare global {
   interface Window {
     envConfig: any;
+    isMobile:any;
+    width:any
   }
 }
 window.envConfig = window.envConfig || {};
@@ -28,6 +30,36 @@ const App = () => {
   const [companyLogoSrc, setcompanyLogoSrc] = useState("");
   const [favIconSrc, setfavIconSrc] = useState("");
 
+
+  
+  const useWindowSize = () => {
+    const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize(); 
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
+
+let TRUTHY_VALUES = [true, 'true', 1];
+const getBoolean=(a) => {
+    return TRUTHY_VALUES.some(function(t) {
+        return t === a;
+    });
+}
+  const [width, height] = useWindowSize();
+  useEffect(() => {
+    let Mobile = width <= 767;
+    sessionStorage.setItem('isMobile', String(Mobile));
+    sessionStorage.setItem('width', String(width));
+   // window.isMobile = sessionStorage.getItem("isMobile")
+   // alert("useeffect"+ window.isMobile)
+    console.log("ismobile:"+window.isMobile,typeof(window.isMobile));
+  }, [width, height])
 
   const history = useHistory()
 
