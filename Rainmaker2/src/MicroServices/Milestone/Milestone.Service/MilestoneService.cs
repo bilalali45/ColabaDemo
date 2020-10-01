@@ -20,7 +20,7 @@ namespace Milestone.Service
 
         public async Task<List<MilestoneModel>> GetAllMilestones(int tenantId)
         {
-            return await Repository.Query().Include(x => x.TenantMilestones)
+            return await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x=>x.Order)
                 .Select(x => new MilestoneModel()
                 {
                     Id = x.Id,
