@@ -29,7 +29,7 @@ namespace Milestone.Data.Mapping
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.Order).HasColumnName(@"Order").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.Icon).HasColumnName(@"Icon").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(2000);
+            builder.Property(x => x.Icon).HasColumnName(@"Icon").HasColumnType("varchar(max)").IsRequired(false).IsUnicode(false);
             builder.Property(x => x.BorrowerName).HasColumnName(@"BorrowerName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.McuName).HasColumnName(@"McuName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.Description).HasColumnName(@"Description").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(500);
