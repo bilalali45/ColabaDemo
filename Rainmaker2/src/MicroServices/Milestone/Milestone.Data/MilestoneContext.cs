@@ -8,7 +8,7 @@
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantOverridenMember
 // ReSharper disable UseNameofExpression
-// TargetFrameworkVersion = 2
+// TargetFrameworkVersion = 2.1
 #pragma warning disable 1591    //  Ignore "Missing XML Comment" warning
 
 
@@ -22,8 +22,12 @@ namespace Milestone.Data
     
     public partial class MilestoneContext : DbContext
     {
+        //public virtual DbSet<ByteDocCategoryMapping> ByteDocCategoryMappings { get; set; } // ByteDocCategoryMapping
+        //public virtual DbSet<ByteDocStatusMapping> ByteDocStatusMappings { get; set; } // ByteDocStatusMapping
+        //public virtual DbSet<ByteDocTypeMapping> ByteDocTypeMappings { get; set; } // ByteDocTypeMapping
         //public virtual DbSet<ExternalOriginator> ExternalOriginators { get; set; } // ExternalOriginator
         //public virtual DbSet<LosTenantMilestone> LosTenantMilestones { get; set; } // LosTenantMilestone
+        //public virtual DbSet<Mapping> Mappings { get; set; } // Mapping
         //public virtual DbSet<Milestone> Milestones { get; set; } // Milestone
         //public virtual DbSet<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping
         //public virtual DbSet<MilestoneSetting> MilestoneSettings { get; set; } // MilestoneSetting
@@ -40,8 +44,12 @@ namespace Milestone.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new ByteDocCategoryMappingMap());
+            modelBuilder.ApplyConfiguration(new ByteDocStatusMappingMap());
+            modelBuilder.ApplyConfiguration(new ByteDocTypeMappingMap());
             modelBuilder.ApplyConfiguration(new ExternalOriginatorMap());
             modelBuilder.ApplyConfiguration(new LosTenantMilestoneMap());
+            modelBuilder.ApplyConfiguration(new MappingMap());
             modelBuilder.ApplyConfiguration(new MilestoneMap());
             modelBuilder.ApplyConfiguration(new MilestoneMappingMap());
             modelBuilder.ApplyConfiguration(new MilestoneSettingMap());

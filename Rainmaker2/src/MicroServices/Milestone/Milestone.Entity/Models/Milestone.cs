@@ -8,7 +8,7 @@
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantOverridenMember
 // ReSharper disable UseNameofExpression
-// TargetFrameworkVersion = 2
+// TargetFrameworkVersion = 2.1
 #pragma warning disable 1591    //  Ignore "Missing XML Comment" warning
 
 
@@ -23,7 +23,7 @@ namespace Milestone.Entity.Models
     {
         public int Id { get; set; } // Id (Primary key)
         public int? Order { get; set; } // Order
-        public string Icon { get; set; } // Icon (length: 50)
+        public string Icon { get; set; } // Icon (length: 2000)
         public string BorrowerName { get; set; } // BorrowerName (length: 50)
         public string McuName { get; set; } // McuName (length: 50)
         public string Description { get; set; } // Description (length: 500)
@@ -36,9 +36,9 @@ namespace Milestone.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping.FK_MilestoneMapping_Milestone_Id
         /// <summary>
-        /// Parent (One-to-One) Milestone pointed by [TenantMilestone].[Id] (FK_TenantMilestone_Milestone_Id)
+        /// Child TenantMilestones where [TenantMilestone].[MilestoneId] point to this entity (FK_TenantMilestone_Milestone_Id)
         /// </summary>
-        public virtual TenantMilestone TenantMilestone { get; set; } // TenantMilestone.FK_TenantMilestone_Milestone_Id
+        public virtual System.Collections.Generic.ICollection<TenantMilestone> TenantMilestones { get; set; } // TenantMilestone.FK_TenantMilestone_Milestone_Id
 
         // Foreign keys
 
@@ -50,6 +50,7 @@ namespace Milestone.Entity.Models
         public Milestone()
         {
             MilestoneMappings = new System.Collections.Generic.HashSet<MilestoneMapping>();
+            TenantMilestones = new System.Collections.Generic.HashSet<TenantMilestone>();
             InitializePartial();
         }
 

@@ -17,26 +17,15 @@ namespace Milestone.Entity.Models
     using System;
     using System.Collections.Generic;
 
-    // TenantMilestone
+    // ByteDocStatusMapping
     
-    public partial class TenantMilestone : URF.Core.EF.Trackable.Entity
+    public partial class ByteDocStatusMapping : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
-        public string BorrowerName { get; set; } // BorrowerName (length: 50)
-        public string McuName { get; set; } // McuName (length: 50)
-        public string Description { get; set; } // Description (length: 500)
-        public bool? Visibility { get; set; } // Visibility
-        public int? TenantId { get; set; } // TenantId
-        public int? MilestoneId { get; set; } // MilestoneId
+        public string ByteDocStatusName { get; set; } // ByteDocStatusName (length: 50)
+        public string RmDocStatusName { get; set; } // RmDocStatusName (length: 50)
 
-        // Foreign keys
-
-        /// <summary>
-        /// Parent Milestone pointed by [TenantMilestone].([MilestoneId]) (FK_TenantMilestone_Milestone_Id)
-        /// </summary>
-        public virtual Milestone Milestone { get; set; } // FK_TenantMilestone_Milestone_Id
-
-        public TenantMilestone()
+        public ByteDocStatusMapping()
         {
             InitializePartial();
         }

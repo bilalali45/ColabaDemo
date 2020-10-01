@@ -8,7 +8,7 @@
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantOverridenMember
 // ReSharper disable UseNameofExpression
-// TargetFrameworkVersion = 2
+// TargetFrameworkVersion = 2.1
 #pragma warning disable 1591    //  Ignore "Missing XML Comment" warning
 
 
@@ -30,10 +30,15 @@ namespace Milestone.Entity.Models
         /// Child LosTenantMilestones where [LosTenantMilestone].[ExternalOriginatorId] point to this entity (FK_LosTenantMilestone_ExternalOriginator_Id)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LosTenantMilestone> LosTenantMilestones { get; set; } // LosTenantMilestone.FK_LosTenantMilestone_ExternalOriginator_Id
-        
+        /// <summary>
+        /// Child Mappings where [Mapping].[ExtOriginatorId] point to this entity (FK_Mapping_ExternalOriginator)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Mapping> Mappings { get; set; } // Mapping.FK_Mapping_ExternalOriginator
+
         public ExternalOriginator()
         {
             LosTenantMilestones = new System.Collections.Generic.HashSet<LosTenantMilestone>();
+            Mappings = new System.Collections.Generic.HashSet<Mapping>();
             InitializePartial();
         }
 

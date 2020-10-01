@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Milestone.API.CorrelationHandlersAndMiddleware;
 using Milestone.API.Helpers;
 using Milestone.Data;
+using Milestone.Service;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -42,6 +43,7 @@ namespace Milestone.API
             services.AddDbContext<MilestoneContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<MilestoneContext>, UnitOfWork<MilestoneContext>>();
+            services.AddScoped<IMilestoneService, MilestoneService>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             csResponse.EnsureSuccessStatusCode();

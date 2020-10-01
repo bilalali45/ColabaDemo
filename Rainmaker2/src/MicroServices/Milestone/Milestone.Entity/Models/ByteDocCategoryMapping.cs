@@ -17,27 +17,24 @@ namespace Milestone.Entity.Models
     using System;
     using System.Collections.Generic;
 
-    // TenantMilestone
+    // ByteDocCategoryMapping
     
-    public partial class TenantMilestone : URF.Core.EF.Trackable.Entity
+    public partial class ByteDocCategoryMapping : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
-        public string BorrowerName { get; set; } // BorrowerName (length: 50)
-        public string McuName { get; set; } // McuName (length: 50)
-        public string Description { get; set; } // Description (length: 500)
-        public bool? Visibility { get; set; } // Visibility
-        public int? TenantId { get; set; } // TenantId
-        public int? MilestoneId { get; set; } // MilestoneId
+        public string ByteDocCategoryName { get; set; } // ByteDocCategoryName (length: 50)
+        public string RmDocCategoryName { get; set; } // RmDocCategoryName (length: 50)
 
-        // Foreign keys
+        // Reverse navigation
 
         /// <summary>
-        /// Parent Milestone pointed by [TenantMilestone].([MilestoneId]) (FK_TenantMilestone_Milestone_Id)
+        /// Child ByteDocTypeMappings where [ByteDocTypeMapping].[ByteDocCategoryId] point to this entity (FK_ByteDocTypeMapping_ByteDocCategoryMapping)
         /// </summary>
-        public virtual Milestone Milestone { get; set; } // FK_TenantMilestone_Milestone_Id
+        public virtual System.Collections.Generic.ICollection<ByteDocTypeMapping> ByteDocTypeMappings { get; set; } // ByteDocTypeMapping.FK_ByteDocTypeMapping_ByteDocCategoryMapping
 
-        public TenantMilestone()
+        public ByteDocCategoryMapping()
         {
+            ByteDocTypeMappings = new System.Collections.Generic.HashSet<ByteDocTypeMapping>();
             InitializePartial();
         }
 

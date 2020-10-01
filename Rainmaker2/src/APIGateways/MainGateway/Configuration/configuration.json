@@ -11,7 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/{catchAll}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
     },
     //notification api config
     {
@@ -24,7 +24,27 @@
         }
       ],
       "UpstreamPathTemplate": "/api/notification/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 100
+      }
+    },
+    //milestone api config
+    {
+      "DownstreamPathTemplate": "/api/milestone/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5909
+        }
+      ],
+      "UpstreamPathTemplate": "/api/milestone/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -44,7 +64,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Identity/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -65,7 +85,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/DocumentManagement/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -90,7 +110,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/RainMaker/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -115,7 +135,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/LosIntegration/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       //"AuthenticationOptions": {
       //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
@@ -140,7 +160,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ByteWebConnector/{everything}",
-      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       //"AuthenticationOptions": {
       //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
