@@ -9,4 +9,10 @@ namespace Milestone.Model
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class MilestoneIdModel
+    {
+        public int loanApplicationId { get; set; }
+        public int milestoneId { get; set; }
+    }
 }

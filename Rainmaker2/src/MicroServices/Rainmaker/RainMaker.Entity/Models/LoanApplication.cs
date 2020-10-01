@@ -80,6 +80,7 @@ namespace RainMaker.Entity.Models
         public int? CreatedBy { get; set; } // CreatedBy
         public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
         public string ByteFileName { get; set; } // ByteFileName (length: 50)
+        public int? MilestoneId { get; set; } // MilestoneId
 
         // Reverse navigation
 

@@ -44,6 +44,7 @@ namespace Milestone.API
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<MilestoneContext>, UnitOfWork<MilestoneContext>>();
             services.AddScoped<IMilestoneService, MilestoneService>();
+            services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddControllers();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             csResponse.EnsureSuccessStatusCode();

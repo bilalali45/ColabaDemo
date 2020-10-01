@@ -19,7 +19,7 @@ msbuild "%workingDir%\\src\Solutions\Rainmaker2.sln"
 cd %workingDir%\src\MicroServices\KeyStore\KeyStore.API\bin\Debug\netcoreapp3.1\
 start KeyStore.API.exe
 
-TIMEOUT 3
+TIMEOUT 5
 
 cd %workingDir%\src\APIGateways\MainGateway\bin\Debug\netcoreapp3.1\
 start MainGateway.exe
@@ -49,7 +49,10 @@ cd %workingDir%\src\MicroServices\Rainmaker\Rainmaker.API\bin\Debug\netcoreapp3.
 start Rainmaker.API.exe
 
 cd %workingDir%\src\MicroServices\ByteWebConnector\ByteWebConnector.SDK\bin\Debug\net472\
-start ByteWebConnector.SDK.exe --urls="http://localhost:5070"
+start ByteWebConnector.SDK.exe
+
+cd %workingDir%\src\MicroServices\Milestone\Milestone.api\bin\Debug\netcoreapp3.1\
+start milestone.api.exe
 
 timeout 3
 

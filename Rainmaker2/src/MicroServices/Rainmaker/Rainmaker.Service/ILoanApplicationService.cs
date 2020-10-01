@@ -25,7 +25,8 @@ namespace Rainmaker.Service
                                             bool isDraft,
                                             int userProfileId,
                                             IOpportunityService opportunityService);
-
+        Task<int> GetMilestoneId(int loanApplicationId);
+        Task SetMilestoneId(int loanApplicationId, int milestoneId);
 
         Task<LoanApplicationModel> GetByLoanApplicationId(int loanId);
 

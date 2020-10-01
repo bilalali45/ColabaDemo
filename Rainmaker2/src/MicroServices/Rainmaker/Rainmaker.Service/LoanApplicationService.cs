@@ -29,6 +29,18 @@ namespace Rainmaker.Service
             this.commonService = commonService;
         }
 
+        public async Task<int> GetMilestoneId(int loanApplicationId)
+        {
+            return await Query(x => x.Id == loanApplicationId).Select(x => x.MilestoneId ?? -1).FirstAsync();
+        }
+
+        public async Task SetMilestoneId(int loanApplicationId, int milestoneId)
+        {
+            LoanApplication loanApplication = await this.GetByIdAsync(loanApplicationId);
+            loanApplication.MilestoneId = milestoneId;
+            Repository.Update(loanApplication);
+            await Uow.SaveChangesAsync();
+        }
 
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId,
                                                       int userProfileId)

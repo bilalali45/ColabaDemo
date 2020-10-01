@@ -89,6 +89,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.CreatedBy).HasColumnName(@"CreatedBy").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.CreatedOnUtc).HasColumnName(@"CreatedOnUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.ByteFileName).HasColumnName(@"ByteFileName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(255);
+            builder.Property(x => x.MilestoneId).HasColumnName(@"MilestoneId").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
             builder.HasOne(a => a.BusinessUnit).WithMany(b => b.LoanApplications).HasForeignKey(c => c.BusinessUnitId).OnDelete(DeleteBehavior.SetNull); // FK_LoanApplication_BusinessUnit

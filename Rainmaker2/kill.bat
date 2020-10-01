@@ -7,6 +7,7 @@ taskkill /IM "LosIntegration.API.exe" /F
 taskkill /IM "Notification.API.exe" /F
 taskkill /IM "Rainmaker.API.exe" /F
 taskkill /IM "ByteWebConnector.SDK.exe" /F
+taskkill /IM "Milestone.API.exe" /F
 
 timeout 1
 
