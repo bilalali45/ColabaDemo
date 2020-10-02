@@ -32,6 +32,8 @@ const App = () => {
   const [favIconSrc, setfavIconSrc] = useState("");
 
   const {state, dispatch} = useContext(Store)
+  const laon: any = state.loan;
+  const { isMobile } = laon;
 
   const useWindowSize = () => {
     const [size, setSize] = useState([0, 0]);
@@ -45,25 +47,14 @@ const App = () => {
     }, []);
     return size;
   }
-
-  let TRUTHY_VALUES = [true, 'true', 1];
-  const getBoolean = (a) => {
-    return TRUTHY_VALUES.some(function (t) {
-      return t === a;
-    });
-  }
+  
   const [width, height] = useWindowSize();
   useEffect(() => {
     let isMobile = width <= 767;
     sessionStorage.setItem('isMobile', String(isMobile));
     sessionStorage.setItem('width', String(width));
-
     dispatch({type: LoanActionsType.SetIsMobile, payload: {value: isMobile}})
 
-
-    // window.isMobile = sessionStorage.getItem("isMobile")
-    // alert("useeffect"+ window.isMobile)
-    console.log("ismobile:" + window.isMobile, typeof (window.isMobile));
   }, [width, height])
 
   const history = useHistory()
@@ -176,7 +167,12 @@ const App = () => {
           <Authorized path="/:loanApplicationId" component={Home} />
         </Switch>
       </Router>
-      <RainsoftRcFooter content={footerText} />
+      {
+        isMobile?.value?null:<RainsoftRcFooter content={footerText} />
+
+        
+      }
+      
     </div>
   );
 };

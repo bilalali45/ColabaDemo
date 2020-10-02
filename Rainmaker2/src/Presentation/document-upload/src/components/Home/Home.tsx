@@ -27,8 +27,6 @@ export class Home extends Component<any> {
   };
 
   render() {
-    window.isMobile = sessionStorage.getItem("isMobile");
-    window.width = sessionStorage.getItem("width");
     return (
       <div data-testid="activity">
         <ActivityHeader {...this.props} />

@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useContext, useRef, } from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
 import { LoanStatus } from "../Activity/LoanStatus/LoanStatus";
-import { LoanStatusMobile } from "../Activity/LoanStatus/LoanStatus-mobile";
 import { Store } from "../../../store/store";
 import { AlertBox } from "../../../shared/Components/AlertBox/AlertBox";
 import { Auth } from "../../../services/auth/Auth";
 import { debug } from "console";
 import { DocumentsActionType } from "../../../store/reducers/documentReducer";
+import dashboardIcon from '../../../assets/images/m-dashboard-icon.svg';
+import loancenterIcon from '../../../assets/images/m-lc-icon.svg';
+import tasklistIcon from '../../../assets/images/m-tl-icon.svg';
+import documentIcon from '../../../assets/images/m-d-icon.svg';
+import Overlay from 'react-bootstrap/Overlay'
+import Popover from 'react-bootstrap/Popover'
 const ActivityHeader = (props) => {
-  const [ismobile, setIsmobile] = useState(false);
   const [leftNav, setLeftNav] = useState("");
   const [showAlert, setshowAlert] = useState(false);
   const [rightNav, setRightNav] = useState("");
@@ -22,10 +26,34 @@ const ActivityHeader = (props) => {
   const history = useHistory();
   const { state, dispatch } = useContext(Store);
   const { pendingDocs, currentDoc }: any = state.documents;
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const selectedFiles = currentDoc?.files || [];
 
   const activityHeadeRef = useRef<HTMLDivElement>(null);
+
+
+  const [showToolTip, setShowToolTip] = useState(false);
+  const [taskListTarget, setTaskListTarget] = useState(null);
+  const taskListContainerRef = useRef(null);
+  const taskListTooltipRef = useRef<any>();
+
+  const handleClickToolTip = (event) => {
+    setShowToolTip(!showToolTip);
+    setTaskListTarget(event.target);
+  }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+        if (taskListTooltipRef.current && !taskListTooltipRef.current.contains(event.target)) {   
+          setShowToolTip(false); 
+        }
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+        document.removeEventListener("click", handleClickOutside);
+    };
+}, [taskListTooltipRef]);
 
   const setNavigations = (pathname) => {
     if (pathname.includes("activity")) {
@@ -90,18 +118,6 @@ const ActivityHeader = (props) => {
       window.onpopstate = () => { };
     }
   }, [location?.pathname, selectedFiles])
-
-  const [mobile, setMobile] = useState(window.isMobile);
-  useEffect(() => {
-    
-    return () => {
-      setMobile(window.isMobile)
-      alert(window.width)
-    };
-    
-  }, [])
-  
-
   const showAlertPopup = (e) => {
 
     if (e.target.tagName === "A") {
@@ -161,47 +177,130 @@ const ActivityHeader = (props) => {
     );
   };
 
-  return (
-    <div data-testid="activity-header" className="activityHeader">
-      <section className="compo-loan-status">
-       {mobile=="true"?<LoanStatusMobile />:<LoanStatus />}
-      </section>
-      <section ref={activityHeadeRef} className="row-subheader">
+
+
+  const ActivityHeaderMobile = () => {
+    return (
+      <div className="mobile-navigation" ref={taskListContainerRef}>
         <div className="row">
           <div className="container">
-            <div className="sub-header-wrap">
-              <div className="row">
-                <div className="col-6">
-                  <ul className="breadcrmubs">
-                    <li>{renderLeftNav()}</li>
-                  </ul>
-                </div>
-                <div className="col-6 text-right">
-                  <div className="action-doc-upload">
-                    <Link
-                      data-testid='right-nav'
-                      onClick={() => setCurrentUrl(rightNavUrl)}
-                      to={{
-                        pathname: showAlert ? location.pathname : rightNavUrl,
-                        state: { from: location.pathname },
-                      }}
-                    >
-                      {rightNav}
-                    </Link>
+            <div className="mobile-n-wrap" >
+              <div className="n-item">
+                <a href="" >
+                  <div className="n-item-icon"><img src={dashboardIcon} alt="" /></div>
+                  <div className="n-item-label">
+                    <div>Dashboard</div>
+                  </div>
+                </a>
+              </div>
+
+              <div className="n-item active">
+                <a>
+                  <div className="n-item-icon"><img src={loancenterIcon} alt="" /></div>
+                  <div className="n-item-label">
+                    <div>Loan Center</div>
+                  </div>
+                </a>
+              </div>
+
+              <div className="n-item">
+                <Overlay
+                  show={showToolTip}
+                  target={taskListTarget}
+                  placement="top"
+                  container={taskListContainerRef.current}
+                  containerPadding={20}
+                >
+                  <Popover id="popover-contained" className="taskListPopover" >
+                  <h4>Task List</h4>
+                  <p>We need <span>8</span> items from you</p>
+                  </Popover>
+                </Overlay>
+
+                <a>
+                  <div className="n-item-icon" ref={taskListTooltipRef}>
+                    <img src={tasklistIcon} alt="" />
+                    <div className="n-item-icon-counter" onClick={handleClickToolTip}>08</div>
+                  </div>
+                  <div className="n-item-label">
+                    <div>Task List</div>
+
+
+                  </div>
+                </a>
+              </div>
+
+              <div className="n-item">
+                <a href="" >
+                  <div className="n-item-icon"><img src={documentIcon} alt="" /></div>
+                  <div className="n-item-label">
+
+                    <div>Documents</div>
+
+                  </div>
+                </a>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const ActivityHeaderDesktop = () => {
+    return (
+      <div>
+        <section ref={activityHeadeRef} className="row-subheader">
+          <div className="row">
+            <div className="container">
+              <div className="sub-header-wrap">
+                <div className="row">
+                  <div className="col-6">
+                    <ul className="breadcrmubs">
+                      <li>{renderLeftNav()}</li>
+                    </ul>
+                  </div>
+                  <div className="col-6 text-right">
+                    <div className="action-doc-upload">
+                      <Link
+                        data-testid='right-nav'
+                        onClick={() => setCurrentUrl(rightNavUrl)}
+                        to={{
+                          pathname: showAlert ? location.pathname : rightNavUrl,
+                          state: { from: location.pathname },
+                        }}
+                      >
+                        {rightNav}
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+        {showAlert && (
+          <AlertBox
+            navigateUrl={currentUrl}
+            isBrowserBack={browserBack}
+            hideAlert={() => setshowAlert(false)}
+          />
+        )}
+      </div>
+    )
+  }
+
+
+  return (
+    <div data-testid="activity-header" className="activityHeader">
+      <section className="compo-loan-status">
+        <LoanStatus />
       </section>
-      {showAlert && (
-        <AlertBox
-          navigateUrl={currentUrl}
-          isBrowserBack={browserBack}
-          hideAlert={() => setshowAlert(false)}
-        />
-      )}
+
+      {isMobile?.value ? ActivityHeaderMobile() : ActivityHeaderDesktop()}
+
     </div>
   );
 };

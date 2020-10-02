@@ -48,14 +48,10 @@ export const LoanStatus = () => {
 
     console.log('in ============================================= ', isMobile)
 
-    if(isMobile?.value) {
-        return <div>
-            <h1>Rendring Mobile View</h1>
-        </div>
-    }
 
-    return (
-        <section className="row" data-testid="loanStatus">
+    const LoanStatusDesktop = () => {
+        return (
+            <section className="row" data-testid="loanStatus">
             <div className="container">
                 <div className="LoanStatus nbox-wrap">
                     <div className="nbox-wrap--body">
@@ -67,11 +63,11 @@ export const LoanStatus = () => {
                                     </div>
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
-
+    
                                         <p className="LoanStatus--text ">
                                             <span className="add-txt" title={formattedAddress()}> {formattedAddress()} </span>
                                             {loanInfo.cityName}, {loanInfo.stateName + ' ' + loanInfo.zipCode} </p>
-
+    
                                     </div>
                                 </div>
                             </li>
@@ -86,8 +82,8 @@ export const LoanStatus = () => {
                                             {loanInfo.propertyType}
                                         </p>
                                     </div>
-
-
+    
+    
                                 </div>
                             </li>
                             <li className="col-sm-3- ls-box ls-box-l-p">
@@ -101,8 +97,8 @@ export const LoanStatus = () => {
                                             {loanInfo.loanPurpose}
                                         </p>
                                     </div>
-
-
+    
+    
                                 </div>
                             </li>
                             <li className="col-sm-3- ls-box ls-box-l-a">
@@ -121,15 +117,114 @@ export const LoanStatus = () => {
                                             </p>
                                         }
                                     </div>
-
-
+    
+    
                                 </div>
                             </li>
-
+    
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
+        )
+    }
+
+    const LoanStatusMobile = () => {
+        return (
+            <section className="row-loanStatus" data-testid="loanStatus">
+                <div className="container">
+                <div className="LoanStatus LoanStatus-mobile nbox-wrap">
+                    <div className="nbox-wrap--body">
+                        <div className="row LoanStatus-mobile-row">
+                            <div className="col-9 LoanStatus-mobile-left">
+                            <ul className="row ls-wrap">
+                            <li className="col-12 ls-mobile-box">
+                                <div className="i-wrap">
+                                    <div className="icon-wrap">
+                                        <img src={icon1} alt="" />
+                                    </div>
+                                    <div className="c-wrap">
+                                        <h4 className="LoanStatus--heading">Property Address</h4>
+    
+                                        <p className="LoanStatus--text ">
+                                            <span className="add-txt" title={formattedAddress()}> {formattedAddress()} </span>
+                                            {loanInfo.cityName}, {loanInfo.stateName + ' ' + loanInfo.zipCode} </p>
+    
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li className="col-12 ls-mobile-box ">
+                                <div className="i-wrap">
+                                    <div className="icon-wrap lp-icon-wrap">
+                                        <img src={icon3} alt="" />
+                                    </div>
+                                    <div className="c-wrap">
+                                        <h4 className="LoanStatus--heading">Loan Purpose</h4>
+                                        <p className="LoanStatus--text">
+                                            {loanInfo.loanPurpose}
+                                        </p>
+                                    </div>
+    
+    
+                                </div>
+                            </li>
+                        </ul>
+                            </div>
+                            <div className="col-3 LoanStatus-mobile-right">
+                            <div className="ls-wrap lp-mobile-sect">
+                            <div className="ls-mobile-box">
+                                <div className="i-wrap lp-i-wrap">
+                                    <div className="icon-wrap">
+                                        <img src={icon4} alt="" />
+                                    </div>
+                                    <div className="c-wrap">
+                                        <h4 className="LoanStatus--heading">Loan Amount</h4>
+                                        {loanInfo.amount &&
+                                            <p className="LoanStatus--text">
+                                                <span className="number-loanAmount">
+                                                    <sup>$</sup>
+                                                    <span>{loanInfo.amount}</span>
+                                                </span>
+                                            </p>
+                                        }
+                                    </div>
+    
+    
+                                </div>
+                            </div>
+    
+                        </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        )
+    }
+
+
+    if(isMobile?.value) {
+        return (
+            LoanStatusMobile()
+        )
+    }
+
+    return (
+        LoanStatusDesktop()
     )
+
+    
 }
+
+
+
+
+
+
+
+

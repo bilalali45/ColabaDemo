@@ -135,6 +135,9 @@ a[href],a[tabindex]{
 .page-content {
     min-height: calc(100vh - 300px);
     padding-bottom: 40px;
+    @include mobile {
+        padding-bottom: 80px;
+      }
 }
 .gutter15 {
     margin-left: -7.5px;
@@ -162,6 +165,9 @@ a[href],a[tabindex]{
     font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
     margin-bottom: 15px;
     background: color("colorWhite");
+    @include mobile {
+        margin-bottom: 10px;
+    }
 
     &--header {
         display: block;

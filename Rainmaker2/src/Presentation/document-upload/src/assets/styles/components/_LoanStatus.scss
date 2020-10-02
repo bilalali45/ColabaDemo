@@ -1,116 +1,145 @@
-.LoanStatus{
-    min-height: 80px; 
-    &--heading{
+.LoanStatus {
+    min-height: 80px;
+
+    &--heading {
         margin: 0 0 5px;
         font: 400 #{fontSize('sm')+'/1.2'} fontFamily('heading');
-        color:color(light-purple);
+        color: color(light-purple);
         text-transform: uppercase;
+
         @include media-breakpoint-down(md) {
-            font-size:fontSize('sm')-2 ;
-          }
+            font-size: fontSize('sm')-2;
+        }
+
+        @include mobile() {
+            margin-bottom: 3px;
+        }
     }
-    &--text{
+
+    &--text {
 
         font: 500 #{fontSize('nr')+'/1.3'} fontFamily('base');
-        color:color(base);
+        color: color(base);
         padding-right: 0;
         margin-bottom: 0;
         min-height: 36px;
+
         @include media-breakpoint-down(lg) {
-            font-size:fontSize('nr')-2 ;
+            font-size: fontSize('nr')-2;
             padding-right: 5px;
-          }
+        }
+
+        @include mobile() {
+            font-size: fontSize('nr')-4;
+            min-height: 0;
+            padding-right: 0px;
+        }
 
     }
-    ul{
+
+    ul {
         margin: 0;
         padding: 0;
         list-style: none;
         flex-wrap: nowrap;
-    
-        > li{
+
+        >li {
             display: block;
             border-right: 1px solid #EBEBEB;
             display: flex;
             align-items: flex-start;
             padding: 0 15px;
+
             @include media-breakpoint-down(md) {
-            align-items: flex-start;
+                align-items: flex-start;
             }
-            &:last-child{
+
+            &:last-child {
                 border-right: none;
             }
 
-            &.ls-box-add{
+            &.ls-box-add {
                 flex: 0 0 30%;
                 max-width: 38%;
+
                 @include media-breakpoint-down(lg) {
-                flex: 0 0 28%;
-                max-width: 34%;
+                    flex: 0 0 28%;
+                    max-width: 34%;
                 }
+
                 @include media-breakpoint-down(md) {
                     flex: 0 0 27%;
                     max-width: 30%;
-                    }
-                .i-wrap{
-                    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-                
-                .c-wrap {
+                }
+
+                .i-wrap {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    width:100%;
-                .add-txt {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: block;
-                    @include media-breakpoint-down(md) {
-                        // white-space:normal;
-                      }
+
+                    .c-wrap {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 100%;
+
+                        .add-txt {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: block;
+
+                            @include media-breakpoint-down(md) {
+                                // white-space:normal;
+                            }
+                        }
                     }
                 }
             }
-            }
-            &.ls-box-p-type{
+
+            &.ls-box-p-type {
                 flex: 0 0 20%;
                 max-width: 20%;
+
                 @include media-breakpoint-down(lg) {
                     flex: 0 0 22%;
                     max-width: 22%;
-                  }
+                }
 
-                  @include media-breakpoint-down(md) {
+                @include media-breakpoint-down(md) {
                     flex: 0 0 23%;
                     max-width: 23%;
-                  }
+                }
+
                 .LoanStatus--text {
                     padding-right: 0;
+
                     @include media-breakpoint-down(lg) {
                         padding-right: 0;
-                      }
+                    }
                 }
             }
+
             &.ls-box-l-p {
                 flex: 0 0 25%;
                 max-width: 25%;
             }
 
-            &.ls-box-l-a{
+            &.ls-box-l-a {
                 flex: 0 0 25%;
-                max-width: 25%; 
+                max-width: 25%;
+
                 @include media-breakpoint-down(lg) {
                     flex: 0 0 28%;
                     max-width: 28%;
-                  }
-                  @include media-breakpoint-down(md) {
+                }
+
+                @include media-breakpoint-down(md) {
                     flex: 0 0 25%;
                     max-width: 25%;
-                  }
+                }
             }
-    
+
         }
     }
 
@@ -122,58 +151,162 @@
 
         @include media-breakpoint-down(lg) {
             padding-left: 55px;
-          }
-          @include media-breakpoint-down(md) {
+        }
+
+        @include media-breakpoint-down(md) {
             padding-left: 0;
             display: block;
             text-align: center;
             width: 100%;
-   
-          }
+
+        }
+
+        @include mobile {
+            padding-left: 35px;
+            text-align: left;
+        }
+
         .icon-wrap {
             position: absolute;
             left: 0;
             min-width: 42px;
             text-align: center;
-            img{
+
+            img {
                 max-width: 100%;
                 height: auto;
             }
 
             @include media-breakpoint-down(lg) {
                 max-width: 45px;
-              }
-              @include media-breakpoint-down(md) {
+            }
+
+            @include media-breakpoint-down(md) {
                 // max-width: 30px;
                 max-width: 100%;
                 position: relative;
                 display: block;
                 min-height: 50px;
-              }
+            }
+
+            @include mobile {
+                max-width: 27px;
+                min-height: auto;
+                position: absolute;
+                min-width: 27px;
+                top: -2px;
+            }
+
+            &.lp-icon-wrap {
+                max-width: 23px;
+                min-width: 23px;
+            }
         }
+
         .c-wrap {
             padding-top: 5px;
+
+            @include mobile {
+                padding-top: 0px;
+            }
         }
 
         .number-loanAmount {
+            @include mobile {
+                padding-top: 2px;
+                display: block;
+            }
+
             sup {
                 color: color('primary');
                 font: 500 #{fontSize('sm')+'/1'} fontFamily('base');
                 margin-top: -6px;
                 position: relative;
                 top: -8px;
+
+                @include mobile {
+                    font: 500 #{fontSize('xs')-2+'/1'} fontFamily('base');
+                }
             }
+
             span {
                 font: 500 #{fontSize('lg')+'/1'} fontFamily('base');
+
                 @include media-breakpoint-down(lg) {
-                    font-size:fontSize('lg')-2 ;
-                  }
+                    font-size: fontSize('lg')-2;
+                }
+
+                @include mobile {
+                    font: 500 #{fontSize('md')+1+'/1'} fontFamily('base');
+                }
             }
         }
-        
+
     }
- 
+
+    &.LoanStatus-mobile {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        padding: 0;
+
+        ul {
+            flex-wrap: wrap;
+            padding-left: 5px;
+        }
+
+        .LoanStatus-mobile-right {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: -15px;
+            display: flex;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            .ls-mobile-box {
+                border: none;
+            }
+        }
+
+        .add-txt {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .ls-mobile-box {
+            border-bottom: 1px solid color('border');
+            border-right: 1px solid color('border');
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            &:last-child {
+                border-bottom: 0px solid color('border');
+            }
+        }
+
+        .lp-mobile-sect {
+            .i-wrap {
+
+                &.lp-i-wrap {
+                    padding-left: 0;
+                    text-align: center;
+
+                    .icon-wrap {
+                        position: relative;
+                        display: block;
+                        // min-height: 50px;
+                        max-width: 27px;
+                        min-height: auto;
+                        min-width: 27px;
+                        margin: 0 auto;
+                    }
+
+                }
+            }
+        }
+
+
+    }
+
 }
-
-
-
