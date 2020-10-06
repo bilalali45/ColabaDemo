@@ -14,6 +14,14 @@ namespace Milestone.Model
         public string Name { get; set; }
         public string Icon { get; set; }
     }
+    public class MilestoneForLoanCenter
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Description { get; set; }
+        public int MilestoneType { get; set; }
+        public bool IsCurrent { get; set; }
+    }
     public class MilestoneModel
     {
         public int Id { get; set; }

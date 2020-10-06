@@ -21,6 +21,37 @@ namespace Milestone.Service
         {
         }
 
+        public async Task<List<MilestoneForLoanCenter>> GetMilestoneForLoanCenter(int loanApplicationId, int milestoneId,
+            int tenantId)
+        {
+            var milestone = await GetEligibleMilestone(loanApplicationId, milestoneId, tenantId);
+            if (milestone != null)
+            {
+                if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
+                {
+                    return new List<MilestoneForLoanCenter>()
+                    {
+                        new MilestoneForLoanCenter()
+                        {
+                            Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
+                                    string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
+                                        .BorrowerName))
+                                ? milestone.BorrowerName
+                                : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
+                            Icon = milestone.Icon,
+                            MilestoneType = milestone.MilestoneTypeId.Value,
+                            IsCurrent = true,
+                            Description =  (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
+                                            string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
+                                                .Description))
+                                ? milestone.Description
+                                : milestone.TenantMilestones.First(x => x.TenantId == tenantId).Description
+                        }
+                    };
+                }
+            }
+            return null;
+        }
         public async Task UpdateMilestoneLog(int loanApplicationId, int milestoneId)
         {
             MilestoneLog milestoneLog = await Uow.Repository<MilestoneLog>()
@@ -57,50 +88,56 @@ namespace Milestone.Service
                     Name = (!x.TenantMilestones.Any(y=>y.TenantId==tenantId) || string.IsNullOrEmpty(x.TenantMilestones.First(y=>y.TenantId==tenantId).McuName)) ? x.McuName : x.TenantMilestones.First(y=>y.TenantId==tenantId).McuName
                 }).ToListAsync();
         }
-
-        public async Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,int milestoneId, int tenantId)
+        public async Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,
+            int milestoneId, int tenantId)
         {
+            var milestone = await GetEligibleMilestone(loanApplicationId, milestoneId, tenantId);
+            if (milestone != null)
+            {
+                return new MilestoneForBorrowerDashboard()
+                {
+                    Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
+                            string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
+                                .BorrowerName))
+                        ? milestone.BorrowerName
+                        : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
+                    Icon = milestone.Icon
+                };
+            }
+            return null;
+        }
+        private async Task<Entity.Models.Milestone> GetEligibleMilestone(int loanApplicationId,
+            int milestoneId, int tenantId)
+        {
+
             MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
                 .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            Entity.Models.Milestone milestone = null;
             if (milestoneSetting == null || milestoneSetting.ShowMilestone.Value)
             {
                 var milestones = await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x => x.Order)
                     .ToListAsync();
-                var milestone = milestones.First(x => x.Id == milestoneId);
+                milestone = milestones.First(x => x.Id == milestoneId);
                 if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
                 {
+                    //check current visible
                     var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
-                    if (visible == null || visible.Value == true)
+                    if (visible != null && !visible.Value)
                     {
-                        return new MilestoneForBorrowerDashboard()
-                        {
-                            Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
-                                    string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
-                                        .BorrowerName))
-                                ? milestone.BorrowerName
-                                : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
-                            Icon = milestone.Icon
-                        };
-                    }
-                    else
-                    {
+                        milestone = null;
+                        // find visible from log
                         List<MilestoneLog> list = await Uow.Repository<MilestoneLog>()
                             .Query(x => x.LoanApplicationId == loanApplicationId)
-                            .Include(x => x.Milestone).ThenInclude(x => x.TenantMilestones).OrderByDescending(x=>x.CreatedDateUtc).ToListAsync();
+                            .Include(x => x.Milestone).ThenInclude(x => x.TenantMilestones)
+                            .OrderByDescending(x => x.CreatedDateUtc).ToListAsync();
                         foreach (var item in list)
                         {
-                            visible = item.Milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
-                            if (visible == null || visible.Value == true)
+                            visible = item.Milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)
+                                ?.Visibility;
+                            if (visible == null || visible.Value)
                             {
-                                return new MilestoneForBorrowerDashboard()
-                                {
-                                    Name = (!item.Milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
-                                            string.IsNullOrEmpty(item.Milestone.TenantMilestones.First(x => x.TenantId == tenantId)
-                                                .BorrowerName))
-                                        ? item.Milestone.BorrowerName
-                                        : item.Milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
-                                    Icon = item.Milestone.Icon
-                                };
+                                milestone = item.Milestone;
+                                break;
                             }
                         }
                     }
@@ -108,9 +145,9 @@ namespace Milestone.Service
                 else
                 {
                     var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
-                    if (visible != null && visible.Value == false)
+                    if (visible != null && !visible.Value)
                     {
-                        // get next visible
+                        // get next visible from timeline
                         if(milestones.Any(x=>x.Order>milestone.Order && x.MilestoneTypeId==(int)MilestoneType.Timeline 
                             && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)?.Visibility==null 
                                 || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility.Value == true)))
@@ -124,7 +161,7 @@ namespace Milestone.Service
                                                                   .FirstOrDefault(y => y.TenantId == tenantId)
                                                                   ?.Visibility.Value == true));
                         }
-                        // get previous visible
+                        // get previous visible from timeline
                         else if (milestones.OrderByDescending(x=>x.Order).Any(x => x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
                                                                                && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility == null
                                                                                    || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility.Value == true)))
@@ -143,22 +180,9 @@ namespace Milestone.Service
                             milestone = null;
                         }
                     }
-                    if (milestone != null)
-                    {
-                        return new MilestoneForBorrowerDashboard()
-                        {
-                            Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
-                                    string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
-                                        .BorrowerName))
-                                ? milestone.BorrowerName
-                                : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
-                            Icon = milestone.Icon
-                        };
-                    }
                 }
             }
-
-            return null;
+            return milestone;
         }
     }
 }
