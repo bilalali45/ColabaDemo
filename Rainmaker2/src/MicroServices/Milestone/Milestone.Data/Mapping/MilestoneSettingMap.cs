@@ -28,8 +28,8 @@ namespace Milestone.Data.Mapping
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.ShowMilestone).HasColumnName(@"ShowMilestone").HasColumnType("bit").IsRequired(false);
+            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.ShowMilestone).HasColumnName(@"ShowMilestone").HasColumnType("bit").IsRequired();
             InitializePartial();
         }
         partial void InitializePartial();

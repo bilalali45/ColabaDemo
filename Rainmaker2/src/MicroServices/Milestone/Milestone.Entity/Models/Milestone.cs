@@ -22,12 +22,12 @@ namespace Milestone.Entity.Models
     public partial class Milestone : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
-        public int? Order { get; set; } // Order
+        public int Order { get; set; } // Order
         public string Icon { get; set; } // Icon
         public string BorrowerName { get; set; } // BorrowerName (length: 50)
         public string McuName { get; set; } // McuName (length: 50)
         public string Description { get; set; } // Description (length: 500)
-        public int? MilestoneTypeId { get; set; } // MilestoneTypeId
+        public int MilestoneTypeId { get; set; } // MilestoneTypeId
 
         // Reverse navigation
 

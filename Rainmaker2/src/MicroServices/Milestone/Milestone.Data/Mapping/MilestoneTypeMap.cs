@@ -28,7 +28,7 @@ namespace Milestone.Data.Mapping
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedNever();
-            builder.Property(x => x.Name).HasColumnName(@"Name").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
+            builder.Property(x => x.Name).HasColumnName(@"Name").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
             InitializePartial();
         }
         partial void InitializePartial();

@@ -39,7 +39,7 @@ namespace Milestone.Service
                                 ? milestone.BorrowerName
                                 : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
                             Icon = milestone.Icon,
-                            MilestoneType = milestone.MilestoneTypeId.Value,
+                            MilestoneType = milestone.MilestoneTypeId,
                             IsCurrent = true,
                             Description =  (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
                                             string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
@@ -53,8 +53,7 @@ namespace Milestone.Service
                 {
                     return await Query(x=>x.MilestoneTypeId==(int)MilestoneType.Timeline &&
                                           (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null 
-                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility == null
-                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility.Value)
+                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)
                                           ).Include(x=>x.TenantMilestones).OrderBy(x=>x.Order).Select(x=>new MilestoneForLoanCenter()
                     {
                         Name = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
@@ -63,7 +62,7 @@ namespace Milestone.Service
                             ? x.BorrowerName
                             : x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName,
                         Icon = x.Icon,
-                        MilestoneType = x.MilestoneTypeId.Value,
+                        MilestoneType = x.MilestoneTypeId,
                         IsCurrent = (x.Id==milestone.Id),
                         Description = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
                                        string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
@@ -136,7 +135,7 @@ namespace Milestone.Service
             MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
                 .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
             Entity.Models.Milestone milestone = null;
-            if (milestoneSetting == null || milestoneSetting.ShowMilestone.Value)
+            if (milestoneSetting == null || milestoneSetting.ShowMilestone)
             {
                 var milestones = await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x => x.Order)
                     .ToListAsync();
@@ -172,31 +171,29 @@ namespace Milestone.Service
                     {
                         // get next visible from timeline
                         if(milestones.Any(x=>x.Order>milestone.Order && x.MilestoneTypeId==(int)MilestoneType.Timeline 
-                            && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)?.Visibility==null 
-                                || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility.Value == true)))
+                            && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)==null 
+                                || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)))
                         {
                             milestone = milestones.First(x =>
                                 x.Order > milestone.Order && x.MilestoneTypeId == (int) MilestoneType.Timeline
                                                           && (x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId)
-                                                                  ?.Visibility == null
+                                                                  .FirstOrDefault(y => y.TenantId == tenantId) == null
                                                               || x.TenantMilestones
                                                                   .FirstOrDefault(y => y.TenantId == tenantId)
-                                                                  ?.Visibility.Value == true));
+                                                                  .Visibility));
                         }
                         // get previous visible from timeline
                         else if (milestones.OrderByDescending(x=>x.Order).Any(x => x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
-                                                                               && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility == null
-                                                                                   || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId)?.Visibility.Value == true)))
+                                                                               && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null
+                                                                                   || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)))
                         {
                             milestone = milestones.OrderByDescending(x => x.Order).First(x =>
                                 x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
                                                           && (x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId)
-                                                                  ?.Visibility == null
+                                                                  .FirstOrDefault(y => y.TenantId == tenantId) == null
                                                               || x.TenantMilestones
                                                                   .FirstOrDefault(y => y.TenantId == tenantId)
-                                                                  ?.Visibility.Value == true));
+                                                                  .Visibility));
                         }
                         else
                         {

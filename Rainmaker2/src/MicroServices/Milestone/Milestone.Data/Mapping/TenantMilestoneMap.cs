@@ -31,9 +31,9 @@ namespace Milestone.Data.Mapping
             builder.Property(x => x.BorrowerName).HasColumnName(@"BorrowerName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.McuName).HasColumnName(@"McuName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.Description).HasColumnName(@"Description").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(500);
-            builder.Property(x => x.Visibility).HasColumnName(@"Visibility").HasColumnType("bit").IsRequired(false);
-            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.MilestoneId).HasColumnName(@"MilestoneId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.Visibility).HasColumnName(@"Visibility").HasColumnType("bit").IsRequired();
+            builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.MilestoneId).HasColumnName(@"MilestoneId").HasColumnType("int").IsRequired();
 
             // Foreign keys
             builder.HasOne(a => a.Milestone).WithMany(b => b.TenantMilestones).HasForeignKey(c => c.MilestoneId).OnDelete(DeleteBehavior.SetNull); // FK_TenantMilestone_Milestone_Id

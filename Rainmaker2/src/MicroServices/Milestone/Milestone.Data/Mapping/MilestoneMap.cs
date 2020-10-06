@@ -28,12 +28,12 @@ namespace Milestone.Data.Mapping
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.Order).HasColumnName(@"Order").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.Icon).HasColumnName(@"Icon").HasColumnType("varchar(max)").IsRequired(false).IsUnicode(false);
-            builder.Property(x => x.BorrowerName).HasColumnName(@"BorrowerName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
-            builder.Property(x => x.McuName).HasColumnName(@"McuName").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
-            builder.Property(x => x.Description).HasColumnName(@"Description").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(500);
-            builder.Property(x => x.MilestoneTypeId).HasColumnName(@"MilestoneTypeId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.Order).HasColumnName(@"Order").HasColumnType("int").IsRequired();
+            builder.Property(x => x.Icon).HasColumnName(@"Icon").HasColumnType("varchar(max)").IsRequired().IsUnicode(false);
+            builder.Property(x => x.BorrowerName).HasColumnName(@"BorrowerName").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
+            builder.Property(x => x.McuName).HasColumnName(@"McuName").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
+            builder.Property(x => x.Description).HasColumnName(@"Description").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(500);
+            builder.Property(x => x.MilestoneTypeId).HasColumnName(@"MilestoneTypeId").HasColumnType("int").IsRequired();
 
             // Foreign keys
             builder.HasOne(a => a.MilestoneType).WithMany(b => b.Milestones).HasForeignKey(c => c.MilestoneTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Milestone_MilestoneType_Id

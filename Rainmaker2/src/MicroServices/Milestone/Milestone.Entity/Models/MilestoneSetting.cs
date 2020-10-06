@@ -22,8 +22,8 @@ namespace Milestone.Entity.Models
     public partial class MilestoneSetting : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
-        public int? TenantId { get; set; } // TenantId
-        public bool? ShowMilestone { get; set; } // ShowMilestone
+        public int TenantId { get; set; } // TenantId
+        public bool ShowMilestone { get; set; } // ShowMilestone
 
         public MilestoneSetting()
         {

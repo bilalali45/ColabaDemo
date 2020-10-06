@@ -22,9 +22,9 @@ namespace Milestone.Entity.Models
     public partial class LosTenantMilestone : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
-        public int? TenantId { get; set; } // TenantId
+        public int TenantId { get; set; } // TenantId
         public string Name { get; set; } // Name (length: 50)
-        public short? ExternalOriginatorId { get; set; } // ExternalOriginatorId
+        public short ExternalOriginatorId { get; set; } // ExternalOriginatorId
 
         // Reverse navigation
 

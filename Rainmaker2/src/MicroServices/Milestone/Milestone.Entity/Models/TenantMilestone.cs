@@ -25,9 +25,9 @@ namespace Milestone.Entity.Models
         public string BorrowerName { get; set; } // BorrowerName (length: 50)
         public string McuName { get; set; } // McuName (length: 50)
         public string Description { get; set; } // Description (length: 500)
-        public bool? Visibility { get; set; } // Visibility
-        public int? TenantId { get; set; } // TenantId
-        public int? MilestoneId { get; set; } // MilestoneId
+        public bool Visibility { get; set; } // Visibility
+        public int TenantId { get; set; } // TenantId
+        public int MilestoneId { get; set; } // MilestoneId
 
         // Foreign keys
 
