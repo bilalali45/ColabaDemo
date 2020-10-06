@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Milestone.Data;
 using Milestone.Entity.Models;
 using Milestone.Model;
+using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 using MilestoneType = Milestone.Model.MilestoneType;
 
@@ -20,6 +21,24 @@ namespace Milestone.Service
         {
         }
 
+        public async Task UpdateMilestoneLog(int loanApplicationId, int milestoneId)
+        {
+            MilestoneLog milestoneLog = await Uow.Repository<MilestoneLog>()
+                .Query(x => x.LoanApplicationId == loanApplicationId)
+                .OrderByDescending(x => x.CreatedDateUtc).FirstOrDefaultAsync();
+            if (milestoneLog == null || milestoneLog.MilestoneId != milestoneId)
+            {
+                milestoneLog = new MilestoneLog()
+                {
+                    MilestoneId = milestoneId,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    LoanApplicationId = loanApplicationId,
+                    TrackingState = TrackingState.Added
+                };
+                Uow.Repository<MilestoneLog>().Insert(milestoneLog);
+                await Uow.SaveChangesAsync();
+            }
+        }
         public async Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId)
         {
             return await Repository.Query(x=>x.Id==milestone).Include(x => x.TenantMilestones)
@@ -39,7 +58,7 @@ namespace Milestone.Service
                 }).ToListAsync();
         }
 
-        public async Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int milestoneId, int tenantId)
+        public async Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,int milestoneId, int tenantId)
         {
             MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
                 .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
@@ -50,15 +69,41 @@ namespace Milestone.Service
                 var milestone = milestones.First(x => x.Id == milestoneId);
                 if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
                 {
-                    return new MilestoneForBorrowerDashboard()
+                    var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
+                    if (visible == null || visible.Value == true)
                     {
-                        Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
-                                string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
-                                    .BorrowerName))
-                            ? milestone.BorrowerName
-                            : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
-                        Icon = milestone.Icon
-                    };
+                        return new MilestoneForBorrowerDashboard()
+                        {
+                            Name = (!milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
+                                    string.IsNullOrEmpty(milestone.TenantMilestones.First(x => x.TenantId == tenantId)
+                                        .BorrowerName))
+                                ? milestone.BorrowerName
+                                : milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
+                            Icon = milestone.Icon
+                        };
+                    }
+                    else
+                    {
+                        List<MilestoneLog> list = await Uow.Repository<MilestoneLog>()
+                            .Query(x => x.LoanApplicationId == loanApplicationId)
+                            .Include(x => x.Milestone).ThenInclude(x => x.TenantMilestones).OrderByDescending(x=>x.CreatedDateUtc).ToListAsync();
+                        foreach (var item in list)
+                        {
+                            visible = item.Milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
+                            if (visible == null || visible.Value == true)
+                            {
+                                return new MilestoneForBorrowerDashboard()
+                                {
+                                    Name = (!item.Milestone.TenantMilestones.Any(x => x.TenantId == tenantId) ||
+                                            string.IsNullOrEmpty(item.Milestone.TenantMilestones.First(x => x.TenantId == tenantId)
+                                                .BorrowerName))
+                                        ? item.Milestone.BorrowerName
+                                        : item.Milestone.TenantMilestones.First(x => x.TenantId == tenantId).BorrowerName,
+                                    Icon = item.Milestone.Icon
+                                };
+                            }
+                        }
+                    }
                 }
                 else
                 {

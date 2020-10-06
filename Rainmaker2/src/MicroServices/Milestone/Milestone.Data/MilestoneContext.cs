@@ -29,6 +29,7 @@ namespace Milestone.Data
         //public virtual DbSet<LosTenantMilestone> LosTenantMilestones { get; set; } // LosTenantMilestone
         //public virtual DbSet<Mapping> Mappings { get; set; } // Mapping
         //public virtual DbSet<Milestone> Milestones { get; set; } // Milestone
+        //public virtual DbSet<MilestoneLog> MilestoneLogs { get; set; } // MilestoneLog
         //public virtual DbSet<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping
         //public virtual DbSet<MilestoneSetting> MilestoneSettings { get; set; } // MilestoneSetting
         //public virtual DbSet<MilestoneType> MilestoneTypes { get; set; } // MilestoneType
@@ -51,6 +52,7 @@ namespace Milestone.Data
             modelBuilder.ApplyConfiguration(new LosTenantMilestoneMap());
             modelBuilder.ApplyConfiguration(new MappingMap());
             modelBuilder.ApplyConfiguration(new MilestoneMap());
+            modelBuilder.ApplyConfiguration(new MilestoneLogMap());
             modelBuilder.ApplyConfiguration(new MilestoneMappingMap());
             modelBuilder.ApplyConfiguration(new MilestoneSettingMap());
             modelBuilder.ApplyConfiguration(new MilestoneTypeMap());

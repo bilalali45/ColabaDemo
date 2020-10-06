@@ -7,7 +7,8 @@ namespace Milestone.Service
     public interface IMilestoneService : IServiceBase<Entity.Models.Milestone>
     {
         Task<List<MilestoneModel>> GetAllMilestones(int tenantId);
-        Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int milestoneId, int tenantId);
+        Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,int milestoneId, int tenantId);
         Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId);
+        Task UpdateMilestoneLog(int loanApplicationId, int milestoneId);
     }
 }

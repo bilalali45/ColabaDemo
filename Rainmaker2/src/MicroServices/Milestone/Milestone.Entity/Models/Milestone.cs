@@ -23,7 +23,7 @@ namespace Milestone.Entity.Models
     {
         public int Id { get; set; } // Id (Primary key)
         public int? Order { get; set; } // Order
-        public string Icon { get; set; } // Icon (length: 2000)
+        public string Icon { get; set; } // Icon
         public string BorrowerName { get; set; } // BorrowerName (length: 50)
         public string McuName { get; set; } // McuName (length: 50)
         public string Description { get; set; } // Description (length: 500)
@@ -31,6 +31,10 @@ namespace Milestone.Entity.Models
 
         // Reverse navigation
 
+        /// <summary>
+        /// Child MilestoneLogs where [MilestoneLog].[MilestoneId] point to this entity (FK_MilestoneLog_Milestone_Id)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<MilestoneLog> MilestoneLogs { get; set; } // MilestoneLog.FK_MilestoneLog_Milestone_Id
         /// <summary>
         /// Child MilestoneMappings where [MilestoneMapping].[MilestoneId] point to this entity (FK_MilestoneMapping_Milestone_Id)
         /// </summary>
@@ -49,6 +53,7 @@ namespace Milestone.Entity.Models
 
         public Milestone()
         {
+            MilestoneLogs = new System.Collections.Generic.HashSet<MilestoneLog>();
             MilestoneMappings = new System.Collections.Generic.HashSet<MilestoneMapping>();
             TenantMilestones = new System.Collections.Generic.HashSet<TenantMilestone>();
             InitializePartial();

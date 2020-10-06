@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Milestone.Model;
 using Milestone.Service;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Milestone.API.Controllers
 {
@@ -41,6 +38,7 @@ namespace Milestone.API.Controllers
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
             await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
+            await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId);
             return Ok();
         }
         [Authorize(Roles = "Customer")]
@@ -52,7 +50,7 @@ namespace Milestone.API.Controllers
                 Request.Headers["Authorization"].Select(x => x.ToString()));
             if (milestone <= 0)
                 return Ok(null);
-            var status = await _milestoneService.GetMilestoneForBorrowerDashboard(milestone,tenantId);
+            var status = await _milestoneService.GetMilestoneForBorrowerDashboard(loanApplicationId,milestone,tenantId);
             return Ok(status);
         }
         [Authorize(Roles = "MCU")]
