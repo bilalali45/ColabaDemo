@@ -4,17 +4,22 @@ import React, {
   useEffect,
   DragEvent,
   Component,
+  useContext,
 } from "react";
 import DocUploadIcon from "../../../assets/images/upload-doc-icon.svg";
 import FileuploadPreviewIcon from "../../../assets/images/fileupload-preview-icon.svg";
 import { FileUpload } from "../../../utils/helpers/FileUpload";
-
+import { Store } from '../../../store/store';
 type DocumentDropBoxPropsType = { getFiles: Function; setFileInput: Function };
 
 export const DocumentDropBox = ({
   getFiles,
   setFileInput,
 }: DocumentDropBoxPropsType) => {
+
+  const { state, dispatch } = useContext(Store);
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -27,6 +32,49 @@ export const DocumentDropBox = ({
     getFiles(files);
   };
 
+  const desktopView = () => {
+    return (
+      <div className="chosefileWrap">
+      <label htmlFor="inputFile">
+        You don't have any files.
+        <br />
+        Drop it here or <span>upload</span>
+      </label>
+      <input
+        data-testid="file-input"
+        ref={inputRef}
+        type="file"
+        name="file"
+        id="inputFile"
+        onChange={(e) => handleChange(e)}
+        multiple
+        accept={FileUpload.allowedExtensions}
+      />
+    </div>
+    )
+  }
+
+  const mobileView = () => {
+    return (
+      <div className="chosefileWrap">
+        <p>You don’t have any files here.</p>
+        <label htmlFor="inputFile" className="btn btn-primary btn-sub-mobile">
+          Submit
+      </label>
+      <input
+        ref={inputRef}
+        type="file"
+        name="file"
+        id="inputFile"
+        onChange={(e) => handleChange(e)}
+        multiple
+        accept={FileUpload.allowedExtensions}
+      />
+    </div>
+    )
+  }
+
+
   return (
     <section className="empty-uploader">
       <div className="empty-d-box-wrap">
@@ -34,29 +82,11 @@ export const DocumentDropBox = ({
           <div className="icon-doc-upload">
             <img src={DocUploadIcon} alt="" />
           </div>
-          <div className="chosefileWrap">
-            <label htmlFor="inputFile">
-              You don't have any files.
-              <br />
-              Drop it here or <span>upload</span>
-            </label>
-            <input
-              data-testid="file-input"
-              ref={inputRef}
-              type="file"
-              name="file"
-              id="inputFile"
-              onChange={(e) => handleChange(e)}
-              multiple
-              accept={FileUpload.allowedExtensions}
-            />
-            {/* <div className="upload-note">
-                            <p>
-                                File Type: PDF, JPEG, PNG <br />
-                                File Size: {FileUpload.allowedSize}mb
-                                </p>
-                        </div> */}
-          </div>
+ 
+          {!isMobile.value ?
+                desktopView() : mobileView()
+            }
+
         </div>
       </div>
     </section>

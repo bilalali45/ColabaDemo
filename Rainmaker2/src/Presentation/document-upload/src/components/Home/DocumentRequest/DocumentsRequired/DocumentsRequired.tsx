@@ -9,13 +9,18 @@ import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Redirect } from "react-router-dom";
 import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
 
-export const DocumentsRequired = () => {
+type DocumentsRequiredType = {
+  setCurrentInview?: any
+}
+
+export const DocumentsRequired = ({setCurrentInview} : DocumentsRequiredType) => {
   const [showAlert, setshowAlert] = useState<boolean>(false);
   const [triedSelected, setTriedSelected] = useState();
   const { state, dispatch } = useContext(Store);
   const { pendingDocs }: any = state.documents;
   const { currentDoc }: any = state.documents;
-
+  const loan: any = state.loan;
+  const {isMobile} = loan; 
   const selectedFiles = currentDoc?.files || [];
 
   const sideBarNav = useRef<HTMLDivElement>(null);
@@ -97,6 +102,7 @@ export const DocumentsRequired = () => {
                 data-testid={`pending-doc-${i}`}
                 key={pd?.docId}
                 onClick={() => {
+                  setCurrentInview('documentUploadView')
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
                     setshowAlert(false);
                     return;
@@ -112,13 +118,15 @@ export const DocumentsRequired = () => {
               >
                 <a title={pd.docName}
                   className={
-                    currentDoc && pd?.docId === currentDoc?.docId
+                    (currentDoc && !isMobile.value && pd?.docId === currentDoc?.docId)
                       ? "active"
                       : ""
                   }
                 >
                   <span> {pd.docName}</span>
+                 
                 </a>
+                {isMobile.value && <div className="pd-m-arrow-icon"><i className="zmdi zmdi-chevron-right"></i></div>}
               </li>
             );
           })}

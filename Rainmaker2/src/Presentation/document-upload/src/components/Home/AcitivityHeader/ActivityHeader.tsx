@@ -33,27 +33,22 @@ const ActivityHeader = (props) => {
   const activityHeadeRef = useRef<HTMLDivElement>(null);
 
 
-  const [showToolTip, setShowToolTip] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(true);
   const [taskListTarget, setTaskListTarget] = useState(null);
   const taskListContainerRef = useRef(null);
-  const taskListTooltipRef = useRef<any>();
-
-  const handleClickToolTip = (event) => {
-    setShowToolTip(!showToolTip);
-    setTaskListTarget(event.target);
-  }
+  const taskListTooltipRef = useRef<any>(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
-        if (taskListTooltipRef.current && !taskListTooltipRef.current.contains(event.target)) {   
-          setShowToolTip(false); 
-        }
+      if (taskListTooltipRef.current && !taskListTooltipRef.current.contains(event.target)) {
+        setShowToolTip(false);
+      }
     }
     document.addEventListener("click", handleClickOutside);
     return () => {
-        document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
-}, [taskListTooltipRef]);
+  }, [taskListTooltipRef]);
 
   const setNavigations = (pathname) => {
     if (pathname.includes("activity")) {
@@ -177,7 +172,67 @@ const ActivityHeader = (props) => {
     );
   };
 
+  const items = [
+    {
+      text: 'Dashboard',
+      link: '/dashboard',
+      img: dashboardIcon
+    },
+    {
+      text: 'Loan Center',
+      link: '/activity',
+      img: loancenterIcon
+    },
+    {
+      text: 'Task List',
+      link: '/documentRequest',
+      img: tasklistIcon
+    },
+    {
+      text: 'Documents',
+      link: '/uploadedDocuments',
+      img: documentIcon
+    },
+  ];
 
+  const handleNavigationMobile = (link) => {
+    let url = `/LoanPortal${link}/${Auth.getLoanAppliationId()}`;
+    console.log(url);
+    history.push(url)
+  }
+
+  const renderItem = ({ text, img, link }, isActive) => {
+
+    return (
+      <div className={`n-item ${isActive ? 'active' : ''}`}>
+        {text === 'Task List' && <Overlay
+          show={showToolTip}
+          target={taskListTooltipRef.current}
+          placement="top"
+          container={taskListContainerRef.current}
+          containerPadding={20}
+        >
+        <Popover id="popover-contained" className="taskListPopover" >
+            <h4>Task List</h4>
+            <p>We need <span>8</span> items from you</p>
+          </Popover>
+        </Overlay>}
+        <Link to={{
+          pathname: showAlert ? location.pathname : leftNavUrl,
+          state: { from: location.pathname },
+        }}
+          onClick={() => handleNavigationMobile(link)} >
+          <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} ><img src={img} alt="" />
+            {text === 'Task List' && <div className="n-item-icon-counter">08</div>}
+          </div>
+          <div className="n-item-label">
+            <div>{text}</div>
+          </div>
+        </Link>
+      </div>
+
+    )
+  }
 
   const ActivityHeaderMobile = () => {
     return (
@@ -185,16 +240,16 @@ const ActivityHeader = (props) => {
         <div className="row">
           <div className="container">
             <div className="mobile-n-wrap" >
-              <div className="n-item">
-                <a href="" >
-                  <div className="n-item-icon"><img src={dashboardIcon} alt="" /></div>
-                  <div className="n-item-label">
-                    <div>Dashboard</div>
-                  </div>
-                </a>
-              </div>
 
-              <div className="n-item active">
+              {
+                items.map((item: any) => {
+                  return (
+                    renderItem(item, location.pathname.includes(item.link))
+                  )
+                })
+              }
+
+              {/* <div className="n-item active">
                 <a>
                   <div className="n-item-icon"><img src={loancenterIcon} alt="" /></div>
                   <div className="n-item-label">
@@ -212,8 +267,8 @@ const ActivityHeader = (props) => {
                   containerPadding={20}
                 >
                   <Popover id="popover-contained" className="taskListPopover" >
-                  <h4>Task List</h4>
-                  <p>We need <span>8</span> items from you</p>
+                    <h4>Task List</h4>
+                    <p>We need <span>8</span> items from you</p>
                   </Popover>
                 </Overlay>
 
@@ -239,7 +294,7 @@ const ActivityHeader = (props) => {
 
                   </div>
                 </a>
-              </div>
+              </div> */}
 
 
             </div>
@@ -295,9 +350,11 @@ const ActivityHeader = (props) => {
 
   return (
     <div data-testid="activity-header" className="activityHeader">
-      <section className="compo-loan-status">
+     
+     {isMobile?.value ? null : <section className="compo-loan-status">
         <LoanStatus />
       </section>
+}
 
       {isMobile?.value ? ActivityHeaderMobile() : ActivityHeaderDesktop()}
 
