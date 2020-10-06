@@ -51,7 +51,7 @@ namespace Milestone.API.Controllers
             int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
                 Request.Headers["Authorization"].Select(x => x.ToString()));
             if (milestone <= 0)
-                return Ok(new MilestoneForBorrowerDashboard());
+                return Ok(null);
             var status = await _milestoneService.GetMilestoneForBorrowerDashboard(milestone,tenantId);
             return Ok(status);
         }

@@ -113,7 +113,7 @@ namespace Milestone.Service
                 }
             }
 
-            return new MilestoneForBorrowerDashboard();
+            return null;
         }
     }
 }
