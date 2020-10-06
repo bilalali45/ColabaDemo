@@ -49,6 +49,29 @@ namespace Milestone.Service
                         }
                     };
                 }
+                else
+                {
+                    return await Query(x=>x.MilestoneTypeId==(int)MilestoneType.Timeline &&
+                                          (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null 
+                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility == null
+                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility.Value)
+                                          ).Include(x=>x.TenantMilestones).OrderBy(x=>x.Order).Select(x=>new MilestoneForLoanCenter()
+                    {
+                        Name = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
+                                string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
+                                    .BorrowerName))
+                            ? x.BorrowerName
+                            : x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName,
+                        Icon = x.Icon,
+                        MilestoneType = x.MilestoneTypeId.Value,
+                        IsCurrent = (x.Id==milestone.Id),
+                        Description = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
+                                       string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
+                                           .Description))
+                            ? x.Description
+                            : x.TenantMilestones.First(y => y.TenantId == tenantId).Description
+                    }).ToListAsync();
+                }
             }
             return null;
         }
