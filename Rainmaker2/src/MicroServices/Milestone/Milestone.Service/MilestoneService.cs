@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Milestone.Data;
 using Milestone.Entity.Models;
 using Milestone.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 using MilestoneType = Milestone.Model.MilestoneType;
@@ -172,27 +171,27 @@ namespace Milestone.Service
                         // get next visible from timeline
                         if(milestones.Any(x=>x.Order>milestone.Order && x.MilestoneTypeId==(int)MilestoneType.Timeline 
                             && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)==null 
-                                || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)))
+                                || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
                         {
                             milestone = milestones.First(x =>
                                 x.Order > milestone.Order && x.MilestoneTypeId == (int) MilestoneType.Timeline
                                                           && (x.TenantMilestones
                                                                   .FirstOrDefault(y => y.TenantId == tenantId) == null
                                                               || x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId)
+                                                                  .First(y => y.TenantId == tenantId)
                                                                   .Visibility));
                         }
                         // get previous visible from timeline
                         else if (milestones.OrderByDescending(x=>x.Order).Any(x => x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
                                                                                && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null
-                                                                                   || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)))
+                                                                                   || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
                         {
                             milestone = milestones.OrderByDescending(x => x.Order).First(x =>
                                 x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
                                                           && (x.TenantMilestones
                                                                   .FirstOrDefault(y => y.TenantId == tenantId) == null
                                                               || x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId)
+                                                                  .First(y => y.TenantId == tenantId)
                                                                   .Visibility));
                         }
                         else
