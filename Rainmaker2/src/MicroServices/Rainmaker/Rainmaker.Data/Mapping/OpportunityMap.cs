@@ -71,7 +71,6 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.LeadCreatedOnUtc).HasColumnName(@"LeadCreatedOnUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.MaxHopCount).HasColumnName(@"MaxHopCount").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.LeadGroupId).HasColumnName(@"LeadGroupId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.LoanOfficerId).HasColumnName(@"LoanOfficerId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.LoanCoordinatorId).HasColumnName(@"LoanCoordinatorId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.PreProcessorId).HasColumnName(@"PreProcessorId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.LoanProcessorId).HasColumnName(@"LoanProcessorId").HasColumnType("int").IsRequired(false);
@@ -86,7 +85,6 @@ namespace RainMaker.Data.Mapping
             builder.HasOne(a => a.LeadSourceType).WithMany(b => b.Opportunities).HasForeignKey(c => c.LeadSourceTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadSourceType
             builder.HasOne(a => a.LeadType).WithMany(b => b.Opportunities).HasForeignKey(c => c.LeadTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadType
             builder.HasOne(a => a.LoanCoordinator).WithMany(b => b.Opportunities_LoanCoordinatorId).HasForeignKey(c => c.LoanCoordinatorId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee2
-            builder.HasOne(a => a.LoanOfficer).WithMany(b => b.Opportunities_LoanOfficerId).HasForeignKey(c => c.LoanOfficerId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee1
             builder.HasOne(a => a.LoanProcessor).WithMany(b => b.Opportunities_LoanProcessorId).HasForeignKey(c => c.LoanProcessorId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee4
             builder.HasOne(a => a.LoanRequest).WithMany(b => b.Opportunities).HasForeignKey(c => c.LoanRequestId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LoanRequest
             builder.HasOne(a => a.LockStatusCause).WithMany(b => b.Opportunities).HasForeignKey(c => c.LockCauseId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LockStatusCause

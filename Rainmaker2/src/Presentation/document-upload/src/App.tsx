@@ -28,6 +28,9 @@ const App = () => {
   const [companyLogoSrc, setcompanyLogoSrc] = useState("");
   const [favIconSrc, setfavIconSrc] = useState("");
 
+
+  const history = useHistory()
+
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
     console.log('Logo Src',logoHeaderSrc)
@@ -49,7 +52,9 @@ const App = () => {
       keepAliveParentApp();
     } else {
       Auth.removeAuth();
-      window.open("/Account/LogOff", "_self");
+      if (window.open) {
+        window.open("/Account/LogOff", "_self");
+      }
     }
   };
 
@@ -79,7 +84,7 @@ const App = () => {
 
   const addExpiryListener = () => {
     if (Auth.getUserPayload()) {
-      console.log("addExpiryListener called from APP tsx");
+      // console.log("addExpiryListener called from APP tsx");
       UserActions.addExpiryListener(Auth.getUserPayload());
       // setExpListnerAdded(true);
     }
@@ -94,13 +99,15 @@ const App = () => {
   };
 
   const onIdle = (e) => {
-    console.log("Idle time meet");
+    // console.log("Idle time meet");
     window.onbeforeunload = null;
     Auth.removeAuth();
-    window.open("/Account/LogOff", "_self");
+    if (window.open) {
+      window.open("/Account/LogOff", "_self");
+    }
   };
 
-  console.log("Application is ", authenticated);
+  // console.log("Application is ", authenticated);
   if (!authenticated) {
     return null;
   }
@@ -112,7 +119,7 @@ const App = () => {
           element={document}
           onIdle={onIdle}
           debounce={250}
-          timeout={1000 * 60 * window.envConfig.IDLE_TIMER}
+          timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
         />
         <RainsoftRcHeader
           logoSrc={companyLogoSrc}
@@ -122,10 +129,14 @@ const App = () => {
         />
         <Router basename="/LoanPortal">
           <Switch>
-            <Authorized
-              path="/:navigation/:loanApplicationId"
+            {process.env.NODE_ENV === 'test' ? <Authorized
+              path="/"
               component={Home}
-            />
+            /> : <Authorized
+                path="/:navigation/:loanApplicationId"
+                component={Home}
+              />
+            }
             <Authorized path="/:loanApplicationId" component={Home} />
           </Switch>
         </Router>

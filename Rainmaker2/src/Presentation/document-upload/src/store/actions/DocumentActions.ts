@@ -8,16 +8,14 @@ import { Document } from "../../entities/Models/Document";
 import { DocumentsEndpoints } from "../endpoints/DocumentsEndpoints";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 
-const http = new Http();
-
 export class DocumentActions {
   static async getPendingDocuments(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<DocumentRequest[]> = await http.get<
+      let res: AxiosResponse<DocumentRequest[]> = await Http.get<
         DocumentRequest[]
       >(Endpoints.documents.GET.pendingDocuments(loanApplicationId));
 
-      let d = res.data.map((d: DocumentRequest, i: number) => {
+      let d = res?.data?.map((d: DocumentRequest, i: number) => {
         let {
           id,
           requestId,
@@ -62,7 +60,7 @@ export class DocumentActions {
 
   static async getSubmittedDocuments(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<UploadedDocuments[]> = await http.get<
+      let res: AxiosResponse<UploadedDocuments[]> = await Http.get<
         UploadedDocuments[]
       >(Endpoints.documents.GET.submittedDocuments(loanApplicationId));
       return res.data.map((r) => r);
@@ -84,7 +82,7 @@ export class DocumentActions {
         params.fileId
       );
 
-      const response = await axios.get(http.createUrl(http.baseUrl, url), {
+      const response = await axios.get(Http.createUrl(Http.baseUrl, url), {
         cancelToken: DocumentActions.documentViewCancelToken.token,
         params: { ...params },
         responseType: "arraybuffer", //arraybuffer response type important to get the correct response back from server.
@@ -101,7 +99,7 @@ export class DocumentActions {
 
   static async finishDocument(loanApplicationId: string, data: {}) {
     try {
-      let doneRes = await http.put(Endpoints.documents.PUT.finishDocument(), {
+      let doneRes = await Http.put(Endpoints.documents.PUT.finishDocument(), {
         ...data,
       });
       if (doneRes) {

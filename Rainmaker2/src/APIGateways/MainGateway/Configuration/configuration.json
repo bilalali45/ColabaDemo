@@ -7,7 +7,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5702
+          "Port": 7079
         }
       ],
       "UpstreamPathTemplate": "/{catchAll}",
@@ -20,7 +20,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5702
+          "Port": 7079
         }
       ],
       "UpstreamPathTemplate": "/api/notification/{everything}",
@@ -60,7 +60,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5010
+          "Port": 7074
         }
       ],
       "UpstreamPathTemplate": "/api/Identity/{everything}",
@@ -81,7 +81,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5020
+          "Port": 7075
         }
       ],
       "UpstreamPathTemplate": "/api/DocumentManagement/{everything}",
@@ -106,7 +106,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5031
+          "Port": 7073
         }
       ],
       "UpstreamPathTemplate": "/api/RainMaker/{everything}",
@@ -131,7 +131,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5050
+          "Port": 7078
         }
       ],
       "UpstreamPathTemplate": "/api/LosIntegration/{everything}",
@@ -156,7 +156,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5060
+          "Port": 7077
         }
       ],
       "UpstreamPathTemplate": "/api/ByteWebConnector/{everything}",

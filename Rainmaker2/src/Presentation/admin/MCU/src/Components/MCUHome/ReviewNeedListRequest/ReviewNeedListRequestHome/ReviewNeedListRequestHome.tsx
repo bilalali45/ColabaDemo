@@ -36,11 +36,12 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
         for (let i = 0; i < documentList.length; i++) {
             names += "-" + documentList[i].docName;
             if (i != documentList.length - 1)
-                names = names + ",";
+            names = names + "\n";
         }
         setDocumentName(names)
     }
-
+    
+   
     const getEmailTemplate = async () => {
         let res: any = await TemplateActions.fetchEmailTemplate();
         setEmailTemplate(res);

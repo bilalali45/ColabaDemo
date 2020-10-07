@@ -54,5 +54,7 @@ start ByteWebConnector.SDK.exe
 cd %workingDir%\src\MicroServices\Milestone\Milestone.api\bin\Debug\netcoreapp3.1\
 start milestone.api.exe
 
+cd %workingDir%
+
 timeout 3
 

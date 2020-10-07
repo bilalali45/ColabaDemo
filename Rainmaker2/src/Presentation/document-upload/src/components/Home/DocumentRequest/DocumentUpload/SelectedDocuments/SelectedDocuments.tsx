@@ -19,6 +19,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  // filesChange: Function;
 }
 
 interface ViewDocumentType {
@@ -35,7 +36,8 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
-}: SelectedDocumentsType) => {
+}: // filesChange,
+SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
@@ -142,7 +144,7 @@ export const SelectedDocuments = ({
     setUploadingFiles(false);
     try {
       Promise.resolve(fetchUploadedDocuments());
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -150,7 +152,7 @@ export const SelectedDocuments = ({
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-        newName.toLowerCase()
+          newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -194,6 +196,7 @@ export const SelectedDocuments = ({
       }
       return f;
     });
+
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
       payload: updatedFilesWithFocus,
@@ -257,9 +260,9 @@ export const SelectedDocuments = ({
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-          Auth.getLoanAppliationId(),
-          data
-        );
+        Auth.getLoanAppliationId(),
+        data
+      );
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -331,11 +334,27 @@ export const SelectedDocuments = ({
           <div className="addmore-wrap">
             {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? (
               <a
+                data-testid="add-more-btn"
                 className="addmoreDoc"
                 onClick={(e) => {
                   addMore(e);
                 }}
               >
+                {" "}
+                Add more files
+                <input
+                  onChange={(e) => addMore(e)}
+                  data-testid="file-input"
+                  type="file"
+                  accept={FileUpload.allowedExtensions}
+                  id="inputFile"
+                  ref={inputRef}
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </a>
+            ) : (
+              <a className="addmoreDoc disabled">
                 {" "}
                 Add more files
                 <input
@@ -347,20 +366,7 @@ export const SelectedDocuments = ({
                   style={{ display: "none" }}
                 />
               </a>
-            ) : (
-                <a className="addmoreDoc disabled">
-                  {" "}
-                Add more files
-                  <input
-                    type="file"
-                    accept={FileUpload.allowedExtensions}
-                    id="inputFile"
-                    ref={inputRef}
-                    multiple
-                    style={{ display: "none" }}
-                  />
-                </a>
-              )}
+            )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -368,8 +374,8 @@ export const SelectedDocuments = ({
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </div>
         </div>
         {!!currentDoc && location.pathname.includes("view") && (
@@ -438,18 +444,18 @@ export const SelectedDocuments = ({
             </div>
           </div>
         ) : (
-            <div className="doc-submit-wrap">
-              {!doneHit && (
-                <button
-                  disabled={btnDisabled || subBtnPressed}
-                  className="btn btn-primary"
-                  onClick={uploadFiles}
-                >
-                  Submit
-                </button>
-              )}
-            </div>
-          )}
+          <div className="doc-submit-wrap">
+            {!doneHit && (
+              <button
+                disabled={btnDisabled || subBtnPressed}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

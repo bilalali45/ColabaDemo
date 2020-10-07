@@ -99,7 +99,7 @@ export const LoanSnapshot = () => {
             <li>
               <label className="mcu-label">Property Value</label>
               {loanInfo.getPropertyValue && (
-                <span className="mcu-label-value plus">
+                <span className="mcu-label-value plus" data-testId="propertyVal">
                   <sup className="text-primary">$</sup>
                   {loanInfo.getPropertyValue}
                 </span>
@@ -108,7 +108,7 @@ export const LoanSnapshot = () => {
             <li>
               <label className="mcu-label">Loan Amount</label>
               {loanInfo.getLoanAmount && (
-                <span className="mcu-label-value plus">
+                <span className="mcu-label-value plus" data-testId="loanAmt"> 
                   <sup className="text-primary">$</sup>
                   {loanInfo.getLoanAmount}
                 </span>

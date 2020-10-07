@@ -62,9 +62,9 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
         centered
     >
         <Modal.Header closeButton>
-            <div className="h-wrap">
+            <div className="h-wrap" data-testid="sync-alert-Header">
                 <div className="e-icon">
-                    <img src={errorIcon} alt="" />
+                    <img src={errorIcon} alt="ErrorIcon" />
                 </div>
                 <div className="e-content">
                     <h4>Document Synchronization Failed</h4>

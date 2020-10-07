@@ -524,7 +524,7 @@ ul {
         label {
             input{
                 &[type=checkbox]{
-pointer-events: none;
+                    pointer-events: none;
                 }
             }
         }
@@ -552,33 +552,10 @@ pointer-events: none;
             line-height: 1;
         }
 
-        .addneedlist-popover{
-            min-width: 395px;
-            min-height: 150px;
-            padding-bottom: 20px;
-            &-title{
-                font: 500 #{fontSize('nr')+'/'+1} fontFamily('base');
-            }
-            &--list{
-                display: block;
-            }
-            .popover-header{
-                background: transparent;
-                border: none;
-                padding: 20px 20px 10px;
-            }
-            .popover-body{
-                padding: 0 20px 0;
-                color: color('base');
-                max-height: 530px;
-                overflow: hidden;
-            }
-        }
-
         .checklist{
             @extend .list-style-none;
             margin-bottom: 25px;
-            max-height: 190px;
+            max-height: 140px;
             overflow-y: auto;
             margin-left: -5px;
             label {
@@ -1077,4 +1054,31 @@ label.error{
 
 .spinning-loader img {
     width: 20px;
+}
+
+.addneedlist-popover{
+    min-width: 395px;
+    min-height: 150px;
+    padding-bottom: 20px;
+    border: 1px solid color('border');
+    &-title{
+        font: 500 #{fontSize('nr')+'/'+1} fontFamily('base');
+    }
+    &--list{
+        display: block;
+    }
+    .popover-header{
+        background: transparent;
+        border: none;
+        padding: 20px 20px 10px;
+    }
+    .popover-body{
+        padding: 0 20px 0;
+        color: color('base');
+        max-height: 530px;
+        overflow: hidden;
+    }
+}
+.bs-popover-right > .arrow::before, .bs-popover-auto[x-placement^="right"] > .arrow::before{
+    border-right-color: color('border');
 }

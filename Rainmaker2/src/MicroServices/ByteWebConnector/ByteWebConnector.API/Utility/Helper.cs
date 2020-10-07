@@ -1,37 +1,92 @@
-﻿using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 
 namespace ByteWebConnector.API.Utility
 {
     public static class Helper
     {
-        public static List<byte[]> WrapImagesInPdf(List<byte[]> intput)
+        private const int exifOrientationID = 0x112; //274
+
+
+        public static List<byte[]> WrapImagesInPdf(List<byte[]> input)
         {
-            List<byte[]> pdfbyte = new List<byte[]>();
-            foreach (var item in intput)
+            var pdfbyte = new List<byte[]>();
+            foreach (var imageBytes in input)
             {
-                PdfDocument pdf = new PdfDocument();
+                var orientationAdjustedImageStream = AdjustAccordingToOrientation(imageBytes: imageBytes);
 
-                PdfPage pdfPage = pdf.AddPage();
+                var pdf = new PdfDocument();
 
-                XGraphics graph = XGraphics.FromPdfPage(pdfPage);
+                var pdfPage = pdf.AddPage();
 
-                XImage image = XImage.FromStream(() => new MemoryStream(item));
+                var graph = XGraphics.FromPdfPage(page: pdfPage);
+
+                var image = XImage.FromStream(stream: () => orientationAdjustedImageStream);
 
                 pdfPage.Width = image.PointWidth;
                 pdfPage.Height = image.PointHeight;
 
-                graph.DrawImage(image, 0, 0);
+                graph.DrawImage(image: image,
+                                x: 0,
+                                y: 0);
 
-                string pdfFilename1 = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
+                var pdfFilename1 = Path.Combine(path1: Path.GetTempPath(),
+                                                path2: Guid.NewGuid() + ".pdf");
 
-                pdf.Save(pdfFilename1);
-                pdfbyte.Add(File.ReadAllBytes(pdfFilename1));
+                pdf.Save(path: pdfFilename1);
+                pdfbyte.Add(item: File.ReadAllBytes(path: pdfFilename1));
             }
+
             return pdfbyte;
+        }
+
+
+        public static MemoryStream AdjustAccordingToOrientation(byte[] imageBytes)
+        {
+            Stream imageStream = new MemoryStream(buffer: imageBytes);
+
+            var inputImage = Image.FromStream(stream: imageStream);
+
+            ExifRotate(img: inputImage);
+
+            var orientationAdjustedImageStream = new MemoryStream();
+            inputImage.Save(stream: orientationAdjustedImageStream,
+                            format: ImageFormat.Png);
+
+            // If you're going to read from the stream, you may need to reset the position to the start
+            orientationAdjustedImageStream.Position = 0;
+            return orientationAdjustedImageStream;
+        }
+
+
+        public static void ExifRotate(this Image img)
+        {
+            if (!img.PropertyIdList.Contains(value: exifOrientationID))
+                return;
+
+            var prop = img.GetPropertyItem(propid: exifOrientationID);
+            int val = BitConverter.ToUInt16(value: prop.Value,
+                                            startIndex: 0);
+            var rot = RotateFlipType.RotateNoneFlipNone;
+
+            if (val == 3 || val == 4)
+                rot = RotateFlipType.Rotate180FlipNone;
+            else if (val == 5 || val == 6)
+                rot = RotateFlipType.Rotate90FlipNone;
+            else if (val == 7 || val == 8)
+                rot = RotateFlipType.Rotate270FlipNone;
+
+            if (val == 2 || val == 4 || val == 5 || val == 7)
+                rot |= RotateFlipType.RotateNoneFlipX;
+
+            if (rot != RotateFlipType.RotateNoneFlipNone)
+                img.RotateFlip(rotateFlipType: rot);
         }
     }
 }

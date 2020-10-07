@@ -1,5 +1,4 @@
 import React, { useState, useContext, useRef, Fragment } from "react";
-
 import {
   DocumentDropBox,
   FileDropper,
@@ -9,7 +8,6 @@ import { Store } from "../../../../store/store";
 import { Document } from "../../../../entities/Models/Document";
 import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
 import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
-
 export const DocumentUpload = () => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [fileLimitError, setFileLimitError] = useState({ value: false });
@@ -17,33 +15,27 @@ export const DocumentUpload = () => {
   const { state, dispatch } = useContext(Store);
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
-
   let docTitle = currentDoc ? currentDoc.docName : "";
   let docMessage = currentDoc?.docMessage
     ? currentDoc.docMessage
     : "Please upload the following documents.";
-
   const parentRef = useRef<HTMLDivElement>(null);
-
   const getFileInput = (fileInputEl: HTMLInputElement) => {
     setFileInput(fileInputEl);
   };
-
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
+    console.log("----------------------------------------------------", "jlkj");
     let files =
       selectedfiles.filter(
         (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
       ).length > 0;
-
     if (files) {
       setshowAlert(true);
       return;
     }
-
     if (fileInput?.value) {
       fileInput.value = "";
     }
-
     if (fileInput) {
       fileInput.click();
       fileInput.onchange = async (e: any) => {
@@ -60,7 +52,6 @@ export const DocumentUpload = () => {
       };
     }
   };
-
   return (
     <section className="Doc-upload" ref={parentRef}>
       <FileDropper
@@ -77,7 +68,9 @@ export const DocumentUpload = () => {
         {currentDoc && (
           <div className="Doc-head-wrap">
             <h2 title={docTitle}>
-              <span className="text-ellipsis d-title-head">{docTitle}</span>
+              <span data-testid="selected-doc-title" className="text-ellipsis">
+                {docTitle}
+              </span>
               {currentDoc?.isRejected && (
                 <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
               )}
@@ -90,7 +83,6 @@ export const DocumentUpload = () => {
             </div>
           </div>
         )}
-
         {currentDoc && (
           <Fragment>
             {!selectedfiles?.length ? (

@@ -27,7 +27,7 @@ export const SelectedTypeDocumentList = ({
 
   const location = useLocation();
   return (
-    <div>
+    <div data-testid="selected-cat-docs-container">
       <div className="s-wrap">
         <h4>{selectedCatDocs?.catName}</h4>
       </div>

@@ -124,7 +124,7 @@ namespace ByteWebConnector.API.Controllers
                     _logger.LogInformation(message: "Wrapping In PDF");
                     var intput = new List<byte[]>();
                     intput.Add(item: request.FileData);
-                    request.FileData = Helper.WrapImagesInPdf(intput: intput).Single();
+                    request.FileData = Helper.WrapImagesInPdf(input: intput).Single();
                     request.DocumentExension = "pdf";
                 }
 

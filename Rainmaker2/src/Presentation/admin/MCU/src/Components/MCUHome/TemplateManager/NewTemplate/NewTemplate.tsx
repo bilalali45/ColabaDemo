@@ -21,9 +21,8 @@ export const NewTemplate = ({ setLoaderVisible }: NewTemplateType) => {
     const templates: any = templateManager?.templates;
     const currentTemplate: any = templateManager?.currentTemplate;
 
-
     return (
-        <section className="add-newTemp-wrap">
+        <section data-testid="new-template-container" className="add-newTemp-wrap">
 
             <div className="empty-wrap">
 
