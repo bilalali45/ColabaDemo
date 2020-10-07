@@ -394,7 +394,7 @@ SelectedDocumentsType) => {
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-md-6 col-lg-7">
+              <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
@@ -403,7 +403,7 @@ SelectedDocumentsType) => {
                 </div>
               </div>
 
-              <div className="col-md-6 col-lg-5">
+              <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
