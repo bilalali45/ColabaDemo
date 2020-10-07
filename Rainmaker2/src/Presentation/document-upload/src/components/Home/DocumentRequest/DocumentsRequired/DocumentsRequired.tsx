@@ -102,7 +102,7 @@ export const DocumentsRequired = ({setCurrentInview} : DocumentsRequiredType) =>
                 data-testid={`pending-doc-${i}`}
                 key={pd?.docId}
                 onClick={() => {
-                  setCurrentInview('documentUploadView')
+                  isMobile.value && setCurrentInview('documentUploadView'); 
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
                     setshowAlert(false);
                     return;

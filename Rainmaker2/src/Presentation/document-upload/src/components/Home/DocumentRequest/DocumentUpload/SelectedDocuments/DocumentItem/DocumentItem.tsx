@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 
 import {
   DocEditIcon,
@@ -10,7 +10,8 @@ import { FileUpload } from "../../../../../../utils/helpers/FileUpload";
 import erroricon from "../../../../../../assets/images/warning-icon.svg";
 import refreshIcon from "../../../../../../assets/images/refresh.svg";
 import { DateFormatWithMoment } from "../../../../../../utils/helpers/DateFormat";
-
+import { Store } from '../../../../../../store/store';
+import Dropdown from 'react-bootstrap/Dropdown'
 type DocumentItemType = {
   disableSubmitButton: Function;
   file: Document;
@@ -43,6 +44,10 @@ export const DocumentItem = ({
   const [focus, setFocus] = useState<boolean>(false);
   const [validFilename, setValidFilename] = useState(true)
   const [filename, setFilename] = useState<string>("")
+
+  const { state, dispatch } = useContext(Store);
+  const loan: any = state.loan;
+  const { isMobile } = loan;
 
   const txtInput = useRef<HTMLInputElement>(null);
 
@@ -92,7 +97,7 @@ export const DocumentItem = ({
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (nameExists === true || validFilename === false || filename === "") {
-    
+
       return event.preventDefault()
     }
 
@@ -213,6 +218,66 @@ export const DocumentItem = ({
     );
   };
 
+  const renderDocListActionsMobile = () => {
+    return (
+      <div className="doc-list-actions doc-list-actions-mobile">
+        <Dropdown>
+          <Dropdown.Toggle id="doc-list-m-actions" as="div">
+            <i className="zmdi zmdi-more-vert"></i>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {file.file && !file.uploadProgress && (
+              <div className="m-d-l-item" data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
+                <div className="d-l-m-icon">{<DocEditIcon />}</div>
+                <span>Rename</span>
+              </div>
+
+            )}
+            <div className="m-d-l-item" onClick={() => viewDocument(file)}
+              title="View Document"
+              tabIndex={-1}
+            >
+              <div className="d-l-m-icon">
+                {<DocviewIcon />}
+              </div>
+              <span>View File</span>
+            </div>
+            {file.file && file.uploadProgress < 100 && (
+              <div className="m-d-l-item"
+                data-testid={`file-remove-btn-${indexKey}`}
+                title="Cancel"
+                onClick={() => deleteDOChandeler()}
+                tabIndex={-1}
+              >
+                <div className="d-l-m-icon">
+                  <i className="zmdi zmdi-close"></i>
+                </div>
+                <span>Delete</span>
+              </div>
+            )}
+
+          </Dropdown.Menu>
+        </Dropdown>
+
+
+        {/* <ul className="readable-actions">
+         
+
+
+          
+                {file.uploadStatus === "done" && (
+                  <li>
+                    <a data-testid="done-upload" title="Uploaded" className="icon-uploaded" tabIndex={-1}>
+                      <i className="zmdi zmdi-check"></i>
+                    </a>
+                  </li>
+                )}
+              </ul> */}
+      </div>
+    );
+  };
+
   const renderFileTitle = () => {
     return (
       <div className="title">
@@ -267,7 +332,12 @@ export const DocumentItem = ({
                 </div>
               )}
             </div>
-            {renderDocListActions()}
+
+            {!isMobile.value ?
+              renderDocListActions() : renderDocListActionsMobile()
+            }
+
+
           </div>
         )}
         {file.file && file.uploadProgress < 100 && file.uploadProgress > 0 && (
