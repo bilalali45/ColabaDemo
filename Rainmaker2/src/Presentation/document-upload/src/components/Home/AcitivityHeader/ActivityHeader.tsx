@@ -185,7 +185,7 @@ const ActivityHeader = (props) => {
     },
     {
       text: 'Task List',
-      link: '/documentRequest',
+      link: '/documentsRequest',
       img: tasklistIcon
     },
     {
@@ -195,8 +195,13 @@ const ActivityHeader = (props) => {
     },
   ];
 
-  const handleNavigationMobile = (link) => {
-    let url = `/LoanPortal${link}/${Auth.getLoanAppliationId()}`;
+  const handleNavigationMobile = (e, link) => {
+    e.preventDefault();
+    if (link.includes('dashboard')) {
+      window.open("/Dashboard", "_self");
+      return;
+    }
+    let url = `${link}/${Auth.getLoanAppliationId()}`;
     console.log(url);
     history.push(url)
   }
@@ -212,19 +217,19 @@ const ActivityHeader = (props) => {
           container={taskListContainerRef.current}
           containerPadding={20}
         >
-        <Popover id="popover-contained" className="taskListPopover" >
+          <Popover id="popover-contained" className="taskListPopover" >
             <h4>Task List</h4>
-            <p>We need <span>8</span> items from you</p>
+            <p>We need <span>{}</span> items from you</p>
           </Popover>
         </Overlay>}
         <Link to={{
           pathname: showAlert ? location.pathname : leftNavUrl,
           state: { from: location.pathname },
         }}
-          onClick={() => handleNavigationMobile(link)} >
-          <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} ><img src={img} alt="" />
-            {text === 'Task List' && <div className="n-item-icon-counter">08</div>}
-          </div>
+          onClick={(e) => handleNavigationMobile(e, link)} >
+          {pendingDocs?.length && <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} ><img src={img} alt="" />
+            {text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length}</div>}
+          </div>}
           <div className="n-item-label">
             <div>{text}</div>
           </div>
@@ -248,54 +253,6 @@ const ActivityHeader = (props) => {
                   )
                 })
               }
-
-              {/* <div className="n-item active">
-                <a>
-                  <div className="n-item-icon"><img src={loancenterIcon} alt="" /></div>
-                  <div className="n-item-label">
-                    <div>Loan Center</div>
-                  </div>
-                </a>
-              </div>
-
-              <div className="n-item">
-                <Overlay
-                  show={showToolTip}
-                  target={taskListTarget}
-                  placement="top"
-                  container={taskListContainerRef.current}
-                  containerPadding={20}
-                >
-                  <Popover id="popover-contained" className="taskListPopover" >
-                    <h4>Task List</h4>
-                    <p>We need <span>8</span> items from you</p>
-                  </Popover>
-                </Overlay>
-
-                <a>
-                  <div className="n-item-icon" ref={taskListTooltipRef}>
-                    <img src={tasklistIcon} alt="" />
-                    <div className="n-item-icon-counter" onClick={handleClickToolTip}>08</div>
-                  </div>
-                  <div className="n-item-label">
-                    <div>Task List</div>
-
-
-                  </div>
-                </a>
-              </div>
-
-              <div className="n-item">
-                <a href="" >
-                  <div className="n-item-icon"><img src={documentIcon} alt="" /></div>
-                  <div className="n-item-label">
-
-                    <div>Documents</div>
-
-                  </div>
-                </a>
-              </div> */}
-
 
             </div>
           </div>
@@ -350,11 +307,11 @@ const ActivityHeader = (props) => {
 
   return (
     <div data-testid="activity-header" className="activityHeader">
-     
-     {isMobile?.value ? null : <section className="compo-loan-status">
+
+      {isMobile?.value ? null : <section className="compo-loan-status">
         <LoanStatus />
       </section>
-}
+      }
 
       {isMobile?.value ? ActivityHeaderMobile() : ActivityHeaderDesktop()}
 
