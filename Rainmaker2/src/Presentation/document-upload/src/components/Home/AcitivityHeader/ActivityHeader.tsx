@@ -225,7 +225,7 @@ const ActivityHeader = (props) => {
         >
           <Popover id="popover-contained" className="taskListPopover" >
             <h4>Task List</h4>
-            <p>We need <span>{}</span> items from you</p>
+            <p>We need <span>{pendingDocs?.length}</span> items from you</p>
           </Popover>
         </Overlay>}
         <Link to={{

@@ -8,9 +8,21 @@
         &--header{
             border-bottom: 1px solid color('border');
             padding: 20px;
+            @include mobile{
+                background:color('primary');
+                color:color('colorWhite');
+                text-align: center;
+                font: 500 #{fontSize('xmd')+'/1'} fontFamily('base'); 
+                padding: 12px 0;
+                margin-bottom: 7px;
+                border: none;
+            }
             
             h2{
                 margin: 0;
+                @include mobile{
+                    color:color('colorWhite');
+                }
             }
         }
     }

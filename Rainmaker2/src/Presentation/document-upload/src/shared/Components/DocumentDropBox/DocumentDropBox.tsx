@@ -59,7 +59,7 @@ export const DocumentDropBox = ({
       <div className="chosefileWrap">
         <p>You don’t have any files here.</p>
         <label htmlFor="inputFile" className="btn btn-primary btn-sub-mobile">
-          Submit
+        Upload
       </label>
       <input
         ref={inputRef}
