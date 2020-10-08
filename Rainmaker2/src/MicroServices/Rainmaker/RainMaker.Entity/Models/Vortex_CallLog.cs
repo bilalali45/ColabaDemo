@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // CallLog
-    
+
     public partial class Vortex_CallLog : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id

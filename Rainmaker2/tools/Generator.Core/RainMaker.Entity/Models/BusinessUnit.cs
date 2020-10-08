@@ -44,6 +44,7 @@ namespace RainMaker.Entity.Models
         public string ShortName { get; set; } // ShortName (length: 150)
         public string AbbreviatedName { get; set; } // AbbreviatedName (length: 150)
         public string ScheduleUrl { get; set; } // ScheduleUrl (length: 500)
+        public string Logo { get; set; } // Logo (length: 50)
 
         // Reverse navigation
 
@@ -128,10 +129,6 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Setting> Settings { get; set; } // Setting.FK_Setting_BusinessUnit
         /// <summary>
-        /// Child UserProfiles where [UserProfile].[BusinessUnitId] point to this entity (FK_UserProfile_BusinessUnit)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<UserProfile> UserProfiles { get; set; } // UserProfile.FK_UserProfile_BusinessUnit
-        /// <summary>
         /// Child UserResetPasswordKeys where [UserResetPasswordKey].[BusinessUnitId] point to this entity (FK_UserResetPasswordKey_BusinessUnit)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<UserResetPasswordKey> UserResetPasswordKeys { get; set; } // UserResetPasswordKey.FK_UserResetPasswordKey_BusinessUnit
@@ -184,7 +181,6 @@ namespace RainMaker.Entity.Models
             RateServiceParameters = new System.Collections.Generic.HashSet<RateServiceParameter>();
             ReviewComments = new System.Collections.Generic.HashSet<ReviewComment>();
             Settings = new System.Collections.Generic.HashSet<Setting>();
-            UserProfiles = new System.Collections.Generic.HashSet<UserProfile>();
             UserResetPasswordKeys = new System.Collections.Generic.HashSet<UserResetPasswordKey>();
             UserResetPasswordLogs = new System.Collections.Generic.HashSet<UserResetPasswordLog>();
             WorkQueues = new System.Collections.Generic.HashSet<WorkQueue>();

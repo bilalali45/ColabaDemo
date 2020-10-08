@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BusinessUnit
-    
+
     public partial class BusinessUnit : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -44,6 +41,9 @@ namespace RainMaker.Entity.Models
         public string ShortName { get; set; } // ShortName (length: 150)
         public string AbbreviatedName { get; set; } // AbbreviatedName (length: 150)
         public string ScheduleUrl { get; set; } // ScheduleUrl (length: 500)
+        public string Logo { get; set; } // Logo (length: 50)
+        public string Banner { get; set; } // Logo (length: 50)
+        public string FavIcon { get; set; } // Logo (length: 50)
 
         // Reverse navigation
 

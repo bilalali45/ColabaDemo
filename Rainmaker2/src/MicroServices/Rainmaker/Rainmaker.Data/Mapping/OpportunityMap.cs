@@ -63,7 +63,6 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.FinancedFeePaid).HasColumnName(@"FinancedFeePaid").HasColumnType("decimal(18,0)").IsRequired(false);
             builder.Property(x => x.LockStatusId).HasColumnName(@"LockStatusId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.LockCauseId).HasColumnName(@"LockCauseId").HasColumnType("int").IsRequired(false);
-            builder.Property(x => x.LeadGroupId).HasColumnName(@"LeadGroupId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.IsDuplicate).HasColumnName(@"IsDuplicate").HasColumnType("bit").IsRequired();
             builder.Property(x => x.DuplicateOfId).HasColumnName(@"DuplicateOfId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.CopyFromId).HasColumnName(@"CopyFromId").HasColumnType("int").IsRequired(false);
@@ -71,20 +70,27 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.TpId).HasColumnName(@"TpId").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(50);
             builder.Property(x => x.LeadCreatedOnUtc).HasColumnName(@"LeadCreatedOnUtc").HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.MaxHopCount).HasColumnName(@"MaxHopCount").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LeadGroupId).HasColumnName(@"LeadGroupId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LoanCoordinatorId).HasColumnName(@"LoanCoordinatorId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.PreProcessorId).HasColumnName(@"PreProcessorId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.LoanProcessorId).HasColumnName(@"LoanProcessorId").HasColumnType("int").IsRequired(false);
 
             // Foreign keys
             builder.HasOne(a => a.AdsSource).WithMany(b => b.Opportunities).HasForeignKey(c => c.AdSourceId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_AdsSource
             builder.HasOne(a => a.Branch).WithMany(b => b.Opportunities).HasForeignKey(c => c.BranchId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Branch
             builder.HasOne(a => a.BusinessUnit).WithMany(b => b.Opportunities).HasForeignKey(c => c.BusinessUnitId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_BusinessUnit
-            builder.HasOne(a => a.Employee).WithMany(b => b.Opportunities).HasForeignKey(c => c.OwnerId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee
             builder.HasOne(a => a.LeadGroup).WithMany(b => b.Opportunities).HasForeignKey(c => c.LeadGroupId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadGroup
             builder.HasOne(a => a.LeadSource_LeadSourceId).WithMany(b => b.Opportunities_LeadSourceId).HasForeignKey(c => c.LeadSourceId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadSource
             builder.HasOne(a => a.LeadSourceOriginal).WithMany(b => b.Opportunities_LeadSourceOriginalId).HasForeignKey(c => c.LeadSourceOriginalId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_OriginalLeadSource
             builder.HasOne(a => a.LeadSourceType).WithMany(b => b.Opportunities).HasForeignKey(c => c.LeadSourceTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadSourceType
             builder.HasOne(a => a.LeadType).WithMany(b => b.Opportunities).HasForeignKey(c => c.LeadTypeId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LeadType
+            builder.HasOne(a => a.LoanCoordinator).WithMany(b => b.Opportunities_LoanCoordinatorId).HasForeignKey(c => c.LoanCoordinatorId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee2
+            builder.HasOne(a => a.LoanProcessor).WithMany(b => b.Opportunities_LoanProcessorId).HasForeignKey(c => c.LoanProcessorId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee4
             builder.HasOne(a => a.LoanRequest).WithMany(b => b.Opportunities).HasForeignKey(c => c.LoanRequestId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LoanRequest
             builder.HasOne(a => a.LockStatusCause).WithMany(b => b.Opportunities).HasForeignKey(c => c.LockCauseId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LockStatusCause
             builder.HasOne(a => a.LockStatusList).WithMany(b => b.Opportunities).HasForeignKey(c => c.LockStatusId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_LockStatusList
+            builder.HasOne(a => a.Owner).WithMany(b => b.Opportunities_OwnerId).HasForeignKey(c => c.OwnerId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee
+            builder.HasOne(a => a.PreProcessor).WithMany(b => b.Opportunities_PreProcessorId).HasForeignKey(c => c.PreProcessorId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Employee3
             builder.HasOne(a => a.StatusCause).WithMany(b => b.Opportunities).HasForeignKey(c => c.StatusCauseId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_StatusCause
             builder.HasOne(a => a.StatusList).WithMany(b => b.Opportunities).HasForeignKey(c => c.StatusId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_StatusList
             builder.HasOne(a => a.Team).WithMany(b => b.Opportunities).HasForeignKey(c => c.TeamId).OnDelete(DeleteBehavior.SetNull); // FK_Opportunity_Team

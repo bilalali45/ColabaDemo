@@ -77,6 +77,7 @@ namespace RainMaker.Entity.Models
         public byte[] LoanApplicationFlowState { get; set; } // LoanApplicationFlowState
         public string EncompassId { get; set; } // EncompassId (length: 50)
         public string EncompassNumber { get; set; } // EncompassNumber (length: 50)
+        public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
         public int? ModifiedBy { get; set; } // ModifiedBy
         public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
         public int? CreatedBy { get; set; } // CreatedBy
@@ -84,6 +85,10 @@ namespace RainMaker.Entity.Models
 
         // Reverse navigation
 
+        /// <summary>
+        /// Parent (One-to-One) LoanApplication pointed by [LoanDocumentPipeLine].[LoanApplicationId] (FK_LoanDocumentPipeLine_LoanApplication)
+        /// </summary>
+        public virtual LoanDocumentPipeLine LoanDocumentPipeLine { get; set; } // LoanDocumentPipeLine.FK_LoanDocumentPipeLine_LoanApplication
         /// <summary>
         /// Child Borrowers where [Borrower].[LoanApplicationId] point to this entity (FK_Borrower_LoanApplication)
         /// </summary>
@@ -101,9 +106,21 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LoanDocument> LoanDocuments { get; set; } // LoanDocument.FK_LoanDocument_LoanApplication
         /// <summary>
+        /// Child LosLoanApplicationBinders where [LosLoanApplicationBinder].[LoanApplicationId] point to this entity (FK_LosLoanApplicationBinder_LoanApplication)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LosLoanApplicationBinder> LosLoanApplicationBinders { get; set; } // LosLoanApplicationBinder.FK_LosLoanApplicationBinder_LoanApplication
+        /// <summary>
+        /// Child LosSyncLogs where [LosSyncLog].[LoanApplicationId] point to this entity (FK_LosSyncLog_LoanApplication)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LosSyncLog> LosSyncLogs { get; set; } // LosSyncLog.FK_LosSyncLog_LoanApplication
+        /// <summary>
         /// Child MortgageEducations where [MortgageEducation].[MortgageEducationTypeId] point to this entity (FK_MortgageEducation_LoanApplication)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<MortgageEducation> MortgageEducations { get; set; } // MortgageEducation.FK_MortgageEducation_LoanApplication
+        /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[LoanApplicationId] point to this entity (FK_TeamRoleLog_LoanApplication)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_LoanApplication
         /// <summary>
         /// Child TransactionInfoBinders where [TransactionInfoBinder].[LoanApplicationId] point to this entity (FK_TransactionInfoBinder_LoanApplication)
         /// </summary>
@@ -189,7 +206,10 @@ namespace RainMaker.Entity.Models
             BorrowerConsents = new System.Collections.Generic.HashSet<BorrowerConsent>();
             LoanApplicationFees = new System.Collections.Generic.HashSet<LoanApplicationFee>();
             LoanDocuments = new System.Collections.Generic.HashSet<LoanDocument>();
+            LosLoanApplicationBinders = new System.Collections.Generic.HashSet<LosLoanApplicationBinder>();
+            LosSyncLogs = new System.Collections.Generic.HashSet<LosSyncLog>();
             MortgageEducations = new System.Collections.Generic.HashSet<MortgageEducation>();
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             TransactionInfoBinders = new System.Collections.Generic.HashSet<TransactionInfoBinder>();
             VaDetails = new System.Collections.Generic.HashSet<VaDetail>();
             InitializePartial();

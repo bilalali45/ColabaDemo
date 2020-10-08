@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Contact
-    
+
     public partial class Contact : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -79,6 +76,10 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LoanContact> LoanContacts { get; set; } // LoanContact.FK_LoanContact_Contact
         /// <summary>
+        /// Child OtpTracings where [OtpTracing].[ContactId] point to this entity (FK_OtpTracing_Contact)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<OtpTracing> OtpTracings { get; set; } // OtpTracing.FK_OtpTracing_Contact
+        /// <summary>
         /// Child Vortex_FollowUps where [FollowUp].[ContactId] point to this entity (FK_FollowUp_Contact)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Vortex_FollowUp> Vortex_FollowUps { get; set; } // FollowUp.FK_FollowUp_Contact
@@ -97,6 +98,7 @@ namespace RainMaker.Entity.Models
             FollowUps = new System.Collections.Generic.HashSet<FollowUp>();
             Vortex_FollowUps = new System.Collections.Generic.HashSet<Vortex_FollowUp>();
             LoanContacts = new System.Collections.Generic.HashSet<LoanContact>();
+            OtpTracings = new System.Collections.Generic.HashSet<OtpTracing>();
             InitializePartial();
         }
 

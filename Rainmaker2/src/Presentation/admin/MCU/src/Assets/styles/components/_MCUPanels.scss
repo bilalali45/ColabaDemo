@@ -1,0 +1,139 @@
+.mcu-panel{
+
+    &-header{
+        background-color: color('widgetBg');
+        color: color('widgetText');
+        padding: 15px 30px;
+        border-bottom:1px solid color('border');
+        min-height: 66px;
+        h3 {
+            font: 500 #{fontSize("xmd")+"/1.2"} fontFamily("base"); 
+        }
+        @include headings{ 
+            margin: 0; 
+            line-height: 2.4;
+            @extend .text-ellipsis;
+        }
+                
+        &--left{
+
+        }
+
+        &--right{
+            text-align: end;
+            .btn-close{
+                font-size: fontSize('lg');
+                padding: 10px 20px;
+                line-height: 1;
+                height: 44px;
+            }
+        }
+
+        .btn{
+            font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        }
+
+    }
+
+    &-body{
+        background-color: color('widgetBg');
+        border-bottom:1px solid color('border');
+        p {
+            font: 400 #{fontSize("nr")+"/1.2"} fontFamily("base");
+        }
+.t-wrap {
+    textarea {
+ resize: none;
+ height: 350px;
+ border:1px solid color('border');
+ font-size: fontSize("nr");
+ &:focus {
+     outline: none;
+     border:1px solid color('border');
+     box-shadow: none;
+ }
+
+
+    }
+}
+        
+        .defaultlisting{
+            ul {
+            list-style: disc;
+            padding-left: 20px;
+            color: color('primary');
+            li{
+                list-style: disc; 
+                margin-bottom: 10px;
+                a{
+                    color: color('base');
+                    font: 400 #{fontSize("nr")+"/1.2"} fontFamily("base");
+                }
+            }
+        }
+        }
+
+        &.padding{
+            padding: 25px 30px;
+            min-height: calc(100% - 135px);
+        }
+
+        > .row{
+            margin: 0;
+        }
+
+        &--col{
+            & + .mcu-panel-body--col{
+                border-left: 1px solid color('border');
+            }
+        }
+
+        &--content{
+            padding: 0;
+            .document-view--header---options{
+                ul{
+                    li:last-child{
+                        display: none;
+                    }
+                }
+            }
+            .mcu-panel-body.padding{
+                min-height: 70vh;
+                height: calc(100vh - 250px);
+                overflow-y: auto;
+            }
+            &-heading{
+                margin-bottom: 20px;
+            }
+        }
+        &--aside{
+            background-color: color('ReviewDocumentSidebarBg');
+            color: color('ReviewDocumentSidebarText');
+            padding: 0;
+            height: 100%;
+
+            .mcu-panel-body{
+                max-height: calc(100vh - 360px);
+                overflow-y: auto;
+            }
+
+        }
+    }
+
+    &-footer{
+        padding: 15px 30px;
+        //border-bottom:1px solid color('border');
+        min-height: 66px;
+        margin-bottom: 0;
+        
+        &.alert{
+            padding: 23px 30px;
+        }
+    }
+
+    .no-preview{
+        min-height: calc(100vh - 180px);
+        background-color: color('widgetBg');
+    }
+
+}

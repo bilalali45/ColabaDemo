@@ -1,60 +1,116 @@
-import React, { useState, ChangeEvent } from 'react'
-import { DocumentDropBox } from '../../../../shared/Components/DocumentDropBox/DocumentDropBox'
-import { SelectedDocuments } from './SelectedDocuments/SelectedDocuments'
-
+import React, { useState, useContext, useRef, Fragment } from "react";
+import {
+  DocumentDropBox,
+  FileDropper,
+} from "../../../../shared/Components/DocumentDropBox/DocumentDropBox";
+import { SelectedDocuments } from "./SelectedDocuments/SelectedDocuments";
+import { Store } from "../../../../store/store";
+import { Document } from "../../../../entities/Models/Document";
+import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
+import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
 export const DocumentUpload = () => {
-    const [files, setFiles] = useState<File[]>([]);
-    const [fileInput, setFileInput] = useState<HTMLInputElement>();
-
-
-
-    const updateFiles = (files: File[]) => {
-        setFiles((previousFiles) => {
-            let allSelectedFiles: File[] = [];
-            allSelectedFiles = [...previousFiles];
-            for (let f of files) {
-                allSelectedFiles.push(f);
-            }
-            return allSelectedFiles;
-        });
+  const [fileInput, setFileInput] = useState<HTMLInputElement>();
+  const [fileLimitError, setFileLimitError] = useState({ value: false });
+  const [showAlert, setshowAlert] = useState<boolean>(false);
+  const { state, dispatch } = useContext(Store);
+  const { currentDoc }: any = state.documents;
+  const selectedfiles: Document[] = currentDoc?.files || null;
+  let docTitle = currentDoc ? currentDoc.docName : "";
+  let docMessage = currentDoc?.docMessage
+    ? currentDoc.docMessage
+    : "Please upload the following documents.";
+  const parentRef = useRef<HTMLDivElement>(null);
+  const getFileInput = (fileInputEl: HTMLInputElement) => {
+    setFileInput(fileInputEl);
+  };
+  const showFileExplorer = (fileToRemnove: Document | null = null) => {
+    console.log("----------------------------------------------------", "jlkj");
+    let files =
+      selectedfiles.filter(
+        (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
+      ).length > 0;
+    if (files) {
+      setshowAlert(true);
+      return;
     }
-
-
-    const getSelectedFiles = (files: File[]) => {
-        updateFiles(files);
+    if (fileInput?.value) {
+      fileInput.value = "";
     }
-
-    const getFileInput = (fileInputEl: HTMLInputElement) => {
-        setFileInput(fileInputEl);
-    }
-
-    const showFileExplorer = () => {
-        fileInput?.click();
-        if (fileInput) {
-            fileInput.onchange = (e: any) => {
-                let files = e?.target?.files;
-                if (files) {
-                    updateFiles(files);
-                }
-            };
+    if (fileInput) {
+      fileInput.click();
+      fileInput.onchange = async (e: any) => {
+        let files = e?.target?.files;
+        if (files) {
+          let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
+          DocumentUploadActions.updateFiles(
+            files,
+            updatedFiles,
+            dispatch,
+            setFileLimitError
+          );
         }
+      };
     }
-
-    return (
-        <div>
-            <p>Document Upload</p>
-            {!files.length ?
-                <DocumentDropBox
-                    url={'http://localhost:5000/upload'}
-                    setSelectedFiles={getSelectedFiles}
-                    setFileInput={getFileInput} />
-                : <>
-                    <SelectedDocuments
-                        files={files}
-                        url={'http://localhost:5000/upload'} />
-                    <button onClick={showFileExplorer}>Add More</button>
-                </>
-            }
-        </div>
-    )
-}
+  };
+  return (
+    <section className="Doc-upload" ref={parentRef}>
+      <FileDropper
+        parent={parentRef.current}
+        getDroppedFiles={(files) =>
+          DocumentUploadActions.updateFiles(
+            files,
+            selectedfiles,
+            dispatch,
+            setFileLimitError
+          )
+        }
+      >
+        {currentDoc && (
+          <div className="Doc-head-wrap">
+            <h2 title={docTitle}>
+              <span data-testid="selected-doc-title" className="text-ellipsis">
+                {docTitle}
+              </span>
+              {currentDoc?.isRejected && (
+                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
+              )}
+            </h2>
+            <div className="doc-note">
+              <p>
+                <i className="fas fa-info-circle"></i>
+                {docMessage?.replace(/<br\s*[\/]?>/gi, "\n")}
+              </p>
+            </div>
+          </div>
+        )}
+        {currentDoc && (
+          <Fragment>
+            {!selectedfiles?.length ? (
+              <DocumentDropBox
+                getFiles={(files) =>
+                  DocumentUploadActions.updateFiles(
+                    files,
+                    selectedfiles,
+                    dispatch,
+                    setFileLimitError
+                  )
+                }
+                setFileInput={getFileInput}
+              />
+            ) : (
+              <>
+                <SelectedDocuments
+                  fileLimitError={fileLimitError}
+                  setFileLimitError={setFileLimitError}
+                  addMore={showFileExplorer}
+                  setFileInput={getFileInput}
+                />
+              </>
+            )}
+          </Fragment>
+        )}
+      </FileDropper>
+      {showAlert && <AlertBox hideAlert={() => setshowAlert(false)} />}
+    </section>
+  );
+};

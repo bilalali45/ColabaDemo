@@ -5,12 +5,12 @@ import { MenuOptionType } from '../../../Types/MenuOptionsPropsType';
 type HeaderPropsType = {
     logoSrc: string;
     displayName: string;
-    displayNameOnClick: Function;
+   // displayNameOnClick: Function;
     options: MenuOptionType[];
 
 }
 
-export const RainsoftRcHeader = ({ logoSrc, displayName, displayNameOnClick, options }: HeaderPropsType) => {
+export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsType) => {
     return (
         <header className="header-main">
             <div className="container-fluid">
@@ -20,19 +20,20 @@ export const RainsoftRcHeader = ({ logoSrc, displayName, displayNameOnClick, opt
                             <div className="navbar-header h-logo">
                                 <a className="logo-link" href="/">
 
-                                    <img alt="Texas Trust Home Loans - Mortgage Lender in Texas " src={logoSrc} className="d-none d-sm-block" />
+                                    <img alt="" src={logoSrc} className="d-none d-sm-block" />
                                 </a>
                             </div>
 
                             <div className="s-account pull-right">
 
-                                <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
+                                {/* <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
                                     Hello,
                                     {displayName}
-                                </a>
+                                </a> */}
                                 <HeaderMenu
                                     options={options}
-                                    displayName={displayName} />
+                                    name={displayName}
+                                />
                             </div>
                         </nav>
                     </div>

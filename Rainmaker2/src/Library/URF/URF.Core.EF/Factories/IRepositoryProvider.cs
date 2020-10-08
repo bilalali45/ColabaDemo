@@ -1,7 +1,7 @@
 ﻿#region
 
-using System;
 using Microsoft.EntityFrameworkCore;
+using System;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 using URF.Core.Abstractions.Trackable;

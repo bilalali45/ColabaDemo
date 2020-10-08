@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // TwilioErrorCodes
-    
+
     public partial class Vortex_TwilioErrorCode : URF.Core.EF.Trackable.Entity
     {
         public string Id { get; set; } // id (Primary key via unique index ) (length: 50)

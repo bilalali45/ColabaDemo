@@ -317,7 +317,7 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.CallDisposition).HasColumnName(@"CallDisposition").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(250);
 
             // Foreign keys
-            builder.HasOne(a => a.MarksmanLead).WithMany().OnDelete(DeleteBehavior.SetNull); // FK_MarksmanLeadDetail_MarksmanLead
+            builder.HasOne(a => a.MarksmanLead).WithOne(b => b.MarksmanLeadDetail).HasForeignKey<MarksmanLeadDetail>(c => c.Id).OnDelete(DeleteBehavior.SetNull); // FK_MarksmanLeadDetail_MarksmanLead
             InitializePartial();
         }
         partial void InitializePartial();

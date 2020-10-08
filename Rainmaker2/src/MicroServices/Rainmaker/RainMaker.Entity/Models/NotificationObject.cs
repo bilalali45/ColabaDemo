@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // notification_object
-    
+
     public partial class NotificationObject : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -26,8 +23,6 @@ namespace RainMaker.Entity.Models
         public int? EntityId { get; set; } // EntityId
         public System.DateTime? CreatedOn { get; set; } // CreatedOn
         public bool? Active { get; set; } // Active
-
-        public virtual System.Collections.Generic.ICollection<NotificationChange> NotificationChanges { get; set; } // FK_NotificationChange_NotificationObject_Id
 
         public NotificationObject()
         {

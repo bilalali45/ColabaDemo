@@ -1,11 +1,15 @@
-import React from 'react'
-import { UploadedDocumentsTable } from './UploadedDocumentsTable/UploadedDocumentsTable'
+import React from "react";
+import { UploadedDocumentsTable } from "./UploadedDocumentsTable/UploadedDocumentsTable";
 
 export const UploadedDocuments = () => {
-    return (
-        <div>
-            <p>Uploaded Documents</p>
-            <UploadedDocumentsTable/>
-        </div>
-    )
-}
+  return (
+    <div data-testid="uploaded-documents" className="UploadedDocuments box-wrap">
+      <div className="box-wrap--header">
+        <h2>Uploaded Documents</h2>
+      </div>
+      <div className="box-wrap--body clearfix">
+        <UploadedDocumentsTable />
+      </div>
+    </div>
+  );
+};

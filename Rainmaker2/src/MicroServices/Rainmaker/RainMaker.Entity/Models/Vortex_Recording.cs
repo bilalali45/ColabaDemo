@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Recording
-    
+
     public partial class Vortex_Recording : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id

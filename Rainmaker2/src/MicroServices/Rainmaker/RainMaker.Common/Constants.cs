@@ -1,9 +1,7 @@
-﻿using System;
+﻿using RainMaker.Entity.Models;
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using RainMaker.Entity.Models;
-using TimeZone = System.TimeZone;
 
 namespace RainMaker.Common
 {
@@ -774,6 +772,9 @@ namespace RainMaker.Common
         public const string BottomHeading1 = "Reviews.Heading.Bottom1";
         public const string BottomHeading2 = "Reviews.Heading.Bottom2";
 
+        //support role name
+        public const string SupportTeamRoleName = "SupportTeam";
+
     }
     public static class AuthorizePermissions
     {
@@ -929,7 +930,6 @@ namespace RainMaker.Common
         public const string VortexConfigurationGrid = "VortexConfigurationGrid";
         public const string OfficeHolidayGrid = "OfficeHolidayGrid";
         public const string VortexUserSessionGrid = "VortexUserSessionGrid";
-
     }
 
     public static class SystemSettingKeys
@@ -1180,6 +1180,16 @@ namespace RainMaker.Common
         public const string EncompassPassword = "EncompassPassword";
         public const string EncompassLoanFolder = "EncompassLoanFolder";
         public const string EncompassLoanTemplatePath = "EncompassLoanTemplatePath";
+
+        public const string ByteProUserName = "ByteProUserName";
+        public const string ByteProPassword = "ByteProPassword";
+        public const string ByteProApiUserName = "ByteProApiUserName";
+        public const string ByteProApiPassword = "ByteProApiPassword";
+        public const string ByteCompanyCode = "ByteCompanyCode";
+        public const string ByteProUserNo = "ByteProUserNo";
+        public const string ByteAuthKey = "ByteAuthKey";
+        public const string ByteApiAuthKey = "ByteApiAuthKey";
+        public const string ByteApiUrl = "ByteApiUrl";
 
         public const string MaxPointFeeValue = "MaxPointFee";
         public const string ForgotTokenExpiry = "ForgotTokenExpiry";
@@ -1530,7 +1540,9 @@ namespace RainMaker.Common
         LoanApplicationStart = 15,
         LoanApplicationSubmitted = 16,
         EmailLoOnLoanApplicationStart = 17,
-        EmailLoOnLoanApplicationSubmitted = 18
+        EmailLoOnLoanApplicationSubmitted = 18,
+        LoanApplicationDocumentRequestActivity = 19,
+        DocumentSyncFailureActivity = 20
     }
 
 

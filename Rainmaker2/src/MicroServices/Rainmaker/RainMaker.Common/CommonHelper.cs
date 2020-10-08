@@ -1,15 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
+using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Net;
-using RainMaker.Common.Extensions;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace RainMaker.Common
 {
@@ -28,7 +26,7 @@ namespace RainMaker.Common
             output = output.Trim();
             output = EnsureMaximumLength(output, 255);
 
-            if(!IsValidEmail(output)) {
+            if (!IsValidEmail(output)) {
                 throw new Exception("Email is not valid.");
             }
 
@@ -166,7 +164,7 @@ namespace RainMaker.Common
                                 AspNetHostingPermissionLevel.High,
                                 AspNetHostingPermissionLevel.Medium,
                                 AspNetHostingPermissionLevel.Low,
-                                AspNetHostingPermissionLevel.Minimal 
+                                AspNetHostingPermissionLevel.Minimal
                             })
                 {
                     try
@@ -217,7 +215,7 @@ namespace RainMaker.Common
 
         public static TypeConverter GetCustomTypeConverter(Type type)
         {
-            
+
             return TypeDescriptor.GetConverter(type);
         }
 
@@ -268,11 +266,11 @@ namespace RainMaker.Common
         public static T To<T>(object value)
         {
             //return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
-          
+
             return (T)To(value, typeof(T));
 
-          
-            
+
+
         }
 
         public static T ParseEnum<T>(string value)
@@ -303,8 +301,8 @@ namespace RainMaker.Common
                 text = text.Replace("+1", "");
                 text = Regex.Replace(text, "[^0-9]", String.Empty).Replace("+1", "");
             }
-            
-             //text=text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
+
+            //text=text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
 
 
             return text;
@@ -383,6 +381,16 @@ namespace RainMaker.Common
             }
 
             return noOfUnit;
+        }
+
+
+        public static string DateFormat(string dateFormate )
+            {
+        
+            DateTime date = DateTime.SpecifyKind(Convert.ToDateTime(dateFormate), DateTimeKind.Utc);
+           
+            var _date= date.ToString("MMM") + " " + date.ToString("dd") + ", " + date.ToString("yyyy") + " AT " + date.ToString("hh:mm") + " " + date.ToString("tt");
+            return _date;
         }
     }
 }

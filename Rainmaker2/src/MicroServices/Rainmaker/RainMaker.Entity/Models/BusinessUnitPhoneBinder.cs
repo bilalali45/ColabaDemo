@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // BusinessUnitPhoneBinder
-    
+
     public partial class BusinessUnitPhoneBinder : URF.Core.EF.Trackable.Entity
     {
         public int BusinessUnitId { get; set; } // BusinessUnitId (Primary key)

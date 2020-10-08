@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // ConferenceLogs
-    
+
     public partial class Vortex_ConferenceLog : URF.Core.EF.Trackable.Entity
     {
         public string Status { get; set; } // status

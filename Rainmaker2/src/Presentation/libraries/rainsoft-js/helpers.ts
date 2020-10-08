@@ -1,3 +1,24 @@
+
+const addAmountSeperator = (amount: string, currency: string) => {
+    let counter = 0;
+
+    return amount.split('').reverse().map((n, i) => {
+        if (counter === 2 && i !== amount.length - 1) {
+            counter = 0;
+            switch (currency) {
+                case 'US':
+                    return `,${n}`
+                case 'BRL':
+                    return `.${n}`
+
+                default:
+                    break;
+            }
+        }
+        counter++;
+        return n;
+    }).reverse().join('');
+}
 export const MaskPhone = (number: number) => {
     return String(number).split('').map((n, i) => {
         if (i === 0) {
@@ -23,28 +44,7 @@ export const UnMaskPhone = (formattedNumber: string) => {
     }).join('');
 }
 
-const addAmountSeperator = (amount: string, currency: string) => {
-    let counter = 0;
-
-    return amount.split('').reverse().map((n, i) => {
-        if (counter === 2 && i !== amount.length - 1) {
-            counter = 0;
-            switch (currency) {
-                case 'US':
-                    return `,${n}`
-                case 'BRL':
-                    return `.${n}`
-
-                default:
-                    break;
-            }
-        }
-        counter++;
-        return n;
-    }).reverse().join('');
-}
-
-export const FormatAmountByCountry = (amount: number) => {
+export const FormatAmountByCountry = (amount: number) =>                                                       {
     let strAmount = String(amount);
     let amountSplitByPoint = strAmount.split('.');
     if (amountSplitByPoint.length > 2) {
@@ -55,10 +55,22 @@ export const FormatAmountByCountry = (amount: number) => {
 
     return (() => {
             if (amountSplitByPoint[1]) {
-                return `$${seperatorAdded}.${amountSplitByPoint[1]}`
+                return `${seperatorAdded}.${amountSplitByPoint[1]}`
             }
-            return `$${seperatorAdded}`
+            return `${seperatorAdded}`
         })();
 }
+
+export const toTitleCase = (str: string | undefined) => {  
+    if(!str){
+        return "";
+    }
+     return str?.toLowerCase().replace(/([^a-z])([a-z])(?=[a-z]{2})|^([a-z])/g, function (_, g1, g2, g3) {
+          return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase();
+        });   
+}
+    
+  
+
 
 

@@ -6,7 +6,6 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentManagement.Service
@@ -18,33 +17,57 @@ namespace DocumentManagement.Service
         {
             this.mongoService = mongoService;
         }
-        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardDTO>> GetPendingDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
-            var projectionDefinition = new BsonDocument
-            {
-                { "_id" , 1 },
-                { "createdOn" , "$requests.createdOn" },
-                { "docId" , "$requests.documents.id" },
-                { "docName" , "$requests.documents.displayName" },
-                { "docMessage" , "$requests.documents.message" },
-                { "typeName" , "$documentObjects.name" },
-                { "typeMessage" , "$documentObjects.message" },
-                { "messages" , "$documentObjects.messages" },
-                { "files" , "$requests.documents.files"}
-            };
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = await collection.Aggregate()
-                .Match(Builders<Request>.Filter.And(
-                    Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
-                    Builders<Request>.Filter.Eq("tenantId", tenantId)
-                    ))
-                .Unwind("requests")
-                .Unwind("requests.documents")
-                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Requested))
-                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
-                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(projectionDefinition)
-                .ToCursorAsync();
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""loanApplicationId"": " + loanApplicationId + @",
+                  ""tenantId"": " + tenantId + @",
+                  ""userId"": " + userProfileId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
+                        }", @"{
+                            ""$unwind"": ""$requests.documents""
+                        }", @"{
+                            ""$match"": { ""$or"":[
+                                {""requests.documents.status"": """ + DocumentStatus.BorrowerTodo + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.Started + @"""}
+                            ]}
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""requests.documents.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documentObjects""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documentObjects"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1,
+                                ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
+                                ""docId"": ""$requests.documents.id"",
+                                ""docName"": ""$requests.documents.displayName"",
+                                ""docMessage"": ""$requests.documents.message"",
+                                ""typeName"": ""$documentObjects.name"",
+                                ""typeMessage"": ""$documentObjects.message"",
+                                ""messages"": ""$documentObjects.messages"",
+                                ""isRejected"": ""$requests.documents.isRejected"",
+                                ""files"": ""$requests.documents.files""
+                            }
+                        }"
+                ));
+
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
             {
@@ -52,68 +75,183 @@ namespace DocumentManagement.Service
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
                     DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
+                    dto.id = query.id;
+                    dto.isRejected = query.isRejected.HasValue ? query.isRejected.Value : false;
                     dto.docId = query.docId;
+                    dto.requestId = query.requestId;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ? 
-                        (query.messages?.Any(x=>x.tenantId==tenantId)==true ? 
-                        query.messages.Where(x => x.tenantId == tenantId).First().message : 
-                        query.typeName) : 
-                        query.docMessage;
-                    dto.files = query.files;
+                    if (string.IsNullOrEmpty(query.docMessage))
+                    {
+                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                        {
+                            dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
+                        }
+                        else
+                        {
+                            dto.docMessage = query.typeMessage;
+                        }
+                    }
+                    else
+                    {
+                        dto.docMessage = query.docMessage;
+                    }
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDto()
+                    {
+                        clientName = x.clientName,
+                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                        id = x.id,
+                        order = x.order,
+                        size = x.size
+                    }).OrderBy(x => x.order).ToList();
                     result.Add(dto);
                 }
             }
             return result;
         }
 
-        public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId)
+        public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
-            var projectionDefinition = new BsonDocument
-            {
-                { "_id" , 1 },
-                { "createdOn" , "$requests.createdOn" },
-                { "docId" , "$requests.documents.id" },
-                { "docName" , "$requests.documents.displayName" },
-                { "docMessage" , "$requests.documents.message" },
-                { "typeName" , "$documentObjects.name" },
-                { "typeMessage" , "$documentObjects.message" },
-                { "messages" , "$documentObjects.messages" },
-                { "files" , "$requests.documents.files"}
-            };
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            using var asyncCursor = await collection.Aggregate()
-                .Match(Builders<Request>.Filter.And(
-                    Builders<Request>.Filter.Eq("loanApplicationId", loanApplicationId),
-                    Builders<Request>.Filter.Eq("tenantId", tenantId)
-                    ))
-                .Unwind("requests")
-                .Unwind("requests.documents")
-                .Match(Builders<BsonDocument>.Filter.Eq("requests.documents.status", Status.Submitted))
-                .Lookup("DocumentType", "requests.documents.typeId", "_id", "documentObjects")
-                .Unwind("documentObjects", new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
-                .Project(projectionDefinition)
-                .ToCursorAsync();
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""loanApplicationId"": " + loanApplicationId + @",
+                  ""tenantId"": " + tenantId + @",
+                  ""userId"": " + userProfileId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}
+                        }", @"{
+                            ""$unwind"": ""$requests.documents""
+                        }", @"{
+                            ""$match"": {""requests.documents.status"":{""$ne"": """ + DocumentStatus.Deleted + @"""}}
+                            }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""requests.documents.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documentObjects""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documentObjects"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1,
+                                ""createdOn"": ""$requests.createdOn"",
+                                ""requestId"": ""$requests.id"",
+                                ""docId"": ""$requests.documents.id"",
+                                ""docName"": ""$requests.documents.displayName"",
+                                ""docMessage"": ""$requests.documents.message"",
+                                ""typeName"": ""$documentObjects.name"",
+                                ""typeMessage"": ""$documentObjects.message"",
+                                ""messages"": ""$documentObjects.messages"",
+                                ""isRejected"": ""$requests.documents.isRejected"",
+                                ""files"": ""$requests.documents.files""
+                            }
+                        }"
+                ));
             List<DashboardDTO> result = new List<DashboardDTO>();
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                     DashboardQuery query = BsonSerializer.Deserialize<DashboardQuery>(current);
-                    DashboardDTO dto = new DashboardDTO();
-                    dto.Id = query.Id;
-                    dto.docId = query.docId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.docMessage = string.IsNullOrEmpty(query.docMessage) ?
-                        (query.messages?.Any(x => x.tenantId == tenantId) == true ?
-                        query.messages.Where(x => x.tenantId == tenantId).First().message :
-                        query.typeName) :
-                        query.docMessage;
-                    dto.files = query.files;
-                    result.Add(dto);
+                    if (query.files?.Count(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted) > 0)
+                    {
+                        DashboardDTO dto = new DashboardDTO();
+                        dto.id = query.id;
+                        dto.isRejected = query.isRejected.HasValue ? query.isRejected.Value : false;
+                        dto.docId = query.docId;
+                        dto.requestId = query.requestId;
+                        dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                        if (string.IsNullOrEmpty(query.docMessage))
+                        {
+                            if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                            {
+                                dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
+                            }
+                            else
+                            {
+                                dto.docMessage = query.typeMessage;
+                            }
+                        }
+                        else
+                        {
+                            dto.docMessage = query.docMessage;
+                        }
+                        dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new FileDto()
+                        {
+                            clientName = x.clientName,
+                            fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                            id = x.id,
+                            order = x.order,
+                            size = x.size
+                        }).OrderBy(x => x.order).ToList();
+                        result.Add(dto);
+                    }
                 }
             }
             return result;
         }
+
+        public async Task<List<DashboardStatus>> GetDashboardStatus(int loanApplicationId, int tenantId, int userProfileId)
+        {
+            List<DashboardStatus> statuses = new List<DashboardStatus>();
+            IMongoCollection<StatusList> collection = mongoService.db.GetCollection<StatusList>("StatusList");
+            using (var asyncCursor = await collection.FindAsync<StatusList>(FilterDefinition<StatusList>.Empty))
+            {
+                while (await asyncCursor.MoveNextAsync())
+                {
+                    foreach (var current in asyncCursor.Current)
+                    {
+                        statuses.Add(new DashboardStatus()
+                        {
+                            id = current.id,
+                            name = current.name,
+                            description = current.description,
+                            order = current.order,
+                            isCurrentStep = false
+                        });
+                    }
+                }
+            }
+            statuses.First(x => x.order == 3).isCurrentStep = true;
+            return statuses.OrderBy(x => x.order).ToList();
+        }
+
+        public async Task<string> GetFooterText(int tenantId, int businessUnitId)
+        {
+            IMongoCollection<BusinessUnit> collection = mongoService.db.GetCollection<BusinessUnit>("BusinessUnit");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<BusinessUnit, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""tenantId"": " + tenantId + @",
+                  ""businessUnitId"": " + businessUnitId + @"}
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""footerText"": ""$footerText"",
+                            }
+                        }"
+                ));
+
+            if (await asyncCursor.MoveNextAsync())
+            {
+                string footerText = string.Empty;
+                if (asyncCursor.Current.Any())
+                {
+                    FooterQuery query = BsonSerializer.Deserialize<FooterQuery>(asyncCursor.Current.First());
+                    footerText = query.footerText;
+                }
+                return footerText;
+            }
+            return string.Empty;
+        }
+
     }
 }

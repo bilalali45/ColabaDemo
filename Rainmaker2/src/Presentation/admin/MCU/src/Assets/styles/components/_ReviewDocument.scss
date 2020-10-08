@@ -1,0 +1,197 @@
+.review-document{
+
+    &-header{
+        background-color: color('ReviewDocumentHeaderBg');
+        color: color('ReviewDocumentHeaderText');
+        padding: 15px;
+        border-bottom:1px solid color('border');
+        @extend .clearfix;
+        position: relative;
+
+        .row{
+            @extend .clearfix;
+            >*{
+                position: static;
+            }  
+        }
+        
+        h2{
+            font-family: fontFamily('base'); 
+            font-size: fontSize('lg') - 3px; 
+            font-weight: 500;     
+            margin: 0;
+            padding: 10px 0;  
+            color:color('heading');
+        }
+
+        .dropdown{
+            display: inline-block;
+            .dropdown-menu{
+                right: 0px !important;
+                transform: none !important;
+                top: calc(100% + 15px) !important;
+                left: auto !important;
+                width: 1000px;
+                padding: 0;
+
+                &::before{
+                    content: "";
+                    @include arrow(top, color('border'), 10px);
+                    position: absolute;
+                    top: -10px;
+                    right: 0;
+                    z-index: 6;
+                }
+
+                &::after{
+                    content: "";
+                    @include arrow(top, color('ReviewDocumentHeaderBg'), 8px);
+                    position: absolute;
+                    top: -8px;
+                    right: 2px;
+                    z-index: 6;
+                }
+                .vertical-tabs--data{
+                    .vertical-tabs--wrap{
+                        width: 1000px;
+                        flex: 0 0 1000px;
+                    }
+                }
+            }
+        }
+
+        &--left{
+            
+        }
+        &--center{
+            text-align: center;
+            .btn{
+                font: 400 #{fontSize('nr')-1+'/'+"1"} fontFamily('base');
+                border: 1px solid color('border');
+                min-width: 202px;
+                text-align: center;
+                padding: 15px 35px;
+                color: color('ReviewDocumentHeaderText');
+                background-color: #F9F9F9;
+                text-transform: capitalize;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+                @include media-breakpoint-down(lg) {
+                    font: 400 #{fontSize('sm')-1+'/'+"1"} fontFamily('base');
+                    min-width: 150px;
+                }
+                &:focus{
+                    background-color: #E6E6E6;
+                }
+            }
+        }
+        &--right{
+            text-align: end;
+            .btn-close{
+                font-size: fontSize('lg');
+                padding: 10px 20px;
+                line-height: 1;
+                height: 44px;
+                margin-right: -15px;
+            }
+        }
+
+        
+    }// header
+
+    &-body{
+        > .row{
+            margin: 0;
+        }
+        &--content{
+            padding: 0;
+            .document-view--header---options{
+                ul{
+                    li:last-child{
+                        display: none;
+                    }
+                }
+            }
+        }
+        &--aside{
+            background-color: color('ReviewDocumentSidebarBg');
+            color: color('ReviewDocumentSidebarText');
+            padding: 0;
+        }
+        
+    }
+
+    .no-preview{
+        min-height: calc(100vh - 180px);
+        background-color: color('widgetBg');
+    }
+
+
+
+}
+
+
+@media (max-width:1000px){
+    .review-document-header--left {
+        flex: 0 0 25%;
+        width: 25%;
+    }
+    .review-document-header--center {
+        flex: 0 0 46%;
+        max-width: 46%;
+    }
+    .review-document-header--right {
+        flex: 0 0 29%;
+        width: 29%;
+    }
+}
+
+@media (max-width:940px){
+    .review-document-header{
+        padding: 0;
+        
+        .row{
+            display: block;
+        }
+        .btn-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+        }
+    }
+    .review-document-header--left,
+    .review-document-header--center,
+    .review-document-header--right{
+        text-align: center;
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+        margin: 20px 0;
+    }
+}
+
+@media (max-width:640px){
+    .review-document-header{ 
+        .btn-group{
+            .btn{
+                font-size: 0;
+                min-width: auto;
+                em,i{
+                    font-size: fontSize('xmd');
+                }
+            }
+        }
+    }
+}
+
+@media (max-width:320px){
+    .review-document-header{
+        .btn-close {
+            right: 5px;
+            top: 5px;
+        }
+    }
+}

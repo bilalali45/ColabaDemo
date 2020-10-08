@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // vEmployeePhoneInfo
-    
+
     public partial class VEmployeePhoneInfo : URF.Core.EF.Trackable.Entity
     {
         public string UserName { get; set; } // UserName (Primary key) (length: 256)

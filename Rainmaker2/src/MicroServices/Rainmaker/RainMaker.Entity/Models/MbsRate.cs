@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // MbsRate
-    
+
     public partial class MbsRate : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -26,9 +23,9 @@ namespace RainMaker.Entity.Models
         public int MbsSecurityId { get; set; } // MbsSecurityId
         public decimal? CouponRate { get; set; } // CouponRate
         public System.DateTime? SettlementMonth { get; set; } // SettlementMonth
-        public decimal? BidBasis { get; set; } // BidBasis
         public System.DateTime CreatedOnUtc { get; set; } // CreatedOnUtc
         public int EntityTypeId { get; set; } // EntityTypeId
+        public decimal? BidBasis { get; set; } // BidBasis
         public string Bid32Nds { get; set; } // Bid32nds (length: 20)
         public string TMaturity { get; set; } // TMaturity (length: 20)
         public decimal? TPrice { get; set; } // TPrice

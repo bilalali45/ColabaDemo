@@ -26,6 +26,7 @@ namespace RainMaker.Entity.Models
         public int? BusinessUnitId { get; set; } // BusinessUnitId
         public int? StatusId { get; set; } // StatusId
         public string EncompassNumber { get; set; } // EncompassNumber (length: 50)
+        public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
         public string StateName { get; set; } // StateName (length: 200)
         public string CountyName { get; set; } // CountyName (length: 200)
         public string CityName { get; set; } // CityName (length: 200)

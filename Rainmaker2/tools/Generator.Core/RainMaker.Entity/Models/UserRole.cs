@@ -40,6 +40,10 @@ namespace RainMaker.Entity.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[RoleId] point to this entity (FK_TeamRoleLog_UserRole)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_UserRole
+        /// <summary>
         /// Child UserInRoles where [UserInRole].[RoleId] point to this entity (FK_UserInRole_UserRole)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<UserInRole> UserInRoles { get; set; } // UserInRole.FK_UserInRole_UserRole
@@ -55,6 +59,7 @@ namespace RainMaker.Entity.Models
             IsSystem = false;
             EntityTypeId = 136;
             IsDeleted = false;
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             UserInRoles = new System.Collections.Generic.HashSet<UserInRole>();
             UserPermissionRoleBinders = new System.Collections.Generic.HashSet<UserPermissionRoleBinder>();
             InitializePartial();

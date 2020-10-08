@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RainMaker.Entity.Models;
+using System;
 using System.Collections.Generic;
-using RainMaker.Entity.Models;
 
 namespace RainMaker.Common
 {

@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Rule
-    
+
     public partial class Rule : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -136,13 +133,13 @@ namespace RainMaker.Entity.Models
         public string LoanIndexTypes { get; set; } // LoanIndexTypes
         public string QuestionsBoolYes { get; set; } // QuestionsBoolYes
         public string QuestionsBoolNo { get; set; } // QuestionsBoolNo
-        public string LeadGroups { get; set; } // LeadGroups
         public bool? IsPickedHighestBenchmarkRate { get; set; } // IsPickedHighestBenchmarkRate
         public bool? IsEmployeeLoggedIn { get; set; } // IsEmployeeLoggedIn
         public bool? IsDesireRateSelected { get; set; } // IsDesireRateSelected
         public System.DateTime? OpportunityCreatedDateUtcFrom { get; set; } // OpportunityCreatedDateUtcFrom
         public System.DateTime? OpportunityCreatedDateUtcTo { get; set; } // OpportunityCreatedDateUtcTo
         public int? ClosingDateOffset { get; set; } // ClosingDateOffset
+        public string LeadGroups { get; set; } // LeadGroups
 
         // Reverse navigation
 

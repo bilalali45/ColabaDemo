@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // LoanApplication
-    
+
     public partial class LoanApplication : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -77,13 +74,19 @@ namespace RainMaker.Entity.Models
         public byte[] LoanApplicationFlowState { get; set; } // LoanApplicationFlowState
         public string EncompassId { get; set; } // EncompassId (length: 50)
         public string EncompassNumber { get; set; } // EncompassNumber (length: 50)
+        public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
         public int? ModifiedBy { get; set; } // ModifiedBy
         public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
         public int? CreatedBy { get; set; } // CreatedBy
         public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
+        public string ByteFileName { get; set; } // ByteFileName (length: 50)
 
         // Reverse navigation
 
+        /// <summary>
+        /// Parent (One-to-One) LoanApplication pointed by [LoanDocumentPipeLine].[LoanApplicationId] (FK_LoanDocumentPipeLine_LoanApplication)
+        /// </summary>
+        public virtual LoanDocumentPipeLine LoanDocumentPipeLine { get; set; } // LoanDocumentPipeLine.FK_LoanDocumentPipeLine_LoanApplication
         /// <summary>
         /// Child Borrowers where [Borrower].[LoanApplicationId] point to this entity (FK_Borrower_LoanApplication)
         /// </summary>

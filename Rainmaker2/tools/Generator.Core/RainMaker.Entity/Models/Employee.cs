@@ -56,6 +56,7 @@ namespace RainMaker.Entity.Models
         public string Photo { get; set; } // Photo (length: 500)
         public string Profile { get; set; } // Profile
         public string CmsName { get; set; } // CmsName (length: 50)
+        public string EmailTag { get; set; } // EmailTag (length: 100)
 
         // Reverse navigation
 
@@ -108,9 +109,25 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<OppAssignLog> OppAssignLogs { get; set; } // OppAssignLog.FK_OppAssignLog_Employee
         /// <summary>
+        /// Child Opportunities where [Opportunity].[LoanCoordinatorId] point to this entity (FK_Opportunity_Employee2)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanCoordinatorId { get; set; } // Opportunity.FK_Opportunity_Employee2
+        /// <summary>
+        /// Child Opportunities where [Opportunity].[LoanOfficerId] point to this entity (FK_Opportunity_Employee1)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanOfficerId { get; set; } // Opportunity.FK_Opportunity_Employee1
+        /// <summary>
+        /// Child Opportunities where [Opportunity].[LoanProcessorId] point to this entity (FK_Opportunity_Employee4)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_LoanProcessorId { get; set; } // Opportunity.FK_Opportunity_Employee4
+        /// <summary>
         /// Child Opportunities where [Opportunity].[OwnerId] point to this entity (FK_Opportunity_Employee)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities { get; set; } // Opportunity.FK_Opportunity_Employee
+        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_OwnerId { get; set; } // Opportunity.FK_Opportunity_Employee
+        /// <summary>
+        /// Child Opportunities where [Opportunity].[PreProcessorId] point to this entity (FK_Opportunity_Employee3)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Opportunity> Opportunities_PreProcessorId { get; set; } // Opportunity.FK_Opportunity_Employee3
         /// <summary>
         /// Child QuoteResults where [QuoteResult].[EmployeId] point to this entity (FK_QuoteResult_Employee)
         /// </summary>
@@ -123,6 +140,10 @@ namespace RainMaker.Entity.Models
         /// Child TeamMembers where [TeamMember].[EmployeeId] point to this entity (FK_TeamMember_Employee)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TeamMember> TeamMembers { get; set; } // TeamMember.FK_TeamMember_Employee
+        /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[EmployeeId] point to this entity (FK_TeamRoleLog_Employee)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_Employee
         /// <summary>
         /// Child Vortex_FollowUps where [FollowUp].[EmployeeId] point to this entity (FK_FollowUp_Employee)
         /// </summary>
@@ -183,10 +204,15 @@ namespace RainMaker.Entity.Models
             LoanRequests = new System.Collections.Generic.HashSet<LoanRequest>();
             Notifications = new System.Collections.Generic.HashSet<Notification>();
             OppAssignLogs = new System.Collections.Generic.HashSet<OppAssignLog>();
-            Opportunities = new System.Collections.Generic.HashSet<Opportunity>();
+            Opportunities_LoanCoordinatorId = new System.Collections.Generic.HashSet<Opportunity>();
+            Opportunities_LoanOfficerId = new System.Collections.Generic.HashSet<Opportunity>();
+            Opportunities_LoanProcessorId = new System.Collections.Generic.HashSet<Opportunity>();
+            Opportunities_OwnerId = new System.Collections.Generic.HashSet<Opportunity>();
+            Opportunities_PreProcessorId = new System.Collections.Generic.HashSet<Opportunity>();
             QuoteResults = new System.Collections.Generic.HashSet<QuoteResult>();
             Subordinates = new System.Collections.Generic.HashSet<Subordinate>();
             TeamMembers = new System.Collections.Generic.HashSet<TeamMember>();
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             Vortex_VoiceMailAssignments = new System.Collections.Generic.HashSet<Vortex_VoiceMailAssignment>();
             Vortex_VoiceMailReadBies = new System.Collections.Generic.HashSet<Vortex_VoiceMailReadBy>();
             InitializePartial();

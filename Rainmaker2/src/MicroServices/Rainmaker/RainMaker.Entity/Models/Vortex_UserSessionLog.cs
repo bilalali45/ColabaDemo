@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // UserSessionLog
-    
+
     public partial class Vortex_UserSessionLog : URF.Core.EF.Trackable.Entity
     {
         public long Id { get; set; } // Id (Primary key)
@@ -28,6 +25,8 @@ namespace RainMaker.Entity.Models
         public System.DateTime CreatedOnUtc { get; set; } // CreatedOnUtc
         public bool IsActive { get; set; } // IsActive
         public bool? IsOnCall { get; set; } // IsOnCall
+        public string MobileDeviceId { get; set; } // MobileDeviceId (length: 100)
+        public string DeviceToken { get; set; } // DeviceToken (length: 100)
 
         // Reverse navigation
 
@@ -36,9 +35,9 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Vortex_AgentStatusLog> Vortex_AgentStatusLogs { get; set; } // AgentStatusLog.FK_AgentStatusLog_Vortex.UserSessionLog_Id
         /// <summary>
-        /// Parent (One-to-One) Vortex_UserSessionLog pointed by [ClientInfo].[UserSessionid] (FK_ClientInfo_UserSessionLog_Id)
+        /// Child Vortex_ClientInfoes where [ClientInfo].[UserSessionid] point to this entity (FK_ClientInfo_UserSessionLog_Id)
         /// </summary>
-        public virtual Vortex_ClientInfo Vortex_ClientInfo { get; set; } // ClientInfo.FK_ClientInfo_UserSessionLog_Id
+        public virtual System.Collections.Generic.ICollection<Vortex_ClientInfo> Vortex_ClientInfoes { get; set; } // ClientInfo.FK_ClientInfo_UserSessionLog_Id
 
         // Foreign keys
 
@@ -55,6 +54,7 @@ namespace RainMaker.Entity.Models
         public Vortex_UserSessionLog()
         {
             Vortex_AgentStatusLogs = new System.Collections.Generic.HashSet<Vortex_AgentStatusLog>();
+            Vortex_ClientInfoes = new System.Collections.Generic.HashSet<Vortex_ClientInfo>();
             InitializePartial();
         }
 

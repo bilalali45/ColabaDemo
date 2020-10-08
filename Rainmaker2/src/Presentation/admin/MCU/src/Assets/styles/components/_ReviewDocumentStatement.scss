@@ -1,0 +1,114 @@
+.document-statement{
+    padding: 0;
+    height: calc(100vh - 116px);
+    
+
+    &--header{
+        border-bottom:1px solid color('border');
+        padding: 20px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        > *{
+            margin: 0;
+        }
+        h2{
+            @extend .text-ellipsis;
+        }
+        .vertical-tabs{
+            &--content{
+                table > thead > tr > th,
+                table > tbody > tr > td{
+                    &:last-child{
+                        width: 150px;
+                    }
+                }
+            }
+        }
+    }
+
+    &--body{
+        padding: 20px;
+        overflow-y: auto;
+        height: calc(100% - 92px);
+        margin-right: 0px;
+        position: relative;
+    }    
+
+    &--footer{
+        padding: 15px 20px;
+        border-top: 1px solid color('border');
+        border-bottom: 1px solid color('border');
+        
+        .row{
+            margin-left: -5px;
+            margin-right: -5px;
+            [class*="col-"],[class^="col-"]{
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        &.alert {
+            padding: 20px;
+            text-align: center;
+            margin-top: 18px;
+            border-radius: 0;
+        }
+    }
+
+    &--body-footer {
+        height: calc(100% - 45px);
+    }
+
+    h2{
+        font:500 #{fontSize("xmd") + "/" + fontSize("xmd")} fontFamily("base");
+        color: color('heading');
+    }
+
+    h3{
+        font:500 #{fontSize("md") + "/" + fontSize("md")} fontFamily("base");
+        color: color('heading');
+    }
+
+    .activity-logs-icon{
+        font-size: fontSize('lg');
+    }
+
+
+    .dropdown{
+        display: inline-block;
+        .dropdown-menu{
+            right: 0px !important;
+            transform: none !important;
+            top: calc(100% + 15px) !important;
+            left: auto !important;
+            width: 1000px;
+            padding: 0;
+    
+            &::before{
+                content: "";
+                @include arrow(top, color('border'), 10px);
+                position: absolute;
+                top: -10px;
+                right: 0;
+                z-index: 6;
+            }
+    
+            &::after{
+                content: "";
+                @include arrow(top, color('ReviewDocumentHeaderBg'), 8px);
+                position: absolute;
+                top: -8px;
+                right: 2px;
+                z-index: 6;
+            }
+            .vertical-tabs--data{
+                .vertical-tabs--wrap{
+                    width: 1000px;
+                    flex: 0 0 1000px;
+                }
+            }
+        }
+    }
+    
+}

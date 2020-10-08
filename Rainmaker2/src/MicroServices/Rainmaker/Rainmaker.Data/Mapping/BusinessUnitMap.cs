@@ -50,6 +50,9 @@ namespace RainMaker.Data.Mapping
             builder.Property(x => x.ShortName).HasColumnName(@"ShortName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(150);
             builder.Property(x => x.AbbreviatedName).HasColumnName(@"AbbreviatedName").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(150);
             builder.Property(x => x.ScheduleUrl).HasColumnName(@"ScheduleUrl").HasColumnType("nvarchar").IsRequired(false).HasMaxLength(500);
+            builder.Property(x => x.Logo).HasColumnName(@"Logo").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
+            builder.Property(x => x.Banner).HasColumnName(@"Banner").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
+            builder.Property(x => x.FavIcon).HasColumnName(@"FavIcon").HasColumnType("varchar").IsRequired(false).IsUnicode(false).HasMaxLength(50);
 
             // Foreign keys
             builder.HasOne(a => a.EmailAccount).WithMany(b => b.BusinessUnits).HasForeignKey(c => c.EmailAccountId).OnDelete(DeleteBehavior.SetNull); // FK_BusinessUnit_EmailAccount

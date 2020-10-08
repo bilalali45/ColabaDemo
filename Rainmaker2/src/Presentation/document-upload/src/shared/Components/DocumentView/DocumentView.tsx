@@ -1,116 +1,263 @@
-import React, { useState } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FunctionComponent,
+  Fragment,
+} from "react";
+import FileViewer from "react-file-viewer";
+import printJS from "print-js";
 
-import { Document, Page, pdfjs } from 'react-pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
+import { Loader } from "../Assets/loader";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-type DocumentViewPropsType = { type: string, url: string, file: File | null, hide: Function }
+interface DocumentViewProps {
+  id: string;
+  requestId: string;
+  docId: string;
+  blobData?: any | null;
+  submittedDocumentCallBack?: Function;
+  fileId?: string;
+  clientName?: string;
+  hideViewer: (currentDoc) => void;
+  file?: any;
+  clearBlob?: Function;
+}
 
-export const DocumentView = ({ type, url, file, hide }: DocumentViewPropsType) => {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [imageSrc, setImageSrc] = useState<string>('');
+interface DocumentParamsType {
+  filePath: string;
+  fileType: string;
+  blob: any;
+}
 
-  const onDocumentLoadSuccess = ({ numPages }: any) => {
-    console.log('numPages', numPages);
-    setNumPages(numPages);
-  }
+export const DocumentView: FunctionComponent<DocumentViewProps> = ({
+  id,
+  requestId,
+  docId,
+  fileId,
+  clientName,
+  hideViewer,
+  file,
+  blobData,
+  submittedDocumentCallBack,
+  clearBlob,
+}) => {
+  const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
+    blob: new Blob(),
+    filePath: "",
+    fileType: "",
+  });
 
-  const readLocalFile = (file: any) => {
-    const reader = new FileReader();
+  const getDocumentForViewBeforeUpload = useCallback(() => {
+    const fileBlob = new Blob([file], { type: "image/png" });
+    const filePath = URL.createObjectURL(fileBlob);
+    file &&
+      setDocumentParams({
+        blob: file,
+        filePath,
+        fileType: file.type.replace("image/", "").replace("application/", ""),
+      });
+  }, [file]);
 
-    reader.addEventListener('loadstart', () => console.log('Read file...'));
-
-    reader.addEventListener('load', (e: any) => {
-      const fileContent = e.target.result;
-      setImageSrc(fileContent);
-    });
-
-    reader.addEventListener('error', (e) => console.log(e));
-
-    reader.addEventListener('progress', (e: any) => {
-      if (e.lengthComputable) {
-        const percentRead = e.loaded;
-        console.log(percentRead);
+  const getSubmittedDocumentForView = useCallback(async () => {
+    try {
+      if (submittedDocumentCallBack) {
+        submittedDocumentCallBack(id, requestId, docId, fileId);
       }
-    });
 
-    reader.readAsDataURL(file);
-  }
+      // URL required to view the document
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong. Please try again later.");
+      hideViewer({});
+    }
+  }, [docId, fileId, id, requestId]);
 
-  const handlePage = (e: any) => {
-    if (e.target.id === 'next') {
-      if (numPages && pageNumber < numPages) {
-        setPageNumber(pageNumber + 1);
+  const printDocument = useCallback(() => {
+    const { filePath, fileType } = documentParams;
+
+    // At the moment we are just allowing images or pdf files to be uplaoded
+    const type = ["jpeg", "jpg", "png"].includes(fileType) ? "image" : "pdf";
+
+    printJS({ printable: filePath, type });
+  }, [documentParams.filePath, documentParams.fileType]);
+
+  const downloadFile = () => {
+    let temporaryDownloadLink: HTMLAnchorElement;
+
+    temporaryDownloadLink = document.createElement("a");
+    temporaryDownloadLink.href = documentParams.filePath;
+    temporaryDownloadLink.setAttribute("download", clientName!); // added ! because client name can't be null
+
+    temporaryDownloadLink.click();
+  };
+
+  const onEscapeKeyPressed = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        hideViewer({});
       }
+    },
+    [hideViewer]
+  );
+
+  useEffect(() => {
+    if (file) {
+      getDocumentForViewBeforeUpload();
     } else {
-      if (pageNumber > 1) {
-        setPageNumber(pageNumber - 1);
+      if (!blobData) {
+        getSubmittedDocumentForView();
+      } else {
+        const fileType: string = blobData.headers["content-type"];
+        const documentBlob = new Blob([blobData.data], { type: fileType });
+        const filePath = URL.createObjectURL(documentBlob);
+        setDocumentParams({
+          blob: documentBlob,
+          filePath,
+          fileType: fileType.replace("image/", "").replace("application/", ""),
+        });
       }
     }
-  }
+  }, [
+    getSubmittedDocumentForView,
+    getDocumentForViewBeforeUpload,
+    file,
+    blobData,
+  ]);
 
-  const renderPdfView = () => {
-    return (
-      <>
-        <div className="modal-content">
-          <Document
+  useEffect(() => {
+    window.addEventListener("keydown", onEscapeKeyPressed, false);
 
-            file={file}
-            onLoadSuccess={onDocumentLoadSuccess}
-          >
-            <Page pageNumber={pageNumber} />
-          </Document>
-          <p>Page {pageNumber} of {numPages}</p>
-        </div>
-        <div className="page-controls">
-          <button id="previous" onClick={handlePage}>Previous</button>
-          <h1>{pageNumber}</h1>
-          <button id="next" onClick={handlePage}>Next</button>
-        </div>
-      </>
-    )
-  }
+    /*var elements = document.getElementsByClassName("classname");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('click', ()=>{ document.body.removeAttribute('style'); }, false);
+    }*/
 
-  const renderTextView = () => {
-    return (
-      <iframe src="https://docs.google.com/viewerng/viewer?url=http://localhost:5000/pdf/file-sample_100kB.doc"></iframe>
-    )
-  }
+    //document.querySelector('.document-view--button').addEventListener("click", ()=>{  document.body.removeAttribute('style');  })
 
-  const renderPlanTextView = () => {
-    // return <div className={'text-file-viewer'}>{imageSrc}</div>
-  }
+    //this will remove listener on unmount
+    return () => {
+      window.removeEventListener("keydown", onEscapeKeyPressed, false);
 
-  const renderImageView = () => {
-    if(imageSrc) {
-      return <img style={{ width: "50%", height: "50%" }} src={imageSrc} alt="" />
-    }
-    return '';
-  }
+      document
+        .getElementById("closeDocumentView")
+        ?.addEventListener("click", () => {
+          document.body.removeAttribute("style");
+        });
+    };
+  }, [onEscapeKeyPressed]);
 
-  const renderView = () => {
-    switch (type) {
-      case 'application/pdf':
-        return renderPdfView();
-      case 'application/msword':
-         return renderTextView();
-      case 'image/jpeg':
-      case 'image/png':
-      case 'image/jpg':
-      case 'image/gif':
-        readLocalFile(file);
-        return renderImageView();
-
-      default:
-        break;
-    }
-  }
+  
+  const removeOverflow = () => {
+    document.body.removeAttribute("style");
+  };
 
   return (
-    <div className="modal-container">
-      <button onClick={() => hide()}>X</button>
-      {renderView()}
-      <div className="overlay"></div>
+    <div className="document-view" id="screen">
+      <div className="document-view--header">
+        <div className="document-view--header---options">
+          <ul>
+            {!!documentParams.filePath && (
+              <Fragment>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={printDocument}
+                  >
+                    <SVGprint />
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="document-view--button"
+                    onClick={downloadFile}
+                  >
+                    <SVGdownload />
+                  </button>
+                </li>
+              </Fragment>
+            )}
+            <li>
+              <button
+                id={"closeDocumentView"}
+                className="document-view--button"
+                onClick={() => {
+                  hideViewer(false);
+                }}
+              >
+                <SVGclose />
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <span className="document-view--header---title">{clientName}</span>
+
+        <div className="document-view--header---controls">
+          <ul>
+            <li>
+              <button className="document-view--arrow-button">
+                <em className="zmdi "></em>
+              </button>
+            </li>
+            <li>
+              <span className="document-view--counts">
+                <input type="text" size={4} value="" />
+              </span>
+            </li>
+            <li>
+              <button className="document-view--arrow-button">
+                <em className="zmdi "></em>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="zoomview-wraper">
+        <TransformWrapper
+          defaultScale={1}
+          wheel={{ wheelEnabled: false }}
+          // defaultPositionX={200}
+          // defaultPositionY={100}
+        >
+          {({ zoomIn, zoomOut, resetTransform }) => (
+            <div>
+              <TransformComponent>
+                <div className="document-view--body">
+                  {!!documentParams.filePath ? (
+                    <FileViewer
+                      fileType={documentParams.fileType}
+                      filePath={documentParams.filePath}
+                    />
+                  ) : (
+                    <Loader height={"94vh"} />
+                  )}
+                </div>
+              </TransformComponent>
+              <div className="document-view--floating-options">
+                <ul>
+                  <li>
+                    <button className="button-float" onClick={zoomIn}>
+                      <em className="zmdi zmdi-plus"></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="button-float" onClick={zoomOut}>
+                      <em className="zmdi zmdi-minus"></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="button-float" onClick={resetTransform}>
+                      <SVGfullScreen />
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </TransformWrapper>
+      </div>
     </div>
   );
-}
+};

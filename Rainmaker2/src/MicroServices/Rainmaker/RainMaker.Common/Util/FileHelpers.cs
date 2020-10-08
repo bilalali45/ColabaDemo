@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace RainMaker.Common.Util
 {
-   public class FileHelpers
+    public class FileHelpers
    {
        public enum FileSize
        {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using RainMaker.Entity.Models;
+using System.Collections.Generic;
 using System.Linq;
-using RainMaker.Entity.Models;
 
 namespace RainMaker.Common
 {
@@ -73,8 +73,12 @@ namespace RainMaker.Common
         EmailSubject,
         EmailDomainUrl,
         FromEmail,
+        EmailTag,
         EmailBody,
-
+        LoanApplicationId,
+        TenantId,
+        ErrorUrl,
+        ErrorCode,
         OpportunitySecondaryContactPreferredName,
         OpportunitySecondaryContactNickName,
         OpportunitySecondaryContactFirstName,
@@ -88,7 +92,7 @@ namespace RainMaker.Common
         OpportunityEmployeeOfficeDirectPhone,
         OpportunityEmployeeOfficeCellPhone,
         OpportunityEmployeeCellPhone,
-        OpportunityAssignEmployeeNmlsNo,        
+        OpportunityAssignEmployeeNmlsNo,
 
         BusinessUnitFetchRatesEmail,
         LoOrBusinessUnitFetchRatesEmail,
@@ -172,13 +176,21 @@ namespace RainMaker.Common
         {FillKey.OpportunitySecondaryContactNickName,   new EmailTemplateKey{KeyName = "Secondary Customer Nick Name",Symbol = "###SecondaryNickName###",Description = "Opportunity Secondary Customer Contact Nick Name",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.OpportunitySecondaryContactFirstName,   new EmailTemplateKey{KeyName = "Secondary Customer First Name",Symbol = "###SecondaryFirstName###",Description = "Opportunity Secondary Customer Contact First Name",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.OpportunitySecondaryContactLastName,   new EmailTemplateKey{KeyName = "Secondary Customer Last Name",Symbol = "###SecondaryLastName###",Description = "Opportunity Secondary Customer Contact Last Name",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-       
+
         {FillKey.EmailSubject,   new EmailTemplateKey{KeyName = "Email Subject",Symbol = "###EmailSubject###",Description = "Email Subject",IsIndependentSystemKey=false}},
         {FillKey.EmailDomainUrl,   new EmailTemplateKey{KeyName = "Email Domain Url",Symbol = "###EmailDomainURL###",Description = "Email Domain url",IsIndependentSystemKey=false}},
         {FillKey.FromEmail,   new EmailTemplateKey{KeyName = "FromEmail",Symbol = "###FromEmail###",Description = "From Email",IsIndependentSystemKey=false}},
         {FillKey.EmailBody,   new EmailTemplateKey{KeyName = "Email Body",Symbol = "###EmailBody###",Description = "Email Body",IsIndependentSystemKey=false}},
-
-            //{FillKey.ProposalForLoanRequest,   new EmailTemplateKey{KeyName = "Loan Request Proposal",Symbol = "###LoanRequestProposal###",Description = "Opportunity Loan Request Proposal",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
+        //{FillKey.EmailTag,   new EmailTemplateKey{KeyName = "EmailTag",Symbol = "###EmailTag###",Description = "Email Tag",IsIndependentSystemKey=false}},
+        {FillKey.EmailTag,   new EmailTemplateKey{KeyName = "EmailTag",Symbol = "###EmailTag###",Description = "Email Tag",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
+        {FillKey.LoanApplicationId,   new EmailTemplateKey{KeyName = "LoanApplicationId",Symbol = "###LoanApplicationId###",Description = "Loan Application Id",IsIndependentSystemKey=false}},
+        {FillKey.TenantId,   new EmailTemplateKey{KeyName = "TenantId",Symbol = "###TenantId###",Description = "Tenant Id",IsIndependentSystemKey=false}},
+        {FillKey.ErrorCode,   new EmailTemplateKey{KeyName = "ErrorCode",Symbol = "###ErrorCode###",Description = "Error Code",IsIndependentSystemKey=false}},
+        {FillKey.ErrorUrl,   new EmailTemplateKey{KeyName = "ErrorUrl",Symbol = "###ErrorUrl###",Description = "Error Url",IsIndependentSystemKey=false}},
+       
+        //  {FillKey.TenantId,   new EmailTemplateKey{KeyName = "TenantId",Symbol = "###TenantId###",Description = "Tenant Id",IsIndependentSystemKey=false}},
+      
+        //{FillKey.ProposalForLoanRequest,   new EmailTemplateKey{KeyName = "Loan Request Proposal",Symbol = "###LoanRequestProposal###",Description = "Opportunity Loan Request Proposal",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.OpportunityId,   new EmailTemplateKey{KeyName = "Opportunity Id",Symbol = "###OpportunityId###",Description = "Opportunity Id",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoanApplicationCreateDate,   new EmailTemplateKey{KeyName = "Loan Application Create Date",Symbol = "###LoanApplicationCreateDate###",Description = "Loan Application Create Date",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         { FillKey.OpportunityStatusLog,   new EmailTemplateKey{KeyName = "Opportunity Status",Symbol = "###OpportunityStatus###",Description = "Opportunity Status",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
@@ -223,7 +235,7 @@ namespace RainMaker.Common
         //{FillKey.SecondLienLine,   new EmailTemplateKey{KeyName = "SECOND LIEN LINE",Symbol = "###SecondLienLine###",Description = "SECOND LIEN LINE",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.QuoteRateId,   new EmailTemplateKey{KeyName = "Price Id",Symbol = "###QuoteRateId###",Description = "Price Id in which customer interested",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.QuoteId,   new EmailTemplateKey{KeyName = "Quote Id",Symbol = "###QuoteId###",Description = "Latest Quote Result Id",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
         { FillKey.OpportunityEmployeeFirstName,   new EmailTemplateKey{KeyName = "Opportunity Employee First Name",Symbol = "###OpportunityEmployeeFirstName###",Description = "Opportunity Employee First Name",IsIndependentSystemKey=true}},
         {FillKey.OpportunityEmployeeLastName,   new EmailTemplateKey{KeyName = "Opportunity Employee Last Name",Symbol = "###OpportunityEmployeeLastName###",Description = "Opportunity Employee Last Name",IsIndependentSystemKey=true}},
         {FillKey.OpportunityEmployeeNickName,   new EmailTemplateKey{KeyName = "Opportunity Employee Nick Name",Symbol = "###OpportunityEmployeeNickName###",Description = "Opportunity Employee Nick Name",IsIndependentSystemKey=true}},
@@ -245,16 +257,16 @@ namespace RainMaker.Common
         {FillKey.BusinessUnitLogoUrl,   new EmailTemplateKey{KeyName = "Business Unit Logo Url",Symbol = "###BusinessUnitLogoUrl###",Description = "Insert business unit logo url",IsIndependentSystemKey=true}},
         {FillKey.BusinessUnitLoanApplicationLink,   new EmailTemplateKey{KeyName = "Business Unit Loan Application Signup Link",Symbol = "###BusinessUnitLoanApplicationLink###",Description = "Business Unit Loan Application Signup Link",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.BusinessUnitLoanApplicationLoginLink,   new EmailTemplateKey{KeyName = "Business Unit Loan Application Login Link",Symbol = "###BusinessUnitLoanApplicationLoginLink###",Description = "Business Unit Loan Application Login Link",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
         { FillKey.BusinessUnitFetchRatesEmail,   new EmailTemplateKey{KeyName = "Business Unit - Fetch New Rates",Symbol = "###BusinessUnitFetchRates###",Description = "Fetch New Rates and Email With Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoOrBusinessUnitFetchRatesEmail,   new EmailTemplateKey{KeyName = "LO or BU - Fetch New Rates",Symbol = "###LoOrBusinessUnitFetchRatesEmail###",Description = "Fetch New Rates and Email With LO or Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.BusinessUnitFetchRatesNoFeeEmail,   new EmailTemplateKey{KeyName = "Business Unit - Fetch New Rates (Single Rate)",Symbol = "###BusinessUnitFetchRatesNoFee###",Description = "Fetch New Rates and Email With Business Unit Values (Single Rate & With No Fee Column)",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoOrBusinessUnitFetchRatesNoFeeEmail,   new EmailTemplateKey{KeyName = "LO or BU - Fetch New Rates (Single Rate)",Symbol = "###LoOrBusinessUnitFetchRatesEmailNoFee###",Description = "Fetch New Rates and Email With LO or Business Unit Values (Single Rate & With No Fee Column) ",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
         {FillKey.BusinessUnitEmailRateStackEmail,   new EmailTemplateKey{KeyName = "Business Unit - Rate Stack",Symbol = "###BusinessUnitEmailRateStack###",Description = "Send Rate Stack List With Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.BusinessUnitEmailClosingCostEmail,   new EmailTemplateKey{KeyName = "Business Unit - Closing Cost",Symbol = "###BusinessUnitEmailClosingCost###",Description = "Closing Cost With Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.BusinessUnitEmailCompareEmail,   new EmailTemplateKey{KeyName = "Business Unit - Compare Rates",Symbol = "###BusinessUnitEmailCompare###",Description = "Compare Rates With Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
         {FillKey.LoOrBusinessUnitAllRateStackEmail,   new EmailTemplateKey{KeyName = "LO or BU - Rate Stack",Symbol = "###LoOrBusinessUnitAllRateStack###",Description = "Send all rates on fething rates from customer site result page",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoOrBusinessUnitRateStackEmail,   new EmailTemplateKey{KeyName = "LO or BU - Rate Stack",Symbol = "###LoOrBusinessUnitRateStack###",Description = "Send rates list via campaign With LO or Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoOrBusinessUnitClosingCostEmailEmail,   new EmailTemplateKey{KeyName = "LO or BU - Closing Cost",Symbol = "###LoOrBusinessUnitClosingCost###",Description = "Closing Cost With LO or Business Unit Values",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
@@ -265,14 +277,14 @@ namespace RainMaker.Common
         {FillKey.ComparePageUrl,   new EmailTemplateKey{KeyName = "View Compare Rates Url",Symbol = "###ComparePageUrl###",Description = "Insert View Compare Rates Url Only",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.RealTimeRateSheetUrl,   new EmailTemplateKey{KeyName = "Real Time Rate Sheet Url",Symbol = "###RealTimeRateSheetUrl###",Description = "Fetch new rate and display on result page",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.DesireRatesOptions,   new EmailTemplateKey{KeyName = "Desire Rates",Symbol = "###DesireRatesOptions###",Description = "Fetch new rate and send customer desire rates only",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
 
         {FillKey.LoOrBusinessUnitLoanApplicationLink,   new EmailTemplateKey{KeyName = "Loan Officer Or BU Loan Application Signup Link",Symbol = "###LoanOfficerLoanApplicationLink###",Description = "Loan Officer or Business Unit Loan Application Signup Link",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoOrBusinessUnitLoanApplicationLoginLink,   new EmailTemplateKey{KeyName = "Loan Officer Or BU Loan Application Login Link",Symbol = "###LoanOfficerLoanApplicationLoginLink###",Description = "Loan Officer or Business Unit Loan Application Login Link",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoProfileLink,   new EmailTemplateKey{KeyName = "Loan Officer Profile Page With Link Tag",Symbol = "###LoProfileLink###",Description = "Loan Officer Profile Page With Link Tag",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoProfileUrl,   new EmailTemplateKey{KeyName = "Loan Officer Profile Page Link",Symbol = "###LoProfileUrl###",Description = "Loan Officer Profile Page Link",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoEmailAddress,   new EmailTemplateKey{KeyName = "Loan Officer Email Address",Symbol = "###LoEmailAddress###",Description = "Loan Officer Email Address",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
-        
+
         {FillKey.CustomEmailHeader, new EmailTemplateKey{KeyName = "Custom Email Header",Symbol = "###CustomEmailHeader###",Description = "Insert customer header text in email",IsIndependentSystemKey=true}},
         {FillKey.CustomEmailFooter, new EmailTemplateKey{KeyName = "Custom Email Footer",Symbol = "###CustomEmailFooter###",Description = "Insert customer footer text in email",IsIndependentSystemKey=true}},
         {FillKey.EmailTemplateId, new EmailTemplateKey{KeyName = "Email Template Id",Symbol = "###EmailTemplateId###",Description = "Insert email template idin email",IsIndependentSystemKey=true}},
@@ -280,7 +292,7 @@ namespace RainMaker.Common
         {FillKey.DefaultRatePageLink, new EmailTemplateKey{KeyName = "Default Rate Page Link",Symbol = "###DefaultRatePageLink###",Description = "Default Rate Page Link",IsIndependentSystemKey=true}},
         {FillKey.ResetPasswordLink, new EmailTemplateKey{KeyName = "Reset Password Link",Symbol = "###ResetPasswordLink###",Description = "Password reset link",IsIndependentSystemKey=true}},
         {FillKey.RegisterPasswordLink, new EmailTemplateKey{KeyName = "Co-Borrower Register Password Link",Symbol = "###RegisterPasswordLink###",Description = "Co-Borrower register password link",IsIndependentSystemKey=true}},
-        {FillKey.LoanApplicationLandingPageLink, new EmailTemplateKey{KeyName = "Loan Application Landing Page Link",Symbol = "###LoanApplicationLandingPageLink###",Description = "Loan Application Landing Page Link",IsIndependentSystemKey=true}},        
+        {FillKey.LoanApplicationLandingPageLink, new EmailTemplateKey{KeyName = "Loan Application Landing Page Link",Symbol = "###LoanApplicationLandingPageLink###",Description = "Loan Application Landing Page Link",IsIndependentSystemKey=true}},
         { FillKey.LoginLink, new EmailTemplateKey{KeyName = "Account Login Link",Symbol = "###LoginLink###",Description = "Account Login Link",EntityRefType = Constants.GetEntityType(typeof(Customer)),IsIndependentSystemKey=false}},
         {FillKey.ActivityDate, new EmailTemplateKey{KeyName = "Activity Date",Symbol = "###ActivityDate###",Description = "Activity Date",EntityRefType = Constants.GetEntityType(typeof(Customer)),IsIndependentSystemKey=false}},
 
@@ -351,7 +363,7 @@ namespace RainMaker.Common
         BusinessUnitEmailRateStackEmail = 4,
         BusinessUnitEmailCompareEmail = 5,
         BusinessUnitEmailClosingCostEmail = 6,
-        
+
         LoOrBusinessUnitRateStackEmail = 7,
         LoOrBusinessUnitCompareEmail = 8,
         LoOrBusinessUnitClosingCostEmail = 9,

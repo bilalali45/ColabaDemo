@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // LeadSourceDefaultProduct
-    
+
     public partial class LeadSourceDefaultProduct : URF.Core.EF.Trackable.Entity
     {
         public int LeadSourceId { get; set; } // LeadSourceId (Primary key)

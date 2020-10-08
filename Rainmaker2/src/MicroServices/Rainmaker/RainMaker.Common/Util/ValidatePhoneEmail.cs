@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Net;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace RainMaker.Common.Util
 {
@@ -37,7 +36,7 @@ namespace RainMaker.Common.Util
         {
             try
             {
-                var webClient = new WebClient();
+                using var webClient = new WebClient();
                 var responseJson = await webClient.DownloadStringTaskAsync(url);
 
                 var result = JsonConvert.DeserializeObject<ApiResult>(responseJson);

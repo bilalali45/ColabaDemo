@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using RainMaker.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using RainMaker.Common;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
-using System.Linq.Dynamic.Core;
 
 namespace URF.Core.EF
 {

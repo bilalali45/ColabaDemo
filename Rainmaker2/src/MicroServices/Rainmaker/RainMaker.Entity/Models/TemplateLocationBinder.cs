@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // TemplateLocationBinder
-    
+
     public partial class TemplateLocationBinder : URF.Core.EF.Trackable.Entity
     {
         public int TemplateId { get; set; } // TemplateId (Primary key)

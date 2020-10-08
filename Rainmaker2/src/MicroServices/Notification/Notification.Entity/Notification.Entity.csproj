@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Models\NotificationModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NotificationModel.cs</LastGenOutput>
+    </None>
+    <None Update="Models\RainMakerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RainMakerModel.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Models\NotificationModel.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NotificationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Models\RainMakerModel.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RainMakerModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

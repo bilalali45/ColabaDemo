@@ -2,7 +2,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DocumentManagement.Entity
 {
@@ -20,5 +19,15 @@ namespace DocumentManagement.Entity
         public int createdBy { get; set; }
         public bool isActive { get; set; }
         public List<Message> messages { get; set; }
+    }
+
+    public class StatusList
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public int order { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
     }
 }

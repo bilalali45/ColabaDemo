@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // Language
-    
+
     public partial class Language : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)

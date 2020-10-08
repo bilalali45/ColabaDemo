@@ -14,11 +14,8 @@
 
 namespace RainMaker.Entity.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     // SessionLog
-    
+
     public partial class SessionLog : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -43,6 +40,10 @@ namespace RainMaker.Entity.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child OtpTracings where [OtpTracing].[SessionLogId] point to this entity (FK_OtpTracing_SessionLog)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<OtpTracing> OtpTracings { get; set; } // OtpTracing.FK_OtpTracing_SessionLog
+        /// <summary>
         /// Child SessionLogDetails where [SessionLogDetail].[SessionLogId] point to this entity (FK_SessionLogDetail_SessionLog)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<SessionLogDetail> SessionLogDetails { get; set; } // SessionLogDetail.FK_SessionLogDetail_SessionLog
@@ -62,6 +63,7 @@ namespace RainMaker.Entity.Models
         public SessionLog()
         {
             EntityTypeId = 85;
+            OtpTracings = new System.Collections.Generic.HashSet<OtpTracing>();
             SessionLogDetails = new System.Collections.Generic.HashSet<SessionLogDetail>();
             InitializePartial();
         }

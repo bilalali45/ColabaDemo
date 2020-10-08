@@ -1,80 +1,62 @@
-import React, { useEffect, useState } from 'react'
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
-import { Activity } from './Activity/Activity'
-import { DocumentRequest } from './DocumentRequest/DocumentRequest'
-import { UploadedDocuments } from './UploadedDocuments/UploadedDocuments'
+import React, { Component } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { Activity } from "./Activity/Activity";
+import { UploadedDocuments } from "./UploadedDocuments/UploadedDocuments";
+import ActivityHeader from "./AcitivityHeader/ActivityHeader";
+import { DocumentRequest } from "./DocumentRequest/DocumentRequest";
+import { PageNotFound } from "../../shared/Errors/PageNotFound";
+import { Authorized } from "../../shared/Components/Authorized/Authorized";
+import { ParamsService } from "../../utils/ParamsService";
 
-import { Http } from '../../services/http/Http'
-import { Auth } from '../../services/auth/Auth'
-import { Store } from '../../store/store'
+export class Home extends Component<any> {
+  
+  componentDidMount() {
 
-import ActivityHeader from './AcitivityHeader/ActivityHeader'
-import { LoanApplication } from '../../entities/Models/LoanApplication'
-import { UserActions } from '../../store/actions/UserActions'
-import ImageAssets from '../../utils/image_assets/ImageAssets';
-//import Footer from '../../shared/Components/Footer/Footer'
-import { RainsoftRcHeader, RainsoftRcFooter } from 'rainsoft-rc'
-const httpClient = new Http();
+    this.setParams(this.props);
+  }
 
-export const Home = () => {
-    const location = useLocation();
-    const history = useHistory();
-
-    const [authenticated, setAuthenticated] = useState<boolean>(false);
-    const gotoDashboardHandler = () => {
-        console.log('gotoDashboardHandler')
+  setParams = (props: any) => {
+    const { loanApplicationId } = props?.match?.params;
+    if (!isNaN(loanApplicationId)) {
+      ParamsService.storeParams(loanApplicationId);
+    } else {
+      if (window?.open) {
+        window?.open("/404", "_self");
+      }
     }
-    const changePasswordHandler = () => {
-        console.log('changePasswordHandler')
-    }
-    const signOutHandler = () => {
-        console.log('gotoDashboardHandler')
-    }
-    const headerDropdowmMenu = [
-        { name: 'Dashboard', callback: gotoDashboardHandler },
-        { name: 'Change Password', callback: changePasswordHandler },
-        { name: 'Sign Out', callback: signOutHandler }
-    ]
+  };
 
-    useEffect(() => {
-        console.log(LoanApplication.formatAmountByCountry(40008094000809)?.BRL());
-        console.log('in here!!!', location);
-        if (!Auth.checkAuth()) {
-            history.push('/loading');
-        }
-        if (location.pathname === '/') {
-            history.push('/home/activity');
-        }
-    }, [])
-
-    httpClient.get('/home');
+  render() {
 
     return (
-        <div>
-
-            <RainsoftRcHeader
-                logoSrc={ImageAssets.header.logoheader}
-                displayName={'Jehangir Babul'}
-                displayNameOnClick={gotoDashboardHandler}
-                options={headerDropdowmMenu}
-            />
-            <ActivityHeader />
+      <div data-testid="activity">
+        <ActivityHeader {...this.props} />
+        <main className="page-content">
+          <div className="container">
             <Switch>
-                <Route path="/home/activity" component={Activity} />
-                <Route path="/home/documentsRequest" component={DocumentRequest} />
-                <Route path="/home/uploadedDocuments" component={UploadedDocuments} />
+              <Redirect
+                exact
+                from={"/:loanApplicationId"}
+                to={"/activity/:loanApplicationId"}
+              />
+              <Authorized
+                path="/activity/:loanApplicationId"
+                component={Activity}
+              />
+              <Authorized
+                path="/documentsRequest/:loanApplicationId"
+                component={DocumentRequest}
+              />
+              <Authorized
+                path="/uploadedDocuments/:loanApplicationId"
+                component={UploadedDocuments}
+              />
+              <Route path="/404" component={PageNotFound} />
+              <Redirect exact from={"*"} to={"/404"} />
             </Switch>
-            <RainsoftRcFooter
-                title={'Texas Trust Home Loans'}
-                streetName={'4100 Spring Valley Rd. Suite 770'}
-                address={'Dallas, Texas 75244'}
-                phoneOne={'(888) 971-1425'}
-                phoneTwo={'(214) 245-3929'}
-                contentOne={'Copyright 2002 – 2019. All rights reserved. American Heritage Capital, LP. NMLS 277676.  NMLS Consumer Access Site.  Equal Housing Lender. Portions licensed under U.S. Patent Numbers 7,366,694 and 7,680,728.'}
-                contentTwo={'Texas Trust Home Loans is a direct, up-front mortgage lender offering up-to-date mortgage rates. Our loan programs include: Conventional, FHA, Fixed Rate and Adjustable Rate Loans. We are committed to delivering the most accurate and competitive mortgage interest rate and closing costs.'}
-                nmlUrl ={'http://www.nmlsconsumeraccess.org/Home.aspx/SubSearch?searchText=277676'}
-                nmlLogoSrc={ImageAssets.footer.nmlsLogo}
-            />
-        </div>
-    )
+          </div>
+        </main>
+      </div>
+    );
+  }
 }

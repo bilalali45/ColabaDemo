@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Quartz;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Security.Cryptography;
-using System.Web;
-using Quartz;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RainMaker.Common.Extensions
@@ -302,7 +301,7 @@ namespace RainMaker.Common.Extensions
 
             if (int.Parse(num) >= 11 && int.Parse(num) <= 20) return suffix;
 
-            num = num.ToCharArray()[num.ToCharArray().Length - 1].ToString(CultureInfo.InvariantCulture);
+            num = num[num.Length - 1].ToString(CultureInfo.InvariantCulture);
             switch (num)
             {
                 case "1":
@@ -440,5 +439,17 @@ namespace RainMaker.Common.Extensions
 
             return name;
         }
+
+        public static bool HasValue(this string input)
+        {
+            return (!input.IsNullOrEmpty());
+        }
+
+        public static bool IsNullOrEmpty(this string input)
+        {
+            return (string.IsNullOrEmpty(input));
+        }
+
+
     }
 }

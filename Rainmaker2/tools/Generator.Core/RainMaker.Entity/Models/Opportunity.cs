@@ -57,7 +57,6 @@ namespace RainMaker.Entity.Models
         public decimal? FinancedFeePaid { get; set; } // FinancedFeePaid
         public int? LockStatusId { get; set; } // LockStatusId
         public int? LockCauseId { get; set; } // LockCauseId
-        public int? LeadGroupId { get; set; } // LeadGroupId
         public bool IsDuplicate { get; set; } // IsDuplicate
         public int? DuplicateOfId { get; set; } // DuplicateOfId
         public int? CopyFromId { get; set; } // CopyFromId
@@ -65,6 +64,11 @@ namespace RainMaker.Entity.Models
         public string TpId { get; set; } // TpId (length: 50)
         public System.DateTime? LeadCreatedOnUtc { get; set; } // LeadCreatedOnUtc
         public int? MaxHopCount { get; set; } // MaxHopCount
+        public int? LeadGroupId { get; set; } // LeadGroupId
+        public int? LoanOfficerId { get; set; } // LoanOfficerId
+        public int? LoanCoordinatorId { get; set; } // LoanCoordinatorId
+        public int? PreProcessorId { get; set; } // PreProcessorId
+        public int? LoanProcessorId { get; set; } // LoanProcessorId
 
         // Reverse navigation
 
@@ -80,6 +84,10 @@ namespace RainMaker.Entity.Models
         /// Child FollowUps where [FollowUp].[OpportunityId] point to this entity (FK_FollowUp_Opportunity)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<FollowUp> FollowUps { get; set; } // FollowUp.FK_FollowUp_Opportunity
+        /// <summary>
+        /// Child InitialContacts where [InitialContact].[OpportunityId] point to this entity (FK_InitialContact_Opportunity)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<InitialContact> InitialContacts { get; set; } // InitialContact.FK_InitialContact_Opportunity
         /// <summary>
         /// Child LoanApplications where [LoanApplication].[OpportunityId] point to this entity (FK_LoanApplication_Opportunity)
         /// </summary>
@@ -121,6 +129,14 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<OpportunityStatusLog> OpportunityStatusLogs { get; set; } // OpportunityStatusLog.FK_OpportunityStatusLog_Opportunity
         /// <summary>
+        /// Child OtpTracings where [OtpTracing].[OpportunityId] point to this entity (FK_OtpTracing_Opportunity)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<OtpTracing> OtpTracings { get; set; } // OtpTracing.FK_OtpTracing_Opportunity
+        /// <summary>
+        /// Child TeamRoleLogs where [TeamRoleLog].[OpportunityId] point to this entity (FK_TeamRoleLog_Opportunity)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TeamRoleLog> TeamRoleLogs { get; set; } // TeamRoleLog.FK_TeamRoleLog_Opportunity
+        /// <summary>
         /// Child ThirdPartyLeads where [ThirdPartyLead].[OpportunityId] point to this entity (FK_ThirdPartyLead_Opportunity)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<ThirdPartyLead> ThirdPartyLeads { get; set; } // ThirdPartyLead.FK_ThirdPartyLead_Opportunity
@@ -147,9 +163,29 @@ namespace RainMaker.Entity.Models
         public virtual BusinessUnit BusinessUnit { get; set; } // FK_Opportunity_BusinessUnit
 
         /// <summary>
+        /// Parent Employee pointed by [Opportunity].([LoanCoordinatorId]) (FK_Opportunity_Employee2)
+        /// </summary>
+        public virtual Employee LoanCoordinator { get; set; } // FK_Opportunity_Employee2
+
+        /// <summary>
+        /// Parent Employee pointed by [Opportunity].([LoanOfficerId]) (FK_Opportunity_Employee1)
+        /// </summary>
+        public virtual Employee LoanOfficer { get; set; } // FK_Opportunity_Employee1
+
+        /// <summary>
+        /// Parent Employee pointed by [Opportunity].([LoanProcessorId]) (FK_Opportunity_Employee4)
+        /// </summary>
+        public virtual Employee LoanProcessor { get; set; } // FK_Opportunity_Employee4
+
+        /// <summary>
         /// Parent Employee pointed by [Opportunity].([OwnerId]) (FK_Opportunity_Employee)
         /// </summary>
-        public virtual Employee Employee { get; set; } // FK_Opportunity_Employee
+        public virtual Employee Owner { get; set; } // FK_Opportunity_Employee
+
+        /// <summary>
+        /// Parent Employee pointed by [Opportunity].([PreProcessorId]) (FK_Opportunity_Employee3)
+        /// </summary>
+        public virtual Employee PreProcessor { get; set; } // FK_Opportunity_Employee3
 
         /// <summary>
         /// Parent LeadGroup pointed by [Opportunity].([LeadGroupId]) (FK_Opportunity_LeadGroup)
@@ -217,6 +253,7 @@ namespace RainMaker.Entity.Models
             IsDuplicate = false;
             Vortex_ActivityLogs = new System.Collections.Generic.HashSet<Vortex_ActivityLog>();
             FollowUps = new System.Collections.Generic.HashSet<FollowUp>();
+            InitialContacts = new System.Collections.Generic.HashSet<InitialContact>();
             LoanApplications = new System.Collections.Generic.HashSet<LoanApplication>();
             Notifications = new System.Collections.Generic.HashSet<Notification>();
             OppAssignLogs = new System.Collections.Generic.HashSet<OppAssignLog>();
@@ -227,6 +264,8 @@ namespace RainMaker.Entity.Models
             OpportunityLockStatusLogs = new System.Collections.Generic.HashSet<OpportunityLockStatusLog>();
             OpportunityPropertyTaxes = new System.Collections.Generic.HashSet<OpportunityPropertyTax>();
             OpportunityStatusLogs = new System.Collections.Generic.HashSet<OpportunityStatusLog>();
+            OtpTracings = new System.Collections.Generic.HashSet<OtpTracing>();
+            TeamRoleLogs = new System.Collections.Generic.HashSet<TeamRoleLog>();
             ThirdPartyLeads = new System.Collections.Generic.HashSet<ThirdPartyLead>();
             InitializePartial();
         }
