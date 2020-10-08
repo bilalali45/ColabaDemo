@@ -33,10 +33,16 @@ const ActivityHeader = (props) => {
   const activityHeadeRef = useRef<HTMLDivElement>(null);
 
 
-  const [showToolTip, setShowToolTip] = useState(true);
+  const [showToolTip, setShowToolTip] = useState(false);
   const [taskListTarget, setTaskListTarget] = useState(null);
   const taskListContainerRef = useRef(null);
   const taskListTooltipRef = useRef<any>(null);
+
+  useEffect(() => {
+    location.pathname.includes("/activity")?setShowToolTip(true):setShowToolTip(false);
+    
+
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {

@@ -279,7 +279,7 @@
             border-right: 1px solid color('border');
             padding-top: 10px;
             padding-bottom: 10px;
-
+            min-height: 50px;
             &:last-child {
                 border-bottom: 0px solid color('border');
             }
