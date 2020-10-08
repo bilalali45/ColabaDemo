@@ -562,8 +562,7 @@ export const DocumentItem = ({
 
   return (
    <Fragment> 
-    {renderDocListPopupMobile()}
-    {renderAllowedFile()}
+    {isMobile?.value && file?.focused && file?.editName ? renderDocListPopupMobile() : renderAllowedFile()}
   </Fragment>
 )
   ;
