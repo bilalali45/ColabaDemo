@@ -9,7 +9,7 @@ export class LoanEndpoints {
     getLOPhoto: (lOPhotoId?: string, loanApplicationId?: string) =>
       `/api/Rainmaker/LoanApplication/GetPhoto?photo=${lOPhotoId}&loanApplicationId=${loanApplicationId}`,
     loanProgressStatus: (loanApplicationId: string) =>
-      `/api/Documentmanagement/dashboard/GetDashboardStatus?loanApplicationId=${loanApplicationId}`,
+      `/api/milestone/milestone/GetMilestoneForloancenter?loanApplicationId=${loanApplicationId}`,
     getFooter: (loanApplicationId: string) => `/api/Documentmanagement/dashboard/GetFooterText?loanApplicationId=${loanApplicationId}`,
     getCompanyLogoSrc: (loanApplicationId: string) => `/api/Rainmaker/LoanApplication/GetBanner?loanApplicationId=${loanApplicationId}`,
     getCompanyFavIconSrc: (loanApplicationId: string) => `/api/Rainmaker/LoanApplication/GetFavIcon?loanApplicationId=${loanApplicationId}`
