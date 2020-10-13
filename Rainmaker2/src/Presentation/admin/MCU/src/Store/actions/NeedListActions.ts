@@ -1,8 +1,8 @@
-import {Http} from 'rainsoft-js';
-import {AxiosResponse} from 'axios';
-import {LoanApplication} from '../../Entities/Models/LoanApplication';
-import {Endpoints} from '../endpoints/Endpoints';
-import {NeedList} from '../../Entities/Models/NeedList';
+import { Http } from 'rainsoft-js';
+import { AxiosResponse } from 'axios';
+import { LoanApplication } from '../../Entities/Models/LoanApplication';
+import { Endpoints } from '../endpoints/Endpoints';
+import { NeedList } from '../../Entities/Models/NeedList';
 
 export class NeedListActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
@@ -11,6 +11,11 @@ export class NeedListActions {
         LoanApplication
       >(Endpoints.NeedListManager.GET.loan.info(loanApplicationId));
 
+      let mileStoneresult: AxiosResponse<string> = await Http.get<
+        string
+      >(Endpoints.NeedListManager.GET.loan.milestoneInfo(loanApplicationId));
+
+      result.data.status = mileStoneresult.data.toString()
       return new LoanApplication().fromJson(result.data);
     } catch (error) {
       console.log(error);

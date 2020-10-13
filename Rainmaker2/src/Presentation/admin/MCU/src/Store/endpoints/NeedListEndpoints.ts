@@ -2,7 +2,9 @@ export class NeedListEndpoints {
   static GET = {
     loan: {
       info: (loanApplicationId: string) =>
-        `/api/Rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`
+        `/api/Rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`,
+        milestoneInfo: (loanApplicationId: string) =>
+        `/api/milestone/milestone/GetMilestoneForMcuDashboard?loanApplicationId=${loanApplicationId}`
     },
     documents: {
       submitted: (loanApplicationId: string, status: boolean) =>
@@ -19,12 +21,12 @@ export class NeedListEndpoints {
         `/api/Documentmanagement/Document/GetActivityLog?id=${id}&docName=${docName}`,
       // emailLogs: (id: string, typeId: string) =>
       //   `/api/Documentmanagement/Document/GetEmailLog?id=${id}&typeId=${typeId}`,
-        emailLogs: (id: string, requestId: string, docId: string) =>
+      emailLogs: (id: string, requestId: string, docId: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}&requestId=${requestId}&docId=${docId}`,
       emailLogsDoc: (id: string, docName: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}&docName=${docName}`,
-      checkIsByteProAuto: () => 
-      `/api/documentmanagement/setting/GetTenantSetting`
+      checkIsByteProAuto: () =>
+        `/api/documentmanagement/setting/GetTenantSetting`
     }
   };
 

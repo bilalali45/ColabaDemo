@@ -16,9 +16,9 @@ import { LoanType } from "../../../../store/reducers/loanReducer";
 export const LoanProgress = () => {
   const [index, setIndex] = useState(0);
 
-  const {state, dispatch} = useContext(Store)
+  const { state, dispatch } = useContext(Store);
   const { loan } = state;
-  const { loanProgress } = loan as Pick<LoanType, 'loanProgress'>;
+  const { loanProgress } = loan as Pick<LoanType, "loanProgress">;
   const [currentItem, setCurrentItem] = useState<LoanProgressModel>();
 
   const loanProgressImages = [
@@ -50,25 +50,25 @@ export const LoanProgress = () => {
     let loanProgress: LoanProgressModel[] = await LaonActions.getLoanProgressStatus(
       applicationId ? applicationId : "1"
     );
-    
+
     if (loanProgress) {
-      dispatch({type:'FETCH_LOAN_PROGRESS', payload: loanProgress})
-      let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
+      dispatch({ type: "FETCH_LOAN_PROGRESS", payload: loanProgress });
+      let activeStep: any = loanProgress.find((l: any) => l.isCurrent);
       setCurrentItem(() => activeStep);
     }
   };
 
   useEffect(() => {
-    if(loanProgress?.length) return
+    if (loanProgress?.length) return;
 
-      fetchLoanProgress();
-  },[loanProgress]);
+    fetchLoanProgress();
+  }, [loanProgress]);
 
   useEffect(() => {
-    if(!!currentItem || !loanProgress) return
+    if (!!currentItem || !loanProgress) return;
 
-    let activeStep: any = loanProgress.find((l: any) => l.isCurrentStep);
-    
+    let activeStep: any = loanProgress.find((l: any) => l.isCurrent);
+
     setCurrentItem(() => activeStep);
     if (activeStep) {
       let a = activeStep.order - 1;
@@ -97,8 +97,7 @@ export const LoanProgress = () => {
         nextLabel=""
         prevIcon={<i aria-hidden="true" className="zmdi zmdi-chevron-left"></i>}
         prevLabel=""
-        fade={true}
-      >
+        fade={true}>
         {renderCarouselItems()}
       </Carousel>
     );
@@ -109,8 +108,11 @@ export const LoanProgress = () => {
       return (
         <Carousel.Item key={l.name}>
           <div className="lp-list">
-            <div className="step-count">
-              <img src={loanProgressImages[i].img} alt={l.order} />
+            <div className="step-count" style={{width:"68px"}} >
+              <img
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(l.icon)}`}
+                alt={l.order}
+              />
             </div>
             <div className="lp-content">
               <div className="step-label">{l.status}</div>
@@ -140,8 +142,7 @@ export const LoanProgress = () => {
         <li
           key={l.name}
           data-index={activeindex}
-          className={liclass + activeindex}
-        >
+          className={liclass + activeindex}>
           <a data-testid="steps-icon" onClick={(e) => handleSelect(i, e)}>
             {i == totallist - 1 && l.status == statusText.UPCOMMING ? (
               <i className="zmdi zmdi-flag"></i>
@@ -159,9 +160,41 @@ export const LoanProgress = () => {
     });
   };
 
+  if (!loanProgress) {
+    return null;
+  }
+
   if (!currentItem) {
     return <Loader containerHeight={"308px"} marginBottom={"15px"} />;
   }
+
+  const SpecialStatus = () => {
+    return (
+      <div className={"lp-wrap current-step1"}>
+        <div className="list-wrap">{renderCarousel()}</div>
+      </div>
+    );
+  };
+
+  const NormalStatus = () => {
+    return (
+      <div
+        className={
+          index === currentItem.order - 1
+            ? "lp-wrap current-step1"
+            : index > currentItem?.order - 1
+            ? "lp-wrap upcoming-step"
+            : "lp-wrap"
+        }>
+        <div className="list-wrap">{renderCarousel()}</div>
+        {loanProgress && loanProgress[0].milestoneType !== 2 ? (
+          <div className="lp-footer">
+            <ul>{renderCarouselList()}</ul>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <div data-testid="loan-progress" className="LoanProgress box-wrap">
@@ -169,21 +202,12 @@ export const LoanProgress = () => {
         <h2 className="heading-h2"> Your Loan Status </h2>
       </div>
       <div className="box-wrap--body">
-        <div
-          className={
-            index == currentItem.order - 1
-              ? "lp-wrap current-step1"
-              : index > currentItem?.order - 1
-              ? "lp-wrap upcoming-step"
-              : "lp-wrap"
-          }
-        >
-          <div className="list-wrap">{renderCarousel()}</div>
-          <div className="lp-footer">
-            <ul>{renderCarouselList()}</ul>
-          </div>
-        </div>
+        {loanProgress && loanProgress[0].milestoneType !== 2
+          ? NormalStatus()
+          : SpecialStatus()}
       </div>
+
+      {/* </div> */}
     </div>
   );
 };

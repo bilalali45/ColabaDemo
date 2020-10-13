@@ -88,6 +88,11 @@ export class LaonActions {
       let res: AxiosResponse<LoanProgress[]> = await Http.get<LoanProgress[]>(
         Endpoints.loan.GET.loanProgressStatus(loanApplicationId)
       );
+      res.data = res.data.map((d, idx)=> {
+        d.order = idx + 1;
+        return d;
+      });
+
       return attachStatus(res.data);
     } catch (error) {
       console.log(error);
@@ -99,7 +104,7 @@ const attachStatus = (data: any) => {
   let current = 0;
 
   data.forEach((l: any, i: number) => {
-    if (l.isCurrentStep) {
+    if (l.isCurrent) {
       current = i;
     }
   });

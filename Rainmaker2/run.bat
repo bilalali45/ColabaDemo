@@ -19,7 +19,7 @@ msbuild "%workingDir%\\src\Solutions\Rainmaker2.sln"
 cd %workingDir%\src\MicroServices\KeyStore\KeyStore.API\bin\Debug\netcoreapp3.1\
 start KeyStore.API.exe
 
-TIMEOUT 5
+TIMEOUT 10
 
 cd %workingDir%\src\APIGateways\MainGateway\bin\Debug\netcoreapp3.1\
 start MainGateway.exe
