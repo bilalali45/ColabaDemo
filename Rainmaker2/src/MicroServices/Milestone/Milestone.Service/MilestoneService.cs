@@ -227,5 +227,35 @@ namespace Milestone.Service
                 Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
             }).ToListAsync();
         }
+
+        public async Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model)
+        {
+            await Uow.BeginTransactionAsync();
+            try
+            {
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync("delete from tenantmilestone where tenantId=" + tenantId);
+                foreach (var item in model)
+                {
+                    TenantMilestone m = new TenantMilestone()
+                    {
+                        BorrowerName = item.BorrowerName,
+                        Description = item.Description,
+                        McuName = item.McuName,
+                        MilestoneId = item.Id,
+                        TenantId = tenantId,
+                        Visibility = item.Visible,
+                        TrackingState = TrackingState.Added
+                    };
+                    Uow.Repository<TenantMilestone>().Insert(m);
+                }
+                await Uow.SaveChangesAsync();
+                await Uow.CommitAsync();
+            }
+            catch
+            {
+                await Uow.RollbackAsync();
+                throw;
+            }
+        }
     }
 }

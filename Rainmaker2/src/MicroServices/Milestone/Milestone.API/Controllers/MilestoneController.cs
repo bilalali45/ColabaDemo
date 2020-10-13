@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Milestone.Model;
 using Milestone.Service;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -99,6 +100,15 @@ namespace Milestone.API.Controllers
         {
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(await _milestoneService.GetMilestoneSetting(tenantId));
+        }
+
+        [Authorize(Roles = "MCU")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetMilestoneSetting([FromBody] List<MilestoneSettingModel> model)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            await _milestoneService.SetMilestoneSetting(tenantId, model);
+            return Ok();
         }
     }
 }
