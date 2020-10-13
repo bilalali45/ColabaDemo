@@ -203,5 +203,29 @@ namespace Milestone.Service
             }
             return milestone;
         }
+
+        public async Task<int> GetLosMilestone(int tenantId, string milestone, short losId)
+        {
+            var m = await Uow.Repository<LosTenantMilestone>().Query(x => x.TenantId == tenantId && x.ExternalOriginatorId == losId && x.Name.ToLower() == milestone.ToLower())
+                .Include(x => x.MilestoneMappings).FirstOrDefaultAsync();
+            if (m == null)
+                return -1;
+            var n = m.MilestoneMappings.FirstOrDefault();
+            if (n == null)
+                return -1;
+            return n.MilestoneId;
+        }
+
+        public async Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId)
+        {
+            return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingModel() { 
+                Id = x.Id,
+                Name = x.McuName,
+                Visible = x.TenantMilestones.Any(y=>y.TenantId==tenantId) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility : true,
+                McuName = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).McuName) ? x.TenantMilestones.First(y => y.TenantId == tenantId).McuName : x.McuName,
+                BorrowerName = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName) ? x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName : x.BorrowerName,
+                Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
+            }).ToListAsync();
+        }
     }
 }

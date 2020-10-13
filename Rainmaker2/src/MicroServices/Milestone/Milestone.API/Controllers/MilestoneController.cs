@@ -77,5 +77,28 @@ namespace Milestone.API.Controllers
             var status = await _milestoneService.GetMilestoneForMcuDashboard(milestone, tenantId);
             return Ok(status);
         }
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetLosMilestone(int tenantId, int loanApplicationId, string milestone, short losId)
+        {
+            int id = await _milestoneService.GetLosMilestone(tenantId, milestone,losId);
+            if(id<=0)
+            {
+                // todo: send email to support
+            }
+            else
+            {
+                await _rainmakerService.SetMilestoneId(loanApplicationId, id, Request.Headers["Authorization"].Select(x => x.ToString()));
+            }
+            return Ok();
+        }
+
+        [Authorize(Roles ="MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMilestoneSetting()
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            return Ok(await _milestoneService.GetMilestoneSetting(tenantId));
+        }
     }
 }

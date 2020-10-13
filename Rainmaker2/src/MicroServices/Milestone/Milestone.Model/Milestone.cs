@@ -33,4 +33,14 @@ namespace Milestone.Model
         public int loanApplicationId { get; set; }
         public int milestoneId { get; set; }
     }
+
+    public class MilestoneSettingModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Visible { get; set; }
+        public string BorrowerName { get; set; }
+        public string McuName { get; set; }
+        public string Description { get; set; }
+    }
 }
