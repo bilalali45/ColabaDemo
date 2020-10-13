@@ -257,5 +257,56 @@ namespace Milestone.Service
                 throw;
             }
         }
+
+        public async Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId)
+        {
+            return await Query().Include(x => x.MilestoneMappings).Select(x => new MilestoneMappingModel()
+            {
+                Id = x.Id,
+                Name = x.McuName,
+                LosId = losId,
+                Mapping = x.MilestoneMappings.Where(y => y.MilestoneId == x.Id && y.LosTenantMilestone.TenantId == tenantId && y.LosTenantMilestone.ExternalOriginatorId == losId)
+                    .Select(y=>y.LosTenantMilestone.Name).ToList()
+            }).ToListAsync();
+        }
+
+        public async Task SetMilestoneMapping(int tenantId, List<MilestoneMappingModel> model)
+        {
+            await Uow.BeginTransactionAsync();
+            try
+            {
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from milestonemapping where losmilestoneid in (select id from lostenantmilestone where tenantId={tenantId} and ExternalOriginatorId={model.First().LosId})");
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from lostenantmilestone where tenantId={tenantId} and ExternalOriginatorId={model.First().LosId}");
+                foreach (var item in model)
+                {
+                    foreach (var x in item.Mapping)
+                    {
+                        LosTenantMilestone m = new LosTenantMilestone()
+                        {
+                            TenantId = tenantId,
+                            ExternalOriginatorId = item.LosId,
+                            Name = x,
+                            TrackingState = TrackingState.Added
+                        };
+                        Uow.Repository<LosTenantMilestone>().Insert(m);
+                        await Uow.SaveChangesAsync();
+                        MilestoneMapping mapping = new MilestoneMapping()
+                        {
+                            LosMilestoneId = m.Id,
+                            MilestoneId = item.Id,
+                            TrackingState = TrackingState.Added
+                        };
+                        Uow.Repository<MilestoneMapping>().Insert(mapping);
+                        await Uow.SaveChangesAsync();
+                    }
+                }
+                await Uow.CommitAsync();
+            }
+            catch
+            {
+                await Uow.RollbackAsync();
+                throw;
+            }
+        }
     }
 }

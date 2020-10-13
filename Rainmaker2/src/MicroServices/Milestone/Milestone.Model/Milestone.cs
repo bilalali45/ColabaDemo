@@ -43,4 +43,12 @@ namespace Milestone.Model
         public string McuName { get; set; }
         public string Description { get; set; }
     }
+
+    public class MilestoneMappingModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public short LosId { get; set; }
+        public List<string> Mapping { get; set; }
+    }
 }
