@@ -42,6 +42,7 @@ namespace Milestone.Model
         public string BorrowerName { get; set; }
         public string McuName { get; set; }
         public string Description { get; set; }
+        public bool ShowMilestone { get; set; }
     }
 
     public class MilestoneMappingModel

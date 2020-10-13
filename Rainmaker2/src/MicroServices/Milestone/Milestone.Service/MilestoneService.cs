@@ -218,7 +218,9 @@ namespace Milestone.Service
 
         public async Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId)
         {
+            var show = (await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync())?.ShowMilestone;
             return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingModel() { 
+                ShowMilestone = show ?? true,
                 Id = x.Id,
                 Name = x.McuName,
                 Visible = x.TenantMilestones.Any(y=>y.TenantId==tenantId) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility : true,
@@ -233,6 +235,23 @@ namespace Milestone.Service
             await Uow.BeginTransactionAsync();
             try
             {
+                var show = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+                if(show==null)
+                {
+                    MilestoneSetting setting = new MilestoneSetting()
+                    { 
+                        ShowMilestone = model.First().ShowMilestone,
+                        TenantId=tenantId,
+                        TrackingState = TrackingState.Added
+                    };
+                    Uow.Repository<MilestoneSetting>().Insert(setting);
+                }
+                else
+                {
+                    show.ShowMilestone = model.First().ShowMilestone;
+                    show.TrackingState = TrackingState.Modified;
+                    Uow.Repository<MilestoneSetting>().Update(show);
+                }
                 await Uow.DataContext.Database.ExecuteSqlCommandAsync("delete from tenantmilestone where tenantId=" + tenantId);
                 foreach (var item in model)
                 {
