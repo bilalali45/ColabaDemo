@@ -19,6 +19,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  setCurrentInview?: any
   // filesChange: Function;
 }
 
@@ -36,6 +37,7 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
+  setCurrentInview
 }: // filesChange,
 SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
@@ -45,7 +47,8 @@ SelectedDocumentsType) => {
   const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-
+  const loan: any = state.loan;
+  const {isMobile} = loan; 
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
   const documents: any = state.documents;
@@ -280,6 +283,9 @@ SelectedDocumentsType) => {
       setDoneVisible(false);
       setDoneHit(false);
       await fetchUploadedDocuments();
+    }
+    if(isMobile?.value && pendingDocs.length === 1) {
+      setCurrentInview('documetsRequired');
     }
   };
 

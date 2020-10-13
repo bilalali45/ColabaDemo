@@ -4,21 +4,21 @@ import { DocumentsStatus } from './DocumentsStatus/DocumentsStatus'
 import { ContactUs } from './ContactUs/ContactUs'
 import contactAvatar from '../../../assets/images/contact-avatar-icon.svg';
 import { LoanStatus } from './LoanStatus/LoanStatus'
-import { StoreProvider,Store } from "../../../store/store";
+import { StoreProvider, Store } from "../../../store/store";
 
 export class Activity extends React.Component {
     render() {
         // console.log("StoreProvider", StoreProvider.con) 
         return (
             <div>
-                <Store.Consumer>  
+                <Store.Consumer>
                     {(store: any) => {
                         let loan = store.state.loan;
                         let isMobile = loan.isMobile;
                         return (
                             <React.Fragment>
-                             {isMobile.value &&<section className="compo-loan-status compo-loan-status-mobile"><LoanStatus /></section>}  
-                             </React.Fragment>
+                                {isMobile.value && <section className="compo-loan-status compo-loan-status-mobile"><LoanStatus /></section>}
+                            </React.Fragment>
                         )
                     }}
                 </Store.Consumer>

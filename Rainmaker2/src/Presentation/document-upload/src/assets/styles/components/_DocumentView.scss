@@ -12,6 +12,7 @@
     color: color("colorWhite");
     padding: 10px 15px;
     font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
+    min-height: 54px;
     // display: flex;
     // display: -webkit-flex;
     // justify-content: space-between;
@@ -33,6 +34,7 @@
     &---controls {
       width: 40%;
       margin: auto;
+      display: none;
       ul {
         > li {
         }
@@ -45,6 +47,9 @@
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      @include mobile {
+        width: 47%;
+      }
     }
 
     &---options {

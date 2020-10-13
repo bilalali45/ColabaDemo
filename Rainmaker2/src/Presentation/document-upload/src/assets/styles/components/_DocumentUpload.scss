@@ -197,6 +197,9 @@
                         min-height: 40px;
                         border: 1px solid color('border');
                         box-shadow: none;
+                        &.dopen {
+                            border: 1px solid color('primary');
+                        }
                     }
                     &.item-error {
                         .doc-liWrap {
@@ -424,6 +427,7 @@
                                     padding-top: 0;
                                     margin-top: -12px;
                                     top: 50%;
+                                    padding-right:10px;
 .m-d-l-submitted-icon {
     a {
         color: color("secondry");
@@ -440,6 +444,11 @@
                                     &::after{
                                         display: none; 
                                     }
+                                    &#doc-list-m-actions{
+                                        text-align: center;
+                                        margin-right: -10px;
+                                        width: 30px; 
+                                    }
                                     i {
                                         font-size: fontSize('nr');
                                     }
@@ -451,7 +460,8 @@
                                     padding: 10px 5px;
                                     border: 1px solid color('border');
                                     box-shadow: $shadow;
-                                    margin-left: 10px !important;
+                                    // margin-left: 10px !important;
+                                    margin-left: -5px !important;
                                     &::before{
                                         content: "";
                                         border-bottom: 8px solid color('colorWhite');
@@ -628,12 +638,18 @@ width:100%;
                        font: 400 #{fontSize("sm") + "/1"} fontFamily("base");
                        padding: 13px 10px 13px;
                     }
+
+                    @include smallMobile {
+                        min-width: 120px;
+                        font: 400 #{fontSize("sm")-1 + "/1"} fontFamily("base");
+                        padding: 13px 8px 13px;
+                     }
                     &:last-child{
                         margin-right: 0;
                     }
                 }
                 
-            }
+            } 
         }
 
         .text-danger{

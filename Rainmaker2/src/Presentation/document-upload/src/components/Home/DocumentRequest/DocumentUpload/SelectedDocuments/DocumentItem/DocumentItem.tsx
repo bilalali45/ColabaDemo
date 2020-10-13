@@ -50,6 +50,7 @@ export const DocumentItem = ({
   const loan: any = state.loan;
   const { isMobile } = loan;
   const [renameModalShow, setRenameModalShow] = useState(true);
+  const [openItemDropdown, setOpenItemDropdown] = useState(false);
   const txtInput = useRef<HTMLInputElement>(null);
 
   const doubleClickHandler = (isUploaded: string | undefined) => {
@@ -221,7 +222,7 @@ export const DocumentItem = ({
 
   const renderDocListActionsMobile = () => {
     return (
-      <div className="doc-list-actions doc-list-actions-mobile">
+      <div className={`doc-list-actions doc-list-actions-mobile`}>
 
 {file.uploadStatus === "done" ?
                   <div className="m-d-l-submitted-icon">
@@ -230,7 +231,7 @@ export const DocumentItem = ({
                     </a>
                   </div>
                   :
-                  <Dropdown>
+                  <Dropdown onToggle={(e)=>{setOpenItemDropdown(e)}}>
                   <Dropdown.Toggle id="doc-list-m-actions" as="div">
                     <i className="zmdi zmdi-more-vert"></i>
                   </Dropdown.Toggle>
@@ -333,7 +334,7 @@ export const DocumentItem = ({
 
   const renderAllowedFile = () => {
     return (
-      <li className="doc-li" data-testid="file-item">
+      <li className={`doc-li ${openItemDropdown?" dopen":""}` } data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={

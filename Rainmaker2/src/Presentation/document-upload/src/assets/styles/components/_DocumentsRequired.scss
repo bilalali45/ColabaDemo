@@ -89,3 +89,25 @@ background-color: color('listhover');
         }
     }
 }
+.doneTasklist {
+    margin-left: -20px;
+    background:color("colorgray");
+    padding: 15px;
+    text-align: center;
+    height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -27px;
+
+    .d-text {
+        max-width: 238px;
+        margin: 0 auto;
+        margin-top: 20px;
+        font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
+        color:color('base');
+        span {
+            color:color('primary');
+        }
+    }
+}

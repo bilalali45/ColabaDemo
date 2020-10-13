@@ -45,7 +45,7 @@ export const DocumentRequest = () => {
                         </div>
                     </aside> :
                         <article className="col-xs-12 col-md-8">
-                            <DocumentUpload />
+                            <DocumentUpload  setCurrentInview={setCurrentInView}  />
                         </article>
                     }
                 </div>
@@ -63,7 +63,7 @@ export const DocumentRequest = () => {
                     <article className="col-sm-12">
                         <div className="dr-head">
                             <h2 className="heading-h2"> 
-                            {isMobile && currentInView === 'documentUploadView' && <div className="dr-head-back-arrow" onClick={() => setCurrentInView('documetsRequired')}><span><i className="zmdi zmdi-arrow-left"></i>Back</span></div>} 
+                            {isMobile?.value && currentInView === 'documentUploadView' && <div className="dr-head-back-arrow" onClick={() => setCurrentInView('documetsRequired')}><span><i className="zmdi zmdi-arrow-left"></i>Back</span></div>} 
                             Task List</h2>
                             {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> {pendingDocsCount == 1 ? "item" : "items"} to complete</p> : ''}
                         </div>

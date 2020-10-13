@@ -41,8 +41,7 @@ const ActivityHeader = (props) => {
   useEffect(() => {
     location.pathname.includes("/activity")?setShowToolTip(true):setShowToolTip(false);
     
-
-  }, []);
+  }, [location.pathname.includes("/activity")]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -233,9 +232,10 @@ const ActivityHeader = (props) => {
           state: { from: location.pathname },
         }}
           onClick={(e) => handleNavigationMobile(e, link)} >
-          {pendingDocs?.length && <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} ><img src={img} alt="" />
-            {text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length}</div>}
-          </div>}
+         <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} >
+            <img src={img} alt="" />
+            {pendingDocs?.length > 0 &&  text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length}</div>}
+          </div>
           <div className="n-item-label">
             <div>{text}</div>
           </div>

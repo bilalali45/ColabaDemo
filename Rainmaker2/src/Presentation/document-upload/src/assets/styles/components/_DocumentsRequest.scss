@@ -6,7 +6,7 @@
     @include mobile {
         text-align: center;
         padding:0;
-        padding-bottom: 5px;
+        padding-bottom: 0px;
         margin-left: -15px;
         margin-right: -15px;
         margin-bottom: 27px;
@@ -23,7 +23,8 @@
             text-align: center;
             font:500 #{fontSize("xmd")+"/1"} fontFamily("heading");
             padding: 12px 0;
-            margin-bottom: 7px;
+            margin-bottom: 0;
+            
         }
         .dr-head-back-arrow {
             position: absolute;
@@ -44,6 +45,10 @@
     p {
         font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
         margin-bottom: 0;
+        @include mobile {
+            margin-top: 7px;
+            margin-bottom: 5px;
+        }
         .DocumentStatus--count {
             font:bolder  #{fontSize("nr")+"/17px"} fontFamily("base");
         }
