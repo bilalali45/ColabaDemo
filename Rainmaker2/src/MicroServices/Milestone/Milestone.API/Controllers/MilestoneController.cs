@@ -140,5 +140,19 @@ namespace Milestone.API.Controllers
         {
             return Ok(await _milestoneService.GetMappingAll(tenantId,losId));
         }
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMapping(int tenantId, int milestoneId)
+        {
+            return Ok(await _milestoneService.GetMapping(tenantId, milestoneId));
+        }
+
+        [Authorize(Roles = "MCU")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetMapping([FromBody] MilestoneMappingModel model)
+        {
+            await _milestoneService.SetMapping(model);
+            return Ok();
+        }
     }
 }

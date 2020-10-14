@@ -307,5 +307,34 @@ namespace Milestone.Service
         {
             return await Uow.Repository<LosTenantMilestone>().Query(x => x.ExternalOriginatorId == losId && x.TenantId == tenantId).Select(x => new MappingModel() { Id = x.Id, Name = x.Name }).ToListAsync();
         }
+        public async Task<MilestoneMappingModel> GetMapping(int tenantId, int milestoneId)
+        {
+            return new MilestoneMappingModel() { Id=milestoneId,Mapping= await Uow.Repository<MilestoneMapping>().Query(x => x.MilestoneId == milestoneId && x.LosTenantMilestone.TenantId == tenantId).Select(x => x.LosMilestoneId).ToListAsync() };
+        }
+        public async Task SetMapping(MilestoneMappingModel model)
+        {
+            await Uow.BeginTransactionAsync();
+            try
+            {
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from milestonemapping where milestoneId={model.Id}");
+                foreach (var item in model.Mapping)
+                {
+                    MilestoneMapping m = new MilestoneMapping()
+                    {
+                        MilestoneId = model.Id,
+                        LosMilestoneId = item,
+                        TrackingState = TrackingState.Added
+                    };
+                    Uow.Repository<MilestoneMapping>().Insert(m);
+                }
+                await Uow.SaveChangesAsync();
+                await Uow.CommitAsync();
+            }
+            catch
+            {
+                await Uow.RollbackAsync();
+                throw;
+            }
+        }
     }
 }

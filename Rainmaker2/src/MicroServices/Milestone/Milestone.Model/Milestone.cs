@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace Milestone.Model
@@ -60,5 +61,11 @@ namespace Milestone.Model
     {
         public bool ShowMilestone { get; set; }
         public int TenantId { get; set; }
+    }
+
+    public class MilestoneMappingModel
+    {
+        public int Id { get; set; }
+        public List<int> Mapping { get; set; }
     }
 }
