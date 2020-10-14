@@ -103,7 +103,7 @@ export class DocumentUploadActions {
         selectedFile.notAllowed = true;
       }
 
-      if (await FileUpload.isTypeAllowed(f) === false) {
+      if ((await FileUpload.isTypeAllowed(f)) === false) {
         selectedFile.notAllowedReason = "FileType";
         selectedFile.notAllowed = true;
       }
