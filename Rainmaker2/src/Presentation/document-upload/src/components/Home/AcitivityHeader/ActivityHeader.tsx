@@ -41,7 +41,7 @@ const ActivityHeader = (props) => {
   useEffect(() => {
     location.pathname.includes("/activity")?setShowToolTip(true):setShowToolTip(false);
     
-  }, [location.pathname.includes("/activity")]);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
