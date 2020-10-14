@@ -244,12 +244,10 @@ namespace Milestone.Service
             }
             await Uow.SaveChangesAsync();
         }
-        /*
-        public async Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId)
+        
+        public async Task<List<MilestoneSettingListModel>> GetMilestoneSettingList(int tenantId)
         {
-            var show = (await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync())?.ShowMilestone;
-            return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingModel() { 
-                ShowMilestone = show ?? true,
+            return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingListModel() { 
                 Id = x.Id,
                 Name = x.McuName,
                 Visible = x.TenantMilestones.Any(y=>y.TenantId==tenantId) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility : true,
@@ -258,7 +256,7 @@ namespace Milestone.Service
                 Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
             }).ToListAsync();
         }
-
+        /*
         public async Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model)
         {
             await Uow.BeginTransactionAsync();
