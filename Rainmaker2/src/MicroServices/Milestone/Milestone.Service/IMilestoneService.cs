@@ -23,5 +23,6 @@ namespace Milestone.Service
         Task SetMapping(MilestoneMappingModel model);
         Task AddMapping(MilestoneAddMappingModel model);
         Task DeleteMapping(MilestoneAddMappingModel model);
+        Task EditMapping(MilestoneAddMappingModel model);
     }
 }

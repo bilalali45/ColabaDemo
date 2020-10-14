@@ -363,5 +363,13 @@ namespace Milestone.Service
                 throw;
             }
         }
+        public async Task EditMapping(MilestoneAddMappingModel model)
+        {
+            var mapping = await Uow.Repository<LosTenantMilestone>().Query(x => x.Id == model.Id).FirstAsync();
+            mapping.Name = model.Name;
+            mapping.TrackingState = TrackingState.Modified;
+            Uow.Repository<LosTenantMilestone>().Insert(mapping);
+            await Uow.SaveChangesAsync();
+        }
     }
 }

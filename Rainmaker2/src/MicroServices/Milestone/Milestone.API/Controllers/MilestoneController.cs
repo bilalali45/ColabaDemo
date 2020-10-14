@@ -162,6 +162,13 @@ namespace Milestone.API.Controllers
             return Ok();
         }
         [Authorize(Roles = "MCU")]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> EditMapping([FromBody] MilestoneAddMappingModel model)
+        {
+            await _milestoneService.EditMapping(model);
+            return Ok();
+        }
+        [Authorize(Roles = "MCU")]
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteMapping([FromBody] MilestoneAddMappingModel model)
         {
