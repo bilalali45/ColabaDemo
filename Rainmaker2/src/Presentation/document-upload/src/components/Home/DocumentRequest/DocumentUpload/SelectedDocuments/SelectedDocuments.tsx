@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
-//import { DocumentView } from "rainsoft-rc";
-import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
-
+import { DocumentView } from "rainsoft-rc";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
