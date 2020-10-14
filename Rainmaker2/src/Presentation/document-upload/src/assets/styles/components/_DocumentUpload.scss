@@ -32,7 +32,14 @@
             height: 330px;
             @include mobile{
                 height: 100%;
-                padding-top: 30%;
+                // padding-top: 30%;
+                padding-top: 10vh;
+                min-height: 240px;
+                padding-bottom: 50px;
+            }
+            @media (max-height:570px) {
+                padding-top: 5vh;
+                min-height: 245px;
             }
             .upload-note {
                 color: color("light-purple");
@@ -115,7 +122,8 @@
             height: 345px;
             min-height: 345px;
             @include mobile {
-                height: calc(100vh - 465px);
+                // height: calc(100vh - 465px);
+                height: auto;
                 min-height: calc(100vh - 465px);
             }
            
@@ -161,9 +169,9 @@
             height: 100%;
             @include mobile {
                 padding-top: 0px;
-                max-height:100%;
-                overflow-y: auto;
-                overflow-x: hidden;
+                // max-height:100%;
+                overflow-y: unset;
+                overflow-x: unset;
                 min-height: 100%;
                 margin-top: 30px;
                 height: auto;
@@ -177,7 +185,7 @@
                 @include mobile {
                     @include scrollbar(6,6); 
                     overflow: unset;
-                    max-height: calc(100% - 60px);
+                    max-height: fit-content !important;
                     
                 }
                 max-height: calc(100% - 50px);

@@ -128,7 +128,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
-
+   
     /*var elements = document.getElementsByClassName("classname");
     for (var i = 0; i < elements.length; i++) {
       elements[i].addEventListener('click', ()=>{ document.body.removeAttribute('style'); }, false);
@@ -146,11 +146,11 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           document.body.removeAttribute("style");
         });
     };
-  }, [onEscapeKeyPressed]);
-
+  }, [onEscapeKeyPressed]);  
+ 
   
   const removeOverflow = () => {
-    document.body.removeAttribute("style");
+    document.body.removeAttribute("style"); 
   };
 
   return (
@@ -172,12 +172,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                   <button
                     className="document-view--button"
                     onClick={downloadFile}
-                  >
+                  >  
                     <SVGdownload />
                   </button>
                 </li>
               </Fragment>
-            )}
+            )} 
             <li>
               <button
                 id={"closeDocumentView"}
@@ -214,10 +214,11 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
-      <div className="zoomview-wraper">
+      <div className="zoomview-wraper"> 
         <TransformWrapper
-          defaultScale={1}
-          wheel={{ wheelEnabled: false }}
+          defaultScale={1}  
+          wheel={{ wheelEnabled: false }}  
+          pinch={{ disabled: true }}  
           // defaultPositionX={200}
           // defaultPositionY={100}
         >

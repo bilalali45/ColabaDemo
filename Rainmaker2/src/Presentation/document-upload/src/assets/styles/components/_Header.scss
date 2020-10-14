@@ -18,6 +18,14 @@
             max-height: 35px;
             width: auto;
             display: block !important;
+            @include mobile{
+                max-height: 25px;
+            }
+            @include smallMobile{
+                max-height: 20px;
+            }
+
+         
         }
     }
     .s-account{
@@ -136,6 +144,23 @@
 -ms-user-select: none; 
 -o-user-select: none;
 user-select: none;
+user-select: none;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+@include mobile {
+
+    max-width: 300px;     
+}
+@include smallMobile {
+    font: 400 #{fontSize("nr")-2+"/1"} fontFamily("heading");  
+    max-width: 210px;       
+}
+@media (max-width:360px) {
+
+    max-width: 170px; 
+    font: 400 #{fontSize("nr")-2+"/1"} fontFamily("heading");         
+}
         &:hover {
             text-decoration: none;
         }

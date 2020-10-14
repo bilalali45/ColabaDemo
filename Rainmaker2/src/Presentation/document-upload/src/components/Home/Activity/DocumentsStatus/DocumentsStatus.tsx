@@ -20,7 +20,7 @@ export const DocumentsStatus = () => {
   useEffect(() => {
     if (!pendingDocs?.length) {
       fetchPendingDocs();
-    }
+    } 
 
     if (!submittedDocs?.length) {
       fetchSubmittedDocs();

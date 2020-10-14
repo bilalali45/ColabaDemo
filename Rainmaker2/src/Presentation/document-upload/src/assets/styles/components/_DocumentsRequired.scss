@@ -7,7 +7,9 @@
     overflow: auto;
     @include scrollbar;
     @include mobile {
-        max-height: calc(100vh - 245px);
+        // max-height: calc(100vh - 245px);
+        min-height: calc(100vh - 245px);
+        max-height: fit-content;
         @include scrollbar(6,6)
     }
             li {
