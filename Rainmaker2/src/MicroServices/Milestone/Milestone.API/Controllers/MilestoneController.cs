@@ -93,7 +93,20 @@ namespace Milestone.API.Controllers
             }
             return Ok();
         }
-
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetGlobalMilestoneSetting(int tenantId)
+        {
+            return Ok(await _milestoneService.GetGlobalMilestoneSetting(tenantId));
+        }
+        [Authorize(Roles = "MCU")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetGlobalMilestoneSetting(GlobalMilestoneSettingModel setting)
+        {
+            await _milestoneService.SetGlobalMilestoneSetting(setting);
+            return Ok();
+        }
+        /*
         [Authorize(Roles ="MCU")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneSetting()
@@ -127,5 +140,6 @@ namespace Milestone.API.Controllers
             await _milestoneService.SetMilestoneMapping(tenantId, model);
             return Ok();
         }
+        */
     }
 }

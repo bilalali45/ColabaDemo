@@ -12,9 +12,11 @@ namespace Milestone.Service
         Task UpdateMilestoneLog(int loanApplicationId, int milestoneId);
         Task<List<MilestoneForLoanCenter>> GetMilestoneForLoanCenter(int loanApplicationId, int milestoneId, int tenantId);
         Task<int> GetLosMilestone(int tenantId, string milestone, short losId);
-        Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId);
-        Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model);
-        Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId);
-        Task SetMilestoneMapping(int tenantId, List<MilestoneMappingModel> model);
+        Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId);
+        Task SetGlobalMilestoneSetting(GlobalMilestoneSettingModel model);
+        /*Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId);
+Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model);
+Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId);
+Task SetMilestoneMapping(int tenantId, List<MilestoneMappingModel> model);*/
     }
 }

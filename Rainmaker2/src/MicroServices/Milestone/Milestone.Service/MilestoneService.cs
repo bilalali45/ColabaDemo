@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Milestone.Data;
+using Milestone.Data.Mapping;
 using Milestone.Entity.Models;
 using Milestone.Model;
 using System;
@@ -130,76 +131,76 @@ namespace Milestone.Service
         private async Task<Entity.Models.Milestone> GetEligibleMilestone(int loanApplicationId,
             int milestoneId, int tenantId)
         {
-
-            MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
-                .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
             Entity.Models.Milestone milestone = null;
-            if (milestoneSetting == null || milestoneSetting.ShowMilestone)
+            var milestones = await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x => x.Order)
+                .ToListAsync();
+            milestone = milestones.First(x => x.Id == milestoneId);
+            if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
             {
-                var milestones = await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x => x.Order)
-                    .ToListAsync();
-                milestone = milestones.First(x => x.Id == milestoneId);
-                if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
+                //check current visible
+                var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
+                if (visible != null && !visible.Value)
                 {
-                    //check current visible
-                    var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
-                    if (visible != null && !visible.Value)
+                    milestone = null;
+                    // find visible from log
+                    List<MilestoneLog> list = await Uow.Repository<MilestoneLog>()
+                        .Query(x => x.LoanApplicationId == loanApplicationId)
+                        .Include(x => x.Milestone).ThenInclude(x => x.TenantMilestones)
+                        .OrderByDescending(x => x.CreatedDateUtc).ToListAsync();
+                    foreach (var item in list)
+                    {
+                        visible = item.Milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)
+                            ?.Visibility;
+                        if (visible == null || visible.Value)
+                        {
+                            milestone = item.Milestone;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
+                if (visible != null && !visible.Value)
+                {
+                    // get next visible from timeline
+                    if(milestones.Any(x=>x.Order>milestone.Order && x.MilestoneTypeId==(int)MilestoneType.Timeline 
+                        && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)==null 
+                            || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
+                    {
+                        milestone = milestones.First(x =>
+                            x.Order > milestone.Order && x.MilestoneTypeId == (int) MilestoneType.Timeline
+                                                        && (x.TenantMilestones
+                                                                .FirstOrDefault(y => y.TenantId == tenantId) == null
+                                                            || x.TenantMilestones
+                                                                .First(y => y.TenantId == tenantId)
+                                                                .Visibility));
+                    }
+                    // get previous visible from timeline
+                    else if (milestones.OrderByDescending(x=>x.Order).Any(x => x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
+                                                                            && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null
+                                                                                || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
+                    {
+                        milestone = milestones.OrderByDescending(x => x.Order).First(x =>
+                            x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
+                                                        && (x.TenantMilestones
+                                                                .FirstOrDefault(y => y.TenantId == tenantId) == null
+                                                            || x.TenantMilestones
+                                                                .First(y => y.TenantId == tenantId)
+                                                                .Visibility));
+                    }
+                    else
                     {
                         milestone = null;
-                        // find visible from log
-                        List<MilestoneLog> list = await Uow.Repository<MilestoneLog>()
-                            .Query(x => x.LoanApplicationId == loanApplicationId)
-                            .Include(x => x.Milestone).ThenInclude(x => x.TenantMilestones)
-                            .OrderByDescending(x => x.CreatedDateUtc).ToListAsync();
-                        foreach (var item in list)
-                        {
-                            visible = item.Milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)
-                                ?.Visibility;
-                            if (visible == null || visible.Value)
-                            {
-                                milestone = item.Milestone;
-                                break;
-                            }
-                        }
                     }
                 }
-                else
-                {
-                    var visible = milestone.TenantMilestones.FirstOrDefault(x => x.TenantId == tenantId)?.Visibility;
-                    if (visible != null && !visible.Value)
-                    {
-                        // get next visible from timeline
-                        if(milestones.Any(x=>x.Order>milestone.Order && x.MilestoneTypeId==(int)MilestoneType.Timeline 
-                            && (x.TenantMilestones.FirstOrDefault(y=>y.TenantId==tenantId)==null 
-                                || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
-                        {
-                            milestone = milestones.First(x =>
-                                x.Order > milestone.Order && x.MilestoneTypeId == (int) MilestoneType.Timeline
-                                                          && (x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId) == null
-                                                              || x.TenantMilestones
-                                                                  .First(y => y.TenantId == tenantId)
-                                                                  .Visibility));
-                        }
-                        // get previous visible from timeline
-                        else if (milestones.OrderByDescending(x=>x.Order).Any(x => x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
-                                                                               && (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null
-                                                                                   || x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility)))
-                        {
-                            milestone = milestones.OrderByDescending(x => x.Order).First(x =>
-                                x.Order < milestone.Order && x.MilestoneTypeId == (int)MilestoneType.Timeline
-                                                          && (x.TenantMilestones
-                                                                  .FirstOrDefault(y => y.TenantId == tenantId) == null
-                                                              || x.TenantMilestones
-                                                                  .First(y => y.TenantId == tenantId)
-                                                                  .Visibility));
-                        }
-                        else
-                        {
-                            milestone = null;
-                        }
-                    }
-                }
+            }
+            MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
+                .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            if (milestoneSetting != null && !milestoneSetting.ShowMilestone && milestone!=null && milestone.Id!=1 && milestone.Id!=2)
+            {
+                milestone = null;
             }
             return milestone;
         }
@@ -215,7 +216,35 @@ namespace Milestone.Service
                 return -1;
             return n.MilestoneId;
         }
-
+        public async Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId)
+        {
+            var setting = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).Select(x => new GlobalMilestoneSettingModel() { ShowMilestone = x.ShowMilestone }).FirstOrDefaultAsync();
+            if (setting == null)
+                setting = new GlobalMilestoneSettingModel() { ShowMilestone = true };
+            return setting;
+        }
+        public async Task SetGlobalMilestoneSetting(GlobalMilestoneSettingModel model)
+        {
+            var setting = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == model.TenantId).FirstOrDefaultAsync();
+            if(setting==null)
+            {
+                setting = new MilestoneSetting()
+                { 
+                    ShowMilestone = model.ShowMilestone,
+                    TenantId = model.TenantId,
+                    TrackingState = TrackingState.Added
+                };
+                Uow.Repository<MilestoneSetting>().Insert(setting);
+            }
+            else
+            {
+                setting.ShowMilestone = model.ShowMilestone;
+                setting.TrackingState = TrackingState.Modified;
+                Uow.Repository<MilestoneSetting>().Update(setting);
+            }
+            await Uow.SaveChangesAsync();
+        }
+        /*
         public async Task<List<MilestoneSettingModel>> GetMilestoneSetting(int tenantId)
         {
             var show = (await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync())?.ShowMilestone;
@@ -326,6 +355,6 @@ namespace Milestone.Service
                 await Uow.RollbackAsync();
                 throw;
             }
-        }
+        }*/
     }
 }

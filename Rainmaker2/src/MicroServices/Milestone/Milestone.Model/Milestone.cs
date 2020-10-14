@@ -33,7 +33,7 @@ namespace Milestone.Model
         public int loanApplicationId { get; set; }
         public int milestoneId { get; set; }
     }
-
+    /*
     public class MilestoneSettingModel
     {
         public int Id { get; set; }
@@ -51,5 +51,11 @@ namespace Milestone.Model
         public string Name { get; set; }
         public short LosId { get; set; }
         public List<string> Mapping { get; set; }
+    }*/
+
+    public class GlobalMilestoneSettingModel
+    {
+        public bool ShowMilestone { get; set; }
+        public int TenantId { get; set; }
     }
 }
