@@ -68,4 +68,11 @@ namespace Milestone.Model
         public int Id { get; set; }
         public List<int> Mapping { get; set; }
     }
+    public class MilestoneAddMappingModel
+    {
+        public int Id { get; set; }
+        public int TenantId { get; set; }
+        public short LosId { get; set; }
+        public string Name { get; set; }
+    }
 }

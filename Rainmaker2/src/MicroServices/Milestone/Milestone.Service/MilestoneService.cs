@@ -336,5 +336,32 @@ namespace Milestone.Service
                 throw;
             }
         }
+        public async Task AddMapping(MilestoneAddMappingModel model)
+        {
+            LosTenantMilestone milestone = new LosTenantMilestone()
+            { 
+                TenantId = model.TenantId,
+                ExternalOriginatorId = model.LosId,
+                Name = model.Name,
+                TrackingState = TrackingState.Added
+            };
+            Uow.Repository<LosTenantMilestone>().Insert(milestone);
+            await Uow.SaveChangesAsync();
+        }
+        public async Task DeleteMapping(MilestoneAddMappingModel model)
+        {
+            await Uow.BeginTransactionAsync();
+            try
+            {
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from milestonemapping where losmilestoneId={model.Id}");
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from lostenantmilestone where Id={model.Id}");
+                await Uow.CommitAsync();
+            }
+            catch
+            {
+                await Uow.RollbackAsync();
+                throw;
+            }
+        }
     }
 }

@@ -21,5 +21,7 @@ namespace Milestone.Service
         Task<List<MappingModel>> GetMappingAll(int tenantId, short losId);
         Task<MilestoneMappingModel> GetMapping(int tenantId, int milestoneId);
         Task SetMapping(MilestoneMappingModel model);
+        Task AddMapping(MilestoneAddMappingModel model);
+        Task DeleteMapping(MilestoneAddMappingModel model);
     }
 }

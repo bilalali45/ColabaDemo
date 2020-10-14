@@ -154,5 +154,19 @@ namespace Milestone.API.Controllers
             await _milestoneService.SetMapping(model);
             return Ok();
         }
+        [Authorize(Roles = "MCU")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddMapping([FromBody] MilestoneAddMappingModel model)
+        {
+            await _milestoneService.AddMapping(model);
+            return Ok();
+        }
+        [Authorize(Roles = "MCU")]
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteMapping([FromBody] MilestoneAddMappingModel model)
+        {
+            await _milestoneService.DeleteMapping(model);
+            return Ok();
+        }
     }
 }
