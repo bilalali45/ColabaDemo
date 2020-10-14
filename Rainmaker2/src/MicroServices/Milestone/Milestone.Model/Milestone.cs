@@ -34,7 +34,7 @@ namespace Milestone.Model
         public int milestoneId { get; set; }
     }
     
-    public class MilestoneSettingListModel
+    public class MilestoneSettingModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -42,6 +42,8 @@ namespace Milestone.Model
         public string BorrowerName { get; set; }
         public string McuName { get; set; }
         public string Description { get; set; }
+        public string Icon { get; set; }
+        public int TenantId { get; set; }
     }
     /*
     public class MilestoneMappingModel

@@ -113,16 +113,21 @@ namespace Milestone.API.Controllers
         {
             return Ok(await _milestoneService.GetMilestoneSettingList(tenantId));
         }
-        /*
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMilestoneSetting(int tenantId,int milestoneId)
+        {
+            return Ok(await _milestoneService.GetMilestoneSetting(tenantId,milestoneId));
+        }
+        
         [Authorize(Roles = "MCU")]
         [HttpPost("[action]")]
-        public async Task<IActionResult> SetMilestoneSetting([FromBody] List<MilestoneSettingModel> model)
+        public async Task<IActionResult> SetMilestoneSetting([FromBody] MilestoneSettingModel model)
         {
-            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            await _milestoneService.SetMilestoneSetting(tenantId, model);
+            await _milestoneService.SetMilestoneSetting(model);
             return Ok();
         }
-
+        /*
         [Authorize(Roles = "MCU")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneMapping(short losId)

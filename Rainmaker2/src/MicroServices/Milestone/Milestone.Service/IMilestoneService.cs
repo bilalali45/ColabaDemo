@@ -14,9 +14,10 @@ namespace Milestone.Service
         Task<int> GetLosMilestone(int tenantId, string milestone, short losId);
         Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId);
         Task SetGlobalMilestoneSetting(GlobalMilestoneSettingModel model);
-        Task<List<MilestoneSettingListModel>> GetMilestoneSettingList(int tenantId);
-/*Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model);
-Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId);
+        Task<List<MilestoneSettingModel>> GetMilestoneSettingList(int tenantId);
+        Task<MilestoneSettingModel> GetMilestoneSetting(int tenantId, int milestoneId);
+Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model);
+/*Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId);
 Task SetMilestoneMapping(int tenantId, List<MilestoneMappingModel> model);*/
     }
 }

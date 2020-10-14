@@ -245,9 +245,11 @@ namespace Milestone.Service
             await Uow.SaveChangesAsync();
         }
         
-        public async Task<List<MilestoneSettingListModel>> GetMilestoneSettingList(int tenantId)
+        public async Task<List<MilestoneSettingModel>> GetMilestoneSettingList(int tenantId)
         {
-            return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingListModel() { 
+            return await Query().Include(x => x.TenantMilestones).Select(x=>new MilestoneSettingModel() { 
+                TenantId = tenantId,
+                Icon = x.Icon,
                 Id = x.Id,
                 Name = x.McuName,
                 Visible = x.TenantMilestones.Any(y=>y.TenantId==tenantId) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility : true,
@@ -256,44 +258,38 @@ namespace Milestone.Service
                 Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
             }).ToListAsync();
         }
-        /*
-        public async Task SetMilestoneSetting(int tenantId, List<MilestoneSettingModel> model)
+        public async Task<MilestoneSettingModel> GetMilestoneSetting(int tenantId, int milestoneId)
+        {
+            return await Query(x=>x.Id==milestoneId).Include(x => x.TenantMilestones).Select(x => new MilestoneSettingModel()
+            {
+                TenantId = tenantId,
+                Icon = x.Icon,
+                Id = x.Id,
+                Name = x.McuName,
+                Visible = x.TenantMilestones.Any(y => y.TenantId == tenantId) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Visibility : true,
+                McuName = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).McuName) ? x.TenantMilestones.First(y => y.TenantId == tenantId).McuName : x.McuName,
+                BorrowerName = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName) ? x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName : x.BorrowerName,
+                Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
+            }).FirstOrDefaultAsync();
+        }
+        
+        public async Task SetMilestoneSetting(MilestoneSettingModel model)
         {
             await Uow.BeginTransactionAsync();
             try
             {
-                var show = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
-                if(show==null)
+                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from tenantmilestone where tenantId={model.TenantId} and milestoneId={model.Id}");
+                TenantMilestone m = new TenantMilestone()
                 {
-                    MilestoneSetting setting = new MilestoneSetting()
-                    { 
-                        ShowMilestone = model.First().ShowMilestone,
-                        TenantId=tenantId,
-                        TrackingState = TrackingState.Added
-                    };
-                    Uow.Repository<MilestoneSetting>().Insert(setting);
-                }
-                else
-                {
-                    show.ShowMilestone = model.First().ShowMilestone;
-                    show.TrackingState = TrackingState.Modified;
-                    Uow.Repository<MilestoneSetting>().Update(show);
-                }
-                await Uow.DataContext.Database.ExecuteSqlCommandAsync("delete from tenantmilestone where tenantId=" + tenantId);
-                foreach (var item in model)
-                {
-                    TenantMilestone m = new TenantMilestone()
-                    {
-                        BorrowerName = item.BorrowerName,
-                        Description = item.Description,
-                        McuName = item.McuName,
-                        MilestoneId = item.Id,
-                        TenantId = tenantId,
-                        Visibility = item.Visible,
-                        TrackingState = TrackingState.Added
-                    };
-                    Uow.Repository<TenantMilestone>().Insert(m);
-                }
+                    BorrowerName = model.BorrowerName,
+                    Description = model.Description,
+                    McuName = model.McuName,
+                    MilestoneId = model.Id,
+                    TenantId = model.TenantId,
+                    Visibility = model.Visible,
+                    TrackingState = TrackingState.Added
+                };
+                Uow.Repository<TenantMilestone>().Insert(m);
                 await Uow.SaveChangesAsync();
                 await Uow.CommitAsync();
             }
@@ -303,7 +299,7 @@ namespace Milestone.Service
                 throw;
             }
         }
-
+        /*
         public async Task<List<MilestoneMappingModel>> GetMilestoneMapping(int tenantId, short losId)
         {
             return await Query().Include(x => x.MilestoneMappings).Select(x => new MilestoneMappingModel()
