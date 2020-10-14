@@ -45,15 +45,17 @@ namespace Milestone.Model
         public string Icon { get; set; }
         public int TenantId { get; set; }
     }
-    /*
-    public class MilestoneMappingModel
+    
+    public class LosModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public short LosId { get; set; }
-        public List<string> Mapping { get; set; }
-    }*/
-
+    }
+    public class MappingModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public class GlobalMilestoneSettingModel
     {
         public bool ShowMilestone { get; set; }
