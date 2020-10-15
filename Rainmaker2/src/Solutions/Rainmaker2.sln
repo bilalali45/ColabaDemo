@@ -115,13 +115,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Milestone", "Milestone", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.API", "..\MicroServices\Milestone\Milestone.API\Milestone.API.csproj", "{CC9F4AC7-A434-481C-AAB0-FCCA329A578C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Data", "..\MicroServices\Milestone\Milestone.Data\Milestone.Data.csproj", "{02002C61-F08E-4CAF-8151-8CDB03989335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Data", "..\MicroServices\Milestone\Milestone.Data\Milestone.Data.csproj", "{02002C61-F08E-4CAF-8151-8CDB03989335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Entity", "..\MicroServices\Milestone\Milestone.Entity\Milestone.Entity.csproj", "{701E65E8-1185-475B-8D49-FA6713B7BCE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Entity", "..\MicroServices\Milestone\Milestone.Entity\Milestone.Entity.csproj", "{701E65E8-1185-475B-8D49-FA6713B7BCE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Model", "..\MicroServices\Milestone\Milestone.Model\Milestone.Model.csproj", "{F87E8A61-98FC-437B-9569-C50B9966E3BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Model", "..\MicroServices\Milestone\Milestone.Model\Milestone.Model.csproj", "{F87E8A61-98FC-437B-9569-C50B9966E3BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Service", "..\MicroServices\Milestone\Milestone.Service\Milestone.Service.csproj", "{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Service", "..\MicroServices\Milestone\Milestone.Service\Milestone.Service.csproj", "{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Tests", "..\MicroServices\Milestone\Milestone.Tests\Milestone.Tests.csproj", "{DBB6B397-E6E3-451A-98DF-D650760B1A8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -325,6 +327,10 @@ Global
 		{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB6B397-E6E3-451A-98DF-D650760B1A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB6B397-E6E3-451A-98DF-D650760B1A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB6B397-E6E3-451A-98DF-D650760B1A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB6B397-E6E3-451A-98DF-D650760B1A8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,6 +393,7 @@ Global
 		{701E65E8-1185-475B-8D49-FA6713B7BCE5} = {5A4954DC-5017-4829-8F29-603B3AC7C1A4}
 		{F87E8A61-98FC-437B-9569-C50B9966E3BE} = {5A4954DC-5017-4829-8F29-603B3AC7C1A4}
 		{5D2F7127-415D-41D6-A62D-BF799A1ADBC4} = {5A4954DC-5017-4829-8F29-603B3AC7C1A4}
+		{DBB6B397-E6E3-451A-98DF-D650760B1A8E} = {5A4954DC-5017-4829-8F29-603B3AC7C1A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E56FE89-36B5-422C-B211-A1E23C5F0D3E}
