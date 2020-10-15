@@ -149,7 +149,7 @@ white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
 @include mobile {
-
+    margin-top: 1px;
     max-width: 300px;     
 }
 @include smallMobile {
