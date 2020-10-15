@@ -368,7 +368,7 @@ namespace Milestone.Service
             var mapping = await Uow.Repository<LosTenantMilestone>().Query(x => x.Id == model.Id).FirstAsync();
             mapping.Name = model.Name;
             mapping.TrackingState = TrackingState.Modified;
-            Uow.Repository<LosTenantMilestone>().Insert(mapping);
+            Uow.Repository<LosTenantMilestone>().Update(mapping);
             await Uow.SaveChangesAsync();
         }
     }
