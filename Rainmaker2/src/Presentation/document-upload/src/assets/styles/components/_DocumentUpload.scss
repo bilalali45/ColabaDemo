@@ -2,6 +2,9 @@
     margin-right: -5px;
     position: relative;
     min-height: 100%;
+    @include mobile {
+        padding-bottom: 90px;
+    }
     &.drag-enter{
         // border: 2px dashed #ebebeb;
         &:after {
@@ -117,6 +120,7 @@
         margin-right: -15px;
         @include mobile {
             min-height: calc(100vh - 245px);
+            background: color("colorWhite");
         }
         &.havefooter {
             height: 345px;
@@ -125,6 +129,7 @@
                 // height: calc(100vh - 465px);
                 height: auto;
                 min-height: calc(100vh - 465px);
+                padding-bottom: 10px;
             }
            
         }
@@ -150,7 +155,7 @@
 
                         &.btn-sub-mobile {
                             position: absolute;
-                            bottom: 0;
+                            bottom: 110px;
                             left: 0;
                             width: 100%;
                         }
@@ -201,7 +206,7 @@
                     position: relative;
                     margin-bottom: 10px;
                     @include mobile {
-                        background: color("colorWhite");  
+                        background: color("colorgray");  
                         min-height: 40px;
                         border: 1px solid color('border');
                         box-shadow: none;
@@ -595,6 +600,18 @@
         margin-right: -15px;
         padding-left: 15px;
         padding-right: 15px;
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            // min-height: 95px;
+            position: fixed;
+            bottom: 61px;
+            background: color('colorWhite');
+            width: 100%;
+            left: 0;
+            margin: 0;
+        }
         .doc-submit-wrap {
             text-align: right;
             @include mobile {
@@ -622,6 +639,10 @@ width:100%;
                     font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
                     @include mobile {
                         font: 400 #{fontSize("sm") + "/17px"} fontFamily("base");
+                    }
+
+                    @media (max-width:360px) {
+                        font: 400 #{fontSize("sm")-1 + "/17px"} fontFamily("base");
                     }
                 }
             }
@@ -768,8 +789,6 @@ p {
             input {
                 width: 100%;
                 border: 1px solid color("border");
-                border-top: none;
-                border-bottom: none;
                 padding: 6px 6px;
                 font: 400 #{fontSize("sm") + "/1"} fontFamily("base"); 
                 color: color('colorBlack');
@@ -792,6 +811,8 @@ p {
     .modal-footer {
         justify-content:center;
         border-top:none;
+        background: color("modalfooter");
+        padding: 6px 10px;
         .btn {
             font: 400 #{fontSize("sm") + "/1"} fontFamily("base"); 
             min-width: 205px;

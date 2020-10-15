@@ -9,7 +9,7 @@ import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Redirect } from "react-router-dom";
 import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
 import doneTaskListIcon from "../../../../assets/images/doneTasklist-icon.svg";
-import noTaskListIcon from "../../../../assets/images/empty-doc-req-icon.svg";
+import noTaskListIcon from "../../../../assets/images/empty-doc-req-icon-mobile.svg";
 type DocumentsRequiredType = {
   setCurrentInview?: any
 }

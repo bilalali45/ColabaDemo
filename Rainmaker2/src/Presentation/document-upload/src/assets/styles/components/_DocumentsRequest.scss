@@ -58,6 +58,9 @@
 .dr-c-wrap {
     background: color("colorWhite"); 
     padding:0 20px;
+    @include mobile {
+        background: color("colorgray"); 
+    }
 
 }
 .dr-asideWrap {
@@ -72,6 +75,15 @@
         border-right:none;
         padding-bottom: 0px;
         margin-right: -20px;
+        .dr-list-wrap {
+            nav {
+                ul {
+                    li {
+                        background: color("colorWhite");     
+                    }
+                }
+            }
+        }
     }
 }
 }
