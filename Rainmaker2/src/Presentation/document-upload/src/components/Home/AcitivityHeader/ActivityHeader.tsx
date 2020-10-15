@@ -39,9 +39,9 @@ const ActivityHeader = (props) => {
   const taskListTooltipRef = useRef<any>(null);
 
   useEffect(() => {
-    location.pathname.includes("/activity")?setShowToolTip(true):setShowToolTip(false);
+    location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
     
-  }, []);
+  }, [pendingDocs?.length]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -224,7 +224,7 @@ const ActivityHeader = (props) => {
         >
           <Popover id="popover-contained" className="taskListPopover" >
             <h4>Task List</h4>
-            <p>We need <span>{pendingDocs?.length}</span> items from you</p>
+            <p>We need <span>{pendingDocs?.length}</span> {pendingDocs?.length < 2?"item":"items"} from you</p>
           </Popover>
         </Overlay>}
         <Link to={{
