@@ -7,6 +7,7 @@ import { DocumentActions } from "../../../../store/actions/DocumentActions";
 import { Auth } from "../../../../services/auth/Auth";
 import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
+import DocUploadIconMobile from "../../../../assets/images/upload-doc-icon-mobile.svg";
 import { DateFormatWithMoment } from "../../../../utils/helpers/DateFormat";
 //import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
 import { DocumentView } from "rainsoft-rc";
@@ -226,7 +227,7 @@ export const UploadedDocumentsTable = () => {
       <div className="no-document">
         <div className="no-document--wrap">
           <div className="no-document--img">
-            <img src={DocUploadIcon} alt="Your don't have any files!" />
+            <img src={isMobile?.value?DocUploadIconMobile:DocUploadIcon} alt="Your don't have any files!" />
           </div>
           <label className="inputno-document--text">
             You don't have any uploaded files.

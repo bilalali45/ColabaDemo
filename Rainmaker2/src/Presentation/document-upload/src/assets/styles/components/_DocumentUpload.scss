@@ -117,6 +117,7 @@
         margin-right: -15px;
         @include mobile {
             min-height: calc(100vh - 245px);
+            background: color("colorWhite");
         }
         &.havefooter {
             height: 345px;
@@ -201,7 +202,7 @@
                     position: relative;
                     margin-bottom: 10px;
                     @include mobile {
-                        background: color("colorWhite");  
+                        background: color("colorgray");  
                         min-height: 40px;
                         border: 1px solid color('border');
                         box-shadow: none;
@@ -595,6 +596,12 @@
         margin-right: -15px;
         padding-left: 15px;
         padding-right: 15px;
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 110px;
+        }
         .doc-submit-wrap {
             text-align: right;
             @include mobile {
