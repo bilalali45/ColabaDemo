@@ -480,12 +480,61 @@ export const DocumentItem = ({
       </li>
     );
   };
+  
+  const renderFileUploadFailed = () => {
+    return (
+      <li className="doc-li item-error" data-testid="type-not-allowed-item">
+        <div className="noneditable doc-liWrap">
+          <div className="doc-icon">
+            <img src={erroricon} alt="" />
+          </div>
+          <div className="doc-list-content">
+            <div className="title">
+              <p>{file.clientName}</p>
+            </div>
+            <div className="dl-info">
+              <span className="dl-text">
+                {" "}
+                File could not be uploaded successfully
+              </span>
+            </div>
+          </div>
+          <div className="doc-list-actions">
+            <ul className="editable-actions">
+              <li
+                onClick={() => {
+                  retry(file);
+                }}
+              >
+                <a title="Retry" className="icon-retry" tabIndex={-1}>
+                  <span className="retry-txt">Retry</span>{" "}
+                  <img src={refreshIcon} alt="" />
+                </a>
+              </li>
+              <li>
+                <a
+                  data-testid={`file-remove-btn-${indexKey}`}
+                  onClick={() => deleteDoc(file.clientName)}
+                  tabIndex={-1}
+                  title="Remove"
+                >
+                  <i className="zmdi zmdi-close"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    );
+  };
 
   const renderNotAllowedFile = () => {
     if (file.notAllowedReason === "FileSize") {
       return renderSizeNotAllowed();
     } else if (file.notAllowedReason === "FileType") {
       return renderTypeIsNotAllowed();
+    } else if (file.notAllowedReason === "Failed") {
+      return renderFileUploadFailed();
     }
     return null;
   };
@@ -570,7 +619,7 @@ export const DocumentItem = ({
     )
   }
 
-  if (file.notAllowed) {
+  if (file.notAllowed || file.uploadStatus === 'failed') {
     return renderNotAllowedFile();
   }
 

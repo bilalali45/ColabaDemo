@@ -49,6 +49,16 @@ export class DocumentUploadActions {
         }
       );
     } catch (error) {
+      dispatchProgress({
+        type: DocumentsActionType.AddFileToDoc,
+        payload: currentSelected?.files?.map(f => {
+          if(f?.clientName === file?.clientName) {
+            f.uploadStatus = 'failed';
+            f.notAllowedReason = 'Failed';
+          }
+          return f;
+        }),
+      });
       console.log("-------------->Upload errors------------>", error);
     }
   }
@@ -103,10 +113,10 @@ export class DocumentUploadActions {
         selectedFile.notAllowed = true;
       }
 
-      if ((await FileUpload.isTypeAllowed(f)) === false) {
-        selectedFile.notAllowedReason = "FileType";
-        selectedFile.notAllowed = true;
-      }
+      // if ((await FileUpload.isTypeAllowed(f)) === false) {
+      //   selectedFile.notAllowedReason = "FileType";
+      //   selectedFile.notAllowed = true;
+      // }
 
       selectedFile.editName = true;
 

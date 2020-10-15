@@ -396,7 +396,8 @@ SelectedDocumentsType) => {
         )}
       </div>
       <div className="doc-upload-footer">
-        {doneVisible ? (
+        {console.log('sdfafasdfa adf asdf asdfa dfasdfadsf asdf asdf', currentSelected?.files?.filter(f => f.uploadedStatus === 'failed'))}
+        {doneVisible && currentSelected?.files?.filter(f => f.uploadedStatus === 'failed').length > 0 ? (
           <div className="doc-confirm-wrap">
             <div className="row">
               <div className="col-xs-12 col-md-6 col-lg-7">
