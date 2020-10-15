@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext,Fragment } from "react";
+import React, { useState, useRef, useEffect, useContext, Fragment } from "react";
 
 import {
   DocEditIcon,
@@ -98,6 +98,9 @@ export const DocumentItem = ({
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (isMobile?.value) {
+      return;
+    }
     if (nameExists === true || validFilename === false || filename === "") {
 
       return event.preventDefault()
@@ -224,52 +227,52 @@ export const DocumentItem = ({
     return (
       <div className={`doc-list-actions doc-list-actions-mobile`}>
 
-{file.uploadStatus === "done" ?
-                  <div className="m-d-l-submitted-icon">
-                    <a data-testid="done-upload" title="Uploaded" className="icon-uploaded" tabIndex={-1}>
-                      <i className="zmdi zmdi-check"></i>
-                    </a>
+        {file.uploadStatus === "done" ?
+          <div className="m-d-l-submitted-icon">
+            <a data-testid="done-upload" title="Uploaded" className="icon-uploaded" tabIndex={-1}>
+              <i className="zmdi zmdi-check"></i>
+            </a>
+          </div>
+          :
+          <Dropdown onToggle={(e) => { setOpenItemDropdown(e) }}>
+            <Dropdown.Toggle id="doc-list-m-actions" as="div">
+              <i className="zmdi zmdi-more-vert"></i>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {file.file && !file.uploadProgress && (
+                <div className="m-d-l-item" data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
+                  <div className="d-l-m-icon">{<DocEditIcon />}</div>
+                  <span>Rename</span>
+                </div>
+
+              )}
+              <div className="m-d-l-item" onClick={() => viewDocument(file)}
+                title="View Document"
+                tabIndex={-1}
+              >
+                <div className="d-l-m-icon">
+                  {<DocviewIcon />}
+                </div>
+                <span>View File</span>
+              </div>
+              {file.file && file.uploadProgress < 100 && (
+                <div className="m-d-l-item"
+                  data-testid={`file-remove-btn-${indexKey}`}
+                  title="Cancel"
+                  onClick={() => deleteDOChandeler()}
+                  tabIndex={-1}
+                >
+                  <div className="d-l-m-icon">
+                    <i className="zmdi zmdi-close"></i>
                   </div>
-                  :
-                  <Dropdown onToggle={(e)=>{setOpenItemDropdown(e)}}>
-                  <Dropdown.Toggle id="doc-list-m-actions" as="div">
-                    <i className="zmdi zmdi-more-vert"></i>
-                  </Dropdown.Toggle>
-        
-                  <Dropdown.Menu>
-                    {file.file && !file.uploadProgress && (
-                      <div className="m-d-l-item" data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
-                        <div className="d-l-m-icon">{<DocEditIcon />}</div>
-                        <span>Rename</span>
-                      </div>
-        
-                    )}
-                    <div className="m-d-l-item" onClick={() => viewDocument(file)}
-                      title="View Document"
-                      tabIndex={-1}
-                    >
-                      <div className="d-l-m-icon">
-                        {<DocviewIcon />}
-                      </div>
-                      <span>View File</span>
-                    </div>
-                    {file.file && file.uploadProgress < 100 && (
-                      <div className="m-d-l-item"
-                        data-testid={`file-remove-btn-${indexKey}`}
-                        title="Cancel"
-                        onClick={() => deleteDOChandeler()}
-                        tabIndex={-1}
-                      >
-                        <div className="d-l-m-icon">
-                          <i className="zmdi zmdi-close"></i>
-                        </div>
-                        <span>Delete</span>
-                      </div>
-                    )}
-        
-                  </Dropdown.Menu>
-                </Dropdown>
-               }
+                  <span>Delete</span>
+                </div>
+              )}
+
+            </Dropdown.Menu>
+          </Dropdown>
+        }
 
 
 
@@ -317,24 +320,24 @@ export const DocumentItem = ({
   const renderFileTitleMobile = () => {
     return (
       <div className="rename-doc-input">
-          <input
-            ref={txtInput}
-            maxLength={250}
-            type="text"
-            className={  nameExists === true || validFilename === false || filename === "" ? "haveError" : "" }
-            value={filename} //filename is default value on edit without extension
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            onBlur={onBlur}
-            autoFocus={true}
-          />
+        <input
+          ref={txtInput}
+          maxLength={250}
+          type="text"
+          className={nameExists === true || validFilename === false || filename === "" ? "haveError" : ""}
+          value={filename} //filename is default value on edit without extension
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          onBlur={onBlur}
+          autoFocus={true}
+        />
       </div>
     )
   }
 
   const renderAllowedFile = () => {
     return (
-      <li className={`doc-li ${openItemDropdown?" dopen":""}` } data-testid="file-item">
+      <li className={`doc-li ${openItemDropdown ? " dopen" : ""}`} data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={
@@ -490,70 +493,80 @@ export const DocumentItem = ({
   const renderDocListPopupMobile = () => {
     return (
       <Modal
-      show ={renameModalShow}
-      className="rename-popup"
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-
-    
->
-<Modal.Header>
-  <Modal.Title>
-  Rename Document?
-  </Modal.Title>
-  <button type="button" className="close" onClick={() => setRenameModalShow(false)}>
-  <span aria-hidden="true">×</span><span className="sr-only" >Close</span></button>
-</Modal.Header>
-<Modal.Body>
+        show={renameModalShow}
+        className="rename-popup"
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
 
 
-<div className="m-rename-popup-docWrap">
-<div className="m-popup-doc-li" >
-        {!file.deleteBoxVisible && (
-          <Fragment>
-          <div className="mp-d-l-wrap">
-            <div className="doc-icon">
-              <i className={file.docLogo}></i>
-            </div>
+      >
+        <Modal.Header>
+          <Modal.Title>
+            Rename Document?
+        </Modal.Title>
+          <button type="button" className="close" onClick={() => {
+            if (filename?.length) {
+              toggleFocus(file, true);
+              changeName(file, filename);
+              return setRenameModalShow(false);
+            }
+          }}>
+            <span aria-hidden="true">×</span><span className="sr-only" >Close</span></button>
+        </Modal.Header>
+        <Modal.Body>
 
-            <div className="m-d-l-info">
-              <h4>Original Document Name</h4>
-              <p>{file.clientName}</p>
-            </div>
 
-            </div>
+          <div className="m-rename-popup-docWrap">
+            <div className="m-popup-doc-li" >
+              {!file.deleteBoxVisible && (
+                <Fragment>
+                  <div className="mp-d-l-wrap">
+                    <div className="doc-icon">
+                      <i className={file.docLogo}></i>
+                    </div>
 
-            <div className="doc-list-content">
-              {renderFileTitleMobile()}
-              {!validFilename && (
-                <div className="dl-info">
-                  <span className="dl-errorrename">File name cannot contain any special characters</span>
-                </div>
+                    <div className="m-d-l-info">
+                      <h4>Original Document Name</h4>
+                      <p>{file.clientName}</p>
+                    </div>
+
+                  </div>
+
+                  <div className="doc-list-content">
+                    {renderFileTitleMobile()}
+                    {!validFilename && (
+                      <div className="dl-info">
+                        <span className="dl-errorrename">File name cannot contain any special characters</span>
+                      </div>
+                    )}
+                    {!!nameExists && (
+                      <div className="dl-info">
+                        <span className="dl-errorrename">File name must be unique.</span>
+                      </div>
+                    )}
+                    {filename === "" && (
+                      <div className="dl-info">
+                        <span className="dl-errorrename">File name cannot be empty.</span>
+                      </div>
+                    )}
+                  </div>
+                </Fragment>
               )}
-              {!!nameExists && (
-                <div className="dl-info">
-                  <span className="dl-errorrename">File name must be unique.</span>
-                </div>
-              )}
-              {filename === "" && (
-                <div className="dl-info">
-                  <span className="dl-errorrename">File name cannot be empty.</span>
-                </div>
-              )}
+
             </div>
-            </Fragment>
-        )}
-
-      </div>
-</div>
+          </div>
 
 
-</Modal.Body>
-<Modal.Footer>
- <button className="btn btn-primary" onClick={() => setRenameModalShow(false)}>Save</button>
-</Modal.Footer>
-</Modal>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-primary" onClick={() => {
+            toggleFocus(file, true);
+            changeName(file, filename);
+            setRenameModalShow(false)
+          }}>Save</button>
+        </Modal.Footer>
+      </Modal>
     )
   }
 
@@ -562,9 +575,9 @@ export const DocumentItem = ({
   }
 
   return (
-   <Fragment> 
-    {isMobile?.value && file?.focused && file?.editName ? renderDocListPopupMobile() : renderAllowedFile()}
-  </Fragment>
-)
-  ;
+    <Fragment>
+      {isMobile?.value && file?.focused && file?.editName ? renderDocListPopupMobile() : renderAllowedFile()}
+    </Fragment>
+  )
+    ;
 };
