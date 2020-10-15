@@ -134,6 +134,7 @@ export const DocumentItem = ({
   }, [file.focused, file.editName]);
 
   const EditTitle = () => {
+    setRenameModalShow(true);
     changeName(file, filename);
 
     toggleFocus(file, true)
@@ -361,7 +362,7 @@ export const DocumentItem = ({
                   <span className="dl-errorrename">File name must be unique.</span>
                 </div>
               )}
-              {filename === "" && (
+              {filename.trim() === "" && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot be empty.</span>
                 </div>
@@ -491,6 +492,7 @@ export const DocumentItem = ({
   };
 
   const renderDocListPopupMobile = () => {
+    console.log('in here reachedDDDD', renameModalShow);
     return (
       <Modal
         show={renameModalShow}
@@ -545,7 +547,7 @@ export const DocumentItem = ({
                         <span className="dl-errorrename">File name must be unique.</span>
                       </div>
                     )}
-                    {filename === "" && (
+                    {filename.trim() === "" && (
                       <div className="dl-info">
                         <span className="dl-errorrename">File name cannot be empty.</span>
                       </div>
@@ -561,6 +563,9 @@ export const DocumentItem = ({
         </Modal.Body>
         <Modal.Footer>
           <button className="btn btn-primary" onClick={() => {
+            if (nameExists === true || validFilename === false || filename.trim() === "") {
+              return;
+            }
             toggleFocus(file, true);
             changeName(file, filename);
             setRenameModalShow(false)
