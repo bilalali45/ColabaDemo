@@ -273,5 +273,59 @@ namespace Milestone.Tests
             var content = (string)(result as OkObjectResult).Value;
             Assert.Equal("",content);
         }
+        [Fact]
+        public async Task TestSetLosMilestone()
+        {
+            //Arrange
+            Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
+            mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.SetLosMilestone(1,1,"",1);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestSetLosMilestoneNull()
+        {
+            //Arrange
+            Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
+            mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(-1);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.SetLosMilestone(1, 1, "", 1);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
     }
 }
