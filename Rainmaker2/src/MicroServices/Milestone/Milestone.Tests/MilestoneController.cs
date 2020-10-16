@@ -156,5 +156,64 @@ namespace Milestone.Tests
             var content = (MilestoneForBorrowerDashboard)(result as OkObjectResult).Value;
             Assert.Null(content);
         }
+
+        [Fact]
+        public async Task TestGetMilestoneForLoanCenter()
+        {
+            //Arrange
+            Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mock.Setup(x => x.GetMilestoneId(It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(1);
+            mockMilestone.Setup(x => x.GetMilestoneForLoanCenter(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new List<MilestoneForLoanCenter>() { new MilestoneForLoanCenter() { Name="Test"} });
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+            //Act
+            IActionResult result = await controller.GetMilestoneForLoanCenter(1);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (List<MilestoneForLoanCenter>)(result as OkObjectResult).Value;
+            Assert.Equal("Test", content[0].Name);
+        }
+        [Fact]
+        public async Task TestGetMilestoneForLoanCenterNull()
+        {
+            //Arrange
+            Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mock.Setup(x => x.GetMilestoneId(It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(-1);
+            mockMilestone.Setup(x => x.GetMilestoneForLoanCenter(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new List<MilestoneForLoanCenter>() { new MilestoneForLoanCenter() { Name = "Test" } });
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+            //Act
+            IActionResult result = await controller.GetMilestoneForLoanCenter(1);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (List<MilestoneForLoanCenter>)(result as OkObjectResult).Value;
+            Assert.Null(content);
+        }
     }
 }
