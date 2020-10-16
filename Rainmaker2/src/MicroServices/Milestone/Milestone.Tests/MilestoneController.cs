@@ -327,5 +327,21 @@ namespace Milestone.Tests
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
+
+        [Fact]
+        public async Task TestGetGlobalMilestoneSetting()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetGlobalMilestoneSetting(It.IsAny<int>())).ReturnsAsync(new GlobalMilestoneSettingModel() { ShowMilestone = true, TenantId = 1 });
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetGlobalMilestoneSetting(1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (GlobalMilestoneSettingModel)(result as OkObjectResult).Value;
+            Assert.True(content.ShowMilestone);
+        }
     }
 }
