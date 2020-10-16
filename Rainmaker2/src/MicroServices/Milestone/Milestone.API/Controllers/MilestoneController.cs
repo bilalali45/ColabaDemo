@@ -80,7 +80,7 @@ namespace Milestone.API.Controllers
         }
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> SetLosMilestone(int tenantId, int loanApplicationId, string milestone, short losId)
+        public async Task<IActionResult> SetLosMilestone(int tenantId, string loanId, string milestone, short losId, short rainmakerLosId)
         {
             int id = await _milestoneService.GetLosMilestone(tenantId, milestone,losId);
             if(id<=0)
@@ -89,7 +89,13 @@ namespace Milestone.API.Controllers
             }
             else
             {
+                int loanApplicationId = await _rainmakerService.GetLoanApplicationId(loanId, rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                if(loanApplicationId<=0)
+                {
+                    return BadRequest("Unable to find loan application");
+                }
                 await _rainmakerService.SetMilestoneId(loanApplicationId, id, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await _milestoneService.UpdateMilestoneLog(loanApplicationId, id);
             }
             return Ok();
         }

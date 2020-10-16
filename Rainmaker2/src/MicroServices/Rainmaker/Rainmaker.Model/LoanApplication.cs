@@ -7,6 +7,12 @@ namespace Rainmaker.Model
         public int loanApplicationId { get; set; }
         public int milestoneId { get; set; }
     }
+
+    public class LoanIdModel
+    {
+        public string loanId { get; set; }
+        public short losId { get; set; }
+    }
     public class PostLoanApplicationModel
     {
         public int loanApplicationId { get; set; }

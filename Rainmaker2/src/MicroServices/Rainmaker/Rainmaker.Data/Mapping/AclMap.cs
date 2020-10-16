@@ -19,7 +19,7 @@ namespace RainMaker.Data.Mapping
     using RainMaker.Entity.Models;
 
     // Acl
-
+    
     public partial class AclMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<Acl>
     {
         public void Configure(EntityTypeBuilder<Acl> builder)

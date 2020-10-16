@@ -294,7 +294,7 @@ namespace Milestone.Tests
             controller.ControllerContext = context;
 
             //Act
-            IActionResult result = await controller.SetLosMilestone(1,1,"",1);
+            IActionResult result = await controller.SetLosMilestone(1,"","",1,1);
 
             //Assert
             Assert.NotNull(result);
@@ -321,7 +321,7 @@ namespace Milestone.Tests
             controller.ControllerContext = context;
 
             //Act
-            IActionResult result = await controller.SetLosMilestone(1, 1, "", 1);
+            IActionResult result = await controller.SetLosMilestone(1, "", "", 1,1);
 
             //Assert
             Assert.NotNull(result);

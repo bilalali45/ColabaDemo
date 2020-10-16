@@ -28,7 +28,11 @@ namespace Rainmaker.Service
         {
             this.commonService = commonService;
         }
-
+        public async Task<int> GetLoanApplicationId(string loanId, short losId)
+        {
+            var binder = (await Uow.Repository<LosLoanApplicationBinder>().Query(x => x.LosLoanAplicationNumber == loanId && x.LosId == losId).FirstOrDefaultAsync())?.LoanApplicationId;
+            return binder ?? -1;
+        }
         public async Task<int> GetMilestoneId(int loanApplicationId)
         {
             return await Query(x => x.Id == loanApplicationId).Select(x => x.MilestoneId ?? -1).FirstAsync();

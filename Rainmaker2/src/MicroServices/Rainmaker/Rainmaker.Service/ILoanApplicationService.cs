@@ -34,6 +34,7 @@ namespace Rainmaker.Service
         List<LoanApplication> GetLoanApplicationWithDetails(int? id = null,
                                                             string encompassNumber = "",
                                                             LoanApplicationService.RelatedEntities? includes = null);
+        Task<int> GetLoanApplicationId(string loanId, short losId);
         Task UpdateLoanInfo(UpdateLoanInfo updateLoanInfo);
         Task<string> GetBanner(int loanApplicationId);
         Task<string> GetFavIcon(int loanApplicationId);

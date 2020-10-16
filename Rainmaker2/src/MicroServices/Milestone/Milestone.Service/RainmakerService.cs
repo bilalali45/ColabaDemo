@@ -17,6 +17,20 @@ namespace Milestone.Service
             this._httpClient = _httpClient;
             this._configuration = _configuration;
         }
+        public async Task<int> GetLoanApplicationId(string loanId, short losId, IEnumerable<string> auth)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/milestone/GetLoanApplicationId"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(@"{""loanId"":""" + loanId + @""",""losId"":" + losId + "}", Encoding.UTF8, "application/json"),
+            };
+            request.Headers.Add("Authorization", auth);
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+            return Convert.ToInt32(await response.Content.ReadAsStringAsync());
+        }
         public async Task SetMilestoneId(int loanApplicationId, int milestoneId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()

@@ -582,6 +582,7 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LendingTreeQuoteMap());
             modelBuilder.ApplyConfiguration(new LendingTreeScoreMap());
             modelBuilder.ApplyConfiguration(new LiabilityTypeMap());
+            modelBuilder.ApplyConfiguration(new LoMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationFeeMap());
             modelBuilder.ApplyConfiguration(new LoanApplicationViewMap());
@@ -614,6 +615,8 @@ namespace RainMaker.Data
             modelBuilder.ApplyConfiguration(new LockStatusCauseMap());
             modelBuilder.ApplyConfiguration(new LockStatusListMap());
             modelBuilder.ApplyConfiguration(new LogItemMap());
+            modelBuilder.ApplyConfiguration(new LosLoanApplicationBinderMap());
+            modelBuilder.ApplyConfiguration(new LosSyncLogMap());
             modelBuilder.ApplyConfiguration(new MaritalStatusListMap());
             modelBuilder.ApplyConfiguration(new MaritalStatusTypeMap());
             modelBuilder.ApplyConfiguration(new MarksmanLeadMap());

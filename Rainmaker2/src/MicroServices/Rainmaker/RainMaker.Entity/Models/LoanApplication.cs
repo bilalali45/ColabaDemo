@@ -105,6 +105,14 @@ namespace RainMaker.Entity.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LoanDocument> LoanDocuments { get; set; } // LoanDocument.FK_LoanDocument_LoanApplication
         /// <summary>
+        /// Child LosLoanApplicationBinders where [LosLoanApplicationBinder].[LoanApplicationId] point to this entity (FK_LosLoanApplicationBinder_LoanApplication)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LosLoanApplicationBinder> LosLoanApplicationBinders { get; set; } // LosLoanApplicationBinder.FK_LosLoanApplicationBinder_LoanApplication
+        /// <summary>
+        /// Child LosSyncLogs where [LosSyncLog].[LoanApplicationId] point to this entity (FK_LosSyncLog_LoanApplication)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LosSyncLog> LosSyncLogs { get; set; } // LosSyncLog.FK_LosSyncLog_LoanApplication
+        /// <summary>
         /// Child MortgageEducations where [MortgageEducation].[MortgageEducationTypeId] point to this entity (FK_MortgageEducation_LoanApplication)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<MortgageEducation> MortgageEducations { get; set; } // MortgageEducation.FK_MortgageEducation_LoanApplication
@@ -193,6 +201,8 @@ namespace RainMaker.Entity.Models
             BorrowerConsents = new System.Collections.Generic.HashSet<BorrowerConsent>();
             LoanApplicationFees = new System.Collections.Generic.HashSet<LoanApplicationFee>();
             LoanDocuments = new System.Collections.Generic.HashSet<LoanDocument>();
+            LosLoanApplicationBinders = new System.Collections.Generic.HashSet<LosLoanApplicationBinder>();
+            LosSyncLogs = new System.Collections.Generic.HashSet<LosSyncLog>();
             MortgageEducations = new System.Collections.Generic.HashSet<MortgageEducation>();
             TransactionInfoBinders = new System.Collections.Generic.HashSet<TransactionInfoBinder>();
             VaDetails = new System.Collections.Generic.HashSet<VaDetail>();

@@ -33,5 +33,11 @@ namespace Rainmaker.API.Controllers
             await _loanApplicationService.SetMilestoneId(model.loanApplicationId,model.milestoneId);
             return Ok();
         }
+        [Authorize(Roles = "MCU")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetLoanApplicationId(LoanIdModel model)
+        {
+            return Ok(await _loanApplicationService.GetLoanApplicationId(model.loanId, model.losId));
+        }
     }
 }
