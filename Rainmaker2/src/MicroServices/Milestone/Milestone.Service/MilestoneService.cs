@@ -25,11 +25,15 @@ namespace Milestone.Service
             int tenantId)
         {
             var milestone = await GetEligibleMilestone(loanApplicationId, milestoneId, tenantId);
-            if (milestone != null)
+            MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
+               .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            if (milestoneSetting == null || milestoneSetting.ShowMilestone)
             {
-                if (milestone.MilestoneTypeId == (int) MilestoneType.Special)
+                if (milestone != null)
                 {
-                    return new List<MilestoneForLoanCenter>()
+                    if (milestone.MilestoneTypeId == (int)MilestoneType.Special)
+                    {
+                        return new List<MilestoneForLoanCenter>()
                     {
                         new MilestoneForLoanCenter()
                         {
@@ -48,28 +52,29 @@ namespace Milestone.Service
                                 : milestone.TenantMilestones.First(x => x.TenantId == tenantId).Description
                         }
                     };
-                }
-                else
-                {
-                    return await Query(x=>x.MilestoneTypeId==(int)MilestoneType.Timeline &&
-                                          (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null 
-                                           || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)
-                                          ).Include(x=>x.TenantMilestones).OrderBy(x=>x.Order).Select(x=>new MilestoneForLoanCenter()
+                    }
+                    else
                     {
-                        Name = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
-                                string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
-                                    .BorrowerName))
-                            ? x.BorrowerName
-                            : x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName,
-                        Icon = x.Icon,
-                        MilestoneType = x.MilestoneTypeId,
-                        IsCurrent = (x.Id==milestone.Id),
-                        Description = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
-                                       string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
-                                           .Description))
-                            ? x.Description
-                            : x.TenantMilestones.First(y => y.TenantId == tenantId).Description
-                    }).ToListAsync();
+                        return await Query(x => x.MilestoneTypeId == (int)MilestoneType.Timeline &&
+                                              (x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId) == null
+                                               || x.TenantMilestones.FirstOrDefault(y => y.TenantId == tenantId).Visibility)
+                                              ).Include(x => x.TenantMilestones).OrderBy(x => x.Order).Select(x => new MilestoneForLoanCenter()
+                                              {
+                                                  Name = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
+                                        string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
+                                            .BorrowerName))
+                                    ? x.BorrowerName
+                                    : x.TenantMilestones.First(y => y.TenantId == tenantId).BorrowerName,
+                                                  Icon = x.Icon,
+                                                  MilestoneType = x.MilestoneTypeId,
+                                                  IsCurrent = (x.Id == milestone.Id),
+                                                  Description = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) ||
+                                               string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId)
+                                                   .Description))
+                                    ? x.Description
+                                    : x.TenantMilestones.First(y => y.TenantId == tenantId).Description
+                                              }).ToListAsync();
+                    }
                 }
             }
             return null;
