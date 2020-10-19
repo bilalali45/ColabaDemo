@@ -76,7 +76,10 @@ export const DocumentItem = ({
   }
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    modifyFilename(event.target.value)
+    modifyFilename(event.target.value);
+    if (!event.target.value.trim()) {
+      setFilename('');
+    }
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -92,7 +95,7 @@ export const DocumentItem = ({
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (nameExists === true || validFilename === false || filename === "") {
-    
+
       return event.preventDefault()
     }
 

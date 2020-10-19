@@ -37,7 +37,7 @@ export const SelectedDocuments = ({
   fileLimitError,
   setFileLimitError,
 }: // filesChange,
-SelectedDocumentsType) => {
+  SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
@@ -144,7 +144,7 @@ SelectedDocumentsType) => {
     setUploadingFiles(false);
     try {
       Promise.resolve(fetchUploadedDocuments());
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -152,7 +152,7 @@ SelectedDocumentsType) => {
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -167,7 +167,9 @@ SelectedDocumentsType) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        if (newName.trim()) {
+          f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        }
         f.editName = !f.editName;
         return f;
       }
@@ -260,9 +262,9 @@ SelectedDocumentsType) => {
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          data
+        );
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -354,19 +356,19 @@ SelectedDocumentsType) => {
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -374,8 +376,8 @@ SelectedDocumentsType) => {
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
         {!!currentDoc && location.pathname.includes("view") && (
@@ -444,18 +446,18 @@ SelectedDocumentsType) => {
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );
