@@ -57,7 +57,7 @@ namespace ByteWebConnector.API.Utility
 
             var orientationAdjustedImageStream = new MemoryStream();
             inputImage.Save(stream: orientationAdjustedImageStream,
-                            format: ImageFormat.Png);
+                            format: ImageFormat.Jpeg);
 
             // If you're going to read from the stream, you may need to reset the position to the start
             orientationAdjustedImageStream.Position = 0;

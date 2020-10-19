@@ -92,7 +92,7 @@ namespace ByteWebConnector.SDK.Controllers
                     if (embeddedDoc != null)
                     {
                         _logger.LogInformation($"DocsyncSDK EmbeddedDoc Added");
-                        string fileNameAndPath = Path.GetTempPath() + documentUploadRequest.DocumentName + "." +
+                        string fileNameAndPath = Path.GetTempPath() + $@"{Guid.NewGuid()}" + "." +
                                                    documentUploadRequest.DocumentExension;
                         embeddedDoc.SetFieldValue("FileExtension",
                                                   documentUploadRequest.DocumentExension);
