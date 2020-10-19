@@ -85,7 +85,7 @@ namespace Milestone.API.Controllers
             int id = await _milestoneService.GetLosMilestone(tenantId, milestone,losId);
             if(id<=0)
             {
-                await _rainmakerService.SendEmailToSupport(tenantId,milestone);
+                await _rainmakerService.SendEmailToSupport(tenantId,milestone, loanId, rainmakerLosId);
             }
             else
             {
