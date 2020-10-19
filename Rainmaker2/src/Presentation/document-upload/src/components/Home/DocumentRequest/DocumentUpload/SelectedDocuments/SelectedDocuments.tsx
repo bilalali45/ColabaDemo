@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "rainsoft-rc";
-
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -19,6 +18,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  setCurrentInview?: any
   // filesChange: Function;
 }
 
@@ -36,8 +36,9 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
+  setCurrentInview
 }: // filesChange,
-SelectedDocumentsType) => {
+  SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
@@ -45,7 +46,8 @@ SelectedDocumentsType) => {
   const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
   const documents: any = state.documents;
@@ -144,7 +146,7 @@ SelectedDocumentsType) => {
     setUploadingFiles(false);
     try {
       Promise.resolve(fetchUploadedDocuments());
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -152,7 +154,7 @@ SelectedDocumentsType) => {
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -167,7 +169,9 @@ SelectedDocumentsType) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        if (newName.trim()) {
+          f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        }
         f.editName = !f.editName;
         return f;
       }
@@ -260,9 +264,9 @@ SelectedDocumentsType) => {
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          data
+        );
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -280,6 +284,9 @@ SelectedDocumentsType) => {
       setDoneVisible(false);
       setDoneHit(false);
       await fetchUploadedDocuments();
+    }
+    if (isMobile?.value && pendingDocs.length === 1) {
+      setCurrentInview('documetsRequired');
     }
   };
 
@@ -354,19 +361,19 @@ SelectedDocumentsType) => {
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -374,8 +381,8 @@ SelectedDocumentsType) => {
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
         {!!currentDoc && location.pathname.includes("view") && (
@@ -387,6 +394,7 @@ SelectedDocumentsType) => {
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
           />
         )}
       </div>
@@ -394,7 +402,7 @@ SelectedDocumentsType) => {
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-md-6 col-lg-7">
+              <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
@@ -403,7 +411,7 @@ SelectedDocumentsType) => {
                 </div>
               </div>
 
-              <div className="col-md-6 col-lg-5">
+              <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
@@ -444,18 +452,18 @@ SelectedDocumentsType) => {
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
-              <button
-                disabled={btnDisabled || subBtnPressed}
-                className="btn btn-primary"
-                onClick={uploadFiles}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        )}
+            <div className="doc-submit-wrap">
+              {!doneHit && (
+                <button
+                  disabled={btnDisabled || subBtnPressed}
+                  className="btn btn-primary"
+                  onClick={uploadFiles}
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          )}
       </div>
     </section>
   );

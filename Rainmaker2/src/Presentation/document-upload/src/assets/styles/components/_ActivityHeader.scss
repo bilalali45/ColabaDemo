@@ -2,32 +2,153 @@
     .sub-header-wrap {
         padding-top: 35px;
         padding-bottom: 35px;
+
         .breadcrmubs {
             a {
                 color: color("primary");
                 font-size: fontSize("nr");
                 font-weight: 500;
-                i{
+
+                i {
                     margin-right: 5px;
                     font-size: fontSize("nr")+4;
                     vertical-align: text-bottom;
                 }
+
                 &:hover {
                     color: color("base");
                     text-decoration: none;
                 }
             }
         }
+
         .action-doc-upload {
-           a {
-            color: color("primary");
-            font-size: fontSize("nr");
-            font-weight: 500;
-            &:hover {
-                color: color("base");
-                text-decoration: none;
+            a {
+                color: color("primary");
+                font-size: fontSize("nr");
+                font-weight: 500;
+
+                &:hover {
+                    color: color("base");
+                    text-decoration: none;
+                }
             }
-           } 
         }
     }
+}
+
+.mobile-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 8582;
+    margin-bottom: 0;
+    padding:9px 10px 8px 10px;
+    border-top: 1px solid color('border');
+    font: 400 14px/17px "Rubik", sans-serif;
+    background: #ffffff;
+    .mobile-n-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+
+        .n-item {
+            width: 25%;
+            position: relative;
+            cursor: pointer;
+
+            &::after {
+                content: "";
+                border-right: 1px solid color('border');
+                position: absolute;
+                right: 0;
+                top: 50%;
+                height: 21px;
+                margin-top: -10px;
+            }
+
+            &:last-child {
+               
+                &::after {
+                    content: "";
+                    border-right: 0px solid color('border');
+                    display: none;
+                }
+            }
+
+            &-icon {
+                min-height: 25px;
+                position: relative;
+                display: inline-block;
+                &-counter{
+                height:14px;
+                width: 14px;
+                background:color('colorred');
+                color: color('colorWhite');
+                font: 500 #{fontSize('xs')-2 +'/9px'} fontFamily('base');
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                right: -10px;
+                top: -3px;
+                }
+            }
+
+            a {
+                color: color("light-purple");
+                font-size: fontSize("sm");
+                font-weight: 400;
+                text-decoration: none !important;
+                @include smallMobile{
+                    font-size: fontSize("sm") - 1;
+                }
+            }
+
+            &.active {
+                a {
+                    color: color("primary");
+                    font-weight: 500;
+                }
+            }
+
+       
+        }
+    }
+
+    .taskListPopover {
+        &.popover {
+            border: 1px solid color('primary');
+            border-radius: 0;
+            padding: 10px;
+        text-align: center;
+        margin-top: -10px;
+        .arrow {
+            bottom: calc(-0.5rem - 0px);
+            &::before {
+                border-top-color: color('primary');
+            }
+        }
+        h4{
+            font: 500 #{fontSize("md") + "/1.2"} fontFamily("heading");
+    text-transform: uppercase;
+    color: color("base");
+    margin-top: 0;
+    margin-bottom: 3px;
+        }
+
+        p{
+            font: 400 #{fontSize("sm") + "/1.2"} fontFamily("base");
+            color:#989797;
+    margin-bottom: 0;
+    span {
+        color:color('primary');
+        font-weight: 500;
+    }
+        }
+    }
+}
 }
