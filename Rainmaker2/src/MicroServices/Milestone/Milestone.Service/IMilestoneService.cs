@@ -24,5 +24,6 @@ namespace Milestone.Service
         Task AddMapping(MilestoneAddMappingModel model);
         Task DeleteMapping(MilestoneAddMappingModel model);
         Task EditMapping(MilestoneAddMappingModel model);
+        Task InsertMilestoneLog(int loanApplicationId, int milestoneId);
     }
 }

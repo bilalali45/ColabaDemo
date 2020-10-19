@@ -42,6 +42,13 @@ namespace Milestone.API.Controllers
             await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId);
             return Ok();
         }
+        [Authorize(Roles ="MCU,Customer")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> InsertMilestoneLog(MilestoneIdModel model)
+        {
+            await _milestoneService.InsertMilestoneLog(model.loanApplicationId,model.milestoneId);
+            return Ok();
+        }
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneForBorrowerDashboard(int loanApplicationId)

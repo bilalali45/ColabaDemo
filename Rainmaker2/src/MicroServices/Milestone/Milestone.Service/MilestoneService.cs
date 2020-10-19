@@ -97,6 +97,18 @@ namespace Milestone.Service
                 await Uow.SaveChangesAsync();
             }
         }
+        public async Task InsertMilestoneLog(int loanApplicationId, int milestoneId)
+        {
+            var milestoneLog = new MilestoneLog()
+            {
+                MilestoneId = milestoneId,
+                CreatedDateUtc = DateTime.UtcNow,
+                LoanApplicationId = loanApplicationId,
+                TrackingState = TrackingState.Added
+            };
+            Uow.Repository<MilestoneLog>().Insert(milestoneLog);
+            await Uow.SaveChangesAsync();
+        }
         public async Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId)
         {
             return await Repository.Query(x=>x.Id==milestone).Include(x => x.TenantMilestones)
