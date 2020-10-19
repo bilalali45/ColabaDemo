@@ -394,6 +394,7 @@ export const SelectedDocuments = ({
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
           />
         )}
       </div>
