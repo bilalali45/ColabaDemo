@@ -83,7 +83,10 @@ export const DocumentItem = ({
   }
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    modifyFilename(event.target.value)
+    modifyFilename(event.target.value);
+    if (!event.target.value.trim()) {
+      setFilename('')
+    }
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -508,6 +511,9 @@ export const DocumentItem = ({
             Rename Document?
         </Modal.Title>
           <button type="button" className="close" onClick={() => {
+            if(!validFilename || nameExists || filename.trim() === '') {
+              return;
+            }
             if (filename?.length) {
               toggleFocus(file, true);
               changeName(file, filename);
