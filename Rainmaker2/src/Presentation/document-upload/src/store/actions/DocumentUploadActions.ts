@@ -80,7 +80,7 @@ export class DocumentUploadActions {
   ) {
     let allSelectedFiles: Document[] = [...prevFiles];
     let counter = 0;
-    for (let f of files) {
+    for (let f of [...files]) {
       if (allSelectedFiles.length >= ApplicationEnv.MaxDocumentCount) {
         setFileLimitError({ value: true });
         break;
@@ -103,7 +103,7 @@ export class DocumentUploadActions {
         selectedFile.notAllowed = true;
       }
 
-      if (!FileUpload.isTypeAllowed(f)) {
+      if ((await FileUpload.isTypeAllowed(f)) === false) {
         selectedFile.notAllowedReason = "FileType";
         selectedFile.notAllowed = true;
       }

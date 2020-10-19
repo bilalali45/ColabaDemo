@@ -16,12 +16,11 @@ export const useReadAllNotificationsForDocument = (
   const readAllNotificationsForDocument = async (loanApplicationId: string) => {
     try {
       if (!notifications) return;
-
       const documentIds = notifications
         .filter(
           (notification) =>
             ['Unseen', 'Unread', 'Seen'].includes(notification.status) &&
-            notification.payload.data.loanApplicationId === loanApplicationId
+            notification?.payload?.data?.loanApplicationId === loanApplicationId
         )
         .map((notification) => notification.id);
 
