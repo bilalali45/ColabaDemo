@@ -282,5 +282,37 @@
                 }
             }
         }
+        &.sp-status {
+            padding: 50px 25px 35px;
+            min-height: 233px;
+            display: flex;
+            align-items: center;
+            .list-wrap {
+                padding-bottom: 0;
+                min-height: auto;
+           
+            .lp-list {
+                padding-left: 0;
+                padding-right: 185px;
+                align-items: center;
+       
+                .lp-content {
+                    p {
+                        margin-bottom: 0;
+                    }
+                }
+                .status-icon {
+                    max-width: 175px;
+                    position: absolute;
+                    right:0;
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                }
+            }
+        }
     }
+    }
+
 }
