@@ -1542,7 +1542,8 @@ namespace RainMaker.Common
         EmailLoOnLoanApplicationStart = 17,
         EmailLoOnLoanApplicationSubmitted = 18,
         LoanApplicationDocumentRequestActivity = 19,
-        DocumentSyncFailureActivity = 20
+        DocumentSyncFailureActivity = 20,
+        MileStoneActivity = 21
     }
 
 

@@ -327,5 +327,56 @@ namespace Rainmaker.API.Controllers
             imageData.Close();
             return Convert.ToBase64String(ms.ToArray());
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SendEmailToSupport([FromBody] SupportEmailModel model)
+        {
+            var loanApplicationId = await loanApplicationService.GetLoanApplicationId(model.loanId, model.losId);
+
+            if (loanApplicationId <= 0)
+            {
+                _logger.LogError(message: $"Loan application not found for Loan Id  {model.loanId}");
+            }
+            else
+            {
+                var loanApplication = await loanApplicationService.GetByLoanApplicationId(loanApplicationId);
+
+                StringBuilder email = new StringBuilder();
+                string commaseperated = ",";
+                var employee = await _employeeService.GetEmployeeEmailByRoleName(Constants.SupportTeamRoleName);
+                for (int i = 0; i < employee.Count; i++)
+                {
+                    if (i == employee.Count - 1)
+                    {
+                        commaseperated = string.Empty;
+                    }
+                    if (employee[i].EmployeeBusinessUnitEmails != null)
+                    {
+                        var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
+                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+                        if (emailAccount != null)
+                        {
+                            email.Append(emailAccount.Email + commaseperated);
+                        }
+                        else
+                        {
+                            email.Append(string.Empty);
+                        }
+                    }
+                }
+
+                var emailBody = "Mile stone email";
+                var data = new Dictionary<FillKey, string>();
+                data.Add(FillKey.CustomEmailHeader, "");
+                data.Add(FillKey.CustomEmailFooter, "");
+                data.Add(FillKey.EmailBody, emailBody.Replace(Environment.NewLine, "<br/>"));
+                await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ActivityForType.MileStoneActivity, email.ToString());
+
+                _logger.LogInformation(message: $"Support email send  to: {email.ToString()}");
+            }
+
+            return Ok();
+
+        }
     }
 }
