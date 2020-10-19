@@ -31,6 +31,17 @@ namespace Milestone.Service
             response.EnsureSuccessStatusCode();
             return Convert.ToInt32(await response.Content.ReadAsStringAsync());
         }
+        public async Task SendEmailToSupport(int tenantId, string milestone)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/loanapplication/sendemailtosupport"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(@"{""tenantId"":" + tenantId + @",""milestone"":""" + milestone + @"""}", Encoding.UTF8, "application/json"),
+            };
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+        }
         public async Task SetMilestoneId(int loanApplicationId, int milestoneId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()
