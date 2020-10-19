@@ -7,6 +7,7 @@ import { DocumentActions } from "../../../../store/actions/DocumentActions";
 import { Auth } from "../../../../services/auth/Auth";
 import { Document } from "../../../../entities/Models/Document";
 import DocUploadIcon from "../../../../assets/images/upload-doc-icon.svg";
+import DocUploadIconMobile from "../../../../assets/images/upload-doc-icon-mobile.svg";
 import { DateFormatWithMoment } from "../../../../utils/helpers/DateFormat";
 //import { DocumentView } from "../../../../shared/Components/DocumentView/DocumentView";
 import { DocumentView } from "rainsoft-rc";
@@ -30,7 +31,8 @@ export const UploadedDocumentsTable = () => {
 
   const { state, dispatch } = useContext(Store);
   const { submittedDocs }: any = state.documents;
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   useEffect(() => {
     fetchUploadedDocuments();
   }, []);
@@ -58,6 +60,43 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
+    if(isMobile?.value){
+      return (
+        <div  className="udl-m-otherinfo-wrap">
+        {data.map((item: Document, index: number) => {
+          const { clientName, id: fileId } = item;
+
+          return (
+            <div  className="m-doc-filename" key={index}>
+              <Link data-testid='doc-file-link'
+                to="#"
+                className="link-filename"
+                title={clientName}
+                onClick={() => {
+                  setCurrentDoc({
+                    ...params,
+                    fileId,
+                    clientName,
+                  });
+
+                  checkFreezBody();
+                }}
+              >
+                {clientName}
+              </Link>
+              <div className="m-doc-date-wrap">
+              <div data-testid='added-date' className="m-doc-date" key={index}>
+                {DateFormatWithMoment(item.fileUploadedOn, true)}
+              </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      )
+    }
+    else{
     return (
       <td>
         {data.map((item: Document, index: number) => {
@@ -86,9 +125,13 @@ export const UploadedDocumentsTable = () => {
         })}
       </td>
     );
+  }
   };
 
   const renderAddedColumn = (data) => {
+    if(isMobile?.value){
+      return;
+    }else{
     return (
       <td>
         {data.map((item: Document, index: number) => {
@@ -100,6 +143,7 @@ export const UploadedDocumentsTable = () => {
         })}
       </td>
     );
+  }
   };
 
   const renderUploadedDocs = (data) => {
@@ -126,24 +170,56 @@ export const UploadedDocumentsTable = () => {
     );
   };
 
+  const renderUploadedDocsMobile = (data) => {
+    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, ["asc",]);
+
+    return sortedUploadedDocuments.map(
+      (item: UploadedDocuments, index: number) => {
+        if (!item?.files?.length) return;
+        const { files, docId, requestId, id } = item;
+        const sortedFiles = _.orderBy(files,(file) => new Date(file.fileUploadedOn),["desc"]);
+
+        return (
+          <div className="uploaded-doc-list-mobile" key={index}>
+            <div data-testid='doc-type' className="udl-m-icon-wrap">
+            <em className="far fa-file"></em> 
+            </div>
+            <div  className="udl-m-content-wrap">
+              <div className="doc-name" title={item.docName}>
+                {item.docName}
+              </div>
+            {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
+            </div>
+          </div>
+        );
+      }
+    );
+  };
+
   const loanHomeHandler = () => {
     history.push(`/activity/${Auth.getLoanAppliationId()}`);
   };
 
   const renderTable = (data) => {
     if (!data || data?.length === 0) return;
-    return (
-      <table  data-testid='uploaded-docs-head' className="table  table-striped">
-        <thead >
-          <tr>
-            <th>Documents</th>
-            <th>File Name</th>
-            <th>Added</th>
-          </tr>
-        </thead>
-        <tbody>{renderUploadedDocs(data)}</tbody>
-      </table>
-    );
+    if(isMobile?.value){
+      return ( renderUploadedDocsMobile(data))
+    }
+    else {
+      return (
+        <table  data-testid='uploaded-docs-head' className="table  table-striped">
+          <thead >
+            <tr>
+              <th>Documents</th>
+              <th>File Name</th>
+              <th>Added</th>
+            </tr>
+          </thead>
+          <tbody>{renderUploadedDocs(data)}</tbody>
+        </table>
+      );
+    }
+
   };
 
   const renderNoData = () => {
@@ -151,7 +227,7 @@ export const UploadedDocumentsTable = () => {
       <div className="no-document">
         <div className="no-document--wrap">
           <div className="no-document--img">
-            <img src={DocUploadIcon} alt="Your don't have any files!" />
+            <img src={isMobile?.value?DocUploadIconMobile:DocUploadIcon} alt="Your don't have any files!" />
           </div>
           <label className="inputno-document--text">
             You don't have any uploaded files.
@@ -202,6 +278,7 @@ export const UploadedDocumentsTable = () => {
           fileId={currentDoc.fileId}
           blobData={blobData}
           submittedDocumentCallBack={getSubmittedDocumentForView}
+          isMobile={isMobile}
         />
       )}
     </React.Fragment>

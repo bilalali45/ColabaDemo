@@ -14,12 +14,13 @@ export const DocumentsStatus = () => {
 
   const history = useHistory();
 
-  const { pendingDocs, submittedDocs }: any = state.documents;
-
+  const { pendingDocs, submittedDocs}: any = state.documents;
+  const loan: any = state.loan;
+    const {isMobile} = loan; 
   useEffect(() => {
     if (!pendingDocs?.length) {
       fetchPendingDocs();
-    }
+    } 
 
     if (!submittedDocs?.length) {
       fetchSubmittedDocs();
@@ -107,6 +108,11 @@ export const DocumentsStatus = () => {
       </div>
     );
   };
+
+
+  if(isMobile?.value) {
+    return (null)
+}
 
   if (!pendingDocs) {
     return <Loader containerHeight={"476px"} />;

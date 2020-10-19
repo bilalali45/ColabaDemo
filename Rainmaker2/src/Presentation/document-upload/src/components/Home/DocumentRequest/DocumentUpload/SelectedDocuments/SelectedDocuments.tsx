@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "rainsoft-rc";
-
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -19,6 +18,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  setCurrentInview?: any
   // filesChange: Function;
 }
 
@@ -36,6 +36,7 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
+  setCurrentInview
 }: // filesChange,
   SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
@@ -45,7 +46,8 @@ export const SelectedDocuments = ({
   const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
   const documents: any = state.documents;
@@ -283,6 +285,9 @@ export const SelectedDocuments = ({
       setDoneHit(false);
       await fetchUploadedDocuments();
     }
+    if (isMobile?.value && pendingDocs.length === 1) {
+      setCurrentInview('documetsRequired');
+    }
   };
 
   const hasSubmitted = () => {
@@ -389,6 +394,7 @@ export const SelectedDocuments = ({
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
           />
         )}
       </div>
@@ -396,7 +402,7 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-md-6 col-lg-7">
+              <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
@@ -405,7 +411,7 @@ export const SelectedDocuments = ({
                 </div>
               </div>
 
-              <div className="col-md-6 col-lg-5">
+              <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"

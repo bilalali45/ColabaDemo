@@ -25,6 +25,8 @@ interface DocumentViewProps {
   file?: any
   loading?: boolean
   showCloseBtn?: boolean
+  isMobile?:any
+
 }
 
 interface DocumentParamsType {
@@ -44,13 +46,44 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   blobData,
   submittedDocumentCallBack,
   loading = false,
-  showCloseBtn = true
+  showCloseBtn = true,
+  isMobile
+
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: '',
     fileType: ''
   })
+
+  const [pan, setPan] = useState<any>(true);
+  const [scale, setScale] = useState<any>(1);
+
+  useEffect(() => {
+    setPan(pan)
+  }, [pan])
+  const enabalePan = (e: any) => {
+    setScale(e.scale)
+    return e.scale;
+  };
+  useEffect(() => {
+    getPanValue(scale)
+  }, [scale])
+
+  const getPanValue = (e:any)=>{
+    // let a:any = e;
+   
+    if(e > 1){
+      setPan(false)
+      console.log(e)
+    }else {
+      setPan(true)
+    }
+    console.log(pan)
+  }
+
+
+
 
   const getDocumentForViewBeforeUpload = useCallback(() => {
     const fileBlob = new Blob([file], { type: 'image/png' })
@@ -199,6 +232,61 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         </div>
       </div>
       <div className='zoomview-wraper'>
+      {isMobile?.value ? <TransformWrapper
+          defaultScale={1}
+          wheel={{ wheelEnabled: false, touchPadEnabled: true }}
+          pan={{ disabled: pan }}
+          zoomIn={{ animation: false, animationTime: 0 }}
+          zoomOut={{ animation: false, animationTime: 0 }}
+          reset={{ animation: false, animationTime: 0 }}
+          doubleClick={{ disabled: true }}
+          onZoomChange={(e) => { enabalePan(e) }}
+        >
+       {({
+            zoomIn,
+            zoomOut,
+            resetTransform
+          }: {
+            zoomIn: any
+            zoomOut: any
+            resetTransform: any
+          }) => (
+            <div className='wrap-zoom-view'>
+              <TransformComponent>
+                <div className='document-view--body'>
+                  {!!documentParams.filePath && !loading ? (
+                    <FileViewer
+                      fileType={documentParams.fileType}
+                      filePath={documentParams.filePath}
+                    />
+                  ) : (
+                    <Loader height={'94vh'} />
+                  )}
+                </div>
+              </TransformComponent>
+              <div className='document-view--floating-options'>
+                <ul>
+                  <li>
+                    <button className='button-float' onClick={zoomIn}>
+                      <em className='zmdi zmdi-plus'></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className='button-float' onClick={zoomOut}>
+                      <em className='zmdi zmdi-minus'></em>
+                    </button>
+                  </li>
+                  <li>
+                    <button className='button-float' onClick={resetTransform}>
+                      <SVGfullScreen />
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </TransformWrapper>
+        :
         <TransformWrapper defaultScale={1} wheel={{ wheelEnabled: false }}>
           {({
             zoomIn,
@@ -244,6 +332,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             </div>
           )}
         </TransformWrapper>
+}
+
       </div>
     </div>
   )
