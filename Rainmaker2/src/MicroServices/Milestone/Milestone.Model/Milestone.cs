@@ -75,4 +75,13 @@ namespace Milestone.Model
         public short LosId { get; set; }
         public string Name { get; set; }
     }
+
+    public class LosMilestoneModel
+    {
+        public int tenantId { get; set; }
+        public string loanId { get; set; }
+        public string milestone { get; set; }
+        public short losId { get; set; }
+        public short rainmakerLosId { get; set; }
+    }
 }
