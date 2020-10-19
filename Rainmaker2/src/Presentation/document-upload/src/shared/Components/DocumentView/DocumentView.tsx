@@ -25,6 +25,7 @@ interface DocumentViewProps {
   hideViewer: (currentDoc) => void;
   file?: any;
   clearBlob?: Function;
+  isMobile?:any
 }
 
 let timer: any = null;
@@ -46,6 +47,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   blobData,
   submittedDocumentCallBack,
   clearBlob,
+  isMobile
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
@@ -54,7 +56,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   });
   const { state, dispatch } = useContext(Store);
   const loan: any = state.loan;
-  const { isMobile } = loan;
+  //const { isMobile } = loan;
   const [pan, setPan] = useState<any>(true);
   const [scale, setScale] = useState<any>(1);
   const getDocumentForViewBeforeUpload = useCallback(() => {
@@ -255,11 +257,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         {isMobile?.value ? <TransformWrapper
           defaultScale={1}
           wheel={{ wheelEnabled: false, touchPadEnabled: true }}
-          pan={{ disabled: pan }}
+          pan={{ disabled: pan, animationTime: 0  }}
           zoomIn={{ animation: false, animationTime: 0 }}
           zoomOut={{ animation: false, animationTime: 0 }}
           reset={{ animation: false, animationTime: 0 }}
           doubleClick={{ disabled: true }}
+          scalePadding={{ animationTime: 0} }
           onZoomChange={(e) => { enabalePan(e) }}
         >
           {({ zoomIn, zoomOut, resetTransform }) => (

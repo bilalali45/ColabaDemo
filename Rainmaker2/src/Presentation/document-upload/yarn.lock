@@ -9695,10 +9695,10 @@ rainsoft-js@^1.0.47:
     from "^0.1.7"
     moment "^2.27.0"
 
-rainsoft-rc@^1.0.19:
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.19.tgz#b407f7c8c3bd195e016e6bfb11ff505bc9d1e959"
-  integrity sha512-WJG4n2w7FsOluLTJhfZmjIgYi7Gv1FEAL2uW2UNGqapdo6X8pWGJ2oqMMeECgl+wTQRerRiO9aSylHPb2eP00Q==
+rainsoft-rc@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/rainsoft-rc/-/rainsoft-rc-1.0.21.tgz#bf36cc557136ab56f53733eb41b737f06cf70f21"
+  integrity sha512-6vf4OFWySvN4UeC019k8d2S2VrxSLSR6H2qN05co1b940VXfVZsU8mmhbNVOpV5/9ntX/CgUYNv2DI1E1KVi4g==
   dependencies:
     node-sass "^4.14.1"
     print-js "^1.0.63"
