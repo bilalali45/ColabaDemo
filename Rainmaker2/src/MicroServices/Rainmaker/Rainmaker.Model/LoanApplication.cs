@@ -60,4 +60,12 @@ namespace Rainmaker.Model
         public string DocumentExension { get; set; }
         public string Url { get; set; }
     }
+
+    public class SupportEmailModel
+    {
+        public int tenantId { get; set; }
+        public string milestone { get; set; }
+        public string loanId { get; set; }
+        public short losId { get; set; }
+    }
 }
