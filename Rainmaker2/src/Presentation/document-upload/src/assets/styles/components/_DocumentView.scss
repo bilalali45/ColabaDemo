@@ -136,11 +136,13 @@
   }
 
   &--floating-options {
-    position: fixed;
-    right: 30px;
-    bottom: 80px;
+    position: relative;
     z-index: 8888;
     > ul {
+      position: fixed;
+      right: 30px;
+      bottom: 80px;
+      z-index: 8888;
       @extend .list-style-none;
       > li {
         &:last-child {

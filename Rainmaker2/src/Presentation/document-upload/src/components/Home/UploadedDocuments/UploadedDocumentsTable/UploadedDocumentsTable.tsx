@@ -278,6 +278,7 @@ export const UploadedDocumentsTable = () => {
           fileId={currentDoc.fileId}
           blobData={blobData}
           submittedDocumentCallBack={getSubmittedDocumentForView}
+          isMobile={isMobile}
         />
       )}
     </React.Fragment>
