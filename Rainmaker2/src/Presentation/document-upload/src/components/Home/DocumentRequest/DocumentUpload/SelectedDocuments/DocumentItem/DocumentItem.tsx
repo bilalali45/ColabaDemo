@@ -365,7 +365,7 @@ export const DocumentItem = ({
                   <span className="dl-errorrename">File name must be unique.</span>
                 </div>
               )}
-              {filename.trim() === "" && (
+              {file.uploadStatus !== 'done' && filename.trim() === "" && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot be empty.</span>
                 </div>
