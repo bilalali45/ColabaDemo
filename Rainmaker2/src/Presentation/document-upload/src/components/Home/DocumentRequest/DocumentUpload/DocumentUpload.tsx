@@ -8,7 +8,11 @@ import { Store } from "../../../../store/store";
 import { Document } from "../../../../entities/Models/Document";
 import { DocumentUploadActions } from "../../../../store/actions/DocumentUploadActions";
 import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
-export const DocumentUpload = () => {
+type DocumentUploadType = {
+  setCurrentInview?: any
+}
+ 
+export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [fileLimitError, setFileLimitError] = useState({ value: false });
   const [showAlert, setshowAlert] = useState<boolean>(false);
@@ -104,6 +108,7 @@ export const DocumentUpload = () => {
                   setFileLimitError={setFileLimitError}
                   addMore={showFileExplorer}
                   setFileInput={getFileInput}
+                  setCurrentInview={setCurrentInview}
                 />
               </>
             )}

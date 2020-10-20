@@ -160,6 +160,28 @@ export const LoanProgress = () => {
     });
   };
 
+  const renderSpecialItem = () => {
+    return loanProgress?.map((l: any, i: number) => {
+      return (
+        <div key={l.name}>
+          <div className="lp-list">
+            <div className="lp-content">
+              <h6>{l.name}</h6>
+              <p>{l.description}</p>
+            </div>
+            <div className="status-icon" >
+              <img
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(l.icon)}`}
+                alt={l.order}
+              />
+            </div>
+          </div>
+
+        </div>
+      );
+    });
+  };
+
   if (!loanProgress) {
     return null;
   }
@@ -170,8 +192,8 @@ export const LoanProgress = () => {
 
   const SpecialStatus = () => {
     return (
-      <div className={"lp-wrap current-step1"}>
-        <div className="list-wrap">{renderCarousel()}</div>
+      <div className={"lp-wrap sp-status"}>
+        <div className="list-wrap">{renderSpecialItem()}</div>
       </div>
     );
   };
