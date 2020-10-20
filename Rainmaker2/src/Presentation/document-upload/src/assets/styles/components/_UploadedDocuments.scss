@@ -3,14 +3,33 @@
     &.box-wrap{
         padding: 0px;
     }
+    &.box-mobilewrap {
+        background: color('colorgray');
+        border: none;
+        box-shadow:none;
+    }
 
     .box-wrap{
         &--header{
             border-bottom: 1px solid color('border');
             padding: 20px;
+            @include mobile{
+                background:color('primary');
+                color:color('colorWhite');
+                text-align: center;
+                font: 500 #{fontSize('xmd')+'/1'} fontFamily('base'); 
+                padding: 12px 15px;
+                margin-bottom: 7px;
+                border: none;
+                margin-left: -15px;
+                margin-right: -15px;
+            }
             
             h2{
                 margin: 0;
+                @include mobile{
+                    color:color('colorWhite');
+                }
             }
         }
     }

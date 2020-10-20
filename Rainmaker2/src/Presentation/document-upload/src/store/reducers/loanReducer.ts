@@ -12,6 +12,7 @@ export enum LoanActionsType {
     FetchLoanOfficer = 'FETCH_LOAN_OFFICER',
     FetchLOImage = 'FETCH_LO_IMAGE',
     FetchLoanProgress = 'FETCH_LOAN_PROGRESS',
+    SetIsMobile = 'SET_IS_MOBILE',
 }
 
 export type LoanType = {
@@ -19,6 +20,9 @@ export type LoanType = {
     loanInfo: LoanApplication | null,
     loImage: LOImage,
     loanProgress: LoanProgress[] | null
+    isMobile: {
+        value: Boolean
+    },
 }
 
 
@@ -26,7 +30,8 @@ export type LoanActionPayload = {
     [LoanActionsType.FetchLoanInfo]: LoanApplication,
     [LoanActionsType.FetchLoanOfficer]: ContactUs,
     [LoanActionsType.FetchLOImage]: LOImage
-    [LoanActionsType.FetchLoanProgress]: LoanProgress[]
+    [LoanActionsType.FetchLoanProgress]: LoanProgress[],
+    [LoanActionsType.SetIsMobile]: { value: Boolean },
 }
 
 export type LoanActions = ActionMap<LoanActionPayload>[keyof ActionMap<LoanActionPayload>];
@@ -50,11 +55,16 @@ export const loanReducer = (state: LoanType | {}, { type, payload }: Actions) =>
                 ...state,
                 loanInfo: { ...payload }
             };
-        case LoanActionsType.FetchLoanProgress: 
-        return {
-            ...state,
-            loanProgress: payload
-        }
+        case LoanActionsType.FetchLoanProgress:
+            return {
+                ...state,
+                loanProgress: payload
+            }
+        case LoanActionsType.SetIsMobile:
+            return {
+                ...state,
+                isMobile: {...payload}
+            }
 
         default:
             return state;
