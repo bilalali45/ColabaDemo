@@ -38,7 +38,7 @@ namespace Milestone.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
-            await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
+            await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId);
             await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId);
             return Ok();
         }
@@ -96,12 +96,12 @@ namespace Milestone.API.Controllers
             }
             else
             {
-                int loanApplicationId = await _rainmakerService.GetLoanApplicationId(model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                int loanApplicationId = await _rainmakerService.GetLoanApplicationId(model.loanId, model.rainmakerLosId);
                 if(loanApplicationId<=0)
                 {
                     return BadRequest("Unable to find loan application");
                 }
-                await _rainmakerService.SetMilestoneId(loanApplicationId, id, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await _rainmakerService.SetMilestoneId(loanApplicationId, id);
                 await _milestoneService.UpdateMilestoneLog(loanApplicationId, id);
             }
             return Ok();

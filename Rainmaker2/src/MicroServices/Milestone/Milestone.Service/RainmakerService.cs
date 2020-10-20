@@ -17,7 +17,7 @@ namespace Milestone.Service
             this._httpClient = _httpClient;
             this._configuration = _configuration;
         }
-        public async Task<int> GetLoanApplicationId(string loanId, short losId, IEnumerable<string> auth)
+        public async Task<int> GetLoanApplicationId(string loanId, short losId)
         {
             var request = new HttpRequestMessage()
             {
@@ -25,7 +25,6 @@ namespace Milestone.Service
                 Method = HttpMethod.Post,
                 Content = new StringContent(@"{""loanId"":""" + loanId + @""",""losId"":" + losId + "}", Encoding.UTF8, "application/json"),
             };
-            request.Headers.Add("Authorization", auth);
             var response = await _httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
@@ -42,7 +41,7 @@ namespace Milestone.Service
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
         }
-        public async Task SetMilestoneId(int loanApplicationId, int milestoneId, IEnumerable<string> auth)
+        public async Task SetMilestoneId(int loanApplicationId, int milestoneId)
         {
             var request = new HttpRequestMessage()
             {
@@ -50,7 +49,6 @@ namespace Milestone.Service
                 Method = HttpMethod.Post,
                 Content = new StringContent(@"{""loanApplicationId"":"+loanApplicationId+@",""milestoneId"":"+milestoneId+"}",Encoding.UTF8,"application/json"),
             };
-            request.Headers.Add("Authorization",auth);
             var response = await _httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
