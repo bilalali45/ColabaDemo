@@ -161,13 +161,15 @@ SelectedDocumentsType) => {
   };
 
   const changeName = (file: Document, newName: string) => {
-    if (fileAlreadyExists(file, newName)) {
+    let name = newName.replace(/\s+/g, " ");
+
+    if (fileAlreadyExists(file, name)) {
       return false;
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        f.clientName = `${name}.${FileUpload.getExtension(file, "dot")}`;
         f.editName = !f.editName;
         return f;
       }

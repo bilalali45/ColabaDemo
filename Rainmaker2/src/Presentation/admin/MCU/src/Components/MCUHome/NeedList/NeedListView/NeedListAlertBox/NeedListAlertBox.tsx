@@ -43,7 +43,12 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
         let files = [];
         for(let k = 0; k < needList[i].files.length; k++){
           if( needList[i].files[k].byteProStatus === "sync failed"){
-            files.push(needList[i].files[k].clientName)         
+            if(needList[i].files[k].mcuName != ""){
+              files.push(needList[i].files[k].mcuName)
+            }else{
+              files.push(needList[i].files[k].clientName)
+            }
+                     
           }
         }
         if(files.length > 0){
