@@ -49,7 +49,8 @@ export const ReviewDocument = () => {
   const { state } = location;
 
   const goBack = () => {
-    console.log('Going Back---------------------------->');
+    // console.log('Going Back---------------------------->');
+    console.log('Going now---------------------------->');
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
 
