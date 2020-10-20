@@ -26,14 +26,14 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await _loanApplicationService.GetMilestoneId(loanApplicationId));
         }
-        [Authorize(Roles = "MCU")]
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
             await _loanApplicationService.SetMilestoneId(model.loanApplicationId,model.milestoneId);
             return Ok();
         }
-        [Authorize(Roles = "MCU")]
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> GetLoanApplicationId(LoanIdModel model)
         {

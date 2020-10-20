@@ -24,7 +24,7 @@ namespace RainMaker.Entity.Models
         public int Id { get; set; } // Id (Primary key)
         public int LosId { get; set; } // LosId
         public int LoanApplicationId { get; set; } // LoanApplicationId
-        public int? LosLoanApplicationId { get; set; } // LosLoanApplicationId
+        public string LosLoanApplicationId { get; set; } // LosLoanApplicationId
         public string LosLoanAplicationNumber { get; set; } // LosLoanAplicationNumber (length: 50)
         public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
         public int? CreatedById { get; set; } // CreatedById
