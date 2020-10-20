@@ -3,7 +3,8 @@ export class Rename {
     static readonly counterPrefix = '-copy-'
 
     static rename(files, file) {
-
+        
+        
 
         let fileName = this.removeExt(file.clientName);
         let fileExt = this.getExt(file.file);
@@ -26,8 +27,8 @@ export class Rename {
     static removeExt(name) {
         let dotParts = name.split('.');
         dotParts.pop();
-        if(!dotParts[0] && dotParts[1]) {
-            dotParts.splice(0, 1);
+        if(dotParts.join() === '') {
+            return 'New File';
         }
         let k = this.removeCounterPart(dotParts.join('.'));
         return k;

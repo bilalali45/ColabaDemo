@@ -136,9 +136,7 @@ export const DocumentsRequired = ({setCurrentInview} : DocumentsRequiredType) =>
     }
     return "";
   };
-  console.log('in here  ------------------------- ----------------------- ', pendingDocs?.length);
   if (pendingDocs?.length === 0) {
-    console.log('in here yyoiu adsfj 9u, 149-04--=====================4234 234=24=23=4=    =', pendingDocs);
       if(isMobile.value) {
 
         if (submittedDocs?.length && !pendingDocs?.length) {
