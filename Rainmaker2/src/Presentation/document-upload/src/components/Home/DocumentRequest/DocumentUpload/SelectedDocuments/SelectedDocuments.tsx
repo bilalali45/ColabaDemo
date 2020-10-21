@@ -92,6 +92,7 @@ export const SelectedDocuments = ({
   };
 
   const viewDocument = (document: any) => {
+    checkFreezBody();
     clearBlob();
     const {
       currentDoc: { id, requestId, docId },
@@ -309,6 +310,15 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
+  const checkFreezBody = async () => {
+    if (document.body.style.overflow == "hidden") {
+      document.body.removeAttribute("style");
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
   //     setDoneVisible(false);
@@ -391,6 +401,8 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
               history.goBack();
             }}
             {...currentDoc}

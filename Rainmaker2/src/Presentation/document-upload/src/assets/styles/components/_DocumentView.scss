@@ -90,8 +90,10 @@
       // }
     }
     canvas {
-      margin: auto;
+      margin: 0 auto;
       display: table;
+     
+     @include mobile { width: 100%;}
     }
   }
 
@@ -193,4 +195,7 @@
   padding: 15px;
   height: calc(100vh - 55px);
   overflow: hidden;
+  @include mobile {
+    height: calc(100vh - 70px);
+  }
 }
