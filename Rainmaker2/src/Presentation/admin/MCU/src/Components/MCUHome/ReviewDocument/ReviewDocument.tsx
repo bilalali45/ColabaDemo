@@ -93,6 +93,7 @@ export const ReviewDocument = () => {
       index: number,
       fileId: string,
       clientName: string,
+      mcuName: string,
       loadingFile?: boolean
     ) => {
       if (index === currentFileIndex || loading === true) return;
@@ -103,6 +104,7 @@ export const ReviewDocument = () => {
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
         setClientName(clientName);
+        setMCUName(mcuName);
 
         return getDocumentForView(id, requestId, docId, fileId);
       }
@@ -350,6 +352,7 @@ export const ReviewDocument = () => {
               fileIndex,
               currentFile.id,
               currentFile.clientName,
+              currentFile.mcuName,
               loading
             );
           }
@@ -364,6 +367,7 @@ export const ReviewDocument = () => {
               fileIndex,
               currentFile.id,
               currentFile.clientName,
+              currentFile.mcuName,
               loading
             );
           }
