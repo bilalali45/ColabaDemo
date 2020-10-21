@@ -233,11 +233,13 @@ namespace Milestone.Service
                 return -1;
             return n.MilestoneId;
         }
+
+        //Start
         public async Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId)
         {
-            var setting = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).Select(x => new GlobalMilestoneSettingModel() { ShowMilestone = x.ShowMilestone }).FirstOrDefaultAsync();
+            var setting = await Uow.Repository<MilestoneSetting>().Query(x => x.TenantId == tenantId).Select(x => new GlobalMilestoneSettingModel() { ShowMilestone = x.ShowMilestone,TenantId=x.TenantId }).FirstOrDefaultAsync();
             if (setting == null)
-                setting = new GlobalMilestoneSettingModel() { ShowMilestone = true };
+                setting = new GlobalMilestoneSettingModel() { ShowMilestone = true,TenantId=tenantId };
             return setting;
         }
         public async Task SetGlobalMilestoneSetting(GlobalMilestoneSettingModel model)
@@ -275,6 +277,8 @@ namespace Milestone.Service
                 Description = x.TenantMilestones.Any(y => y.TenantId == tenantId) && !string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).Description) ? x.TenantMilestones.First(y => y.TenantId == tenantId).Description : x.Description
             }).ToListAsync();
         }
+
+
         public async Task<MilestoneSettingModel> GetMilestoneSetting(int tenantId, int milestoneId)
         {
             return await Query(x=>x.Id==milestoneId).Include(x => x.TenantMilestones).Select(x => new MilestoneSettingModel()
