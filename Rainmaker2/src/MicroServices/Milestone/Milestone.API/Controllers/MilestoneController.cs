@@ -38,7 +38,7 @@ namespace Milestone.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
-            await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId);
+            await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
             await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId);
             return Ok();
         }
@@ -85,23 +85,23 @@ namespace Milestone.API.Controllers
             var status = await _milestoneService.GetMilestoneForMcuDashboard(milestone, tenantId);
             return Ok(status);
         }
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> SetLosMilestone(LosMilestoneModel model)
         {
             int id = await _milestoneService.GetLosMilestone(model.tenantId, model.milestone, model.losId);
             if(id<=0)
             {
-                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone, model.loanId, model.rainmakerLosId);
+                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone, model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
             }
             else
             {
-                int loanApplicationId = await _rainmakerService.GetLoanApplicationId(model.loanId, model.rainmakerLosId);
+                int loanApplicationId = await _rainmakerService.GetLoanApplicationId(model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(loanApplicationId<=0)
                 {
                     return BadRequest("Unable to find loan application");
                 }
-                await _rainmakerService.SetMilestoneId(loanApplicationId, id);
+                await _rainmakerService.SetMilestoneId(loanApplicationId, id, Request.Headers["Authorization"].Select(x => x.ToString()));
                 await _milestoneService.UpdateMilestoneLog(loanApplicationId, id);
             }
             return Ok();

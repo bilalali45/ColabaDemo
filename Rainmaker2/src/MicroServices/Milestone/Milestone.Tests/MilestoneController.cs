@@ -76,7 +76,7 @@ namespace Milestone.Tests
             //Arrange
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
-            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(),It.IsAny<IEnumerable<string>>())).Verifiable();
             mockMilestone.Setup(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
@@ -95,7 +95,7 @@ namespace Milestone.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
-            mock.Verify(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>()),Times.Once());
+            mock.Verify(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>()),Times.Once());
             mockMilestone.Verify(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>()),Times.Once());
         }
         [Fact]
@@ -279,7 +279,7 @@ namespace Milestone.Tests
             //Arrange
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
-            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
             mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
@@ -306,8 +306,8 @@ namespace Milestone.Tests
             //Arrange
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
-            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            mock.Setup(x => x.GetLoanApplicationId(It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
+            mock.Setup(x => x.GetLoanApplicationId(It.IsAny<string>(), It.IsAny<short>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(1);
             mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
@@ -334,7 +334,7 @@ namespace Milestone.Tests
             //Arrange
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
-            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
             mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(-1);
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(

@@ -328,6 +328,7 @@ namespace Rainmaker.API.Controllers
             return Convert.ToBase64String(ms.ToArray());
         }
 
+        [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> SendEmailToSupport([FromBody] SupportEmailModel model)
         {

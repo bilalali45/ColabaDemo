@@ -17,7 +17,7 @@ namespace Milestone.Service
             this._httpClient = _httpClient;
             this._configuration = _configuration;
         }
-        public async Task<int> GetLoanApplicationId(string loanId, short losId)
+        public async Task<int> GetLoanApplicationId(string loanId, short losId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()
             {
@@ -25,12 +25,13 @@ namespace Milestone.Service
                 Method = HttpMethod.Post,
                 Content = new StringContent(@"{""loanId"":""" + loanId + @""",""losId"":" + losId + "}", Encoding.UTF8, "application/json"),
             };
+            request.Headers.Add("Authorization", auth);
             var response = await _httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
             return Convert.ToInt32(await response.Content.ReadAsStringAsync());
         }
-        public async Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId)
+        public async Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()
             {
@@ -38,10 +39,11 @@ namespace Milestone.Service
                 Method = HttpMethod.Post,
                 Content = new StringContent(@"{""tenantId"":" + tenantId + @",""milestone"":""" + milestone + @""",""loanId"":"""+loanId+@""",""losId"":"+rainmakerLosId+"}", Encoding.UTF8, "application/json"),
             };
+            request.Headers.Add("Authorization", auth);
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
         }
-        public async Task SetMilestoneId(int loanApplicationId, int milestoneId)
+        public async Task SetMilestoneId(int loanApplicationId, int milestoneId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()
             {
@@ -49,6 +51,7 @@ namespace Milestone.Service
                 Method = HttpMethod.Post,
                 Content = new StringContent(@"{""loanApplicationId"":"+loanApplicationId+@",""milestoneId"":"+milestoneId+"}",Encoding.UTF8,"application/json"),
             };
+            request.Headers.Add("Authorization", auth);
             var response = await _httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
