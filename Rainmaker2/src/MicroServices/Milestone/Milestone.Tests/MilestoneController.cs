@@ -524,5 +524,18 @@ namespace Milestone.Tests
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
+        [Fact]
+        public async Task TestInsertMilestoneLog()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.InsertMilestoneLog(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.InsertMilestoneLog(new MilestoneIdModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
     }
 }
