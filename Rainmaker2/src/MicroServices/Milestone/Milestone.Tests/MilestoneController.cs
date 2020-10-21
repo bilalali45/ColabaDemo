@@ -298,6 +298,34 @@ namespace Milestone.Tests
 
             //Assert
             Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestSetLosMilestoneValid()
+        {
+            //Arrange
+            Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mock.Setup(x => x.GetLoanApplicationId(It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+            mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
+
+            //Act
+            IActionResult result = await controller.SetLosMilestone(new LosMilestoneModel());
+
+            //Assert
+            Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
         [Fact]
@@ -342,6 +370,159 @@ namespace Milestone.Tests
             Assert.IsType<OkObjectResult>(result);
             var content = (GlobalMilestoneSettingModel)(result as OkObjectResult).Value;
             Assert.True(content.ShowMilestone);
+        }
+        [Fact]
+        public async Task TestSetGlobalMilestoneSetting()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.SetGlobalMilestoneSetting(It.IsAny<GlobalMilestoneSettingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.SetGlobalMilestoneSetting(new GlobalMilestoneSettingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result); 
+        }
+        [Fact]
+        public async Task TestGetMilestoneSettingList()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetMilestoneSettingList(It.IsAny<int>())).ReturnsAsync(new List<MilestoneSettingModel>() { new MilestoneSettingModel() { Id=1} });
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetMilestoneSettingList(1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (List<MilestoneSettingModel>)(result as OkObjectResult).Value;
+            Assert.Equal(1,content[0].Id);
+        }
+        [Fact]
+        public async Task TestGetMilestoneSetting()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetMilestoneSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new MilestoneSettingModel() { Id = 1 } );
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetMilestoneSetting(1,1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (MilestoneSettingModel)(result as OkObjectResult).Value;
+            Assert.Equal(1, content.Id);
+        }
+        [Fact]
+        public async Task TestSetMilestoneSetting()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.SetMilestoneSetting(It.IsAny<MilestoneSettingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.SetMilestoneSetting(new MilestoneSettingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestGetLosAll()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetLosAll()).ReturnsAsync(new List<LosModel>() { new LosModel() { Id = 1 } });
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetLosAll();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (List<LosModel>)(result as OkObjectResult).Value;
+            Assert.Equal(1, content[0].Id);
+        }
+        [Fact]
+        public async Task TestGetMappingAll()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetMappingAll(It.IsAny<int>(),It.IsAny<short>())).ReturnsAsync(new List<MappingModel>() { new MappingModel() { Id = 1 } });
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetMappingAll(1,1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (List<MappingModel>)(result as OkObjectResult).Value;
+            Assert.Equal(1, content[0].Id);
+        }
+        [Fact]
+        public async Task TestGetMapping()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.GetMapping(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new MilestoneMappingModel() { Id = 1 });
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.GetMapping(1, 1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (MilestoneMappingModel)(result as OkObjectResult).Value;
+            Assert.Equal(1, content.Id);
+        }
+        [Fact]
+        public async Task TestSetMapping()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.SetMapping(It.IsAny<MilestoneMappingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.SetMapping(new MilestoneMappingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestAddMapping()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.AddMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.AddMapping(new MilestoneAddMappingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestEditMapping()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.EditMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.EditMapping(new MilestoneAddMappingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestDeleteMapping()
+        {
+            //arrange
+            Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
+            mockMilestone.Setup(x => x.DeleteMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
+            var controller = new MilestoneController(mockMilestone.Object, null);
+            //act
+            var result = await controller.DeleteMapping(new MilestoneAddMappingModel());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
     }
 }
