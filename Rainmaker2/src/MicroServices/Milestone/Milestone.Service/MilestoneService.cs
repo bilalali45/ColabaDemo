@@ -25,10 +25,10 @@ namespace Milestone.Service
             int tenantId)
         {
             var milestone = await GetEligibleMilestone(loanApplicationId, milestoneId, tenantId);
-            MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
-               .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
-            if (milestoneSetting == null || milestoneSetting.ShowMilestone)
-            {
+            //MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
+            //   .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            //if (milestoneSetting == null || milestoneSetting.ShowMilestone)
+            //{
                 if (milestone != null)
                 {
                     if (milestone.MilestoneTypeId == (int)MilestoneType.Special)
@@ -76,7 +76,7 @@ namespace Milestone.Service
                                               }).ToListAsync();
                     }
                 }
-            }
+            //}
             return null;
         }
         public async Task UpdateMilestoneLog(int loanApplicationId, int milestoneId)
@@ -213,12 +213,12 @@ namespace Milestone.Service
                     }
                 }
             }
-            MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
-                .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
-            if (milestoneSetting != null && !milestoneSetting.ShowMilestone && milestone!=null && milestone.Id!=1 && milestone.Id!=2)
-            {
-                milestone = null;
-            }
+            //MilestoneSetting milestoneSetting = await Uow.Repository<MilestoneSetting>()
+            //    .Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            //if (milestoneSetting != null && !milestoneSetting.ShowMilestone && milestone!=null && milestone.Id!=1 && milestone.Id!=2)
+            //{
+            //    milestone = null;
+            //}
             return milestone;
         }
 
