@@ -156,5 +156,78 @@ namespace Milestone.Tests
 
             Assert.Equal("Doe", result[0].Name);
         }
+        [Fact]
+        public async Task TestServiceGetLosMilestone()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            LosTenantMilestone losTenantMilestone = new LosTenantMilestone()
+            {
+                Id=1,
+                ExternalOriginatorId=1,
+                Name="Processing",
+                TenantId=3
+            };
+            dataContext.Set<LosTenantMilestone>().Add(losTenantMilestone);
+            MilestoneMapping milestoneMapping = new MilestoneMapping()
+            {
+                LosMilestoneId = 1,
+                MilestoneId = 1
+            };
+            dataContext.Set<MilestoneMapping>().Add(milestoneMapping);
+            dataContext.SaveChanges();
+
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetLosMilestone(3,"Processing",1);
+
+            Assert.Equal(1, result);
+        }
+        [Fact]
+        public async Task TestServiceGetLosMilestoneNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetLosMilestone(4, "Processing1", 1);
+
+            Assert.Equal(-1, result);
+        }
+        [Fact]
+        public async Task TestServiceGetLosMilestoneMappingNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            LosTenantMilestone losTenantMilestone = new LosTenantMilestone()
+            {
+                Id = 2,
+                ExternalOriginatorId = 1,
+                Name = "Processing",
+                TenantId = 5
+            };
+            dataContext.Set<LosTenantMilestone>().Add(losTenantMilestone);
+            
+            dataContext.SaveChanges();
+
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetLosMilestone(5, "Processing", 1);
+
+            Assert.Equal(-1, result);
+        }
     }
 }
