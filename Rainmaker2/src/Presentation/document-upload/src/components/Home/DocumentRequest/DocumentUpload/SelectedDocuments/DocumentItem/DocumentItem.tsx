@@ -522,7 +522,6 @@ export const DocumentItem = ({
   }
 
   const renderDocListPopupMobile = () => {
-    console.log('in here reachedDDDD', renameModalShow);
     return (
       <Modal
         show={renameModalShow}
