@@ -22,7 +22,7 @@
   }
 .LoanProgress {
     .lp-wrap {
-        padding: 36px 55px 10px;
+        padding: 36px 35px 10px;
         @include media-breakpoint-down(lg) {
             padding: 36px 20px 10px;
           }
@@ -37,6 +37,10 @@
               }
               @include mobile {
                 min-height: 130px;
+            }
+            .carousel-item{
+                padding-left: 20px;
+                padding-right: 20px;
             }
             .carousel-control-prev,
             .carousel-control-next {
@@ -62,7 +66,7 @@
                 padding-top: 5px;
                 align-items:flex-start;
                 @include media-breakpoint-down(md) {
-                    padding-left: 84px;
+                    padding-left: 65px;
                   }
                 .step-count {
                     position: absolute;
@@ -71,10 +75,19 @@
                     color: color("primary");
                     align-items: center;
                     display: flex;
-                    max-width: 91px;
+                    width: 70px;
+                    &.s-icon-2{width: 85px; margin-left: -15px;}
+                    &.s-icon-4{width: 79px;    margin-left: -9px;}
+                    &.s-icon-5{    width: 80px;margin-left: -10px;}
+                    &.s-icon-6{width: 83px; margin-left: -13px;}
                     @include media-breakpoint-down(md) {
                         font-size:fontSize("sm") * 9  ;
-                        max-width: 71px;
+                        // max-width: 71px;
+                        width: 50px;
+                        &.s-icon-2{width: 65px; margin-left: -15px;}
+                        &.s-icon-4{width: 59px;    margin-left: -9px;}
+                        &.s-icon-5{    width: 60px;margin-left: -10px;}
+                        &.s-icon-6{width: 63px; margin-left: -13px;}
                       }
                     img {
                         max-width: 100%;
@@ -283,26 +296,48 @@
             }
         }
         &.sp-status {
-            padding: 50px 25px 35px;
+            padding: 50px 15px 35px;
             min-height: 233px;
             display: flex;
             align-items: center;
+            @include mobile {
+                padding: 30px 15px 35px;
+                min-height: auto; 
+            }
             .list-wrap {
                 padding-bottom: 0;
                 min-height: auto;
+                width: 100%;
            
             .lp-list {
                 padding-left: 0;
                 padding-right: 185px;
                 align-items: center;
-       
+                width: 100%;
+                padding-bottom: 0;
+                padding-top: 0;
+                @include media-breakpoint-down(lg) {
+                    padding-right: 165px;
+                  }
+                  @include media-breakpoint-down(md) {
+                    padding-right: 105px;
+                  }
                 .lp-content {
+                    width: 100%;
+                    padding-bottom: 10px;
                     p {
                         margin-bottom: 0;
+                        word-break: break-word;
                     }
                 }
                 .status-icon {
                     max-width: 175px;
+                    @include media-breakpoint-down(lg) {
+                        max-width: 150px;
+                      }
+                    @include media-breakpoint-down(md) {
+                        max-width: 90px;
+                      }
                     position: absolute;
                     right:0;
                     img {

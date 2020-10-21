@@ -105,10 +105,11 @@ export const LoanProgress = () => {
 
   const renderCarouselItems = () => {
     return loanProgress?.map((l: any, i: number) => {
+      console.log(l.icon)
       return (
         <Carousel.Item key={l.name}>
           <div className="lp-list">
-            <div className="step-count" style={{width:"68px"}} >
+            <div className={`step-count s-icon-${l.order}`} >
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(l.icon)}`}
                 alt={l.order}
@@ -132,7 +133,7 @@ export const LoanProgress = () => {
       let liclass = "completed-icon";
       liclass =
         l.status == statusText.CURRENT
-          ? "current-icon1"
+          ? "current-icon"
           : l.status == statusText.UPCOMMING
           ? "upcoming-icon"
           : "completed-icon";
@@ -149,8 +150,8 @@ export const LoanProgress = () => {
             ) : l.status == statusText.COMPLETED ? (
               <i className="zmdi zmdi-check"></i>
             ) : l.status == statusText.CURRENT ? (
-              // { <i className="zmdi zmdi-male-alt"></i>}
-              <i className="zmdi zmdi-check"></i>
+              <i className="zmdi zmdi-male-alt"></i>
+              // {<i className="zmdi zmdi-check"></i>}
             ) : (
               <span>{step}</span>
             )}
@@ -181,9 +182,13 @@ export const LoanProgress = () => {
       );
     });
   };
-
+  const noMilestone = () => {
+    return (
+      <Loader containerHeight={"308px"} marginBottom={"15px"} />
+    );
+  };
   if (!loanProgress) {
-    return null;
+    return noMilestone();
   }
 
   if (!currentItem) {
@@ -198,12 +203,14 @@ export const LoanProgress = () => {
     );
   };
 
+
+
   const NormalStatus = () => {
     return (
       <div
         className={
           index === currentItem.order - 1
-            ? "lp-wrap current-step1"
+            ? "lp-wrap current-step"
             : index > currentItem?.order - 1
             ? "lp-wrap upcoming-step"
             : "lp-wrap"
