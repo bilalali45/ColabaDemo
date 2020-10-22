@@ -27,6 +27,9 @@ export const ReadyToSync = 'Ready to Sync';
 export const ReadyToSyncClass = 'readyto_Sync';
 export const Synchronizing = 'Synchronizing';
 
+const timeout = 10000;
+let timer: any = null;
+
 export const NeedListView = () => {
   const [toggle, setToggle] = useState(true);
   const [sortArrow, setSortArrow] = useState('desc');
@@ -123,6 +126,8 @@ export const NeedListView = () => {
       for (const file of doc.files) {
         syncSingle(file);
       }
+      // if (doc.status === 'Completed' && doc?.files?.length) {
+      // }
     }
     return arr;
   };
@@ -179,6 +184,12 @@ export const NeedListView = () => {
       return;
     }
 
+    // const nonFilesDoc = needListData.filter(
+    //   (needListItem: NeedList) => needListItem.status === 'Completed'
+    // );
+    // if (!nonFilesDoc.length) {
+    //   return;
+    // }
     let data = await syncAll(needListData);
     dispatch({
       type: NeedListActionsType.SetNeedListTableDATA,
@@ -289,6 +300,12 @@ export const NeedListView = () => {
     } else {
       setsyncSuccess(true);
       setSyncTitleClass('synced');
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        setsyncSuccess(false);
+      }, timeout);
     }
   };
 
@@ -361,7 +378,7 @@ export const NeedListView = () => {
 
   const togglerHandler = (pending: boolean) => {
     setShowConfirmBox(false);
-    setSyncTitleClass('not_Synced')
+    setSyncTitleClass('not_Synced');
     if (pending) {
       fetchNeedList(pending, true).then((data) => {
         dispatch({

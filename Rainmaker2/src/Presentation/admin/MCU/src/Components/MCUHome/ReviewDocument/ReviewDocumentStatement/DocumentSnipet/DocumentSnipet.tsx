@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Http } from 'rainsoft-js';
+import React, {useState, useEffect, useRef} from 'react';
+import {Http} from 'rainsoft-js';
 
-import { NeedListEndpoints } from '../../../../../Store/endpoints/NeedListEndpoints';
-import { SVGeditFile } from '../../../../../Shared/SVG';
-import { datetimeFormatRenameFile } from '../../../../../Utils/helpers/DateFormat';
-import { NeedList } from '../../../../../Entities/Models/NeedList';
+import {NeedListEndpoints} from '../../../../../Store/endpoints/NeedListEndpoints';
+import {SVGeditFile} from '../../../../../Shared/SVG';
+import {datetimeFormatRenameFile} from '../../../../../Utils/helpers/DateFormat';
+import {NeedList} from '../../../../../Entities/Models/NeedList';
 
 export const DocumentSnipet = ({
   index,
@@ -24,7 +24,7 @@ export const DocumentSnipet = ({
   isCurrent
 }: {
   index: number;
-  moveNextFile: (index: number, fileId: string, clientName: string) => void;
+  moveNextFile: (index: number, fileId: string, clientName: string, mcuName: string) => void;
   clientName: string;
   id: string;
   requestId: string;
@@ -121,9 +121,7 @@ export const DocumentSnipet = ({
         }
 
         try {
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.renameMCU(), {
+          await Http.post(NeedListEndpoints.POST.documents.renameMCU(), {
             ...data
           });
 
@@ -148,7 +146,7 @@ export const DocumentSnipet = ({
   const moveNext = (event: any) => {
     event.stopPropagation();
     // getDocumentFiles(currentDocument);
-    moveNextFile(index, fileId, clientName);
+    moveNextFile(index, fileId, clientName, mcuName);
   };
 
   const eventBubblingHandler = (
@@ -242,11 +240,11 @@ export const DocumentSnipet = ({
       onDoubleClick={(event) => onDoubleClick(event)}
       className={`document-snipet ${index === currentFileIndex && 'focus'} ${
         editingModeEnabled && 'edit'
-        }`}
-      style={{ cursor: 'pointer' }}
+      }`}
+      style={{cursor: 'pointer'}}
       id="moveNext"
       onClick={(e) => {
-        setItemViewd(true)
+        setItemViewd(true);
         eventBubblingHandler(e);
       }}
     >
@@ -259,7 +257,7 @@ export const DocumentSnipet = ({
                 className={`${
                   (!filenameUnique || !!filenameEmpty || !validFilename) &&
                   'error'
-                  }`}
+                }`}
                 maxLength={250}
                 size={38}
                 type="text"
@@ -271,16 +269,14 @@ export const DocumentSnipet = ({
               />
             </React.Fragment>
           ) : (
-              <p title={renameMCUName.trim() || mcuName || clientName}>
-                {isRead || index === currentFileIndex || itemViewd ? 
-                  renameMCUName.trim() || mcuName || clientName
-                  :
-                <strong>
-                  {renameMCUName.trim() || mcuName || clientName}
-                </strong>
-                }
-              </p>
-            )}
+            <p title={renameMCUName.trim() || mcuName || clientName}>
+              {isRead || index === currentFileIndex || itemViewd ? (
+                renameMCUName.trim() || mcuName || clientName
+              ) : (
+                <strong>{renameMCUName.trim() || mcuName || clientName}</strong>
+              )}
+            </p>
+          )}
         </div>
         <small className="document-snipet--detail">
           {`By ${username} on ${datetimeFormatRenameFile(uploadedOn)}`}

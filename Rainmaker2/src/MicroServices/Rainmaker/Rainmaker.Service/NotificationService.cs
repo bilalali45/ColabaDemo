@@ -26,12 +26,12 @@ namespace Rainmaker.Service
             LoanApplication application = await Repository.Query(x =>
                     x.Id == loanApplicationId).Include(x => x.Opportunity).ThenInclude(x => x.OpportunityLeadBinders)
                 .ThenInclude(x => x.Customer)
-                .Include(x => x.Opportunity).ThenInclude(x => x.LoanOfficer)
+                .Include(x => x.Opportunity).ThenInclude(x => x.Owner)
                 .Include(x => x.Opportunity).ThenInclude(x => x.LoanCoordinator)
                 .Include(x => x.Opportunity).ThenInclude(x => x.LoanProcessor)
                 .Include(x => x.Opportunity).ThenInclude(x => x.PreProcessor).FirstAsync();
-            if (application.Opportunity.LoanOfficer != null)
-                list.Add(application.Opportunity.LoanOfficer.UserId.Value);
+            if (application.Opportunity.Owner != null)
+                list.Add(application.Opportunity.Owner.UserId.Value);
             if (application.Opportunity.LoanCoordinator != null)
                 list.Add(application.Opportunity.LoanCoordinator.UserId.Value);
             if (application.Opportunity.LoanProcessor != null)

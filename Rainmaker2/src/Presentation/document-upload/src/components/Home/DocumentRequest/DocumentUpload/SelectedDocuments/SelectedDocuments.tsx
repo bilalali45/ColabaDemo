@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "rainsoft-rc";
-
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -19,6 +18,8 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  setCurrentInview?: any
+  // filesChange: Function;
 }
 
 interface ViewDocumentType {
@@ -35,7 +36,9 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
-}: SelectedDocumentsType) => {
+  setCurrentInview
+}: // filesChange,
+  SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
@@ -43,7 +46,8 @@ export const SelectedDocuments = ({
   const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
   const documents: any = state.documents;
@@ -88,6 +92,7 @@ export const SelectedDocuments = ({
   };
 
   const viewDocument = (document: any) => {
+    checkFreezBody();
     clearBlob();
     const {
       currentDoc: { id, requestId, docId },
@@ -159,13 +164,17 @@ export const SelectedDocuments = ({
   };
 
   const changeName = (file: Document, newName: string) => {
-    if (fileAlreadyExists(file, newName)) {
+    let name = newName.replace(/\s+/g, " ");
+
+    if (fileAlreadyExists(file, name)) {
       return false;
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        if (name.trim()) {
+          f.clientName = `${name}.${FileUpload.getExtension(file, "dot")}`;
+        }
         f.editName = !f.editName;
         return f;
       }
@@ -194,6 +203,7 @@ export const SelectedDocuments = ({
       }
       return f;
     });
+
     dispatch({
       type: DocumentsActionType.AddFileToDoc,
       payload: updatedFilesWithFocus,
@@ -278,6 +288,9 @@ export const SelectedDocuments = ({
       setDoneHit(false);
       await fetchUploadedDocuments();
     }
+    if (isMobile?.value && pendingDocs.length === 1) {
+      setCurrentInview('documetsRequired');
+    }
   };
 
   const hasSubmitted = () => {
@@ -296,6 +309,24 @@ export const SelectedDocuments = ({
     ).length;
     return foundIndx === index;
   };
+
+  const checkFreezBody = async () => {
+    
+    let page:any = document.querySelector("html");
+    if (document.body.style.overflow == "hidden" ) {
+      document.body.removeAttribute("style");
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+    if (page.style.overflow == "hidden" ) {
+      page.removeAttribute("style");
+    } else {
+      page.style.overflow = "hidden"
+    }
+
+    
+  };
+
 
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
@@ -331,6 +362,7 @@ export const SelectedDocuments = ({
           <div className="addmore-wrap">
             {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? (
               <a
+                data-testid="add-more-btn"
                 className="addmoreDoc"
                 onClick={(e) => {
                   addMore(e);
@@ -339,6 +371,8 @@ export const SelectedDocuments = ({
                 {" "}
                 Add more files
                 <input
+                  onChange={(e) => addMore(e)}
+                  data-testid="file-input"
                   type="file"
                   accept={FileUpload.allowedExtensions}
                   id="inputFile"
@@ -376,11 +410,17 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
+              let page:any = document.querySelector("html");
+                page.style.overflow = "visible";
+                page.removeAttribute("style");
               history.goBack();
             }}
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
           />
         )}
       </div>
@@ -388,7 +428,7 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-md-6 col-lg-7">
+              <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
                   <p>
@@ -397,7 +437,7 @@ export const SelectedDocuments = ({
                 </div>
               </div>
 
-              <div className="col-md-6 col-lg-5">
+              <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"

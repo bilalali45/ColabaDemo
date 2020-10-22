@@ -45,6 +45,10 @@ export class Auth {
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;
       }
+      if (decodeCacheToken.exp > decodeAuth.exp) {
+        console.log("Cache token is going to validate");
+        return false;
+      }
     }
 
     let payload = this.getUserPayload();

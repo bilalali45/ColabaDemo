@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using ByteWebConnector.SDK.Models;
+﻿using ByteWebConnector.SDK.Models;
 using ByteWebConnector.SDK.Models.ControllerModels.Document.Response;
 using LOSAutomation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Serilog;
-using Xceed.Pdf;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ByteWebConnector.SDK.Controllers
 {
@@ -70,7 +64,6 @@ namespace ByteWebConnector.SDK.Controllers
                         catch (Exception e)
                         {
                             _logger.LogInformation($"DocsyncSDK Session Exception={e.Message}");
-                            //session = null;
                         }
                     }
 
@@ -99,7 +92,7 @@ namespace ByteWebConnector.SDK.Controllers
                     if (embeddedDoc != null)
                     {
                         _logger.LogInformation($"DocsyncSDK EmbeddedDoc Added");
-                        string fileNameAndPath = Path.GetTempPath() + documentUploadRequest.DocumentName + "." +
+                        string fileNameAndPath = Path.GetTempPath() + $@"{Guid.NewGuid()}" + "." +
                                                    documentUploadRequest.DocumentExension;
                         embeddedDoc.SetFieldValue("FileExtension",
                                                   documentUploadRequest.DocumentExension);
@@ -115,7 +108,6 @@ namespace ByteWebConnector.SDK.Controllers
                         System.IO.File.WriteAllBytes(fileNameAndPath,
                                                      Convert.FromBase64String(documentUploadRequest.DocumentData));
                         _logger.LogInformation($"DocsyncSDK File Write location = {fileNameAndPath}");
-                        //MemoryStream stream = GenerateStreamFromString(documentUploadRequest.DocumentData);
 
                         embeddedDoc.LoadFromFile(fileNameAndPath);
                         _logger.LogInformation($"DocsyncSDK LoadFromFile = true");
@@ -150,16 +142,6 @@ namespace ByteWebConnector.SDK.Controllers
 
         }
 
-
-        // PUT: api/Document/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/Document/5
-        public void Delete(int id)
-        {
-        }
 
         #region private Methods
         public static MemoryStream GenerateStreamFromString(string s)

@@ -71,8 +71,8 @@ export const TemplateListContainer = ({
       });
     }
     setLoaderVisible(false);
-    if (listContainerElRef?.current) {
-      listContainerElRef.current.scrollTo(0, 0);
+    if (listContainerElRef?.current && listContainerElRef?.current?.scrollTo) {
+      listContainerElRef?.current?.scrollTo(0, 0);
     }
   };
 
@@ -148,7 +148,7 @@ export const TemplateListContainer = ({
             <div className="list-wrap tenant-temp-list">
               <ul>
                 {templates
-                  ?.filter((t: any) => t?.type === TenantTemplate)
+                  ?.filter((t: any) => t?.type === TenantTemplate || t?.type === SystemTemplate)
                   .map((t: any) => {
                     return TenantListItem(t);
                   })}
@@ -160,14 +160,17 @@ export const TemplateListContainer = ({
     );
   };
 
-  if (!templates) return <Loader containerHeight={"100%"} />;
+  if (!templates) {
+    return <Loader containerHeight={"100%"} />
+  }
 
   return (
-    <div className="TL-container">
+    <div data-testid="template-list-container" className="TL-container">
       <div className="head-TLC">
         <h4>Templates</h4>
 
         <div
+          data-testid="add-new-template-btn"
           className="btn-add-new-Temp"
           onClick={() => {
             clearOld();
@@ -183,9 +186,7 @@ export const TemplateListContainer = ({
       </div>
 
       <div className="listWrap-templates">
-        {/* My Templates */}
         {MyTemplates()}
-
         {TemplatesByTenant()}
       </div>
     </div>

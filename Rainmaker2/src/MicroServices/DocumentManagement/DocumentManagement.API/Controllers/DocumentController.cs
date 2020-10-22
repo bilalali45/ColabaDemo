@@ -133,7 +133,8 @@ namespace DocumentManagement.API.Controllers
             string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             var setting = await settingService.GetSetting();
             if (mcuRenameModel.newName.Length > setting.maxFileNameSize)
-                throw new DocumentManagementException("File Name size exceeded limit");
+                //throw new DocumentManagementException("File Name size exceeded limit");
+                return BadRequest("File Name size exceeded limit");
             logger.LogInformation($"mcurename requested by {userProfileId}, new name is {mcuRenameModel.newName}");
             var docQuery = await documentService.McuRename(id: mcuRenameModel.id,
                                                            requestId: mcuRenameModel.requestId,

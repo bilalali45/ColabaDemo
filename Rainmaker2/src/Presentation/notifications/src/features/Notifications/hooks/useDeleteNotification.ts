@@ -7,7 +7,6 @@ import {Actions} from '../reducers/useNotificationsReducer';
 interface UseDeleteNotificationProps {
   notifications: NotificationType[] | null;
   timers: TimersType[];
-  http: Http;
   dispatch: Dispatch<Actions>;
 }
 
@@ -16,7 +15,7 @@ export const useDeleteNotification = (
 ): {
   deleteNotification: (id: number) => void;
 } => {
-  const {timers, http, dispatch, notifications} = props;
+  const {timers, dispatch, notifications} = props;
 
   const deleteNotification = (id: number) => {
     if (!notifications) return;
@@ -27,7 +26,7 @@ export const useDeleteNotification = (
         }
 
         const timer = setTimeout(async () => {
-          await http.put('/api/Notification/notification/Delete', {
+          await Http.put('/api/Notification/notification/Delete', {
             id
           });
 
@@ -43,7 +42,7 @@ export const useDeleteNotification = (
         });
       } else {
         const timer = setTimeout(async () => {
-          await http.put('/api/Notification/notification/Delete', {
+          await Http.put('/api/Notification/notification/Delete', {
             id
           });
 

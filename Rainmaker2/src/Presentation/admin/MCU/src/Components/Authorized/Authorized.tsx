@@ -1,7 +1,7 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Route, Redirect, RouteProps } from "react-router-dom";
-import { LocalDB } from "../../Utils/LocalDB";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {Route, Redirect, RouteProps} from 'react-router-dom';
+import {LocalDB} from '../../Utils/LocalDB';
 
 interface MyRouteProps extends RouteProps {
   component: any;

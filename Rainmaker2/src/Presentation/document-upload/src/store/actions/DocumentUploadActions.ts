@@ -8,8 +8,6 @@ import { Endpoints } from "../endpoints/Endpoints";
 import { ApplicationEnv } from "../../utils/helpers/AppEnv";
 import { Rename } from "../../utils/helpers/rename";
 
-const http = new Http();
-
 export class DocumentUploadActions {
   static async submitDocuments(
     currentSelected: DocumentRequest,
@@ -18,11 +16,11 @@ export class DocumentUploadActions {
     loanApplicationId: string
   ) {
     try {
-      await http.fetch(
+      await Http.fetch(
         {
-          method: http.methods.POST,
-          url: http.createUrl(
-            http.baseUrl,
+          method: Http.methods.POST,
+          url: Http.createUrl(
+            Http.baseUrl,
             Endpoints.documents.POST.submitDocuments()
           ),
           cancelToken: file.uploadReqCancelToken.token,
@@ -82,7 +80,7 @@ export class DocumentUploadActions {
   ) {
     let allSelectedFiles: Document[] = [...prevFiles];
     let counter = 0;
-    for (let f of files) {
+    for (let f of [...files]) {
       if (allSelectedFiles.length >= ApplicationEnv.MaxDocumentCount) {
         setFileLimitError({ value: true });
         break;
@@ -98,7 +96,6 @@ export class DocumentUploadActions {
         "pending",
         f
       );
-
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
 
       if (!FileUpload.isSizeAllowed(f)) {
@@ -106,7 +103,7 @@ export class DocumentUploadActions {
         selectedFile.notAllowed = true;
       }
 
-      if (!(await FileUpload.isTypeAllowed(f))) {
+      if ((await FileUpload.isTypeAllowed(f)) === false) {
         selectedFile.notAllowedReason = "FileType";
         selectedFile.notAllowed = true;
       }

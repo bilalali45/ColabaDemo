@@ -14,12 +14,13 @@ export const DocumentsStatus = () => {
 
   const history = useHistory();
 
-  const { pendingDocs, submittedDocs }: any = state.documents;
-
+  const { pendingDocs, submittedDocs}: any = state.documents;
+  const loan: any = state.loan;
+    const {isMobile} = loan; 
   useEffect(() => {
     if (!pendingDocs?.length) {
       fetchPendingDocs();
-    }
+    } 
 
     if (!submittedDocs?.length) {
       fetchSubmittedDocs();
@@ -73,7 +74,7 @@ export const DocumentsStatus = () => {
                 <img src={IconEmptyDocRequest} alt="" />
               </div>
               <div className="eds-txt">
-                <p>You have 0 tasks to complete.</p>
+                <p data-testid="pending-docs-length">You have 0 tasks to complete.</p>
               </div>
             </div>
           </div>
@@ -84,7 +85,7 @@ export const DocumentsStatus = () => {
 
   const renderCompletedDocs = () => {
     return (
-      <div className="DocumentStatus box-wrap empty">
+      <div data-testid="complete-pending-docs" className="DocumentStatus box-wrap empty">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2">Task List</h2>
         </div>
@@ -108,6 +109,11 @@ export const DocumentsStatus = () => {
     );
   };
 
+
+  if(isMobile?.value) {
+    return (null)
+}
+
   if (!pendingDocs) {
     return <Loader containerHeight={"476px"} />;
   }
@@ -124,7 +130,7 @@ export const DocumentsStatus = () => {
       <div className="overlay-DocumentStatus">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2"> Task List</h2>
-          <p>
+          <p data-testid="borrower-pending-docs">
             You have{" "}
             <span className="DocumentStatus--count">{pendingDocs.length}</span>{" "}
             {pendingDocs.length == 1 ?"item":"items"} to complete
@@ -135,7 +141,7 @@ export const DocumentsStatus = () => {
             {pendingDocs.map((item: any, index: any) => {
               if (index < 8)
                 return (
-                  <li title={item.docName} key={index}>
+                  <li data-testid="borrower-pending-doc" title={item.docName} key={index}>
                     {" "}
                     {item.docName}{" "}
                   </li>
@@ -145,7 +151,7 @@ export const DocumentsStatus = () => {
         </div>
         <div className="box-wrap--footer clearfix">
           {/* <button className="btn btn-primary float-right">Get Start <em className="zmdi zmdi-arrow-right"></em></button> */}
-          <button onClick={getStarted} className="btn btn-primary">
+          <button data-testid="get-started" onClick={getStarted} className="btn btn-primary">
             Get Started <em className="zmdi zmdi-arrow-right"></em>
           </button>
         </div>

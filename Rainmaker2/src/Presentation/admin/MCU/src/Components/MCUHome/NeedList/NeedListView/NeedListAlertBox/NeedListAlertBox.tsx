@@ -43,7 +43,12 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
         let files = [];
         for(let k = 0; k < needList[i].files.length; k++){
           if( needList[i].files[k].byteProStatus === "sync failed"){
-            files.push(needList[i].files[k].clientName)         
+            if(needList[i].files[k].mcuName != ""){
+              files.push(needList[i].files[k].mcuName)
+            }else{
+              files.push(needList[i].files[k].clientName)
+            }
+                     
           }
         }
         if(files.length > 0){
@@ -62,9 +67,9 @@ export const NeedListAlertBox = ({showFailedToSyncBox, needList, syncAgain, hand
         centered
     >
         <Modal.Header closeButton>
-            <div className="h-wrap">
+            <div className="h-wrap" data-testid="sync-alert-Header">
                 <div className="e-icon">
-                    <img src={errorIcon} alt="" />
+                    <img src={errorIcon} alt="ErrorIcon" />
                 </div>
                 <div className="e-content">
                     <h4>Document Synchronization Failed</h4>

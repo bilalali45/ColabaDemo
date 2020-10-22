@@ -54,7 +54,7 @@ export class LoanApplication {
     this.countryName = toTitleCase(json.countryName);
     this.countyName = toTitleCase(json.countyName);
     this.cityName = toTitleCase(json.cityName);
-    this.stateName = json.stateName ? json.stateName.toUpperCase() : "";
+    this.stateName = json.stateName ? json.stateName?.toUpperCase() : "";
     this.streetAddress = toTitleCase(json.streetAddress);
     this.zipCode = json.zipCode ? json.zipCode : "";
     this.unitNumber = json.unitNumber;

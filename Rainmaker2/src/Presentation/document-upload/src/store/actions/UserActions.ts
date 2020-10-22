@@ -5,7 +5,6 @@ import { Http } from "rainsoft-js";
 import Cookies from "universal-cookie";
 import axios from "axios";
 const cookies = new Cookies();
-const http = new Http();
 
 export class UserActions {
   static async authenticate() {
@@ -15,7 +14,7 @@ export class UserActions {
       employee: false,
     };
 
-    let res: any = await http.post(
+    let res: any = await Http.post(
       Endpoints.user.POST.authorize(),
       credentials
     );
@@ -34,7 +33,7 @@ export class UserActions {
       if (!Auth.checkAuth()) {
         return;
       }
-      let res: any = await http.post(Endpoints.user.POST.refreshToken(), {
+      let res: any = await Http.post(Endpoints.user.POST.refreshToken(), {
         token: Auth.getAuth(),
         refreshToken: Auth.getRefreshToken(),
       });
@@ -45,10 +44,9 @@ export class UserActions {
         let payload = UserActions.decodeJwt(res.data.data.token);
         Auth.storeTokenPayload(payload);
         UserActions.addExpiryListener(payload);
-        http.setAuth(res.data.data.token);
         return true;
       }
-      console.log("Refresh token fail.");
+      // console.log("Refresh token fail.");
       Auth.removeAuth();
       window.open("/Account/LogOff", "_self");
       return false;
@@ -62,7 +60,7 @@ export class UserActions {
 
   static async refreshParentApp() {
     try {
-      console.log("In refreshParentApp");
+      // console.log("In refreshParentApp");
       axios.get(window.location.origin + "/Account/KeepAlive");
       return true;
     } catch (error) {
@@ -74,7 +72,7 @@ export class UserActions {
   static async authorize() {
     let isAuth = Auth.checkAuth();
     if (isAuth === "token expired") {
-      console.log("Refresh token called from authorize");
+      // console.log("Refresh token called from authorize");
       let res: any = await UserActions.refreshToken();
       if (res) {
         return true;
@@ -89,7 +87,6 @@ export class UserActions {
         if (tokens.token) {
           Auth.saveAuth(tokens.token);
           Auth.saveRefreshToken(tokens.refreshToken);
-          http.setAuth(tokens.token);
           return true;
         } else {
           return false;
@@ -98,31 +95,30 @@ export class UserActions {
 
       let Rainmaker2Token = cookies.get("Rainmaker2Token");
       let Rainmaker2RefreshToken = cookies.get("Rainmaker2RefreshToken");
-      console.log(
-        "Cache token values in authorize Rainmaker2Token",
-        Rainmaker2Token,
-        "Rainmaker2RefreshToken",
-        Rainmaker2RefreshToken
-      );
+      // console.log(
+      //   "Cache token values in authorize Rainmaker2Token",
+      //   Rainmaker2Token,
+      //   "Rainmaker2RefreshToken",
+      //   Rainmaker2RefreshToken
+      // );
       if (Rainmaker2Token && Rainmaker2RefreshToken) {
-        console.log("Cache token values exist");
+        // console.log("Cache token values exist");
         Auth.saveAuth(Rainmaker2Token);
         Auth.saveRefreshToken(Rainmaker2RefreshToken);
         Auth.storeTokenPayload(UserActions.decodeJwt(Rainmaker2Token));
-        http.setAuth(Rainmaker2Token);
         let isAuth = Auth.checkAuth();
-        console.log("Cache token check Auth", isAuth);
+        // console.log("Cache token check Auth", isAuth);
         if (isAuth === "token expired" || !isAuth) {
-          console.log("Cache token is not valid");
-          console.log(
-            "Refresh token called from authorize in case of MVC expire token"
-          );
+          // console.log("Cache token is not valid");
+          // console.log(
+          //   "Refresh token called from authorize in case of MVC expire token"
+          // );
           await UserActions.refreshToken();
         }
-        console.log("Cache token is valid");
+        // console.log("Cache token is valid");
         return true;
       } else {
-        console.log("Cache token not found");
+        // console.log("Cache token not found");
         return false;
       }
     } else {
@@ -131,13 +127,13 @@ export class UserActions {
   }
 
   static addExpiryListener(payload) {
-    console.log("in listener added");
+    // console.log("in listener added");
     let expiry = payload.exp;
     let currentTime = Date.now();
     let expiryTime = expiry * 1000;
     let time = expiryTime - currentTime;
     if (time < 1) {
-      console.log("Refresh token called from addExpiryListener in case of < 1");
+      // console.log("Refresh token called from addExpiryListener in case of < 1");
       (async () => {
         await UserActions.refreshToken();
       })();
@@ -145,11 +141,11 @@ export class UserActions {
     }
     // let t = (time * 1000) * 60;
 
-    console.log("toke will expire after", time, "mil sec");
+    // console.log("toke will expire after", time, "mil sec");
     setTimeout(async () => {
-      console.log(
-        "Refresh token called from addExpiryListener in case of time out meet"
-      );
+      // console.log(
+      //   "Refresh token called from addExpiryListener in case of time out meet"
+      // );
       await UserActions.refreshToken();
     }, time - 2000);
   }

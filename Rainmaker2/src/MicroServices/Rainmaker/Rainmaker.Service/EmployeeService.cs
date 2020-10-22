@@ -4,10 +4,9 @@ using RainMaker.Entity.Models;
 using RainMaker.Service;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
-using System.Linq;
 
 namespace Rainmaker.Service
 {

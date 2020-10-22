@@ -79,7 +79,7 @@ export const LoanSnapshot = () => {
         <div className="loansnapshot--wrap">
           <ul>
             <li>
-              <label className="mcu-label">Loan No.</label>
+              <label className="mcu-label">Byte Loan No</label>
               <span className="mcu-label-value">{loanInfo.loanNumber}</span>
             </li>
             <li>
@@ -99,7 +99,10 @@ export const LoanSnapshot = () => {
             <li>
               <label className="mcu-label">Property Value</label>
               {loanInfo.getPropertyValue && (
-                <span className="mcu-label-value plus">
+                <span
+                  className="mcu-label-value plus"
+                  data-testId="propertyVal"
+                >
                   <sup className="text-primary">$</sup>
                   {loanInfo.getPropertyValue}
                 </span>
@@ -108,7 +111,7 @@ export const LoanSnapshot = () => {
             <li>
               <label className="mcu-label">Loan Amount</label>
               {loanInfo.getLoanAmount && (
-                <span className="mcu-label-value plus">
+                <span className="mcu-label-value plus" data-testId="loanAmt">
                   <sup className="text-primary">$</sup>
                   {loanInfo.getLoanAmount}
                 </span>

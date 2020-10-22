@@ -20,7 +20,7 @@ export const TemplateHeader = () => {
   }, []);
 
   return (
-    <section className="MTheader">
+    <section data-testid="tempate-header" className="MTheader">
       <h2>Manage Document Templates</h2>
 
       <Link

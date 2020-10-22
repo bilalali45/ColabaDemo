@@ -18,6 +18,8 @@ import {
 import { NeedList } from '../../../Entities/Models/NeedList';
 import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
+import { ReviewDocumentActions } from '../../../Store/actions/ReviewDocumentActions';
+import { NeedListActions } from '../../../Store/actions/__mocks__/NeedListActions';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -26,8 +28,8 @@ export const ReviewDocument = () => {
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [documentDetail, setDocumentDetail] = useState(false);
   const [fileViewd, setFileViewd] = useState(false);
-
-    const [clientName, setClientName] = useState('');
+  const [clientName, setClientName] = useState('');
+  const [MCUName, setMCUName] = useState('');
   const [
     previousDocumentButtonDisabled,
     setPreviousDocumentButtonDisabled
@@ -40,16 +42,17 @@ export const ReviewDocument = () => {
   const { state: AppState, dispatch } = useContext(Store);
   const { needListManager } = AppState;
   const { needList } = needListManager as Pick<NeedListType, 'needList'>;
+  const [blobData, setBlobData] = useState<any>();
 
   const history = useHistory();
   const location = useLocation();
   const { state } = location;
 
   const goBack = () => {
-    history.push(`/needlist/${LocalDB.getLoanAppliationId()}`)
+    // console.log('Going Back---------------------------->');
+    console.log('Going now---------------------------->');
+    history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
-
-  const [blobData, setBlobData] = useState<any>();
 
   const documentsForReviewArrayIndexes = () =>
     _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
@@ -58,24 +61,20 @@ export const ReviewDocument = () => {
     async (id, requestId, docId, fileId) => {
       try {
         setLoading(true);
+        let response = await ReviewDocumentActions.getDocumentForView(id, requestId, docId, fileId)
+        // const http = new Http();
 
-        const http = new Http();
+        // const authToken = LocalDB.getAuthToken();
 
-        const authToken = LocalDB.getAuthToken();
+        // const url = NeedListEndpoints.GET.documents.view(id,requestId,docId,fileId
+        // );
 
-        const url = NeedListEndpoints.GET.documents.view(
-          id,
-          requestId,
-          docId,
-          fileId
-        );
-
-        const response = await Axios.get(http.createUrl(http.baseUrl, url), {
-          responseType: 'arraybuffer',
-          headers: {
-            Authorization: `Bearer ${authToken}`
-          }
-        });
+        // const response = await Axios.get(http.createUrl(http.baseUrl, url), {
+        //   responseType: 'arraybuffer',
+        //   headers: {
+        //     Authorization: `Bearer ${authToken}`
+        //   }
+        // });
 
         setBlobData(response);
         setFileViewd(true);
@@ -94,6 +93,7 @@ export const ReviewDocument = () => {
       index: number,
       fileId: string,
       clientName: string,
+      mcuName: string,
       loadingFile?: boolean
     ) => {
       if (index === currentFileIndex || loading === true) return;
@@ -104,6 +104,7 @@ export const ReviewDocument = () => {
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
         setClientName(clientName);
+        setMCUName(mcuName);
 
         return getDocumentForView(id, requestId, docId, fileId);
       }
@@ -138,7 +139,7 @@ export const ReviewDocument = () => {
 
       if (!!files && files.length > 0) {
         setClientName(files[0].clientName);
-
+        setMCUName(files[0].mcuName)
         getDocumentForView(id, requestId, docId, files[0].id);
       }
     },
@@ -235,14 +236,14 @@ export const ReviewDocument = () => {
           setAcceptRejectLoading(true);
 
           const { id, requestId, docId } = currentDocument;
+          await ReviewDocumentActions.acceptDocument(id, requestId, docId);
+          // const http = new Http();
 
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.accept(), {
-            id,
-            requestId,
-            docId
-          });
+          // await http.post(NeedListEndpoints.POST.documents.accept(), {
+          //   id,
+          //   requestId,
+          //   docId
+          // });
 
           setAcceptRejectLoading(false);
 
@@ -280,10 +281,9 @@ export const ReviewDocument = () => {
           const { id, requestId, docId } = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
+          //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
 
-          const http = new Http();
-
-          await http.post(NeedListEndpoints.POST.documents.reject(), {
+          await Http.post(NeedListEndpoints.POST.documents.reject(), {
             loanApplicationId,
             id,
             requestId,
@@ -352,6 +352,7 @@ export const ReviewDocument = () => {
               fileIndex,
               currentFile.id,
               currentFile.clientName,
+              currentFile.mcuName,
               loading
             );
           }
@@ -366,6 +367,7 @@ export const ReviewDocument = () => {
               fileIndex,
               currentFile.id,
               currentFile.clientName,
+              currentFile.mcuName,
               loading
             );
           }
@@ -376,13 +378,15 @@ export const ReviewDocument = () => {
 
   useEffect(() => {
     //apex
-    if (!!currentDocument && currentDocument.files && currentDocument.files.length) {
+    if (
+      !!currentDocument &&
+      currentDocument.files &&
+      currentDocument.files.length
+    ) {
       setHaveDocuments(true);
+    } else {
+      setHaveDocuments(false);
     }
-    else {
-      setHaveDocuments(false)
-    }
-
 
     window.addEventListener('keydown', onMoveArrowKeys);
 
@@ -452,7 +456,7 @@ export const ReviewDocument = () => {
 
         if (!loading && !!files && !!files.length && files.length > 0) {
           setClientName(files[fileIndex || 0].clientName);
-
+          setMCUName(files[fileIndex || 0].mcuName)
           getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
         }
       } catch (error) {
@@ -465,6 +469,7 @@ export const ReviewDocument = () => {
 
   return (
     <div
+      data-testid="testId"
       id="ReviewDocument"
       data-component="ReviewDocument"
       className="review-document"
@@ -503,7 +508,7 @@ export const ReviewDocument = () => {
                     id={currentDocument.id}
                     requestId={currentDocument.requestId}
                     docId={currentDocument.docId}
-                    clientName={clientName}
+                    clientName={MCUName || clientName}
                     blobData={blobData}
                     hideViewer={() => { }}
                   />
