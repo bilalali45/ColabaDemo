@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
+using System;
 using System.Net.Http;
 
 namespace DocumentManagement.Service
@@ -40,6 +41,7 @@ namespace DocumentManagement.Service
                     logger.LogInformation($"{e.CommandName} - {e.Command.ToJson()}");
                 });
             };
+            mongoClientSettings.MaxConnectionIdleTime = TimeSpan.FromMinutes(3);
             client = new MongoClient(mongoClientSettings);
             db = client.GetDatabase(config["Mongo:Database"]);
         }
