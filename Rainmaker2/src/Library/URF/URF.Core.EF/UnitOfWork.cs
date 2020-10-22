@@ -74,7 +74,7 @@ namespace URF.Core.EF
         {
             return RepositoryProvider.GetRepositoryForEntityType<TEntity>();
         }
-        public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.Unspecified, CancellationToken cancellationToken = default)
+        public virtual async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.Unspecified, CancellationToken cancellationToken = default)
         {
             if(DataContext.Database.GetDbConnection().State!=ConnectionState.Open)
             {
