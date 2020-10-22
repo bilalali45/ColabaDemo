@@ -40,10 +40,7 @@ export const SelectedDocuments = ({
 }: // filesChange,
   SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
-  const [doneVisible, setDoneVisible] = useState<boolean>(false);
-  const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
   const loan: any = state.loan;
@@ -62,7 +59,6 @@ export const SelectedDocuments = ({
 
   useEffect(() => {
     setFileInput(inputRef.current);
-    disableSubmitBtn();
 
     let curentFileIndex = pendingDocs.findIndex(
       (pd: DocumentRequest) => pd?.docId === currentSelected?.docId
@@ -74,9 +70,7 @@ export const SelectedDocuments = ({
     if (selectedFiles.length < ApplicationEnv.MaxDocumentCount) {
       setFileLimitError({ value: false });
     }
-    if (!uploadingFiles) {
-      hasSubmitted();
-    }
+
   }, [selectedFiles, selectedFiles.length, uploadingFiles]);
 
   const handleDeleteAction = (file) => {
@@ -170,7 +164,6 @@ export const SelectedDocuments = ({
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
-        // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
         if (name.trim()) {
           f.clientName = `${name}.${FileUpload.getExtension(file, "dot")}`;
         }
@@ -193,7 +186,6 @@ export const SelectedDocuments = ({
         f.focused = focus;
         nextInd = i + 1;
       }
-      // debugger
       return f;
     });
     let updatedFilesWithFocus = updatedFiles.map((f: Document, i: number) => {
@@ -220,27 +212,6 @@ export const SelectedDocuments = ({
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
-  const disableSubmitBtn = () => {
-    let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
-    let docEdits = selectedFiles.filter((de) => de.editName);
-    let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
-
-    if (docFiles.length > 0) {
-      setBtnDisabled(false);
-    } else {
-      setBtnDisabled(true);
-    }
-    if (docEdits.length > 0) {
-      setBtnDisabled(true);
-    } else if (doneVisible) {
-      setBtnDisabled(true);
-    } else if (docDelete.length > 0) {
-      setBtnDisabled(true);
-    } else {
-      setBtnDisabled(false);
-    }
-  };
-
   const fetchUploadedDocuments = async () => {
     let uploadedDocs = await DocumentActions.getSubmittedDocuments(
       Auth.getLoanAppliationId()
@@ -254,8 +225,7 @@ export const SelectedDocuments = ({
   };
 
   const doneDoc = async () => {
-    setDoneVisible(false);
-    setDoneHit(true);
+ 
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -283,22 +253,11 @@ export const SelectedDocuments = ({
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
-      setDoneVisible(false);
-      setDoneHit(false);
+      
       await fetchUploadedDocuments();
     }
     if (isMobile?.value && pendingDocs.length === 1) {
       setCurrentInview('documetsRequired');
-    }
-  };
-
-  const hasSubmitted = () => {
-    let pending = selectedFiles.filter((f) => f.uploadStatus === "pending");
-    if (pending.length > 0) {
-      setDoneVisible(false);
-      return;
-    } else {
-      setDoneVisible(true);
     }
   };
 
@@ -309,15 +268,11 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
-  const handleSubmitBtnDisabled = (subBtnPressed) => {
+  const handleSubmitBtnDisabled = () => {
     console.log(selectedFiles);
     let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
     console.log('newFiles', 'in here here', newFiles);
     let filesEditing = newFiles?.filter(f => f.editName);
-
-    if (subBtnPressed) {
-      return true;
-    }
 
     if (!newFiles.length) {
       return true;
@@ -327,13 +282,6 @@ export const SelectedDocuments = ({
       return true;
     }
   }
-
-  // useEffect(() => {
-  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
-  //     setDoneVisible(false);
-  //     setBtnDisabled(true);
-  //   }
-  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
   return (
     <section className="file-drop-box-wrap">
@@ -346,7 +294,6 @@ export const SelectedDocuments = ({
                   key={f.clientName + index}
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
-                  disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
@@ -426,7 +373,6 @@ export const SelectedDocuments = ({
             <div className="row">
               <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
-                  {/* {docTitle} */}
                   <p>
                     You won't be able to come back to this once you're done.
                   </p>
@@ -438,8 +384,7 @@ export const SelectedDocuments = ({
                   <button
                     className="btn btn-small btn-secondary"
                     onClick={() => {
-                      setDoneVisible(false);
-                      disableSubmitBtn();
+                   
                       if (pendingDocs.length > 1) {
                         let curDocInd = 0;
                         pendingDocs?.forEach((d, i) => {
@@ -475,15 +420,13 @@ export const SelectedDocuments = ({
           </div>
         ) : (
             <div className="doc-submit-wrap">
-              {!doneHit && (
-                <button
-                  disabled={handleSubmitBtnDisabled(subBtnPressed)}
-                  className="btn btn-primary"
-                  onClick={uploadFiles}
-                >
-                  Submit
+              <button
+                disabled={handleSubmitBtnDisabled()}
+                className="btn btn-primary"
+                onClick={uploadFiles}
+              >
+                Submit
                 </button>
-              )}
             </div>
           )}
       </div>

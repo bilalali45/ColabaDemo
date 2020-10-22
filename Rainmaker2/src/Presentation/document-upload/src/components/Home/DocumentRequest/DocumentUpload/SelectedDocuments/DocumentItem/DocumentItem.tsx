@@ -14,7 +14,6 @@ import { Store } from '../../../../../../store/store';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Modal from 'react-bootstrap/Modal'
 type DocumentItemType = {
-  disableSubmitButton: Function;
   file: Document;
   viewDocument: Function;
   changeName: Function;
@@ -35,7 +34,6 @@ export const DocumentItem = ({
   fileAlreadyExists,
   retry,
   indexKey,
-  disableSubmitButton,
   handleDelete,
   shouldFocus,
   toggleFocus
