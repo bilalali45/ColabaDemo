@@ -309,6 +309,25 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
+  const handleSubmitBtnDisabled = (subBtnPressed) => {
+    console.log(selectedFiles);
+    let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
+    console.log('newFiles', 'in here here', newFiles);
+    let filesEditing = newFiles?.filter(f => f.editName);
+
+    if (subBtnPressed) {
+      return true;
+    }
+
+    if (!newFiles.length) {
+      return true;
+    }
+
+    if (filesEditing.length) {
+      return true;
+    }
+  }
+
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
   //     setDoneVisible(false);
@@ -402,7 +421,7 @@ export const SelectedDocuments = ({
       </div>
       <div className="doc-upload-footer">
         {console.log('sdfafasdfa adf asdf asdfa dfasdfadsf asdf asdf', currentSelected?.files?.filter(f => f.uploadedStatus === 'failed'))}
-        {doneVisible && currentSelected?.files?.filter(f => f.uploadedStatus === 'failed').length > 0 ? (
+        {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles ? (
           <div className="doc-confirm-wrap">
             <div className="row">
               <div className="col-xs-12 col-md-6 col-lg-7">
@@ -458,7 +477,7 @@ export const SelectedDocuments = ({
             <div className="doc-submit-wrap">
               {!doneHit && (
                 <button
-                  disabled={btnDisabled || subBtnPressed}
+                  disabled={handleSubmitBtnDisabled(subBtnPressed)}
                   className="btn btn-primary"
                   onClick={uploadFiles}
                 >

@@ -503,7 +503,7 @@ export const DocumentItem = ({
             <div className="dl-info">
               <span className="dl-text">
                 {" "}
-                File could not be uploaded successfully
+                {file?.failedReason}
               </span>
             </div>
           </div>
