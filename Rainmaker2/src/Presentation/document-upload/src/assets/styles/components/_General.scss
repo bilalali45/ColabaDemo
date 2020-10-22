@@ -463,3 +463,13 @@ a[href],a[tabindex]{
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn; }
 
+    .zoomview-wraper{
+        .react-transform-element{
+          @include mobile {
+          -webkit-transition: all 0.3s ease-out; 
+          -moz-transition: all 0.3s ease-out;
+          -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+          }
+        }
+      }

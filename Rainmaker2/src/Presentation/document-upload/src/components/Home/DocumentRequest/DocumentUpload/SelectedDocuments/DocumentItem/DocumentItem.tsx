@@ -54,6 +54,9 @@ export const DocumentItem = ({
   const txtInput = useRef<HTMLInputElement>(null);
 
   const doubleClickHandler = (isUploaded: string | undefined) => {
+    if (isMobile?.value) {
+      return;
+    }
     if (isUploaded === 'done' || validFilename === false || nameExists === true || filename === "") {
       return;
     }
@@ -83,7 +86,10 @@ export const DocumentItem = ({
   }
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    modifyFilename(event.target.value)
+    modifyFilename(event.target.value);
+    if (!event.target.value.trim()) {
+      setFilename('')
+    }
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -134,6 +140,7 @@ export const DocumentItem = ({
   }, [file.focused, file.editName]);
 
   const EditTitle = () => {
+    setRenameModalShow(true);
     changeName(file, filename);
 
     toggleFocus(file, true)
@@ -351,7 +358,7 @@ export const DocumentItem = ({
             </div>
             <div data-testid={`file-container-${indexKey}`} onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
-              {!validFilename && (
+              {/* {!validFilename && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot contain any special characters</span>
                 </div>
@@ -361,11 +368,12 @@ export const DocumentItem = ({
                   <span className="dl-errorrename">File name must be unique.</span>
                 </div>
               )}
-              {filename === "" && (
+              {file.uploadStatus !== 'done' && filename.trim() === "" && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot be empty.</span>
                 </div>
-              )}
+              )} */}
+              {renderErrors()}
             </div>
 
             {!isMobile.value ?
@@ -539,6 +547,29 @@ export const DocumentItem = ({
     return null;
   };
 
+  const renderErrors = () => {
+
+    if (!validFilename) {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name cannot contain any special characters</span>
+        </div>
+      )
+    } else if (nameExists) {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name must be unique.</span>
+        </div>
+      )
+    } else if (file.uploadStatus === 'pending' && filename.trim() === '') {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name cannot be empty.</span>
+        </div>
+      )
+    }
+  }
+
   const renderDocListPopupMobile = () => {
     return (
       <Modal
@@ -555,6 +586,9 @@ export const DocumentItem = ({
             Rename Document?
         </Modal.Title>
           <button type="button" className="close" onClick={() => {
+            if (!validFilename || nameExists || filename.trim() === '') {
+              return;
+            }
             if (filename?.length) {
               toggleFocus(file, true);
               changeName(file, filename);
@@ -584,21 +618,7 @@ export const DocumentItem = ({
 
                   <div className="doc-list-content">
                     {renderFileTitleMobile()}
-                    {!validFilename && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name cannot contain any special characters</span>
-                      </div>
-                    )}
-                    {!!nameExists && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name must be unique.</span>
-                      </div>
-                    )}
-                    {filename === "" && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name cannot be empty.</span>
-                      </div>
-                    )}
+                    {renderErrors()}
                   </div>
                 </Fragment>
               )}
@@ -610,6 +630,9 @@ export const DocumentItem = ({
         </Modal.Body>
         <Modal.Footer>
           <button className="btn btn-primary" onClick={() => {
+            if (nameExists === true || validFilename === false || filename.trim() === "") {
+              return;
+            }
             toggleFocus(file, true);
             changeName(file, filename);
             setRenameModalShow(false)

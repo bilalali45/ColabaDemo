@@ -4,13 +4,15 @@ import React, {
   useCallback,
   FunctionComponent,
   Fragment,
+  useContext
 } from "react";
 import FileViewer from "react-file-viewer";
 import printJS from "print-js";
-
 import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { Loader } from "../Assets/loader";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Store } from "../../../store/store";
+
 
 interface DocumentViewProps {
   id: string;
@@ -23,7 +25,10 @@ interface DocumentViewProps {
   hideViewer: (currentDoc) => void;
   file?: any;
   clearBlob?: Function;
+  isMobile?:any
 }
+
+let timer: any = null;
 
 interface DocumentParamsType {
   filePath: string;
@@ -42,13 +47,18 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   blobData,
   submittedDocumentCallBack,
   clearBlob,
+  isMobile
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: "",
     fileType: "",
   });
-
+  const { state, dispatch } = useContext(Store);
+  const loan: any = state.loan;
+  //const { isMobile } = loan;
+  const [pan, setPan] = useState<any>(true);
+  const [scale, setScale] = useState<any>(1);
   const getDocumentForViewBeforeUpload = useCallback(() => {
     const fileBlob = new Blob([file], { type: "image/png" });
     const filePath = URL.createObjectURL(fileBlob);
@@ -59,6 +69,18 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         fileType: file.type.replace("image/", "").replace("application/", ""),
       });
   }, [file]);
+
+
+  useEffect(() => {
+    setPan(pan)
+  }, [pan])
+  const enabalePan = (e: any) => {
+    setScale(e.scale)
+    return e.scale;
+  };
+  useEffect(() => {
+    getPanValue(scale)
+  }, [scale])
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -128,7 +150,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   useEffect(() => {
     window.addEventListener("keydown", onEscapeKeyPressed, false);
-   
+
     /*var elements = document.getElementsByClassName("classname");
     for (var i = 0; i < elements.length; i++) {
       elements[i].addEventListener('click', ()=>{ document.body.removeAttribute('style'); }, false);
@@ -146,12 +168,28 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           document.body.removeAttribute("style");
         });
     };
-  }, [onEscapeKeyPressed]);  
- 
-  
+  }, [onEscapeKeyPressed]);
+
+
   const removeOverflow = () => {
-    document.body.removeAttribute("style"); 
+    document.body.removeAttribute("style");
   };
+
+
+
+  const getPanValue = (e: any) => {
+    // let a:any = e;
+
+    if (e > 1) {
+      setPan(false)
+      console.log(e)
+    } else {
+      setPan(true)
+    }
+  }
+
+
+
 
   return (
     <div className="document-view" id="screen">
@@ -172,12 +210,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                   <button
                     className="document-view--button"
                     onClick={downloadFile}
-                  >  
+                  >
                     <SVGdownload />
                   </button>
                 </li>
               </Fragment>
-            )} 
+            )}
             <li>
               <button
                 id={"closeDocumentView"}
@@ -214,13 +252,17 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
-      <div className="zoomview-wraper"> 
-        <TransformWrapper
-          defaultScale={1}  
-          wheel={{ wheelEnabled: false }}  
-          pinch={{ disabled: true }}  
-          // defaultPositionX={200}
-          // defaultPositionY={100}
+      <div className="zoomview-wraper">
+        {isMobile?.value ? <TransformWrapper
+          defaultScale={1}
+          wheel={{ wheelEnabled: false, touchPadEnabled: true }}
+          pan={{ disabled: pan, animationTime: 0  }}
+          zoomIn={{ animation: false, animationTime: 0 }}
+          zoomOut={{ animation: false, animationTime: 0 }}
+          reset={{ animation: false, animationTime: 0 }}
+          doubleClick={{ disabled: true }}
+          scalePadding={{ animationTime: 0} }
+          onZoomChange={(e) => { enabalePan(e) }}
         >
           {({ zoomIn, zoomOut, resetTransform }) => (
             <div>
@@ -232,8 +274,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                       filePath={documentParams.filePath}
                     />
                   ) : (
-                    <Loader height={"94vh"} />
-                  )}
+                      <Loader height={"94vh"} />
+                    )}
                 </div>
               </TransformComponent>
               <div className="document-view--floating-options">
@@ -257,7 +299,55 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
               </div>
             </div>
           )}
+
         </TransformWrapper>
+          : <TransformWrapper
+            defaultScale={1}
+            wheel={{ wheelEnabled: false }}
+          >
+
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <div>
+                <TransformComponent>
+                  <div className="document-view--body">
+                    {!!documentParams.filePath ? (
+                      <FileViewer
+                        fileType={documentParams.fileType}
+                        filePath={documentParams.filePath}
+                      />
+                    ) : (
+                        <Loader height={"94vh"} />
+                      )}
+                  </div>
+                </TransformComponent>
+                <div className="document-view--floating-options">
+                  <ul>
+                    <li>
+                      <button className="button-float" onClick={zoomIn}>
+                        <em className="zmdi zmdi-plus"></em>
+                      </button>
+                    </li>
+                    <li>
+                      <button className="button-float" onClick={zoomOut}>
+                        <em className="zmdi zmdi-minus"></em>
+                      </button>
+                    </li>
+                    <li>
+                      <button className="button-float" onClick={resetTransform}>
+                        <SVGfullScreen />
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+          </TransformWrapper>
+        }
+
+
+
+
       </div>
     </div>
   );

@@ -25,6 +25,7 @@ interface DocumentViewProps {
   file?: any
   loading?: boolean
   showCloseBtn?: boolean
+  isMobile?: any
 }
 
 interface DocumentParamsType {
@@ -32,6 +33,8 @@ interface DocumentParamsType {
   fileType: string
   blob: any
 }
+
+
 
 export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   id,
@@ -44,13 +47,17 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   blobData,
   submittedDocumentCallBack,
   loading = false,
-  showCloseBtn = true
+  showCloseBtn = true,
+  isMobile
 }) => {
   const [documentParams, setDocumentParams] = useState<DocumentParamsType>({
     blob: new Blob(),
     filePath: '',
     fileType: ''
   })
+
+  const [pan, setPan] = useState<any>(true);
+  const [scale, setScale] = useState<any>(1);
 
   const getDocumentForViewBeforeUpload = useCallback(() => {
     const fileBlob = new Blob([file], { type: 'image/png' })
@@ -62,7 +69,18 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         filePath,
         fileType: file.type.replace('image/', '').replace('application/', '')
       })
-  }, [file])
+  }, [file]);
+
+  useEffect(() => {
+    setPan(pan)
+  }, [pan])
+  const enabalePan = (e: any) => {
+    setScale(e.scale)
+    return e.scale;
+  };
+  useEffect(() => {
+    getPanValue(scale)
+  }, [scale])
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -137,6 +155,19 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     }
   }, [onEscapeKeyPressed])
 
+  const getPanValue = (e: any) => {
+    // let a:any = e;
+
+    if (e > 1) {
+      setPan(false)
+      console.log(e)
+    } else {
+      setPan(true)
+    }
+    console.log(pan)
+  }
+
+
   return (
     <div className='document-view' id='screen'>
       <div data-testid="file-viewer-header" className='document-view--header'>
@@ -199,7 +230,15 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         </div>
       </div>
       <div className='zoomview-wraper'>
-        <TransformWrapper defaultScale={1} wheel={{ wheelEnabled: false }}>
+      {isMobile?.value ? <TransformWrapper  defaultScale={1}
+          wheel={{ wheelEnabled: false, touchPadEnabled: true }}
+          pan={{ disabled: pan, animationTime: 0 }}
+          zoomIn={{ animation: false, animationTime: 0 }}
+          zoomOut={{ animation: false, animationTime: 0 }}
+          reset={{ animation: false, animationTime: 0 }}
+          doubleClick={{ disabled: true }}
+          scalePadding={{ animationTime: 0} }
+          onZoomChange={(e: any) => { enabalePan(e) }}>
           {({
             zoomIn,
             zoomOut,
@@ -244,6 +283,58 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             </div>
           )}
         </TransformWrapper>
+        :
+        <TransformWrapper
+        defaultScale={1}
+        wheel={{ wheelEnabled: false }}
+      >
+
+        {({
+            zoomIn,
+            zoomOut,
+            resetTransform
+          }: {
+            zoomIn: any
+            zoomOut: any
+            resetTransform: any
+          }) => (
+          <div>
+            <TransformComponent>
+              <div className="document-view--body">
+                {!!documentParams.filePath ? (
+                  <FileViewer
+                    fileType={documentParams.fileType}
+                    filePath={documentParams.filePath}
+                  />
+                ) : (
+                    <Loader height={"94vh"} />
+                  )}
+              </div>
+            </TransformComponent>
+            <div className="document-view--floating-options">
+              <ul>
+                <li>
+                  <button className="button-float" onClick={zoomIn}>
+                    <em className="zmdi zmdi-plus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={zoomOut}>
+                    <em className="zmdi zmdi-minus"></em>
+                  </button>
+                </li>
+                <li>
+                  <button className="button-float" onClick={resetTransform}>
+                    <SVGfullScreen />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+      </TransformWrapper>
+}
       </div>
     </div>
   )

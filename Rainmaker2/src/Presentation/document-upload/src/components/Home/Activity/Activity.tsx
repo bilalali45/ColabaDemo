@@ -8,7 +8,6 @@ import { StoreProvider, Store } from "../../../store/store";
 
 export class Activity extends React.Component {
     render() {
-        // console.log("StoreProvider", StoreProvider.con) 
         return (
             <div>
                 <Store.Consumer>

@@ -40,6 +40,14 @@ const ActivityHeader = (props) => {
 
   useEffect(() => {
     location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
+
+    window.onclick = (e) => {
+      setShowToolTip(false);
+    }
+
+    return () => {
+      window.onclick = null;
+    }
     
   }, [pendingDocs?.length]);
 
@@ -207,7 +215,6 @@ const ActivityHeader = (props) => {
       return;
     }
     let url = `${link}/${Auth.getLoanAppliationId()}`;
-    console.log(url);
     history.push(url)
   }
 
@@ -224,7 +231,7 @@ const ActivityHeader = (props) => {
         >
           <Popover id="popover-contained" className="taskListPopover" >
             <h4>Task List</h4>
-            <p>We need <span>{pendingDocs?.length}</span> {pendingDocs?.length < 2?"item":"items"} from you</p>
+            <p>We need <span> {pendingDocs?.length}</span> {pendingDocs?.length < 2?"item":"items"} from you</p>
           </Popover>
         </Overlay>}
         <Link to={{
@@ -234,7 +241,7 @@ const ActivityHeader = (props) => {
           onClick={(e) => handleNavigationMobile(e, link)} >
          <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} >
             <img src={img} alt="" />
-            {pendingDocs?.length > 0 &&  text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length}</div>}
+            {pendingDocs?.length > 0 &&  text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length < 10 ? 0 : ''}{pendingDocs?.length}</div>}
           </div>
           <div className="n-item-label">
             <div>{text}</div>

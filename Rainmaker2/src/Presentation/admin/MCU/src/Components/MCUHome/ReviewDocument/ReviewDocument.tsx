@@ -1,16 +1,16 @@
-import React, {useEffect, useCallback, useState, useContext} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
-import {Http} from 'rainsoft-js';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Http } from 'rainsoft-js';
 import Axios from 'axios';
-import {DocumentView} from 'rainsoft-rc';
+import { DocumentView } from 'rainsoft-rc';
 import _ from 'lodash';
 
-import {ReviewDocumentHeader} from './ReviewDocumentHeader/ReviewDocumentHeader';
-import {ReviewDocumentStatement} from './ReviewDocumentStatement/ReviewDocumentStatement';
-import {NeedListEndpoints} from '../../../Store/endpoints/NeedListEndpoints';
-import {LocalDB} from '../../../Utils/LocalDB';
+import { ReviewDocumentHeader } from './ReviewDocumentHeader/ReviewDocumentHeader';
+import { ReviewDocumentStatement } from './ReviewDocumentStatement/ReviewDocumentStatement';
+import { NeedListEndpoints } from '../../../Store/endpoints/NeedListEndpoints';
+import { LocalDB } from '../../../Utils/LocalDB';
 import emptyIcon from '../../../Assets/images/empty-icon.svg';
-import {Store} from '../../../Store/Store';
+import { Store } from '../../../Store/Store';
 import {
   NeedListType,
   NeedListActionsType
@@ -29,6 +29,7 @@ export const ReviewDocument = () => {
   const [documentDetail, setDocumentDetail] = useState(false);
   const [fileViewd, setFileViewd] = useState(false);
   const [clientName, setClientName] = useState('');
+  const [MCUName, setMCUName] = useState('');
   const [
     previousDocumentButtonDisabled,
     setPreviousDocumentButtonDisabled
@@ -38,22 +39,23 @@ export const ReviewDocument = () => {
   );
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
   const [haveDocuments, setHaveDocuments] = useState(false);
-  const {state: AppState, dispatch} = useContext(Store);
-  const {needListManager} = AppState;
-  const {needList} = needListManager as Pick<NeedListType, 'needList'>;
+  const { state: AppState, dispatch } = useContext(Store);
+  const { needListManager } = AppState;
+  const { needList } = needListManager as Pick<NeedListType, 'needList'>;
   const [blobData, setBlobData] = useState<any>();
 
   const history = useHistory();
   const location = useLocation();
-  const {state} = location;
+  const { state } = location;
 
   const goBack = () => {
-    console.log('Going Back---------------------------->');
+    // console.log('Going Back---------------------------->');
+    console.log('Going now---------------------------->');
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
 
   const documentsForReviewArrayIndexes = () =>
-    _.keys(_.pickBy(needList, {status: DocumentStatus.PENDING_REVIEW}));
+    _.keys(_.pickBy(needList, { status: DocumentStatus.PENDING_REVIEW }));
 
   const getDocumentForView = useCallback(
     async (id, requestId, docId, fileId) => {
@@ -96,7 +98,7 @@ export const ReviewDocument = () => {
       if (index === currentFileIndex || loading === true) return;
 
       if (currentDocument) {
-        const {id, requestId, docId} = currentDocument;
+        const { id, requestId, docId } = currentDocument;
 
         setCurrentFileIndex(() => index);
         setBlobData(() => null);
@@ -116,7 +118,7 @@ export const ReviewDocument = () => {
 
   const changeCurrentDocument = useCallback(
     (nextDocument: NeedList, nextIndex: number, fromHeader: boolean) => {
-      const {id, requestId, docId, files} = nextDocument;
+      const { id, requestId, docId, files } = nextDocument;
 
       const nextDocIndex = needList.findIndex(
         (document, index) =>
@@ -135,7 +137,7 @@ export const ReviewDocument = () => {
 
       if (!!files && files.length > 0) {
         setClientName(files[0].clientName);
-
+        setMCUName(files[0].mcuName)
         getDocumentForView(id, requestId, docId, files[0].id);
       }
     },
@@ -232,7 +234,7 @@ export const ReviewDocument = () => {
           setAcceptRejectLoading(true);
 
           const { id, requestId, docId } = currentDocument;
-         await ReviewDocumentActions.acceptDocument(id, requestId, docId);
+          await ReviewDocumentActions.acceptDocument(id, requestId, docId);
           // const http = new Http();
 
           // await http.post(NeedListEndpoints.POST.documents.accept(), {
@@ -274,11 +276,11 @@ export const ReviewDocument = () => {
         try {
           setAcceptRejectLoading(true);
 
-          const {id, requestId, docId} = currentDocument;
+          const { id, requestId, docId } = currentDocument;
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
-        //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
-        
+          //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
+
           await Http.post(NeedListEndpoints.POST.documents.reject(), {
             loanApplicationId,
             id,
@@ -414,7 +416,7 @@ export const ReviewDocument = () => {
 
     if (!!location.state) {
       try {
-        const {currentDocumentIndex, documentDetail, fileIndex} = state as any;
+        const { currentDocumentIndex, documentDetail, fileIndex } = state as any;
         const doc = needList[currentDocumentIndex];
 
         if (!documentDetail) {
@@ -446,11 +448,11 @@ export const ReviewDocument = () => {
         !!fileIndex && setCurrentFileIndex(fileIndex);
         setDocumentDetail(() => documentDetail);
 
-        const {id, requestId, docId, files, typeId, docName} = doc;
+        const { id, requestId, docId, files, typeId, docName } = doc;
 
         if (!loading && !!files && !!files.length && files.length > 0) {
           setClientName(files[fileIndex || 0].clientName);
-
+          setMCUName(files[fileIndex || 0].mcuName)
           getDocumentForView(id, requestId, docId, files[fileIndex || 0].id);
         }
       } catch (error) {
@@ -493,32 +495,32 @@ export const ReviewDocument = () => {
       <div className="review-document-body">
         <div className="row">
           {!!currentDocument &&
-          currentDocument.files &&
-          currentDocument.files.length ? (
-            <div className="review-document-body--content col-md-8">
-              <div className="doc-view-mcu">
-                <DocumentView
-                  loading={loading}
-                  id={currentDocument.id}
-                  requestId={currentDocument.requestId}
-                  docId={currentDocument.docId}
-                  clientName={clientName}
-                  blobData={blobData}
-                  hideViewer={() => {}}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="no-preview">
-              <div className="no-preview--wrap">
-                <div className="clearfix">
-                  <img src={emptyIcon} alt="No preview available" />
+            currentDocument.files &&
+            currentDocument.files.length ? (
+              <div className="review-document-body--content col-md-8">
+                <div className="doc-view-mcu">
+                  <DocumentView
+                    loading={loading}
+                    id={currentDocument.id}
+                    requestId={currentDocument.requestId}
+                    docId={currentDocument.docId}
+                    clientName={MCUName || clientName}
+                    blobData={blobData}
+                    hideViewer={() => { }}
+                  />
                 </div>
-                <h2>Nothing In {currentDocument?.docName}</h2>
-                <p>No file submitted yet</p>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="no-preview">
+                <div className="no-preview--wrap">
+                  <div className="clearfix">
+                    <img src={emptyIcon} alt="No preview available" />
+                  </div>
+                  <h2>Nothing In {currentDocument?.docName}</h2>
+                  <p>No file submitted yet</p>
+                </div>
+              </div>
+            )}
           {/* review-document-body--content */}
           {!!currentDocument &&
             currentDocument.files &&
