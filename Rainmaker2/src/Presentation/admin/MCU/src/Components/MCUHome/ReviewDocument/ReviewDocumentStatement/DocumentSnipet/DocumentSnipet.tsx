@@ -24,7 +24,7 @@ export const DocumentSnipet = ({
   isCurrent
 }: {
   index: number;
-  moveNextFile: (index: number, fileId: string, clientName: string) => void;
+  moveNextFile: (index: number, fileId: string, clientName: string, mcuName: string) => void;
   clientName: string;
   id: string;
   requestId: string;
@@ -146,7 +146,7 @@ export const DocumentSnipet = ({
   const moveNext = (event: any) => {
     event.stopPropagation();
     // getDocumentFiles(currentDocument);
-    moveNextFile(index, fileId, clientName);
+    moveNextFile(index, fileId, clientName, mcuName);
   };
 
   const eventBubblingHandler = (

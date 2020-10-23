@@ -42,6 +42,7 @@ export const SelectedDocuments = ({
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
+  const [donePressed, setDonePressed] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
   const loan: any = state.loan;
   const { isMobile } = loan;
@@ -86,6 +87,7 @@ export const SelectedDocuments = ({
   };
 
   const viewDocument = (document: any) => {
+    checkFreezBody();
     clearBlob();
     const {
       currentDoc: { id, requestId, docId },
@@ -225,7 +227,7 @@ export const SelectedDocuments = ({
   };
 
   const doneDoc = async () => {
- 
+    setDonePressed(true);
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -259,6 +261,7 @@ export const SelectedDocuments = ({
     if (isMobile?.value && pendingDocs.length === 1) {
       setCurrentInview('documetsRequired');
     }
+    setDonePressed(false);
   };
 
   const checkFocus = (file: Document, index: number) => {
@@ -282,6 +285,30 @@ export const SelectedDocuments = ({
       return true;
     }
   }
+  const checkFreezBody = async () => {
+    
+    let page:any = document.querySelector("html");
+    if (document.body.style.overflow == "hidden" ) {
+      document.body.removeAttribute("style");
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+    if (page.style.overflow == "hidden" ) {
+      page.removeAttribute("style");
+    } else {
+      page.style.overflow = "hidden"
+    }
+
+    
+  };
+
+
+  // useEffect(() => {
+  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
+  //     setDoneVisible(false);
+  //     setBtnDisabled(true);
+  //   }
+  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
   return (
     <section className="file-drop-box-wrap">
@@ -291,7 +318,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
-                  key={f.clientName + index}
+                  key={f.clientName + index}  
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   fileAlreadyExists={fileAlreadyExists}
@@ -357,6 +384,11 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
+              let page:any = document.querySelector("html");
+                page.style.overflow = "visible";
+                page.removeAttribute("style");
               history.goBack();
             }}
             {...currentDoc}
@@ -368,7 +400,7 @@ export const SelectedDocuments = ({
       </div>
       <div className="doc-upload-footer">
         {console.log('sdfafasdfa adf asdf asdfa dfasdfadsf asdf asdf', currentSelected?.files?.filter(f => f.uploadedStatus === 'failed'))}
-        {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles ? (
+        {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
               <div className="col-xs-12 col-md-6 col-lg-7">
@@ -381,7 +413,7 @@ export const SelectedDocuments = ({
 
               <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
-                  <button
+                  <button 
                     className="btn btn-small btn-secondary"
                     onClick={() => {
                    

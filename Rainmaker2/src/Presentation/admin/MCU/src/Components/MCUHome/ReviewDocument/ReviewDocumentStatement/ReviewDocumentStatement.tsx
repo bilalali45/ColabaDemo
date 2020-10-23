@@ -331,9 +331,10 @@ export const ReviewDocumentStatement = ({
                     index: number,
                     fileId: string,
                     clientName: string,
+                    mcuName: string,
                     loadingFile?: boolean
                   ) => {
-                    moveNextFile(index, fileId, clientName, loadingFile).then(
+                    moveNextFile(index, fileId, clientName, mcuName, loadingFile).then(
                       async () => {
                         setCurrentFileName(clientName);
                         if (currentDocument) {

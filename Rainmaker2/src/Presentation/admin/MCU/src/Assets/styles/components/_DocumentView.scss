@@ -111,8 +111,10 @@
             }
         } 
         canvas {
-            margin: auto;
+            margin:0 auto;
             display: table;
+            position: relative;
+            z-index: -1;
         }
     }
 
@@ -162,7 +164,7 @@
         position: relative;
         z-index: 8888;
         > ul {
-          position: fixed;
+          position: absolute;
           right: 30px;
           bottom: 80px;
           z-index: 8888;

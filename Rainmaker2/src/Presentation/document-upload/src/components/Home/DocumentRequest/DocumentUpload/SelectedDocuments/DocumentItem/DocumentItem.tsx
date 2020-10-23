@@ -315,7 +315,11 @@ export const DocumentItem = ({
             onBlur={onBlur}
           />
         ) : (
-            <p title={file.clientName}> {file.clientName}</p>
+            <p onClick={() => {
+              if(isMobile.value && file.uploadStatus === 'done') {
+                viewDocument(file)
+              }
+            }} title={file.clientName}> {file.clientName}</p>
           )}
       </div>
     )
