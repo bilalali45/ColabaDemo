@@ -96,13 +96,13 @@ namespace DocumentManagement.API.Controllers
             {
                 if (file.Length > setting.maxFileSize)
                     //throw new DocumentManagementException("File size exceeded limit");
-                    return BadRequest("File size exceeded limit");
+                    return BadRequest($"File size over {((decimal)setting.maxFileSize)/(1024*1024)}mb limit");
                 if (file.FileName.Length > setting.maxFileNameSize)
                     return BadRequest("File Name size exceeded limit");
                 //throw new DocumentManagementException("File Name size exceeded limit");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
                     //throw new DocumentManagementException("This file type is not allowed for uploading");
-                    return BadRequest("This file type is not allowed for uploading");
+                    return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
             }
             // save
             List<string> fileId = new List<string>();
