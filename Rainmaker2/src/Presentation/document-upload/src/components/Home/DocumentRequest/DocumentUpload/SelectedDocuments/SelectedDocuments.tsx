@@ -277,6 +277,10 @@ export const SelectedDocuments = ({
     console.log('newFiles', 'in here here', newFiles);
     let filesEditing = newFiles?.filter(f => f.editName);
 
+    if(subBtnPressed) {
+      return true;
+    }
+
     if (!newFiles.length) {
       return true;
     }

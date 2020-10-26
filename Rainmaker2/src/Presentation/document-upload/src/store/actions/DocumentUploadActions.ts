@@ -110,10 +110,10 @@ export class DocumentUploadActions {
       );
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
 
-      if (!FileUpload.isSizeAllowed(f)) {
-        selectedFile.notAllowedReason = "FileSize";
-        selectedFile.notAllowed = true;
-      }
+      // if (!FileUpload.isSizeAllowed(f)) {
+      //   selectedFile.notAllowedReason = "FileSize";
+      //   selectedFile.notAllowed = true;
+      // }
 
       // if ((await FileUpload.isTypeAllowed(f)) === false) {
       //   selectedFile.notAllowedReason = "FileType";
