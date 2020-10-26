@@ -204,7 +204,7 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            var result = await service.GetLosMilestone(3, "Processing", 1);
+            var result = await service.GetLosMilestone(3, 1, 1);
 
             Assert.Equal(1, result);
         }
@@ -220,7 +220,7 @@ namespace Milestone.Tests
             dataContext.Database.EnsureCreated();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            var result = await service.GetLosMilestone(4, "Processing1", 1);
+            var result = await service.GetLosMilestone(4, 1, 1);
 
             Assert.Equal(-1, result);
         }
@@ -246,7 +246,7 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            var result = await service.GetLosMilestone(5, "Processing", 1);
+            var result = await service.GetLosMilestone(5, 1, 1);
 
             Assert.Equal(-1, result);
         }

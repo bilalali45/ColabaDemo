@@ -25,6 +25,7 @@ namespace Milestone.Entity.Models
         public int TenantId { get; set; } // TenantId
         public string Name { get; set; } // Name (length: 50)
         public short ExternalOriginatorId { get; set; } // ExternalOriginatorId
+        public int StatusId { get; set; } // StatusId
 
         // Reverse navigation
 

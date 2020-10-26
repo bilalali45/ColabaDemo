@@ -92,7 +92,7 @@ namespace Milestone.API.Controllers
             int id = await _milestoneService.GetLosMilestone(model.tenantId, model.milestone, model.losId);
             if(id<=0)
             {
-                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone, model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone.ToString(), model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
             }
             else
             {

@@ -11,7 +11,7 @@ namespace Milestone.Service
         Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId);
         Task UpdateMilestoneLog(int loanApplicationId, int milestoneId);
         Task<List<MilestoneForLoanCenter>> GetMilestoneForLoanCenter(int loanApplicationId, int milestoneId, int tenantId);
-        Task<int> GetLosMilestone(int tenantId, string milestone, short losId);
+        Task<int> GetLosMilestone(int tenantId, int milestone, short losId);
         Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId);
         Task SetGlobalMilestoneSetting(GlobalMilestoneSettingModel model);
         Task<List<MilestoneSettingModel>> GetMilestoneSettingList(int tenantId);

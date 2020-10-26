@@ -222,9 +222,9 @@ namespace Milestone.Service
             return milestone;
         }
 
-        public async Task<int> GetLosMilestone(int tenantId, string milestone, short losId)
+        public async Task<int> GetLosMilestone(int tenantId, int milestone, short losId)
         {
-            var m = await Uow.Repository<LosTenantMilestone>().Query(x => x.TenantId == tenantId && x.ExternalOriginatorId == losId && x.Name.ToLower() == milestone.ToLower())
+            var m = await Uow.Repository<LosTenantMilestone>().Query(x => x.TenantId == tenantId && x.ExternalOriginatorId == losId && x.StatusId==milestone)
                 .Include(x => x.MilestoneMappings).FirstOrDefaultAsync();
             if (m == null)
                 return -1;
@@ -326,7 +326,7 @@ namespace Milestone.Service
         }
         public async Task<List<MappingModel>> GetMappingAll(int tenantId, short losId)
         {
-            return await Uow.Repository<LosTenantMilestone>().Query(x => x.ExternalOriginatorId == losId && x.TenantId == tenantId).Select(x => new MappingModel() { Id = x.Id, Name = x.Name }).ToListAsync();
+            return await Uow.Repository<LosTenantMilestone>().Query(x => x.ExternalOriginatorId == losId && x.TenantId == tenantId).Select(x => new MappingModel() { Id = x.Id, Name = x.Name,StatusId=x.StatusId }).ToListAsync();
         }
         public async Task<MilestoneMappingModel> GetMapping(int tenantId, int milestoneId)
         {
@@ -364,6 +364,7 @@ namespace Milestone.Service
                 TenantId = model.TenantId,
                 ExternalOriginatorId = model.LosId,
                 Name = model.Name,
+                StatusId = model.StatusId,
                 TrackingState = TrackingState.Added
             };
             Uow.Repository<LosTenantMilestone>().Insert(milestone);
@@ -388,6 +389,7 @@ namespace Milestone.Service
         {
             var mapping = await Uow.Repository<LosTenantMilestone>().Query(x => x.Id == model.Id).FirstAsync();
             mapping.Name = model.Name;
+            mapping.StatusId = model.StatusId;
             mapping.TrackingState = TrackingState.Modified;
             Uow.Repository<LosTenantMilestone>().Update(mapping);
             await Uow.SaveChangesAsync();

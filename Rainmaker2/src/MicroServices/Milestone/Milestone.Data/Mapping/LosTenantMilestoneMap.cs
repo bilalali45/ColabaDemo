@@ -31,6 +31,7 @@ namespace Milestone.Data.Mapping
             builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
             builder.Property(x => x.Name).HasColumnName(@"Name").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.ExternalOriginatorId).HasColumnName(@"ExternalOriginatorId").HasColumnType("smallint").IsRequired();
+            builder.Property(x => x.StatusId).HasColumnName(@"StatusId").HasColumnType("int").IsRequired();
 
             // Foreign keys
             builder.HasOne(a => a.ExternalOriginator).WithMany(b => b.LosTenantMilestones).HasForeignKey(c => c.ExternalOriginatorId).OnDelete(DeleteBehavior.SetNull); // FK_LosTenantMilestone_ExternalOriginator_Id
