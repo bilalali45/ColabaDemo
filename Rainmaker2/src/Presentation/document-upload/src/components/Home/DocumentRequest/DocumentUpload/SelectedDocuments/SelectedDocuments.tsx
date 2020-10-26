@@ -123,7 +123,7 @@ export const SelectedDocuments = ({
     setSubBtnPressed(true);
     setUploadingFiles(true);
     for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
+      if (file.file && file.uploadStatus !== "done" && !file.notAllowed && file.uploadStatus !== 'failed') {
         try {
           await DocumentUploadActions.submitDocuments(
             currentSelected,
