@@ -108,6 +108,42 @@ namespace DocumentManagement.Service
             }
             return result;
         }
+        public async Task<List<TaskCountDTO>> GetPendingDocumentsByLoanApplications(int[] loanApplicationId, int tenantId, int userProfileId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+           List< TaskCountDTO> result =  new List<TaskCountDTO>();
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                               @"{""$match"": 
+                                    {  ""loanApplicationId"":{ ""$in"": [" + string.Join(",", loanApplicationId.Select(x => x.ToString()).ToArray()) + @"] }
+									
+									} 
+									
+									}",
+                               @"{ ""$unwind"": ""$requests""}",
+                               @"{ ""$match"": {""requests.status"": """ + RequestStatus.Active + @"""}}",
+                               @"{""$unwind"": ""$requests.documents""}",
+                              @"{
+                                            ""$match"": { ""$or"":[
+                                                {""requests.documents.status"": """ + DocumentStatus.BorrowerTodo + @"""},
+                                                {""requests.documents.status"": """ + DocumentStatus.Started + @"""}
+                                            ]}
+                                        }",
+                            @"{ ""$group"": { ""_id"": ""$loanApplicationId"",""count"": { ""$sum"": 1 } } } "
+               ));
+             
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    TaskCountQuery query = BsonSerializer.Deserialize<TaskCountQuery>(current);
+                    var dto = new TaskCountDTO();
+                    dto.loanId = query._id;
+                    dto.count = query.count;
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
 
         public async Task<List<DashboardDTO>> GetSubmittedDocuments(int loanApplicationId, int tenantId, int userProfileId)
         {
