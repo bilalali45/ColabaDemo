@@ -458,7 +458,7 @@ export const DocumentItem = ({
             <div className="dl-info">
               <span className="dl-text">
                 {" "}
-                File type is not supported. Allowed types: PDF, JPEG, PNG
+                File type is not supported. Allowed types: PDF,JPEG,PNG
               </span>
             </div>
           </div>
