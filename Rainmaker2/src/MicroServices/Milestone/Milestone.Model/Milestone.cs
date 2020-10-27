@@ -12,8 +12,13 @@ namespace Milestone.Model
     }
     public class MilestoneForBorrowerDashboard
     {
+
+
         public string Name { get; set; }
         public string Icon { get; set; }
+
+        public int loanAplicationId { get; set; }
+        public int milestoneId { get; set; }
     }
     public class MilestoneForLoanCenter
     {
@@ -85,5 +90,10 @@ namespace Milestone.Model
         public int milestone { get; set; }
         public short losId { get; set; }
         public short rainmakerLosId { get; set; }
+    }
+
+    public class MilestoneloanIdsModel
+    {
+        public int[] loanApplicationId { get; set; }
     }
 }

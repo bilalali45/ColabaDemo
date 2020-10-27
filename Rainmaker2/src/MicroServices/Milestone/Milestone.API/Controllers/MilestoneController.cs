@@ -49,18 +49,7 @@ namespace Milestone.API.Controllers
             await _milestoneService.InsertMilestoneLog(model.loanApplicationId,model.milestoneId);
             return Ok();
         }
-        [Authorize(Roles = "Customer")]
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetMilestoneForBorrowerDashboard(int loanApplicationId)
-        {
-            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
-                Request.Headers["Authorization"].Select(x => x.ToString()));
-            if (milestone <= 0)
-                return Ok(null);
-            var status = await _milestoneService.GetMilestoneForBorrowerDashboard(loanApplicationId,milestone,tenantId);
-            return Ok(status);
-        }
+        
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneForLoanCenter(int loanApplicationId)
@@ -188,5 +177,33 @@ namespace Milestone.API.Controllers
             await _milestoneService.DeleteMapping(model);
             return Ok();
         }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetMilestoneForBorrowerDashboard(MilestoneloanIdsModel milestoneloanIdsModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            List<MilestoneForBorrowerDashboard> MilestoneForBorrowerDashboard = new List<MilestoneForBorrowerDashboard>();
+            if (milestoneloanIdsModel.loanApplicationId != null)
+            {
+                for (int i = 0; i < milestoneloanIdsModel.loanApplicationId.Length; i++)
+                {
+                    int milestone = await _rainmakerService.GetMilestoneId(milestoneloanIdsModel.loanApplicationId[i],
+                    Request.Headers["Authorization"].Select(x => x.ToString()));
+                    if (milestone != -1)
+                    {
+                        var status = await _milestoneService.GetMilestoneForBorrowerDashboard(milestoneloanIdsModel.loanApplicationId[i], milestone, tenantId);
+                        status.loanAplicationId = milestoneloanIdsModel.loanApplicationId[i];
+                        status.milestoneId = milestone;
+                        MilestoneForBorrowerDashboard.Add(status);
+                    }
+                }
+            }
+            if (MilestoneForBorrowerDashboard.Count <= 0)
+                return Ok(null);
+          
+            return Ok(MilestoneForBorrowerDashboard);
+        }
+
     }
 }

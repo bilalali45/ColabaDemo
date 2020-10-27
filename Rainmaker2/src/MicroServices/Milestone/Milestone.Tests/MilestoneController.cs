@@ -112,6 +112,8 @@ namespace Milestone.Tests
                 );
             var controller = new MilestoneController(mockMilestone.Object, mock.Object);
             var httpContext = new Mock<HttpContext>();
+            MilestoneloanIdsModel milestoneloanIdsModel = new MilestoneloanIdsModel();
+            milestoneloanIdsModel.loanApplicationId = new int[2] { 2, 3 };
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
@@ -119,7 +121,7 @@ namespace Milestone.Tests
 
             controller.ControllerContext = context;
             //Act
-            IActionResult result = await controller.GetMilestoneForBorrowerDashboard(1);
+            IActionResult result = await controller.GetMilestoneForBorrowerDashboard(milestoneloanIdsModel);
 
             //Assert
             Assert.NotNull(result);
@@ -143,12 +145,13 @@ namespace Milestone.Tests
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
-
+            MilestoneloanIdsModel milestoneloanIdsModel = new MilestoneloanIdsModel();
+            milestoneloanIdsModel.loanApplicationId = new int[2] { 2, 3 };
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
             //Act
-            IActionResult result = await controller.GetMilestoneForBorrowerDashboard(1);
+            IActionResult result = await controller.GetMilestoneForBorrowerDashboard(milestoneloanIdsModel);
 
             //Assert
             Assert.NotNull(result);
