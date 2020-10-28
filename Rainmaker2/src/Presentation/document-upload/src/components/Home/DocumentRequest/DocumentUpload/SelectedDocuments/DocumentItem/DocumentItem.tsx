@@ -308,7 +308,7 @@ export const DocumentItem = ({
           <input
             data-testid="file-item-rename-input"
             ref={txtInput}
-            style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
+            style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" :file.focused?"1px solid #206cf2":"none" }}
             maxLength={250}
             type="text"
             value={filename} //filename is default value on edit without extension
@@ -317,7 +317,11 @@ export const DocumentItem = ({
             onBlur={onBlur}
           />
         ) : (
-            <p title={file.clientName}> {file.clientName}</p>
+            <p onClick={() => {
+              if(isMobile.value && file.uploadStatus === 'done') {
+                viewDocument(file)
+              }
+            }} title={file.clientName}> {file.clientName}</p>
           )}
       </div>
     )
@@ -344,7 +348,7 @@ export const DocumentItem = ({
 
   const renderAllowedFile = () => {
     return (
-      <li className={`doc-li ${openItemDropdown ? " dopen" : ""}`} data-testid="file-item">
+      <li className={`doc-li ${file.editName && file.focused ? " editmode" : ""} ${openItemDropdown ? " dopen" : ""}`} data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={

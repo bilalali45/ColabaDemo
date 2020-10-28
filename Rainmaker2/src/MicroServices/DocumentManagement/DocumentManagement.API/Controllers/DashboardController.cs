@@ -49,7 +49,19 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
+        [HttpPost(template: "GetPendingDocumentsByLoanApplication")]
+        public async Task<IActionResult> GetPendingDocumentsByLoanApplication(GetPendingDocumentsByLoanApplication moGetPendingDocuments)
+        {
+         
+            var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            logger.LogInformation($"GetPendingDocument requested for {moGetPendingDocuments.loanApplicationId} tenantId {tenantId} userId {userProfileId}");
 
+            var docQuery = await dashboardService.GetPendingDocumentsByLoanApplications(loanApplicationId: moGetPendingDocuments.loanApplicationId,
+                                                                      tenantId: tenantId,
+                                                                      userProfileId: userProfileId);
+            return Ok(value: docQuery);
+        }
         [HttpGet(template: "GetSubmittedDocuments")]
         public async Task<IActionResult> GetSubmittedDocuments([FromQuery] GetSubmittedDocuments moGetSubmittedDocuments)
         {

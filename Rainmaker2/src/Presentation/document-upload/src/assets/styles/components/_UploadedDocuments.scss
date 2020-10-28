@@ -1,5 +1,9 @@
 .UploadedDocuments{
-
+&.havedoc{
+    .box-wrap--header {
+        border-bottom: 1px solid color('border');
+    }
+}
     &.box-wrap{
         padding: 0px;
     }
@@ -11,7 +15,7 @@
 
     .box-wrap{
         &--header{
-            border-bottom: 1px solid color('border');
+           
             padding: 20px;
             @include mobile{
                 background:color('primary');
