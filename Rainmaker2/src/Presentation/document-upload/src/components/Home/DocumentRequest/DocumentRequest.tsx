@@ -38,7 +38,7 @@ export const DocumentRequest = () => {
   const  getClass =(cls) =>{
     setdocReqClass(cls)
     }
-    
+
     const mobileView = () => {
         return (
             <section className={`dr-c-wrap ${docReqClass} ${currentInView === 'documetsRequired' ? "PageDocListView":"PageDocUploadView"}`}>

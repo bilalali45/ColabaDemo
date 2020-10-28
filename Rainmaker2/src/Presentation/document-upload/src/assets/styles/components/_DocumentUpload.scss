@@ -129,6 +129,7 @@
         margin-right: -15px;
         @include mobile {
             min-height: calc(100vh - 240px);
+            min-height:calc((var(--vh, 1vh) * 100) - 240px);
             background: color("colorWhite");
         }
         &.havefooter {
@@ -139,7 +140,7 @@
                 height: auto;
                 min-height: calc(100vh - 465px);
                 padding-bottom: 10px;
-                margin-bottom: 90px;
+                margin-bottom: 170px;
             }
            
         }
