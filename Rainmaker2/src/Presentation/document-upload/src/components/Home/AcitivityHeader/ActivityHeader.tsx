@@ -215,7 +215,6 @@ const ActivityHeader = (props) => {
       return;
     }
     let url = `${link}/${Auth.getLoanAppliationId()}`;
-    console.log(url);
     history.push(url)
   }
 

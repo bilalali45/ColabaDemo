@@ -186,7 +186,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     } else {
       setPan(true)
     }
-    console.log(pan)
   }
 
 

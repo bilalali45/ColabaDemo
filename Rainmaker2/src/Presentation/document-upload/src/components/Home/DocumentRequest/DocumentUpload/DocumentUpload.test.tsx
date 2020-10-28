@@ -144,7 +144,6 @@ describe('Document Request File Upload', () => {
         await waitFor(() => {
 
             expect(files).toHaveLength(2);
-            console.log(files[1].innerHTML);
             expect(files[1]).toHaveTextContent('sample-copy-1.pdf');
 
         })

@@ -33,7 +33,7 @@ namespace Notification.Service
                         INotificationService notificationService =
                             scope.ServiceProvider.GetRequiredService<INotificationService>();
                         IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                        IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
+                        using IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
                         IDatabaseAsync database = connection.GetDatabase();
                         long count = await database.ListLengthAsync(NotificationKey);
                         List<NotificationModel> list = new List<NotificationModel>();
@@ -71,7 +71,7 @@ namespace Notification.Service
             using (IServiceScope scope = serviceProvider.CreateScope())
             {
                 IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
+                using IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
                 IDatabaseAsync database = connection.GetDatabase();
                 long count = await database.ListLengthAsync(NotificationKey);
                 List<NotificationModel> list = new List<NotificationModel>();

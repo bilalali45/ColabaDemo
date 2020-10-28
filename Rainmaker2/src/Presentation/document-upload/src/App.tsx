@@ -61,7 +61,6 @@ const App = () => {
 
   useEffect(() => {
     console.log("Document Management App Version", "0.1.3");
-    console.log('Logo Src', logoHeaderSrc)
     authenticate();
     // component unmount
     return () => {
@@ -112,9 +111,7 @@ const App = () => {
 
   const addExpiryListener = () => {
     if (Auth.getUserPayload()) {
-      // console.log("addExpiryListener called from APP tsx");
       UserActions.addExpiryListener(Auth.getUserPayload());
-      // setExpListnerAdded(true);
     }
   };
 
@@ -127,7 +124,6 @@ const App = () => {
   };
 
   const onIdle = (e) => {
-    // console.log("Idle time meet");
     window.onbeforeunload = null;
     Auth.removeAuth();
     if (window.open) {
@@ -135,7 +131,6 @@ const App = () => {
     }
   };
 
-  // console.log("Application is ", authenticated);
   if (!authenticated) {
     return null;
   }

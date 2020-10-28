@@ -217,6 +217,11 @@ namespace DocumentManagement.Model
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
     }
+    public class GetPendingDocumentsByLoanApplication
+    {
+      
+        public int[] loanApplicationId { get; set; }
+    }
     public class GetSubmittedDocuments
     {
         [FromQuery(Name = "loanApplicationId")]
@@ -234,6 +239,20 @@ namespace DocumentManagement.Model
         [FromQuery(Name = "loanApplicationId")]
         [Required(ErrorMessage = "Field Can't be empty")]
         public int loanApplicationId { get; set; }
+
+    }
+
+    public class TaskCountQuery
+    {
+        public int _id { get; set; }
+        public int count { get; set; }
+
+    }
+
+    public class TaskCountDTO
+    {
+     public int loanId { get; set; }
+        public int count { get; set; }
 
     }
 

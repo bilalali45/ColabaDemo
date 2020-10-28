@@ -92,6 +92,7 @@ export const SelectedDocuments = ({
   };
 
   const viewDocument = (document: any) => {
+    checkFreezBody();
     clearBlob();
     const {
       currentDoc: { id, requestId, docId },
@@ -163,14 +164,16 @@ export const SelectedDocuments = ({
   };
 
   const changeName = (file: Document, newName: string) => {
-    if (fileAlreadyExists(file, newName)) {
+    let name = newName.replace(/\s+/g, " ");
+
+    if (fileAlreadyExists(file, name)) {
       return false;
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
         // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        if (newName.trim()) {
-          f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        if (name.trim()) {
+          f.clientName = `${name}.${FileUpload.getExtension(file, "dot")}`;
         }
         f.editName = !f.editName;
         return f;
@@ -307,6 +310,24 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
+  const checkFreezBody = async () => {
+    
+    let page:any = document.querySelector("html");
+    if (document.body.style.overflow == "hidden" ) {
+      document.body.removeAttribute("style");
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+    if (page.style.overflow == "hidden" ) {
+      page.removeAttribute("style");
+    } else {
+      page.style.overflow = "hidden"
+    }
+
+    
+  };
+
+
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
   //     setDoneVisible(false);
@@ -389,6 +410,11 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
+              let page:any = document.querySelector("html");
+                page.style.overflow = "visible";
+                page.removeAttribute("style");
               history.goBack();
             }}
             {...currentDoc}

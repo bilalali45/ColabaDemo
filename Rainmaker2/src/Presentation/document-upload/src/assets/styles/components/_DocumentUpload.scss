@@ -202,6 +202,7 @@
                 & > li {
                     min-height: 62px;
                     background: color("listhover");
+                    border: 1px solid color('listhover');
                     box-shadow: 0 0 3px rgba(color("colorBlack"), 0.16);
                     position: relative;
                     margin-bottom: 10px;
@@ -213,6 +214,10 @@
                         &.dopen {
                             border: 1px solid color('primary');
                         }
+
+                    }
+                    &.editmode {
+                        border: 1px solid color('primary');
                     }
                     &.item-error {
                         .doc-liWrap {

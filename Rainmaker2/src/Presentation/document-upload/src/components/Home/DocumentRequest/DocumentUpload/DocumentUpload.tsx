@@ -28,7 +28,6 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
     setFileInput(fileInputEl);
   };
   const showFileExplorer = (fileToRemnove: Document | null = null) => {
-    console.log("----------------------------------------------------", "jlkj");
     let files =
       selectedfiles.filter(
         (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"

@@ -54,6 +54,9 @@ export const DocumentItem = ({
   const txtInput = useRef<HTMLInputElement>(null);
 
   const doubleClickHandler = (isUploaded: string | undefined) => {
+    if (isMobile?.value) {
+      return;
+    }
     if (isUploaded === 'done' || validFilename === false || nameExists === true || filename === "") {
       return;
     }
@@ -305,7 +308,7 @@ export const DocumentItem = ({
           <input
             data-testid="file-item-rename-input"
             ref={txtInput}
-            style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" : "none" }}
+            style={{ border: nameExists === true || validFilename === false || filename === "" ? "1px solid #D7373F" :file.focused?"1px solid #206cf2":"none" }}
             maxLength={250}
             type="text"
             value={filename} //filename is default value on edit without extension
@@ -314,7 +317,11 @@ export const DocumentItem = ({
             onBlur={onBlur}
           />
         ) : (
-            <p title={file.clientName}> {file.clientName}</p>
+            <p onClick={() => {
+              if(isMobile.value && file.uploadStatus === 'done') {
+                viewDocument(file)
+              }
+            }} title={file.clientName}> {file.clientName}</p>
           )}
       </div>
     )
@@ -341,7 +348,7 @@ export const DocumentItem = ({
 
   const renderAllowedFile = () => {
     return (
-      <li className={`doc-li ${openItemDropdown ? " dopen" : ""}`} data-testid="file-item">
+      <li className={`doc-li ${file.editName && file.focused ? " editmode" : ""} ${openItemDropdown ? " dopen" : ""}`} data-testid="file-item">
         {!file.deleteBoxVisible && (
           <div
             className={
@@ -355,7 +362,7 @@ export const DocumentItem = ({
             </div>
             <div data-testid={`file-container-${indexKey}`} onDoubleClick={(e) => doubleClickHandler(file.uploadStatus)} className="doc-list-content">
               {renderFileTitle()}
-              {!validFilename && (
+              {/* {!validFilename && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot contain any special characters</span>
                 </div>
@@ -365,11 +372,12 @@ export const DocumentItem = ({
                   <span className="dl-errorrename">File name must be unique.</span>
                 </div>
               )}
-              {filename.trim() === "" && (
+              {file.uploadStatus !== 'done' && filename.trim() === "" && (
                 <div className="dl-info">
                   <span className="dl-errorrename">File name cannot be empty.</span>
                 </div>
-              )}
+              )} */}
+              {renderErrors()}
             </div>
 
             {!isMobile.value ?
@@ -494,8 +502,30 @@ export const DocumentItem = ({
     return null;
   };
 
+  const renderErrors = () => {
+
+    if (!validFilename) {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name cannot contain any special characters</span>
+        </div>
+      )
+    } else if (nameExists) {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name must be unique.</span>
+        </div>
+      )
+    } else if (file.uploadStatus === 'pending' && filename.trim() === '') {
+      return (
+        <div className="dl-info">
+          <span className="dl-errorrename">File name cannot be empty.</span>
+        </div>
+      )
+    }
+  }
+
   const renderDocListPopupMobile = () => {
-    console.log('in here reachedDDDD', renameModalShow);
     return (
       <Modal
         show={renameModalShow}
@@ -511,7 +541,7 @@ export const DocumentItem = ({
             Rename Document?
         </Modal.Title>
           <button type="button" className="close" onClick={() => {
-            if(!validFilename || nameExists || filename.trim() === '') {
+            if (!validFilename || nameExists || filename.trim() === '') {
               return;
             }
             if (filename?.length) {
@@ -543,21 +573,7 @@ export const DocumentItem = ({
 
                   <div className="doc-list-content">
                     {renderFileTitleMobile()}
-                    {!validFilename && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name cannot contain any special characters</span>
-                      </div>
-                    )}
-                    {!!nameExists && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name must be unique.</span>
-                      </div>
-                    )}
-                    {filename.trim() === "" && (
-                      <div className="dl-info">
-                        <span className="dl-errorrename">File name cannot be empty.</span>
-                      </div>
-                    )}
+                    {renderErrors()}
                   </div>
                 </Fragment>
               )}

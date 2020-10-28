@@ -24,10 +24,12 @@
             font-weight: 500;
             th{
                 font-weight: 500;
+                color: color("base");
             }
         }
         tbody{
             font-weight: 400;
+            color: color("colorBlack");
         }
 
         td,th{
@@ -52,6 +54,7 @@
                 position: absolute;
                 top: 0px;
                 left: 5px;
+                color: color("light-purple");
                 @include media-breakpoint-down(lg) {
                     top: 2px;
                 }

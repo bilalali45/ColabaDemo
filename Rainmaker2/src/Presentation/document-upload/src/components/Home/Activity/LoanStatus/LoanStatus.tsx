@@ -46,9 +46,6 @@ export const LoanStatus = () => {
         return `${loanInfo.streetAddress || ''}   ${ loanInfo.unitNumber ? ' # ' + loanInfo.unitNumber : '' }`
     }
 
-    console.log('in ============================================= ', isMobile)
-
-
     const LoanStatusDesktop = () => {
         return (
             <section className="row" data-testid="loanStatus">
