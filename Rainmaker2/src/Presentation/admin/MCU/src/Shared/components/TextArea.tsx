@@ -20,7 +20,7 @@ export const TextArea = ({
   onBlurHandler = () => {},
   onChangeHandler = () => {},
   focus,
-  maxLengthValue = 3000,
+  maxLengthValue = 6500,
   onKeyDown = () => {}
 }: TextAreaType) => {
   const [isTextValid, setIsTextValid] = useState<boolean>(false);
