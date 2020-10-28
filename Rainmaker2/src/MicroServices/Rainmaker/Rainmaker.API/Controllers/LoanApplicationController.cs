@@ -366,7 +366,7 @@ namespace Rainmaker.API.Controllers
                     }
                 }
 
-                var emailBody = "Mile stone email";
+                var emailBody = $"Unable to find status {model.milestone} against Byte File Name {model.loanId} for tenant {model.tenantId} Dated {DateTime.Now}";
                 var data = new Dictionary<FillKey, string>();
                 data.Add(FillKey.CustomEmailHeader, "");
                 data.Add(FillKey.CustomEmailFooter, "");
