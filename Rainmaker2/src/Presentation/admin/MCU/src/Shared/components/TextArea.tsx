@@ -24,7 +24,7 @@ export const TextArea = ({
   onKeyDown = () => {}
 }: TextAreaType) => {
   const [isTextValid, setIsTextValid] = useState<boolean>(false);
-  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
+  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'“”<,>\.\?\/\s  ]*$/i;
 
   const checkIfValid = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (regex.test(e.target.value)) {
