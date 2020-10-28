@@ -89,7 +89,7 @@
                         text-transform: uppercase;
                         margin-bottom: 10px;
                         @include mobile {
-                            font: 500 #{fontSize("xs") + "/1.2"} fontFamily("heading");
+                            font: 500 #{fontSize("sm") + "/1.2"} fontFamily("heading");
                         }
                     }
                     h6 {
@@ -99,7 +99,7 @@
                             font-size:fontSize('nr')-1 ;
                           }
                           @include mobile {
-                            font-size:fontSize('sm') ;
+                            font-size:fontSize('nr') ;
                             margin-bottom: 5px;
                         }
                     }
@@ -110,7 +110,7 @@
                             font-size:fontSize('nr')-1 ;
                           }
                           @include mobile {
-                            font-size:fontSize('sm') ;
+                            font-size:fontSize('nr') ;
                         }
                     }
                 }

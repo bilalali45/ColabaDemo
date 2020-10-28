@@ -122,31 +122,35 @@
     .taskListPopover {
         &.popover {
             border: 1px solid color('primary');
+            background: color('primary') ;
             border-radius: 0;
             padding: 10px;
-        text-align: center;
-        margin-top: -10px;
+            text-align: center;
+            margin-top: -10px;
         .arrow {
             bottom: calc(-0.5rem - 0px);
             &::before {
                 border-top-color: color('primary');
             }
+            &::after {
+                border-top-color: color('primary');
+            }
         }
         h4{
-            font: 500 #{fontSize("md") + "/1.2"} fontFamily("heading");
+            font: 500 #{fontSize("xmd") + "/1.2"} fontFamily("heading");
     text-transform: uppercase;
-    color: color("base");
+    color: color("colorWhite");
     margin-top: 0;
     margin-bottom: 3px;
         }
 
         p{
-            font: 400 #{fontSize("sm") + "/1.2"} fontFamily("base");
-            color:#989797;
+            font: 400 #{fontSize("nr") + "/1.2"} fontFamily("base");
+            color:color("colorWhite");
     margin-bottom: 0;
     span {
-        color:color('primary');
-        font-weight: 500;
+        color:color('colorWhite');
+        font-weight: 600;
     }
         }
     }

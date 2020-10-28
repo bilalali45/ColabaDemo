@@ -60,6 +60,34 @@
     padding:0 20px;
     @include mobile {
         background: color("colorgray"); 
+        overflow-y: auto;
+        height: calc(100vh - 245px);
+        &.PageDocListView {
+            margin-right: -15px;
+            .dr-asideWrap{
+                margin-right: -5px;
+            }
+        }
+        &.PageDocUploadView {
+            height: calc(100vh - 240px);
+            margin-left: -5px;
+            margin-right: -15px;
+        }
+    }
+
+    @media (max-height:420px) and  (orientation: landscape) {
+        height: calc(100vh - 220px) !important;
+        &.PageDoneTask {
+            height: calc(100vh - 190px) !important;
+        }
+        .file-drop-box.havefooter {
+            margin-bottom: 0;
+        }
+        .doc-upload-footer {
+            position: relative;
+            bottom: 0;
+  
+        }
     }
 
 }

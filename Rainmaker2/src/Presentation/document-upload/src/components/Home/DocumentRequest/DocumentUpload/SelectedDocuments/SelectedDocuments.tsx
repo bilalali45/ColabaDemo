@@ -382,18 +382,19 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-                <a className="addmoreDoc disabled">
-                  {" "}
-                Add more files
-                  <input
-                    type="file"
-                    accept={FileUpload.allowedExtensions}
-                    id="inputFile"
-                    ref={inputRef}
-                    multiple
-                    style={{ display: "none" }}
-                  />
-                </a>
+              null
+                // <a className="addmoreDoc disabled">
+                //   {" "}
+                // Add more files
+                //   <input
+                //     type="file"
+                //     accept={FileUpload.allowedExtensions}
+                //     id="inputFile"
+                //     ref={inputRef}
+                //     multiple
+                //     style={{ display: "none" }}
+                //   />
+                // </a>
               )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
@@ -428,6 +429,7 @@ export const SelectedDocuments = ({
         {doneVisible ? (
           <div className="doc-confirm-wrap">
             <div className="row">
+{!isMobile?.value && 
               <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
                   {/* {docTitle} */}
@@ -436,7 +438,7 @@ export const SelectedDocuments = ({
                   </p>
                 </div>
               </div>
-
+            }
               <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
                   <button
@@ -475,6 +477,15 @@ export const SelectedDocuments = ({
                   </button>
                 </div>
               </div>
+              {isMobile?.value && 
+              <div className="col-xs-12 col-md-6 col-lg-7">
+                <div className="dc-text">
+                  <p>
+                    You won't be able to come back to this once you're done.
+                  </p>
+                </div>
+              </div>
+            }
             </div>
           </div>
         ) : (
