@@ -26,13 +26,11 @@ export class Auth {
   }
 
   public static getLoginUserName() {
-  //  return localStorage.getItem("devusername");
-  return 'taruf.ali@rainsoftfn.com';
+    return localStorage.getItem("devusername");
   }
 
   public static getLoginPassword() {
-    //return localStorage.getItem("devuserpassword");
-    return 'test@124';
+    return localStorage.getItem("devuserpassword");
   }
 
   public static checkAuth(): boolean | string {
