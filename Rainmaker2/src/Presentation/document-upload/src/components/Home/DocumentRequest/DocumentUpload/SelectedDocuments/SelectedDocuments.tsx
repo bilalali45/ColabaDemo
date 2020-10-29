@@ -382,19 +382,21 @@ export const SelectedDocuments = ({
                 />
               </a>
             ) : (
-              null
-                // <a className="addmoreDoc disabled">
-                //   {" "}
-                // Add more files
-                //   <input
-                //     type="file"
-                //     accept={FileUpload.allowedExtensions}
-                //     id="inputFile"
-                //     ref={inputRef}
-                //     multiple
-                //     style={{ display: "none" }}
-                //   />
-                // </a>
+              isMobile?.value?null
+                :
+                <a className="addmoreDoc disabled">
+                  {" "}
+                Add more files
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+                
               )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (

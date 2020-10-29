@@ -203,6 +203,8 @@
             }
             .doc-list-ul {
                 @include scrollbar;
+                margin-right: -5px;
+                padding-right: 5px;
                 @include mobile {
                     @include scrollbar(6,6); 
                     overflow: unset;
