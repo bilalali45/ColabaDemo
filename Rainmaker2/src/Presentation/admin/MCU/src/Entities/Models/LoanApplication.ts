@@ -99,7 +99,7 @@ export class LoanApplication {
     this.zipCode = json.zipCode ? json.zipCode : "";
     this.unitNumber = json.unitNumber;
     this.expectedClosingDate = json.expectedClosingDate ? DateFormat(json.expectedClosingDate, true) : '';
-    this.status = toTitleCase(json.status);
+    this.status = json.status;
     this.rate = json.rate;
     this.loanProgram = json.loanProgram;
     this.loanNumber = json.loanNumber;
