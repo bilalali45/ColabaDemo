@@ -377,9 +377,13 @@ body ,html {
     }  
 }
 .no-document {
-    min-height: calc(100vh - 220px);
-    min-height: calc(100vh - 220px);
-    min-height:calc((var(--vh, 1vh) * 100) - 220px);
+    min-height: 450px;
+    @include mobile {
+        min-height: calc(100vh - 220px);
+        min-height: calc(100vh - 220px);
+        min-height:calc((var(--vh, 1vh) * 100) - 220px);
+    }
+  
     display: -webkit-flex;
     display: flex;
     justify-content: center;
