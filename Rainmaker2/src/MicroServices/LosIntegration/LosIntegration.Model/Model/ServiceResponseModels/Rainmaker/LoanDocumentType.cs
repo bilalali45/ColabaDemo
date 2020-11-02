@@ -1,0 +1,64 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace LosIntegration.Model.Model.ServiceResponseModels.Rainmaker
+{
+    // LoanDocumentType
+
+    public partial class LoanDocumentType 
+    {
+        public int Id { get; set; } // Id (Primary key)
+        public string Name { get; set; } // Name (length: 150)
+        public string Description { get; set; } // Description (length: 500)
+        public int DisplayOrder { get; set; } // DisplayOrder
+        public bool IsActive { get; set; } // IsActive
+        public int EntityTypeId { get; set; } // EntityTypeId
+        public bool IsDefault { get; set; } // IsDefault
+        public bool IsSystem { get; set; } // IsSystem
+        public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
+        public int? CreatedBy { get; set; } // CreatedBy
+        public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
+        public int? ModifiedBy { get; set; } // ModifiedBy
+        public string TpId { get; set; } // TpId (length: 50)
+        public bool IsDeleted { get; set; } // IsDeleted
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child LoanDocuments where [LoanDocument].[LoanDocumentTypeId] point to this entity (FK_LoanDocument_LoanDocumentType)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LoanDocument> LoanDocuments { get; set; } // LoanDocument.FK_LoanDocument_LoanDocumentType
+        /// <summary>
+        /// Child LoanDocumentSubTypes where [LoanDocumentSubType].[LoanDocumentTypeId] point to this entity (FK_LoanDocumentSubType_LoanDocumentType)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LoanDocumentSubType> LoanDocumentSubTypes { get; set; } // LoanDocumentSubType.FK_LoanDocumentSubType_LoanDocumentType
+
+        public LoanDocumentType()
+        {
+            DisplayOrder = 0;
+            IsActive = true;
+            EntityTypeId = 205;
+            IsDefault = false;
+            IsSystem = false;
+            IsDeleted = false;
+            LoanDocuments = new System.Collections.Generic.HashSet<LoanDocument>();
+            LoanDocumentSubTypes = new System.Collections.Generic.HashSet<LoanDocumentSubType>();
+            InitializePartial();
+        }
+
+        partial void InitializePartial();
+    }
+
+}
+// </auto-generated>

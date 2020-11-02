@@ -122,5 +122,73 @@ namespace Extensions.ExtensionClasses
 
             return dt;
         }
+
+
+        public class ElapsedTimeSpan
+        {
+            public int years;
+            public int months;
+            public int days;
+            public int hours;
+            public int minutes;
+            public int seconds;
+            public int milliseconds;
+        }
+
+
+        public static ElapsedTimeSpan ElapsedTime( this DateTime fromDate, DateTime toDate)
+        {
+
+            ElapsedTimeSpan elapsedTimeSpan;
+            // If from_date > to_date, switch them around.
+            if (fromDate > toDate)
+            {
+              elapsedTimeSpan =    ElapsedTime(toDate, fromDate);
+                elapsedTimeSpan.years = -elapsedTimeSpan.years ;
+                elapsedTimeSpan.months = -elapsedTimeSpan.months ;
+                elapsedTimeSpan.days = -elapsedTimeSpan.days ;
+                elapsedTimeSpan.hours = -elapsedTimeSpan.hours ;
+                elapsedTimeSpan.minutes = -elapsedTimeSpan.minutes ;
+                elapsedTimeSpan.seconds = -elapsedTimeSpan.seconds ;
+                elapsedTimeSpan.milliseconds = -elapsedTimeSpan.milliseconds ;
+            }
+            else
+            {
+                elapsedTimeSpan = new ElapsedTimeSpan();
+                // Handle the years.
+                elapsedTimeSpan.years = toDate.Year - fromDate.Year;
+
+                // See if we went too far.
+                DateTime test_date = fromDate.AddMonths(12 * elapsedTimeSpan.years);
+                if (test_date > toDate)
+                {
+                    elapsedTimeSpan.years--;
+                    test_date = fromDate.AddMonths(12 * elapsedTimeSpan.years);
+                }
+
+                // Add months until we go too far.
+                elapsedTimeSpan.months = 0;
+                while (test_date <= toDate)
+                {
+                    elapsedTimeSpan.months++;
+                    test_date = fromDate.AddMonths(12 * elapsedTimeSpan.years + elapsedTimeSpan.months);
+                }
+                elapsedTimeSpan.months--;
+
+                // Subtract to see how many more days,
+                // hours, minutes, etc. we need.
+                fromDate = fromDate.AddMonths(12 * elapsedTimeSpan.years + elapsedTimeSpan.months);
+                TimeSpan remainder = toDate - fromDate;
+               elapsedTimeSpan.days = remainder.Days;
+               elapsedTimeSpan.hours = remainder.Hours;
+               elapsedTimeSpan.minutes = remainder.Minutes;
+               elapsedTimeSpan.seconds = remainder.Seconds;
+                elapsedTimeSpan.milliseconds = remainder.Milliseconds;
+            }
+
+            return elapsedTimeSpan;
+        }
+
+
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />

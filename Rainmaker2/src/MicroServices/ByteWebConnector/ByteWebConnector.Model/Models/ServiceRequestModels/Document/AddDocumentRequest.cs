@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using ByteWebConnector.Model.Models.Document;
-
+using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 namespace ByteWebConnector.Model.Models.ServiceRequestModels.Document
 {
     public class AddDocumentRequest

@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net.Http;
 using System.Security.Authentication;
+using LosIntegration.Service.InternalServices;
+using LosIntegration.Service.InternalServices.Rainmaker;
+using Microsoft.AspNetCore.Http;
+using ServiceCallHelper;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
@@ -40,6 +44,9 @@ namespace LosIntegration.API
             services.AddScoped<IByteDocCategoryMappingService, ByteDocCategoryMappingService>();
             services.AddScoped<IByteDocStatusMappingService, ByteDocStatusMappingService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
+            services.AddScoped<ILoanApplicationService, LoanApplicationService>();
+            services.AddScoped<IByteWebConnectorService, ByteWebConnectorService>();
+            services.AddScoped<IMilestoneService, MilestoneService>();
 
             #region HttpClientDependencies
 
@@ -68,6 +75,9 @@ namespace LosIntegration.API
             }
 
             app.UseRouting();
+
+            AppContext.Configure(httpContextAccessor:
+                                 app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
             app.UseAuthorization();
 

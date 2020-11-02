@@ -1,16 +1,17 @@
-﻿using ByteWebConnector.Model.Models.Document;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ByteWebConnector.Model.Models;
+using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 
 namespace ByteWebConnector.Service.InternalServices
 {
     public interface ILosIntegrationService
     {
-        Task<HttpResponseMessage> DocumentDelete(string content);
+        Task<bool> DocumentDelete(string content);
 
 
-        Task<HttpResponseMessage> DocumentAddDocument(int fileDataId,
-                                                      List<EmbeddedDoc> embeddedDocs);
+        Task<bool> DocumentAddDocument(int fileDataId,
+                                       List<EmbeddedDoc> embeddedDocs);
     }
 }
