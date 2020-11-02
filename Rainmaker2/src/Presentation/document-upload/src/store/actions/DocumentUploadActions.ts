@@ -49,6 +49,18 @@ export class DocumentUploadActions {
         }
       );
     } catch (error) {
+      console.log('error', error.response);
+      dispatchProgress({
+        type: DocumentsActionType.AddFileToDoc,
+        payload: currentSelected?.files?.map(f => {
+          if(f?.clientName === file?.clientName) {
+            f.uploadStatus = 'failed';
+            f.notAllowedReason = 'Failed';
+            f.failedReason = error.response.data;
+          }
+          return f;
+        }),
+      });
       console.log("-------------->Upload errors------------>", error);
     }
   }
