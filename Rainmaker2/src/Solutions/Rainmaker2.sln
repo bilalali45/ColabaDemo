@@ -103,8 +103,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.Model", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.Service", "..\MicroServices\ByteWebConnector\ByteWebConnector.Service\ByteWebConnector.Service.csproj", "{418FCA54-0F77-43D2-92FF-851C01BB466E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnector.Tests", "..\MicroServices\ByteWebConnector\ByteWebConnector.Tests\ByteWebConnector.Tests.csproj", "{201694BD-11B5-4B6A-9922-FC309F00E0E2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Tests", "..\MicroServices\Identity\Identity.Tests\Identity.Tests.csproj", "{6026ED2B-E9CA-47EB-AF65-5A4485327EAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LosIntegration.Tests", "..\MicroServices\LosIntegration\LosIntegration.Tests\LosIntegration.Tests.csproj", "{CD420909-12FB-4945-806C-7B590579AEAE}"
@@ -123,7 +121,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Model", "..\Micro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Service", "..\MicroServices\Milestone\Milestone.Service\Milestone.Service.csproj", "{5D2F7127-415D-41D6-A62D-BF799A1ADBC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Milestone.Tests", "..\MicroServices\Milestone\Milestone.Tests\Milestone.Tests.csproj", "{DBB6B397-E6E3-451A-98DF-D650760B1A8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Milestone.Tests", "..\MicroServices\Milestone\Milestone.Tests\Milestone.Tests.csproj", "{DBB6B397-E6E3-451A-98DF-D650760B1A8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -291,10 +289,6 @@ Global
 		{418FCA54-0F77-43D2-92FF-851C01BB466E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{418FCA54-0F77-43D2-92FF-851C01BB466E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{418FCA54-0F77-43D2-92FF-851C01BB466E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{201694BD-11B5-4B6A-9922-FC309F00E0E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{201694BD-11B5-4B6A-9922-FC309F00E0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{201694BD-11B5-4B6A-9922-FC309F00E0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{201694BD-11B5-4B6A-9922-FC309F00E0E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6026ED2B-E9CA-47EB-AF65-5A4485327EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6026ED2B-E9CA-47EB-AF65-5A4485327EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6026ED2B-E9CA-47EB-AF65-5A4485327EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -383,7 +377,6 @@ Global
 		{CDAAF5CB-F038-45E3-9A0D-8B166E36E493} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
 		{762C32EE-B47D-4609-8805-AAC2135CD177} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
 		{418FCA54-0F77-43D2-92FF-851C01BB466E} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
-		{201694BD-11B5-4B6A-9922-FC309F00E0E2} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
 		{6026ED2B-E9CA-47EB-AF65-5A4485327EAA} = {22F48F21-2A1F-474C-B7BA-F62DEB0A211C}
 		{CD420909-12FB-4945-806C-7B590579AEAE} = {72A77178-843D-45F0-BCA5-50B97D4EDE30}
 		{19A38FE7-1F6B-4297-B6A4-7D74B91A0EA8} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
