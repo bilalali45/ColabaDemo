@@ -126,8 +126,8 @@ namespace Milestone.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (MilestoneForBorrowerDashboard)(result as OkObjectResult).Value;
-            Assert.Equal("Test", content.Name);
+            var content = (List<MilestoneForBorrowerDashboard>)(result as OkObjectResult).Value;
+            Assert.Equal("Test", content[0].Name);
         }
         [Fact]
         public async Task TestGetMilestoneForBorrowerDashboardNull()

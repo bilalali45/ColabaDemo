@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="InternalServices\DocumentManagementService.cs" />
+    <Compile Remove="InternalServices\IDocumentManagementService.cs" />
+    <Compile Remove="InternalServices\IRainmakerService.cs" />
+    <Compile Remove="InternalServices\Rainmaker\ILoanRequestService.cs" />
+    <Compile Remove="InternalServices\Rainmaker\IThirdPartyCodeService.cs" />
+    <Compile Remove="InternalServices\Rainmaker\LoanRequestService.cs" />
+    <Compile Remove="InternalServices\Rainmaker\RainmakerService.cs" />
+    <Compile Remove="InternalServices\Rainmaker\ThirdPartyCodeService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.20" />
@@ -12,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\Extensions\Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Library\ServiceCallHelper\ServiceCallHelper.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
     <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />

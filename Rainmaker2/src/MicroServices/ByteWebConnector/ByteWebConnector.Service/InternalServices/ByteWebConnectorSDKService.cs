@@ -1,12 +1,11 @@
-﻿using ByteWebConnector.Model.Models.ByteApi;
-using ByteWebConnector.Model.Models.ByteSDK;
-using ByteWebConnector.Model.Models.ServiceResponseModels.ByteWebConnectorSDK;
+﻿using ByteWebConnector.Model.Models.ServiceResponseModels.ByteWebConnectorSDK;
 using ByteWebConnector.Service.DbServices;
 using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using ServiceCallHelper;
 using System.Net.Http;
+using ByteWebConnector.Model.Models.ServiceRequestModels.ByteWebConnectorSDK;
 
 namespace ByteWebConnector.Service.InternalServices
 {
@@ -37,10 +36,12 @@ namespace ByteWebConnector.Service.InternalServices
             var content = new SdkSendDocumentRequest(byteProSettings: byteProSettings,
                                                      documentUploadRequest: documentUploadRequest);
 
-            return _httpClient.Post<SendSdkDocumentResponse>(endPoint: $"{_baseUrl}/api/ByteWebConnectorSdk/Document/SendSdkDocument",
-                                                             content: content.ToJson(),
-                                                             request: _request,
-                                                             attachBearerTokenFromCurrentRequest: true);
+            var sendSdkDocumentResponse =  _httpClient.EasyPost<SendSdkDocumentResponse>(out var callResponse,
+                                                                                         $"{_baseUrl}/api/ByteWebConnectorSdk/Document/SendSdkDocument",
+                                                                                         content,
+                                                                                         true);
+
+            return callResponse;
         }
     }
 }

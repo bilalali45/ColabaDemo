@@ -1,5 +1,4 @@
-﻿using ByteWebConnector.Model.Models.Document;
-using ByteWebConnector.Model.Models.ServiceRequestModels.Document;
+﻿using ByteWebConnector.Model.Models.ServiceRequestModels.Document;
 using ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanApplication;
 using Extensions.ExtensionClasses;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using ByteWebConnector.Model.Models;
+using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 
 namespace ByteWebConnector.Service.InternalServices
 {
@@ -29,15 +30,15 @@ namespace ByteWebConnector.Service.InternalServices
         }
 
 
-        public CallResponse<GetLoanApplicationResponse> GetLoanApplication(int loanApplicationId)
+        public GetLoanApplicationResponse GetLoanApplication(int loanApplicationId)
         {
        
 
 
-            return _httpClient.Get<GetLoanApplicationResponse>(endPoint: $"{_baseUrl}/api/RainMaker/LoanApplication/GetLoanApplication?id={loanApplicationId}",                                                                    
-                                                                    request: _request,
-                                                                    attachBearerTokenFromCurrentRequest: true
-                                                                   );
+            return _httpClient.EasyGet<GetLoanApplicationResponse>(out var callResponse,
+                                                                               $"{_baseUrl}/api/RainMaker/LoanApplication/GetLoanApplication?id={loanApplicationId}",
+                                                                               true
+                                                                              );
         }
 
 

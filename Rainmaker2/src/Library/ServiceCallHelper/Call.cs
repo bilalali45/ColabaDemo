@@ -49,7 +49,7 @@ namespace ServiceCallHelper
             }
 
             return new CallResponse<T>(httpResponseMessage: httpResponseMessage,
-                                       responseObject: response);
+                                       responseObject: response, rawResult: "");
         }
 
         #endregion
@@ -101,23 +101,10 @@ namespace ServiceCallHelper
             }
 
             return new CallResponse<T>(httpResponseMessage: httpResponseMessage,
-                                       responseObject: response);
+                                       responseObject: response, rawResult:"");
         }
 
         #endregion
     }
 
-    public class CallResponse<T>
-    {
-        public CallResponse(HttpResponseMessage httpResponseMessage,
-                            T responseObject)
-        {
-            HttpResponseMessage = httpResponseMessage;
-            ResponseObject = responseObject;
-        }
-
-
-        public HttpResponseMessage HttpResponseMessage { get; }
-        public T ResponseObject { get; }
-    }
 }

@@ -295,5 +295,124 @@ namespace Extensions.ExtensionClasses
 
             return name.ToString();
         }
+
+        public static int FindEnumIndex(this string text,Type t)
+        {
+
+
+            var index = 0;
+            foreach (int e in Enum.GetValues(enumType: t))
+                if (Enum.GetName(enumType: t,
+                                 value: e) == text)
+                {
+                    index = e;
+                    break;
+                }
+
+            return index;
+        }
+
+        public static string ToByteProStatusName(this short byteProStatusId)
+        {
+            string status = string.Empty;
+            switch(byteProStatusId)
+            {
+                case 11:
+                    status = "Started";
+                    break;
+
+                case 1:
+                    status = "Pre Approval";
+                    break;
+
+                case 2:
+                    status = "Pre Approval Underwriting";
+                    break;
+
+                case 52:
+                    status = "Application";
+                    break;
+
+                case 53:
+                    status = "Processing";
+                    break;
+
+                case 3:
+                    status = "Processing";
+                    break;
+
+                case 4:
+                    status = "Pre Underwriting";
+                    break;
+
+                case 54:
+                    status = "Underwriting";
+                    break;
+
+                case 5:
+                    status = "Approved with Conditions";
+                    break;
+
+                case 8:
+                    status = "Pre Closing QC";
+                    break;
+
+                case 16:
+                    status = "Closing Docs Preparation";
+                    break;
+
+                case 55:
+                    status = "Closing Docs QC";
+                    break;
+
+                case 17:
+                    status = "Closing";
+                    break;
+
+                case 9:
+                    status = "Funding";
+                    break;
+
+                case 14:
+                    status = "Post Funding QC";
+                    break;
+
+                case 19:
+                    status = "Shipping";
+                    break;
+
+                case 15:
+                    status = "Purchasing";
+                    break;
+
+                case 56:
+                    status = "Reconciliation";
+                    break;
+
+                case 57:
+                    status = "Trailing Docs";
+                    break;
+
+                case 58:
+                    status = "Completed";
+                    break;
+
+                case 51:
+                    status = "Closing Suspended";
+                    break;
+
+                case 10:
+                    status = "Cancelled";
+                    break;
+
+                case 7:
+                    status = "Declined";
+                    break;
+
+                
+            }
+            return status;
+        }
+
     }
 }

@@ -83,6 +83,70 @@ namespace Rainmaker.API.Controllers
             return Ok(loanApplication);
         }
 
+        [Authorize(Roles = "MCU,Customer")]
+        [HttpGet("[action]")]
+        public IActionResult GetLoanApplicationForByte([FromQuery] string encompassNumber = null, [FromQuery] int? id = null, long? includes = null)
+        {
+            //var relatedEntities = (LoanApplicationService.RelatedEntities?)includes;
+
+
+            var relatedEntities = LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_AddressInfo |
+                                  LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes |
+                                  LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences_LoanAddress |
+                                  LoanApplicationService.RelatedEntities.Borrower_BorrowerAccount_AccountType |
+                                  LoanApplicationService.RelatedEntities.Borrower_LoanContact_Ethnicity;
+
+
+
+
+            var loanApplication = loanApplicationService.GetLoanApplicationWithDetails(id: id, encompassNumber: encompassNumber, includes: relatedEntities).SingleOrDefault();
+
+
+            relatedEntities = LoanApplicationService.RelatedEntities.Borrower_LoanContact_Race |
+                              LoanApplicationService.RelatedEntities.Borrower_LoanContact_Gender |
+                              LoanApplicationService.RelatedEntities.Borrower_Liability |
+                              LoanApplicationService.RelatedEntities.Borrower_PropertyInfo_AddressInfo |
+                              LoanApplicationService.RelatedEntities.Borrower_BorrowerQuestionResponses_Question |
+                              LoanApplicationService.RelatedEntities.Borrower_BorrowerQuestionResponses_QuestionResponse;
+
+
+
+
+            loanApplicationService.GetLoanApplicationWithDetails(id: id, encompassNumber: encompassNumber, includes: relatedEntities);
+
+
+            relatedEntities = LoanApplicationService.RelatedEntities.Opportunity_Employee_CompanyPhoneInfo |
+                              LoanApplicationService.RelatedEntities.Opportunity_Employee_EmailAccount |
+                              LoanApplicationService.RelatedEntities.Opportunity_Employee_UserProfile |
+                              LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact;
+
+
+
+
+            loanApplicationService.GetLoanApplicationWithDetails(id: id, encompassNumber: encompassNumber, includes: relatedEntities);
+
+            relatedEntities = LoanApplicationService.RelatedEntities.PropertyInfo_PropertyTaxEscrows |
+                              LoanApplicationService.RelatedEntities.PropertyInfo_AddressInfo |
+                              LoanApplicationService.RelatedEntities.PropertyInfo_MortgageOnProperties |
+                              LoanApplicationService.RelatedEntities.BusinessUnit_LeadSource |
+                              LoanApplicationService.RelatedEntities.LoanGoal;
+
+
+
+
+
+            loanApplicationService.GetLoanApplicationWithDetails(id: id, encompassNumber: encompassNumber, includes: relatedEntities);
+
+
+            var config = AutoMapperConfig.GetConfiguration();
+            var mapper = config.CreateMapper();
+            var loanApplicationModel = mapper.Map<Model.ServiceResponseModels.Rainmaker.LoanApplication>(loanApplication);
+
+
+            return Ok(loanApplicationModel);
+        }
+
+
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<string> GetPhoto(string photo, int loanApplicationId)

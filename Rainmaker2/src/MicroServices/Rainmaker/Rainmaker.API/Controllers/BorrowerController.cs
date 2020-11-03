@@ -65,7 +65,7 @@ namespace Rainmaker.API.Controllers
             var loanApplication = _loanApplicationService
                                   .GetLoanApplicationWithDetails(encompassNumber: rainmakerBorrowerModel.FileDataId,
                                                                  includes: LoanApplicationService
-                                                                           .RelatedEntities.Borrowers)
+                                                                           .RelatedEntities.Borrower)
                                   .SingleOrDefault();
 
             var borrowerEntity = _borrowerService.GetBorrowerWithDetails(encompassId: rainmakerBorrowerModel.FileDataId,

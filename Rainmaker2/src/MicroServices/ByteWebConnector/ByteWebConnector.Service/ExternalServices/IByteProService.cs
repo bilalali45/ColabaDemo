@@ -1,8 +1,10 @@
-﻿using ByteWebConnector.Model.Models;
-using ByteWebConnector.Model.Models.Document;
-using ByteWebConnector.Model.Models.ServiceRequestModels.BytePro;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ByteWebConnector.Model.Models;
+using ByteWebConnector.Model.Models.ActionModels.LoanFile;
+using ByteWebConnector.Model.Models.OwnModels;
+using ByteWebConnector.Model.Models.ServiceRequestModels.ByteApi;
+using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 
 namespace ByteWebConnector.Service.ExternalServices
 {
@@ -11,8 +13,8 @@ namespace ByteWebConnector.Service.ExternalServices
         string GetByteProSession();
 
 
-        ApiResponse SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
-                                       string session);
+        ApiResponse<DocumentUploadResponse> SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
+                                                               string session);
 
 
         List<EmbeddedDoc> GetAllByteDocuments(string session,
@@ -26,5 +28,17 @@ namespace ByteWebConnector.Service.ExternalServices
         EmbeddedDoc GetEmbeddedDocData(string byteProSession,
                                        int documentId,
                                        int fileDataId);
+
+
+        bool ValidateByteSession(string byteSession);
+
+
+        FileDataResponse GetFileData(string byteSession,
+                                     string fileDataId);
+
+
+        ByteFile GetByteLoanFile(string loanApplicationByteLoanNumber);
+        ByteFile SendFile(LoanFileRequest loanFileRequest);
+        Task<short> GetLoanStatusAsync(int fileDataId);
     }
 }

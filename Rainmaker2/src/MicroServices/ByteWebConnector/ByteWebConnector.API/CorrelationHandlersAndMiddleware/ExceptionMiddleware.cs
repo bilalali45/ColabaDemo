@@ -1,9 +1,9 @@
-﻿using ByteWebConnector.API.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using ByteWebConnector.Model.Models.OwnModels;
 
 namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
 {
@@ -16,7 +16,7 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext,ILogger<ExceptionMiddleware> _logger)
+        public async Task InvokeAsync(HttpContext httpContext, ILogger<ExceptionMiddleware> _logger)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,$"Something went wrong");
+                _logger.LogError(ex, $"Something went wrong");
                 await HandleExceptionAsync(httpContext);
             }
         }
@@ -34,11 +34,11 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return context.Response.WriteAsync(new ApiResponse
-            {
-                Code = context.Response.StatusCode.ToString(),
-                Message = "Internal Server Error"
-            }.ToString());
+            return context.Response.WriteAsync(new ApiResponse<dynamic>
+                                               {
+                                                   Code = context.Response.StatusCode.ToString(),
+                                                   Message = "Internal Server Error"
+                                               }.ToString());
         }
     }
 }

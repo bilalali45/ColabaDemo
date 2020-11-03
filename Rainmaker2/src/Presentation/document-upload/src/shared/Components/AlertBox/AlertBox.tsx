@@ -69,7 +69,7 @@ export const AlertBox = ({
         <section className="alert-box--modal-body">
           <div className="alert-box--modal-body-content">
             <p>Are you sure you want to leave?</p>
-            <p>The files that have not been submitted will be lost.</p>
+            <p>The files that have not been submitted will be lost</p>
           </div>
         </section>
         <footer className="alert-box--modal-footer">

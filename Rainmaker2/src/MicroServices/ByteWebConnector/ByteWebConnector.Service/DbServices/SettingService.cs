@@ -4,12 +4,12 @@ using Extensions.ExtensionClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ByteWebConnector.Model.Models.Settings;
+using ByteWebConnector.Model.Models.OwnModels.Settings;
 using URF.Core.Abstractions;
 
 namespace ByteWebConnector.Service.DbServices
 {
-    public partial class SettingService : ServiceBase<BwcContext, Setting>, ISettingService
+    public partial class SettingService : ServiceBase<BwcContext, ByteWebConnector.Entity.Models.Setting>, ISettingService
     {
         public SettingService(IUnitOfWork<BwcContext> previousUow,
                               IServiceProvider services) : base(previousUow: previousUow,
@@ -18,17 +18,14 @@ namespace ByteWebConnector.Service.DbServices
         }
 
 
-        public List<Setting> GetSettingWithDetails(int? id = null,
-                                                   string tag = null)
+        public List<Entity.Models.Setting> GetSettingWithDetails(int? id = null,
+                                                                                  string tag = null)
         {
             var mappings = Repository.Query().AsQueryable();
 
             // @formatter:off 
-
             if (id.HasValue()) mappings = mappings.Where(predicate: setting => setting.Id == id);
             if (tag.HasValue()) mappings = mappings.Where(predicate: setting => setting.Tag == tag);
-
-
             // @formatter:on 
 
             return mappings.ToList();

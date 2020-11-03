@@ -15,7 +15,6 @@
     <Compile Remove="ExtensionClasses\DynamicExtensions.cs" />
     <Compile Remove="ExtensionClasses\EnumExtension.cs" />
     <Compile Remove="ExtensionClasses\HtmlExtensions.cs" />
-    <Compile Remove="ExtensionClasses\ListExtensions.cs" />
     <Compile Remove="ExtensionClasses\Mapping.cs" />
   </ItemGroup>
 

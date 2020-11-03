@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace ByteWebConnector.Model.Models.ActionModels.LoanFile
+{
+    // BankRatePropertyTypeBinder
+
+    public partial class BankRatePropertyTypeBinder 
+    {
+        public int BankRateProductId { get; set; } // BankRateProductId (Primary key)
+        public int PropertyTypeId { get; set; } // PropertyTypeId (Primary key)
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent BankRateProduct pointed by [BankRatePropertyTypeBinder].([BankRateProductId]) (FK_BankRatePropertyTypeBinder_BankRateProduct)
+        /// </summary>
+        public virtual BankRateProduct BankRateProduct { get; set; } // FK_BankRatePropertyTypeBinder_BankRateProduct
+
+        /// <summary>
+        /// Parent PropertyType pointed by [BankRatePropertyTypeBinder].([PropertyTypeId]) (FK_BankRatePropertyTypeBinder_PropertyType)
+        /// </summary>
+        public virtual PropertyType PropertyType { get; set; } // FK_BankRatePropertyTypeBinder_PropertyType
+
+        public BankRatePropertyTypeBinder()
+        {
+            InitializePartial();
+        }
+
+        partial void InitializePartial();
+    }
+
+}
+// </auto-generated>
