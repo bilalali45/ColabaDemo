@@ -45,11 +45,11 @@ const ActivityHeader = (props) => {
   useEffect(() => {
     // location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
 
-    location.pathname.includes("/activity") && setShowToolTip(location.pathname.includes("/activity"));
+    location.pathname.includes("/activity") && pendingDocs?.length > 0 &&  setShowToolTip(location.pathname.includes("/activity"));
     clearTimeout(timer);
     timer = setTimeout(()=>{setShowToolTip(false)}, 3000);
 
-  }, [location.pathname]);
+  }, [location.pathname ,pendingDocs?.length ]);
 
   useEffect(() => {
     function handleClickOutside(event) {
