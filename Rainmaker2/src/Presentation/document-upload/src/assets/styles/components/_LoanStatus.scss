@@ -13,6 +13,7 @@
 
         @include mobile() {
             margin-bottom: 3px;
+            font-size: fontSize('sm');
         }
     }
 
@@ -30,7 +31,7 @@
         }
 
         @include mobile() {
-            font-size: fontSize('nr')-4;
+            font-size: fontSize('nr')-2;
             min-height: 0;
             padding-right: 0px;
         }
@@ -194,7 +195,7 @@
                 min-height: auto;
                 position: absolute;
                 min-width: 27px;
-                top: -2px;
+                top: 0px;
             }
 
             &.lp-icon-wrap {
@@ -245,7 +246,7 @@
     }
 
     &.LoanStatus-mobile {
-        margin-top: 25px;
+        margin-top: 5px;
         margin-bottom: 10px;
         padding: 0;
 
@@ -264,6 +265,9 @@
             justify-content: center;
             .ls-mobile-box {
                 border: none;
+            }
+            .icon-wrap {
+                top:-4px;
             }
         }
 

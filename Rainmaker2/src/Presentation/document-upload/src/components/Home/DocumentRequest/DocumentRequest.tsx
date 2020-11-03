@@ -7,6 +7,7 @@ import { AlertBox } from '../../../shared/Components/AlertBox/AlertBox';
 export const DocumentRequest = () => {
 
     const [currentInView, setCurrentInView] = useState('documetsRequired');
+    const [docReqClass, setdocReqClass] = useState('');
 
     const { state, dispatch } = useContext(Store);
     const { pendingDocs, currentDoc }: any = state.documents;
@@ -34,14 +35,19 @@ export const DocumentRequest = () => {
         )
     }
 
+  const  getClass =(cls) =>{
+    setdocReqClass(cls)
+    }
+
     const mobileView = () => {
         return (
-            <section className="dr-c-wrap">
+            <section className={`dr-c-wrap ${docReqClass} ${currentInView === 'documetsRequired' ? "PageDocListView":"PageDocUploadView"}`}>
                 <div className="row">
                     {currentInView === 'documetsRequired' ? <aside className="col-xs-12 col-md-4">
                         <div className="dr-asideWrap">
                             <DocumentsRequired 
-                                setCurrentInview={setCurrentInView} />
+                                setCurrentInview={setCurrentInView} 
+                                setClass={getClass}/>
                         </div>
                     </aside> :
                         <article className="col-xs-12 col-md-8">

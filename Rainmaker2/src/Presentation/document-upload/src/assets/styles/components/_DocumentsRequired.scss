@@ -96,11 +96,22 @@ background-color: color('listhover');
     background:color("colorgray");
     padding: 15px;
     text-align: center;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 250px);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -27px;
+    margin-top: 0;
+    @media (max-height:420px) and  (orientation: landscape) {
+        align-items: flex-start;
+        .d-wrap {
+            min-height: 200px;
+            max-width: 50vh;
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
 
     .d-text {
         max-width: 238px;

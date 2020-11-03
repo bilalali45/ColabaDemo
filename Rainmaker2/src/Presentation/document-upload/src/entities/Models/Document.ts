@@ -17,6 +17,7 @@ export class Document {
     public deleteBoxVisible: boolean = false;
     public uploadReqCancelToken = axios.CancelToken.source();
     public focused: boolean = true;
+    public failedReason: string = '';
 
     constructor(
         id: string = '',

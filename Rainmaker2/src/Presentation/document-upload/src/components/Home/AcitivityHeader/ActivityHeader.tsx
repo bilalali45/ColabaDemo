@@ -12,6 +12,10 @@ import tasklistIcon from '../../../assets/images/m-tl-icon.svg';
 import documentIcon from '../../../assets/images/m-d-icon.svg';
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
+
+
+let timer : any = null;
+
 const ActivityHeader = (props) => {
   const [leftNav, setLeftNav] = useState("");
   const [showAlert, setshowAlert] = useState(false);
@@ -39,17 +43,13 @@ const ActivityHeader = (props) => {
   const taskListTooltipRef = useRef<any>(null);
 
   useEffect(() => {
-    location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
+    // location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
 
-    window.onclick = (e) => {
-      setShowToolTip(false);
-    }
+    location.pathname.includes("/activity") && setShowToolTip(location.pathname.includes("/activity"));
+    clearTimeout(timer);
+    timer = setTimeout(()=>{setShowToolTip(false)}, 3000);
 
-    return () => {
-      window.onclick = null;
-    }
-    
-  }, [pendingDocs?.length]);
+  }, [location.pathname]);
 
   useEffect(() => {
     function handleClickOutside(event) {

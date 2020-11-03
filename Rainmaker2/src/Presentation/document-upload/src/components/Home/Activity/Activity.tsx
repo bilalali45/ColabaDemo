@@ -9,7 +9,7 @@ import { StoreProvider, Store } from "../../../store/store";
 export class Activity extends React.Component {
     render() {
         return (
-            <div>
+            <div className="activity-Page">
                 <Store.Consumer>
                     {(store: any) => {
                         let loan = store.state.loan;

@@ -128,17 +128,48 @@ a[href],a[tabindex]{
     }
 }
 #root > .app {
-    overflow: hidden;
-    position: relative;
-    min-height: 100vh;
+    // overflow: hidden;
+    // position: relative;
+    // min-height: 100vh;
 }
+body ,html {
+    // overflow: hidden;
+}
+
 .page-content {
     min-height: calc(100vh - 300px);
     padding-bottom: 40px;
     @include mobile {
         padding-bottom: 80px;
-        min-height: calc(100vh - 120px);
+        // min-height: calc(100vh - 120px);
+        //apex
+        // min-height: 0;
+        // height: calc(100vh - 90px);
+        // height:calc((var(--vh, 1vh) * 100) - 90px);
+        //apex end
+
+        &.mainPage-activity{
+            height: auto;
+            .activity-Page {
+                margin-top: 20px;
+            }
+        }
+
+        &.mainPage-uploadedDocuments{
+            height: auto;
+
+        }
       }
+      @media (max-height:420px) and  (orientation: landscape) {
+        &.mainPage-activity{
+            .activity-Page {
+                // overflow-y: auto;
+                // height: calc(100vh - 145px);
+
+            }
+        }  
+      }
+
 }
 .gutter15 {
     margin-left: -7.5px;
@@ -346,13 +377,19 @@ a[href],a[tabindex]{
     }  
 }
 .no-document {
-    min-height: 500px;
+    min-height: 450px;
+    @include mobile {
+        min-height: calc(100vh - 220px);
+        min-height: calc(100vh - 220px);
+        min-height:calc((var(--vh, 1vh) * 100) - 220px);
+    }
+  
     display: -webkit-flex;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-
+    font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
     &--wrap{
 
     }
@@ -472,4 +509,9 @@ a[href],a[tabindex]{
           transition: all 0.3s ease-out;
           }
         }
+      }
+
+      .activityHeader .compo-loan-status ,.activityHeader .row-subheader {
+padding-left: 15px;
+padding-right: 15px;
       }
