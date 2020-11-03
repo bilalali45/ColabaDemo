@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Milestone.Data;
 using Milestone.Entity.Models;
@@ -178,7 +179,7 @@ namespace Milestone.Tests
             Assert.Equal(5, result[0].Id);
         }
         [Fact]
-        public async Task TestServiceGetLosMilestone()
+        public async Task TestServiceGetLosMilestoneIsNull()
         {
             DbContextOptions<MilestoneContext> options;
             var builder = new DbContextOptionsBuilder<MilestoneContext>();
@@ -206,8 +207,10 @@ namespace Milestone.Tests
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             var result = await service.GetLosMilestone(3, 1, 1);
 
-            Assert.Equal(1, result);
+            Assert.Equal(-1, result);
         }
+
+       
         [Fact]
         public async Task TestServiceGetLosMilestoneNull()
         {
@@ -559,12 +562,7 @@ namespace Milestone.Tests
 
         }
 
-        [Fact]
-        public async Task TestServiceDeleteMapping()
-        {
-
-
-        }
+       
 
         [Fact]
         public async Task TestServiceEditMapping()
@@ -703,7 +701,9 @@ namespace Milestone.Tests
                      new TenantMilestone {
                          MilestoneId = 5 ,
                          Visibility=true,
-                         TenantId=25
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
                      }
                 }
             };
@@ -765,7 +765,9 @@ namespace Milestone.Tests
                      new TenantMilestone {
                          MilestoneId = 5 ,
                          Visibility=true,
-                         TenantId=25
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
                      }
                 }
             };
@@ -776,5 +778,128 @@ namespace Milestone.Tests
             Assert.Equal(1, result[0].MilestoneType);
 
         }
+
+        [Fact]
+        public async Task TestServiceGetLosMilestoneIsNotNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            LosTenantMilestone losTenantMilestone = new LosTenantMilestone()
+            {
+                Id = 7,
+                ExternalOriginatorId = 2,
+                Name = "Processing",
+                TenantId = 6,
+                StatusId = 2
+            };
+            dataContext.Set<LosTenantMilestone>().Add(losTenantMilestone);
+            MilestoneMapping milestoneMapping = new MilestoneMapping()
+            {
+                LosMilestoneId = 2,
+                MilestoneId = 2
+            };
+            dataContext.Set<MilestoneMapping>().Add(milestoneMapping);
+            dataContext.SaveChanges();
+
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetLosMilestone(6, 2, 2);
+
+            Assert.Equal(-1, result);
+        }
+        [Fact]
+        public async Task TestServiceGetMilestoneForBorrowerDashboardIsNotNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            Entity.Models.Milestone milestone = new Entity.Models.Milestone()
+            {
+                Id = 21,
+                MilestoneTypeId = 2,
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 6
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 5 ,
+                         Visibility=true,
+                         TenantId=26,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone);
+            dataContext.SaveChanges();
+
+
+            
+            dataContext.SaveChanges();
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetMilestoneForBorrowerDashboard(2, 21, 26);
+            Assert.Equal("John", result.Name);
+
+        }
+        [Fact]
+        public async Task TestServiceGetMilestoneForBorrowerDashboardIsNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            Entity.Models.Milestone milestone = new Entity.Models.Milestone()
+            {
+                Id = 22,
+                MilestoneTypeId = 2,
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 6
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 5 ,
+                         Visibility=false,
+                         TenantId=26,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone);
+            dataContext.SaveChanges();
+
+
+
+            dataContext.SaveChanges();
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetMilestoneForBorrowerDashboard(2, 22, 26);
+            Assert.Null(result);
+ 
+
+        }
+
     }
 }

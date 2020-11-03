@@ -62,7 +62,7 @@ namespace LosIntegration.API.Controllers
                 {
                     //var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId);
                     var updateRespose = await this.UpdateRainmakerLoanStatus(loanApplicationId, loanApplicationDetail.ByteFileName, byteProLoanStatusId);
-                    return updateRespose;
+                    return Ok(updateRespose);
                 }
             }
         }
