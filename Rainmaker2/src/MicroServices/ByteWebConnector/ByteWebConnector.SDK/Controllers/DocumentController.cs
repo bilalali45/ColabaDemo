@@ -38,7 +38,7 @@ namespace ByteWebConnector.SDK.Controllers
 
         [Route(template: "[action]")]
         [HttpPost]
-        public SendSdkDocumentResponse SendSdkDocument([FromBody] SdkSendDocumentRequest sdkSendDocumentRequest)
+        public EmbedDocumentResponse SendSdkDocument([FromBody] SdkSendDocumentRequest sdkSendDocumentRequest)
         {
             try
             {
@@ -130,14 +130,14 @@ namespace ByteWebConnector.SDK.Controllers
                     };
                     _logger.LogInformation($"DocsyncSDK EmbedDocumentResponse= {documentResponse.DocumentId}");
                     _logger.LogInformation($"DocsyncSDK EmbedDocumentResponse= {documentResponse.ExtOriginatorId}");
-                    return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Success, Data = JsonConvert.SerializeObject(documentResponse) };
+                    return documentResponse;
                 }
                
             }
             catch (Exception e)
             {
                 _logger.LogInformation($"DocsyncSDK Exception= {e.Message}");
-                return new SendSdkDocumentResponse() { Status = SendSdkDocumentResponse.SdkDocumentResponseStatus.Error };
+                throw;
             }
 
         }

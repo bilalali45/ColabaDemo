@@ -102,10 +102,10 @@ namespace ServiceCallHelper
             TOutput deserializeObject = default;
 
             string result = null;
+            result = await httpResponseMessage.Content.ReadAsStringAsync();
 
             if (deserializeResponse && httpResponseMessage.IsSuccessStatusCode)
             {
-                result = await httpResponseMessage.Content.ReadAsStringAsync();
                 deserializeObject = JsonConvert.DeserializeObject<TOutput>(value: result);
             }
 

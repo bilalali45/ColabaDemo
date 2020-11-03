@@ -632,18 +632,15 @@ namespace LosIntegration.API.Controllers
 
                 _logger.LogInformation(message:
                                        $"DocSync SendDocumentToExternalOriginator :externalOriginatorSendDocumentResponse {result} ");
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(value: result);
-                _logger.LogInformation(message:
-                                       $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
-                _logger.LogInformation(message: "Deserialize Successfully");
-                if (apiResponse.Status != ApiResponse.ApiResponseStatus.Success)
+                
+                if (!externalOriginatorSendDocumentResponse.IsSuccessStatusCode)
                 {
                     #region SendEmail in case of sync fail
 
                     await _rainmakerService.SendEmailSupportTeam(loanApplicationId: sendDocumentRequest.LoanApplicationId,
                                                                 TenantId: sendDocumentRequest.TenantId,
                                                                 ErrorDate: DateTime.Now.ToString(),
-                                                                EmailBody: apiResponse.Message,
+                                                                EmailBody: result,
                                                                 ErrorCode: (int)HttpStatusCode.InternalServerError,
                                                                 DocumentCategory: sendDocumentRequest.DocumentCategory,
                                                                 DocumentName: sendDocumentRequest.DocumentName,
@@ -657,12 +654,12 @@ namespace LosIntegration.API.Controllers
                    
                     throw new LosIntegrationException(message: "Unable to deserialize External Originator document ");
                 }
-                _logger.LogInformation(message:
-                                          $"DocSync SendDocumentToExternalOriginator :Unable to deserialize External Originator document {apiResponse.Status} ");
+            var apiResponse = JsonConvert.DeserializeObject<DocumentResponse>(value: result);
+            _logger.LogInformation(message:
+                                   $"DocSync SendDocumentToExternalOriginator :Deserialize apiResponse {apiResponse} ");
+            _logger.LogInformation(message: "Deserialize Successfully");
+            return apiResponse;
 
-                DocumentResponse documentResponse = JsonConvert.DeserializeObject<DocumentResponse>(apiResponse.Data);
-                return documentResponse;
-            
         }
 
         #endregion

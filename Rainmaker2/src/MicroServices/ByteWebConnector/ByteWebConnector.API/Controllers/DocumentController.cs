@@ -119,7 +119,7 @@ namespace ByteWebConnector.API.Controllers
 
         [Route(template: "[action]")]
         [HttpPost]
-        public ApiResponse<SendSdkDocumentResponse> SendDocument([FromBody] SendDocumentRequest request)
+        public SendSdkDocumentResponse SendDocument([FromBody] SendDocumentRequest request)
         {
             var loanApplication =
                 _rainmakerService.GetLoanApplication(loanApplicationId: request.LoanApplicationId);
@@ -159,13 +159,13 @@ namespace ByteWebConnector.API.Controllers
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadRequest: documentUploadModel).ResponseObject;
 
-                var apiResponse = new ApiResponse<SendSdkDocumentResponse>
-                {
-                    Status = sdkDocumentResponse.Status,
-                    Data = sdkDocumentResponse.Data
-                };
+                //var apiResponse = new ApiResponse<SendSdkDocumentResponse>
+                //{
+                //    Status = ApiResponseStatus.Success,
+                //    Data = sdkDocumentResponse
+                //};
 
-                return apiResponse;
+                return sdkDocumentResponse;
 
                 #endregion
             }
