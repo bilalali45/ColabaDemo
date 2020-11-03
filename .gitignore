@@ -20,4 +20,6 @@ coverage
 yarn.lock
 *.log
 /Rainmaker2/src/Solutions/AllProjects.sln
+pspdfkit-lib
+build.zip
 
