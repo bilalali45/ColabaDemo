@@ -11,10 +11,11 @@ import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
 import doneTaskListIcon from "../../../../assets/images/doneTasklist-icon.svg";
 import noTaskListIcon from "../../../../assets/images/empty-doc-req-icon-mobile.svg";
 type DocumentsRequiredType = {
-  setCurrentInview?: any
+  setCurrentInview?: any,
+  setClass?:Function
 }
 
-export const DocumentsRequired = ({setCurrentInview} : DocumentsRequiredType) => {
+export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequiredType) => {
   const [showAlert, setshowAlert] = useState<boolean>(false);
   const [triedSelected, setTriedSelected] = useState();
   const { state, dispatch } = useContext(Store);
@@ -138,7 +139,9 @@ export const DocumentsRequired = ({setCurrentInview} : DocumentsRequiredType) =>
   };
   if (pendingDocs?.length === 0) {
       if(isMobile.value) {
-
+      if(setClass) {
+              setClass("PageDoneTask")
+            }
         if (submittedDocs?.length && !pendingDocs?.length) {
           return (
             <section className="doneTasklist">

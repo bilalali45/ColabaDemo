@@ -59,7 +59,7 @@ export const EmailContentReview = ({
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
 
-  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
+  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'“”<,>\.\?\/\s  ]*$/i;
 
   useEffect(() => {
     if (Boolean(isDocumentDraft?.requestId)) {
@@ -82,6 +82,9 @@ export const EmailContentReview = ({
     } else {
       setIsValid(true);
     }
+
+    // setEmailBody(txt);
+    //   setIsValid(false);
   };
 
   const saveEmailContent = () => {
