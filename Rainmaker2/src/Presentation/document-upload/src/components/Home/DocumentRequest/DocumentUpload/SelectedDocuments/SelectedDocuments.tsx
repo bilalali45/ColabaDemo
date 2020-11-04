@@ -255,7 +255,7 @@ export const SelectedDocuments = ({
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
-      
+
       await fetchUploadedDocuments();
     }
     if (isMobile?.value && pendingDocs.length === 1) {
@@ -277,7 +277,7 @@ export const SelectedDocuments = ({
     console.log('newFiles', 'in here here', newFiles);
     let filesEditing = newFiles?.filter(f => f.editName);
 
-    if(subBtnPressed) {
+    if (subBtnPressed) {
       return true;
     }
 
@@ -290,20 +290,20 @@ export const SelectedDocuments = ({
     }
   }
   const checkFreezBody = async () => {
-    
-    let page:any = document.querySelector("html");
-    if (document.body.style.overflow == "hidden" ) {
+
+    let page: any = document.querySelector("html");
+    if (document.body.style.overflow == "hidden") {
       document.body.removeAttribute("style");
     } else {
       document.body.style.overflow = "hidden";
     }
-    if (page.style.overflow == "hidden" ) {
+    if (page.style.overflow == "hidden") {
       page.removeAttribute("style");
     } else {
       page.style.overflow = "hidden"
     }
 
-    
+
   };
 
 
@@ -314,6 +314,82 @@ export const SelectedDocuments = ({
   //   }
   // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
+
+  const renderUploadButton = () => {
+
+    if (isMobile?.value) {
+      return (
+        <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+          <a
+            data-testid="add-more-btn"
+            className="addmoreDoc"
+            onClick={(e) => {
+              addMore(e);
+            }}
+          >
+            {" "}
+        Add more files
+        <input
+              onChange={(e) => addMore(e)}
+              data-testid="file-input"
+              type="file"
+              accept={FileUpload.allowedExtensions}
+              id="inputFile"
+              ref={inputRef}
+              multiple
+              style={{ display: "none" }}
+            />
+          </a>
+          <a
+            data-testid="add-more-btn"
+            className="addmoreDoc"
+            onClick={(e) => {
+              addMore(e);
+            }}
+          >
+            {" "}
+        Take a picture
+        <input
+              onChange={(e) => addMore(e)}
+              data-testid="file-input"
+              type="file"
+              accept={'image/*'}
+              id="inputFile"
+              ref={inputRef}
+              multiple
+              style={{ display: "none" }}
+              capture="environment"
+            />
+          </a>
+        </div>
+      )
+    } else {
+      return (
+        <a
+          data-testid="add-more-btn"
+          className="addmoreDoc"
+          onClick={(e) => {
+            addMore(e);
+          }}
+        >
+          {" "}
+    Add more files
+          <input
+            onChange={(e) => addMore(e)}
+            data-testid="file-input"
+            type="file"
+            accept={FileUpload.allowedExtensions}
+            id="inputFile"
+            ref={inputRef}
+            multiple
+            style={{ display: "none" }}
+          />
+        </a>
+      )
+    }
+
+  }
+
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -322,7 +398,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
-                  key={f.clientName + index}  
+                  key={f.clientName + index}
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   fileAlreadyExists={fileAlreadyExists}
@@ -338,29 +414,8 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? (
-              <a
-                data-testid="add-more-btn"
-                className="addmoreDoc"
-                onClick={(e) => {
-                  addMore(e);
-                }}
-              >
-                {" "}
-                Add more files
-                <input
-                  onChange={(e) => addMore(e)}
-                  data-testid="file-input"
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            ) : (
-              isMobile?.value?null
+            {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? renderUploadButton() : (
+              isMobile?.value ? null
                 :
                 <a className="addmoreDoc disabled">
                   {" "}
@@ -374,8 +429,8 @@ export const SelectedDocuments = ({
                     style={{ display: "none" }}
                   />
                 </a>
-                
-              )}
+
+            )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -393,9 +448,9 @@ export const SelectedDocuments = ({
               setCurrentDoc(null);
               document.body.style.overflow = "visible";
               document.body.removeAttribute("style");
-              let page:any = document.querySelector("html");
-                page.style.overflow = "visible";
-                page.removeAttribute("style");
+              let page: any = document.querySelector("html");
+              page.style.overflow = "visible";
+              page.removeAttribute("style");
               history.goBack();
             }}
             {...currentDoc}
@@ -410,21 +465,21 @@ export const SelectedDocuments = ({
         {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-{!isMobile?.value && 
-              <div className="col-xs-12 col-md-6 col-lg-7">
-                <div className="dc-text">
-                  <p>
-                    You won't be able to come back to this once you're done.
+              {!isMobile?.value &&
+                <div className="col-xs-12 col-md-6 col-lg-7">
+                  <div className="dc-text">
+                    <p>
+                      You won't be able to come back to this once you're done.
                   </p>
+                  </div>
                 </div>
-              </div>
-            }
+              }
               <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
-                  <button 
+                  <button
                     className="btn btn-small btn-secondary"
                     onClick={() => {
-                   
+
                       if (pendingDocs.length > 1) {
                         let curDocInd = 0;
                         pendingDocs?.forEach((d, i) => {
@@ -456,15 +511,15 @@ export const SelectedDocuments = ({
                   </button>
                 </div>
               </div>
-              {isMobile?.value && 
-              <div className="col-xs-12 col-md-6 col-lg-7">
-                <div className="dc-text">
-                  <p>
-                    You won't be able to come back to this once you're done.
+              {isMobile?.value &&
+                <div className="col-xs-12 col-md-6 col-lg-7">
+                  <div className="dc-text">
+                    <p>
+                      You won't be able to come back to this once you're done.
                   </p>
+                  </div>
                 </div>
-              </div>
-            }
+              }
             </div>
           </div>
         ) : (
