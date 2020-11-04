@@ -44,6 +44,8 @@ namespace Rainmaker.API
             services.AddScoped<IStringResourceService, StringResourceService>();
             services.AddSingleton<ICommonService, CommonService>();
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
+            services.AddScoped<ILoanRequestService, LoanRequestService>();
+            services.AddScoped<IThirdPartyCodeService, ThirdPartyCodeService>();
             services.AddScoped<IOpportunityService, OpportunityService>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IFtpHelper,FtpHelper>();

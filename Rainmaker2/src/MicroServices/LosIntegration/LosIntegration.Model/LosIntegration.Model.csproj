@@ -17,8 +17,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Model\ServiceRequestModels\ByteWebConnector\SendDocumentRequest.cs" />
+    <Compile Include="Model\ServiceRequestModels\ByteWebConnector\SendLoanFileRequest.cs" />
+    <Compile Include="Model\ServiceRequestModels\ByteWebConnector\UploadFileRequest.cs" />
+    <Compile Include="Model\ServiceRequestModels\DocumentManagement\DeleteFileRequest.cs" />
+    <Compile Include="Model\ServiceRequestModels\Document\Category.cs" />
+    <Compile Include="Model\ServiceRequestModels\Document\DocumentManagementDocumentResponse.cs" />
+    <Compile Include="Model\ServiceRequestModels\Document\EmbeddedDoc.cs" />
+    <Compile Include="Model\ServiceRequestModels\Document\GetDocumentDataRequest.cs" />
+    <Compile Include="Model\ServiceRequestModels\Document\UploadFileResponse.cs" />
     <Compile Include="Model\ServiceRequestModels\Milestone\LosMilestoneRequest.cs" />
     <Compile Include="Model\ServiceRequestModels\RainMaker\UpdateLoanApplicationRequest.cs" />
+    <Compile Include="Model\ServiceResponseModels\ApiResponse.cs" />
+    <Compile Include="Model\ServiceResponseModels\ByteWebConnector\ByteFile.cs" />
+    <Compile Include="Model\ServiceResponseModels\ByteWebConnector\DocumentResponse.cs" />
+    <Compile Include="Model\ServiceResponseModels\ByteWebConnector\FileData.cs" />
+    <Compile Include="Model\ServiceResponseModels\ByteWebConnector\LoanFileInfo.cs" />
+    <Compile Include="Model\ServiceResponseModels\ByteWebConnector\SendSdkDocumentResponse.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\AccountType.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\Acl.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\Activity.cs" />
@@ -393,6 +408,14 @@
     <Compile Include="Model\ServiceResponseModels\Rainmaker\ZillowLeadFee.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\ZillowLeadProgram.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\ZipCode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Model\ServiceRequestModels\Document\EmbeddedDoc.cs~merged" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>

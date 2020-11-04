@@ -38,5 +38,6 @@ namespace Rainmaker.Service
         Task UpdateLoanInfo(UpdateLoanInfo updateLoanInfo);
         Task<string> GetBanner(int loanApplicationId);
         Task<string> GetFavIcon(int loanApplicationId);
+        Task UpdateLoanApplication(LoanApplication loanApplicationRequest);
     }
 }

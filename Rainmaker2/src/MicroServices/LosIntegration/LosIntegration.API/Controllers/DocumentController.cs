@@ -6,6 +6,7 @@ using LosIntegration.API.Models.LoanApplication;
 using LosIntegration.Entity.Models;
 using LosIntegration.Service;
 using LosIntegration.Service.Interface;
+using LosIntegration.Service.InternalServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

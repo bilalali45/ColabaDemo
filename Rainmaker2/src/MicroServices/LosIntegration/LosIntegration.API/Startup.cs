@@ -46,6 +46,8 @@ namespace LosIntegration.API
             services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddScoped<ILoanApplicationService, LoanApplicationService>();
             services.AddScoped<IByteWebConnectorService, ByteWebConnectorService>();
+            services.AddScoped<ILoanRequestService, LoanRequestService>();
+            services.AddScoped<IThirdPartyCodeService, ThirdPartyCodeService>();
             services.AddScoped<IMilestoneService, MilestoneService>();
 
             #region HttpClientDependencies

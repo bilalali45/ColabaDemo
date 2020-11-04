@@ -1,6 +1,12 @@
 ﻿
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using LosIntegration.Model.Model.ServiceRequestModels.ByteWebConnector;
+using LosIntegration.Model.Model.ServiceRequestModels.Document;
+using LosIntegration.Model.Model.ServiceResponseModels;
+using LosIntegration.Model.Model.ServiceResponseModels.ByteWebConnector;
+using LosIntegration.Model.Model.ServiceResponseModels.Rainmaker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ServiceCallHelper;
@@ -24,6 +30,55 @@ namespace LosIntegration.Service.InternalServices
         #endregion
 
         #region Methods 
+
+        public async Task<CallResponse<SendSdkDocumentResponse>> SendDocument(SendDocumentRequest sendDocumentRequest)
+        {
+            var externalOriginatorSendDocumentResponse = await
+                _httpClient.EasyPostAsync<SendSdkDocumentResponse>(requestUri: $"{_baseUrl}/api/ByteWebConnector/Document/SendDocument",
+                                                                   content: sendDocumentRequest,
+                                                                   attachAuthorizationHeadersFromCurrentRequest: true);
+            return externalOriginatorSendDocumentResponse;
+        }
+
+
+        public async Task<EmbeddedDoc> GetDocumentDataFromByte(GetDocumentDataRequest documentDataRequest)
+        {
+            var documentDataResult = await
+                _httpClient.EasyPostAsync<EmbeddedDoc>(requestUri: $"{_baseUrl}/api/ByteWebConnector/Document/GetDocumentDataFromByte",
+                                                       content: documentDataRequest,
+                                                       attachAuthorizationHeadersFromCurrentRequest: true);
+            return documentDataResult.ResponseObject;
+        }
+
+
+        public async Task<UploadFileResponse> UploadFile(string uploadFileRequest)
+        {
+            var uploadFileResponse = await
+                _httpClient.EasyPostAsync<UploadFileResponse>(requestUri: $"{_baseUrl}/api/DocumentManagement/request/UploadFile",
+                                                              content: uploadFileRequest,
+                                                              attachAuthorizationHeadersFromCurrentRequest: true);
+            return uploadFileResponse.ResponseObject;
+        }
+
+
+        public async Task<CallResponse<ApiResponse<LoanFileInfo>>> SendLoanApplication(LoanApplication loanApplication,
+                                                                                       LoanRequest loanRequest,
+                                                                                       List<ThirdPartyCode> byteProCodeList)
+        {
+
+            var sendLoanFileRequest = new SendLoanFileRequest
+            {
+                LoanApplication = loanApplication,
+                LoanRequest = loanRequest,
+                ThirdPartyCodeList = new ThirdPartyCodeList() { ThirdPartyCodes = byteProCodeList }
+            };
+            var externalOriginatorSendDocumentResponse =
+                _httpClient.EasyPostAsync<ApiResponse<LoanFileInfo>>(requestUri: $"{_baseUrl}/api/ByteWebConnector/LoanFile/SendLoanFile",
+                                                           content: sendLoanFileRequest,
+                                                           attachAuthorizationHeadersFromCurrentRequest: true
+                                                           );
+            return await externalOriginatorSendDocumentResponse;
+        }
 
         public async Task<short> GetLoanStatusAsync(string fileDataId)
         {

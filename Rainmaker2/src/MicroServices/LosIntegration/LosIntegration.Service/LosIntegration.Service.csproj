@@ -7,12 +7,6 @@
   <ItemGroup>
     <Compile Remove="InternalServices\DocumentManagementService.cs" />
     <Compile Remove="InternalServices\IDocumentManagementService.cs" />
-    <Compile Remove="InternalServices\IRainmakerService.cs" />
-    <Compile Remove="InternalServices\Rainmaker\ILoanRequestService.cs" />
-    <Compile Remove="InternalServices\Rainmaker\IThirdPartyCodeService.cs" />
-    <Compile Remove="InternalServices\Rainmaker\LoanRequestService.cs" />
-    <Compile Remove="InternalServices\Rainmaker\RainmakerService.cs" />
-    <Compile Remove="InternalServices\Rainmaker\ThirdPartyCodeService.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 
 namespace Rainmaker.Service
@@ -244,9 +245,114 @@ namespace Rainmaker.Service
         private IQueryable<LoanApplication> ProcessIncludes(IQueryable<LoanApplication> query,
                                                             RelatedEntities includes)
         {
-            // @formatter:off 
-            if (includes.HasFlag(flag: RelatedEntities.Borrower)) query = query.Include(navigationPropertyPath: loanApplication => loanApplication.Borrowers);
-            // @formatter:on 
+            // @formatter:off    
+            //if (includes.HasFlag(RelatedEntities.LosSyncLog)) query = query.Include(x => x.LosSyncLogs);
+            if (includes.HasFlag(RelatedEntities.Opportunity_UserProfile)) query = query.Include(l => l.Opportunity.OpportunityLeadBinders).ThenInclude(olb => olb.Customer);
+            if (includes.HasFlag(RelatedEntities.Opportunity_LoanRequest)) query = query.Include(l => l.Opportunity.LoanRequest);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Employee_UserProfile)) query = query.Include(l => l.Opportunity.Owner.UserProfile);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Employee_Contact)) query = query.Include(l => l.Opportunity.Owner.Contact);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Employee_CompanyPhoneInfo)) query = query.Include(l => l.Opportunity.Owner.EmployeePhoneBinders).ThenInclude(employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Employee_EmailAccount)) query = query.Include(l => l.Opportunity.Owner.EmployeeBusinessUnitEmails).ThenInclude(employeeBusinessUnitEmails => employeeBusinessUnitEmails.EmailAccount);
+
+            if (includes.HasFlag(RelatedEntities.LoanGoal)) query = query.Include(l => l.LoanGoal);
+            if (includes.HasFlag(RelatedEntities.LoanPurpose)) query = query.Include(l => l.LoanPurpose);
+
+            if (includes.HasFlag(RelatedEntities.PropertyInfo)) query = query.Include(l => l.PropertyInfo);
+            if (includes.HasFlag(RelatedEntities.PropertyInfo_AddressInfo))
+            {
+                query = query.Include(l => l.PropertyInfo.AddressInfo);
+                query = query.Include(l => l.PropertyInfo.AddressInfo.State);
+                query = query.Include(l => l.PropertyInfo.AddressInfo.County);
+                query = query.Include(l => l.PropertyInfo.AddressInfo.City);
+            }
+
+            if (includes.HasFlag(RelatedEntities.PropertyInfo_MortgageOnProperties)) query = query.Include(l => l.PropertyInfo.MortgageOnProperties);
+            if (includes.HasFlag(RelatedEntities.PropertyInfo_PropertyType)) query = query.Include(l => l.PropertyInfo.PropertyType);
+            if (includes.HasFlag(RelatedEntities.PropertyInfo_PropertyUsage)) query = query.Include(l => l.PropertyInfo.PropertyUsage);
+            if (includes.HasFlag(RelatedEntities.PropertyInfo_PropertyTaxEscrows)) query = query.Include(l => l.PropertyInfo.PropertyTaxEscrows).ThenInclude(pte => pte.EscrowEntityType);
+
+            if (includes.HasFlag(RelatedEntities.Borrower)) query = query.Include(l => l.Borrowers);
+            if (includes.HasFlag(RelatedEntities.Borrower_OwnType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.OwnType);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerResidences)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerResidences_OwnershipType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.OwnershipType);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerResidences_LoanAddress))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.LoanAddress);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.LoanAddress.City);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.LoanAddress.County);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.LoanAddress.State);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerResidences).ThenInclude(br => br.LoanAddress.Country);
+
+            }
+            if (includes.HasFlag(RelatedEntities.Borrower_Bankruptcies)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerBankRuptcies);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerAssets)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.AssetBorrowerBinders).ThenInclude(abb => abb.BorrowerAsset.AssetType);
+            if (includes.HasFlag(RelatedEntities.Borrower_PropertyInfo))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.PropertyUsage);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.PropertyType);
+            }
+
+            if (includes.HasFlag(RelatedEntities.Borrower_PropertyInfo_AddressInfo))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.AddressInfo);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.AddressInfo.City);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.AddressInfo.County);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.AddressInfo.State);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerProperties).ThenInclude(bp => bp.PropertyInfo.AddressInfo.Country);
+            }
+
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerAccount)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerAccountBinders).ThenInclude(bab => bab.BorrowerAccount);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerAccount_AccountType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerAccountBinders).ThenInclude(bab => bab.BorrowerAccount.AccountType);
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.MaritalStatusList);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.Contact);
+            }
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact_Gender)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.Gender);
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact_Ethnicity))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.LoanContactEthnicityBinders).ThenInclude(eb => eb.Ethnicity);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.LoanContactEthnicityBinders).ThenInclude(eb => eb.EthnicityDetail);
+
+            }
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact_Race))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.LoanContactRaceBinders).ThenInclude(rb => rb.Race);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.LoanContactRaceBinders).ThenInclude(rb => rb.RaceDetail);
+            }
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact_ResidencyType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.ResidencyType);
+            if (includes.HasFlag(RelatedEntities.Borrower_LoanContact_ResidencyState)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.LoanContact.ResidencyState);
+
+            if (includes.HasFlag(RelatedEntities.Borrower_EmploymentInfoes)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes);
+            if (includes.HasFlag(RelatedEntities.Borrower_EmploymentInfoes_JobType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(ei => ei.JobType);
+            if (includes.HasFlag(RelatedEntities.Borrower_EmploymentInfoes_AddressInfo))
+            {
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.AddressInfo);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.AddressInfo.City);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.AddressInfo.County);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.AddressInfo.State);
+                query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.AddressInfo.Country);
+            }
+            if (includes.HasFlag(RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(e => e.OtherEmploymentIncomes).ThenInclude(oei => oei.OtherEmploymentIncomeHistories);
+            if (includes.HasFlag(RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes_IncomeType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.EmploymentInfoes).ThenInclude(ei => ei.OtherEmploymentIncomes).ThenInclude(oei => oei.OtherEmploymentIncomeType);
+            if (includes.HasFlag(RelatedEntities.Borrower_OtherIncomes_IncomeType)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.OtherIncomes).ThenInclude(o => o.IncomeType);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerQuestionResponses)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerQuestionResponses);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerQuestionResponses_Question)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerQuestionResponses).ThenInclude(bqr => bqr.Question);
+            if (includes.HasFlag(RelatedEntities.Borrower_BorrowerQuestionResponses_QuestionResponse)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerQuestionResponses).ThenInclude(bqr => bqr.QuestionResponse);
+            if (includes.HasFlag(RelatedEntities.Borrower_Consent_ConsentLog)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerConsents).ThenInclude(bc => bc.BorrowerConsentLogs);
+            if (includes.HasFlag(RelatedEntities.Borrower_Liability)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerLiabilities).ThenInclude(bl => bl.LiabilityType);
+            if (includes.HasFlag(RelatedEntities.Borrower_SupportPayments)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.BorrowerSupportPayments);
+            if (includes.HasFlag(RelatedEntities.Borrower_OwnerShipInterests)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.OwnerShipInterests);
+            if (includes.HasFlag(RelatedEntities.Borrower_VaDetails)) query = query.Include(l => l.Borrowers).ThenInclude(b => b.VaDetails);
+            if (includes.HasFlag(RelatedEntities.Borrower_FamilyRelationType)) query = query.Include(l => l.Borrowers).ThenInclude(x => x.FamilyRelationType);
+
+            if (includes.HasFlag(RelatedEntities.BusinessUnit)) query = query.Include(l => l.BusinessUnit);
+            if (includes.HasFlag(RelatedEntities.BusinessUnit_LeadSource)) query = query.Include(l => l.BusinessUnit.LeadSource);
+            if (includes.HasFlag(RelatedEntities.Opportunity)) query = query.Include(l => l.Opportunity);
+
+            // @formatter:on             
             return query;
         }
 
@@ -402,6 +508,17 @@ namespace Rainmaker.Service
         {
             return await Repository.Query(x => x.Id == loanApplicationId).Include(x => x.BusinessUnit)
                 .Select(x => x.BusinessUnit.FavIcon).FirstAsync();
+        }
+
+        public async Task UpdateLoanApplication(LoanApplication loanApplicationRequest)
+        {
+            var loanApplication = await Uow.Repository<LoanApplication>().Query(query: application => application.Id == loanApplicationRequest.Id).Include(application => application.Opportunity).SingleAsync();
+            loanApplication.ByteFileName = loanApplicationRequest.ByteFileName;
+            loanApplication.ByteLoanNumber = loanApplicationRequest.ByteLoanNumber;
+            loanApplication.BytePostDateUtc = loanApplicationRequest.BytePostDateUtc;
+            loanApplication.Opportunity.TpId = loanApplicationRequest.ByteFileName;
+            loanApplication.TrackingState = TrackingState.Modified;
+            await SaveChangesAsync();
         }
     }
 }

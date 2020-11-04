@@ -82,6 +82,8 @@ namespace RainMaker.Entity.Models
         public string ByteFileName { get; set; } // ByteFileName (length: 50)
         public int? MilestoneId { get; set; } // MilestoneId
 
+        public System.DateTime? BytePostDateUtc { get; set; }
+
         // Reverse navigation
 
         /// <summary>

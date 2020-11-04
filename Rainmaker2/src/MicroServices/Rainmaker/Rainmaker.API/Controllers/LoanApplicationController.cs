@@ -443,5 +443,13 @@ namespace Rainmaker.API.Controllers
             return Ok();
 
         }
+
+        [Authorize(Roles = "MCU,Customer")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateLoanApplication([FromBody] LoanApplication loanApplicationRequest)
+        {
+            await loanApplicationService.UpdateLoanApplication(loanApplicationRequest);
+            return Ok();
+        }
     }
 }
