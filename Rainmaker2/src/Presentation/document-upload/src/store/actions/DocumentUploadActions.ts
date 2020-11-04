@@ -53,10 +53,11 @@ export class DocumentUploadActions {
       dispatchProgress({
         type: DocumentsActionType.AddFileToDoc,
         payload: currentSelected?.files?.map(f => {
+          let err = error.response.data;
           if(f?.clientName === file?.clientName) {
             f.uploadStatus = 'failed';
             f.notAllowedReason = 'Failed';
-            f.failedReason = error.response.data;
+            f.failedReason =  err.Message? err.Message : err;
           }
           return f;
         }),
