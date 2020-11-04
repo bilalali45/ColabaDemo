@@ -290,20 +290,13 @@ export const SelectedDocuments = ({
     }
   }
   const checkFreezBody = async () => {
-
-    let page: any = document.querySelector("html");
-    if (document.body.style.overflow == "hidden") {
+    if (document.body.style.overflow == "hidden" ) {
       document.body.removeAttribute("style");
+      document.body.classList.remove("lockbody");
     } else {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("lockbody");
     }
-    if (page.style.overflow == "hidden") {
-      page.removeAttribute("style");
-    } else {
-      page.style.overflow = "hidden"
-    }
-
-
   };
 
 
@@ -448,9 +441,7 @@ export const SelectedDocuments = ({
               setCurrentDoc(null);
               document.body.style.overflow = "visible";
               document.body.removeAttribute("style");
-              let page: any = document.querySelector("html");
-              page.style.overflow = "visible";
-              page.removeAttribute("style");
+              document.body.classList.remove("lockbody");
               history.goBack();
             }}
             {...currentDoc}
