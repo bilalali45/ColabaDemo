@@ -102,6 +102,8 @@
     &--footer{
         padding: 15px;
         border-top: 1px solid color('border');
+        max-height: 90px;
+    overflow: auto;
         h2{
             font: 500 #{fontSize('nr')+'/1.2'} fontFamily('base');
             margin-bottom: 2px !important;
@@ -116,8 +118,10 @@
     }// footer
 
     &--scrollable{
-        max-height: 400px;
+        max-height: 380px;
         overflow-y: auto;
+        margin-right: -13px;
+        padding-right: 13px;
     }
 
     &--aside{
