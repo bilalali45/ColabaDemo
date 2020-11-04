@@ -96,6 +96,7 @@
 
                 }
                 .lp-content {
+                    min-height: 125px;
                     .step-label {
                         font: 500 #{fontSize("sm") + "/1.2"} fontFamily("heading");
                         color: color("primary");
