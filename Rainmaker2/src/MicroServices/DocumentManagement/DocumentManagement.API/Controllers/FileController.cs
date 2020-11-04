@@ -99,7 +99,7 @@ namespace DocumentManagement.API.Controllers
                     return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
                 if (file.Length > setting.maxFileSize)
                     //throw new DocumentManagementException("File size exceeded limit");
-                    return BadRequest($"File size over {((decimal)setting.maxFileSize)/(1024*1024)}mb limit");
+                    return BadRequest($"File size must be under {((decimal)setting.maxFileSize)/(1024*1024)} mb");
                 if (file.FileName.Length > setting.maxFileNameSize)
                     return BadRequest("File Name size exceeded limit");
                 //throw new DocumentManagementException("File Name size exceeded limit");
