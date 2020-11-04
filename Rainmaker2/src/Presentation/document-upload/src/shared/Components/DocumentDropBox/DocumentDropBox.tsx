@@ -10,8 +10,6 @@ import DocUploadIcon from "../../../assets/images/upload-doc-icon.svg";
 import FileuploadPreviewIcon from "../../../assets/images/fileupload-preview-icon.svg";
 import { FileUpload } from "../../../utils/helpers/FileUpload";
 import { Store } from '../../../store/store';
-import cameraIcon from "../../../assets/images/camera-icon.svg";
-import folderIcon from "../../../assets/images/folder-icon.svg";
 type DocumentDropBoxPropsType = { getFiles: Function; setFileInput: Function };
 
 export const DocumentDropBox = ({
@@ -59,33 +57,10 @@ export const DocumentDropBox = ({
   const mobileView = () => {
     return (
       <div className="chosefileWrap">
-        <p>You don’t have any files here.<br />
-Upload from</p>
-
-<div className="upload-btns-wrap">
-<div className="camera-wrap">
-          <label htmlFor="inputFile2" className="iconic-btn cam-btn">
-     <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span> 
-     <span className="iconic-btn-lbl">   Camera </span>
-
-          </label>
-          <input
-            ref={inputRef}
-            type="file"
-            name="file"
-            id="inputFile2"
-            onChange={(e) => handleChange(e)}
-            multiple
-            accept={'image/*'}
-            capture="environment"
-          />
-        </div>
-      
-
-        <div className="folder-wrap">
-          <label htmlFor="inputFile" className="iconic-btn folder-btn">
-          <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span> 
-     <span className="iconic-btn-lbl">   Folder </span>
+        <p>You don’t have any files here.</p>
+        <div>
+          <label htmlFor="inputFile" className="btn btn-primary btn-sub-mobile">
+            Upload
       </label>
           <input
             ref={inputRef}
@@ -97,7 +72,20 @@ Upload from</p>
             accept={FileUpload.allowedExtensions}
           />
         </div>
-
+        <div>
+          <label htmlFor="inputFile2" className="btn btn-primary btn-sub-mobile">
+            Take a picture
+      </label>
+          <input
+            ref={inputRef}
+            type="file"
+            name="file"
+            id="inputFile2"
+            onChange={(e) => handleChange(e)}
+            multiple
+            accept={'image/*'}
+            capture="environment"
+          />
         </div>
       </div>
     )

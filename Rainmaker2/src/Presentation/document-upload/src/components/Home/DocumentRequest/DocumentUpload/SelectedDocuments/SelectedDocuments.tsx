@@ -12,8 +12,7 @@ import { DocumentUploadActions } from "../../../../../store/actions/DocumentUplo
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { useLocation, useHistory } from "react-router-dom";
-import cameraIcon from "../../../../../assets/images/camera-icon.svg";
-import folderIcon from "../../../../../assets/images/folder-icon.svg"; 
+
 interface SelectedDocumentsType {
   addMore: Function;
   setFileInput: Function;
@@ -313,16 +312,36 @@ export const SelectedDocuments = ({
 
     if (isMobile?.value) {
       return (
-        <div className="upload-btns-wrap">
-                   <a
+        <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+          <a
             data-testid="add-more-btn"
-            className="addmoreDoc camera-wrap"
+            className="addmoreDoc"
             onClick={(e) => {
               addMore(e);
             }}
           >
-         <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span> 
-     <span className="iconic-btn-lbl">   Camera </span>
+            {" "}
+        Add more files
+        <input
+              onChange={(e) => addMore(e)}
+              data-testid="file-input"
+              type="file"
+              accept={FileUpload.allowedExtensions}
+              id="inputFile"
+              ref={inputRef}
+              multiple
+              style={{ display: "none" }}
+            />
+          </a>
+          <a
+            data-testid="add-more-btn"
+            className="addmoreDoc"
+            onClick={(e) => {
+              addMore(e);
+            }}
+          >
+            {" "}
+        Take a picture
         <input
               onChange={(e) => addMore(e)}
               data-testid="file-input"
@@ -335,29 +354,6 @@ export const SelectedDocuments = ({
               capture="environment"
             />
           </a>
-         
-          <a
-            data-testid="add-more-btn"
-            className="addmoreDoc folder-wrap"
-            onClick={(e) => {
-              addMore(e);
-            }}
-          >
-           <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span> 
-     <span className="iconic-btn-lbl">   Folder </span>
-        <input
-              onChange={(e) => addMore(e)}
-              data-testid="file-input"
-              type="file"
-              accept={FileUpload.allowedExtensions}
-              id="inputFile"
-              ref={inputRef}
-              multiple
-              style={{ display: "none" }}
-            />
-          </a>
-
-
         </div>
       )
     } else {

@@ -37,9 +37,9 @@
             @include mobile{
                 height: 100%;
                 // padding-top: 30%;
-                padding-top: 5vh;
+                padding-top: 10vh;
                 min-height: 240px;
-                padding-bottom: 20px;
+                padding-bottom: 65px;
             }
             @media (max-height:570px) {
                 padding-top: 5vh;
@@ -182,7 +182,6 @@
                         left: 0;
                         z-index: -1;
                     }
-
                 }
             }
         }
@@ -852,38 +851,4 @@ p {
     }
     }
 }
-
-.upload-btns-wrap {
-    width: 100%;
-    max-width: 190px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    .addmoreDoc {
-        min-width: 0 !important;
-    }
-    .camera-wrap {
-        border-right: 1px solid color('border');
-        padding-right: 25px;
-    }
-    .folder-wrap {
-        padding-left:5px;
-    }
-    .iconic-btn {
-margin-bottom: 0;
-        &-img {
-            display: block;
-        }
-        &-lbl {
-            display: block;
-            margin-top: 10px;
-            font: 400 #{fontSize("nr") + "/17px"} fontFamily("base");
-            color: color("base") !important;
-        }
-    }
-}
-
 
