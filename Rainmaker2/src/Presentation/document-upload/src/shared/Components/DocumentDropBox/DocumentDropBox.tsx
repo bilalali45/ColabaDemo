@@ -35,22 +35,22 @@ export const DocumentDropBox = ({
   const desktopView = () => {
     return (
       <div className="chosefileWrap">
-        <label htmlFor="inputFile">
-          You don't have any files.
+      <label htmlFor="inputFile">
+        You don't have any files.
         <br />
         Drop it here or <span>upload</span>
-        </label>
-        <input
-          data-testid="file-input"
-          ref={inputRef}
-          type="file"
-          name="file"
-          id="inputFile"
-          onChange={(e) => handleChange(e)}
-          multiple
-          accept={FileUpload.allowedExtensions}
-        />
-      </div>
+      </label>
+      <input
+        data-testid="file-input"
+        ref={inputRef}
+        type="file"
+        name="file"
+        id="inputFile"
+        onChange={(e) => handleChange(e)}
+        multiple
+        accept={FileUpload.allowedExtensions}
+      />
+    </div>
     )
   }
 
@@ -58,36 +58,19 @@ export const DocumentDropBox = ({
     return (
       <div className="chosefileWrap">
         <p>You don’t have any files here.</p>
-        <div>
-          <label htmlFor="inputFile" className="btn btn-primary btn-sub-mobile">
-            Upload
+        <label htmlFor="inputFile" className="btn btn-primary btn-sub-mobile">
+        Upload
       </label>
-          <input
-            ref={inputRef}
-            type="file"
-            name="file"
-            id="inputFile"
-            onChange={(e) => handleChange(e)}
-            multiple
-            accept={FileUpload.allowedExtensions}
-          />
-        </div>
-        <div>
-          <label htmlFor="inputFile2" className="btn btn-primary btn-sub-mobile">
-            Take a picture
-      </label>
-          <input
-            ref={inputRef}
-            type="file"
-            name="file"
-            id="inputFile2"
-            onChange={(e) => handleChange(e)}
-            multiple
-            accept={'image/*'}
-            capture="environment"
-          />
-        </div>
-      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        name="file"
+        id="inputFile"
+        onChange={(e) => handleChange(e)}
+        multiple
+        accept={FileUpload.allowedExtensions}
+      />
+    </div>
     )
   }
 
@@ -99,10 +82,10 @@ export const DocumentDropBox = ({
           <div className="icon-doc-upload">
             <img src={DocUploadIcon} alt="" />
           </div>
-
+ 
           {!isMobile.value ?
-            desktopView() : mobileView()
-          }
+                desktopView() : mobileView()
+            }
 
         </div>
       </div>
