@@ -17,6 +17,15 @@
             // max-width: 100%;
             max-height: 35px;
             width: auto;
+            display: block !important;
+            @include mobile{
+                max-height: 25px;
+            }
+            @include smallMobile{
+                max-height: 30px;
+            }
+
+         
         }
     }
     .s-account{
@@ -27,6 +36,9 @@
     .userdropdown {
         float: right;
         margin: -8px 0 0 0;
+        @include mobile {
+            top: 2px;
+        }
         .hd-shorname {
             cursor: pointer;
             height: 14px;
@@ -34,6 +46,12 @@
     background:color('primary');
     display: inline-block;
     vertical-align: middle;
+    @include mobile {
+        height: 22px;
+        width: 22px;
+        margin-top: 0px;
+        line-height: 24px;
+    }
     @include borderRadius(100%,false);
     margin-top: 5px;
     text-align: center;
@@ -48,6 +66,20 @@
             border-right: 4px solid transparent;
             border-left: 4px solid transparent;
             border-bottom: 0;
+            @include mobile {
+                width: 2px;
+                height: 14px;
+                content: '\f19b';
+                border-top: none;
+                border-right: none;
+                border-left: none;
+                font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+                font-size: inherit;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                font-size: fontSize('nr') !important;
+            }
            }
          
         }
@@ -61,6 +93,14 @@
                     border-bottom: 4px solid;
                     position: relative;
                     top: -1px;
+                    @include mobile {
+                        border-top: none;
+                        border-right: none;
+                        border-left:none;
+                        border-bottom:none;
+                        position: relative;
+                        top:auto;
+                    }
                    }
             }
 
@@ -107,6 +147,23 @@
 -ms-user-select: none; 
 -o-user-select: none;
 user-select: none;
+user-select: none;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+@include mobile {
+    margin-top: 1px;
+    max-width: 300px;     
+}
+@include smallMobile {
+    font: 400 #{fontSize("nr")+"/1"} fontFamily("heading");  
+    max-width: 170px;       
+}
+@media (max-width:360px) {
+
+    max-width: 125px; 
+    font: 400 #{fontSize("nr")+"/1"} fontFamily("heading");         
+}
         &:hover {
             text-decoration: none;
         }

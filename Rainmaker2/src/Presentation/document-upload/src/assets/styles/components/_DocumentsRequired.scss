@@ -3,9 +3,24 @@
         ul {
             margin-left: -20px;
             max-height: 440px;
+           
     overflow: auto;
     @include scrollbar;
+    @include mobile {
+        // max-height: calc(100vh - 245px);
+        min-height: calc(100vh - 245px);
+        max-height: fit-content;
+        @include scrollbar(6,6)
+    }
             li {
+                position: relative;
+                @include mobile {
+                    border: 1px solid color('border');
+                    margin-bottom: 5px;
+                    &:last-child {
+                        margin-bottom: 0px;  
+                    }
+                }
                 a { 
                 min-height: 39px;
                 margin-bottom: 1px;
@@ -16,6 +31,10 @@
                 padding-left: 45px;
                 font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
                 position: relative;
+                padding-right: 15px;
+                @include mobile {
+                    padding-right: 40px;
+                }
                 &::before {
                     content: "\f15b";
                     font-family: "Font Awesome 5 Free";
@@ -28,7 +47,11 @@
                     line-height: 1;
                     position: absolute;
                     left: 20px;
-                    color:color('light-purple')
+                    color:color('light-purple');
+                    @include mobile {
+                        color:color('primary') 
+                    }
+                    
                 }
                 &.active {
                     &::before {
@@ -46,9 +69,58 @@ margin-right: 15px; display: none;
                 }
                 &:hover,&.active {
 background-color: color('listhover');
+@include mobile {
+    background-color: color('colorWhite');
+}
+                }
+            }
+
+            .pd-m-arrow-icon {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                margin-top: -8px;
+                cursor: pointer;
+                color: color("light-purple");
+                pointer-events: none;
+                i {
+                    font-size:fontSize("xmd");
                 }
             }
             }
+        }
+    }
+}
+.doneTasklist {
+    margin-left: -20px;
+    background:color("colorgray");
+    padding: 15px;
+    text-align: center;
+    height: calc(100vh - 250px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    @media (max-height:420px) and  (orientation: landscape) {
+        align-items: flex-start;
+        .d-wrap {
+            min-height: 200px;
+            max-width: 50vh;
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    .d-text {
+        max-width: 238px;
+        margin: 0 auto;
+        margin-top: 20px;
+        font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
+        color:color('base');
+        span {
+            color:color('primary');
         }
     }
 }

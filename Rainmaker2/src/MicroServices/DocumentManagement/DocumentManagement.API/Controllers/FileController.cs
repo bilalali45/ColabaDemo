@@ -94,12 +94,15 @@ namespace DocumentManagement.API.Controllers
                                                               key: await keyStoreService.GetFtpKey()));
             foreach (var file in files)
             {
-                if (file.Length > setting.maxFileSize)
-                    throw new DocumentManagementException("File size exceeded limit");
-                if (file.FileName.Length > setting.maxFileNameSize)
-                    throw new DocumentManagementException("File Name size exceeded limit");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                    throw new DocumentManagementException("This file type is not allowed for uploading");
+                    //throw new DocumentManagementException("This file type is not allowed for uploading");
+                    return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+                if (file.Length > setting.maxFileSize)
+                    //throw new DocumentManagementException("File size exceeded limit");
+                    return BadRequest($"File size over {((decimal)setting.maxFileSize)/(1024*1024)}mb limit");
+                if (file.FileName.Length > setting.maxFileNameSize)
+                    return BadRequest("File Name size exceeded limit");
+                //throw new DocumentManagementException("File Name size exceeded limit");
             }
             // save
             List<string> fileId = new List<string>();
@@ -131,7 +134,8 @@ namespace DocumentManagement.API.Controllers
                     System.IO.File.Delete(path: filePath);
                     logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
-                        throw new DocumentManagementException("unable to update file in mongo");
+                        //throw new DocumentManagementException("unable to update file in mongo");
+                        return BadRequest("unable to upload file");
                     fileId.Add(docQuery);
                     logger.LogInformation($"DocSync docQuery is not empty");
                 }
@@ -255,7 +259,8 @@ namespace DocumentManagement.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             var setting = await settingService.GetSetting();
             if (model.fileName.Length > setting.maxFileNameSize)
-                throw new DocumentManagementException("File Name size exceeded limit");
+                //throw new DocumentManagementException("File Name size exceeded limit");
+                return BadRequest("File Name size exceeded limit");
             var docQuery = await fileService.Rename(model: model,
                                                     userProfileId: userProfileId, tenantId);
             if (docQuery)

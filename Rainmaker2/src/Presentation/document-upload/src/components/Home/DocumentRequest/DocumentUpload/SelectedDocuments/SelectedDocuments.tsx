@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
 import { DocumentView } from "rainsoft-rc";
-
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -19,6 +18,7 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
+  setCurrentInview?: any
   // filesChange: Function;
 }
 
@@ -36,16 +36,16 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
+  setCurrentInview
 }: // filesChange,
-SelectedDocumentsType) => {
+  SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
-  const [doneVisible, setDoneVisible] = useState<boolean>(false);
-  const [doneHit, setDoneHit] = useState<boolean>(false);
   const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
+  const [donePressed, setDonePressed] = useState<boolean>(false);
   const { state, dispatch } = useContext(Store);
-
+  const loan: any = state.loan;
+  const { isMobile } = loan;
   const [currentDocIndex, setCurrentDocIndex] = useState<number>(0);
 
   const documents: any = state.documents;
@@ -60,7 +60,6 @@ SelectedDocumentsType) => {
 
   useEffect(() => {
     setFileInput(inputRef.current);
-    disableSubmitBtn();
 
     let curentFileIndex = pendingDocs.findIndex(
       (pd: DocumentRequest) => pd?.docId === currentSelected?.docId
@@ -72,9 +71,7 @@ SelectedDocumentsType) => {
     if (selectedFiles.length < ApplicationEnv.MaxDocumentCount) {
       setFileLimitError({ value: false });
     }
-    if (!uploadingFiles) {
-      hasSubmitted();
-    }
+
   }, [selectedFiles, selectedFiles.length, uploadingFiles]);
 
   const handleDeleteAction = (file) => {
@@ -90,6 +87,7 @@ SelectedDocumentsType) => {
   };
 
   const viewDocument = (document: any) => {
+    checkFreezBody();
     clearBlob();
     const {
       currentDoc: { id, requestId, docId },
@@ -125,7 +123,7 @@ SelectedDocumentsType) => {
     setSubBtnPressed(true);
     setUploadingFiles(true);
     for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done" && !file.notAllowed) {
+      if (file.file && file.uploadStatus !== "done" && !file.notAllowed && file.uploadStatus !== 'failed') {
         try {
           await DocumentUploadActions.submitDocuments(
             currentSelected,
@@ -144,7 +142,7 @@ SelectedDocumentsType) => {
     setUploadingFiles(false);
     try {
       Promise.resolve(fetchUploadedDocuments());
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fileAlreadyExists = (file, newName) => {
@@ -152,7 +150,7 @@ SelectedDocumentsType) => {
       (f) =>
         f !== file &&
         FileUpload.removeDefaultExt(f.clientName).toLowerCase() ===
-          newName.toLowerCase()
+        newName.toLowerCase()
     );
     if (alreadyExist) {
       return true;
@@ -161,13 +159,16 @@ SelectedDocumentsType) => {
   };
 
   const changeName = (file: Document, newName: string) => {
-    if (fileAlreadyExists(file, newName)) {
+    let name = newName.replace(/\s+/g, " ");
+
+    if (fileAlreadyExists(file, name)) {
       return false;
     }
     let updatedFiles = selectedFiles.map((f: Document) => {
       if (file.file && f.clientName === file.clientName) {
-        // f.clientName = `${newName}.${Rename.getExt(file.file)}`;
-        f.clientName = `${newName}.${FileUpload.getExtension(file, "dot")}`;
+        if (name.trim()) {
+          f.clientName = `${name}.${FileUpload.getExtension(file, "dot")}`;
+        }
         f.editName = !f.editName;
         return f;
       }
@@ -187,7 +188,6 @@ SelectedDocumentsType) => {
         f.focused = focus;
         nextInd = i + 1;
       }
-      // debugger
       return f;
     });
     let updatedFilesWithFocus = updatedFiles.map((f: Document, i: number) => {
@@ -214,27 +214,6 @@ SelectedDocumentsType) => {
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
-  const disableSubmitBtn = () => {
-    let docFiles = selectedFiles.filter((df) => df.uploadStatus === "pending");
-    let docEdits = selectedFiles.filter((de) => de.editName);
-    let docDelete = selectedFiles.filter((dd) => dd.deleteBoxVisible);
-
-    if (docFiles.length > 0) {
-      setBtnDisabled(false);
-    } else {
-      setBtnDisabled(true);
-    }
-    if (docEdits.length > 0) {
-      setBtnDisabled(true);
-    } else if (doneVisible) {
-      setBtnDisabled(true);
-    } else if (docDelete.length > 0) {
-      setBtnDisabled(true);
-    } else {
-      setBtnDisabled(false);
-    }
-  };
-
   const fetchUploadedDocuments = async () => {
     let uploadedDocs = await DocumentActions.getSubmittedDocuments(
       Auth.getLoanAppliationId()
@@ -248,8 +227,7 @@ SelectedDocumentsType) => {
   };
 
   const doneDoc = async () => {
-    setDoneVisible(false);
-    setDoneHit(true);
+    setDonePressed(true);
     let fields = ["id", "requestId", "docId"];
     let data = {};
 
@@ -260,9 +238,9 @@ SelectedDocumentsType) => {
       let docs:
         | DocumentRequest[]
         | undefined = await DocumentActions.finishDocument(
-        Auth.getLoanAppliationId(),
-        data
-      );
+          Auth.getLoanAppliationId(),
+          data
+        );
       if (docs?.length) {
         let indForCurrentDoc = currentDocIndex;
         if (currentDocIndex === pendingDocs.length - 1) {
@@ -277,20 +255,13 @@ SelectedDocumentsType) => {
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
-      setDoneVisible(false);
-      setDoneHit(false);
+      
       await fetchUploadedDocuments();
     }
-  };
-
-  const hasSubmitted = () => {
-    let pending = selectedFiles.filter((f) => f.uploadStatus === "pending");
-    if (pending.length > 0) {
-      setDoneVisible(false);
-      return;
-    } else {
-      setDoneVisible(true);
+    if (isMobile?.value && pendingDocs.length === 1) {
+      setCurrentInview('documetsRequired');
     }
+    setDonePressed(false);
   };
 
   const checkFocus = (file: Document, index: number) => {
@@ -299,6 +270,36 @@ SelectedDocumentsType) => {
     ).length;
     return foundIndx === index;
   };
+
+  const handleSubmitBtnDisabled = () => {
+    console.log(selectedFiles);
+    let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
+    console.log('newFiles', 'in here here', newFiles);
+    let filesEditing = newFiles?.filter(f => f.editName);
+
+    if(subBtnPressed) {
+      return true;
+    }
+
+    if (!newFiles.length) {
+      return true;
+    }
+
+    if (filesEditing.length) {
+      return true;
+    }
+  }
+  const checkFreezBody = async () => {
+    
+    if (document.body.style.overflow == "hidden" ) {
+      document.body.removeAttribute("style");
+      document.body.classList.remove("lockbody");
+    } else {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("lockbody");
+    }
+  };
+
 
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
@@ -315,10 +316,9 @@ SelectedDocumentsType) => {
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
-                  key={f.clientName + index}
+                  key={f.clientName + index}  
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
-                  disableSubmitButton={setBtnDisabled}
                   fileAlreadyExists={fileAlreadyExists}
                   retry={(fileToRemove) => addMore(fileToRemove)}
                   file={f}
@@ -354,19 +354,22 @@ SelectedDocumentsType) => {
                 />
               </a>
             ) : (
-              <a className="addmoreDoc disabled">
-                {" "}
+              isMobile?.value?null
+                :
+                <a className="addmoreDoc disabled">
+                  {" "}
                 Add more files
-                <input
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            )}
+                  <input
+                    type="file"
+                    accept={FileUpload.allowedExtensions}
+                    id="inputFile"
+                    ref={inputRef}
+                    multiple
+                    style={{ display: "none" }}
+                  />
+                </a>
+                
+              )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -374,42 +377,46 @@ SelectedDocumentsType) => {
                 document. Please contact us if you'd like to upload more files.
               </p>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </div>
         {!!currentDoc && location.pathname.includes("view") && (
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
+              document.body.classList.remove("lockbody");
               history.goBack();
             }}
             {...currentDoc}
             blobData={blobData}
             submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
           />
         )}
       </div>
       <div className="doc-upload-footer">
-        {doneVisible ? (
+        {console.log('sdfafasdfa adf asdf asdfa dfasdfadsf asdf asdf', currentSelected?.files?.filter(f => f.uploadedStatus === 'failed'))}
+        {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              <div className="col-md-6 col-lg-7">
+{!isMobile?.value && 
+              <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="dc-text">
-                  {/* {docTitle} */}
                   <p>
                     You won't be able to come back to this once you're done.
                   </p>
                 </div>
               </div>
-
-              <div className="col-md-6 col-lg-5">
+            }
+              <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
-                  <button
+                  <button 
                     className="btn btn-small btn-secondary"
                     onClick={() => {
-                      setDoneVisible(false);
-                      disableSubmitBtn();
+                   
                       if (pendingDocs.length > 1) {
                         let curDocInd = 0;
                         pendingDocs?.forEach((d, i) => {
@@ -441,21 +448,28 @@ SelectedDocumentsType) => {
                   </button>
                 </div>
               </div>
+              {isMobile?.value && 
+              <div className="col-xs-12 col-md-6 col-lg-7">
+                <div className="dc-text">
+                  <p>
+                    You won't be able to come back to this once you're done.
+                  </p>
+                </div>
+              </div>
+            }
             </div>
           </div>
         ) : (
-          <div className="doc-submit-wrap">
-            {!doneHit && (
+            <div className="doc-submit-wrap">
               <button
-                disabled={btnDisabled || subBtnPressed}
+                disabled={handleSubmitBtnDisabled()}
                 className="btn btn-primary"
                 onClick={uploadFiles}
               >
                 Submit
-              </button>
-            )}
-          </div>
-        )}
+                </button>
+            </div>
+          )}
       </div>
     </section>
   );

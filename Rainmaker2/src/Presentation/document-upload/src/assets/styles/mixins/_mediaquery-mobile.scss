@@ -2,6 +2,11 @@
     @media (max-width:767px){ @content; }
 }
 
+@mixin smallMobile{
+  @media (max-width:479px){ @content; }
+}
+
+
 /* Example to use
 body{
   background: color(primary);

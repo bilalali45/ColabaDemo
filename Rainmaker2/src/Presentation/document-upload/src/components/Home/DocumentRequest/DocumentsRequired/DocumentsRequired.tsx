@@ -8,14 +8,21 @@ import { DocumentsActionType } from "../../../../store/reducers/documentReducer"
 import { DocumentRequest } from "../../../../entities/Models/DocumentRequest";
 import { Redirect } from "react-router-dom";
 import { AlertBox } from "../../../../shared/Components/AlertBox/AlertBox";
+import doneTaskListIcon from "../../../../assets/images/doneTasklist-icon.svg";
+import noTaskListIcon from "../../../../assets/images/empty-doc-req-icon-mobile.svg";
+type DocumentsRequiredType = {
+  setCurrentInview?: any,
+  setClass?:Function
+}
 
-export const DocumentsRequired = () => {
+export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequiredType) => {
   const [showAlert, setshowAlert] = useState<boolean>(false);
   const [triedSelected, setTriedSelected] = useState();
   const { state, dispatch } = useContext(Store);
-  const { pendingDocs }: any = state.documents;
+  const { pendingDocs,submittedDocs }: any = state.documents;
   const { currentDoc }: any = state.documents;
-
+  const loan: any = state.loan;
+  const {isMobile} = loan; 
   const selectedFiles = currentDoc?.files || [];
 
   const sideBarNav = useRef<HTMLDivElement>(null);
@@ -97,6 +104,7 @@ export const DocumentsRequired = () => {
                 data-testid={`pending-doc-${i}`}
                 key={pd?.docId}
                 onClick={() => {
+                  isMobile.value && setCurrentInview('documentUploadView'); 
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
                     setshowAlert(false);
                     return;
@@ -112,13 +120,15 @@ export const DocumentsRequired = () => {
               >
                 <a title={pd.docName}
                   className={
-                    currentDoc && pd?.docId === currentDoc?.docId
+                    (currentDoc && !isMobile.value && pd?.docId === currentDoc?.docId)
                       ? "active"
                       : ""
                   }
                 >
                   <span> {pd.docName}</span>
+                 
                 </a>
+                {isMobile.value && <div className="pd-m-arrow-icon"><i className="zmdi zmdi-chevron-right"></i></div>}
               </li>
             );
           })}
@@ -127,9 +137,43 @@ export const DocumentsRequired = () => {
     }
     return "";
   };
-  console.log('in here  ------------------------- ----------------------- ', pendingDocs?.length);
   if (pendingDocs?.length === 0) {
-    console.log('in here yyoiu adsfj 9u, 149-04--=====================4234 234=24=23=4=    =', pendingDocs);
+      if(isMobile.value) {
+      if(setClass) {
+              setClass("PageDoneTask")
+            }
+        if (submittedDocs?.length && !pendingDocs?.length) {
+          return (
+            <section className="doneTasklist">
+            <div className="d-wrap">
+              <div className="d-icon">
+                <img src={doneTaskListIcon} alt="" />
+              </div>
+              <div className="d-text">
+              <span>Congrats!</span> You’ve completed all tasks for now! We’ll let you know if we need anything else
+              </div>
+  
+            </div>               
+            </section>
+          )
+        }
+        if (pendingDocs.length == 0) {
+          return (
+            <section className="doneTasklist">
+            <div className="d-wrap">
+              <div className="d-icon">
+                <img src={noTaskListIcon} alt="" />
+              </div>
+              <div className="d-text">
+              You have <span>0</span> tasks to complete
+              </div>
+  
+            </div>               
+            </section>
+          )
+        }
+
+      }
     return <Redirect to={`/activity/${Auth.getLoanAppliationId()}`} />;
   }
 

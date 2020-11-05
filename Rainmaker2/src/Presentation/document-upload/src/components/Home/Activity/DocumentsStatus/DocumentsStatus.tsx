@@ -14,12 +14,13 @@ export const DocumentsStatus = () => {
 
   const history = useHistory();
 
-  const { pendingDocs, submittedDocs }: any = state.documents;
-
+  const { pendingDocs, submittedDocs}: any = state.documents;
+  const loan: any = state.loan;
+    const {isMobile} = loan; 
   useEffect(() => {
     if (!pendingDocs?.length) {
       fetchPendingDocs();
-    }
+    } 
 
     if (!submittedDocs?.length) {
       fetchSubmittedDocs();
@@ -62,7 +63,7 @@ export const DocumentsStatus = () => {
 
   const renderNoPendingDocs = () => {
     return (
-      <div className="DocumentStatus box-wrap empty">
+      <div className="DocumentStatus box-wrap empty PageNoPendingDocs">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2"> Task List</h2>
         </div>
@@ -84,7 +85,7 @@ export const DocumentsStatus = () => {
 
   const renderCompletedDocs = () => {
     return (
-      <div data-testid="complete-pending-docs" className="DocumentStatus box-wrap empty">
+      <div data-testid="complete-pending-docs" className="DocumentStatus box-wrap empty PageCompletedDocs">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2">Task List</h2>
         </div>
@@ -108,6 +109,11 @@ export const DocumentsStatus = () => {
     );
   };
 
+
+  if(isMobile?.value) {
+    return (null)
+}
+
   if (!pendingDocs) {
     return <Loader containerHeight={"476px"} />;
   }
@@ -120,7 +126,7 @@ export const DocumentsStatus = () => {
     return renderNoPendingDocs();
   }
   return (
-    <div className="DocumentStatus hasData box-wrap">
+    <div className="DocumentStatus hasData box-wrap PageHaveDocList">
       <div className="overlay-DocumentStatus">
         <div className="box-wrap--header clearfix">
           <h2 className="heading-h2"> Task List</h2>
