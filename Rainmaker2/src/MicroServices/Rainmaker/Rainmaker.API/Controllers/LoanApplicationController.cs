@@ -279,10 +279,10 @@ namespace Rainmaker.API.Controllers
                     {
                         commaseperated = string.Empty;
                     }
-                    if (employee[i].EmployeeBusinessUnitEmails != null)
+                    if (employee[i].EmployeeBusinessUnitEmails != null && employee[i].EmployeeBusinessUnitEmails.Any())
                     {
                         var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
-                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault()?.EmailAccount;
                         if (emailAccount != null)
                         {
                             email.Append(emailAccount.Email + commaseperated);
@@ -418,7 +418,7 @@ namespace Rainmaker.API.Controllers
                     if (employee[i].EmployeeBusinessUnitEmails != null && employee[i].EmployeeBusinessUnitEmails.Any())
                     {
                         var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
-                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault()?.EmailAccount;
                         if (emailAccount != null)
                         {
                             email.Append(emailAccount.Email + commaseperated);
