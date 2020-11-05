@@ -1,7 +1,9 @@
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Milestone.API.Controllers;
 using Milestone.Model;
@@ -338,12 +340,13 @@ namespace Milestone.Tests
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).Verifiable();
-            mockMilestone.Setup(x => x.GetLosMilestone(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<short>())).ReturnsAsync(-1);
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com/");
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, mockConfiguration.Object);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
