@@ -290,6 +290,7 @@ export const SelectedDocuments = ({
     }
   }
   const checkFreezBody = async () => {
+    
     if (document.body.style.overflow == "hidden" ) {
       document.body.removeAttribute("style");
       document.body.classList.remove("lockbody");

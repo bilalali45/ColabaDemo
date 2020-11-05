@@ -410,7 +410,8 @@ export const DocumentItem = ({
             <div className="dl-info">
               <span className="dl-text">
                 {" "}
-                File size over {FileUpload.allowedSize}mb limit{" "}
+                File size must be under {FileUpload.allowedSize} mb
+                {/* File size over {FileUpload.allowedSize}mb limit{" "} */}
               </span>
             </div>
           </div>

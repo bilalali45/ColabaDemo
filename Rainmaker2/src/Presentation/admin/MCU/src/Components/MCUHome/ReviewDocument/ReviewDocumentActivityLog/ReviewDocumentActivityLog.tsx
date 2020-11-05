@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {Http} from 'rainsoft-js';
 import _ from 'lodash';
+import ReactHtmlParser from 'react-html-parser'; 
 
 import {
   ActivityLogType,
@@ -315,7 +316,9 @@ export const ReviewDocumentActivityLog = ({
               <h2>
                 <span>Message to borrower</span>
               </h2>
-              {activityLogs.length > 0 && activityLogs[logIndex].message}
+              {activityLogs.length > 0 &&
+                <div>{ReactHtmlParser(activityLogs[logIndex].message)}</div>
+              }
             </footer>
           </div>
         </div>
