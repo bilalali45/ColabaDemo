@@ -24,7 +24,7 @@ namespace Milestone.Tests
             Mock<IMilestoneService> mock = new Mock<IMilestoneService>();
             List<MilestoneModel> list = new List<MilestoneModel>() { new MilestoneModel() { Id=1,Name="Test"} };
             mock.Setup(x => x.GetAllMilestones(It.IsAny<int>())).ReturnsAsync(list);
-            var controller = new MilestoneController(mock.Object, null);
+            var controller = new MilestoneController(mock.Object, null, null);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -54,7 +54,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(null,mock.Object);
+            var controller = new MilestoneController(null,mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
@@ -82,7 +82,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
@@ -110,7 +110,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             MilestoneloanIdsModel milestoneloanIdsModel = new MilestoneloanIdsModel();
             milestoneloanIdsModel.loanApplicationId = new int[2] { 2, 3 };
@@ -141,7 +141,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -172,7 +172,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -201,7 +201,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -230,7 +230,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -259,7 +259,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -288,7 +288,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
@@ -316,7 +316,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
@@ -343,7 +343,7 @@ namespace Milestone.Tests
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
                 );
-            var controller = new MilestoneController(mockMilestone.Object, mock.Object);
+            var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
 
@@ -365,7 +365,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetGlobalMilestoneSetting(It.IsAny<int>())).ReturnsAsync(new GlobalMilestoneSettingModel() { ShowMilestone = true, TenantId = 1 });
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetGlobalMilestoneSetting(1);
             //Assert
@@ -380,7 +380,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.SetGlobalMilestoneSetting(It.IsAny<GlobalMilestoneSettingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.SetGlobalMilestoneSetting(new GlobalMilestoneSettingModel());
             //Assert
@@ -393,7 +393,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetMilestoneSettingList(It.IsAny<int>())).ReturnsAsync(new List<MilestoneSettingModel>() { new MilestoneSettingModel() { Id=1} });
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetMilestoneSettingList(1);
             //Assert
@@ -408,7 +408,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetMilestoneSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new MilestoneSettingModel() { Id = 1 } );
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetMilestoneSetting(1,1);
             //Assert
@@ -423,7 +423,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.SetMilestoneSetting(It.IsAny<MilestoneSettingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.SetMilestoneSetting(new MilestoneSettingModel());
             //Assert
@@ -436,7 +436,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetLosAll()).ReturnsAsync(new List<LosModel>() { new LosModel() { Id = 1 } });
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetLosAll();
             //Assert
@@ -451,7 +451,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetMappingAll(It.IsAny<int>(),It.IsAny<short>())).ReturnsAsync(new List<MappingModel>() { new MappingModel() { Id = 1 } });
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetMappingAll(1,1);
             //Assert
@@ -466,7 +466,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.GetMapping(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new MilestoneMappingModel() { Id = 1 });
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.GetMapping(1, 1);
             //Assert
@@ -481,7 +481,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.SetMapping(It.IsAny<MilestoneMappingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.SetMapping(new MilestoneMappingModel());
             //Assert
@@ -494,7 +494,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.AddMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.AddMapping(new MilestoneAddMappingModel());
             //Assert
@@ -507,7 +507,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.EditMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.EditMapping(new MilestoneAddMappingModel());
             //Assert
@@ -520,7 +520,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.DeleteMapping(It.IsAny<MilestoneAddMappingModel>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.DeleteMapping(new MilestoneAddMappingModel());
             //Assert
@@ -533,7 +533,7 @@ namespace Milestone.Tests
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.InsertMilestoneLog(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            var controller = new MilestoneController(mockMilestone.Object, null);
+            var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.InsertMilestoneLog(new MilestoneIdModel());
             //Assert

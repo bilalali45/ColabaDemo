@@ -67,5 +67,6 @@ namespace Rainmaker.Model
         public string milestone { get; set; }
         public string loanId { get; set; }
         public short losId { get; set; }
+        public string url { get; set; }
     }
 }

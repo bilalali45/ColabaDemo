@@ -8,6 +8,6 @@ namespace Milestone.Service
         Task SetMilestoneId(int loanApplicationId,int milestoneId, IEnumerable<string> auth);
         Task<int> GetMilestoneId(int loanApplicationId, IEnumerable<string> auth);
         Task<int> GetLoanApplicationId(string loanId, short losId, IEnumerable<string> auth);
-        Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId, IEnumerable<string> auth);
+        Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId, string url, IEnumerable<string> auth);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Milestone.Model;
 using Milestone.Service;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace Milestone.API.Controllers
     {
         private readonly IMilestoneService _milestoneService;
         private readonly IRainmakerService _rainmakerService;
+        private readonly IConfiguration _configuration;
 
         public MilestoneController(IMilestoneService milestoneService,
-            IRainmakerService rainmakerService)
+            IRainmakerService rainmakerService, IConfiguration configuration)
         {
             _milestoneService = milestoneService;
             _rainmakerService = rainmakerService;
+            _configuration = configuration;
         }
         [Authorize(Roles = "MCU")]
         [HttpGet("[action]")]
@@ -81,7 +84,8 @@ namespace Milestone.API.Controllers
             int id = await _milestoneService.GetLosMilestone(model.tenantId, model.milestone, model.losId);
             if(id<=0)
             {
-                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone.ToString(), model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
+                var url = $"{_configuration["RainMaker:Url"]}/api/milestone/milestone/setlosmilestone";
+                await _rainmakerService.SendEmailToSupport(model.tenantId, model.milestone.ToString(), model.loanId, model.rainmakerLosId, url, Request.Headers["Authorization"].Select(x => x.ToString()));
             }
             else
             {

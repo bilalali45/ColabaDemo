@@ -31,13 +31,14 @@ namespace Milestone.Service
             response.EnsureSuccessStatusCode();
             return Convert.ToInt32(await response.Content.ReadAsStringAsync());
         }
-        public async Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId, IEnumerable<string> auth)
+        public async Task SendEmailToSupport(int tenantId, string milestone, string loanId, int rainmakerLosId, string url, IEnumerable<string> auth)
         {
+            var contentString = @"{""tenantId"":" + tenantId + @",""milestone"":""" + milestone + @""",""loanId"":""" + loanId + @""",""losId"":" + rainmakerLosId + @",""url"":""" + url + @"""}";
             var request = new HttpRequestMessage()
             {
                 RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/loanapplication/sendemailtosupport"),
                 Method = HttpMethod.Post,
-                Content = new StringContent(@"{""tenantId"":" + tenantId + @",""milestone"":""" + milestone + @""",""loanId"":"""+loanId+@""",""losId"":"+rainmakerLosId+"}", Encoding.UTF8, "application/json"),
+                Content = new StringContent(contentString, Encoding.UTF8, "application/json"),
             };
             request.Headers.Add("Authorization", auth);
             var response = await _httpClient.SendAsync(request);

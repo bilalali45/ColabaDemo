@@ -415,7 +415,7 @@ namespace Rainmaker.API.Controllers
                     {
                         commaseperated = string.Empty;
                     }
-                    if (employee[i].EmployeeBusinessUnitEmails != null)
+                    if (employee[i].EmployeeBusinessUnitEmails != null && employee[i].EmployeeBusinessUnitEmails.Any())
                     {
                         var emailAccount = employee[i].EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == loanApplication.BusinessUnitId)
                             .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
@@ -430,11 +430,18 @@ namespace Rainmaker.API.Controllers
                     }
                 }
 
-                var emailBody = $"Unable to find status {model.milestone} against Byte File Name {model.loanId} for tenant {model.tenantId} Dated {DateTime.Now}";
+                //var emailBody = $"Unable to find status {model.milestone} against Byte File Name {model.loanId} for tenant {model.tenantId} Dated {DateTime.Now}";
                 var data = new Dictionary<FillKey, string>();
                 data.Add(FillKey.CustomEmailHeader, "");
                 data.Add(FillKey.CustomEmailFooter, "");
-                data.Add(FillKey.EmailBody, emailBody.Replace(Environment.NewLine, "<br/>"));
+                //data.Add(FillKey.EmailBody, emailBody.Replace(Environment.NewLine, "<br/>"));
+                data.Add(FillKey.TenantId, model.tenantId.ToString());
+                data.Add(FillKey.ByteFileName, model.loanId);
+                data.Add(FillKey.ByteStatusId, model.milestone);
+                data.Add(FillKey.ActivityDate, CommonHelper.DateFormat(DateTime.UtcNow.UtcToTimeZone().ToString()));
+                data.Add(FillKey.ErrorCode, ((int)HttpStatusCode.BadRequest).ToString() + ":" + HttpStatusCode.BadRequest.ToString());
+                data.Add(FillKey.ErrorUrl, model.url);
+
                 await SendEmailSupportActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), ActivityForType.MileStoneActivity, email.ToString());
 
                 _logger.LogInformation(message: $"Support email send  to: {email.ToString()}");

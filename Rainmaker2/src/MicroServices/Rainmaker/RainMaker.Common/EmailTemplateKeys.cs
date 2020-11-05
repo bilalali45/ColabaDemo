@@ -144,7 +144,9 @@ namespace RainMaker.Common
         LoanApplicationLandingPageLink,
         DefaultRatePageLink,
         LoanApplicationCreateDate,
-        DailyRates
+        DailyRates,
+        ByteFileName,
+        ByteStatusId
     }
 
     public enum Questions
@@ -187,9 +189,9 @@ namespace RainMaker.Common
         {FillKey.TenantId,   new EmailTemplateKey{KeyName = "TenantId",Symbol = "###TenantId###",Description = "Tenant Id",IsIndependentSystemKey=false}},
         {FillKey.ErrorCode,   new EmailTemplateKey{KeyName = "ErrorCode",Symbol = "###ErrorCode###",Description = "Error Code",IsIndependentSystemKey=false}},
         {FillKey.ErrorUrl,   new EmailTemplateKey{KeyName = "ErrorUrl",Symbol = "###ErrorUrl###",Description = "Error Url",IsIndependentSystemKey=false}},
-       
-        //  {FillKey.TenantId,   new EmailTemplateKey{KeyName = "TenantId",Symbol = "###TenantId###",Description = "Tenant Id",IsIndependentSystemKey=false}},
-      
+        {FillKey.ByteFileName,   new EmailTemplateKey{KeyName = "ByteFileName", Symbol = "###ByteFileName###",Description = "Byte File Name" ,IsIndependentSystemKey = false}},
+        {FillKey.ByteStatusId,   new EmailTemplateKey{KeyName = "ByteStatusId", Symbol = "###ByteStatusId###",Description = "Byte Status Id" ,IsIndependentSystemKey = false}},
+
         //{FillKey.ProposalForLoanRequest,   new EmailTemplateKey{KeyName = "Loan Request Proposal",Symbol = "###LoanRequestProposal###",Description = "Opportunity Loan Request Proposal",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.OpportunityId,   new EmailTemplateKey{KeyName = "Opportunity Id",Symbol = "###OpportunityId###",Description = "Opportunity Id",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
         {FillKey.LoanApplicationCreateDate,   new EmailTemplateKey{KeyName = "Loan Application Create Date",Symbol = "###LoanApplicationCreateDate###",Description = "Loan Application Create Date",EntityRefType = Constants.GetEntityType(typeof(Opportunity)),IsIndependentSystemKey=false}},
