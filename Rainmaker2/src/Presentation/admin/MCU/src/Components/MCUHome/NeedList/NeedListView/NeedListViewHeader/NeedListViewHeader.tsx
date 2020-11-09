@@ -34,9 +34,6 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
     
     const fetchDashBoardSettings= async () => {
         let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
-        console.log(res)
-        console.log(switchRef)
-        console.log(res?.pending != toggle)
         if (res && switchRef && res.pending != toggle) {
            
             switchRef.click()
