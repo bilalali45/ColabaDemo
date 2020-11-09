@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import { LoanApplication } from '../../Entities/Models/LoanApplication';
 import { Endpoints } from '../endpoints/Endpoints';
 import { NeedList } from '../../Entities/Models/NeedList';
+import { DashboardSetting } from '../../Entities/Models/DashboardSetting';
 
 export class NeedListActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
@@ -29,6 +30,17 @@ export class NeedListActions {
     );
     try {
       let res: AxiosResponse<NeedList[]> = await Http.get<NeedList[]>(url);
+
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async getDashBoardSettings() {
+    let url = Endpoints.NeedListManager.GET.documents.DashBoardSettingsInfo();
+    try {
+      let res: AxiosResponse<DashboardSetting> = await Http.get<DashboardSetting>(url);
 
       return res.data;
     } catch (error) {

@@ -4,7 +4,7 @@ export class NeedListEndpoints {
       info: (loanApplicationId: string) =>
         `/api/Rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`,
         milestoneInfo: (loanApplicationId: string) =>
-        `/api/milestone/milestone/GetMilestoneForMcuDashboard?loanApplicationId=${loanApplicationId}`
+        `/api/milestone/milestone/GetMilestoneForMcuDashboard?loanApplicationId=${loanApplicationId}`        
     },
     documents: {
       submitted: (loanApplicationId: string, status: boolean) =>
@@ -26,7 +26,9 @@ export class NeedListEndpoints {
       emailLogsDoc: (id: string, docName: string) =>
         `/api/Documentmanagement/Document/GetEmailLog?id=${id}&docName=${docName}`,
       checkIsByteProAuto: () =>
-        `/api/documentmanagement/setting/GetTenantSetting`
+        `/api/documentmanagement/setting/GetTenantSetting`,
+        DashBoardSettingsInfo: () =>
+        `/api/Documentmanagement/admindashboard/GetDashboardSetting`
     }
   };
 

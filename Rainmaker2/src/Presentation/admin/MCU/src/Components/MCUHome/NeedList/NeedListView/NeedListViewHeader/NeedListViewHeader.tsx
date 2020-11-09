@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
@@ -7,6 +7,8 @@ import { MyTemplate, TenantTemplate, SystemTemplate } from '../../../TemplateMan
 import { Link } from 'react-router-dom';
 import { NeedListSelect } from '../../NeedListSelect/NeedListSelect';
 import { isDocumentDraftType } from '../../../../../Store/reducers/TemplatesReducer';
+import { DashboardSetting } from '../../../../../Entities/Models/DashboardSetting';
+import { NeedListActions } from '../../../../../Store/actions/NeedListActions';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
@@ -17,7 +19,11 @@ type headerProps = {
 
 export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft }: headerProps) => {
     const [toggle, setToggle] = useState(true);
+    let switchRef: any;
 
+    useEffect(()=>{
+        fetchDashBoardSettings()
+    },[])
 
     const callBack = () => {
         toggleCallBack(!toggle)
@@ -25,6 +31,19 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
     }
 
 
+    
+    const fetchDashBoardSettings= async () => {
+        let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
+        console.log(res)
+        console.log(switchRef)
+        console.log(res?.pending != toggle)
+        if (res && switchRef && res.pending != toggle) {
+           
+            switchRef.click()
+        }
+      }
+
+      
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
@@ -49,7 +68,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                    <input type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} data-testid="needListSwitch"/>
+                    <input ref={check => {switchRef = check}} type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} data-testid="needListSwitch"/>
                     <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;
