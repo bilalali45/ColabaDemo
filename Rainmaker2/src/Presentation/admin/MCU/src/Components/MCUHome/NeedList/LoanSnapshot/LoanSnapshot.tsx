@@ -101,7 +101,7 @@ export const LoanSnapshot = () => {
               {loanInfo.getPropertyValue && (
                 <span
                   className="mcu-label-value plus"
-                  data-testId="propertyVal"
+                  data-testid="propertyVal"
                 >
                   <sup className="text-primary">$</sup>
                   {loanInfo.getPropertyValue}
