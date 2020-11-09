@@ -27,11 +27,17 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> GetDocuments([FromQuery] GetDocuments moGetDocuments)
         {
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             logger.LogInformation($"GetDocuments requested for {moGetDocuments.loanApplicationId} from tenantId {tenantId} and value of pending is {moGetDocuments.pending}");
-            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, tenantId, moGetDocuments.pending);
+            var docQuery = await adminDashboardService.GetDocument(moGetDocuments.loanApplicationId, tenantId, moGetDocuments.pending,userProfileId);
             return Ok(docQuery);
         }
-
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetDashboardSetting()
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            return Ok(await adminDashboardService.GetDashboardSetting(userProfileId));
+        }
 
         [HttpPut(template: "[action]")]
         public async Task<IActionResult> Delete(AdminDeleteModel model)

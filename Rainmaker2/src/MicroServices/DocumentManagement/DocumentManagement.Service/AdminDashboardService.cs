@@ -20,8 +20,9 @@ namespace DocumentManagement.Service
             this.activityLogService = activityLogService;
             this.rainmakerService = rainmakerService;
         }
-        public async Task<List<AdminDashboardDto>> GetDocument(int loanApplicationId, int tenantId, bool pending)
+        public async Task<List<AdminDashboardDto>> GetDocument(int loanApplicationId, int tenantId, bool pending, int userId)
         {
+            await SaveDashboardSetting(userId,pending);
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
@@ -108,6 +109,19 @@ namespace DocumentManagement.Service
             return result;
         }
 
+        private async Task SaveDashboardSetting(int userId, bool pending)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("DashboardSetting");
+            await collection.UpdateOneAsync(new BsonDocument() { {"userId",userId } }, new BsonDocument()
+            {
+
+                { "$set", new BsonDocument()
+                    {
+                        { "pending", pending}
+                    }
+                }
+            },new UpdateOptions() { IsUpsert=true});
+        }
 
         public async Task<bool> Delete(AdminDeleteModel model, int tenantId, IEnumerable<string> authHeader)
         {
@@ -263,6 +277,33 @@ namespace DocumentManagement.Service
                 }
             }
             return query;
+        }
+
+        public async Task<DashboardSettingModel> GetDashboardSetting(int userProfileId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("DashboardSetting");
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""userId"": " + userProfileId + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""userId"": 1,
+                                ""pending"": 1
+                            }
+                        }"
+            ));
+            DashboardSettingModel query = new DashboardSettingModel();
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    query = BsonSerializer.Deserialize<DashboardSettingModel>(current);
+                    return query;
+                }
+            }
+            return new DashboardSettingModel() { userId=userProfileId,pending=true};
         }
     }
 }

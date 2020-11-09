@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DocumentManagement.Model
 {
+    public class DashboardSettingModel
+    {
+        public int userId { get; set; }
+        public bool pending { get; set; }
+    }
     public static class RequestStatus
     {
         public const string Active = "Active"; // mcu submit

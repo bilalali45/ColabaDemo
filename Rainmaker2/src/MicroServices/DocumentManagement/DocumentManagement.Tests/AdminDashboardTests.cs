@@ -30,10 +30,11 @@ namespace DocumentManagement.Tests
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
             List<AdminDashboardDto> list = new List<AdminDashboardDto>() { { new AdminDashboardDto() { docId = "1" } } };
 
-            mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(list);
+            mock.Setup(x => x.GetDocument(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<int>())).ReturnsAsync(list);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
             var admindashboardController = new AdminDashboardController(mock.Object,Mock.Of<ILogger<AdminDashboardController>>());
 
@@ -220,7 +221,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<AdminDashboardDto> dto = await service.GetDocument(1, 1 ,true);
+            List<AdminDashboardDto> dto = await service.GetDocument(1, 1 ,true,1);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(6, dto.Count);
@@ -333,7 +334,7 @@ namespace DocumentManagement.Tests
 
             var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object,null);
             //Act
-            List<AdminDashboardDto> dto = await service.GetDocument(1, 1, false);
+            List<AdminDashboardDto> dto = await service.GetDocument(1, 1, false,1);
             //Assert
             Assert.NotNull(dto);
             Assert.Equal(6, dto.Count);
