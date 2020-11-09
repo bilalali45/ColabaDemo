@@ -105,7 +105,6 @@ export const LoanProgress = () => {
 
   const renderCarouselItems = () => {
     return loanProgress?.map((l: any, i: number) => {
-      console.log(l.icon)
       return (
         <Carousel.Item key={l.name}>
           <div className="lp-list">
