@@ -49,26 +49,43 @@ namespace LosIntegration.API.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateLoanStatusFromByte([FromQuery] int loanApplicationId)
         {
+            try { 
             short byteProLoanStatusId = 0;
             var loanApplicationDetail = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId: loanApplicationId);
-            if (loanApplicationDetail == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                byteProLoanStatusId = await this._byteWebConnectorService.GetLoanStatusAsync(loanApplicationDetail.ByteLoanNumber);
-                if(byteProLoanStatusId <= 0)
+                if (loanApplicationDetail == null)
                 {
-                    base._logger.LogWarning($"Loan status return from LOS is not valid. Loan Status : {byteProLoanStatusId}");
-                    return BadRequest();
+
+
+                    return NotFound(new {
+                        Message = "Unable to find loanApplicationId=" + loanApplicationId.ToString()
+                    });
                 }
                 else
                 {
-                    //var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId);
-                    var updateRespose = await this.UpdateRainmakerLoanStatus(loanApplicationId, loanApplicationDetail.ByteFileName, byteProLoanStatusId);
-                    return Ok(updateRespose);
+                    byteProLoanStatusId = await this._byteWebConnectorService.GetLoanStatusAsync(loanApplicationDetail.ByteLoanNumber);
+                    if (byteProLoanStatusId <= 0)
+                    {
+                        base._logger.LogWarning($"Loan status return from LOS is not valid. Loan Status : {byteProLoanStatusId}");
+                        return BadRequest(new
+                        {
+                            Message = "Unable to find loanApplicationId=" + loanApplicationId.ToString()
+                        });
+                    }
+                    else
+                    {
+                        //var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId);
+                        var updateRespose = await this.UpdateRainmakerLoanStatus(loanApplicationId, loanApplicationDetail.ByteFileName, byteProLoanStatusId);
+                        return Ok(updateRespose);
+                    }
                 }
+                
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Message = "Internal Server Error"
+                });
             }
         }
 
