@@ -62,6 +62,7 @@ namespace Milestone.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public int StatusId { get; set; }
+        public int? MilestoneId { get; set; }
     }
     public class GlobalMilestoneSettingModel
     {
@@ -81,6 +82,7 @@ namespace Milestone.Model
         public short LosId { get; set; }
         public string Name { get; set; }
         public int StatusId { get; set; }
+        public int MilestoneId { get; set; }
     }
 
     public class LosMilestoneModel

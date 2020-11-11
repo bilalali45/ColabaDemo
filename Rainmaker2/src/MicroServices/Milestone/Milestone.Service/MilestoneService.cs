@@ -326,7 +326,7 @@ namespace Milestone.Service
         }
         public async Task<List<MappingModel>> GetMappingAll(int tenantId, short losId)
         {
-            return await Uow.Repository<LosTenantMilestone>().Query(x => x.ExternalOriginatorId == losId && x.TenantId == tenantId).Select(x => new MappingModel() { Id = x.Id, Name = x.Name,StatusId=x.StatusId }).ToListAsync();
+            return await Uow.Repository<LosTenantMilestone>().Query(x => x.ExternalOriginatorId == losId && x.TenantId == tenantId).Include(x=>x.MilestoneMappings).Select(x => new MappingModel() { Id = x.Id, Name = x.Name,StatusId=x.StatusId,MilestoneId=x.MilestoneMappings.FirstOrDefault()==null?(int?)null: x.MilestoneMappings.FirstOrDefault().MilestoneId }).ToListAsync();
         }
         public async Task<MilestoneMappingModel> GetMapping(int tenantId, int milestoneId)
         {
@@ -368,6 +368,14 @@ namespace Milestone.Service
                 TrackingState = TrackingState.Added
             };
             Uow.Repository<LosTenantMilestone>().Insert(milestone);
+            await Uow.SaveChangesAsync();
+            MilestoneMapping mapping = new MilestoneMapping()
+            {
+                LosMilestoneId = milestone.Id,
+                MilestoneId = model.MilestoneId,
+                TrackingState = TrackingState.Added
+            };
+            Uow.Repository<MilestoneMapping>().Insert(mapping);
             await Uow.SaveChangesAsync();
         }
         public async Task DeleteMapping(MilestoneAddMappingModel model)
