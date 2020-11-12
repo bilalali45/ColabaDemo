@@ -81,7 +81,7 @@ namespace RainMaker.Entity.Models
         public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
         public string ByteFileName { get; set; } // ByteFileName (length: 50)
         public int? MilestoneId { get; set; } // MilestoneId
-
+        public int? LosMilestoneId { get; set; } // LosMilestoneId
         public System.DateTime? BytePostDateUtc { get; set; }
 
         // Reverse navigation

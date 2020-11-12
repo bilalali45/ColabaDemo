@@ -79,7 +79,7 @@ namespace Milestone.Tests
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mock.Setup(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(),It.IsAny<IEnumerable<string>>())).Verifiable();
-            mockMilestone.Setup(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mockMilestone.Setup(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
@@ -98,7 +98,7 @@ namespace Milestone.Tests
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
             mock.Verify(x => x.SetMilestoneId(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>()),Times.Once());
-            mockMilestone.Verify(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>()),Times.Once());
+            mockMilestone.Verify(x => x.UpdateMilestoneLog(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()),Times.Once());
         }
         [Fact]
         public async Task TestGetMilestoneForBorrowerDashboard()
@@ -227,7 +227,7 @@ namespace Milestone.Tests
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mock.Setup(x => x.GetMilestoneId(It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(1);
-            mockMilestone.Setup(x => x.GetMilestoneForMcuDashboard(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("Test");
+            mockMilestone.Setup(x => x.GetMilestoneForMcuDashboard(It.IsAny<int>(),It.IsAny<BothLosMilestoneModel>(), It.IsAny<int>())).ReturnsAsync(new MilestoneForMcuDashboard() { milestone="Test" });
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
@@ -256,7 +256,7 @@ namespace Milestone.Tests
             Mock<IRainmakerService> mock = new Mock<IRainmakerService>();
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mock.Setup(x => x.GetMilestoneId(It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(-1);
-            mockMilestone.Setup(x => x.GetMilestoneForMcuDashboard(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync("Test");
+            mockMilestone.Setup(x => x.GetMilestoneForMcuDashboard(It.IsAny<int>(), It.IsAny<BothLosMilestoneModel>(), It.IsAny<int>())).ReturnsAsync(new MilestoneForMcuDashboard() { milestone = "Test" });
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
                 new StringValues("Test")
@@ -535,7 +535,7 @@ namespace Milestone.Tests
         {
             //arrange
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
-            mockMilestone.Setup(x => x.InsertMilestoneLog(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            mockMilestone.Setup(x => x.InsertMilestoneLog(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             var controller = new MilestoneController(mockMilestone.Object, null, null);
             //act
             var result = await controller.InsertMilestoneLog(new MilestoneIdModel());

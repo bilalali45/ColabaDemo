@@ -41,15 +41,17 @@ namespace Milestone.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
-            await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId);
+            await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId,userProfileId);
             return Ok();
         }
         [Authorize(Roles ="MCU,Customer")]
         [HttpPost("[action]")]
         public async Task<IActionResult> InsertMilestoneLog(MilestoneIdModel model)
         {
-            await _milestoneService.InsertMilestoneLog(model.loanApplicationId,model.milestoneId);
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await _milestoneService.InsertMilestoneLog(model.loanApplicationId,model.milestoneId,userProfileId);
             return Ok();
         }
         
@@ -70,17 +72,16 @@ namespace Milestone.API.Controllers
         public async Task<IActionResult> GetMilestoneForMcuDashboard(int loanApplicationId)
         {
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
-            int milestone = await _rainmakerService.GetMilestoneId(loanApplicationId,
+            var milestone = await _rainmakerService.GetBothLosAndMilestoneId(loanApplicationId,
                 Request.Headers["Authorization"].Select(x => x.ToString()));
-            if (milestone <= 0)
-                return Ok("");
-            var status = await _milestoneService.GetMilestoneForMcuDashboard(milestone, tenantId);
+            var status = await _milestoneService.GetMilestoneForMcuDashboard(loanApplicationId, milestone, tenantId);
             return Ok(status);
         }
         [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> SetLosMilestone(LosMilestoneModel model)
         {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             int id = await _milestoneService.GetLosMilestone(model.tenantId, model.milestone, model.losId);
             if(id<=0)
             {
@@ -94,8 +95,8 @@ namespace Milestone.API.Controllers
                 {
                     return BadRequest("Unable to find loan application");
                 }
-                await _rainmakerService.SetMilestoneId(loanApplicationId, id, Request.Headers["Authorization"].Select(x => x.ToString()));
-                await _milestoneService.UpdateMilestoneLog(loanApplicationId, id);
+                await _rainmakerService.SetBothLosAndMilestoneId(loanApplicationId, id,model.milestone, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await _milestoneService.UpdateMilestoneLog(loanApplicationId, id,userProfileId);
             }
             return Ok();
         }

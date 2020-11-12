@@ -98,4 +98,14 @@ namespace Milestone.Model
     {
         public int[] loanApplicationId { get; set; }
     }
+    public class BothLosMilestoneModel
+    {
+        public int? milestoneId { get; set; }
+        public int? losMilestoneId { get; set; }
+    }
+    public class MilestoneForMcuDashboard
+    {
+        public string milestone { get; set; }
+        public string losMilestone { get; set; }
+    }
 }

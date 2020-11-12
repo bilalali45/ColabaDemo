@@ -31,7 +31,7 @@ namespace Milestone.Data.Mapping
             builder.Property(x => x.LoanApplicationId).HasColumnName(@"LoanApplicationId").HasColumnType("int").IsRequired();
             builder.Property(x => x.MilestoneId).HasColumnName(@"MilestoneId").HasColumnType("int").IsRequired();
             builder.Property(x => x.CreatedDateUtc).HasColumnName(@"CreatedDateUtc").HasColumnType("datetime2").IsRequired();
-
+            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired(false);
             // Foreign keys
             builder.HasOne(a => a.Milestone).WithMany(b => b.MilestoneLogs).HasForeignKey(c => c.MilestoneId).OnDelete(DeleteBehavior.SetNull); // FK_MilestoneLog_Milestone_Id
             InitializePartial();

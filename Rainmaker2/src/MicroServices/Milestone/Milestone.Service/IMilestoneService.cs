@@ -8,8 +8,8 @@ namespace Milestone.Service
     {
         Task<List<MilestoneModel>> GetAllMilestones(int tenantId);
         Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,int milestoneId, int tenantId);
-        Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId);
-        Task UpdateMilestoneLog(int loanApplicationId, int milestoneId);
+        Task<MilestoneForMcuDashboard> GetMilestoneForMcuDashboard(int loanApplicationId,BothLosMilestoneModel milestone, int tenantId);
+        Task UpdateMilestoneLog(int loanApplicationId, int milestoneId, int userId);
         Task<List<MilestoneForLoanCenter>> GetMilestoneForLoanCenter(int loanApplicationId, int milestoneId, int tenantId);
         Task<int> GetLosMilestone(int tenantId, int milestone, short losId);
         Task<GlobalMilestoneSettingModel> GetGlobalMilestoneSetting(int tenantId);
@@ -24,6 +24,6 @@ namespace Milestone.Service
         Task AddMapping(MilestoneAddMappingModel model);
         Task DeleteMapping(MilestoneAddMappingModel model);
         Task EditMapping(MilestoneAddMappingModel model);
-        Task InsertMilestoneLog(int loanApplicationId, int milestoneId);
+        Task InsertMilestoneLog(int loanApplicationId, int milestoneId, int userId);
     }
 }

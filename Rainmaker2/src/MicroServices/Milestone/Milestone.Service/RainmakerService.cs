@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Milestone.Model;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -57,7 +58,19 @@ namespace Milestone.Service
 
             response.EnsureSuccessStatusCode();
         }
+        public async Task SetBothLosAndMilestoneId(int loanApplicationId, int milestoneId, int losMilestoneId, IEnumerable<string> auth)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/milestone/SetBothLosAndMilestoneId"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(@"{""loanApplicationId"":" + loanApplicationId + @",""milestoneId"":" + milestoneId + @",""losMilestoneId"":"+losMilestoneId+"}", Encoding.UTF8, "application/json"),
+            };
+            request.Headers.Add("Authorization", auth);
+            var response = await _httpClient.SendAsync(request);
 
+            response.EnsureSuccessStatusCode();
+        }
         public async Task<int> GetMilestoneId(int loanApplicationId, IEnumerable<string> auth)
         {
             var request = new HttpRequestMessage()
@@ -70,6 +83,19 @@ namespace Milestone.Service
 
             response.EnsureSuccessStatusCode();
             return int.Parse(await response.Content.ReadAsStringAsync());
+        }
+        public async Task<BothLosMilestoneModel> GetBothLosAndMilestoneId(int loanApplicationId, IEnumerable<string> auth)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/milestone/GetBothLosAndMilestoneId?loanApplicationId=" + loanApplicationId),
+                Method = HttpMethod.Get
+            };
+            request.Headers.Add("Authorization", auth);
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BothLosMilestoneModel>(await response.Content.ReadAsStringAsync());
         }
     }
 }

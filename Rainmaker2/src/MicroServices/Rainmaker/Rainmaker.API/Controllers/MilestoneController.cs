@@ -39,5 +39,19 @@ namespace Rainmaker.API.Controllers
         {
             return Ok(await _loanApplicationService.GetLoanApplicationId(model.loanId, model.losId));
         }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SetBothLosAndMilestoneId(LosMilestoneIdModel model)
+        {
+            await _loanApplicationService.SetBothLosAndMilestoneId(model.loanApplicationId, model.milestoneId,model.losMilestoneId);
+            return Ok();
+        }
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetBothLosAndMilestoneId(int loanApplicationId)
+        {
+            var result = await _loanApplicationService.GetBothLosAndMilestoneId(loanApplicationId);
+            return Ok(result);
+        }
     }
 }

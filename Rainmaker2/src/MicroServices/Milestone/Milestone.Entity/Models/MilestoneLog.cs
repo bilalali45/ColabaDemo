@@ -25,6 +25,7 @@ namespace Milestone.Entity.Models
         public int LoanApplicationId { get; set; } // LoanApplicationId
         public int MilestoneId { get; set; } // MilestoneId
         public System.DateTime CreatedDateUtc { get; set; } // CreatedDateUtc
+        public int? UserId { get; set; }
 
         // Foreign keys
 

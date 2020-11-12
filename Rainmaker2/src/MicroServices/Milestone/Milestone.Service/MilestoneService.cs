@@ -79,7 +79,7 @@ namespace Milestone.Service
             //}
             return null;
         }
-        public async Task UpdateMilestoneLog(int loanApplicationId, int milestoneId)
+        public async Task UpdateMilestoneLog(int loanApplicationId, int milestoneId, int userId)
         {
             MilestoneLog milestoneLog = await Uow.Repository<MilestoneLog>()
                 .Query(x => x.LoanApplicationId == loanApplicationId)
@@ -91,32 +91,35 @@ namespace Milestone.Service
                     MilestoneId = milestoneId,
                     CreatedDateUtc = DateTime.UtcNow,
                     LoanApplicationId = loanApplicationId,
+                    UserId = userId,
                     TrackingState = TrackingState.Added
                 };
                 Uow.Repository<MilestoneLog>().Insert(milestoneLog);
                 await Uow.SaveChangesAsync();
             }
         }
-        public async Task InsertMilestoneLog(int loanApplicationId, int milestoneId)
+        public async Task InsertMilestoneLog(int loanApplicationId, int milestoneId, int userId)
         {
             var milestoneLog = new MilestoneLog()
             {
                 MilestoneId = milestoneId,
                 CreatedDateUtc = DateTime.UtcNow,
                 LoanApplicationId = loanApplicationId,
+                UserId = userId,
                 TrackingState = TrackingState.Added
             };
             Uow.Repository<MilestoneLog>().Insert(milestoneLog);
             await Uow.SaveChangesAsync();
         }
-        public async Task<string> GetMilestoneForMcuDashboard(int milestone, int tenantId)
+        public async Task<MilestoneForMcuDashboard> GetMilestoneForMcuDashboard(int loanApplicationId,BothLosMilestoneModel milestone, int tenantId)
         {
-            return await Repository.Query(x=>x.Id==milestone).Include(x => x.TenantMilestones)
-                .Select(x => 
-                    (!x.TenantMilestones.Any(y => y.TenantId == tenantId) 
-                     || string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).McuName)) ? 
-                        x.McuName : x.TenantMilestones.First(y => y.TenantId == tenantId).McuName
-                ).FirstOrDefaultAsync();
+            string los = "";
+            var status = milestone.milestoneId==null?"":(await GetMilestoneForBorrowerDashboard(loanApplicationId, milestone.milestoneId.Value, tenantId))?.Name;
+            if(milestone.losMilestoneId!=null)
+            {
+                los = (await Uow.Repository<LosTenantMilestone>().Query(x => x.StatusId == milestone.losMilestoneId.Value).FirstOrDefaultAsync())?.Name;
+            }
+            return new MilestoneForMcuDashboard() {milestone=status, losMilestone=los};
         }
         public async Task<List<MilestoneModel>> GetAllMilestones(int tenantId)
         {

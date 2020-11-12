@@ -49,7 +49,7 @@ namespace Milestone.Tests
             dataContext.Database.EnsureCreated();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            await service.InsertMilestoneLog(1, 1);
+            await service.InsertMilestoneLog(1, 1,1);
 
             Assert.Equal(4, dataContext.Set<MilestoneLog>().Where(x => x.LoanApplicationId == 1).First().MilestoneId);
         }
@@ -65,7 +65,7 @@ namespace Milestone.Tests
             dataContext.Database.EnsureCreated();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            await service.UpdateMilestoneLog(2, 1);
+            await service.UpdateMilestoneLog(2, 1,1);
 
             Assert.Equal(1, dataContext.Set<MilestoneLog>().Where(x => x.LoanApplicationId == 2).First().MilestoneId);
         }
@@ -88,7 +88,7 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            await service.UpdateMilestoneLog(3, 1);
+            await service.UpdateMilestoneLog(3, 1,1);
 
             Assert.Equal(1, dataContext.Set<MilestoneLog>().Where(x => x.LoanApplicationId == 3).First().MilestoneId);
         }
@@ -111,7 +111,7 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            await service.UpdateMilestoneLog(4, 2);
+            await service.UpdateMilestoneLog(4, 2,1);
 
             Assert.Equal(2, dataContext.Set<MilestoneLog>().Where(x => x.LoanApplicationId == 4 && x.MilestoneId == 2).First().MilestoneId);
         }
@@ -143,9 +143,9 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            string result = await service.GetMilestoneForMcuDashboard(20, 20);
+            var result = await service.GetMilestoneForMcuDashboard(20,new BothLosMilestoneModel(), 20);
 
-            Assert.Equal("Doe", result);
+            Assert.Equal("Doe", result.milestone);
         }
         [Fact]
         public async Task TestServiceGetAllMilestones()
@@ -577,7 +577,7 @@ namespace Milestone.Tests
             dataContext.SaveChanges();
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
-            await service.UpdateMilestoneLog(1, 5);
+            await service.UpdateMilestoneLog(1, 5,1);
 
 
         }

@@ -2,12 +2,22 @@
 
 namespace Rainmaker.Model
 {
+    public class BothLosMilestoneModel
+    {
+        public int? milestoneId { get; set; }
+        public int? losMilestoneId { get; set; }
+    }
     public class MilestoneIdModel
     {
         public int loanApplicationId { get; set; }
         public int milestoneId { get; set; }
     }
-
+    public class LosMilestoneIdModel
+    {
+        public int loanApplicationId { get; set; }
+        public int milestoneId { get; set; }
+        public int losMilestoneId { get; set; }
+    }
     public class LoanIdModel
     {
         public string loanId { get; set; }

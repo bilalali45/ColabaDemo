@@ -87,7 +87,25 @@ namespace Rainmaker.Service
         {
             return await Query(x => x.Id == loanApplicationId).Select(x => x.MilestoneId ?? -1).FirstAsync();
         }
-
+        public async Task SetBothLosAndMilestoneId(int loanApplicationId, int milestoneId, int losMilestoneId)
+        {
+            LoanApplication loanApplication = await this.GetByIdAsync(loanApplicationId);
+            loanApplication.MilestoneId = milestoneId;
+            loanApplication.LosMilestoneId = losMilestoneId;
+            Repository.Update(loanApplication);
+            await Uow.SaveChangesAsync();
+        }
+        public async Task<BothLosMilestoneModel> GetBothLosAndMilestoneId(int loanApplicationId)
+        {
+            BothLosMilestoneModel model = new BothLosMilestoneModel();
+            var loanApplication = await Query(x => x.Id == loanApplicationId).FirstOrDefaultAsync();
+            if(loanApplication!=null)
+            {
+                model.milestoneId = loanApplication.MilestoneId;
+                model.losMilestoneId = loanApplication.LosMilestoneId;
+            }
+            return model;
+        }
         public async Task SetMilestoneId(int loanApplicationId, int milestoneId)
         {
             LoanApplication loanApplication = await this.GetByIdAsync(loanApplicationId);
