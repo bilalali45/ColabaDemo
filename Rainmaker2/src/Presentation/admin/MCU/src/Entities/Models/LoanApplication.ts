@@ -24,6 +24,8 @@ export class LoanApplication {
   public expirationDate?: string;
   public borrowers?: string[]  = [];
   public borrowersName?: string;
+  public milestone?: string;
+  public losMilestone?: string;
 
   constructor(
     borrowers?: string[],
@@ -47,6 +49,8 @@ export class LoanApplication {
     lockStatus?: string,
     lockDate?: string,
     expirationDate?: string,
+    milestone?: string,
+    losMilestone?: string
     
   ) {
     this.loanPurpose = loanPurpose;
@@ -70,6 +74,8 @@ export class LoanApplication {
     this.lockDate = lockDate;
     this.expirationDate = expirationDate;
     this.borrowers = borrowers;
+    this.milestone = milestone;
+    this.losMilestone = losMilestone;
   }
 
   get getLoanAmount() {

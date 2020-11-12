@@ -118,9 +118,15 @@ export const LoanSnapshot = () => {
               )}
             </li>
             <li>
-              <label className="mcu-label">Milestone/Status</label>
+              <label className="mcu-label">Status seen by borrower</label>
               <span className="mcu-label-value">{loanInfo.status}</span>
             </li>
+
+            <li>
+              <label className="mcu-label">Status in LOS</label>
+              <span className="mcu-label-value">{loanInfo.losMilestone}</span>
+            </li>
+            
             <li>
               <label className="mcu-label">Property type</label>
               <span className="mcu-label-value">{loanInfo.propertyType}</span>

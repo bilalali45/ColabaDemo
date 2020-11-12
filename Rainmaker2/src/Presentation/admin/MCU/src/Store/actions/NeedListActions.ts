@@ -12,11 +12,12 @@ export class NeedListActions {
         LoanApplication
       >(Endpoints.NeedListManager.GET.loan.info(loanApplicationId));
 
-      let mileStoneresult: AxiosResponse<string> = await Http.get<
-        string
+      let mileStoneresult: AxiosResponse<LoanApplication> = await Http.get<
+      LoanApplication
       >(Endpoints.NeedListManager.GET.loan.milestoneInfo(loanApplicationId));
 
-      result.data.status = mileStoneresult.data.toString()
+      result.data.status = mileStoneresult.data.milestone?.toString()
+      result.data.losMilestone = mileStoneresult.data.losMilestone?.toString()
       return new LoanApplication().fromJson(result.data);
     } catch (error) {
       console.log(error);
