@@ -115,6 +115,7 @@ export class LoanApplication {
     this.popertyValue = json.popertyValue;
     this.borrowersName = LoanApplication.GetBorrowerName(json.borrowers)
     this.borrowers = json.borrowers;
+    this.losMilestone = json.losMilestone;
     return this;
   }
 
