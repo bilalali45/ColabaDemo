@@ -226,9 +226,9 @@ namespace DocumentManagement.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-
-
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Rename(model); });
+            var result = controller.Rename(model).Result;
+            Assert.IsType<BadRequestObjectResult>(result);
+            //    await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Rename(model); });
 
         }
         [Fact]
@@ -655,7 +655,9 @@ namespace DocumentManagement.Tests
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
 
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            var result = controller.Submit(id, requestId, docId, order, files).Result;
+            Assert.IsType<BadRequestObjectResult>(result);
+            //await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
 
         [Fact]
@@ -684,7 +686,7 @@ namespace DocumentManagement.Tests
             setting.ftpUser = "ftpuser";
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
             setting.maxFileSize = 0;
-
+            setting.allowedExtensions = new string[2] { "txt", "png" };
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
             mocksettingservice.Setup(x => x.GetSetting()).ReturnsAsync(setting);
@@ -745,7 +747,9 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            var result =await controller.Submit(id, requestId, docId, order, files);
+            Assert.IsType<BadRequestObjectResult>(result);
+            //await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
         [Fact]
         public async Task TestSubmitIsStartedTrueService()
@@ -879,6 +883,7 @@ namespace DocumentManagement.Tests
             setting.ftpPassword = "HRp0cc2dbNNWxpm3kjp8aQ==";
             setting.maxFileSize = 1000000;
             setting.maxFileNameSize = 255;
+            setting.allowedExtensions =new string[2]{"jpg","txt" };
             string FileName = new string('a', 500);
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -940,7 +945,9 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            var result =await controller.Submit(id, requestId, docId, order, files);
+            Assert.IsType<BadRequestObjectResult>(result);
+           // await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
         [Fact]
         public async Task TestSubmitService()
@@ -1083,7 +1090,9 @@ namespace DocumentManagement.Tests
             formFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             order = @"[{ 'fileName': null,'order': 0}]";
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
+            var result = controller.Submit(id, requestId, docId, order, files).Result;
+            Assert.IsType<BadRequestObjectResult>(result);
+          //  await Assert.ThrowsAsync<DocumentManagementException>(async () => { await controller.Submit(id, requestId, docId, order, files); });
         }
 
         private static void AddText(FileStream fs, string value)

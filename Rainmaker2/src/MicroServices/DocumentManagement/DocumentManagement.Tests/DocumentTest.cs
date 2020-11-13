@@ -1032,9 +1032,11 @@ namespace DocumentManagement.Tests
             mcuRenameModel.docId = "1";
             mcuRenameModel.fileId = "1";
             mcuRenameModel.newName = new string('a', 256); ;
-
+            var result = documentController.McuRename(mcuRenameModel).Result;
             //Assert
-            await Assert.ThrowsAsync<DocumentManagementException>(async () => { await documentController.McuRename(mcuRenameModel); });
+ 
+             Assert.IsType<BadRequestObjectResult>(result);
+           // await Assert.ThrowsAsync<DocumentManagementException>(async () => { await documentController.McuRename(mcuRenameModel); });
 
         }
         [Fact]

@@ -951,7 +951,8 @@ namespace RainmakerTest
                 SubjectPropertyDetailId = 1,
                 OpportunityId = 14,
                 LoanNumber = "xyz",
-                ExpectedClosingDate = DateTime.Now
+                ExpectedClosingDate = DateTime.Now,
+                ByteFileName="xyz"
             };
             dataContext.Set<LoanApplication>().Add(app);
 
