@@ -7,14 +7,16 @@ export enum NeedListActionsType {
     SetNeedListTableDATA = "SET_NEEDLIST_TABLE_DATA",
     SetTemplateIds = "SET_TEMPLATE_IDS",
     SetIsDraft = "SET_IS_DRAFT",
-    SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO"
+    SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
+    SetNeedListFilter = "SET_NEED_LIST_FILTER"
 }
 
 export type NeedListType = {
     loanInfo: LoanApplication[],
     needList: NeedList[],
     templateIds: string[],
-    isDraft: boolean
+    isDraft: boolean,
+    needListFilter: boolean
 }
 
 export type NeedListActionPayload = {
@@ -22,7 +24,8 @@ export type NeedListActionPayload = {
     [NeedListActionsType.SetNeedListTableDATA]: NeedList[],
     [NeedListActionsType.SetTemplateIds]: string[],
     [NeedListActionsType.SetIsDraft]: string,
-    [NeedListActionsType.SetIsByteProAuto]: string
+    [NeedListActionsType.SetIsByteProAuto]: string,
+    [NeedListActionsType.SetNeedListFilter]: string
 }
 
 export type NeedListActions = ActionMap<NeedListActionPayload>[keyof ActionMap<NeedListActionPayload>];
@@ -53,7 +56,12 @@ export const needListReducer = (state: NeedListType | {}, { type, payload }: Act
             return{
                 ...state,
                 isByteProAuto: payload
-            }    
+            }  
+            case NeedListActionsType.SetNeedListFilter:
+            return{
+                ...state,
+                needListFilter: payload
+            }   
         default:
             return state;
     }

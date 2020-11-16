@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Toggler } from '../../../../../Shared/Toggler';
@@ -9,6 +9,8 @@ import { NeedListSelect } from '../../NeedListSelect/NeedListSelect';
 import { isDocumentDraftType } from '../../../../../Store/reducers/TemplatesReducer';
 import { DashboardSetting } from '../../../../../Entities/Models/DashboardSetting';
 import { NeedListActions } from '../../../../../Store/actions/NeedListActions';
+import { Store } from '../../../../../Store/Store';
+import { NeedListActionsType } from '../../../../../Store/reducers/NeedListReducer';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
@@ -18,26 +20,27 @@ type headerProps = {
 }
 
 export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft }: headerProps) => {
-    const [toggle, setToggle] = useState(true);
-    let switchRef: any;
+    const {state, dispatch} = useContext(Store);
+
+    const needListManager: any = state?.needListManager;
 
     useEffect(()=>{
+        if(!needListManager.hasOwnProperty('needListFilter'))
         fetchDashBoardSettings()
     },[])
 
-    const callBack = () => {
-        toggleCallBack(!toggle)
-        setToggle(!toggle)
+    const callBack = () => { 
+        dispatch({type: NeedListActionsType.SetNeedListFilter, payload: !needListManager?.needListFilter});
+        toggleCallBack(!needListManager?.needListFilter)
     }
 
 
     
     const fetchDashBoardSettings= async () => {
         let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
-        if (res && switchRef && res.pending != toggle) {
-           
-            switchRef.click()
-        }
+        if(res){
+            dispatch({type: NeedListActionsType.SetNeedListFilter, payload: res.pending});
+    }
       }
 
       
@@ -65,7 +68,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                    <input ref={check => {switchRef = check}} type="checkbox" onChange={callBack} id="toggle" defaultChecked={toggle} data-testid="needListSwitch"/>
+                    <input type="checkbox" onClick={callBack} id="toggle" defaultChecked={needListManager?.needListFilter} data-testid="needListSwitch"/>
                     <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;
