@@ -12,6 +12,8 @@ import { DocumentUploadActions } from "../../../../../store/actions/DocumentUplo
 import { FileUpload } from "../../../../../utils/helpers/FileUpload";
 import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { useLocation, useHistory } from "react-router-dom";
+import cameraIcon from "../../../../../assets/images/camera-icon.svg";
+import folderIcon from "../../../../../assets/images/folder-icon.svg";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -54,7 +56,7 @@ export const SelectedDocuments = ({
   const selectedFiles = currentSelected.files || [];
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const inputRef2 = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const history = useHistory();
 
@@ -255,7 +257,7 @@ export const SelectedDocuments = ({
       } else if (docs?.length === 0) {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
       }
-      
+
       await fetchUploadedDocuments();
     }
     if (isMobile?.value && pendingDocs.length === 1) {
@@ -277,7 +279,7 @@ export const SelectedDocuments = ({
     console.log('newFiles', 'in here here', newFiles);
     let filesEditing = newFiles?.filter(f => f.editName);
 
-    if(subBtnPressed) {
+    if (subBtnPressed) {
       return true;
     }
 
@@ -290,8 +292,8 @@ export const SelectedDocuments = ({
     }
   }
   const checkFreezBody = async () => {
-    
-    if (document.body.style.overflow == "hidden" ) {
+
+    if (document.body.style.overflow == "hidden") {
       document.body.removeAttribute("style");
       document.body.classList.remove("lockbody");
     } else {
@@ -308,6 +310,84 @@ export const SelectedDocuments = ({
   //   }
   // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
+  const renderUploadButton = () => {
+
+    if (isMobile?.value) {
+      return (
+        <div className="upload-btns-wrap">
+          <a
+            data-testid="add-more-btn"
+            className="addmoreDoc camera-wrap"
+            onClick={(e) => {
+              //setFileInput(inputRef2.current);
+              addMore(e,inputRef2);
+            }}
+          >
+            <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>
+            <span className="iconic-btn-lbl">   Camera </span>
+            <input
+              onChange={(e) => addMore(e)}
+              data-testid="file-input"
+              type="file"
+              accept={'image/*'}
+              id="inputFile"
+              ref={inputRef2}
+              multiple
+              style={{ display: "none" }}
+              capture="environment"
+            />
+          </a>
+
+          <a
+            data-testid="add-more-btn"
+            className="addmoreDoc folder-wrap"
+            onClick={(e) => {
+              addMore(e,null);
+            }}
+          >
+            <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>
+            <span className="iconic-btn-lbl">   Folder </span>
+            <input
+              onChange={(e) => addMore(e)}
+              data-testid="file-input"
+              type="file"
+              accept={FileUpload.allowedExtensions}
+              id="inputFile"
+              ref={inputRef}
+              multiple
+              style={{ display: "none" }}
+            />
+          </a>
+
+
+        </div>
+      )
+    } else {
+      return (
+        <a
+          data-testid="add-more-btn"
+          className="addmoreDoc"
+          onClick={(e) => {
+            addMore(e);
+          }}
+        >
+          {" "}
+    Add more files
+          <input
+            onChange={(e) => addMore(e)}
+            data-testid="file-input"
+            type="file"
+            accept={FileUpload.allowedExtensions}
+            id="inputFile"
+            ref={inputRef}
+            multiple
+            style={{ display: "none" }}
+          />
+        </a>
+      )
+    }
+
+  }
   return (
     <section className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
@@ -316,7 +396,7 @@ export const SelectedDocuments = ({
             {selectedFiles.map((f, index) => {
               return (
                 <DocumentItem
-                  key={f.clientName + index}  
+                  key={f.clientName + index}
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   fileAlreadyExists={fileAlreadyExists}
@@ -332,29 +412,8 @@ export const SelectedDocuments = ({
             })}
           </ul>
           <div className="addmore-wrap">
-            {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? (
-              <a
-                data-testid="add-more-btn"
-                className="addmoreDoc"
-                onClick={(e) => {
-                  addMore(e);
-                }}
-              >
-                {" "}
-                Add more files
-                <input
-                  onChange={(e) => addMore(e)}
-                  data-testid="file-input"
-                  type="file"
-                  accept={FileUpload.allowedExtensions}
-                  id="inputFile"
-                  ref={inputRef}
-                  multiple
-                  style={{ display: "none" }}
-                />
-              </a>
-            ) : (
-              isMobile?.value?null
+            {selectedFiles.length < ApplicationEnv.MaxDocumentCount ? renderUploadButton() : (
+              isMobile?.value ? null
                 :
                 <a className="addmoreDoc disabled">
                   {" "}
@@ -368,8 +427,8 @@ export const SelectedDocuments = ({
                     style={{ display: "none" }}
                   />
                 </a>
-                
-              )}
+
+            )}
 
             {!(selectedFiles.length < ApplicationEnv.MaxDocumentCount) ? (
               <p className="text-danger">
@@ -402,21 +461,21 @@ export const SelectedDocuments = ({
         {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-{!isMobile?.value && 
-              <div className="col-xs-12 col-md-6 col-lg-7">
-                <div className="dc-text">
-                  <p>
-                    You won't be able to come back to this once you're done.
+              {!isMobile?.value &&
+                <div className="col-xs-12 col-md-6 col-lg-7">
+                  <div className="dc-text">
+                    <p>
+                      You won't be able to come back to this once you're done.
                   </p>
+                  </div>
                 </div>
-              </div>
-            }
+              }
               <div className="col-xs-12 col-md-6 col-lg-5">
                 <div className="dc-actions">
-                  <button 
+                  <button
                     className="btn btn-small btn-secondary"
                     onClick={() => {
-                   
+
                       if (pendingDocs.length > 1) {
                         let curDocInd = 0;
                         pendingDocs?.forEach((d, i) => {
@@ -448,15 +507,15 @@ export const SelectedDocuments = ({
                   </button>
                 </div>
               </div>
-              {isMobile?.value && 
-              <div className="col-xs-12 col-md-6 col-lg-7">
-                <div className="dc-text">
-                  <p>
-                    You won't be able to come back to this once you're done.
+              {isMobile?.value &&
+                <div className="col-xs-12 col-md-6 col-lg-7">
+                  <div className="dc-text">
+                    <p>
+                      You won't be able to come back to this once you're done.
                   </p>
+                  </div>
                 </div>
-              </div>
-            }
+              }
             </div>
           </div>
         ) : (

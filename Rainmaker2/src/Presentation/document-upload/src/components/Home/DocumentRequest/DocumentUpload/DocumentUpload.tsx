@@ -27,8 +27,38 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
   const getFileInput = (fileInputEl: HTMLInputElement) => {
     setFileInput(fileInputEl);
   };
-  const showFileExplorer = (fileToRemnove: Document | null = null) => {
-    let files =
+  const showFileExplorer = (fileToRemnove: Document | null = null,fileInput2?:any) => {
+    if(fileInput2?.current){
+      let files =
+      selectedfiles.filter(
+        (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
+      ).length > 0;
+    if (files) {
+      setshowAlert(true);
+      return;
+    }
+    if (fileInput2?.current?.value) {
+      fileInput2.current.value = "";
+    }
+    if (fileInput2.current) {
+      fileInput2.current.click();
+      fileInput2.current.onchange = async (e: any) => {
+        let files = e?.target?.files;
+        if (files) {
+          let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
+          DocumentUploadActions.updateFiles(
+            files,
+            updatedFiles,
+            dispatch,
+            setFileLimitError
+          );
+        }
+      };
+    }
+
+    }
+    else {
+      let files =
       selectedfiles.filter(
         (f) => f.uploadProgress > 0 && f.uploadStatus === "pending"
       ).length > 0;
@@ -54,6 +84,8 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
         }
       };
     }
+    }
+    
   };
   return (
     <section className={`Doc-upload ${!selectedfiles?.length ?"pageEmptyUpload":"pageHaveDocUpload" }`} ref={parentRef}>
