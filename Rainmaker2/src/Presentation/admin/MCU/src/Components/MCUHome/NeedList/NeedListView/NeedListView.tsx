@@ -13,6 +13,7 @@ import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import {NeedListAlertBox} from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
 import {NeedListDocuments} from '../../../../Entities/Models/NeedListDocuments';
+import { DashboardSetting } from '../../../../Entities/Models/DashboardSetting';
 
 export const Sync = 'Synchronized';
 export const SyncTxt = 'Synced';
@@ -58,7 +59,9 @@ export const NeedListView = () => {
   var isError = false;
 
   useEffect(() => {
-    fetchNeedList(true, true);
+    if(!needListManager.hasOwnProperty('needListFilter')){
+        fetchDashBoardSettings()
+    }
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
     checkIsByteProAuto();
   }, []);
@@ -480,6 +483,16 @@ export const NeedListView = () => {
     setShowConfirmBox(false);
   };
 
+
+  const fetchDashBoardSettings= async () => {
+    let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
+    if(res){
+        dispatch({type: NeedListActionsType.SetNeedListFilter, payload: res.pending});
+
+        fetchNeedList(res.pending, true);
+}
+  } 
+  
   return (
     <div className="need-list-view">
       <NeedListViewHeader
@@ -488,6 +501,7 @@ export const NeedListView = () => {
         addTemplatesDocuments={addTemplatesDocuments}
         isDocumentDraft={isDocumentDraft}
         viewSaveDraft={viewSaveDraftHandler}
+        fetchDashBoardSettings={fetchDashBoardSettings}
       />
       <NeedListTable
         needList={needListData}

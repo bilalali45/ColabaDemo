@@ -17,33 +17,19 @@ type headerProps = {
     addTemplatesDocuments: Function;
     isDocumentDraft: isDocumentDraftType;
     viewSaveDraft: Function;
+    fetchDashBoardSettings:Function;
 }
 
-export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft }: headerProps) => {
+export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft, fetchDashBoardSettings }: headerProps) => {
     const {state, dispatch} = useContext(Store);
 
     const needListManager: any = state?.needListManager;
 
-    useEffect(()=>{
-        if(!needListManager.hasOwnProperty('needListFilter'))
-        fetchDashBoardSettings()
-    },[])
-
-    const callBack = () => { 
+    const CheckBoxClickHandler = () => { 
         dispatch({type: NeedListActionsType.SetNeedListFilter, payload: !needListManager?.needListFilter});
         toggleCallBack(!needListManager?.needListFilter)
     }
 
-
-    
-    const fetchDashBoardSettings= async () => {
-        let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
-        if(res){
-            dispatch({type: NeedListActionsType.SetNeedListFilter, payload: res.pending});
-    }
-      }
-
-      
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
             <div className="need-list-view-header--left">
@@ -68,7 +54,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                    <input type="checkbox" onClick={callBack} id="toggle" defaultChecked={needListManager?.needListFilter} data-testid="needListSwitch"/>
+                    <input type="checkbox" onClick={CheckBoxClickHandler} id="toggle" defaultChecked={needListManager?.needListFilter} data-testid="needListSwitch"/>
                     <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;
