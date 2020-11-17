@@ -123,12 +123,17 @@ namespace Milestone.Service
         }
         public async Task<List<MilestoneModel>> GetAllMilestones(int tenantId)
         {
-            return await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x=>x.Order)
-                .Select(x => new MilestoneModel()
-                {
-                    Id = x.Id,
-                    Name = (!x.TenantMilestones.Any(y=>y.TenantId==tenantId) || string.IsNullOrEmpty(x.TenantMilestones.First(y=>y.TenantId==tenantId).McuName)) ? x.McuName : x.TenantMilestones.First(y=>y.TenantId==tenantId).McuName
-                }).ToListAsync();
+            var isDefined = await Uow.Repository<LosTenantMilestone>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            if (isDefined == null)
+            {
+                return await Repository.Query().Include(x => x.TenantMilestones).OrderBy(x => x.Order)
+                    .Select(x => new MilestoneModel()
+                    {
+                        Id = x.Id,
+                        Name = (!x.TenantMilestones.Any(y => y.TenantId == tenantId) || string.IsNullOrEmpty(x.TenantMilestones.First(y => y.TenantId == tenantId).McuName)) ? x.McuName : x.TenantMilestones.First(y => y.TenantId == tenantId).McuName
+                    }).ToListAsync();
+            }
+            return new List<MilestoneModel>();
         }
         public async Task<MilestoneForBorrowerDashboard> GetMilestoneForBorrowerDashboard(int loanApplicationId,
             int milestoneId, int tenantId)
