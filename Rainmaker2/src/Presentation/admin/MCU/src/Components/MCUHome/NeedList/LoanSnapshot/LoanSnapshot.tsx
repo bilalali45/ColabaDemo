@@ -82,7 +82,7 @@ export const LoanSnapshot = () => {
               <label className="mcu-label">Byte Loan No</label>
               <span className="mcu-label-value">{loanInfo.loanNumber}</span>
             </li>
-            <li>
+            <li data-private>
               <label className="mcu-label">Primary & co-Borrower</label>
               <span className="mcu-label-value">{loanInfo.borrowersName}</span>
             </li>
@@ -144,7 +144,7 @@ export const LoanSnapshot = () => {
               <label className="mcu-label">Loan Program</label>
               {renderLoanProgram(loanInfo.loanProgram)}
             </li>
-            <li>
+            <li data-private>
               <label className="mcu-label">Property Address</label>
               <span className="mcu-label-value">{}</span>
               <p className="LoanStatus--text ">
