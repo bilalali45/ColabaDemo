@@ -12,6 +12,7 @@ import tasklistIcon from '../../../assets/images/m-tl-icon.svg';
 import documentIcon from '../../../assets/images/m-d-icon.svg';
 import Overlay from 'react-bootstrap/Overlay'
 import Popover from 'react-bootstrap/Popover'
+import { DocumentActions } from "../../../store/actions/DocumentActions";
 
 
 let timer : any = null;
@@ -41,6 +42,13 @@ const ActivityHeader = (props) => {
   const [taskListTarget, setTaskListTarget] = useState(null);
   const taskListContainerRef = useRef(null);
   const taskListTooltipRef = useRef<any>(null);
+
+  useEffect(()=>{
+    if (!pendingDocs) {
+      fetchPendingDocs()
+    }
+
+  },[])
 
   useEffect(() => {
     // location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
@@ -101,6 +109,7 @@ const ActivityHeader = (props) => {
     }
   };
 
+  
   useEffect(() => {
     setNavigations(location.pathname);
 
@@ -151,6 +160,17 @@ const ActivityHeader = (props) => {
     // setbrowserBack(false);
   };
 
+  const fetchPendingDocs = async () => {
+    
+      let docs = await DocumentActions.getPendingDocuments(
+        Auth.getLoanAppliationId()
+      );
+      if (docs) {
+        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
+        
+      }
+    
+  };
   const renderLeftNav = () => {
     if (leftNav === "Dashboard") {
       return (
