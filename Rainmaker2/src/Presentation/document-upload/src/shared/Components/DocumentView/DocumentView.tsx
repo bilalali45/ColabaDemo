@@ -267,7 +267,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           {({ zoomIn, zoomOut, resetTransform }) => (
             <div>
               <TransformComponent>
-                <div className="document-view--body">
+                <div className="document-view--body" data-private>
                   {!!documentParams.filePath ? (
                     <FileViewer
                       fileType={documentParams.fileType}
@@ -309,7 +309,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
             {({ zoomIn, zoomOut, resetTransform }) => (
               <div>
                 <TransformComponent>
-                  <div className="document-view--body">
+                  <div className="document-view--body" data-private>
                     {!!documentParams.filePath ? (
                       <FileViewer
                         fileType={documentParams.fileType}
