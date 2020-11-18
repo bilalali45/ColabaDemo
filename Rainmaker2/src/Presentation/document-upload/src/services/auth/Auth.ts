@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import Cookies from "universal-cookie";
 import { ApplicationEnv } from "../../utils/helpers/AppEnv";
 import { debug } from "console";
+import { isNaN } from "lodash";
 const cookies = new Cookies();
 
 export class Auth {
@@ -31,6 +32,12 @@ export class Auth {
 
   public static getLoginPassword() {
     return localStorage.getItem("devuserpassword");
+  }
+
+  public static getLoanApplicationFromUrl(location: string) {
+    const arrPath = location.split('/');
+    const loanApplicationId = arrPath[arrPath.length -1]
+    return isNaN(loanApplicationId) ? '' : loanApplicationId;
   }
 
   public static checkAuth(): boolean | string {
