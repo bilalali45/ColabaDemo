@@ -62,6 +62,8 @@ export const NeedListView = () => {
     if(!needListManager.hasOwnProperty('needListFilter')){
         fetchDashBoardSettings()
     }
+    let status = needListManager?.needListFilter? needListManager?.needListFilter : false
+    fetchNeedList(status, true )
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
     checkIsByteProAuto();
   }, []);
@@ -488,9 +490,7 @@ export const NeedListView = () => {
     let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
     if(res){
         dispatch({type: NeedListActionsType.SetNeedListFilter, payload: res.pending});
-
-        fetchNeedList(res.pending, true);
-}
+    }
   } 
   
   return (
