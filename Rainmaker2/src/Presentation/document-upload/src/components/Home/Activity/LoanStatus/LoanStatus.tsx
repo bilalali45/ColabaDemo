@@ -144,7 +144,7 @@ export const LoanStatus = () => {
                                     <div className="c-wrap">
                                         <h4 className="LoanStatus--heading">Property Address</h4>
     
-                                        <p className="LoanStatus--text ">
+                                        <p className="LoanStatus--text " data-private>
                                             <span className="add-txt" title={formattedAddress()}> {formattedAddress()} </span>
                                             {loanInfo.cityName}, {loanInfo.stateName + ' ' + loanInfo.zipCode} </p>
     

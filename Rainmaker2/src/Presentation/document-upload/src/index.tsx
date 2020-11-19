@@ -42,7 +42,7 @@ if(window.envConfig.LOGROCKET_ENABLE){
     OpportunityId: oppId || '',
     LoanApplicationId: loanApplicationId || ''
   };
-  LogRocket.identify(`${visitorId}-${loanApplicationId != "" ? loanApplicationId + "-" : ""}${new Date().toLocaleDateString().replaceAll("/","")}`, identification)
+  LogRocket.identify(`${visitorId}-${loanApplicationId != "" ? loanApplicationId : ""}`, identification)
 }
 
 
