@@ -410,5 +410,16 @@ namespace Milestone.Service
             Uow.Repository<LosTenantMilestone>().Update(mapping);
             await Uow.SaveChangesAsync();
         }
+        public async Task<bool> IsMilestoneMappAgainstStatusId(int MilestoneId)
+        {
+            var mapping = await Uow.Repository<MilestoneMapping>().Query(x => x.MilestoneId == MilestoneId).FirstOrDefaultAsync();
+
+            if (mapping != null)
+                return true;
+            else
+                return false;
+           
+         
+        }
     }
 }

@@ -210,5 +210,12 @@ namespace Milestone.API.Controllers
             return Ok(MilestoneForBorrowerDashboard);
         }
 
+        [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
+        public  async Task<bool> IsMilestoneMappAgainstStatusId( int MilestoneId)
+        {
+             return await  _milestoneService.IsMilestoneMappAgainstStatusId(MilestoneId);
+        }
+
     }
 }

@@ -25,5 +25,7 @@ namespace Milestone.Service
         Task DeleteMapping(MilestoneAddMappingModel model);
         Task EditMapping(MilestoneAddMappingModel model);
         Task InsertMilestoneLog(int loanApplicationId, int milestoneId, int userId);
+
+        Task<bool> IsMilestoneMappAgainstStatusId(int MilestoneId);
     }
 }
