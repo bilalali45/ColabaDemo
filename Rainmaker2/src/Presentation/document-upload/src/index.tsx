@@ -11,38 +11,40 @@ import { Auth } from "./services/auth/Auth";
 import { debug } from "console";
 const cookies = new Cookies();
 
+if(window.envConfig.LOGROCKET_ENABLE){
+    LogRocket.init('evhjvq/borrowerside-react', {
+      // dom: {
+      //     textSanitizer: true,
+      //     inputSanitizer: true,
+      // },
+      network: {
+          responseSanitizer: (response : any) => {
+            if (response.headers['x-secret']) {
+              // removes all response data
+              return null;
+            }
 
-LogRocket.init('evhjvq/borrowerside-react', {
-    // dom: {
-    //     textSanitizer: true,
-    //     inputSanitizer: true,
-    // },
-    network: {
-        responseSanitizer: (response : any) => {
-          if (response.headers['x-secret']) {
-            // removes all response data
-            return null;
-          }
+            // scrubs response body
+            response.body = null;
+            return response;
+          },
+      },
+  });
 
-          // scrubs response body
-          response.body = null;
-          return response;
-        },
-    },
-});
+  const visitorId = cookies.get("RsVid");
+  const oppId = cookies.get("RsOpid");
+  const sessionId = cookies.get("ASP.NET_SessionId");
+  //const loanApplicationId = cookies.get("RsLoanApplicationId");
+  const loanApplicationId = Auth.getLoanApplicationFromUrl(window.location.pathname);
+  const identification = {
+    UserSessionId: sessionId || '',
+    VisitorId: visitorId || '',
+    OpportunityId: oppId || '',
+    LoanApplicationId: loanApplicationId || ''
+  };
+  LogRocket.identify(`${visitorId}-${loanApplicationId != "" ? loanApplicationId + "-" : ""}${new Date().toLocaleDateString().replaceAll("/","")}`, identification)
+}
 
-const visitorId = cookies.get("RsVid");
-const oppId = cookies.get("RsOpid");
-const sessionId = cookies.get("ASP.NET_SessionId");
-//const loanApplicationId = cookies.get("RsLoanApplicationId");
-const loanApplicationId = Auth.getLoanApplicationFromUrl(window.location.pathname);
-const identification = {
-  UserSessionId: sessionId || '',
-  VisitorId: visitorId || '',
-  OpportunityId: oppId || '',
-  LoanApplicationId: loanApplicationId || ''
-};
-LogRocket.identify(`${visitorId}-${loanApplicationId != "" ? loanApplicationId + "-" : ""}${new Date().toLocaleDateString().replaceAll("/","")}`, identification)
 
 ReactDOM.render(<StoreProvider><App /></StoreProvider>, document.getElementById("root"));
 
