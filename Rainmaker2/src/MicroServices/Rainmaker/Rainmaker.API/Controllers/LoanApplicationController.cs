@@ -193,7 +193,9 @@ namespace Rainmaker.API.Controllers
             EmailAccount emailAccount = null;
 
             if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
+                emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == busnessUnitId)
+                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
+            //emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
 
 
             var data = new Dictionary<FillKey, string>();
