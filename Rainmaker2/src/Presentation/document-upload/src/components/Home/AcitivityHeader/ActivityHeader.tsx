@@ -53,7 +53,7 @@ const ActivityHeader = (props) => {
   useEffect(() => {
     // location.pathname.includes("/activity") && pendingDocs?.length > 0 ? setShowToolTip(true):setShowToolTip(false);
 
-    location.pathname.includes("/activity") && pendingDocs?.length > 0 &&  setShowToolTip(location.pathname.includes("/activity"));
+    location.pathname.toLowerCase().includes("/activity") && pendingDocs?.length > 0 &&  setShowToolTip(location.pathname.toLowerCase().includes("/activity"));
     clearTimeout(timer);
     timer = setTimeout(()=>{setShowToolTip(false)}, 3000);
 
@@ -72,21 +72,21 @@ const ActivityHeader = (props) => {
   }, [taskListTooltipRef]);
 
   const setNavigations = (pathname) => {
-    if (pathname.includes("activity")) {
+    if (pathname.toLowerCase().includes("activity")) {
       setLeftNav("Dashboard");
       setRightNav("Documents");
       setLeftNavUrl("/DashBoard");
       setRightNavUrl("/uploadedDocuments/" + Auth.getLoanAppliationId());
     }
 
-    if (pathname.includes("documentsRequest")) {
+    if (pathname.toLowerCase().includes("documentsrequest")) {
       setLeftNav("Loan Center");
       setRightNav("Documents");
       setLeftNavUrl("/activity/" + Auth.getLoanAppliationId());
       setRightNavUrl("/uploadedDocuments/" + Auth.getLoanAppliationId());
     }
 
-    if (pathname.includes("uploadedDocuments")) {
+    if (pathname.toLowerCase().includes("uploadeddocuments")) {
       if (
         props.location.state == undefined ||
         props.location.state.from.includes("/activity")
@@ -131,7 +131,7 @@ const ActivityHeader = (props) => {
 
   useEffect(() => {
     window.onpopstate = backHandler;
-    if (location.pathname.includes('view')) {
+    if (location.pathname.toLowerCase().includes('view')) {
       window.onpopstate = () => { };
     }
   }, [location?.pathname, selectedFiles])
