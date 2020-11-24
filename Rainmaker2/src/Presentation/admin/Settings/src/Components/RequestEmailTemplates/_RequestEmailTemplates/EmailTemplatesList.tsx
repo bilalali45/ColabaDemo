@@ -26,10 +26,13 @@ export const EmailTemplatesList = ({addEmailTemplateClick, insertTokenClick}: pr
     const handler = (e:any) => {
       if(!removeTemplate.current?.contains(e.target)){
         document.querySelector<HTMLElement>('#removeAlertNo')?.click();
-
+        
       }
     }
     document.addEventListener('click',handler);
+    document.querySelectorAll('.settings-btn-sort').forEach((item:any)=>{
+      item.addEventListener('click',handler);
+    })
     return () => {document.removeEventListener('click',handler)}
   })
 

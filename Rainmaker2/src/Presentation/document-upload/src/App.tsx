@@ -75,9 +75,9 @@ const App = () => {
   }, []);
 
   const authenticate = async () => {
-    if (process.env.NODE_ENV === "development") {
-      await window.Authorization.authorize();
-    }
+    //if (process.env.NODE_ENV === "development") {
+      await window?.Authorization?.authorize();
+    //}
     if (Auth.getAuth()) {
       setAuthenticated(Boolean(true));
       getCompanyLogoSrc();

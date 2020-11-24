@@ -255,7 +255,7 @@ export const EmailContentReview = ({
     return (
       <section className="mcu-dropdown-popup" style={{ left: dropdownToolPopup.x, top: dropdownToolPopup.y }}>
           <div className="mcu-dropdown-popup--info">
-            <div style={{ top: dropdownToolPopupArrow.y, left: dropdownToolPopupArrow.x, position:dropdownToolPopupArrow.x ? 'fixed' : 'absolute' }} className="mcu-dropdown-popup-arrow"><span>Arrow</span></div>
+            {templateDropdownList==true && ishowList && <div style={{ top: dropdownToolPopupArrow.y, left: dropdownToolPopupArrow.x, position:dropdownToolPopupArrow.x ? 'fixed' : 'absolute' }} className="mcu-dropdown-popup-arrow"><span>Arrow</span></div> }
             <ul>
               <li>
                 <label className="settings__label">From</label>
