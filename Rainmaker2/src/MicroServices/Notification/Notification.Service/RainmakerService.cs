@@ -25,10 +25,9 @@ namespace Notification.Service
             };
             var response = await _httpClient.SendAsync(request);
 
-            if (response.IsSuccessStatusCode)
-                return Newtonsoft.Json.JsonConvert.DeserializeObject <List<int>>(await response.Content.ReadAsStringAsync());
-            else
-                return null;
+            response.EnsureSuccessStatusCode(); 
+            return Newtonsoft.Json.JsonConvert.DeserializeObject <List<int>>(await response.Content.ReadAsStringAsync());
+         
         }
 
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId)

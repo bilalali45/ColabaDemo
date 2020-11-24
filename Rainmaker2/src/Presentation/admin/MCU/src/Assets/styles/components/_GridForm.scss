@@ -1,0 +1,127 @@
+.grid-form {
+
+    &-group {
+        // display: flex;
+        // display: -webkit-flex;
+        // justify-content: center;
+        // align-items: center;  
+        display : table;
+        position: relative;
+        width   : 100%;
+
+        >* {
+            display: table-cell !important;
+        }
+
+        label.error {
+            position: absolute;
+            top     : 50%;
+            right   : 15px;
+            @include transform(translateY(-50%));
+            margin : 0;
+            padding: 0;
+        }
+
+        &.error {
+            .grid-form-control {
+                border: 1px solid $danger !important;
+            }
+
+            &+.grid-form-group.error {
+                .grid-form-control {
+                    border-top: none !important;
+                }
+            }
+        }
+    }
+
+    &-label {
+        padding: 11px 20px;
+        //flex:0 0 12%;
+        margin : 0;
+        @include font(normal, 1.4, 'nr', 'base');
+        border-right : 1px solid color('border');
+        border-bottom: 1px solid color('border');
+        height       : 46px;
+        box-sizing   : border-box;
+        line-height  : 26px;
+        width        : 12%;
+    }
+
+    input.grid-form-control {
+        padding: 11px 20px;
+        height : 49px;
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:active,
+        &:-webkit-autofill:focus {
+            background-color       : #FFFFFF !important;
+            color                  : #000000 !important;
+            -webkit-box-shadow     : 0 0 0 1000px white inset !important;
+            -webkit-text-fill-color: #555555 !important;
+        }
+
+        &.focused,
+        &:focus {
+            border   : 1px solid color('primary') !important;
+            padding: 6px 19px;
+            height   : 48px;
+        }
+    }
+
+    &-control {
+        //flex: 0 0 88%;
+        border: none;
+        @include font(normal, 1.4, 'nr', 'base');
+        border-bottom: 1px solid color('border');
+        color        : color('base');
+        width        : 100%;
+
+
+        &.react-multi-email {
+            border            : none;
+            border-bottom     : 1px solid color('border');
+            border-radius     : 0px;
+            padding           : 8px 18px;
+            min-height        : 46px;
+            box-sizing        : border-box;
+            // white-space: nowrap;
+            // display: block;
+            // overflow-x: auto;
+            max-width         : calc(100% - 153px);
+            // overflow-y: hidden;
+            // scrollbar-width:thin;
+
+            &::-webkit-scrollbar {
+                width : 5px;
+                height: 5px;
+            }
+
+            >span[data-placeholder] {
+                @include font(normal, 1.5, 'nr', 'base');
+            }
+
+            &.empty>span[data-placeholder] {
+                left: 15px;
+                top: 8px;
+            }
+
+            [data-tag] {
+                display: inline-block;
+            }
+        }
+
+        &.react-multi-email.error,
+        &.react-multi-email.error:focus-within {
+            border: 1px solid $danger !important;
+        }
+
+        &.focused,
+        &:focus {
+            border : 1px solid color('primary') !important;
+            padding: 8px 17px;
+        }
+    }
+
+}

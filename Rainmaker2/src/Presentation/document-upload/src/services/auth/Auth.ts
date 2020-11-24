@@ -5,6 +5,7 @@ import { debug } from "console";
 import { isNaN } from "lodash";
 const cookies = new Cookies();
 
+
 export class Auth {
   public static saveAuth(token: string) {
     localStorage.setItem("auth", this.encodeString(token));
@@ -23,7 +24,7 @@ export class Auth {
   }
 
   public static getAuth() {
-    return this.decodeString(localStorage.getItem("auth"));
+    return this.decodeString(localStorage.getItem("Rainmaker2Token"));
   }
 
   public static getLoginUserName() {
@@ -46,9 +47,12 @@ export class Auth {
     if (!auth) {
       return false;
     }
+    
     if (rainmaker2Token) {
       const decodeCacheToken: any = jwt_decode(rainmaker2Token);
+      
       const decodeAuth: any = jwt_decode(auth);
+      
       if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
         return false;
       }
@@ -90,7 +94,7 @@ export class Auth {
   }
 
   public static removeAuth() {
-    let items = ["auth", "payload", "refreshToken"];
+    let items = ['Rainmaker2Token', 'TokenPayload', 'Rainmaker2RefreshToken'];
     for (const item of items) {
       localStorage.removeItem(item);
     }

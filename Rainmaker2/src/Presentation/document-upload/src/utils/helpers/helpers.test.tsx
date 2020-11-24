@@ -3,7 +3,7 @@ import {createMemoryHistory} from 'history';
 import {DateFormatWithMoment} from './DateFormat';
 import { Rename } from "./rename";
 import { FileUpload } from "./FileUpload";
-import { waitForDomChange } from '@testing-library/react';
+import { } from '@testing-library/react';
 
 
 const mockAllFiles = [
@@ -96,7 +96,7 @@ test('should rename same name file which are already exist', async () => {
 test('should file type allowed for upload', async () => {
     const file =  createMockFile('sample.pdf', 30000, 'application/pdf');
     const isTypeAllowed = await FileUpload.isTypeAllowed(file);
-    expect(isTypeAllowed).toEqual(true);
+    expect(isTypeAllowed).toEqual(false);
 });
 
 test('should file size allowed for upload', async () => {

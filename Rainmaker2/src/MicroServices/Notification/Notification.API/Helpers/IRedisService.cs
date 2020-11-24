@@ -7,6 +7,6 @@ namespace Notification.Service
     {
         Task Run();
         Task InsertInCache(NotificationModel model);
-        Task SendNotification(long id);
+        Task<bool> SendNotification(NotificationModel model);
     }
 }

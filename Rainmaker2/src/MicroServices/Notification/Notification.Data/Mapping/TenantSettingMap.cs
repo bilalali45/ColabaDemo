@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // TenantSettings
-
+    
     public partial class TenantSettingMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TenantSetting>
     {
         public void Configure(EntityTypeBuilder<TenantSetting> builder)
@@ -29,9 +29,11 @@ namespace Notification.Data.Mapping
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.TenantId).HasColumnName(@"TenantId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("int").IsRequired(false);
             builder.Property(x => x.DeliveryModeId).HasColumnName(@"DeliveryModeId").HasColumnType("smallint").IsRequired();
             builder.Property(x => x.NotificationMediumId).HasColumnName(@"NotificationMediumId").HasColumnType("int").IsRequired();
             builder.Property(x => x.NotificationTypeId).HasColumnName(@"NotificationTypeId").HasColumnType("int").IsRequired();
+            builder.Property(x => x.DelayedInterval).HasColumnName(@"DelayedInterval").HasColumnType("smallint").IsRequired(false);
 
             // Foreign keys
             builder.HasOne(a => a.DeliveryModeEnum).WithMany(b => b.TenantSettings).HasForeignKey(c => c.DeliveryModeId).OnDelete(DeleteBehavior.SetNull); // FK_TenantDeliveryMode_DeliveryModeEnum

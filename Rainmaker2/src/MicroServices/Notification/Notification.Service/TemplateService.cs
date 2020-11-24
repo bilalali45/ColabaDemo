@@ -19,35 +19,36 @@ namespace Notification.Service
         {
             this.serviceProvider = serviceProvider;
         }
-        public async Task PopulateTemplate(long notificationId)
+        public async Task<string> PopulateTemplate(long notificationId, int notificationTypeId, int notificationMediumId)
         {
             INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             NotificationObject notificationObject = await notificationService.GetByIdForTemplate(notificationId);
-            switch ((Common.NotificationType)notificationObject.NotificationTypeId)
+            switch ((Common.NotificationType)notificationTypeId)
             {
                 case Common.NotificationType.DocumentSubmission:
-                    await DocumentSubmissionTemplate(notificationObject);
-                    break;
+                    return await DocumentSubmissionTemplate(notificationObject,notificationMediumId);
             }
+
+            return "";
         }
 
-        private async Task DocumentSubmissionTemplate(NotificationObject notificationObject)
+        private async Task<string> DocumentSubmissionTemplate(NotificationObject notificationObject, int notificationMediumId)
         {
             foreach (var template in notificationObject.NotificationType.NotificationTemplates)
             {
-                switch ((Common.NotificationMedium)template.NotificationMediumId)
+                switch ((Common.NotificationMedium)notificationMediumId)
                 {
                     case Common.NotificationMedium.InApp:
-                        await DocumentSubmissionTemplate_InApp(notificationObject, template);
-                        break;
+                        return await DocumentSubmissionTemplate_InApp(notificationObject, template);
                 }
             }
+
+            return "";
         }
 
-        private async Task DocumentSubmissionTemplate_InApp(NotificationObject notificationObject,
+        private async Task<string> DocumentSubmissionTemplate_InApp(NotificationObject notificationObject,
             NotificationTemplate notificationTemplate)
         {
-            INotificationService notificationService = serviceProvider.GetRequiredService<INotificationService>();
             IRainmakerService rainmakerService = serviceProvider.GetRequiredService<IRainmakerService>();
             LoanSummary summary = await rainmakerService.GetLoanSummary(notificationObject.EntityId.Value);
             // populate template  
@@ -61,18 +62,10 @@ namespace Notification.Service
             templateJson = templateJson.Replace("{{ZipCode}}",summary.ZipCode ?? "");
             templateJson = templateJson.Replace("{{LoanApplicationId}}", notificationObject.EntityId.Value.ToString());
             string metaJson = notificationTemplate.MediumMetaDataJson.Replace("{{Link}}", $"/admin/loanapplication/documentmanagement?loanApplicationId={notificationObject.EntityId}");
-
-            List<NotificationRecepientMedium> list = notificationObject.NotificationRecepients.SelectMany(x => x.NotificationRecepientMediums.Where(y=>y.NotificationMediumid==notificationTemplate.NotificationMediumId)).ToList();
-            foreach (var item in list)
-            {
-                JObject jObject = new JObject();
-                jObject.Add("data",JObject.Parse(templateJson));
-                jObject.Add("meta", JObject.Parse(metaJson));
-                item.SentTextJson = jObject.ToString();
-                item.TrackingState = TrackingState.Modified;
-                notificationService.Update(notificationObject);
-                await notificationService.SaveChangesAsync();
-            }
+            JObject jObject = new JObject();
+            jObject.Add("data",JObject.Parse(templateJson));
+            jObject.Add("meta", JObject.Parse(metaJson));
+            return jObject.ToString();
         }
     }
 }

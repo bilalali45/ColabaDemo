@@ -6,6 +6,7 @@ $color:(
     border              :       #E7E7E7,//#E5E5E5, 
     base                :       #4E4E4E, 
     heading             :       #000000,//#263238,
+    textEditorText      :       #4E4E4E,
     bg                  :       #F2F3F5,
     default             :       #F2F3F5,
     colorWhite          :       #ffffff,
@@ -33,6 +34,11 @@ $color:(
 
     //Table Strip Color
     tableStripBg        :       #F6F6F6,
+
+    // Dropdown
+    dropdownStripBg     :       #F8F8F8,
+    dropdownPopup       :       #4E4E4E,
+    pillsBg             :       #F8F8F8,
 
     //Status
     statusDefault           :       #cccccc,
@@ -68,11 +74,14 @@ $color:(
     verticalTabsBg          :       #ffffff,
     verticalTabsText        :       #4E4E4E,
 
+    
+
     needListTableFileName   :       #707070,
     needListTableSYNCColor  :       #000000,
 
     //Modal
-    modalfooter             :       #F6F6F6
+    modalfooter             :       #F6F6F6,
+    customDropdownText      :       #A7A7A7
 );
 
 

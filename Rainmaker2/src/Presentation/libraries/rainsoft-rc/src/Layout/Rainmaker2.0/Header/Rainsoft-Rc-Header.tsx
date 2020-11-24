@@ -24,7 +24,7 @@ export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsTy
                                 </a>
                             </div>
 
-                            <div className="s-account pull-right">
+                            <div className="s-account pull-right" data-private >
 
                                 {/* <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
                                     Hello,

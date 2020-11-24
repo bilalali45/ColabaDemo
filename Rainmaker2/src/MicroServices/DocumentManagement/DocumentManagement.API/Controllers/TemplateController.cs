@@ -77,7 +77,17 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             return NotFound();
         }
-
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> RenameTenantTemplate(RenameTemplateModel renameTemplateModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.RenameTenantTemplate(id: renameTemplateModel.id,
+                                                                tenantid: tenantId,
+                                                                newname: renameTemplateModel.name);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
 
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
@@ -91,6 +101,16 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> InsertTenantTemplate(InsertTemplateModel insertTemplateModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.InsertTenantTemplate(tenantId: tenantId,
+                                                                      name: insertTemplateModel.name);
+
+            return Ok(value: docQuery);
+        }
+
 
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> AddDocument(AddDocumentModel addDocumentModel)
@@ -100,6 +120,19 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await templateService.AddDocument(templateId: addDocumentModel.templateId,
                                                              tenantId: tenantId,
                                                              userProfileId: userProfileId,
+                                                             typeId: addDocumentModel.typeId,
+                                                             docName: addDocumentModel.docName);
+
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
+        [HttpPost(template: "[action]")]
+        public async Task<IActionResult> AddTenantDocument(AddDocumentModel addDocumentModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.AddTenantDocument(templateId: addDocumentModel.templateId,
+                                                             tenantId: tenantId,
                                                              typeId: addDocumentModel.typeId,
                                                              docName: addDocumentModel.docName);
 
@@ -137,8 +170,18 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
+        [HttpDelete(template: "[action]")]
+        public async Task<IActionResult> DeleteTenantDocument(DeleteDocumentModel deleteDocumentModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.DeleteTenantDocument(id: deleteDocumentModel.id,
+                                                                tenantid: tenantId,
+                                                                documentid: deleteDocumentModel.documentId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
 
-         
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteTemplate(DeleteTemplateModel deleteTemplateModel)
         {
@@ -147,6 +190,16 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await templateService.DeleteTemplate(templateId: deleteTemplateModel.templateId,
                                                                 tenantId: tenantId,
                                                                 userProfileId: userProfileId);
+            if (docQuery)
+                return Ok();
+            return NotFound();
+        }
+        [HttpDelete(template: "[action]")]
+        public async Task<IActionResult> DeleteTenantTemplate(DeleteTemplateModel deleteTemplateModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var docQuery = await templateService.DeleteTenantTemplate(templateId: deleteTemplateModel.templateId,
+                                                                tenantId: tenantId);
             if (docQuery)
                 return Ok();
             return NotFound();

@@ -59,6 +59,7 @@ const ActivityHeader = (props) => {
 
   }, [location.pathname ,pendingDocs?.length ]);
 
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (taskListTooltipRef.current && !taskListTooltipRef.current.contains(event.target)) {
@@ -249,19 +250,19 @@ const ActivityHeader = (props) => {
           container={taskListContainerRef.current}
           containerPadding={20}
         >
-          <Popover id="popover-contained" className="taskListPopover" >
+          <Popover id="popover-contained" className="taskListPopover" data-testId="task-list-popover" >
             <h4>Task List</h4>
-            <p>We need <span> {pendingDocs?.length}</span> {pendingDocs?.length < 2?"item":"items"} from you</p>
+            <p>We need <span> {pendingDocs?.length}</span> {pendingDocs?.length < 2 ? "item" : "items"} from you</p>
           </Popover>
         </Overlay>}
-        <Link to={{
+        <Link data-testid={link} to={{
           pathname: showAlert ? location.pathname : leftNavUrl,
           state: { from: location.pathname },
         }}
           onClick={(e) => handleNavigationMobile(e, link)} >
-         <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} >
+          <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} >
             <img src={img} alt="" />
-            {pendingDocs?.length > 0 &&  text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length < 10 ? 0 : ''}{pendingDocs?.length}</div>}
+            {pendingDocs?.length > 0 && text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length < 10 ? 0 : ''}{pendingDocs?.length}</div>}
           </div>
           <div className="n-item-label">
             <div>{text}</div>
@@ -274,10 +275,10 @@ const ActivityHeader = (props) => {
 
   const ActivityHeaderMobile = () => {
     return (
-      <div className="mobile-navigation" ref={taskListContainerRef}>
+      <div  className="mobile-navigation" ref={taskListContainerRef}>
         <div className="row">
           <div className="container">
-            <div className="mobile-n-wrap" >
+            <div className="mobile-n-wrap" data-testid="activity-header-mobile" >
 
               {
                 items.map((item: any) => {

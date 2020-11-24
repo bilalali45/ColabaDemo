@@ -7,7 +7,7 @@ import {PayloadType} from './types';
 
 const cookies = new Cookies();
 const baseUrl: any = window.envConfig.API_BASE_URL;
-const httpClient = new Http(baseUrl, 'notificationToken');
+const httpClient = new Http(baseUrl, 'Rainmaker2Token');
 
 export class LocalDB {
   static getCredentials(): {
@@ -26,7 +26,7 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken(): string | null {
-    return this.decodeString(localStorage.getItem('notificationToken'));
+    return this.decodeString(localStorage.getItem('Rainmaker2Token'));
   }
 
   static getRefreshToken(): string | null {
@@ -42,9 +42,7 @@ export class LocalDB {
   }
 
   static getUserPayload(): any {
-    const payload = this.decodeString(
-      localStorage.getItem('notificationPayload')
-    );
+    const payload = this.decodeString(localStorage.getItem('TokenPayload'));
 
     if (payload) {
       return JSON.parse(payload);
@@ -60,15 +58,15 @@ export class LocalDB {
     if (!payload) return;
 
     localStorage.setItem(
-      'notificationPayload',
+      'TokenPayload',
       this.encodeString(JSON.stringify(payload))
     );
   }
 
   static storeAuthTokens(token: string, refreshToken: string): void {
-    localStorage.setItem('notificationToken', this.encodeString(token));
+    localStorage.setItem('Rainmaker2Token', this.encodeString(token));
     localStorage.setItem(
-      'notificationRefreshToken',
+      'Rainmaker2RefreshToken',
       this.encodeString(refreshToken)
     );
   }
@@ -82,7 +80,7 @@ export class LocalDB {
   }
 
   public static checkAuth(): boolean | string {
-    const notificationToken = cookies.get('NotificationToken');
+    const notificationToken = cookies.get('Rainmaker2Token');
     const auth = this.getAuthToken();
     if (!auth) {
       return false;
@@ -121,11 +119,7 @@ export class LocalDB {
 
   //#region Remove Auth
   static removeAuth(): void {
-    const items = [
-      'notificationToken',
-      'notificationPayload',
-      'notificationRefreshToken'
-    ];
+    const items = ['Rainmaker2Token', 'TokenPayload', 'Rainmaker2RefreshToken'];
     for (const item of items) {
       localStorage.removeItem(item);
     }

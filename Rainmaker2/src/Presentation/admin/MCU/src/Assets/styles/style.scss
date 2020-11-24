@@ -29,6 +29,7 @@
         'mixins/backface-visibility',
         'mixins/scrollbar',
         'mixins/headings',
+        'mixins/fonts',
         
         // MEDIA QUERIES
         'mixins/mediaquery-custom',
@@ -59,4 +60,5 @@
         './components/VerticalTabs',
         './components/CustomScrollbar',
         './components/RequestDocument',
-        './components/MCUPanels';
+        './components/MCUPanels',
+        './components/GridForm';

@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // NotificationMedium
-
+    
     public partial class NotificationMediumMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<NotificationMedium>
     {
         public void Configure(EntityTypeBuilder<NotificationMedium> builder)

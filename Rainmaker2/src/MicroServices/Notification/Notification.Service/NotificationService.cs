@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Notification.Common;
 using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 
@@ -41,81 +42,80 @@ namespace Notification.Service
         public async Task<TenantSettingModel> GetTenantSetting(int tenantId)
         {
             var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
-            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
-            return new TenantSettingModel() { deliveryModeId = tenantSetting.DeliveryModeId, queueTimeout = setting.QueueTimeInMinute };
+            return new TenantSettingModel() { deliveryModeId = tenantSetting.DeliveryModeId, queueTimeout = tenantSetting.DelayedInterval };
         }
 
-        public async Task<Setting> GetSetting(int tenantId)
+        public async Task<TenantSetting> GetSetting(int tenantId)
         {
-            return await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
+            return await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstOrDefaultAsync();
         }
-        public async Task<long> Add(NotificationModel model, int userId, int tenantId, TenantSetting setting)
+        public async Task<long> Add(NotificationModel model)
         {
             NotificationObject notificationObject = new NotificationObject();
             notificationObject.CreatedOn = model.DateTime;
             notificationObject.CustomTextJson = model.CustomTextJson;
             notificationObject.EntityId = model.EntityId;
             notificationObject.NotificationTypeId = model.NotificationType;
-            notificationObject.TenantId = tenantId;
+            notificationObject.TenantId = model.tenantId.Value;
             notificationObject.StatusId = (byte)Notification.Common.StatusList.Created;
             notificationObject.TrackingState = TrackingState.Added;
 
             notificationObject.NotificationActor = new NotificationActor();
             notificationObject.NotificationActor.TrackingState = TrackingState.Added;
-            notificationObject.NotificationActor.ActorId = userId;
-
-            List<int> reciepient = await rainmakerService.GetAssignedUsers(model.EntityId);
-            if (reciepient != null)
-            {
-                foreach (var item in reciepient)
-                {
-                    if (await IsUserSubscribedToMedium(item, tenantId, setting.NotificationMediumId, model.NotificationType))
-                    {
-                        NotificationRecepient notificationRecepient = new NotificationRecepient();
-                        notificationRecepient.RecipientId = item;
-                        notificationRecepient.StatusId = (byte)Notification.Common.StatusList.Unseen;
-                        notificationRecepient.TrackingState = TrackingState.Added;
-                        notificationObject.NotificationRecepients.Add(notificationRecepient);
-                        notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
-                    
-                        NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
-                        notificationRecepientMedium.DeliveryModeId = setting.DeliveryModeId;
-                        notificationRecepientMedium.NotificationMediumid = setting.NotificationMediumId;
-                        notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusList.Created;
-                        notificationRecepientMedium.SentTextJson = String.Empty;
-                        notificationRecepientMedium.TrackingState = TrackingState.Added;
-
-                        notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
-                    }
-                }
-            }
+            notificationObject.NotificationActor.ActorId = model.userId.Value;
+            
+            model.UsersToSendList = await rainmakerService.GetAssignedUsers(model.EntityId);
 
             Uow.Repository<NotificationObject>().Insert(notificationObject);
             await Uow.SaveChangesAsync();
 
-            await templateService.PopulateTemplate(notificationObject.Id);
-
             return notificationObject.Id;
+        }
+
+
+        public async Task<NotificationRecepient> GetRecepient(long recepientId)
+        {
+            return await Uow.Repository<NotificationRecepient>().Query(x => x.Id == recepientId).Include(x => x.StatusListEnum).FirstAsync();
+        }
+        public async Task<long> AddUserNotificationMedium(int userId, long notificationObjectId, short deliveryModeId, int notificationMediumId, int notificationTypeId)
+        {
+            NotificationRecepient notificationRecepient = new NotificationRecepient();
+            notificationRecepient.RecipientId = userId;
+            notificationRecepient.StatusId = (byte)Notification.Common.StatusList.Unseen;
+            notificationRecepient.NotificationObjectId = notificationObjectId;
+            notificationRecepient.TrackingState = TrackingState.Added;
+            notificationRecepient.NotificationRecepientMediums = new List<NotificationRecepientMedium>();
+
+            NotificationRecepientMedium notificationRecepientMedium = new NotificationRecepientMedium();
+            notificationRecepientMedium.DeliveryModeId = deliveryModeId;
+            notificationRecepientMedium.NotificationMediumid = notificationMediumId;
+            notificationRecepientMedium.StatusId = (byte)Notification.Common.StatusList.Created;
+            notificationRecepientMedium.SentTextJson = await templateService.PopulateTemplate(notificationObjectId,notificationTypeId,notificationMediumId);
+            notificationRecepientMedium.TrackingState = TrackingState.Added;
+
+            notificationRecepient.NotificationRecepientMediums.Add(notificationRecepientMedium);
+            Uow.Repository<NotificationRecepient>().Insert(notificationRecepient);
+            await Uow.SaveChangesAsync();
+            return notificationRecepient.Id;
         }
 
         public async Task<NotificationObject> GetByIdForTemplate(long notificationId)
         {
             return await Repository.Query(x => x.Id == notificationId).Include(x => x.NotificationType).ThenInclude(x => x.NotificationTemplates)
-                .Include(x=>x.NotificationRecepients).ThenInclude(x=>x.StatusListEnum)
-                .Include(x => x.NotificationRecepients).ThenInclude(x => x.NotificationRecepientMediums).FirstAsync();
+                .FirstAsync();
         }
 
         private async Task<bool> IsUserSubscribedToMedium(int userId, int tenantId, int mediumId, int notificationType)
         {
-            var result = await Uow.Repository<UserNotificationMedium>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId==notificationType).FirstOrDefaultAsync();
+            var result = await Uow.Repository<TenantSetting>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId==notificationType && x.DeliveryModeId != (short)DeliveryMode.Off).FirstOrDefaultAsync();
             if (result == null)
             {
-                return true;
+                 result = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId == notificationType && x.DeliveryModeId != (short)DeliveryMode.Off).FirstOrDefaultAsync();
+                 if (result != null)
+                     return true;
+                 return false;
             }
-            else
-            {
-                return result.IsActive.Value;
-            }
+            return true;
         }
 
         public async Task<List<NotificationMediumModel>> GetPaged(int pageSize, long lastId, int mediumId, int userId)
@@ -128,7 +128,7 @@ namespace Notification.Service
                 .Select(x => new NotificationMediumModel()
                 {
                     id = x.Id,
-                    payload = !String.IsNullOrEmpty(x.SentTextJson) ? JObject.Parse(x.SentTextJson) : new JObject(),
+                    payload = x.SentTextJson,
                     status = x.NotificationRecepient.StatusListEnum.Name
                 }).ToListAsync();
         }
@@ -234,7 +234,7 @@ namespace Notification.Service
                 .ThenInclude(x => x.StatusListEnum)
                 .FirstOrDefaultAsync();
 
-            return new NotificationMediumModel() { id = result.Id, payload = !String.IsNullOrEmpty(result.SentTextJson) ? JObject.Parse(result.SentTextJson) : new JObject(), status = result.NotificationRecepient.StatusListEnum.Name };
+            return new NotificationMediumModel() { id = result.Id, payload = result.SentTextJson, status = result.NotificationRecepient.StatusListEnum.Name };
         }
 
         public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
@@ -242,11 +242,8 @@ namespace Notification.Service
             var tenantSetting = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId).FirstAsync();
             tenantSetting.TrackingState = TrackingState.Modified;
             tenantSetting.DeliveryModeId = model.deliveryModeId;
+            tenantSetting.DelayedInterval = model.queueTimeout;
             Uow.Repository<TenantSetting>().Update(tenantSetting);
-            var setting = await Uow.Repository<Setting>().Query(x => x.TenantId == tenantId).FirstAsync();
-            setting.TrackingState = TrackingState.Modified;
-            setting.QueueTimeInMinute = model.queueTimeout;
-            Uow.Repository<Setting>().Update(setting);
             await Uow.SaveChangesAsync();
         }
     }

@@ -87,7 +87,7 @@ export const NeedListContent = ({
               <>
                 {/* <h3><span className="text-ellipsis"> {document?.docName}</span></h3> */}
                 <h3 className="text-ellipsis" title={docName}>
-                  <span className="text-ellipsis">{docName}</span>
+                  <span className="text-ellipsis" data-testid="document-name">{docName}</span>
                   {document?.isCustom && (
                     <span
                       className="editicon"
@@ -120,13 +120,13 @@ export const NeedListContent = ({
 
   // rows={6}
   return (
-    <section className="veiw-SelectedTemplate">
+    <section data-testid="veiw-selected-template" className="veiw-SelectedTemplate">
       {renderTitleInputText()}
 
       <div className="mainbody">
         <p>Add or edit details for this document</p>
-        <div className="editer-wrap">
-          <TextArea
+        <div className="editer-wrap" data-testid="doc-message">
+          <TextArea         
             placeholderValue={'Type your message'}
             focus={true}
             textAreaValue={docMessage || ''}
@@ -153,6 +153,7 @@ export const NeedListContent = ({
         <div className="btn-wrap">
           <button
             // disabled={!document?.docMessage}
+            data-testid="review-req-btn"
             onClick={(e) => toggleShowReview(e)}
             className="btn btn-primary"
           >

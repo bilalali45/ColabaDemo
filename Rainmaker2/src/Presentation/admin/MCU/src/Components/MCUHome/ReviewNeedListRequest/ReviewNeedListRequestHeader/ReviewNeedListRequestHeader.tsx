@@ -58,7 +58,9 @@ export const ReviewNeedListRequestHeader = ({
             </button>{" "}
             <button
               disabled={!documentList?.length}
-              onClick={() => saveAsDraft(true)}
+              onClick={() => {
+                saveAsDraft(true);
+              }}
               className="btn btn-primary"
             >
               Save & Close
@@ -90,10 +92,10 @@ export const ReviewNeedListRequestHeader = ({
           </Modal.Body>
           <Modal.Footer>
           <p className="text-center">
-              <Button onClick={closeHandler} variant="secondary">
+              <Button data-testid="needlist-close-popup-button" onClick={closeHandler} variant="secondary">
                 {"Close"}
               </Button>{" "}
-              <Button onClick={() => saveAsDraft(true)} variant="primary">
+              <Button data-testid="needlist-save-popup-button" onClick={() => saveAsDraft(true)} variant="primary">
                 {"Save & Close"} 
               </Button>
             </p>

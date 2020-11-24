@@ -229,7 +229,7 @@ export const ReviewDocumentActivityLog = ({
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
 
-    return <div dangerouslySetInnerHTML={{__html: emailLog.emailText}}></div>;
+    return <div>{emailLog?.emailText}</div>;
   };
 
   useEffect(() => {

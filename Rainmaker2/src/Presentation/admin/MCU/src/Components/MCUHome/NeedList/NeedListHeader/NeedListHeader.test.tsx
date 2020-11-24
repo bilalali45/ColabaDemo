@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, waitForDomChange, fireEvent} from '@testing-library/react';
+import {render, waitForDomChange, fireEvent, waitFor} from '@testing-library/react';
 import App from '../../../../App';
 import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
 import {MockLocalStorage} from '../../../../test_utilities/LocalStoreMock';
@@ -35,4 +35,9 @@ test('should render navigation Links', async () => {
   const backIcon = getByText((content, element) => element.className === "zmdi zmdi-arrow-left")
   expect(backIcon).toBeInTheDocument()
 
+
+  fireEvent.click(backBtn);
+  await waitFor(() => {
+  // expect(backBtn).not.toBeInTheDocument()
+  });
 });

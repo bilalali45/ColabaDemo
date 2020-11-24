@@ -9,8 +9,10 @@ using Notification.Model;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Notification.Common;
 
 namespace Notification.Service
 {
@@ -24,7 +26,7 @@ namespace Notification.Service
         }
         public async Task Run()
         {
-            while (true) 
+            while (true)
             {
                 using (IServiceScope scope = serviceProvider.CreateScope())
                 {
@@ -44,20 +46,18 @@ namespace Notification.Service
                             {
                                 NotificationModel m =
                                     JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                                Setting setting = await notificationService.GetSetting(m.tenantId.Value);
-                                if ((DateTime.UtcNow - m.DateTime.Value).TotalMinutes > setting.QueueTimeInMinute)
-                                    list.Add(m);
+                                NotificationModel c =
+                                    JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+                                if(await SendNotification(m))
+                                    list.Add(c);
                             }
                         }
                         foreach (var item in list)
                         {
-                            TenantSetting tenantSetting = await notificationService.GetTenantSetting(item.tenantId.Value,item.NotificationType);
-                            long id = await notificationService.Add(item,item.userId.Value,item.tenantId.Value,tenantSetting);
-                            await SendNotification(id);
                             await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
                         }
                     }
-                    catch 
+                    catch
                     {
                         // this exception can be ignored
                     }
@@ -77,7 +77,7 @@ namespace Notification.Service
                 List<NotificationModel> list = new List<NotificationModel>();
                 for (int i = 0; i < count; i++)
                 {
-                    RedisValue value = await database.ListGetByIndexAsync(NotificationKey,i);
+                    RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
                     if (!value.IsNullOrEmpty)
                     {
                         NotificationModel m = JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
@@ -94,32 +94,64 @@ namespace Notification.Service
             }
         }
 
-        public async Task SendNotification(long id)
+        public async Task<bool> SendNotification(NotificationModel model)
         {
             using (IServiceScope scope = serviceProvider.CreateScope())
             {
-                INotificationService notificationService =
-                    scope.ServiceProvider.GetRequiredService<INotificationService>();
+                INotificationService notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+                ISettingService settingService = scope.ServiceProvider.GetRequiredService<ISettingService>();
                 IHubContext<ServerHub, IClientHub> context = scope.ServiceProvider.GetRequiredService<IHubContext<ServerHub, IClientHub>>();
-                NotificationObject notificationObject = await notificationService.GetByIdForTemplate(id);
-                foreach (var recep in notificationObject.NotificationRecepients)
+                List<int> doneUsers = new List<int>();
+                foreach (var user in model.UsersToSendList)
                 {
-                    foreach (var medium in recep.NotificationRecepientMediums)
+                    SettingModel setting = (await settingService.GetSettings(model.tenantId.Value,
+                                                                              user)).FirstOrDefault(x=> x.NotificationTypeId == model.NotificationType);
+                    if(setting==null)
+                        doneUsers.Add(user);
+                    else if(setting.DeliveryModeId==(short)DeliveryMode.Off)
+                        doneUsers.Add(user);
+                    else if (setting.DeliveryModeId == (short) DeliveryMode.Express)
                     {
-                        if (medium.NotificationMediumid == (int) Notification.Common.NotificationMedium.InApp)
+                        long recepientId = await notificationService.AddUserNotificationMedium(user,
+                                                                                                              model.Id,
+                                                                                                              setting.DeliveryModeId,
+                                                                                                              setting.NotificationMediumId,
+                                                                                                              setting.NotificationTypeId);
+                        NotificationRecepient recepient = await notificationService.GetRecepient(recepientId);
+                        NotificationMediumModel m = new NotificationMediumModel()
                         {
-                            NotificationMediumModel model = new NotificationMediumModel()
-                            {
-                                id = medium.Id,
-                                payload = string.IsNullOrEmpty(medium.SentTextJson)
-                                    ? new JObject()
-                                    : JObject.Parse(medium.SentTextJson),
-                                status = recep.StatusListEnum.Name
-                            };
-                            await ServerHub.SendNotification(context, recep.RecipientId.Value, model);
-                        }
+                            id = recepient.NotificationRecepientMediums.First().Id,
+                            payload = recepient.NotificationRecepientMediums.First().SentTextJson,
+                            status = recepient.StatusListEnum.Name
+                        };
+                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
+                        doneUsers.Add(user);
+                    }
+                    else if (setting.DeliveryModeId == (short) DeliveryMode.Queued && (DateTime.UtcNow - model.DateTime.Value).TotalMinutes >= setting.DelayedInterval.Value)
+                    {
+                        long recepientId = await notificationService.AddUserNotificationMedium(user,
+                                                                                               model.Id,
+                                                                                               setting.DeliveryModeId,
+                                                                                               setting.NotificationMediumId,
+                                                                                               setting.NotificationTypeId);
+                        NotificationRecepient recepient = await notificationService.GetRecepient(recepientId);
+                        NotificationMediumModel m = new NotificationMediumModel()
+                                                    {
+                                                        id = recepient.NotificationRecepientMediums.First().Id,
+                                                        payload = recepient.NotificationRecepientMediums.First().SentTextJson,
+                                                        status = recepient.StatusListEnum.Name
+                                                    };
+                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
+                        doneUsers.Add(user);
                     }
                 }
+
+                foreach (var item in doneUsers)
+                {
+                    model.UsersToSendList.Remove(item);
+                }
+
+                return model.UsersToSendList.Count <= 0;
             }
         }
     }

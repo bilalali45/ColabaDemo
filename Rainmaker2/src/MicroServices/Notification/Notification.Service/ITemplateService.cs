@@ -4,6 +4,6 @@ namespace Notification.Service
 {
     public interface ITemplateService
     {
-        Task PopulateTemplate(long notificationId);
+        Task<string> PopulateTemplate(long notificationId, int notificationTypeId, int notificationMediumId);
     }
 }

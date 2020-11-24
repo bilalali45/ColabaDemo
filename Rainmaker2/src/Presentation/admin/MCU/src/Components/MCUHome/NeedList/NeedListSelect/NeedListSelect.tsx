@@ -88,8 +88,8 @@ export const NeedListSelect = ({
       myTemplateContainerRef?.current &&
       tenantTemplateContainerRef?.current
     ) {
-      myTemplateContainerRef?.current.scrollTo(0, 0);
-      tenantTemplateContainerRef?.current.scrollTo(0, 0);
+      // myTemplateContainerRef?.current.scrollTo(0, 0);
+      // tenantTemplateContainerRef?.current.scrollTo(0, 0);
     }
   }, [show === true, location.pathname, templates]);
 
@@ -119,7 +119,7 @@ export const NeedListSelect = ({
     if (!templateList || templateList.length === 0) return null;
     return (
       <>
-        <div>
+        <div data-testid="templates">
           <h3>My Templates</h3>
 
           <ul className="checklist" ref={myTemplateContainerRef} 
@@ -131,6 +131,7 @@ export const NeedListSelect = ({
               if (t?.type === MyTemplate) {
                 return (
                   <li
+                  data-testid="my-template"
                     key={t?.id}
                     onMouseEnter={(e:any) => {
                        displayPopover(e, t.docs, t.name);
@@ -172,8 +173,8 @@ export const NeedListSelect = ({
         placement="right"
         container={ref.current}
       >
-        <Popover id="popover-contained" className="addneedlist-popover">
-          <Popover.Title as="h3" className="addneedlist-popover-title">
+        <Popover id="popover-contained" className="addneedlist-popover" data-testid="popup-temp">
+          <Popover.Title as="h3" className="addneedlist-popover-title" >
             {templateName}
           </Popover.Title>
           <Popover.Content>
@@ -196,7 +197,7 @@ export const NeedListSelect = ({
   const TemplatesByTenant = (templateList: Template[]) => {
     if (!templateList || templateList.length === 0) return null;
     return (
-      <>
+      <div data-testid="templatesByTenant">
         <h3>Templates by Tenants</h3>
         <ul className="checklist" ref={tenantTemplateContainerRef}           onScroll={(e) => {
                       hidePopover(e);
@@ -204,7 +205,7 @@ export const NeedListSelect = ({
           {templateList?.map((t: Template) => {
             if (t?.type === TenantTemplate || t?.type === SystemTemplate) {
               return (
-                <li
+                <li data-testid="tenant-template"
                   key={t?.id}
                   onMouseEnter={(e:any) => {
                     displayPopover(e, t.docs, t.name);
@@ -233,7 +234,7 @@ export const NeedListSelect = ({
           })}
         </ul>
         {renderDocsPopover()}
-      </>
+      </div>
     );
   };
   const StartListButton = () => {
@@ -253,7 +254,7 @@ export const NeedListSelect = ({
     } else {
       if (idArray.length > 0) {
         return (
-          <button
+          <button data-testid="continue-with-temp-btn"
             onClick={() => {
               setShow(false);
               addTemplatesDocuments(idArray);
@@ -282,11 +283,11 @@ export const NeedListSelect = ({
       <>
         <Dropdown onToggle={() => setShow(!show)} show={show} drop={dropType} data-testid="addTemplate" className="dropdown">
           {showButton ?
-            <Dropdown.Toggle size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
+            <Dropdown.Toggle data-testid="addTemplateBtn"  size="sm" variant="primary" className="mcu-dropdown-toggle no-caret" id="dropdown-basic">
               Add <span className="btn-icon-right"><em className="zmdi zmdi-plus"></em></span>
             </Dropdown.Toggle> :
 
-            <Dropdown.Toggle size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
+            <Dropdown.Toggle data-testid="add-from-temp-btn" size="sm" style={{ background: 'none', border: 'none', outline: 'none' }} className="mcu-dropdown-toggle no-caret" id="dropdown-basic"  >
               <span className="btn-text">Add from template</span>
             </Dropdown.Toggle>
           }

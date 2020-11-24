@@ -23,13 +23,13 @@ export const NeedListHeader = () => {
 
   return (
     <div className="need-list-header">
-      <div className="need-list-header--left">
+      <div className="need-list-header--left" data-testid="NeedListBackButton">
         <a href="#" className="btn btn-back" onClick={redirectToMVC}>
           <em className="zmdi zmdi-arrow-left"></em> Back
         </a>
       </div>
-      <div className="need-list-header--right">
-        <button data-testid="template-link" onClick={redirectToTemplate} className="btn btn-primary">
+      <div className="need-list-header--right" data-testId="NeedListManageButton">
+        <button onClick={redirectToTemplate} className="btn btn-primary">
           <em className="icon-record"></em> Manage Document Template
         </button>
         {/* <button disabled = {true} className="btn btn-primary" >

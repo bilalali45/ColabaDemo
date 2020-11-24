@@ -20,7 +20,8 @@ interface SelectedDocumentsType {
   setFileInput: Function;
   setFileLimitError: Function;
   fileLimitError: { value: boolean };
-  setCurrentInview?: any
+  setCurrentInview?: any;
+  setFiles: Function
   // filesChange: Function;
 }
 
@@ -31,6 +32,7 @@ interface ViewDocumentType {
   clientName?: string;
   fileId?: string;
   file?: any;
+
 }
 
 export const SelectedDocuments = ({
@@ -38,7 +40,8 @@ export const SelectedDocuments = ({
   setFileInput,
   fileLimitError,
   setFileLimitError,
-  setCurrentInview
+  setCurrentInview,
+  setFiles
 }: // filesChange,
   SelectedDocumentsType) => {
   const [currentDoc, setCurrentDoc] = useState<ViewDocumentType | null>(null);
@@ -57,6 +60,7 @@ export const SelectedDocuments = ({
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRef2 = useRef<HTMLInputElement>(null);
+  const [fileToRemove, setFileToRemove] = useState<any | null>();
   const location = useLocation();
   const history = useHistory();
 
@@ -303,6 +307,12 @@ export const SelectedDocuments = ({
   };
 
 
+  const retryFile = (file:Document) =>{
+    if(file){
+    setFileToRemove(file);
+    }
+    addMore(fileToRemove);
+  }
   // useEffect(() => {
   //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
   //     setDoneVisible(false);
@@ -400,7 +410,7 @@ export const SelectedDocuments = ({
                   toggleFocus={toggleFocus}
                   handleDelete={handleDeleteAction}
                   fileAlreadyExists={fileAlreadyExists}
-                  retry={(fileToRemove) => addMore(fileToRemove)}
+                  retry={(fileToRemove) => retryFile(fileToRemove)}
                   file={f}
                   viewDocument={viewDocument}
                   changeName={changeName}
@@ -419,6 +429,7 @@ export const SelectedDocuments = ({
                   {" "}
                 Add more files
                   <input
+                  data-testid="more-file-input"
                     type="file"
                     accept={FileUpload.allowedExtensions}
                     id="inputFile"

@@ -40,9 +40,23 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
     "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
-    "test-coverage": "react-scripts test --verbose --silent --coverage . --coverageDirectory='coverage'",
+    "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",
     "test-debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/services/test_helpers/*.{ts,tsx}",
+      "!src/store/actions/*.{ts,tsx}",
+      "!src/utils/image_assets/*.{ts,tsx}",
+      "!src/utils/ParamsService.ts",
+      "!src/store/endpoints/*.{ts,tsx}",
+      "!src/test_utilities/*.{ts, tsx}",
+      "!src/index.tsx",
+      "!src/serviceWorker.ts", 
+      "!src/shared/Components/DocumentView/DocumentView.tsx"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"

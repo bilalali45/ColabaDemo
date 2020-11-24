@@ -1,0 +1,73 @@
+@import './theme-variables';
+
+@import './bootstrap/functions',
+        './bootstrap/mixins',
+        './bootstrap/variables',
+        './bootstrap/grid',
+        './bootstrap/utilities',
+        './bootstrap/tables';
+
+
+//@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+//@import './bootstrap/bootstrap.scss';
+
+//Function
+@import './functions/color',
+        './functions/fontFamily',
+        './functions/fontSizes';
+
+// Mixins
+@import 'mixins/arrow',
+        'mixins/border-radius',
+        'mixins/rotate',
+        'mixins/scale',
+        'mixins/skew',
+        'mixins/gradient',
+        'mixins/translate',
+        'mixins/perspective',        
+        'mixins/box-sizing',
+        'mixins/transition',
+        'mixins/transform',
+        'mixins/transform-style',
+        'mixins/transform-origin',
+        'mixins/backface-visibility',
+        'mixins/scrollbar',
+        'mixins/headings',
+        'mixins/font',
+        'mixins/placeholder',
+        
+        // MEDIA QUERIES
+        'mixins/mediaquery-custom',
+        'mixins/mediaquery-desktop',
+        'mixins/mediaquery-tablet',
+        'mixins/mediaquery-mobile';
+
+// Components
+@import './components/general',
+        './components/settings-header',
+        './components/settings-body',
+        './components/settings-sidebar',
+        './components/settings-content-area',
+        './components/settings-side-navigation',
+        './components/settings-accordion',
+        './components/settings-info-display',
+        './components/settings-table',
+        './components/settings-notifications',
+        './components/settings-accordion-signable',        
+        './components/settings-add-docs-popup',
+        './components/settings-list-alert',
+        './components/settings-data-not-found',
+        './components/settings-nav-pills',
+        './components/settings-form-controls',
+        './components/settings-tokenpopup',
+        './components/settings-footer';
+
+// Pages
+@import './components/settings-request-email-templates',
+        './components/settings-manage-doc-temp',
+        './components/settings-assigned-role',
+        './components/settings-profile',
+        './components/settings-manage-users',
+        './components/settings-loan-origination-system',
+        './components/settings-create-email-templates';

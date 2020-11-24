@@ -1,0 +1,29 @@
+.manage-doc-temp{
+
+    &-body{
+        .settings__list-alert{
+            max-width: 400px;
+        }
+        .settings__data-not-found{
+            max-width: 400px;
+            width: auto;
+            float: left;
+            padding: 25px;
+        }
+    }
+
+    &-heading{
+        &.h5{
+            @include font(500,1,'sm','base');
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+    }
+    
+    .rename-spinner{
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+}
+

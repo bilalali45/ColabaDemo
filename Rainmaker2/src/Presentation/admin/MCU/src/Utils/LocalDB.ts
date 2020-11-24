@@ -16,11 +16,11 @@ export class LocalDB {
 
   //#region Local DB get methods
   static getAuthToken() {
-    return this.decodeString(localStorage.getItem('token'));
+    return this.decodeString(localStorage.getItem('Rainmaker2Token'));
   }
 
   static getRefreshToken() {
-    return this.decodeString(localStorage.getItem('refreshToken'));
+    return this.decodeString(localStorage.getItem('Rainmaker2RefreshToken'));
   }
 
   static getLoginDevUserName() {
@@ -32,7 +32,7 @@ export class LocalDB {
   }
 
   static getUserPayload() {
-    let payload = this.decodeString(localStorage.getItem('payload'));
+    let payload = this.decodeString(localStorage.getItem('TokenPayload'));
     if (payload) {
       return JSON.parse(payload);
     }
@@ -61,12 +61,18 @@ export class LocalDB {
   //#region Local DB Post Methods
   static storeTokenPayload(payload: any) {
     if (!payload) return;
-    localStorage.setItem('payload', this.encodeString(JSON.stringify(payload)));
+    localStorage.setItem(
+      'TokenPayload',
+      this.encodeString(JSON.stringify(payload))
+    );
   }
 
   static storeAuthTokens(token: string, refreshToken: string) {
-    localStorage.setItem('token', this.encodeString(token));
-    localStorage.setItem('refreshToken', this.encodeString(refreshToken));
+    localStorage.setItem('Rainmaker2Token', this.encodeString(token));
+    localStorage.setItem(
+      'Rainmaker2RefreshToken',
+      this.encodeString(refreshToken)
+    );
   }
 
   public static checkAuth(): boolean | string {
@@ -82,7 +88,6 @@ export class LocalDB {
         return false;
       }
       if (decodeCacheToken.exp > decodeAuth.exp) {
-        console.log('Cache token is going to validate');
         return false;
       }
     }
@@ -109,7 +114,7 @@ export class LocalDB {
 
   //#region Remove Auth
   static removeAuth() {
-    let items = ['token', 'payload', 'refreshToken'];
+    let items = ['Rainmaker2Token', 'TokenPayload', 'Rainmaker2RefreshToken'];
     for (const item of items) {
       localStorage.removeItem(item);
     }

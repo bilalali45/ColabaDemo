@@ -99,7 +99,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }
 
     const addDocumentToList = async (doc: Document, type: string) => {
-
         try {
             let success = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
             if (success) {
@@ -113,6 +112,7 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
 
     const setCurrentTemplateDocs = async (template: any) => {
+       
         if (!currentTemplate) return '';
         setLoaderVisible(!loaderVisible);
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
@@ -141,9 +141,9 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }
 
     const renameTemplate = async (value: string) => {
-        // if (!nameTest.test(value.trim())) {
-        //     return;
-        // }
+        if (!nameTest.test(value.trim())) {
+            return;
+        }
 
         if (value === currentTemplate?.name) {
             toggleRename();

@@ -32,38 +32,39 @@ import {
   enableBrowserPrompt,
   disableBrowserPrompt
 } from '../../../../Utils/helpers/Common';
+import { RequestEmailTemplateActionsType } from '../../../../Store/reducers/RequestEmailTemplateReducer';
+import { RequestEmailTemplate } from '../../../../Entities/Models/RequestEmailTemplate';
 
 export const NewNeedList = () => {
-  const [
-    currentDocument,
-    setCurrentDocument
-  ] = useState<TemplateDocument | null>(null);
-  const [allDocuments, setAllDocuments] = useState<TemplateDocument[]>([]);
-  const [draftDocuments, setDraftDocuments] = useState<TemplateDocument[]>([]);
-  const [customDocuments, setCustomDocuments] = useState<TemplateDocument[]>(
-    []
-  );
+
   const {state, dispatch} = useContext(Store);
-  const [templateName, setTemplateName] = useState<string>('');
-  const [showReview, setShowReview] = useState<boolean>(false);
-  const [requestSent, setRequestSent] = useState<boolean>(false);
-  const [currentDocumentIndex, setCurrentDocumentIndex] = useState<number>(0);
   const templateManager: any = state?.templateManager;
   const needListManager: any = state?.needListManager;
+  const emailTemplateManger: any = state.requestEmailTemplateManager;
   const isDocumentDraft = templateManager?.isDocumentDraft;
   const emailBody = templateManager?.emailContent;
   const templateIds = needListManager?.templateIds || [];
   const loanData = needListManager?.loanInfo;
   const categoryDocuments = templateManager?.categoryDocuments;
   const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
-  const selectedTemplateDocuments: TemplateDocument[] =
-    templateManager?.selectedTemplateDocuments || [];
+  const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
   const selectedIds: string[] = needListManager?.templateIds;
   const loanInfo: string[] = needListManager?.loanInfo;
   const isDraft: string = needListManager?.isDraft;
   const templates: Template[] = templateManager?.templates;
+  const emailContent: any = emailTemplateManger?.emailContent;
+  const selectedEmailTemplate = emailTemplateManger.selectedEmailTemplate;
+
+
+  const [currentDocument,setCurrentDocument] = useState<TemplateDocument | null>(null);
+  const [allDocuments, setAllDocuments] = useState<TemplateDocument[]>([]);
+  const [draftDocuments, setDraftDocuments] = useState<TemplateDocument[]>([]);
+  const [customDocuments, setCustomDocuments] = useState<TemplateDocument[]>([]);
+  const [templateName, setTemplateName] = useState<string>('');
+  const [showReview, setShowReview] = useState<boolean>(false);
+  const [requestSent, setRequestSent] = useState<boolean>(false);
+  const [currentDocumentIndex, setCurrentDocumentIndex] = useState<number>(0);
   const [showSendButton, setShowSendButton] = useState<boolean>(true);
-  const emailContent: string = templateManager?.emailContent;
   const [documentHash, setDocumentHash] = useState<string>();
   const [emailTemplate, setEmailTemplate] = useState<string>();
   const [documentsName, setDocumentName] = useState<string>();
@@ -89,11 +90,14 @@ export const NewNeedList = () => {
 
   useEffect(() => {
     getDocumentsName();
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEmailContent,
+      payload: null
+    });
+    dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: false})
   }, [allDocuments?.length]);
 
-  useEffect(() => {
-    setDeafultText();
-  }, [documentsName]);
+  
 
   useEffect(() => {
     if (allDocuments) {
@@ -131,17 +135,16 @@ export const NewNeedList = () => {
     setTemplateName('');
     dispatch({type: TemplateActionsType.SetTemplates, payload: null});
     dispatch({type: NeedListActionsType.SetTemplateIds, payload: null});
-    dispatch({type: TemplateActionsType.SetEmailContent, payload: null});
+    dispatch({type: RequestEmailTemplateActionsType.SetEmailContent, payload: null});
     dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: null});
-    dispatch({
-      type: TemplateActionsType.SetSelectedTemplateDocuments,
-      payload: null
-    });
-    dispatch({
-      type: TemplateActionsType.SetCurrentCategoryDocuments,
-      payload: null
-    });
+    dispatch({type: TemplateActionsType.SetSelectedTemplateDocuments,payload: null});
+    dispatch({type: TemplateActionsType.SetCurrentCategoryDocuments,payload: null});
     dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: null});
+    dispatch({type: RequestEmailTemplateActionsType.SetDraftEmail, payload: null});
+    dispatch({type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: null});
+    dispatch({type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: null});
+    dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: false})
+    dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: false})
   };
 
   const fetchTemplateDocs = (idArray: string[]) => {
@@ -224,6 +227,7 @@ export const NewNeedList = () => {
 
     let data: any = [...draftDocuments, ...customDocuments, ...allTemplateDocs];
     setAllDocuments(data);
+    dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: true})
 
     dispatch({
       type: TemplateActionsType.SetSelectedTemplateDocuments,
@@ -237,7 +241,7 @@ export const NewNeedList = () => {
     let documents: any = await NewNeedListActions.getDraft(
       LocalDB.getLoanAppliationId()
     );
-    const data = documents?.map((obj: any) => ({
+    const data = documents?.draftDocuments?.map((obj: any) => ({
       ...obj,
       isRejected: false,
       localId: v4()
@@ -246,6 +250,10 @@ export const NewNeedList = () => {
     dispatch({
       type: TemplateActionsType.SetSelectedTemplateDocuments,
       payload: data
+    });
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetDraftEmail,
+      payload: documents.draftEmail
     });
     setRequestSent(false);
   };
@@ -292,6 +300,7 @@ export const NewNeedList = () => {
     let newDocs = [...allDocuments, newDoc];
     setCustomDocuments([...customDocuments, newDoc]);
     setAllDocuments(newDocs);
+    dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: true})
     dispatch({
       type: TemplateActionsType.SetSelectedTemplateDocuments,
       payload: newDocs
@@ -305,14 +314,20 @@ export const NewNeedList = () => {
   };
 
   const saveAsDraft = async (toDraft: boolean) => {
-    let body =
-      toDraft === false ? emailContent?.replace(/\n/g, '<br />') : emailContent;
-    await NewNeedListActions.saveNeedList(
-      LocalDB.getLoanAppliationId(),
-      toDraft,
-      body || '',
-      allDocuments
-    );
+    let emailData : any = {};
+    if(emailContent === null && selectedEmailTemplate){     
+      emailData.emailTemplateId = selectedEmailTemplate.id; 
+      emailData.toAddress = null;
+      emailData.fromAddress = null;
+      emailData.ccAddress = null;
+      emailData.subject = null;
+      emailData.emailBody = null;
+
+    }else{
+      emailData = emailContent;
+    }
+   // let body = toDraft === false ? emailContent?.replace(/\n/g, '<br />') : emailContent;
+    await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
     if (toDraft) {
       history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
     } else {
@@ -349,6 +364,7 @@ export const NewNeedList = () => {
         return pt;
       });
     });
+    dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: true})
     setCurrentDocument(doc);
     enableBrowserPrompt();
   };
@@ -395,6 +411,7 @@ export const NewNeedList = () => {
     await setCustomDocuments(filter);
     await setDraftDocuments(filter);
     await setAllDocuments(filter);
+    dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: true})
     dispatch({
       type: TemplateActionsType.SetIsDocumentDraft,
       payload: {requestId: null}
@@ -412,16 +429,19 @@ export const NewNeedList = () => {
     setEmailTemplate(res);
   };
 
+
   const getDocumentsName = () => {
     if (!allDocuments) return;
-    let names: string = '';
-
+    let names: string = "<ul>";
+      
     for (let i = 0; i < allDocuments.length; i++) {
-      names += '-' + allDocuments[i].docName;
-      if (i != allDocuments.length - 1) names = names + ',';
+        names += "<li>" + allDocuments[i].docName+"</li>";
+        if (i != allDocuments.length - 1)
+        names = names + "\n";
     }
-    setDocumentName(names);
-  };
+    names += "</ul>"
+    setDocumentName(names)
+}
 
   const setDeafultText = () => {
     let str: string = '';
@@ -437,15 +457,15 @@ export const NewNeedList = () => {
       // .replace('{mcu}', mcuName); because we will provide Business Unit Name from BE while emailing
       enableBrowserPrompt();
       setDefaultEmail(str);
-      dispatch({
-        type: TemplateActionsType.SetEmailContent,
-        payload: str
-      });
+      // dispatch({
+      //   type: RequestEmailTemplateActionsType.SetEmailContent,
+      //   payload: str
+      // });
     }
   };
 
   return (
-    <main className="NeedListAddDoc-wrap">
+    <main data-testid="newNeedList" className="NeedListAddDoc-wrap">
       {/* <NewNeedListHeader
                 saveAsDraft={saveAsDraft} /> */}
       <ReviewNeedListRequestHeader

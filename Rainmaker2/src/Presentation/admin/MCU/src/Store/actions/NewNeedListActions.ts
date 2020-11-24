@@ -5,6 +5,7 @@ import {DocumentRequest} from '../../Entities/Models/DocumentRequest';
 import {TemplateDocument} from '../../Entities/Models/TemplateDocument';
 import {debug} from 'console';
 import {AxiosResponse} from 'axios';
+import { RequestEmailTemplate } from '../../Entities/Models/RequestEmailTemplate';
 
 export type DocumentsWithTemplateDetails = {
   id: string;
@@ -41,11 +42,10 @@ export class NewNeedListActions {
   static async saveNeedList(
     loanApplicationId: string,
     isDraft: boolean,
-    emailText: string,
+    emailDetail: RequestEmailTemplate,
     documents: any[]
   ) {
     let url = Endpoints.NewNeedList.POST.save(isDraft);
-
     let mappedDocs = documents.map((d) => {
       return {
         typeId: d.typeId,
@@ -56,18 +56,20 @@ export class NewNeedListActions {
       };
     });
 
+    
+
     let requestData = {
       loanApplicationId: parseInt(loanApplicationId),
       requests: [
         {
-          message: emailText,
+          email: emailDetail,
           documents: mappedDocs
         }
       ]
     };
     try {
       let res = await Http.post(url, requestData);
-      return res.data;
+      return res.status;
     } catch (error) {
       console.log(error);
     }

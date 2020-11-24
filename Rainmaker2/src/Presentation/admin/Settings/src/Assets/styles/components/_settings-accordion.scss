@@ -1,0 +1,75 @@
+.settings__accordion{
+    padding-top: 14px;
+
+    &-panel{
+        display: block;
+    }
+
+    &-header{
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+        @include transition(all 0.5s ease-out);
+        position: relative;
+
+        &::after{
+            content: '\f2f9';
+            display: inline-block;
+            font: normal 14px/1 'Material-Design-Iconic-Font';
+            font-size: fontSize('lg')*1.4;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: color('secondry');
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            @include transition(all 0.2s ease-out);
+        }
+
+        svg{
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        a{
+            display: block;
+            padding: 12px 25px;
+            text-decoration: none;
+            color: color('sideNavText');
+            @include font(normal, 1.4, 'nr', 'base');
+            span{
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        &.active{
+            span{
+                font-weight: 500;
+            }
+
+            &::after{
+                transform: translateY(-50%) rotate(180deg);
+                color: color('primary');
+            }
+        }
+    }
+
+    &-body{
+        .settings__side-navigation{
+            ul{
+                li{
+                    a{
+                        padding: 15px 25px 15px 50px;
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -1,11 +1,11 @@
 export class LocalDB {
   //#region Local DB get methods
   static getAuthToken() {
-    return 'token';
+    return 'Rainmaker2Token';
   }
 
   static getRefreshToken() {
-    return 'refreshToken';
+    return 'Rainmaker2RefreshToken';
   }
 
   static getUserPayload() {
@@ -16,11 +16,19 @@ export class LocalDB {
     return 3;
   }
 
+
+  static getPortalReferralUrl() {
+    return 'PortalReferralUrl';
+  }
+
   static removeAuth() {}
 
   static setLoanAppliationId(loanApplicationId: string) {}
 
   public static checkAuth(): boolean | string {
     return true;
+  }
+
+  public static encodeString(value: string) {
   }
 }

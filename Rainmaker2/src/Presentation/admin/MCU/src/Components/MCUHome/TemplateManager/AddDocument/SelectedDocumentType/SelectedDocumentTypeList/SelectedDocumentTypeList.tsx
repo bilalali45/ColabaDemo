@@ -35,6 +35,7 @@ export const SelectedDocumentTypeList = ({
   const location = useLocation();
 
   const filterUsedDocs = (templateDocs: any[]) => {
+    
     return documentList?.filter(
       (cd: any) =>
         !templateDocs?.find((td: any) => {

@@ -14,8 +14,11 @@
 
 namespace Notification.Entity.Models
 {
-    // NotificationMedium
+    using System;
+    using System.Collections.Generic;
 
+    // NotificationMedium
+    
     public partial class NotificationMedium : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
@@ -35,17 +38,12 @@ namespace Notification.Entity.Models
         /// Child TenantSettings where [TenantSettings].[NotificationMediumId] point to this entity (FK_TenantSettings_NotificationMedium)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TenantSetting> TenantSettings { get; set; } // TenantSettings.FK_TenantSettings_NotificationMedium
-        /// <summary>
-        /// Child UserNotificationMediums where [UserNotificationMedium].[NotificationMediumId] point to this entity (FK_UserNotificationMedium_NotificationMedium_Id)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<UserNotificationMedium> UserNotificationMediums { get; set; } // UserNotificationMedium.FK_UserNotificationMedium_NotificationMedium_Id
 
         public NotificationMedium()
         {
             NotificationRecepientMediums = new System.Collections.Generic.HashSet<NotificationRecepientMedium>();
             NotificationTemplates = new System.Collections.Generic.HashSet<NotificationTemplate>();
             TenantSettings = new System.Collections.Generic.HashSet<TenantSetting>();
-            UserNotificationMediums = new System.Collections.Generic.HashSet<UserNotificationMedium>();
             InitializePartial();
         }
 

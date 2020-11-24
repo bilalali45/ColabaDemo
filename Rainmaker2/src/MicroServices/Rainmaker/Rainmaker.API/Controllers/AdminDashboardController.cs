@@ -47,5 +47,6 @@ namespace Rainmaker.API.Controllers
             var loanApplication = await loanApplicationService.GetAdminLoanSummary(loanApplicationId);
             return Ok(loanApplication);
         }
+
     }
 }

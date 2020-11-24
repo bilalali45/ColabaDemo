@@ -41,5 +41,9 @@ namespace DocumentManagement.Entity
         public string requestId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        public string fromAddress { get; set; }
+        public string toAddress { get; set; }
+        public string CCAddress { get; set; }
+        public string subject { get; set; }
     }
 }

@@ -1153,7 +1153,7 @@ namespace DocumentManagement.Tests
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync(true);
-            mockRainMakerService.Setup(x=>x.SendBorrowerEmail(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
+            mockRainMakerService.Setup(x=>x.SendBorrowerEmail(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
             mockRainMakerService.Setup(x => x.UpdateLoanInfo(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>()));
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));

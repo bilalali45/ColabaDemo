@@ -63,13 +63,13 @@ export const DocumentRequest = () => {
     return (
 
 
-        <main className="dr-upload" data-testid="task-list">
+        <main className="dr-upload" data-testid="task-list-header">
             <section className="dr-upload--header">
                 <div className="row">
                     <article className="col-sm-12">
-                        <div className="dr-head">
+                        <div className="dr-head" data-testid="task-list-header-adaptive">
                             <h2 className="heading-h2"> 
-                            {isMobile?.value && currentInView === 'documentUploadView' && <div className="dr-head-back-arrow" onClick={() => setCurrentInView('documetsRequired')}><span><i className="zmdi zmdi-arrow-left"></i>Back</span></div>} 
+                            {isMobile?.value && currentInView === 'documentUploadView' && <div data-testid="pending-docs-heading" className="dr-head-back-arrow" onClick={() => setCurrentInView('documetsRequired')}><span><i className="zmdi zmdi-arrow-left"></i>Back</span></div>} 
                             Task List</h2>
                             {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> {pendingDocsCount == 1 ? "item" : "items"} to complete</p> : ''}
                         </div>
@@ -77,7 +77,7 @@ export const DocumentRequest = () => {
                 </div>
             </section>
 
-            {!isMobile.value ?
+            {!isMobile?.value ?
                 desktopView() : mobileView()
             }
 

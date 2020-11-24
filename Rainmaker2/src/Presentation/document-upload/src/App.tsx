@@ -17,13 +17,17 @@ declare global {
   interface Window {
     envConfig: any;
     isMobile: any;
-    width: any
+    width: any;
+    Authorization: any
   }
 }
 window.envConfig = window.envConfig || {};
 function getFaviconEl() {
   return document.getElementById("favicon");
 }
+
+
+
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -60,6 +64,8 @@ const App = () => {
   const history = useHistory()
 
   useEffect(() => {
+    window.resizeTo(400, 600); 
+    
     console.log("Document Management App Version", "0.1.3");
     authenticate();
     // component unmount
@@ -69,13 +75,15 @@ const App = () => {
   }, []);
 
   const authenticate = async () => {
-    let isAuth = await UserActions.authorize();
-    if (isAuth) {
-      setAuthenticated(Boolean(isAuth));
+    if (process.env.NODE_ENV === "development") {
+      await window.Authorization.authorize();
+    }
+    if (Auth.getAuth()) {
+      setAuthenticated(Boolean(true));
       getCompanyLogoSrc();
       setFavIcon();
       getFooterText();
-      addExpiryListener();
+      //addExpiryListener();
       keepAliveParentApp();
     } else {
       Auth.removeAuth();
@@ -96,7 +104,7 @@ const App = () => {
     let logoSrc = await LaonActions.getCompanyLogoSrc(applicationId);
     let logo = `data:image/png;base64,${logoSrc}`
     setcompanyLogoSrc(logo);
-  }
+  };
 
   const setFavIcon = async () => {
     let applicationId = Auth.getLoanAppliationId();
@@ -107,13 +115,6 @@ const App = () => {
       favicon.href = logo;
     }
   }
-
-
-  const addExpiryListener = () => {
-    if (Auth.getUserPayload()) {
-      UserActions.addExpiryListener(Auth.getUserPayload());
-    }
-  };
 
   const keepAliveParentApp = () => {
     if (process.env.NODE_ENV === "production") {
@@ -127,6 +128,7 @@ const App = () => {
     window.onbeforeunload = null;
     Auth.removeAuth();
     if (window.open) {
+      debugger
       window.open("/Account/LogOff", "_self");
     }
   };
@@ -164,8 +166,6 @@ const App = () => {
       </Router>
       {
         isMobile?.value?null:<RainsoftRcFooter content={footerText} />
-
-        
       }
       
     </div>

@@ -41,6 +41,10 @@ namespace Rainmaker.Model
         public int loanApplicationId { get; set; }
         public string emailBody { get; set; }
         public int activityForId { get; set; }
+        public string toAddess { get; set; }
+        public string ccAddress { get; set; }
+        public string fromAddress { get; set; }
+        public string subject { get; set; }
     }
     public class GetLoanApplicationModel
     {

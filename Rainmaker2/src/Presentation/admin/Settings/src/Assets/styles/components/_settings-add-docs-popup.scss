@@ -1,0 +1,128 @@
+.settings__add-docs-popup{
+    background-color: color('widgetBg');
+    box-shadow: $box-shadow;
+    height: 400px;
+    width: 700px;
+    max-width: 100%;
+    position: fixed;
+    top: 21%;
+    right: 20px;
+    z-index: 9;
+
+    @include headings{
+        text-transform: uppercase;
+    }
+
+    .h4{        
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+    
+    &-wrap{
+        display: flex;
+        display: -webkit-flex;
+        height: 100%;
+    }
+
+    &--sidebar{
+        @include font(normal,1.2,'nr','base');
+        padding: 2px;
+        flex: 0 0 35%;
+        width: 35%;
+        overflow-y: auto;
+        @include scrollbar();
+
+        >ul{
+            @extend .list-style-none;
+            >li{
+                a{
+                    display: block;
+                    text-decoration: none;
+                    padding: 12px 12px;
+                    color: color('base');
+                    @extend .text-ellipsis;
+                }
+                &.active{
+                    a{
+                        background-color: color('focusedListBg');  
+                        font-weight: 500;       
+                        color: color('primary');               
+                    }
+                }
+                &:first-child{
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
+        & + .settings__add-docs-popup--content{
+            border-left: 1px solid color('border');
+        }
+    }
+
+    &--content{
+        flex: 0 0 65%;
+        width: 65%;
+    }
+
+    &--search{
+        display: flex;
+        display: -webkit-flex;
+        padding: 8px 5px;
+        border-bottom: 1px solid color('border');
+        
+        &-input{
+            padding: 5px 20px;
+            width: 100%;
+            border: none;
+            @include font(normal,1.2,'nr','base');
+            @include placeholder{
+                color: color('placeholder');
+            }
+        }
+
+        &-submit{
+            font-size: fontSize('searchIcon');
+            color: color('primary');
+            background-color: transparent;
+            padding: 2px 15px;
+            line-height: 22px;
+            border: none;
+        }
+    }
+
+    &--search-details{
+        padding: 20px 25px;
+        height: calc(100% - 44px);
+        @include font(normal,1.2,'nr','base');
+        overflow-y: auto;
+        @include scrollbar();
+    }
+
+    &--search-data{
+        ul{
+            @extend .list-style-none;
+            >li{
+                a{
+                    display: block;
+                    text-decoration: none;
+                    padding: 8px 0px;
+                    color: color('base');
+                    @extend .text-ellipsis;
+                }
+                &.active{
+                    a{
+                        background-color: color('focusedListBg');  
+                        font-weight: 500;       
+                        color: color('primary');               
+                    }
+                }
+            }
+        }
+    }
+
+} 
+
+.addDocForMyTemplates .settings__add-docs-popup{
+    
+}

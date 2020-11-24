@@ -16,7 +16,7 @@ export class Activity extends React.Component {
                         let isMobile = loan.isMobile;
                         return (
                             <React.Fragment>
-                                {isMobile.value && <section className="compo-loan-status compo-loan-status-mobile"><LoanStatus /></section>}
+                                {isMobile?.value && <section className="compo-loan-status compo-loan-status-mobile"><LoanStatus /></section>}
                             </React.Fragment>
                         )
                     }}

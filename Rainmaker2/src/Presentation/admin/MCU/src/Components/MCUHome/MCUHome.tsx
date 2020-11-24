@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 
 import { NeedList } from './NeedList/NeedList';
-import { AddNeedList } from './NeedList/Add/AddNeedList';
 import { TemplateManager } from './TemplateManager/TemplateManager';
 import {
   Route,
@@ -20,7 +19,7 @@ import { ParamsService } from '../../Utils/helpers/ParamService';
 
 export const MCUHome = () => {
   const { state, dispatch } = useContext(Store);
-  const { loanApplicationId } = useParams();
+  const { loanApplicationId } : any = useParams();
   const location = useLocation();
   ParamsService.storeParams(loanApplicationId);
   useEffect(() => {
@@ -38,7 +37,7 @@ export const MCUHome = () => {
   }, [])
 
   return (
-    <section className="home-layout">
+    <section data-testid="mcu-home" className="home-layout">
       <Switch>
         <Redirect
           exact

@@ -1,0 +1,75 @@
+{
+  "name": "settings",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/Setting",
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
+    "@hookform/error-message": "^0.0.4",
+    "@microsoft/signalr": "^3.1.7",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/axios": "^0.14.0",
+    "@types/draft-js": "^0.10.44",
+    "@types/draftjs-to-html": "^0.8.0",
+    "@types/html-to-draftjs": "^1.4.0",
+    "@types/jest": "^24.9.1",
+    "@types/jwt-decode": "^2.2.1",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-draft-wysiwyg": "^1.13.0",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/universal-cookie": "^2.2.0",
+    "@types/uuid": "^8.0.1",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.19",
+    "node-sass": "^4.14.1",
+    "npm": "^6.14.6",
+    "rainsoft-js": "^1.0.47",
+    "rainsoft-rc": "^1.0.18",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "react-draft-wysiwyg": "^1.14.5",
+    "react-file-viewer": "^1.2.1",
+    "react-hook-form": "^6.9.6",
+    "react-idle-timer": "^4.2.12",
+    "react-multi-email": "^0.5.3",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-spring": "^8.0.27",
+    "typescript": "~3.8.0",
+    "universal-cookie": "^4.0.3",
+    "uuid": "^8.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
+    "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
+    "test-coverage": "react-scripts test --verbose --silent --coverage . --coverageDirectory='coverage'",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.157",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
+  }
+}

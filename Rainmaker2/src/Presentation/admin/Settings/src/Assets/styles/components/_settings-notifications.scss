@@ -1,0 +1,17 @@
+.notification-table{
+
+    .settings__table--row{
+        .settings__table--td{
+            &:first-child{
+                width: 30%;
+            }
+
+            .info-display{
+                &.float-right{
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+
+}

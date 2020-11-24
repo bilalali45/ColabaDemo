@@ -1,5 +1,5 @@
 window.envConfig = {
-  API_BASE_URL: 'https://qamaingateway.rainsoftfn.com'
+  API_BASE_URL: 'https://172.16.100.17:9088',
 };
 
 let scriptElement = document.getElementById('rs-alert-lib');

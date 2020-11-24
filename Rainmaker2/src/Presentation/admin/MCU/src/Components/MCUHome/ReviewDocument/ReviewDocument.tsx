@@ -388,11 +388,11 @@ export const ReviewDocument = () => {
       setHaveDocuments(false);
     }
 
-    window.addEventListener('keydown', onMoveArrowKeys);
+    // window.addEventListener('keydown', onMoveArrowKeys);
 
-    return () => {
-      window.removeEventListener('keydown', onMoveArrowKeys);
-    };
+    // return () => {
+    //   window.removeEventListener('keydown', onMoveArrowKeys);
+    // };
   }, [currentDocument, loading, currentFileIndex]);
 
   useEffect(() => {
@@ -502,7 +502,7 @@ export const ReviewDocument = () => {
             currentDocument.files &&
             currentDocument.files.length ? (
               <div className="review-document-body--content col-md-8">
-                <div className="doc-view-mcu">
+                <div className="doc-view-mcu" data-testid="document-preview">                 
                   <DocumentView
                     loading={loading}
                     id={currentDocument.id}

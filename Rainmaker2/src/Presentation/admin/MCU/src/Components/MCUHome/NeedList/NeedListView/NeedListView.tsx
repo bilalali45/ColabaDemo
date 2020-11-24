@@ -57,7 +57,6 @@ export const NeedListView = () => {
   const [syncTitleClass, setSyncTitleClass] = useState<string>(notSyncClass);
 
   var isError = false;
-
   useEffect(() => {
     if(!needListManager.hasOwnProperty('needListFilter')){
         fetchDashBoardSettings()
@@ -67,6 +66,10 @@ export const NeedListView = () => {
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
     checkIsByteProAuto();
   }, []);
+
+  useEffect(() => {
+    console.log('in here ----------------------------------------------- ', isDocumentDraft)
+  }, [isDocumentDraft?.value])
 
   useEffect(() => {
     if (templates && templates?.length) {
@@ -333,6 +336,7 @@ export const NeedListView = () => {
 
   const checkIsDocumentDraft = async (id: string) => {
     let res: any = await TemplateActions.isDocumentDraft(id);
+    console.log('in here you ++++++++++++++++++++++++++++', res);
     dispatch({type: TemplateActionsType.SetIsDocumentDraft, payload: res});
   };
 
@@ -494,7 +498,7 @@ export const NeedListView = () => {
   } 
   
   return (
-    <div className="need-list-view">
+    <div className="need-list-view" data-testid="need-list-view">
       <NeedListViewHeader
         toggleCallBack={togglerHandler}
         templateList={templates}

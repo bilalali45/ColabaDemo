@@ -27,6 +27,19 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
   const getFileInput = (fileInputEl: HTMLInputElement) => {
     setFileInput(fileInputEl);
   };
+
+  const setFiles = (files, fileToRemnove) => {
+    if (files) {
+      let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
+      DocumentUploadActions.updateFiles(
+        files,
+        updatedFiles,
+        dispatch,
+        setFileLimitError
+      );
+    }
+  }
+  
   const showFileExplorer = (fileToRemnove: Document | null = null,fileInput2?:any) => {
     if(fileInput2?.current){
       let files =
@@ -71,18 +84,19 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
     }
     if (fileInput) {
       fileInput.click();
-      fileInput.onchange = async (e: any) => {
-        let files = e?.target?.files;
-        if (files) {
-          let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
-          DocumentUploadActions.updateFiles(
-            files,
-            updatedFiles,
-            dispatch,
-            setFileLimitError
-          );
-        }
-      };
+      // fileInput.onchange = async (e: any) => {
+      //   let files = e?.target?.files;
+      //   if (files) {
+      //     let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
+      //     DocumentUploadActions.updateFiles(
+      //       files,
+      //       updatedFiles,
+      //       dispatch,
+      //       setFileLimitError
+      //     );
+      //   }
+      // };
+
     }
     }
     
@@ -135,6 +149,7 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
             ) : (
               <>
                 <SelectedDocuments
+                  setFiles={setFiles}
                   fileLimitError={fileLimitError}
                   setFileLimitError={setFileLimitError}
                   addMore={showFileExplorer}

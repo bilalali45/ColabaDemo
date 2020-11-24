@@ -1,21 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import {SignalRHub} from 'rainsoft-js';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { SignalRHub } from 'rainsoft-js';
 import IdleTimer from 'react-idle-timer';
 
 import './App.scss';
-import {MCUHome} from './Components/MCUHome/MCUHome';
-import {RainMakerFooter} from './Components/RainMakerFooter/RainMakerFooter';
-import {StoreProvider} from './Store/Store';
-import {UserActions} from './Store/actions/UserActions';
-import {LocalDB} from './Utils/LocalDB';
+import { MCUHome } from './Components/MCUHome/MCUHome';
+import { RainMakerFooter } from './Components/RainMakerFooter/RainMakerFooter';
+import { StoreProvider } from './Store/Store';
+import { UserActions } from './Store/actions/UserActions';
+import { LocalDB } from './Utils/LocalDB';
 
-import {Authorized} from './Components/Authorized/Authorized';
+import { Authorized } from './Components/Authorized/Authorized';
 
 let baseUrl: any = window?.envConfig?.API_BASE_URL;
 declare global {
   interface Window {
     envConfig: any;
+    Authorization: any;
   }
 }
 window.envConfig = window.envConfig || {};
@@ -35,11 +36,15 @@ const App = () => {
 
   const authenticate = async () => {
     console.log('Before Authorize');
-    let isAuth = await UserActions.authorize();
-    setAuthenticated(Boolean(isAuth));
+    if (process.env.NODE_ENV === 'development') {
+      await window.Authorization.authorize();
+    }
+    if (LocalDB.getAuthToken()) {
+      setAuthenticated(Boolean(true));
+      UserActions.keepAliveParentApp();
+    }
     console.log('After Authorize');
-    UserActions.addExpiryListener();
-    UserActions.keepAliveParentApp();
+
   };
 
   const onIdle = (e: any) => {
@@ -60,12 +65,14 @@ const App = () => {
   }
   return (
     <div className="App">
-      {process.env.NODE_ENV !== 'test' && <IdleTimer
-        element={document}
-        onIdle={onIdle}
-        debounce={250}
-        timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
-      />}
+      {process.env.NODE_ENV !== 'test' && (
+        <IdleTimer
+          element={document}
+          onIdle={onIdle}
+          debounce={250}
+          timeout={1000 * 60 * window?.envConfig?.IDLE_TIMER}
+        />
+      )}
       {/* <RainMakerHeader /> */}
       <section className="d-layout">
         {/* <RainMakerSidebar /> */}
@@ -76,11 +83,11 @@ const App = () => {
                 {process.env.NODE_ENV === 'test' ? (
                   <Authorized path="/" component={MCUHome} />
                 ) : (
-                  <Authorized
-                    path="/:activity/:loanApplicationId/"
-                    component={MCUHome}
-                  />
-                )}
+                    <Authorized
+                      path="/:activity/:loanApplicationId/"
+                      component={MCUHome}
+                    />
+                  )}
 
                 <Authorized
                   exact
@@ -88,7 +95,7 @@ const App = () => {
                   component={MCUHome}
                 />
 
-                
+
               </Switch>
             </Router>
             <RainMakerFooter />

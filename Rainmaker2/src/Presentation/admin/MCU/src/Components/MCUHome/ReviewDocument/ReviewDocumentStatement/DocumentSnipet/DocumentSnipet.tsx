@@ -237,6 +237,7 @@ export const DocumentSnipet = ({
 
   return (
     <div
+    data-testid="document-item"
       onDoubleClick={(event) => onDoubleClick(event)}
       className={`document-snipet ${index === currentFileIndex && 'focus'} ${
         editingModeEnabled && 'edit'
@@ -253,6 +254,7 @@ export const DocumentSnipet = ({
           {!!editingModeEnabled ? (
             <React.Fragment>
               <input
+              data-testid="rename-doc"
                 ref={inputRef}
                 className={`${
                   (!filenameUnique || !!filenameEmpty || !validFilename) &&
@@ -282,17 +284,17 @@ export const DocumentSnipet = ({
           {`By ${username} on ${datetimeFormatRenameFile(uploadedOn)}`}
         </small>
         {!!filenameEmpty && (
-          <label className="document-snipet--detail error">
+          <label className="document-snipet--detail error" data-testid="empty-file-name-error">
             File name cannot be empty
           </label>
         )}
         {!filenameUnique && (
-          <label className="document-snipet--detail error">
+          <label className="document-snipet--detail error" data-testid="unique-file-name-error">
             File name must be unique
           </label>
         )}
         {!validFilename && (
-          <label className="document-snipet--detail error">
+          <label className="document-snipet--detail error" data-testid="special-character-error">
             File name cannot contain any special characters
           </label>
         )}

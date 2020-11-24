@@ -227,7 +227,7 @@ export const LoanProgress = () => {
   return (
     <div data-testid="loan-progress" className="LoanProgress box-wrap">
       <div className="box-wrap--header">
-        <h2 className="heading-h2"> Your Loan Status </h2>
+        <h2 data-testid="loan-progress-heading" className="heading-h2"> Your Loan Status </h2>
       </div>
       <div className="box-wrap--body">
         {loanProgress && loanProgress[0].milestoneType !== 2

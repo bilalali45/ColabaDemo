@@ -3,23 +3,30 @@
 const mockFiles = [
     {
         "id": "5f58c63b603a2d64b4a27d79",
-        "docId": "5f63481f37de0c1490a36b65",
-        "docName": "Government Issued Identification",
-        "typeId": "5f47439dcca0a5d1c971083c",
-        "requestId": "5f63481f37de0c1490a36b58",
+        "docId": "5f69eaaba16049171422d549",
+        "docName": "Covid-19",
+        "typeId": "5f47439dcca0a5d1c971083a",
+        "requestId": "5f63481f37de0c1490a36b59",
         "files": [
             {
-                "fileId": "5f644f5f37de0c1490a370c1",
-                "clientName": "abcxyz.jpeg",
+                "fileId": "5f69eac8a16049171422d54d",
+                "clientName": "download.jpeg",
                 "mcuName": "",
-                "fileUploadedOn": "2020-09-18T06:10:39.796Z",
+                "fileUploadedOn": "2020-09-22T12:15:04.914Z",
                 "isRead": true
             },
             {
-                "fileId": "5f644f6837de0c1490a370c4",
-                "clientName": "abcxyz-copy-1.jpeg",
+                "fileId": "5f69eacaa16049171422d550",
+                "clientName": "sampleabc.jpeg",
                 "mcuName": "",
-                "fileUploadedOn": "2020-09-18T06:10:48.168Z",
+                "fileUploadedOn": "2020-09-22T12:15:06.864Z",
+                "isRead": true
+            },
+            {
+                "fileId": "5f69eacba16049171422d552",
+                "clientName": "download-copy-1.jpeg",
+                "mcuName": "",
+                "fileUploadedOn": "2020-09-22T12:15:07.747Z",
                 "isRead": true
             }
         ],
@@ -126,4 +133,11 @@ export class ReviewDocumentActions {
     static async getActivityLogs(id: string, docId: string, requestId: string){
         return activityLogMock;
     }
+
+    static async acceptDocument(id: string, requestId: string, docId: string){
+       
+   }
+
+   static async rejectDocument(loanApplicationId: number, id: string, requestId: string, docId: string){
+   }
 }

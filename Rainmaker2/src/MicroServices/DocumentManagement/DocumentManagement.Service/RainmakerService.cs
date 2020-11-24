@@ -49,13 +49,17 @@ namespace DocumentManagement.Service
                 return null;
         }
 
-        public async Task SendBorrowerEmail(int loanApplicationId, string emailBody, int activityForId,int userId ,string userName, IEnumerable<string> authHeader )
+        public async Task SendBorrowerEmail(int loanApplicationId, string toAddess, string ccAddress, string fromAddress, string subject, string emailBody, int activityForId,int userId ,string userName, IEnumerable<string> authHeader )
         {
             var content = new
             {
                 loanApplicationId,
                 emailBody,
-                activityForId
+                activityForId,
+                toAddess,
+                ccAddress,
+                fromAddress,
+                subject
             };
 
             var request = new HttpRequestMessage()

@@ -9,11 +9,8 @@ import { DocumentsType } from "./reducers/documentReducer";
 import { Auth } from "../services/auth/Auth";
 import { MockEnvConfig } from "../services/test_helpers/EnvConfigMock";
 
-let baseUrl: any = window.envConfig.API_BASE_URL;
-const httpClient = new Http(baseUrl, "auth");
-if (!window.envConfig) {
-  MockEnvConfig();
-}
+let baseUrl: any = window?.envConfig?.API_BASE_URL;
+const httpClient = new Http(baseUrl, "Rainmaker2Token");
 
 export type InitialStateType = {
   loan: LoanType | {};

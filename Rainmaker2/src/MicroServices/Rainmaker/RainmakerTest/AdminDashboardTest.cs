@@ -148,7 +148,7 @@ namespace Rainmaker.Test
             };
             dataContext.Set<UserProfile>().Add(userProfile);
 
-            UserRole userRole = new UserRole()
+            RainMaker.Entity.Models.UserRole userRole = new RainMaker.Entity.Models.UserRole()
             {
                 Id = 1,
                 RoleName = "Executives",
@@ -159,7 +159,7 @@ namespace Rainmaker.Test
                 EntityTypeId = 1,
                 IsDeleted = false
             };
-            dataContext.Set<UserRole>().Add(userRole);
+            dataContext.Set<RainMaker.Entity.Models.UserRole>().Add(userRole);
 
             RainMaker.Entity.Models.Sitemap sitemap = new RainMaker.Entity.Models.Sitemap()
             {

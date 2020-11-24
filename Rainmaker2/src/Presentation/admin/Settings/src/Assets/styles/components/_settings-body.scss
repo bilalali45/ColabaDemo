@@ -1,0 +1,43 @@
+.settings__body{
+    display: flex;
+    display: -webkit-flex;
+    background-color: color('widgetBg');
+    box-sizing: border-box;
+    border-bottom: 1px solid color('border');
+
+    > *{
+        height: calc(100vh - 150px);
+        box-sizing: border-box;
+    }
+
+    .settings__sidebar{
+        width: 22%;
+        flex: 0 0 22%;
+
+        & + .settings__content-area{
+            border-left: 1px solid color('border');
+        }
+    }
+
+    .settings__content-area{
+        width: 78%;
+        flex: 0 0 78%;
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+
+        > *{
+            flex: 0 0 100%;
+            width: 100%;
+        }
+
+        .settings__content-area--header{
+            height: 55px;
+        }
+        .settings__content-area--body{
+            max-height: 100%;
+            height: calc(100% - 63px);
+        }
+    }
+
+}

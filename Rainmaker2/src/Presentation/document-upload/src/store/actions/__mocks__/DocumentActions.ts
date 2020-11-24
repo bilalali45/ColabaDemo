@@ -89,96 +89,96 @@ export const seedData = [
         "status": "Pending review",
         "createdOn": "2020-08-25T11:31:54.532Z",
         "files": [
-            {
-                "id": "5f44f76460b6782ac07de680",
-                "clientName": "turkey-30482991920-1366x550.jpg",
-                "fileUploadedOn": "2020-08-25T11:35:00.461Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f77d60b6782ac07de683",
-                "clientName": "turkey-30482991920-02.jpg",
-                "fileUploadedOn": "2020-08-25T11:35:25.016Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f7d360b6782ac07de685",
-                "clientName": "turkey-30482991920-03.jpeg",
-                "fileUploadedOn": "2020-08-25T11:36:51.766Z",
-                "mcuName": "",
-                "byteProStatus": "Not synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f81460b6782ac07de687",
-                "clientName": "turkey-30482991920-04.jpeg",
-                "fileUploadedOn": "2020-08-25T11:37:56.73Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f84b60b6782ac07de689",
-                "clientName": "nature.jpg",
-                "fileUploadedOn": "2020-08-25T11:38:51.61Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f85860b6782ac07de68b",
-                "clientName": "turkey-30482991920-05.jpeg",
-                "fileUploadedOn": "2020-08-25T11:39:04.479Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f91d60b6782ac07de68d",
-                "clientName": "turkey-30482991920-06.jpeg",
-                "fileUploadedOn": "2020-08-25T11:42:21.351Z",
-                "mcuName": "",
-                "byteProStatus": "Not synchronized",
-                "isRead": false,
-                "status": null
-            },
-            {
-                "id": "5f44f91e60b6782ac07de68f",
-                "clientName": "sample.pdf",
-                "fileUploadedOn": "2020-08-25T11:42:22.308Z",
-                "mcuName": "",
-                "byteProStatus": "Not synchronized",
-                "isRead": true,
-                "status": null
-            },
-            {
-                "id": "5f44f94360b6782ac07de691",
-                "clientName": "sample-02.pdf",
-                "fileUploadedOn": "2020-08-25T11:42:59.845Z",
-                "mcuName": "",
-                "byteProStatus": "Not synchronized",
-                "isRead": false,
-                "status": null
-            },
-            {
-                "id": "5f45029360b6782ac07de6a6",
-                "clientName": "sample-03.pdf",
-                "fileUploadedOn": "2020-08-25T12:22:43.006Z",
-                "mcuName": "",
-                "byteProStatus": "Synchronized",
-                "isRead": true,
-                "status": null
-            }
+            // {
+            //     "id": "5f44f76460b6782ac07de680",
+            //     "clientName": "turkey-30482991920-1366x550.jpg",
+            //     "fileUploadedOn": "2020-08-25T11:35:00.461Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f77d60b6782ac07de683",
+            //     "clientName": "turkey-30482991920-02.jpg",
+            //     "fileUploadedOn": "2020-08-25T11:35:25.016Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f7d360b6782ac07de685",
+            //     "clientName": "turkey-30482991920-03.jpeg",
+            //     "fileUploadedOn": "2020-08-25T11:36:51.766Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Not synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f81460b6782ac07de687",
+            //     "clientName": "turkey-30482991920-04.jpeg",
+            //     "fileUploadedOn": "2020-08-25T11:37:56.73Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f84b60b6782ac07de689",
+            //     "clientName": "nature.jpg",
+            //     "fileUploadedOn": "2020-08-25T11:38:51.61Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f85860b6782ac07de68b",
+            //     "clientName": "turkey-30482991920-05.jpeg",
+            //     "fileUploadedOn": "2020-08-25T11:39:04.479Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f91d60b6782ac07de68d",
+            //     "clientName": "turkey-30482991920-06.jpeg",
+            //     "fileUploadedOn": "2020-08-25T11:42:21.351Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Not synchronized",
+            //     "isRead": false,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f91e60b6782ac07de68f",
+            //     "clientName": "sample.pdf",
+            //     "fileUploadedOn": "2020-08-25T11:42:22.308Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Not synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f44f94360b6782ac07de691",
+            //     "clientName": "sample-02.pdf",
+            //     "fileUploadedOn": "2020-08-25T11:42:59.845Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Not synchronized",
+            //     "isRead": false,
+            //     "status": null
+            // },
+            // {
+            //     "id": "5f45029360b6782ac07de6a6",
+            //     "clientName": "sample-03.pdf",
+            //     "fileUploadedOn": "2020-08-25T12:22:43.006Z",
+            //     "mcuName": "",
+            //     "byteProStatus": "Synchronized",
+            //     "isRead": true,
+            //     "status": null
+            // }
         ],
         "typeId": "5eb257a3e519051af2eeb624",
         "userName": "Shehroz Riyaz"

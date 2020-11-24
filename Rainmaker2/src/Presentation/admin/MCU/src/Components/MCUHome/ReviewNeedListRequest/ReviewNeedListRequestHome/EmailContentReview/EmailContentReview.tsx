@@ -1,11 +1,18 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {Store} from '../../../../../Store/Store';
-import {TemplateDocument} from '../../../../../Entities/Models/TemplateDocument';
-import {TemplateActionsType} from '../../../../../Store/reducers/TemplatesReducer';
-import {TextArea} from '../../../../../Shared/components/TextArea';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { Store } from '../../../../../Store/Store';
+import { TemplateDocument } from '../../../../../Entities/Models/TemplateDocument';
+import { TemplateActionsType } from '../../../../../Store/reducers/TemplatesReducer';
+import { TextArea } from '../../../../../Shared/components/TextArea';
 import Spinner from 'react-bootstrap/Spinner';
-import {LocalDB} from '../../../../../Utils/LocalDB';
-import {enableBrowserPrompt} from '../../../../../Utils/helpers/Common';
+import { LocalDB } from '../../../../../Utils/LocalDB';
+import { enableBrowserPrompt } from '../../../../../Utils/helpers/Common';
+import { EmailReview } from '../EmailContentReview/_EmailReview';
+import { RequestEmailTemplateActions } from '../../../../../Store/actions/RequestEmailTemplateActions';
+import { RequestEmailTemplateActionsType } from '../../../../../Store/reducers/RequestEmailTemplateReducer';
+import { RequestEmailTemplate } from '../../../../../Entities/Models/RequestEmailTemplate';
+import { SVGDocRequest } from '../../../../../Shared/SVG';
+import ReactHtmlParser from 'react-html-parser';
+import { truncate } from '../../../../../Utils/helpers/TruncateString';
 
 type emailContentReviewProps = {
   documentsName: string | undefined;
@@ -31,152 +38,202 @@ export const EmailContentReview = ({
 }: emailContentReviewProps) => {
 
   const setDeafultText = () => {
+
     let str: string = '';
-    //let documentNames = documentsName ? documentsName?.split(',').join(' \r\n') : '';
     if (emailTemplate) {
-      str = emailTemplate
-        .replace('{user}', borrowername)
-        .replace('{documents}', documentsName ? documentsName: '');
-        // .replace('{mcu}', mcuName); because we will provide Business Unit Name from BE while emailing
+      str = emailTemplate.replace('{documents}', documentsName ? documentsName : '');
       hashDocuments();
       enableBrowserPrompt();
     }
     return str;
   };
 
-  const {state, dispatch} = useContext(Store);
+  const { state, dispatch } = useContext(Store);
 
   const needListManager: any = state?.needListManager;
   const templateManager: any = state?.templateManager;
   const isDocumentDraft = templateManager?.isDocumentDraft;
   const emailContent = templateManager?.emailContent;
   const previousDocLength = templateManager?.documentLength;
-  const selectedTemplateDocuments: TemplateDocument[] =
-    templateManager?.selectedTemplateDocuments || [];
+  const selectedTemplateDocuments: TemplateDocument[] = templateManager?.selectedTemplateDocuments || [];
   const loanData = needListManager?.loanInfo;
   const borrowername = loanData?.borrowers?.[0];
+  const emailTemplateManger: any = state.requestEmailTemplateManager;
+  const emailTemplates: RequestEmailTemplate[] = emailTemplateManger.requestEmailTemplateData;
+  const draftEmail: RequestEmailTemplate = emailTemplateManger.draftEmail;
+  const selectedEmailTemplate = emailTemplateManger.selectedEmailTemplate;
+
   const [emailBody, setEmailBody] = useState<string>();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
+  const [ishowList, setishowList] = useState<boolean>(false);
+  const [ishowHover, setishowHover] = useState<boolean>(false);
 
-  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'“”<,>\.\?\/\s  ]*$/i;
+  const templateDropdown = useRef<any>(null);
+  const templateDropdownBtn = useRef<any>(null);
+  const [templateDropdownList, setTemplateDropdownList] = useState<boolean>(false);
+  const [templateHoverValue, setTemplateHoverValue] = useState<RequestEmailTemplate>(new RequestEmailTemplate());
+
+  // Ref for List Dropdown
+  const selectedTemplateDropdownList = useRef<any>([]);
+  selectedTemplateDropdownList.current = [];
+
+  const [dropdownToolPopup, setDropdownToolPopup] = useState<any>({ x: 0, y: 0 })
+  const [dropdownToolPopupArrow, setDropdownToolPopupArrow] = useState<any>({ x: 1589, y: 153 });
+  const [selectedEmailTemplateName, setselectedEmailTemplateName] = useState('');
+  const regex = /^[a-zA-Z0-9~`!@#\$%\^&\*\(\)_\-\+={\[\}\]\|\\:;"'<,>\.\?\/\s  ]*$/i;
+
+
+
 
   useEffect(() => {
-    if (Boolean(isDocumentDraft?.requestId)) {
-      draftExist();
-    } else {
-      draftNotExist();
+    setDropdownToolPopup({
+      x: (templateDropdownBtn.current?.getBoundingClientRect().x) - 740,
+      y: (templateDropdownBtn.current?.getBoundingClientRect().y) + 37
+    })
+  }, [templateDropdownList == true])
+
+  // For click out side of Selected Template Dropdown
+  useEffect(() => {
+    document.addEventListener('click', e => {
+      if (!templateDropdown.current?.contains(e.target)) {
+        setishowList(false);
+      }
+    })
+
+    return () => {
+      document.removeEventListener('click', () => { })
     }
-  }, [emailTemplate]);
+  }, [])
+
+  useEffect(() => {
+    getEmailTemplates();
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData,
+      payload: null
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedEmailTemplate) {
+      if(selectedEmailTemplate.templateName){
+        setselectedEmailTemplateName(selectedEmailTemplate.templateName);
+      }
+      
+    }
+  }, [selectedEmailTemplate])
+
+
+  const getEmailTemplates = async () => {
+    let result: RequestEmailTemplate[] | undefined = await RequestEmailTemplateActions.fetchEmailTemplates();
+    if (result) {
+     let sortedList = sortList(result, true)
+      dispatch({ type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: sortedList });
+    }
+  }
+
+  const sortList = (list: any, isAsc: boolean) => {
+    if(isAsc){
+   return list.sort(function(a: any, b: any){
+       if(a.sortOrder < b.sortOrder) { return -1; }
+       if(a.sortOrder > b.sortOrder) { return 1; }
+       return 0;
+      })
+    }         
+ }
+
+  const setSelectedEmailTemplate = (id?: string) => {
+    let mappedData = emailTemplates.map((item: RequestEmailTemplate, index: number) => {
+      if (id === item.id?.toString()) {
+        item.selected = true;
+      } else {
+        item.selected = false;
+      }
+      return item;
+    });
+    dispatch({ type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: mappedData });
+  }
+
 
   const hashDocuments = () => {
     let hash = LocalDB.encodeString(JSON.stringify(documentList));
     setHash(hash);
   };
 
-  const editEmailBodyHandler = (e: any) => {
-    let txt = e.target.value;
-    if (regex.test(txt)) {
-      setEmailBody(txt);
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
 
-    // setEmailBody(txt);
-    //   setIsValid(false);
-  };
+  const getSelectedEmailTemplate = async (id?: string) => {
+    let loanApplicationId = LocalDB.getLoanAppliationId()
+    let result = await RequestEmailTemplateActions.fetchDraftEmailTemplate(id, loanApplicationId)
+    dispatch({ type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result })
+    setSelectedEmailTemplate(id);
+    if(draftEmail){
+      addProppertyToDraft();
+    }    
+  }
+  
+  const addProppertyToDraft = () => {
+    let draft: any = {...draftEmail};
+    draft.emailTemplateId = '';
+    draft.change = true;
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetDraftEmail,
+      payload: draft
+    });
 
-  const saveEmailContent = () => {
-    if (emailBody) {
-      dispatch({type: TemplateActionsType.SetEmailContent, payload: emailBody});
-    }
-  };
+  }
 
-  const draftExist = () => {
-    if (!documentHash) {
-      if (selectedTemplateDocuments[0].message != '') {
-        let body = selectedTemplateDocuments[0].message.replace(
-          '<br />',
-          ' \r\n'
-        );
-        setEmailBody(body);
-        enableBrowserPrompt();
-        dispatch({
-          type: TemplateActionsType.SetEmailContent,
-          payload: body
-        });
-        hashDocuments();
-      } else {
-        setEmailBody(setDeafultText());
-        enableBrowserPrompt();
-        dispatch({
-          type: TemplateActionsType.SetEmailContent,
-          payload: emailBody
-        });
-      }
-      return;
-    } else {
-      let Newhash = LocalDB.encodeString(JSON.stringify(documentList));
-      if (documentHash != Newhash) {
-        setEmailBody(setDeafultText());
-        enableBrowserPrompt();
-        dispatch({
-          type: TemplateActionsType.SetEmailContent,
-          payload: emailBody
-        });
-      } else {
-        setEmailBody(emailContent);
-        enableBrowserPrompt();
-        dispatch({
-          type: TemplateActionsType.SetEmailContent,
-          payload: emailBody
-        });
-      }
+  // Refs for Array map list
+  const refForListDropDown: any = (el: any, indexNum: any) => {
+    if (el && !selectedTemplateDropdownList.current.includes(el)) {
+      selectedTemplateDropdownList.current.push(el)
+     //console.log(selectedTemplateDropdownList.current)
     }
-  };
-  const draftNotExist = () => {
-    if (emailTemplate) {
-      let Newhash = LocalDB.encodeString(JSON.stringify(documentList));
-      if (documentHash != Newhash) {
-        setEmailBody(setDeafultText());
-      } else {
-        setEmailBody(emailContent);
-      }
-      enableBrowserPrompt();
-    }
-  };
+  }
 
-  const sendRequestButton = () => {
-    if (showSendButton) {
+  const showTemplateDetailOnHover = (show: boolean, value: RequestEmailTemplate) => {
+    setishowHover(show)
+    setTemplateHoverValue(value);    
+  }
+
+  const showList = () => {
+    return emailTemplates.map((item: RequestEmailTemplate, index: number) => {
       return (
         <>
-          <footer className="mcu-panel-footer text-right">
-            <button
-              disabled={isSendBtnDisable}
-              onClick={() => {
-                setSendBtnDisable(true);
-                saveAsDraft(false);
-              }}
-              className="btn btn-primary"
-            >
-              Send Request
-            </button>
-          </footer>
+          <li
+            key={index}
+            ref={refForListDropDown}
+            onMouseOverCapture={()=> checkDropdownPopup(true)}
+            onMouseLeave={()=>{ showTemplateDetailOnHover(false, item); checkDropdownPopup(false); }}
+            onMouseOver={(e)=>{
+              e.preventDefault();
+              checkDropdownPopup(true);
+              showTemplateDetailOnHover(true, item);
+              if(templateDropdownList){
+                setDropdownToolPopupArrow({
+                  x: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().left),
+                  y: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().top) + 25
+                })
+              }
+            }}
+            onClick={() => {
+              getSelectedEmailTemplate(item.id?.toString())
+              setishowList(!ishowList)
+              checkDropdownPopup(false);
+            }}            
+            className={`${item.selected == true ? 'active' : ''}`}
+          >
+            <div className="mcu-dropdown-menu--data">
+              <span className="mcu-dropdown-menu--icon"><SVGDocRequest /></span>
+              <h5>{item.templateName}</h5>
+              <p>{item.templateDescription}</p>
+            </div>
+          </li>
         </>
-      );
-    } else {
-      return (
-        <>
-          <footer className="mcu-panel-footer text-center alert alert-success">
-            Need list has been sent.
-          </footer>
-        </>
-      );
-    }
-  };
+      )
+    });
+  }
 
-  if (!emailTemplate) {
+  if (!emailTemplates) {
     return (
       <div className="loader-widget loansnapshot">
         <Spinner animation="border" role="status">
@@ -186,27 +243,108 @@ export const EmailContentReview = ({
     );
   }
 
+  const checkDropdownPopup = (status:any) => {
+    if(status==true){
+      setTemplateDropdownList(true)
+    }else{
+      setTemplateDropdownList(false)
+    }
+  }
+
+  const dropdownPopover = ()=>{
+    return (
+      <section className="mcu-dropdown-popup" style={{ left: dropdownToolPopup.x, top: dropdownToolPopup.y }}>
+          <div className="mcu-dropdown-popup--info">
+            <div style={{ top: dropdownToolPopupArrow.y, left: dropdownToolPopupArrow.x, position:dropdownToolPopupArrow.x ? 'fixed' : 'absolute' }} className="mcu-dropdown-popup-arrow"><span>Arrow</span></div>
+            <ul>
+              <li>
+                <label className="settings__label">From</label>
+                <div className="settings__text">
+                  {templateHoverValue.fromAddress &&
+                    <span className="mcu-dropdown-pills">{templateHoverValue.fromAddress}</span>
+                  }
+                  
+                </div>
+              </li>
+
+              <li>
+                <label className="settings__label">To</label>
+                <div className="settings__text">
+                  {templateHoverValue.toAddress &&
+                    <span className="mcu-dropdown-pills">{templateHoverValue.toAddress}</span>
+                  }
+                </div>
+              </li>
+
+              <li>
+                <label className="settings__label">CC</label>
+                <div className="settings__text">
+                  {templateHoverValue.ccAddress &&
+                    <span className="mcu-dropdown-pills">{templateHoverValue.ccAddress}</span>
+                  }
+                </div>
+              </li>
+
+              <li>
+                <label className="settings__label">Subject</label>
+                <div className="settings__text">
+                  <p>{templateHoverValue.subject}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="mcu-dropdown-popup--content">
+            {templateHoverValue.emailBody &&
+              ReactHtmlParser(templateHoverValue.emailBody)
+            }
+
+          </div>
+        </section>
+    )
+  }
+  
   return (
     <div className="mcu-panel-body--content">
-      <div className="mcu-panel-body padding">
-        <h3 className="text-ellipsis mcu-panel-body--content-heading" title={'Review email to ' + borrowername}>
-          Review email to {borrowername}
-        </h3>
-        <p>If you'd like, you can customize this email.</p>
-        <div className="t-wrap">
-        <TextArea
-          focus={true}
-          textAreaValue={emailBody}
-          onBlurHandler={saveEmailContent}
-          onChangeHandler={editEmailBodyHandler}
-          errorText={errorText}
-          isValid={isValid}
-          placeholderValue={'Type your message'}
-          rows={20}
-        />
+
+
+      <header className="mcu-panel-header">
+
+        <div className="mcu-panel-header--left">
+          <h3 className="text-ellipsis mcu-panel-body--content-heading" title={'Review email to ' + borrowername}>
+            Review email to {borrowername}
+          </h3>
         </div>
-      </div>
-      {sendRequestButton()}
+
+        <div className="mcu-panel-header--right">
+          <div className="mcu-dropdown" ref={templateDropdown}>
+            <label className="mcu-dropdown-label">Selected Template</label>
+            <button ref={templateDropdownBtn} id="templateDropdownBtn" onClick={() => { setishowList(!ishowList) }} className={`mcu-dropdown-btn ${ishowList ? 'focused':''}`}><span className={`mcu-dropdown-btn-text`}>{ truncate(selectedEmailTemplateName ? selectedEmailTemplateName : '', 30)}</span> <i className="zmdi zmdi-chevron-down"></i></button>
+            {ishowList &&
+              <div className="mcu-dropdown-menu">
+                <ul>
+                  {showList()}
+                </ul>
+              </div>
+            }
+          </div>
+        </div>
+
+      </header>
+
+      <EmailReview
+        addEmailTemplateClick={() => { }}
+        showinsertToken={false}
+        showSendButton={showSendButton}
+        saveAsDraft={saveAsDraft}
+        documentsName={documentsName}
+        setSelectedEmailTemplate={setSelectedEmailTemplate}
+        setselectedEmailTemplateName ={setselectedEmailTemplateName}
+      />
+      
+
+      {templateDropdownList==true && ishowList && 
+        dropdownPopover()
+      }
     </div>
   );
 };

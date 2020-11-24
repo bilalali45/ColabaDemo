@@ -392,7 +392,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (documentSortClick)
       return (
         <div className="th">
-          <a onClick={() => sortDocumentTitle()} href="javascript:;">
+          <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document{' '}
             <em
               className={
@@ -407,7 +407,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     else
       return (
         <div className="th">
-          <a onClick={() => sortDocumentTitle()} href="javascript:;">
+          <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document
           </a>
         </div>
@@ -418,7 +418,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (statusSortClick)
       return (
         <div className="th">
-          <a onClick={() => sortStatusTitle()} href="javascript:;">
+          <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
             <em
               className={
@@ -433,7 +433,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     else
       return (
         <div className="th">
-          <a onClick={() => sortStatusTitle()} href="javascript:;">
+          <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
           </a>
         </div>

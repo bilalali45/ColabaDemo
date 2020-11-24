@@ -187,29 +187,23 @@ namespace Rainmaker.API.Controllers
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var loanApplication = await loanApplicationService.GetByLoanApplicationId(model.loanApplicationId);
             var activityEnumType = (ActivityForType)model.activityForId;
-            var busnessUnitId = loanApplication.BusinessUnitId.ToInt();
 
             var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount);
-            EmailAccount emailAccount = null;
-
-            if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Where(x => x.BusinessUnitId == null || x.BusinessUnitId == busnessUnitId)
-                            .OrderByDescending(x => x.BusinessUnitId).FirstOrDefault().EmailAccount;
-            //emailAccount = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.SingleOrDefault(e => e.BusinessUnitId == busnessUnitId).EmailAccount;
-
 
             var data = new Dictionary<FillKey, string>();
             data.Add(FillKey.CustomEmailHeader, "");
             data.Add(FillKey.CustomEmailFooter, "");
+            data.Add(FillKey.FromEmail, model.fromAddress);
+            data.Add(FillKey.EmailSubject, model.subject);
             data.Add(FillKey.EmailBody, model.emailBody.Replace(Environment.NewLine, "<br/>"));
-            data.Add(FillKey.FromEmail, emailAccount == null ? "" : emailAccount.Email);
-            if(userProfile != null)
+
+            if (userProfile != null)
                 data.Add(FillKey.EmailTag, String.IsNullOrEmpty(userProfile.Employees.SingleOrDefault().EmailTag) ? String.Empty : userProfile.Employees.SingleOrDefault().EmailTag);
-            await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType);
+            await SendLoanApplicationActivityEmail(data, loanApplication.OpportunityId.ToInt(), loanApplication.LoanRequestId.ToInt(), loanApplication.BusinessUnitId.ToInt(), activityEnumType,model.toAddess,model.ccAddress);
             return Ok();
         }
 
-        private async Task SendLoanApplicationActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype)
+        private async Task SendLoanApplicationActivityEmail(Dictionary<FillKey, string> data, int opportunityId, int loanRequestId, int businessUnitId, ActivityForType emailtype,string toAddess,string ccAddress)
         {
             var activity = await activityService.GetCustomerActivity(businessUnitId, emailtype);
             if (activity != null)
@@ -234,7 +228,9 @@ namespace Rainmaker.API.Controllers
                     LoanRequestId = loanRequestId,
                     Code = activity.Id.ToString(System.Globalization.CultureInfo.InvariantCulture).Encrypt(random.ToString(System.Globalization.CultureInfo.InvariantCulture)),
                     ScheduleDateUtc = DateTime.UtcNow,
-                    IsCustom = false
+                    IsCustom = false,
+                    ToAddress = toAddess,
+                    CcAddress = ccAddress
 
                 };
                 foreach (var key in data)

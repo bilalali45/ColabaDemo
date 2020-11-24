@@ -240,7 +240,7 @@ export const DocumentItem = ({
           </div>
           :
           <Dropdown onToggle={(e) => { setOpenItemDropdown(e) }}>
-            <Dropdown.Toggle id="doc-list-m-actions" as="div">
+            <Dropdown.Toggle id="doc-list-m-actions" as="div" data-testid={`file-options-${indexKey}`}>
               <i className="zmdi zmdi-more-vert"></i>
             </Dropdown.Toggle>
 
@@ -330,6 +330,7 @@ export const DocumentItem = ({
     return (
       <div className="rename-doc-input">
         <input
+          data-testid="rename-input-adaptive"
           ref={txtInput}
           maxLength={250}
           type="text"
@@ -378,7 +379,7 @@ export const DocumentItem = ({
               {renderErrors()}
             </div>
 
-            {!isMobile.value ?
+            {!isMobile?.value ?
               renderDocListActions() : renderDocListActionsMobile()
             }
 
@@ -555,19 +556,19 @@ export const DocumentItem = ({
     if (!validFilename) {
       return (
         <div className="dl-info">
-          <span className="dl-errorrename">File name cannot contain any special characters</span>
+          <span className="dl-errorrename" data-testid="special-character-error">File name cannot contain any special characters</span>
         </div>
       )
     } else if (nameExists) {
       return (
         <div className="dl-info">
-          <span className="dl-errorrename">File name must be unique.</span>
+          <span className="dl-errorrename"data-testid="unique-file-name-error">File name must be unique.</span>
         </div>
       )
     } else if (file.uploadStatus === 'pending' && filename.trim() === '') {
       return (
         <div className="dl-info">
-          <span className="dl-errorrename">File name cannot be empty.</span>
+          <span className="dl-errorrename" data-testid="empty-file-name-error">File name cannot be empty.</span>
         </div>
       )
     }
@@ -581,7 +582,7 @@ export const DocumentItem = ({
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-
+        data-testid="rename-popup"
 
       >
         <Modal.Header>
@@ -603,7 +604,7 @@ export const DocumentItem = ({
         <Modal.Body>
 
 
-          <div className="m-rename-popup-docWrap">
+          <div data-testid="rename-popup-doc-container" className="m-rename-popup-docWrap">
             <div className="m-popup-doc-li" >
               {!file.deleteBoxVisible && (
                 <Fragment>
@@ -632,7 +633,7 @@ export const DocumentItem = ({
 
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-primary" onClick={() => {
+          <button data-testid="name-save-btn-adaptive" className="btn btn-primary" onClick={() => {
             if (nameExists === true || validFilename === false || filename.trim() === "") {
               return;
             }

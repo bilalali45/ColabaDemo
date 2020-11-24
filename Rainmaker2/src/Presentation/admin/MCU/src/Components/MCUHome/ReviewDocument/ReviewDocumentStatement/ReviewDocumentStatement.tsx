@@ -80,8 +80,9 @@ const Footer = ({
   return status === DocumentStatus.PENDING_REVIEW ? (
     <footer className="document-statement--footer">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-6" >
           <button
+          data-testid="reject-doc-btn"
             className="btn btn-secondry btn-block"
             disabled={acceptRejectEnabled}
             onClick={setRejectPopup}
@@ -91,6 +92,7 @@ const Footer = ({
         </div>
         <div className="col-md-6">
           <button
+           data-testid="accept-doc-btn"
             className="btn btn-primary btn-block"
             disabled={acceptRejectEnabled}
             onClick={acceptDocument}
@@ -179,10 +181,10 @@ export const ReviewDocumentStatement = ({
               : getFileNameWithoutExtension(file.mcuName)
         };
       })
-    );
+    ); 
   };
 
-  const getMcuNameUpdated = (fileId: string): string => {
+  const getMcuNameUpdated = (fileId: string): string => {  
     const item = mcuNamesUpdated.find((item) => item.fileId === fileId);
 
     return !!item ? item.mcuName : '';
@@ -363,7 +365,7 @@ export const ReviewDocumentStatement = ({
             {rejectDocumentModal && (
               <div className="dialogbox">
                 <div className="dialogbox-backdrop"></div>
-                <div className="dialogbox-slideup">
+                <div className="dialogbox-slideup" data-testid="req-doc-dialog">
                   <h2 className="h2">Request this document again.</h2>
                   <p>
                     Let the borrower know what you need to mark it as complete

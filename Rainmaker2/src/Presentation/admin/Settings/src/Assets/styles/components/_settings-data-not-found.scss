@@ -1,0 +1,23 @@
+.settings__data-not-found{
+    text-align: center;
+    @include font(normal,1.4,'sm','base');
+    @include headings{
+        margin-bottom: 10px;
+    }
+    .h4,h4{
+        @include font(500,1.4,'nr','heading');
+        margin-bottom: 5px;
+    }    
+    p{
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 6px;
+        display: table;
+        max-width: 150px;
+
+    }
+    .settings-btn{
+        text-transform: capitalize;
+        font-weight: normal;
+    }
+}

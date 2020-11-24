@@ -1,0 +1,30 @@
+.settings__assigned-role{
+    @include font(normal,1.4,'nr','base');
+
+    &--list{
+        margin-top: 25px;
+        ul{
+            @extend .list-style-none;
+            >li{
+                padding: 4px 0;
+                input{
+                    vertical-align: top;
+                    &[type=checkbox]{
+                        border:2px solid color('border');
+                        outline: none;
+                        vertical-align: middle;
+                        margin-right: 6px;
+                        margin-top: -3px;
+                    }
+                }
+                &.assigned{
+                    color: color('primary');
+                }
+                &.unassigned{
+                    
+                }
+            }
+        }
+    }
+
+}

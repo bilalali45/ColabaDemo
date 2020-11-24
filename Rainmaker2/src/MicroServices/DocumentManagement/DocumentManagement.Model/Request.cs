@@ -17,6 +17,7 @@ namespace DocumentManagement.Model
         public DateTime createdOn { get; set; }
         public string status { get; set; }
         public string message { get; set; }
+        public RequestEmail email { get; set; }
         public List<RequestDocument> documents { get; set; }
     }
     public static class ActivityStatus
@@ -124,5 +125,33 @@ namespace DocumentManagement.Model
     public class EmailTemplateQuery
     {
         public string emailTemplate { get; set; }
+    }
+
+    [BsonNoId]
+    public class DraftEmailQuery
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string emailTemplateId { get; set; }
+        public string fromAddress { get; set; }
+        public string toAddress { get; set; }
+        public string ccAddress { get; set; }
+        public string subject { get; set; }
+        public string emailBody { get; set; }
+    }
+
+    public class DraftEmailDto
+    {
+        public string emailTemplateId { get; set; }
+        public string fromAddress { get; set; }
+        public string toAddress { get; set; }
+        public string ccAddress { get; set; }
+        public string subject { get; set; }
+        public string emailBody { get; set; }
+    }
+
+    public class RequestDraftModel
+    {
+        public DraftEmailDto draftEmail { get; set; }
+        public List<DraftDocumentDto> draftDocuments { get; set; }
     }
 }

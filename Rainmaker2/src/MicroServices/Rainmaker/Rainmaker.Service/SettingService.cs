@@ -7,16 +7,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Rainmaker.Model;
+using Rainmaker.Service;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 
 namespace RainMaker.Service
 {
-    public class SettingService : ServiceBase<RainMakerContext,Setting>, ISettingService
+    public class SettingService : ServiceBase<RainMakerContext, Setting>, ISettingService
     {
-        public SettingService(IUnitOfWork<RainMakerContext> previousUow, IServiceProvider services)
-            : base(previousUow,services)
+        private readonly IOpportunityService opportunityService;
+        private readonly IUserProfileService userProfileService;
+        public SettingService(IOpportunityService opportunityService, IUserProfileService userProfileService, IUnitOfWork<RainMakerContext> previousUow, IServiceProvider services)
+            : base(previousUow, services)
         {
+            this.opportunityService = opportunityService;
+            this.userProfileService = userProfileService;
         }
 
         public async Task<(IEnumerable<Setting> collection, int totalRecords)> GetPagedListAsync(int pageNumber, int pageSize, DynamicLinQFilter gridfilter)
@@ -120,6 +126,143 @@ namespace RainMaker.Service
         public async Task<Setting> GetSettingByKeyNameAsync(string keyName, int? businessUnitId)
         {
             return (await Uow.Repository<Setting>().Query(x => x.Name == keyName && (x.BusinessUnitId == null || x.BusinessUnitId == businessUnitId) && x.IsActive != false && x.IsDeleted != true).ToListAsync()).FirstOrDefault();
+        }
+
+        public async Task<EmailTemplate> RenderEmailTokens(int id, int loanApplicationId, int userProfileId, string fromAddess, string subject, string emailBody, List<TokenModel> lsTokenModels)
+        {
+            EmailTemplate emailTemplate = new EmailTemplate();
+
+            var opportunityId = await Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Select(x => x.OpportunityId).FirstOrDefaultAsync();
+
+            if (opportunityId != null)
+            {
+                var opportunity = await opportunityService.GetSingleOpportunity(opportunityId);
+
+                foreach (var token in lsTokenModels)
+                {
+                    if (fromAddess.Contains(token.symbol))
+                    {
+                        string value = token.symbol;
+
+                        switch (token.key)
+                        {
+                            case TokenKey.LoginUserEmail:
+                                {
+                                    string userEmail = await GetLoginUserEmail(loanApplicationId, userProfileId);
+
+                                    value = userEmail;
+
+                                    //int? busnessUnitId = Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Select(x => x.BusinessUnitId).FirstOrDefault();
+
+                                    //var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+                                    //EmailAccount emailAccount = null;
+
+                                    //if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+                                    //{
+                                    //    var emailAccounts = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e=>e.BusinessUnitId);
+                                    //    userEmail = emailAccounts.Any() ? emailAccounts.FirstOrDefault().EmailAccount.Email : "";
+                                    //}
+                                }
+                                break;
+                        }
+
+                        fromAddess = fromAddess.Replace(token.symbol,
+                                                        value);
+
+                    }
+                    if (subject.Contains(token.symbol))
+                    {
+                        string value = token.symbol;
+
+                        switch (token.key)
+                        {
+                            case TokenKey.LoginUserEmail:
+                                {
+                                    string userEmail = await GetLoginUserEmail(loanApplicationId, userProfileId);
+
+                                    value = userEmail;
+                                }
+                                break;
+                            case TokenKey.CustomerFirstName:
+                                {
+                                    value = GetCustomerFirstName(opportunity);
+                                    //var customer = opportunity.OpportunityLeadBinders.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null);
+                                    //value = customer != null ? customer.Customer.Contact.FirstName : string.Empty;
+                                }
+                                break;
+                            case TokenKey.BusinessUnitName:
+                                {
+                                    value = GetBusinessUnitName(loanApplicationId);
+                                }
+                                break;
+                        }
+
+                        subject = subject.Replace(token.symbol,
+                                                  value);
+
+                    }
+                    if (emailBody.Contains(token.symbol))
+                    {
+                        string value = token.symbol;
+
+                        switch (token.key)
+                        {
+                            case TokenKey.LoginUserEmail:
+                                {
+                                    string userEmail = await GetLoginUserEmail(loanApplicationId, userProfileId);
+
+                                    value = userEmail;
+                                }
+                                break;
+                            case TokenKey.CustomerFirstName:
+                                {
+                                    value = GetCustomerFirstName(opportunity);
+                                }
+                                break;
+                            case TokenKey.BusinessUnitName:
+                                {
+                                    value = GetBusinessUnitName(loanApplicationId);
+                                }
+                                break;
+                        }
+
+                        emailBody = emailBody.Replace(token.symbol,
+                                                      value);
+                    }
+                }
+                // Get Customer Email Address
+                var customerEmailAddess = opportunity.OpportunityLeadBinders.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null && s.Customer.Contact.ContactEmailInfoes != null && s.OwnTypeId == 1 && s.Customer.Contact.ContactEmailInfoes.Any(a => a.IsPrimary == true && a.ValidityId != 3));
+
+                emailTemplate.id = id;
+                emailTemplate.fromAddress = fromAddess;
+                emailTemplate.toAddress = customerEmailAddess.Customer.Contact.ContactEmailInfoes.FirstOrDefault().Email;
+                emailTemplate.subject = subject;
+                emailTemplate.emailBody = emailBody;
+            }
+            return emailTemplate;
+        }
+
+        private string GetBusinessUnitName(int loanApplicationId)
+        {
+            return Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Include(x => x.BusinessUnit).Select(x => x.BusinessUnit.Name).FirstOrDefault();
+        }
+        private string GetCustomerFirstName(Opportunity opportunity)
+        {
+            var customer = opportunity.OpportunityLeadBinders.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null);
+            return customer != null ? customer.Customer.Contact.FirstName : string.Empty;
+        }
+        private async Task<string> GetLoginUserEmail(int loanApplicationId, int userProfileId)
+        {
+            int? busnessUnitId = Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Select(x => x.BusinessUnitId).FirstOrDefault();
+
+            var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount);
+
+            if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
+            {
+                var emailAccounts = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e => e.BusinessUnitId);
+                return emailAccounts.Any() ? emailAccounts.FirstOrDefault().EmailAccount.Email : "";
+            }
+            return "";
         }
     }
 }

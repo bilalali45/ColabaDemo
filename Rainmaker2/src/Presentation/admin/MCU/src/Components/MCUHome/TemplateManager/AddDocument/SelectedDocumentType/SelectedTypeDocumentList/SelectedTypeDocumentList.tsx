@@ -17,12 +17,14 @@ type SelectedTypeType = {
 };
 
 export const SelectedTypeDocumentList = ({
+
   documentList,
   selectedCatDocs,
   addNewDoc,
   setVisible,
   needList
 }: SelectedTypeType) => {
+  
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {};
 
   const location = useLocation();

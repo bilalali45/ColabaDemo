@@ -71,10 +71,12 @@ namespace DocumentManagement.API.Controllers
                 loanApplication.userName = user.userName;
                 loanApplication.requests[0].userId = userProfileId;
                 loanApplication.requests[0].userName = userName;
-
+                
                 await requestService.Save(loanApplication,isDraft, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!isDraft)
-                    await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId,loanApplication.requests[0].message,(int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                {
+                    await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId, loanApplication.requests[0].email.toAddress, loanApplication.requests[0].email.CCAddress, loanApplication.requests[0].email.fromAddress, loanApplication.requests[0].email.subject, loanApplication.requests[0].email.emailBody, (int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                }
                 return Ok();
             }
             else

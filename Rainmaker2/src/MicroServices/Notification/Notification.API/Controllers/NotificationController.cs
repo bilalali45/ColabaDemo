@@ -33,18 +33,11 @@ namespace Notification.API.Controllers
             model.DateTime = DateTime.UtcNow;
             model.userId = userProfileId;
             model.tenantId = tenantId;
-            TenantSetting setting = await _notificationService.GetTenantSetting(tenantId,model.NotificationType);
-            if (setting.DeliveryModeId == (short) Notification.Common.DeliveryMode.Express)
-            {
-                long id = await _notificationService.Add(model, userProfileId, tenantId,setting);
-                await _redisService.SendNotification(id);
-                return Ok(id);
-            }
-            else if (setting.DeliveryModeId == (short)Notification.Common.DeliveryMode.Queued)
-            {
+            model.Id = await _notificationService.Add(model);
+            bool completed = await _redisService.SendNotification(model);
+            if (!completed)
                 await _redisService.InsertInCache(model);
-            }
-            return Ok(-1L);
+            return Ok(model.Id);
         }
 
         [HttpGet("[action]")]

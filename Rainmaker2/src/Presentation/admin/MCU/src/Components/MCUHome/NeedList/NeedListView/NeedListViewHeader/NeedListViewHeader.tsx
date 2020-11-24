@@ -32,7 +32,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
 
     return (
         <div className="need-list-view-header" id="NeedListViewHeader" data-component="NeedListViewHeader">
-            <div className="need-list-view-header--left">
+            <div className="need-list-view-header--left" data-testid="need-view-test-header">
                 <span className="h2">Needs List</span>
                 <div className="btn-group">
                     {!isDocumentDraft ? null : isDocumentDraft?.requestId ?

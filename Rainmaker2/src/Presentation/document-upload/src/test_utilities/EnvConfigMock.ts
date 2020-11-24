@@ -3,5 +3,5 @@ export const MockEnvConfig = () => {
       API_BASE_URL: "https://alphamaingateway.rainsoftfn.com",
       IDLE_TIMER: "10", // Must be in minutes
     };
-    Object.defineProperty(window, "envConfig", envConfig);
+    // Object.defineProperty(window, "envConfig", envConfig);
   };

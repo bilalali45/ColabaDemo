@@ -4,8 +4,11 @@ using RainMaker.Data;
 using RainMaker.Entity.Models;
 using RainMaker.Service;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using TrackableEntities.Common.Core;
 using URF.Core.Abstractions;
 
 namespace Rainmaker.Service
@@ -45,7 +48,7 @@ namespace Rainmaker.Service
             // @formatter:off 
 
             if (id.HasValue()) userProfiles = userProfiles.Where(predicate: userProfile => userProfile.Id == id);
-            
+
 
             // @formatter:on 
 
@@ -61,11 +64,67 @@ namespace Rainmaker.Service
                                                         RelatedEntities includes)
         {
             // @formatter:off 
-            if (includes.HasFlag(flag:RelatedEntities.Employees)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees);
-            if (includes.HasFlag(flag:RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount)) query = query.Include(navigationPropertyPath:userProfile => userProfile.Employees).ThenInclude(navigationPropertyPath:employee=>employee.EmployeeBusinessUnitEmails).ThenInclude(navigationPropertyPath:employeeBusinessUnitEmail=>employeeBusinessUnitEmail.EmailAccount);
+            if (includes.HasFlag(flag: RelatedEntities.Employees)) query = query.Include(navigationPropertyPath: userProfile => userProfile.Employees);
+            if (includes.HasFlag(flag: RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount)) query = query.Include(navigationPropertyPath: userProfile => userProfile.Employees).ThenInclude(navigationPropertyPath: employee => employee.EmployeeBusinessUnitEmails).ThenInclude(navigationPropertyPath: employeeBusinessUnitEmail => employeeBusinessUnitEmail.EmailAccount);
 
             // @formatter:on 
             return query;
+        }
+
+
+        public async Task<List<Model.UserRole>> GetUserRoles(int userId)
+        {
+            var userRoles = await Uow.Repository<UserRole>().Query(role => role.IsDeleted == false && role.IsActive && role.IsCustomerRole == false).ToListAsync();
+
+            var userInRole = await Uow.Repository<UserInRole>().Query(role => role.UserId == userId).ToListAsync();
+
+            List<Model.UserRole> lstUserRole = new List<Model.UserRole>();
+
+            foreach (var role in userRoles)
+            {
+                lstUserRole.Add(new Model.UserRole { RoleId = role.Id, RoleName = role.RoleName, IsRoleAssigned = userInRole.Any(s => s.RoleId == role.Id) });
+            }
+
+            return lstUserRole;
+        }
+
+        public async Task UpdateUserRoles(List<Model.UserRole> userRoles, int userId)
+        {
+            var lstUserRole = await Uow.Repository<UserInRole>().Query(role => role.UserId == userId).Include(x=>x.UserRole).ToListAsync();
+
+            if (lstUserRole != null && lstUserRole.Count > 0)
+            {
+                foreach (var role in lstUserRole)
+                {
+                    role.TrackingState = TrackingState.Deleted;
+
+                    Uow.Repository<UserInRole>().Delete(role);
+                    await Uow.SaveChangesAsync();
+                }
+               
+            }
+            if(userRoles.Any(x => x.IsRoleAssigned))
+            {
+                foreach (var role in userRoles)
+                {
+                    if (role.IsRoleAssigned)
+                    {
+                        var userProfile = await Uow.Repository<UserProfile>().Query(x => x.Id == userId).FirstOrDefaultAsync();
+                        var userRole = await Uow.Repository<UserRole>().Query(x => x.Id == role.RoleId).FirstOrDefaultAsync();
+
+                        UserInRole userInRole = new UserInRole();
+                        userInRole.UserId = userId;
+                        userInRole.RoleId = role.RoleId;
+                        userInRole.UserRole = userRole;
+                        userInRole.UserProfile = userProfile;
+                        userInRole.TrackingState = TrackingState.Added;
+
+                        Uow.Repository<UserInRole>().Insert(userInRole);
+                        await Uow.SaveChangesAsync();
+                    }
+                }
+              
+            }
         }
     }
 }

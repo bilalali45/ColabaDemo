@@ -21,6 +21,7 @@ type AddDocumentType = {
     setLoaderVisible: Function;
     needList?: TemplateDocument[],
 }
+
 export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, addDocumentToList, needList }: AddDocumentType) => {
     const [PopoverShowClass, setpopovershowClass] = useState("");
     const [target, setTarget] = useState(null);
@@ -50,6 +51,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
 
 
     const handleClick = (event: any) => {
+      
         let tag = event.target.tagName;
 
         dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: !addDocumentBoxVisible?.value } })
@@ -89,6 +91,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const changeCurrentDocType = (curDocType: string) => {
+       
         if (curDocType === 'all') {
             setCurrentDocType(extractAllDocs());
         } else {
@@ -98,6 +101,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const extractAllDocs = () => {
+       
         let allDocs: Document[] = [];
 
         for (const doc of categoryDocuments) {
@@ -111,6 +115,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const addDocToTemplate = async (doc: Document, type: string, onlyName: boolean) => {
+      
         if (!doc?.docType?.length || doc?.docType?.length > 255) {
             return;
         }
@@ -125,6 +130,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const hidePopup = () => {
+       
         dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
     }
 
@@ -152,6 +158,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const renderPopOver = () => {
+      
         return (
             <Popover id="popover-add-document" className={PopoverShowClass}>
                 <Popover.Content>
@@ -166,7 +173,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
 
             <div className="add-doc-link-wrap" >
                 <div data-testid="add-doc-btn" ref={aRef} className="btn-add-new-Temp" onClick={(e) => { handleClick(e) }} >
-                    <button className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
+                    <button data-testid="add-document" className={` ${"btn btn-primary addnewTemplate-btn btn-dropdown-toggle " + (show ? 'active' : '')}`} >
                         <span className="btn-text">Add document</span>
                         <span className="btn-icon">
                             <i className="zmdi zmdi-plus"></i>

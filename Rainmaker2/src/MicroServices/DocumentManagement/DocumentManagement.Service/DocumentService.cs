@@ -245,7 +245,11 @@ namespace DocumentManagement.Service
                                 ""_id"": 1 ,
                                 ""emailText"": 1, 
                                 ""loanId"": 1,
-                                ""message"": 1
+                                ""message"": 1,
+                                ""fromAddress"": 1,
+                                ""toAddress"": 1,
+                                ""CCAddress"": 1,
+                                ""subject"": 1
                             }
                            } "
                 ));
@@ -264,6 +268,10 @@ namespace DocumentManagement.Service
                     dto.id = query.id;
                     dto.loanId = query.loanId;
                     dto.message = query.message;
+                    dto.fromAddress = query.fromAddress;
+                    dto.toAddress = query.toAddress;
+                    dto.CCAddress = query.CCAddress;
+                    dto.subject = query.subject;
                     result.Add(dto);
                 }
             }

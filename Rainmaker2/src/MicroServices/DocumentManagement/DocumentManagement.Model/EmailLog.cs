@@ -15,6 +15,10 @@ namespace DocumentManagement.Model
         public DateTime dateTime { get; set; }
         public string loanId { get; set; }
         public string message { get; set; }
+        public string fromAddress { get; set; }
+        public string toAddress { get; set; }
+        public string CCAddress { get; set; }
+        public string subject { get; set; }
     }
 
     public class EmailLogQuery
@@ -28,6 +32,10 @@ namespace DocumentManagement.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string loanId { get; set; }
         public string message { get; set; }
+        public string fromAddress { get; set; }
+        public string toAddress { get; set; }
+        public string CCAddress { get; set; }
+        public string subject { get; set; }
     }
 
 }

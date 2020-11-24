@@ -104,7 +104,7 @@ export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequire
                 data-testid={`pending-doc-${i}`}
                 key={pd?.docId}
                 onClick={() => {
-                  isMobile.value && setCurrentInview('documentUploadView'); 
+                  isMobile?.value && setCurrentInview('documentUploadView'); 
                   if (currentDoc && pd?.docId === currentDoc?.docId) {
                     setshowAlert(false);
                     return;
@@ -120,7 +120,7 @@ export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequire
               >
                 <a title={pd.docName}
                   className={
-                    (currentDoc && !isMobile.value && pd?.docId === currentDoc?.docId)
+                    (currentDoc && !isMobile?.value && pd?.docId === currentDoc?.docId)
                       ? "active"
                       : ""
                   }
@@ -128,7 +128,7 @@ export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequire
                   <span> {pd.docName}</span>
                  
                 </a>
-                {isMobile.value && <div className="pd-m-arrow-icon"><i className="zmdi zmdi-chevron-right"></i></div>}
+                {isMobile?.value && <div className="pd-m-arrow-icon"><i className="zmdi zmdi-chevron-right"></i></div>}
               </li>
             );
           })}
@@ -178,7 +178,7 @@ export const DocumentsRequired = ({setCurrentInview,setClass} : DocumentsRequire
   }
 
   return (
-    <div ref={sideBarNav} className="dr-list-wrap">
+    <div data-testid="requiredDocsList" ref={sideBarNav} className="dr-list-wrap">
       <nav>{pendingDocs && renderRequiredDocs()}</nav>
       {showAlert && (
         <AlertBox

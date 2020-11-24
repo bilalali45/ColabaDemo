@@ -94,7 +94,7 @@ export const ContactUs = () => {
           </div>
           <div className="ContactUs--right">
             <ul className="ContactUs--list ContactUs--list-mobile">
-              <li>
+              <li data-testid="div-call">
                 <a title={loanOfficer.phone} href={`tel:${loanOfficer.phone}`}>
                   <span>
                     <i className="zmdi zmdi-phone"></i>
@@ -102,7 +102,7 @@ export const ContactUs = () => {
                   </span>
                 </a>
               </li>
-              <li>
+              <li data-testid="div-email">
                 <a
                   title={loanOfficer.email}
                   href={`mailto:${loanOfficer.email}`}
@@ -113,7 +113,7 @@ export const ContactUs = () => {
                   </span>
                 </a>
               </li>
-              <li>
+              <li data-testid="div-website">
                 <a
                   title={loanOfficer.webUrl?.split("/")[2]}
                   href={"http://" + loanOfficer?.webUrl?.split("/")[2]}

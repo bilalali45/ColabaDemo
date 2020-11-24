@@ -19,7 +19,6 @@ type ReviewNeedListRequestHomeType = {
 }
 
 export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash, defaultEmail }: ReviewNeedListRequestHomeType) => {
-
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
 
@@ -31,13 +30,14 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
 
     const getDocumentsName = () => {
         if (!documentList) return;
-        let names: string = "";
-        
+        let names: string = "<ul>";
+          
         for (let i = 0; i < documentList.length; i++) {
-            names += "-" + documentList[i].docName;
+            names += "<li>" + documentList[i].docName+"</li>";
             if (i != documentList.length - 1)
             names = names + "\n";
         }
+        names += "</ul>"
         setDocumentName(names)
     }
     
@@ -49,7 +49,7 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
 
     useEffect(() => {
         getDocumentsName();
-        getEmailTemplate();
+        //getEmailTemplate();
     }, [documentList])
 
     return (

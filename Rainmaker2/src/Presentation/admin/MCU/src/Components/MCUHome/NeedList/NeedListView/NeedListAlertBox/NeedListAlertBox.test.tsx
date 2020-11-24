@@ -1,18 +1,9 @@
-import React, {Children} from 'react';
-import {
-  render,
-  waitForDomChange,
-  fireEvent,
-  waitForElement,
-  waitFor
-} from '@testing-library/react';
+import React from 'react';
+import {render, waitForDomChange, fireEvent, getQueriesForElement, waitFor} from '@testing-library/react';
 import App from '../../../../../App';
 import {MockEnvConfig} from '../../../../../test_utilities/EnvConfigMock';
 import {MockLocalStorage} from '../../../../../test_utilities/LocalStoreMock';
 import {MemoryRouter} from 'react-router-dom';
-import {getByText} from '@testing-library/react';
-import {getByTestId} from '@testing-library/react';
-import { getByAltText } from '@testing-library/react';
 
 jest.mock('axios');
 jest.mock('../../../../../Store/actions/UserActions');

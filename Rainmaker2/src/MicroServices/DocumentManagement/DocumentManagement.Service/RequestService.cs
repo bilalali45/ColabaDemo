@@ -52,7 +52,7 @@ namespace DocumentManagement.Service
 
             using MemoryStream memoryStream = new MemoryStream();
             byte[] bytes = Convert.FromBase64String(model.fileData);
-            memoryStream.Write(bytes,0,bytes.Length);
+            memoryStream.Write(bytes, 0, bytes.Length);
             memoryStream.Position = 0;
 
             var algo = config[key: "File:Algo"];
@@ -69,7 +69,7 @@ namespace DocumentManagement.Service
             await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                         localFile: filePath);
             // get document upload status
-            string status=string.Empty;
+            string status = string.Empty;
             IMongoCollection<Entity.StatusList> collection =
                 mongoService.db.GetCollection<Entity.StatusList>("StatusList");
 
@@ -109,7 +109,7 @@ namespace DocumentManagement.Service
                         }"
                 ));
             // if loan application does not exists create loan application
-          
+
             if (await asyncCursorRequest.MoveNextAsync())
             {
                 int loanApplicationId = -1;
@@ -142,7 +142,7 @@ namespace DocumentManagement.Service
             BsonArray documentBsonArray = new BsonArray();
             BsonArray filesArray = new BsonArray();
             ObjectId fileId = ObjectId.GenerateNewId();
-            BsonDocument fileDocument = new BsonDocument() { 
+            BsonDocument fileDocument = new BsonDocument() {
                 { "id", fileId },
                 { "clientName", model.fileName },
                 { "serverName", Path.GetFileName(path: filePath) },
@@ -166,7 +166,7 @@ namespace DocumentManagement.Service
             bsonDocument.Add("typeId", BsonNull.Value);
             bsonDocument.Add("displayName", model.documentType);
             bsonDocument.Add("message", BsonString.Empty);
-            bsonDocument.Add("isRejected",false);
+            bsonDocument.Add("isRejected", false);
             bsonDocument.Add("files", filesArray);
             documentBsonArray.Add(bsonDocument);
 
@@ -191,7 +191,7 @@ namespace DocumentManagement.Service
                         },
                     }
             );
-            await rainmakerService.UpdateLoanInfo(model.loanApplicationId,"", authHeader);
+            await rainmakerService.UpdateLoanInfo(model.loanApplicationId, "", authHeader);
             if (result.ModifiedCount > 0)
                 return fileId.ToString();
             return null;
@@ -272,8 +272,22 @@ namespace DocumentManagement.Service
             request.userName = loanApplication.requests[0].userName;
             request.createdOn = DateTime.UtcNow;
             request.status = isDraft ? RequestStatus.Draft : RequestStatus.Active;
-            request.message = loanApplication.requests[0].message;
+            //request.message = loanApplication.requests[0].message;
+            request.email = new Entity.RequestEmail();
             request.documents = new List<Entity.RequestDocument>() { };
+
+            BsonDocument bsonEmail = new BsonDocument();
+
+            if (loanApplication.requests[0].email != null)
+            {
+                bsonEmail.Add("id", new ObjectId(ObjectId.GenerateNewId().ToString()));
+                bsonEmail.Add("emailTemplateId", new BsonObjectId(new ObjectId(loanApplication.requests[0].email.emailTemplateId)));
+                bsonEmail.Add("fromAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.fromAddress) ? (BsonValue)BsonNull.Value :loanApplication.requests[0].email.fromAddress);
+                bsonEmail.Add("toAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.toAddress) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.toAddress);
+                bsonEmail.Add("ccAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.CCAddress) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.CCAddress);
+                bsonEmail.Add("subject", string.IsNullOrEmpty(loanApplication.requests[0].email.subject) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.subject);
+                bsonEmail.Add("emailBody", string.IsNullOrEmpty(loanApplication.requests[0].email.emailBody) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.emailBody);
+            }
 
             IMongoCollection<Entity.Request> collectionInsertRequest = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -294,8 +308,8 @@ namespace DocumentManagement.Service
                     {
                         { "$set", new BsonDocument()
                             {
-                                { "requests.$[request].documents.$[document].message", item.message},
-                                { "requests.$[request].message", loanApplication.requests[0].message}
+                                { "requests.$[request].documents.$[document].message", item.message}
+                                //{ "requests.$[request].message", loanApplication.requests[0].message}
                             }
                         }
                     }, new UpdateOptions()
@@ -313,7 +327,7 @@ namespace DocumentManagement.Service
                     {
                         IMongoCollection<Entity.Request> collectionDraftStatus = mongoService.db.GetCollection<Entity.Request>("Request");
 
-                         await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
+                        await collectionDraftStatus.UpdateOneAsync(new BsonDocument()
                          {
                              { "_id", BsonObjectId.Create(loanApplication.id) }
                          }, new BsonDocument()
@@ -343,7 +357,7 @@ namespace DocumentManagement.Service
                             userName = request.userName,
                             dateTime = DateTime.UtcNow,
                             activity = ActivityStatus.RerequestedBy,
-                            typeId = string.IsNullOrEmpty(item.typeId)?null:item.typeId,
+                            typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,
                             docId = item.docId,
                             docName = item.displayName,
                             loanId = loanApplication.id,
@@ -356,7 +370,7 @@ namespace DocumentManagement.Service
 
                         IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(),requestId = item.requestId,docId = item.docId, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RerequestedBy,typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId,docName = item.displayName };
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = item.requestId, docId = item.docId, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = loanApplication.requests[0].email.emailBody,loanId = loanApplication.id, message = ActivityStatus.RerequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName,fromAddress = loanApplication.requests[0].email .fromAddress,toAddress = loanApplication.requests[0].email .toAddress,CCAddress= loanApplication.requests[0].email .CCAddress,subject = loanApplication.requests[0].email .subject};
                         await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
@@ -403,7 +417,7 @@ namespace DocumentManagement.Service
 
                         IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = request.id,docId = item.id , userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = request.message, loanId = loanApplication.id, message = ActivityStatus.RequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName };
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = request.id, docId = item.id, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = loanApplication.requests[0].email.emailBody, loanId = loanApplication.id, message = ActivityStatus.RequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName, fromAddress = loanApplication.requests[0].email.fromAddress, toAddress = loanApplication.requests[0].email.toAddress, CCAddress = loanApplication.requests[0].email.CCAddress, subject = loanApplication.requests[0].email.subject };
                         await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
@@ -432,7 +446,8 @@ namespace DocumentManagement.Service
             bsonElements.Add("userName", request.userName);
             bsonElements.Add("createdOn", request.createdOn);
             bsonElements.Add("status", request.status);
-            bsonElements.Add("message", request.message);
+            //bsonElements.Add("message", request.message);
+            bsonElements.Add("email", bsonEmail);
             bsonElements.Add("documents", documentBsonArray);
 
             if (documentBsonArray.Count > 0)
@@ -486,7 +501,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursorDocumentDraft.Current)
                 {
                     InDraftDocumentQuery query = BsonSerializer.Deserialize<InDraftDocumentQuery>(current);
-                    if(!loanApplication.requests[0].documents.Any(x => x.docId == query.docId && x.requestId == query.requestId))
+                    if (!loanApplication.requests[0].documents.Any(x => x.docId == query.docId && x.requestId == query.requestId))
                     {
                         IMongoCollection<Entity.Request> collectionDraftStatus = mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -515,18 +530,22 @@ namespace DocumentManagement.Service
                     }
                 }
             }
-            if(!isDraft)
+            if (!isDraft)
             {
                 await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId, "", authHeader);
             }
             return true;
         }
 
-        public async Task<List<DraftDocumentDto>> GetDraft(int loanApplicationId, int tenantId)
+        public async Task<RequestDraftModel> GetDraft(int loanApplicationId, int tenantId)
         {
             IMongoCollection<Entity.Request> collectionRequest = mongoService.db.GetCollection<Entity.Request>("Request");
             IMongoCollection<Entity.Request> collectionDocumentDraft = mongoService.db.GetCollection<Entity.Request>("Request");
+            IMongoCollection<Entity.Request> collectionEmailDraft = mongoService.db.GetCollection<Entity.Request>("Request");
+            RequestDraftModel requestDraftmodel = new RequestDraftModel();
             List<DraftDocumentDto> result = new List<DraftDocumentDto>();
+            DraftEmailDto draftEmail = new DraftEmailDto();
+
             using var asyncCursor = collectionRequest.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
               @"{""$match"": {
                   ""loanApplicationId"": " + loanApplicationId + @" 
@@ -679,9 +698,51 @@ namespace DocumentManagement.Service
                 }
             }
 
-            
+            //Get Draft Email
+            using var asyncDarftEmailCursor = collectionEmailDraft.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+            @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @" 
+                            }
+                        }",
+                      @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                      @"{
+                            ""$match"": {
+                                ""requests.status"": """ + RequestStatus.Draft + @""",
+                            }
+                        }",
+                      @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""emailTemplateId"": ""$requests.email.emailTemplateId"",
+                                ""fromAddress"": ""$requests.email.fromAddress"",
+                                ""toAddress"": ""$requests.email.toAddress"",
+                                ""ccAddress"": ""$requests.email.ccAddress"",
+                                ""subject"": ""$requests.email.subject"",
+                                ""emailBody"": ""$requests.email.emailBody""
+                                }
+                         } "));
 
-            return result;
+            while (await asyncDarftEmailCursor.MoveNextAsync())
+            {
+
+                foreach (var current in asyncDarftEmailCursor.Current)
+                {
+                    DraftEmailQuery query = BsonSerializer.Deserialize<DraftEmailQuery>(current);
+                    
+                    draftEmail.emailTemplateId = query.emailTemplateId;
+                    draftEmail.fromAddress = query.fromAddress;
+                    draftEmail.toAddress = query.toAddress;
+                    draftEmail.ccAddress = query.ccAddress;
+                    draftEmail.subject = query.subject;
+                    draftEmail.emailBody = query.emailBody;
+                }
+            }
+
+            requestDraftmodel.draftDocuments = result;
+            requestDraftmodel.draftEmail = draftEmail;
+            return (requestDraftmodel);
         }
 
         public async Task<string> GetEmailTemplate(int tenantId)

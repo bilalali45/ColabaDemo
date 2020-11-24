@@ -60,7 +60,7 @@ export const LoanSnapshot = () => {
 
   if (!loanInfo) {
     return (
-      <div className="loader-widget loansnapshot">
+      <div data-testid="loan-snapshot-spinner" className="loader-widget loansnapshot">
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
@@ -74,7 +74,7 @@ export const LoanSnapshot = () => {
   };
 
   return (
-    <div className="loansnapshot">
+    <div data-testid="loan-snapshot" className="loansnapshot">
       <div className="loansnapshot--left-side">
         <div className="loansnapshot--wrap">
           <ul>

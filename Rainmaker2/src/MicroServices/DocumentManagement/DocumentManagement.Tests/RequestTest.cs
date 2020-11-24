@@ -36,7 +36,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(),It.IsAny<List<string>>())).ReturnsAsync(true);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -45,7 +45,7 @@ namespace DocumentManagement.Tests
             httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
-            mockRainMock.Setup(x => x.PostLoanApplication(It.IsAny<int>(),It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("{userId:59,userName:'Melissa Merritt'}");
+            mockRainMock.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("{userId:59,userName:'Melissa Merritt'}");
 
             var request = new Mock<HttpRequest>();
 
@@ -72,10 +72,17 @@ namespace DocumentManagement.Tests
             requestModel.id = "5f0ede3cce9c4b62509d0dc0";
             requestModel.userId = 3842;
             requestModel.userName = "Danish Faiz";
-            requestModel.message = "Hi Mark";
+            requestModel.email = new Model.RequestEmail();
             requestModel.createdOn = DateTime.UtcNow;
             requestModel.status = DocumentStatus.BorrowerTodo;
             requestModel.documents = new List<Model.RequestDocument>();
+
+            requestModel.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            requestModel.email.fromAddress = "aliya@texastrustloans.com";
+            requestModel.email.toAddress = "prasla@gmail.com";
+            requestModel.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            requestModel.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            requestModel.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument document = new Model.RequestDocument();
             document.id = "5f0ede3cce9c4b62509d0dc1";
@@ -105,7 +112,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(requestModel);
 
-            IActionResult result = await controller.Save(loanApplication,false);
+            IActionResult result = await controller.Save(loanApplication, false);
 
             //Assert
             Assert.NotNull(result);
@@ -118,7 +125,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(),It.IsAny<List<string>>())).ReturnsAsync(false);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(false);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -263,7 +270,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object,null,null,null,null,null, Mock.Of<IRainmakerService>());
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -276,8 +283,15 @@ namespace DocumentManagement.Tests
             Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
-            request.message = "Hi Mark";
             request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
@@ -290,7 +304,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false,new List<string>());
+            bool result = await service.Save(loanApplication, false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -379,8 +393,15 @@ namespace DocumentManagement.Tests
             Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
-            request.message = "Hi Mark";
             request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
@@ -481,7 +502,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,Mock.Of<IRainmakerService>());
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -494,8 +515,16 @@ namespace DocumentManagement.Tests
             Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
-            request.message = "Hi Mark";
+            
             request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+            
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
@@ -613,8 +642,15 @@ namespace DocumentManagement.Tests
             Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
-            request.message = "Hi Mark";
             request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
@@ -702,7 +738,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,null);
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, null);
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -805,7 +841,7 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.db).Returns(mockdb.Object);
 
             //Act
-            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null,Mock.Of<IRainmakerService>());
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
 
             Model.LoanApplication loanApplication = new Model.LoanApplication();
             loanApplication.userId = 59;
@@ -818,8 +854,15 @@ namespace DocumentManagement.Tests
             Model.Request request = new Model.Request();
             request.userId = 3842;
             request.userName = "Danish Faiz";
-            request.message = "Hi Mark";
             request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
 
             Model.RequestDocument requestDocument = new Model.RequestDocument();
             requestDocument.status = "Started";
@@ -844,6 +887,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
+
             List<DraftDocumentDto> list = new List<DraftDocumentDto>() { { new DraftDocumentDto()
             {
                 message = "Hi Mark",
@@ -854,10 +898,22 @@ namespace DocumentManagement.Tests
                 docMessage = "please upload salary slip"
             } } };
 
+            DraftEmailDto draftEmailDto = new DraftEmailDto();
+            draftEmailDto.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            draftEmailDto.fromAddress = "aliya@texastrustloans.com";
+            draftEmailDto.toAddress = "prasla@gmail.com";
+            draftEmailDto.ccAddress = "Ali@gmail.com,hasan@gmail.com";
+            draftEmailDto.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            draftEmailDto.emailBody = "<p>Hi Javed,To continue your application, we need some more information.</p>";
+
             GetDraft getDraft = new GetDraft();
             getDraft.loanApplicationId = 14;
 
-            mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+            RequestDraftModel requestDraftModel = new RequestDraftModel();
+            requestDraftModel.draftDocuments = list;
+            requestDraftModel.draftEmail = draftEmailDto;
+
+            mock.Setup(x => x.GetDraft(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(requestDraftModel);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -873,14 +929,19 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as List<DraftDocumentDto>;
-            Assert.Single(content);
-            Assert.Equal("Hi Mark", content[0].message);
-            Assert.Equal("5ebc18cba5d847268075ad4f", content[0].typeId);
-            Assert.Equal("5f2155194ce1db1a7cdb17e8", content[0].requestId);
-            Assert.Equal("5f2155194ce1db1a7cdb17e9", content[0].docId);
-            Assert.Equal("W3 2020", content[0].docName);
-            Assert.Equal("please upload salary slip", content[0].docMessage);
+            var content = (result as OkObjectResult).Value as RequestDraftModel;
+            Assert.Equal("Hi Mark", content.draftDocuments[0].message);
+            Assert.Equal("5ebc18cba5d847268075ad4f", content.draftDocuments[0].typeId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e8", content.draftDocuments[0].requestId);
+            Assert.Equal("5f2155194ce1db1a7cdb17e9", content.draftDocuments[0].docId);
+            Assert.Equal("W3 2020", content.draftDocuments[0].docName);
+            Assert.Equal("please upload salary slip", content.draftDocuments[0].docMessage);
+            Assert.Equal("5fa020214c2ff92af0a1c85f", content.draftEmail.emailTemplateId);
+            Assert.Equal("aliya@texastrustloans.com", content.draftEmail.fromAddress);
+            Assert.Equal("prasla@gmail.com", content.draftEmail.toAddress);
+            Assert.Equal("Ali@gmail.com,hasan@gmail.com", content.draftEmail.ccAddress);
+            Assert.Equal("You have new tasks to complete for your Texas Trust Home Loans loan application", content.draftEmail.subject);
+            Assert.Equal("<p>Hi Javed,To continue your application, we need some more information.</p>", content.draftEmail.emailBody);
         }
 
         [Fact]
@@ -891,6 +952,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorRequestDraft = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequestEmail = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
             {
@@ -994,38 +1056,55 @@ namespace DocumentManagement.Tests
                     { "messages" , BsonNull.Value }
                 }
             };
-
-            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
-            mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
-
+            List<BsonDocument> listRequestEmail = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "emailTemplateId" , "5fa020214c2ff92af0a1c85f"},
+                    { "fromAddress" , "aliya@texastrustloans.com"},
+                    { "toAddress" , "prasla@gmail.com"},
+                    { "ccAddress" , "Ali@gmail.com,hasan@gmail.com"},
+                    { "subject" , "You have new tasks to complete for your Texas Trust Home Loans loan application"},
+                    { "emailBody" , "<p>Hi Javed,To continue your application, we need some more information.</p>"}
+                }
+            };
             mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursorRequest.Setup(x => x.Current).Returns(listDocumentDraft);
 
             mockCursorRequestDraft.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursorRequestDraft.Setup(x => x.Current).Returns(listRequestDraft);
 
-            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorRequestDraft.Object);
+            mockCursorRequestEmail.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequestEmail.Setup(x => x.Current).Returns(listRequestEmail);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorRequestDraft.Object).Returns(mockCursorRequestEmail.Object);
 
             mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null, null);
 
             //Act
-            List<DraftDocumentDto> dto = await service.GetDraft(14, 1);
+            RequestDraftModel dto = await service.GetDraft(14, 1);
 
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(8, dto.Count);
-            Assert.Equal("", dto[0].docMessage);
-            Assert.Equal("please upload salary slip", dto[1].docMessage);
-            Assert.Equal("Credit report has been uploaded", dto[2].docMessage);
-            Assert.Equal("Credit report has been uploaded", dto[3].docMessage);
-            Assert.Equal("", dto[4].docMessage);
-            Assert.Equal("please upload salary slip", dto[5].docMessage);
-            Assert.Equal("Credit report has been uploaded", dto[6].docMessage);
-            Assert.Equal("Credit report has been uploaded", dto[7].docMessage);
+            Assert.Equal(8, dto.draftDocuments.Count);
+            Assert.Equal("", dto.draftDocuments[0].docMessage);
+            Assert.Equal("please upload salary slip", dto.draftDocuments[1].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto.draftDocuments[2].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto.draftDocuments[3].docMessage);
+            Assert.Equal("", dto.draftDocuments[4].docMessage);
+            Assert.Equal("please upload salary slip", dto.draftDocuments[5].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto.draftDocuments[6].docMessage);
+            Assert.Equal("Credit report has been uploaded", dto.draftDocuments[7].docMessage);
+
+            Assert.Equal("aliya@texastrustloans.com", dto.draftEmail.fromAddress);
+            Assert.Equal("prasla@gmail.com", dto.draftEmail.toAddress);
+            Assert.Equal("Ali@gmail.com,hasan@gmail.com", dto.draftEmail.ccAddress);
+            Assert.Equal("You have new tasks to complete for your Texas Trust Home Loans loan application", dto.draftEmail.subject);
+            Assert.Equal("<p>Hi Javed,To continue your application, we need some more information.</p>", dto.draftEmail.emailBody);
         }
 
         [Fact]
@@ -1079,7 +1158,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null, null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -1113,7 +1192,7 @@ namespace DocumentManagement.Tests
 
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
-            var service = new RequestService(mock.Object, null, null, null, null, null, null,null);
+            var service = new RequestService(mock.Object, null, null, null, null, null, null, null);
             //Act
             string dto = await service.GetEmailTemplate(1);
             //Assert
@@ -1127,7 +1206,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f30d944ccbf4475dcdfed33");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f30d944ccbf4475dcdfed33");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1171,7 +1250,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).ReturnsAsync("");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).ReturnsAsync("");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1214,7 +1293,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).ReturnsAsync("");
+            mock.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).ReturnsAsync("");
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -1270,7 +1349,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
-            
+
             string filePath = Path.GetTempFileName();
             MemoryStream ms = new MemoryStream();
             Setting setting = new Setting();
@@ -1292,7 +1371,7 @@ namespace DocumentManagement.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
-            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).Verifiable();
+            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();
             uploadFileModel.documentType = "Salary Type";
@@ -1367,7 +1446,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            string result = await service.UploadFile(3842, "Danish Faiz", 1,3333, "Danish Faiz", uploadFileModel, new List<string>());
+            string result = await service.UploadFile(3842, "Danish Faiz", 1, 3333, "Danish Faiz", uploadFileModel, new List<string>());
 
             //Assert
             Assert.NotNull(result);
@@ -1415,7 +1494,7 @@ namespace DocumentManagement.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
-            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(),It.IsAny<List<string>>())).Verifiable();
+            mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();
             uploadFileModel.documentType = "Salary Type";
@@ -1490,7 +1569,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            string result = await service.UploadFile(3842, "Danish Faiz", 1, 3333, "Danish Faiz", uploadFileModel,new List<string>());
+            string result = await service.UploadFile(3842, "Danish Faiz", 1, 3333, "Danish Faiz", uploadFileModel, new List<string>());
 
             //Assert
             Assert.Null(result);

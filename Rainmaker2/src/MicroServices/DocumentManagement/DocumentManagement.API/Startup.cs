@@ -52,6 +52,7 @@ namespace DocumentManagement.API
             services.AddScoped<ILosIntegrationService, LosIntegrationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IByteProService, ByteProService>();
+            services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
             #region HttpClientDependencies
 

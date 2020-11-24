@@ -1,0 +1,1266 @@
+{
+	"info": {
+		"_postman_id": "53e99b37-321c-4839-b37f-11fa957a605d",
+		"name": "Setting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "GetSettings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/Notification/GetSettings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"Notification",
+								"GetSettings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSettings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"notificationTypeId\":1,\r\n      \"deliveryModeId\":2,\r\n      \"delayedInterval\":50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/Notification/UpdateSettings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"Notification",
+								"UpdateSettings"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Rainmaker",
+			"item": [
+				{
+					"name": "GetUserRoles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/RainMaker/GetUserRoles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"RainMaker",
+								"GetUserRoles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RenderEmailTokens",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n                \"id\": 1,\r\n                \"name\":\"Login User Email\",\r\n                \"symbol\":\"###LoginUserEmail###\",\r\n                \"description\":\"Key for enabling user email address Key for enabling user email address\",\r\n                \"key\":\"LoginUserEmail\"\r\n},\r\n{\r\n                \"id\": 2,\r\n                \"name\":\"Customer First Name\",\r\n                \"symbol\":\"##CustomerFirstname###\",\r\n                \"description\":\"Key for enabling customer first name\",\r\n                \"key\":\"CustomerFirstName\"\r\n},\r\n{\r\n                \"id\": 3,\r\n                \"name\":\"Request Document List\",\r\n                \"symbol\":\"###DoucmentList###\",\r\n                \"description\":\"Key for enabling list of all requested document\",\r\n                \"key\":\"RequestDocumentList\"\r\n}\r\n,\r\n{\r\n                \"id\": 4,\r\n                \"name\":\"Business Unit Name\",\r\n                \"symbol\":\"###BusinessUnitName###\",\r\n                \"description\":\"Business Unit Name\",\r\n                \"key\":\"BusinessUnitName\"\r\n}\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7073/api/rainmaker/Setting/RenderEmailTokens?loanApplicationId=3&fromAddess=%23%23%23LoginUserEmail%23%23%23&subject=You have new tasks to complete for your %23%23%23BusinessUnitName%23%23%23 loan application&emailBody=Hi %23%23CustomerFirstname%23%23%23,\nTo continue your application, we need some more information.\n%23%23%23DoucmentList%23%23%23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7073",
+							"path": [
+								"api",
+								"rainmaker",
+								"Setting",
+								"RenderEmailTokens"
+							],
+							"query": [
+								{
+									"key": "loanApplicationId",
+									"value": "3"
+								},
+								{
+									"key": "fromAddess",
+									"value": "%23%23%23LoginUserEmail%23%23%23"
+								},
+								{
+									"key": "subject",
+									"value": "You have new tasks to complete for your %23%23%23BusinessUnitName%23%23%23 loan application"
+								},
+								{
+									"key": "emailBody",
+									"value": "Hi %23%23CustomerFirstname%23%23%23,\nTo continue your application, we need some more information.\n%23%23%23DoucmentList%23%23%23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUserRoles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"roleId\": 2,\r\n        \"roleName\": \"Executives\",\r\n        \"isRoleAssigned\": true\r\n    },\r\n    {\r\n        \"roleId\": 3,\r\n        \"roleName\": \"Staff Employee\",\r\n        \"isRoleAssigned\": true\r\n    },\r\n    {\r\n        \"roleId\": 4,\r\n        \"roleName\": \"Administrator\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 5,\r\n        \"roleName\": \"Manager - Production\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 6,\r\n        \"roleName\": \"Operations Manager\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 7,\r\n        \"roleName\": \"Manager - Loan Sales\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 8,\r\n        \"roleName\": \"Loan Sales\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 9,\r\n        \"roleName\": \"Site Content Manager\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 10,\r\n        \"roleName\": \"System Role\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 11,\r\n        \"roleName\": \"SEO\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 1011,\r\n        \"roleName\": \"Loan Officer\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 1012,\r\n        \"roleName\": \"Loan Coordinator\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 1013,\r\n        \"roleName\": \"Pre Processor\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 1014,\r\n        \"roleName\": \"Loan Processor\",\r\n        \"isRoleAssigned\": false\r\n    },\r\n    {\r\n        \"roleId\": 1015,\r\n        \"roleName\": \"SupportTeam\",\r\n        \"isRoleAssigned\": false\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/RainMaker/UpdateUserRoles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"RainMaker",
+								"UpdateUserRoles"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Template",
+			"item": [
+				{
+					"name": "DeleteTenantTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/template/DeleteTenantTemplate?templateId=5eba77905561502c495f6777",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"template",
+								"DeleteTenantTemplate"
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "5eba77905561502c495f6777"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTenantDocument",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\":\"5f86f2c3fad946217cbd8c33\",\r\n\"documentId\":\"5f86f302fad946217cbd8c34\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/template/DeleteTenantDocument",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"template",
+								"DeleteTenantDocument"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5eba77905561502c495f6777",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RenameTenantTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"id\":\"5f86f161fad946217cbd8c32\",\r\n      \"name\":\"Insert Tenant Template26\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/template/RenameTenantTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"template",
+								"RenameTenantTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InsertTenantTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Insert Tenant Template25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/template/InsertTenantTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"template",
+								"InsertTenantTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddTenantDocument",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"templateId\":\"5f86f2c3fad946217cbd8c33\",\r\n      \"tenantId\":1,\r\n      \"docName\":\"Credit Report\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/template/AddTenantDocument",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"template",
+								"AddTenantDocument"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "EmailTemplate",
+			"item": [
+				{
+					"name": "InsertEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"templateTypeId\":1,\r\n      \"templateName\":\"Template #4\",\r\n      \"templateDescription\":\"Sed ut perspiciatis unde omnis iste natus\",\r\n      \"fromAddress\":\"###LoginUserEmail###\",\r\n      \"CCAddress\":\"Ali@gmail.com,hasan@gmail.com\",\r\n      \"subject\":\"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n      \"emailBody\":\"Hi ###CustomerFirstname###,To continue your application, we need some more information.\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/InsertEmailTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"InsertEmailTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"id\":4,\r\n      \"templateName\":\"Template #5\",\r\n      \"templateDescription\":\"Sed ut perspiciatis unde omnis iste natus\",\r\n      \"fromAddress\":\"###LoginUserEmail###\",\r\n      \"CCAddress\":\"Ali@gmail.com,hasan@gmail.com\",\r\n      \"subject\":\"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n      \"emailBody\":\"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/UpdateEmailTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"UpdateEmailTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSortOrder",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": 1,\r\n        \"templateTypeId\": 1,\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #1\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 1\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"templateTypeId\": 1,\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #2\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 3\r\n    },\r\n    {\r\n        \"id\": 4,\r\n        \"templateTypeId\": 1,\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #4\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 2\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/UpdateSortOrder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"UpdateSortOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmailTemplates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/GetEmailTemplates",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"GetEmailTemplates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmailTemplateById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/GetEmailTemplateById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"GetEmailTemplateById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRenderEmailTemplateById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1043,\r\n    \"loanApplicationId\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/GetRenderEmailTemplateById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"GetRenderEmailTemplateById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1043",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTokens",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/GetTokens",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"GetTokens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"id\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7080/api/Setting/EmailTemplate/DeleteEmailTemplate?id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"api",
+								"Setting",
+								"EmailTemplate",
+								"DeleteEmailTemplate"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DocumentManagement(EmailTemplate)",
+			"item": [
+				{
+					"name": "InsertEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"templateName\":\"Template #4\",\r\n      \"templateDescription\":\"Sed ut perspiciatis unde omnis iste natus\",\r\n      \"fromAddress\":\"###LoginUserEmail###\",\r\n      \"CCAddress\":\"Ali@gmail.com,hasan@gmail.com\",\r\n      \"subject\":\"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n      \"emailBody\":\"Hi ###CustomerFirstname###,To continue your application, we need some more information.###DoucmentList###\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/InsertEmailTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"InsertEmailTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmailTemplates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/GetEmailTemplates",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"GetEmailTemplates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTokens",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/GetTokens",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"GetTokens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmailTemplateById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa020214c2ff92af0a1c85f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/GetEmailTemplateById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"GetEmailTemplateById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRenderEmailTemplateById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa020214c2ff92af0a1c85f\",\r\n    \"loanApplicationId\":1033\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/GetRenderEmailTemplateById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"GetRenderEmailTemplateById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1043",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDraftEmailTemplateById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/GetDraftEmailTemplateById?id=5fa020214c2ff92af0a1c85f&loanApplicationId=1033",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"GetDraftEmailTemplateById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5fa020214c2ff92af0a1c85f"
+								},
+								{
+									"key": "loanApplicationId",
+									"value": "1033"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"loanApplicationId\":1033,\r\n      \"requests\":[{\r\n            \"email\":{\r\n                \"emailTemplateId\":\"5fa020214c2ff92af0a1c85f\",\r\n                \"fromAddress\":\"aliya@texastrustloans.com\",\r\n                \"toAddress\":\"prasla@gmail.com\",\r\n                \"ccAddress\":\"Ali@gmail.com,hasan@gmail.com\",\r\n                \"subject\":\"You have new tasks to complete for your Texas Trust Home Loans loan application\",\r\n                 \"emailBody\":\"Hi Javed,To continue your application, we need some more information.\"\r\n            },\r\n            \"documents\": [\r\n            {\r\n                \"typeId\": \"5eb257a3e519051af2eeb624\",\r\n                \"displayName\":\"W2 2020\",\r\n                \"message\":\"please upload salary slip\",\r\n                \"docId\":null,\r\n                \"requestId\":null\r\n            }\r\n            ,\r\n            {\r\n                \"typeId\": \"5ebc18cba5d847268075ad4f\",\r\n                \"displayName\":\"W3 2020\",\r\n                \"message\":\"please upload salary slip\",\r\n                \"docId\":null,\r\n                \"requestId\":null\r\n            }\r\n      ]\r\n      }]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/request/Save?isDraft=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"request",
+								"Save"
+							],
+							"query": [
+								{
+									"key": "isDraft",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDraft",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/request/GetDraft?loanApplicationId=1033&tenantId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"request",
+								"GetDraft"
+							],
+							"query": [
+								{
+									"key": "loanApplicationId",
+									"value": "1033"
+								},
+								{
+									"key": "tenantId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"id\":\"5fa29509bc672105d0bf1428\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/DeleteEmailTemplate?id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"DeleteEmailTemplate"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEmailTemplate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"id\":\"5fa299ff3efa5a60bcc1a58c\",\r\n      \"templateName\":\"Template #444\",\r\n      \"templateDescription\":\"Sed ut perspiciatis unde omnis iste natuss\",\r\n      \"fromAddress\":\"###LoginUserEmail###\",\r\n      \"CCAddress\":\"Ali@gmail.com,hasan@gmail.com\",\r\n      \"subject\":\"You have new tasks to complete for your ###BusinessUnitName### loan applications\",\r\n      \"emailBody\":\"Hi ###CustomerFirstName###,To continue your application, we need some more informations.\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/UpdateEmailTemplate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"UpdateEmailTemplate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSortOrder",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": \"5fa020214c2ff92af0a1c85f\",\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #1\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 1\r\n    },\r\n    {\r\n        \"id\": \"5fa0202d4c2ff92af0a1c860\",\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #2\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 3\r\n    },\r\n    {\r\n        \"id\": \"5fa299ff3efa5a60bcc1a58c\",\r\n        \"tenantId\": 1,\r\n        \"templateName\": \"Template #4\",\r\n        \"templateDescription\": \"Sed ut perspiciatis unde omnis iste natus\",\r\n        \"fromAddress\": \"###LoginUserEmail###\",\r\n        \"toAddress\": null,\r\n        \"ccAddress\": \"Ali@gmail.com,hasan@gmail.com\",\r\n        \"subject\": \"You have new tasks to complete for your ###BusinessUnitName### loan application\",\r\n        \"emailBody\": \"Hi ###CUSTOMERFIRSTNAME###,To continue your application, we need some more information.\",\r\n        \"sortOrder\": 2\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7075/api/Documentmanagement/EmailTemplate/UpdateSortOrder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7075",
+							"path": [
+								"api",
+								"Documentmanagement",
+								"EmailTemplate",
+								"UpdateSortOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

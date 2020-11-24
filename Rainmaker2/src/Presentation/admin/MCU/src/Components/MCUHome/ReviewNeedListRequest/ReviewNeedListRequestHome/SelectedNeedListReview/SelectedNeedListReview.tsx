@@ -28,8 +28,8 @@ export const SelectedNeedListReview = ({
           <ul>
             {documentList?.map((t: TemplateDocument) => {
               return (
-                <li key={t.localId}>
-                  <a title={t.docName}>{t.docName}</a>
+                <li key={t.localId} >
+                  <a title={t.docName} >{t.docName}</a>
                 </li>
               );
             })}

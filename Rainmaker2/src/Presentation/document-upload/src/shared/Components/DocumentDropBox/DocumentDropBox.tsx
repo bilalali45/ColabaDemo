@@ -113,7 +113,7 @@ Upload from</p>
             <img src={DocUploadIcon} alt="" />
           </div>
  
-          {!isMobile.value ?
+          {!isMobile?.value ?
                 desktopView() : mobileView()
             }
 
@@ -192,6 +192,7 @@ export class FileDropper extends Component<{
   render() {
     return (
       <div
+        data-testid="file-dropper"
         id="file-dropper"
         className="file-drop-box"
         onDragEnter={(e) => this.onDragEnter(e)}

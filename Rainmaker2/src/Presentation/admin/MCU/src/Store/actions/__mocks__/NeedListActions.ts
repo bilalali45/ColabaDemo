@@ -3,7 +3,7 @@ import { LoanApplication } from '../../../Entities/Models/LoanApplication';
 
 
 
-const LoanInfo = {
+const LoanInfo : any = {
   "borrowers": ["Taruf Ali", "Co Borr Last Name"],
   "cityName": "Houston",
   "countryName": "",
@@ -198,6 +198,42 @@ const NeedList = [
     status: "Borrower to do",
     typeId: "5f47441ecca0a5d1c9719720",
     userName: "Taruf Ali",
+  },{
+    createdOn: "2020-10-20T06:11:01.71Z",
+docId: "5f8e7f7549fa941f146f9804",
+docName: "W-2s - Last Two years",
+files: [
+  {
+    byteProStatus: "Not synchronized",
+clientName: "abcxyz.jpeg",
+fileUploadedOn: "2020-10-26T05:31:56.897Z",
+id: "5f965f4cea3ac431b81445af",
+isRead: true,
+mcuName: "",
+status: null,
+  },{
+    byteProStatus: "Not synchronized",
+clientName: "abc-xyz.jpeg",
+fileUploadedOn: "2020-10-26T05:32:04.098Z",
+id: "5f965f54ea3ac431b81445b2",
+isRead: false,
+mcuName: "",
+status: null,
+  },{
+    byteProStatus: "Not synchronized",
+clientName: "abcxyz-copy-1.jpeg",
+fileUploadedOn: "2020-10-26T06:07:50.324Z",
+id: "5f9667b6ea3ac431b81445c3",
+isRead: false,
+mcuName: "",
+status: null
+  },
+],
+id: "5f7eca651cfe5b44d833873b",
+requestId: "5f8e7f7549fa941f146f97f3",
+status: "Pending review",
+typeId: "5f473879cca0a5d1c9659cc3",
+userName: "Danish Khan",
   }
 ]
 
@@ -380,7 +416,7 @@ const NeedListMockApplictionId3 = [
 export class NeedListActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
     try {
-      return LoanInfo;
+      return Promise.resolve(LoanInfo);
     } catch (error) {
       console.log(error);
     }

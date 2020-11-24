@@ -1,10 +1,10 @@
+import { fireEvent, getAllByText, render, waitFor, waitForDomChange, waitForElement } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 import React from 'react';
-import {render, waitForDomChange, fireEvent, waitFor, waitForElement, getByTestId} from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../../../App';
-import {MemoryRouter} from 'react-router-dom';
-import {MockEnvConfig} from '../../../test_utilities/EnvConfigMock';
-import {MockLocalStorage} from '../../../test_utilities/LocalStoreMock';
-import {createMemoryHistory} from 'history';
+import { MockEnvConfig } from '../../../test_utilities/EnvConfigMock';
+import { MockLocalStorage } from '../../../test_utilities/LocalStoreMock';
 
 jest.mock('axios');
 jest.mock('../../../Store/actions/UserActions');
@@ -197,23 +197,333 @@ beforeEach(() => {
         expect(logDetailSection).toHaveTextContent('View Email Log');
       });
 
-      // test('Should render ""Request", "Log Details", "View Email Log" titles on header of activity detail section', async ()=> {
-      //   const {getByTestId, getByText, getAllByTestId } = render(
-      //     <MemoryRouter initialEntries={[Url]} >
-      //        <App/>
-      //     </MemoryRouter>
-      //    );
+      test('Should render activity log Request list in activity detail section', async ()=> {
+        const {getByTestId, getByText, getAllByTestId } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
 
-      //    await waitForDomChange()
+         await waitForDomChange()
 
-      //   const detailBtns: any = getAllByTestId('needList-detailBtnts');     
-      //   fireEvent.click(detailBtns[0]);
-      //   let activityLogBtn: any = null;
-      //   await waitFor(() => {
-      //      activityLogBtn = getByTestId("activity-logBtn");                 
-      //   })
-      //   fireEvent.click(activityLogBtn);
-      //   let activityLogList = getAllByTestId("activity-log-list");
+        const detailBtns: any = getAllByTestId('needList-detailBtnts');     
+        fireEvent.click(detailBtns[0]);
+        let activityLogBtn: any = null;
+        let activityLogList: any = null;
+        await waitFor(() => {
+           activityLogBtn = getByTestId("activity-logBtn");                 
+        })
+        fireEvent.click(activityLogBtn);
+
+        await waitFor(() => {
+          activityLogList = getAllByTestId("activity-log-list");                 
+       })
+       
+       expect(activityLogList[0]).toHaveTextContent('Re-requested By');
+       expect(activityLogList[0]).toHaveTextContent('System Administrator');
+       expect(activityLogList[0]).toHaveTextContent('Sep, 24 at 04:12 PM');
+
+      });
+
+
+      test('Should move between documents', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+
+          
+          expect(getByTestId("document-preview")).toBeInTheDocument();
+          
+          const fileName = getByText((content, element) => element.className === "document-view--header---title")
+            expect(documents[0]).toHaveTextContent("download.jpeg");
+
+          fireEvent.keyDown(documents[0].children[0],{
+            key: "ArrowDown",
+      code: "ArrowDown",
+      keyCode: 40,
+      charCode: 40
+          });
+
+          await waitFor(() => {
+            
+            expect(fileName).toHaveTextContent("download.jpeg");
+          });
+         
+      })
+
+
+      test('Should move to next document', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+
+          
+          expect(getByTestId("document-preview")).toBeInTheDocument();
+          
+          const fileName = getByText((content, element) => element.className === "document-view--header---title")
+            expect(documents[0]).toHaveTextContent("download.jpeg");
+
+            fireEvent.click(documents[2].children[0]);
+            fireEvent.click(documents[2].children[0]);
+            
+            await waitFor(() => {
+            const fileName = getByText((content, element) => element.className === "document-view--header---title")
+            expect(fileName).toHaveTextContent("download.jpeg");
+            });
+            
+          fireEvent.keyDown(documents[2],{
+            key: 'ArrowDown',
+      code: "ArrowDown",
+      keyCode: 40,
+      charCode: 40
+          });
+
+          await waitFor(() => {
+            
+            expect(fileName).toHaveTextContent("download.jpeg");
+          });
+         
+      })
+
+
+      test('Should rename document', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+          
+          fireEvent.doubleClick(documents[0]);
+          const renameDocInput = getByTestId("rename-doc");
+          expect(renameDocInput).toBeInTheDocument();
+
+          fireEvent.change(renameDocInput, { target: { value: "newTestFile" } });
+          fireEvent.blur(renameDocInput, { target: { value: "newTestFile" } })
+
+          expect(documents[0]).toHaveTextContent("newTestFile");
+         
+      })
+
+      test('Should show empty string error', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+          
+          fireEvent.doubleClick(documents[0]);
+          const renameDocInput = getByTestId("rename-doc");
+          expect(renameDocInput).toBeInTheDocument();
+
+          fireEvent.change(renameDocInput, { target: { value: "" } });
+          fireEvent.blur(renameDocInput, { target: { value: "" } })
+
+          expect(getByTestId("empty-file-name-error")).toBeInTheDocument();
+         
+      })
+
+      test('Should show unique name error', async () => {
+        const {getByTestId, getAllByTestId, getByTitle } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+          
+          fireEvent.doubleClick(documents[0]);
+          const renameDocInput = getByTestId("rename-doc");
+          expect(renameDocInput).toBeInTheDocument();
+
+          fireEvent.change(renameDocInput, { target: { value: "sampleabc" } });
+          fireEvent.blur(renameDocInput, { target: { value: "sampleabc" } })
+
+          expect(getByTestId("unique-file-name-error")).toBeInTheDocument();
+         
+      })
+
+
+      test('Should show special character error', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+          
+          fireEvent.doubleClick(documents[0]);
+          const renameDocInput = getByTestId("rename-doc");
+          expect(renameDocInput).toBeInTheDocument();
+
+          fireEvent.change(renameDocInput, { target: { value: "~" } });
+          fireEvent.blur(renameDocInput, { target: { value: "~" } })
+
+          expect(getByTestId("special-character-error")).toBeInTheDocument();
+         
+      })
+
+
+      test('Should accept doc on accept btn click', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[0]).toBeInTheDocument();
+         fireEvent.click(detailBtns[0]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("Covid-19")
+          expect(filesHeader).toBeDefined();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+        const acceptDocBtn = getByTestId("accept-doc-btn");
+        expect(acceptDocBtn).toBeInTheDocument();
+
+        fireEvent.click(acceptDocBtn);
+
+        await waitFor(() => {
+          const acceptDocBtn = getByTestId("accept-doc-btn");
+          expect(acceptDocBtn).toBeInTheDocument();
+          // expect(getByText("This document has been accepted"));
+        });
+      })
+
+
+      test('Should reject doc on reject btn click', async () => {
+        const {getByTestId, getByText, getAllByTestId, getByTitle, getAllByText } = render(
+          <MemoryRouter initialEntries={[Url]} >
+             <App/>
+          </MemoryRouter>
+         );
+
+         await waitForDomChange();
+
+         const detailBtns: any = getAllByTestId('needList-reviewBtnts');     
+         expect(detailBtns[2]).toBeInTheDocument();
+         fireEvent.click(detailBtns[2]);
+
+         await waitFor(() => {
+          const filesHeader = getByTitle("W-2s - Last Two years")
+          expect(filesHeader).toBeInTheDocument();
+
+        }); 
+          const documents = getAllByTestId("document-item");
+          expect(documents[0]).toBeInTheDocument();
+
+        const rejecttDocBtn = getByTestId("reject-doc-btn");
+        expect(rejecttDocBtn).toBeInTheDocument();
+
+        const acceptDocBtn = getByText("Accept Document");
+        expect(acceptDocBtn).toBeInTheDocument();
+
+        fireEvent.click(rejecttDocBtn);
+       
+        await waitFor(() => {
+        //   const acceptDocBtn = getByText("Accept Document");
+        // expect(acceptDocBtn).toBeInTheDocument();
         
-      // });
+        //   const doc = getByTestId("req-doc-dialog");
+
+        // expect(doc).toBeInTheDocument();
+        });
+      })
     });

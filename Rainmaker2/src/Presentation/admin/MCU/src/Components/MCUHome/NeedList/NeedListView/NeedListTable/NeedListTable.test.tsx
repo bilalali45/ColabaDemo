@@ -47,6 +47,62 @@ test('should render table headings', async () => {
   expect(tableHeadings.children[3]).toHaveTextContent('sync to LOS');
 });
 
+test('should sort on Document click', async () => {
+  const {getByTestId, getAllByTestId} = render(
+    <MemoryRouter initialEntries={[Url]}>
+      <App />
+    </MemoryRouter>
+  );
+
+  await waitForDomChange();
+
+  const Doc = getByTestId('doc-title');
+
+  
+ 
+ expect(Doc).toBeDefined()
+ fireEvent.click(Doc);
+ await waitFor(() => {
+ const needList = getAllByTestId('needList');
+  expect(needList[1]).toHaveTextContent('Government Issued Identification');
+ })
+
+ fireEvent.click(Doc);
+ await waitFor(() => {
+ const needList = getAllByTestId('needList');
+  expect(needList[0]).toHaveTextContent('Work Visa - Work Permit');
+ })
+});
+
+test('should sort on status click', async () => {
+  const {getByTestId, getAllByTestId} = render(
+    <MemoryRouter initialEntries={[Url]}>
+      <App />
+    </MemoryRouter>
+  );
+
+  await waitForDomChange();
+
+  const Status = getByTestId('status-title');
+
+  
+ 
+ expect(Status).toBeDefined()
+ fireEvent.click(Status);
+ await waitFor(() => {
+ const needList = getAllByTestId('needList');
+  expect(needList[1]).toHaveTextContent('Pending Review');
+ })
+
+ fireEvent.click(Status);
+ await waitFor(() => {
+ const needList = getAllByTestId('needList');
+  expect(needList[1]).toHaveTextContent('Pending Review');
+ })
+});
+
+
+
 test('should render need list', async () => {
   const {getByTestId, getAllByTestId} = render(
     <MemoryRouter initialEntries={[Url]}>

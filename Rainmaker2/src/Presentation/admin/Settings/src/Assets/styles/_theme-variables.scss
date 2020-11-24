@@ -1,0 +1,74 @@
+
+$color:(
+    primary             :       #4484F4,
+    primary-text        :       #ffffff,
+    secondry            :       #7E829E,
+    secondry-text       :       #ffffff,
+    border              :       #E7E7E7,
+    base                :       #4E4E4E, 
+    heading             :       #000000,
+    bg                  :       #F2F3F5,
+    default             :       #F2F3F5,
+    sucsess             :       #00AD46,
+    scroll              :       #DBDBDB,
+    input               :       #A1A1A1,
+    widgetBg            :       #ffffff,
+    placeholder         :       #CCCCCC,
+    dropdownBg          :       #ffffff,
+    dropdownText        :       #000000,
+    disabledBg          :       #efefef,
+    disableText         :       #CCCCCC,
+    inputText           :       #4E4E4E,
+    footerText          :       #A8A6A6,
+    label               :       #000000,
+    
+    //Table Strip Color
+    tableStripBg        :       #F8F8F8,
+    listHoverBg         :       #F6F6F6,
+    tableDisableText    :       #A7A7A7,
+
+    //Modal
+    modalfooter         :       #F6F6F6,
+
+    //List
+    focusedListBg       :       #F6F6F6,
+
+    // Nav Pill Tabs
+    navPills            :      #000000,
+    navPillsDisabled    :      #A7A7A7,
+
+    // Side Navigation
+    sideNavText         :       #4E4E4E,
+    sideNavActiveBg     :       #F6F6F6               ,
+
+    //accordion signable
+    accordionSignableText   :   #000000,
+);
+
+
+$font:(
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 10px,
+    sm: 12px,
+    nr: 14px,
+    md: 15px,
+    lg: 16px,
+    xlg: 18px, // not used yet
+    searchIcon: 22px
+);
+
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+
+// Bootstrap Variables
+$grid-gutter-width:           30px !default;
+$primary:       #4484F4 !default;
+$secondary:     #5D617E !default;
+$danger:        #FF5652 !default;
+
+// Private
+$widget-space: $grid-gutter-width !default;

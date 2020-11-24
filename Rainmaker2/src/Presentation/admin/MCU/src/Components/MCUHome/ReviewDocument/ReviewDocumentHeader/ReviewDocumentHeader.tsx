@@ -45,6 +45,7 @@ export const ReviewDocumentHeader = ({
             <div className="review-document-header--center col-md-4">
               <div className="btn-group">
                 <button
+                data-testid="previous-doc-btn"
                   className="btn btn-default"
                   disabled={perviousDocumentButtonDisabled}
                   onClick={buttonsEnabled ? previousDocument : () => { }}
@@ -53,6 +54,7 @@ export const ReviewDocumentHeader = ({
                   Document
                 </button>
                 <button
+                data-testid="next-doc-btn"
                   className="btn btn-default"
                   disabled={nextDocumentButtonDisabled}
                   onClick={buttonsEnabled ? nextDocument : () => { }}

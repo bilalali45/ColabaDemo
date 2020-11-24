@@ -34,7 +34,7 @@ namespace Notification.Tests
             TenantSetting tenantSetting = new TenantSetting();
             tenantSetting.DeliveryModeId = (short)Notification.Common.DeliveryMode.Express;
             mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(tenantSetting);
-            var notificationController = new NotificationController(mockUserProfileService.Object,null,Mock.Of<IRedisService>());
+            var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -130,7 +130,7 @@ namespace Notification.Tests
             var notificationController = new NotificationController(mockUserProfileService.Object, mockHubContext.Object, Mock.Of<IRedisService>());
 
             NotificationRead notificationRead = new NotificationRead();
-            notificationRead.ids = new List<long> {10};
+            notificationRead.ids = new List<long> { 10 };
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -157,8 +157,8 @@ namespace Notification.Tests
         {
             //Arrange
             Mock<Service.INotificationService> mockUserProfileService = new Mock<Service.INotificationService>();
-            Mock<IHubContext<ServerHub,IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub,IClientHub>>();
-               var httpContext = new Mock<HttpContext>();
+            Mock<IHubContext<ServerHub, IClientHub>> mockHubContext = new Mock<IHubContext<ServerHub, IClientHub>>();
+            var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
 
             Mock<IClientHub> clientHub = new Mock<IClientHub>();
@@ -234,7 +234,7 @@ namespace Notification.Tests
 
             NotificationRecepientMedium app = new NotificationRecepientMedium()
             {
-                Id = 1,
+                Id = 9,
                 SentTextJson = "test",
                 DeliveryModeId = 1,
                 NotificationRecepientId = 1
@@ -262,7 +262,7 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-            await notificationService.Read(new List<long>{1},1);
+            await notificationService.Read(new List<long> { 9 }, 1);
         }
         [Fact]
         public async Task TestDeleteService()
@@ -297,8 +297,8 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-             await notificationService.Delete(2);
-   
+            await notificationService.Delete(2);
+
         }
         [Fact]
         public async Task TestDeleteAllService()
@@ -380,7 +380,7 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-            List<NotificationMediumModel> res = await notificationService.GetPaged(1,6,1,1);
+            List<NotificationMediumModel> res = await notificationService.GetPaged(1, 6, 1, 1);
 
             // Assert
             Assert.NotNull(res);
@@ -457,36 +457,26 @@ namespace Notification.Tests
 
             dataContext.Database.EnsureCreated();
 
-            TenantSetting tenantSetting = new TenantSetting()
-            {
-                TenantId = 1,
-                NotificationTypeId = 1
-
-            };
-            dataContext.Set<TenantSetting>().Add(tenantSetting);
-
             dataContext.SaveChanges();
 
             Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
             List<int> lstAssignedUsers = new List<int>();
-            lstAssignedUsers.Add(1);
+            lstAssignedUsers.Add(500);
             mockRainmakerService.Setup(x => x.GetAssignedUsers(It.IsAny<int>())).ReturnsAsync(lstAssignedUsers);
 
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, mockRainmakerService.Object, Mock.Of<ITemplateService>());
 
             //Act
             NotificationModel notificationModel = new NotificationModel();
-            notificationModel.NotificationType = 1;
-            notificationModel.EntityId = 1;
+            notificationModel.NotificationType = 2;
+            notificationModel.EntityId = 500;
             notificationModel.CustomTextJson = "";
-
-            TenantSetting model = new TenantSetting();
-            model.DeliveryModeId = (short)Notification.Common.DeliveryMode.Express;
-            model.NotificationMediumId = 1;
-            long res = await notificationService.Add(notificationModel, 1, 1, model);
+            notificationModel.tenantId = 55;
+            notificationModel.userId = 6308;
+            long res = await notificationService.Add(notificationModel);
 
             // Assert
-            Assert.Equal(2,res);
+            Assert.NotNull(res);
         }
         [Fact]
         public async Task TestSeenController()
@@ -540,7 +530,7 @@ namespace Notification.Tests
                                 }",
                 DeliveryModeId = 1,
                 NotificationRecepientId = 6,
-                NotificationMediumid = 1, 
+                NotificationMediumid = 1,
             };
             dataContext.Set<NotificationRecepientMedium>().Add(app);
 
@@ -705,7 +695,7 @@ namespace Notification.Tests
             TenantSettingModel tenantSettingModel = new TenantSettingModel();
             tenantSettingModel.deliveryModeId = 1;
 
-            mockUserProfileService.Setup(x=>x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenantSettingModel);
+            mockUserProfileService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenantSettingModel);
 
             var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
@@ -731,8 +721,8 @@ namespace Notification.Tests
 
             TenantSetting app = new TenantSetting()
             {
-                Id = 1,
-                NotificationTypeId = 1
+                Id = 49,
+                NotificationTypeId = 3
             };
             dataContext.Set<TenantSetting>().Add(app);
 
@@ -741,7 +731,7 @@ namespace Notification.Tests
             INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
 
             //Act
-            await notificationService.GetTenantSetting(1 , 1);
+            await notificationService.GetTenantSetting(49, 3);
         }
         [Fact]
         public async Task TestSetTenantSettingController()
@@ -754,7 +744,7 @@ namespace Notification.Tests
 
             var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
-            mockUserProfileService.Setup(x => x.SetTenantSetting(It.IsAny<int>(),It.IsAny<TenantSettingModel>()));
+            mockUserProfileService.Setup(x => x.SetTenantSetting(It.IsAny<int>(), It.IsAny<TenantSettingModel>()));
 
             var notificationController = new NotificationController(mockUserProfileService.Object, null, Mock.Of<IRedisService>());
 
@@ -782,18 +772,18 @@ namespace Notification.Tests
 
             TenantSetting app = new TenantSetting()
             {
-                Id = 2,
+                Id = 4,
                 TrackingState = TrackingState.Modified,
                 DeliveryModeId = 1,
-                TenantId = 6
+                TenantId = 7
             };
             dataContext.Set<TenantSetting>().Add(app);
 
-            Setting setting = new Setting()
+            TenantSetting setting = new TenantSetting()
             {
-                TenantId = 6
+                TenantId = 7
             };
-            dataContext.Set<Setting>().Add(setting);
+            dataContext.Set<TenantSetting>().Add(setting);
 
             dataContext.SaveChanges();
 
@@ -802,8 +792,150 @@ namespace Notification.Tests
             //Act
             TenantSettingModel tenantSettingModel = new TenantSettingModel();
             tenantSettingModel.deliveryModeId = 1;
-            await notificationService.SetTenantSetting(6, tenantSettingModel);
+            await notificationService.SetTenantSetting(7, tenantSettingModel);
         }
-       
+        [Fact]
+        public async Task TestGetRecepientService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            NotificationRecepient notificationRecepient = new NotificationRecepient()
+            {
+                Id = 10021,
+                NotificationObjectId = 40247,
+                RecipientId = 21,
+                StatusId = 6
+            };
+            dataContext.Set<NotificationRecepient>().Add(notificationRecepient);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            await notificationService.GetRecepient(10021);
+        }
+        [Fact]
+        public async Task TestGetTenantSettingOverloadService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            TenantSetting app = new TenantSetting()
+            {
+                Id = 111,
+                UserId = 111,
+                TenantId = 59,
+                DeliveryModeId = 2,
+                NotificationMediumId = 1,
+                NotificationTypeId = 1,
+                DelayedInterval = 25
+            };
+            dataContext.Set<TenantSetting>().Add(app);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            TenantSettingModel tenantSetting = await notificationService.GetTenantSetting(59);
+
+            //Assert
+            Assert.NotNull(tenantSetting);
+        }
+        [Fact]
+        public async Task TestGetSettingService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            TenantSetting app = new TenantSetting()
+            {
+                Id = 61,
+                DeliveryModeId = 2,
+                DelayedInterval = 5
+            };
+            dataContext.Set<TenantSetting>().Add(app);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            await notificationService.GetSetting(61);
+        }
+        [Fact]
+        public async Task TestGetByIdForTemplateService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            NotificationObject notificationObject = new NotificationObject()
+            {
+                Id = 40246
+            };
+            dataContext.Set<NotificationObject>().Add(notificationObject);
+
+            NotificationType notificationType = new NotificationType()
+            {
+                Id = 3
+            };
+            dataContext.Set<NotificationType>().Add(notificationType);
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, null);
+
+            //Act
+            await notificationService.GetByIdForTemplate(40246);
+        }
+        [Fact]
+        public async Task TestAddUserNotificationMediumService()
+        {
+            //Arrange
+            DbContextOptions<NotificationContext> options;
+            var builder = new DbContextOptionsBuilder<NotificationContext>();
+            builder.UseInMemoryDatabase("Notification");
+            options = builder.Options;
+            using NotificationContext dataContext = new NotificationContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            dataContext.SaveChanges();
+
+            INotificationService notificationService = new NotificationService(new UnitOfWork<NotificationContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null, Mock.Of<ITemplateService>());
+
+            //Act
+            long res = await notificationService.AddUserNotificationMedium(6326, 40244, 1, 1, 1);
+
+            // Assert
+            Assert.NotNull(res);
+        }
+
     }
 }

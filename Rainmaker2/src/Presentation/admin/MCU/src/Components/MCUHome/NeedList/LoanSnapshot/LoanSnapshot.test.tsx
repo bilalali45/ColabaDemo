@@ -1,9 +1,11 @@
 import React from 'react';
-import {render, waitForDomChange, fireEvent} from '@testing-library/react';
+import { render, waitForDomChange, fireEvent, waitFor } from '@testing-library/react';
 import App from '../../../../App';
-import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
-import {MockLocalStorage} from '../../../../test_utilities/LocalStoreMock';
-import {MemoryRouter} from 'react-router-dom';
+import { MockEnvConfig } from '../../../../test_utilities/EnvConfigMock';
+import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
+import { MemoryRouter } from 'react-router-dom';
+import { StoreProvider } from '../../../../Store/Store';
+import { LoanSnapshot } from './LoanSnapshot';
 
 jest.mock('axios');
 jest.mock('../../../../Store/actions/UserActions');
@@ -17,240 +19,273 @@ beforeEach(() => {
   MockLocalStorage();
 });
 
-test('should render loan no', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+describe('LoanSnapshot', () => {
 
-  await waitForDomChange();
+  // test('should render loan no', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  const loanNoLabel = getByText('Loan No.');
-  expect(loanNoLabel).toBeInTheDocument();
+  //   await waitForDomChange();
 
-  const loanNoVal = getByText('50020000155');
-  expect(loanNoVal).toBeInTheDocument();
+  //   const loanNoLabel = getByText('Loan No.');
+  //   expect(loanNoLabel).toBeInTheDocument();
 
-});
+  //   const loanNoVal = getByText('50020000155');
+  //   expect(loanNoVal).toBeInTheDocument();
 
-test('should render Primary & co-Borrower', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // });
 
-  await waitForDomChange();
+  // test('should render Primary & co-Borrower', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  const borrowerLabel = getByText('Primary & co-Borrower');
-  expect(borrowerLabel).toBeInTheDocument();
 
-  const borrowerVal = getByText('Taruf Ali, Co Borr Last Name');
-  expect(borrowerVal).toBeInTheDocument();
+  //   await waitForDomChange();
 
-});
+  //   const borrowerLabel = getByText('Primary & co-Borrower');
+  //   expect(borrowerLabel).toBeInTheDocument();
 
+  //   const borrowerVal = getByText('Taruf Ali, Co Borr Last Name');
+  //   expect(borrowerVal).toBeInTheDocument();
 
-test('should render Est. Closing Date', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // });
 
-  await waitForDomChange();
 
-  const estClosingDateLabel = getByText('Est. Closing Date');
-  expect(estClosingDateLabel).toBeInTheDocument();
+  // test('should render Est. Closing Date', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  const estClosingDateText = getByText('Aug 29, 2020');
-  expect(estClosingDateText).toBeInTheDocument();
+  //   await waitForDomChange();
 
-});
+  //   const estClosingDateLabel = getByText('Est. Closing Date');
+  //   expect(estClosingDateLabel).toBeInTheDocument();
 
+  //   const estClosingDateText = getByText('Aug 29, 2020');
+  //   expect(estClosingDateText).toBeInTheDocument();
 
-test('should render loan Purpose', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // });
 
-  await waitForDomChange();
 
-  const loanPurposeLabel = getByText('Loan Purpose');
-  expect(loanPurposeLabel).toBeInTheDocument();
+  // test('should render loan Purpose', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  const loanPurposeText = getByText('Purchase a home');
-  expect(loanPurposeText).toBeInTheDocument();
 
-});
+  //   await waitForDomChange();
 
-test('should render Property Value', async () => {
-  const {getByText, getByTestId} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  //   const loanPurposeLabel = getByText('Loan Purpose');
+  //   expect(loanPurposeLabel).toBeInTheDocument();
 
-  await waitForDomChange();
+  //   const loanPurposeText = getByText('Purchase a home');
+  //   expect(loanPurposeText).toBeInTheDocument();
 
-  const propValLabel = getByText('Property Value');
-  expect(propValLabel).toBeInTheDocument();
+  // });
 
-  const propertyValText = getByTestId('propertyVal');
-  expect(propertyValText).toHaveTextContent('55,000');
-  expect(propertyValText).toHaveTextContent('$');
+  // test('should render Property Value', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-});
+  //   await waitForDomChange();
 
-test('should render loan Amount', async () => {
-  const {getByText, getByTestId} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  //   const propValLabel = getByText('Property Value');
+  //   expect(propValLabel).toBeInTheDocument();
 
-  await waitForDomChange();
+  //   const propertyValText = getByTestId('propertyVal');
+  //   expect(propertyValText).toHaveTextContent('55,000');
+  //   expect(propertyValText).toHaveTextContent('$');
 
-  const loanAmtLabel = getByText('Loan Amount');
-  expect(loanAmtLabel).toBeInTheDocument();
+  // });
 
-  const loanAmtText = getByTestId('loanAmt');
-  expect(loanAmtText).toHaveTextContent('45,000');
-  expect(loanAmtText).toHaveTextContent('$');
+  // test('should render loan Amount', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-});
 
-test('should render Milestone/Status', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  //   await waitForDomChange();
 
-  await waitForDomChange();
+  //   const loanAmtLabel = getByText('Loan Amount');
+  //   expect(loanAmtLabel).toBeInTheDocument();
 
-  const manageDocumentTemplateBtn = getByText('Milestone/Status');
-  expect(manageDocumentTemplateBtn).toBeInTheDocument();
+  //   const loanAmtText = getByTestId('loanAmt');
+  //   expect(loanAmtText).toHaveTextContent('45,000');
+  //   expect(loanAmtText).toHaveTextContent('$');
 
-  const backBtn = getByText('Application Submitted');
-  expect(backBtn).toBeInTheDocument();
+  // });
 
-});
+  // test('should render Milestone/Status', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-test('should render Property type', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
 
-  await waitForDomChange();
+  //   await waitForDomChange();
 
-  const propTypeLabel = getByText('Property type');
-  expect(propTypeLabel).toBeInTheDocument();
+  //   const manageDocumentTemplateBtn = getByText('Milestone/Status');
+  //   expect(manageDocumentTemplateBtn).toBeInTheDocument();
 
-  const propTypeText = getByText('Single Family Detached');
-  expect(propTypeText).toBeInTheDocument();
+  //   const backBtn = getByText('Application Submitted');
+  //   expect(backBtn).toBeInTheDocument();
 
-});
+  // });
 
-test('should render Rate', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // test('should render Property type', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  await waitForDomChange();
+  //   await waitForDomChange();
 
-  const rateLabel = getByText('Rate');
-  expect(rateLabel).toBeInTheDocument();
+  //   const propTypeLabel = getByText('Property type');
+  //   expect(propTypeLabel).toBeInTheDocument();
 
-});
+  //   const propTypeText = getByText('Single Family Detached');
+  //   expect(propTypeText).toBeInTheDocument();
 
+  // });
 
-test('should render loan Program', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // test('should render Rate', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  await waitForDomChange();
+  //   await waitForDomChange();
 
-  const loanProgramLabel = getByText('Loan Program');
-  expect(loanProgramLabel).toBeInTheDocument();
+  //   const rateLabel = getByText('Rate');
+  //   expect(rateLabel).toBeInTheDocument();
 
-});
+  // });
 
-test('should render Property Address', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
 
-  await waitForDomChange();
+  // test('should render loan Program', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  const propAddressLabel = getByText('Property Address');
-  expect(propAddressLabel).toBeInTheDocument();
+  //   await waitForDomChange();
 
-  const propAddressText = getByText('New27Aug # 2708');
-  const propAddress2Text = getByText('Houston, TX 77023')
-  expect(propAddressText).toBeInTheDocument();
-  expect(propAddress2Text).toBeInTheDocument();
+  //   const loanProgramLabel = getByText('Loan Program');
+  //   expect(loanProgramLabel).toBeInTheDocument();
 
-});
+  // });
 
-test('should render Lock status', async () => {
-  const {getByText, getByTestId} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // test('should render Property Address', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  await waitForDomChange();
+  //   await waitForDomChange();
 
-  const lockStatusLabel = getByText('Lock status');
-  expect(lockStatusLabel).toBeInTheDocument();
+  //   const propAddressLabel = getByText('Property Address');
+  //   expect(propAddressLabel).toBeInTheDocument();
 
-  const lockStatusText = getByTestId('SVGopenLock');
-  expect(lockStatusText).toBeInTheDocument();
+  //   const propAddressText = getByText('New27Aug # 2708');
+  //   const propAddress2Text = getByText('Houston, TX 77023')
+  //   expect(propAddressText).toBeInTheDocument();
+  //   expect(propAddress2Text).toBeInTheDocument();
 
-});
+  // });
 
-test('should render Lock Date', async () => {
-  const {getByText} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
+  // test('should render Lock status', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-  await waitForDomChange();
 
-  const lockDateLabel = getByText('Lock Date');
-  expect(lockDateLabel).toBeInTheDocument();
+  //   await waitForDomChange();
 
-  const lockDateText = getByText('Aug 18, 2020');
-  expect(lockDateText).toBeInTheDocument();
+  //   const lockStatusLabel = getByText('Lock status');
+  //   expect(lockStatusLabel).toBeInTheDocument();
 
-});
+  //   const lockStatusText = getByTestId('SVGopenLock');
+  //   expect(lockStatusText).toBeInTheDocument();
 
+  // });
 
+  // test('should render Lock Date', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
 
-test('should render Expiration date', async () => {
-  const {getByText, getByTestId} = render(
-    <MemoryRouter initialEntries={[Url]}>
-      <App />
-    </MemoryRouter>
-  );
 
-  await waitForDomChange();
+  //   await waitForDomChange();
 
-  const expirationDateLabel = getByText('Expiration date');
-  expect(expirationDateLabel).toBeInTheDocument();
+  //   const lockDateLabel = getByText('Lock Date');
+  //   expect(lockDateLabel).toBeInTheDocument();
 
-});
+  //   const lockDateText = getByText('Aug 18, 2020');
+  //   expect(lockDateText).toBeInTheDocument();
+
+  // });
+
+
+
+  // test('should render Expiration date', async () => {
+  //   const {getByText, getByTestId } = render(
+  //     <StoreProvider>
+  //       <LoanSnapshot />
+  //     </StoreProvider>
+  //   );
+
+  //   await waitForDomChange();
+
+  //   const expirationDateLabel = getByText('Expiration date');
+  //   expect(expirationDateLabel).toBeInTheDocument();
+
+  // });
+
+  test('should render LoanSnapShot Spinner', async () => {
+    const { getByTestId } = render(
+      <LoanSnapshot />
+    );
+
+    expect(getByTestId('loan-snapshot-spinner')).toBeInTheDocument();
+
+  });
+
+  test('should render LoanSnapShot Data', async () => {
+    const { getByTestId } = render(
+      <StoreProvider>
+        <LoanSnapshot />
+      </StoreProvider>
+    );
+
+    await waitForDomChange();
+
+    const loanSnapShot = getByTestId('loan-snapshot');
+    expect(loanSnapShot).toBeInTheDocument();
+
+  });
+
+})

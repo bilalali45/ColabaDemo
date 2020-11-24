@@ -19,7 +19,7 @@ namespace Notification.Data.Mapping
     using Notification.Entity.Models;
 
     // DeliveryModeEnum
-
+    
     public partial class DeliveryModeEnumMap : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<DeliveryModeEnum>
     {
         public void Configure(EntityTypeBuilder<DeliveryModeEnum> builder)

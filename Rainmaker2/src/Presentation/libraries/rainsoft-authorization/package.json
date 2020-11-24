@@ -1,0 +1,26 @@
+{
+  "name": "authorization",
+  "version": "1.0.0",
+  "description": "User token Authorization",
+  "main": "\u001b[A\u001b[B",
+  "scripts": {
+    "start": "parcel serve ./index.html --port 4000",
+    "build": "parcel build ./index.html",
+    "precommit": "lint-staged",
+    "build-js": "parcel build ./index.tsx --out-file rs-authorization.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jwt-decode": "^3.0.0-beta.2",
+    "lodash": "^4.17.20",
+    "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
+    "rainsoft-js": "^1.0.47",
+    "react": "^16.13.1",
+    "universal-cookie": "^4.0.4"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  }
+}

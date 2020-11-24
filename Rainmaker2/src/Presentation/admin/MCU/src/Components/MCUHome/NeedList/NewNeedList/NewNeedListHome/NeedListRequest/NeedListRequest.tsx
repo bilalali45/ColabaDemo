@@ -9,7 +9,6 @@ import { Template } from '../../../../../../Entities/Models/Template';
 import { NeedListSelect } from '../../../NeedListSelect/NeedListSelect';
 
 import emptyIcon from '../../../../../../Assets/images/empty-icon.svg';
-import { nameTest } from '../../../Add/Home/AddNeedListHome';
 import Spinner from 'react-bootstrap/Spinner';
 import { isDocumentDraftType } from '../../../../../../Store/reducers/TemplatesReducer';
 import { CustomDocuments } from '../../../../TemplateManager/AddDocument/SelectedDocumentType/CustomDocuments/CustomDocuments';
@@ -68,7 +67,6 @@ export const NeedListRequest = ({
   useEffect(() => {
     setLoaderVisible(false);
   }, []);
-  console.log(documentList.length);
   useEffect(() => {
     setShowSaveAsTemplate(false);
   }, [documentList.length === 0])
@@ -115,7 +113,7 @@ export const NeedListRequest = ({
       <div className="no-preview">
         <div>
           <div className="icon-wrap">
-            <img src={emptyIcon} alt="" />
+            <img src={emptyIcon} alt="no-document-preview-icon" />
           </div>
           <h2>Nothing</h2>
           <p>You have not added any document</p>
@@ -146,7 +144,7 @@ export const NeedListRequest = ({
                         removeDocumentFromList(d)
                         setTimeout(() => {
                           if (documentContainerRef?.current) {
-                            documentContainerRef.current.scrollTo(0, 0);
+                            documentContainerRef?.current?.scrollTo(0, 0);
                           }
                         }, 100);
                       }
@@ -167,6 +165,7 @@ export const NeedListRequest = ({
       <div className="save-template-wrap">
         <div className="save-template">
           <input
+          data-testid="save-template-input"
             onKeyDown={(e: any) => {
               let {
                 keyCode,
@@ -196,6 +195,7 @@ export const NeedListRequest = ({
               Cancel
             </button>{' '}
             <button
+            data-testid="save-temp-btn"
               className="btn btn-sm btn-primary"
               onClick={async () => {
                 if (!templateName) {
@@ -215,7 +215,7 @@ export const NeedListRequest = ({
             </button>
           </div>
         </div>
-        {templateNameError && <p className="error">{templateNameError}</p>}
+        {templateNameError && <p data-testid="error-text" className="error">{templateNameError}</p>}
       </div>
     );
   };
@@ -233,8 +233,8 @@ export const NeedListRequest = ({
             addDocumentToList={(d: TemplateDocument) => {
               addDocumentToList(d);
               setTimeout(() => {
-                if (documentContainerRef?.current) {
-                  documentContainerRef.current.scrollTo(0, documentContainerRef.current.clientHeight);
+                if (documentContainerRef?.current && documentContainerRef?.current?.scrollTo) {
+                  documentContainerRef?.current?.scrollTo(0, documentContainerRef.current.clientHeight);
                 }
               }, 100);
             }}
@@ -259,7 +259,7 @@ export const NeedListRequest = ({
           </Spinner>
         </div>
       ) : (
-          <div className="listWrap-templates">
+          <div data-testid="template-doc-container" className="listWrap-templates">
             {renderDocumentList()}
 
             {/* Remove Message */}
@@ -286,6 +286,7 @@ export const NeedListRequest = ({
                   />
                   {showSaveAsTemplateLink ? (
                     <a
+                    data-testid="save-as-template-btn"
                       onClick={toggleSaveAsTemplate}
                       className="btn-link link-primary"
                     >

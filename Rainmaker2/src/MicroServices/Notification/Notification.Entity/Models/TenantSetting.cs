@@ -14,15 +14,20 @@
 
 namespace Notification.Entity.Models
 {
-    // TenantSettings
+    using System;
+    using System.Collections.Generic;
 
+    // TenantSettings
+    
     public partial class TenantSetting : URF.Core.EF.Trackable.Entity
     {
         public int Id { get; set; } // Id (Primary key)
         public int TenantId { get; set; } // TenantId
+        public int? UserId { get; set; } // UserId
         public short DeliveryModeId { get; set; } // DeliveryModeId
         public int NotificationMediumId { get; set; } // NotificationMediumId
         public int NotificationTypeId { get; set; } // NotificationTypeId
+        public short? DelayedInterval { get; set; } // DelayedInterval
 
         // Foreign keys
 

@@ -7,7 +7,7 @@ namespace Notification.Model
     public class TenantSettingModel
     {
         public short deliveryModeId { get; set; }
-        public int queueTimeout { get; set; }
+        public short? queueTimeout { get; set; }
     }
     public class NotificationRead
     {
@@ -33,6 +33,8 @@ namespace Notification.Model
         public DateTime? DateTime  { get; set; }
         public int? userId { get; set; }
         public int? tenantId { get; set; }
+        public long Id { get; set; }
+        public List<int> UsersToSendList { get; set; }
     }
 
     public class LoanSummary
@@ -54,7 +56,26 @@ namespace Notification.Model
     public class NotificationMediumModel
     {
         public long id { get; set; }
-        public JObject payload { get; set; }
+        public string payload { get; set; }
         public string status { get; set; }
+    }
+
+    public class SettingModel
+    {
+        public int Id { get; set; }
+        public int TenantId { get; set; }
+        public int? UserId { get; set; }
+        public short DeliveryModeId { get; set; }
+        public int NotificationMediumId { get; set; }
+        public int NotificationTypeId { get; set; }
+        public short? DelayedInterval { get; set; }
+        public string NotificationType { get; set; }
+    }
+
+    public class UpdateSettingModel
+    {
+        public int notificationTypeId { get; set; }
+        public short deliveryModeId { get; set; }
+        public short? delayedInterval { get; set; }
     }
 }
