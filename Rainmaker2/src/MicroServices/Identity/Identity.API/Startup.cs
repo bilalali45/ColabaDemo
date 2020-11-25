@@ -1,4 +1,7 @@
-﻿using Identity.CorrelationHandlersAndMiddleware;
+﻿using ElmahCore.Mvc;
+using ElmahCore.Sql;
+using Identity.CorrelationHandlersAndMiddleware;
+using Identity.Helpers;
 using Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +15,7 @@ namespace Identity
 {
     public class Startup
     {
+        private static HttpClient httpClient = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +28,13 @@ namespace Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var elmahResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=ElmahCS"));
+            elmahResponse.EnsureSuccessStatusCode();
+            var elmahKey = AsyncHelper.RunSync(func: () => elmahResponse.Content.ReadAsStringAsync());
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = elmahKey;
+            });
             #region Denpendency Injection
 
             services.AddTransient<ITokenService, TokenService>();
@@ -65,6 +76,7 @@ namespace Identity
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
+            app.UseElmah();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(configure: endpoints =>

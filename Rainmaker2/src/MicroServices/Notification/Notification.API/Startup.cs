@@ -1,3 +1,5 @@
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,13 @@ namespace Notification.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+            var elmahResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=ElmahCS"));
+            elmahResponse.EnsureSuccessStatusCode();
+            var elmahKey = AsyncHelper.RunSync(func: () => elmahResponse.Content.ReadAsStringAsync());
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = elmahKey;
+            });
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=NotificationCS"));
             csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<Notification.Data.NotificationContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
@@ -112,7 +121,7 @@ namespace Notification.API
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-
+            app.UseElmah();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

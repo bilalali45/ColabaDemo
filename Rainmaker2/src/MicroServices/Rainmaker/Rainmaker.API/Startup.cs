@@ -1,3 +1,5 @@
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,13 @@ namespace Rainmaker.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var elmahResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=ElmahCS"));
+            elmahResponse.EnsureSuccessStatusCode();
+            var elmahKey = AsyncHelper.RunSync(func: () => elmahResponse.Content.ReadAsStringAsync());
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = elmahKey;
+            });
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
             csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<RainMaker.Data.RainMakerContext>(options => options.UseSqlServer(AsyncHelper.RunSync(()=> csResponse.Content.ReadAsStringAsync())));
@@ -114,7 +123,7 @@ namespace Rainmaker.API
             {
                 app.UseMiddleware<ExceptionMiddleware>();
             }
-
+            app.UseElmah();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

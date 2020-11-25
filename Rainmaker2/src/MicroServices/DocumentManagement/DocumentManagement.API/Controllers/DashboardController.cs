@@ -3,6 +3,7 @@ using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,7 +53,8 @@ namespace DocumentManagement.API.Controllers
         [HttpPost(template: "GetPendingDocumentsByLoanApplication")]
         public async Task<IActionResult> GetPendingDocumentsByLoanApplication(GetPendingDocumentsByLoanApplication moGetPendingDocuments)
         {
-         
+            if (moGetPendingDocuments.loanApplicationId == null || moGetPendingDocuments.loanApplicationId.Length <= 0)
+                return Ok(new List<TaskCountDTO>());
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             logger.LogInformation($"GetPendingDocument requested for {moGetPendingDocuments.loanApplicationId} tenantId {tenantId} userId {userProfileId}");

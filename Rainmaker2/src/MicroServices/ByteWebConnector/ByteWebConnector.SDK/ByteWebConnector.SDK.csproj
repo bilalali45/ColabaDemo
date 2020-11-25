@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ElmahCore" Version="1.2.5" />
+    <PackageReference Include="ElmahCore.Sql" Version="1.2.5" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
@@ -30,6 +32,7 @@
     <Reference Include="LOSAutomation">
       <HintPath>..\..\..\Library\ByteProSDK\LOSAutomation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="Xceed.Editors">
       <HintPath>..\..\..\Library\ByteProSDK\Xceed.Editors.dll</HintPath>
     </Reference>

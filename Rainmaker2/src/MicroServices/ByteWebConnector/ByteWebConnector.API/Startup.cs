@@ -9,6 +9,8 @@ using ByteWebConnector.Data;
 using ByteWebConnector.Service.DbServices;
 using ByteWebConnector.Service.ExternalServices;
 using ByteWebConnector.Service.InternalServices;
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
 using LosIntegration.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +45,13 @@ namespace ByteWebConnector.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var elmahResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=ElmahCS"));
+            elmahResponse.EnsureSuccessStatusCode();
+            var elmahKey = AsyncHelper.RunSync(func: () => elmahResponse.Content.ReadAsStringAsync());
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = elmahKey;
+            });
             var csResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
             csResponse.EnsureSuccessStatusCode();
             services.AddControllers();
@@ -122,7 +131,7 @@ namespace ByteWebConnector.API
         {
             app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
+            app.UseElmah();
             app.UseRouting();
 
             AppContext.Configure(httpContextAccessor:
