@@ -69,6 +69,8 @@ namespace MainGateway
                          .Enrich.FromLogContext()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithMachineName()
+                         .Enrich.WithClientIp()
+                         .Enrich.WithClientAgent()
                          //.WriteTo.Debug()
 #if DEBUG
                          .WriteTo.Console()

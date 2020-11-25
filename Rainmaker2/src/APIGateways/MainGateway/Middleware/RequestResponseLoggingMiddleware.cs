@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +17,13 @@ namespace MainGateway.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, ILogger<RequestResponseLoggingMiddleware> _logger)
+        public async Task InvokeAsync(HttpContext context, ILogger<RequestResponseLoggingMiddleware> _logger, IConfiguration configuration)
         {
             context.Request.EnableBuffering();
 
             var builder = new StringBuilder();
 
-            var request = await FormatRequest(context.Request);
+            var request = await FormatRequest(context.Request,configuration);
 
             builder.Append("Request: ").AppendLine(request);
             builder.AppendLine("Request headers:");
@@ -43,7 +45,7 @@ namespace MainGateway.Middleware
 
             //Format the response from the server
             builder = new StringBuilder();
-            var response = await FormatResponse(context.Response);
+            var response = await FormatResponse(context.Response,configuration);
             builder.Append("Response: ").AppendLine(response);
             builder.AppendLine("Response headers: ");
             foreach (var header in context.Response.Headers)
@@ -59,7 +61,7 @@ namespace MainGateway.Middleware
                 await responseBody.CopyToAsync(originalBodyStream);
         }
 
-        private async Task<string> FormatRequest(HttpRequest request)
+        private async Task<string> FormatRequest(HttpRequest request, IConfiguration configuration)
         {
             // Leave the body open so the next middleware can read it.
             using var reader = new StreamReader(
@@ -68,10 +70,11 @@ namespace MainGateway.Middleware
                 detectEncodingFromByteOrderMarks: false,
                 leaveOpen: true);
             var body = await reader.ReadToEndAsync();
+            body = Left(body, int.Parse(configuration["LoggingMiddleware:RequestSize"]) * 1024);
             // Do some processing with body…
             if (request.Path.ToString().ToLower().Contains("api/identity/token/authorize"))
                 body = "";
-            var formattedRequest = $"{request.Scheme}://{request.Host}{request.Path}?{request.QueryString} {body}";
+            var formattedRequest = $"{request.Method} {request.Scheme}://{request.Host}{request.Path}?{request.QueryString} {body}";
 
             // Reset the request body stream position so the next middleware can read it
             request.Body.Position = 0;
@@ -79,7 +82,7 @@ namespace MainGateway.Middleware
             return formattedRequest;
         }
 
-        private async Task<string> FormatResponse(HttpResponse response)
+        private async Task<string> FormatResponse(HttpResponse response, IConfiguration configuration)
         {
             //We need to read the response stream from the beginning...
             response.Body.Seek(0, SeekOrigin.Begin);
@@ -89,9 +92,26 @@ namespace MainGateway.Middleware
 
             //We need to reset the reader for the response so that the client can read it.
             response.Body.Seek(0, SeekOrigin.Begin);
-
+            text = Left(text, int.Parse(configuration["LoggingMiddleware:ResponseSize"]) * 1024);
             //Return the string for the response, including the status code (e.g. 200, 404, 401, etc.)
-            return $"{response.StatusCode}: {text}";
+            return $"HTTP Status Code {response.StatusCode}: {text}";
+        }
+
+        private static string Left(string s, int length)
+        {
+            if (string.IsNullOrEmpty(s))
+                return string.Empty;
+
+            length = Math.Max(length, 0);
+
+            if (s.Length > length)
+            {
+                return s.Substring(0, length);
+            }
+            else
+            {
+                return s;
+            }
         }
     }
 }
