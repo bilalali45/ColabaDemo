@@ -56,7 +56,7 @@ namespace Notification.Model
     public class NotificationMediumModel
     {
         public long id { get; set; }
-        public string payload { get; set; }
+        public JObject payload { get; set; }
         public string status { get; set; }
     }
 

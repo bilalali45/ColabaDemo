@@ -44,7 +44,7 @@ namespace Notification.Service
             }
             else
             {
-                return await Uow.Repository<TenantSetting>().Query(query: x => x.TenantId == tenantId)
+                return await Uow.Repository<TenantSetting>().Query(query: x => x.TenantId == tenantId && x.UserId == null)
                                 .Include(x => x.NotificationType)
                                 .Select(selector: x => new SettingModel
                                 {

@@ -128,7 +128,7 @@ namespace Notification.Service
                 .Select(x => new NotificationMediumModel()
                 {
                     id = x.Id,
-                    payload = x.SentTextJson,
+                    payload = !String.IsNullOrEmpty(x.SentTextJson) ? JObject.Parse(x.SentTextJson) : new JObject(),
                     status = x.NotificationRecepient.StatusListEnum.Name
                 }).ToListAsync();
         }
@@ -234,7 +234,7 @@ namespace Notification.Service
                 .ThenInclude(x => x.StatusListEnum)
                 .FirstOrDefaultAsync();
 
-            return new NotificationMediumModel() { id = result.Id, payload = result.SentTextJson, status = result.NotificationRecepient.StatusListEnum.Name };
+            return new NotificationMediumModel() { id = result.Id, payload = JObject.Parse(result.SentTextJson), status = result.NotificationRecepient.StatusListEnum.Name };
         }
 
         public async Task SetTenantSetting(int tenantId, TenantSettingModel model)
