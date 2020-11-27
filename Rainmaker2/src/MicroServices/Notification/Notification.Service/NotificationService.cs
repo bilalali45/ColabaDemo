@@ -234,7 +234,7 @@ namespace Notification.Service
                 .ThenInclude(x => x.StatusListEnum)
                 .FirstOrDefaultAsync();
 
-            return new NotificationMediumModel() { id = result.Id, payload = JObject.Parse(result.SentTextJson), status = result.NotificationRecepient.StatusListEnum.Name };
+            return new NotificationMediumModel() { id = result.Id, payload = !String.IsNullOrEmpty(result.SentTextJson) ? JObject.Parse(result.SentTextJson) : new JObject(), status = result.NotificationRecepient.StatusListEnum.Name };
         }
 
         public async Task SetTenantSetting(int tenantId, TenantSettingModel model)

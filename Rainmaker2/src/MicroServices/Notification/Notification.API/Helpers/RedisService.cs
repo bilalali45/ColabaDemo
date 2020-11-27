@@ -121,7 +121,7 @@ namespace Notification.Service
                         NotificationMediumModel m = new NotificationMediumModel()
                         {
                             id = recepient.NotificationRecepientMediums.First().Id,
-                            payload = JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
+                            payload = string.IsNullOrEmpty(recepient.NotificationRecepientMediums.First().SentTextJson) ? new JObject() : JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
                             status = recepient.StatusListEnum.Name
                         };
                         await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
@@ -138,7 +138,7 @@ namespace Notification.Service
                         NotificationMediumModel m = new NotificationMediumModel()
                                                     {
                                                         id = recepient.NotificationRecepientMediums.First().Id,
-                                                        payload = JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
+                                                        payload = string.IsNullOrEmpty(recepient.NotificationRecepientMediums.First().SentTextJson)? new JObject(): JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
                                                         status = recepient.StatusListEnum.Name
                                                     };
                         await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
