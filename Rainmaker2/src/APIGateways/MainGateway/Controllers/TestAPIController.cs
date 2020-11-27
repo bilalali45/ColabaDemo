@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace MainGateway.Controllers
 {
@@ -7,19 +9,23 @@ namespace MainGateway.Controllers
     public class TestAPIController : Controller
     {
         [HttpGet("[action]")]
-        public string TestGet(string text)
+        [HttpHead("[action]")]
+        public ActionResult Test(string text)
         {
-            return "Get : " + text;
+            return Json(new { Success = true, Result =  " : " + text });
         }
         [HttpPost("[action]")]
-        public string TestPost(string text)
-        {
-            return "Post : " + text;
-        }
         [HttpPut("[action]")]
-        public string TestPut(string text)
+        [HttpDelete("[action]")]
+        [HttpPatch("[action]")]
+        [HttpOptions("[action]")]
+        public ActionResult Test(TextModel model)
         {
-            return "Put : " + text;
+            return Json(new { Success = true, Result =  " : " + model.text });
+        }
+        public class TextModel
+        {
+            public string text { get; set; }
         }
     }
 }
