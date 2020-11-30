@@ -13,7 +13,7 @@ import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import {NeedListAlertBox} from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
 import {NeedListDocuments} from '../../../../Entities/Models/NeedListDocuments';
-import { DashboardSetting } from '../../../../Entities/Models/DashboardSetting';
+import {DashboardSetting} from '../../../../Entities/Models/DashboardSetting';
 
 export const Sync = 'Synchronized';
 export const SyncTxt = 'Synced';
@@ -44,7 +44,7 @@ export const NeedListView = () => {
   
 
   const needListManager: any = state?.needListManager;
-  const filtertoggler: any  = needListManager?.needListFilter;
+  const filtertoggler: any = needListManager?.needListFilter;
   const needListData = needListManager?.needList;
   const templateManager: any = state.templateManager;
   const templates: Template[] = templateManager?.templates;
@@ -61,18 +61,17 @@ export const NeedListView = () => {
 
   var isError = false;
   useEffect(() => {
-    if(!needListManager.hasOwnProperty('needListFilter')){
-        fetchDashBoardSettings()
-    }
-    let status = needListManager?.needListFilter? needListManager?.needListFilter : false
-    fetchNeedList(status, true )
+    fetchNeedListData();
     checkIsDocumentDraft(LocalDB.getLoanAppliationId());
     checkIsByteProAuto();
   }, []);
 
   useEffect(() => {
-    console.log('in here ----------------------------------------------- ', isDocumentDraft)
-  }, [isDocumentDraft?.value])
+    console.log(
+      'in here ----------------------------------------------- ',
+      isDocumentDraft
+    );
+  }, [isDocumentDraft?.value]);
 
   useEffect(() => {
     if (templates && templates?.length) {
@@ -82,6 +81,14 @@ export const NeedListView = () => {
       });
     }
   }, [templates?.length]);
+
+  const fetchNeedListData = async () => {
+    let status = filtertoggler;
+    if (!status) {
+      status = await fetchDashBoardSettings();
+    }
+    await fetchNeedList(status ? status : false, true);
+  };
 
   const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
     if (LocalDB.getLoanAppliationId()) {
@@ -492,14 +499,19 @@ export const NeedListView = () => {
     setShowConfirmBox(false);
   };
 
-
-  const fetchDashBoardSettings= async () => {
-    let res: DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
-    if(res){
-        dispatch({type: NeedListActionsType.SetNeedListFilter, payload: res.pending});
+  const fetchDashBoardSettings = async () => {
+    let res:
+      | DashboardSetting
+      | undefined = await NeedListActions.getDashBoardSettings();
+    if (res) {
+      dispatch({
+        type: NeedListActionsType.SetNeedListFilter,
+        payload: res.pending
+      });
     }
-  } 
-  
+    return res?.pending;
+  };
+
   return (
     <div className="need-list-view" data-testid="need-list-view">
       <NeedListViewHeader
