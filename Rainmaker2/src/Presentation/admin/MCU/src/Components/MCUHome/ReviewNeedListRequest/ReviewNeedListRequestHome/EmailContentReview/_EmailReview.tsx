@@ -200,6 +200,12 @@ export const EmailReview = ({
     setEmailBody(content);
     setValue('emailBody', content, {shouldValidate: true});
     dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: true})
+    let emailContentDetail : RequestEmailTemplate = emailContent;
+    emailContentDetail.emailBody = content.toString();
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEmailContent,
+      payload: emailContentDetail
+    });
   };
 
   const onBlurTextEditor = (content: string) => {
