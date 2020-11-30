@@ -12,15 +12,20 @@ namespace Rainmaker.API.Controllers
     [ApiController]
     public class SettingController : ControllerBase
     {
+        #region Private Variables
         private readonly IUserProfileService userProfileService;
         private readonly ISettingService settingService;
-
+        #endregion
+        #region Constructors
         public SettingController( IUserProfileService userProfileService,ISettingService settingService)
         {
             this.userProfileService = userProfileService;
             this.settingService = settingService;
         }
+        #endregion
+        #region Action Methods
 
+        #region Get
         [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
         public async Task<IActionResult> GetUserRoles()
@@ -28,15 +33,6 @@ namespace Rainmaker.API.Controllers
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
             var userRoles = await userProfileService.GetUserRoles(userId:userProfileId);
             return Ok(userRoles);
-        }
-
-        [HttpPost("[action]")]
-        [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> UpdateUserRoles(List<Model.UserRole> userRoles)
-        {
-            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            await userProfileService.UpdateUserRoles(userRoles:userRoles,userId: userProfileId);
-            return Ok();
         }
 
         [HttpGet("[action]")]
@@ -47,5 +43,38 @@ namespace Rainmaker.API.Controllers
             var templateQuery = await settingService.RenderEmailTokens(id:emailTemplateModel.id,loanApplicationId: emailTemplateModel.loanApplicationId, userProfileId: userProfileId, fromAddess: emailTemplateModel.fromAddress, subject: emailTemplateModel.subject, emailBody: emailTemplateModel.emailBody, lsTokenModels: emailTemplateModel.lstTokens);
             return Ok(value: templateQuery);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLoanOfficers()
+        {
+            var loanOfficers = await userProfileService.GetLoanOfficers();
+            return Ok(loanOfficers);
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetBusinessUnits()
+        {
+            var businessUnits = await userProfileService.GetBusinessUnits();
+            return Ok(businessUnits);
+        }
+        #endregion
+        #region Post
+        [HttpPost("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> UpdateUserRoles(List<Model.UserRole> userRoles)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await userProfileService.UpdateUserRoles(userRoles: userRoles, userId: userProfileId);
+            return Ok();
+        }
+        [HttpPost("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> UpdateByteUsersName(List<Model.ByteUserNameModel> byteUserNameModel)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await userProfileService.UpdateByteUserName(byteUserNameModel: byteUserNameModel, userId: userProfileId);
+            return Ok();
+        }
+        #endregion
+        #endregion
     }
 }

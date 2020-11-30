@@ -70,7 +70,6 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
         setTimeout(()=>{
             const popupTop = mainContainerRef.current?.getBoundingClientRect().top;
             setPopupPosition({...getPopupPosition,y:popupTop});
-            console.log('popupTop ',popupTop);
         },100)
 
         let handler = (event: any) => {
@@ -83,7 +82,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
             // Click Out for remove template alert
             if(!removeAlert.current?.contains(event.target)){
                 document.querySelector<HTMLElement>('#removeAlertNo')?.click();
-                console.log(removeAlert.current,removeAlert.current?.childNodes[1].childNodes[0]);
+                
             }
 
         }
@@ -601,6 +600,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                     }
                                     return n;
                                 });
+                                setNameError('');
                                 setDataState(updated);
                                 await removeTemplate(item);
                             }}

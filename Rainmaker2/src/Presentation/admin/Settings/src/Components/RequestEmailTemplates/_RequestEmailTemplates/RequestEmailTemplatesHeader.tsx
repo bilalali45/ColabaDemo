@@ -40,7 +40,7 @@ export const RequestEmailTemplatesHeader = ({ addEmailTemplateClick, showEmailLi
       <div data-testid="add-emailTemplate" className="dropdown arrow-right float-right">
         {showEmailList &&
           <button
-            onClick={e => addEmailTemplateClick(e)}
+            onClick={() => addEmailTemplateClick(true)}
             className="settings-btn dropdown-toggle"
             data-testid="addNewTemplate-btn">
             Add Email Template

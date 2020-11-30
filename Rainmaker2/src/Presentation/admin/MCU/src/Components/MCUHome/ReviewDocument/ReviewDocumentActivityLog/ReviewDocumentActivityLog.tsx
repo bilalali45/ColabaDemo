@@ -37,6 +37,8 @@ export const ReviewDocumentActivityLog = ({
     boolean | null
   >(true);
 
+  
+
   const checkActiveTab = (step: any) => {
     if (step == tab) {
       return 'active';
@@ -229,7 +231,7 @@ export const ReviewDocumentActivityLog = ({
   const renderEmailLogDetails = (emailLogIndex: number) => {
     const emailLog = emailLogs[emailLogIndex];
 
-    return <div>{emailLog?.emailText}</div>;
+    return <div id="emailContent" >{ReactHtmlParser(emailLog?.emailText)}</div>;
   };
 
   useEffect(() => {

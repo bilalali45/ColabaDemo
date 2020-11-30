@@ -93,6 +93,9 @@
                     td,th{
                         cursor: pointer;
                     }
+                    td{
+                        @include font(normal,1.4,'xs','base');
+                    }
                 }
             }
             
@@ -106,6 +109,7 @@
 
         h5{
             @include font(normal,1.4,'sm','heading');
+            color: color('tableHeadText');
         }
     }
 

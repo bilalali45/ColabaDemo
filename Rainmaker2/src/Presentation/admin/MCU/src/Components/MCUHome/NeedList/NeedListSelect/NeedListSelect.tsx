@@ -88,8 +88,8 @@ export const NeedListSelect = ({
       myTemplateContainerRef?.current &&
       tenantTemplateContainerRef?.current
     ) {
-      // myTemplateContainerRef?.current.scrollTo(0, 0);
-      // tenantTemplateContainerRef?.current.scrollTo(0, 0);
+       myTemplateContainerRef?.current.scrollTo(0, 0);
+       tenantTemplateContainerRef?.current.scrollTo(0, 0);
     }
   }, [show === true, location.pathname, templates]);
 

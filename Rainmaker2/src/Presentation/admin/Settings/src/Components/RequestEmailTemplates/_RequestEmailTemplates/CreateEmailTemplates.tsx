@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import ContentHeader, {ContentSubHeader} from '../../Shared/ContentHeader';
 import 'react-multi-email/style.css';
 import {EmailInputBox} from '../../Shared/EmailInputBox';
@@ -38,15 +38,17 @@ export const CreateEmailTemplates = ({
   const [tokens, setValidTokens] = useState<string[]>([]);
   const [defaultText, setDefaultText] = useState<string>();
 
-  const {register, errors, handleSubmit, setValue, getValues} = useForm();
+  const {register, errors, handleSubmit, setValue, getValues, formState, trigger} = useForm();
 
   const [lastSelectedInput, setLastSelectedInput] = useState<string>('');
   const [selectedToken, setSelectedToken] = useState('');
 
+ 
   useEffect(() => {
     if (selectedEmailTemplate) {
       setDefaultValue(selectedEmailTemplate);
     }
+    
   }, []);
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export const CreateEmailTemplates = ({
       templateData.emailBody
     );
     if (result === 200) {
-      addEmailTemplateClick();
+      addEmailTemplateClick(true);
     }
   };
 
@@ -103,7 +105,7 @@ export const CreateEmailTemplates = ({
       templateData.emailBody
     );
     if (result === 200) {
-      addEmailTemplateClick();
+      addEmailTemplateClick(true);
     }
   };
 
@@ -184,18 +186,19 @@ export const CreateEmailTemplates = ({
     
   };
 
-  const onSubmit = (data: any) => {
-    if(selectedEmailTemplate && selectedEmailTemplate.id){
-      data.id = selectedEmailTemplate.id;
-      updateEmailTemplate(data);
-    }else{
-      createEmailTemplate(data);
-    }
-   
-    dispatch({
-      type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
-      payload: null
-    });
+  const onSubmit = (data: any) => {  
+      if(selectedEmailTemplate && selectedEmailTemplate.id){
+        data.id = selectedEmailTemplate.id;
+        updateEmailTemplate(data);
+      }else{
+        createEmailTemplate(data);
+      }
+     
+      dispatch({
+        type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
+        payload: null
+      });
+     
   };
 
   const handlerOnFocusOnTextEditor = () => {
@@ -235,15 +238,15 @@ export const CreateEmailTemplates = ({
       <ContentSubHeader
         title={''}
         backLinkText={'Back'}
-        backLink={addEmailTemplateClick}
+        backLink={ () => addEmailTemplateClick(true)}
         className="create-email-templates-header"
       ></ContentSubHeader>
-      <form data-testid="create-form" onSubmit={handleSubmit(onSubmit)}>
+      <form data-testid="create-form">
         <ContentBody>
           <div className="row">
             <div data-testid="dv-templateName" className="col-md-5 form-group">
               <label className="settings__label">Template Name</label>
-              <input
+              <input           
                 data-testid = "templateName-input"
                 maxLength = {100}
                 id="templateName"
@@ -252,6 +255,7 @@ export const CreateEmailTemplates = ({
                 className={`settings__control ${
                   errors.templateName ? 'error' : ''
                 }`}
+                
                 ref={register({
                   required: 'Template name is required.',
                   validate: isTokenExist,
@@ -275,7 +279,7 @@ export const CreateEmailTemplates = ({
             </div>
             <div data-testid="dv-templateDesc" className="col-md-7 form-group">
               <label className="settings__label">Template Description</label>
-              <input
+              <input              
                 data-testid = "templateName-desc"
                 maxLength = {100}
                 id="templateDescription"
@@ -306,12 +310,13 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-fromAddress" className="col-md-12 form-group">
               <label className="settings__label">Default From Address</label>
               <EmailInputBox
+                id="defaultFromAddress"              
                 handlerEmail={handlerFromEmail}
                 handlerClick={() => handlerClick('fromAddress')}
                 tokens={tokens}
                 exisitngEmailValues={fromEmailArray}
-                className={`${errors.fromEmail?'error':''}`}
-                dataTestId = {'from-email'}
+                className={errors.fromEmail?'error':''}
+                dataTestId = {'from-email'}               
               />
               {errors.fromEmail && (
                 <label data-testid="fromEmail-error" className="error">{errors.fromEmail.message}</label>
@@ -330,12 +335,15 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-ccAddress" className="col-md-12 form-group">
               <label className="settings__label">Default CC Address</label>
               <EmailInputBox
+                id="defaultCCAddress"
+               
                 handlerEmail={handlerCCEmail}
                 handlerClick={() => handlerClick('ccAddress')}
                 tokens={tokens}
                 exisitngEmailValues={cCEmailArray}
-                className={`${errors.cCEmail?'error':''}`}
+                className={errors.cCEmail?'error':''}
                 dataTestId = {'cc-email'}
+                
               />
               {errors.cCEmail && (
                 <label data-testid="ccEmail-error" className="error">{errors.cCEmail.message}</label>
@@ -352,11 +360,14 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-subline" className="col-md-12 form-group">
               <label className="settings__label">Subject Line</label>
               <input
+               
                 data-testid= "subject-input"
+               
+                id="subjectLine"
                 maxLength = {250}
                 name="subjectLine"
                 type="text"
-                className={`settings__control ${
+                className={`settings__control  ${
                   errors.subjectLine ? 'error' : ''
                 }`}
                 ref={register({
@@ -376,11 +387,12 @@ export const CreateEmailTemplates = ({
 
           <label data-testid="email-body-label" className="settings__label">Email Body</label>
           <TextEditor
+            id="emailBody"          
             selectedToken={selectedToken}
             handlerOnFocus={handlerOnFocusOnTextEditor}
             handlerOnChange={onChnageTextEditor}
             defaultText = {defaultText}
-            className={errors.emailBody ? 'error' : 'className-for-testid'}
+            className={`${errors.emailBody ? 'error' : 'className-for-testid'}`}
           />
           {errors.emailBody && (
             <label data-testid="emailBody-error" className="error">{errors.emailBody.message}</label>
@@ -396,13 +408,16 @@ export const CreateEmailTemplates = ({
           />          
         </ContentBody>
         <ContentFooter>
-          <button data-testid= "save-btn" type="submit" className="settings-btn settings-btn-primary">
+          <button type="button" data-testid= "save-btn"
+           onClick={handleSubmit(onSubmit)} 
+           className="settings-btn settings-btn-primary">
             Save
           </button>
           <button
+            type="button"
             data-testid= "cancel-btn"
             onClick={() => {
-              addEmailTemplateClick();
+              addEmailTemplateClick(true);
               dispatch({
                 type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
                 payload: null

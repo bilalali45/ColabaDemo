@@ -15,8 +15,8 @@ import TableTH from '../../Shared/SettingTable/TableTH';
 const TimeIntervalEnum = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
 export const NotificationBody = () => {
-    const { state, dispatch } = useContext(Store);
 
+    const { state, dispatch } = useContext(Store);
     const notificationManager: any = state.notificationManager;
     const notificationData = notificationManager.notificationData;
 
@@ -87,7 +87,7 @@ export const NotificationBody = () => {
         return notificationData?.map((d:Notificaiton) => {
             return (
                 <TableROW>
-                    <TableTD><span className={d.currentState === 3 ? "notOff settings__table--seprate-right" : "settings__table--seprate-right"}>{d?.name}</span></TableTD>
+                    <TableTD><span className={d.currentState != 3 ? "notOff settings__table--seprate-right" : "settings__table--seprate-right"}>{d?.name}</span></TableTD>
                     <TableTD>
                         {rednerOptions(d)}
                         <span>

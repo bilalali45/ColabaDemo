@@ -40,7 +40,7 @@
                 &-label{
                     margin-top: -11px;
                 }
-            }
+            }            
         }
 
         .btn {
@@ -138,6 +138,14 @@
 
             &-heading {
                 margin-bottom: 20px;
+            }
+
+            .mcu-dropdown-popup{
+                .mcu-dropdown-popup-arrow{
+                    left: auto;
+                    position: fixed;
+                    right: 320px;
+                }
             }
         }
 

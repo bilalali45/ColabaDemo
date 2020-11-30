@@ -44,6 +44,7 @@ namespace RainMaker.Entity.Models
         public string Logo { get; set; } // Logo (length: 50)
         public string Banner { get; set; } // Logo (length: 50)
         public string FavIcon { get; set; } // Logo (length: 50)
+        public string ByteOrganizationCode { get; set; }  // ByteOrganizationCode (length: 50) 
 
         // Reverse navigation
 

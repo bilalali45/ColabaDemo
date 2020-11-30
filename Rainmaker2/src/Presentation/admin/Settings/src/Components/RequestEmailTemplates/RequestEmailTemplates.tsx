@@ -10,8 +10,11 @@ import { RequestEmailTemplatesHeader } from './_RequestEmailTemplates/RequestEma
     const [showEmailList, setShowEmailList] = useState<boolean>(true);
     const [showinsertToken, setshowInsertToken] = useState<boolean>(false);
 
-    const addEmailTemplateClickHandler = () => {
-        setShowEmailList(!showEmailList);     
+    const addEmailTemplateClickHandler = (isCall: boolean) => {
+        if(isCall){
+            setShowEmailList(!showEmailList);
+        }
+            
     }
 
     const insertTokenClickHandler = (value: boolean) => {

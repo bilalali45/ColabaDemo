@@ -1,4 +1,4 @@
-import  React ,{useState, useEffect} from "react";
+import  React ,{useState, useEffect, useRef} from "react";
 import { ReactMultiEmail, isEmail  } from "react-multi-email";
 import "react-multi-email/style.css";
 
@@ -9,11 +9,14 @@ type props = {
   exisitngEmailValues?: string[] | null;
   className?:any;
   dataTestId: string;
+  id?:any;
 }
 
 export const EmailInputBox = (props: props) => {
   const [emails, setEmailArray] = useState<string[]>([]);
   const existingEmailValues = props.exisitngEmailValues;
+  
+
   useEffect(() => {
     if (existingEmailValues){
       setEmailArray(existingEmailValues)
@@ -45,11 +48,13 @@ export const EmailInputBox = (props: props) => {
   const ClickHandler = () => {
     props.handlerClick();
   }
+
   
     return (
       <>
-      <div data-testid={props.dataTestId}  onFocus={ClickHandler} onClick={ClickHandler} className={`settings__multi-pills-control ${props.className?props.className:''}`}>
+      <div  data-testid={props.dataTestId}  onFocus={ClickHandler} onClick={ClickHandler} className={`settings__multi-pills-control ${props.className?props.className:''}`}>
         <ReactMultiEmail
+          className = {props.dataTestId}
           emails={emails}
           onChange={handlerEmailChange}          
           validateEmail={email => {

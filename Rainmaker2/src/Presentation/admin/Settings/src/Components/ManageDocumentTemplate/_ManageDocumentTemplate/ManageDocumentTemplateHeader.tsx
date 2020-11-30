@@ -43,7 +43,6 @@ interface Props {
   useEffect (() => {
     fetchTemplatesList();
      return () => {
-       console.log('ManageDocumentTemplateHeader unmounting..')
       clearAll();
      }     
    },[])
@@ -52,7 +51,7 @@ interface Props {
     dispatch({ type: TemplateActionsType.SetTemplates, payload: []});
     dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: {}});
     dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null});
-    dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: []});
+    //dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: []});
     dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: {}});
     dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: []});
    }

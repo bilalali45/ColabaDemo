@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import 'react-multi-email/style.css';
 import {EmailInputBox} from '../../../../../Shared/components/EmailInputBox';
 import {TextEditor} from '../../../../../Shared/components/TextEditor';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {RequestEmailTemplateActionsType} from '../../../../../Store/reducers/RequestEmailTemplateReducer';
 import {RequestEmailTemplateActions} from '../../../../../Store/actions/RequestEmailTemplateActions';
 import {Store} from '../../../../../Store/Store';
@@ -41,16 +41,18 @@ export const EmailReview = ({
   const isListUpdated = emailTemplateManger?.listUpdated;
   const selectedId = emailTemplateManger?.selectedId;
 
+  const [test, setTest] = useState<number>(1);
   const [fromEmail, setFromEmail] = useState<string>();
   const [fromEmailArray, setFromEmailArray] = useState<string[]>([]);
   const [toEmail, setToEmail] = useState<string>();
   const [toEmailArray, setToEmailArray] = useState<string[]>([]);
   const [cCEmail, setCCEmail] = useState<string>();
   const [cCEmailArray, setCCEmailArray] = useState<string[]>([]);
+  const [subject, setSubject] = useState<string>();
   const [emailBody, setEmailBody] = useState<string>();
   const [tokens, setValidTokens] = useState<string[]>([]);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
-  const {register, errors, handleSubmit, setValue, getValues} = useForm();
+  const {register, errors, handleSubmit, setValue, getValues, trigger,setError} = useForm();
   const [defaultText, setDefaultText] = useState<string>();
 
   useEffect(() => {
@@ -114,8 +116,6 @@ export const EmailReview = ({
     dispatch({type:RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result})
   }
 
- 
-
   const setDefaultValue = (template: any) => {
       let ccEmail = template.ccAddress?.split(',');
       let fromEmail = template.fromAddress?.split(',');
@@ -125,7 +125,8 @@ export const EmailReview = ({
       setValue('fromEmail', template.fromAddress?.toString());
       setValue('toEmail', template.toAddress?.toString());
       setValue('cCEmail', template.ccAddress?.toString());
-      setValue('subjectLine', template.subject?.toString());   
+      setValue('subjectLine', template.subject?.toString());
+      setSubject(template.subject?.toString());   
       setValue('emailBody', emailBodyContent?.toString());
       setCCEmail(template.ccAddress?.toString());
       setFromEmail(template.fromAddress?.toString());
@@ -224,7 +225,8 @@ export const EmailReview = ({
     dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: true})
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: any, e: any) => {
+    resetFields();
     setSendBtnDisable(true);
     saveAsDraft(false);
     dispatch({
@@ -239,7 +241,8 @@ export const EmailReview = ({
         <>
           <footer className="mcu-panel-footer text-right">
             <button
-              type="submit"
+              onClick={handleSubmit(onSubmit)}
+              type="button"
               disabled={isSendBtnDisable}             
               className="btn btn-primary"
             >
@@ -259,9 +262,38 @@ export const EmailReview = ({
     }
   };
 
+  const subjectOnchangeHandler = (event: any) => {
+    let value = event.target.value;
+    setSubject(value);
+  }
+
+  const resetFields = () => {
+    setFromEmailArray([]);
+    setToEmailArray([]);
+    setCCEmailArray([]);  
+    setDefaultText('<p></p>');
+  }
+
+  const errorHandlerFromEmail = () => {
+   console.log('----------> errorHandlerFromEmail')
+   trigger('fromEmail');
+   //setTest(test+1)
+   setError('fromEmail', {type: "validate", message: "Dont Forget Your Username Should Be Cool!"});
+  }
+
+  const errorHandlerToEmail = () => {
+    console.log('----------> errorHandlerToEmail')
+    trigger('toEmail');
+  }
+
+  const errorHandlerCCEmail = () => {
+    console.log('----------> errorHandlerCCEmail')
+    trigger('cCEmail');
+  }
+console.log('---------->----->errors.fromEmail', errors.fromEmail)
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
       <div className="mcu-panel-body">
           <div className="grid-form">                   
             <div className={`grid-form-group ${errors.fromEmail ? 'error': ''}`}>
@@ -271,6 +303,7 @@ export const EmailReview = ({
                 tokens={tokens}
                 exisitngEmailValues={fromEmailArray}
                 className={`grid-form-control`}
+                errorHandler = {errorHandlerFromEmail}
               />
               <input
                 name="fromEmail"
@@ -283,6 +316,10 @@ export const EmailReview = ({
               {errors.fromEmail && (
                 <label className="error">{errors.fromEmail.message}</label>
               )}
+
+              {errors.fromEmail && errors.fromEmail.type === "validate" && (
+                <label className="error">{errors.fromEmail.message}</label>
+              )}
             </div>
 
             <div className={`grid-form-group ${errors.toEmail ? 'error': ''}`}>
@@ -292,6 +329,7 @@ export const EmailReview = ({
                 tokens={tokens}
                 exisitngEmailValues={toEmailArray}
                 className={`grid-form-control`}
+                errorHandler = {errorHandlerToEmail}
               />
               <input
                 name="toEmail"
@@ -313,6 +351,7 @@ export const EmailReview = ({
                 tokens={tokens}
                 exisitngEmailValues={cCEmailArray}
                 className={`grid-form-control`}
+                errorHandler = {errorHandlerCCEmail}
               />
               <input
                 name="cCEmail"
@@ -329,13 +368,16 @@ export const EmailReview = ({
               <label className="grid-form-label">Subject</label>
               <input
                 name="subjectLine"
-                type="text"
+                type="text"             
                 className={`grid-form-control`}
                 ref={register({
                   required: 'Subject is required.'
                 })}
-                onBlur={(e) => onBlurSubjectHandler(e)}
+                onBlur={(e: any) => onBlurSubjectHandler(e)}
+                value={subject}
+                onChange= {(e) => subjectOnchangeHandler(e)}
               />
+
               {errors.subjectLine && (
                 <label className="error">{errors.subjectLine.message}</label>
               )}

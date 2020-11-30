@@ -2,6 +2,7 @@
 using RainMaker.Entity.Models;
 using RainMaker.Service;
 using System.Threading.Tasks;
+using Rainmaker.Model;
 
 namespace Rainmaker.Service
 {
@@ -13,5 +14,8 @@ namespace Rainmaker.Service
 
         Task<List<Model.UserRole>> GetUserRoles(int userId);
         Task UpdateUserRoles(List<Model.UserRole> userRoles, int userId);
+        Task<List<ByteUserNameModel>> GetLoanOfficers();
+        Task UpdateByteUserName(List<Model.ByteUserNameModel> byteUserNameModel, int userId);
+        Task<List<ByteBusinessUnitModel>> GetBusinessUnits();
     }
 }

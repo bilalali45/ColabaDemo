@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Role } from '../../../Store/Navigation';
 import { ProfileMenu } from '../../../Utils/helpers/Enums';
 import { LocalDB } from '../../../Utils/LocalDB';
-import ContentHeader from '../../Shared/ContentHeader';
+import ContentHeader, { ContentSubHeader } from '../../Shared/ContentHeader';
 
 type HeaderProps = {
     navigation : number;
@@ -29,11 +29,13 @@ const ProfileHeader = ({navigation, changeNav, backHandler}: HeaderProps) => {
 
     
     return (
-        <ContentHeader 
-            title={'Manage Users'} 
+        <>
+        <ContentHeader title={'Manage Users'} className="profile-header"></ContentHeader>
+        <ContentSubHeader 
+            //title={'Manage Users'} 
             //backLinkText={linkText} 
             //backLink={backHandler} 
-            className="profile-header">
+            className="profile-subheader">
 
             <ul className="settings__nav-pills">
                 {/* <li data-testid="profile-menu" className={`${navigation == ProfileMenu.AccountDetail ? 'active' : ''}`}>
@@ -47,7 +49,8 @@ const ProfileHeader = ({navigation, changeNav, backHandler}: HeaderProps) => {
                 </li>
             </ul>
 
-        </ContentHeader>
+        </ContentSubHeader>
+        </>
     )
 }
 

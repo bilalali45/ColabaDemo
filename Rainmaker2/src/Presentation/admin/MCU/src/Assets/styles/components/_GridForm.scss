@@ -36,7 +36,7 @@
     }
 
     &-label {
-        padding: 11px 20px;
+        padding: 11px 30px;
         //flex:0 0 12%;
         margin : 0;
         @include font(normal, 1.4, 'nr', 'base');
@@ -46,6 +46,7 @@
         box-sizing   : border-box;
         line-height  : 26px;
         width        : 12%;
+        min-width: 112px;
     }
 
     input.grid-form-control {
@@ -92,6 +93,10 @@
             max-width         : calc(100% - 153px);
             // overflow-y: hidden;
             // scrollbar-width:thin;
+
+            input{
+                min-width: 220px;
+            }
 
             &::-webkit-scrollbar {
                 width : 5px;

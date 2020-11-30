@@ -31,7 +31,11 @@ export const TextEditor = ({ handlerOnChange, selectedToken, defaultText, classN
 
    const setDefaultText = () => {
     if(defaultText){
-       const blocksFromHTML = convertFromHTML(defaultText);
+      const regExOpenTag = new RegExp('<ins>', "g");
+      const regExCloseTag = new RegExp('</ins>', "g");
+
+      let updatedText = defaultText.replace(regExOpenTag, '<u>').replace(regExCloseTag,'</u>');
+       const blocksFromHTML = convertFromHTML(updatedText);
        const state = EditorState.createWithContent(
            ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
@@ -63,18 +67,6 @@ const insertText = (text: string , editorState: any) => {
 
 
   const onEditorStateChange = (editorStateValue: any) => {
-   
-    // const currentContentTextLength = editorState.getCurrentContent().getPlainText().length;
-    // const newContentTextLength = editorStateValue.getCurrentContent().getPlainText().length;
-
-    // if (currentContentTextLength === 0 && newContentTextLength === 1) {
-     
-    //   seteditorState(EditorState.moveFocusToEnd(editorStateValue));
-    // } else {
-    //   seteditorState(editorStateValue);
-    //   seteditorState(EditorState.moveFocusToEnd(editorStateValue))
-    // }
-
       let rawDatavalue = editorStateValue.getCurrentContent();
       let value = draftToHtml(convertToRaw(rawDatavalue));
       seteditorState(editorStateValue);
@@ -82,9 +74,7 @@ const insertText = (text: string , editorState: any) => {
       if(editorState){
         const rawValue = editorState.getCurrentContent().getPlainText()
         if(rawValue){ handlerOnChange(value); }
-      }
-     
-      
+      }      
   };
 
  const  handlerOnBlur = (editorStateValue: any) => {
@@ -95,9 +85,7 @@ const insertText = (text: string , editorState: any) => {
       onBlurTextEditor("")
     }else{
       onBlurTextEditor(value)
-    }
-    
-    
+    }     
   }
 
  const  HandlerOnContentChange = (text: string) => {

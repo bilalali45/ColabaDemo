@@ -36,23 +36,25 @@ export class TemplateActions {
   }
 
   static async fetchTemplateDocuments(id: string) {
-    fetchTemplateDocumentCancelToken.cancel();
-    fetchTemplateDocumentCancelToken = axios.CancelToken.source();
-    let url = Endpoints.TemplateManager.GET.templateDocuments(id);
-
-    try {
-      let res = await Http.fetch(
-        {
-          url: Http.createUrl(Http.baseUrl, url),
-          cancelToken: fetchTemplateDocumentCancelToken.token
-        },
-        {
-          Authorization: `Bearer ${LocalDB.getAuthToken()}`
-        }
-      );
-      return res.data;
-    } catch (error) {
-      console.log(error);
+    if(id){
+      fetchTemplateDocumentCancelToken.cancel();
+      fetchTemplateDocumentCancelToken = axios.CancelToken.source();
+      let url = Endpoints.TemplateManager.GET.templateDocuments(id);
+  
+      try {
+        let res = await Http.fetch(
+          {
+            url: Http.createUrl(Http.baseUrl, url),
+            cancelToken: fetchTemplateDocumentCancelToken.token
+          },
+          {
+            Authorization: `Bearer ${LocalDB.getAuthToken()}`
+          }
+        );
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

@@ -326,7 +326,6 @@ export const NewNeedList = () => {
     }else{
       emailData = emailContent;
     }
-   // let body = toDraft === false ? emailContent?.replace(/\n/g, '<br />') : emailContent;
     await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
     if (toDraft) {
       history.push(`/needList/${LocalDB.getLoanAppliationId()}`);

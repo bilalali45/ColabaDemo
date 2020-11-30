@@ -112,7 +112,6 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
 
     const setCurrentTemplateDocs = async (template: any) => {
-       
         if (!currentTemplate) return '';
         setLoaderVisible(!loaderVisible);
         const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);

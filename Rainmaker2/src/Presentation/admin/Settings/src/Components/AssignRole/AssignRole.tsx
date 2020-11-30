@@ -39,6 +39,7 @@ const AssignRole = () => {
       
 
     const updateAssignedRole = async (roleId?: string, roleName?: string, isRoleAssigned?: boolean) => {
+        
         let data: AssignedRole = await assignedRoles.map((d: AssignedRole) => {
             if(d.roleId === roleId){
                 d.updateRole(roleId, !isRoleAssigned)
@@ -98,9 +99,10 @@ const AssignRole = () => {
             <div className="settings__assigned-role--list">
                 <ul>
                     {
-                      assignedRoles.map((d: AssignedRole, index:any)=> {
-                      //return <li data-testid="assigned-role-li" className={d.isRoleAssigned ? 'assigned' : 'unassigned'}><label><input data-testid="assignedRole-input" onChange={(e) => updateAssignedRole(d.roleId, d.roleName, d.isRoleAssigned)} type="checkbox" checked={d.isRoleAssigned === true} name={d.roleName} id={d.roleId}/>{d.roleName}</label></li>                                                        })  
-                        return(<li key={index} data-testid="assigned-role-li" className={d.isRoleAssigned ? 'assigned' : 'unassigned'}><InputCheckedBox data-testid="assignedRole-input" onchange={(e:any) => updateAssignedRole(d.roleId, d.roleName, d.isRoleAssigned)} checked={d.isRoleAssigned === true} name={d.roleName} id={d.roleId}>{d.roleName}</InputCheckedBox></li>) 
+                      assignedRoles.map((d: AssignedRole, index:any)=> {                     
+                        return(<li key={index} data-testid="assigned-role-li" className={d.isRoleAssigned ? 'assigned' : 'unassigned'}>
+                            <InputCheckedBox data-testid="assignedRole-input" onchange={(e:any) => updateAssignedRole(d.roleId, d.roleName, d.isRoleAssigned)} checked={d.isRoleAssigned === true} name={d.roleName} id={d.roleId}>{d.roleName}</InputCheckedBox>
+                            </li>) 
                       })     
                     }                
                 </ul>

@@ -14,6 +14,7 @@ import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { useLocation, useHistory } from "react-router-dom";
 import cameraIcon from "../../../../../assets/images/camera-icon.svg";
 import folderIcon from "../../../../../assets/images/folder-icon.svg";
+import { render } from "@testing-library/react";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -60,6 +61,8 @@ export const SelectedDocuments = ({
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRef2 = useRef<HTMLInputElement>(null);
+
+
   const [fileToRemove, setFileToRemove] = useState<any | null>();
   const location = useLocation();
   const history = useHistory();
@@ -307,9 +310,9 @@ export const SelectedDocuments = ({
   };
 
 
-  const retryFile = (file:Document) =>{
-    if(file){
-    setFileToRemove(file);
+  const retryFile = (file: Document) => {
+    if (file) {
+      setFileToRemove(file);
     }
     addMore(fileToRemove);
   }
@@ -320,54 +323,62 @@ export const SelectedDocuments = ({
   //   }
   // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
 
+
   const renderUploadButton = () => {
 
     if (isMobile?.value) {
       return (
         <div className="upload-btns-wrap">
-          <a
+          <label
+            htmlFor="inputFile1"
             data-testid="add-more-btn"
             className="addmoreDoc camera-wrap"
             onClick={(e) => {
               //setFileInput(inputRef2.current);
-              addMore(e,inputRef2);
+              // addMore(e, inputRef2);
+              // setFiles(e.target.files, fileToRemove);
             }}
           >
             <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>
             <span className="iconic-btn-lbl">   Camera </span>
             <input
-              onChange={(e) => addMore(e)}
+              onChange={(e) => {
+                setFiles(e.target.files, fileToRemove);
+              }}
               data-testid="file-input"
               type="file"
               accept={'image/*'}
-              id="inputFile"
-              ref={inputRef2}
+              id="inputFile1"
+              ref={inputRef}
               multiple
               style={{ display: "none" }}
               capture="environment"
             />
-          </a>
+          </label>
 
-          <a
+          <label
+            htmlFor="inputFile2"
             data-testid="add-more-btn"
             className="addmoreDoc folder-wrap"
             onClick={(e) => {
-              addMore(e,null);
+              // addMore(e, null);
             }}
           >
             <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
-              onChange={(e) => addMore(e)}
+               onChange={(e) => {
+                setFiles(e.target.files, fileToRemove);
+              }}
               data-testid="file-input"
               type="file"
               accept={FileUpload.allowedExtensions}
-              id="inputFile"
+              id="inputFile2"
               ref={inputRef}
               multiple
               style={{ display: "none" }}
             />
-          </a>
+          </label>
 
 
         </div>
@@ -384,7 +395,9 @@ export const SelectedDocuments = ({
           {" "}
     Add more files
           <input
-            onChange={(e) => addMore(e)}
+            onChange={(e) => {
+              setFiles(e.target.files, fileToRemove);
+            }}
             data-testid="file-input"
             type="file"
             accept={FileUpload.allowedExtensions}
@@ -398,8 +411,34 @@ export const SelectedDocuments = ({
     }
 
   }
+
+  // (
+  //   <a
+  //     data-testid="add-more-btn"
+  //     className="addmoreDoc"
+  //     onClick={(e) => {
+  //       addMore(e);
+  //     }}
+  //   >
+  //     {" "}
+  //     Add more files
+  //     <input
+  //       onChange={(e) => {
+  //         setFiles(e.target.files, fileToRemove);
+  //       }}
+  //       data-testid="more-file-input"
+  //       type="file"
+  //       accept={FileUpload.allowedExtensions}
+  //       id="inputFile"
+  //       ref={inputRef}
+  //       multiple
+  //       style={{ display: "none" }}
+  //     />
+  //   </a>
+  // )
+
   return (
-    <section className="file-drop-box-wrap">
+    <section data-testid="files-container" className="file-drop-box-wrap">
       <div className="file-drop-box havefooter">
         <div className="list-selected-doc">
           <ul className="doc-list-ul">
@@ -429,7 +468,10 @@ export const SelectedDocuments = ({
                   {" "}
                 Add more files
                   <input
-                  data-testid="more-file-input"
+                      onChange={(e) => {
+                        setFiles(e.target.files, fileToRemove);
+                      }}
+                    data-testid="more-file-input"
                     type="file"
                     accept={FileUpload.allowedExtensions}
                     id="inputFile"

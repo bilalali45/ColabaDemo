@@ -666,7 +666,7 @@ ul {
             position: absolute;
             right: -10px;
             font-size: 0px;
-            @include transition(all 0.2s ease-out);
+            //@include transition(all 0.2s ease-out);
             z-index: 999;
             width: 10px;
             span{
@@ -1446,6 +1446,10 @@ label.error {
         }
     }
 
+    input{
+        width: 220px;
+    }
+
     .empty>span[data-placeholder] {
         line-height: 24px;
     }
@@ -1454,7 +1458,7 @@ label.error {
 .rdw-editor-wrapper {
     .rdw-editor-toolbar {
         background-color: color('default');
-        padding         : 8px 20px 3px;
+        padding         : 8px 20px 3px 12px;
         margin-bottom   : 0px;
 
         [class^="editor-toolbar--btn-"],
@@ -1575,6 +1579,7 @@ label.error {
         height: 341px;
         border-bottom: 1px solid color('border');
         overflow-y: auto;
+        margin-right: 2px;
     }
 
     .rdw-link-modal {

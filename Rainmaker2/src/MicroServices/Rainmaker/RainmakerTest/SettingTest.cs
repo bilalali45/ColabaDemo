@@ -41,7 +41,6 @@ namespace Rainmaker.Test
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
         }
-
         [Fact]
         public async Task TestUpdateUserRolesController()
         {
@@ -70,7 +69,6 @@ namespace Rainmaker.Test
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
-
         [Fact]
         public async Task TestGetUserRolesService()
         {
@@ -112,7 +110,6 @@ namespace Rainmaker.Test
             Assert.Equal(2, res[0].RoleId);
             Assert.Equal("Executives", res[0].RoleName);
         }
-
         [Fact]
         public async Task TestUpdateUserRolesService()
         {
@@ -280,6 +277,63 @@ namespace Rainmaker.Test
             Assert.Equal("talha@gmail.com", res.fromAddress);
             Assert.Equal("hammad@gmail.com", res.toAddress);
             Assert.Equal("You have new tasks to complete for your  loan application",res.subject);
+        }
+        [Fact]
+        public async Task TestGetLoanOfficersController()
+        {
+            //Arrange
+            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+
+            var settingController = new SettingController(mockUserProfileService.Object, null);
+
+            //Act
+            IActionResult result = await settingController.GetLoanOfficers();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestUpdateByteUsersNameController()
+        {
+            //Arrange
+            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+
+            var settingController = new SettingController(mockUserProfileService.Object, null);
+
+            List<Model.ByteUserNameModel> lstByteUserNameModel = new List<Model.ByteUserNameModel>();
+            Model.ByteUserNameModel model = new Model.ByteUserNameModel();
+            model.userId = 21;
+            model.userName = "Tanner.Holland";
+            model.byteUserName = "Tunner";
+            model.fullName = "Tanner Holland";
+            lstByteUserNameModel.Add(model);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            settingController.ControllerContext = context;
+
+            //Act
+            IActionResult result = await settingController.UpdateByteUsersName(lstByteUserNameModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+        [Fact]
+        public async Task TestGetBusinessUnitsController()
+        {
+            //Arrange
+            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+
+            var settingController = new SettingController(mockUserProfileService.Object, null);
+
+            //Act
+            IActionResult result = await settingController.GetBusinessUnits();
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }

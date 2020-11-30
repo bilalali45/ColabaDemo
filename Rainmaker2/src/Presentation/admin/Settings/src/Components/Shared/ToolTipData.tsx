@@ -62,8 +62,9 @@ export const ToolTipData = (props: any) => {
     } else if (props.type === ToolTipEnum.TokenList) {
         return (
             <>
-                <h5>Token List</h5>
-                <p>Configure the order of the dropdown list your users will use when they send Needs Lists to borrowers. The first item on this list will populate by default.</p>
+                <h5>Tokens</h5>
+                <p>You can add dynamic tokens to the fields below. These will populate with borrower specific data when an employee selects a template. </p>
+                <p>For example, specifying the ###BorrowerFirstName### token will populate with the Borrower’s first name into the field. </p>
             </>
         )
     } else if (props.type === ToolTipEnum.ByteSoftInteg) {

@@ -8,7 +8,7 @@ interface InputCheckedBoxProps {
     checked?:boolean;
     value?:string;
     testId?:string;
-    onchange?: any; //()=>void;
+    onchange: Function
 }
 
 const InputCheckedBox:React.FC<InputCheckedBoxProps> = ({id, className, name, checked, value, testId, onchange, children}) => {
@@ -20,10 +20,10 @@ const InputCheckedBox:React.FC<InputCheckedBoxProps> = ({id, className, name, ch
     } 
 
     return (
-        <label className="settings__input-checkbox" onClick={makeClick}>
-            <input onClick={makeClick} ref={refInput} type="checkbox" data-testid={testId} onChange={onchange} id={id} className={className} name={name} checked={checked} value={value}/>
+        <label className="settings__input-checkbox">
+            <input  ref={refInput} type="checkbox" data-testid={testId} onClick={() =>  onchange()} id={id} className={className} name={name} checked={checked} value={value}/>
             <span className={`settings__input-checkbox-type`}></span>
-            <label className={`settings__input-checkbox-label`}>{children}</label>
+            <label className={`settings__input-checkbox-label`} onClick={makeClick}>{children}</label>
         </label>
     )
 }

@@ -18,10 +18,15 @@
                     }
                 }
                 &.assigned{
-                    color: color('primary');
+                    .settings__input-checkbox-label{
+                        color: color('primary');
+                    }                    
                 }
                 &.unassigned{
                     
+                }
+                .settings__input-checkbox{
+                    display: inline-block;
                 }
             }
         }

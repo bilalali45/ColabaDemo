@@ -97,13 +97,15 @@
                 }
             }
         }
+
+        
     }// body
 
     &--footer{
         padding: 15px;
         border-top: 1px solid color('border');
         max-height: 90px;
-    overflow: auto;
+        overflow: auto;
         h2{
             font: 500 #{fontSize('nr')+'/1.2'} fontFamily('base');
             margin-bottom: 2px !important;
@@ -142,6 +144,14 @@
     &--content{
         flex: 3 0 0;
         max-width: 70%;
+
+        .vertical-tabs--body{
+            ul{
+                padding-left: 20px;
+                list-style: disc;
+                margin-bottom: 20px;
+            }
+        }
     }
 
     &--list{

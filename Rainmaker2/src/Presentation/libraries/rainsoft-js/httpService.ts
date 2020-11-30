@@ -100,7 +100,7 @@ export class Http {
         error?.response?.status === 401
       ) {
       }
-
+      console.log("API request error", error, "request url", url)
       return new Promise((_, reject) => {
         reject(error);
       });

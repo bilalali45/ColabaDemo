@@ -8,5 +8,14 @@
             margin-bottom: 10px;
         }
     }
+    .profile-subheader{
+        .settings__nav-pills{
+            margin-left: 10px;
+        }
+    }
+
+    .settings__body .settings__content-area & .settings__content-area--body{
+        height: calc(100% - 111px);
+    }
 
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useState, useRef } from 'react';
+import React, { useContext, useEffect,useLayoutEffect,useState, useRef } from 'react';
 import { RequestEmailTemplate } from '../../../Entities/Models/RequestEmailTemplate';
 import { RequestEmailTemplateActions } from '../../../Store/actions/RequestEmailTemplateActions';
 import { RequestEmailTemplateActionsType, RequestEmailTemplateType } from '../../../Store/reducers/RequestEmailTemplateReducer';
@@ -22,6 +22,8 @@ export const EmailTemplatesList = ({addEmailTemplateClick, insertTokenClick}: pr
   const emailTemplates: RequestEmailTemplate[] = emailTemplateManger.requestEmailTemplateData;
   const removeTemplate = useRef<HTMLDivElement>(null);
 
+  
+
   useEffect(() => {    
     const handler = (e:any) => {
       if(!removeTemplate.current?.contains(e.target)){
@@ -30,11 +32,13 @@ export const EmailTemplatesList = ({addEmailTemplateClick, insertTokenClick}: pr
       }
     }
     document.addEventListener('click',handler);
-    document.querySelectorAll('.settings-btn-sort').forEach((item:any)=>{
-      item.addEventListener('click',handler);
-    })
-    return () => {document.removeEventListener('click',handler)}
-  })
+    document.querySelector<any>('.settings-btn-sort')?.addEventListener('click',()=>{document.querySelector<HTMLElement>('#removeAlertNo')?.click();})
+    
+    return () => {
+      document.removeEventListener('click',handler);
+      document.querySelector<any>('.settings-btn-sort')?.addEventListener('click',()=>{document.querySelector<HTMLElement>('#removeAlertNo')?.click();})
+    }    
+  },[emailTemplates])
 
   const getEmailTemplates = async () => {   
       let result: any = await RequestEmailTemplateActions.fetchEmailTemplates();
@@ -63,13 +67,16 @@ export const EmailTemplatesList = ({addEmailTemplateClick, insertTokenClick}: pr
             type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
             payload: null
       }); 
-      insertTokenClick(false);   
+      insertTokenClick(false); 
+      return () => {
+        dispatch({type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: []});
+      }  
    },[])
 
    const setSelectedEmailTemplateInStore = (emailTemplate: RequestEmailTemplate) => {
      
     dispatch({type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: emailTemplate});
-    addEmailTemplateClick();
+    addEmailTemplateClick(true);
    }
 
 const updateEmailTemplateList = (fieldName: string, value?: boolean, id?: number) => {
@@ -130,6 +137,7 @@ const arrayMove = (arr: any, oldIndex: number, newIndex: number) => {
 }
 
 const swapElementInList = (isUpward: boolean, item: RequestEmailTemplate, index: number) => {
+  document.querySelector<HTMLElement>('#removeAlertNo')?.click();
   let updatedList: RequestEmailTemplate[];
   if(isUpward){
     updatedList = arrayMove(emailTemplates, index, index-1)

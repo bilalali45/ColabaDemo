@@ -7,6 +7,7 @@ type props = {
   tokens: string[];
   exisitngEmailValues?: string[] | null;
   className?: string;
+  errorHandler: Function;
 }
 
 export const EmailInputBox = (props: props) => {
@@ -24,24 +25,14 @@ export const EmailInputBox = (props: props) => {
    }
    
   const  handlerEmailValidate = (text: string) => {
-       if(isEmail(text)){ // check valid email address
+       if(isEmail(text)){
           return true;
-       } else if(checkTokenIsValid(text)){ //check valid token
-         return true;
-       } else{
+       }else{
+        props.errorHandler()
          return false;
        }    
    } 
 
-  const checkTokenIsValid = (text: string) => {
-     let tokens: string[] = props.tokens;
-     let result: boolean = false
-     result = tokens.some(item => item === text);
-     return result;
-   }
-
-
-  
     return (
       <>
         <ReactMultiEmail

@@ -45,6 +45,10 @@ namespace RainMaker.Entity.Models
         public System.DateTime? LastLoginOnUtc { get; set; } // LastLoginOnUtc
         public System.DateTime? LastLogoutOnUtc { get; set; } // LastLogoutOnUtc
         public int? BusinessUnitId { get; set; } // BusinessUnitId
+        public int? FailedPasswordAttemptCount { get; set; } // FailedPasswordAttemptCount
+        public bool? IsLockedOut { get; set; } // IsLockedOut
+        public System.DateTime? LastLockedOutDateUtc { get; set; } // LastLockedOutDateUtc
+        public string ByteUserName { get; set; }
 
         // Reverse navigation
 

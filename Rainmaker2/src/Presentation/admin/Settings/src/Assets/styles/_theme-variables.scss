@@ -26,6 +26,7 @@ $color:(
     tableStripBg        :       #F8F8F8,
     listHoverBg         :       #F6F6F6,
     tableDisableText    :       #A7A7A7,
+    tableHeadText       :       #4E4E4E,
 
     //Modal
     modalfooter         :       #F6F6F6,
@@ -39,11 +40,14 @@ $color:(
 
     // Side Navigation
     sideNavText         :       #4E4E4E,
+    sideNavActive       :       #000000,
     sideNavActiveBg     :       #F6F6F6               ,
 
     //accordion signable
-    accordionSignableHeadingText : #000000,
-    accordionSignableText   :   #4E4E4E,
+    accordionSignableHeadingText    :   #000000,
+    accordionSignableText           :   #4E4E4E,
+
+    requestEmailTemplateCol1        :   #000000,
 );
 
 

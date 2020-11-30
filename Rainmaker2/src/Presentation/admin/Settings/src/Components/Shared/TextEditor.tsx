@@ -11,9 +11,11 @@ type props = {
   selectedToken?: string;
   defaultText?: string;
   className?: string;
+  tabIndex?:any;
+  id?:any
 }
 
-export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defaultText, className}: props) => {
+export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defaultText, className, tabIndex, id}: props) => {
   const [editorState, seteditorState] = useState<any>(EditorState.createEmpty());
   
   useEffect(()=> {
@@ -32,7 +34,12 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
 
    const setDefaultText = () => {
     if(defaultText){
-       const blocksFromHTML = convertFromHTML(defaultText);
+
+      const regExOpenTag = new RegExp('<ins>', "g");
+      const regExCloseTag = new RegExp('</ins>', "g");
+      let updatedText = defaultText.replace(regExOpenTag, '<u>').replace(regExCloseTag,'</u>');
+      
+       const blocksFromHTML = convertFromHTML(updatedText);
        const state = EditorState.createWithContent(
            ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
@@ -94,8 +101,9 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
 
 
     return (
-      <div data-testid="text-editor-dv"  onFocus={onFocus} >
-        <Editor 
+      <div data-testid="text-editor-dv" onFocus={onFocus} id={id}>
+        <Editor           
+          tabIndex={tabIndex}
           editorState={editorState}
           wrapperClassName="editor-wrapper"
           editorClassName={className}

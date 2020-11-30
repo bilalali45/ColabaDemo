@@ -13,8 +13,8 @@
         }
 
         .settings__content-area--body{
-            min-height: calc(100vh - 312px);
-            max-height: calc(100vh - 312px);;
+            min-height: calc(100vh - 284px);
+            max-height: calc(100vh - 284px);;
         }
     }
 
@@ -43,6 +43,23 @@
                         top: 50%;
                         right: 0;
                         @include transform(translateY(-50%));
+                    }
+                }
+            }
+        }
+        thead{
+            tr{
+                th{
+                    color: color('tableHeadText');
+                }
+            }
+        }
+        tbody{
+            color: color('base');
+            tr{
+                td{
+                    &:first-child{
+                        color: color('requestEmailTemplateCol1');
                     }
                 }
             }

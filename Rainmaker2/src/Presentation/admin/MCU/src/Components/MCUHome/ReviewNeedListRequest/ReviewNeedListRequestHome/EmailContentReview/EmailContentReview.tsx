@@ -202,7 +202,9 @@ export const EmailContentReview = ({
           <li
             key={index}
             ref={refForListDropDown}
-            onMouseOverCapture={()=> checkDropdownPopup(true)}
+            className={`${item.selected == true ? 'active' : ''}`}
+          >
+            <div className="mcu-dropdown-menu--data" onMouseOverCapture={()=> checkDropdownPopup(true)}
             onMouseLeave={()=>{ showTemplateDetailOnHover(false, item); checkDropdownPopup(false); }}
             onMouseOver={(e)=>{
               e.preventDefault();
@@ -219,10 +221,7 @@ export const EmailContentReview = ({
               getSelectedEmailTemplate(item.id?.toString())
               setishowList(!ishowList)
               checkDropdownPopup(false);
-            }}            
-            className={`${item.selected == true ? 'active' : ''}`}
-          >
-            <div className="mcu-dropdown-menu--data">
+            }}>
               <span className="mcu-dropdown-menu--icon"><SVGDocRequest /></span>
               <h5>{item.templateName}</h5>
               <p>{item.templateDescription}</p>
@@ -255,7 +254,8 @@ export const EmailContentReview = ({
     return (
       <section className="mcu-dropdown-popup" style={{ left: dropdownToolPopup.x, top: dropdownToolPopup.y }}>
           <div className="mcu-dropdown-popup--info">
-            {templateDropdownList==true && ishowList && <div style={{ top: dropdownToolPopupArrow.y, left: dropdownToolPopupArrow.x, position:dropdownToolPopupArrow.x ? 'fixed' : 'absolute' }} className="mcu-dropdown-popup-arrow"><span>Arrow</span></div> }
+          {/* left: dropdownToolPopupArrow.x, */}
+            {templateDropdownList==true && ishowList && <div style={{ top: dropdownToolPopupArrow.y,  position:dropdownToolPopupArrow.x ? 'fixed' : 'absolute' }} className="mcu-dropdown-popup-arrow"><span>Arrow</span></div> }
             <ul>
               <li>
                 <label className="settings__label">From</label>
@@ -324,8 +324,12 @@ export const EmailContentReview = ({
                 <ul>
                   {showList()}
                 </ul>
+                {templateDropdownList==true && ishowList && 
+                  dropdownPopover()
+                }
               </div>
             }
+            
           </div>
         </div>
 
@@ -342,9 +346,7 @@ export const EmailContentReview = ({
       />
       
 
-      {templateDropdownList==true && ishowList && 
-        dropdownPopover()
-      }
+      
     </div>
   );
 };
