@@ -41,7 +41,10 @@ export const NeedListView = () => {
   const {state, dispatch} = useContext(Store);
   const history = useHistory();
 
+  
+
   const needListManager: any = state?.needListManager;
+  const filtertoggler: any  = needListManager?.needListFilter;
   const needListData = needListManager?.needList;
   const templateManager: any = state.templateManager;
   const templates: Template[] = templateManager?.templates;
@@ -358,7 +361,7 @@ export const NeedListView = () => {
         docId
       );
       if (res === 200) {
-        fetchNeedList(toggle, true).then((data) => {
+        fetchNeedList(filtertoggler, true).then((data) => {
           let sortedList;
           if (docSort) {
             sortedList = sortList(
