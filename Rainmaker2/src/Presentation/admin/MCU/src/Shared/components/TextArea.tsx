@@ -55,6 +55,7 @@ export const TextArea = ({
   return (
     <Fragment>
       <textarea
+      data-testid="email-content"
         onKeyDown={(e) => onKeyDown(e)}
         // style={
         //   textAreaValue?.trim() === ''
@@ -71,6 +72,7 @@ export const TextArea = ({
         rows={rows}
         placeholder={placeholderValue}
         maxLength={maxLengthValue}
+
       ></textarea>
 
       {/* <Editor

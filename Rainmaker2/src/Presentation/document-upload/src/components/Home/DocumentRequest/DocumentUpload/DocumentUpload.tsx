@@ -57,7 +57,7 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
     }
   };
   return (
-    <section className={`Doc-upload ${!selectedfiles?.length ?"pageEmptyUpload":"pageHaveDocUpload" }`} ref={parentRef}>
+    <section  data-testid="document-dropper" className={`Doc-upload ${!selectedfiles?.length ?"pageEmptyUpload":"pageHaveDocUpload" }`} ref={parentRef}>
       <FileDropper
         parent={parentRef.current}
         getDroppedFiles={(files) =>

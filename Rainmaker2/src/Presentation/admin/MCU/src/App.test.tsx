@@ -64,3 +64,27 @@ test('Should render MCU Home', async () => {
 
   //expect(getByTestId('tempate-manager')).toHaveTextContent('Add Documents');
 });
+
+test('Should render MCU Home', async () => {
+  const { getByText, getByTestId } = render(
+    <MemoryRouter>
+      <MCUHome />
+    </MemoryRouter>
+  );
+
+  await waitFor(() => {
+    expect(document.getElementById('mcu-home')).toBeInTheDocument();
+  })
+  // const linkElement = getByTestId('template-link');
+  // await waitFor(() => {
+  //   expect(linkElement).toBeInTheDocument();
+  // })
+
+  // fireEvent.click(linkElement);
+
+  // await waitFor(() => {
+  //   let templateHeader = getByTestId('tempate-header');
+  //   expect(templateHeader).toHaveTextContent('Manage Document Templates');
+  // });
+
+});

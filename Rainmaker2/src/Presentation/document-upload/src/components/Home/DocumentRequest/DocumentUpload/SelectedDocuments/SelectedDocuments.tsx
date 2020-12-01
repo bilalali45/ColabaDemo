@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
-import { DocumentView } from "rainsoft-rc";
+// import { DocumentView } from "rainsoft-rc";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -14,6 +14,8 @@ import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { useLocation, useHistory } from "react-router-dom";
 import cameraIcon from "../../../../../assets/images/camera-icon.svg";
 import folderIcon from "../../../../../assets/images/folder-icon.svg";
+import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
+import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { render } from "@testing-library/react";
 
 interface SelectedDocumentsType {
@@ -35,6 +37,9 @@ interface ViewDocumentType {
   file?: any;
 
 }
+
+const baseUrl = `${window.location.protocol}//${window.location.host}/${process.env.PUBLIC_URL
+  }`;
 
 export const SelectedDocuments = ({
   addMore,
@@ -111,6 +116,7 @@ export const SelectedDocuments = ({
       clientName,
       file: document.file,
     });
+    getSubmittedDocumentForView(id, requestId, docId, fileId);
     history.push(`${location.pathname}/${clientName}/view`);
   };
 
@@ -121,6 +127,7 @@ export const SelectedDocuments = ({
       docId,
       fileId,
     });
+    console.log('response', response);
     setBlobData(response);
   };
   const clearBlob = () => {
@@ -494,6 +501,9 @@ export const SelectedDocuments = ({
           </div>
         </div>
         {!!currentDoc && location.pathname.includes("view") && (
+
+         
+
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);

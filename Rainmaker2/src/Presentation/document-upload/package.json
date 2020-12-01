@@ -21,6 +21,7 @@
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "print-js": "^1.0.63",
+    "pspdfkit": "^2020.6.1",
     "rainsoft-js": "^1.0.47",
     "rainsoft-rc": "^1.0.23",
     "react": "^16.13.1",
@@ -36,8 +37,9 @@
     "universal-cookie": "^4.0.3"
   },
   "scripts": {
-    "start": "set PORT=3001 && react-scripts start",
-    "build": "react-scripts build",
+    "verify-installation": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js",
+    "start": "set PORT=3001 && node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts start",
+    "build": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
     "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
     "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",
@@ -80,6 +82,7 @@
     "@types/lodash": "^4.14.157",
     "@types/react-router-dom": "^5.1.5",
     "@types/universal-cookie": "^2.2.0",
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "ncp": "^2.0.0"
   }
 }

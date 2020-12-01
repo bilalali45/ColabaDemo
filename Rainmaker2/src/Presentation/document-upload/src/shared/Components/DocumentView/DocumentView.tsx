@@ -12,6 +12,11 @@ import { SVGprint, SVGdownload, SVGclose, SVGfullScreen } from "../Assets/SVG";
 import { Loader } from "../Assets/loader";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Store } from "../../../store/store";
+import { PSPDFKitWebViewer } from "../PSPDFKit/PSPDFKitWebViewer";
+
+// const baseUrl = `${window.location.protocol}//${window.location.host}/${process.env.PUBLIC_URL
+//   }`;
+
 
 
 interface DocumentViewProps {
@@ -25,7 +30,7 @@ interface DocumentViewProps {
   hideViewer: (currentDoc) => void;
   file?: any;
   clearBlob?: Function;
-  isMobile?:any
+  isMobile?: any
 }
 
 let timer: any = null;
@@ -55,6 +60,13 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     fileType: "",
   });
   const { state, dispatch } = useContext(Store);
+
+  // const baseUrl = `${window.location.protocol}${window.location.host}${process.env.PUBLIC_URL}/`;
+  // console.log(baseUrl);
+  // console.log('window.location.protocol', window.location.protocol);
+  // console.log('window.location.host', window.location.host);
+  // console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL);
+
   const loan: any = state.loan;
   //const { isMobile } = loan;
   const [pan, setPan] = useState<any>(true);
@@ -80,7 +92,10 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   };
   useEffect(() => {
     getPanValue(scale)
-  }, [scale])
+  }, [scale]);
+
+  const baseUrl = `${window.location.protocol}//${window.location.host}${process.env.PUBLIC_URL}/`;
+  console.log('baseUrl', baseUrl);
 
   const getSubmittedDocumentForView = useCallback(async () => {
     try {
@@ -193,12 +208,12 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
   return (
     <div className="document-view" id="screen">
-      <div className="document-view--header">
+      <div className="document-view--header" style={{ display: 'none' }}>
         <div className="document-view--header---options">
           <ul>
             {!!documentParams.filePath && (
               <Fragment>
-                <li>
+                {/* <li>
                   <button
                     className="document-view--button"
                     onClick={printDocument}
@@ -213,7 +228,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                   >
                     <SVGdownload />
                   </button>
-                </li>
+                </li> */}
               </Fragment>
             )}
             <li>
@@ -252,102 +267,25 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
           </ul>
         </div>
       </div>
-      <div className="zoomview-wraper">
-        {isMobile?.value ? <TransformWrapper
-          defaultScale={1}
-          wheel={{ wheelEnabled: false, touchPadEnabled: true }}
-          pan={{ disabled: pan, animationTime: 0  }}
-          zoomIn={{ animation: false, animationTime: 0 }}
-          zoomOut={{ animation: false, animationTime: 0 }}
-          reset={{ animation: false, animationTime: 0 }}
-          doubleClick={{ disabled: true }}
-          scalePadding={{ animationTime: 0} }
-          onZoomChange={(e) => { enabalePan(e) }}
-        >
-          {({ zoomIn, zoomOut, resetTransform }) => (
-            <div>
-              <TransformComponent>
-                <div className="document-view--body" data-private>
-                  {!!documentParams.filePath ? (
-                    <FileViewer
-                      fileType={documentParams.fileType}
-                      filePath={documentParams.filePath}
-                    />
-                  ) : (
-                      <Loader height={"94vh"} />
-                    )}
-                </div>
-              </TransformComponent>
-              <div className="document-view--floating-options">
-                <ul>
-                  <li>
-                    <button className="button-float" onClick={zoomIn}>
-                      <em className="zmdi zmdi-plus"></em>
-                    </button>
-                  </li>
-                  <li>
-                    <button className="button-float" onClick={zoomOut}>
-                      <em className="zmdi zmdi-minus"></em>
-                    </button>
-                  </li>
-                  <li>
-                    <button className="button-float" onClick={resetTransform}>
-                      <SVGfullScreen />
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          )}
-
-        </TransformWrapper>
-          : <TransformWrapper
-            defaultScale={1}
-            wheel={{ wheelEnabled: false }}
-          >
-
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <div>
-                <TransformComponent>
-                  <div className="document-view--body" data-private>
-                    {!!documentParams.filePath ? (
-                      <FileViewer
-                        fileType={documentParams.fileType}
-                        filePath={documentParams.filePath}
-                      />
-                    ) : (
-                        <Loader height={"94vh"} />
-                      )}
-                  </div>
-                </TransformComponent>
-                <div className="document-view--floating-options">
-                  <ul>
-                    <li>
-                      <button className="button-float" onClick={zoomIn}>
-                        <em className="zmdi zmdi-plus"></em>
-                      </button>
-                    </li>
-                    <li>
-                      <button className="button-float" onClick={zoomOut}>
-                        <em className="zmdi zmdi-minus"></em>
-                      </button>
-                    </li>
-                    <li>
-                      <button className="button-float" onClick={resetTransform}>
-                        <SVGfullScreen />
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
-          </TransformWrapper>
-        }
-
-
-
-
+      <div>
+        <div>
+          <div className="document-view--body" style={{ width: '100vw', height: '100vh' }}>
+            {!!blobData && documentParams.filePath ? (
+              <PSPDFKitWebViewer
+                // documentURL={'http://localhost:4000/static/Sample.pdf'}
+                documentURL={blobData?.data}
+                appBaseURL={baseUrl}
+                licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
+                clientName={clientName}
+                closeViewer={() => {
+                  console.log('in here ------------------ ')
+                  hideViewer({});
+                }} />
+            ) : (
+                <Loader height={"94vh"} />
+              )}
+          </div>
+        </div>
       </div>
     </div>
   );

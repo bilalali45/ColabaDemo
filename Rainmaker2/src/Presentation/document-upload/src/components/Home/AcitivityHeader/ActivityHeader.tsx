@@ -60,6 +60,7 @@ const ActivityHeader = (props) => {
   }, [location.pathname ,pendingDocs?.length ]);
 
 
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (taskListTooltipRef.current && !taskListTooltipRef.current.contains(event.target)) {
