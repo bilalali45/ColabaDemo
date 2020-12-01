@@ -1,11 +1,10 @@
 import { Http } from "rainsoft-js";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { OutgoingHttpHeaders } from "http";
 import { Auth } from "../../services/auth/Auth";
 import { Endpoints } from "../endpoints/Endpoints";
 import { ContactUs } from "../../entities/Models/ContactU";
-import { AxiosResponse } from "axios";
 import { LoanApplication } from "../../entities/Models/LoanApplication";
-import { isFunction } from "util";
-import { url } from "inspector";
 import { LoanProgress } from "../../entities/Models/LoanProgress";
 
 export const statusText = {
@@ -14,6 +13,7 @@ export const statusText = {
   UPCOMMING: "UPCOMING",
 };
 export class LaonActions {
+
   static async getLoanOfficer(loanApplicationId: string) {
     try {
       let res: AxiosResponse<ContactUs> = await Http.get<ContactUs>(
@@ -29,13 +29,23 @@ export class LaonActions {
   }
 
   static async getLoanApplication(loanApplicationId: string) {
+   let baseUrl: any = window.envConfig.API_BASE_URL;
+   
     try {
-      let res: AxiosResponse<LoanApplication> = await Http.get<LoanApplication>(
-        Endpoints.loan.GET.info(loanApplicationId)
-      );
+      let newUrl = `${baseUrl}${Endpoints.loan.GET.info(loanApplicationId)}`
+      const bearer = `Bearer ${this.decodeString(localStorage.getItem("auth"))}`;
+      const options: any = {
+        method: "get",
+        url: newUrl,
+        data: "",
+        headers: { "Authorization": bearer}
+      };
+     // let res: AxiosResponse<LoanApplication> = await Http.get<LoanApplication>(url);
+     let res: AxiosResponse<LoanApplication> =  await axios(options)  
+      console.log('Axios Direct Network Response getLoanApplication',res.data)
       return new LoanApplication().fromJson(res.data);
     } catch (error) {
-      console.log(error);
+      console.log("Axios Direct Network Response Error", error);
     }
   }
 
@@ -96,6 +106,19 @@ export class LaonActions {
       return attachStatus(res.data);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  public static decodeString(value?: string | null) {
+    // Decode the String
+    if (!value) {
+      return '';
+    }
+    try {
+      const decodedString = atob(value);
+      return decodedString.split('|')[0];
+    } catch {
+      return null;
     }
   }
 }
