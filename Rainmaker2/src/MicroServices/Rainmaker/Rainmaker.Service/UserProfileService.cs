@@ -127,54 +127,5 @@ namespace Rainmaker.Service
               
             }
         }
-        public async Task<List<ByteUserNameModel>> GetLoanOfficers()
-        {
-            var result = await Uow.Repository<UserProfile>().Query(query: x => x.IsActive
-                                                                          && !x.IsDeleted)
-                .Include(e=>e.Employees)
-                .ThenInclude(c=>c.Contact)
-                .Include(u => u.UserInRoles).ToListAsync();
-
-            //Filter Loan Officers
-            var loanOfficers = result.Where(c => c.UserInRoles.Any(x => x.RoleId == 12)).ToList();
-
-            return loanOfficers.Select(x => new ByteUserNameModel()
-            {
-                userId = x.Id,
-                userName = x.UserName,
-                byteUserName = x.ByteUserName,
-                fullName = x.Employees.FirstOrDefault().Contact.FirstName +" "+ x.Employees.FirstOrDefault().Contact.LastName
-            }).ToList();
-        }
-        public async Task UpdateByteUserName(List<Model.ByteUserNameModel> byteUserNameModel, int userId)
-        {
-            foreach (var item in byteUserNameModel)
-            {
-                if (!string.IsNullOrEmpty(item.byteUserName))
-                {
-                    var userProfile = await Uow.Repository<UserProfile>().Query(x => x.Id == item.userId).FirstOrDefaultAsync();
-                    userProfile.ByteUserName = item.byteUserName;
-                    userProfile.ModifiedBy = userId;
-                    userProfile.ModifiedOnUtc = DateTime.UtcNow;
-
-                    userProfile.TrackingState = TrackingState.Modified;
-
-                    Uow.Repository<UserProfile>().Update(userProfile);
-                    await Uow.SaveChangesAsync();
-                }
-            }
-        }
-        public async Task<List<ByteBusinessUnitModel>> GetBusinessUnits()
-        {
-            var result = await Uow.Repository<BusinessUnit>().Query(query: x => x.IsActive
-                                                                          && !x.IsDeleted).ToListAsync();
-
-            return result.Select(x => new ByteBusinessUnitModel()
-            {
-                id = x.Id,
-                name = x.Name,
-                byteOrganizationCode = x.ByteOrganizationCode
-            }).ToList();
-        }
     }
 }

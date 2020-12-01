@@ -286,12 +286,47 @@
         margin-top: 5px;
     }
 
+    .rdw-link-decorator-wrapper a{
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .rdw-link-decorator-icon {
+        top: -1px;
+        left: auto;
+        right: -20px;
+        background: #fff;
+        padding: 2px;
+        z-index: 4;
+    }
+
+    .rdw-link-modal-target-option{
+        display: none;
+    }
+
+    .rdw-link-modal-btn{
+        border: 1px solid color('border');
+        @include font(normal,1.4,'sm','base');
+    }
+
+    .rdw-link-modal-input{
+        border: 1px solid color('border');
+        @include font(normal,1.4,'sm','base');
+    }
+
+    .rdw-link-modal-label{
+        @include font(500,1.4,'sm','base');
+        margin-bottom: 2px;
+    }
+
 }
 
 .settings__content-area--body .react-multi-email {
     border-radius: 0px;
     @include font(normal, 1.4, 'sm', 'base');
     padding: 1px 4px;
+    cursor: text;
 
     >span[data-placeholder] {
         line-height: 0.8;

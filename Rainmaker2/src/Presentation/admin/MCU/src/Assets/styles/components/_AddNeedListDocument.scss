@@ -465,6 +465,7 @@
             .ST-content-Wrap {
                 padding-top: 15px;
                 height     : calc(100% - 60px);
+                margin-right: -28px;
 
                 >ul {
                     display: block;
@@ -530,9 +531,9 @@
 
             .mainbody {
                 padding-bottom: 70px;
-p {
-    font-size: fontSize("nr");
-}
+                p {
+                    font-size: fontSize("nr");
+                }
                 .editer-wrap {
 
                     .editer,
@@ -543,6 +544,7 @@ p {
                         padding   : 10px;
                         resize    : none;
                         font-size: fontSize("nr");
+                        @include scrollbar();
                         @include media-breakpoint-down(md) {
                             min-height: 250px;
                         }

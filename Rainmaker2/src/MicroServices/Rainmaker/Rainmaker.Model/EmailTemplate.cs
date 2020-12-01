@@ -6,9 +6,9 @@ namespace Rainmaker.Model
 {
     public static class TokenKey
     {
-        public const string LoginUserEmail = "LoginUserEmail"; // system template
-        public const string CustomerFirstName = "CustomerFirstName"; // tenant template
-        public const string BusinessUnitName = "BusinessUnitName"; // mcu template
+        public const string LoginUserEmail = "LoginUserEmail";
+        public const string CustomerFirstName = "CustomerFirstName";
+        public const string BusinessUnitName = "BusinessUnitName";
     }
 
     public class TokenModel
@@ -42,6 +42,7 @@ namespace Rainmaker.Model
         public string templateName { get; set; }
         public string templateDescription { get; set; }
         public string fromAddress { get; set; }
+        public string ccAddress { get; set; }
         public string toAddress { get; set; }
         public string subject { get; set; }
         public string emailBody { get; set; }

@@ -38,7 +38,7 @@ export const CreateEmailTemplates = ({
   const [tokens, setValidTokens] = useState<string[]>([]);
   const [defaultText, setDefaultText] = useState<string>();
 
-  const {register, errors, handleSubmit, setValue, getValues, formState, trigger} = useForm();
+  const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError} = useForm();
 
   const [lastSelectedInput, setLastSelectedInput] = useState<string>('');
   const [selectedToken, setSelectedToken] = useState('');
@@ -160,14 +160,14 @@ export const CreateEmailTemplates = ({
   };
 
   const handlerFromEmail = (email: string[]) => {
-    console.log('CreateFromEmailTemplate', email);
+    
     setFromEmail(email.toString());
     setFromEmailArray(email);
     setValue('fromEmail', email.toString(), {shouldValidate: true});
   };
   
   const handlerCCEmail = (email: string[]) => {
-    console.log('CreateCCEmailTemplate', email);
+    
     setCCEmail(email.toString());
     setCCEmailArray(email);
     setValue('cCEmail', email.toString(), {shouldValidate: true});
@@ -187,6 +187,11 @@ export const CreateEmailTemplates = ({
   };
 
   const onSubmit = (data: any) => {  
+       if(data.fromEmail.split(',').length > 1){
+        setError('fromEmail', {type: "validate", message: "Only one email is allowed in from address."});
+        return;
+       }
+
       if(selectedEmailTemplate && selectedEmailTemplate.id){
         data.id = selectedEmailTemplate.id;
         updateEmailTemplate(data);
@@ -232,6 +237,7 @@ export const CreateEmailTemplates = ({
   const isTokenExist = (value: string) => {
     return value.includes('###') ? false : true
   }
+  console.log('##############',errors.fromEmail)
 
   return (
     <>
@@ -327,6 +333,7 @@ export const CreateEmailTemplates = ({
                 type="hidden"
                 ref={register({
                   required: 'Please enter valid email format'
+                
                 })}
                 value={fromEmail}
               />

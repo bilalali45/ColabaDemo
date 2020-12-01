@@ -110,6 +110,7 @@
             .mcu-panel-body{
                 height: calc(100vh - 318px);
                 overflow-y: auto;
+                @include scrollbar();
             }
         }
 
@@ -134,6 +135,7 @@
                 min-height: 70vh;
                 height    : calc(100vh - 250px);
                 overflow-y: auto;
+                @include scrollbar();
             }
 
             &-heading {

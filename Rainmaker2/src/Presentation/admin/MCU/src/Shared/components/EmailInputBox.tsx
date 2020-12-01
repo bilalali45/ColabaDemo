@@ -7,7 +7,7 @@ type props = {
   tokens: string[];
   exisitngEmailValues?: string[] | null;
   className?: string;
-  errorHandler: Function;
+  errorHandler?: any;
 }
 
 export const EmailInputBox = (props: props) => {

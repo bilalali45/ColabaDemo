@@ -14,5 +14,6 @@ namespace DocumentManagement.Entity
         public string symbol { get; set; }
         public string description { get; set; }
         public string key { get; set; }
+        public bool isEmail { get; set; }
     }
 }

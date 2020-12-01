@@ -1,3 +1,6 @@
+html,body{
+    @include scrollbar();
+}
 body {
     background: color("bg");
 }
@@ -577,7 +580,7 @@ ul {
         right     : 0;
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
         width     : 100%;
-        max-height: calc(100vh - 555px);
+        max-height: 310px;//calc(100vh - 555px);
         overflow-y: auto;
 
         >ul {
@@ -845,6 +848,7 @@ ul {
             max-height   : 140px;
             overflow-y   : auto;
             margin-left  : -5px;
+            @include scrollbar();
 
             label {
                 padding-left    : 5px;
@@ -1568,6 +1572,11 @@ label.error {
     .rdw-editor-main{
         @include font(normal, 1.4, 'nr', 'base');
         color: color('textEditorText');
+
+
+        &:focus-within {
+            border: 1px solid color('primary');
+        }
     }
 
     .rdw-option-wrapper {
@@ -1576,7 +1585,7 @@ label.error {
 
     .public-DraftEditor-content[contenteditable=true] {
         padding: 25px;
-        height: 341px;
+        min-height: 341px;
         border-bottom: 1px solid color('border');
         overflow-y: auto;
         margin-right: 2px;
@@ -1596,6 +1605,40 @@ label.error {
     &+label.error {
         text-align: right;
         padding   : 10px;
+    }
+
+    .rdw-link-decorator-wrapper a{
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .rdw-link-decorator-icon {
+        top: -1px;
+        left: auto;
+        right: -20px;
+        background: #fff;
+        padding: 2px;
+        z-index: 4;
+    }
+
+    .rdw-link-modal-target-option{
+        display: none;
+    }
+
+    .rdw-link-modal-btn{
+        border: 1px solid color('border');
+        @include font(normal,1.4,'sm','base');
+    }
+
+    .rdw-link-modal-input{
+        border: 1px solid color('border');
+        @include font(normal,1.4,'sm','base');
+    }
+
+    .rdw-link-modal-label{
+        @include font(500,1.4,'sm','base');
+        margin-bottom: 2px;
     }
 
 }

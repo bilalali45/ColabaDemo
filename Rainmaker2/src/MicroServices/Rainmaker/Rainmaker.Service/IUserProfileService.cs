@@ -11,11 +11,7 @@ namespace Rainmaker.Service
         Task<UserProfile> GetUserProfile(int userProfileId);
         Task<UserProfile> GetUserProfileEmployeeDetail(int? id = null,
                                                            UserProfileService.RelatedEntities? includes = null);
-
         Task<List<Model.UserRole>> GetUserRoles(int userId);
         Task UpdateUserRoles(List<Model.UserRole> userRoles, int userId);
-        Task<List<ByteUserNameModel>> GetLoanOfficers();
-        Task UpdateByteUserName(List<Model.ByteUserNameModel> byteUserNameModel, int userId);
-        Task<List<ByteBusinessUnitModel>> GetBusinessUnits();
     }
 }

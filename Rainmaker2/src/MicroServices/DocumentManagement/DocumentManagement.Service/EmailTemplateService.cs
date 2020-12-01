@@ -155,7 +155,8 @@ namespace DocumentManagement.Service
                                 ""name"": ""$name"",
                                 ""symbol"": ""$symbol"",
                                 ""description"": ""$description"",
-                                ""key"":""$key""
+                                ""key"":""$key"",
+                                ""isEmail"":""$isEmail""
                             }
                         }"
                                                                                                                          ));
@@ -170,6 +171,7 @@ namespace DocumentManagement.Service
                     dto.symbol = query.symbol;
                     dto.description = query.description;
                     dto.key = query.key;
+                    dto.isEmail = query.isEmail;
                     lstTokenModels.Add(dto);
                 }
             }

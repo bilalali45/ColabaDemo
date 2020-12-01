@@ -11,6 +11,7 @@ using Rainmaker.Model;
 using Rainmaker.Service;
 using URF.Core.Abstractions;
 using URF.Core.EF;
+using TrackableEntities.Common.Core;
 
 namespace RainMaker.Service
 {
@@ -128,7 +129,7 @@ namespace RainMaker.Service
             return (await Uow.Repository<Setting>().Query(x => x.Name == keyName && (x.BusinessUnitId == null || x.BusinessUnitId == businessUnitId) && x.IsActive != false && x.IsDeleted != true).ToListAsync()).FirstOrDefault();
         }
 
-        public async Task<EmailTemplate> RenderEmailTokens(int id, int loanApplicationId, int userProfileId, string fromAddess, string subject, string emailBody, List<TokenModel> lsTokenModels)
+        public async Task<EmailTemplate> RenderEmailTokens(int id, int loanApplicationId, int userProfileId, string fromAddess, string ccAddess, string subject, string emailBody, List<TokenModel> lsTokenModels)
         {
             EmailTemplate emailTemplate = new EmailTemplate();
 
@@ -151,17 +152,6 @@ namespace RainMaker.Service
                                     string userEmail = await GetLoginUserEmail(loanApplicationId, userProfileId);
 
                                     value = userEmail;
-
-                                    //int? busnessUnitId = Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Select(x => x.BusinessUnitId).FirstOrDefault();
-
-                                    //var userProfile = await userProfileService.GetUserProfileEmployeeDetail(userProfileId, UserProfileService.RelatedEntities.Employees_EmployeeBusinessUnitEmails_EmailAccount);
-                                    //EmailAccount emailAccount = null;
-
-                                    //if (userProfile != null && userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Any())
-                                    //{
-                                    //    var emailAccounts = userProfile.Employees.SingleOrDefault().EmployeeBusinessUnitEmails.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e=>e.BusinessUnitId);
-                                    //    userEmail = emailAccounts.Any() ? emailAccounts.FirstOrDefault().EmailAccount.Email : "";
-                                    //}
                                 }
                                 break;
                         }
@@ -186,8 +176,6 @@ namespace RainMaker.Service
                             case TokenKey.CustomerFirstName:
                                 {
                                     value = GetCustomerFirstName(opportunity);
-                                    //var customer = opportunity.OpportunityLeadBinders.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null);
-                                    //value = customer != null ? customer.Customer.Contact.FirstName : string.Empty;
                                 }
                                 break;
                             case TokenKey.BusinessUnitName:
@@ -241,7 +229,67 @@ namespace RainMaker.Service
             }
             return emailTemplate;
         }
+        public async Task<List<ByteUserNameModel>> GetLoanOfficers()
+        {
+            var result = await Uow.Repository<UserProfile>().Query(query: x => x.IsActive
+                                                                          && !x.IsDeleted)
+                .Include(e => e.Employees)
+                .ThenInclude(c => c.Contact)
+                .Include(u => u.UserInRoles).ToListAsync();
 
+            //Filter Loan Officers
+            var loanOfficers = result.Where(c => c.UserInRoles.Any(x => x.RoleId == 12)).ToList();
+
+            return loanOfficers.Select(x => new ByteUserNameModel()
+            {
+                userId = x.Id,
+                userName = x.UserName,
+                byteUserName = x.ByteUserName,
+                fullName = x.Employees.FirstOrDefault().Contact.FirstName + " " + x.Employees.FirstOrDefault().Contact.LastName
+            }).ToList();
+        }
+        public async Task UpdateByteUserName(List<ByteUserNameModel> byteUserNameModel, int userId)
+        {
+            foreach (var item in byteUserNameModel)
+            {
+                var userProfile = await Uow.Repository<UserProfile>().Query(x => x.Id == item.userId).FirstOrDefaultAsync();
+                userProfile.ByteUserName = item.byteUserName;
+                userProfile.ModifiedBy = userId;
+                userProfile.ModifiedOnUtc = DateTime.UtcNow;
+
+                userProfile.TrackingState = TrackingState.Modified;
+
+                Uow.Repository<UserProfile>().Update(userProfile);
+                await Uow.SaveChangesAsync();
+            }
+        }
+        public async Task<List<ByteBusinessUnitModel>> GetBusinessUnits()
+        {
+            var result = await Uow.Repository<BusinessUnit>().Query(query: x => x.IsActive
+                                                                          && !x.IsDeleted).ToListAsync();
+
+            return result.Select(x => new ByteBusinessUnitModel()
+            {
+                id = x.Id,
+                name = x.Name,
+                byteOrganizationCode = x.ByteOrganizationCode
+            }).ToList();
+        }
+        public async Task UpdateByteOrganizationCode(List<ByteBusinessUnitModel> byteBusinessUnitModel, int userId)
+        {
+            foreach (var item in byteBusinessUnitModel)
+            {
+                var businessUnit = await Uow.Repository<BusinessUnit>().Query(x => x.Id == item.id).FirstOrDefaultAsync();
+                businessUnit.ByteOrganizationCode = item.byteOrganizationCode;
+                businessUnit.ModifiedBy = userId;
+                businessUnit.ModifiedOnUtc = DateTime.UtcNow;
+
+                businessUnit.TrackingState = TrackingState.Modified;
+
+                Uow.Repository<BusinessUnit>().Update(businessUnit);
+                await Uow.SaveChangesAsync();
+            }
+        }
         private string GetBusinessUnitName(int loanApplicationId)
         {
             return Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplicationId).Include(x => x.BusinessUnit).Select(x => x.BusinessUnit.Name).FirstOrDefault();

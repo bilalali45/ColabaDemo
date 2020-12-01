@@ -269,7 +269,7 @@ namespace Rainmaker.Test
             ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            EmailTemplate res = await settingService.RenderEmailTokens(1, 199, 199, "###LoginUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Hello ###CustomerFirstname###</p>\n<p>Please submit following documents</p>\n<p>###DoucmentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
+            EmailTemplate res = await settingService.RenderEmailTokens(1, 199, 199, "###LoginUserEmail###", "###LoginUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Hello ###CustomerFirstname###</p>\n<p>Please submit following documents</p>\n<p>###DoucmentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
@@ -282,9 +282,9 @@ namespace Rainmaker.Test
         public async Task TestGetLoanOfficersController()
         {
             //Arrange
-            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
 
-            var settingController = new SettingController(mockUserProfileService.Object, null);
+            var settingController = new SettingController(null, mockSettingService.Object);
 
             //Act
             IActionResult result = await settingController.GetLoanOfficers();
@@ -296,9 +296,9 @@ namespace Rainmaker.Test
         public async Task TestUpdateByteUsersNameController()
         {
             //Arrange
-            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
 
-            var settingController = new SettingController(mockUserProfileService.Object, null);
+            var settingController = new SettingController(null, mockSettingService.Object);
 
             List<Model.ByteUserNameModel> lstByteUserNameModel = new List<Model.ByteUserNameModel>();
             Model.ByteUserNameModel model = new Model.ByteUserNameModel();
@@ -325,15 +325,165 @@ namespace Rainmaker.Test
         public async Task TestGetBusinessUnitsController()
         {
             //Arrange
-            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
 
-            var settingController = new SettingController(mockUserProfileService.Object, null);
+            var settingController = new SettingController(null, mockSettingService.Object);
 
             //Act
             IActionResult result = await settingController.GetBusinessUnits();
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestGetLoanOfficersService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            RainMaker.Entity.Models.UserProfile userProfile = new RainMaker.Entity.Models.UserProfile()
+            {
+                Id = 201,
+                UserName = "minaz.karim",
+                ByteUserName = "Minaz Karim",
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<RainMaker.Entity.Models.UserProfile>().Add(userProfile);
+
+            Employee employee = new Employee()
+            {
+                Id = 201,
+                ContactId = 201,
+                UserId = 201,
+                IsDeleted = false
+            };
+            dataContext.Set<Employee>().Add(employee);
+
+            Contact contact = new Contact()
+            {
+                Id = 201,
+                FirstName = "Minaz",
+                LastName = "Karim",
+                IsDeleted = false
+            };
+            dataContext.Set<Contact>().Add(contact);
+
+            UserInRole userInRole = new UserInRole()
+            {
+                UserId = 201,
+                RoleId = 12
+            };
+            dataContext.Set<UserInRole>().Add(userInRole);
+
+            dataContext.SaveChanges();
+
+            ISettingService settingService = new SettingService(null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            List<Model.ByteUserNameModel> res = await settingService.GetLoanOfficers();
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(201, res[0].userId);
+            Assert.Equal("minaz.karim", res[0].userName);
+            Assert.Equal("Minaz Karim", res[0].byteUserName);
+            Assert.Equal("Minaz Karim", res[0].fullName);
+        }
+        [Fact]
+        public async Task TestGetBusinessUnitsService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            BusinessUnit businessUnit = new BusinessUnit()
+            {
+                Id = 12,
+                Name = "AHCLending",
+                ByteOrganizationCode = "302039",
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<BusinessUnit>().Add(businessUnit);
+
+            dataContext.SaveChanges();
+
+            ISettingService settingService = new SettingService(null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            //Act
+            List<Model.ByteBusinessUnitModel> res = await settingService.GetBusinessUnits();
+
+            // Assert
+            Assert.NotNull(res);
+            Assert.Equal(12, res[0].id);
+            Assert.Equal("AHCLending", res[0].name);
+            Assert.Equal("302039", res[0].byteOrganizationCode);
+        }
+        [Fact]
+        public async Task TestUpdateByteUserNameService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            RainMaker.Entity.Models.UserProfile userProfile1 = new RainMaker.Entity.Models.UserProfile()
+            {
+                Id = 202,
+                UserName = "minaz.karim",
+                ByteUserName = "Minaz Karim",
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<RainMaker.Entity.Models.UserProfile>().Add(userProfile1);
+
+            RainMaker.Entity.Models.UserProfile userProfile2 = new RainMaker.Entity.Models.UserProfile()
+            {
+                Id = 203,
+                UserName = "Tanner.Holland",
+                ByteUserName = null,
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<RainMaker.Entity.Models.UserProfile>().Add(userProfile2);
+
+            dataContext.SaveChanges();
+
+            ISettingService settingService = new SettingService(null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            List<Model.ByteUserNameModel> lstModel = new List<Model.ByteUserNameModel>();
+
+            Model.ByteUserNameModel byteUserNameModel1 = new Model.ByteUserNameModel();
+            byteUserNameModel1.userId = 202;
+            byteUserNameModel1.userName = "minaz.karim";
+            byteUserNameModel1.byteUserName = "Minaz Karim";
+            byteUserNameModel1.fullName = "Minaz Karim";
+            lstModel.Add(byteUserNameModel1);
+
+            Model.ByteUserNameModel byteUserNameModel2 = new Model.ByteUserNameModel();
+            byteUserNameModel2.userId = 203;
+            byteUserNameModel2.userName = "Tanner.Holland";
+            byteUserNameModel2.byteUserName = null;
+            byteUserNameModel2.fullName = "Tanner Holland";
+            lstModel.Add(byteUserNameModel2);
+
+            await settingService.UpdateByteUserName(lstModel, 1);
         }
     }
 }

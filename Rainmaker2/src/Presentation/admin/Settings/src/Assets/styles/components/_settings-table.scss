@@ -45,6 +45,7 @@
             border: 1px solid color('border');
             color: color('base');
             padding: 2px;
+            @include font(normal,1.4,'sm','base');
         }
     }
 

@@ -60,6 +60,12 @@
             .mcu-label-value{
                 line-height: 1;
             }
+
+            svg{
+                path{
+                    fill: color('primary') !important;
+                }
+            }
         }
 
         .form-group {

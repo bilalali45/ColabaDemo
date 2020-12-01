@@ -120,7 +120,7 @@ export const EmailReview = ({
       let ccEmail = template.ccAddress?.split(',');
       let fromEmail = template.fromAddress?.split(',');
       let toEmail = template.toAddress?.split(',');
-      let emailBodyContent = template.emailBody?.replace('###DoucmentList###', documentsName ? documentsName: '');
+      let emailBodyContent = template.emailBody?.replace('###RequestList###', documentsName ? documentsName: '');
 
       setValue('fromEmail', template.fromAddress?.toString());
       setValue('toEmail', template.toAddress?.toString());
@@ -232,6 +232,11 @@ export const EmailReview = ({
   };
 
   const onSubmit = (data: any, e: any) => {
+    if(data.fromEmail.split(',').length > 1){
+      console.log('----------------> error in from address')
+      setError('fromEmail', {type: "validate", message: "Only one email is allowed in from address."});
+      return;
+    }
     resetFields();
     setSendBtnDisable(true);
     saveAsDraft(false);
@@ -240,6 +245,37 @@ export const EmailReview = ({
       payload: []
     });
   };
+
+  
+
+  const subjectOnchangeHandler = (event: any) => {
+    let value = event.target.value;
+    setSubject(value);
+  }
+
+  const resetFields = () => {
+    setFromEmailArray([]);
+    setToEmailArray([]);
+    setCCEmailArray([]);  
+    setDefaultText('<p></p>');
+  }
+
+  const errorHandlerFromEmail = () => {
+   console.log('----------> errorHandlerFromEmail')
+   trigger('fromEmail');
+  
+   setError('fromEmail', {type: "validate", message: "Dont Forget Your Username Should Be Cool!"});
+  }
+
+  const errorHandlerToEmail = () => {
+    console.log('----------> errorHandlerToEmail')
+    trigger('toEmail');
+  }
+
+  const errorHandlerCCEmail = () => {
+    console.log('----------> errorHandlerCCEmail')
+    trigger('cCEmail');
+  }
 
   const sendRequestButton = () => {
     if (showSendButton) {
@@ -267,35 +303,6 @@ export const EmailReview = ({
       );
     }
   };
-
-  const subjectOnchangeHandler = (event: any) => {
-    let value = event.target.value;
-    setSubject(value);
-  }
-
-  const resetFields = () => {
-    setFromEmailArray([]);
-    setToEmailArray([]);
-    setCCEmailArray([]);  
-    setDefaultText('<p></p>');
-  }
-
-  const errorHandlerFromEmail = () => {
-   console.log('----------> errorHandlerFromEmail')
-   trigger('fromEmail');
-   //setTest(test+1)
-   setError('fromEmail', {type: "validate", message: "Dont Forget Your Username Should Be Cool!"});
-  }
-
-  const errorHandlerToEmail = () => {
-    console.log('----------> errorHandlerToEmail')
-    trigger('toEmail');
-  }
-
-  const errorHandlerCCEmail = () => {
-    console.log('----------> errorHandlerCCEmail')
-    trigger('cCEmail');
-  }
 console.log('---------->----->errors.fromEmail', errors.fromEmail)
   return (
     <>
@@ -309,7 +316,6 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
                 tokens={tokens}
                 exisitngEmailValues={fromEmailArray}
                 className={`grid-form-control`}
-                errorHandler = {errorHandlerFromEmail}
               />
               <input
                 name="fromEmail"
@@ -335,7 +341,6 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
                 tokens={tokens}
                 exisitngEmailValues={toEmailArray}
                 className={`grid-form-control`}
-                errorHandler = {errorHandlerToEmail}
               />
               <input
                 name="toEmail"
@@ -357,7 +362,6 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
                 tokens={tokens}
                 exisitngEmailValues={cCEmailArray}
                 className={`grid-form-control`}
-                errorHandler = {errorHandlerCCEmail}
               />
               <input
                 name="cCEmail"

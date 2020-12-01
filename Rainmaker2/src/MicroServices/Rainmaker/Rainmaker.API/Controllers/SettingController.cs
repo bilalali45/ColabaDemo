@@ -40,20 +40,20 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> RenderEmailTokens(EmailTemplateModel emailTemplateModel)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            var templateQuery = await settingService.RenderEmailTokens(id:emailTemplateModel.id,loanApplicationId: emailTemplateModel.loanApplicationId, userProfileId: userProfileId, fromAddess: emailTemplateModel.fromAddress, subject: emailTemplateModel.subject, emailBody: emailTemplateModel.emailBody, lsTokenModels: emailTemplateModel.lstTokens);
+            var templateQuery = await settingService.RenderEmailTokens(id:emailTemplateModel.id,loanApplicationId: emailTemplateModel.loanApplicationId, userProfileId: userProfileId, fromAddess: emailTemplateModel.fromAddress, ccAddess: emailTemplateModel.ccAddress, subject: emailTemplateModel.subject, emailBody: emailTemplateModel.emailBody, lsTokenModels: emailTemplateModel.lstTokens);
             return Ok(value: templateQuery);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLoanOfficers()
         {
-            var loanOfficers = await userProfileService.GetLoanOfficers();
+            var loanOfficers = await settingService.GetLoanOfficers();
             return Ok(loanOfficers);
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBusinessUnits()
         {
-            var businessUnits = await userProfileService.GetBusinessUnits();
+            var businessUnits = await settingService.GetBusinessUnits();
             return Ok(businessUnits);
         }
         #endregion
@@ -71,7 +71,15 @@ namespace Rainmaker.API.Controllers
         public async Task<IActionResult> UpdateByteUsersName(List<Model.ByteUserNameModel> byteUserNameModel)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
-            await userProfileService.UpdateByteUserName(byteUserNameModel: byteUserNameModel, userId: userProfileId);
+            await settingService.UpdateByteUserName(byteUserNameModel: byteUserNameModel, userId: userProfileId);
+            return Ok();
+        }
+        [HttpPost("[action]")]
+        [Authorize(Roles = "MCU")]
+        public async Task<IActionResult> UpdateByteOrganizationCode(List<Model.ByteBusinessUnitModel> byteBusinessUnitModel)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await settingService.UpdateByteOrganizationCode(byteBusinessUnitModel: byteBusinessUnitModel, userId: userProfileId);
             return Ok();
         }
         #endregion

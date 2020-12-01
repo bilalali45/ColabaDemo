@@ -18,6 +18,10 @@ namespace RainMaker.Service
         Task<Setting> GetSettingByKeyNameAsync(string keyName, int? businessUnitId);
         Task<IList<Setting>> GetAllSettingAsync(int? businessUnit = null);
         Task<Setting> GetSettingByKeyAsync(string settingKey, int? businessUnit = null);
-        Task<EmailTemplate> RenderEmailTokens(int id,int loanApplicationId, int userProfileId, string fromAddess,string subject,string emailBody,List<TokenModel> lsTokenModels);
+        Task<EmailTemplate> RenderEmailTokens(int id,int loanApplicationId, int userProfileId, string fromAddess,string ccAddess, string subject,string emailBody,List<TokenModel> lsTokenModels);
+        Task<List<ByteUserNameModel>> GetLoanOfficers();
+        Task UpdateByteUserName(List<ByteUserNameModel> byteUserNameModel, int userId);
+        Task<List<ByteBusinessUnitModel>> GetBusinessUnits();
+        Task UpdateByteOrganizationCode(List<ByteBusinessUnitModel> byteBusinessUnitModel, int userId);
     }
 }
