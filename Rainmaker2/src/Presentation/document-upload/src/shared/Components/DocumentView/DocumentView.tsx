@@ -61,12 +61,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
   });
   const { state, dispatch } = useContext(Store);
 
-  // const baseUrl = `${window.location.protocol}${window.location.host}${process.env.PUBLIC_URL}/`;
-  // console.log(baseUrl);
-  // console.log('window.location.protocol', window.location.protocol);
-  // console.log('window.location.host', window.location.host);
-  // console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL);
-
   const loan: any = state.loan;
   //const { isMobile } = loan;
   const [pan, setPan] = useState<any>(true);
@@ -94,7 +88,7 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
     getPanValue(scale)
   }, [scale]);
 
-  const baseUrl = `${window.location.protocol}//${window.location.host}${process.env.PUBLIC_URL}/`;
+  const baseUrl = `${window.location.protocol}//${window.location.host}/LoanPortal/`;
   console.log('baseUrl', baseUrl);
 
   const getSubmittedDocumentForView = useCallback(async () => {
@@ -105,7 +99,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
       // URL required to view the document
     } catch (error) {
-      console.log(error);
       alert("Something went wrong. Please try again later.");
       hideViewer({});
     }
@@ -197,7 +190,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
 
     if (e > 1) {
       setPan(false)
-      console.log(e)
     } else {
       setPan(true)
     }
@@ -278,7 +270,6 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                 licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
                 clientName={clientName}
                 closeViewer={() => {
-                  console.log('in here ------------------ ')
                   hideViewer({});
                 }} />
             ) : (

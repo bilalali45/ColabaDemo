@@ -1,3 +1,4 @@
+
 import React, { useEffect, useCallback, useState, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Http } from 'rainsoft-js';
@@ -50,8 +51,10 @@ export const ReviewDocument = () => {
   const { state } = location;
 
   
-  const baseUrl = `${window.location.protocol}//${window.location.host}${process.env.PUBLIC_URL}/`;
-  console.log('baseUrl', baseUrl);
+  // const baseUrl = `${window.location.protocol}//${window.location.host}${process.env.PUBLIC_URL}/`;
+  // console.log('baseUrl', baseUrl);
+
+  const baseUrl = `${window.location.protocol}//${window.location.host}/DocumentManagement/`;
   
   const goBack = () => {
     // console.log('Going Back---------------------------->');

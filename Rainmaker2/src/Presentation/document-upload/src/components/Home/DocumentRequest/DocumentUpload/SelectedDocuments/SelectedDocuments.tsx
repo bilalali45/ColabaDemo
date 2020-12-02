@@ -72,6 +72,7 @@ export const SelectedDocuments = ({
   const location = useLocation();
   const history = useHistory();
 
+  console.log('in here!!!!');
   useEffect(() => {
     setFileInput(inputRef.current);
 
@@ -116,19 +117,37 @@ export const SelectedDocuments = ({
       clientName,
       file: document.file,
     });
-    getSubmittedDocumentForView(id, requestId, docId, fileId);
+    if (!document.file) {
+      getSubmittedDocumentForView(id, requestId, docId, fileId);
+    } else {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        let dataUrl = event.target.result;
+        setBlobData({
+          data: dataUrl
+        });
+      };
+      reader.readAsDataURL(document.file);
+    }
     history.push(`${location.pathname}/${clientName}/view`);
   };
 
   const getSubmittedDocumentForView = async (id, requestId, docId, fileId) => {
-    const response = await DocumentActions.getSubmittedDocumentForView({
-      id,
-      requestId,
-      docId,
-      fileId,
-    });
-    console.log('response', response);
-    setBlobData(response);
+    try {
+      const response = await DocumentActions.getSubmittedDocumentForView({
+        id,
+        requestId,
+        docId,
+        fileId,
+      });
+      console.log('response', response);
+      setBlobData(response);
+    } catch (error) {
+      if (location.pathname.includes('/view')) {
+        console.log('in here!!!! ', error, 'request failed');
+        history.goBack();
+      }
+    }
   };
   const clearBlob = () => {
     DocumentActions.documentViewCancelToken.cancel();
@@ -288,9 +307,7 @@ export const SelectedDocuments = ({
   };
 
   const handleSubmitBtnDisabled = () => {
-    console.log(selectedFiles);
     let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
-    console.log('newFiles', 'in here here', newFiles);
     let filesEditing = newFiles?.filter(f => f.editName);
 
     if (subBtnPressed) {
@@ -374,7 +391,7 @@ export const SelectedDocuments = ({
             <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
-               onChange={(e) => {
+              onChange={(e) => {
                 setFiles(e.target.files, fileToRemove);
               }}
               data-testid="file-input"
@@ -403,6 +420,7 @@ export const SelectedDocuments = ({
     Add more files
           <input
             onChange={(e) => {
+              console.log('in here ----------', e.target.files);
               setFiles(e.target.files, fileToRemove);
             }}
             data-testid="file-input"
@@ -418,31 +436,6 @@ export const SelectedDocuments = ({
     }
 
   }
-
-  // (
-  //   <a
-  //     data-testid="add-more-btn"
-  //     className="addmoreDoc"
-  //     onClick={(e) => {
-  //       addMore(e);
-  //     }}
-  //   >
-  //     {" "}
-  //     Add more files
-  //     <input
-  //       onChange={(e) => {
-  //         setFiles(e.target.files, fileToRemove);
-  //       }}
-  //       data-testid="more-file-input"
-  //       type="file"
-  //       accept={FileUpload.allowedExtensions}
-  //       id="inputFile"
-  //       ref={inputRef}
-  //       multiple
-  //       style={{ display: "none" }}
-  //     />
-  //   </a>
-  // )
 
   return (
     <section data-testid="files-container" className="file-drop-box-wrap">
@@ -475,9 +468,9 @@ export const SelectedDocuments = ({
                   {" "}
                 Add more files
                   <input
-                      onChange={(e) => {
-                        setFiles(e.target.files, fileToRemove);
-                      }}
+                    onChange={(e) => {
+                      setFiles(e.target.files, fileToRemove);
+                    }}
                     data-testid="more-file-input"
                     type="file"
                     accept={FileUpload.allowedExtensions}
@@ -500,27 +493,8 @@ export const SelectedDocuments = ({
               )}
           </div>
         </div>
-        {!!currentDoc && location.pathname.includes("view") && (
-
-         
-
-          <DocumentView
-            hideViewer={() => {
-              setCurrentDoc(null);
-              document.body.style.overflow = "visible";
-              document.body.removeAttribute("style");
-              document.body.classList.remove("lockbody");
-              history.goBack();
-            }}
-            {...currentDoc}
-            blobData={blobData}
-            submittedDocumentCallBack={getSubmittedDocumentForView}
-            isMobile={isMobile}
-          />
-        )}
       </div>
       <div className="doc-upload-footer">
-        {console.log('sdfafasdfa adf asdf asdfa dfasdfadsf asdf asdf', currentSelected?.files?.filter(f => f.uploadedStatus === 'failed'))}
         {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
@@ -593,6 +567,24 @@ export const SelectedDocuments = ({
             </div>
           )}
       </div>
+      {
+        currentDoc && location.pathname.includes("view") && (
+          <DocumentView
+            hideViewer={() => {
+              setCurrentDoc(null);
+              document.body.style.overflow = "visible";
+              document.body.removeAttribute("style");
+              document.body.classList.remove("lockbody");
+              history.goBack();
+            }}
+            {...currentDoc}
+            blobData={blobData}
+            submittedDocumentCallBack={getSubmittedDocumentForView}
+            isMobile={isMobile}
+          />
+        )
+
+      }
     </section>
   );
 };

@@ -7,10 +7,7 @@ let _instance: any = null;
 
 
 export const PSPDFKitWebViewer = ({ documentURL, appBaseURL, licenseKey, clientName, closeViewer }) => {
-    console.log(documentURL, appBaseURL);
-    console.log('in here !!!!', closeViewer)
     const viewerRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         load();
     }, [document])
