@@ -441,7 +441,8 @@
                 .ul-ST-content {
                     max-height: calc(100vh - 270px);
                     overflow  : auto;
-                    @include scrollbar(6, 6)
+                    @include scrollbar();
+                    margin-right: -30px;
                 }
 
                 .add-doc-link-wrap {

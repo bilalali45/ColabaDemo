@@ -57,6 +57,7 @@
         overflow-y: auto;
         word-break: break-all;
         font:  400 #{fontSize("sm") + "/1.2"} fontFamily("base");
+        @include scrollbar();
         &.padding{
             padding: 15px;
         }
@@ -124,6 +125,7 @@
         overflow-y: auto;
         margin-right: -13px;
         padding-right: 13px;
+        @include scrollbar();
     }
 
     &--aside{

@@ -81,7 +81,10 @@ namespace DocumentManagement.Model
         public string symbol { get; set; }
         public string description { get; set; }
         public string key { get; set; }
-        public bool isEmail { get; set; }
+        public bool fromAddess { get; set; }
+        public bool ccAddess { get; set; }
+        public bool emailBody { get; set; }
+        public bool emailSubject { get; set; }
     }
 
     public class EmailTemplateIdModel
@@ -142,7 +145,10 @@ namespace DocumentManagement.Model
         public string symbol { get; set; }
         public string description { get; set; }
         public string key { get; set; }
-        public bool isEmail { get; set; }
+        public bool fromAddess { get; set; }
+        public bool ccAddess { get; set; }
+        public bool emailBody { get; set; }
+        public bool emailSubject { get; set; }
     }
 
 }

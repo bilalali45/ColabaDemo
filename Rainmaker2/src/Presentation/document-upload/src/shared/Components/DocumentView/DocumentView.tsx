@@ -263,15 +263,19 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
         <div>
           <div className="document-view--body" style={{ width: '100vw', height: '100vh' }}>
             {!!blobData && documentParams.filePath ? (
-              <PSPDFKitWebViewer
-                // documentURL={'http://localhost:4000/static/Sample.pdf'}
-                documentURL={blobData?.data}
-                appBaseURL={baseUrl}
-                licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
-                clientName={clientName}
-                closeViewer={() => {
-                  hideViewer({});
-                }} />
+              // <PSPDFKitWebViewer
+              //   // documentURL={'http://localhost:4000/static/Sample.pdf'}
+              //   documentURL={blobData?.data}
+              //   appBaseURL={baseUrl}
+              //   licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
+              //   clientName={clientName}
+              //   closeViewer={() => {
+              //     hideViewer({});
+              //   }} />
+              <FileViewer
+                fileType={documentParams.fileType}
+                filePath={documentParams.filePath}
+              />
             ) : (
                 <Loader height={"94vh"} />
               )}

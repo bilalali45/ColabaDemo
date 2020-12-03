@@ -6,9 +6,39 @@ namespace Rainmaker.Model
 {
     public static class TokenKey
     {
-        public const string LoginUserEmail = "LoginUserEmail";
-        public const string CustomerFirstName = "CustomerFirstName";
+        public const string Date = "Date";
+        public const string PrimaryBorrowerEmailAddress = "PrimaryBorrowerEmailAddress";
+        public const string PrimaryBorrowerFirstName = "PrimaryBorrowerFirstName";
+        public const string PrimaryBorrowerLastName = "PrimaryBorrowerLastName";
+        public const string CoBorrowerFirstName = "Co-BorrowerFirstName";
+        public const string CoBorrowerLastName = "Co-BorrowerLastName";
+        public const string CoBorrowerEmailAddress = "Co-BorrowerEmailAddress";
+        public const string EmailTag = "EmailTag";
+        public const string LoanPortalUrl = "LoanPortalUrl";
+        public const string LoanStatus = "LoanStatus";
+        public const string SubjectPropertyAddress = "SubjectPropertyAddress";
+        public const string SubjectPropertyState = "SubjectPropertyState";
+        public const string SubjectPropertyStateAbbreviation = "SubjectPropertyStateAbbreviation";
+        public const string SubjectPropertyCounty = "SubjectPropertyCounty";
+        public const string SubjectPropertyCity = "SubjectPropertyCity";
+        public const string SubjectPropertyZipCode = "SubjectPropertyZipCode";
+        public const string LoanPurpose = "LoanPurpose";
+        public const string LoanAmount = "LoanAmount";
+        public const string PropertyValue = "PropertyValue";
+        public const string PropertyType = "PropertyType";
+        public const string PropertyUsage = "PropertyUsage";
+        public const string ResidencyType = "ResidencyType";
+        public const string BranchNmlsNo = "BranchNmlsNo";
         public const string BusinessUnitName = "BusinessUnitName";
+        public const string BusinessUnitPhoneNumber = "BusinessUnitPhoneNumber";
+        public const string BusinessUnitWebSiteUrl = "BusinessUnitWebSiteUrl";
+        public const string LoanApplicationLoginLink = "LoanApplicationLoginLink";
+        public const string LoanOfficerPageUrl = "LoanOfficerPageUrl";
+        public const string LoanOfficerFirstName = "LoanOfficerFirstName";
+        public const string LoanOfficerLastName = "LoanOfficerLastName";
+        public const string RequestDocumentList = "RequestDocumentList";
+        public const string RequestorUserEmail = "RequestorUserEmail";
+
     }
 
     public class TokenModel
@@ -18,6 +48,7 @@ namespace Rainmaker.Model
         public string symbol { get; set; }
         public string description { get; set; }
         public string key { get; set; }
+        public string value { get; set; }
     }
 
     public class EmailTemplate

@@ -6,6 +6,7 @@ import {LocalDB} from '../Utils/LocalDB';
 import { NotificationType } from './reducers/NotificationReducer';
 import { AssignedRoleType } from './reducers/AssignedRoleReducer';
 import { RequestEmailTemplateType } from './reducers/RequestEmailTemplateReducer';
+import { LoanOfficerType } from './reducers/LoanOfficerReducer';
 const baseUrl: any = window?.envConfig?.API_BASE_URL;
 const httpClient = new Http(baseUrl, 'Rainmaker2Token');
 
@@ -20,6 +21,7 @@ export type InitialStateType = {
   notificationManager: NotificationType | {};
   assignedRolesManager: AssignedRoleType | {};
   requestEmailTemplateManager: RequestEmailTemplateType | {};
+  loanOfficerManager:LoanOfficerType | {};
 };
 
 export const InitialState = {
@@ -29,7 +31,8 @@ export const InitialState = {
   templateManager: {},
   notificationManager: {},
   assignedRolesManager: {},
-  requestEmailTemplateManager: {}
+  requestEmailTemplateManager: {},
+  loanOfficerManager:{}
 };
 
 const Store = createContext<{

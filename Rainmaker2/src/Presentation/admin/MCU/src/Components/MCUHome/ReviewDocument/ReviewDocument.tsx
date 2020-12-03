@@ -511,15 +511,16 @@ export const ReviewDocument = () => {
             currentDocument.files.length ? (
               <div className="review-document-body--content col-md-8">
                 <div className="doc-view-mcu" data-testid="document-preview">
-                  {blobData && <PSPDFKitWebViewer
-                    // documentURL={'http://localhost:4000/static/Sample.pdf'}
-                    documentURL={blobData?.data}
-                    appBaseURL={baseUrl}
-                    licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
-                    clientName={MCUName || clientName}
-                  />}
+                  {blobData && 
+                  // <PSPDFKitWebViewer
+                  //   // documentURL={'http://localhost:4000/static/Sample.pdf'}
+                  //   documentURL={blobData?.data}
+                  //   appBaseURL={baseUrl}
+                  //   licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
+                  //   clientName={MCUName || clientName}
+                  // />
 
-                  {/* <DocumentView
+                  <DocumentView
                     loading={loading}
                     id={currentDocument.id}
                     requestId={currentDocument.requestId}
@@ -527,7 +528,9 @@ export const ReviewDocument = () => {
                     clientName={MCUName || clientName}
                     blobData={blobData}
                     hideViewer={() => { }}
-                  /> */}
+                  />
+                }
+
                 </div>
               </div>
             ) : (

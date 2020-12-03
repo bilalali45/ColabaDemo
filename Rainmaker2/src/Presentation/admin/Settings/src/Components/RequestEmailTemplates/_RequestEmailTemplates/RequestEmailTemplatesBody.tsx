@@ -13,7 +13,7 @@ type props = {
 
 export const RequestEmailTemplatesBody = ({addEmailTemplateClick, showEmailList, showinsertToken, insertTokenClick}: props) => {
     return (
-        <div className={`settings__content-area--body no-padding no-scrollbar ${showEmailList ? 'show-email-templates-list' : 'create-email-templates'}`}>
+        <div className={`settings__content-area--body no-padding ${showEmailList ? 'show-email-templates-list' : 'create-email-templates'}`}>
             { showEmailList 
              ? 
              <EmailTemplatesList

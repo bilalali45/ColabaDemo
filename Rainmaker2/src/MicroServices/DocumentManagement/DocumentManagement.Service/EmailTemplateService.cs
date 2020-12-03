@@ -156,7 +156,10 @@ namespace DocumentManagement.Service
                                 ""symbol"": ""$symbol"",
                                 ""description"": ""$description"",
                                 ""key"":""$key"",
-                                ""isEmail"":""$isEmail""
+                                ""fromAddess"":""$fromAddess"",
+                                ""ccAddess"":""$ccAddess"",
+                                ""emailBody"":""$emailBody"",
+                                ""emailSubject"":""$emailSubject""
                             }
                         }"
                                                                                                                          ));
@@ -171,7 +174,10 @@ namespace DocumentManagement.Service
                     dto.symbol = query.symbol;
                     dto.description = query.description;
                     dto.key = query.key;
-                    dto.isEmail = query.isEmail;
+                    dto.fromAddess = query.fromAddess;
+                    dto.ccAddess = query.ccAddess;
+                    dto.emailBody = query.emailBody;
+                    dto.emailSubject = query.emailSubject;
                     lstTokenModels.Add(dto);
                 }
             }

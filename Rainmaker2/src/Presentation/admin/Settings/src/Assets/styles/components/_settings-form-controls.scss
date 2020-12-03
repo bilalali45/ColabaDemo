@@ -261,7 +261,8 @@
     .rdw-editor-main {
         padding: 10px 15px;
         border : 1px solid transparent;
-        height : 276px;
+        //height : 276px;
+        @include scrollbar();
 
         &:focus-within {
             border: 1px solid color('primary');

@@ -55,6 +55,8 @@
         overflow-y: auto;
         max-height: calc(100vh - 290px);
         @extend .clearfix;
+        @include scrollbar();
+        //margin-right: 2px;
 
         .settings__content-area--header{
             border-bottom: none;

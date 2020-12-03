@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef, useContext} from 'react'
 import { RequestEmailTemplateActionsType } from '../../../Store/reducers/RequestEmailTemplateReducer'
 import { Store } from '../../../Store/Store'
+import { disableBrowserPrompt } from '../../../Utils/helpers/Common'
 import ContentHeader from '../../Shared/ContentHeader'
 import { TokenPopup } from '../../Shared/TokenPopup'
 
@@ -26,7 +27,8 @@ export const RequestEmailTemplatesHeader = ({ addEmailTemplateClick, showEmailLi
       }
     });
     return ()=>{
-
+     console.log('Request Email Template unmounting...')
+     disableBrowserPrompt();
     }
   },[]);
 

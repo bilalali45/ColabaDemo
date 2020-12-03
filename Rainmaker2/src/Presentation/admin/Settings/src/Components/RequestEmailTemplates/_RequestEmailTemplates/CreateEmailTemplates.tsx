@@ -12,6 +12,7 @@ import {RequestEmailTemplateActions} from '../../../Store/actions/RequestEmailTe
 import {Store} from '../../../Store/Store';
 import {RequestEmailTemplate} from '../../../Entities/Models/RequestEmailTemplate';
 import {Tokens} from '../../../Entities/Models/Token';
+import { disableBrowserPrompt, enableBrowserPrompt } from '../../../Utils/helpers/Common';
 
 type props = {
   addEmailTemplateClick?: any;
@@ -160,20 +161,21 @@ export const CreateEmailTemplates = ({
   };
 
   const handlerFromEmail = (email: string[]) => {
-    
+    enableBrowserPrompt();
     setFromEmail(email.toString());
     setFromEmailArray(email);
     setValue('fromEmail', email.toString(), {shouldValidate: true});
   };
   
   const handlerCCEmail = (email: string[]) => {
-    
+    enableBrowserPrompt();
     setCCEmail(email.toString());
     setCCEmailArray(email);
     setValue('cCEmail', email.toString(), {shouldValidate: true});
   };
 
   const onChnageTextEditor = (content: string) => {
+    enableBrowserPrompt();
     setEmailBody(content);
     setValue('emailBody', content, {shouldValidate: true});
   };
@@ -203,7 +205,7 @@ export const CreateEmailTemplates = ({
         type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
         payload: null
       });
-     
+      disableBrowserPrompt();
   };
 
   const handlerOnFocusOnTextEditor = () => {
@@ -237,14 +239,19 @@ export const CreateEmailTemplates = ({
   const isTokenExist = (value: string) => {
     return value.includes('###') ? false : true
   }
-  console.log('##############',errors.fromEmail)
+  const onChangeHandler = () => {
+    enableBrowserPrompt();
+  }
 
   return (
     <>
       <ContentSubHeader
         title={''}
         backLinkText={'Back'}
-        backLink={ () => addEmailTemplateClick(true)}
+        backLink={ () => {
+          addEmailTemplateClick(true);
+          disableBrowserPrompt();
+        }}
         className="create-email-templates-header"
       ></ContentSubHeader>
       <form data-testid="create-form">
@@ -275,6 +282,7 @@ export const CreateEmailTemplates = ({
                    insertTokenClick(false);
                   setLastSelectedInput('');
                 }}
+                onChange= {onChangeHandler}
               />
               {errors.templateName && errors.templateName.type === "validate" && (
                 <label data-testid="token-error" className="error">Cannot add token here</label>
@@ -303,6 +311,7 @@ export const CreateEmailTemplates = ({
                     insertTokenClick(false);
                   setLastSelectedInput('');
                 }}
+                onChange= {onChangeHandler}
               />
               {errors.templateDescription && errors.templateDescription.type === "validate" && (
                 <label data-testid="token-error-desc" className="error">Cannot add token here</label>
@@ -385,6 +394,7 @@ export const CreateEmailTemplates = ({
                    insertTokenClick(true);
                   setLastSelectedInput('subjectLine');
                 }}
+                onChange= {onChangeHandler}
               />
               {errors.subjectLine && (
                 <label data-testid="subjectLine-error" className="error">{errors.subjectLine.message}</label>
@@ -429,6 +439,7 @@ export const CreateEmailTemplates = ({
                 type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
                 payload: null
               });
+              disableBrowserPrompt();
             }}
             className="settings-btn settings-btn-secondry"
           >

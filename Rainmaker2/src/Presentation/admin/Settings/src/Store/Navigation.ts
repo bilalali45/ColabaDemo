@@ -46,20 +46,20 @@ export const navigation = [
       }
     ]
   },
-  // {
-  //   text: 'Integrations',
-  //   icon: 'Integrations',
-  //   role: Role.ADMIN_ROLE,
-  //   link: '/Integrations',
-  //   childern: [
-  //     {
-  //       text: 'Loan Origination System',
-  //       icon: 'LoanOriginationSystem',
-  //       role: Role.ADMIN_ROLE,
-  //       link: '/LoanOriginationSystem'
-  //     }
-  //   ]
-  // },
+  {
+    text: 'Integrations',
+    icon: 'Integrations',
+    role: Role.ADMIN_ROLE,
+    link: '/Integrations',
+    childern: [
+      {
+        text: 'Loan Origination System',
+        icon: 'LoanOriginationSystem',
+        role: Role.ADMIN_ROLE,
+        link: '/LoanOriginationSystem'
+      }
+    ]
+  },
   //#endregion
   //#region MCU Navigations
   {

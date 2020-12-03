@@ -4,10 +4,10 @@
     background-color: color('widgetBg');
     box-sizing: border-box;
     border-bottom: 1px solid color('border');
-    min-height: calc(100vh - 127px);
+    min-height: calc(100vh - 135px);
 
     > *{
-        height: calc(100vh - 128px);
+        height: calc(100vh - 136px);
         box-sizing: border-box;
     }
 
@@ -37,7 +37,7 @@
         }
         .settings__content-area--body{
             max-height: 100%;
-            height: calc(100% - 56px);
+            height: calc(100% - 55px);
         }
     }
 

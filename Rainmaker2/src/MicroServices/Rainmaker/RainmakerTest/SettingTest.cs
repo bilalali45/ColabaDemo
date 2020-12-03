@@ -266,7 +266,7 @@ namespace Rainmaker.Test
 
             mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities>())).ReturnsAsync(profile);
 
-            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             EmailTemplate res = await settingService.RenderEmailTokens(1, 199, 199, "###LoginUserEmail###", "###LoginUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Hello ###CustomerFirstname###</p>\n<p>Please submit following documents</p>\n<p>###DoucmentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
@@ -384,7 +384,7 @@ namespace Rainmaker.Test
 
             dataContext.SaveChanges();
 
-            ISettingService settingService = new SettingService(null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null,null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             List<Model.ByteUserNameModel> res = await settingService.GetLoanOfficers();
@@ -420,7 +420,7 @@ namespace Rainmaker.Test
 
             dataContext.SaveChanges();
 
-            ISettingService settingService = new SettingService(null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null, null,null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             //Act
             List<Model.ByteBusinessUnitModel> res = await settingService.GetBusinessUnits();
 
@@ -464,7 +464,7 @@ namespace Rainmaker.Test
 
             dataContext.SaveChanges();
 
-            ISettingService settingService = new SettingService(null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null, null,null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             List<Model.ByteUserNameModel> lstModel = new List<Model.ByteUserNameModel>();

@@ -2,7 +2,7 @@
     height: 100%;
 
     .rdw-editor-wrapper .rdw-editor-main {
-        height: 250px;
+        min-height: 250px;
     }
 
     .create-email-templates{
@@ -13,8 +13,12 @@
         }
 
         .settings__content-area--body{
-            min-height: calc(100vh - 284px);
-            max-height: calc(100vh - 284px);;
+            min-height: calc(100vh - 292px);
+            max-height: calc(100vh - 292px);;
+        }
+
+        .settings__content-area--body{
+            border-right: 0;
         }
     }
 
