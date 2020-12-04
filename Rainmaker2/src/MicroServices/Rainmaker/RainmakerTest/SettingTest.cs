@@ -225,6 +225,7 @@ namespace Rainmaker.Test
 
             Mock<IOpportunityService> mockOpportunityService = new Mock<IOpportunityService>();
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            Mock<ILoanApplicationService> mockLoanApplicationService = new Mock<ILoanApplicationService>();
 
             ContactEmailInfo contactEmailInfo = new ContactEmailInfo();
             contactEmailInfo.Email = "hammad@gmail.com";
@@ -264,9 +265,13 @@ namespace Rainmaker.Test
             profile.BusinessUnitId = 199;
             profile.Employees.Add(emp);
 
-            mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities>())).ReturnsAsync(profile);
+            List<LoanApplication> lstLoanApplication = new List<LoanApplication>();
+            LoanApplication loanApplication1 = new LoanApplication();
+            loanApplication1.Id = 4188;
 
-            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities>())).ReturnsAsync(profile);
+            mockLoanApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities>())).Returns(lstLoanApplication);
+            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             EmailTemplate res = await settingService.RenderEmailTokens(1, 199, 199, "###LoginUserEmail###", "###LoginUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Hello ###CustomerFirstname###</p>\n<p>Please submit following documents</p>\n<p>###DoucmentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
@@ -334,6 +339,40 @@ namespace Rainmaker.Test
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
+        }
+        [Fact]
+        public async Task TestUpdateByteOrganizationCodeController()
+        {
+            //Arrange
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
+
+            var settingController = new SettingController(null, mockSettingService.Object);
+
+            List<Model.ByteBusinessUnitModel> lstByteBusinessUnitModel = new List<Model.ByteBusinessUnitModel>();
+            Model.ByteBusinessUnitModel model = new Model.ByteBusinessUnitModel();
+            model.id = 1;
+            model.name = "AHCLending";
+            model.byteOrganizationCode = "100390";
+            lstByteBusinessUnitModel.Add(model);
+
+            Model.ByteBusinessUnitModel model2 = new Model.ByteBusinessUnitModel();
+            model2.id = 2;
+            model2.name = "Texas Trust Home Loans";
+            model2.byteOrganizationCode = "302309";
+            lstByteBusinessUnitModel.Add(model2);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new Microsoft.AspNetCore.Mvc.ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            settingController.ControllerContext = context;
+
+            //Act
+            IActionResult result = await settingController.UpdateByteOrganizationCode(lstByteBusinessUnitModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
         [Fact]
         public async Task TestGetLoanOfficersService()
@@ -484,6 +523,58 @@ namespace Rainmaker.Test
             lstModel.Add(byteUserNameModel2);
 
             await settingService.UpdateByteUserName(lstModel, 1);
+        }
+        [Fact]
+        public async Task TestUpdateByteOrganizationCodeService()
+        {
+            //Arrange
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            RainMaker.Entity.Models.BusinessUnit businessUnit1 = new RainMaker.Entity.Models.BusinessUnit()
+            {
+                Id = 1,
+                Name = "AHCLending",
+                ByteOrganizationCode = "100390",
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<RainMaker.Entity.Models.BusinessUnit>().Add(businessUnit1);
+
+            RainMaker.Entity.Models.BusinessUnit businessUnit2 = new RainMaker.Entity.Models.BusinessUnit()
+            {
+                Id = 2,
+                Name = "Texas Trust Home Loans",
+                ByteOrganizationCode = "302309",
+                IsDeleted = false,
+                IsActive = true
+            };
+            dataContext.Set<RainMaker.Entity.Models.BusinessUnit>().Add(businessUnit2);
+
+            dataContext.SaveChanges();
+
+            ISettingService settingService = new SettingService(null, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+
+            //Act
+            List<Model.ByteBusinessUnitModel> lstByteBusinessUnitModel = new List<Model.ByteBusinessUnitModel>();
+            Model.ByteBusinessUnitModel model = new Model.ByteBusinessUnitModel();
+            model.id = 1;
+            model.name = "AHCLending";
+            model.byteOrganizationCode = "100390";
+            lstByteBusinessUnitModel.Add(model);
+
+            Model.ByteBusinessUnitModel model2 = new Model.ByteBusinessUnitModel();
+            model2.id = 2;
+            model2.name = "Texas Trust Home Loans";
+            model2.byteOrganizationCode = "302309";
+            lstByteBusinessUnitModel.Add(model2);
+
+            await settingService.UpdateByteOrganizationCode(lstByteBusinessUnitModel, 1);
         }
     }
 }

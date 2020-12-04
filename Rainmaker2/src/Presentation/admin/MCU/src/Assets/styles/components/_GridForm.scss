@@ -23,8 +23,12 @@
         }
 
         &.error {
-            .grid-form-control {
-                border: 1px solid $danger !important;
+            .grid-form-control,.grid-form-control:focus {
+                border: 1px solid $danger !important;               
+            }
+
+            .grid-form-control:focus{
+                @include placeholder(color('colorWhite'));
             }
 
             &+.grid-form-group.error {
@@ -52,6 +56,11 @@
     input.grid-form-control {
         padding: 11px 20px;
         height : 49px;
+
+        
+        @include placeholder(color('placeholder'));
+
+        
 
         &:-webkit-autofill,
         &:-webkit-autofill:hover,

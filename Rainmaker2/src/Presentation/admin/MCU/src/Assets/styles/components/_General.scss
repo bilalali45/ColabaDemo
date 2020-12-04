@@ -728,6 +728,7 @@ ul {
                     .settings__text {
                         flex: 0 0 85%;
                         @include font(normal, 1, 'nr', 'base');
+                        word-break: break-word;
                     }
 
                     p {
@@ -1069,24 +1070,7 @@ ul {
     letter-spacing: 1px;
 }
 
-@mixin placeholder($color: color('input')) {
-    &::-webkit-input-placeholder {
-        color: $color
-    }
 
-    &::-moz-placeholder {
-        color: $color;
-    }
-
-    &:-ms-input-placeholder {
-        color: $color;
-    }
-
-    &:-moz-placeholder {
-        color: $color;
-    }
-
-}
 
 .loader-widget {
     padding        : 30px;
@@ -1574,7 +1558,7 @@ label.error {
         color: color('textEditorText');
 
 
-        &:focus-within {
+        &:focus-within .public-DraftEditor-content[contenteditable=true]{
             border: 1px solid color('primary');
         }
     }
@@ -1598,7 +1582,7 @@ label.error {
 
     &.error {
         .public-DraftEditor-content[contenteditable=true] {
-            border: 1px solid $danger;
+            border: 1px solid $danger !important;
         }
     }
 

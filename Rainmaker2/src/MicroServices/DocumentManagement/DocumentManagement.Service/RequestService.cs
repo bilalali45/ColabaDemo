@@ -281,8 +281,11 @@ namespace DocumentManagement.Service
             if (loanApplication.requests[0].email != null)
             {
                 bsonEmail.Add("id", new ObjectId(ObjectId.GenerateNewId().ToString()));
-                bsonEmail.Add("emailTemplateId", new BsonObjectId(new ObjectId(loanApplication.requests[0].email.emailTemplateId)));
-                bsonEmail.Add("fromAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.fromAddress) ? (BsonValue)BsonNull.Value :loanApplication.requests[0].email.fromAddress);
+                if (!string.IsNullOrEmpty(loanApplication.requests[0].email.emailTemplateId))
+                {
+                    bsonEmail.Add("emailTemplateId", new BsonObjectId(new ObjectId(loanApplication.requests[0].email.emailTemplateId)));
+                }
+                bsonEmail.Add("fromAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.fromAddress) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.fromAddress);
                 bsonEmail.Add("toAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.toAddress) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.toAddress);
                 bsonEmail.Add("ccAddress", string.IsNullOrEmpty(loanApplication.requests[0].email.CCAddress) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.CCAddress);
                 bsonEmail.Add("subject", string.IsNullOrEmpty(loanApplication.requests[0].email.subject) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].email.subject);
@@ -370,7 +373,7 @@ namespace DocumentManagement.Service
 
                         IMongoCollection<Entity.EmailLog> collectionEmail = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = item.requestId, docId = item.docId, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = loanApplication.requests[0].email.emailBody,loanId = loanApplication.id, message = ActivityStatus.RerequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName,fromAddress = loanApplication.requests[0].email .fromAddress,toAddress = loanApplication.requests[0].email .toAddress,CCAddress= loanApplication.requests[0].email .CCAddress,subject = loanApplication.requests[0].email .subject};
+                        Entity.EmailLog emailLog = new Entity.EmailLog() { id = ObjectId.GenerateNewId().ToString(), requestId = item.requestId, docId = item.docId, userId = request.userId, userName = request.userName, dateTime = DateTime.UtcNow, emailText = loanApplication.requests[0].email.emailBody, loanId = loanApplication.id, message = ActivityStatus.RerequestedBy, typeId = string.IsNullOrEmpty(item.typeId) ? null : item.typeId, docName = item.displayName, fromAddress = loanApplication.requests[0].email.fromAddress, toAddress = loanApplication.requests[0].email.toAddress, CCAddress = loanApplication.requests[0].email.CCAddress, subject = loanApplication.requests[0].email.subject };
                         await collectionEmail.InsertOneAsync(emailLog);
                     }
                 }
@@ -730,7 +733,7 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncDarftEmailCursor.Current)
                 {
                     DraftEmailQuery query = BsonSerializer.Deserialize<DraftEmailQuery>(current);
-                    
+
                     draftEmail.emailTemplateId = query.emailTemplateId;
                     draftEmail.fromAddress = query.fromAddress;
                     draftEmail.toAddress = query.toAddress;

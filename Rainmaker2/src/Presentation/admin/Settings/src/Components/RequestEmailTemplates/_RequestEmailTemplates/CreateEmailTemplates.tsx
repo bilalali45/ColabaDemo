@@ -18,11 +18,13 @@ type props = {
   addEmailTemplateClick?: any;
   insertTokenClick?: Function;
   showinsertToken?: boolean;
+  setSelectedField: Function;
 };
 
 export const CreateEmailTemplates = ({
   addEmailTemplateClick,
-  insertTokenClick
+  insertTokenClick,
+  setSelectedField
 }: props) => {
   const {state, dispatch} = useContext(Store);
   const emailTemplateManger: any = state.requestEmailTemplateManager;
@@ -36,8 +38,9 @@ export const CreateEmailTemplates = ({
   const [cCEmail, setCCEmail] = useState<string>();
   const [cCEmailArray, setCCEmailArray] = useState<string[]>([]);
   const [emailBody, setEmailBody] = useState<string>();
-  const [tokens, setValidTokens] = useState<string[]>([]);
+  const [tokens, setValidTokens] = useState<Tokens[]>([]);
   const [defaultText, setDefaultText] = useState<string>();
+  const [slectionPos, setSelectionPos] = useState('');
 
   const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError} = useForm();
 
@@ -66,8 +69,8 @@ export const CreateEmailTemplates = ({
 
   useEffect(() => {
     if (allToken) {
-      const tokens = allToken.map((x: Tokens) => x.symbol);
-      setValidTokens(tokens);
+      //const tokens = allToken.map((x: Tokens) => x.symbol);
+      setValidTokens(allToken);
     }
   }, [allToken]);
 
@@ -119,7 +122,6 @@ export const CreateEmailTemplates = ({
       if (value) {
         setSelectedToken(value);
       }
-
       let prevValues: string = '';
       prevValues = getValues('emailBody');
       let concatVal: string = '';
@@ -128,17 +130,28 @@ export const CreateEmailTemplates = ({
       } else {
         concatVal = '' + value;
       }
-
       setValue(target, concatVal);
       setEmailBody(concatVal);
       setValue('emailBody', concatVal, {shouldValidate: true});
-      setDefaultText(concatVal);
     } else {
       const prevValues = getValues(target);
-      setValue(target, prevValues + ' ' + value);
+      if(prevValues.length < 250){
+        if(prevValues){            
+          let firstPart = prevValues.substring(0, slectionPos);
+          let secondPart = prevValues.substring(slectionPos);
+          setValue(target, firstPart + value + secondPart);
+        }else{
+          setValue(target, prevValues + ' ' + value);
+        }    
+      }      
     }
     dispatch({type: RequestEmailTemplateActionsType.SetSelectedToken, payload: null});
   };
+
+  const onBlurSubjectHandler = (event: any) => {
+    const startPos = event.target.selectionStart;
+    setSelectionPos(startPos);
+  }
 
   const setDefaultValue = (template: RequestEmailTemplate) => {
       let ccEmail = template.ccAddress != "" ? template.ccAddress?.split(',') : null ;
@@ -154,9 +167,9 @@ export const CreateEmailTemplates = ({
       setFromEmail(template.fromAddress?.toString());
       setEmailBody(template.emailBody?.toString());
       if(ccEmail)
-      setCCEmailArray(ccEmail);
+        setCCEmailArray(ccEmail.filter( (x: string) => x != ""));
       if(fromEmail)
-      setFromEmailArray(fromEmail);
+        setFromEmailArray(fromEmail.filter( (x: string) => x != ""));
       setDefaultText(template.emailBody?.toString());
   };
 
@@ -177,13 +190,14 @@ export const CreateEmailTemplates = ({
   const onChnageTextEditor = (content: string) => {
     enableBrowserPrompt();
     setEmailBody(content);
-    setValue('emailBody', content, {shouldValidate: true});
+    setValue('emailBody', content, {shouldValidate: false});
   };
 
   const handlerClick = (clickOn: string) => {
     if(insertTokenClick){
       insertTokenClick(true);
       setLastSelectedInput(clickOn);
+      setSelectedField(clickOn);
     }
     
   };
@@ -212,6 +226,7 @@ export const CreateEmailTemplates = ({
     if(insertTokenClick){
       insertTokenClick(true);
       setLastSelectedInput('textEditor');
+      setSelectedField('textEditor');
     }
     
   };
@@ -351,8 +366,7 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-ccAddress" className="col-md-12 form-group">
               <label className="settings__label">Default CC Address</label>
               <EmailInputBox
-                id="defaultCCAddress"
-               
+                id="defaultCCAddress"              
                 handlerEmail={handlerCCEmail}
                 handlerClick={() => handlerClick('ccAddress')}
                 tokens={tokens}
@@ -375,30 +389,35 @@ export const CreateEmailTemplates = ({
             </div>
             <div data-testid="dv-subline" className="col-md-12 form-group">
               <label className="settings__label">Subject Line</label>
-              <input
-               
-                data-testid= "subject-input"
-               
+              <input        
+                data-testid= "subject-input"             
                 id="subjectLine"
-                maxLength = {250}
+                maxLength = {250}       
                 name="subjectLine"
                 type="text"
                 className={`settings__control  ${
                   errors.subjectLine ? 'error' : ''
                 }`}
                 ref={register({
-                  required: 'Subject is required.'
+                  required: 'Subject is required.',
+                  minLength : {
+                    value: 2,
+                    message: 'Minimum length is 2 character.'
+                  }
                 })}
                 onFocus={(e) => {
                   if(insertTokenClick)
                    insertTokenClick(true);
-                  setLastSelectedInput('subjectLine');
+                   setLastSelectedInput('subjectLine');
+                   setSelectedField('subjectLine');
                 }}
                 onChange= {onChangeHandler}
+                onBlur= {onBlurSubjectHandler}
               />
               {errors.subjectLine && (
                 <label data-testid="subjectLine-error" className="error">{errors.subjectLine.message}</label>
               )}
+             
             </div>
           </div>
 

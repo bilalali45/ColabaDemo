@@ -9,6 +9,7 @@ import { RequestEmailTemplatesHeader } from './_RequestEmailTemplates/RequestEma
     const {state, dispatch} = useContext(Store);
     const [showEmailList, setShowEmailList] = useState<boolean>(true);
     const [showinsertToken, setshowInsertToken] = useState<boolean>(false);
+    const [selectedField, setSelectedField] = useState<string>('');
 
     const addEmailTemplateClickHandler = (isCall: boolean) => {
         if(isCall){
@@ -28,12 +29,14 @@ import { RequestEmailTemplatesHeader } from './_RequestEmailTemplates/RequestEma
               addEmailTemplateClick ={addEmailTemplateClickHandler}
               showinsertToken = {showinsertToken}
               insertTokenClick = {insertTokenClickHandler}
+              selectedField = {selectedField}
             />
             <RequestEmailTemplatesBody
             showEmailList = {showEmailList}
             addEmailTemplateClick={addEmailTemplateClickHandler}
             showinsertToken={showinsertToken}
             insertTokenClick={insertTokenClickHandler}
+            setSelectedField = {setSelectedField}
             />
         </div>
     )

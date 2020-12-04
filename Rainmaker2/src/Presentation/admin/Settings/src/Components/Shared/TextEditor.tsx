@@ -34,7 +34,6 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
 
    const setDefaultText = () => {
     if(defaultText){
-
       const regExOpenTag = new RegExp('<ins>', "g");
       const regExCloseTag = new RegExp('</ins>', "g");
       let updatedText = defaultText.replace(regExOpenTag, '<u>').replace(regExCloseTag,'</u>');

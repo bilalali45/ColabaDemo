@@ -52,11 +52,12 @@ export const EmailReview = ({
   const [emailBody, setEmailBody] = useState<string>();
   const [tokens, setValidTokens] = useState<string[]>([]);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
-  const {register, errors, handleSubmit, setValue, getValues, trigger,setError} = useForm();
+  const {register, errors, handleSubmit, setValue, reset, trigger,setError} = useForm();
   const [defaultText, setDefaultText] = useState<string>();
 
   useEffect(() => {
     if(selectedEmailTemplate){
+      reset();
       setDefaultValue(selectedEmailTemplate)
     }
   }, [selectedEmailTemplate])
@@ -120,7 +121,7 @@ export const EmailReview = ({
       let ccEmail = template.ccAddress?.split(',');
       let fromEmail = template.fromAddress?.split(',');
       let toEmail = template.toAddress?.split(',');
-      let emailBodyContent = template.emailBody?.replace('###RequestList###', documentsName ? documentsName: '');
+      let emailBodyContent = template.emailBody?.replace('###RequestDocumentList###', documentsName ? documentsName: '');
 
       setValue('fromEmail', template.fromAddress?.toString());
       setValue('toEmail', template.toAddress?.toString());
@@ -133,13 +134,13 @@ export const EmailReview = ({
       setToEmail(template.toAddress?.toString())
       setEmailBody(emailBodyContent?.toString());
       setDefaultText(emailBodyContent?.toString());
-      
+  
       if(ccEmail && template.ccAddress != "" && template.toAddress != "null")
-       setCCEmailArray(ccEmail);
+       setCCEmailArray(ccEmail.filter( (x: string) => x != ""));
       if(fromEmail && template.fromAddress != "" && template.toAddress != "null")
-       setFromEmailArray(fromEmail);
+       setFromEmailArray(fromEmail.filter( (x: string) => x != ""));
       if(toEmail && template.toAddress != "" && template.toAddress != "null")
-       setToEmailArray(toEmail);
+       setToEmailArray(toEmail.filter( (x: string) => x != ""));
 
        let mappedEmailContent = {
           emailTemplateId : template.id != undefined ? template.id : template.emailTemplateId,
@@ -160,7 +161,12 @@ export const EmailReview = ({
     setFromEmail(email.toString());
     setFromEmailArray(email);
     setValue('fromEmail', email.toString(), {shouldValidate: true});
-    let emailContentDetail : RequestEmailTemplate = emailContent;
+    let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }  
     emailContentDetail.fromAddress = email.toString();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
@@ -174,7 +180,12 @@ export const EmailReview = ({
     setToEmail(email.toString());
     setToEmailArray(email);
     setValue('toEmail', email.toString(), {shouldValidate: true});
-    let emailContentDetail: RequestEmailTemplate = emailContent;
+    let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }
     emailContentDetail.toAddress = email.toString();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
@@ -187,7 +198,12 @@ export const EmailReview = ({
     setCCEmail(email.toString());
     setCCEmailArray(email);
     setValue('cCEmail', email.toString(), {shouldValidate: true});
-    let emailContentDetail : RequestEmailTemplate = emailContent;
+    let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }
     emailContentDetail.ccAddress = email.toString();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
@@ -200,7 +216,12 @@ export const EmailReview = ({
     setEmailBody(content);
     setValue('emailBody', content, {shouldValidate: true});
     dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: true})
-    let emailContentDetail : RequestEmailTemplate = emailContent;
+    let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }
     emailContentDetail.emailBody = content.toString();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
@@ -210,9 +231,13 @@ export const EmailReview = ({
 
   const onBlurTextEditor = (content: string) => {
     setEmailBody(content);
-    setValue('emailBody', content, {shouldValidate: true});
-    let emailContentDetail : RequestEmailTemplate = emailContent;
-    emailContentDetail.emailBody = content.toString();
+    setValue('emailBody', content, {shouldValidate: false});
+    let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
       payload: emailContentDetail
@@ -222,7 +247,12 @@ export const EmailReview = ({
 
   const onBlurSubjectHandler = (event: any) => {
    let subject = event.target.value;
-   let emailContentDetail: RequestEmailTemplate = emailContent;
+   let emailContentDetail : any;
+    if(emailContent){
+      emailContentDetail = emailContent;
+    }else{
+      emailContentDetail = {};
+    }
     emailContentDetail.subject = subject.toString();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEmailContent,
@@ -233,7 +263,6 @@ export const EmailReview = ({
 
   const onSubmit = (data: any, e: any) => {
     if(data.fromEmail.split(',').length > 1){
-      console.log('----------------> error in from address')
       setError('fromEmail', {type: "validate", message: "Only one email is allowed in from address."});
       return;
     }
@@ -246,8 +275,6 @@ export const EmailReview = ({
     });
   };
 
-  
-
   const subjectOnchangeHandler = (event: any) => {
     let value = event.target.value;
     setSubject(value);
@@ -258,6 +285,10 @@ export const EmailReview = ({
     setToEmailArray([]);
     setCCEmailArray([]);  
     setDefaultText('<p></p>');
+  }
+
+  const resetValidations = () => {
+
   }
 
   const errorHandlerFromEmail = () => {
@@ -365,8 +396,7 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
               />
               <input
                 name="cCEmail"
-                type="hidden"
-               
+                type="hidden"               
                 value={cCEmail}
               />
               {errors.cCEmail && (
@@ -377,11 +407,17 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
             <div className={`grid-form-group ${errors.subjectLine ? 'error': ''}`}>
               <label className="grid-form-label">Subject</label>
               <input
+                placeholder={`Input your Subject`}
+                maxLength = {250}
                 name="subjectLine"
                 type="text"             
                 className={`grid-form-control`}
                 ref={register({
-                  required: 'Subject is required.'
+                  required: 'Subject is required.',
+                  minLength : {
+                    value: 2,
+                    message: 'Minimum length is 2 character.'
+                  }
                 })}
                 onBlur={(e: any) => onBlurSubjectHandler(e)}
                 value={subject}

@@ -69,6 +69,7 @@ namespace Rainmaker.Service
             Opportunity_Employee_CompanyPhoneInfo = 1L << 47,
             Opportunity_Employee_EmailAccount = 1L << 48,
             BusinessUnit_LeadSource = 1L << 49,
+            LoanApplication_Status = 1L << 50,
         }
 
         private readonly ICommonService commonService;
@@ -369,6 +370,7 @@ namespace Rainmaker.Service
             if (includes.HasFlag(RelatedEntities.BusinessUnit)) query = query.Include(l => l.BusinessUnit);
             if (includes.HasFlag(RelatedEntities.BusinessUnit_LeadSource)) query = query.Include(l => l.BusinessUnit.LeadSource);
             if (includes.HasFlag(RelatedEntities.Opportunity)) query = query.Include(l => l.Opportunity);
+            if (includes.HasFlag(RelatedEntities.LoanApplication_Status)) query = query.Include(l => l.StatusList);
 
             // @formatter:on             
             return query;

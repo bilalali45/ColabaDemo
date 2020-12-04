@@ -28,7 +28,7 @@ export const EmailInputBox = (props: props) => {
        if(isEmail(text)){
           return true;
        }else{
-        props.errorHandler()
+       // props.errorHandler()
          return false;
        }    
    } 

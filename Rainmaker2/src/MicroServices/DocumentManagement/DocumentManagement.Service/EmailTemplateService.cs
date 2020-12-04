@@ -312,7 +312,7 @@ namespace DocumentManagement.Service
             result.tenantId = emailTemplateModel.tenantId;
             result.templateName = emailTemplateModel.templateName;
             result.templateDescription = emailTemplateModel.templateDescription;
-            result.CCAddress = emailTemplateModel.CCAddress;
+            //result.CCAddress = emailTemplateModel.CCAddress;
             return result;
         }
 

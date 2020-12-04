@@ -459,9 +459,9 @@ export class RequestEmailTemplateActions {
     static async fetchTokens() {
         let url = Endpoints.RequestEmailTemplateManager.GET.tokens();
         try {
-            //let res = await Http.get(url);
-            //return res.data;
-            return Promise.resolve(tokensMock);
+            let res = await Http.get(url);
+            return res.data;
+            //return Promise.resolve(tokensMock);
         } catch (error) {
             console.log('error',error) 
         }

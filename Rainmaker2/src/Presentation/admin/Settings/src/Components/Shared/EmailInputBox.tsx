@@ -1,10 +1,11 @@
 import  React ,{useState, useEffect, useRef} from "react";
 import { ReactMultiEmail, isEmail  } from "react-multi-email";
 import "react-multi-email/style.css";
+import { Tokens } from "../../Entities/Models/Token";
 
 type props = {
   handlerEmail: Function;
-  tokens: string[];
+  tokens: Tokens[];
   handlerClick: Function;
   exisitngEmailValues?: string[] | null;
   className?:any;
@@ -39,9 +40,15 @@ export const EmailInputBox = (props: props) => {
    } 
 
   const checkTokenIsValid = (text: string) => {
-     let tokens: string[] = props.tokens;
-     let result: boolean = false
-     result = tokens.some(item => item === text);
+    let tokens: Tokens[]; 
+    let result: boolean = false
+
+    if(props.id === "defaultFromAddress"){
+      tokens = props.tokens.filter(item => item.fromAddess === true); 
+    }else{
+      tokens = props.tokens.filter(item => item.ccAddess === true);
+    }     
+     result = tokens.some(item => item.symbol === text);
      return result;
    }
 

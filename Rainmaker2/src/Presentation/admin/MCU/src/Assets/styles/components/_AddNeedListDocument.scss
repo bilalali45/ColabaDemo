@@ -83,7 +83,7 @@
     .MT-CWrap {
         .MT-leftbar {
             border-right  : 1px solid color('border');
-            min-height    : 81vh;
+            min-height    : calc(100vh - 152px);
             height        : 100%;
             padding-bottom: 70px;
 

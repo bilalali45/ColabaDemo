@@ -78,14 +78,16 @@ export class RequestEmailTemplateActions {
     }
 
     static async fetchDraftEmailTemplate(id?: string, loanApplicationId?: string) {
-        let url = Endpoints.RequestEmailTemplateManager.GET.GetDraftEmailTemplateById(id,loanApplicationId);
-        try {
-         let res  = await Http.get(url)       
-         return res.data;
-            
-        } catch (error) {
-            console.log('error',error)
-        }
+        if(id && loanApplicationId){
+            let url = Endpoints.RequestEmailTemplateManager.GET.GetDraftEmailTemplateById(id,loanApplicationId);
+            try {
+             let res  = await Http.get(url)       
+             return res.data;
+                
+            } catch (error) {
+                console.log('error',error)
+            }
+        }       
      }
 
     static async deleteEmailTemplate(id?: number){

@@ -31,7 +31,8 @@ export const UploadedDocuments = () => {
   return (
     <div data-testid="uploaded-documents" className={`UploadedDocuments box-wrap ${submittedDocs?.length>0?"havedoc":""} ${isMobile?.value? "box-mobilewrap":""}`}>
       <div className="box-wrap--header">
-        <h2>Uploaded Documents</h2>
+        <h2>My Documents</h2>
+        
       </div>
       <div className="box-wrap--body clearfix">
         <UploadedDocumentsTable />

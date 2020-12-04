@@ -8,10 +8,11 @@ type props = {
     addEmailTemplateClick? : any;
     showEmailList: boolean;
     showinsertToken: boolean;
-    insertTokenClick? : any;   
+    insertTokenClick? : any;  
+    setSelectedField: Function; 
     }
 
-export const RequestEmailTemplatesBody = ({addEmailTemplateClick, showEmailList, showinsertToken, insertTokenClick}: props) => {
+export const RequestEmailTemplatesBody = ({addEmailTemplateClick, showEmailList, showinsertToken, insertTokenClick, setSelectedField}: props) => {
     return (
         <div className={`settings__content-area--body no-padding ${showEmailList ? 'show-email-templates-list' : 'create-email-templates'}`}>
             { showEmailList 
@@ -25,6 +26,7 @@ export const RequestEmailTemplatesBody = ({addEmailTemplateClick, showEmailList,
                  addEmailTemplateClick={addEmailTemplateClick}
                  insertTokenClick={insertTokenClick}
                  showinsertToken={showinsertToken}
+                 setSelectedField = {setSelectedField}
             />
             }
             
