@@ -84,10 +84,10 @@ namespace MainGateway
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
+            //else
+            //{
+            //    app.UseHsts();
+            //}
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseHttpsRedirection();
@@ -107,10 +107,10 @@ namespace MainGateway
                 {
                     if (!context.WebSockets.IsWebSocketRequest)
                     {
-                        context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
-                        context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
-                        if (context.Response.Headers["Content-Disposition"].Count <= 0)
-                            context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
+                        //context.Response.Headers.Add("Referrer-Policy", new StringValues("no-referrer"));
+                        //context.Response.Headers.Add("X-Content-Type-Options", new StringValues("nosniff"));
+                        //if (context.Response.Headers["Content-Disposition"].Count <= 0)
+                        //    context.Response.Headers.Add("Content-Disposition", "attachment; filename=\"api.json\"");
                         context.Response.Headers.Remove("Server");
                     }
                     return Task.CompletedTask;
