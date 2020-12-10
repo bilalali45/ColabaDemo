@@ -144,13 +144,17 @@ namespace RainMaker.Service
                                 LoanApplicationService.RelatedEntities.PropertyInfo_PropertyUsage |
                                 LoanApplicationService.RelatedEntities.Borrower_LoanContact |
                                 LoanApplicationService.RelatedEntities.Borrower_LoanContact_ResidencyState |
+                                LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences_LoanAddress |
                                 LoanApplicationService.RelatedEntities.PropertyInfo_AddressInfo |
                                 LoanApplicationService.RelatedEntities.Opportunity_Employee_CompanyPhoneInfo |
-                                LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact;
+                                LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact|
+                                LoanApplicationService.RelatedEntities.Opportunity_Branch |
+                                LoanApplicationService.RelatedEntities.Opportunity_Employee_EmailAccount|
+                                LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact_ContactPhoneInfoes;
 
-            var loanApplication = loanApplicationService.GetLoanApplicationWithDetails(id: loanApplicationId, includes: relatedEntities).SingleOrDefault();
+           var loanApplication = loanApplicationService.GetLoanApplicationWithDetails(id: loanApplicationId, includes: relatedEntities).SingleOrDefault();
 
-            lsTokenModels = await SetTokenValues(loanApplication, lsTokenModels, userProfileId);
+            lsTokenModels = await SetTokenValues(loanApplication, lsTokenModels, userProfileId, emailTemplate);
 
             foreach (var token in lsTokenModels)
             {
@@ -177,11 +181,11 @@ namespace RainMaker.Service
             }
 
             //Get Customer Email Address
-            var customerEmailAddess = loanApplication.Opportunity.OpportunityLeadBinders.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null && s.Customer.Contact.ContactEmailInfoes != null && s.OwnTypeId == 1 && s.Customer.Contact.ContactEmailInfoes.Any(a => a.IsPrimary == true && a.ValidityId != 3));
+            //var customerEmailAddess = loanApplication.Opportunity?.OpportunityLeadBinders?.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null && s.Customer.Contact.ContactEmailInfoes != null && s.OwnTypeId == 1 && s.Customer.Contact.ContactEmailInfoes.Any(a => a.IsPrimary == true && a.ValidityId != 3));
 
             emailTemplate.id = id;
             emailTemplate.fromAddress = fromAddess;
-            emailTemplate.toAddress = customerEmailAddess?.Customer?.Contact?.ContactEmailInfoes?.FirstOrDefault().Email ?? "";
+            //emailTemplate.toAddress = customerEmailAddess?.Customer?.Contact?.ContactEmailInfoes?.FirstOrDefault().Email ?? "";
             emailTemplate.CCAddress = ccAddess;
             emailTemplate.subject = subject;
             emailTemplate.emailBody = emailBody;
@@ -262,12 +266,13 @@ namespace RainMaker.Service
             }
             return "";
         }
-        private async Task<List<TokenModel>> SetTokenValues(LoanApplication loanApplication, List<TokenModel> lsTokenModels, int userProfileId)
+        private async Task<List<TokenModel>> SetTokenValues(LoanApplication loanApplication, List<TokenModel> lsTokenModels, int userProfileId, EmailTemplate emailTemplate)
         {
             var borrowerChunks = loanApplication.Borrowers.ToList().ChunkBy(chunkSize: 2);
             List<Borrower> borrowers = borrowerChunks[0];
             var rmBorrower = borrowers[index: 0];
             var rmCoBorrower = borrowers.Count > 1 ? borrowers[index: 1] : null;
+            int? busnessUnitId = Uow.Repository<LoanApplication>().Query(x => x.IsDeleted == false && x.Id == loanApplication.Id).Select(x => x.BusinessUnitId).FirstOrDefault();
 
             foreach (var token in lsTokenModels)
             {
@@ -411,7 +416,7 @@ namespace RainMaker.Service
                         break;
                     case TokenKey.LoanOfficerPageUrl:
                         {
-                            token.value = loanApplication.BusinessUnit?.WebUrl ?? "" + "/lo/" + loanApplication.Opportunity?.Owner?.CmsName ?? "";
+                            token.value =  loanApplication.BusinessUnit?.WebUrl != null  ? loanApplication.BusinessUnit?.WebUrl + "/lo/" + loanApplication.Opportunity?.Owner?.CmsName ?? "" : "";
                         }
                         break;
                     case TokenKey.LoanOfficerFirstName:
@@ -421,7 +426,7 @@ namespace RainMaker.Service
                         break;
                     case TokenKey.LoanOfficerLastName:
                         {
-                            token.value = loanApplication.Opportunity.Owner?.Contact.LastName ?? "";
+                            token.value = loanApplication.Opportunity?.Owner?.Contact.LastName ?? "";
                         }
                         break;
                     case TokenKey.RequestDocumentList:
@@ -434,8 +439,104 @@ namespace RainMaker.Service
                             token.value = await GetLoginUserEmail(loanApplication.Id, userProfileId);
                         }
                         break;
+                    case TokenKey.CompanyNMLSNo:
+                        {
+                            token.value = loanApplication.Opportunity?.Branch?.NmlsNo ?? "";
+                        }
+                        break;
+                    case TokenKey.LoanOfficerEmailAddress:
+                        {
+                            token.value = loanApplication.Opportunity?.Owner?.EmployeeBusinessUnitEmails?.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e => e.BusinessUnitId).FirstOrDefault().EmailAccount?.Email ?? "";
+                        }
+                        break;
+                    case TokenKey.LoanOfficerOfficePhoneNumber:
+                        {
+                            token.value = loanApplication.Opportunity?.Owner?.EmployeePhoneBinders?.FirstOrDefault().CompanyPhoneInfo?.Phone ?? "";
+                        }
+                        break;
+                    case TokenKey.LoanOfficerCellPhoneNumber:
+                        {
+                            token.value = loanApplication.Opportunity?.Owner?.Contact?.ContactPhoneInfoes?.FirstOrDefault().Phone ?? "";
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentStreetAddress:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StreetAddress ?? "" ;
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentUnitNo:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.UnitNo ?? "";
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentCity:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.CityName ?? "";
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentState:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StateName ?? "";
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentStateAbbreviation:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.State?.Abbreviation ?? "";
+                        }
+                        break;
+                    case TokenKey.PrimaryBorrowerPresentZipCode:
+                        {
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.ZipCode ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentStreetAddress:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StreetAddress ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentUnitNo:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.UnitNo ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentCity:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.CityName ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentState:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StateName ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentStateAbbreviation:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.State?.Abbreviation ?? "";
+                        }
+                        break;
+                    case TokenKey.CoBorrowerPresentZipCode:
+                        {
+                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.ZipCode ?? "";
+                        }
+                        break;
+                    case TokenKey.DocumentUploadButton:
+                        {
+                            token.value = "";
+                        }
+                        break;
+                    case TokenKey.LoanPortalHomeButton:
+                        {
+                            token.value = "";
+                        }
+                        break;
+                    case TokenKey.DocumentsPageButton:
+                        {
+                            token.value = "";
+                        }
+                        break;
                 }
             }
+            emailTemplate.toAddress = rmBorrower?.LoanContact?.EmailAddress ?? "";
             return lsTokenModels;
         }
     }

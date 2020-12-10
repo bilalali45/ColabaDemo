@@ -63,6 +63,12 @@
     &--content{
         flex: 0 0 65%;
         width: 65%;
+
+        &.all{
+            .settings__add-docs-popup--search-details{
+                height: calc(100% - 43px);
+            }                
+        }
     }
 
     &--search{
@@ -93,11 +99,12 @@
 
     &--search-details{
         padding: 20px 25px;
-        height: calc(100% - 44px);
+        height: 100%;
         @include font(normal,1.2,'nr','base');
         overflow-y: auto;
         @include scrollbar();
     }
+    
 
     &--search-data{
         ul{

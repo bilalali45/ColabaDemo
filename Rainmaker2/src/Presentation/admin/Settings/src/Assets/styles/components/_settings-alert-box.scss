@@ -1,0 +1,56 @@
+.settings__alert-box{
+    background-color: rgba(#000,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    &--modal{
+        background-color: color('widgetBg');
+        max-width: 100%;
+        width: 500px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+
+        &-body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;            
+            position: relative;
+            flex: 1 1 auto;
+
+            &-content{
+                text-align: center;
+                line-height: 1.4;
+            }
+        }
+
+        &-footer{
+            padding: 12px;
+            background-color: color('modalfooter');
+            .btn-secondary,
+            .btn-primary{
+                @extend .settings-btn;
+                @extend .settings-btn-sm;
+                margin: 0 2px;
+                min-width: 100px;
+            }
+            .btn-secondary{
+                @extend .settings-btn-secondry;
+            }
+            .btn-primary{
+                @extend .settings-btn-primary;
+            }
+        }
+    }
+}

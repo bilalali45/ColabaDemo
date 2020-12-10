@@ -204,19 +204,20 @@ export const EmailContentReview = ({
             ref={refForListDropDown}
             className={`${item.selected == true ? 'active' : ''}`}
           >
-            <div className="mcu-dropdown-menu--data" onMouseOverCapture={()=> checkDropdownPopup(true)}
-            onMouseLeave={()=>{ showTemplateDetailOnHover(false, item); checkDropdownPopup(false); }}
-            onMouseOver={(e)=>{
-              e.preventDefault();
-              checkDropdownPopup(true);
-              showTemplateDetailOnHover(true, item);
-              if(templateDropdownList){
-                setDropdownToolPopupArrow({
-                  x: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().left),
-                  y: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().top) + 25
-                })
-              }
-            }}
+            <div className="mcu-dropdown-menu--data" 
+            // onMouseOverCapture={()=> checkDropdownPopup(true)}
+            // onMouseLeave={()=>{ showTemplateDetailOnHover(false, item); checkDropdownPopup(false); }}
+            // onMouseOver={(e)=>{
+            //   e.preventDefault();
+            //   checkDropdownPopup(true);
+            //   showTemplateDetailOnHover(true, item);
+            //   if(templateDropdownList){
+            //     setDropdownToolPopupArrow({
+            //       x: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().left),
+            //       y: (selectedTemplateDropdownList.current[index]?.getBoundingClientRect().top) + 25
+            //     })
+            //   }
+            // }}
             onClick={() => {
               getSelectedEmailTemplate(item.id?.toString())
               setishowList(!ishowList)

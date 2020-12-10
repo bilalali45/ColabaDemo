@@ -70,6 +70,8 @@ namespace Rainmaker.Service
             Opportunity_Employee_EmailAccount = 1L << 48,
             BusinessUnit_LeadSource = 1L << 49,
             LoanApplication_Status = 1L << 50,
+            Opportunity_Branch = 1L << 51,
+            Opportunity_Employee_Contact_ContactPhoneInfoes = 1L << 52,
         }
 
         private readonly ICommonService commonService;
@@ -270,8 +272,10 @@ namespace Rainmaker.Service
             if (includes.HasFlag(RelatedEntities.Opportunity_LoanRequest)) query = query.Include(l => l.Opportunity.LoanRequest);
             if (includes.HasFlag(RelatedEntities.Opportunity_Employee_UserProfile)) query = query.Include(l => l.Opportunity.Owner.UserProfile);
             if (includes.HasFlag(RelatedEntities.Opportunity_Employee_Contact)) query = query.Include(l => l.Opportunity.Owner.Contact);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Employee_Contact_ContactPhoneInfoes)) query = query.Include(l => l.Opportunity.Owner.Contact.ContactPhoneInfoes);
             if (includes.HasFlag(RelatedEntities.Opportunity_Employee_CompanyPhoneInfo)) query = query.Include(l => l.Opportunity.Owner.EmployeePhoneBinders).ThenInclude(employeePhoneBinder => employeePhoneBinder.CompanyPhoneInfo);
             if (includes.HasFlag(RelatedEntities.Opportunity_Employee_EmailAccount)) query = query.Include(l => l.Opportunity.Owner.EmployeeBusinessUnitEmails).ThenInclude(employeeBusinessUnitEmails => employeeBusinessUnitEmails.EmailAccount);
+            if (includes.HasFlag(RelatedEntities.Opportunity_Branch)) query = query.Include(l => l.Opportunity.Branch);
 
             if (includes.HasFlag(RelatedEntities.LoanGoal)) query = query.Include(l => l.LoanGoal);
             if (includes.HasFlag(RelatedEntities.LoanPurpose)) query = query.Include(l => l.LoanPurpose);

@@ -38,7 +38,25 @@ namespace Rainmaker.Model
         public const string LoanOfficerLastName = "LoanOfficerLastName";
         public const string RequestDocumentList = "RequestDocumentList";
         public const string RequestorUserEmail = "RequestorUserEmail";
-
+        public const string CompanyNMLSNo = "CompanyNMLSNo.";
+        public const string LoanOfficerEmailAddress = "LoanOfficerEmailAddress";
+        public const string LoanOfficerOfficePhoneNumber = "LoanOfficerOfficePhoneNumber";
+        public const string LoanOfficerCellPhoneNumber = "LoanOfficerCellPhoneNumber";
+        public const string PrimaryBorrowerPresentStreetAddress = "PrimaryBorrowerPresentStreetAddress";
+        public const string PrimaryBorrowerPresentUnitNo = "PrimaryBorrowerPresentUnitNo.";
+        public const string PrimaryBorrowerPresentCity = "PrimaryBorrowerPresentCity";
+        public const string PrimaryBorrowerPresentState = "PrimaryBorrowerPresentState";
+        public const string PrimaryBorrowerPresentStateAbbreviation = "PrimaryBorrowerPresentStateAbbreviation";
+        public const string PrimaryBorrowerPresentZipCode = "PrimaryBorrowerPresentZipCode";
+        public const string CoBorrowerPresentStreetAddress = "Co-BorrowerPresentStreetAddress";
+        public const string CoBorrowerPresentUnitNo = "Co-BorrowerPresentUnitNo.";
+        public const string CoBorrowerPresentCity = "Co-BorrowerPresentCity";
+        public const string CoBorrowerPresentState = "Co-BorrowerPresentState";
+        public const string CoBorrowerPresentStateAbbreviation = "Co-BorrowerPresentStateAbbreviation";
+        public const string CoBorrowerPresentZipCode = "Co-BorrowerPresentZipCode";
+        public const string DocumentUploadButton = "DocumentUploadButton";
+        public const string LoanPortalHomeButton = "LoanPortalHomeButton";
+        public const string DocumentsPageButton = "DocumentsPageButton";
     }
 
     public class TokenModel

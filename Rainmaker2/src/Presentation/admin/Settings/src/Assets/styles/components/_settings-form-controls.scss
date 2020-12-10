@@ -363,12 +363,26 @@
 
 .settings__multi-pills-control {
     &.error {
+        &:focus-within,
+        &:focus-visible{
+            .react-multi-email{
+                border-color: $danger;
+            }
+        }
+
         .react-multi-email {
             border-color: $danger;
         }
 
         &+label.error {
             margin-top: 5px;
+        }
+    }
+
+    &:focus-within,
+    &:focus-visible{
+        .react-multi-email{
+            border-color: color('primary');
         }
     }
 }

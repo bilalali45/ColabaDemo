@@ -11,30 +11,84 @@ type props = {
   className?:any;
   dataTestId: string;
   id?:any;
+  setInputError: Function
+  triggerInputValidation: Function
+  clearInputError: Function
 }
 
 export const EmailInputBox = (props: props) => {
-  const [emails, setEmailArray] = useState<string[]>([]);
+  const [emailsArray, setEmailArray] = useState<string[]>([]);
+  const [isEmailValid, setisEmailValid] = useState<boolean>();
   const existingEmailValues = props.exisitngEmailValues;
   
+  useEffect(() => {
+      const emailCoontainer  = document?.getElementsByClassName(`${props.dataTestId} react-multi-email`); 
+      const inputElement =  emailCoontainer[0]?.children[0];
+
+      const updateInputSize = () => {
+        let l =  inputElement.getAttribute('value')?.length;
+        inputElement?.setAttribute('size',String(l));
+      }
+
+      const keyDownListner = (event: any) => {
+        props.clearInputError(props.id);
+        if(event.code == "Backspace" && event.target.value.length == 1){
+          setisEmailValid(true);
+          props.triggerInputValidation(props.id, true);
+        }else if(event.code == "Backspace" && window?.getSelection()?.toString() == event.target.value){
+          setisEmailValid(true);
+          props.triggerInputValidation(props.id, true);
+        }
+        updateInputSize();
+      }
+      inputElement.addEventListener('keydown', keyDownListner);
+      inputElement.addEventListener('paste', async()=>{ setTimeout( ()=>{ updateInputSize() },100)});
+
+      const fromEmailListener = (event: any) => {
+        props.clearInputError(props.id);
+        if(window?.getSelection()?.toString() != event.target.value){
+          if(props.id == "fromEmail" && event.target.value.length > 1){
+            if(emailCoontainer[0].childElementCount == 2){
+              setisEmailValid(false);
+              props.setInputError(props.id, "Only one email is allowed in from address.")
+              return;  
+            }
+          }
+        }
+      }
+
+      inputElement.addEventListener('keydown', fromEmailListener);
+
+      return () => {
+        inputElement.removeEventListener("keydown", keyDownListner);
+        inputElement.removeEventListener('paste', async()=>{setTimeout( ()=>{ updateInputSize() },100)});
+      };
+  },[]);
 
   useEffect(() => {
-    if (existingEmailValues){
-      setEmailArray(existingEmailValues)
+    if (existingEmailValues && existingEmailValues?.length > 0){
+      setEmailArray(existingEmailValues);
     }
   }, [existingEmailValues]);
 
   const handlerEmailChange = (content: string[]) => {
     setEmailArray(content)
     props.handlerEmail(content);
+    props.triggerInputValidation(props.id, true)
    }
    
   const  handlerEmailValidate = (text: string) => {
-       if(isEmail(text)){ // check valid email address
+    if(isEmail(text)){ // check valid email address
+         if(isEmailValid === false){
+          return false;
+         }
+         setisEmailValid(true);
           return true;
        } else if(checkTokenIsValid(text)){ //check valid token
          return true;
        } else{
+         setisEmailValid(false)
+         props.setInputError(props.id);
          return false;
        }    
    } 
@@ -42,8 +96,7 @@ export const EmailInputBox = (props: props) => {
   const checkTokenIsValid = (text: string) => {
     let tokens: Tokens[]; 
     let result: boolean = false
-
-    if(props.id === "defaultFromAddress"){
+    if(props.id === "fromEmail"){
       tokens = props.tokens.filter(item => item.fromAddess === true); 
     }else{
       tokens = props.tokens.filter(item => item.ccAddess === true);
@@ -56,14 +109,35 @@ export const EmailInputBox = (props: props) => {
     props.handlerClick();
   }
 
-  
+  const emailBlur = () => {
+    props.triggerInputValidation(props.id, isEmailValid);
+  }
+
+  //const refPills:any = useRef<any>(null);
+  //refPills.current = [];
+
+  const doubleClickHandler = (event: any,i:any) => {
+    let parentDiv = event.target.parentElement; //nodeName
+    let pillsTxt = event.target.textContent;
+    let deleteSpan = event.target.childNodes[1];
+    let elementLength = parentDiv.children.length;
+    let input = parentDiv.children[elementLength-1];
+    deleteSpan.click();
+    setTimeout(()=>{input.value = pillsTxt.substring(0,(pillsTxt.length-1))},20)
+    console.log('doubleClick on pill', );
+  }
+
+  const removeEmailHandler = () => {
+    setisEmailValid(true);
+    props.triggerInputValidation(props.id, true);
+  }
     return (
       <>
-      <div  data-testid={props.dataTestId}  onFocus={ClickHandler} onClick={ClickHandler} className={`settings__multi-pills-control ${props.className?props.className:''}`}>
+      <div data-testid={props.dataTestId} onBlur={emailBlur}  onFocus={ClickHandler} onClick={ClickHandler} className={`settings__multi-pills-control ${props.className?props.className:''}`}>
         <ReactMultiEmail
           className = {props.dataTestId}
-          emails={emails}
-          onChange={handlerEmailChange}          
+          emails={emailsArray}
+          onChange={handlerEmailChange}         
           validateEmail={email => {
             return handlerEmailValidate(email); 
           }}
@@ -73,10 +147,15 @@ export const EmailInputBox = (props: props) => {
             removeEmail: (index: number) => void
           ) => {
             return (
-              <div data-tag key={index}>
+              <div  data-tag key={index}>
                 {email}
-                <span data-tag-handle onClick={() => removeEmail(index)}>
-                  ×
+                <span data-tag-handle onClick={
+                () => {
+                  removeEmail(index)
+                  removeEmailHandler()
+                }           
+                }>
+                ×
                 </span>
               </div>
             );

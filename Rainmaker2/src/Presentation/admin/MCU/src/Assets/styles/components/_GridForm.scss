@@ -37,6 +37,8 @@
                 }
             }
         }
+
+        
     }
 
     &-label {
@@ -139,4 +141,8 @@
         }
     }
 
+}
+
+.grid-form-control.react-multi-email:focus-within {
+    border: 1px solid color('primary');
 }

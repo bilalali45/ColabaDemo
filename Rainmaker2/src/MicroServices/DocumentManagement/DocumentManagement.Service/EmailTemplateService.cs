@@ -150,6 +150,7 @@ namespace DocumentManagement.Service
 
             using var asyncCursorTokens = collection.Aggregate(PipelineDefinition<Entity.TokenParam, BsonDocument>.Create(
                                                                                                                           @"{
+                            ""$sort"": {""name"": 1}}", @"{
                             ""$project"": {
                                 ""_id"": 1,
                                 ""name"": ""$name"",
@@ -312,6 +313,7 @@ namespace DocumentManagement.Service
             result.tenantId = emailTemplateModel.tenantId;
             result.templateName = emailTemplateModel.templateName;
             result.templateDescription = emailTemplateModel.templateDescription;
+            result.sortOrder = emailTemplate.sortOrder;
             //result.CCAddress = emailTemplateModel.CCAddress;
             return result;
         }

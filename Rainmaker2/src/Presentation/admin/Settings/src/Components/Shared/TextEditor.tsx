@@ -74,7 +74,7 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
       seteditorState(editorStateValue);
       
       if(editorState){
-        const rawValue = editorState.getCurrentContent().getPlainText()
+        const rawValue = editorStateValue.getCurrentContent().getPlainText()
         if(rawValue){ handlerOnChange(value); }
       }
      

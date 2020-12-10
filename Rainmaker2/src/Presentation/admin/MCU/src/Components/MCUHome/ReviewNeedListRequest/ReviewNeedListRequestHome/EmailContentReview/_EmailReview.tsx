@@ -52,13 +52,20 @@ export const EmailReview = ({
   const [emailBody, setEmailBody] = useState<string>();
   const [tokens, setValidTokens] = useState<string[]>([]);
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
-  const {register, errors, handleSubmit, setValue, reset, trigger,setError} = useForm();
+  const {register, errors, handleSubmit, getValues, setValue, reset, trigger,setError, clearErrors} = useForm({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    criteriaMode: "firstError",
+    shouldFocusError: true,
+    shouldUnregister: true,
+  });
   const [defaultText, setDefaultText] = useState<string>();
+  const [isError, setIsError] = useState<string>();
 
   useEffect(() => {
     if(selectedEmailTemplate){
-      reset();
-      setDefaultValue(selectedEmailTemplate)
+      clearErrors();
+        setDefaultValue(selectedEmailTemplate)   
     }
   }, [selectedEmailTemplate])
 
@@ -109,7 +116,43 @@ export const EmailReview = ({
     }
    
   }
-  }, [documentsName])
+  }, [documentsName]);
+
+  const setInputError = (inputName: string, message?: string) => {
+    if(inputName === "fromEmail"){
+     if(fromEmail != undefined && fromEmail != ""){
+      setError(inputName, {
+        type: "custom",
+        message: message ?? "Only one email is allowed in from address.",
+      });
+      setIsError(inputName);
+      }else{
+        setError(inputName, {
+          type: "custom",
+          message: message ?? "Please enter valid format",
+        });
+        setIsError(inputName);
+      }
+    }else{
+      setError(inputName, {
+        type: "custom",
+        message: message ?? "Please enter valid format",
+      });
+      setIsError(inputName);
+    }  
+  }
+
+
+  const triggerInputValidation = (inputName: string, isEmailValid: boolean) => {
+    if(isEmailValid){
+      trigger(inputName);
+      setIsError('');
+    }
+  }
+
+  const clearInputError = (inputName: string) => {
+    clearErrors(inputName)
+  }
 
   const getSelectedEmailTemplate = async (id?: string) => {
     let loanApplicationId = LocalDB.getLoanAppliationId();
@@ -141,7 +184,12 @@ export const EmailReview = ({
        setFromEmailArray(fromEmail.filter( (x: string) => x != ""));
       if(toEmail && template.toAddress != "" && template.toAddress != "null")
        setToEmailArray(toEmail.filter( (x: string) => x != ""));
-
+      if(template.toAddress === "")
+       setToEmailArray([]);
+      if(template.fromAddress === "")
+      setFromEmailArray([]);
+      if(template.ccAddress === "")
+      setCCEmailArray([]);
        let mappedEmailContent = {
           emailTemplateId : template.id != undefined ? template.id : template.emailTemplateId,
           fromAddress: template.fromAddress != "" ? template.fromAddress : null,
@@ -262,6 +310,19 @@ export const EmailReview = ({
   };
 
   const onSubmit = (data: any, e: any) => {
+    if(isError){
+      if(isError === 'fromEmail'){
+        setInputError('fromEmail');
+        return;
+      }else if(isError === 'toEmail'){
+        setInputError('toEmail');
+        return;
+      }else if(isError === 'cCEmail'){
+        setInputError('cCEmail');
+        return;
+      }
+    }
+
     if(data.fromEmail.split(',').length > 1){
       setError('fromEmail', {type: "validate", message: "Only one email is allowed in from address."});
       return;
@@ -275,37 +336,17 @@ export const EmailReview = ({
     });
   };
 
-  const subjectOnchangeHandler = (event: any) => {
-    let value = event.target.value;
-    setSubject(value);
-  }
+  // const subjectOnchangeHandler = (event: any) => {
+  //   let value = event.target.value;
+  //   setSubject(value);
+  //   setValue('subjectLine', value);
+  // }
 
   const resetFields = () => {
     setFromEmailArray([]);
     setToEmailArray([]);
     setCCEmailArray([]);  
     setDefaultText('<p></p>');
-  }
-
-  const resetValidations = () => {
-
-  }
-
-  const errorHandlerFromEmail = () => {
-   console.log('----------> errorHandlerFromEmail')
-   trigger('fromEmail');
-  
-   setError('fromEmail', {type: "validate", message: "Dont Forget Your Username Should Be Cool!"});
-  }
-
-  const errorHandlerToEmail = () => {
-    console.log('----------> errorHandlerToEmail')
-    trigger('toEmail');
-  }
-
-  const errorHandlerCCEmail = () => {
-    console.log('----------> errorHandlerCCEmail')
-    trigger('cCEmail');
   }
 
   const sendRequestButton = () => {
@@ -334,7 +375,7 @@ export const EmailReview = ({
       );
     }
   };
-console.log('---------->----->errors.fromEmail', errors.fromEmail)
+
   return (
     <>
       <form>
@@ -343,10 +384,14 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
             <div className={`grid-form-group ${errors.fromEmail ? 'error': ''}`}>
               <label className="grid-form-label">From</label>
               <EmailInputBox
+                id="fromEmail" 
                 handlerEmail={handlerFromEmail}
                 tokens={tokens}
                 exisitngEmailValues={fromEmailArray}
-                className={`grid-form-control`}
+                className={`grid-form-control from-email`}
+                setInputError = {setInputError}
+                triggerInputValidation = {triggerInputValidation}
+                clearInputError = {clearInputError}
               />
               <input
                 name="fromEmail"
@@ -368,10 +413,14 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
             <div className={`grid-form-group ${errors.toEmail ? 'error': ''}`}>
               <label className="grid-form-label">To</label>
               <EmailInputBox
+                id="toEmail"
                 handlerEmail={handlerToEmail}
                 tokens={tokens}
                 exisitngEmailValues={toEmailArray}
-                className={`grid-form-control`}
+                className={`grid-form-control to-email`}
+                setInputError = {setInputError}
+                triggerInputValidation = {triggerInputValidation}
+                clearInputError = {clearInputError} 
               />
               <input
                 name="toEmail"
@@ -389,10 +438,14 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
             <div className={`grid-form-group ${errors.cCEmail ? 'error': ''}`}>
               <label className="grid-form-label">CC</label>
               <EmailInputBox
+                id="cCEmail"
                 handlerEmail={handlerCCEmail}
                 tokens={tokens}
                 exisitngEmailValues={cCEmailArray}
-                className={`grid-form-control`}
+                className={`grid-form-control cC-email`}
+                setInputError = {setInputError}
+                triggerInputValidation = {triggerInputValidation}
+                clearInputError = {clearInputError}
               />
               <input
                 name="cCEmail"
@@ -407,7 +460,6 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
             <div className={`grid-form-group ${errors.subjectLine ? 'error': ''}`}>
               <label className="grid-form-label">Subject</label>
               <input
-                placeholder={`Input your Subject`}
                 maxLength = {250}
                 name="subjectLine"
                 type="text"             
@@ -420,8 +472,6 @@ console.log('---------->----->errors.fromEmail', errors.fromEmail)
                   }
                 })}
                 onBlur={(e: any) => onBlurSubjectHandler(e)}
-                value={subject}
-                onChange= {(e) => subjectOnchangeHandler(e)}
               />
 
               {errors.subjectLine && (

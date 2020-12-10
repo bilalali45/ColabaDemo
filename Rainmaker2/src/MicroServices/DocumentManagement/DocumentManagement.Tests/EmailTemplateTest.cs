@@ -210,6 +210,60 @@ namespace DocumentManagement.Tests
             Assert.Equal(1, content.sortOrder);
         }
         [Fact]
+        public async Task TestGetRenderEmailTemplateByIdController()
+        {
+            //Arrange
+            Mock<IEmailTemplateService> mock = new Mock<IEmailTemplateService>();
+            Model.EmailTemplate emailTemplate = new Model.EmailTemplate();
+
+            emailTemplate.id = "5fa020214c2ff92af0a1c85f";
+            emailTemplate.tenantId = 1;
+            emailTemplate.templateName = "Template #1";
+            emailTemplate.templateDescription = "Sed ut perspiciatis unde omnis iste natus";
+            emailTemplate.fromAddress = "aliya@texastrustloans.com";
+            emailTemplate.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            emailTemplate.toAddress = "prasla@gmail.com";
+            emailTemplate.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            emailTemplate.emailBody = "Hi Javed,To continue your application, we need some more information.";
+            emailTemplate.sortOrder = 1;
+
+            mock.Setup(x => x.GetRenderEmailTemplateById(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(emailTemplate);
+
+            var emailTemplateController = new EmailTemplateController(mock.Object);
+
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            emailTemplateController.ControllerContext = context;
+
+            //Act
+            RenderTemplateIdModel renderTemplateIdModel = new RenderTemplateIdModel();
+            renderTemplateIdModel.id = "5fa020214c2ff92af0a1c85f";
+            IActionResult result = await emailTemplateController.GetRenderEmailTemplateById(renderTemplateIdModel);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as Model.EmailTemplate;
+            Assert.Equal("5fa020214c2ff92af0a1c85f", content.id);
+            Assert.Equal(1, content.tenantId);
+            Assert.Equal("Template #1", content.templateName);
+            Assert.Equal("Sed ut perspiciatis unde omnis iste natus", content.templateDescription);
+            Assert.Equal("aliya@texastrustloans.com", content.fromAddress);
+            Assert.Equal("Ali@gmail.com,hasan@gmail.com", content.CCAddress);
+            Assert.Equal("prasla@gmail.com", content.toAddress);
+            Assert.Equal("You have new tasks to complete for your Texas Trust Home Loans loan application", content.subject);
+            Assert.Equal("Hi Javed,To continue your application, we need some more information.", content.emailBody);
+            Assert.Equal(1, content.sortOrder);
+        }
+        [Fact]
         public async Task TestInsertEmailTemplateController()
         {
             //Arrange

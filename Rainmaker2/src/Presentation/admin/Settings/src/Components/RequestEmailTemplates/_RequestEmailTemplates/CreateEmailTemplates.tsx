@@ -14,6 +14,7 @@ import {RequestEmailTemplate} from '../../../Entities/Models/RequestEmailTemplat
 import {Tokens} from '../../../Entities/Models/Token';
 import { disableBrowserPrompt, enableBrowserPrompt } from '../../../Utils/helpers/Common';
 
+
 type props = {
   addEmailTemplateClick?: any;
   insertTokenClick?: Function;
@@ -32,6 +33,7 @@ export const CreateEmailTemplates = ({
   const emailTemplates: RequestEmailTemplate[] = emailTemplateManger.requestEmailTemplateData;
   const token: Tokens = emailTemplateManger.selectedToken;
   const selectedEmailTemplate = emailTemplateManger.selectedEmailTemplate;
+  const isFieldEdited = emailTemplateManger.editedFields;
 
   const [fromEmail, setFromEmail] = useState<string>();
   const [fromEmailArray, setFromEmailArray] = useState<string[]>([]);
@@ -40,14 +42,22 @@ export const CreateEmailTemplates = ({
   const [emailBody, setEmailBody] = useState<string>();
   const [tokens, setValidTokens] = useState<Tokens[]>([]);
   const [defaultText, setDefaultText] = useState<string>();
-  const [slectionPos, setSelectionPos] = useState('');
+  const [slectionPos, setSelectionPos] = useState(0);
+  const [isError, setIsError] = useState<string>();
 
-  const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError} = useForm();
+  const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError, clearErrors} = useForm({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    criteriaMode: "firstError",
+    shouldFocusError: true,
+    shouldUnregister: true,
+  });
 
   const [lastSelectedInput, setLastSelectedInput] = useState<string>('');
   const [selectedToken, setSelectedToken] = useState('');
+  const [disableSaveBtn, setDisableSaveBtn] = useState<boolean>(false);
 
- 
+
   useEffect(() => {
     if (selectedEmailTemplate) {
       setDefaultValue(selectedEmailTemplate);
@@ -59,6 +69,10 @@ export const CreateEmailTemplates = ({
     if (token) {
       if (lastSelectedInput) {
         setValues(lastSelectedInput, token.symbol);
+        enableBrowserPrompt();
+        dispatch({
+          type: RequestEmailTemplateActionsType.SetEditedFields, payload: true
+        });
       }
     }
   }, [token]);
@@ -113,6 +127,41 @@ export const CreateEmailTemplates = ({
     }
   };
 
+  const setInputError = (inputName: string, message?: string) => {
+    if(inputName === "fromEmail"){
+     if(fromEmail != undefined && fromEmail != ""){
+      setError(inputName, {
+        type: "custom",
+        message: message ?? "Only one email is allowed in from address.",
+      });
+      setIsError(inputName);
+      }else{
+        setError(inputName, {
+          type: "custom",
+          message: message ?? "Please enter valid format",
+        });
+        setIsError(inputName);
+      }
+    }else{
+      setError(inputName, {
+        type: "custom",
+        message: message ?? "Please enter valid format",
+      });
+      setIsError(inputName);
+    }  
+  }
+
+  const triggerInputValidation = (inputName: string, isEmailValid: boolean) => {
+    if(isEmailValid){
+      trigger(inputName);
+      setIsError('');
+    }
+  }
+
+  const clearInputError = (inputName: string) => {
+    clearErrors(inputName)
+  }
+
   const setValues = (target: string, value?: string) => {
     if (target === 'fromAddress') {
       if (value) addFromToken(value);
@@ -136,12 +185,14 @@ export const CreateEmailTemplates = ({
     } else {
       const prevValues = getValues(target);
       if(prevValues.length < 250){
-        if(prevValues){            
-          let firstPart = prevValues.substring(0, slectionPos);
-          let secondPart = prevValues.substring(slectionPos);
-          setValue(target, firstPart + value + secondPart);
+        if(prevValues){ 
+            let firstPart = prevValues.substring(0, slectionPos);
+            let secondPart = prevValues.substring(slectionPos);
+            setValue(target, firstPart + value + secondPart);
+            setSelectionPos(getValues(target).length);                
         }else{
-          setValue(target, prevValues + ' ' + value);
+          setValue(target,value);
+          setSelectionPos(getValues(target).length);
         }    
       }      
     }
@@ -178,6 +229,9 @@ export const CreateEmailTemplates = ({
     setFromEmail(email.toString());
     setFromEmailArray(email);
     setValue('fromEmail', email.toString(), {shouldValidate: true});
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEditedFields, payload: true
+    });
   };
   
   const handlerCCEmail = (email: string[]) => {
@@ -185,12 +239,22 @@ export const CreateEmailTemplates = ({
     setCCEmail(email.toString());
     setCCEmailArray(email);
     setValue('cCEmail', email.toString(), {shouldValidate: true});
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEditedFields, payload: true
+    });
   };
 
   const onChnageTextEditor = (content: string) => {
     enableBrowserPrompt();
     setEmailBody(content);
-    setValue('emailBody', content, {shouldValidate: false});
+    if(content === ""){
+      setValue('emailBody', content, {shouldValidate: false});
+    }else{
+      setValue('emailBody', content, {shouldValidate: true});
+    }  
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEditedFields, payload: true
+    });
   };
 
   const handlerClick = (clickOn: string) => {
@@ -203,11 +267,21 @@ export const CreateEmailTemplates = ({
   };
 
   const onSubmit = (data: any) => {  
-       if(data.fromEmail.split(',').length > 1){
+    if(isError){
+      if(isError === 'fromEmail'){
+        setInputError('fromEmail');
+        return;
+      }else if(isError === 'cCEmail'){
+        setInputError('cCEmail');
+        return;
+      }
+    }
+
+    if(data.fromEmail.split(',').length > 1){
         setError('fromEmail', {type: "validate", message: "Only one email is allowed in from address."});
         return;
        }
-
+       setDisableSaveBtn(true);
       if(selectedEmailTemplate && selectedEmailTemplate.id){
         data.id = selectedEmailTemplate.id;
         updateEmailTemplate(data);
@@ -220,6 +294,9 @@ export const CreateEmailTemplates = ({
         payload: null
       });
       disableBrowserPrompt();
+      dispatch({
+        type: RequestEmailTemplateActionsType.SetEditedFields, payload: false
+      });
   };
 
   const handlerOnFocusOnTextEditor = () => {
@@ -254,10 +331,39 @@ export const CreateEmailTemplates = ({
   const isTokenExist = (value: string) => {
     return value.includes('###') ? false : true
   }
-  const onChangeHandler = () => {
+  const onChangeHandler = (event?: any, field?: string) => {
+    if(field === "templateName"){
+      if(event.target.value.includes('###')){
+        trigger(field);
+      }else{
+        clearErrors(field);
+      }    
+    }
+    if(field === "templateDescription"){
+      if(event.target.value.includes('###')){
+        trigger(field);
+      }else{
+        clearErrors(field);
+      }    
+    }
     enableBrowserPrompt();
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEditedFields, payload: true
+    });
   }
 
+  const cancelHandler = () => {
+    addEmailTemplateClick(true);
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
+      payload: null
+    });
+    dispatch({
+      type: RequestEmailTemplateActionsType.SetEditedFields, payload: false
+    });
+    disableBrowserPrompt();
+  }
+  
   return (
     <>
       <ContentSubHeader
@@ -296,8 +402,9 @@ export const CreateEmailTemplates = ({
                   if(insertTokenClick)
                    insertTokenClick(false);
                   setLastSelectedInput('');
+                  
                 }}
-                onChange= {onChangeHandler}
+                onChange= {(e) => onChangeHandler(e,"templateName")}
               />
               {errors.templateName && errors.templateName.type === "validate" && (
                 <label data-testid="token-error" className="error">Cannot add token here</label>
@@ -326,7 +433,7 @@ export const CreateEmailTemplates = ({
                     insertTokenClick(false);
                   setLastSelectedInput('');
                 }}
-                onChange= {onChangeHandler}
+                onChange= {(e) => onChangeHandler(e,"templateDescription")}
               />
               {errors.templateDescription && errors.templateDescription.type === "validate" && (
                 <label data-testid="token-error-desc" className="error">Cannot add token here</label>
@@ -340,13 +447,16 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-fromAddress" className="col-md-12 form-group">
               <label className="settings__label">Default From Address</label>
               <EmailInputBox
-                id="defaultFromAddress"              
+                id="fromEmail"              
                 handlerEmail={handlerFromEmail}
                 handlerClick={() => handlerClick('fromAddress')}
                 tokens={tokens}
                 exisitngEmailValues={fromEmailArray}
                 className={errors.fromEmail?'error':''}
-                dataTestId = {'from-email'}               
+                dataTestId = {'from-email'}
+                setInputError = {setInputError}
+                triggerInputValidation = {triggerInputValidation}
+                clearInputError = {clearInputError}
               />
               {errors.fromEmail && (
                 <label data-testid="fromEmail-error" className="error">{errors.fromEmail.message}</label>
@@ -356,8 +466,7 @@ export const CreateEmailTemplates = ({
                 name="fromEmail"
                 type="hidden"
                 ref={register({
-                  required: 'Please enter valid email format'
-                
+                  required: 'From email is required.',
                 })}
                 value={fromEmail}
               />
@@ -366,14 +475,16 @@ export const CreateEmailTemplates = ({
             <div data-testid="dv-ccAddress" className="col-md-12 form-group">
               <label className="settings__label">Default CC Address</label>
               <EmailInputBox
-                id="defaultCCAddress"              
+                id="cCEmail"              
                 handlerEmail={handlerCCEmail}
                 handlerClick={() => handlerClick('ccAddress')}
                 tokens={tokens}
                 exisitngEmailValues={cCEmailArray}
                 className={errors.cCEmail?'error':''}
                 dataTestId = {'cc-email'}
-                
+                setInputError = {setInputError}
+                triggerInputValidation = {triggerInputValidation}
+                clearInputError = {clearInputError}
               />
               {errors.cCEmail && (
                 <label data-testid="ccEmail-error" className="error">{errors.cCEmail.message}</label>
@@ -444,7 +555,10 @@ export const CreateEmailTemplates = ({
           />          
         </ContentBody>
         <ContentFooter>
-          <button type="button" data-testid= "save-btn"
+          <button 
+           disabled = {disableSaveBtn}
+           type="button" 
+           data-testid= "save-btn"
            onClick={handleSubmit(onSubmit)} 
            className="settings-btn settings-btn-primary">
             Save
@@ -453,12 +567,7 @@ export const CreateEmailTemplates = ({
             type="button"
             data-testid= "cancel-btn"
             onClick={() => {
-              addEmailTemplateClick(true);
-              dispatch({
-                type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
-                payload: null
-              });
-              disableBrowserPrompt();
+              cancelHandler();     
             }}
             className="settings-btn settings-btn-secondry"
           >
@@ -466,6 +575,9 @@ export const CreateEmailTemplates = ({
           </button>
         </ContentFooter>
       </form>
+
+        
+
     </>
   );
 };

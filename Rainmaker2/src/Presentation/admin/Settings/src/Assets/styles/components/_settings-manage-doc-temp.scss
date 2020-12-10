@@ -8,7 +8,12 @@
             max-width: 400px;
             width: auto;
             float: left;
-            padding: 25px;
+            padding: 25px 6px;
+
+            .settings-btn{
+                padding-left: 0;
+                padding-right: 0;
+            }
         }
     }
 

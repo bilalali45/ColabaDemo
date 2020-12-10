@@ -67,6 +67,7 @@
             input{
                 border: 1px solid color('primary');
                 padding: 5px 10px;
+                width: 225px;
             }
             & + label.error{
                 padding-left: 32px;

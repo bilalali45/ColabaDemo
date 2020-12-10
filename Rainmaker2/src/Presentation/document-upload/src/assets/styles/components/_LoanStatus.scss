@@ -89,6 +89,7 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             display: block;
+                            max-width: 300px;
 
                             @include media-breakpoint-down(md) {
                                 // white-space:normal;

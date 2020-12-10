@@ -26,6 +26,7 @@ const AddDocument = ({
   const currentCategoryDocuments = templateManager?.currentCategoryDocuments;
 
   const [requestSent, setRequestSent] = useState<boolean>(false);
+  const [allClass, setAllClass] = useState('all');
 
   useEffect(() => {
     if (categoryDocuments?.length) {
@@ -50,11 +51,14 @@ const AddDocument = ({
   const changeCurrentDocType = (curDocType: string) => {
     if (curDocType === 'all') {
       setCurrentDocType(extractAllDocs());
+      setAllClass('all');
+
     } else {
       let currentDoc = categoryDocuments?.find(
         (c: CategoryDocument) => c?.catId === curDocType
       );
       setCurrentDocType(currentDoc);
+      setAllClass('');
     }
   };
 
@@ -101,7 +105,7 @@ const AddDocument = ({
             changeCurrentDocType={changeCurrentDocType}
           />
         </aside>
-        <section className="settings__add-docs-popup--content">
+       <section className={`settings__add-docs-popup--content ${allClass}`}>
           <SelectedType
             needList={needList}
             setVisible={hidePopup}
