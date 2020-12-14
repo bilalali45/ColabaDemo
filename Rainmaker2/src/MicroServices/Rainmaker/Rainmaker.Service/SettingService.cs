@@ -515,6 +515,21 @@ namespace RainMaker.Service
                             token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.ZipCode ?? "";
                         }
                         break;
+                    case TokenKey.DocumentUploadButton:
+                        {
+                            token.value = token.symbol;
+                        }
+                        break;
+                    case TokenKey.LoanPortalHomeButton:
+                        {
+                            token.value = token.symbol;
+                        }
+                        break;
+                    case TokenKey.DocumentsPageButton:
+                        {
+                            token.value = token.symbol;
+                        }
+                        break;
                     //case TokenKey.DocumentUploadButton:
                     //    {
                     //        token.value = token.symbol;
