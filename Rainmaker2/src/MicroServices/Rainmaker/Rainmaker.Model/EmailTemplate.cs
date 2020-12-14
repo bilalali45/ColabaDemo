@@ -67,6 +67,7 @@ namespace Rainmaker.Model
         public string description { get; set; }
         public string key { get; set; }
         public string value { get; set; }
+        public string defaultValue { get; set; }
     }
 
     public class EmailTemplate

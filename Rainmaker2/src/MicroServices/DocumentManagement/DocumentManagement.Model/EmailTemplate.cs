@@ -85,6 +85,7 @@ namespace DocumentManagement.Model
         public bool ccAddess { get; set; }
         public bool emailBody { get; set; }
         public bool emailSubject { get; set; }
+        public string defaultValue { get; set; }
     }
 
     public class EmailTemplateIdModel
@@ -149,6 +150,7 @@ namespace DocumentManagement.Model
         public bool ccAddess { get; set; }
         public bool emailBody { get; set; }
         public bool emailSubject { get; set; }
+        public string defaultValue { get; set; }
     }
 
 }

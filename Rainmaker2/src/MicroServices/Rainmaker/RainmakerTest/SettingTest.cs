@@ -256,7 +256,7 @@ namespace Rainmaker.Test
             lstTokenModels.Add(new TokenModel() { description = "Loan Officer Office Phone Number", key = "LoanOfficerOfficePhoneNumber", name = "Loan Officer Office Phone Number", symbol = "###LoanOfficerOfficePhoneNumber###" });
             lstTokenModels.Add(new TokenModel() { description = "Loan Officer Cell Phone Number", key = "LoanOfficerCellPhoneNumber", name = "Loan Officer Cell Phone Number", symbol = "###LoanOfficerCellPhoneNumber###" });
             lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Street Address", key = "PrimaryBorrowerPresentStreetAddress", name = "Primary Borrower Present Street Address", symbol = "###PrimaryBorrowerPresentStreetAddress###" });
-            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Unit No.", key = "PrimaryBorrowerPresentUnitNo", name = "Primary Borrower Present Unit No.", symbol = "###PrimaryBorrowerPresentUnitNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Unit No.", key = "PrimaryBorrowerPresentUnitNo.", name = "Primary Borrower Present Unit No.", symbol = "###PrimaryBorrowerPresentUnitNo.###" });
             lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present City", key = "PrimaryBorrowerPresentCity", name = "Primary Borrower Present City", symbol = "###PrimaryBorrowerPresentCity###" });
             lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State", key = "PrimaryBorrowerPresentState", name = "Primary Borrower Present State", symbol = "###PrimaryBorrowerPresentState###" });
             lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State Abbreviation", key = "PrimaryBorrowerPresentStateAbbreviation", name = "Primary Borrower Present State Abbreviation", symbol = "###PrimaryBorrowerPresentStateAbbreviation###" });
@@ -278,17 +278,59 @@ namespace Rainmaker.Test
             List<LoanApplication> lstLoanApplication = new List<LoanApplication>();
             LoanApplication loanApplication1 = new LoanApplication();
             loanApplication1.Id = 4188;
-           
+
+            State stateBorrower = new State();
+            stateBorrower.Id = 9;
+            stateBorrower.Name = "Alaska";
+            stateBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoBorrower = new AddressInfo();
+            addressInfoBorrower.Id = 7390;
+            addressInfoBorrower.Name = "Texas";
+            addressInfoBorrower.UnitNo = "428";
+            addressInfoBorrower.StreetAddress = "568 Broadway";
+            addressInfoBorrower.StateName = "Texas";
+            addressInfoBorrower.CountryName = "America";
+            addressInfoBorrower.CountyName = "Harris";
+            addressInfoBorrower.CityName = "Houston";
+            addressInfoBorrower.ZipCode = "77055";
+            addressInfoBorrower.State = stateBorrower;
+
+            BorrowerResidence borrowerResidence = new BorrowerResidence();
+            borrowerResidence.LoanAddress = addressInfoBorrower;
+
             Borrower borrower1 = new Borrower();
             borrower1.Id = 6194;
             borrower1.LoanContactId = 6189;
             borrower1.LoanApplicationId = 4188;
+            borrower1.BorrowerResidences.Add(borrowerResidence);
             loanApplication1.Borrowers.Add(borrower1);
+
+            State stateCoBorrower = new State();
+            stateCoBorrower.Id = 10;
+            stateCoBorrower.Name = "Alaska";
+            stateCoBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoCoBorrower = new AddressInfo();
+            addressInfoCoBorrower.Id = 7391;
+            addressInfoCoBorrower.Name = "Texas";
+            addressInfoCoBorrower.UnitNo = "428";
+            addressInfoCoBorrower.StreetAddress = "568 Broadway";
+            addressInfoCoBorrower.StateName = "Texas";
+            addressInfoCoBorrower.CountryName = "America";
+            addressInfoCoBorrower.CountyName = "Harris";
+            addressInfoCoBorrower.CityName = "Houston";
+            addressInfoCoBorrower.ZipCode = "77055";
+            addressInfoCoBorrower.State = stateBorrower;
+
+            BorrowerResidence coBorrowerResidence = new BorrowerResidence();
+            coBorrowerResidence.LoanAddress = addressInfoBorrower;
 
             Borrower borrower2 = new Borrower();
             borrower2.Id = 6195;
             borrower2.LoanContactId = 6190;
             borrower2.LoanApplicationId = 4188;
+            borrower2.BorrowerResidences.Add(coBorrowerResidence);
             loanApplication1.Borrowers.Add(borrower2);
 
             ContactEmailInfo contactEmailInfo = new ContactEmailInfo();
@@ -413,6 +455,25 @@ namespace Rainmaker.Test
             lstTokenModels.Add(new TokenModel() { description = "Loan Officer Last Name", key = "LoanOfficerLastName", name = "Loan Officer Last Name", symbol = "###BusinessUnitName###" });
             lstTokenModels.Add(new TokenModel() { description = "Bullet Point list of Documents being requested", key = "RequestDocumentList", name = "Request Document List", symbol = "###RequestDocumentList###" });
             lstTokenModels.Add(new TokenModel() { description = "Email Address of the Needs List requestor", key = "RequestorUserEmail", name = "Requestor User Email", symbol = "###RequestorUserEmail###" });
+            lstTokenModels.Add(new TokenModel() { description = "NMLS number of your company", key = "CompanyNMLSNo.", name = "Company NMLS No.", symbol = "###CompanyNMLSNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Email Address", key = "LoanOfficerEmailAddress", name = "Loan Officer Email Address", symbol = "###LoanOfficerEmailAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Office Phone Number", key = "LoanOfficerOfficePhoneNumber", name = "Loan Officer Office Phone Number", symbol = "###LoanOfficerOfficePhoneNumber###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Cell Phone Number", key = "LoanOfficerCellPhoneNumber", name = "Loan Officer Cell Phone Number", symbol = "###LoanOfficerCellPhoneNumber###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Street Address", key = "PrimaryBorrowerPresentStreetAddress", name = "Primary Borrower Present Street Address", symbol = "###PrimaryBorrowerPresentStreetAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Unit No.", key = "PrimaryBorrowerPresentUnitNo.", name = "Primary Borrower Present Unit No.", symbol = "###PrimaryBorrowerPresentUnitNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present City", key = "PrimaryBorrowerPresentCity", name = "Primary Borrower Present City", symbol = "###PrimaryBorrowerPresentCity###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State", key = "PrimaryBorrowerPresentState", name = "Primary Borrower Present State", symbol = "###PrimaryBorrowerPresentState###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State Abbreviation", key = "PrimaryBorrowerPresentStateAbbreviation", name = "Primary Borrower Present State Abbreviation", symbol = "###PrimaryBorrowerPresentStateAbbreviation###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Zip Code", key = "PrimaryBorrowerPresentZipCode", name = "Primary Borrower Present Zip Code", symbol = "###PrimaryBorrowerPresentZipCode###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Street Address", key = "Co-BorrowerPresentStreetAddress", name = "Co-Borrower Present Street Address", symbol = "###Co-BorrowerPresentStreetAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Unit No.", key = "Co-BorrowerPresentUnitNo.", name = "Co-Borrower Present Unit No.", symbol = "###Co-BorrowerPresentUnitNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present City", key = "Co-BorrowerPresentCity", name = "Co-Borrower Present City", symbol = "###Co-BorrowerPresentCity###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present State", key = "Co-BorrowerPresentState", name = "Co-Borrower Present State", symbol = "###Co-BorrowerPresentState###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present State Abbreviation", key = "Co-BorrowerPresentStateAbbreviation", name = "Co-Borrower Present State Abbreviation", symbol = "###Co-BorrowerPresentStateAbbreviation###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Zip Code", key = "Co-BorrowerPresentZipCode", name = "Co-Borrower Present Zip Code", symbol = "###Co-BorrowerPresentZipCode###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to document upload module", key = "DocumentUploadButton", name = "Document Upload Button", symbol = "###DocumentUploadButton###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to loan portal home screen", key = "LoanPortalHomeButton", name = "Loan Portal Home Button", symbol = "###LoanPortalHomeButton###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to documents page on loan portal", key = "DocumentsPageButton", name = "Documents Page Button", symbol = "###DocumentsPageButton###" });
 
             Mock<IOpportunityService> mockOpportunityService = new Mock<IOpportunityService>();
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
@@ -434,31 +495,8 @@ namespace Rainmaker.Test
             state.Name = "Alaska";
             state.Abbreviation = "AK";
 
-            //AddressInfo addressInfo = new AddressInfo();
-            //addressInfo.Id = 7487;
-            //addressInfo.Name = "Texas";
-            //addressInfo.UnitNo = "428";
-            //addressInfo.StreetAddress = "568 Broadway";
-            //addressInfo.StateName = "Texas";
-            //addressInfo.CountryName = "America";
-            //addressInfo.CountyName = "Harris";
-            //addressInfo.CityName = "Houston";
-            //addressInfo.ZipCode = "77055";
-            //addressInfo.State = state;
-
-            //PropertyUsage propertyUsage = new PropertyUsage();
-            //propertyUsage.Id = 1;
-            //propertyUsage.Name = "Primary Residence";
-
-            //PropertyType propertyType = new PropertyType();
-            //propertyType.Id = 1;
-            //propertyType.Name = "Single Family Detached";
-
             PropertyInfo propertyInfo = new PropertyInfo();
             propertyInfo.Id = 7487;
-            //propertyInfo.AddressInfo = addressInfo;
-            //propertyInfo.PropertyType = propertyType;
-            //propertyInfo.PropertyUsage = propertyUsage;
 
             LoanPurpose loanPurpose = new LoanPurpose();
             loanPurpose.Id = 1;
@@ -473,10 +511,51 @@ namespace Rainmaker.Test
             loanApplication1.LoanAmount = 800000;
             loanApplication1.LoanPurpose = loanPurpose;
 
+            State stateBorrower = new State();
+            stateBorrower.Id = 14;
+            stateBorrower.Name = "Alaska";
+            stateBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoBorrower = new AddressInfo();
+            addressInfoBorrower.Id = 7398;
+            addressInfoBorrower.Name = "Texas";
+            addressInfoBorrower.UnitNo = "428";
+            addressInfoBorrower.StreetAddress = "568 Broadway";
+            addressInfoBorrower.StateName = "Texas";
+            addressInfoBorrower.CountryName = "America";
+            addressInfoBorrower.CountyName = "Harris";
+            addressInfoBorrower.CityName = "Houston";
+            addressInfoBorrower.ZipCode = "77055";
+            addressInfoBorrower.State = stateBorrower;
+
+            BorrowerResidence borrowerResidence = new BorrowerResidence();
+            borrowerResidence.LoanAddress = addressInfoBorrower;
+
+            State stateCoBorrower = new State();
+            stateCoBorrower.Id = 15;
+            stateCoBorrower.Name = "Alaska";
+            stateCoBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoCoBorrower = new AddressInfo();
+            addressInfoCoBorrower.Id = 7399;
+            addressInfoCoBorrower.Name = "Texas";
+            addressInfoCoBorrower.UnitNo = "428";
+            addressInfoCoBorrower.StreetAddress = "568 Broadway";
+            addressInfoCoBorrower.StateName = "Texas";
+            addressInfoCoBorrower.CountryName = "America";
+            addressInfoCoBorrower.CountyName = "Harris";
+            addressInfoCoBorrower.CityName = "Houston";
+            addressInfoCoBorrower.ZipCode = "77055";
+            addressInfoCoBorrower.State = stateBorrower;
+
+            BorrowerResidence coBorrowerResidence = new BorrowerResidence();
+            coBorrowerResidence.LoanAddress = addressInfoBorrower;
+
             Borrower borrower1 = new Borrower();
             borrower1.Id = 7194;
             borrower1.LoanContactId = 7189;
             borrower1.LoanApplicationId = 7192;
+            borrower1.BorrowerResidences.Add(borrowerResidence);
             loanApplication1.Borrowers.Add(borrower1);
 
             ContactEmailInfo contactEmailInfo = new ContactEmailInfo();
@@ -618,6 +697,25 @@ namespace Rainmaker.Test
             lstTokenModels.Add(new TokenModel() { description = "Loan Officer Last Name", key = "LoanOfficerLastName", name = "Loan Officer Last Name", symbol = "###BusinessUnitName###" });
             lstTokenModels.Add(new TokenModel() { description = "Bullet Point list of Documents being requested", key = "RequestDocumentList", name = "Request Document List", symbol = "###RequestDocumentList###" });
             lstTokenModels.Add(new TokenModel() { description = "Email Address of the Needs List requestor", key = "RequestorUserEmail", name = "Requestor User Email", symbol = "###RequestorUserEmail###" });
+            lstTokenModels.Add(new TokenModel() { description = "NMLS number of your company", key = "CompanyNMLSNo.", name = "Company NMLS No.", symbol = "###CompanyNMLSNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Email Address", key = "LoanOfficerEmailAddress", name = "Loan Officer Email Address", symbol = "###LoanOfficerEmailAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Office Phone Number", key = "LoanOfficerOfficePhoneNumber", name = "Loan Officer Office Phone Number", symbol = "###LoanOfficerOfficePhoneNumber###" });
+            lstTokenModels.Add(new TokenModel() { description = "Loan Officer Cell Phone Number", key = "LoanOfficerCellPhoneNumber", name = "Loan Officer Cell Phone Number", symbol = "###LoanOfficerCellPhoneNumber###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Street Address", key = "PrimaryBorrowerPresentStreetAddress", name = "Primary Borrower Present Street Address", symbol = "###PrimaryBorrowerPresentStreetAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Unit No.", key = "PrimaryBorrowerPresentUnitNo.", name = "Primary Borrower Present Unit No.", symbol = "###PrimaryBorrowerPresentUnitNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present City", key = "PrimaryBorrowerPresentCity", name = "Primary Borrower Present City", symbol = "###PrimaryBorrowerPresentCity###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State", key = "PrimaryBorrowerPresentState", name = "Primary Borrower Present State", symbol = "###PrimaryBorrowerPresentState###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present State Abbreviation", key = "PrimaryBorrowerPresentStateAbbreviation", name = "Primary Borrower Present State Abbreviation", symbol = "###PrimaryBorrowerPresentStateAbbreviation###" });
+            lstTokenModels.Add(new TokenModel() { description = "Primary Borrower Present Zip Code", key = "PrimaryBorrowerPresentZipCode", name = "Primary Borrower Present Zip Code", symbol = "###PrimaryBorrowerPresentZipCode###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Street Address", key = "Co-BorrowerPresentStreetAddress", name = "Co-Borrower Present Street Address", symbol = "###Co-BorrowerPresentStreetAddress###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Unit No.", key = "Co-BorrowerPresentUnitNo.", name = "Co-Borrower Present Unit No.", symbol = "###Co-BorrowerPresentUnitNo.###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present City", key = "Co-BorrowerPresentCity", name = "Co-Borrower Present City", symbol = "###Co-BorrowerPresentCity###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present State", key = "Co-BorrowerPresentState", name = "Co-Borrower Present State", symbol = "###Co-BorrowerPresentState###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present State Abbreviation", key = "Co-BorrowerPresentStateAbbreviation", name = "Co-Borrower Present State Abbreviation", symbol = "###Co-BorrowerPresentStateAbbreviation###" });
+            lstTokenModels.Add(new TokenModel() { description = "Co-Borrower Present Zip Code", key = "Co-BorrowerPresentZipCode", name = "Co-Borrower Present Zip Code", symbol = "###Co-BorrowerPresentZipCode###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to document upload module", key = "DocumentUploadButton", name = "Document Upload Button", symbol = "###DocumentUploadButton###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to loan portal home screen", key = "LoanPortalHomeButton", name = "Loan Portal Home Button", symbol = "###LoanPortalHomeButton###" });
+            lstTokenModels.Add(new TokenModel() { description = "Button directing recepient to documents page on loan portal", key = "DocumentsPageButton", name = "Documents Page Button", symbol = "###DocumentsPageButton###" });
 
             Mock<IOpportunityService> mockOpportunityService = new Mock<IOpportunityService>();
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
@@ -700,11 +798,52 @@ namespace Rainmaker.Test
             loanContact2.EmailAddress = "minaz.karim@gmail.com";
             loanContact1.ResidencyState = residencyState2;
 
+            State stateBorrower = new State();
+            stateBorrower.Id = 11;
+            stateBorrower.Name = "Alaska";
+            stateBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoBorrower = new AddressInfo();
+            addressInfoBorrower.Id = 7395;
+            addressInfoBorrower.Name = "Texas";
+            addressInfoBorrower.UnitNo = "428";
+            addressInfoBorrower.StreetAddress = "568 Broadway";
+            addressInfoBorrower.StateName = "Texas";
+            addressInfoBorrower.CountryName = "America";
+            addressInfoBorrower.CountyName = "Harris";
+            addressInfoBorrower.CityName = "Houston";
+            addressInfoBorrower.ZipCode = "77055";
+            addressInfoBorrower.State = stateBorrower;
+
+            BorrowerResidence borrowerResidence = new BorrowerResidence();
+            borrowerResidence.LoanAddress = addressInfoBorrower;
+
+            State stateCoBorrower = new State();
+            stateCoBorrower.Id = 12;
+            stateCoBorrower.Name = "Alaska";
+            stateCoBorrower.Abbreviation = "AK";
+
+            AddressInfo addressInfoCoBorrower = new AddressInfo();
+            addressInfoCoBorrower.Id = 7396;
+            addressInfoCoBorrower.Name = "Texas";
+            addressInfoCoBorrower.UnitNo = "428";
+            addressInfoCoBorrower.StreetAddress = "568 Broadway";
+            addressInfoCoBorrower.StateName = "Texas";
+            addressInfoCoBorrower.CountryName = "America";
+            addressInfoCoBorrower.CountyName = "Harris";
+            addressInfoCoBorrower.CityName = "Houston";
+            addressInfoCoBorrower.ZipCode = "77055";
+            addressInfoCoBorrower.State = stateBorrower;
+
+            BorrowerResidence coBorrowerResidence = new BorrowerResidence();
+            coBorrowerResidence.LoanAddress = addressInfoBorrower;
+
             Borrower borrower1 = new Borrower();
             borrower1.Id = 6194;
             borrower1.LoanContactId = 6189;
             borrower1.LoanApplicationId = 4189;
             borrower1.LoanContact = loanContact1;
+            borrower1.BorrowerResidences.Add(borrowerResidence);
             loanApplication1.Borrowers.Add(borrower1);
 
             Borrower borrower2 = new Borrower();
@@ -712,6 +851,7 @@ namespace Rainmaker.Test
             borrower2.LoanContactId = 6190;
             borrower2.LoanApplicationId = 4189;
             borrower2.LoanContact = loanContact2;
+            borrower2.BorrowerResidences.Add(coBorrowerResidence);
             loanApplication1.Borrowers.Add(borrower2);
 
             ContactEmailInfo contactEmailInfo = new ContactEmailInfo();
@@ -732,18 +872,27 @@ namespace Rainmaker.Test
             //CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo();
             //companyPhoneInfo.Id = 20;
             //companyPhoneInfo.Phone = "9725733900";
+            EmailAccount eAccount = new EmailAccount();
+            eAccount.Id = 205;
+            eAccount.Email = "talha@gmail.com";
 
             EmployeePhoneBinder employeePhoneBinder = new EmployeePhoneBinder();
             employeePhoneBinder.Id = 1;
             employeePhoneBinder.EmployeeId = 2;
             employeePhoneBinder.CompanyPhoneInfoId = 20;
             employeePhoneBinder.TypeId = 3;
-            //employeePhoneBinder.CompanyPhoneInfo = companyPhoneInfo;
+
+            EmployeeBusinessUnitEmail employeeBusinessUnit = new EmployeeBusinessUnitEmail();
+            employeeBusinessUnit.Id = 205;
+            employeeBusinessUnit.EmployeeId = 205;
+            employeeBusinessUnit.BusinessUnitId = 205;
+            employeeBusinessUnit.EmailAccount = eAccount;
 
             Employee employee = new Employee();
             employee.Id = 2;
             employee.NmlsNo = "286821";
             employee.CmsName = "sal-prasla";
+            employee.EmployeeBusinessUnitEmails.Add(employeeBusinessUnit);
             employee.EmployeePhoneBinders.Add(employeePhoneBinder);
 
             Opportunity opportunity = new Opportunity();
@@ -751,16 +900,6 @@ namespace Rainmaker.Test
             opportunity.Owner = employee;
             opportunity.OpportunityLeadBinders.Add(new OpportunityLeadBinder() { OwnTypeId = 1, Customer = customer });
             mockOpportunityService.Setup(x => x.GetSingleOpportunity(It.IsAny<int>())).ReturnsAsync(opportunity);
-
-            EmailAccount eAccount = new EmailAccount();
-            eAccount.Id = 205;
-            eAccount.Email = "talha@gmail.com";
-
-            EmployeeBusinessUnitEmail employeeBusinessUnit = new EmployeeBusinessUnitEmail();
-            employeeBusinessUnit.Id = 205;
-            employeeBusinessUnit.EmployeeId = 205;
-            employeeBusinessUnit.BusinessUnitId = 205;
-            employeeBusinessUnit.EmailAccount = eAccount;
 
             Employee emp = new Employee();
             emp.Id = 205;

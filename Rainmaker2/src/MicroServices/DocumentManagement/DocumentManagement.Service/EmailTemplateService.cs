@@ -160,7 +160,8 @@ namespace DocumentManagement.Service
                                 ""fromAddess"":""$fromAddess"",
                                 ""ccAddess"":""$ccAddess"",
                                 ""emailBody"":""$emailBody"",
-                                ""emailSubject"":""$emailSubject""
+                                ""emailSubject"":""$emailSubject"",
+                                ""defaultValue"":""$defaultValue""
                             }
                         }"
                                                                                                                          ));
@@ -179,6 +180,7 @@ namespace DocumentManagement.Service
                     dto.ccAddess = query.ccAddess;
                     dto.emailBody = query.emailBody;
                     dto.emailSubject = query.emailSubject;
+                    dto.defaultValue = query.defaultValue;
                     lstTokenModels.Add(dto);
                 }
             }

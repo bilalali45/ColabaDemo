@@ -245,6 +245,7 @@ export const CreateEmailTemplates = ({
   };
 
   const onChnageTextEditor = (content: string) => {
+    
     enableBrowserPrompt();
     setEmailBody(content);
     if(content === ""){

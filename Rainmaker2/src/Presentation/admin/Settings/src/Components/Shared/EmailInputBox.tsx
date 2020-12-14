@@ -20,8 +20,11 @@ export const EmailInputBox = (props: props) => {
   const [emailsArray, setEmailArray] = useState<string[]>([]);
   const [isEmailValid, setisEmailValid] = useState<boolean>();
   const existingEmailValues = props.exisitngEmailValues;
+
+  //const [inputText, setInputText] = useState<string>('');
   
   useEffect(() => {
+
       const emailCoontainer  = document?.getElementsByClassName(`${props.dataTestId} react-multi-email`); 
       const inputElement =  emailCoontainer[0]?.children[0];
 
@@ -32,7 +35,7 @@ export const EmailInputBox = (props: props) => {
 
       const keyDownListner = (event: any) => {
         props.clearInputError(props.id);
-        if(event.code == "Backspace" && event.target.value.length == 1){
+        if(event.code == "Backspace" && event.target.value.length == 1){ 
           setisEmailValid(true);
           props.triggerInputValidation(props.id, true);
         }else if(event.code == "Backspace" && window?.getSelection()?.toString() == event.target.value){
@@ -113,8 +116,7 @@ export const EmailInputBox = (props: props) => {
     props.triggerInputValidation(props.id, isEmailValid);
   }
 
-  //const refPills:any = useRef<any>(null);
-  //refPills.current = [];
+  const [inputText, setInputText] = useState<any>('');
 
   const doubleClickHandler = (event: any,i:any) => {
     let parentDiv = event.target.parentElement; //nodeName
@@ -122,14 +124,20 @@ export const EmailInputBox = (props: props) => {
     let deleteSpan = event.target.childNodes[1];
     let elementLength = parentDiv.children.length;
     let input = parentDiv.children[elementLength-1];
+    
+    input.focus();
     deleteSpan.click();
-    setTimeout(()=>{input.value = pillsTxt.substring(0,(pillsTxt.length-1))},20)
-    console.log('doubleClick on pill', );
+    setTimeout(()=>{
+      input.value = pillsTxt.substring(0,(pillsTxt.length-1))      
+    },20)
+    console.log('doubleClick on pill', emailsArray[i]);
+    //...emailsArray,emailsArray[i]
+    //setEmailArray([...emailsArray,emailsArray[i]=input.value]);
   }
 
   const removeEmailHandler = () => {
     setisEmailValid(true);
-    props.triggerInputValidation(props.id, true);
+  props.triggerInputValidation(props.id, true);
   }
     return (
       <>
@@ -137,17 +145,20 @@ export const EmailInputBox = (props: props) => {
         <ReactMultiEmail
           className = {props.dataTestId}
           emails={emailsArray}
-          onChange={handlerEmailChange}         
+          onChange={handlerEmailChange}       //handlerEmailChange
           validateEmail={email => {
             return handlerEmailValidate(email); 
           }}
+          
           getLabel={(
             email: string,
             index: number,
             removeEmail: (index: number) => void
           ) => {
             return (
-              <div  data-tag key={index}>
+              <div 
+              //onDoubleClick={(e:any)=> doubleClickHandler(e ,index)} 
+              data-tag key={index}>
                 {email}
                 <span data-tag-handle onClick={
                 () => {

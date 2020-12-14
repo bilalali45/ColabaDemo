@@ -180,12 +180,8 @@ namespace RainMaker.Service
                 }
             }
 
-            //Get Customer Email Address
-            //var customerEmailAddess = loanApplication.Opportunity?.OpportunityLeadBinders?.FirstOrDefault(s => s.Customer != null && s.Customer.Contact != null && s.Customer.Contact.ContactEmailInfoes != null && s.OwnTypeId == 1 && s.Customer.Contact.ContactEmailInfoes.Any(a => a.IsPrimary == true && a.ValidityId != 3));
-
             emailTemplate.id = id;
             emailTemplate.fromAddress = fromAddess;
-            //emailTemplate.toAddress = customerEmailAddess?.Customer?.Contact?.ContactEmailInfoes?.FirstOrDefault().Email ?? "";
             emailTemplate.CCAddress = ccAddess;
             emailTemplate.subject = subject;
             emailTemplate.emailBody = emailBody;
@@ -401,7 +397,7 @@ namespace RainMaker.Service
                         break;
                     case TokenKey.BusinessUnitPhoneNumber:
                         {
-                            token.value = loanApplication.Opportunity?.Owner?.EmployeePhoneBinders?.FirstOrDefault().CompanyPhoneInfo?.Phone ?? "";
+                            token.value = loanApplication.Opportunity?.Owner?.EmployeePhoneBinders?.FirstOrDefault()?.CompanyPhoneInfo?.Phone ?? "";
                         }
                         break;
                     case TokenKey.BusinessUnitWebSiteUrl:
@@ -446,94 +442,94 @@ namespace RainMaker.Service
                         break;
                     case TokenKey.LoanOfficerEmailAddress:
                         {
-                            token.value = loanApplication.Opportunity?.Owner?.EmployeeBusinessUnitEmails?.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e => e.BusinessUnitId).FirstOrDefault().EmailAccount?.Email ?? "";
+                            token.value = loanApplication.Opportunity?.Owner?.EmployeeBusinessUnitEmails?.Where(e => e.BusinessUnitId == busnessUnitId || e.BusinessUnitId == null).OrderByDescending(e => e.BusinessUnitId).FirstOrDefault()?.EmailAccount?.Email ?? "";
                         }
                         break;
                     case TokenKey.LoanOfficerOfficePhoneNumber:
                         {
-                            token.value = loanApplication.Opportunity?.Owner?.EmployeePhoneBinders?.FirstOrDefault().CompanyPhoneInfo?.Phone ?? "";
+                            token.value = loanApplication.Opportunity?.Owner?.EmployeePhoneBinders?.FirstOrDefault()?.CompanyPhoneInfo?.Phone ?? "";
                         }
                         break;
                     case TokenKey.LoanOfficerCellPhoneNumber:
                         {
-                            token.value = loanApplication.Opportunity?.Owner?.Contact?.ContactPhoneInfoes?.FirstOrDefault().Phone ?? "";
+                            token.value = loanApplication.Opportunity?.Owner?.Contact?.ContactPhoneInfoes?.FirstOrDefault()?.Phone ?? "";
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentStreetAddress:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StreetAddress ?? "" ;
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.StreetAddress ?? "" ;
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentUnitNo:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.UnitNo ?? "";
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.UnitNo ?? "";
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentCity:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.CityName ?? "";
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.CityName ?? "";
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentState:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StateName ?? "";
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.StateName ?? "";
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentStateAbbreviation:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.State?.Abbreviation ?? "";
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.State?.Abbreviation ?? "";
                         }
                         break;
                     case TokenKey.PrimaryBorrowerPresentZipCode:
                         {
-                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.ZipCode ?? "";
+                            token.value = rmBorrower.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.ZipCode ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentStreetAddress:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StreetAddress ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.StreetAddress ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentUnitNo:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.UnitNo ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.UnitNo ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentCity:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.CityName ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.CityName ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentState:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.StateName ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.StateName ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentStateAbbreviation:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.State?.Abbreviation ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.State?.Abbreviation ?? "";
                         }
                         break;
                     case TokenKey.CoBorrowerPresentZipCode:
                         {
-                            token.value = rmCoBorrower.BorrowerResidences?.FirstOrDefault().LoanAddress?.ZipCode ?? "";
+                            token.value = rmCoBorrower?.BorrowerResidences?.FirstOrDefault()?.LoanAddress?.ZipCode ?? "";
                         }
                         break;
-                    case TokenKey.DocumentUploadButton:
-                        {
-                            token.value = "";
-                        }
-                        break;
-                    case TokenKey.LoanPortalHomeButton:
-                        {
-                            token.value = "";
-                        }
-                        break;
-                    case TokenKey.DocumentsPageButton:
-                        {
-                            token.value = "";
-                        }
-                        break;
+                    //case TokenKey.DocumentUploadButton:
+                    //    {
+                    //        token.value = token.symbol;
+                    //    }
+                    //    break;
+                    //case TokenKey.LoanPortalHomeButton:
+                    //    {
+                    //        token.value = token.symbol;
+                    //    }
+                    //    break;
+                    //case TokenKey.DocumentsPageButton:
+                    //    {
+                    //        token.value = token.symbol;
+                    //    }
+                    //    break;
                 }
             }
             emailTemplate.toAddress = rmBorrower?.LoanContact?.EmailAddress ?? "";

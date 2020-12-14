@@ -18,5 +18,6 @@ namespace DocumentManagement.Entity
         public bool ccAddess { get; set; }
         public bool emailBody { get; set; }
         public bool emailSubject { get; set; }
+        public string defaultValue { get; set; }
     }
 }

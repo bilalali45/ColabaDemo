@@ -623,8 +623,7 @@ ul {
 
         &--data {
             display: block;
-            //@extend .clearfix;
-            padding : 14px 20px 15px 40px;
+            padding : 14px 20px 15px 20px; // 14px 20px 15px 40px // 2051 task
             position: relative;
             @include font(normal, 1, 'xs', 'base');
             z-index: 2;
@@ -648,6 +647,7 @@ ul {
             top     : 50%;
             left    : 15px;
             @include transform(translateY(-50%));
+            display: none; // 2051 task
         }
     }
 
