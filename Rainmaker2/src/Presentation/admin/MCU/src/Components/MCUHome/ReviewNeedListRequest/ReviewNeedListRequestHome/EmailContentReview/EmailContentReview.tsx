@@ -163,7 +163,7 @@ export const EmailContentReview = ({
 
   const getSelectedEmailTemplate = async (id?: string) => {
     let loanApplicationId = LocalDB.getLoanAppliationId()
-    let result = await RequestEmailTemplateActions.fetchDraftEmailTemplate(id, loanApplicationId)
+    let result = await RequestEmailTemplateActions.fetchDraftEmailTemplate(id, loanApplicationId);
     dispatch({ type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result })
     setSelectedEmailTemplate(id);
     if(draftEmail){
