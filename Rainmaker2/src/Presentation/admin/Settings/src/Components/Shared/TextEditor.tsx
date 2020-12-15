@@ -37,14 +37,16 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
       const regExOpenTag = new RegExp('<ins>', "g");
       const regExCloseTag = new RegExp('</ins>', "g");
       let updatedText = defaultText.replace(regExOpenTag, '<u>').replace(regExCloseTag,'</u>');
-      
-       const blocksFromHTML = convertFromHTML(updatedText);
-       const state = EditorState.createWithContent(
-           ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks,
-          blocksFromHTML.entityMap,
-         )
-    );
+      //  const blocksFromHTML = convertFromHTML(updatedText);
+      //  const state = EditorState.createWithContent(
+      //      ContentState.createFromBlockArray(
+      //     blocksFromHTML.contentBlocks,
+      //     blocksFromHTML.entityMap,
+      //    )
+    //);
+    const contentBlock = htmlToDraft(updatedText);
+    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const state = EditorState.createWithContent(contentState);
     seteditorState(state);
   }
 }

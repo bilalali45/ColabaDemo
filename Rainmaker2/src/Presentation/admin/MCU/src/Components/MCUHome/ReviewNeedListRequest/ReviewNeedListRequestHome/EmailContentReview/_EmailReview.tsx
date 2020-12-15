@@ -63,12 +63,25 @@ export const EmailReview = ({
   const [isError, setIsError] = useState<string>();
 
   useEffect(() => {
-    if(selectedEmailTemplate){
-      clearErrors();
-        setDefaultValue(selectedEmailTemplate)   
+    if(selectedEmailTemplate ){
+       clearErrors();   
+       stripEmptyEmail(selectedEmailTemplate); 
     }
   }, [selectedEmailTemplate])
 
+  const stripEmptyEmail =  (data: any) => {
+    let ccAddress = data.ccAddress.split(',');
+    let toAddress = data.toAddress.split(',');
+
+    if(ccAddress != "" && ccAddress != "null"){
+      data.ccAddress = ccAddress.filter( (x: string) => x != "").toString();
+    }
+    
+    if(toAddress != "" && toAddress != "null"){
+      data.toAddress = toAddress.filter( (x: string) => x != "").toString();
+    }
+    setDefaultValue(data)  
+  }
 
   useEffect(() => {
     if(draftEmail){
@@ -190,6 +203,7 @@ export const EmailReview = ({
       setFromEmailArray([]);
       if(template.ccAddress === "")
       setCCEmailArray([]);
+
        let mappedEmailContent = {
           emailTemplateId : template.id != undefined ? template.id : template.emailTemplateId,
           fromAddress: template.fromAddress != "" ? template.fromAddress : null,
@@ -204,6 +218,23 @@ export const EmailReview = ({
          payload: mappedEmailContent
        });
   };
+
+  // const stripEmptyEmail =  (data: any, emailBody: any) => {
+  //   let ccAddress = data.ccAddress.split(',');
+  //   let toAddress = data.toAddress.split(',');
+
+  //   if(ccAddress != "" && ccAddress != "null"){
+  //     data.ccAddress = ccAddress.filter( (x: string) => x != "").toString();
+  //   }
+    
+  //   if(toAddress != "" && toAddress != "null"){
+  //     data.toAddress = toAddress.filter( (x: string) => x != "").toString();
+  //   }
+  //   data.fromAddress != "" ? data.fromAddress : null,
+  //   data.id != undefined ? data.id : data.emailTemplateId,
+  //   data.emailBody = emailBody;
+  //  return data;
+  // }
 
   const handlerFromEmail = (email: string[]) => {
     setFromEmail(email.toString());
@@ -332,7 +363,7 @@ export const EmailReview = ({
     saveAsDraft(false);
     dispatch({
       type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate,
-      payload: []
+      payload: null
     });
   };
 

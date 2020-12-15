@@ -3,6 +3,7 @@ import { EditorState, convertToRaw, convertFromRaw, ContentState,convertFromHTML
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 type props = {
   handlerOnChange: Function;
@@ -35,13 +36,16 @@ export const TextEditor = ({ handlerOnChange, selectedToken, defaultText, classN
       const regExCloseTag = new RegExp('</ins>', "g");
 
       let updatedText = defaultText.replace(regExOpenTag, '<u>').replace(regExCloseTag,'</u>');
-       const blocksFromHTML = convertFromHTML(updatedText);
-       const state = EditorState.createWithContent(
-           ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks,
-          blocksFromHTML.entityMap,
-         )
-    );
+      const contentBlock = htmlToDraft(updatedText);
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const state = EditorState.createWithContent(contentState);
+    //    const blocksFromHTML = convertFromHTML(updatedText);
+    //    const state = EditorState.createWithContent(
+    //        ContentState.createFromBlockArray(
+    //       blocksFromHTML.contentBlocks,
+    //       blocksFromHTML.entityMap,
+    //      )
+    // );
     seteditorState(state);
   }
 }
