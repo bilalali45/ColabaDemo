@@ -106,8 +106,8 @@ export class Http {
         error?.response?.data === "Could not login" ||
         error?.response?.status === 401
       ) {
-      }
-      console.log("API request error", error, "request url", url)
+      }    
+      console.log("API request error",error,"request url",url);    
       return new Promise((_, reject) => {
         reject(error);
       });
