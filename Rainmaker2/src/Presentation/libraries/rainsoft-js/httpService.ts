@@ -78,7 +78,14 @@ export class Http {
   }
 
   static createUrl(baseUrl: string, url: string) {
-    return `${baseUrl}${url}`;
+    let timeStamp = Math.floor(Date.now() / 1000);
+    let newUrl = ''
+    if(url.includes('?')){
+      newUrl = `${baseUrl}${url}${'&timeStamp='}${timeStamp}`;
+    }else{
+      newUrl = `${baseUrl}${url}${'?timeStamp='}${timeStamp}`;
+    }
+    return newUrl;
   }
 
   static async createRequest<T, R = any>(

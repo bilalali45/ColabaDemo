@@ -98,7 +98,15 @@ var Http = /** @class */ (function () {
         });
     };
     Http.createUrl = function (baseUrl, url) {
-        return "" + baseUrl + url;
+        var timeStamp = Math.floor(Date.now() / 1000);
+        var newUrl = '';
+        if (url.includes('?')) {
+            newUrl = "" + baseUrl + url + '&timeStamp=' + timeStamp;
+        }
+        else {
+            newUrl = "" + baseUrl + url + '?timeStamp=' + timeStamp;
+        }
+        return newUrl;
     };
     Http.createRequest = function (reqType, url, data, customHeader) {
         var _a, _b, _c, _d, _e, _f;
