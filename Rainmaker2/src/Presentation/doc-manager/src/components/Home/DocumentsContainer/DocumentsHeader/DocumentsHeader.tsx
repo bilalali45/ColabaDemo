@@ -26,6 +26,8 @@ import { PDFThumbnails } from "../../../../Utilities/PDFThumbnails";
 import { AnnotationActions } from "../../../../Utilities/AnnotationActions";
 import { ViewerTools } from "../../../../Utilities/ViewerTools";
 import { ViewerActionsType } from "../../../../Store/reducers/ViewerReducer";
+import { ViewerActions } from "../../../../Store/actions/ViewerActions";
+import { DocumentFile } from "../../../../Models/DocumentFile";
 
 export const DocumentsHeader = () => {
   const [showTrashOverlay, setShowTrash] = useState<boolean>(false);
@@ -33,7 +35,7 @@ export const DocumentsHeader = () => {
   const refTrashOverlay = useRef(null);
   const [trashedDocs, setTrashedDocs] = useState<TrashItem[]>([]);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc }: any = state.documents;
+  const { currentDoc,uploadFailedDocs }: any = state.documents;
   const { currentFile, selectedFileData }: any = state.viewer;
 
   const templateManager: any = state.templateManager;
@@ -44,6 +46,8 @@ export const DocumentsHeader = () => {
   const { trashedDoc }: any = state.documents;
   const documents: any = state.documents;
   const isDragging: any = documents?.isDragging;
+  const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
+  const [retryFile, setRetryFile] = useState<DocumentFile>();
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
   useEffect(() => {
@@ -120,11 +124,21 @@ export const DocumentsHeader = () => {
         file.fromFileId,
         cancelCurrentFileViewRequest
       );
-      if (success) {
-      await DocumentActions.getWorkBenchItems(dispatch);
-      await DocumentActions.getTrashedDocuments(dispatch)
-      
-    }
+      if (success) { 
+        
+        if(selectedFileData && selectedFileData?.fileId === file.fromFileId){
+          if (currentFile) {
+            ViewerActions.resetInstance(dispatch)
+          }
+          dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+          await DocumentActions.getCurrentWorkbenchItem(dispatch);
+        }
+        else{
+          
+        let d = await DocumentActions.getWorkBenchItems(dispatch);
+        }
+        let docs = await DocumentActions.getTrashedDocuments(dispatch)
+      }
     }
     else if(isFromCategory){
       let cancelCurrentFileViewRequest:boolean = false;
@@ -140,8 +154,13 @@ export const DocumentsHeader = () => {
         cancelCurrentFileViewRequest
       );
       if (success) {
-      await DocumentActions.getDocumentItems(dispatch)
-      await DocumentActions.getTrashedDocuments(dispatch)
+        
+  
+        if (selectedFileData && selectedFileData?.fileId === file.fromFileId) {
+          await DocumentActions.getCurrentDocumentItems(dispatch, false);
+        }
+        await getDocswithfailedFiles()
+        let res = await DocumentActions.getTrashedDocuments(dispatch);
       }
     } else if(isFromThumbnail){
 
@@ -163,6 +182,67 @@ export const DocumentsHeader = () => {
                     // }
     }
 }
+
+
+const getDocswithfailedFiles = async() => {
+  let foundFirstFileDoc: any = null;
+  let foundFirstFile: any = null;
+
+  
+  let docs:any = await DocumentActions.getDocumentItems(dispatch)
+  
+      let uploadFailedFiles:DocumentFile[] = uploadFailedDocs.length? uploadFailedDocs : failedDocs;
+  
+      let failedFiles:DocumentFile[] = []
+      if(uploadFailedFiles && uploadFailedFiles.length > 0){
+          
+         failedFiles= uploadFailedDocs.length? uploadFailedFiles.concat(failedDocs): uploadFailedFiles
+        failedFiles = failedFiles.filter((file)=> file.id !== retryFile?.id)
+
+        
+        dispatch({
+          type:DocumentActionsType.SetFailedDocs, 
+          payload:failedFiles
+        })
+        
+        
+          let allDocs:any;
+          for (let index = 0; index < failedFiles.length; index++) {
+            allDocs = docs?.map((doc:any)=> {
+              if(doc.docId === failedFiles[index].docCategoryId){
+                doc.files = [...doc.files, failedFiles[index]]
+              }
+              return doc
+            })
+            
+            
+          }
+        
+          setFailedDocs([])
+          
+          if(allDocs && allDocs.length) {
+            dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
+          }
+        }
+        else 
+        if(docs && !currentFile){
+      
+              for (const doc of docs) {
+                  if (doc?.files?.length) {
+                      dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
+                      dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+                      foundFirstFileDoc = doc;
+                      foundFirstFile = doc?.files[0];
+                      ViewerActions.resetInstance(dispatch)
+                      
+                      await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
+                      break;
+                  }
+                  
+              }
+          }
+} 
+
   return (
     <div id="c-DocHeader" className="c-DocHeader">
       <div className="c-DocHeader-wrap">

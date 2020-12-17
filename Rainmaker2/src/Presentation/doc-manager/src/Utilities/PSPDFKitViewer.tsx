@@ -55,7 +55,8 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
             licenseKey,
             baseUrl,
             theme: PSPDFKit.Theme.DARK,
-            styleSheets: [`${baseUrl}assets/css/pspdfkit-styles.css`]
+            // styleSheets: ['http://localhost:3002/DocManager/assets/css/pspdfkit-styles.css']
+            
         };
         try {
             let instance = await PSPDFKit.load(instanceConfig);

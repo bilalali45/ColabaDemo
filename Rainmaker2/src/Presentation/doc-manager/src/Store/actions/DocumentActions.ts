@@ -17,6 +17,7 @@ import { ViewerActionsType } from '../reducers/ViewerReducer';
 import { SelectedFile } from '../../Models/SelectedFile';
 import { debug } from 'console';
 import { ViewerActions } from './ViewerActions';
+import { Rename } from '../../Utilities/helpers/Rename';
 
 export default class DocumentActions {
 static nonExistentFileId = "000000000000000000000000"
@@ -95,6 +96,7 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
 
               let currentFile = new CurrentInView(foundFirstFile?.id, f, DocumentActions.getFileName(foundFirstFile), true, foundFirstFile.fileId);
               dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+              dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
               
           }
           else{
@@ -258,6 +260,8 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       "System Administrator"
 
     );
+
+    selectedFile = await Rename.rename(currentSelected.files, selectedFile);
     selectedFile.uploadProgress = 0;
     let allDocs = documents.map((doc:any)=>{
       if(doc.docId === currentSelected.docId){

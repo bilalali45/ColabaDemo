@@ -141,12 +141,12 @@ export const FileItem = ({
   };
 
   const viewFileForDocCategory = async () => {
+    
+
+    if (file.file && file.uploadProgress <= 100) return;
     dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
     ViewerActions.resetInstance(dispatch);
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-
-    if (file.file && file.uploadProgress <= 100) return;
-
     await setCurrentDocument();
     await DocumentActions.viewFile(document, file, dispatch);
 

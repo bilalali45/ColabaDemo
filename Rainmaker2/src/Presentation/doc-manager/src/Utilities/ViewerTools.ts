@@ -100,11 +100,13 @@ export class ViewerTools extends Viewer {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
         let saveButton: any = null;
-        if (isFileChanged) {
-            saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
-        } else {
-            saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
-        }
+        // enable only when changes found
+        // if (isFileChanged) {
+        //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
+        // } else {
+        //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
+        // }
+        saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
         const rotateLeftButton: any = this.createToolbarItem('custom', 'rotate-left', 'Rotate Left', rotateLeftIcon, this.rotateLeft);
         const rotateRightButton: any = this.createToolbarItem('custom', 'rotate-right', 'Rotate Right', roatateRightIcon, this.rotateRight);
         const flipButton: any = this.createToolbarItem('custom', 'flip', 'Flip', flipIcon);
