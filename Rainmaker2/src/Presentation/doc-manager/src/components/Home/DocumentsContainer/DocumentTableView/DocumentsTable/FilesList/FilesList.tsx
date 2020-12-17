@@ -6,6 +6,7 @@ import { DocumentActionsType } from '../../../../../../Store/reducers/documentsR
 import { ViewerActionsType } from '../../../../../../Store/reducers/ViewerReducer';
 import { Store } from '../../../../../../Store/Store';
 import { AnnotationActions } from '../../../../../../Utilities/AnnotationActions';
+import { PDFActions } from '../../../../../../Utilities/PDFActions';
 import { PDFThumbnails } from '../../../../../../Utilities/PDFThumbnails';
 import { ViewerTools } from '../../../../../../Utilities/ViewerTools';
 // import { ViewerActions } from '../../../../../../Utilities/ViewerActions';
@@ -66,7 +67,7 @@ export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setR
                 fileId:"000000000000000000000000",
                 isFromCategory:true
                 }
-                let fileData = await PDFThumbnails.createNewFileFromThumbnail(file.index);
+                let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
             let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, document  );
                 
                     // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);

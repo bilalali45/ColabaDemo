@@ -46,7 +46,7 @@ export class ViewerTools extends Viewer {
     }
 
     static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
-        return PDFActions.removeAndReattachAnnotations(() => this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc))
+        return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc)
 
     }
     static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
@@ -62,12 +62,13 @@ export class ViewerTools extends Viewer {
             fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
             await DocumentActions.getTrashedDocuments(dispatch)
         }
-
+        dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
 
         if (fileId) {
             await AnnotationActions.saveAnnotations(fileObj, fileId, false)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
+            
             return fileId
         }
 

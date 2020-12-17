@@ -28,6 +28,8 @@ import { ViewerTools } from "../../../../Utilities/ViewerTools";
 import { ViewerActionsType } from "../../../../Store/reducers/ViewerReducer";
 import { ViewerActions } from "../../../../Store/actions/ViewerActions";
 import { DocumentFile } from "../../../../Models/DocumentFile";
+import { PDFActions } from "../../../../Utilities/PDFActions";
+
 
 export const DocumentsHeader = () => {
   const [showTrashOverlay, setShowTrash] = useState<boolean>(false);
@@ -171,7 +173,7 @@ export const DocumentsHeader = () => {
                 fileId:"000000000000000000000000",
                 isFromTrash:true
                 }
-                let fileData = await PDFThumbnails.createNewFileFromThumbnail(file.index);
+                let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
             let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch,  trashedDoc );
                 
                     // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);

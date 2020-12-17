@@ -11,6 +11,7 @@ import { PDFThumbnails } from '../../../../../Utilities/PDFThumbnails';
 import { AnnotationActions } from '../../../../../Utilities/AnnotationActions';
 import { ViewerTools } from '../../../../../Utilities/ViewerTools';
 import { ViewerActionsType } from '../../../../../Store/reducers/ViewerReducer';
+import { PDFActions } from '../../../../../Utilities/PDFActions';
 
 const nonExistentFileId = '000000000000000000000000';
 
@@ -69,7 +70,7 @@ export const WorkbenchTable = () => {
                 isFromWorkbench:true
                 }
 
-                let fileData = await PDFThumbnails.createNewFileFromThumbnail(file.index);
+                let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
             let success : any = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, workbenchItems  );
                 
                     // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);

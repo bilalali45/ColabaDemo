@@ -106,17 +106,6 @@ export class PDFThumbnails extends Viewer {
         }
     }
 
-    static async createNewFileFromThumbnail(pageIndex: number) {
-
-        const buffer = await this.instance.exportPDFWithOperations([
-            {
-                type: "keepPages",
-                pageIndexes: [+pageIndex]
-            }   
-        ], null);
-        const blob = new Blob([buffer], { type: "application/pdf" });
-        let file = new File([blob], FileUpload.getFileNameByDate(), { lastModified: Date.now(),  type:  "application/pdf" });
-        return file;
-    }
+    
 
 }
