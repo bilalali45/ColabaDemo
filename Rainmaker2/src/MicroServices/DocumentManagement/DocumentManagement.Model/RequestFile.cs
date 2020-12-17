@@ -21,5 +21,10 @@ namespace DocumentManagement.Model
         public string status { get; set; }
         public string byteProStatus { get; set; }
         public bool? isRead { get; set; }
+        public int? userId { get; set; }
+        public string userName { get; set; }
+        public string annotations { get; set; }
+        public bool? isMcuVisible { get; set; }
+        public DateTime? fileModifiedOn { get; set; }
     }
 }

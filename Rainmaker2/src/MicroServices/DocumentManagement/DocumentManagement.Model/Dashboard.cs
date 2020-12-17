@@ -26,6 +26,7 @@ namespace DocumentManagement.Model
         public const string Started = "Started"; // borrower has added a file or rejected by mcu
         public const string Completed = "Completed"; // mcu has accepted
         public const string Deleted = "Deleted"; // deleted
+        public const string ManuallyAdded = "Manually added"; // ManuallyAdded
     }
     public static class FileStatus
     {
@@ -94,9 +95,11 @@ namespace DocumentManagement.Model
         public string status { get; set; }
         public DateTime? createdOn { get; set; }
         public List<RequestFile> files { get; set; }
+        public List<RequestFile> mcuFiles { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string typeId { get; set; }
         public string userName { get; set; }
+        public bool? isMcuVisible { get; set; }
     }
     public class AdminDashboardDto
     {
@@ -120,6 +123,9 @@ namespace DocumentManagement.Model
         public string byteProStatus { get; set; }
         public bool isRead { get; set; }
         public string status { get; set; }
+        public int? userId { get; set; }
+        public string userName { get; set; }
+        public DateTime? fileModifiedOn { get; set; }
     }
     public class AdminDeleteModel
     {

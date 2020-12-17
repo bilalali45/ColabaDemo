@@ -145,7 +145,7 @@ namespace Milestone.Tests
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             var result = await service.GetMilestoneForMcuDashboard(20,new BothLosMilestoneModel(), 20);
 
-            Assert.Equal("Doe", result.milestone);
+            Assert.Equal("", result.milestone);
         }
         [Fact]
         public async Task TestServiceGetAllMilestones()

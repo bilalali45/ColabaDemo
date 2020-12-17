@@ -1,6 +1,14 @@
 import { LoanApplication } from "../../Entities/Models/LoanApplication"
 import { NeedList } from "../../Entities/Models/NeedList"
-import { ActionMap, Actions } from "./reducers"
+import { ActionMap, Actions } from "./reducers";
+
+export type NeedListLock = {
+    id: string,
+    loanApplicationId: number,
+    lockDateTime: string,
+    lockUserId: number,
+    lockUserName: string
+}
 
 export enum NeedListActionsType {
     SetLoanInfo = "SET_LOAN_INFO",
@@ -8,7 +16,8 @@ export enum NeedListActionsType {
     SetTemplateIds = "SET_TEMPLATE_IDS",
     SetIsDraft = "SET_IS_DRAFT",
     SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
-    SetNeedListFilter = "SET_NEED_LIST_FILTER"
+    SetNeedListFilter = "SET_NEED_LIST_FILTER",
+    SetIsNeedListLocked = "SET_IS_NEED_LIST_LOCKED"
 }
 
 export type NeedListType = {
@@ -16,7 +25,8 @@ export type NeedListType = {
     needList: NeedList[],
     templateIds: string[],
     isDraft: boolean,
-    needListFilter: boolean
+    needListFilter: boolean,
+    isNeedListLocked: NeedListLock
 }
 
 export type NeedListActionPayload = {
@@ -25,7 +35,8 @@ export type NeedListActionPayload = {
     [NeedListActionsType.SetTemplateIds]: string[],
     [NeedListActionsType.SetIsDraft]: string,
     [NeedListActionsType.SetIsByteProAuto]: string,
-    [NeedListActionsType.SetNeedListFilter]: string
+    [NeedListActionsType.SetNeedListFilter]: string,
+    [NeedListActionsType.SetIsNeedListLocked]: NeedListLock,
 }
 
 export type NeedListActions = ActionMap<NeedListActionPayload>[keyof ActionMap<NeedListActionPayload>];
@@ -43,25 +54,30 @@ export const needListReducer = (state: NeedListType | {}, { type, payload }: Act
                 needList: payload
             }
         case NeedListActionsType.SetTemplateIds:
-            return{
+            return {
                 ...state,
                 templateIds: payload
             }
         case NeedListActionsType.SetIsDraft:
-            return{
+            return {
                 ...state,
                 isDraft: payload
             }
         case NeedListActionsType.SetIsByteProAuto:
-            return{
+            return {
                 ...state,
                 isByteProAuto: payload
-            }  
-            case NeedListActionsType.SetNeedListFilter:
-            return{
+            }
+        case NeedListActionsType.SetNeedListFilter:
+            return {
                 ...state,
                 needListFilter: payload
-            }   
+            }
+        case NeedListActionsType.SetIsNeedListLocked:
+            return {
+                ...state,
+                isNeedListLocked: payload
+            }
         default:
             return state;
     }

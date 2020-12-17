@@ -342,6 +342,10 @@ ul {
     &.indraft {
         background-color: color('secondry');
     }
+
+    &.manualyadded {
+        background-color: color('manualyadded');
+    }
 }
 
 .button-float {

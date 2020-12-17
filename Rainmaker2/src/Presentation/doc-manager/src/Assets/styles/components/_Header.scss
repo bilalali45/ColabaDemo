@@ -1,0 +1,27 @@
+.dm-h-wrap {
+    min-height: 50px;
+    border-bottom: 1px solid color("border");
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    background: color('colorWhite');
+    .dm-h-backBtn {
+        font: 400 #{fontSize("nr") + "/18px"} fontFamily("base");
+        vertical-align: middle;
+        color:color('primary');
+        display: inline-block;
+        cursor: pointer;
+        &:hover{text-decoration: none;}
+        i {
+            font-size: fontSize('xmd') + 2;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+        }
+        span {
+            vertical-align: middle;
+            min-height: 18px;
+            display: inline-block;
+        }
+    }
+}

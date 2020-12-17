@@ -38,6 +38,10 @@ export class NeedListEndpoints {
       accept: () => '/api/Documentmanagement/document/AcceptDocument',
       reject: () => '/api/Documentmanagement/document/RejectDocument',
       fileSyncToLos: () => '/api/LosIntegration/Document/SendFileToExternalOriginator'
+    },
+    needListLock: {
+      retainLock: () => `/api/DocManager/Lock/RetainLock`,
+      aquireLock: () => `/api/DocManager/Lock/AcquireLock`
     }
   };
 

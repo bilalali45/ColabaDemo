@@ -39,6 +39,19 @@
       "UpstreamPathTemplate": "/api/milestone/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
+    //docmanager api config
+    {
+      "DownstreamPathTemplate": "/api/DocManager/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/DocManager/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
     //Identity api config
     {
       "DownstreamPathTemplate": "/api/Identity/{everything}",

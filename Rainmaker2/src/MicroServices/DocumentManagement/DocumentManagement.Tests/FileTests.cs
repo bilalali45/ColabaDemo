@@ -485,7 +485,7 @@ namespace DocumentManagement.Tests
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
-            mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
+            //mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
             mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;

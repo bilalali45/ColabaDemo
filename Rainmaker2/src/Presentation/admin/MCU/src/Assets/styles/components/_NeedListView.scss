@@ -23,6 +23,8 @@
     cursor: pointer;
 }
 
+.needListlocked{filter: blur(3px);}
+
 .sync-alert {
     background: color("colorWhite");
     max-width: 557px;
@@ -185,6 +187,18 @@
                     }
                 }
             }
+        }
+    }
+    &.need-list-lock{
+        .modal-body{
+            text-align: center;
+            >div{padding: 10vh 0;}
+            figure{margin-bottom: 30px;}
+            h4{
+                font: 500 #{fontSize("xmd") + "/1.5"} fontFamily("base");margin-bottom: 20px;
+                span{display: block; text-transform: uppercase;}
+            }
+            button{}
         }
     }
 }

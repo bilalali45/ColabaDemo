@@ -62,6 +62,7 @@ namespace DocumentManagement.Service
                                 ""typeId"": ""$requests.documents.typeId"",
                                 ""docName"": ""$requests.documents.displayName"",
                                 ""files"": ""$requests.documents.files"",
+                                ""mcuFiles"": ""$requests.documents.mcuFiles"",
                                 ""userName"": 1,
                             }
                              } "
@@ -85,14 +86,33 @@ namespace DocumentManagement.Service
                     dto.requestId = query.requestId;
                     dto.userName = query.userName;
                     dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDto()
+                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted && (x.isMcuVisible == null || x.isMcuVisible == true)).Select(x => new DocumentFileDto()
                     {
                         isRead = x.isRead.HasValue ? x.isRead.Value : false,
                         fileId = x.id,
                         clientName = x.clientName,
                         fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
-                        mcuName = x.mcuName
+                        mcuName = x.mcuName,
+                        userId = x.userId,
+                        userName = x.userName,
+                        fileModifiedOn = x.fileModifiedOn == null ? null : (DateTime?)DateTime.SpecifyKind(x.fileModifiedOn.Value, DateTimeKind.Utc)
                     }).ToList();
+                    if (query.mcuFiles != null)
+                    {
+                        var mcufiles = query.mcuFiles.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new DocumentFileDto()
+                        {
+                            isRead = x.isRead.HasValue ? x.isRead.Value : false,
+                            fileId = x.id,
+                            clientName = x.clientName,
+                            fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                            mcuName = x.mcuName,
+                            userId = x.userId,
+                            userName = x.userName,
+                            fileModifiedOn = x.fileModifiedOn == null ? null : (DateTime?)DateTime.SpecifyKind(x.fileModifiedOn.Value, DateTimeKind.Utc)
+                        }).ToList();
+                        dto.files.AddRange(mcufiles);
+                    }
+                    dto.files=dto.files.OrderBy(x => x.fileUploadedOn).ToList();
                     result.Add(dto);
                 }
             }
@@ -102,7 +122,7 @@ namespace DocumentManagement.Service
         public async Task<List<ActivityLogDto>> GetActivityLog(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.ActivityLog> collection = mongoService.db.GetCollection<Entity.ActivityLog>("ActivityLog");
-            string match =  @"{""$match"": {
+            string match = @"{""$match"": {
                   ""loanId"": " + new ObjectId(id).ToJson() + @", 
                   ""requestId"": " + new ObjectId(requestId).ToJson() + @", 
                   ""docId"": " + new ObjectId(docId).ToJson() + @", 
@@ -206,7 +226,7 @@ namespace DocumentManagement.Service
                         dto.docs = new List<TemplateDocumentModel>();
                         result.Add(dto);
                     }
-                    if(query.typeId==null && query.docName==null)
+                    if (query.typeId == null && query.docName == null)
                         continue;
                     TemplateDocumentModel dto1 = new TemplateDocumentModel();
                     dto1.typeId = query.typeId;
@@ -224,11 +244,11 @@ namespace DocumentManagement.Service
             }
             return result;
         }
-        public async Task<List<EmailLogDto>> GetEmailLog(string id,string requestId,string docId)
+        public async Task<List<EmailLogDto>> GetEmailLog(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.EmailLog> collection = mongoService.db.GetCollection<Entity.EmailLog>("EmailLog");
 
-            string match =  @"{""$match"": {
+            string match = @"{""$match"": {
                   ""loanId"": " + new ObjectId(id).ToJson() + @", 
                   ""requestId"": " + new ObjectId(requestId).ToJson() + @",
                   ""docId"": " + new ObjectId(docId).ToJson() + @"
@@ -308,8 +328,79 @@ namespace DocumentManagement.Service
 
                 await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RenamedBy, userName, newName));
             }
-
+            else
+            {
+                result = await McuRenameMcuFile(id, requestId, docId, fileId, newName, userName);
+                if(result.ModifiedCount!=1)
+                {
+                    result = await McuRenameWorkbench(id, requestId, docId, fileId, newName, userName);
+                }
+            }
             return result.ModifiedCount == 1;
+        }
+        public async Task<UpdateResult> McuRenameMcuFile(string id, string requestId, string docId, string fileId, string newName, string userName)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].mcuFiles.$[file].mcuName", newName}
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId( requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId( docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
+                }
+            });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RenamedBy, userName, newName));
+            }
+            
+            return result;
+        }
+        public async Task<UpdateResult> McuRenameWorkbench(string id, string requestId, string docId, string fileId, string newName, string userName)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "workbench.$[file].mcuName", newName}
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId( fileId).ToJson()+"}")
+                }
+            });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.RenamedBy, userName, newName));
+            }
+
+            return result;
         }
         public async Task<bool> AcceptDocument(string id, string requestId, string docId, string userName, IEnumerable<string> authHeader)
         {
@@ -349,7 +440,7 @@ namespace DocumentManagement.Service
 
             return result.ModifiedCount == 1;
         }
-        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message,int userId, string userName, IEnumerable<string> authHeader)
+        public async Task<bool> RejectDocument(string id, string requestId, string docId, string message, int userId, string userName, IEnumerable<string> authHeader)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -436,36 +527,180 @@ namespace DocumentManagement.Service
 
                 ));
 
-
-            await asyncCursor.MoveNextAsync();
-            FileViewDto fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
-
-            IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
-
-            ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
-            await viewLogCollection.InsertOneAsync(viewLog);
-            // mark as read
-            await collection.UpdateOneAsync(new BsonDocument()
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
             {
-                { "_id", BsonObjectId.Create(model.id) }
-            }, new BsonDocument()
+                if (asyncCursor.Current.FirstOrDefault() != null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
+            if (fileViewDTO != null)
             {
-                { "$set", new BsonDocument()
-                    {
-                        { "requests.$[request].documents.$[document].files.$[file].isRead", true}
-                    }
-                }
-            }, new UpdateOptions()
-            {
-                ArrayFilters = new List<ArrayFilterDefinition>()
+                IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+                ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+                await viewLogCollection.InsertOneAsync(viewLog);
+                // mark as read
+                await collection.UpdateOneAsync(new BsonDocument()
                 {
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(model.fileId).ToJson()+"}")
-                }
-            });
+                    { "_id", BsonObjectId.Create(model.id) }
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                            { "requests.$[request].documents.$[document].files.$[file].isRead", true}
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(model.fileId).ToJson()+"}")
+                    }
+                });
+            }
+            if (fileViewDTO == null)
+            {
+               fileViewDTO= await McuFileView(model, userProfileId, ipAddress, tenantId);
+            }
+            if(fileViewDTO == null)
+            {
+                fileViewDTO = await WorkbenchFileView(model, userProfileId, ipAddress, tenantId);
+            }
             return fileViewDTO;
         }
+        public async Task<FileViewDto> WorkbenchFileView(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$workbench""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""workbench.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""serverName"": ""$workbench.serverName"",
+                                ""encryptionKey"": ""$workbench.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$workbench.encryptionAlgorithm"",
+                                ""clientName"": ""$workbench.mcuName"",
+                                ""contentType"": ""$workbench.contentType""
+                            }
+                             } "
+
+                ));
+
+
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
+            {
+                if (asyncCursor.Current.FirstOrDefault() != null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
+            
+            return fileViewDTO;
+        }
+        public async Task<FileViewDto> McuFileView(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.mcuFiles""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.mcuFiles.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""serverName"": ""$requests.documents.mcuFiles.serverName"",
+                                ""encryptionKey"": ""$requests.documents.mcuFiles.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$requests.documents.mcuFiles.encryptionAlgorithm"",
+                                ""clientName"": ""$requests.documents.mcuFiles.clientName"",
+                                ""contentType"": ""$requests.documents.mcuFiles.contentType""
+                            }
+                             } "
+
+                ));
+
+
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
+            {
+                if (asyncCursor.Current.FirstOrDefault() != null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
+            if (fileViewDTO != null)
+            {
+                IMongoCollection<ViewLog> viewLogCollection = mongoService.db.GetCollection<ViewLog>("ViewLog");
+
+                ViewLog viewLog = new ViewLog() { userProfileId = userProfileId, createdOn = DateTime.UtcNow, ipAddress = ipAddress, loanApplicationId = model.id, requestId = model.requestId, documentId = model.docId, fileId = model.fileId };
+                await viewLogCollection.InsertOneAsync(viewLog);
+                // mark as read
+                await collection.UpdateOneAsync(new BsonDocument()
+                {
+                    { "_id", BsonObjectId.Create(model.id) }
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                            { "requests.$[request].documents.$[document].mcuFiles.$[file].isRead", true}
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(model.fileId).ToJson()+"}")
+                    }
+                });
+            }
+            return fileViewDTO;
+        }
+
+
+
         public async Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId, bool isUploaded, int userId, int tenantId)
         {
             var status = isUploaded ? ByteProStatus.Synchronized : ByteProStatus.Error;
@@ -491,11 +726,46 @@ namespace DocumentManagement.Service
                 }
 
             });
-            
+             
             IMongoCollection<Entity.ByteProLog> collectionBytePro = mongoService.db.GetCollection<Entity.ByteProLog>("ByteProLog");
-            await collectionBytePro.InsertOneAsync(new ByteProLog() {id=ObjectId.GenerateNewId().ToString(),loanId=id,requestId=requestId,docId=docId,fileId=fileId,status=status,tenantId=tenantId,userId=userId,updatedOn=DateTime.UtcNow });
-            
+            await collectionBytePro.InsertOneAsync(new ByteProLog() { id = ObjectId.GenerateNewId().ToString(), loanId = id, requestId = requestId, docId = docId, fileId = fileId, status = status, tenantId = tenantId, userId = userId, updatedOn = DateTime.UtcNow });
+            if(result.ModifiedCount!=1)
+            {
+                result = await UpdateByteProStatusMCU(id,requestId,docId,fileId,isUploaded,userId,tenantId);
+            }
+
             return result.ModifiedCount == 1;
+        }
+        public async Task<UpdateResult> UpdateByteProStatusMCU(string id, string requestId, string docId, string fileId, bool isUploaded, int userId, int tenantId)
+        {
+            var status = isUploaded ? ByteProStatus.Synchronized : ByteProStatus.Error;
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) }
+            }, new BsonDocument()
+            {
+                { "$set", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].mcuFiles.$[file].byteProStatus", status}
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
+                }
+
+            });
+
+            IMongoCollection<Entity.ByteProLog> collectionBytePro = mongoService.db.GetCollection<Entity.ByteProLog>("ByteProLog");
+            await collectionBytePro.InsertOneAsync(new ByteProLog() { id = ObjectId.GenerateNewId().ToString(), loanId = id, requestId = requestId, docId = docId, fileId = fileId, status = status, tenantId = tenantId, userId = userId, updatedOn = DateTime.UtcNow });
+
+            return result;
         }
         public async Task<bool> DeleteFile(int loanApplicationId, string fileId)
         {
@@ -519,7 +789,28 @@ namespace DocumentManagement.Service
                 }
 
             });
+            if(result.ModifiedCount!=1)
+            {
+                result = await collection.UpdateOneAsync(new BsonDocument()
+                {
+                    { "loanApplicationId", loanApplicationId }
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                            { "requests.$[].documents.$[].mcuFiles.$[file].status", FileStatus.Deleted}
 
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition<Entity.Request>("{ \"file.id\": "+new ObjectId(fileId).ToJson()+"}")
+                    }
+
+                });
+            }
             return result.ModifiedCount == 1;
         }
     }

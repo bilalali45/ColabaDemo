@@ -1,0 +1,94 @@
+$color:(
+        primary             :       #4484F4,
+        primary-text        :       #ffffff,
+        secondry            :       #5D617E,
+        secondry-text       :       #ffffff,
+        border              :       #E7E7E7,//#E5E5E5,
+        base                :       #4E4E4E,
+        heading             :       #000000,//#263238,
+        bg                  :       #F2F3F5,
+        default             :       #F2F3F5,
+        colorWhite          :       #ffffff,
+        colorBlack          :       #000000,
+        colorRed            :       #FF5652,
+        colorgray           :       #E5E5E5,
+        sucsess             :       #00AD46,
+        scroll              :       #DBDBDB,
+        input               :       #A1A1A1,
+        listModifyLable     :       #707070,
+        a7                  :       #A7A7A7,
+        gray3               :       #7E829E,
+
+
+
+  //footer
+        footerColor         :       #A8A6A6,
+  //Manage Templates
+        listalertbg         :       #F2F1F2,
+        listalert           :       #101111,
+        listHoverBg         :       #F6F6F6,
+
+  //Table Strip Color
+        doclistBg1          :       #F8F8F8,
+        doclistBg2          :       #ECF2FE,
+        doclistBgSelected   :       #E5E5E5,
+        primaryactive       :       #ECF2FE,
+
+  //Status
+        statusDefault           :       #cccccc,
+        pending                 :       #4484F4,
+        manualyadded            :       #903faf,
+        indraft                 :       #5d617e,
+        started                 :       #FEC54E,
+        borrower                :       #FF5652,
+        completed               :       #00AD46,
+        notificationCountBg     :       #FF5652,
+        notificationCountText   :       #ffffff,
+
+        ReviewDocumentHeaderBg  :       #ffffff,
+        ReviewDocumentHeaderText:       #263238,
+        ReviewDocumentSidebarBg :       #ffffff,
+        ReviewDocumentSidebarText:      #263238,
+
+
+  //Modal
+        modalfooter             :       #F6F6F6
+);
+
+
+$font:(
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 10px,
+    sm: 12px,
+    nr: 14px,
+    md: 15px,
+    xmd:16px,
+    lg: 24px,
+    xlg: 34px,
+
+    h1:34px,
+    h2:16px,
+    h3:15px,
+    h4:14px,
+    h5:12px,
+    h6:10px,
+
+);
+$shadow                :        0 3px 6px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+$float-button-size     :        35px;
+$burger-resolution     :        16px;
+$rotate-plus-resolution:        10px;
+
+// Bootstrap Variables
+$grid-gutter-width:           30px !default;
+$primary:       #4484F4 !default;
+$secondary:     #5D617E !default;
+$danger:        #FF5652 !default;
+
+// Private
+$widget-space: $grid-gutter-width !default;

@@ -1,0 +1,58 @@
+{
+  "name": "doc-manager",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/DocManager",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/node": "^12.12.39",
+    "@types/jest": "^24.9.1",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.6",
+    "jwt-decode": "^3.1.2",
+    "moment": "^2.29.1",
+    "node-sass": "^4.14.1",
+    "pspdfkit": "^2020.6.1",
+    "rainsoft-js": "^1.0.47",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "react-idle-timer": "^4.5.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "typescript": "^3.1.1",
+    "universal-cookie": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "verify-installation": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js",
+    "start": "set PORT=3002 && node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts start",
+    "build": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "devDependencies": {
+    "ncp": "^2.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

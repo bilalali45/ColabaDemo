@@ -72,10 +72,73 @@ namespace DocumentManagement.Service
                              } "
 
                 ));
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
+            {
+                if(asyncCursor.Current.FirstOrDefault()!=null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
+            if(fileViewDTO==null)
+            {
+                fileViewDTO = await mcuView(model,tenantId);
+            }
+            return fileViewDTO;
+        }
+        public async Task<FileViewDto> mcuView(AdminFileViewModel model, int tenantId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
-            await asyncCursor.MoveNextAsync();
-            FileViewDto fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
 
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.mcuFiles""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.mcuFiles.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""serverName"": ""$requests.documents.mcuFiles.serverName"",
+                                ""encryptionKey"": ""$requests.documents.mcuFiles.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$requests.documents.mcuFiles.encryptionAlgorithm"",
+                                ""clientName"": ""$requests.documents.mcuFiles.clientName"",
+                                ""contentType"": ""$requests.documents.mcuFiles.contentType""
+                            }
+                             } "
+
+                ));
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
+            {
+                if (asyncCursor.Current.FirstOrDefault() != null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
             return fileViewDTO;
         }
         public async Task<Tenant> GetTenantSetting(int tenantId)
@@ -157,6 +220,60 @@ namespace DocumentManagement.Service
             while (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
+                {
+                    FileIdModel model = BsonSerializer.Deserialize<FileIdModel>(current);
+                    await losIntegrationService.SendFilesToBytePro(loanApplicationId,
+                        id,
+                        requestId,
+                        docId,
+                        model.fileId,
+                        auth);
+                }
+            }
+            // upload mcu files
+            using var asyncCursor1 = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(id).ToJson() + @" 
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(docId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents.mcuFiles""
+                        }",
+
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.mcuFiles.byteProStatus"": """ + ByteProStatus.NotSynchronized + @"""
+                            }
+                        }",
+
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""fileId"": ""$requests.documents.mcuFiles.id"",
+                            }
+                             } "
+
+                ));
+            while (await asyncCursor1.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor1.Current)
                 {
                     FileIdModel model = BsonSerializer.Deserialize<FileIdModel>(current);
                     await losIntegrationService.SendFilesToBytePro(loanApplicationId,

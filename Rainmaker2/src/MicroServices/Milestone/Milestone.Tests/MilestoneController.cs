@@ -87,7 +87,8 @@ namespace Milestone.Tests
             var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
-
+            
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
@@ -246,8 +247,8 @@ namespace Milestone.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (string)(result as OkObjectResult).Value;
-            Assert.Equal("Test", content);
+            var content = (MilestoneForMcuDashboard)(result as OkObjectResult).Value;
+            Assert.Equal("Test", content.milestone);
         }
         [Fact]
         public async Task TestGetMilestoneForMcuDashboardNull()
@@ -275,8 +276,8 @@ namespace Milestone.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (string)(result as OkObjectResult).Value;
-            Assert.Equal("",content);
+            var content = (MilestoneForMcuDashboard)(result as OkObjectResult).Value;
+            Assert.Equal("Test", content.milestone);
         }
         [Fact]
         public async Task TestSetLosMilestone()
@@ -293,7 +294,7 @@ namespace Milestone.Tests
             var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
-
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
@@ -321,7 +322,8 @@ namespace Milestone.Tests
             var controller = new MilestoneController(mockMilestone.Object, mock.Object, null);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
-
+         
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
@@ -349,7 +351,8 @@ namespace Milestone.Tests
             var controller = new MilestoneController(mockMilestone.Object, mock.Object, mockConfiguration.Object);
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(m => m.Request).Returns(request.Object);
-
+            
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
@@ -537,8 +540,18 @@ namespace Milestone.Tests
             Mock<IMilestoneService> mockMilestone = new Mock<IMilestoneService>();
             mockMilestone.Setup(x => x.InsertMilestoneLog(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
             var controller = new MilestoneController(mockMilestone.Object, null, null);
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(m => m.Request).Returns(request.Object);
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            controller.ControllerContext = context;
             //act
-            var result = await controller.InsertMilestoneLog(new MilestoneIdModel());
+            var result = await controller.InsertMilestoneLog(new MilestoneIdModel() { loanApplicationId = 1, milestoneId = 1 });
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);

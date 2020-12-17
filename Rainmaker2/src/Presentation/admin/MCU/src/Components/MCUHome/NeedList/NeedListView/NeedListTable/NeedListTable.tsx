@@ -153,6 +153,9 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       case 'In draft':
         cssClass = 'status-bullet indraft';
         break;
+      case 'Manually added':
+        cssClass = 'status-bullet manualyadded';
+        break;
       default:
         cssClass = 'status-bullet pending';
     }

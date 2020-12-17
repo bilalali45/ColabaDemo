@@ -255,7 +255,8 @@ namespace DocumentManagement.Service
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.ManuallyAdded + @"""}
                             ]}
                         }", @"{
                             ""$count"": ""CompletedDocuments""

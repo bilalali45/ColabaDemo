@@ -169,27 +169,18 @@ namespace DocumentManagement.API.Controllers
                                  logger.LogInformation($"DocSync if check = true");
                                  foreach (var fileid in fileId)
                                  {
-                                     FileViewModel fileViewModel = new FileViewModel();
-                                     fileViewModel.id = id;
-                                     fileViewModel.requestId = requestId;
-                                     fileViewModel.docId = docId;
-                                     fileViewModel.fileId = fileid;
-                                     var files = await fileService.GetFileByDocId(fileViewModel, userProfileId, ipAddress, tenantId);
+                                     var loanApplicationId = await rainmakerService.GetLoanApplicationId(id);
                                      logger.LogInformation(message: $"DocSync fileid {fileid} is getting from submit file");
 
-                                     if (files.Count > 0)
-                                     {
+                                    logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been started :fileid {fileid} is getting from submit file");
+                                    await losIntegration.SendFilesToBytePro(loanApplicationId,
+                                                                            id,
+                                                                            requestId,
+                                                                            docId,
+                                                                            fileid,
+                                                                            auth);
+                                    logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been finished :fileid {fileid} is getting from submit file");
 
-                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been started :fileid {fileid} is getting from submit file");
-                                         await losIntegration.SendFilesToBytePro(files[0].loanApplicationId,
-                                                                                 id,
-                                                                                 requestId,
-                                                                                 docId,
-                                                                                 fileid,
-                                                                                 auth);
-                                         logger.LogInformation(message: $"DocSync SendFilesToBytePro service has been finished :fileid {fileid} is getting from submit file");
-
-                                     }
                                  }
                              }
                          }

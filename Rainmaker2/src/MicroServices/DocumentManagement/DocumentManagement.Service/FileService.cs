@@ -211,13 +211,13 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {   
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value } }   }
                     }
                 },
                 { "$set", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started}
-
+                        { "requests.$[request].documents.$[document].status", DocumentStatus.Started},
+                        { "requests.$[request].documents.$[document].isMcuVisible", true}
                     }
                 }
             }, new UpdateOptions()
@@ -314,7 +314,7 @@ namespace DocumentManagement.Service
             return fileViewDTO;
         }
 
-
+        /*
         public async Task<List<FileViewDto>> GetFileByDocId(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
@@ -380,7 +380,7 @@ namespace DocumentManagement.Service
 
 
             return fileViewDTO;
-        }
+        }*/
 
     }
 }

@@ -4,6 +4,8 @@ import { LoanApplication } from '../../Entities/Models/LoanApplication';
 import { Endpoints } from '../endpoints/Endpoints';
 import { NeedList } from '../../Entities/Models/NeedList';
 import { DashboardSetting } from '../../Entities/Models/DashboardSetting';
+import { NeedListEndpoints } from '../endpoints/NeedListEndpoints';
+import { LocalDB } from '../../Utils/LocalDB';
 
 export class NeedListActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
@@ -13,7 +15,7 @@ export class NeedListActions {
       >(Endpoints.NeedListManager.GET.loan.info(loanApplicationId));
 
       let mileStoneresult: AxiosResponse<LoanApplication> = await Http.get<
-      LoanApplication
+        LoanApplication
       >(Endpoints.NeedListManager.GET.loan.milestoneInfo(loanApplicationId));
 
       result.data.status = mileStoneresult.data.milestone?.toString()
@@ -96,6 +98,33 @@ export class NeedListActions {
       return res.status;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  static async retainLock() {
+    let url = NeedListEndpoints.POST.needListLock.retainLock();
+    let id = LocalDB.getLoanAppliationId();
+
+    try {
+      let res = await Http.post(url, { loanApplicationId: parseInt(id) });
+      return res.data;
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async aquireLock() {
+    let id = LocalDB.getLoanAppliationId();
+    let url = NeedListEndpoints.POST.needListLock.aquireLock();
+    try {
+      let res = await Http.post(url, { loanApplicationId: parseInt(id) })
+      return res.data;
+
+    } catch (error) {
+      console.log(error);
+      return error?.response?.data;
+
     }
   }
 }

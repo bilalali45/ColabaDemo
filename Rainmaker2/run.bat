@@ -12,6 +12,8 @@ goto :choice
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
 
+msbuild -t:restore "%workingDir%\\src\Solutions\Rainmaker2.sln"
+
 msbuild "%workingDir%\\src\Solutions\Rainmaker2.sln" 
 
 :skipBuildSolution
@@ -54,8 +56,11 @@ start ByteWebConnector.SDK.exe
 cd %workingDir%\src\MicroServices\Milestone\Milestone.api\bin\Debug\netcoreapp3.1\
 start milestone.api.exe
 
-cd %workingDir%\src\MicroServices\Setting\Setting.API\bin\Debug\netcoreapp3.1\
-start Setting.API.exe
+cd %workingDir%\src\MicroServices\DocManager\DocManager.api\bin\Debug\netcoreapp3.1\
+start DocManager.api.exe
+
+cd %workingDir%\src\MicroServices\Setting\Setting.api\bin\Debug\netcoreapp3.1\
+start Setting.api.exe
 
 cd %workingDir%
 

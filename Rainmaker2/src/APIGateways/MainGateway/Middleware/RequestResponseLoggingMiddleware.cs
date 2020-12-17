@@ -74,7 +74,7 @@ namespace MainGateway.Middleware
             // Do some processing with body…
             if (request.Path.ToString().ToLower().Contains("api/identity/token/authorize"))
                 body = "";
-            var formattedRequest = $"{request.Method} {request.Scheme}://{request.Host}{request.Path}?{request.QueryString} {body}";
+            var formattedRequest = $"{request.Method} {request.Scheme}://{request.Host}{request.Path}{request.QueryString} {body}";
 
             // Reset the request body stream position so the next middleware can read it
             request.Body.Position = 0;

@@ -230,7 +230,7 @@ namespace DocumentManagement.Tests
                     { "docName" , BsonString.Empty},
                     { "typeName" ,BsonString.Empty},
                     { "requestId" ,"abc15d1fe456051af2eeb768"},
-                    { "files" , BsonNull.Value}
+                    { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                 }
             };
 

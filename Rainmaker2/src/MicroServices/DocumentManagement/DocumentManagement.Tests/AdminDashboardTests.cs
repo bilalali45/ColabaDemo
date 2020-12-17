@@ -193,7 +193,7 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started"  },
                         { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
-                        { "files" ,BsonNull.Value}
+                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
                   ,
                  new BsonDocument
@@ -295,19 +295,8 @@ namespace DocumentManagement.Tests
                         { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
                         { "files" , BsonArray.Create(new Entity.RequestFile[]{ })}
                     }
-                    ,
-                 new BsonDocument
-                    {
-                        //Cover all empty fields except status and set files null
-                          { "_id" , BsonString.Empty },
-                        { "requestId" , BsonString.Empty  },
-                        { "docId" , BsonString.Empty },
-                        { "docName" , BsonString.Empty },
-                        { "typeName" , BsonString.Empty },
-                        { "status" , "Started"  },
-                        { "createdOn" , Convert.ToDateTime("2020-06-25T07:39:57.233Z") },
-                        { "files" ,BsonNull.Value}
-                    }
+                    
+                  
                   ,
                  new BsonDocument
                     {
@@ -337,12 +326,12 @@ namespace DocumentManagement.Tests
             List<AdminDashboardDto> dto = await service.GetDocument(1, 1, false,1);
             //Assert
             Assert.NotNull(dto);
-            Assert.Equal(6, dto.Count);
+            Assert.Equal(5, dto.Count);
             Assert.Equal("House Document", dto[1].docName);
             Assert.Equal("Property", dto[2].docName);
             Assert.Equal("Started", dto[3].status);
             Assert.Equal("Started", dto[4].status);
-            Assert.Equal("asd", dto[5].files[0].clientName);
+            Assert.Equal("asd", dto[4].files[0].clientName);
         }
 
         [Fact]

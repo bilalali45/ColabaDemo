@@ -59,9 +59,11 @@ namespace DocumentManagement.Service
                                ""requestId"": ""$requests.id"",
                                 ""docId"": ""$requests.documents.id"",
                                 ""docName"": ""$requests.documents.displayName"",
+                                ""isMcuVisible"": ""$requests.documents.isMcuVisible"",
                                  ""typeName"": ""$documentObjects.name"",
                                 ""status"": ""$requests.documents.status"",
                                 ""files"": ""$requests.documents.files"",
+                                ""mcuFiles"": ""$requests.documents.mcuFiles"",
                                 ""typeId"": ""$requests.documents.typeId"",
                                 ""userName"": 1,
                                 ""createdOn"": ""$requests.createdOn""
@@ -75,26 +77,49 @@ namespace DocumentManagement.Service
                 foreach (var current in asyncCursor.Current)
                 {
                     AdminDashboardQuery query = BsonSerializer.Deserialize<AdminDashboardQuery>(current);
-                    AdminDashboardDto dto = new AdminDashboardDto();
-                    dto.id = query.id;
-                    dto.docId = query.docId;
-                    dto.requestId = query.requestId;
-                    dto.userName = query.userName;
-                    dto.typeId = query.typeId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    dto.status = query.status;
-                    dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value,DateTimeKind.Utc) : null;
-                    dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status!=FileStatus.Deleted).Select(x => new AdminFileDto()
+                    if (query.isMcuVisible != false)
                     {
-                        isRead = x.isRead.HasValue ? x.isRead.Value : false,
-                        id = x.id,
-                        clientName = x.clientName,
-                        fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
-                        mcuName = x.mcuName,
-                        byteProStatus = String.IsNullOrEmpty(x.byteProStatus) ? ByteProStatus.NotSynchronized : x.byteProStatus
-                    }).ToList();
-                    result.Add(dto);
+                        AdminDashboardDto dto = new AdminDashboardDto();
+                        dto.id = query.id;
+                        dto.docId = query.docId;
+                        dto.requestId = query.requestId;
+                        dto.userName = query.userName;
+                        dto.typeId = query.typeId;
+                        dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                        dto.status = query.status;
+                        dto.createdOn = query.createdOn.HasValue ? (DateTime?)DateTime.SpecifyKind(query.createdOn.Value, DateTimeKind.Utc) : null;
+                        dto.files = query.files?.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted && (x.isMcuVisible == null || x.isMcuVisible == true)).Select(x => new AdminFileDto()
+                        {
+                            isRead = x.isRead.HasValue ? x.isRead.Value : false,
+                            id = x.id,
+                            clientName = x.clientName,
+                            fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                            mcuName = x.mcuName,
+                            byteProStatus = String.IsNullOrEmpty(x.byteProStatus) ? ByteProStatus.NotSynchronized : x.byteProStatus,
+                            userId = x.userId,
+                            userName = x.userName,
+                            fileModifiedOn = x.fileModifiedOn == null ? null : (DateTime?)DateTime.SpecifyKind(x.fileModifiedOn.Value, DateTimeKind.Utc)
+                        }).ToList();
+                        if (query.mcuFiles != null)
+                        {
+                            var mcufiles = query.mcuFiles.Where(x => x.status != FileStatus.RejectedByMcu && x.status != FileStatus.Deleted).Select(x => new AdminFileDto()
+                            {
+                                isRead = x.isRead.HasValue ? x.isRead.Value : false,
+                                id = x.id,
+                                clientName = x.clientName,
+                                fileUploadedOn = DateTime.SpecifyKind(x.fileUploadedOn, DateTimeKind.Utc),
+                                mcuName = x.mcuName,
+                                byteProStatus = String.IsNullOrEmpty(x.byteProStatus) ? ByteProStatus.NotSynchronized : x.byteProStatus,
+                                userId = x.userId,
+                                userName = x.userName,
+                                fileModifiedOn = x.fileModifiedOn == null ? null : (DateTime?)DateTime.SpecifyKind(x.fileModifiedOn.Value, DateTimeKind.Utc)
+                            }).ToList();
 
+                            dto.files.AddRange(mcufiles);
+                        }
+                        dto.files = dto.files.OrderBy(x => x.fileUploadedOn).ToList();
+                        result.Add(dto);
+                    }
                 }
             }
             if (pending)

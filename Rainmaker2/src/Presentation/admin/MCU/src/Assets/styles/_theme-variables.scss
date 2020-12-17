@@ -1,88 +1,89 @@
 $color:(
-    primary             :       #4484F4,
-    primary-text        :       #ffffff,
-    secondry            :       #5D617E,
-    secondry-text       :       #ffffff,
-    border              :       #E7E7E7,//#E5E5E5, 
-    base                :       #4E4E4E, 
-    heading             :       #000000,//#263238,
-    placeholder         :       #cccccc,
-    textEditorText      :       #4E4E4E,
-    bg                  :       #F2F3F5,
-    default             :       #F2F3F5,
-    colorWhite          :       #ffffff,
-    colorBlack          :       #000000,
-    colorRed            :       #FF5652,
-    sucsess             :       #00AD46,
-    scroll              :       #A1A1A1,
-    input               :       #A1A1A1,
-    // Dashboard
-    headerBg            :       #375471,
-    headerBg-text       :       #ffffff,
-    sidebarBg           :       #2d323d,
-    sidebarBg-text      :       #cdd0d8,
-    widgetBg            :       #ffffff,
-    labelColor          :       #7E829E,
-    labelValueColor     :       #4E4E4E,
-    sidebarboder        :       rgba(0,0,0,0.2),
-    toggleDefaultKnob   :       #7E829E,
-    toggleDefaultKnobBg :       #cccccc,
+        primary             :       #4484F4,
+        primary-text        :       #ffffff,
+        secondry            :       #5D617E,
+        secondry-text       :       #ffffff,
+        border              :       #E7E7E7,//#E5E5E5,
+        base                :       #4E4E4E,
+        heading             :       #000000,//#263238,
+        placeholder         :       #cccccc,
+        textEditorText      :       #4E4E4E,
+        bg                  :       #F2F3F5,
+        default             :       #F2F3F5,
+        colorWhite          :       #ffffff,
+        colorBlack          :       #000000,
+        colorRed            :       #FF5652,
+        sucsess             :       #00AD46,
+        scroll              :       #A1A1A1,
+        input               :       #A1A1A1,
+  // Dashboard
+        headerBg            :       #375471,
+        headerBg-text       :       #ffffff,
+        sidebarBg           :       #2d323d,
+        sidebarBg-text      :       #cdd0d8,
+        widgetBg            :       #ffffff,
+        labelColor          :       #7E829E,
+        labelValueColor     :       #4E4E4E,
+        sidebarboder        :       rgba(0,0,0,0.2),
+        toggleDefaultKnob   :       #7E829E,
+        toggleDefaultKnobBg :       #cccccc,
 
-    //Manage Templates
-    listalertbg         :       #F2F1F2,
-    listalert           :       #101111,
-    listHoverBg         :       #F6F6F6,
+  //Manage Templates
+        listalertbg         :       #F2F1F2,
+        listalert           :       #101111,
+        listHoverBg         :       #F6F6F6,
 
-    //Table Strip Color
-    tableStripBg        :       #F6F6F6,
+  //Table Strip Color
+        tableStripBg        :       #F6F6F6,
 
-    // Dropdown
-    dropdownStripBg     :       #F8F8F8,
-    dropdownPopup       :       #4E4E4E,
-    pillsBg             :       #F8F8F8,
+  // Dropdown
+        dropdownStripBg     :       #F8F8F8,
+        dropdownPopup       :       #4E4E4E,
+        pillsBg             :       #F8F8F8,
 
-    //Status
-    statusDefault           :       #cccccc,
-    pending                 :       #4484F4,
-    started                 :       #FFC640,
-    borrower                :       #FF5652,
-    completed               :       #00AD46,
-    notificationCountBg     :       #FF5652,
-    notificationCountText   :       #ffffff,
+  //Status
+        statusDefault           :       #cccccc,
+        pending                 :       #4484F4,
+        manualyadded            :       #903faf,
+        started                 :       #FFC640,
+        borrower                :       #FF5652,
+        completed               :       #00AD46,
+        notificationCountBg     :       #FF5652,
+        notificationCountText   :       #ffffff,
 
-    ReviewDocumentHeaderBg  :       #ffffff,
-    ReviewDocumentHeaderText:       #263238,
-    ReviewDocumentSidebarBg :       #ffffff,
-    ReviewDocumentSidebarText:      #263238,    
+        ReviewDocumentHeaderBg  :       #ffffff,
+        ReviewDocumentHeaderText:       #263238,
+        ReviewDocumentSidebarBg :       #ffffff,
+        ReviewDocumentSidebarText:      #263238,
 
-    //Document Snipet
-    docSnipetBg             :       #F9F9F9,
-    docSnipetBorder         :       #DDDDDD,
-    docSnipetText           :       #A7A7A7,
-    docSnipetBgActive       :       #F9F9F9,
-    docSnipetBorderActive   :       #4484F4,
-    docSnipetSuccess        :       #00AD46,
-    docSnipetFailed         :       #FF5652,
+  //Document Snipet
+        docSnipetBg             :       #F9F9F9,
+        docSnipetBorder         :       #DDDDDD,
+        docSnipetText           :       #A7A7A7,
+        docSnipetBgActive       :       #F9F9F9,
+        docSnipetBorderActive   :       #4484F4,
+        docSnipetSuccess        :       #00AD46,
+        docSnipetFailed         :       #FF5652,
 
-    dialogText              :       #A7A7A7,
-    dialogBg                :       #ffffff,
+        dialogText              :       #A7A7A7,
+        dialogBg                :       #ffffff,
 
-    // File Viewer
-    fileReaderHeaderBg      :       #2D2D2D,
-    fileReaderHeaderText    :       #ffffff,
+  // File Viewer
+        fileReaderHeaderBg      :       #2D2D2D,
+        fileReaderHeaderText    :       #ffffff,
 
-    // Vertical Tabs
-    verticalTabsBg          :       #ffffff,
-    verticalTabsText        :       #4E4E4E,
+  // Vertical Tabs
+        verticalTabsBg          :       #ffffff,
+        verticalTabsText        :       #4E4E4E,
 
-    
 
-    needListTableFileName   :       #707070,
-    needListTableSYNCColor  :       #000000,
 
-    //Modal
-    modalfooter             :       #F6F6F6,
-    customDropdownText      :       #A7A7A7
+        needListTableFileName   :       #707070,
+        needListTableSYNCColor  :       #000000,
+
+  //Modal
+        modalfooter             :       #F6F6F6,
+        customDropdownText      :       #A7A7A7
 );
 
 

@@ -26,6 +26,7 @@ namespace DocumentManagement.Model
         public string docName { get; set; }
         public string typeName { get; set; }
         public List<RequestFile> files { get; set; }
+        public List<RequestFile> mcuFiles { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string requestId { get; set; }
         public string userName { get; set; }
@@ -51,6 +52,9 @@ namespace DocumentManagement.Model
         public string mcuName { get; set; }
         public DateTime fileUploadedOn { get; set; }
         public bool isRead { get; set; }
+        public int? userId { get; set; }
+        public string userName { get; set; }
+        public DateTime? fileModifiedOn { get; set; }
     }
     public class TemplateIdModel
     {

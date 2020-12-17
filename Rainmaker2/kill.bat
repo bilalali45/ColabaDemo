@@ -8,6 +8,7 @@ taskkill /IM "Notification.API.exe" /F
 taskkill /IM "Rainmaker.API.exe" /F
 taskkill /IM "ByteWebConnector.SDK.exe" /F
 taskkill /IM "Milestone.API.exe" /F
+taskkill /IM "DocManager.API.exe" /F
 taskkill /IM "Setting.API.exe" /F
 
 timeout 1

@@ -162,7 +162,7 @@ namespace DocumentManagement.Service
                         }", @"{
                             ""$unwind"": ""$requests.documents""
                         }", @"{
-                            ""$match"": {""requests.documents.status"":{""$ne"": """ + DocumentStatus.Deleted + @"""}}
+                            ""$match"": {""$and"":[{""requests.documents.status"": {""$ne"":""" + DocumentStatus.Deleted + @"""}},{""requests.documents.status"": {""$ne"":""" + DocumentStatus.ManuallyAdded + @"""}}]}
                             }", @"{
                             ""$lookup"": {
                                 ""from"": ""DocumentType"",
