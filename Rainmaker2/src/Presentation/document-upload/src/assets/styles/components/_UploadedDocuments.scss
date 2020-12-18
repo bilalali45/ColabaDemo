@@ -25,7 +25,7 @@
                 color:color('colorWhite');
                 text-align: center;
                 font: 500 #{fontSize('xmd')+'/1'} fontFamily('base'); 
-                padding: 12px 15px;
+                padding: 8px 15px; min-height:40px;
                 margin-bottom: 7px;
                 border: none;
                 margin-left: -15px;
@@ -37,7 +37,7 @@
                 display: inline-block;
                 padding: 17px 20px;
                 @include mobile{
-                    color:color('colorWhite');
+                    color:color('colorWhite');padding: 4px 20px;
                 }
             }
         }
