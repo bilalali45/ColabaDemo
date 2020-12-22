@@ -29,7 +29,7 @@ export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setR
         
         let file = JSON.parse(e.dataTransfer.getData('file'))
 
-        let{isFromWorkbench, isFromCategory, isFromThumbnail } = file;
+        let{isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
         if(isFromWorkbench){
 
             let success = await DocumentActions.moveFromWorkBenchToCategory(
@@ -79,6 +79,20 @@ export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setR
                     
             // }
            
+        } else if(isFromTrash){
+
+            // let success = await DocumentActions.moveFromWorkBenchToCategory(
+            //     document.id, 
+            //     document.requestId, 
+            //     document.docId,
+            //     file.fromFileId,
+            // );
+            
+            // if (success) {
+            //     await DocumentActions.getDocumentItems(dispatch)
+            //     await DocumentActions.getTrashedDocuments(dispatch);
+            // }
+
         }
           
         }

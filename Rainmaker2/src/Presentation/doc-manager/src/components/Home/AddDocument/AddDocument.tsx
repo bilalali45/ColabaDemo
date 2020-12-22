@@ -38,7 +38,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
 
     const handleClick = (event: any) => {
         let tag = event.target.tagName;
-
+        dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: !addDocumentBoxVisible?.value } })
         setShow(!show);
 
         setTarget(event.target);
@@ -63,7 +63,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
         if (categoryDocuments?.length) {
             changeCurrentDocType('all');
         }
-        // setShow(addDocumentBoxVisible?.value)
+        setShow(addDocumentBoxVisible?.value)
     }, [!currentCategoryDocuments && categoryDocuments])
 
     const setCurrentDocType = (curDoc: CategoryDocument) => {

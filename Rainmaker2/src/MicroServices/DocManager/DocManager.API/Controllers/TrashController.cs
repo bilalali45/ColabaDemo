@@ -35,7 +35,18 @@ namespace DocManager.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(await trashService.MoveFromTrashToWorkBench(moveFromTrashToWorkBench, tenantId));
         }
-
+        [HttpPost("[action]")]
+        public async Task<IActionResult> MoveFromTrashToCategory(MoveFromTrashToCategory moveFromTrashToCategory)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            return Ok(await trashService.MoveFromTrashToCategory(moveFromTrashToCategory, tenantId));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ViewTrashAnnotations(ViewTrashAnnotations viewTrashAnnotations)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            return Ok(await trashService.ViewTrashAnnotations(viewTrashAnnotations, tenantId));
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> SaveTrashAnnotations(SaveTrashAnnotations  saveTrashAnnotations)
         {

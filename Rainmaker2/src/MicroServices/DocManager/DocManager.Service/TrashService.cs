@@ -170,5 +170,105 @@ namespace DocManager.Service
 
         }
 
+        public async Task<bool> MoveFromTrashToCategory(MoveFromTrashToCategory moveFromTrashToCategory, int tenantId)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(moveFromTrashToCategory.id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$trash""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""trash.id"": " + new ObjectId(moveFromTrashToCategory.fromFileId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                               ""files"": ""$trash"",
+                            }
+                        }"
+                ));
+
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    bool deleted = await DeleteTrashFile(moveFromTrashToCategory.id, tenantId, moveFromTrashToCategory.fromFileId);
+                    if (deleted)
+                    {
+                        IMongoCollection<Request> collectionInsertRequest = mongoService.db.GetCollection<Request>("Request");
+
+                        UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(moveFromTrashToCategory.id) },
+                { "tenantId", tenantId}
+            }, new BsonDocument()
+            {
+
+                { "$push", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].mcuFiles",current.GetValue("files") }
+
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(moveFromTrashToCategory.toRequestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(moveFromTrashToCategory.toDocId).ToJson()+"}")
+                }
+            });
+                        return result.ModifiedCount == 1;
+                    }
+
+                }
+            }
+            return false;
+        }
+        public async Task<string> ViewTrashAnnotations(ViewTrashAnnotations viewTrashAnnotations, int tenantId)
+        {
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(viewTrashAnnotations.id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$trash""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""trash.id"": " + new ObjectId(viewTrashAnnotations.fromFileId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                               ""files"": ""$trash"",
+                            }
+                        }"
+                ));
+
+            while (await asyncCursor.MoveNextAsync())
+            {
+
+                foreach (var current in asyncCursor.Current)
+                {
+                    RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
+                    return query.annotations;
+                }
+            }
+            return null;
+        }
     }
 }

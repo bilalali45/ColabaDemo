@@ -35,15 +35,12 @@ export const DocumentsHeader = () => {
   const [showTrashOverlay, setShowTrash] = useState<boolean>(false);
   const [targetTrash, setTargetTrash] = useState(null);
   const refTrashOverlay = useRef(null);
-  const [trashedDocs, setTrashedDocs] = useState<TrashItem[]>([]);
   const { state, dispatch } = useContext(Store);
   const { currentDoc,uploadFailedDocs }: any = state.documents;
   const { currentFile, selectedFileData }: any = state.viewer;
 
   const templateManager: any = state.templateManager;
-  const currentTemplate = templateManager?.currentTemplate;
-  const templates = templateManager?.templates;
-  const templateDocuments = templateManager?.templateDocuments;
+  const [isDraggingItem, setIsDraggingItem] = useState(false);
   const categoryDocuments = templateManager?.categoryDocuments;
   const { trashedDoc }: any = state.documents;
   const documents: any = state.documents;
@@ -58,6 +55,12 @@ export const DocumentsHeader = () => {
       fetchTrashedDocs();
     }
   }, []);
+
+
+  useEffect(() => {
+    dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
+  }, [isDraggingItem]);
+
 
   const handleClickTrash = async (event: any) => {
 
@@ -93,7 +96,7 @@ export const DocumentsHeader = () => {
     try {
       let res = await DocumentActions.addDocCategory(loanApplicationId, data);
       if (res) {
-        let d = await DocumentActions.getDocumentItems(dispatch);
+        await DocumentActions.getDocumentItems(dispatch);
         
       }
     } catch (error) { }
@@ -105,8 +108,8 @@ export const DocumentsHeader = () => {
       file.fileId
     );
     if (success) {
-      let res = await DocumentActions.getTrashedDocuments(dispatch);
-      let d = await DocumentActions.getWorkBenchItems(dispatch);
+      await DocumentActions.getTrashedDocuments(dispatch);
+      await DocumentActions.getWorkBenchItems(dispatch);
       
     }
   };
@@ -245,6 +248,19 @@ const getDocswithfailedFiles = async() => {
           }
 } 
 
+const dragStartHandler = (e: any, file:any) => {
+
+  setIsDraggingItem(true);
+  let fileObj = {
+    id: file.id,
+    fileId: file.fileId,
+    isFromTrash:true
+  }
+  setShowTrash(false);
+  // setIsDraggingItem(false);
+  e.dataTransfer.setData("file", JSON.stringify(fileObj));
+}
+
   return (
     <div id="c-DocHeader" className="c-DocHeader">
       <div className="c-DocHeader-wrap">
@@ -323,11 +339,22 @@ const getDocswithfailedFiles = async() => {
                       trashedDoc.length > 0 &&
                       trashedDoc.map((doc: any, i:number) => {
                         return (
-                          <li key={i}  title={doc.mcuName}>
+                          <li key={i}   title={doc.mcuName}>
                             <div className="l-icon">
                               <FileIcon />
                             </div>
-                            <div className="d-name">
+                            <div className="d-name"
+                            draggable
+                            onDragStart={(e: any) => {
+                              DocumentActions.showFileBeingDragged(e, doc);
+                              dragStartHandler(e, doc)
+                            }}
+                            onDragEnd={() => {
+                              setIsDraggingItem(false);
+                              let dragView: any = window.document.getElementById('fileBeingDragged');
+                              window.document.body.removeChild(dragView);
+                            }}
+                            >
                               <p title={DocumentActions.getFileName(doc)}>{DocumentActions.getFileName(doc)}</p>
                               {doc.file && doc.uploadProgress <= 100?null:
                               <div className="modify-info">

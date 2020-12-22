@@ -568,6 +568,10 @@ namespace DocumentManagement.Service
             {
                 fileViewDTO = await WorkbenchFileView(model, userProfileId, ipAddress, tenantId);
             }
+            if (fileViewDTO == null)
+            {
+                fileViewDTO = await TrashFileView(model, userProfileId, ipAddress, tenantId);
+            }
             return fileViewDTO;
         }
         public async Task<FileViewDto> WorkbenchFileView(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
@@ -610,6 +614,48 @@ namespace DocumentManagement.Service
                     fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
             }
             
+            return fileViewDTO;
+        }
+        public async Task<FileViewDto> TrashFileView(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)
+        {
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+              @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @" ,
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$trash""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""trash.id"": " + new ObjectId(model.fileId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,                               
+                                ""serverName"": ""$trash.serverName"",
+                                ""encryptionKey"": ""$trash.encryptionKey"",
+                                ""encryptionAlgorithm"": ""$trash.encryptionAlgorithm"",
+                                ""clientName"": ""$trash.mcuName"",
+                                ""contentType"": ""$trash.contentType""
+                            }
+                             } "
+
+                ));
+
+
+            FileViewDto fileViewDTO = null;
+            if (await asyncCursor.MoveNextAsync())
+            {
+                if (asyncCursor.Current.FirstOrDefault() != null)
+                    fileViewDTO = BsonSerializer.Deserialize<FileViewDto>(asyncCursor.Current.FirstOrDefault());
+            }
+
             return fileViewDTO;
         }
         public async Task<FileViewDto> McuFileView(AdminFileViewModel model, int userProfileId, string ipAddress, int tenantId)

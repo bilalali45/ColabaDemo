@@ -73,7 +73,7 @@ export const SelectedDocumentTypeList = ({
                   setRequestSent(true);
                   await addNewDoc(dl, 'typeId');
                   setRequestSent(false);
-                  // setVisible(false);
+                  setVisible(false);
                 }}
               >
                 {dl?.docType}

@@ -212,21 +212,24 @@ export const FileItem = ({
   };
 
   const DragStartHandler = async (e: any) => {
-    DocumentActions.showFileBeingDragged(e, file);
-    let FileData = {
-      id: document.id,
-      fromRequestId: document.requestId,
-      fromDocId: document.docId,
-      fromFileId: file.id,
-      fileName: file.mcuName ? file.mcuName : file.clientName,
-      isFromThumbnail: false,
-      isFromWorkbench: false,
-      isFromCategory: true
+    if(file && document){
+      DocumentActions.showFileBeingDragged(e, file);
+      let FileData = {
+        id: document.id,
+        fromRequestId: document.requestId,
+        fromDocId: document.docId,
+        fromFileId: file.id,
+        fileName: file.mcuName ? file.mcuName : file.clientName,
+        isFromThumbnail: false,
+        isFromWorkbench: false,
+        isFromCategory: true
+      }
+      setIsDraggingItem(true);
+      setDraggingSelf(true);
+      setDraggingItem(true);
+      e.dataTransfer.setData("file", JSON.stringify(FileData));
     }
-    setIsDraggingItem(true);
-    setDraggingSelf(true);
-    setDraggingItem(true);
-    e.dataTransfer.setData("file", JSON.stringify(FileData));
+    
 
   }
 

@@ -42,6 +42,13 @@ namespace DocManager.Model
         public string toRequestId { get; set; }
         public string toDocId { get; set; }
     }
+    public class MoveFromTrashToCategory
+    {
+        public string id { get; set; }
+        public string fromFileId { get; set; }
+        public string toRequestId { get; set; }
+        public string toDocId { get; set; }
+    }
     public class MoveFromCategoryToTrash   
     {
         public string id { get; set; }
@@ -377,6 +384,12 @@ namespace DocManager.Model
         public string id { get; set; }
         public string fromRequestId { get; set; }
         public string fromDocId { get; set; }
+        public string fromFileId { get; set; }
+
+    }
+    public class ViewTrashAnnotations
+    {
+        public string id { get; set; }
         public string fromFileId { get; set; }
 
     }

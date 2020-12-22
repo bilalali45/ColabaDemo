@@ -198,21 +198,24 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   };
 
   const dragStartHandler = (e: any) => {
-
-    let fileObj = {
-      id: file.id,
-      fromRequestId: nonExistentFileId,
-      fromDocId: nonExistentFileId,
-      fromFileId: file.fileId,
-      fileName: file.mcuName ? file.mcuName : file.clientName,
-      isFromThumbnail: false,
-      isFromWorkbench: true,
-      isFromCategory: false
+    if(file){
+      DocumentActions.showFileBeingDragged(e, file);
+      let fileObj = {
+        id: file.id,
+        fromRequestId: nonExistentFileId,
+        fromDocId: nonExistentFileId,
+        fromFileId: file.fileId,
+        fileName: file.mcuName ? file.mcuName : file.clientName,
+        isFromThumbnail: false,
+        isFromWorkbench: true,
+        isFromCategory: false
+      }
+      setIsDraggingItem(true);
+      setDraggingSelf(true);
+      setDraggingItem(true);
+      e.dataTransfer.setData("file", JSON.stringify(fileObj));
     }
-    setIsDraggingItem(true);
-    setDraggingSelf(true);
-    setDraggingItem(true);
-    e.dataTransfer.setData("file", JSON.stringify(fileObj));
+    
   }
 
   const getCurrentFileSelectedStyle = () => {
@@ -231,7 +234,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
         onClick={viewFileForWorkBench}
         draggable={!editingModeEnabled ? true : false}
         onDragStart={(e: any) => {
-          DocumentActions.showFileBeingDragged(e, file);
+          
           dragStartHandler(e)
         }}
 

@@ -48,7 +48,7 @@ export const WorkbenchTable = () => {
         }
        
         let file: any = JSON.parse(e.dataTransfer.getData('file'));
-        let {isFromThumbnail, isFromCategory} = file
+        let {isFromThumbnail, isFromCategory, isFromTrash} = file
         
         if(isFromCategory){
             let {id, fromRequestId, fromDocId, fromFileId} : any = file;
@@ -61,6 +61,7 @@ export const WorkbenchTable = () => {
         }
 
         if(isFromThumbnail){
+            
 
           let{id} = currentFile
             let fileObj = {
@@ -82,6 +83,19 @@ export const WorkbenchTable = () => {
       
         }
         
+        if(isFromTrash){
+            let {id, fileId} : any = file;
+            let success = await DocumentActions.moveTrashFileToWorkBench(
+                id,
+                fileId
+              );
+              if (success) {
+                await DocumentActions.getTrashedDocuments(dispatch);
+                await DocumentActions.getWorkBenchItems(dispatch);
+                
+              }
+
+        }
         
     }
 
