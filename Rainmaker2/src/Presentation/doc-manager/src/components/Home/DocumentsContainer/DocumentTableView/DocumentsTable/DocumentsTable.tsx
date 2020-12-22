@@ -17,17 +17,25 @@ export const DocumentsTable = () => {
 
     const documents: any = state.documents;
     const documentItems: any = documents?.documentItems;
+    const catScrollFreeze: any = documents?.catScrollFreeze;
     let loanApplicationId = LocalDB.getLoanAppliationId();
     const {isLoading, selectedFileData}:any  = state.viewer;
     const [fileClicked, setFileClicked]= useState<boolean>(false);
 
+    const [openedReassignDropdown,setOpenReassignDropdown] = useState<boolean>(false);
+
     useEffect(() => {
         if (!documentItems) {
             DocumentActions.getCurrentDocumentItems(dispatch, true);
+            checkIsByteProAuto()
         }
     }, [!documentItems]);
 
-    
+    const checkIsByteProAuto = async () => {
+        let res: any = await DocumentActions.checkIsByteProAuto();
+        let isAuto = res?.syncToBytePro != 2 ? true : false;
+        dispatch({type: DocumentActionsType.SetIsByteProAuto, payload: isAuto});
+      };
 
     return (
         <div id="c-DocTable" className="dm-docTable c-DocTable" >
@@ -37,7 +45,7 @@ export const DocumentsTable = () => {
                 <div className="dm-dt-thead-right">Status</div>
             </div>
 
-            <div className="dm-dt-tbody" ref={refReassignDropdown}>
+            <div className={`dm-dt-tbody ${catScrollFreeze?" freeze":""}`} ref={refReassignDropdown}>
 
                 {
                     documentItems && documentItems.length ?( documentItems?.map((d: any, i: number) => {
@@ -48,6 +56,7 @@ export const DocumentsTable = () => {
                                 refReassignDropdown={refReassignDropdown}
                                 setFileClicked={setFileClicked}
                                 fileClicked = {fileClicked}
+                                setOpenReassignDropdown={setOpenReassignDropdown}
                             />
                         )
                     })

@@ -20,7 +20,7 @@ export const ViewerHeader = () => {
   
   
   const { state, dispatch } = useContext(Store);
-  const { currentFile }: any = state.viewer;
+  const { currentFile, selectedFileData }: any = state.viewer;
 
   const onDoubleClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -54,8 +54,8 @@ export const ViewerHeader = () => {
           isWorkBenchFile={false}
         />
       ) : (
-        <h2 title={currentFile?.name}>
-         {currentFile?.name}
+        <h2 title={selectedFileData?.name}>
+         {selectedFileData?.name}
         </h2>
       )}
     </div>

@@ -79,7 +79,8 @@ export class ViewerTools extends Viewer {
         dispatch({
             type: ViewerActionsType.SetIsLoading,
             payload: true
-        })
+        });
+        
         let file = await PDFActions.createPDFFromInstance(fileObj.name);
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc)
 

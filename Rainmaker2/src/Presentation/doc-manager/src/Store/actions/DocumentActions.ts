@@ -276,6 +276,11 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       });
     try {
     
+      if (await !FileUpload.isSizeAllowed(file)) {
+        selectedFile.notAllowedReason = "FileSize";
+        selectedFile.notAllowed = true;
+        return selectedFile
+      }
       if ((await FileUpload.isTypeAllowed(file)) === false) {
         selectedFile.notAllowedReason = "FileType";
         selectedFile.notAllowed = true;
@@ -633,7 +638,7 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
               }
                 return docFile;
               })
-              console.log(docFiles)
+              
               dispatchProgress({
                 type: DocumentActionsType.AddFileToTrash,
                 payload: docFiles
@@ -792,5 +797,15 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
 
   }
 
+
+  static async checkIsByteProAuto() {
+    let url = Endpoints.Document.GET.checkIsByteProAuto();
+    try {
+      let res: any = await Http.get(url);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 }

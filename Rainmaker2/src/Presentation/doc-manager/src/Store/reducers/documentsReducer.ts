@@ -23,7 +23,10 @@ export enum DocumentActionsType {
     SetUploadFailedDocs = 'SET_UPLOAD_FAILED_DOCS',
     SetFailedDocs = 'SET_FAILED_DOCS',
     SetIsFileDirty = 'SET_IS_FILE_DIRTY',
-    SetFileUploadInProgress = 'SET_FILE_UPLOAD_IN_PROGRESS'
+    SetFileUploadInProgress = 'SET_FILE_UPLOAD_IN_PROGRESS',
+    SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
+    SetCatScrollFreeze= "SET_CAT_SCROLL_FREEZE",
+    SetWbScrollFreeze= "SET_WB_SCROLL_FREEZE",
 }
 
 export type DocumentsType = {
@@ -37,8 +40,12 @@ export type DocumentsType = {
     filesToSync: any[],
     syncStarted: boolean,
     uploadFailedDocs: DocumentFile | [],
-    isFileDirty: boolean
-    fileUploadInProgress:boolean
+    isFileDirty: boolean,
+    fileUploadInProgress:boolean,
+    isByteProAuto: boolean,
+    catScrollFreeze:boolean,
+    wbScrollFreeze:boolean,
+    
 }
 
 export type DocumentActionsPayload = {
@@ -65,6 +72,9 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetUploadFailedDocs]:DocumentFile[],
     [DocumentActionsType.SetFailedDocs]:DocumentFile[],
     [DocumentActionsType.SetFileUploadInProgress]:boolean
+    [DocumentActionsType.SetIsByteProAuto]: string,
+    [DocumentActionsType.SetCatScrollFreeze]: boolean,
+    [DocumentActionsType.SetWbScrollFreeze]: boolean,
 }
 
 export type DocumentsActions = ActionMap<DocumentActionsPayload>[keyof ActionMap<DocumentActionsPayload>];
@@ -185,11 +195,26 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 isFileDirty: payload
             }
 
-            case DocumentActionsType.SetFileUploadInProgress:
-                return {
-                    ...state,
-                    fileUploadInProgress: payload
-                }
+        case DocumentActionsType.SetFileUploadInProgress:
+            return {
+                ...state,
+                fileUploadInProgress: payload
+            }
+        case DocumentActionsType.SetIsByteProAuto:
+        return {
+            ...state,
+            isByteProAuto: payload
+        }
+        case DocumentActionsType.SetCatScrollFreeze:
+        return {
+            ...state,
+            catScrollFreeze: payload
+        }
+        case DocumentActionsType.SetWbScrollFreeze:
+        return {
+            ...state,
+            wbScrollFreeze: payload
+        }
         default:
             return state;
     }

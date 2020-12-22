@@ -13,7 +13,7 @@ import { ViewerTools } from '../../../../../../Utilities/ViewerTools';
 import { DocumentDropBox } from '../DocumentDropBox/DocumentDropBox';
 import { FileItem } from '../FileItem/FileItem';
 
-export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setRetryFile, getDocswithfailedFiles }: any) => {
+export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setRetryFile, getDocswithfailedFiles, setOpenReassignDropdown }: any) => {
 
     const [draggingSelf, setDraggingSelf] = useState<boolean>(false);
     const [draggingItem, setDraggingItem] = useState<boolean>(false);
@@ -146,7 +146,9 @@ export const FilesList = ({ addFiles, document,refReassignDropdown, docInd, setR
                                     setDraggingItem={setDraggingItem}
                                     refReassignDropdown={refReassignDropdown}
                                     deleteFile = {deleteFiles}
-                                    getDocswithfailedFiles = {getDocswithfailedFiles}/>
+                                    getDocswithfailedFiles = {getDocswithfailedFiles}
+                                    setOpenReassignDropdown={setOpenReassignDropdown}
+                                    />
                             )
                         })
                     ):

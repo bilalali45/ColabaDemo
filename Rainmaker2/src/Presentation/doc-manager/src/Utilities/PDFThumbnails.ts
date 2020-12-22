@@ -9,11 +9,17 @@ import { ViewerTools } from "./ViewerTools";
 export class PDFThumbnails extends Viewer {
     static async generateThumbnailData(index: number) {
 
-        if (this.instance) {
+        try{
+            if (this.instance) {
 
-            const src = await this.instance?.renderPageAsImageURL({ width: 400 }, index);
-            return src;
-        };
+                const src = await this.instance?.renderPageAsImageURL({ width: 400 }, index);
+                return src;
+            };
+            return '';
+        }
+        catch(error){
+            console.log(error)
+        }
         return '';
     }
 

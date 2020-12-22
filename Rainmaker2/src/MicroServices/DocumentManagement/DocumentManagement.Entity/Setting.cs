@@ -12,6 +12,7 @@ namespace DocumentManagement.Entity
         public string ftpPassword { get; set; }
         public int maxFileSize { get; set; }
         public int maxFileNameSize { get; set; }
+        public int maxMcuFileSize { get; set; }
         public string[] allowedExtensions { get; set; }
     }
 }

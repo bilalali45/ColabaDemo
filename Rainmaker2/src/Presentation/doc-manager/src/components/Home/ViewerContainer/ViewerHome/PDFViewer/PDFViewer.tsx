@@ -37,16 +37,25 @@ export const PDFViewer = () => {
     useEffect(() => {
         if (instance) {
             instance.addEventListener("document.change", async () => {
+                console.log('in here document change')
                 if (!isFileChanged) {
                     await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
+                }
+            });
+            
+            instance.addEventListener("annotations.willChange", async () => {
+                console.log('in here annotations change')
+                Viewer.instance = instance
+                if (!isFileChanged) {
+                    await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
+                    
                 }
             });
 
-            instance.addEventListener("annotations.update", async () => {
-                if (!isFileChanged) {
-                    await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
-                }
-            });
+            instance.addEventListener("annotations.delete", (deletedAnnotations:any) => {
+                console.log("in delete annotations")
+                Viewer.instance = instance
+              });
         }
 
     }, [instance, currentDoc, currentFile])
@@ -65,9 +74,10 @@ export const PDFViewer = () => {
 
     }
 
-    const setAnnotations = () => {
+    const setAnnotations = async () => {
         if (currentDoc && currentFile) {
-            AnnotationActions?.getAnnoations(currentDoc, currentFile);
+           await AnnotationActions?.getAnnoations(currentDoc, currentFile);
+           dispatch({type: ViewerActionsType.SetIsFileChanged, payload: false});
         }
     }
 

@@ -11,103 +11,130 @@ export class AnnotationActions extends Viewer {
 
 
     static async getAnnotationForThePage(body: any) {
-        let res : any = await Http.post(Endpoints.Document.POST.ViewCategoryAnnotations(), body);
+        try {
+            let res: any = await Http.post(Endpoints.Document.POST.ViewCategoryAnnotations(), body);
 
-        for (const annotation of res.data) {
-            
-            let n = this.instance.createAnnotation(PSPDFKit.Annotations.fromSerializableObject(annotation));
+
+            for (const annotation of res.data) {
+
+                let n = this.instance.create(PSPDFKit.Annotations.fromSerializableObject(annotation));
+            }
+        }
+        catch (error) {
+            console.log(error())
         }
     }
 
-    static async fetchAnnotations(body: any, isWorkbenchFile:boolean) {
-        let res:any;
-        if(isWorkbenchFile){
-            res= await Http.post(Endpoints.Document.POST.viewWorkbenchAnnotations(), body);
+    static async fetchAnnotations(body: any, isWorkbenchFile: boolean) {
+        let res: any;
+        try {
+            if (isWorkbenchFile) {
+                res = await Http.post(Endpoints.Document.POST.viewWorkbenchAnnotations(), body);
+            }
+            else {
+                res = await Http.post(Endpoints.Document.POST.ViewCategoryAnnotations(), body);
+            }
+
+            if (!res.data.annotations) {
+                return;
+            }
+            for (const annotation of res?.data.annotations) {
+                let n: any = this?.instance?.create(PSPDFKit.Annotations.fromSerializableObject(annotation));
+            }
+        } catch (error) {
+            console.log(error())
         }
-        else{
-            res= await Http.post(Endpoints.Document.POST.ViewCategoryAnnotations(), body);
-        }
-         
-        if(!res.data.annotations) {
-            return;
-        }
-        for (const annotation of res?.data.annotations) {            
-            let n : any = this?.instance?.createAnnotation(PSPDFKit.Annotations.fromSerializableObject(annotation));
-        }
+
     }
 
-    static async saveAnnotations(AnnotationObj:any, fileId: string,  wasDragged: boolean, pageIndex?: number) {
+    static async saveAnnotations(AnnotationObj: any, fileId: string, wasDragged: boolean, pageIndex?: number) {
         let body: any;
-        let url:any;
-        
-        if(AnnotationObj.isFromWorkbench){
-            let{ id } = AnnotationObj;
+        let url: any;
+
+        if (AnnotationObj.isFromWorkbench) {
+            let { id } = AnnotationObj;
             url = Endpoints.Document.POST.saveWorkbenchAnnotations();
             body = {
-                    id, fileId
+                id, fileId
             }
         }
-        else if(AnnotationObj.isFromCategory){
-            let{ id, requestId,docId } = AnnotationObj;
+        else if (AnnotationObj.isFromCategory) {
+            let { id, requestId, docId } = AnnotationObj;
             url = Endpoints.Document.POST.saveCategoryAnnotations();
             body = {
-                    id, requestId, docId, fileId
+                id, requestId, docId, fileId
             }
-            
+
         }
-        else if(AnnotationObj.isFromTrash){
-            let{ id } = AnnotationObj;
-            console.log(AnnotationObj)
+        else if (AnnotationObj.isFromTrash) {
+            let { id } = AnnotationObj;
             url = Endpoints.Document.POST.saveTrashAnnotations();
             body = {
                 id, fileId
             }
-            
+
         }
-        
-        
-        if(wasDragged && pageIndex) {
 
-            let annotationsAsString = this.extractPageAnnotationsAsString(pageIndex);
-            let data = {
-                ...body,
-                annotations: annotationsAsString
+        try {
+            if (wasDragged && pageIndex) {
+
+                let annotationsAsString = this.extractPageAnnotationsAsString(pageIndex);
+                let data = {
+                    ...body,
+                    annotations: annotationsAsString
+                }
+
+                return this.saveAnnotationsLocal(url, data);
+
+            } else {
+
+                let annotations = await this.extractAnnotationsAsString();
+                let data = {
+                    ...body,
+                    annotations
+                }
+
+                return this.saveAnnotationsLocal(url, data);
             }
-
-            return this.saveAnnotationsLocal(url, data);
-
-        }else {
-
-            let annotations = await this.extractAnnotationsAsString();
-            let data = {
-                ...body,
-                annotations
-            }
-
-            return this.saveAnnotationsLocal(url, data);
         }
+        catch (error) {
+            console.log(error)
+        }
+
     }
 
     static async extractAnnotationsAsString() {
-        const allAnnotations = await this.instance.exportInstantJSON();
-        const annotationsString = JSON.stringify(allAnnotations);
-        return annotationsString;
+        try {
+            const allAnnotations = await this.instance.exportInstantJSON();
+            const annotationsString = JSON.stringify(allAnnotations);
+            return annotationsString;
+        }
+        catch (error) {
+            console.log(error)
+        }
+
     }
 
     static async extractPageAnnotationsAsString(pageIndex: number) {
-        const annotations: any = await this.instance.getAnnotations(pageIndex);
+        try {
 
-        let annotationsToJSON = [];
+            const annotations: any = await this.instance.getAnnotations(pageIndex);
 
-        for (const annotation of annotations) {
-            let json = PSPDFKit.Annotations.toSerializableObject(annotation);
-            annotationsToJSON.push(json);
+            let annotationsToJSON = [];
+
+            for (const annotation of annotations) {
+                let json = PSPDFKit.Annotations.toSerializableObject(annotation);
+                annotationsToJSON.push(json);
+            }
+
+            return JSON.stringify(annotations);
         }
-
-        return JSON.stringify(annotations);
+        catch (error) {
+            console.log(error)
+        }
     }
 
-    
+
     static async saveAnnotationsLocal(url: any, body: any) {
         try {
             let res: AxiosResponse = await Http.post(
@@ -124,10 +151,12 @@ export class AnnotationActions extends Viewer {
         const { id, requestId, docId }: any = document;
         const { fileId, isWorkBenchFile }: any = file;
         let body = {
-          id, fromRequestId: requestId, fromDocId: docId, fromFileId: fileId
+            id, fromRequestId: requestId, fromDocId: docId, fromFileId: fileId
         }
         await AnnotationActions.fetchAnnotations(body, isWorkBenchFile)
+
+    }
+
     
-      }
 
 }

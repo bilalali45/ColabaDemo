@@ -13,6 +13,7 @@ import DocumentActions from '../../Store/actions/DocumentActions';
 import { UserActions } from '../../Store/actions/UserActions';
 import { ViewerActionsType } from '../../Store/reducers/ViewerReducer';
 import { Loader } from '../../Utilities/Loader';
+import { ConfirmationAlert } from './ConfirmationAlert/ConfirmationAlert';
 
 
 let timer: any;
@@ -32,8 +33,8 @@ export const Home = () => {
   const viewer: any = state?.viewer;
   const isNeedListLocked = viewer?.isNeedListLocked;
 
- 
-  const { currentFile, isLoading }: any = state.viewer;
+
+  const { currentFile, isLoading, isFileChanged, showingConfirmationAlert }: any = state.viewer;
 
   useEffect(() => {
     retainLock();
@@ -52,13 +53,13 @@ export const Home = () => {
     let lockRetained = await UserActions.retainLock();
     dispatch({ type: ViewerActionsType.SetIsNeedListLocked, payload: lockRetained })
   }
-  useEffect(()=>{
-        setStateProps();
-  },[])
+  useEffect(() => {
+    setStateProps();
+  }, [])
 
-  const setStateProps = ()=> {
-    dispatch({ type:DocumentActionsType.SetFailedDocs, payload:[] })  
-    dispatch({ type:DocumentActionsType.SetDocumentItems, payload:[] })
+  const setStateProps = () => {
+    dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })
+    dispatch({ type: DocumentActionsType.SetDocumentItems, payload: [] })
   }
   return (
     <section className="c-Home loader-parent-Wrap"
@@ -67,7 +68,7 @@ export const Home = () => {
         // e.dataTransfer.setData('file', JSON.stringify(file));
         dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
       }}>
-  {isLoading && <Loader containerHeight={"153px"} />}     
+      {isLoading && <Loader containerHeight={"153px"} />}
       <div className="c-Home-wrap">
         <div className="c-Home-left">
           <DocumentsContainer />
@@ -78,7 +79,6 @@ export const Home = () => {
           <ViewerContainer />
         </div>
       </div>
-
     </section>
   )
 }

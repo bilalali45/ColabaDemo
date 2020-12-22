@@ -1,6 +1,7 @@
 import Instance from "pspdfkit/dist/types/typescript/Instance";
 import { RefObject } from "react";
 import { CurrentInView } from "../../Models/CurrentInView";
+import { DocumentRequest } from "../../Models/DocumentRequest";
 import { SelectedFile } from "../../Models/SelectedFile";
 import { ThumbnailItem } from "../../Models/ThumbnailItem";
 import { ActionMap, Actions } from "./reducers";
@@ -13,6 +14,10 @@ export type NeedListLock = {
     lockUserName: string
 }
 
+export type FileToChange = {
+    file: CurrentInView,
+    document: DocumentRequest
+}
 
 export enum ViewerActionsType {
     SetInstance = "SET_INSTANCE",
@@ -22,7 +27,9 @@ export enum ViewerActionsType {
     SetIsFileChanged = "SET_IS_FILE_CHANGED",
     SetIsNeedListLocked = "SET_IS_NEED_LIST_LOCKED",
     SetSelectedFileData = "SET_SELECTED_FILE_DATA",
-    SetIsLoading = "SET_IS_LOADING"
+    SetIsLoading = "SET_IS_LOADING",
+    SetShowingConfirmationAlert = "SET_SHOWING_CONFIRMATION_ALERT",
+    SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED"
 
 }
 
@@ -34,7 +41,9 @@ export type ViewerType = {
     isFileChanged: boolean;
     isNeedListLocked: NeedListLock;
     selectedFileData: SelectedFile;
-    isLoading:boolean;
+    isLoading: boolean;
+    showingConfirmationAlert: boolean;
+    SetFileToChangeWhenUnSaved: FileToChange
     // documentsSelection: {}
 }
 
@@ -46,7 +55,9 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetIsFileChanged]: boolean;
     [ViewerActionsType.SetIsNeedListLocked]: NeedListLock;
     [ViewerActionsType.SetSelectedFileData]: SelectedFile;
-    [ViewerActionsType.SetIsLoading]:boolean;
+    [ViewerActionsType.SetIsLoading]: boolean;
+    [ViewerActionsType.SetShowingConfirmationAlert]: boolean;
+    [ViewerActionsType.SetFileToChangeWhenUnSaved]: FileToChange;
 
 }
 
@@ -61,41 +72,52 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
                 instance: payload
             };
 
-            case ViewerActionsType.SetCurrentFile:
+        case ViewerActionsType.SetCurrentFile:
 
             return {
                 ...state,
                 currentFile: payload
             };
-            case ViewerActionsType.SetContainerElement:
+        case ViewerActionsType.SetContainerElement:
 
             return {
                 ...state,
                 containerElement: payload
             };
-            case ViewerActionsType.SetIsFileChanged:
+        case ViewerActionsType.SetIsFileChanged:
             return {
                 ...state,
                 isFileChanged: payload
             };
 
-            case ViewerActionsType.SetIsNeedListLocked:
-                return {
-                    ...state,
-                    isNeedListLocked: payload
-                }
-            case ViewerActionsType.SetSelectedFileData:
+        case ViewerActionsType.SetIsNeedListLocked:
+            return {
+                ...state,
+                isNeedListLocked: payload
+            }
+        case ViewerActionsType.SetSelectedFileData:
 
-                return {
-                    ...state,
-                    selectedFileData: payload
-                };
-            case ViewerActionsType.SetIsLoading:
+            return {
+                ...state,
+                selectedFileData: payload
+            };
+        case ViewerActionsType.SetIsLoading:
 
-                return {
-                    ...state,
-                    isLoading: payload
-                };
+            return {
+                ...state,
+                isLoading: payload
+            };
+        case ViewerActionsType.SetShowingConfirmationAlert:
+            return {
+                ...state,
+                showingConfirmationAlert: payload
+            };
+
+        case ViewerActionsType.SetFileToChangeWhenUnSaved:
+            return {
+                ...state,
+                fileToChangeWhenUnSaved: payload
+            };
         default:
             return state;
     }

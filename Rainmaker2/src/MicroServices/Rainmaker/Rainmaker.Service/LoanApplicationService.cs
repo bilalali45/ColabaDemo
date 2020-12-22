@@ -120,7 +120,7 @@ namespace Rainmaker.Service
         public async Task<LoanSummary> GetLoanSummary(int loanApplicationId,
                                                       int userProfileId)
         {
-            string url = await commonService.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.AdminDomainUrl);
+            string url = "";
             return await Repository
                          .Query(query: x =>
                                     x.Opportunity.OpportunityLeadBinders

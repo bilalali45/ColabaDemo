@@ -262,7 +262,7 @@ const getDocswithfailedFiles = async() => {
                                 </div>
                             </div>
                         </li> */}
-            <li onClick={handleClickTrash}>
+            <li onClick={handleClickTrash} className={showTrashOverlay?'active':''}>
             {/* <div
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e: any) => {
@@ -395,7 +395,7 @@ const getDocswithfailedFiles = async() => {
                 </div>
                 ):(
                     <div className="emptyList">
-                      <p>There is no item in List</p>
+                      <p>Trash Bin is empty.</p>
                     </div>
                 )}
               </Popover.Content>

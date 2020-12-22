@@ -31,7 +31,10 @@
         min-height: 280px;
         @include scrollbar(6, 6);
         border-bottom: 1px solid color('border');
-        position: relative;
+        // position: relative;
+        &.freeze {
+            overflow: hidden;
+        }
 
         .empty-items {
             font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
@@ -340,7 +343,9 @@
                         svg+svg {
                             display: none;
                         }
-
+&.complete {
+    display: block;
+}
                         &.active {
                             display: flex;
                             opacity: 0.5;

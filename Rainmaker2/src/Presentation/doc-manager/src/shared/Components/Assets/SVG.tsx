@@ -207,26 +207,20 @@ export const MCUDocIcon = () => {
 
 export const MinusIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
-      <g id="Group_1397" data-name="Group 1397" transform="translate(-65 -234)">
-        <rect id="Rectangle_414" data-name="Rectangle 414" width="15" height="15" transform="translate(65 234)" fill="#4484f4" />
-        <path id="Path_520" data-name="Path 520" d="M14.375,12.875H5V11h9.375Z" transform="translate(62.813 229.563)" fill="#fff" />
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <g id="Group_1042" data-name="Group 1042" transform="translate(-2787 -2294)">
+    <path id="Path_536" data-name="Path 536" d="M15.444,3H4.556A1.555,1.555,0,0,0,3,4.556V15.444A1.555,1.555,0,0,0,4.556,17H15.444A1.56,1.56,0,0,0,17,15.444V4.556A1.56,1.56,0,0,0,15.444,3Zm0,12.444H4.556V4.556H15.444Zm-4.667-4.667h3.111V9.222H6.111v1.556h4.667Z" transform="translate(2784 2291)" fill="#4484f4"/>
+  </g>
+</svg>
   )
 }
 
 export const PlusIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
-      <g id="Group_1399" data-name="Group 1399" transform="translate(-58 -210)">
-        <g id="Group_1398" data-name="Group 1398" transform="translate(58 210)">
-          <rect id="Rectangle_414" data-name="Rectangle 414" width="15" height="15" fill="#7e829e" />
-          <path id="Path_520" data-name="Path 520" d="M14,13H5V11h9Z" transform="translate(-2 -4.5)" fill="#fff" />
-          <path id="Path_521" data-name="Path 521" d="M9,2H0V0H9Z" transform="translate(6.5 12) rotate(-90)" fill="#fff" />
-        </g>
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <path id="Path_536" data-name="Path 536" d="M15.444,3H4.556A1.555,1.555,0,0,0,3,4.556V15.444A1.555,1.555,0,0,0,4.556,17H15.444A1.56,1.56,0,0,0,17,15.444V4.556A1.56,1.56,0,0,0,15.444,3Zm0,12.444H4.556V4.556H15.444ZM9.222,13.889h1.556V10.778h3.111V9.222H10.778V6.111H9.222V9.222H6.111v1.556H9.222Z" transform="translate(-3 -3)" fill="#7e829e"/>
+</svg>
+
   )
 }
 

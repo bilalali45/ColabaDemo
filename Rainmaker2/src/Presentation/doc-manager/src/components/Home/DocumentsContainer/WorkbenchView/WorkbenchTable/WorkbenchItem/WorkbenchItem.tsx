@@ -37,7 +37,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   const viewer: any = state.viewer;
   const { currentDoc }: any = state.documents;
   const instance: any = viewer?.instance;
-  const { selectedFileData, currentFile }: any = state.viewer;
+  const { selectedFileData, currentFile, isFileChanged }: any = state.viewer;
   const loanApplicationId = LocalDB.getLoanAppliationId();
 
   const toggleReassignDropdown = async (e: any) => {
@@ -124,6 +124,12 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       };
       
       const viewFileForWorkBench = async () => {
+
+        // if(isFileChanged) {
+        //   dispatch({type: ViewerActionsType.SetShowingConfirmationAlert, payload: true});
+        //   return;
+        // }
+
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
         setCurrentDocument();
         

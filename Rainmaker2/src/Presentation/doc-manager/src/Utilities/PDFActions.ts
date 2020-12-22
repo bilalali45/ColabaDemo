@@ -3,11 +3,11 @@ import { FileUpload } from "./helpers/FileUpload";
 import { Viewer } from "./Viewer";
 
 export class PDFActions extends Viewer {
-    
+
 
 
     static async createPDFforDownload() {
-        try{
+        try {
             const buffer = await this.instance.exportPDF();
             const blob = new Blob([buffer], { type: "application/pdf" });
             if (navigator.msSaveOrOpenBlob) {
@@ -23,104 +23,190 @@ export class PDFActions extends Viewer {
                 window.URL.revokeObjectURL(objectUrl);
             }
             return true
-        } catch (error){
+        } catch (error) {
             return false;
         }
-        
+
     }
 
-    static async createPDFWithAnnotations() {
-        this.createPDFforDownload();
-    }
+
     static async createPDFWithoutAnnotations() {
-        let annotations:any  = []
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            annotations.push( await this.instance.getAnnotations(i));
-            for (const annotation of annotations[i]) {
-                await this.instance.update(annotation.set("noView", true));
-            }
-            
+        try {
+            const pagesAnnotations = await Promise.all(
+                Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
+                    Viewer.instance.getAnnotations(pageIndex)
+                )
+            );
+            await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+                if (pageList.toJS().length) {
+
+                    return Array.from(pageList.toArray()).map((annotation: any) => (
+                        Viewer.instance.update(annotation.set("noView", true))
+                    )
+
+                    )
+                }
+                else
+                    return Promise.resolve()
+
+            }).flat())
+
+            let res = await this.createPDFforDownload();
+
+
+            await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+                if (pageList.toJS().length) {
+
+                    return Array.from(pageList.toArray()).map((annotation: any) => (
+                        Viewer.instance.update(annotation.set("noView", false))
+                    )
+
+                    )
+                }
+                else
+                    return Promise.resolve()
+
+            }).flat())
+            return res
         }
-        
-
-        let res = await this.createPDFforDownload();
-
-
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            for (const annotation of annotations[i]) {
-                await this.instance.update(annotation);
-            }
-         }
-         return res
+        catch (error) {
+            console.log(error)
+        }
     }
 
 
-    static async createPDFFromInstance(name:string) {
-        let annotations:any  = []
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            annotations.push( await this.instance.getAnnotations(i));
-            for (const annotation of annotations[i]) {
-                await this.instance.update(annotation.set("noView", true));
+    static async createPDFFromInstance(name: string) {
+
+        console.time("completeExport")
+
+        const pagesAnnotations = await Promise.all(
+            Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
+                Viewer.instance.getAnnotations(pageIndex)
+            )
+        );
+
+        await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+            if (pageList.toJS().length) {
+
+                return Array.from(pageList.toArray()).map((annotation: any) => (
+                    Viewer.instance.update(annotation.set("noView", true))
+                )
+
+                )
             }
-            
-        }
+            else
+                return Promise.resolve()
+
+        }).flat())
+
+
 
         const buffer = await this.instance.exportPDF();
         const blob = new Blob([buffer], { type: "application/pdf" });
-        let file = new File([blob], name, { lastModified: Date.now(), type:  "application/pdf"  });
+        let file = new File([blob], name, { lastModified: Date.now(), type: "application/pdf" });
 
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            for (const annotation of annotations[i]) {
-                await this.instance.update(annotation);
+        await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+            if (pageList.toJS().length) {
+
+                return Array.from(pageList.toArray()).map((annotation: any) => (
+                    Viewer.instance.update(annotation.set("noView", false))
+                )
+
+                )
             }
-         }
+            else
+                return Promise.resolve()
 
-        return file; 
+        }).flat())
+        console.timeEnd("completeExport")
+        return file;
+
 
     }
 
     static async createNewFileFromThumbnail(pageIndex: number) {
 
-        let annotations =  await this.instance.getAnnotations(pageIndex);
-        for (let annotation of annotations.toArray()) {
-            await this.instance.updateAnnotation(annotation.set("noView", true));
+        const pagesAnnotations = await Viewer.instance.getAnnotations(pageIndex)
+
+        await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+            if (pageList.toJS().length) {
+
+                return Array.from(pageList.toArray()).map((annotation: any) => (
+                    Viewer.instance.update(annotation.set("noView", true))
+                )
+
+                )
+            }
+            else
+                return Promise.resolve()
+
+        }).flat())
+        let buffer: any;
+
+        try {
+            buffer = await this.instance.exportPDFWithOperations([
+                {
+                    type: "keepPages",
+                    pageIndexes: [+pageIndex]
+                }
+            ], null);
         }
-        const buffer = await this.instance.exportPDFWithOperations([
-            {
-                type: "keepPages",
-                pageIndexes: [+pageIndex]
-            }   
-        ], null);
+        catch (error) {
+            console.log(error)
+        }
         const blob = new Blob([buffer], { type: "application/pdf" });
-        let file = new File([blob], FileUpload.getFileNameByDate(), { lastModified: Date.now(),  type:  "application/pdf" });
-        for (const annotation of annotations.toArray()) {
-            await this.instance.updateAnnotation(annotation);
-        }
+        let file = new File([blob], FileUpload.getFileNameByDate(), { lastModified: Date.now(), type: "application/pdf" });
+
+
+        await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+            if (pageList.toJS().length) {
+
+                return Array.from(pageList.toArray()).map((annotation: any) => (
+                    Viewer.instance.update(annotation.set("noView", false))
+                )
+
+                )
+            }
+            else
+                return Promise.resolve()
+
+        }).flat())
         return file;
+
     }
 
 
-    static async printPDF(){
+    static async printPDF() {
 
-        
-        let annotations:any  = []
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            annotations.push( await Viewer.instance.getAnnotations(i));
-            for (const annotation of annotations[i]) {
-                await Viewer.instance.updateAnnotation(annotation.set("noView", true));
+        const pagesAnnotations = await Promise.all(
+            Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
+                Viewer.instance.getAnnotations(pageIndex)
+            )
+        );
+
+        await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
+
+            if (pageList.toJS().length) {
+
+                return Array.from(pageList.toArray()).map((annotation: any) => (
+                    Viewer.instance.update(annotation.set("noPrint", true))
+                )
+
+                )
             }
-            
-        }
-        
+            else
+                return Promise.resolve()
+
+        }).flat())
+
 
         await Viewer.instance.print();
-
-
-        for (let i = 0; i < Viewer.instance.totalPageCount; i++) {
-            for (const annotation of annotations[i]) {
-                await Viewer.instance.updateAnnotation(annotation);
-            }
-         }
     }
 
 

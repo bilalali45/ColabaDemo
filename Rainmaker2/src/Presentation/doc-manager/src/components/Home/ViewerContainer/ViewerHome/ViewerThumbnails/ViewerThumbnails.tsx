@@ -9,6 +9,7 @@ import { PDFThumbnails } from "../../../../../Utilities/PDFThumbnails";
 import { ScrollDownArrow, ErrorIcon } from "../../../../../shared/Components/Assets/SVG";
 import PSPDFKit from "pspdfkit";
 import { Viewer } from "../../../../../Utilities/Viewer";
+import { AnnotationActions } from "../../../../../Utilities/AnnotationActions";
 
 const scrollToRef = (ref: any, dir: any) => {
   if (dir == 'up') { ref.current.scrollTo(0, (ref.current.scrollTop - 5)); }
@@ -25,6 +26,7 @@ export const ViewerThumbnails = () => {
   const [currentPageIndex, setCurrentIndex] = useState(0);
 
   const [isThumbnailGenerated, setIsThumbnailGenerated] = useState(false);
+  const [isEmptythumbnailSet, setIsEmptythumbnailSet] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false);
   const { state, dispatch } = useContext(Store);
 
@@ -33,7 +35,7 @@ export const ViewerThumbnails = () => {
 
   const documents: any = state.documents;
   const isDragging: any = documents?.isDragging;
-
+  const { isFileChanged }: any = state.viewer;
   const scrlUpRef = useRef<HTMLUListElement | any>(null);
   const doScrlUp = () => scrollToRef(scrlUpRef, 'up');
   const doScrlDn = () => scrollToRef(scrlUpRef, '');
@@ -42,17 +44,29 @@ export const ViewerThumbnails = () => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: thumbDragged });
   }, [thumbDragged])
 
+  useEffect(()=>{
+    if (instance) {
+      
+    setThumbnails(
+      new Array(instance?.totalPageCount).map((item) => (item = ""))
+    );
+  }
+  },[instance?.totalPageCount])
   useEffect(() => {
 
     
     (async () => {
       if (instance) {
 
-          setThumbnails(
-            new Array(instance?.totalPageCount).map((item) => (item = ""))
-          );
-
           await generateAllThumbnailData();
+            instance.addEventListener("annotations.change", () => {
+              // ...
+             
+              let currpage = instance?.viewState?.currentPageIndex
+                generateThumbnailForSinglePage(currpage)
+              
+              
+            })
           setCurrentIndex(0)
       }
       else {
@@ -65,7 +79,6 @@ export const ViewerThumbnails = () => {
 
 
   const generateAllThumbnailData = async () => {
-
     // if(!isThumbnailGenerated){
     let TempThumbnails: any = [];
     for (let i = 0; i < instance?.totalPageCount; i++) {
@@ -76,10 +89,27 @@ export const ViewerThumbnails = () => {
       if (instance?.totalPageCount === 1) {
         setThumbnails([TempThumbnails[0]]);
       }
+      if(i === instance?.totalPageCount-1){
+        let thumbnail = await PDFThumbnails.generateThumbnailData(0)
+        setThumbnails((prevState) => [
+          ...prevState.map((item, index) => index === 0 ? thumbnail : item),
+        ]);
+      }
     }
     // } 
-    setIsThumbnailGenerated(true)
+    dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+    
   };
+
+  const generateThumbnailForSinglePage = async(currPage:number) => {
+    
+    let thumbnail = await PDFThumbnails.generateThumbnailData(currPage)
+    setThumbnails((prevState) => [
+      ...prevState.map((item, index) => index === currPage ? thumbnail : item),
+    ]);
+
+  }
+
 
   const swapThumnails = (pageIndex: number, moveIndex: number) => {
     let swappedThumbnails = thumbnails;

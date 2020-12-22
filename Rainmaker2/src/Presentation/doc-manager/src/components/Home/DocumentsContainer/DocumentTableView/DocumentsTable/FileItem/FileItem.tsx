@@ -34,7 +34,10 @@ import { readSync } from "fs";
 import { fireEvent } from "@testing-library/react";
 import { Viewer } from "../../../../../../Utilities/Viewer";
 import { ViewerActions } from "../../../../../../Store/actions/ViewerActions";
+import { FileUpload } from "../../../../../../Utilities/helpers/FileUpload";
 
+import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
+import { setTimeout } from "timers";
 export const FileItem = ({
   file,
   setDraggingSelf,
@@ -45,7 +48,8 @@ export const FileItem = ({
   fileInd,
   retry,
   deleteFile,
-  getDocswithfailedFiles
+  getDocswithfailedFiles,
+  setOpenReassignDropdown
 }: any) => {
   const [
     showingReassignDropdown,
@@ -62,11 +66,14 @@ export const FileItem = ({
   const { state, dispatch } = useContext(Store);
 
   const viewer: any = state.viewer;
-  const { currentFile, selectedFileData, isLoading }: any = state.viewer;
+  const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
   const documents: any = state.documents;
+  const catScrollFreeze: any = documents?.catScrollFreeze;
+
   const isDragging: any = documents;
   const filesToSync: any = documents?.filesToSync || [];
   const isSynching: any = documents?.isSynching;
+  const isByteProAuto:boolean = documents?.isByteProAuto;
   const syncStarted: any = documents?.syncStarted;
   const instance: any = viewer?.instance;
   const loanApplicationId = LocalDB.getLoanAppliationId();
@@ -76,9 +83,25 @@ export const FileItem = ({
 
     setReassignDropdownTarget(target);
     setShowingReassignDropdown(true);
+    dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
+   // dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
+
+   // setOpenReassignDropdown(showingReassignDropdown)
   };
 
-  const hideReassign = () => setShowingReassignDropdown(false);
+  const hideReassign = () => {
+    //dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: false });
+  setShowingReassignDropdown(false);}
+  
+  useEffect(() => {
+      if(catScrollFreeze===true && showingReassignDropdown===true){
+      dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
+    }
+    else {
+    dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: showingReassignDropdown });
+  }
+  }, [showingReassignDropdown]);
+
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
   }, [isDraggingItem]);
@@ -108,7 +131,7 @@ export const FileItem = ({
   };
 
   const toggleSyncAlert = () => {
-    if(syncStarted) {
+    if (syncStarted) {
       return;
     }
     if (file.byteProStatus !== 'Synchronized') {
@@ -141,16 +164,26 @@ export const FileItem = ({
   };
 
   const viewFileForDocCategory = async () => {
-    
 
+    // if (isFileChanged) {
+    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+    //   dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
+    //   return;
+    // }
+
+    viewFile(file, document, dispatch);
+
+  };
+
+  const viewFile = async (file: any, document: any, dispatch: any) => {
+    dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
     if (file.file && file.uploadProgress <= 100) return;
-    dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
     ViewerActions.resetInstance(dispatch);
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
     await setCurrentDocument();
     await DocumentActions.viewFile(document, file, dispatch);
-
-  };
+    dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
+  }
 
   const onDoubleClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -223,7 +256,8 @@ export const FileItem = ({
             <ReassignListIcon />
           </a>
         </li>
-        {renderSyncIcon()}
+
+        {!isByteProAuto &&  renderSyncIcon()}
       </ul>
     );
   };
@@ -286,6 +320,51 @@ export const FileItem = ({
     )
   }
 
+  const renderSizeNotAllowed = () => {
+    return (
+      <li className="item-error" data-testid="type-not-allowed-item">
+        <div className="l-icon">
+          <img src={erroricon} alt="" />
+        </div>
+        <div className="d-name">
+          <div>
+            <p>{file.clientName}</p>
+            <div className="modify-info">
+              <span className="mb-text">
+                {" "}
+                File size must be under {FileUpload.allowedSize} mb
+                {/* File size over {FileUpload.allowedSize}mb limit{" "} */}
+              </span>
+            </div>
+          </div>
+          <div className="action-btns">
+          <ul>
+            <li
+              onClick={() => {
+                retry(file);
+              }}
+            >
+              <a title="Retry" className="icon-retry" tabIndex={-1}>
+                <span className="retry-txt">Retry</span>{" "}
+                <img src={refreshIcon} alt="" />
+              </a>
+            </li>
+            <li>
+              <a
+                data-testid={``}
+                onClick={() => deleteFile(file)}
+                tabIndex={-1}
+                title="Remove"
+              >
+                <i className="zmdi zmdi-close"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </li>
+    );
+  };
   const renderTypeIsNotAllowed = () => {
     return (
       <li className="item-error" data-testid="type-not-allowed-item">
@@ -377,7 +456,9 @@ export const FileItem = ({
   };
 
   const renderNotAllowedFile = () => {
-    if (file.notAllowedReason === "FileType") {
+    if (file.notAllowedReason === "FileSize") {
+      return renderSizeNotAllowed();
+    } else if (file.notAllowedReason === "FileType") {
       return renderTypeIsNotAllowed();
     } else if (file.notAllowedReason === "Failed") {
       return renderFileUploadFailed();
@@ -397,69 +478,74 @@ export const FileItem = ({
   }
 
   return (
-    <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''} ${getCurrentFileSelectedStyle()}`}
-      draggable={!editingModeEnabled ? true : false}
-      onDragStart={async (e: any) => {
-        await DragStartHandler(e)
-      }}
-      onDragEnd={() => {
-        let dragView: any = window.document.getElementById('fileBeingDragged');
-         window.document.body.removeChild(dragView);
-        setIsDraggingItem(false);
-      }}
-    >
-      <div className="l-icon">
-        <FileIcon />
-      </div>
-      <div
-        className="d-name"
-        onDoubleClick={(event) => onDoubleClick(event)}
-        onClick={viewFileForDocCategory}
+    <>
+      <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''} ${getCurrentFileSelectedStyle()}`}
+        draggable={!editingModeEnabled ? true : false}
+        onDragStart={async (e: any) => {
+          await DragStartHandler(e)
+        }}
+        onDragEnd={() => {
+          let dragView: any = window.document.getElementById('fileBeingDragged');
+          window.document.body.removeChild(dragView);
+          setIsDraggingItem(false);
+        }}
       >
-        {!!editingModeEnabled ? (
-          <RenameFile
-            editingModeEnabled={editingModeEnabled}
-            editMode={editMode}
-            isWorkBenchFile={false}
-          />
-        ) : (
-            <div>
-              <p title={DocumentActions.getFileName(file)}>{DocumentActions.getFileName(file)}</p>
-              {file.file && file.uploadProgress <= 100?null : 
-              <div className="modify-info">
-                <span className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
-                <span className="mb-name">
-                  {file.userName ? file.userName : "Borrower"}{" "}
-                  {getFileDate(file)}
-                </span>
-              </div>}
-            </div>
-          )}
-      </div>
-      {doesFileExist() && <div className={`syncActive`} style={{ flex: 1 }}>
-      </div>}
-      <div className={`dl-actions ${showingReassignDropdown ? "show" : ""}`}>
-
-        {file.file && file.uploadProgress < 100 ? null : renderFileActions()}
-        {showingReassignDropdown ? (
-          <ReassignDropdown
-            visible={showingReassignDropdown}
-            hide={hideReassign}
-            container={refReassignDropdown?.current}
-            target={reassignDropdownTarget}
-            selectedFile={file}
-            isFromWorkbench={false}
-            getDocswithfailedFiles={getDocswithfailedFiles}
-          />) : null
-        }
-      </div>
-      {file.file && file.uploadProgress < 100 && (
+        <div className="l-icon">
+          <FileIcon />
+        </div>
         <div
-          data-testid="upload-progress-bar"
-          className="progress-upload"
-          style={{ width: file.uploadProgress + "%" }}
-        ></div>
-      )}
-    </li>
+          className="d-name"
+          onDoubleClick={(event) => onDoubleClick(event)}
+          onClick={viewFileForDocCategory}
+        >
+          {!!editingModeEnabled ? (
+            <RenameFile
+              editingModeEnabled={editingModeEnabled}
+              editMode={editMode}
+              isWorkBenchFile={false}
+            />
+          ) : (
+              <div>
+                <p title={DocumentActions.getFileName(file)}>{DocumentActions.getFileName(file)}</p>
+                {file.file && file.uploadProgress <= 100 ? null :
+                  <div className="modify-info">
+                    <span className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
+                    <span className="mb-name">
+                      {file.userName ? file.userName : "Borrower"}{" "}
+                      {getFileDate(file)}
+                    </span>
+                  </div>}
+              </div>
+            )}
+        </div>
+        {doesFileExist() && <div className={`syncActive`} style={{ flex: 1 }}>
+        </div>}
+        <div className={`dl-actions ${showingReassignDropdown ? "show" : ""}`}>
+
+          {file.file && file.uploadProgress < 100 ? null : renderFileActions()}
+          {showingReassignDropdown ? (
+            <ReassignDropdown
+              visible={showingReassignDropdown}
+              hide={hideReassign}
+              container={refReassignDropdown?.current}
+              target={reassignDropdownTarget}
+              selectedFile={file}
+              isFromWorkbench={false}
+              getDocswithfailedFiles={getDocswithfailedFiles}
+            />) : null
+          }
+        </div>
+        {file.file && file.uploadProgress < 100 && (
+          <div
+            data-testid="upload-progress-bar"
+            className="progress-upload"
+            style={{ width: file.uploadProgress + "%" }}
+          ></div>
+        )}
+      </li>
+      { isFileChanged && showingConfirmationAlert && fileToChangeWhenUnSaved?.file === file ? <ConfirmationAlert
+        viewFile={(file: any, document: any, dispatch: any) => viewFile(file, document, dispatch)}
+      /> : ''}
+    </>
   );
 };

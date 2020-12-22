@@ -145,7 +145,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     return (
 
 
-        <li>
+        <li className={show?'active':''}>
 
             <div className="Compo-add-document" ref={mainContainerRef}  >
                 <div className="dh-actions-lbl-wrap" ref={aRef} onClick={(e) => { handleClick(e) }}>

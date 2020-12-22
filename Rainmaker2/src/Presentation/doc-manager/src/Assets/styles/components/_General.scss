@@ -410,6 +410,26 @@ a,button{
             //     padding-top: 10px;
             // }
         }
+
+        &.havModalcloseIcon {
+            .modal-header{
+                border-bottom: none;
+                padding-bottom: 0;
+                padding: 0;
+                display: block;
+                .close {
+                    display: block;
+                    position: absolute;
+                    right: 16px;
+                    top: 17px;
+                    cursor: pointer;
+                    z-index: 7588;
+                    padding: 3px 10px;
+                    height: 21px;
+                }
+         
+            }
+        }
         .modal-footer {
             border-top: none;
             align-items: center;

@@ -23,6 +23,7 @@ type DocumentItemType = {
   refReassignDropdown: any;
   setFileClicked:Function;
   fileClicked:boolean;
+  setOpenReassignDropdown:any;
 };
 
 export const DocumentItem = ({
@@ -30,7 +31,8 @@ export const DocumentItem = ({
   document,
   refReassignDropdown,
   setFileClicked, 
-  fileClicked
+  fileClicked,
+  setOpenReassignDropdown
 }: DocumentItemType) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -290,6 +292,7 @@ if(text){
           setRetryFile = {setRetryFile}
           setFileClicked ={setFileClicked}
           getDocswithfailedFiles = {getDocswithfailedFiles}
+          setOpenReassignDropdown={setOpenReassignDropdown}
         />
       )}
     </section>

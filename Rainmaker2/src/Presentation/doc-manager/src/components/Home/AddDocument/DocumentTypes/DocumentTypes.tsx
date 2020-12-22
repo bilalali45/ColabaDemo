@@ -11,8 +11,6 @@ export const DocumentTypes = ({ documentTypeList, changeCurrentDocType, currentC
 
     const [documentTypeItems, setDocumentTypeList] = useState<any[]>(documentTypeList);
 
-    console.log(currentCategoryDocuments);
-
     const reorderCatsToShowOtherInLast = () => {
         let cats = [];
         let otherCat = null;

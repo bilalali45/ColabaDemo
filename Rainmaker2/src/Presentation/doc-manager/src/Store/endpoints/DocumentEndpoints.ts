@@ -4,6 +4,7 @@ export class DocumentEndpoints {
         all: (loanApplicationId: string) =>  `/api/Documentmanagement/admindashboard/GetDocuments?loanApplicationId=${loanApplicationId}&pending=false`,
         categoryDocuments: () => `/api/documentmanagement/template/GetCategoryDocument`,
         viewDocument: (id:string, requestId:string, docId: string, fileId:string) => `/api/documentmanagement/document/view?id=${id}&requestId=${requestId}&docId=${docId}&fileId=${fileId}`,
+        checkIsByteProAuto: () =>`/api/documentmanagement/setting/GetTenantSetting`,
     }
   
     static POST = {
