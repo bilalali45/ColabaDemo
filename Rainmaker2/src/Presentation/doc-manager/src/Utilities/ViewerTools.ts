@@ -3,7 +3,7 @@ import DocumentActions from "../Store/actions/DocumentActions";
 import { Endpoints } from "../Store/endpoints/Endpoints";
 import { ViewerActionsType } from "../Store/reducers/ViewerReducer";
 import { AnnotationActions } from "./AnnotationActions";
-import { rotateLeftIcon, roatateRightIcon, flipIcon, saveIcon, downloadIcon, printIcon, saveIconDisabled } from "./CustomIcons";
+import { editIcon, saveIcon, downloadIcon, printIcon } from "./CustomIcons";
 import { PDFActions } from "./PDFActions";
 import { Viewer } from "./Viewer";
 
@@ -34,15 +34,6 @@ export class ViewerTools extends Viewer {
 
     static createToolbarItem(type: string, id?: string, title?: string, icon?: string, onPress?: Function, className?: string) {
         return { type, id, title, icon, onPress, className }
-    }
-
-    static rotateLeft() {
-
-        Viewer.instance?.setViewState((viewState: { rotateLeft: () => any }) => viewState.rotateLeft())
-    }
-
-    static rotateRight() {
-        Viewer.instance?.setViewState((viewState: { rotateRight: () => any }) => viewState.rotateRight());
     }
 
     static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
@@ -109,13 +100,11 @@ export class ViewerTools extends Viewer {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
         saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
-        const rotateLeftButton: any = this.createToolbarItem('custom', 'rotate-left', 'Rotate Left', rotateLeftIcon, this.rotateLeft);
-        const rotateRightButton: any = this.createToolbarItem('custom', 'rotate-right', 'Rotate Right', roatateRightIcon, this.rotateRight);
-        const flipButton: any = this.createToolbarItem('custom', 'flip', 'Flip', flipIcon);
+        const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, this.downloadFile);
         const printButton: any = this.createToolbarItem('custom', 'print', 'Print', printIcon, PDFActions.printPDF);
 
-        let customizedToolBarItems: any = [rotateLeftButton, rotateRightButton, downloadButton, printButton];
+        let customizedToolBarItems: any = [editPDF, downloadButton, printButton];
 
         this.currentToolbar.forEach((toolbaritem) => {
             customizedToolBarItems.push(
@@ -138,6 +127,19 @@ export class ViewerTools extends Viewer {
 
     static fitToScreen() {
         this.instance.setViewState((viewState: any) => viewState.set("zoom", "FIT_TO_VIEWPORT"));
+    }
+
+    static editPDF(instance:any, dispatch:any){
+        instance.setViewState((viewState:any) =>
+            viewState.set(
+            "interactionMode", 'DOCUMENT_EDITOR'
+            )
+        );
+
+        dispatch({
+            type: ViewerActionsType.SetIsFileChanged,
+            payload: false
+        })
     }
 
     static async convertImageToPDF(src: any) {

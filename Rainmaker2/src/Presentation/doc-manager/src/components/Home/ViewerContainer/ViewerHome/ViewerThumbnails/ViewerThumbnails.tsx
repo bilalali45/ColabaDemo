@@ -101,6 +101,10 @@ export const ViewerThumbnails = () => {
     
   };
 
+  useEffect(() => {
+    generateAllThumbnailData();
+},[isFileChanged])
+
   const generateThumbnailForSinglePage = async(currPage:number) => {
     
     let thumbnail = await PDFThumbnails.generateThumbnailData(currPage)
