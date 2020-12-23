@@ -67,6 +67,7 @@ const App = () => {
     window.resizeTo(400, 600); 
     console.log("Document Management App Version", "0.1.3");
     authenticate();
+    UserActions.testHttpRequest();
     // component unmount
     return () => {
       Auth.removeAuth();

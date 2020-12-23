@@ -33,7 +33,7 @@ export class LaonActions {
    
     try {
       let newUrl = `${baseUrl}${Endpoints.loan.GET.info(loanApplicationId)}`
-      const bearer = `Bearer ${this.decodeString(localStorage.getItem("auth"))}`;
+      const bearer = `Bearer ${Auth.getAuth()}`;
       const options: any = {
         method: "get",
         url: newUrl,

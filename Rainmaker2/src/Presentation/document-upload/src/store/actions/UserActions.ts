@@ -34,4 +34,24 @@ export class UserActions {
   static async logout() {
     Auth.removeAuth();
   }
+
+  static async testHttpRequest() {
+    // Third Party
+    try {
+      await axios.get('https://reqres.in/api/users?page=2');
+      console.log("Third party executed Successfully")
+    } catch (error) {
+      console.log("Third party Error", error)
+      return false;
+    }
+    // Azure Maingateway
+    try {
+      await axios.get('https://rsapigateway.azurewebsites.net/WeatherForecast');
+      console.log("Azure Maingateway Executed Successfully")
+    } catch (error) {
+      console.log("Azure Maingateway Error", error)
+      return false;
+    }
+    
+  }
 }
