@@ -315,16 +315,22 @@ export const NewNeedList = () => {
 
   const saveAsDraft = async (toDraft: boolean) => {
     let emailData : any = {};
-    if(emailContent === null && selectedEmailTemplate){     
-      emailData.emailTemplateId = selectedEmailTemplate.id; 
+    if(emailContent === null && selectedEmailTemplate){
+      emailData.emailTemplateId = selectedEmailTemplate.id;
       emailData.toAddress = null;
       emailData.fromAddress = null;
       emailData.ccAddress = null;
       emailData.subject = null;
       emailData.emailBody = null;
-
     }else{
-      emailData = emailContent;
+      const regExOpenTag = new RegExp('<li>', "g");
+      emailData.emailTemplateId = emailContent.emailTemplateId;
+      emailData.toAddress = emailContent.toAddress;
+      emailData.fromAddress = emailContent.fromAddress;
+      emailData.ccAddress = emailContent.ccAddress;
+      emailData.subject = emailContent.subject;
+      let body = emailContent.emailBody;
+      emailData.emailBody = body.replace(regExOpenTag,'<li style="padding-bottom: 10px;">');
     }
     await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
     if (toDraft) {
@@ -337,6 +343,7 @@ export const NewNeedList = () => {
     }
     disableBrowserPrompt();
   };
+
 
   const addTemplatesDocuments = (idArray: string[]) => {
     if (!idArray) {
