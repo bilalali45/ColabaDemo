@@ -61,7 +61,8 @@ export interface ActivityLogType {
 export enum DocumentStatus {
   PENDING_REVIEW = 'Pending review',
   COMPLETED = 'Completed',
-  IN_DRAFT = 'In draft'
+  IN_DRAFT = 'In draft',
+  STARTED = 'Started'
 }
 
 export interface EmailLogsType {

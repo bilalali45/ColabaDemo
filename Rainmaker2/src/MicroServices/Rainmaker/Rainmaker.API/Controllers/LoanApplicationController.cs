@@ -172,7 +172,7 @@ namespace Rainmaker.API.Controllers
             return Convert.ToBase64String(ms.ToArray());
         }
 
-        [Authorize(Roles = "MCU")]
+        [Authorize(Roles = "MCU,Customer")]
         [HttpPost("[action]")]
         public async Task<IActionResult> PostLoanApplication([FromBody] PostLoanApplicationModel model)
         {

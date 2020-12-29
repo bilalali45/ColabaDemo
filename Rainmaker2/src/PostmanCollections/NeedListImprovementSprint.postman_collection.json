@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "afccaa31-5ae9-4cbe-ae2a-d19ae3b6da99",
+		"name": "NeedListImprovementSprint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetLoanOfficers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/setting/GetLoanOfficers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"setting",
+						"GetLoanOfficers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateByteUsersName",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"userId\": 8,\r\n        \"userName\": \"minaz.karim\",\r\n        \"byteUserName\": \"Minaz Karim\",\r\n        \"fullName\": \"Minaz Karim\"\r\n    },\r\n    {\r\n        \"userId\": 21,\r\n        \"userName\": \"Tanner.Holland\",\r\n        \"byteUserName\": null,\r\n        \"fullName\": \"Tanner Holland\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/setting/UpdateByteUsersName",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"setting",
+						"UpdateByteUsersName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateByteOrganizationCode",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\": 1,\r\n        \"name\": \"AHCLending\",\r\n        \"byteOrganizationCode\": \"100390\"\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"name\": \"Texas Trust Home Loans\",\r\n        \"byteOrganizationCode\": null\r\n    },\r\n    {\r\n        \"id\": 3,\r\n        \"name\": \"Lendova Mortgage\",\r\n        \"byteOrganizationCode\": null\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/setting/UpdateByteOrganizationCode",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"setting",
+						"UpdateByteOrganizationCode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBusinessUnits",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/rainmaker/setting/GetBusinessUnits",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"rainmaker",
+						"setting",
+						"GetBusinessUnits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveByBorrower",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"loanApplicationId\":4188,\r\n      \"docId\":\"5f0e8d014e72f52edcff3887\",\r\n      \"order\":[1,2],\r\n      \"tenantId\":1,\r\n      \"files\":[]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7075/api/Documentmanagement/request/SaveByBorrower?isDraft=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7075",
+					"path": [
+						"api",
+						"Documentmanagement",
+						"request",
+						"SaveByBorrower"
+					],
+					"query": [
+						{
+							"key": "isDraft",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubmitByBorrower",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "loanApplicationId",
+							"value": "4188",
+							"type": "text"
+						},
+						{
+							"key": "docId",
+							"value": "5f4745fccca0a5d1c973abf9",
+							"type": "text"
+						},
+						{
+							"key": "displayName",
+							"value": "Property Survey",
+							"type": "text"
+						},
+						{
+							"key": "order",
+							"value": "[]",
+							"type": "text"
+						},
+						{
+							"key": "tenantId",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/C:/Users/user/Downloads/unnamed.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/file/SubmitByBorrower",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"file",
+						"SubmitByBorrower"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

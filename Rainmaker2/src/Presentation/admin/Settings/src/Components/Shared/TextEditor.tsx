@@ -135,7 +135,7 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
             link: {
               inDropdown: false,                         
               showOpenOptionOnHover: true,
-              defaultTargetOption: '_self',
+              defaultTargetOption: '_blank',
               options: ['link'],
               link:{className:'editor-toolbar--btn-link'}
             },

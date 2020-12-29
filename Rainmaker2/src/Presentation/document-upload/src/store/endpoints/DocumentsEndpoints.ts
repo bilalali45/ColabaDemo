@@ -13,10 +13,12 @@ export class DocumentsEndpoints {
       fileId: string
     ) =>
       `/api/documentmanagement/file/view?id=${id}&requestId=${requestId}& docId=${docId}&fileId=${fileId}`,
+      categoryDocuments: () => `/api/documentmanagement/template/GetCategoryDocument`,
   };
 
   static POST = {
     submitDocuments: () => `/api/Documentmanagement/file/submit`,
+    submitByBorrower: () => `/api/Documentmanagement/file/SubmitByBorrower`
   };
 
   static PUT = {

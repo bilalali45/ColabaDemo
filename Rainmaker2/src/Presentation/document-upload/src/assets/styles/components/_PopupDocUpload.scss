@@ -1,0 +1,324 @@
+.popup-doc-upload{
+    width: 1110px;    
+    background-color: color('widgetBg');
+
+    &--btn-close{
+        border: none;
+        float: right;
+        margin: 14px;
+        font-size: 22px;
+        background-color: transparent;
+        color: color('light-purple');
+    }
+
+    &--header{
+        border-bottom: 1px solid color('border');
+        .h2{
+            font-size: fontSize('xmd');
+            font-weight: 500;
+            font-family: fontFamily('heading');
+            //color: color('heading');
+            display: inline-block;
+            padding: 16px 25px;
+            text-transform: uppercase;
+            margin: 0;
+            color: color('colorBlack');
+        }
+    }
+
+    &--body{
+        display: flex;
+        width: 100%;
+    }
+
+    &--sidebar{
+        flex: 0 0 40%;
+        width: 40%;
+        border-right: 1px solid color('border');;
+    }
+
+    &--sidebar-content{
+        padding: 20px 25px;
+        height: 495px;
+        overflow-y: auto;
+        @include scrollbar();
+
+        .dr-list-wrap{
+            nav{
+                ul{
+                    li{
+                        a{
+                            padding: 7px 10px 7px 30px;
+                            line-height: 1.2;
+                            min-height: 30px;
+                            &::before{
+                                left: 10px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &--search-area{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 6px 25px;
+        border-bottom: 1px solid color('border');
+        svg{
+            margin: 10px 1px;
+        }
+        .form-control{
+            height: 30px;
+            flex: 1 0 0;
+            border: none;
+
+            @include placeholder{
+                color: color('placeholder');
+                @include font(normal,1,'nr','base');
+            }     
+            
+            &:focus{
+                box-shadow: none;
+                outline: none;
+            }
+        }
+    }
+
+    &--list-group{
+        margin-bottom: 25px;
+
+        .h4{
+            @include font(500,1,'nr','heading');
+            text-transform: uppercase;
+            //color: color('heading');
+            margin-bottom: 15px;
+            color: color('colorBlack');
+        }
+    }
+
+    &--list{
+        color: color('base');
+        margin-left: -10px;
+        margin-right: -10px;
+        ul{
+            list-style: none;
+            margin: 0 !important;
+            padding: 0;
+            >li{
+                display: block;
+                a{
+                    display: block;
+                    padding: 7px 10px;
+                    color: color('base');                    
+                    em,i{
+                        margin-right: 5px;
+                        color: color('base');
+                    }
+                    .list-text{
+                        @extend .text-ellipsis;
+                    }
+                }
+                &:hover,&:focus{
+                    a{
+                        text-decoration: none;
+                    }
+                }
+                &.current{
+                    background-color: color('listhover');
+                    a{
+                        color: color('primary');
+                        &::before,em,i{
+                            color: color('primary');
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &--content-area{
+        flex: 0 0 60%;
+        width: 60%;
+
+        .doc-list-ul {
+            max-height: calc(100% - 40px);
+
+            .doc-li{
+                &.open,&.dopen{
+                    .doc-liWrap{
+                        z-index: 100;
+                    }
+                }
+            }
+        }
+
+        .Doc-upload{
+            min-height: auto;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            left: 0;
+            right: 0;
+
+            &::after{
+                content: "";
+                position: absolute;
+                height: auto;
+                width: auto;
+                left: 15px;
+                top: 15px;
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .file-drop-box{
+                min-height: calc(100vh - 300px);
+                margin: 0;
+                padding: 0;
+
+                &.havefooter{
+                    height: 405px;
+                }
+
+                .addmore-wrap{
+                    padding-top: 0px;
+                }
+
+                .list-selected-doc{
+                    padding: 0;
+                }
+            }
+        }
+        
+        &-header{
+            padding: 15px 25px;
+            border-bottom: 1px solid color('border');
+            height: 46px;
+            .h2,h2{
+                text-transform: uppercase;
+                @include font(500,1,'xmd','heading');
+                margin: 0;
+                color: color('colorBlack');
+            }
+        }
+
+        &-body{
+            height: 444px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            box-sizing: border-box;
+            @include scrollbar();
+
+            .doc-list-ul{
+                margin-top: 0;
+            }
+
+            .addmore-wrap{
+                margin-top: 15px;
+                a.addmoreDoc{
+                    @include font(500,'17px','nr','base');
+                    color: color('primary');
+                    cursor: pointer;
+                    display: inline-block;
+                    position: relative;
+                    overflow: hidden;
+
+                    &.disabled {
+                        pointer-events: none;
+                        color: color('disabled-text'); 
+                        -webkit-user-select: none;     
+                        -moz-user-select: none; 
+                        -ms-user-select: none; 
+                        -o-user-select: none;
+                        user-select: none;
+                    }
+
+                    input[type="file"]{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 4;
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+
+        &-footer{
+            border-top: 1px solid color('border');
+            text-align: end;
+            padding: 10px 20px;
+            .btn-sm{
+                padding: 8px 15px;
+                @include font(500,1,'sm','base');
+            }
+        }
+    }
+
+    &--list-not-selected{
+        text-align: center;
+        padding: 14% 19% 8%;
+        box-sizing: border-box;
+
+        svg{
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        .h2{
+            @include font(400,1,'xmd','heading');
+            color: color('heading');
+            span{
+                color: color('primary');
+            }
+        }
+    }
+
+    &--list-selected{
+        .no-document {
+            min-height: 370px;
+        }
+    }
+
+}
+
+/*===================================
+        Mobile SCSS
+====================================*/
+.popup-doc-upload.mobile{
+    margin-top: 0;
+    width: 100%;
+}
+
+@media (min-width:768px){
+    .popup-doc-upload{
+        max-width: calc(100vw - 40px);
+    }
+}
+
+@media (max-width:767px){
+    .popup-doc-upload{
+        .Doc-upload .file-drop-box .list-selected-doc{
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+        }
+        .doc-list-ul > li.item-error .noneditable.doc-liWrap {
+            padding: 10px 10px 10px 36px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+    }
+}

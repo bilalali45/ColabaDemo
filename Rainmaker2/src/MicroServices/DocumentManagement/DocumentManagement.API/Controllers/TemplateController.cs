@@ -7,7 +7,6 @@ using static DocumentManagement.Model.Template;
 
 namespace DocumentManagement.API.Controllers
 {
-    [Authorize(Roles = "MCU")]
     [ApiController]
     [Route(template: "api/DocumentManagement/[controller]")]
     public class TemplateController : Controller
@@ -31,6 +30,7 @@ namespace DocumentManagement.API.Controllers
 
         #region Get
 
+        [Authorize(Roles = "MCU")]
         [HttpGet(template: "GetTemplates")]
         public async Task<IActionResult> GetTemplates()
         {
@@ -41,7 +41,7 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
-
+        [Authorize(Roles = "MCU")]
         [HttpGet(template: "GetDocuments")]
         public async Task<IActionResult> GetDocument([FromQuery] GetTemplateDocuments moGetTemplateDocuments)
         {
@@ -50,7 +50,7 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
-
+        [Authorize(Roles = "MCU,Customer")]
         [HttpGet(template: "GetCategoryDocument")]
         public async Task<IActionResult> GetCategoryDocument()
         {
@@ -63,7 +63,7 @@ namespace DocumentManagement.API.Controllers
 
         #region Post
 
-     
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> RenameTemplate(RenameTemplateModel renameTemplateModel)
         {
@@ -77,6 +77,8 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             return NotFound();
         }
+
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> RenameTenantTemplate(RenameTemplateModel renameTemplateModel)
         {
@@ -89,6 +91,7 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> InsertTemplate(InsertTemplateModel insertTemplateModel)
         {
@@ -101,6 +104,7 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> InsertTenantTemplate(InsertTemplateModel insertTemplateModel)
         {
@@ -111,7 +115,7 @@ namespace DocumentManagement.API.Controllers
             return Ok(value: docQuery);
         }
 
-
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> AddDocument(AddDocumentModel addDocumentModel)
         {
@@ -127,6 +131,8 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             return NotFound();
         }
+
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> AddTenantDocument(AddDocumentModel addDocumentModel)
         {
@@ -141,7 +147,7 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
-
+        [Authorize(Roles = "MCU")]
         [HttpPost(template: "[action]")]
         public async Task<IActionResult> SaveTemplate(AddTemplateModel model)
         {
@@ -155,7 +161,7 @@ namespace DocumentManagement.API.Controllers
 
         #region Delete
 
-         
+        [Authorize(Roles = "MCU")]
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteDocument(DeleteDocumentModel deleteDocumentModel)
         {
@@ -170,6 +176,7 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "MCU")]
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteTenantDocument(DeleteDocumentModel deleteDocumentModel)
         {
@@ -182,6 +189,7 @@ namespace DocumentManagement.API.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "MCU")]
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteTemplate(DeleteTemplateModel deleteTemplateModel)
         {
@@ -194,6 +202,8 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             return NotFound();
         }
+
+        [Authorize(Roles = "MCU")]
         [HttpDelete(template: "[action]")]
         public async Task<IActionResult> DeleteTenantTemplate(DeleteTemplateModel deleteTemplateModel)
         {

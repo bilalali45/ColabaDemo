@@ -14,6 +14,8 @@ using URF.Core.EF;
 using TrackableEntities.Common.Core;
 using System.Net.Http;
 using RainMaker.Common.Extensions;
+using System.IO;
+using Rainmaker.Service.Helpers;
 
 namespace RainMaker.Service
 {
@@ -22,12 +24,16 @@ namespace RainMaker.Service
         private readonly IOpportunityService opportunityService;
         private readonly IUserProfileService userProfileService;
         private readonly ILoanApplicationService loanApplicationService;
-        public SettingService(IOpportunityService opportunityService, IUserProfileService userProfileService, ILoanApplicationService loanApplicationService, IUnitOfWork<RainMakerContext> previousUow, IServiceProvider services)
+        private readonly ICommonService commonService;
+        private readonly IFtpHelper ftp;
+        public SettingService(IOpportunityService opportunityService, IUserProfileService userProfileService, ILoanApplicationService loanApplicationService, ICommonService commonService, IFtpHelper ftp, IUnitOfWork<RainMakerContext> previousUow, IServiceProvider services)
             : base(previousUow, services)
         {
             this.opportunityService = opportunityService;
             this.userProfileService = userProfileService;
             this.loanApplicationService = loanApplicationService;
+            this.commonService = commonService;
+            this.ftp = ftp;
         }
 
         public async Task<(IEnumerable<Setting> collection, int totalRecords)> GetPagedListAsync(int pageNumber, int pageSize, DynamicLinQFilter gridfilter)
@@ -190,6 +196,7 @@ namespace RainMaker.Service
         }
         public async Task<List<ByteUserNameModel>> GetLoanOfficers()
         {
+            List<ByteUserNameModel> lstLoanOfficer = new List<ByteUserNameModel>();
             var result = await Uow.Repository<UserProfile>().Query(query: x => x.IsActive
                                                                           && !x.IsDeleted)
                 .Include(e => e.Employees)
@@ -199,13 +206,18 @@ namespace RainMaker.Service
             //Filter Loan Officers
             var loanOfficers = result.Where(c => c.UserInRoles.Any(x => x.RoleId == 12)).ToList();
 
-            return loanOfficers.Select(x => new ByteUserNameModel()
+            foreach (var lo in loanOfficers)
             {
-                userId = x.Id,
-                userName = x.UserName,
-                byteUserName = x.ByteUserName,
-                fullName = x.Employees.FirstOrDefault().Contact.FirstName + " " + x.Employees.FirstOrDefault().Contact.LastName
-            }).ToList();
+                ByteUserNameModel model = new ByteUserNameModel();
+                model.userId = lo.Id;
+                model.userName = lo.UserName;
+                model.byteUserName = lo.ByteUserName;
+                model.fullName = lo.Employees.FirstOrDefault().Contact.FirstName + " " + lo.Employees.FirstOrDefault().Contact.LastName;
+                model.photo = await GetPhoto(lo.Employees.FirstOrDefault().Photo);
+                lstLoanOfficer.Add(model);
+            }
+          
+            return lstLoanOfficer;
         }
         public async Task UpdateByteUserName(List<ByteUserNameModel> byteUserNameModel, int userId)
         {
@@ -224,15 +236,20 @@ namespace RainMaker.Service
         }
         public async Task<List<ByteBusinessUnitModel>> GetBusinessUnits()
         {
+            List<ByteBusinessUnitModel> lstByteBusinessUnit = new List<ByteBusinessUnitModel>();
             var result = await Uow.Repository<BusinessUnit>().Query(query: x => x.IsActive
                                                                           && !x.IsDeleted).ToListAsync();
 
-            return result.Select(x => new ByteBusinessUnitModel()
+            foreach (var item in result)
             {
-                id = x.Id,
-                name = x.Name,
-                byteOrganizationCode = x.ByteOrganizationCode
-            }).ToList();
+                ByteBusinessUnitModel model= new ByteBusinessUnitModel();
+                model.id = item.Id;
+                model.name = item.Name;
+                model.byteOrganizationCode = item.ByteOrganizationCode;
+                model.photo = await GetPhoto(item.Logo, item.Id);
+                lstByteBusinessUnit.Add(model);
+            }
+            return lstByteBusinessUnit;
         }
         public async Task UpdateByteOrganizationCode(List<ByteBusinessUnitModel> byteBusinessUnitModel, int userId)
         {
@@ -530,25 +547,32 @@ namespace RainMaker.Service
                             token.value = token.symbol;
                         }
                         break;
-                    //case TokenKey.DocumentUploadButton:
-                    //    {
-                    //        token.value = token.symbol;
-                    //    }
-                    //    break;
-                    //case TokenKey.LoanPortalHomeButton:
-                    //    {
-                    //        token.value = token.symbol;
-                    //    }
-                    //    break;
-                    //case TokenKey.DocumentsPageButton:
-                    //    {
-                    //        token.value = token.symbol;
-                    //    }
-                    //    break;
                 }
             }
             emailTemplate.toAddress = rmBorrower?.LoanContact?.EmailAddress ?? "";
             return lsTokenModels;
+        }
+
+        private async Task<string> GetPhoto(string photo, int? businessUnitId = null)
+        {
+            var remoteFilePath = await commonService.GetSettingValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId) + "/" + photo;
+            Stream imageData = null;
+            try
+            {
+                imageData = await ftp.DownloadStream(remoteFilePath);
+            }
+            catch
+            {
+                // this exception can be ignored
+            }
+            if (imageData == null)
+            {
+                imageData = new FileStream("Content\\images\\default-LO.jpg", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            }
+            using MemoryStream ms = new MemoryStream();
+            imageData.CopyTo(ms);
+            imageData.Close();
+            return Convert.ToBase64String(ms.ToArray());
         }
     }
 }

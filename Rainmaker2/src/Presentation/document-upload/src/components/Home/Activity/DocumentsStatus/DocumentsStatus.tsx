@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { DocumentActions } from "../../../../store/actions/DocumentActions";
-import { Endpoints } from "../../../../store/endpoints/Endpoints";
+import _ from "lodash";
 import { Auth } from "../../../../services/auth/Auth";
 import IconEmptyDocRequest from "../../../../assets/images/empty-doc-req-icon.svg";
 import IconDoneDocRequest from "../../../../assets/images/done-doc-req-icon.svg";
@@ -54,9 +54,10 @@ export const DocumentsStatus = () => {
       Auth?.getLoanAppliationId()
     );
     if (submittedDocs) {
+      const sortedUploadedDocuments = _.orderBy(submittedDocs, (item) => item.docName, ["asc",]);
       dispatch({
         type: DocumentsActionType.FetchSubmittedDocs,
-        payload: submittedDocs,
+        payload: sortedUploadedDocuments,
       });
     }
   };

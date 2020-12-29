@@ -63,7 +63,6 @@ export const NeedListRequest = ({
   const [requestHit, setRequestHit] = useState<boolean>(false);
 
   const documentContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     setLoaderVisible(false);
   }, []);

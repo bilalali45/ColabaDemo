@@ -74,49 +74,65 @@
     } 
 
     @include mobile {
-        padding-top: 0px;
-        padding-bottom: 0;
+        padding-top: 10px;
+        padding-bottom: 30px;
     }
 
     .uploaded-doc-list-mobile {
-        border: 1px solid color("border");
-        padding: 15px;
-        background: color('colorWhite');
+        //border: 1px solid color("border");
+        //padding: 15px;
+        //background: color('colorWhite');
         margin-bottom: 10px;
-        padding-left: 40px;
+        //padding-left: 40px;
         position: relative;
         &:last-child {
             margin-bottom: 0;
         }
-
-        .udl-m-icon-wrap {
-            position: absolute;
-            left: 15px;
-            em {
-                font-size: fontSize("xmd")-1;
-                color:color("light-purple")
-            }
+        .udl-m-content-wrap{
+            margin-bottom: 20px;
         }
         .doc-name {
             font: 400 #{fontSize('nr')+'/1'} fontFamily('base'); 
             color: color("colorBlack");  
+            text-transform: capitalize;
             margin-bottom: 10px;
             padding-top: 2px;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+
+            em {
+                font-size: fontSize("xmd")-1;
+                color:color("light-purple");
+                margin-right: 5px;
+                margin-left: 2px;
+            }
         }
         .m-doc-filename {
+            margin-bottom: 5px;
             a {
-                
-            font: 400 #{fontSize('nr')+'/1.3'} fontFamily('base'); 
-            color: color("primary");
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            display: block;
-            }  
-            margin-bottom: 13px;
+                background: color('colorWhite');
+                border: 1px solid color("border");
+                padding: 15px 35px 15px 15px;
+                font: 400 #{fontSize('nr')+'/1.3'} fontFamily('base'); 
+                color: color("colorBlack");
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                display: block;
+                position: relative;
+                box-shadow: 0 0 3px 0px rgba(0,0,0,0.1);
+
+                .pd-m-arrow-icon{
+                    position: absolute;
+                    top: 50%;
+                    right: 15px;
+                    z-index: 2;
+                    transform: translateY(-50%);
+                    font-size: fontSize('xmd');
+                    color: color('light-purple');
+                }
+            }              
         }
         .m-doc-date-wrap {
         .m-doc-date{

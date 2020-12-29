@@ -95,7 +95,7 @@ export const ReviewNeedListRequestHeader = ({
               <Button data-testid="needlist-close-popup-button" onClick={closeHandler} variant="secondary">
                 {"Close"}
               </Button>{" "}
-              <Button data-testid="needlist-save-popup-button" onClick={() => saveAsDraft(true)} variant="primary">
+              <Button  data-testid="needlist-save-popup-button" onClick={() => saveAsDraft(true)} variant="primary">
                 {"Save & Close"} 
               </Button>
             </p>

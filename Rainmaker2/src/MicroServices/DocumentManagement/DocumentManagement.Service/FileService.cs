@@ -250,6 +250,133 @@ namespace DocumentManagement.Service
                
             return null;
         }
+        public async Task<string> SubmitByBorrower(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
+        {
+            bool isStarted = false;
+
+            IMongoCollection<Entity.Request> collectionRequst = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursor = collectionRequst.Aggregate(
+                PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                    ""_id"": " + new ObjectId(id).ToJson() + @"
+                            }
+                        }",
+                    @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(requestId).ToJson() + @"
+                            }
+                        }",
+                    @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                    @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(docId).ToJson() + @",
+                                ""requests.documents.status"": """ + DocumentStatus.PendingReview + @""",
+                            }
+                        }", @"{
+                            ""$project"": {
+                                 ""_id"": 1
+                            }
+                        }"
+                ));
+
+            if (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    isStarted = true;
+                }
+            }
+
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            var fileId = ObjectId.GenerateNewId();
+            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            {
+                { "_id", BsonObjectId.Create(id) },
+                { "tenantId", tenantId},
+                { "userId", userProfileId},
+                {
+                    "requests" , new BsonDocument()
+                    {
+                        {
+                            "$elemMatch" , new BsonDocument()
+                            {
+                                {
+                                    "$and",new BsonArray()
+                                    {
+                                        new BsonDocument()
+                                        {
+                                            { "id", BsonObjectId.Create(requestId) }
+                                        },
+                                        new BsonDocument()
+                                        {
+                                            {
+                                                "documents",new BsonDocument()
+                                                {
+                                                    {
+                                                        "$elemMatch", new BsonDocument()
+                                                        {
+                                                            {
+                                                                "$and", new BsonArray()
+                                                                {
+                                                                    new BsonDocument()
+                                                                    {
+                                                                        { "id", BsonObjectId.Create(docId) }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }, new BsonDocument()
+            {
+                { "$push", new BsonDocument()
+                    {
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value } }   }
+                    }
+                }
+            }, new UpdateOptions()
+            {
+                ArrayFilters = new List<ArrayFilterDefinition>()
+                {
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"request.id\": "+new ObjectId(requestId).ToJson()+"}"),
+                    new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(docId).ToJson()+"}")
+                }
+            });
+
+            if (result.ModifiedCount == 1)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.FileSubmitted, clientName));
+            }
+            if (result.ModifiedCount == 1 && !isStarted)
+            {
+                string activityLogId = await activityLogService.GetActivityLogId(id, requestId, docId);
+
+                await activityLogService.InsertLog(activityLogId, string.Format(ActivityStatus.StatusChanged, DocumentStatus.Started));
+            }
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
+            if (result.ModifiedCount == 1)
+            {
+                return fileId.ToString();
+            }
+
+
+            return null;
+        }
 
         public async Task<FileViewDto> View(FileViewModel model, int userProfileId, string ipAddress, int tenantId)
         {

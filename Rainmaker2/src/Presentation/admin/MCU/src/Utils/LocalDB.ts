@@ -110,6 +110,9 @@ export class LocalDB {
   public static storeItem(name: string, data: string) {
     localStorage.setItem(name, this.encodeString(data));
   }
+  public static getItem(name: string) {
+    return this.decodeString(localStorage.getItem(name));
+  }
   //#endregion
 
   //#region Remove Auth

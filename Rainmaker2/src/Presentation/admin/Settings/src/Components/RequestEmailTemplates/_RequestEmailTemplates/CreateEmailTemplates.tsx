@@ -44,7 +44,7 @@ export const CreateEmailTemplates = ({
   const [defaultText, setDefaultText] = useState<string>();
   const [slectionPos, setSelectionPos] = useState(0);
   const [isError, setIsError] = useState<string>();
-
+  const [validSubject, setvalidSubject] = useState<string>("");
   const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError, clearErrors} = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -209,7 +209,8 @@ export const CreateEmailTemplates = ({
       let fromEmail = template.fromAddress != "" ?  template.fromAddress?.split(',') : null;
       setValue('templateName', template.templateName?.toString());
       setValue('templateDescription', template.templateDescription?.toString());
-      setValue('subjectLine', template.subject?.toString());
+      //setValue('subjectLine', template.subject?.toString());
+      setSubjectWithValidation(template.subject?.toString() || "");
       setValue('fromEmail', template.fromAddress?.toString());
    
       setValue('cCEmail', template.ccAddress?.toString());
@@ -332,7 +333,16 @@ export const CreateEmailTemplates = ({
   const isTokenExist = (value: string) => {
     return value.includes('###') ? false : true
   }
+  const setSubjectWithValidation=(text: string) =>{
+    var str = removeSpecialChars(text)
+    setvalidSubject(str);
+  }
+  const removeSpecialChars= (text: string) => {
+      return text.replace(/[^ -~]/gi, "");
+    }
   const onChangeHandler = (event?: any, field?: string) => {
+    let val = event.target.value;
+    setSubjectWithValidation(val);
     if(field === "templateName"){
       if(event.target.value.includes('###')){
         trigger(field);
@@ -506,6 +516,7 @@ export const CreateEmailTemplates = ({
                 id="subjectLine"
                 maxLength = {250}       
                 name="subjectLine"
+                value={validSubject}
                 type="text"
                 className={`settings__control  ${
                   errors.subjectLine ? 'error' : ''

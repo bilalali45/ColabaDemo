@@ -5,6 +5,7 @@ import { DocumentManagerEndpoints } from "./DocumentManagerEndpoints";
 import { NotificationEndpoints } from "./NotificationEndpoints";
 import { AssignedRoleEndpoints } from "./AssignedRoleEndpoints";
 import { RequestEmailTemplateEndpoints } from "./RequestEmailTemplateEndpoints";
+import { OrganizationEndpoints } from "./OrganizationEndPoint";
 import { LoanOfficersEndpoints } from "./LoanOfficersEndpoints";
 
 
@@ -16,5 +17,6 @@ export class Endpoints {
   static NotificationManger = NotificationEndpoints;
   static AssignedRoleManager = AssignedRoleEndpoints;
   static RequestEmailTemplateManager = RequestEmailTemplateEndpoints;
-  static LoanOfficersManager = LoanOfficersEndpoints;
+  static LoanOfficersManager = LoanOfficersEndpoints
+  static OrganizationManager = OrganizationEndpoints;
 }

@@ -13,6 +13,7 @@ namespace DocumentManagement.Entity
         public string userName { get; set; }
         public DateTime createdOn { get; set; }
         public string status { get; set; }
+        public bool isFromBorrower { get; set; }
         public RequestEmail email { get; set; }
         public List<RequestDocument> documents { get; set; }
     }

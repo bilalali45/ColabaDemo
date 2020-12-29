@@ -72,12 +72,41 @@ namespace DocumentManagement.API.Controllers
                 loanApplication.requests[0].userId = userProfileId;
                 loanApplication.requests[0].userName = userName;
                 
-                await requestService.Save(loanApplication,isDraft, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await requestService.Save(loanApplication,isDraft,false, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!isDraft)
                 {
                     await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId, loanApplication.requests[0].email.toAddress, loanApplication.requests[0].email.CCAddress, loanApplication.requests[0].email.fromAddress, loanApplication.requests[0].email.subject, loanApplication.requests[0].email.emailBody, (int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 }
                 return Ok();
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SaveByBorrower(Model.LoanApplication loanApplication, bool isDraft)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            loanApplication.tenantId = tenantId;
+            string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
+
+            var responseBody = await rainmakerService.PostLoanApplication(loanApplication.loanApplicationId, isDraft, Request.Headers["Authorization"].Select(x => x.ToString()));
+
+            if (!String.IsNullOrEmpty(responseBody))
+            {
+                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                loanApplication.userId = user.userId;
+                loanApplication.userName = user.userName;
+                loanApplication.requests[0].userId = userProfileId;
+                loanApplication.requests[0].userName = userName;
+
+                var requestResponseModel = await requestService.SaveByBorrower(loanApplication, isDraft,true,Request.Headers["Authorization"].Select(x => x.ToString()));
+                if (!isDraft)
+                {
+                    await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId, loanApplication.requests[0].email.toAddress, loanApplication.requests[0].email.CCAddress, loanApplication.requests[0].email.fromAddress, loanApplication.requests[0].email.subject, loanApplication.requests[0].email.emailBody, (int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
+                }
+                return Ok(value: requestResponseModel);
             }
             else
                 return NotFound();

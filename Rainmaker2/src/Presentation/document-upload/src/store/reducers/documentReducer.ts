@@ -3,19 +3,22 @@ import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { UploadedDocuments } from "../../entities/Models/UploadedDocuments";
 import { FileUpload } from "../../utils/helpers/FileUpload";
 import { Document } from "../../entities/Models/Document";
+import { CategoryDocument } from "../../entities/Models/CategoryDocument";
 
 export enum DocumentsActionType {
     FetchPendingDocs = 'FETCH_PENDING_DOCS',
     FetchSubmittedDocs = 'FETCH_SUBMITTED_DOCS',
     SetCurrentDoc = 'SET_CURRENT_DOC',
-    AddFileToDoc = 'ADD_FILE_TO_DOC'
-
+    AddFileToDoc = 'ADD_FILE_TO_DOC',
+    SetCategoryDocuments = "SET_CATEGORY_DOCUMENTS",
+    AddFileToCategoryDocs = "ADD_FILE_TO_CATEGORY_DOCS"
 }
 
 export type DocumentsType = {
     pendingDocs: DocumentRequest[] | null,
     currentDoc: DocumentRequest | null,
-    submittedDocs: UploadedDocuments[] | null
+    submittedDocs: UploadedDocuments[] | null,
+    categoryDocuments: CategoryDocument[],
 }
 
 
@@ -23,7 +26,9 @@ type DocumentsActionPayload = {
     [DocumentsActionType.FetchPendingDocs]: DocumentRequest[],
     [DocumentsActionType.SetCurrentDoc]: DocumentRequest,
     [DocumentsActionType.AddFileToDoc]: Document[],
-    [DocumentsActionType.FetchSubmittedDocs]: UploadedDocuments[]
+    [DocumentsActionType.FetchSubmittedDocs]: UploadedDocuments[],
+    [DocumentsActionType.SetCategoryDocuments]: CategoryDocument[],
+    [DocumentsActionType.AddFileToCategoryDocs]: CategoryDocument[]
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
@@ -37,13 +42,14 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
             };
 
         case DocumentsActionType.SetCurrentDoc:
+            
             return {
                 ...state,
                 currentDoc: payload
             };
 
         case DocumentsActionType.AddFileToDoc:
-            const pdocs = state['pendingDocs']?.map((pd: any) => {
+            const pdocs = state['pendingDocs']?.map((pd: any) => {              
                 if (pd?.docId === state['currentDoc']?.docId) {
                     if (Array.isArray(payload)) {
                         pd.files = payload;
@@ -57,11 +63,48 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
                 pendingDocs: pdocs
             }
 
+            case DocumentsActionType.AddFileToCategoryDocs:
+                let currentDocs = state['currentDoc'];
+                const catDocs = state['categoryDocuments']?.map((cd: any) => {                  
+                  if(cd.documents === undefined){
+                    if (cd?.docTypeId === state['currentDoc']?.docId) {
+                        if (Array.isArray(payload)) {
+                            cd.files = payload;
+                            currentDocs.files = payload;
+                        }
+                        return cd;
+                    }
+                    return cd;
+                  }else{
+                    for (const item of cd.documents) {
+                        if (item?.docTypeId === state['currentDoc']?.docId) {
+                            if (Array.isArray(payload)) {
+                                item.files = payload;
+                                currentDocs.files = payload;
+                            }
+                            return cd;
+                        }
+                        
+                    }
+                    return cd;
+                  }                    
+                });
+                return {
+                    ...state,
+                    categoryDocuments: catDocs,
+                    currentDoc:currentDocs
+                }
+
         case DocumentsActionType.FetchSubmittedDocs:
             return {
                 ...state,
                 submittedDocs: payload
             };
+        case DocumentsActionType.SetCategoryDocuments:
+            return {
+                ...state,
+                categoryDocuments: payload
+            }
 
         default:
             return state;

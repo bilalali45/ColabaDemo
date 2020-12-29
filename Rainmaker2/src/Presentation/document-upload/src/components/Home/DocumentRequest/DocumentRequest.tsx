@@ -14,7 +14,9 @@ export const DocumentRequest = () => {
     let pendingDocsCount = pendingDocs ? pendingDocs.length : 0;
     const loan: any = state.loan;
     const { isMobile } = loan;
-
+    const currentSelected: any = currentDoc;
+    const selectedFiles = currentSelected?.files || [];
+    const [showAlert, setshowAlert] = useState<boolean>(false);
 
     const desktopView = () => {
         return (
@@ -35,12 +37,13 @@ export const DocumentRequest = () => {
         )
     }
 
-  const  getClass =(cls) =>{
+    const  getClass =(cls) =>{
     setdocReqClass(cls)
     }
 
     const mobileView = () => {
         return (
+            <>
             <section className={`dr-c-wrap ${docReqClass} ${currentInView === 'documetsRequired' ? "PageDocListView":"PageDocUploadView"}`}>
                 <div className="row">
                     {currentInView === 'documetsRequired' ? <aside className="col-xs-12 col-md-4">
@@ -57,20 +60,39 @@ export const DocumentRequest = () => {
                 </div>
 
             </section>
+            {showAlert && (
+            <AlertBox
+              hideAlert={() => setshowAlert(false)}
+              callbackHandler={() => {
+                setCurrentInView('documetsRequired');                     
+              }}
+            />
+          )}
+            </>
         )
     }
 
+    const backHandlerFromUpload = () => {
+      const files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
+      if (files) {
+        setshowAlert(true);
+      }else{
+        setCurrentInView('documetsRequired');
+      }   
+    }
+
     return (
-
-
         <main className="dr-upload" data-testid="task-list-header">
             <section className="dr-upload--header">
                 <div className="row">
                     <article className="col-sm-12">
                         <div className="dr-head" data-testid="task-list-header-adaptive">
                             <h2 className="heading-h2"> 
-                            {isMobile?.value && currentInView === 'documentUploadView' && <div data-testid="pending-docs-heading" className="dr-head-back-arrow" onClick={() => setCurrentInView('documetsRequired')}><span><i className="zmdi zmdi-arrow-left"></i>Back</span></div>} 
-                            Task List</h2>
+                            {isMobile?.value && currentInView === 'documentUploadView' && 
+                                <div data-testid="pending-docs-heading" className="dr-head-back-arrow" onClick={() => backHandlerFromUpload()}>
+                                    <span><i className="zmdi zmdi-arrow-left"></i>Back</span>
+                                </div>} 
+                                Task List</h2>
                             {pendingDocsCount ? <p>You have <span className="DocumentStatus--count">{pendingDocsCount}</span> {pendingDocsCount == 1 ? "item" : "items"} to complete</p> : ''}
                         </div>
                     </article>

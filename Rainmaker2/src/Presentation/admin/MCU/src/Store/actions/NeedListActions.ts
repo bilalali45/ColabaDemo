@@ -41,10 +41,11 @@ export class NeedListActions {
   }
 
   static async getDashBoardSettings() {
+    console.log('----------------> calling getDashBoardSettings...');
     let url = Endpoints.NeedListManager.GET.documents.DashBoardSettingsInfo();
     try {
       let res: AxiosResponse<DashboardSetting> = await Http.get<DashboardSetting>(url);
-
+      console.log('----------------> getDashBoardSettings Response', res.data);
       return res.data;
     } catch (error) {
       console.log(error);

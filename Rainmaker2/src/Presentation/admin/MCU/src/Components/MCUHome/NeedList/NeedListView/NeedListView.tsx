@@ -44,7 +44,7 @@ export const NeedListView = () => {
   
 
   const needListManager: any = state?.needListManager;
-  const filtertoggler: any = needListManager?.needListFilter;
+  const filtertoggler: any = LocalDB.getItem(NeedListActionsType.SetNeedListFilter);
   const needListData = needListManager?.needList;
   const templateManager: any = state.templateManager;
   const templates: Template[] = templateManager?.templates;
@@ -500,14 +500,10 @@ export const NeedListView = () => {
   };
 
   const fetchDashBoardSettings = async () => {
-    let res:
-      | DashboardSetting
-      | undefined = await NeedListActions.getDashBoardSettings();
+    let res:| DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
     if (res) {
-      dispatch({
-        type: NeedListActionsType.SetNeedListFilter,
-        payload: res.pending
-      });
+      LocalDB.storeItem(NeedListActionsType.SetNeedListFilter, res.pending.toString())
+      
     }
     return res?.pending;
   };

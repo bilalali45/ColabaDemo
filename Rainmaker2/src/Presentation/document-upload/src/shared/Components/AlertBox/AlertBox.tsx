@@ -10,6 +10,8 @@ type AlertBoxType = {
   triedSelected?: any;
   navigateUrl?: string;
   isBrowserBack?: boolean;
+  type?: string;
+  callbackHandler?: any
 };
 
 export const AlertBox = ({
@@ -17,6 +19,8 @@ export const AlertBox = ({
   triedSelected,
   navigateUrl,
   isBrowserBack,
+  type,
+  callbackHandler
 }: AlertBoxType) => {
   const history = useHistory();
 
@@ -24,6 +28,7 @@ export const AlertBox = ({
   const { pendingDocs, currentDoc }: any = state.documents;
 
   const yesHandler = () => {
+    
     try {
       let updatedFiles = currentDoc.files.filter((f) => {
         if (f.uploadStatus !== "pending") {
@@ -32,23 +37,62 @@ export const AlertBox = ({
           f.uploadReqCancelToken.cancel();
         }
       });
-      dispatch({
-        type: DocumentsActionType.AddFileToDoc,
-        payload: updatedFiles,
-      });
+      if(type === "WithoutReq"){
+        dispatch({
+          type: DocumentsActionType.AddFileToCategoryDocs,
+          payload: updatedFiles,
+        });
+
+        if (triedSelected) {
+          let curDoc = {
+            id:'',
+            requestId: '',
+            docId: triedSelected.docTypeId,
+            docName:triedSelected.docType,
+            docMessage:triedSelected.docMessage,
+            files: [],
+            isRejected: false,
+            resubmittedNewFiles: false
+          }
+          dispatch({
+            type: DocumentsActionType.SetCurrentDoc,
+            payload: curDoc,
+          });
+        } else {
+          if (navigateUrl) {
+            history.push(navigateUrl);
+          } else {
+            callbackHandler();
+          }
+      }
+
+      }else{
+        dispatch({
+          type: DocumentsActionType.AddFileToDoc,
+          payload: updatedFiles,
+        });
+
+        dispatch({
+          type: DocumentsActionType.AddFileToCategoryDocs,
+          payload: updatedFiles,
+        });
+         
       if (triedSelected) {
         dispatch({
           type: DocumentsActionType.SetCurrentDoc,
           payload: triedSelected,
         });
       } else {
-        // debugger
         if (navigateUrl) {
           history.push(navigateUrl);
-        } else if (!isBrowserBack || !navigateUrl) {
+        } else if(callbackHandler){
+          callbackHandler();
+        }
+        else if (!isBrowserBack || !navigateUrl) {
           history.goBack();
         }
-      }
+       }
+      }    
       hideAlert();
     } catch (error) {
       console.log(error);

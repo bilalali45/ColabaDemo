@@ -196,7 +196,7 @@ namespace DocumentManagement.Service
                 return fileId.ToString();
             return null;
         }
-        public async Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft, IEnumerable<string> authHeader)
+        public async Task<bool> Save(Model.LoanApplication loanApplication, bool isDraft, bool isFromBorrower, IEnumerable<string> authHeader)
         {
             // get document upload status
             IMongoCollection<Entity.StatusList> collection =
@@ -272,6 +272,7 @@ namespace DocumentManagement.Service
             request.userName = loanApplication.requests[0].userName;
             request.createdOn = DateTime.UtcNow;
             request.status = isDraft ? RequestStatus.Draft : RequestStatus.Active;
+            request.isFromBorrower = isFromBorrower;
             //request.message = loanApplication.requests[0].message;
             request.email = new Entity.RequestEmail();
             request.documents = new List<Entity.RequestDocument>() { };
@@ -312,7 +313,6 @@ namespace DocumentManagement.Service
                         { "$set", new BsonDocument()
                             {
                                 { "requests.$[request].documents.$[document].message", item.message}
-                                //{ "requests.$[request].message", loanApplication.requests[0].message}
                             }
                         }
                     }, new UpdateOptions()
@@ -449,7 +449,7 @@ namespace DocumentManagement.Service
             bsonElements.Add("userName", request.userName);
             bsonElements.Add("createdOn", request.createdOn);
             bsonElements.Add("status", request.status);
-            //bsonElements.Add("message", request.message);
+            bsonElements.Add("isFromBorrower", request.isFromBorrower);
             bsonElements.Add("email", bsonEmail);
             bsonElements.Add("documents", documentBsonArray);
 
@@ -538,6 +538,182 @@ namespace DocumentManagement.Service
                 await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId, "", authHeader);
             }
             return true;
+        }
+        public async Task<RequestResponseModel> SaveByBorrower(Model.LoanApplication loanApplication, bool isDraft, bool isFromBorrower, IEnumerable<string> authHeader)
+        {
+            RequestResponseModel requestResponseModel = new RequestResponseModel();
+            // get document upload status
+            IMongoCollection<Entity.StatusList> collection =
+                mongoService.db.GetCollection<Entity.StatusList>("StatusList");
+
+            using var asyncCursorStatus = collection.Aggregate(
+                PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
+                    @"{""$match"": {
+                  ""order"": " + 3 + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1
+                            }
+                        }"
+                ));
+            while (await asyncCursorStatus.MoveNextAsync())
+            {
+                foreach (var current in asyncCursorStatus.Current)
+                {
+                    StatusNameQuery query = BsonSerializer.Deserialize<StatusNameQuery>(current);
+                    loanApplication.status = query._id;
+                }
+            }
+            // check whether loan application already exists
+            IMongoCollection<Entity.Request> collectionRequest =
+                mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursorRequest = collectionRequest.Aggregate(
+                PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplication.loanApplicationId + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""loanApplicationId"": 1
+                            }
+                        }"
+                ));
+            // if loan application does not exists create loan application
+            Entity.Request request = new Entity.Request();
+            if (await asyncCursorRequest.MoveNextAsync())
+            {
+                int loanApplicationId = -1;
+                foreach (var current in asyncCursorRequest.Current)
+                {
+                    LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
+                    loanApplicationId = query.loanApplicationId;
+                    loanApplication.id = query._id;
+                }
+
+                if (loanApplicationId != loanApplication.loanApplicationId)
+                {
+                    IMongoCollection<Entity.LoanApplication> collectionLoanApplication =
+                        mongoService.db.GetCollection<Entity.LoanApplication>("Request");
+                    Entity.LoanApplication loanApplicationModel = new Entity.LoanApplication()
+                    {
+                        id = ObjectId.GenerateNewId().ToString(),
+                        loanApplicationId = loanApplication.loanApplicationId,
+                        tenantId = loanApplication.tenantId,
+                        status = loanApplication.status,
+                        userId = loanApplication.userId,
+                        userName = loanApplication.userName,
+                        requests = new List<Entity.Request>() { }
+                    };
+                    loanApplication.id = loanApplicationModel.id;
+                    await collectionLoanApplication.InsertOneAsync(loanApplicationModel);
+                }
+            }
+
+            request.id = ObjectId.GenerateNewId().ToString();
+            request.userId = loanApplication.requests[0].userId;
+            request.userName = loanApplication.requests[0].userName;
+            request.createdOn = DateTime.UtcNow;
+            request.status = isDraft ? RequestStatus.Draft : RequestStatus.Active;
+            request.isFromBorrower = isFromBorrower;
+            request.documents = new List<Entity.RequestDocument>() { };
+
+            BsonDocument bsonEmail = new BsonDocument();
+
+            IMongoCollection<Entity.Request> collectionInsertRequest = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            BsonArray documentBsonArray = new BsonArray();
+
+            BsonDocument bsonDocument = new BsonDocument();
+
+            loanApplication.requests[0].documents[0].id = ObjectId.GenerateNewId().ToString();
+            loanApplication.requests[0].documents[0].status = DocumentStatus.PendingReview;
+
+            bsonDocument.Add("id", new ObjectId(loanApplication.requests[0].documents[0].id));
+            bsonDocument.Add("status", loanApplication.requests[0].documents[0].status);
+            bsonDocument.Add("typeId", string.IsNullOrEmpty(loanApplication.requests[0].documents[0].typeId) ? (BsonValue)BsonNull.Value : new BsonObjectId(new ObjectId(loanApplication.requests[0].documents[0].typeId)));
+            bsonDocument.Add("displayName", loanApplication.requests[0].documents[0].displayName);
+            bsonDocument.Add("message", string.IsNullOrEmpty(loanApplication.requests[0].documents[0].message) ? (BsonValue)BsonNull.Value : loanApplication.requests[0].documents[0].message);
+            bsonDocument.Add("isRejected", false);
+            bsonDocument.Add("isMcuVisible", true);
+            bsonDocument.Add("files", new BsonArray());
+
+            //Add document
+            documentBsonArray.Add(bsonDocument);
+
+            IMongoCollection<ActivityLog> collectionInsertActivityLog =
+                mongoService.db.GetCollection<ActivityLog>("ActivityLog");
+
+            ActivityLog activityLog = new ActivityLog()
+            {
+                id = ObjectId.GenerateNewId().ToString(),
+                requestId = request.id,
+                userId = request.userId,
+                userName = request.userName,
+                dateTime = DateTime.UtcNow,
+                activity = ActivityStatus.RequestedBy,
+                typeId = string.IsNullOrEmpty(loanApplication.requests[0].documents[0].typeId) ? null : loanApplication.requests[0].documents[0].typeId,
+                docId = loanApplication.requests[0].documents[0].id,
+                docName = loanApplication.requests[0].documents[0].displayName,
+                loanId = loanApplication.id,
+                message = loanApplication.requests[0].documents[0].message,
+                log = new List<Log>() { }
+            };
+            await collectionInsertActivityLog.InsertOneAsync(activityLog);
+
+            await activityLogService.InsertLog(activityLog.id, string.Format(ActivityStatus.StatusChanged, DocumentStatus.PendingReview));
+
+            IMongoCollection<Entity.Request> collectionDeleteDraftRequest = mongoService.db.GetCollection<Entity.Request>("Request");
+
+            await collectionDeleteDraftRequest.UpdateOneAsync(new BsonDocument()
+            {
+                { "loanApplicationId", loanApplication.loanApplicationId}
+            }
+                , new BsonDocument()
+                {
+                { "$pull", new BsonDocument()
+                    {
+                        { "requests",
+                           new BsonDocument(){{ "status", RequestStatus.Draft}}
+                        }
+                    }
+                }
+                });
+
+            BsonDocument bsonElements = new BsonDocument();
+            bsonElements.Add("id", new ObjectId(request.id));
+            bsonElements.Add("userId", request.userId);
+            bsonElements.Add("userName", request.userName);
+            bsonElements.Add("createdOn", request.createdOn);
+            bsonElements.Add("status", request.status);
+            bsonElements.Add("isFromBorrower", request.isFromBorrower);
+            bsonElements.Add("documents", documentBsonArray);
+
+            if (documentBsonArray.Count > 0)
+            {
+                await collectionInsertRequest.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "loanApplicationId", loanApplication.loanApplicationId}
+                        }, new BsonDocument()
+                        {
+                            { "$push", new BsonDocument()
+                                {
+                                    { "requests", bsonElements  }
+                                }
+                            },
+                        }
+                );
+            }
+
+            if (!isDraft)
+            {
+                await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId, "", authHeader);
+            }
+            requestResponseModel.id = loanApplication.id;
+            requestResponseModel.requestId = request.id;
+            requestResponseModel.docId = loanApplication.requests[0].documents[0].id;
+            return requestResponseModel;
         }
 
         public async Task<RequestDraftModel> GetDraft(int loanApplicationId, int tenantId)
@@ -774,6 +950,64 @@ namespace DocumentManagement.Service
                 return emailTemplate;
             }
             return string.Empty;
+        }
+        public async Task<RequestResponseModel> GetDocumentRequest(int loanApplicationId, int tenantId, string docId)
+        {
+            RequestResponseModel requestResponseModel = new RequestResponseModel();
+
+            IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""loanApplicationId"": " + loanApplicationId + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$match"": {""$and"":[{""requests.status"": """ + RequestStatus.Active + @"""},{""requests.isFromBorrower"": true}]}
+                        }", @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.documents.typeId"": " + new ObjectId(docId).ToJson() + @"
+                            }
+                        }", @"{
+                            ""$lookup"": {
+                                ""from"": ""DocumentType"",
+                                ""localField"": ""requests.documents.typeId"",
+                                ""foreignField"": ""_id"",
+                                ""as"": ""documentObjects""
+                            }
+                        }", @"{
+                            ""$unwind"": {
+                                ""path"": ""$documentObjects"",
+                                ""preserveNullAndEmptyArrays"": true
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1,
+                                ""requestId"": ""$requests.id"",
+                                ""docId"": ""$requests.documents.id""
+                            }
+                        }"
+                ));
+          
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    DocumentRequestQuery query = BsonSerializer.Deserialize<DocumentRequestQuery>(current);
+                    if (query != null)
+                    {
+                        requestResponseModel.id = query.id;
+                        requestResponseModel.docId = query.docId;
+                        requestResponseModel.requestId = query.requestId;
+                    }
+                }
+            }
+            return requestResponseModel;
         }
     }
 }

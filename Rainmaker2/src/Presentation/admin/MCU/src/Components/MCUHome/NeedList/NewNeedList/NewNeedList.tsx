@@ -314,6 +314,7 @@ export const NewNeedList = () => {
   };
 
   const saveAsDraft = async (toDraft: boolean) => {
+   
     let emailData : any = {};
     if(emailContent === null && selectedEmailTemplate){     
       emailData.emailTemplateId = selectedEmailTemplate.id; 
@@ -324,7 +325,14 @@ export const NewNeedList = () => {
       emailData.emailBody = null;
 
     }else{
-      emailData = emailContent;
+      const regExOpenTag = new RegExp('<li>', "g");
+      emailData.emailTemplateId = emailContent?.emailTemplateId; 
+      emailData.toAddress = emailContent?.toAddress;
+      emailData.fromAddress = emailContent?.fromAddress;
+      emailData.ccAddress = emailContent?.ccAddress;
+      emailData.subject = emailContent?.subject;
+      let body = emailContent?.emailBody;
+      emailData.emailBody = body?.replace(regExOpenTag,'<li style="padding-bottom: 10px;">');
     }
     await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
     if (toDraft) {
@@ -406,7 +414,6 @@ export const NewNeedList = () => {
         payload: updatedTemplateIds
       });
     }
-    // debugger
     await setCustomDocuments(filter);
     await setDraftDocuments(filter);
     await setAllDocuments(filter);
@@ -434,7 +441,7 @@ export const NewNeedList = () => {
     let names: string = "<ul>";
       
     for (let i = 0; i < allDocuments.length; i++) {
-        names += "<li>" + allDocuments[i].docName+"</li>";
+        names += "<li style='padding-bottom: 10px;'>" + allDocuments[i].docName+"</li>";
         if (i != allDocuments.length - 1)
         names = names + "\n";
     }

@@ -36,7 +36,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(true);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -125,7 +125,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
-            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(false);
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(false);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
@@ -195,6 +195,176 @@ namespace DocumentManagement.Tests
             loanApplication.requests.Add(requestModel);
 
             IActionResult result = await controller.Save(loanApplication, false);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result);
+        }
+        [Fact]
+        public async Task TestSaveByBorrowerControllerTrue()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+            Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(true);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+            mockRainMock.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("{userId:59,userName:'Melissa Merritt'}");
+
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var controller = new RequestController(mock.Object, mockRainMock.Object);
+
+            controller.ControllerContext = context;
+
+            //Act
+            LoanApplication loanApplication = new LoanApplication();
+            loanApplication.id = "5f0e8d014e72f52edcff3885";
+            loanApplication.loanApplicationId = 14;
+            loanApplication.tenantId = 1;
+            loanApplication.userId = 59;
+            loanApplication.userName = "Melissa Merritt";
+            loanApplication.requests = new List<Model.Request>();
+
+            Model.Request requestModel = new Model.Request();
+            requestModel.id = "5f0ede3cce9c4b62509d0dc0";
+            requestModel.userId = 3842;
+            requestModel.userName = "Danish Faiz";
+            requestModel.email = new Model.RequestEmail();
+            requestModel.createdOn = DateTime.UtcNow;
+            requestModel.status = DocumentStatus.BorrowerTodo;
+            requestModel.documents = new List<Model.RequestDocument>();
+
+            requestModel.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            requestModel.email.fromAddress = "aliya@texastrustloans.com";
+            requestModel.email.toAddress = "prasla@gmail.com";
+            requestModel.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            requestModel.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            requestModel.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
+
+            Model.RequestDocument document = new Model.RequestDocument();
+            document.id = "5f0ede3cce9c4b62509d0dc1";
+            document.status = DocumentStatus.BorrowerTodo;
+            document.typeId = "5eb257a3e519051af2eeb624";
+            document.displayName = "W2 2020";
+            document.message = "please upload salary slip";
+            document.files = new List<Model.RequestFile>();
+
+            Model.RequestFile requestFile = new Model.RequestFile();
+            requestFile.id = "abc15d1fe456051af2eeb768";
+            requestFile.clientName = "3e06ed7f-0620-42f2-b6f5-e7b8ee1f2778.pdf";
+            requestFile.serverName = "0c550bb7-7e4b-4384-98eb-5264d9411737.enc";
+            requestFile.fileUploadedOn = DateTime.UtcNow;
+            requestFile.size = 1904942;
+            requestFile.encryptionKey = "FileKey";
+            requestFile.encryptionAlgorithm = "AES";
+            requestFile.order = 0;
+            requestFile.mcuName = "abc";
+            requestFile.contentType = "application/pdf";
+            requestFile.status = FileStatus.SubmittedToMcu;
+            requestFile.byteProStatus = "Active";
+
+            document.files.Add(requestFile);
+
+            requestModel.documents.Add(document);
+
+            loanApplication.requests.Add(requestModel);
+
+            IActionResult result = await controller.SaveByBorrower(loanApplication, false);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task TestSaveByBorrowerControllerFalse()
+        {
+            //Arrange
+            Mock<IRequestService> mock = new Mock<IRequestService>();
+            Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
+            mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(false);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "Danish"));
+            httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "Faiz"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Connection.RemoteIpAddress).Returns(IPAddress.Parse("127.0.0.1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+            mockRainMock.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("");
+
+            var request = new Mock<HttpRequest>();
+
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var controller = new RequestController(mock.Object, mockRainMock.Object);
+
+            controller.ControllerContext = context;
+
+            //Act
+            LoanApplication loanApplication = new LoanApplication();
+            loanApplication.id = "5f0e8d014e72f52edcff3885";
+            loanApplication.loanApplicationId = 14;
+            loanApplication.tenantId = 1;
+            loanApplication.userId = 59;
+            loanApplication.userName = "Melissa Merritt";
+            loanApplication.requests = new List<Model.Request>();
+
+            Model.Request requestModel = new Model.Request();
+            requestModel.id = "5f0ede3cce9c4b62509d0dc0";
+            requestModel.userId = 3842;
+            requestModel.userName = "Danish Faiz";
+            requestModel.message = "Hi Mark";
+            requestModel.createdOn = DateTime.UtcNow;
+            requestModel.status = DocumentStatus.BorrowerTodo;
+            requestModel.documents = new List<Model.RequestDocument>();
+
+            Model.RequestDocument document = new Model.RequestDocument();
+            document.id = "5f0ede3cce9c4b62509d0dc1";
+            document.status = DocumentStatus.BorrowerTodo;
+            document.typeId = "5eb257a3e519051af2eeb624";
+            document.displayName = "W2 2020";
+            document.message = "please upload salary slip";
+            document.files = new List<Model.RequestFile>();
+
+            Model.RequestFile requestFile = new Model.RequestFile();
+            requestFile.id = "abc15d1fe456051af2eeb768";
+            requestFile.clientName = "3e06ed7f-0620-42f2-b6f5-e7b8ee1f2778.pdf";
+            requestFile.serverName = "0c550bb7-7e4b-4384-98eb-5264d9411737.enc";
+            requestFile.fileUploadedOn = DateTime.UtcNow;
+            requestFile.size = 1904942;
+            requestFile.encryptionKey = "FileKey";
+            requestFile.encryptionAlgorithm = "AES";
+            requestFile.order = 0;
+            requestFile.mcuName = "abc";
+            requestFile.contentType = "application/pdf";
+            requestFile.status = FileStatus.SubmittedToMcu;
+            requestFile.byteProStatus = "Active";
+
+            document.files.Add(requestFile);
+
+            requestModel.documents.Add(document);
+
+            loanApplication.requests.Add(requestModel);
+
+            IActionResult result = await controller.SaveByBorrower(loanApplication, false);
 
             //Assert
             Assert.NotNull(result);
@@ -304,7 +474,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false, new List<string>());
+            bool result = await service.Save(loanApplication, false, false,new List<string>());
 
             //Assert
             Assert.True(result);
@@ -413,7 +583,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false, new List<string>());
+            bool result = await service.Save(loanApplication, false,false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -539,7 +709,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false, new List<string>());
+            bool result = await service.Save(loanApplication, false,false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -665,7 +835,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false, new List<string>());
+            bool result = await service.Save(loanApplication, false,false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -765,7 +935,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, true, new List<string>());
+            bool result = await service.Save(loanApplication, true,false, new List<string>());
 
             //Assert
             Assert.True(result);
@@ -875,7 +1045,7 @@ namespace DocumentManagement.Tests
 
             loanApplication.requests.Add(request);
 
-            bool result = await service.Save(loanApplication, false, new List<string>());
+            bool result = await service.Save(loanApplication, false, false,new List<string>());
 
             //Assert
             Assert.True(result);

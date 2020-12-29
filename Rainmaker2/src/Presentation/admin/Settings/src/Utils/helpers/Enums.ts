@@ -20,3 +20,7 @@ export enum LoadOriginationMenu {
     Users = 1,
     Organization = 2
 }
+export enum SimpleSort{
+    Up =1,
+    Down=2
+}

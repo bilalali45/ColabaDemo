@@ -1,26 +1,33 @@
 import React, { FunctionComponent,useState, useEffect } from 'react'
+import { SimpleSort } from '../../../Utils/helpers/Enums';
 
 
 
 type TableSortProps = {
     order?: any,
     className?:any,
+    callBackFunction: Function
 }
 
-const TableSort: React.FC<TableSortProps> = ({ order, className, children }) => {
+
+const TableSort: React.FC<TableSortProps> = ({ order, className, callBackFunction,children }) => {
     let ovalue = order ? order : null;
     const [sortOrder, setSortOrder] = useState<any>(ovalue);
-
+    useEffect(() => {
+        debugger;
+        // action on update of sortOrder
+        callBackFunction(sortOrder);
+    }, [sortOrder]);
     const makeSort = () => {
         switch(sortOrder) {
             case null:
-                setSortOrder('up');
+                setSortOrder(SimpleSort.Up);
                 break;
-            case 'up':
-                setSortOrder('down');
+            case SimpleSort.Up:
+                setSortOrder(SimpleSort.Down);
                 break;
-            case 'down':
-                setSortOrder('up');
+            case SimpleSort.Down:
+                setSortOrder(SimpleSort.Up);
                 break;
             default:
                 setSortOrder(null);
@@ -29,12 +36,15 @@ const TableSort: React.FC<TableSortProps> = ({ order, className, children }) => 
     }
 
     return (
-        <span onClick={makeSort} className={`clickable ${className?className:''}`}>
+        <span onClick={() => {
+            makeSort();
+        }
+        } className={`clickable ${className?className:''}`}>
         {children}
         {sortOrder != null &&
             <div className="settings__table-sorter">
-                {sortOrder == 'up' && <i className="zmdi zmdi-long-arrow-up"></i>}
-                {sortOrder == 'down' && <i className="zmdi zmdi-long-arrow-down"></i>}
+                {sortOrder == 1 && <i className="zmdi zmdi-long-arrow-up"></i>}
+                {sortOrder == 2 && <i className="zmdi zmdi-long-arrow-down"></i>}
             </div>
         }        
         </span>

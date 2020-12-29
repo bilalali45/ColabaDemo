@@ -5,6 +5,7 @@ import { NotificationActions, notificationReducer } from './NotificationReducer'
 import { assignedRoleReducer, AssignedRoleActions } from './AssignedRoleReducer';
 import { requestEmailTemplateReducer, RequestEmailTemplateActions } from './RequestEmailTemplateReducer';
 import { loanOfficerReducer, LoanOfficerActions } from './LoanOfficerReducer';
+import { OrganizationActions, organizationReducer } from './OrganizationReducer';
 
 export type ActionMap<M extends { [index: string]: any }> = {
     [Key in keyof M] : M[Key] extends undefined
@@ -16,14 +17,15 @@ export type ActionMap<M extends { [index: string]: any }> = {
         payload: M[Key];
     }
 }
-export type Actions = UserActions | TemplateActions | NotificationActions | AssignedRoleActions | RequestEmailTemplateActions | LoanOfficerActions
+export type Actions = UserActions | TemplateActions | NotificationActions | AssignedRoleActions | RequestEmailTemplateActions | LoanOfficerActions | OrganizationActions
 
 
-export const mainReducer = ({user, templateManager, notificationManager, assignedRolesManager, requestEmailTemplateManager,loanOfficerManager } : InitialStateType, action: Actions) => ({
+export const mainReducer = ({user, templateManager, notificationManager, assignedRolesManager, requestEmailTemplateManager,loanOfficerManager,organizationManager } : InitialStateType, action: Actions) => ({
     user: userReducer(user, action),
     templateManager: templateReducer(templateManager, action),
     notificationManager: notificationReducer(notificationManager, action),
     assignedRolesManager: assignedRoleReducer(assignedRolesManager, action),
     requestEmailTemplateManager: requestEmailTemplateReducer(requestEmailTemplateManager, action),
-    loanOfficerManager:loanOfficerReducer(loanOfficerManager,action)
+    loanOfficerManager:loanOfficerReducer(loanOfficerManager,action),
+    organizationManager:organizationReducer(organizationManager,action)
 });

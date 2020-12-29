@@ -35,20 +35,20 @@ export const SelectedDocumentTypeList = ({
   const location = useLocation();
 
   const filterUsedDocs = (templateDocs: any[]) => {
-    
-    return documentList?.filter(
-      (cd: any) =>
-        !templateDocs?.find((td: any) => {
-          if (!cd?.docId) {
-            if (cd?.docType?.toLowerCase() === td?.docName?.toLowerCase()) {
-              return cd;
-            }
-          }
-          if (td?.typeId === cd?.docTypeId) {
-            return cd;
-          }
-        })
-    );
+    return documentList;
+    // return documentList?.filter(
+    //   (cd: any) =>
+    //     !templateDocs?.find((td: any) => {
+    //       if (!cd?.docId) {
+    //         if (cd?.docType?.toLowerCase() === td?.docName?.toLowerCase()) {
+    //           return cd;
+    //         }
+    //       }
+    //       if (td?.typeId === cd?.docTypeId) {
+    //         return cd;
+    //       }
+    //     })
+    // );
   };
 
   if (!documentList) {

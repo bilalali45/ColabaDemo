@@ -1162,7 +1162,35 @@ ul {
         @include transition(all 0.5s ease-out);
 
         h2 {
-            font: normal #{fontSize('nr')+'/1.2'} fontFamily('heading');
+            font: normal #{fontSize('nr')+'/1.2'} fontFamily('heading') !important;
+            margin: 0px !important;
+        }
+        textarea.form-control{
+            height: 100px;
+            padding: 10px 15px;
+            resize: none;
+            overflow-y: auto;
+            @include scrollbar();
+        }
+    }
+
+    &-error{
+        color: $danger;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include font(normal,1.4,'sm','base');
+
+        &-icon{
+            color: $danger;
+            margin-right: 10px;
+            font-size: 26px;
+        }
+
+        p{
+            //max-width: 380px;
+            margin: 0;
+            //margin-right: auto;            
         }
     }
 }

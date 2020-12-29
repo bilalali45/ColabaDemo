@@ -29,6 +29,7 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
   };
 
   const setFiles = (files, fileToRemnove) => {
+    
     if (files) {
       let updatedFiles = selectedfiles.filter((sf) => sf !== fileToRemnove);
       DocumentUploadActions.updateFiles(

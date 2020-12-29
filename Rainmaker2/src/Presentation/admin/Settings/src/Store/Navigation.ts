@@ -1,6 +1,7 @@
 export enum Role {
   ADMIN_ROLE = 1,
-  MCU_ROLE = 2
+  MCU_ROLE = 2,
+  SYSTEM_ROLE =3
 }
 
 export const navigation = [
@@ -46,20 +47,20 @@ export const navigation = [
       }
     ]
   },
-  // {
-  //   text: 'Integrations',
-  //   icon: 'Integrations',
-  //   role: Role.ADMIN_ROLE,
-  //   link: '/Integrations',
-  //   childern: [
-  //     {
-  //       text: 'Loan Origination System',
-  //       icon: 'LoanOriginationSystem',
-  //       role: Role.ADMIN_ROLE,
-  //       link: '/LoanOriginationSystem'
-  //     }
-  //   ]
-  // },
+  {
+    text: 'Integrations',
+    icon: 'Integrations',
+    role: Role.ADMIN_ROLE,
+    link: '/Integrations',
+    childern: [
+      {
+        text: 'Loan Origination System',
+        icon: 'LoanOriginationSystem',
+        role: Role.ADMIN_ROLE,
+        link: '/LoanOriginationSystem'
+      }
+    ]
+  },
   //#endregion
   //#region MCU Navigations
   {

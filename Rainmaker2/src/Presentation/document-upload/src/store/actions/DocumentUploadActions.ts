@@ -13,18 +13,16 @@ export class DocumentUploadActions {
     currentSelected: DocumentRequest,
     file: Document,
     dispatchProgress: Function,
-    loanApplicationId: string
+    loanApplicationId: string,
+    type?: string
   ) {
     try {
-      await Http.fetch(
+     let res = await Http.fetch(
         {
           method: Http.methods.POST,
-          url: Http.createUrl(
-            Http.baseUrl,
-            Endpoints.documents.POST.submitDocuments()
-          ),
+          url: Http.createUrl(Http.baseUrl, type === "WithoutReq" ? Endpoints.documents.POST.submitByBorrower() : Endpoints.documents.POST.submitDocuments()),
           cancelToken: file.uploadReqCancelToken.token,
-          data: DocumentUploadActions.prepareFormData(currentSelected, file),
+          data: DocumentUploadActions.prepareFormData(currentSelected, file, loanApplicationId, type),
           onUploadProgress: (e) => {
             let p = Math.floor((e.loaded / e.total) * 100);
             let files: any = currentSelected.files;
@@ -38,48 +36,81 @@ export class DocumentUploadActions {
               }
               return f;
             });
-            dispatchProgress({
-              type: DocumentsActionType.AddFileToDoc,
-              payload: updatedFiles,
-            });
+            if(type === "WithoutReq"){
+              dispatchProgress({
+                type: DocumentsActionType.AddFileToCategoryDocs,
+                payload: updatedFiles,
+              });
+            }else{
+              dispatchProgress({
+                type: DocumentsActionType.AddFileToDoc,
+                payload: updatedFiles,
+              });
+            }          
           },
         },
         {
           Authorization: `Bearer ${Auth.getAuth()}`,
         }
       );
+      return res;
     } catch (error) {
       console.log('error', error.response);
-      dispatchProgress({
-        type: DocumentsActionType.AddFileToDoc,
-        payload: currentSelected?.files?.map(f => {
-          let err = error.response.data;
-          if(f?.clientName === file?.clientName) {
-            f.uploadStatus = 'failed';
-            f.notAllowedReason = 'Failed';
-            f.failedReason =  err.Message? err.Message : err;
-          }
-          return f;
-        }),
-      });
+      if(type === "WithoutReq"){
+        dispatchProgress({
+          type: DocumentsActionType.AddFileToCategoryDocs,
+          payload: currentSelected?.files?.map(f => {         
+            let err = error.response.data;
+            if(f?.clientName === file?.clientName) {
+              f.uploadStatus = 'failed';
+              f.notAllowedReason = 'Failed';
+              f.failedReason =  err.Message? err.Message : err.title;
+            }
+            return f;
+          }),
+        });
+      }else{
+        dispatchProgress({
+          type: DocumentsActionType.AddFileToDoc,
+          payload: currentSelected?.files?.map(f => {
+            let err = error.response.data;
+            if(f?.clientName === file?.clientName) {
+              f.uploadStatus = 'failed';
+              f.notAllowedReason = 'Failed';
+              f.failedReason =  err.Message? err.Message : err;
+            }
+            return f;
+          }),
+        });
+      }
+      
       console.log("-------------->Upload errors------------>", error);
     }
   }
 
-  static prepareFormData(currentSelected: DocumentRequest, file: Document) {
+  static prepareFormData(currentSelected: DocumentRequest, file: Document, loanApplicationId: string, type?: string) {
     const data = new FormData();
-
-    let fields = ["id", "requestId", "docId"];
-
+    let fields ;
+    if(type === "WithoutReq"){
+      fields = ["loanApplicationId", "displayName", "docId"];
+    }else{
+       fields = ["id", "requestId", "docId"];
+    }
+   
     if (file.file) {
       data.append("files", file.file, `${file.clientName}`);
     }
 
-    for (const field of fields) {
-      const value = currentSelected[field];
-      data.append(field, value);
+    if(type === "WithoutReq"){
+      data.append(fields[0], loanApplicationId);
+      data.append(fields[1], currentSelected.docName);
+      data.append(fields[2], currentSelected.docId);
+    }else{
+      for (const field of fields) {
+        const value = currentSelected[field];
+        data.append(field, value);
+      }
     }
-
     data.append("order", JSON.stringify(file.documentOrder));
 
     return data;
@@ -89,7 +120,8 @@ export class DocumentUploadActions {
     files: File[],
     prevFiles: Document[],
     dispatch: Function,
-    setFileLimitError: Function
+    setFileLimitError: Function,
+    type?: string
   ) {
     let allSelectedFiles: Document[] = [...prevFiles];
     let counter = 0;
@@ -132,22 +164,42 @@ export class DocumentUploadActions {
       }
       counter++;
     }
-    dispatch({
-      type: DocumentsActionType.AddFileToDoc,
-      payload: allSelectedFiles,
-    });
+    if(type === "WithoutReq"){
+      dispatch({
+        type: DocumentsActionType.AddFileToCategoryDocs,
+        payload: allSelectedFiles,
+      });
+    }else{
+      dispatch({
+        type: DocumentsActionType.AddFileToDoc,
+        payload: allSelectedFiles,
+      });
+    }
+    
   }
 
   static removeActualFile(
     fileName: string,
     prevFiles: Document[],
-    dispatch: Function
+    dispatch: Function,
+    type?: string
   ) {
+    
     prevFiles = prevFiles.filter((f) => {
       if (f?.clientName.split(".")[0] !== fileName) {
         return f;
       }
     });
-    dispatch({ type: DocumentsActionType.AddFileToDoc, payload: prevFiles });
+    if(type === "WithoutReq"){
+      dispatch({
+        type: DocumentsActionType.AddFileToCategoryDocs,
+        payload: prevFiles,
+      });
+    }else{
+      dispatch({
+        type: DocumentsActionType.AddFileToDoc,
+        payload: prevFiles,
+      });
+    }
   }
 }

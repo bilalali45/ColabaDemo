@@ -19,7 +19,6 @@ export const TextEditor = ({ handlerOnChange, selectedToken, defaultText, classN
   
   useEffect(()=> {
    if(selectedToken){
-     console.log('selectedToken', selectedToken)
      setContent(selectedToken);
    }
   }, [selectedToken])
@@ -133,7 +132,7 @@ const insertText = (text: string , editorState: any) => {
             link: {
               inDropdown: false,                         
               showOpenOptionOnHover: true,
-              defaultTargetOption: '_self',
+              defaultTargetOption: '_blank',
               options: ['link'],
               link:{className:'editor-toolbar--btn-link'}          
             },

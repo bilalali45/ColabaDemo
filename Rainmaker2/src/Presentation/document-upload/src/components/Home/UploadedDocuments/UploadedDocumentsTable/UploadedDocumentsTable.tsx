@@ -41,11 +41,12 @@ export const UploadedDocumentsTable = () => {
     if (!submittedDocs) {
       let uploadedDocs = await DocumentActions.getSubmittedDocuments(
         Auth.getLoanAppliationId()
-      );
+      );     
       if (uploadedDocs) {
+        const sortedUploadedDocuments = _.orderBy(uploadedDocs, (item) => item.docName, ["asc",]);
         dispatch({
           type: DocumentsActionType.FetchSubmittedDocs,
-          payload: uploadedDocs,
+          payload: sortedUploadedDocuments,
         });
       }
     }
@@ -62,100 +63,102 @@ export const UploadedDocumentsTable = () => {
   };
 
   const renderFileNameColumn = (data, params: ViewDocumentType) => {
-    if(isMobile?.value){
+    if (isMobile?.value) {
       return (
-        <div  className="udl-m-otherinfo-wrap">
-        {data.map((item: Document, index: number) => {
-          const { clientName, id: fileId } = item;
+        <div className="udl-m-otherinfo-wrap">
+          {data.map((item: Document, index: number) => {
+            const { clientName, id: fileId } = item;
 
-          return (
-            <div  className="m-doc-filename" key={index}>
-              <Link data-testid='doc-file-link'
-                to="#"
-                className="link-filename"
-                title={clientName}
-                onClick={() => {
-                  setCurrentDoc({
-                    ...params,
-                    fileId,
-                    clientName,
-                  });
+            return (
+              <div className="m-doc-filename" key={index}>
+                <Link data-testid='doc-file-link'
+                  to="#"
+                  className="link-filename"
+                  title={clientName}
+                  onClick={() => {
+                    setCurrentDoc({
+                      ...params,
+                      fileId,
+                      clientName,
+                    });
 
-                  checkFreezBody();
-                }}
-              >
-                {clientName}
-              </Link>
-              <div className="m-doc-date-wrap">
-              <div data-testid='added-date' className="m-doc-date" key={index}>
-                {DateFormatWithMoment(item.fileUploadedOn, true)}
+                    checkFreezBody();
+                  }}
+                >
+                  {clientName}
+
+                  <div className="pd-m-arrow-icon"><i className="zmdi zmdi-chevron-right"></i></div>
+                </Link>
+
+                {/* <div className="m-doc-date-wrap">
+                  <div data-testid='added-date' className="m-doc-date" key={index}>
+                    {DateFormatWithMoment(item.fileUploadedOn, true)}
+                  </div>
+                </div> */}
               </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
       )
     }
-    else{
-    return (
-      <td>
-        {data.map((item: Document, index: number) => {
-          const { clientName, id: fileId } = item;
+    else {
+      return (
+        <td>
+          {data.map((item: Document, index: number) => {
+            const { clientName, id: fileId } = item;
 
-          return (
-            <span data-testid='doc-file' className="block-element" key={index}>
-              <Link data-testid='doc-file-link'
-                to="#"
-                className="link-filename"
-                title={clientName}
-                onClick={() => {
-                  setCurrentDoc({
-                    ...params,
-                    fileId,
-                    clientName,
-                  });
+            return (
+              <span data-testid='doc-file' className="block-element" key={index}>
+                <Link data-testid='doc-file-link'
+                  to="#"
+                  className="link-filename"
+                  title={clientName}
+                  onClick={() => {
 
-                  checkFreezBody();
-                }}
-              >
-                {clientName}
-              </Link>
-            </span>
-          );
-        })}
-      </td>
-    );
-  }
+                    setCurrentDoc({
+                      ...params,
+                      fileId,
+                      clientName,
+                    });
+
+                    checkFreezBody();
+                  }}
+                >
+                  {clientName}
+                </Link>
+              </span>
+            );
+          })}
+        </td>
+      );
+    }
   };
 
   const renderAddedColumn = (data) => {
-    if(isMobile?.value){
+    if (isMobile?.value) {
       return;
-    }else{
-    return (
-      <td>
-        {data.map((item: Document, index: number) => {
-          return (
-            <span data-testid='added-date' className="block-element" key={index}>
-              {DateFormatWithMoment(item.fileUploadedOn, true)}
-            </span>
-          );
-        })}
-      </td>
-    );
-  }
+    } else {
+      return (
+        <td>
+          {data.map((item: Document, index: number) => {
+            return (
+              <span data-testid='added-date' className="block-element" key={index}>
+                {DateFormatWithMoment(item.fileUploadedOn, true)}
+              </span>
+            );
+          })}
+        </td>
+      );
+    }
   };
 
-  const renderUploadedDocs = (data) => {
-    const sortedUploadedDocuments = _.orderBy(data, (item) => item.docName, ["asc",]);
-
-    return sortedUploadedDocuments.map(
+  const renderUploadedDocs = (data) => {  
+    return data.map(
       (item: UploadedDocuments, index: number) => {
         if (!item?.files?.length) return;
         const { files, docId, requestId, id } = item;
-        const sortedFiles = _.orderBy(files,(file) => new Date(file.fileUploadedOn),["desc"]);
+        const sortedFiles = _.orderBy(files, (file) => new Date(file.fileUploadedOn), ["desc"]);
 
         return (
           <tr key={index}>
@@ -179,18 +182,18 @@ export const UploadedDocumentsTable = () => {
       (item: UploadedDocuments, index: number) => {
         if (!item?.files?.length) return;
         const { files, docId, requestId, id } = item;
-        const sortedFiles = _.orderBy(files,(file) => new Date(file.fileUploadedOn),["desc"]);
+        const sortedFiles = _.orderBy(files, (file) => new Date(file.fileUploadedOn), ["desc"]);
 
         return (
           <div className="uploaded-doc-list-mobile" key={index}>
-            <div data-testid='doc-type' className="udl-m-icon-wrap">
-            <em className="far fa-file"></em> 
-            </div>
-            <div  className="udl-m-content-wrap">
+            {/* <div data-testid='doc-type' className="udl-m-icon-wrap">
+              
+            </div> */}
+            <div className="udl-m-content-wrap">
               <div className="doc-name" title={item.docName}>
-                {item.docName}
+                <em className="far fa-file"></em> {item.docName}
               </div>
-            {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
+              {renderFileNameColumn(sortedFiles, { id, requestId, docId })}
             </div>
           </div>
         );
@@ -204,12 +207,12 @@ export const UploadedDocumentsTable = () => {
 
   const renderTable = (data) => {
     if (!data || data?.length === 0) return;
-    if(isMobile?.value){
-      return ( renderUploadedDocsMobile(data))
+    if (isMobile?.value) {
+      return (renderUploadedDocsMobile(data))
     }
     else {
       return (
-        <table  data-testid='uploaded-docs-head' className="table  table-striped">
+        <table data-testid='uploaded-docs-head' className="table  table-striped">
           <thead >
             <tr>
               <th>Documents</th>
@@ -229,14 +232,14 @@ export const UploadedDocumentsTable = () => {
       <div className="no-document">
         <div className="no-document--wrap">
           <div className="no-document--img">
-            <img src={isMobile?.value?DocUploadIconMobile:DocUploadIcon} alt="Your don't have any files!" />
+            <img src={isMobile?.value ? DocUploadIconMobile : DocUploadIcon} alt="Your don't have any files!" />
           </div>
           <label className="inputno-document--text">
             You don't have any uploaded files.
             <br />
             Go to{" "}
             <a tabIndex={-1} onClick={loanHomeHandler}>
-            Loan Center.
+              Loan Center.
             </a>
           </label>
         </div>

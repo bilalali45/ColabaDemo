@@ -61,6 +61,7 @@ export const EmailReview = ({
   });
   const [defaultText, setDefaultText] = useState<string>();
   const [isError, setIsError] = useState<string>();
+  const [validSubject, setvalidSubject] = useState<string>("");
 
   useEffect(() => {
     if(selectedEmailTemplate ){
@@ -182,7 +183,8 @@ export const EmailReview = ({
       setValue('fromEmail', template.fromAddress?.toString());
       setValue('toEmail', template.toAddress?.toString());
       setValue('cCEmail', template.ccAddress?.toString());
-      setValue('subjectLine', template.subject?.toString());
+      //setValue('subjectLine', template.subject?.toString());
+      setSubjectWithValidation(template.subject?.toString() || "");
       setSubject(template.subject?.toString());   
       setValue('emailBody', emailBodyContent?.toString());
       setCCEmail(template.ccAddress?.toString());
@@ -339,6 +341,17 @@ export const EmailReview = ({
     });
     dispatch({ type: RequestEmailTemplateActionsType.SetEdit, payload: true})
   };
+  const setSubjectWithValidation=(text: string) =>{
+    var str = removeSpecialChars(text)
+    setvalidSubject(str);
+  }
+  const onChangeSubjectHandler = (event:any) =>{
+      let val = event.target.value;
+      setSubjectWithValidation(val);
+  }
+  const removeSpecialChars= (text: string) => {
+    return text.replace(/[^ -~]/gi, "");
+  }
 
   const onSubmit = (data: any, e: any) => {
     if(isError){
@@ -495,6 +508,7 @@ export const EmailReview = ({
                 name="subjectLine"
                 type="text"             
                 className={`grid-form-control`}
+                value={validSubject}
                 ref={register({
                   required: 'Subject is required.',
                   minLength : {
@@ -503,6 +517,7 @@ export const EmailReview = ({
                   }
                 })}
                 onBlur={(e: any) => onBlurSubjectHandler(e)}
+                onChange ={(e:any) => onChangeSubjectHandler(e)}
               />
 
               {errors.subjectLine && (

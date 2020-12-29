@@ -1,6 +1,7 @@
-// @include box-sizing(border-box);
-@mixin scrollbar($w: 11, $h: 11) {
+// @include scrollbar();
+@mixin scrollbar($w: 6, $h: 6) {
   scrollbar-color: color('scroll');
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 0px color('scroll');
      -webkit-box-shadow: inset 0 0 0px color('scroll');

@@ -68,6 +68,33 @@ a[tabindex] {
     cursor: pointer;
 }
 
+input[type=search]{
+    //background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAYCAYAAADzoH0MAAAABHNCSVQICAgIfAhkiAAAAKpJREFUOE9jZKAQMFKon2G4GFDbtMCageFf/x8WBu/2qqTX+MKlsm2eKMsfhq0MDEyFzXUJR8FhUNs07xQjA4Ppf4b/N/+wMNriMgSi+f9hRgZG9f8MDKeb65LMwAagSmA3BJcaeCzgMwSfHEo0YlMIciHC2Ziuw0gH6IaADID4GbvXsCYkZENABuALXOobQJEXKApEiqKR4oREcVKmODNRUioNlxKJkjAAALgN6hljawuEAAAAAElFTkSuQmCC');
+    
+
+    &::-khtml-clear,
+    &::-o-clear,
+    &::-moz-clear,
+    &::-ms-clear,
+    &::-webkit-clear {
+        display: none;
+    }
+
+    &::-webkit-search-cancel-button{
+        position:relative;
+        right:-12px; 
+        cursor: pointer;
+        -webkit-appearance: none;
+        height: 14px;
+        width: 15px;
+        background-image: url('../../images/close.png');
+        background-repeat: no-repeat;
+        background-position:  center center;
+        background-size: contain;
+        transition: background 0.4s;
+    }
+}
+
 .clearfix {
 
     &::before,
@@ -317,6 +344,22 @@ html {
     &-default {
         background-color: color('default');
     }
+
+    &-icon {
+        color: color('base');
+
+        svg {
+            margin-right  : 6px;
+            display       : inline-block;
+            vertical-align: middle;
+        }
+
+        &:focus,
+        &:visited {
+            outline   : none;
+            box-shadow: none;
+        }
+    }
 }
 
 
@@ -418,6 +461,18 @@ html {
 
 .no-document {
     min-height: 450px;
+    position: relative;
+
+    input[type="file"]{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
 
     @include mobile {
         min-height: calc(100vh - 220px);
@@ -575,4 +630,21 @@ html {
 .activityHeader .row-subheader {
     padding-left : 15px;
     padding-right: 15px;
+}
+
+.popup-overlay{
+    background-color: rgba(color('colorBlack'), 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    display: flex;
+
+    .popup-doc-upload{
+        margin: auto;
+    }
 }

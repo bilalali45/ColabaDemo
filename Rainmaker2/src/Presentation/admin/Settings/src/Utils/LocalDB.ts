@@ -83,6 +83,7 @@ export class LocalDB {
   public static getUserRole() {
     return Role.ADMIN_ROLE; // 1
     //return Role.MCU_ROLE; // 2
+    //return Role.SYSTEM_ROLE;
   }
 
   public static setCurrentUrl(currentNavigation: string) {

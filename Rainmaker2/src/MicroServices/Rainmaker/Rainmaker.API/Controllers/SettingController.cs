@@ -10,7 +10,7 @@ namespace Rainmaker.API.Controllers
 {
     [Route("api/rainmaker/[controller]")]
     [ApiController]
-    public class SettingController : ControllerBase
+    public class SettingController : Controller
     {
         #region Private Variables
         private readonly IUserProfileService userProfileService;
@@ -26,8 +26,8 @@ namespace Rainmaker.API.Controllers
         #region Action Methods
 
         #region Get
-        [HttpGet("[action]")]
         [Authorize(Roles = "MCU")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetUserRoles()
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
@@ -44,6 +44,7 @@ namespace Rainmaker.API.Controllers
             return Ok(value: templateQuery);
         }
 
+        [Authorize(Roles = "MCU")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLoanOfficers()
         {
@@ -51,6 +52,7 @@ namespace Rainmaker.API.Controllers
             return Ok(loanOfficers);
         }
         [HttpGet("[action]")]
+        [Authorize(Roles = "MCU")]
         public async Task<IActionResult> GetBusinessUnits()
         {
             var businessUnits = await settingService.GetBusinessUnits();

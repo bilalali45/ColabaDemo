@@ -36,12 +36,13 @@ const ActivityHeader = (props) => {
   const selectedFiles = currentDoc?.files || [];
 
   const activityHeadeRef = useRef<HTMLDivElement>(null);
-
+  const sideBarNav = useRef<HTMLDivElement>(null);
 
   const [showToolTip, setShowToolTip] = useState(false);
   const [taskListTarget, setTaskListTarget] = useState(null);
   const taskListContainerRef = useRef(null);
   const taskListTooltipRef = useRef<any>(null);
+  const [triedSelected, setTriedSelected] = useState('');
 
   useEffect(()=>{
     if (!pendingDocs) {
@@ -128,6 +129,13 @@ const ActivityHeader = (props) => {
         activityHeadeRef.current.onclick = null;
       }
     }
+    else if(sideBarNav.current){
+      if (files) {
+        sideBarNav.current.onclick = showAlertPopup;
+      } else {
+        sideBarNav.current.onclick = null;
+      }
+    }
 
   }, [selectedFiles]);
 
@@ -137,9 +145,13 @@ const ActivityHeader = (props) => {
       window.onpopstate = () => { };
     }
   }, [location?.pathname, selectedFiles])
-  const showAlertPopup = (e) => {
+  
 
+  const showAlertPopup = (e) => {
+    console.log('------------> showAlert', showAlert)
     if (e.target.tagName === "A") {
+      setshowAlert(true);
+    }else if(isMobile?.value){
       setshowAlert(true);
     }
   };
@@ -231,13 +243,18 @@ const ActivityHeader = (props) => {
   ];
 
   const handleNavigationMobile = (e, link) => {
+   
     e.preventDefault();
+    let url = `${link}/${Auth.getLoanAppliationId()}`;
+    setTriedSelected(url);
+    if(!showAlert){
     if (link.includes('dashboard')) {
       window.open("/Dashboard", "_self");
       return;
-    }
-    let url = `${link}/${Auth.getLoanAppliationId()}`;
-    history.push(url)
+    } 
+      history.push(url)
+    }  
+
   }
 
   const renderItem = ({ text, img, link }, isActive) => {
@@ -260,7 +277,9 @@ const ActivityHeader = (props) => {
           pathname: showAlert ? location.pathname : leftNavUrl,
           state: { from: location.pathname },
         }}
-          onClick={(e) => handleNavigationMobile(e, link)} >
+          onClick={(e) => {
+            handleNavigationMobile(e, link);
+          } } id={link.split('/')[1]} >
           <div className="n-item-icon" ref={text === 'Task List' ? taskListTooltipRef : null} >
             <img src={img} alt="" />
             {pendingDocs?.length > 0 && text === 'Task List' && <div className="n-item-icon-counter">{pendingDocs?.length < 10 ? 0 : ''}{pendingDocs?.length}</div>}
@@ -276,8 +295,14 @@ const ActivityHeader = (props) => {
 
   const ActivityHeaderMobile = () => {
     return (
-      <div  className="mobile-navigation" ref={taskListContainerRef}>
-        <div className="row">
+      <div  className="mobile-navigation"  onClick={()=>{
+          setTimeout(()=>{if(document.body.style.overflow == 'hidden'){
+            document.body.style.overflow = 'auto'
+          }},20)
+        }
+        }>
+         <section ref={taskListContainerRef}>
+        <div ref={sideBarNav} className="row">
           <div className="container">
             <div className="mobile-n-wrap" data-testid="activity-header-mobile" >
 
@@ -292,7 +317,17 @@ const ActivityHeader = (props) => {
             </div>
           </div>
         </div>
+        </section>
+        {showAlert && (
+          <AlertBox
+            navigateUrl={triedSelected}
+            isBrowserBack={browserBack}
+            hideAlert={() => setshowAlert(false)}
+            
+          />
+        )}
       </div>
+     
     )
   }
 

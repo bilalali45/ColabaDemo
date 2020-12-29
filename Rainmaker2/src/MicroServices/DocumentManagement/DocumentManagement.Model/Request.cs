@@ -17,6 +17,7 @@ namespace DocumentManagement.Model
         public DateTime createdOn { get; set; }
         public string status { get; set; }
         public string message { get; set; }
+        public bool isFromBorrower { get; set; }
         public RequestEmail email { get; set; }
         public List<RequestDocument> documents { get; set; }
     }
@@ -153,5 +154,24 @@ namespace DocumentManagement.Model
     {
         public DraftEmailDto draftEmail { get; set; }
         public List<DraftDocumentDto> draftDocuments { get; set; }
+    }
+
+    public class RequestResponseModel
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+    }
+
+    public class DocumentRequestQuery
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string requestId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string docId { get; set; }
+      
     }
 }

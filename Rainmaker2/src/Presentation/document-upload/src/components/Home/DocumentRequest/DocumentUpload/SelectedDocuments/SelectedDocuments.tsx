@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { DocumentItem } from "./DocumentItem/DocumentItem";
-// import { DocumentView } from "rainsoft-rc";
+import _ from "lodash";
 import { Store } from "../../../../../store/store";
 import { Document } from "../../../../../entities/Models/Document";
 import { DocumentActions } from "../../../../../store/actions/DocumentActions";
@@ -98,6 +98,7 @@ export const SelectedDocuments = ({
 
       return f;
     });
+   
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
@@ -209,6 +210,7 @@ export const SelectedDocuments = ({
       }
       return f;
     });
+    
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
@@ -254,9 +256,10 @@ export const SelectedDocuments = ({
       Auth.getLoanAppliationId()
     );
     if (uploadedDocs) {
+      const sortedUploadedDocuments = _.orderBy(uploadedDocs, (item) => item.docName, ["asc",]);
       dispatch({
         type: DocumentsActionType.FetchSubmittedDocs,
-        payload: uploadedDocs,
+        payload: sortedUploadedDocuments,
       });
     }
   };
@@ -322,6 +325,7 @@ export const SelectedDocuments = ({
       return true;
     }
   }
+  
   const checkFreezBody = async () => {
 
     if (document.body.style.overflow == "hidden") {
@@ -368,6 +372,7 @@ export const SelectedDocuments = ({
             <input
               onChange={(e) => {
                 setFiles(e.target.files, fileToRemove);
+                e.target.value = ''
               }}
               data-testid="file-input"
               type="file"
@@ -393,6 +398,7 @@ export const SelectedDocuments = ({
             <input
               onChange={(e) => {
                 setFiles(e.target.files, fileToRemove);
+                e.target.value = ''
               }}
               data-testid="file-input"
               type="file"
@@ -498,7 +504,7 @@ export const SelectedDocuments = ({
         {!selectedFiles.filter(f => f.uploadStatus !== 'done').length && !uploadingFiles && !donePressed ? (
           <div className="doc-confirm-wrap">
             <div className="row">
-              {!isMobile?.value &&
+              {/* {!isMobile?.value &&
                 <div className="col-xs-12 col-md-6 col-lg-7">
                   <div className="dc-text">
                     <p>
@@ -506,8 +512,8 @@ export const SelectedDocuments = ({
                   </p>
                   </div>
                 </div>
-              }
-              <div className="col-xs-12 col-md-6 col-lg-5">
+              } */}
+              <div className="col-xs-12 col-md-7 col-lg-6">
                 <div className="dc-actions">
                   <button
                     className="btn btn-small btn-secondary"
@@ -540,11 +546,11 @@ export const SelectedDocuments = ({
                     className="btn btn-small btn-primary"
                     onClick={doneDoc}
                   >
-                    {"I'M Done"}
+                    {"Send for Review"}
                   </button>
                 </div>
               </div>
-              {isMobile?.value &&
+              {/* {isMobile?.value &&
                 <div className="col-xs-12 col-md-6 col-lg-7">
                   <div className="dc-text">
                     <p>
@@ -552,7 +558,7 @@ export const SelectedDocuments = ({
                   </p>
                   </div>
                 </div>
-              }
+              } */}
             </div>
           </div>
         ) : (

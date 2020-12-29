@@ -10,7 +10,7 @@ export class LoanOfficersActions {
         try {
            let res: any = await Http.get(url);
             let mappedData = res.data.map((lo:any) => {
-                return new LoanOfficer(lo.userId, lo.userName, lo.byteUserName, lo.fullName);
+                return new LoanOfficer(lo.userId, lo.userName, lo.byteUserName, lo.fullName,lo.photo);
             });
               return mappedData;
 

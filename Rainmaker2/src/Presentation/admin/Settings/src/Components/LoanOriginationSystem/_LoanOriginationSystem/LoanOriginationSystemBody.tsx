@@ -21,10 +21,10 @@ export const LoanOriginationSystemBody = ({navigation, changeNav}: BodyProps) =>
                 {/* <li data-testid="profile-menu" className={`${navigation == ProfileMenu.AccountDetail ? 'active' : ''}`}>
     <a className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.AccountDetail)}> {LocalDB.getUserRole()=== Role.MCU_ROLE ? 'Account Detail' : 'Profile'}</a>
                 </li> */}
-                <li data-testid="profile-menu" className={`${navigation == LoadOriginationMenu.Users ? 'active' : ''}`}>
+                <li data-testid="los-menu-user" className={`${navigation == LoadOriginationMenu.Users ? 'active' : ''}`}>
                     <a href="javascript:;" onClick={e=>changeNav(LoadOriginationMenu.Users)}>Users</a>
                 </li>
-                <li data-testid="profile-menu" className={`${navigation == LoadOriginationMenu.Organization ? 'active' : ''}`}>
+                <li data-testid="los-menu-org" className={`${navigation == LoadOriginationMenu.Organization ? 'active' : ''}`}>
                     <a href="javascript:;" onClick={e=>changeNav(LoadOriginationMenu.Organization)}>Organization</a>
                 </li>
             </ul>

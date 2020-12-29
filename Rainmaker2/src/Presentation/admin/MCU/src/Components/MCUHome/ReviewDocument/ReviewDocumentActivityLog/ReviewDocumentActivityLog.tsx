@@ -1,16 +1,19 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {Http} from 'rainsoft-js';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Http } from 'rainsoft-js';
 import _ from 'lodash';
-import ReactHtmlParser from 'react-html-parser'; 
+import ReactHtmlParser from 'react-html-parser';
 
 import {
   ActivityLogType,
   LogType,
   EmailLogsType
 } from '../../../../Entities/Types/Types';
-import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
-import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
+import { ActivityLogFormat } from '../../../../Utils/helpers/DateFormat';
+import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints';
 import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
+import { Tab, Tabs } from 'react-bootstrap';
+
+
 
 export const ReviewDocumentActivityLog = ({
   id,
@@ -37,7 +40,7 @@ export const ReviewDocumentActivityLog = ({
     boolean | null
   >(true);
 
-  
+
 
   const checkActiveTab = (step: any) => {
     if (step == tab) {
@@ -120,13 +123,14 @@ export const ReviewDocumentActivityLog = ({
                 setLogIndex(index);
               }}
             >
-              <div className="d-flex justify-content-between">
+              <div> {/* className="d-flex justify-content-between"*/}
                 <h6>{activityLog.activity}</h6>
+                <h2>{activityLog.userName}</h2>
                 <time className="vertical-tabs--list-time">
                   {ActivityLogFormat(activityLog.dateTime)}
                 </time>
               </div>
-              <h2>{activityLog.userName}</h2>
+
             </a>
           </li>
         );
@@ -195,7 +199,7 @@ export const ReviewDocumentActivityLog = ({
 
   const getEmailLogs = useCallback(async (id, docId, requestId) => {
     try {
-      const {data} = await Http.get<EmailLogsType[]>(
+      const { data } = await Http.get<EmailLogsType[]>(
         NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
       );
 
@@ -229,6 +233,8 @@ export const ReviewDocumentActivityLog = ({
   };
 
   const renderEmailLogDetails = (emailLogIndex: number) => {
+    
+    //setFooter(false);
     const emailLog = emailLogs[emailLogIndex];
 
     return <div id="emailContent" >{ReactHtmlParser(emailLog?.emailText)}</div>;
@@ -245,6 +251,10 @@ export const ReviewDocumentActivityLog = ({
     getEmailLogs(id, requestId, docId);
   }, [getEmailLogs, id, docId, requestId]);
 
+  const [tabKey , setTabKey] = useState<string>('ActivityLog');
+  const checkTab = (eventKey:any) => {
+    setTabKey(eventKey);    
+  }
   return (
     <section data-testid="logDetail-section" ref={sectionRef} className="vertical-tabs" id="verticalTab">
       <div className="vertical-tabs--data" style={tabDataStyle}>
@@ -252,7 +262,7 @@ export const ReviewDocumentActivityLog = ({
         <div
           className={'vertical-tabs--wrap activity-log ' + checkActiveTab(1)}
           data-step="1"
-          style={{width: `${getWidthSection}px`}}
+          style={{ width: `${getWidthSection}px` }}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">
@@ -270,7 +280,7 @@ export const ReviewDocumentActivityLog = ({
               <div className="vertical-tabs--header-left">
                 <h2 className="vertical-tabs--header-title">Log Details</h2>
               </div>
-              <div className="vertical-tabs--header-right">
+              <div className="vertical-tabs--header-right" style={{ display: 'none' }}>
                 <button
                   className="btn-go"
                   onClick={() => {
@@ -283,38 +293,57 @@ export const ReviewDocumentActivityLog = ({
               </div>
             </header>
             <section className="vertical-tabs--body padding">
-              <table className="table table-noborder">
-                <thead>
-                  <tr>
-                    <th>
-                      <button onClick={sortEventNames}>
-                        Events
-                        <em
-                          className={getSortIconClassName(sortByEventName)}
-                        ></em>
-                      </button>
-                    </th>
-                    <th>
-                      <button onClick={sortEventDates}>
-                        Date & Time
-                        <em
-                          className={getSortIconClassName(sortByEventDateTime)}
-                        ></em>
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-              </table>
-              <div className="vertical-tabs--scrollable">
-                <table className="table">
-                  <tbody>
-                    {activityLogs.length > 0 &&
-                      renderActivity(activityLogs[logIndex].log)}
-                  </tbody>
-                </table>
+              <div className={`horizontal-tabs ` + tabKey}>
+                <Tabs defaultActiveKey={tabKey} id="activityLogsTabs" onSelect={(eventKey:any)=>checkTab(eventKey)}>
+                  <Tab eventKey="ActivityLog" title="Activity Log" >
+                    <table className="table table-noborder">
+                      <colgroup>
+                        <col style={{ width: '75%' }} />
+                        <col style={{ width: '25%' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>
+                            <button onClick={sortEventNames}>
+                              Events
+                          <em
+                                className={getSortIconClassName(sortByEventName)}
+                              ></em>
+                            </button>
+                          </th>
+                          <th>
+                            <button onClick={sortEventDates}>
+                              Date & Time
+                          <em
+                                className={getSortIconClassName(sortByEventDateTime)}
+                              ></em>
+                            </button>
+                          </th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <div className="vertical-tabs--scrollable">
+                      <table className="table">
+                        <colgroup>
+                          <col style={{ width: '75%' }} />
+                          <col style={{ width: '25%' }} />
+                        </colgroup>
+                        <tbody>
+                          {activityLogs.length > 0 &&
+                            renderActivity(activityLogs[logIndex].log)}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="EmailSent" title="Email Sent">
+                    {!!emailLogs.length && renderEmailLogDetails(emailLogIndex)}
+                  </Tab>
+                </Tabs>
               </div>
             </section>
-            <footer className="vertical-tabs--footer">
+            {tabKey == 'ActivityLog' &&
+              //footer &&
+              <footer className="vertical-tabs--footer">
               <h2>
                 <span>Message to borrower</span>
               </h2>
@@ -322,14 +351,16 @@ export const ReviewDocumentActivityLog = ({
                 <div>{ReactHtmlParser(activityLogs[logIndex].message)}</div>
               }
             </footer>
+            }
+     
           </div>
         </div>
 
         {/* Email Log */}
-        <div
+        {/* <div
           className={'vertical-tabs--wrap email-log ' + checkActiveTab(2)}
           data-step="2"
-          style={{width: `${sectionRef?.current?.offsetWidth}px`}}
+          style={{ width: `${sectionRef?.current?.offsetWidth}px` }}
         >
           <div className="vertical-tabs--aside">
             <header className="vertical-tabs--header">
@@ -362,7 +393,7 @@ export const ReviewDocumentActivityLog = ({
               {!!emailLogs.length && renderEmailLogDetails(emailLogIndex)}
             </section>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

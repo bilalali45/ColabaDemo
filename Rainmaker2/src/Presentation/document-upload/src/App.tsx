@@ -127,7 +127,6 @@ const App = () => {
     window.onbeforeunload = null;
     Auth.removeAuth();
     if (window.open) {
-      debugger
       window.open("/Account/LogOff", "_self");
     }
   };

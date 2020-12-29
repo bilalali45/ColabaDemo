@@ -11,6 +11,7 @@ import { DashboardSetting } from '../../../../../Entities/Models/DashboardSettin
 import { NeedListActions } from '../../../../../Store/actions/NeedListActions';
 import { Store } from '../../../../../Store/Store';
 import { NeedListActionsType } from '../../../../../Store/reducers/NeedListReducer';
+import { LocalDB } from '../../../../../Utils/LocalDB';
 type headerProps = {
     toggleCallBack: Function;
     templateList: Template[];
@@ -22,12 +23,14 @@ type headerProps = {
 
 export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesDocuments, isDocumentDraft, viewSaveDraft, fetchDashBoardSettings }: headerProps) => {
     const {state, dispatch} = useContext(Store);
-
     const needListManager: any = state?.needListManager;
-
+    
+    const needFilter:any = LocalDB.getItem(NeedListActionsType.SetNeedListFilter);
     const CheckBoxClickHandler = () => { 
-        dispatch({type: NeedListActionsType.SetNeedListFilter, payload: !needListManager?.needListFilter});
-        toggleCallBack(!needListManager?.needListFilter)
+        const needtoggleFilter: any = LocalDB.getItem(NeedListActionsType.SetNeedListFilter);
+        const toggleFilter = !(needtoggleFilter === 'true');
+        LocalDB.storeItem(NeedListActionsType.SetNeedListFilter,toggleFilter.toString());
+        toggleCallBack(toggleFilter)
     }
 
     return (
@@ -54,7 +57,7 @@ export const NeedListViewHeader = ({ toggleCallBack, templateList, addTemplatesD
                 &nbsp;&nbsp;&nbsp;
                 {/* <Toggler /> */}
                 <label className="switch" >
-                    <input type="checkbox" onClick={CheckBoxClickHandler} id="toggle" defaultChecked={needListManager?.needListFilter} data-testid="needListSwitch"/>
+                    <input type="checkbox" onClick={CheckBoxClickHandler} id="toggle" defaultChecked={(needFilter === 'true'?true:false)} data-testid="needListSwitch"/>
                     <span className="slider round"></span>
                 </label>
                 &nbsp;&nbsp;&nbsp;
