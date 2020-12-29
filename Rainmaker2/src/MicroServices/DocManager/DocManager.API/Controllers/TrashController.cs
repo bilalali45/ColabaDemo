@@ -53,5 +53,14 @@ namespace DocManager.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(await trashService.SaveTrashAnnotations(saveTrashAnnotations, tenantId));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteTrashFile(DeleteTrashFile deleteModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var res = await trashService.DeleteTrashFile(deleteModel.id, tenantId,deleteModel.fileId);
+            
+            return Ok(res);
+        }
+
     }
 }

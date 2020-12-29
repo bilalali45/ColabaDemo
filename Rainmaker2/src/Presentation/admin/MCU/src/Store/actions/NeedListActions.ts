@@ -120,11 +120,10 @@ export class NeedListActions {
     let url = NeedListEndpoints.POST.needListLock.aquireLock();
     try {
       let res = await Http.post(url, { loanApplicationId: parseInt(id) })
-      return res.data;
+      return res;
 
     } catch (error) {
-      console.log(error);
-      return error?.response?.data;
+      return error?.response;
 
     }
   }

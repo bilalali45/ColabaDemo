@@ -118,7 +118,7 @@ namespace DocManager.Service
             }
             return false;
         }
-        private async Task<bool> DeleteTrashFile(string id, int tenantid, string fromFileId)
+        public async Task<bool> DeleteTrashFile(string id, int tenantid, string fromFileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

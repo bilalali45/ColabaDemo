@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { CurrentInView } from '../../../Models/CurrentInView';
+import { SelectedFile } from '../../../Models/SelectedFile';
 import DocumentActions from '../../../Store/actions/DocumentActions';
 import { DocumentActionsType } from '../../../Store/reducers/documentsReducer';
 import { ViewerActionsType } from '../../../Store/reducers/ViewerReducer';
@@ -183,6 +184,8 @@ export const RenameFile = ({
             payload: newFile,
           });
 
+          let selectedFileData = new SelectedFile(currentFile.id,newNameWithFileExtension, currentFile.fileId )
+          dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
         } catch (error) {
           //swallod error because it should not update
 

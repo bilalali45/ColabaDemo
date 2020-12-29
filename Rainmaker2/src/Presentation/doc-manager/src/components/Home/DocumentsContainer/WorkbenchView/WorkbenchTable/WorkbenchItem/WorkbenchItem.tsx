@@ -15,8 +15,10 @@ import { DocumentRequest } from '../../../../../../Models/DocumentRequest'
 import { AnnotationActions } from '../../../../../../Utilities/AnnotationActions'
 import { SelectedFile } from '../../../../../../Models/SelectedFile'
 import { ViewerActions } from '../../../../../../Store/actions/ViewerActions'
+import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
 
-const nonExistentFileId = '000000000000000000000000';
+
+export const nonExistentFileId = '000000000000000000000000';
 
 export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReassignDropdown }: any) => {
 
@@ -32,26 +34,57 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [isDraggingItem, setIsDraggingItem] = useState(false);
 
+  const refReassignPopover = useRef<any>(null);
+  const refReassignlink = useRef<any>(null);
+
   const { state, dispatch } = useContext(Store);
 
   const viewer: any = state.viewer;
   const { currentDoc }: any = state.documents;
   const instance: any = viewer?.instance;
-  const { selectedFileData, currentFile, isFileChanged }: any = state.viewer;
+  const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
+
   const loanApplicationId = LocalDB.getLoanAppliationId();
 
   const toggleReassignDropdown = async (e: any) => {
+
+    if (isFileChanged && file?.id === currentFile?.id) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+
+      return;
+    }
+
     let target = e.target
     await setCurrentDocument();
 
     setReassignDropdownTarget(target);
-    setShowingReassignDropdown(true);
+    setShowingReassignDropdown(!showingReassignDropdown);
+    showingReassignDropdown ? refReassignDropdown.current.classList.remove("freeze") : refReassignDropdown.current.classList.add("freeze");
   };
 
-  const hideReassign = () => setShowingReassignDropdown(false);
+  const hideReassign = () => {
+
+    setShowingReassignDropdown(false);
+    refReassignDropdown.current?.classList.remove("freeze")
+  }
+
+  const handleClickOutside = (event: any) => {
+    if (refReassignPopover && !refReassignPopover.current?.contains(event.target) && !refReassignlink.current?.contains(event.target)) {
+      hideReassign();
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showingReassignDropdown]);
 
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
+    if (selectedFileData && file.fileId === selectedFileData.fileId)
+      dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: isDraggingItem });
   }, [isDraggingItem]);
 
   const setCurrentDocument = () => {
@@ -73,29 +106,36 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
   }
   const moveWorkBenchToTrash = async () => {
+
+    if (isFileChanged && file?.fileId === currentFile?.fileId) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+
+      return;
+    }
+
     setCurrentDocument();
-    let cancelCurrentFileViewRequest:boolean = false;
-    if(selectedFileData && selectedFileData?.fileId === file.fileId){
+    let cancelCurrentFileViewRequest: boolean = false;
+    if (selectedFileData && selectedFileData?.fileId === file.fileId) {
       cancelCurrentFileViewRequest = true;
     }
-    
+
     let success = await DocumentActions.moveWorkBenchFileToTrash(
       file.id,
-      file.fileId, 
+      file.fileId,
       cancelCurrentFileViewRequest
     );
 
-    if (success) { 
-      if(selectedFileData && selectedFileData?.fileId === file.fileId){
+    if (success) {
+      if (selectedFileData && selectedFileData?.fileId === file.fileId) {
         if (viewer?.currentFile) {
           ViewerActions.resetInstance(dispatch)
         }
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
         await DocumentActions.getCurrentWorkbenchItem(dispatch);
       }
-      else{
-        
-      let d = await DocumentActions.getWorkBenchItems(dispatch);
+      else {
+
+        let d = await DocumentActions.getWorkBenchItems(dispatch);
       }
       let docs = await DocumentActions.getTrashedDocuments(dispatch)
     }
@@ -113,59 +153,73 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
         </li>
         <li className={`reAssBtn`}>
           <a
+            ref={refReassignlink}
             data-title="Reassign"
             onClick={(e) => toggleReassignDropdown(e)}
             className={showingReassignDropdown ? "overlayOpen" : ""}>
             <ReassignListIcon />
           </a>
         </li>
-          </ul>
-        );
-      };
-      
-      const viewFileForWorkBench = async () => {
+      </ul>
+    );
+  };
 
-        // if(isFileChanged) {
-        //   dispatch({type: ViewerActionsType.SetShowingConfirmationAlert, payload: true});
-        //   return;
-        // }
+  const viewFileForWorkBench = async () => {
 
-        dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-        setCurrentDocument();
-        
-        let selectedFileData = new SelectedFile(file.id, DocumentActions.getFileName(file), file.fileId )
-        if (viewer?.currentFile) {
-          ViewerActions.resetInstance(dispatch)
-          
-        }
-        dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
-        let f = await DocumentActions.getFileToView(
-          file?.id,
-          nonExistentFileId,
-          nonExistentFileId,
-          file.fileId
-        );
-
-        
-        
-        
-        let currentFile = new CurrentInView(file.id, f, getFileName(), true, file.fileId);
-        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-        dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
-      };
-    
-
-      const getAnnoations = async() => {
-        const{id}:any =  currentDoc
-        const { id: fileId, isWorkBenchFile }: any = file;
-        let body = {
-          id, fromRequestId: nonExistentFileId, fromDocId: nonExistentFileId, fromFileId: fileId
-            }
-       
-        await AnnotationActions.fetchAnnotations(body, true)
-        
+    if (isFileChanged) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      return;
     }
-    
+    // if (isFileChanged) {
+    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+    //   dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
+    //   return;
+    // }
+
+    viewFile(file, null, dispatch);
+  };
+
+  const viewFile = async (file: any, document: any, dispatch: any) => {
+    console.log('file', file, 'document', document)
+    dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+    setCurrentDocument();
+
+    let selectedFileData = new SelectedFile(file.id, DocumentActions.getFileName(file), file.fileId)
+    if (viewer?.currentFile) {
+      ViewerActions.resetInstance(dispatch)
+
+    }
+    dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
+    let f = await DocumentActions.getFileToView(
+      file?.id,
+      nonExistentFileId,
+      nonExistentFileId,
+      file.fileId,
+      false,
+      true,
+      false
+    );
+
+    let currentFile = new CurrentInView(file.id, f, getFileName(), true, file.fileId);
+    dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+    dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+  }
+
+
+
+
+
+  //   const getAnnoations = async() => {
+  //     const{id}:any =  currentDoc
+  //     const { id: fileId, isWorkBenchFile }: any = file;
+  //     let body = {
+  //       id, fromRequestId: nonExistentFileId, fromDocId: nonExistentFileId, fromFileId: fileId
+  //         }
+
+  //     await AnnotationActions.fetchAnnotations(body, true)
+
+  // }
+
 
   const getFileName = () => {
     if (file?.mcuName) return file?.mcuName;
@@ -198,7 +252,8 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   };
 
   const dragStartHandler = (e: any) => {
-    if(file){
+
+    if (file) {
       DocumentActions.showFileBeingDragged(e, file);
       let fileObj = {
         id: file.id,
@@ -215,7 +270,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       setDraggingItem(true);
       e.dataTransfer.setData("file", JSON.stringify(fileObj));
     }
-    
+
   }
 
   const getCurrentFileSelectedStyle = () => {
@@ -225,66 +280,73 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
     return '';
   }
   return (
-    <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''}  ${getCurrentFileSelectedStyle()}`}>
-      <div className="l-icon">
-        <FileIcon />
-      </div>
-      <div
-        onDoubleClick={(event) => onDoubleClick(event)}
-        onClick={viewFileForWorkBench}
-        draggable={!editingModeEnabled ? true : false}
-        onDragStart={(e: any) => {
-          
-          dragStartHandler(e)
-        }}
-
-        onDragEnd={() => {
-          setIsDraggingItem(false);
-          let dragView: any = window.document.getElementById('fileBeingDragged');
-          window.document.body.removeChild(dragView);
-        }}
-        className="d-name">
-        {!!editingModeEnabled ? (
-          <RenameFile
-            editingModeEnabled={editingModeEnabled}
-            editMode={editMode}
-            isWorkBenchFile={true}
-          />
-        ) : (
-            <div>
-              <p title={getFileName()}>{getFileName()}</p>
-              {file.file && file.uploadProgress <= 100?null : 
-              <div className="modify-info">
-                <span className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
-                <span className="mb-name">
-                  {file.userName ? file.userName : "Borrower"}{" "}
-                  {getFileDate(file)}
-                </span>
-              </div>}
-            </div>
-          )}
-      </div>
-      <div className={`dl-actions ${showingReassignDropdown ? "show" : ""}`}>
-        {renderFileActions()}
-        {showingReassignDropdown ? (
-          <ReassignDropdown
-            visible={showingReassignDropdown}
-            hide={hideReassign}
-            container={refReassignDropdown?.current}
-            target={reassignDropdownTarget}
-            selectedFile={file}
-            isFromWorkbench={true}
-          />) : null
-        }
-      </div>
-
-      {file && file.uploadProgress > 0 && (
+    <>
+      <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''}  ${getCurrentFileSelectedStyle()}`}>
+        <div className="l-icon">
+          <FileIcon />
+        </div>
         <div
-          data-testid="upload-progress-bar"
-          className="progress-upload"
-          style={{ width: file.uploadProgress + "%" }}
-        ></div>
-      )}
-    </li>
+          onDoubleClick={(event) => onDoubleClick(event)}
+          onClick={viewFileForWorkBench}
+          draggable={!editingModeEnabled ? true : false}
+          onDragStart={(e: any) => {
+
+            dragStartHandler(e)
+          }}
+
+          onDragEnd={() => {
+            setIsDraggingItem(false);
+            let dragView: any = window.document.getElementById('fileBeingDragged');
+            window.document.body.removeChild(dragView);
+          }}
+          className="d-name">
+          {!!editingModeEnabled ? (
+            <RenameFile
+              editingModeEnabled={editingModeEnabled}
+              editMode={editMode}
+              isWorkBenchFile={true}
+            />
+          ) : (
+              <div>
+                <p title={getFileName()}>{getFileName()}</p>
+                {file.file && file.uploadProgress <= 100 ? null :
+                  <div className="modify-info">
+                    <span className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
+                    <span className="mb-name">
+                      {file.userName ? file.userName : "Borrower"}{" "}
+                      {getFileDate(file)}
+                    </span>
+                  </div>}
+              </div>
+            )}
+        </div>
+        <div className={`dl-actions ${showingReassignDropdown ? "show" : ""}`}>
+          {renderFileActions()}
+          {showingReassignDropdown ? (
+            <ReassignDropdown
+              visible={showingReassignDropdown}
+              hide={hideReassign}
+              container={refReassignDropdown?.current}
+              target={reassignDropdownTarget}
+              selectedFile={file}
+              isFromWorkbench={true}
+              placement="top-end"
+              refReassignPopover={refReassignPopover}
+            />) : null
+          }
+        </div>
+
+        {file && file.uploadProgress > 0 && (
+          <div
+            data-testid="upload-progress-bar"
+            className="progress-upload"
+            style={{ width: file.uploadProgress + "%" }}
+          ></div>
+        )}
+      </li>
+      {/* { isFileChanged && showingConfirmationAlert && fileToChangeWhenUnSaved?.file === file ? <ConfirmationAlert
+        viewFile={(file: any, document: any, dispatch: any) => viewFile(file, document, dispatch)}
+      /> : ''} */}
+    </>
   );
 }

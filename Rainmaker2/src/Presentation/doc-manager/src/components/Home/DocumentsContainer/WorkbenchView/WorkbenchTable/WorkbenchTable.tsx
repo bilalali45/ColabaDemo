@@ -20,9 +20,9 @@ export const WorkbenchTable = () => {
 
     const [draggingSelf, setDraggingSelf] = useState<boolean>(false);
     const [draggingItem, setDraggingItem] = useState<boolean>(false);
-    const refReassignDropdown = useRef<any>(null);
+    const refReassignDropdownWB = useRef<any>(null);
     const { state, dispatch } = useContext(Store);
-    const { currentFile }: any = state.viewer;
+    const { currentFile, isFileChanged }: any = state.viewer;
     const { currentDoc }: any = state.documents;
     const documents: any = state.documents;
     const workbenchItems: any = documents?.workbenchItems;
@@ -41,13 +41,23 @@ export const WorkbenchTable = () => {
     }
 
     const handleOnDrop = async (e: any) => {
+        let file: any = JSON.parse(e.dataTransfer.getData('file'));
+
+        if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
+            dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      
+            return;
+        }
+        e.preventDefault();
+        if(isDragging){
         dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
+        dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
+    }
         if (draggingItem) {
             setDraggingItem(false);
             return;
         }
        
-        let file: any = JSON.parse(e.dataTransfer.getData('file'));
         let {isFromThumbnail, isFromCategory, isFromTrash} = file
         
         if(isFromCategory){
@@ -84,10 +94,10 @@ export const WorkbenchTable = () => {
         }
         
         if(isFromTrash){
-            let {id, fileId} : any = file;
+            let {id, fromFileId} : any = file;
             let success = await DocumentActions.moveTrashFileToWorkBench(
                 id,
-                fileId
+                fromFileId
               );
               if (success) {
                 await DocumentActions.getTrashedDocuments(dispatch);
@@ -113,9 +123,13 @@ export const WorkbenchTable = () => {
             </div>
             
             {isDragging && !draggingSelf &&<div  onDrop={handleOnDrop} className="isDragging-wrap"><div className="drag-wrap"><p>Drop Here</p></div></div>}
-            <div className="dm-wb-tbody" style={{ minHeight: (isDragging && !draggingSelf ? '227px' : '287px') }}>
+            <div className="dm-wb-tbody" ref={refReassignDropdownWB} 
             
-                <section className="dm-wb-tr dm-wb-doc-list" ref={refReassignDropdown}>
+            //style={{ minHeight: (isDragging && !draggingSelf ? '227px' : '287px') }}
+            
+            >
+            
+                <section className="dm-wb-tr dm-wb-doc-list" >
                     <div className="dm-wb-row">
                         <ul  className={`dm-dt-docList ${isDragging ? 'dragActive' : ''}`}
                         >
@@ -126,7 +140,7 @@ export const WorkbenchTable = () => {
                                         file={d}
                                         setDraggingSelf={setDraggingSelf}
                                         setDraggingItem={setDraggingItem}
-                                        refReassignDropdown={refReassignDropdown}
+                                        refReassignDropdown={refReassignDropdownWB}
                                         />
                                         // file={d} />
                                     )

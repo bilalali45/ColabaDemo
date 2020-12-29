@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NeedListActions } from '../../../Store/actions/NeedListActions'
 import { NeedListActionsType } from '../../../Store/reducers/NeedListReducer'
 import { Store } from '../../../Store/Store'
@@ -15,6 +15,8 @@ import Button from "react-bootstrap/Button";
 let timer: any;
 
 export const NeedList = () => {
+
+    const [acquireLockFailed, setAquireLockFailed] = useState<boolean>(false);
 
     const { state, dispatch } = useContext(Store);
 
@@ -38,14 +40,23 @@ export const NeedList = () => {
     }, [isNeedListLocked?.lockUserId]);
 
     const aquireLock = async () => {
-        let lockAcquired = await NeedListActions.aquireLock();
-        dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: lockAcquired })
+        let res = await NeedListActions.aquireLock();
+        if(res.status === 200 || (res?.status === 400 && res?.data?.id)) {
+            dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: res.data });
+        }else {
+            setAquireLockFailed(true);
+        }
+
 
     }
 
     const retainLock = async () => {
         let lockRetained = await NeedListActions.retainLock();
         dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: lockRetained })
+    }
+
+    if(acquireLockFailed) {
+        return <h1>Need List Failure</h1>
     }
 
     if (!isNeedListLocked) {

@@ -9,8 +9,7 @@ import { Loader } from '../../../../../Utilities/Loader';
 import { PSPDFKitViewer } from '../../../../../Utilities/PSPDFKitViewer';
 import { Viewer } from '../../../../../Utilities/Viewer';
 
-// TRIAL-553dIKgZHx9CKMmvcnQUWyoTpN2xhAAdyxBGSUG55hVPsfXIYR3jexSzJ_LmE3z7mcOQqvoX2s_pJDuwOy4vkWW2xkuQrxL4Ef0v7rXbV7w
-const licenseKey = 'Xq2sbPLKcoMngmloCFRhq1HUgk0jQLLbOf6LosAo6oO8y2G9QoaX3w3aX0PWavM6WOVdQo49a7UbnVe1GG6vkS1oSYDJv4EsuCckA4sx6M1qwqn9NbaszHkR6dvE8F0UhxZUsvIIRKUQQ67XwqwCd5G5iBfiJG6NE6gZRu-zasYtvEoyQ1uufbWcWF6FoXV6P_1FOcHrXqToVEXUqYVdYoPtXT3o_gEhLIp3mkLmIWXA2sUuMYZKKAHie1Wqu1eD1mpL0EzxadBtTVAPjLL8xMgl3h0PRZppCtQswQVFCQQMYwMLmDXG7Mzc_v8SO7z_3-CpjubR71MiAaMiw-jRCS8NfVnpso5pCws5gB3uhgxb4x94ISus4h1I0kiN9n7rsihbeJwn16L0-wuxDhuRr-Yyhh2WYdcQz-BfX6XXTTEThzESMHyrWWSJ6KNSNJLq';
+
 
 const baseUrl = `${window.location.protocol}//${window.location.host}/DocManager/`;
 
@@ -38,8 +37,10 @@ export const PDFViewer = () => {
         if (instance) {
             instance.addEventListener("document.change", async () => {
                 console.log('in here document change')
+                Viewer.instance = instance
                 if (!isFileChanged) {
                     await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
+                    
                 }
             });
             
@@ -71,7 +72,6 @@ export const PDFViewer = () => {
 
         dispatch({ type: ViewerActionsType.SetContainerElement, payload: containerRef })
         Viewer.instance = instance;
-
     }
 
     const setAnnotations = async () => {
@@ -88,7 +88,6 @@ export const PDFViewer = () => {
             {viewer?.currentFile && <PSPDFKitViewer
                 isFileChanged={isFileChanged}
                 baseUrl={baseUrl}
-                licenseKey={licenseKey}
                 file={viewer?.currentFile.src}
                 retrieveViewerInstance={getViewerInstance}
                 retrieveContainerElement={getViewerContainerElement}

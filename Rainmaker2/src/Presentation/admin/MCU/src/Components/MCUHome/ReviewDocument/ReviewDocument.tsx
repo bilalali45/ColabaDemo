@@ -2,8 +2,6 @@
 import React, { useEffect, useCallback, useState, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Http } from 'rainsoft-js';
-import Axios from 'axios';
-import { DocumentView } from 'rainsoft-rc';
 import _ from 'lodash';
 
 import { ReviewDocumentHeader } from './ReviewDocumentHeader/ReviewDocumentHeader';
@@ -20,8 +18,8 @@ import { NeedList } from '../../../Entities/Models/NeedList';
 import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
 import { ReviewDocumentActions } from '../../../Store/actions/ReviewDocumentActions';
-import { NeedListActions } from '../../../Store/actions/__mocks__/NeedListActions';
 import { PSPDFKitWebViewer } from '../../PSPDFKit/PSPDFKitWebViewer';
+import { Loader } from '../../../Shared/components/loader';
 
 export const ReviewDocument = () => {
   const [currentDocument, setCurrentDocument] = useState<NeedList>();
@@ -50,15 +48,9 @@ export const ReviewDocument = () => {
   const location = useLocation();
   const { state } = location;
 
-  
-  // const baseUrl = `${window.location.protocol}//${window.location.host}${process.env.PUBLIC_URL}/`;
-  // console.log('baseUrl', baseUrl);
-
-  const baseUrl = `${window.location.protocol}//${window.location.host}/DocumentManagement/`;
+  const {PSPDF_LICENSE_BASE_URL, PSPDF_LICENSE_KEY} = window?.envConfig;
   
   const goBack = () => {
-    // console.log('Going Back---------------------------->');
-    console.log('Going now---------------------------->');
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
 
@@ -70,19 +62,6 @@ export const ReviewDocument = () => {
       try {
         setLoading(true);
         let response = await ReviewDocumentActions.getDocumentForView(id, requestId, docId, fileId)
-        // const http = new Http();
-
-        // const authToken = LocalDB.getAuthToken();
-
-        // const url = NeedListEndpoints.GET.documents.view(id,requestId,docId,fileId
-        // );
-
-        // const response = await Axios.get(http.createUrl(http.baseUrl, url), {
-        //   responseType: 'arraybuffer',
-        //   headers: {
-        //     Authorization: `Bearer ${authToken}`
-        //   }
-        // });
 
         setBlobData(response);
         setFileViewd(true);
@@ -509,28 +488,19 @@ export const ReviewDocument = () => {
           {!!currentDocument &&
             currentDocument.files &&
             currentDocument.files.length ? (
-              <div className="review-document-body--content col-md-8">
+              <div className="review-document-body--content col-md-8" style={loading ? {display:'flex', justifyContent:'center'}: {}}>
                 <div className="doc-view-mcu" data-testid="document-preview">
-                  {blobData && 
-                  // <PSPDFKitWebViewer
-                  //   // documentURL={'http://localhost:4000/static/Sample.pdf'}
-                  //   documentURL={blobData?.data}
-                  //   appBaseURL={baseUrl}
-                  //   licenseKey={'ltwAc8WQgX-LBjjJ1NwRimmgCfesJtXDm_m0Tcoz77Dbc7ZrBufOIY3sN87tnAatXTojU64U-2X2_bwEka3UYWWp2usgfAmbNYTShPoHWzWUqoXWd43Bu4Jnlg6cweJ_Whvkl_lBmCkbw9bJ16jiGgljtKvOceOktQPkYcd4TQZZHXSuQu1fgZcTi63A_huDgB4A3NcHAEN9D1f5KiE3rH9hCTWl2DTLoYkjUay1gPFkZ6w4jQnz4Xel_Qyb2by6CBkHWQ0TFecKHin5ixAj0QPbsWgBps8P-ATKkpUHxNAwkIBDl-ouvzxIFAIfcmeUW6Wq2X5iLGZnXqeagRcpWU5eFzxNVl0Zm42hsj1ye3QtK_7Lx_WbGoz9PqmYM00V1kMBjfe7zYIN8t2s1wtVd_OyaxWtWCc7_3EVy8pJqGYFrXRnzFWZbcKVKKFrHUG9'}
-                  //   clientName={MCUName || clientName}
-                  // />
-
-                  <DocumentView
-                    loading={loading}
-                    id={currentDocument.id}
-                    requestId={currentDocument.requestId}
-                    docId={currentDocument.docId}
-                    clientName={MCUName || clientName}
-                    blobData={blobData}
-                    hideViewer={() => { }}
-                  />
-                }
-
+                  {loading && (
+                   <Loader />
+                  )}                  
+                    {!loading && blobData && 
+                    <PSPDFKitWebViewer
+                      documentURL={blobData?.data}
+                      appBaseURL={PSPDF_LICENSE_BASE_URL}
+                      licenseKey={PSPDF_LICENSE_KEY}
+                      clientName={MCUName || clientName}
+                    />
+                  }
                 </div>
               </div>
             ) : (

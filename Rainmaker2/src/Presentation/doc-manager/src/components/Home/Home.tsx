@@ -37,6 +37,7 @@ export const Home = () => {
   const { currentFile, isLoading, isFileChanged, showingConfirmationAlert }: any = state.viewer;
 
   useEffect(() => {
+
     retainLock();
     if (isNeedListLocked?.lockUserName === LocalDB.getUserPayload()?.UserName) {
       timer = setInterval(() => {
@@ -55,7 +56,16 @@ export const Home = () => {
   }
   useEffect(() => {
     setStateProps();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', (e: any) => {
+      if (isFileChanged) {
+        e.preventDefault();
+        e.returnValue = ''
+      }
+    }, false)
+  }, [isFileChanged])
 
   const setStateProps = () => {
     dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })
@@ -67,6 +77,7 @@ export const Home = () => {
         e.preventDefault();
         // e.dataTransfer.setData('file', JSON.stringify(file));
         dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
+        dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
       }}>
       {isLoading && <Loader containerHeight={"153px"} />}
       <div className="c-Home-wrap">
@@ -79,6 +90,7 @@ export const Home = () => {
           <ViewerContainer />
         </div>
       </div>
+      { isFileChanged && showingConfirmationAlert  ? <ConfirmationAlert /> : ''}
     </section>
   )
 }

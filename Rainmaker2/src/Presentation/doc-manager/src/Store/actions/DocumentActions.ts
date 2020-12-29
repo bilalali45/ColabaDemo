@@ -18,9 +18,10 @@ import { SelectedFile } from '../../Models/SelectedFile';
 import { debug } from 'console';
 import { ViewerActions } from './ViewerActions';
 import { Rename } from '../../Utilities/helpers/Rename';
+import { ViewerTools } from '../../Utilities/ViewerTools';
 
 export default class DocumentActions {
-static nonExistentFileId = "000000000000000000000000"
+  static nonExistentFileId = "000000000000000000000000"
   static loanApplicationId = LocalDB.getLoanAppliationId();
   static documentViewCancelToken: any = Axios.CancelToken.source();
   static async getDocumentItems(dispatch: Function) {
@@ -34,82 +35,84 @@ static nonExistentFileId = "000000000000000000000000"
         dispatch({ type: DocumentActionsType.SetDocumentItems, payload: res.data });
       }
       let docs = res.data;
-      if(docs.length === 1 && docs[0]?.files.length === 0)
-        {
+      if (docs.length === 1 && docs[0]?.files.length === 0) {
         ViewerActions.resetInstance(dispatch)
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
-        }
+      }
       return res.data;
     } catch (error) {
       console.log(error);
     }
   }
 
-  static getCurrentDocumentItems = async (dispatch:Function, isFirstLoad:boolean) => {
-    let docs: any = await DocumentActions.getDocumentItems(dispatch);  
+  static getCurrentDocumentItems = async (dispatch: Function, isFirstLoad: boolean) => {
+    let docs: any = await DocumentActions.getDocumentItems(dispatch);
     let foundFirstFileDoc: any = null;
     let foundFirstFile: any = null;
     ViewerActions.resetInstance(dispatch)
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
     if (docs && docs.length > 0) {
-        
-        for (const doc of docs) {
-            if (doc?.files?.length) {
-                dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
-                dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-                foundFirstFileDoc = doc;
-                foundFirstFile = doc?.files[0];
-                
-                await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
-                break;
-            }else
-            if(!isFirstLoad){
-              ViewerActions.resetInstance(dispatch)
-              dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
-            }
-            
-        }
-        
-        
-    }
 
-    
-    
-}
+      for (const doc of docs) {
+        if (doc?.files?.length) {
+          dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
+          dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+          foundFirstFileDoc = doc;
+          foundFirstFile = doc?.files[0];
 
-
-static getCurrentWorkbenchItem = async (dispatch:Function) => {
-  let files: any = await DocumentActions.getWorkBenchItems(dispatch);
-  let foundFirstFile: any = null;
-          if (files?.length> 0) {
-            foundFirstFile = files[0];
-              
-              let selectedFileData = new SelectedFile(foundFirstFile.id,DocumentActions.getFileName(foundFirstFile), foundFirstFile.fileId )
-              dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
-              let f = await DocumentActions.getFileToView(
-                foundFirstFile?.id,
-                DocumentActions.nonExistentFileId,
-                DocumentActions.nonExistentFileId,
-                foundFirstFile.fileId
-              );
-              
-
-              let currentFile = new CurrentInView(foundFirstFile?.id, f, DocumentActions.getFileName(foundFirstFile), true, foundFirstFile.fileId);
-              dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-              dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
-              
-          }
-          else{
-            
+          await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
+          break;
+        } else
+          if (!isFirstLoad) {
             ViewerActions.resetInstance(dispatch)
             dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
           }
-      
+
+      }
+
+
+    }
+
+
+
   }
 
-  
-  
-  static async getFileToView(id: string, requestId: string, docId: string, fileId: string) {
+
+  static getCurrentWorkbenchItem = async (dispatch: Function) => {
+    let files: any = await DocumentActions.getWorkBenchItems(dispatch);
+    let foundFirstFile: any = null;
+    if (files?.length > 0) {
+      foundFirstFile = files[0];
+
+      let selectedFileData = new SelectedFile(foundFirstFile.id, DocumentActions.getFileName(foundFirstFile), foundFirstFile.fileId)
+      dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
+      let f = await DocumentActions.getFileToView(
+        foundFirstFile?.id,
+        DocumentActions.nonExistentFileId,
+        DocumentActions.nonExistentFileId,
+        foundFirstFile.fileId, 
+        false,
+        true, 
+        false
+      );
+
+
+      let currentFile = new CurrentInView(foundFirstFile?.id, f, DocumentActions.getFileName(foundFirstFile), true, foundFirstFile.fileId);
+      dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+      dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+
+    }
+    else {
+
+      ViewerActions.resetInstance(dispatch)
+      dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+    }
+
+  }
+
+
+
+  static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory:boolean, isFromWorkbench:boolean, isFromTrash:boolean) {
     await DocumentActions.documentViewCancelToken.cancel();
     DocumentActions.documentViewCancelToken = Axios.CancelToken.source();
     let url = Endpoints.Document.GET.viewDocument(
@@ -120,22 +123,41 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
     );
 
     const authToken = LocalDB.getAuthToken();
-    try{
-    const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
-      cancelToken: DocumentActions.documentViewCancelToken.token,
-      responseType: 'arraybuffer',
-      headers: {
-        Authorization: `Bearer ${authToken}`
-      }
-    });
+    try {
+      const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
+        cancelToken: DocumentActions.documentViewCancelToken.token,
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      });
 
-    return response.data;
-  }
-    catch(error){
+      let fileData={
+        id, 
+        requestId, 
+        docId, 
+        fileId,
+        isFromCategory, 
+        isFromWorkbench, 
+        isFromTrash
+      }
+      let file : any;
+      if (!response.data.type.includes('pdf')) {
+        file = await ViewerTools.convertImageToPDF(response.data, false,fileData, false);
+
+      } else {
+
+        file = response.data;
+      }
+
+      return file;
+    }
+    catch (error) {
       console.log(error)
     }
 
   }
+
 
   static async addDocCategory(locationId: string, requestData: any) {
 
@@ -242,7 +264,7 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
   static async submitDocuments(
     documents: any,
     currentSelected: DocumentRequest,
-    fileId:string,
+    fileId: string,
     file: File,
     dispatchProgress: Function,
   ) {
@@ -263,19 +285,19 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
 
     selectedFile = await Rename.rename(currentSelected.files, selectedFile);
     selectedFile.uploadProgress = 0;
-    let allDocs = documents.map((doc:any)=>{
-      if(doc.docId === currentSelected.docId){
+    let allDocs = documents.map((doc: any) => {
+      if (doc.docId === currentSelected.docId) {
         doc = currentSelected
       }
       return doc
     })
-    
+
     dispatchProgress({
-        type: DocumentActionsType.AddFileToDoc,
-        payload: allDocs,
-      });
+      type: DocumentActionsType.AddFileToDoc,
+      payload: allDocs,
+    });
     try {
-    
+
       if (await !FileUpload.isSizeAllowed(file)) {
         selectedFile.notAllowedReason = "FileSize";
         selectedFile.notAllowed = true;
@@ -302,22 +324,22 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
             selectedFile.uploadProgress = p;
             if (p === 100) {
               selectedFile.uploadStatus = "done";
-              
+
             }
-            
-            let allDocs = documents.map((doc:any)=>{
-              if(doc.docId === currentSelected.docId){
+
+            let allDocs = documents.map((doc: any) => {
+              if (doc.docId === currentSelected.docId) {
                 doc = currentSelected
               }
               return doc
             })
-            
+
             dispatchProgress({
-                type: DocumentActionsType.AddFileToDoc,
-                payload: allDocs,
-              });
-            
-            
+              type: DocumentActionsType.AddFileToDoc,
+              payload: allDocs,
+            });
+
+
           },
         },
         {
@@ -330,12 +352,12 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       let err = error.response.data;
       selectedFile.uploadStatus = 'failed';
       selectedFile.notAllowedReason = 'Failed';
-      selectedFile.failedReason =  err.Message? err.Message : err;
+      selectedFile.failedReason = err.Message ? err.Message : err;
       currentSelected.files = [...currentSelected?.files, selectedFile]
 
       dispatchProgress({
         type: DocumentActionsType.AddFileToDoc,
-        payload:currentSelected
+        payload: currentSelected
       });
       console.log("-------------->Upload errors------------>", error);
       return selectedFile;
@@ -439,13 +461,33 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
     }
   }
 
+
+  static async moveFromTrashToCategory(id: string, toRequestId: string, toDocId: string, fromFileId: string) {
+    let url = Endpoints.Document.POST.moveFromTrashToCategory();
+    try {
+      let res: AxiosResponse = await Http.post(
+        url,
+        {
+          id,
+          toRequestId,
+          toDocId,
+          fromFileId
+        }
+      );
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   static async moveCatFileToTrash(id: string, requestId: string, docId: string, fileId: string, cancelCurrentFileViewRequest:boolean) {
     
 
-    if(cancelCurrentFileViewRequest){
+
+    if (cancelCurrentFileViewRequest) {
       await DocumentActions.documentViewCancelToken.cancel();
     }
-    
+
     let url = Endpoints.Trash.POST.moveCatFileToTrash();
     try {
       let res: AxiosResponse = await Http.post(
@@ -464,13 +506,13 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
     return false;
   }
 
-  static async moveWorkBenchFileToTrash(id: string, fileId: string, cancelCurrentFileViewRequest:boolean) {
+  static async moveWorkBenchFileToTrash(id: string, fileId: string, cancelCurrentFileViewRequest: boolean) {
 
-    if(cancelCurrentFileViewRequest){
-      try{
-        await  DocumentActions.documentViewCancelToken.cancel();
+    if (cancelCurrentFileViewRequest) {
+      try {
+        await DocumentActions.documentViewCancelToken.cancel();
       }
-      catch(error){
+      catch (error) {
         console.log(error)
       }
     }
@@ -508,7 +550,60 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
     }
   }
 
-  static async SaveCategoryDocument(document: any, file: File, dispatchProgress:Function, currentDoc:any) {
+  static async DeleteCategoryFile(fileData:any) {
+    let {id, fromRequestId, fromDocId, fromFileId} = fileData;
+
+    let url = Endpoints.Document.POST.DeleteCategoryFile();
+    try {
+      let res: AxiosResponse = await Http.post(
+        url,
+        {
+          id: id,
+          requestId: fromRequestId, 
+          docId: fromDocId,
+          fileId: fromFileId,
+        }
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  static async DeleteTrashFile(id: string, fileId: string) {
+
+    let url = Endpoints.Document.POST.DeleteTrashFile();
+    try {
+      let res: AxiosResponse = await Http.post(
+        url,
+        {
+          id: id,
+          fileId: fileId
+        }
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async DeleteWorkbenchFile(id: string, fileId: string) {
+
+    let url = Endpoints.Document.POST.DeleteWorkbenchFile();
+    try {
+      let res: AxiosResponse = await Http.post(
+        url,
+        {
+          id: id,
+          fileId: fileId
+        }
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async SaveCategoryDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
     let selectedFile = new DocumentFile(
       document.fileId,
       FileUpload.removeSpecialChars(file.name),
@@ -531,7 +626,7 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       formData.append('fileId', fileId);
       formData.append('file', file);
 
-      if(fileId === DocumentActions.nonExistentFileId){
+      if (fileId === DocumentActions.nonExistentFileId) {
         let files = [...currentDoc.files, selectedFile]
         currentDoc.files = files
       }
@@ -550,21 +645,21 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
             if (p === 100) {
               selectedFile.uploadStatus = "done";
             }
-            
-              const docFiles = currentDoc?.files?.map((docFile:any)=>{
-                if(docFile.id === document?.fileId){
-                  docFile = selectedFile
-                }
-                  return docFile;
-                })
-                currentDoc.files = docFiles;
-              
-           
-              dispatchProgress({
-                type: DocumentActionsType.UpdateDocFile,
-                payload: currentDoc
-              });
-            
+
+            const docFiles = currentDoc?.files?.map((docFile: any) => {
+              if (docFile.id === document?.fileId) {
+                docFile = selectedFile
+              }
+              return docFile;
+            })
+            currentDoc.files = docFiles;
+
+
+            dispatchProgress({
+              type: DocumentActionsType.UpdateDocFile,
+              payload: currentDoc
+            });
+
           },
         },
         {
@@ -578,18 +673,18 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       let err = error.response.data;
       selectedFile.uploadStatus = 'failed';
       selectedFile.notAllowedReason = 'Failed';
-      selectedFile.failedReason =  err.Message? err.Message : err;
+      selectedFile.failedReason = err.Message ? err.Message : err;
       document.files = [...document?.files, selectedFile]
 
       dispatchProgress({
         type: DocumentActionsType.AddFileToDoc,
-        payload:document
+        payload: document
       });
       console.log("-------------->Upload errors------------>", error);
     }
   }
 
-  static async SaveTrashDocument(document: any, file: File, dispatchProgress:Function, currentDoc:any) {
+  static async SaveTrashDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
     let selectedFile = new DocumentFile(
       "",
       FileUpload.removeSpecialChars(file.name),
@@ -609,13 +704,13 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       formData.append('fileId', "000000000000000000000000");
       formData.append('file', file);
 
-      
-        let files = [...currentDoc, selectedFile]
-        dispatchProgress({
-          type: DocumentActionsType.AddFileToTrash,
-          payload: files
-        });
-        
+
+      let files = [...currentDoc, selectedFile]
+      dispatchProgress({
+        type: DocumentActionsType.AddFileToTrash,
+        payload: files
+      });
+
       let res = await Http.fetch(
         {
           method: Http.methods.POST,
@@ -631,8 +726,8 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
             if (p === 100) {
               selectedFile.uploadStatus = "done";
             }
-            const docFiles = files?.map((docFile:any)=>{
-              if(docFile.fileId === DocumentActions.nonExistentFileId){
+            const docFiles = files?.map((docFile: any) => {
+              if (docFile.fileId === DocumentActions.nonExistentFileId) {
                 console.log(docFile)
                 docFile = selectedFile
               }
@@ -654,19 +749,19 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       return res.data;
     } catch (error) {
       console.log('error', error.response);
-      
+
       selectedFile.uploadStatus = 'failed';
       selectedFile.notAllowedReason = 'Failed';
-      selectedFile.failedReason =  error.Message? error.Message : error;
+      selectedFile.failedReason = error.Message ? error.Message : error;
       dispatchProgress({
-      type: DocumentActionsType.AddFileToTrash,
-      payload: selectedFile
+        type: DocumentActionsType.AddFileToTrash,
+        payload: selectedFile
       });
       console.log("-------------->Upload errors------------>", error);
     }
   }
 
-  static async SaveWorkbenchDocument(fileObj: any, file: File, dispatchProgress:Function, currentDoc:any) {
+  static async SaveWorkbenchDocument(fileObj: any, file: File, dispatchProgress: Function, currentDoc: any) {
     let selectedFile = new DocumentFile(
       "",
       FileUpload.removeSpecialChars(file.name),
@@ -679,16 +774,16 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
 
     );
     try {
-      let { id, fileId} = fileObj
+      let { id, fileId } = fileObj
       const formData = new FormData();
       formData.append('id', id)
       formData.append('fileId', fileId);
       formData.append('file', file);
 
-      let files:any=currentDoc;
-      if(fileId === DocumentActions.nonExistentFileId){
+      let files: any = currentDoc;
+      if (fileId === DocumentActions.nonExistentFileId) {
         files = [...currentDoc, selectedFile]
-        
+
       }
       let res = await Http.fetch(
         {
@@ -706,19 +801,19 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
             if (p === 100) {
               selectedFile.uploadStatus = "done";
             }
-            
-            const docFiles = files?.map((docFile:any)=>{
-              if(docFile.fileId === fileId){
+
+            const docFiles = files?.map((docFile: any) => {
+              if (docFile.fileId === fileId) {
                 docFile = selectedFile
               }
-                return docFile;
-              })
-              dispatchProgress({
-                type: DocumentActionsType.AddFileToWorkbench,
-                payload: docFiles
-              });
-            }
-            
+              return docFile;
+            })
+            dispatchProgress({
+              type: DocumentActionsType.AddFileToWorkbench,
+              payload: docFiles
+            });
+          }
+
         },
         {
           Authorization: `Bearer ${LocalDB.getAuthToken()}`,
@@ -730,10 +825,10 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
       console.log('error', error.response);
       selectedFile.uploadStatus = 'failed';
       selectedFile.notAllowedReason = 'Failed';
-      selectedFile.failedReason =  error.Message? error.Message : error;
+      selectedFile.failedReason = error.Message ? error.Message : error;
       dispatchProgress({
-      type: DocumentActionsType.AddFileToWorkbench,
-      payload: selectedFile
+        type: DocumentActionsType.AddFileToWorkbench,
+        payload: selectedFile
       });
       console.log("-------------->Upload errors------------>", error);
     }
@@ -766,14 +861,16 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
   };
 
   static async viewFile(document: any, file: any, dispatch: Function) {
-
       let selectedFileData = new SelectedFile(document.id,this.getFileName(file), file.id )
       dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
       let f = await DocumentActions.getFileToView(
         document.id,
         document.requestId,
         document.docId,
-        file.id
+        file.id, 
+        true, 
+        false, 
+        false
       );
         let currentFile = new CurrentInView(document.id, f, this.getFileName(file), false, file.id);
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
@@ -787,10 +884,10 @@ static getCurrentWorkbenchItem = async (dispatch:Function) => {
     fileItemDragView.className = 'fileBeingDragged';
 
     let fileName = file.mcuName || file?.clientName;
-    let by = `<span class="mb-lbl">${file.fileModifiedOn ? "Modified By:" :"Uploaded By:"}</span>  <span class="mb-name">${file.userName ? file.userName : "Borrower"}</span>`;
+    let by = `<span class="mb-lbl">${file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>  <span class="mb-name">${file.userName ? file.userName : "Borrower"}</span>`;
     //fileItemDragView = document.getElementById('fileBeingDragged');
     // fileItemDragView.innerHTML = '<p style="color: white; font-weight: bold; font-size: 20px;">'+fileName+'</p><p style="color: white;">'+by+'</p>';
-    fileItemDragView.innerHTML = '<div class="l-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 15 20"><path id="Path_633" data-name="Path 633" d="M14.453-13.672A1.808,1.808,0,0,1,15-12.344V.625a1.808,1.808,0,0,1-.547,1.328,1.808,1.808,0,0,1-1.328.547H1.875A1.808,1.808,0,0,1,.547,1.953,1.808,1.808,0,0,1,0,.625v-16.25a1.808,1.808,0,0,1,.547-1.328A1.808,1.808,0,0,1,1.875-17.5H9.844a1.808,1.808,0,0,1,1.328.547ZM12.969-12.5,10-15.469V-12.5ZM1.875.625h11.25v-11.25H9.063A.9.9,0,0,1,8.4-10.9a.9.9,0,0,1-.273-.664v-4.062H1.875Z" transform="translate(0 17.5)" fill="#7e829e"></path></svg></div><div class="d-name"><div><p>'+fileName+'</p><div class="modify-info">'+by+'</div></div></div>';
+    fileItemDragView.innerHTML = '<div class="l-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 15 20"><path id="Path_633" data-name="Path 633" d="M14.453-13.672A1.808,1.808,0,0,1,15-12.344V.625a1.808,1.808,0,0,1-.547,1.328,1.808,1.808,0,0,1-1.328.547H1.875A1.808,1.808,0,0,1,.547,1.953,1.808,1.808,0,0,1,0,.625v-16.25a1.808,1.808,0,0,1,.547-1.328A1.808,1.808,0,0,1,1.875-17.5H9.844a1.808,1.808,0,0,1,1.328.547ZM12.969-12.5,10-15.469V-12.5ZM1.875.625h11.25v-11.25H9.063A.9.9,0,0,1,8.4-10.9a.9.9,0,0,1-.273-.664v-4.062H1.875Z" transform="translate(0 17.5)" fill="#7e829e"></path></svg></div><div class="d-name"><div><p>' + fileName + '</p><div class="modify-info">' + by + '</div></div></div>';
     window.document.body.appendChild(fileItemDragView);
     e.dataTransfer.setDragImage(fileItemDragView, 5, 5);
 

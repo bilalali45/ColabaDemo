@@ -88,6 +88,8 @@ namespace DocManager.API.Controllers
                                                               key: await keyStoreService.GetFtpKey()));
             foreach (var file in files)
             {
+                if (file.Length <= 0)
+                    return BadRequest("Something went wrong. Please try again");
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
                     //throw new DocumentManagementException("This file type is not allowed for uploading");
                     return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");

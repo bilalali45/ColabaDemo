@@ -69,7 +69,9 @@ namespace DocManager.Service
                             { "loanApplicationId", lockModel.loanApplicationId},
                         }, new BsonDocument()
                         {
-                            { "$set", l.ToBsonDocument()
+                            { "$set", new BsonDocument(){
+                                {"lockDateTime",l.lockDateTime }
+                            }
                             }
 
                         });
@@ -87,7 +89,11 @@ namespace DocManager.Service
                             { "loanApplicationId", lockModel.loanApplicationId},
                         }, new BsonDocument()
                         {
-                            { "$set", l.ToBsonDocument()
+                            { "$set", new BsonDocument(){
+                                {"lockDateTime",l.lockDateTime },
+                                {"lockUserId",l.lockUserId },
+                                {"lockUserName",l.lockUserName }
+                            }
                             }
 
                         });
@@ -139,7 +145,9 @@ namespace DocManager.Service
                             { "loanApplicationId", lockModel.loanApplicationId},
                         }, new BsonDocument()
                         {
-                            { "$set", l.ToBsonDocument()
+                            { "$set", new BsonDocument(){
+                                {"lockDateTime",l.lockDateTime }
+                            }
                             }
 
                         });

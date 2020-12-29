@@ -52,5 +52,13 @@ namespace DocManager.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(await workbenchService.SaveWorkbenchAnnotations(saveWorkbenchAnnotations, tenantId));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteWorkbenchFile(DeleteTrashFile deleteModel)
+        {
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var res = await workbenchService.DeleteWorkbenchFile(deleteModel.id, tenantId, deleteModel.fileId);
+
+            return Ok(res);
+        }
     }
 }

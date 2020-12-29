@@ -25,26 +25,35 @@ export class AnnotationActions extends Viewer {
         }
     }
 
-    static async fetchAnnotations(body: any, isWorkbenchFile: boolean) {
+    static async fetchAnnotations(body: any, isFromWorkbench: boolean,isFromCategory:boolean, isFromTrash: boolean = false) {
         let res: any;
         try {
-            if (isWorkbenchFile) {
+            if (isFromWorkbench) {
                 res = await Http.post(Endpoints.Document.POST.viewWorkbenchAnnotations(), body);
             }
-            else {
+            else if(isFromTrash) {
+                res = await Http.post(Endpoints.Document.POST.viewTrashhAnnotations(), body);
+            }
+            else if (isFromCategory) {
                 res = await Http.post(Endpoints.Document.POST.ViewCategoryAnnotations(), body);
             }
 
             if (!res.data.annotations) {
                 return;
             }
-            for (const annotation of res?.data.annotations) {
-                let n: any = this?.instance?.create(PSPDFKit.Annotations.fromSerializableObject(annotation));
-            }
+            return res?.data.annotations;
         } catch (error) {
             console.log(error())
         }
 
+    }
+
+    static AddAnnotationsToInstance(annotations: any){
+
+
+        for (const annotation of annotations) {
+            let n: any = this?.instance?.create(PSPDFKit.Annotations.fromSerializableObject(annotation));
+        }
     }
 
     static async saveAnnotations(AnnotationObj: any, fileId: string, wasDragged: boolean, pageIndex?: number) {
@@ -149,12 +158,14 @@ export class AnnotationActions extends Viewer {
 
     static async getAnnoations(document: any, file: any) {
         const { id, requestId, docId }: any = document;
-        const { fileId, isWorkBenchFile }: any = file;
+        const { fileId, isWorkBenchFile, isFromTrash }: any = file;
         let body = {
             id, fromRequestId: requestId, fromDocId: docId, fromFileId: fileId
         }
-        await AnnotationActions.fetchAnnotations(body, isWorkBenchFile)
-
+        let annotations = await AnnotationActions.fetchAnnotations(body, isWorkBenchFile, !isWorkBenchFile, isFromTrash)
+        if(annotations){
+            AnnotationActions.AddAnnotationsToInstance(annotations);
+        }
     }
 
     

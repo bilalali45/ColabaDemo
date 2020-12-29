@@ -14,3 +14,21 @@
     pointer-events: none;
     background: none !important;
 }
+
+.PSPDFKit-Scroll {
+    scrollbar-color: #DBDBDB;
+}
+
+.PSPDFKit-Scroll::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px  #DBDBDB;;
+     -webkit-box-shadow: inset 0 0 0px  #DBDBDB;;
+      background-color:#ffffff;;
+      
+  }
+  .PSPDFKit-Scroll::-webkit-scrollbar {
+      width: 6px;
+      background-color:  #ffffff;
+  }
+  .PSPDFKit-Scroll::-webkit-scrollbar-thumb {
+      background-color:  #DBDBDB;;
+  }

@@ -16,7 +16,8 @@ export const useHandleClickOutside = (
     const handleClickOutside = (event: any) => {
       if (
         refContainerSidebar.current &&
-        !refContainerSidebar.current.contains(event.target)
+        (!refContainerSidebar.current.contains(event.target) ||
+          event.target.innerHTML.startsWith('<button class="btn-notify">'))
       ) {
         dispatch({
           type: 'UPDATE_STATE',

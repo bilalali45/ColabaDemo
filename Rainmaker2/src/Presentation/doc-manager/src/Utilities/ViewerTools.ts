@@ -1,18 +1,20 @@
 import PSPDFKit from "pspdfkit";
+import Instance from "pspdfkit/dist/types/typescript/Instance";
+import { idText } from "typescript";
+import { CurrentInView } from "../Models/CurrentInView";
+import { SelectedFile } from "../Models/SelectedFile";
 import DocumentActions from "../Store/actions/DocumentActions";
-import { Endpoints } from "../Store/endpoints/Endpoints";
 import { ViewerActionsType } from "../Store/reducers/ViewerReducer";
 import { AnnotationActions } from "./AnnotationActions";
-import { editIcon, saveIcon, downloadIcon, printIcon } from "./CustomIcons";
+import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon } from "./CustomIcons";
 import { PDFActions } from "./PDFActions";
 import { Viewer } from "./Viewer";
 
-
 const baseUrl = `${window.location.protocol}//${window.location.host}/DocManager/`;
-const licenseKey = 'Xq2sbPLKcoMngmloCFRhq1HUgk0jQLLbOf6LosAo6oO8y2G9QoaX3w3aX0PWavM6WOVdQo49a7UbnVe1GG6vkS1oSYDJv4EsuCckA4sx6M1qwqn9NbaszHkR6dvE8F0UhxZUsvIIRKUQQ67XwqwCd5G5iBfiJG6NE6gZRu-zasYtvEoyQ1uufbWcWF6FoXV6P_1FOcHrXqToVEXUqYVdYoPtXT3o_gEhLIp3mkLmIWXA2sUuMYZKKAHie1Wqu1eD1mpL0EzxadBtTVAPjLL8xMgl3h0PRZppCtQswQVFCQQMYwMLmDXG7Mzc_v8SO7z_3-CpjubR71MiAaMiw-jRCS8NfVnpso5pCws5gB3uhgxb4x94ISus4h1I0kiN9n7rsihbeJwn16L0-wuxDhuRr-Yyhh2WYdcQz-BfX6XXTTEThzESMHyrWWSJ6KNSNJLq';
+const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 
 export class ViewerTools extends Viewer {
-
+    
     static currentToolbar: Array<string> = [
         "pan",
         "annotate",
@@ -59,7 +61,7 @@ export class ViewerTools extends Viewer {
         if (fileId) {
             await AnnotationActions.saveAnnotations(fileObj, fileId, false)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
-            
+
             return fileId
         }
 
@@ -71,7 +73,7 @@ export class ViewerTools extends Viewer {
             type: ViewerActionsType.SetIsLoading,
             payload: true
         });
-        
+
         let file = await PDFActions.createPDFFromInstance(fileObj.name);
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc)
 
@@ -87,19 +89,35 @@ export class ViewerTools extends Viewer {
         PDFActions.createPDFWithoutAnnotations();
     }
 
+    static rotateLeft() {
+        Viewer.instance.applyOperations([
+            {
+                type: "rotatePages",
+                pageIndexes: [0],
+                rotateBy: 90
+            }
+        ], null);
+    }
+
+    static async discardChanges(dispatch: Function, currentDoc: any, currentFile: any) {
+
+        dispatch({type: ViewerActionsType.SetCurrentFile, payload: null});
+        dispatch({type: ViewerActionsType.SetCurrentFile, payload: currentFile});
+    }
 
 
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
-        let saveButton: any = null;
+        // let saveButton: any = null;
         // enable only when changes found
         // if (isFileChanged) {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
         // } else {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
-        saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
+        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
+        const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentDoc, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, this.downloadFile);
         const printButton: any = this.createToolbarItem('custom', 'print', 'Print', printIcon, PDFActions.printPDF);
@@ -111,6 +129,9 @@ export class ViewerTools extends Viewer {
                 toolbarItems.filter((el) => el.type === toolbaritem)[0]
             );
         });
+        if (isFileChanged) {
+            customizedToolBarItems.push(discardButton)
+        }
         customizedToolBarItems.push(saveButton)
         this.instance?.setToolbarItems(customizedToolBarItems);
     };
@@ -129,10 +150,11 @@ export class ViewerTools extends Viewer {
         this.instance.setViewState((viewState: any) => viewState.set("zoom", "FIT_TO_VIEWPORT"));
     }
 
-    static editPDF(instance:any, dispatch:any){
-        instance.setViewState((viewState:any) =>
+    // static async convertImageToPDF(src: any, isImported: boolean) {
+    static editPDF(instance: any, dispatch: any) {
+        instance.setViewState((viewState: any) =>
             viewState.set(
-            "interactionMode", 'DOCUMENT_EDITOR'
+                "interactionMode", 'DOCUMENT_EDITOR'
             )
         );
 
@@ -142,38 +164,152 @@ export class ViewerTools extends Viewer {
         })
     }
 
-    static async convertImageToPDF(src: any) {
+    static async convertImageToPDF(src: any, isImported: boolean, fileData: any, isPDF: boolean) {
 
+        let file: any = "";
+        let pageIndex = 0;
+
+        if (isImported) {
+            pageIndex = 1;
+        }
 
 
         let el = document.createElement('div');
-        el.id = "viewer-container";
-        el.style.height = '800px';
-        el.style.width = '400px';
+        el.id = "local-viewer-container";
+        el.style.height = '0.01vh';
+        el.style.width = '0.01vh';
         el.style.display = 'none';
         document.body.appendChild(el);
-
+        let localInstance: any = await this.loadlocalInstance(src);
         try {
-            let localInstance = await PSPDFKit.load({
-                document: src,
-                container: '#viewer-container',
-                licenseKey: licenseKey,
-                baseUrl: baseUrl,
-            });
 
-            const buffer = await localInstance.exportPDF();
-            const blob = new Blob([buffer], { type: "arraybuffer" });
-            let file = new File([blob], "file_name", { lastModified: Date.now() });
+            let file: any;
+            if (!isPDF) {
+                let imageSize = localInstance.pageInfoForIndex(0);
+
+                await this.addAnEmptyPage(localInstance, pageIndex);
+                let newPageSize = await localInstance.pageInfoForIndex(0);
+                await this.addImageAsAnnotationOnThePage(localInstance, src, newPageSize, pageIndex, imageSize);
+            }
+
+            if (isImported)
+                await this.addAnnotationToPage(localInstance, fileData)
+
+            file = await this.createPDFFileFromImage(localInstance, isPDF);
+
+            PSPDFKit.unload(localInstance);
             document.body.removeChild(el);
 
-            await PSPDFKit.unload(localInstance)
             return file;
-        } catch (error) {
-            console.log(error);
 
+        } catch (error) {
+            PSPDFKit.unload(localInstance);
+            document.body.removeChild(el);
+            console.log('error', error);
         }
 
         return null;
+    }
+
+    static async loadlocalInstance(src: any) {
+        try {
+            let instance = await PSPDFKit.load({
+                document: await src.arrayBuffer(),
+                container: '#local-viewer-container',
+                licenseKey: licenseKey,
+                baseUrl: baseUrl,
+            });
+            return instance;
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    static async addAnEmptyPage(instance: any, pageToKeep: number) {
+
+
+
+
+        await instance.applyOperations([
+            {
+                type: "addPage",
+                beforePageIndex: 0, // Add new page after page 1.
+                backgroundColor: new PSPDFKit.Color({ r: 255, g: 255, b: 255 }), // Set the new page background color.
+                pageWidth: 602.986083984375,
+                pageHeight: 782.9860229492188,
+                rotateBy: 0 // No rotation.
+                // Insets are optional.
+            },
+            {
+                type: "keepPages",
+                pageIndexes: [pageToKeep] // Remove all pages except pages 0 to 2.
+            }
+        ]);
+    }
+
+    static async addImageAsAnnotationOnThePage(instance: any, src: any, pageSize: any, pageToAnnotate: number, originalImage: any) {
+
+        let imageDimensions = this.getImagedimensoins(originalImage, pageSize)
+
+        const imageAttachmentId = await instance.createAttachment(src);
+        const annotation = new PSPDFKit.Annotations.ImageAnnotation({
+            pageIndex: pageToAnnotate,
+            contentType: "image/jpeg",
+            imageAttachmentId,
+            description: "Example Image Annotation",
+            boundingBox: new PSPDFKit.Geometry.Rect({
+                left: 0,
+                top: 0,
+                width: imageDimensions.width,
+                height: imageDimensions.height
+            }),
+        });
+        let anno = await instance.createAnnotation(annotation);
+        await instance.saveAnnotations();
+        await instance.ensureAnnotationSaved(anno);
+        console.log('anno', anno);
+    }
+
+
+    static getImagedimensoins(originalImage: any, pageSize: any) {
+        let pageWidth: any = originalImage.width > pageSize.width ? pageSize.width : originalImage.width
+        let pageHeight: any = originalImage.height > pageSize.height ? pageSize.height : originalImage.height
+
+        let imageDimensions = {
+            width: pageWidth,
+            height: pageHeight
+        }
+
+        return imageDimensions;
+
+    }
+
+    static async addAnnotationToPage(instance: any, fileData: any) {
+        let { id, fromRequestId, fromDocId, fromFileId, isFromCategory, isFromWorkbench, isFromTrash } = fileData
+        let currentDoc = {
+            id,
+            fromRequestId,
+            fromDocId,
+            fromFileId
+        }
+
+        let annotations = await AnnotationActions?.fetchAnnotations(currentDoc, isFromWorkbench, isFromCategory, isFromTrash);
+        if (annotations && annotations.length) {
+            for (const annotation of annotations) {
+                let n: any = await instance?.create(PSPDFKit.Annotations.fromSerializableObject(annotation));
+            }
+        }
+
+    }
+
+    static async createPDFFileFromImage(instance: any, isPDF: boolean) {
+
+        const buffer = await instance.exportPDF({ flatten: true });
+        const blob = new Blob([buffer], { type: "arraybuffer" });
+        let file = await new File([blob], "file_name", { lastModified: Date.now() });
+
+        return file;
     }
 
 }

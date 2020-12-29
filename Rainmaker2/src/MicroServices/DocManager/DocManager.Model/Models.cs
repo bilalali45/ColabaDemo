@@ -413,6 +413,24 @@ namespace DocManager.Model
         public string requestId { get; set; }
         public string docId { get; set; }
     }
+    public class DeleteCategoryFile
+    {
+        public string id { get; set; }
+        public string requestId { get; set; }
+        public string docId { get; set; }
+        public string fileId { get; set; }
+    }
+    public class DeleteTrashFile
+    {
+        public string id { get; set; }
+        public string fileId { get; set; }
+    }
+    public class DeleteWorkbenchFile
+    {
+        public string id { get; set; }
+        public string fileId { get; set; }
+    }
+    
     public class SaveCategoryAnnotations
     {
         public string id { get; set; }
@@ -445,6 +463,10 @@ namespace DocManager.Model
         public int loanApplicationId { get; set; }
         
     }
-    
+    public class DocumentStatusQuery
+    {
+        public string  status { get; set; }
+
+    }
 
 }

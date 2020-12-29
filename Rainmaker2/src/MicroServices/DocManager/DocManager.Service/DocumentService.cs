@@ -19,26 +19,96 @@ namespace DocManager.Service
         public async Task<bool> Delete(DeleteModel deleteModel, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+             @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(deleteModel.id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                     @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                     @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(deleteModel.requestId).ToJson() + @"
+                            }
+                        }",
+                     @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                      @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(deleteModel.docId).ToJson() + @"
+                            }
+                        }",
+
+                     @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""status"": ""$requests.documents.status""
+                            }
+                        }"
+             ));
+            while (await asyncCursor.MoveNextAsync())
             {
-                { "_id", BsonObjectId.Create(deleteModel.id) },
-                { "tenantId", tenantId}
-            }, new BsonDocument()
-            {
-                { "$set", new BsonDocument()
+                foreach (var current in asyncCursor.Current)
+                {
+                    var query = BsonSerializer.Deserialize<DocumentStatusQuery>((BsonDocument)current);
+
+                    if (query.status == DocumentStatus.BorrowerTodo)
                     {
-                        { "requests.$[request].documents.$[document].isMcuVisible", false}
+                        UpdateResult statusresult = await collection.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "_id", BsonObjectId.Create(deleteModel.id) },
+                            { "tenantId", tenantId}
+                        }, new BsonDocument()
+                        {
+                            { "$set", new BsonDocument()
+                                {
+                                    { "requests.$[request].documents.$[document].status", DocumentStatus.Deleted}
+                                }
+                            }
+                        }, new UpdateOptions()
+                        {
+                            ArrayFilters = new List<ArrayFilterDefinition>()
+                            {
+                                new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(deleteModel.requestId).ToJson()+"}"),
+                                new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(deleteModel.docId).ToJson()+"}")
+                            }
+                        });
+                        return statusresult.ModifiedCount == 1;
+
+                    }
+                    else
+                    {
+                        UpdateResult statusresult = await collection.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "_id", BsonObjectId.Create(deleteModel.id) },
+                            { "tenantId", tenantId}
+                        }, new BsonDocument()
+                        {
+                            { "$set", new BsonDocument()
+                                {
+                                    { "requests.$[request].documents.$[document].isMcuVisible", false}
+                                }
+                            }
+                        }, new UpdateOptions()
+                        {
+                            ArrayFilters = new List<ArrayFilterDefinition>()
+                            {
+                                new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(deleteModel.requestId).ToJson()+"}"),
+                                new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(deleteModel.docId).ToJson()+"}")
+                            }
+                        });
+                        return statusresult.ModifiedCount == 1;
+
                     }
                 }
-            }, new UpdateOptions()
-            {
-                ArrayFilters = new List<ArrayFilterDefinition>()
-                {
-                    new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(deleteModel.requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(deleteModel.docId).ToJson()+"}")
-                }
-            });
-            return result.ModifiedCount == 1;
+
+            }
+
+            return false;
         }
         public async Task<bool> MoveFromCategoryToTrash(MoveFromCategoryToTrash moveFromCategoryToTrash, int tenantId)
         {
@@ -78,7 +148,7 @@ namespace DocManager.Service
                         @"{
                             ""$project"": {
                                 ""_id"": 0,
-                               ""files"": ""$requests.documents.files"",
+                               ""files"": ""$requests.documents.files""
                             }
                         }"
                 ));
@@ -334,7 +404,7 @@ namespace DocManager.Service
             }
             return false;
         }
-        private async Task<bool> DeleteCategoryFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId)
+        public async Task<bool> DeleteCategoryFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -372,7 +442,7 @@ namespace DocManager.Service
             });
             return result.ModifiedCount == 1;
         }
-        private async Task<bool> DeleteCategoryMcuFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId)
+        public async Task<bool> DeleteCategoryMcuFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()

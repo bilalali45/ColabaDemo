@@ -119,7 +119,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
 
     if (count > 0)
       return (
-        <div className="td">
+        <div className="td" style={{width:"40%"}}>
           <span className="f-normal" title={name}>
             <i className="far fa-file text-primary"></i> <strong>{name}</strong>
           </span>
@@ -127,7 +127,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="td">
+        <div className="td" style={{width:"40%"}}>
           <span className="f-normal" title={name}>
             <i className="far fa-file"></i> {name}
           </span>
@@ -160,7 +160,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         cssClass = 'status-bullet pending';
     }
     return (
-      <div className="td">
+      <div className="td" style={{width:"15%"}}>
         <span data-testid="needListStatus" className={cssClass}></span>{' '}
         {toTitleCase(status)}
       </div>
@@ -267,13 +267,13 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   ) => {
     if (data === null || data.length === 0) {
       return (
-        <div className="td" data-testid="need-list-files">
+        <div className="td" data-testid="need-list-files" style={{width:"25%"}}>
           <span className="block-element">No file submitted yet</span>
         </div>
       );
     } else {
       return (
-        <div className="td " data-testid="need-list-files">
+        <div className="td " data-testid="need-list-files" style={{width:"25%"}}>
           {data.map((file: NeedListDocuments, index) => {
             const pendingReview = status === DocumentStatus.PENDING_REVIEW;
             const {mcuName, clientName, isRead} = file;
@@ -338,7 +338,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       return <div data-testid="sync-status" className="td"></div>;
     } else {
       return (
-        <div data-testid="sync-status" id={String(index)} className="td">
+        <div data-testid="sync-status" id={String(index)} className="td" style={{width:"15%"}}>
           {data.map((item: NeedListDocuments) => {
             return (
               <span
@@ -394,7 +394,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderDocumentTitle = () => {
     if (documentSortClick)
       return (
-        <div className="th">
+        <div className="th" style={{width:"40%"}}>
           <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document{' '}
             <em
@@ -409,7 +409,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="th">
+        <div className="th" style={{width:"40%"}}>
           <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document
           </a>
@@ -420,7 +420,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderStatusTitle = () => {
     if (statusSortClick)
       return (
-        <div className="th">
+        <div className="th" style={{width:"15%"}}>
           <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
             <em
@@ -435,7 +435,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="th">
+        <div className="th" style={{width:"15%"}}>
           <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
           </a>
@@ -448,7 +448,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       return <></>;
     } else {
       return (
-        <div className="th">
+        <div className="th" style={{width:"15%"}}>
           <a
             onClick={() =>
               syncButtonEnabled === true ? FilesSyncToLos(syncTitleClass) : {}
@@ -537,7 +537,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           <div className="tr" data-testid="needlist-table-header">
             {renderDocumentTitle()}
             {renderStatusTitle()}
-            <div className="th">File Name</div>
+            <div className="th" style={{width:"25%"}}>File Name</div>
             {renderSyncToLosTitle()}
 
             <div className="th options">&nbsp;</div>

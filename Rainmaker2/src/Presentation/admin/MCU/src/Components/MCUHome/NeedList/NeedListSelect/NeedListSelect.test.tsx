@@ -75,7 +75,7 @@ describe('Add New Template Button', () => {
       const addTemplateDropDown = getByTestId('addTemplateDropDown');
 
       expect(addTemplateDropDown.children[0]).toHaveTextContent(
-        'Select a need list Template'
+        'Select a needs list Template'
       );
       expect(addTemplateDropDown.children[3]).toHaveTextContent(
         'Start from new list'
@@ -90,7 +90,7 @@ describe('Add New Template Button', () => {
 
       const templatesByTenant = addTemplateDropDown.children[2];
       expect(templatesByTenant.children[0]).toHaveTextContent(
-        'Templates by Tenants'
+        'System Templates'
       );
       //   expect(templatesByTenant.children).toHaveTextContent('test')
     });
@@ -184,7 +184,7 @@ describe('Add New Template Button', () => {
 
       const templatesByTenant = addTemplateDropDown.children[2];
       expect(templatesByTenant.children[0]).toHaveTextContent(
-        'Templates by Tenants'
+        'System Templates'
       );
     });
       

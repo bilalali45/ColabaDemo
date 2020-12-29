@@ -60,6 +60,9 @@ export const FileItem = ({
     setReassignDropdownTarget,
   ] = useState<HTMLDivElement>();
   //const refReassignDropdown = useRef<HTMLDivElement>(null);
+
+  const refReassignPopover = useRef<any>(null);
+  const refReassignlink = useRef<any>(null);
   const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [isDraggingItem, setIsDraggingItem] = useState(false);
 
@@ -77,36 +80,56 @@ export const FileItem = ({
   const syncStarted: any = documents?.syncStarted;
   const instance: any = viewer?.instance;
   const loanApplicationId = LocalDB.getLoanAppliationId();
+  
   const toggleReassignDropdown = async (e: any) => {
+    
+    if (isFileChanged && file?.id === currentFile?.fileId) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      return;
+    }
+
     let target = e.target
     await setCurrentDocument();
 
     setReassignDropdownTarget(target);
-    setShowingReassignDropdown(true);
-    dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
-   // dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
-
-   // setOpenReassignDropdown(showingReassignDropdown)
+    setShowingReassignDropdown(!showingReassignDropdown);
+    showingReassignDropdown? refReassignDropdown.current.classList.remove("freeze"):refReassignDropdown.current.classList.add("freeze");
   };
 
-  const hideReassign = () => {
-    //dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: false });
-  setShowingReassignDropdown(false);}
-  
-  useEffect(() => {
-      if(catScrollFreeze===true && showingReassignDropdown===true){
-      dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: true });
-    }
-    else {
-    dispatch({ type: DocumentActionsType.SetCatScrollFreeze, payload: showingReassignDropdown });
+  const hideReassign = () => { 
+    setShowingReassignDropdown(false);
+  refReassignDropdown.current?.classList.remove("freeze")
+
+}
+
+const handleClickOutside = (event:any) => {
+  if (refReassignPopover && !refReassignPopover.current?.contains(event.target) && !refReassignlink.current?.contains(event.target)) {
+    hideReassign();
   }
-  }, [showingReassignDropdown]);
+}
+  
+useEffect(() => {
+  window.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    window.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [showingReassignDropdown]);
+
 
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
+    if(selectedFileData && file.id === selectedFileData.fileId)
+      dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: isDraggingItem });
   }, [isDraggingItem]);
 
   const moveDocToTrash = async () => {
+
+    if (isFileChanged && file?.id === currentFile?.fileId) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      return;
+    }
+
+
     let cancelCurrentFileViewRequest: boolean = false;
     if (selectedFileData && selectedFileData?.fileId === file.id) {
       cancelCurrentFileViewRequest = true;
@@ -131,6 +154,17 @@ export const FileItem = ({
   };
 
   const toggleSyncAlert = () => {
+
+    console.log('in here file', file);
+    console.log('in here file current', currentFile);
+
+    if (isFileChanged && file?.id === currentFile?.fileId) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+
+      return;
+  }
+
+
     if (syncStarted) {
       return;
     }
@@ -165,11 +199,11 @@ export const FileItem = ({
 
   const viewFileForDocCategory = async () => {
 
-    // if (isFileChanged) {
-    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-    //   dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
-    //   return;
-    // }
+    if (isFileChanged) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
+      return;
+    }
 
     viewFile(file, document, dispatch);
 
@@ -251,8 +285,8 @@ export const FileItem = ({
             <TrashCan />
           </a>
         </li>
-        <li className={`reAssBtn`}>
-          <a
+        <li className={`reAssBtn`} >
+          <a ref={refReassignlink}
             data-title="Reassign"
             onClick={(e) => toggleReassignDropdown(e)}
             className={showingReassignDropdown ? "overlayOpen" : ""}>
@@ -535,6 +569,8 @@ export const FileItem = ({
               selectedFile={file}
               isFromWorkbench={false}
               getDocswithfailedFiles={getDocswithfailedFiles}
+              placement="bottom-end"
+              refReassignPopover={refReassignPopover}
             />) : null
           }
         </div>
@@ -546,9 +582,9 @@ export const FileItem = ({
           ></div>
         )}
       </li>
-      { isFileChanged && showingConfirmationAlert && fileToChangeWhenUnSaved?.file === file ? <ConfirmationAlert
+      {/* { isFileChanged && showingConfirmationAlert && fileToChangeWhenUnSaved?.file === file ? <ConfirmationAlert
         viewFile={(file: any, document: any, dispatch: any) => viewFile(file, document, dispatch)}
-      /> : ''}
+      /> : ''} */}
     </>
   );
 };

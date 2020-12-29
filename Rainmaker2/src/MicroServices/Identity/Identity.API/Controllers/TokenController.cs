@@ -121,6 +121,22 @@ namespace Identity.Controllers
             return Ok(value: response);
         }
 
+        [Route(template: "[action]")]
+        [HttpGet]
+        public IActionResult SingleSignOn(string key)
+        {
+            foreach(var pair in TokenService.RefreshTokens)
+            {
+                foreach(var tokens in pair.Value)
+                {
+                    if(tokens.RefreshToken==key)
+                    {
+                        return Ok(tokens.JwtToken);
+                    }
+                }
+            }
+            return BadRequest();
+        }
 
         [Route(template: "[action]")]
         [HttpPost]

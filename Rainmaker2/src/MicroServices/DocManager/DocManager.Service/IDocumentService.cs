@@ -14,5 +14,7 @@ namespace DocManager.Service
         Task<string> ViewCategoryAnnotations(ViewCategoryAnnotations viewCategoryAnnotations, int tenantId);
         Task<bool> SaveCategoryAnnotations(SaveCategoryAnnotations saveCategoryAnnotations, int tenantId);
         Task<bool> Delete(DeleteModel deleteModel, int tenantId);
+        Task<bool> DeleteCategoryFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId);
+        Task<bool> DeleteCategoryMcuFile(string id, int tenantid, string fromRequestId, string fromDocId, string fromFileId);
     }
 }

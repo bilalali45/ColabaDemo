@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext, useEffect, MutableRefObject } from "react";
 import {
   MinusIcon,
   PlusIcon,
@@ -24,6 +24,10 @@ type DocumentItemType = {
   setFileClicked:Function;
   fileClicked:boolean;
   setOpenReassignDropdown:any;
+  getDocswithfailedFiles:Function;
+  setRetryFile:Function;
+  inputRef:MutableRefObject<HTMLInputElement>,
+  selectedDoc:DocumentRequest
 };
 
 export const DocumentItem = ({
@@ -32,7 +36,11 @@ export const DocumentItem = ({
   refReassignDropdown,
   setFileClicked, 
   fileClicked,
-  setOpenReassignDropdown
+  setOpenReassignDropdown,
+  getDocswithfailedFiles,
+  setRetryFile, 
+  inputRef,
+  selectedDoc
 }: DocumentItemType) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -47,12 +55,10 @@ export const DocumentItem = ({
   const selectedfiles: Document[] = currentDoc?.files || null;
   let loanApplicationId = LocalDB.getLoanAppliationId();
   const { currentFile }: any = state.viewer;
-  const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
-  const [retryFile, setRetryFile] = useState<DocumentFile>();
+  
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   
   let fileListRef = useRef<HTMLUListElement>(null);
-
-
 
     useEffect(()=>{
       
@@ -64,6 +70,13 @@ export const DocumentItem = ({
           setFileClicked(true)
         }
       },[currentDoc])
+
+      useEffect(()=>{
+        if(document === selectedDoc && !show){
+          setShow(true)
+        }
+
+      },[selectedDoc])
       
   const handleClick = () => {
     setShow(!show);
@@ -84,6 +97,32 @@ export const DocumentItem = ({
     setShow(!show);
   };
 
+  const renderDeleteDocSlider = () =>{
+    return (
+          <div className="list-remove-alert">
+            <span className="list-remove-text">
+              Remove this document type from Doc Manager?
+            </span>
+            <div className="list-remove-options">
+              <button
+                onClick={() => {
+                  deleteDoc();
+                  setConfirmDelete(false);
+                }}
+                className="btn btn-sm btn-secondry"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="btn btn-sm btn-primary"
+              >
+                No
+              </button>
+            </div>
+          </div>
+    )
+  }
   const deleteDoc = async () =>{
 
     try {
@@ -101,119 +140,10 @@ export const DocumentItem = ({
     
   }
 
-  const getDocswithfailedFiles = async() => {
-    let foundFirstFileDoc: any = null;
-    let foundFirstFile: any = null;
+  
 
-    let docs:any = await fetchDocuments()
-    
-        let uploadFailedFiles:DocumentFile[] = uploadFailedDocs.length? uploadFailedDocs : failedDocs;
-    
-        let failedFiles:DocumentFile[] = []
-        if(uploadFailedFiles && uploadFailedFiles.length > 0){
-            
-           failedFiles= uploadFailedDocs.length? uploadFailedFiles.concat(failedDocs): uploadFailedFiles
-          failedFiles = failedFiles.filter((file)=> file.id !== retryFile?.id)
-
-          
-          dispatch({
-            type:DocumentActionsType.SetFailedDocs, 
-            payload:failedFiles
-          })
-          
-          
-            let allDocs:any;
-            for (let index = 0; index < failedFiles.length; index++) {
-              allDocs = docs?.map((doc:any)=> {
-                if(doc.docId === failedFiles[index].docCategoryId){
-                  doc.files = [...doc.files, failedFiles[index]]
-                }
-                return doc
-              })
-              
-              
-            }
-          
-            setFailedDocs([])
-            
-            if(allDocs && allDocs.length) {
-              dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
-            }
-          }
-          else 
-          if(docs && !currentFile){
-        
-                for (const doc of docs) {
-                    if (doc?.files?.length) {
-                        dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
-                        dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-                        foundFirstFileDoc = doc;
-                        foundFirstFile = doc?.files[0];
-                        ViewerActions.resetInstance(dispatch)
-                        
-                        await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
-                        break;
-                    }
-                    
-                }
-            }
-  } 
-
-  const addFiles = async (selectedFiles: FileList) => {
-    
-    if (document) {
-      if (selectedFiles) {
-        // DocumentActions.addFilesToDocCategory(document, files)
-        dispatch({
-          type: DocumentActionsType.SetFileUploadInProgress,
-          payload: true,
-        });
-        for (let index = 0; index < selectedFiles.length; index++) {
-          const file = selectedFiles[index];
-          if (file) {
-            try {
-              let d =  new Date();
-              let fileId =  d.getDate().toString() + d.getMonth().toString() + d.getFullYear().toString() + d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()+ d.getMilliseconds().toString()
-              let res = await DocumentActions.submitDocuments(
-                documentItems,
-                document,
-                fileId,
-                file,
-                dispatch
-              );
-
-              if(res.notAllowed || res.uploadStatus === 'failed'){
-                failedDocs.push(res)
-                
-              }
-              // console.log(documentItems)
-              // if(documentItems?.files?.length === 1 ){
-              //   console.log(documentItems)
-              // }
-              
-            } catch (error) {
-              // file.uploadStatus = "failed";
-              console.log("error during file submit", error);
-              console.log("error during file submit", error.response);
-            }
-          }
-        }
-        await getDocswithfailedFiles();
-        dispatch({
-          type: DocumentActionsType.SetFileUploadInProgress,
-          payload: false,
-        });
-      }
-    }
-    
-    
-  };
-
-  const fetchDocuments = async()=>{
-    let d = await DocumentActions.getDocumentItems(dispatch)
-    return d;
-
-  }
+  
+  
   const CapitalizeText = (text:string ) =>{
 if(text){
       var splitStr = text.toLowerCase().split(' ');
@@ -268,14 +198,20 @@ if(text){
           {document.files && document.files.length === 0 ?
             (<button
                 data-testid="btn-delete"
-                onClick={deleteDoc}
+                onClick={()=> setConfirmDelete(true)}
                 className="btn btn-delete btn-sm"
               >
                 <em className="zmdi zmdi-close"></em>
               </button>): null
           }
-        
+
+
         </div>
+        {confirmDelete &&
+
+renderDeleteDocSlider()
+
+}
       </div>
     );
   };
@@ -285,7 +221,6 @@ if(text){
       {renderDocumentTile()}
       {show && (
         <FilesList
-          addFiles={(files: any) => addFiles(files)}
           document={document}
           docInd={docInd}
           refReassignDropdown={refReassignDropdown}
@@ -293,6 +228,7 @@ if(text){
           setFileClicked ={setFileClicked}
           getDocswithfailedFiles = {getDocswithfailedFiles}
           setOpenReassignDropdown={setOpenReassignDropdown}
+          inputRef={inputRef}
         />
       )}
     </section>

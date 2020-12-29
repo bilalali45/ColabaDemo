@@ -13,6 +13,6 @@ namespace DocManager.Service
         Task<bool> MoveFromWorkBenchToCategory(MoveFromWorkBenchToCategory moveFromWorkBenchToCategory, int tenantId);
         Task<string> ViewWorkbenchAnnotations(ViewWorkbenchAnnotations  viewWorkbenchAnnotations, int tenantId);
         Task<bool> SaveWorkbenchAnnotations(SaveWorkbenchAnnotations  saveWorkbenchAnnotations, int tenantId);
-        
+        Task<bool> DeleteWorkbenchFile(string id, int tenantid, string fromFileId);
     }
 }

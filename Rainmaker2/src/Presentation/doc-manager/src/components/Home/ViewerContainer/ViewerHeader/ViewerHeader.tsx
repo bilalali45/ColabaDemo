@@ -40,6 +40,7 @@ export const ViewerHeader = () => {
   }, [editingModeEnabled]);
 
 
+  
   return (
     <div
       data-testid="document-item"

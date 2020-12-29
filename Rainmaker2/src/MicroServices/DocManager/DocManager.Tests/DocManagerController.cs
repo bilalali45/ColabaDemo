@@ -157,7 +157,7 @@ namespace DocManager.Tests
             moveFromCategoryToTrash.fromRequestId = "5fc0f5eedd5c73a764eafa2d";
             moveFromCategoryToTrash.fromFileId = "5fc0f7f5dd5c73a764eafa38";
             documentService.Setup(x => x.MoveFromCategoryToTrash(moveFromCategoryToTrash, It.IsAny<int>())).ReturnsAsync(true);
-            var controller = new DocumentController(documentService.Object);
+            var controller = new DocumentController(documentService.Object,Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -186,7 +186,7 @@ namespace DocManager.Tests
             moveFromCategoryToworkbench.fromRequestId = "5fc0f5eedd5c73a764eafa2d";
 
             documentService.Setup(x => x.MoveFromCategoryToWorkBench(moveFromCategoryToworkbench, It.IsAny<int>())).ReturnsAsync(true);
-            var controller = new DocumentController(documentService.Object);
+            var controller = new DocumentController(documentService.Object, Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -216,7 +216,7 @@ namespace DocManager.Tests
             moveFromoneCategoryToAnotherCategory.fromRequestId = "5fc0f5eedd5c73a764eafa2d";
 
             documentService.Setup(x => x.MoveFromoneCategoryToAnotherCategory(moveFromoneCategoryToAnotherCategory, It.IsAny<int>())).ReturnsAsync(true);
-            var controller = new DocumentController(documentService.Object);
+            var controller = new DocumentController(documentService.Object, Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -266,7 +266,7 @@ namespace DocManager.Tests
 
 
             mockDocumentService.Setup(x => x.Delete(deleteModel, It.IsAny<int>()));
-            var controller = new DocumentController(mockDocumentService.Object);
+            var controller = new DocumentController(mockDocumentService.Object, Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -294,7 +294,7 @@ namespace DocManager.Tests
             saveCategoryAnnotations.fileId = "5fc0f5eedd5c73a764eafa2e";
             saveCategoryAnnotations.annotations = "abc";
             mockDocumentService.Setup(x => x.SaveCategoryAnnotations(saveCategoryAnnotations, It.IsAny<int>()));
-            var controller = new DocumentController(mockDocumentService.Object);
+            var controller = new DocumentController(mockDocumentService.Object, Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
@@ -322,7 +322,7 @@ namespace DocManager.Tests
             viewCategoryAnnotations.fromFileId = "5fc0f5eedd5c73a764eafa2e";
 
             mockDocumentService.Setup(x => x.ViewCategoryAnnotations(viewCategoryAnnotations, It.IsAny<int>()));
-            var controller = new DocumentController(mockDocumentService.Object);
+            var controller = new DocumentController(mockDocumentService.Object, Mock.Of<IRainmakerService>());
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));

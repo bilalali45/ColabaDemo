@@ -15,15 +15,20 @@ export class DocumentEndpoints {
         delDocCategory: ()=> `/api/DocManager/Document/Delete`,
         moveFromCategoryToWorkBench: ()=> `/api/DocManager/Document/MoveFromCategoryToWorkBench`,
         moveFromWorkBenchToCategory: ()=> `/api/DocManager/Workbench/MoveFromWorkBenchToCategory`,
+        moveFromTrashToCategory: ()=> `/api/DocManager/Trash/MoveFromTrashToCategory`,
         saveCategoryAnnotations: () => `/api/DocManager/Document/SaveCategoryAnnotations`,
         saveTrashAnnotations: () => `/api/DocManager/Trash/SaveTrashAnnotations`,
         saveWorkbenchAnnotations: () => `/api/DocManager/Workbench/SaveWorkbenchAnnotations`,
         ViewCategoryAnnotations: () => `/api/DocManager/Document/ViewCategoryAnnotations`,
         viewWorkbenchAnnotations: () => `/api/DocManager/Workbench/ViewWorkbenchAnnotations`,
+        viewTrashhAnnotations: () => `/api/DocManager/Trash/ViewTrashAnnotations`,
         saveCategoryDocument: ()=> `/api/DocManager/Thumbnail/SaveCategoryDocument`,
         saveTrashDocument: ()=> `/api/DocManager/Thumbnail/SaveTrashDocument`,
         saveWorkbenchDocument: ()=> `/api/DocManager/Thumbnail/SaveWorkbenchDocument`,
         syncToLOS: () => `/api/LosIntegration/Document/SendFileToExternalOriginator`,
+        DeleteCategoryFile: () => `/api/DocManager/Document/DeleteCategoryFile`,
+        DeleteTrashFile: () => `/api/DocManager/Trash/DeleteTrashFile`,
+        DeleteWorkbenchFile: () => `/api/DocManager/Workbench/DeleteWorkbenchFile`,
     }
   
     static PUT = { 

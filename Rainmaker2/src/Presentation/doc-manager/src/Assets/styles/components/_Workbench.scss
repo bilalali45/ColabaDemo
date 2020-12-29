@@ -1,15 +1,21 @@
 
 .c-WorkbenchView {
+    overflow: hidden;
 .wb-head {
     border-bottom: 1px solid color('border');
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 10px;
+    &.wbcollaps {border-bottom: 0px solid color('border');}
     h2 {
         font: 500 #{fontSize("h2") + "/1.2"} fontFamily("base");
         color: color('heading');
         margin-bottom: 0;
-        padding-left: 30px;
+        padding-left: 13px;
         text-transform: uppercase;
+        cursor: pointer;
+        svg {
+            margin-top: -3px;
+        }
     }
 }
 
@@ -38,12 +44,14 @@
     .dm-wb-tbody {
         padding: 0px 13px; 
         overflow: auto;
-        max-height: 220px;
-        min-height: 220px;
+        max-height: calc(45vh - 161px);
+        min-height: calc(45vh - 161px);
+        // min-height: 220px;
         @include scrollbar(6,6);
-        .dm-wb-doc-list {
-            position: relative;
+        &.freeze {
+            overflow: hidden; 
         }
+
     }
 
 }

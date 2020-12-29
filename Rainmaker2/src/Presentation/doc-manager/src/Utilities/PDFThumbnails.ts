@@ -9,7 +9,7 @@ import { ViewerTools } from "./ViewerTools";
 export class PDFThumbnails extends Viewer {
     static async generateThumbnailData(index: number) {
 
-        try{
+        try {
             if (this.instance) {
 
                 const src = await this.instance?.renderPageAsImageURL({ width: 400 }, index);
@@ -17,7 +17,7 @@ export class PDFThumbnails extends Viewer {
             };
             return '';
         }
-        catch(error){
+        catch (error) {
             console.log(error)
         }
         return '';
@@ -29,39 +29,48 @@ export class PDFThumbnails extends Viewer {
 
     static getFileDataToView = async (file: any) => {
         let buffer = await DocumentActions.getFileToView(
-          file.id,
-          file.fromRequestId,
-          file.fromDocId,
-          file.fromFileId
+            file.id,
+            file.fromRequestId,
+            file.fromDocId,
+            file.fromFileId,
+            file.isFromCategory, 
+            file.isFromWorkbench, 
+            false
+
         );
-    
+
         return buffer;
-      };
-  
-      
+    };
+
+
     static async addAPage(fileData: any, index: number, dispatch: React.Dispatch<any>) {
         let file: any = null;
 
-        
-        if (!fileData.fileName?.includes('.pdf')) {
-            let buffer = await PDFThumbnails.getFileDataToView(fileData);
-            file = await ViewerTools.convertImageToPDF(buffer);
-        } else {
-            let blob = await PDFThumbnails.getFileDataToView(fileData);
-            file = new Blob([blob], { type: "application/pdf" });
-        }
-        
-        try{
-        let importDocumentOp = {
-            type: "importDocument",
-            afterPageIndex: index,
-            treatImportedDocumentAsOnePage: false,
-            document: file,
-        };
 
-        let operations: any = [importDocumentOp];
+        // if (!fileData.fileName?.includes('.pdf')) {
+        //     let buffer = await PDFThumbnails.getFileDataToView(fileData);
+        //     file = await ViewerTools.convertImageToPDF(buffer, true, fileData );
+        // } else {
+        //     let blob = await PDFThumbnails.getFileDataToView(fileData);
+        //     file = new Blob([blob], { type: "application/pdf" });
+        // }
 
-       
+        let isPDF:boolean = fileData.fileName?.includes('.pdf')
+        let buffer = await PDFThumbnails.getFileDataToView(fileData);
+        file = await ViewerTools.convertImageToPDF(buffer, true, fileData, isPDF );
+
+        try {
+
+            let importDocumentOp = {
+                type: "importDocument",
+                afterPageIndex: index,
+                treatImportedDocumentAsOnePage: false,
+                document: file,
+            };
+
+            let operations: any = [importDocumentOp];
+
+
             await this.instance.applyOperations(operations, null);
 
             dispatch({
@@ -69,23 +78,23 @@ export class PDFThumbnails extends Viewer {
                 payload: this.instance
             });
             return true;
-        }catch(error){
+        } catch (error) {
             return false;
         }
-        
+
     }
 
     static async removePages(pages: number[]) {
 
-        try{
-        await this.instance.applyOperations([
-            {
-                type: "removePages",
-                pageIndexes: pages,
-            }
-        ], null);
-        return true;
-        }catch(error){
+        try {
+            await this.instance.applyOperations([
+                {
+                    type: "removePages",
+                    pageIndexes: pages,
+                }
+            ], null);
+            return true;
+        } catch (error) {
             return false;
         }
         // await generateThumbnails()
@@ -98,20 +107,20 @@ export class PDFThumbnails extends Viewer {
             pageIndex = moveIndex;
             moveIndex = cachedIndex;
         }
-        try{
-        await this.instance.applyOperations([
-            {
-                type: "movePages",
-                pageIndexes: [pageIndex], // Move pages 0 and 4.
-                beforePageIndex: moveIndex // The specified pages will be moved after page 7.
-            }
-        ], null);
-        return true;
-        }catch(error){
+        try {
+            await this.instance.applyOperations([
+                {
+                    type: "movePages",
+                    pageIndexes: [pageIndex], // Move pages 0 and 4.
+                    beforePageIndex: moveIndex // The specified pages will be moved after page 7.
+                }
+            ], null);
+            return true;
+        } catch (error) {
             return false
         }
     }
 
-    
+
 
 }

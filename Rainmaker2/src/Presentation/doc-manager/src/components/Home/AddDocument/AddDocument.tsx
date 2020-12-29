@@ -106,6 +106,7 @@ export const AddDocument = ({ popoverplacement = "bottom", setLoaderVisible, add
     }
 
     const hidePopup = () => {
+        setShow(false)
         dispatch({ type: TemplateActionsType.ToggleAddDocumentBox, payload: { value: false } })
     }
 

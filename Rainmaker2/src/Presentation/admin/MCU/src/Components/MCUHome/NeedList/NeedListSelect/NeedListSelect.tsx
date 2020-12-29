@@ -198,7 +198,7 @@ export const NeedListSelect = ({
     if (!templateList || templateList.length === 0) return null;
     return (
       <div data-testid="templatesByTenant">
-        <h3>Templates by Tenants</h3>
+        <h3>System Templates</h3>
         <ul className="checklist" ref={tenantTemplateContainerRef}           onScroll={(e) => {
                       hidePopover(e);
                     }}>
@@ -293,7 +293,7 @@ export const NeedListSelect = ({
           }
 
           {show && <Dropdown.Menu className="padding" show={show} data-testid="addTemplateDropDown" ref={ref}>
-            <h2>Select a need list Template</h2>
+            <h2>Select a needs list Template</h2>
             {MyTemplates(
               templates?.filter((t: Template) => t.type === MyTemplate)
             )}

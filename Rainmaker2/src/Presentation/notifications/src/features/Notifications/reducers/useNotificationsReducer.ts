@@ -62,7 +62,7 @@ const readOrSeenNotification = (
   const clonedNotifications = cloneDeep(state.notifications);
 
   notificationIds.forEach((readNotificationId) => {
-    const notification = clonedNotifications!.find(
+    const notification = clonedNotifications.find(
       (notification) => notification.id === readNotificationId
     );
 

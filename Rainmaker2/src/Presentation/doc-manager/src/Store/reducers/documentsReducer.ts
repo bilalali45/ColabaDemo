@@ -27,12 +27,14 @@ export enum DocumentActionsType {
     SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
     SetCatScrollFreeze= "SET_CAT_SCROLL_FREEZE",
     SetWbScrollFreeze= "SET_WB_SCROLL_FREEZE",
+    SetIsDraggingCurrentFile = "SET_IS_DRAGGING_CURRENT_FILE"
 }
 
 export type DocumentsType = {
     documentItems: DocumentItem[] | [];
     workbenchItems: WorkbenchItem[] | [];
     isDragging: boolean;
+    isDraggingCurrentFile: boolean;
     isSynching: string;
     syncStatus: string;
     currentDoc: DocumentRequest | null,
@@ -54,6 +56,7 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetCurrentDoc]: DocumentRequest,
     [DocumentActionsType.SetTrashedDoc]: DocumentRequest,
     [DocumentActionsType.SetIsDragging]: boolean,
+    [DocumentActionsType.SetIsDraggingCurrentFile]: boolean,
     [DocumentActionsType.SetIsSynching]: string,
     [DocumentActionsType.SetSyncStatus]: string,
     [DocumentActionsType.SetFilesToSync]: any[],
@@ -159,6 +162,12 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 ...state,
                 isDragging: payload
             }
+
+        case DocumentActionsType.SetIsDraggingCurrentFile:
+        return {
+            ...state,
+            isDraggingCurrentFile: payload
+        }
 
         case DocumentActionsType.SetIsSynching:
             return {

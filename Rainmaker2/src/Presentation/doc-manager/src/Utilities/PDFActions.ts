@@ -58,16 +58,17 @@ export class PDFActions extends Viewer {
             await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 
                 if (pageList.toJS().length) {
-
+    
                     return Array.from(pageList.toArray()).map((annotation: any) => (
-                        Viewer.instance.update(annotation.set("noView", false))
+                        // Viewer.instance.update(annotation.set("noView", false))
+                             Viewer.instance.updateAnnotation(annotation)
                     )
-
+    
                     )
                 }
                 else
                     return Promise.resolve()
-
+    
             }).flat())
             return res
         }
@@ -113,7 +114,8 @@ export class PDFActions extends Viewer {
             if (pageList.toJS().length) {
 
                 return Array.from(pageList.toArray()).map((annotation: any) => (
-                    Viewer.instance.update(annotation.set("noView", false))
+                    // Viewer.instance.update(annotation.set("noView", false))
+                         Viewer.instance.updateAnnotation(annotation)
                 )
 
                 )
@@ -122,6 +124,8 @@ export class PDFActions extends Viewer {
                 return Promise.resolve()
 
         }).flat())
+        
+
         console.timeEnd("completeExport")
         return file;
 
@@ -168,7 +172,7 @@ export class PDFActions extends Viewer {
             if (pageList.toJS().length) {
 
                 return Array.from(pageList.toArray()).map((annotation: any) => (
-                    Viewer.instance.update(annotation.set("noView", false))
+                         Viewer.instance.updateAnnotation(annotation)
                 )
 
                 )

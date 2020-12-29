@@ -2,16 +2,16 @@ import PSPDFKit from 'pspdfkit'
 import Instance from 'pspdfkit/dist/types/typescript/Instance';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Store } from '../Store/Store';
+import { ViewerTools } from './ViewerTools';
 
 
-let baseUrl: any = '';
-let licenseKey: any = '';
+let licenseKey: any = window?.envConfig?.PSPDFKIT_LICENCE;
+const baseUrl = `${window.location.protocol}//${window.location.host}/DocManager/`;
 
 let _cachedInstance: any = null;
 
 type PSPDFKitViewerType = {
     baseUrl: string;
-    licenseKey: string,
     file: ArrayBuffer | null | any,
     retrieveViewerInstance: Function,
     retrieveContainerElement: Function,
@@ -21,7 +21,6 @@ type PSPDFKitViewerType = {
 
 export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
     baseUrl,
-    licenseKey,
     file,
     retrieveViewerInstance,
     retrieveContainerElement,
@@ -47,20 +46,23 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
     }, [file]);
 
 
-    const getViewerInstance = async (file: ArrayBuffer) => {
+    const getViewerInstance = async (file: Blob) => {
 
         let instanceConfig: any = {
-            document: file,
+            document: await file.arrayBuffer(),
             container: viewerRef?.current || '',
             licenseKey,
             baseUrl,
             theme: PSPDFKit.Theme.DARK,
-            // styleSheets: ['http://localhost:3002/DocManager/assets/css/pspdfkit-styles.css']
+             styleSheets: [`${baseUrl}assets/css/pspdfkit-styles.css`]
             
         };
         try {
             let instance = await PSPDFKit.load(instanceConfig);
+            console.log('PSPDFKit.PageInfo', instance.pageInfoForIndex(0));
+
             _cachedInstance = instance;
+            // ViewerTools.addEmptyPage(instance);
             retrieveViewerInstance(instance);
             setAnnotations();
             instance?.setViewState(state => state.set("zoom", 'FIT_TO_VIEWPORT'));

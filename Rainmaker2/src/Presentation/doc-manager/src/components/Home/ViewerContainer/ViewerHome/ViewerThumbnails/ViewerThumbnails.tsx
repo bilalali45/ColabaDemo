@@ -35,39 +35,44 @@ export const ViewerThumbnails = () => {
 
   const documents: any = state.documents;
   const isDragging: any = documents?.isDragging;
-  const { isFileChanged }: any = state.viewer;
+  const isDraggingCurrentFile:any = documents?.isDraggingCurrentFile;
+  const { isFileChanged, selectedFileData }: any = state.viewer;
   const scrlUpRef = useRef<HTMLUListElement | any>(null);
   const doScrlUp = () => scrollToRef(scrlUpRef, 'up');
   const doScrlDn = () => scrollToRef(scrlUpRef, '');
 
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: thumbDragged });
+    
   }, [thumbDragged])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (instance) {
-      
-    setThumbnails(
-      new Array(instance?.totalPageCount).map((item) => (item = ""))
-    );
-  }
-  },[instance?.totalPageCount])
+
+      setThumbnails(
+        new Array(instance?.totalPageCount).map((item) => (item = ""))
+      );
+    }
+  }, [instance?.totalPageCount])
   useEffect(() => {
 
-    
+
     (async () => {
       if (instance) {
 
-          await generateAllThumbnailData();
-            instance.addEventListener("annotations.change", () => {
-              // ...
-             
-              let currpage = instance?.viewState?.currentPageIndex
-                generateThumbnailForSinglePage(currpage)
-              
-              
-            })
-          setCurrentIndex(0)
+        await generateAllThumbnailData();
+        instance.addEventListener("annotations.change", () => {
+          Viewer.instance = instance
+           if(!thumbDragged){
+            let currpage = instance?.viewState?.currentPageIndex
+            generateThumbnailForSinglePage(currpage)
+          }
+        })
+
+        instance.addEventListener("document.change", async () => {
+          generateAllThumbnailData()
+      });
+        setCurrentIndex(0)
       }
       else {
         setCurrentIndex(0)
@@ -75,7 +80,7 @@ export const ViewerThumbnails = () => {
       }
     })();
 
-  }, [instance, instance?.totalPageCount]);
+  }, [instance]);
 
 
   const generateAllThumbnailData = async () => {
@@ -87,9 +92,10 @@ export const ViewerThumbnails = () => {
         ...prevState.map((item, index) => TempThumbnails[index]),
       ]);
       if (instance?.totalPageCount === 1) {
-        setThumbnails([TempThumbnails[0]]);
+        let thumbnail = await PDFThumbnails.generateThumbnailData(0)
+        setThumbnails([thumbnail]);
       }
-      if(i === instance?.totalPageCount-1){
+      if (i === instance?.totalPageCount - 1) {
         let thumbnail = await PDFThumbnails.generateThumbnailData(0)
         setThumbnails((prevState) => [
           ...prevState.map((item, index) => index === 0 ? thumbnail : item),
@@ -98,12 +104,9 @@ export const ViewerThumbnails = () => {
     }
     // } 
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
-    
+
   };
 
-  useEffect(() => {
-    generateAllThumbnailData();
-},[isFileChanged])
 
   const generateThumbnailForSinglePage = async(currPage:number) => {
     
@@ -137,15 +140,29 @@ export const ViewerThumbnails = () => {
     i: number,
     file: string
   ) => {
+
+    if (isFileChanged) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+
+      return;
+  }
+
+    if (isDragging) {
+      dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
+      dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
+    }
     let success = false;
     if (thumbDragged) {
       success = await moveAPage(afterIndex, i);
       setThumbDragged(false);
     } else if (thumbnails?.length) {
       let tempFile = JSON.parse(file);
+      if(tempFile.fromFileId  === selectedFileData.fileId) return;
       dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-      dispatch({ type: ViewerActionsType.SetInstance, payload: null });
       success = await addAPage(tempFile, draggingIndex - 1);
+      if(success){
+        await removeOriginalFile(tempFile)
+      }
       dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
 
     }
@@ -155,6 +172,19 @@ export const ViewerThumbnails = () => {
     }
   };
 
+  const removeOriginalFile = async (fileData:any)=>{
+    console.log(fileData)
+    if(fileData.isFromWorkbench){
+      await DocumentActions.DeleteWorkbenchFile(fileData.id, fileData.fromFileId)
+      await DocumentActions.getWorkBenchItems(dispatch)
+    } else if(fileData.isFromCategory){
+      await DocumentActions.DeleteCategoryFile(fileData)
+      await DocumentActions.getDocumentItems(dispatch)
+    } else if(fileData.isFromTrash){
+      await DocumentActions.DeleteTrashFile(fileData.id, fileData.fromFileId)
+      await DocumentActions.getTrashedDocuments(dispatch)
+    }
+  }
 
 
   const onDragOverHandler = (i: number) => {
@@ -204,7 +234,7 @@ export const ViewerThumbnails = () => {
         }}>
         {thumbnails.map((t, i) => (
           <li key={i} className={thumbDragged && draggingIndex === i ? 'dragging' : ''}>
-            {i === draggingIndex && isDragging && !thumbDragged ? (
+            {i === draggingIndex && isDragging && !isDraggingCurrentFile && !thumbDragged ? (
               <div
                 onDrop={(e) => {
                   e.stopPropagation();
@@ -232,18 +262,20 @@ export const ViewerThumbnails = () => {
                 // onDragOverHandler(i);
               }}
               onDrop={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 let afterIndex = e.dataTransfer.getData("index");
                 let fileData = e.dataTransfer.getData("file");
                 onDroptoThumbnail(+afterIndex, i, fileData);
               }}
-              onDrag={(e: any) => {
-                if (isDragging === true || thumbDragged) {
-                  return;
-                }
-                dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
-              }}
+              // onDrag={(e: any) => {
+              //   if (isDragging === true || thumbDragged) {
+              //     return;
+              //   }
+              //   dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
+              // }}
               onDragStart={(e: any) => {
+                dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
                 onDragStartHandler(e, i)
               }}
               onDragEnd={(e) => {
@@ -259,7 +291,7 @@ export const ViewerThumbnails = () => {
 
               }
               onClick={() => {
-                
+
                 setCurrentIndex(i);
                 PDFThumbnails.goToPage(i);
               }}>

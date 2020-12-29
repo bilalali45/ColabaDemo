@@ -58,6 +58,8 @@ namespace DocManager.API.Controllers
                 return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
             if (file.FileName.Length > setting.maxFileNameSize)
                 return BadRequest("File Name size exceeded limit");
+            if (file.Length <= 0)
+                return BadRequest("Something went wrong. Please try again");
 
             if (file.Length > 0)
             {
@@ -97,6 +99,8 @@ namespace DocManager.API.Controllers
                 return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
             if (file.FileName.Length > setting.maxFileNameSize)
                 return BadRequest("File Name size exceeded limit");
+            if (file.Length <= 0)
+                return BadRequest("Something went wrong. Please try again");
 
             if (file.Length > 0)
             {
@@ -136,6 +140,8 @@ namespace DocManager.API.Controllers
                 return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
             if (file.FileName.Length > setting.maxFileNameSize)
                 return BadRequest("File Name size exceeded limit");
+            if (file.Length <= 0)
+                return BadRequest("Something went wrong. Please try again");
 
             if (file.Length > 0)
             {

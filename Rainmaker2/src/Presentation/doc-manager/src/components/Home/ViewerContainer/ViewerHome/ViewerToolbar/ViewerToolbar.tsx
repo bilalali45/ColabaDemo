@@ -34,7 +34,7 @@ export const ViewerToolbar = () => {
           isFromWorkbench:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems, currentFile );
         
       }
       else{
@@ -48,7 +48,7 @@ export const ViewerToolbar = () => {
           isFromCategory:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc, currentFile );
 
       }
       
