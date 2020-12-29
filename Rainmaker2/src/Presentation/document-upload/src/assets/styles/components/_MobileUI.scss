@@ -103,6 +103,7 @@
             &--list{
                 margin-left: 0;
                 margin-right: 0;
+                padding-bottom: 50px;
             }
 
             &--content-area{
@@ -126,6 +127,13 @@
                     height: calc(100vh - 260px);
                     .upload-btns-wrap{
                         padding-top: 90px;
+                        @media (max-height:570px) {
+                            padding-top: 20px;
+                        }
+                    }
+
+                    @include mobile {
+                        height: 290px;
                     }
                 }
                 &-footer{

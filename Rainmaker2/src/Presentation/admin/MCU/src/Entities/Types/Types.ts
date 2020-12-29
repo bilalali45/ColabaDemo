@@ -62,7 +62,8 @@ export enum DocumentStatus {
   PENDING_REVIEW = 'Pending review',
   COMPLETED = 'Completed',
   IN_DRAFT = 'In draft',
-  STARTED = 'Started'
+  STARTED = 'Started',
+  BORROWER_TO_DO = 'Borrower to do',
 }
 
 export interface EmailLogsType {

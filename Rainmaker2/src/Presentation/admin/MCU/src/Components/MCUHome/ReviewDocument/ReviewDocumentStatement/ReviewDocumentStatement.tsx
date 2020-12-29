@@ -1,11 +1,11 @@
-import React, {useEffect, useCallback, useState, useRef} from 'react';
-import {Http} from 'rainsoft-js';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Http } from 'rainsoft-js';
 import Spinner from 'react-bootstrap/Spinner';
-import {DocumentSnipet} from './DocumentSnipet/DocumentSnipet';
-import {DocumentFileType, FileType} from '../../../../Entities/Types/Types';
-import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
-import {NeedList} from '../../../../Entities/Models/NeedList';
-import {DocumentStatus} from '../../../../Entities/Types/Types';
+import { DocumentSnipet } from './DocumentSnipet/DocumentSnipet';
+import { DocumentFileType, FileType } from '../../../../Entities/Types/Types';
+import { NeedListEndpoints } from '../../../../Store/endpoints/NeedListEndpoints';
+import { NeedList } from '../../../../Entities/Models/NeedList';
+import { DocumentStatus } from '../../../../Entities/Types/Types';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
 import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
@@ -29,19 +29,19 @@ const Footer = ({
   //requestAgain: () => void;
 }) => {
 
-  const [acceptDocumentAlert, setAcceptDocumentAlert] = useState<boolean>(false);
+  const [acceptDocumentAlert, setAcceptDocumentAlert] = useState<number>(0);
   const rejectAndCloseRejectPopUp = () => {
     rejectDocument();
   };
 
-  const checkAlertMsgForAcceptDocumentOnly = () => {
-    acceptDocumentOnly();   
-    setAcceptDocumentAlert(!acceptDocumentAlert);
+  const checkAlertMsgForAcceptDocumentOnly = (status:number) => {
+    acceptDocumentOnly();
+    setAcceptDocumentAlert(status);
   }
 
   if (status === DocumentStatus.COMPLETED) {
 
-    if(rejectModalOpen){
+    if (rejectModalOpen) {
       return (
         <footer className="document-statement--footer">
           <div className="row">
@@ -66,7 +66,7 @@ const Footer = ({
           </div>
         </footer>
       );
-    }else{
+    } else {
       return (
         // <footer
         //   className="document-statement--footer alert alert-success"
@@ -75,24 +75,24 @@ const Footer = ({
         //   This document has been accepted.
         // </footer>
         <footer className="document-statement--footer">
-        <div className="row">
-          <div className="col-md-6"></div>
-          <div className="col-md-6">
-            <button
-             data-testid="accept-doc-btn"
-              className="btn btn-primary btn-block"
-              //disabled={acceptRejectEnabled}
-              onClick={setRejectPopup}
-            >
-              Request Again
+          <div className="row">
+            <div className="col-md-6"></div>
+            <div className="col-md-6">
+              <button
+                data-testid="accept-doc-btn"
+                className="btn btn-primary btn-block"
+                //disabled={acceptRejectEnabled}
+                onClick={setRejectPopup}
+              >
+                Request Again
             </button>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
       );
     }
 
-    
+
   } else if (status === DocumentStatus.IN_DRAFT) {
     return (
       <footer
@@ -102,29 +102,27 @@ const Footer = ({
         This document has been saved as draft.
       </footer>
     );
-  } else if (status === DocumentStatus.STARTED){
+  } else if (status === DocumentStatus.STARTED || status === DocumentStatus.BORROWER_TO_DO) {
 
-    
-
-    if(acceptDocumentAlert){
+    if (acceptDocumentAlert == 1) {
       return (
         <footer className="document-statement--footer">
           <div className="row">
             <div className="col-md-6">
-            <button
+              <button
                 className="btn btn-secondry btn-block"
                 //disabled={acceptRejectEnabled}
-                onClick={checkAlertMsgForAcceptDocumentOnly}
+                onClick={()=>checkAlertMsgForAcceptDocumentOnly(0)}
               >
                 No
               </button>
             </div>
             <div className="col-md-6">
               <button
-              data-testid="accept-doc-btn"
+                data-testid="accept-doc-btn"
                 className="btn btn-primary btn-block"
                 //disabled={acceptRejectEnabled}
-                onClick={acceptDocument}
+                onClick={()=>{checkAlertMsgForAcceptDocumentOnly(2);acceptDocument(); }}
               >
                 Yes
               </button>
@@ -132,17 +130,21 @@ const Footer = ({
           </div>
         </footer>
       )
-    }else{
+    } else if (acceptDocumentAlert == 2) {
+      return (
+        <footer className="document-statement--footer alert alert-success">This document has been accepted.</footer>
+      )
+    } else {
       return (
         <footer className="document-statement--footer">
           <div className="row">
             <div className="col-md-6"></div>
             <div className="col-md-6">
               <button
-              data-testid="accept-doc-btn"
+                data-testid="accept-doc-btn"
                 className="btn btn-primary btn-block"
                 //disabled={acceptRejectEnabled}
-                onClick={checkAlertMsgForAcceptDocumentOnly} // acceptDocument
+                onClick={()=>checkAlertMsgForAcceptDocumentOnly(1)} // acceptDocument
               >
                 Accept Document
               </button>
@@ -184,7 +186,7 @@ const Footer = ({
       <div className="row">
         <div className="col-md-6" >
           <button
-          data-testid="reject-doc-btn"
+            data-testid="reject-doc-btn"
             className="btn btn-secondry btn-block"
             disabled={acceptRejectEnabled}
             onClick={setRejectPopup}
@@ -194,7 +196,7 @@ const Footer = ({
         </div>
         <div className="col-md-6">
           <button
-           data-testid="accept-doc-btn"
+            data-testid="accept-doc-btn"
             className="btn btn-primary btn-block"
             disabled={acceptRejectEnabled}
             onClick={acceptDocument}
@@ -228,7 +230,7 @@ export const ReviewDocumentStatement = ({
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [mcuNamesUpdated, setMcuNamesUpdated] = useState<
-    {fileId: string; mcuName: string}[]
+    { fileId: string; mcuName: string }[]
   >([]);
   const [rejectDocumentModal, setRejectDocumentModal] = useState(false);
   const [rejectDocumentMessage, setRejectDocumentMessage] = useState('');
@@ -238,7 +240,6 @@ export const ReviewDocumentStatement = ({
 
   const acceptDocForStarted = () => {
     setAcceptDocumentAlert(!acceptDocumentAlert);
-    console.log('Zuhaib')
   }
 
   const getFileNameWithoutExtension = (fileName: string) =>
@@ -268,13 +269,7 @@ export const ReviewDocumentStatement = ({
   const requestDocumentFiles = async (currentDocument: NeedList) => {
     const { id, requestId, docId } = currentDocument;
 
-   const data = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
-       // const http = new Http();
-
-    // const { data } = await http.get<DocumentFileType[]>(
-    //   NeedListEndpoints.GET.documents.files(id, requestId, docId)
-    // );
-   
+    const data = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
     const { files, userName } = data[0];
     setDocumentFiles(files);
     setUsername(userName);
@@ -288,10 +283,10 @@ export const ReviewDocumentStatement = ({
               : getFileNameWithoutExtension(file.mcuName)
         };
       })
-    ); 
+    );
   };
 
-  const getMcuNameUpdated = (fileId: string): string => {  
+  const getMcuNameUpdated = (fileId: string): string => {
     const item = mcuNamesUpdated.find((item) => item.fileId === fileId);
     return !!item ? item.mcuName : '';
   };
@@ -370,8 +365,7 @@ export const ReviewDocumentStatement = ({
   useEffect(() => {
     // Set reject document message when document changed.
     setRejectDocumentMessage(
-      `Hi ${currentDocument!.userName}, please submit the ${
-        currentDocument!.docName
+      `Hi ${currentDocument!.userName}, please submit the ${currentDocument!.docName
       } again.`
     );
 
@@ -415,7 +409,7 @@ export const ReviewDocumentStatement = ({
           <h2 title={currentDocument.docName}>{currentDocument.docName}</h2>
           {renderStatus(currentDocument.status)}
         </div>
-        
+
         <Dropdown>
           <Dropdown.Toggle
             size="lg"
@@ -452,105 +446,117 @@ export const ReviewDocumentStatement = ({
           </Spinner>
         </div>
       ) : (
-        <div className="document-statement--body-footer">
-          <section
-            ref={documentStateBodyRef}
-            className="document-statement--body"
-            style={checkDialog()}
-          >
-            {/* <h3>Documents</h3> */}
-            {!!documentFiles && documentFiles.length ? (
-              documentFiles.map((file, index) => (
-                <DocumentSnipet
-                  key={index}
-                  id={currentDocument?.id!}
-                  index={index}
-                  moveNextFile={async (
-                    index: number,
-                    fileId: string,
-                    clientName: string,
-                    mcuName: string,
-                    loadingFile?: boolean
-                  ) => {
-                    moveNextFile(index, fileId, clientName, mcuName, loadingFile).then(
-                      async () => {
-                        setCurrentFileName(clientName);
-                        if (currentDocument) {
-                          await requestDocumentFiles(currentDocument);
+          <div className="document-statement--body-footer">
+            <section
+              ref={documentStateBodyRef}
+              className="document-statement--body"
+              style={checkDialog()}
+            >
+              {/* <h3>Documents</h3> */}
+              {!!documentFiles && documentFiles.length ? (
+                documentFiles.map((file, index) => (
+                  <DocumentSnipet
+                    key={index}
+                    id={currentDocument?.id!}
+                    index={index}
+                    moveNextFile={async (
+                      index: number,
+                      fileId: string,
+                      clientName: string,
+                      mcuName: string,
+                      loadingFile?: boolean
+                    ) => {
+                      moveNextFile(index, fileId, clientName, mcuName, loadingFile).then(
+                        async () => {
+                          setCurrentFileName(clientName);
+                          if (currentDocument) {
+                            await requestDocumentFiles(currentDocument);
+                          }
                         }
-                      }
-                    );
-                  }}
-                  requestId={currentDocument.requestId}
-                  docId={currentDocument.docId}
-                  fileId={file.fileId}
-                  mcuName={file.mcuName}
-                  clientName={file.clientName}
-                  isCurrent={currentFileName === file.clientName}
-                  currentFileIndex={currentFileIndex}
-                  uploadedOn={file.fileUploadedOn}
-                  isRead={file.isRead}
-                  username={username}
-                  allowFileRenameMCU={allowFileRenameMCU}
-                  getMcuNameUpdated={getMcuNameUpdated}
-                />
-              ))
-            ) : (
-              <span>No file submitted yet</span>
-            )}
-
-            {rejectDocumentModal && (
-              <div className="dialogbox">
-                <div className="dialogbox-backdrop"></div>
-                <div className="dialogbox-slideup" data-testid="req-doc-dialog">
-                  <h2 className="h2">Request this document again.</h2>
-                  <p>
-                    Let the borrower know what you need to mark it as complete
-                  </p>
-                  <textarea
-                    style={{
-                      borderColor:
-                        rejectDocumentMessage.trim() === '' ? 'red' : ''
+                      );
                     }}
-                    className="form-control"
-                    rows={6}
-                    value={rejectDocumentMessage}
-                    onChange={onChangeTextArea}
-                    maxLength={255}
+                    requestId={currentDocument.requestId}
+                    docId={currentDocument.docId}
+                    fileId={file.fileId}
+                    mcuName={file.mcuName}
+                    clientName={file.clientName}
+                    isCurrent={currentFileName === file.clientName}
+                    currentFileIndex={currentFileIndex}
+                    uploadedOn={file.fileUploadedOn}
+                    isRead={file.isRead}
+                    username={username}
+                    allowFileRenameMCU={allowFileRenameMCU}
+                    getMcuNameUpdated={getMcuNameUpdated}
                   />
-                  {rejectDocumentMessage.trim() === '' && (
-                    <div style={{color: 'red'}}>This field is required.</div>
-                  )}
+                ))
+              ) : (
+                  <span>No file submitted yet</span>
+                )}
+
+              {rejectDocumentModal && (
+                <div className="dialogbox">
+                  <div className="dialogbox-backdrop"></div>
+                  <div className="dialogbox-slideup" data-testid="req-doc-dialog">
+                    <h2 className="h2">Request this document again.</h2>
+                    <p>
+                      Let the borrower know what you need to mark it as complete
+                  </p>
+                    <textarea
+                      style={{
+                        borderColor:
+                          rejectDocumentMessage.trim() === '' ? 'red' : ''
+                      }}
+                      className="form-control"
+                      rows={6}
+                      value={rejectDocumentMessage}
+                      onChange={onChangeTextArea}
+                      maxLength={255}
+                    />
+                    {rejectDocumentMessage.trim() === '' && (
+                      <div style={{ color: 'red' }}>This field is required.</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              
+              {acceptDocumentAlert && currentDocument?.status == DocumentStatus.STARTED &&
+                <div className="dialogbox">
+                  <div className="dialogbox-backdrop"></div>
+                  <div className="dialogbox-slideup" data-testid="req-doc-dialog">
+                    <div className="dialogbox-error">
+                      <div className="dialogbox-error-icon"><i className="zmdi zmdi-alert-triangle"></i></div>
+                      <p>Are you sure you want to accept these documents? This item will disappear from the borrower’s Needs List.</p>
+                    </div>
+                  </div>
+                </div>
+              }
 
-            {acceptDocumentAlert && currentDocument?.status == "Started" &&
-              <div className="dialogbox">
-              <div className="dialogbox-backdrop"></div>
-              <div className="dialogbox-slideup" data-testid="req-doc-dialog">
-                <div className="dialogbox-error">
-                  <div className="dialogbox-error-icon"><i className="zmdi zmdi-alert-triangle"></i></div>
-                  <p>Are you sure you want to accept these documents? This item will disappear from the borrower’s Needs List.</p>
-                </div>                
-              </div>
-            </div>
-            }
+              {acceptDocumentAlert && currentDocument?.status == DocumentStatus.BORROWER_TO_DO &&
+                <div className="dialogbox">
+                  <div className="dialogbox-backdrop"></div>
+                  <div className="dialogbox-slideup" data-testid="req-doc-dialog">
+                    <div className="dialogbox-error">
+                      <div className="dialogbox-error-icon"><i className="zmdi zmdi-alert-triangle"></i></div>
+                      <p>Are you sure you want to accept these documents? This item will disappear from the borrower’s Needs List.</p>
+                    </div>
+                  </div>
+                </div>
+              }
 
 
 
-          </section>
-          <Footer
-            acceptDocumentOnly={acceptDocForStarted}
-            status={currentDocument?.status}
-            acceptDocument={acceptDocument}
-            rejectDocument={validateAndRejectDocument}
-            setRejectPopup={setRejectPopup}
-            rejectModalOpen={rejectDocumentModal}
-            acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
-          />
-        </div>
-      )}
+            </section>
+            <Footer
+              acceptDocumentOnly={acceptDocForStarted}
+              status={currentDocument?.status}
+              acceptDocument={acceptDocument}
+              rejectDocument={validateAndRejectDocument}
+              setRejectPopup={setRejectPopup}
+              rejectModalOpen={rejectDocumentModal}
+              acceptRejectEnabled={documentViewLoading} // Prevent click on document loading and on accept/reject API Call
+            />
+          </div>
+        )}
     </div>
   );
 };

@@ -46,15 +46,17 @@
         @include mobile {
             height        : 100%;
             // padding-top: 30%;
-            padding-top   : 5vh;
+            padding-top   : 40px;//5vh;
             min-height    : 240px;
             padding-bottom: 20px;
         }
 
-        @media (max-height:570px) {
-            padding-top: 5vh;
-            min-height : 245px;
-        }
+        // @media (max-height:570px) {
+        //     padding-top: 20px;
+        //     min-height : 245px;
+        // }
+
+        
 
         .upload-note {
             color: color("light-purple");
@@ -403,7 +405,6 @@
     // .doc-upload-footer
 }
 
-
 .drag-preview {
     background     : rgba(color('colorWhite'), 0.95);
     position       : absolute;
@@ -586,9 +587,6 @@
         }
     }
 }
-
-
-
 
 .doc-list-ul {
     @include scrollbar;
@@ -897,6 +895,7 @@
             right    : 20px;
             top      : 50%;
             transform: translateY(-50%);
+            z-index: 2;
 
             ul {
                 padding-top: 4px;
@@ -1050,7 +1049,6 @@
         }
     }
 }
-
 
 .doc-li {
     min-height   : 58px;

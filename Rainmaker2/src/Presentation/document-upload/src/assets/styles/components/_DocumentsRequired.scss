@@ -8,7 +8,7 @@
             @include mobile {
                 min-height: calc(100vh - 245px);
                 max-height: initial;
-                @include scrollbar(6,6)
+                @include scrollbar(6,6);
                 padding-bottom:50px;
             }
             li {
