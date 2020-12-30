@@ -207,7 +207,7 @@ export const DocumentItem = ({
 
                 <li>
                   <a
-                    onClick={() => viewDocument(file)}
+                    onClick={() => {viewDocument(file); document.body.classList.add('openDocumentViewer');}}
                     title="View Document"
                     tabIndex={-1}
                   >
@@ -265,7 +265,7 @@ export const DocumentItem = ({
                 </div>
 
               )}
-              <div className="m-d-l-item" ref={refViewDoc} onClick={() => viewDocument(file)}
+              <div className="m-d-l-item" ref={refViewDoc} onClick={() => {viewDocument(file);document.body.classList.add('openDocumentViewer');}}
                 title="View Document"
                 tabIndex={-1}
               >

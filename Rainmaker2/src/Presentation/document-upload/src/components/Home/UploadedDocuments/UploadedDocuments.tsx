@@ -27,17 +27,19 @@ export const UploadedDocuments = () => {
         document.body.classList.add('overflow-hidden');
       } else {
         document.body.classList.remove('overflow-hidden');
+        document.body.classList.remove('lockbody');
       }
     }
     checkPopupOpen();
 
     const closeDocUploadPopup = () => {
       setPopupDocumentUpload(false);
+      document.body.classList.remove('lockbody');
     }
-    document.getElementById('uploadedDocuments')?.addEventListener('click',closeDocUploadPopup);
+    document.getElementById('mobileNavigation')?.addEventListener('click',closeDocUploadPopup);
     return () => {
       checkPopupOpen();
-      document.getElementById('uploadedDocuments')?.addEventListener('click',closeDocUploadPopup);
+      document.getElementById('mobileNavigation')?.addEventListener('click',closeDocUploadPopup);
     }
   }, [popupDocumentUpload])
 

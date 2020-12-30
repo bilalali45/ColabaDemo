@@ -295,7 +295,7 @@ const ActivityHeader = (props) => {
 
   const ActivityHeaderMobile = () => {
     return (
-      <div  className="mobile-navigation"  onClick={()=>{
+      <div id="mobileNavigation" className="mobile-navigation"  onClick={()=>{
           setTimeout(()=>{if(document.body.style.overflow == 'hidden'){
             document.body.style.overflow = 'auto'
           }},20)

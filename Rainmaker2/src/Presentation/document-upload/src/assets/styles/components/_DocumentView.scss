@@ -16,6 +16,10 @@
   width: 100vw;
   background-color: rgba(color("colorBlack"), 0.5);
 
+  @include mobile{
+    background-color: rgba(82, 82, 82, 1) !important;
+  }
+
   &--header {
     background-color: color("fileReaderHeaderBg");
     color: color("colorWhite");
@@ -158,6 +162,11 @@
       bottom: 80px;
       z-index: 8888;
       @extend .list-style-none;
+
+      @include mobile{
+        bottom: 30px;
+      }
+
       > li {
         &:last-child {
           margin-top: 15px;
