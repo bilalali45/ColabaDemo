@@ -141,12 +141,6 @@ export const ViewerThumbnails = () => {
     file: string
   ) => {
 
-    if (isFileChanged) {
-      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
-      return;
-  }
-
     if (isDragging) {
       dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
       dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });

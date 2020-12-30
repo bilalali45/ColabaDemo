@@ -373,6 +373,7 @@ export const ReviewDocumentStatement = ({
   }, [currentDocument!.docName]);
 
   const renderStatus = (status: string) => {
+    console.log("RenderStatus",status)
     let cssClass = '';
     switch (status) {
       case 'Pending review':
@@ -389,6 +390,9 @@ export const ReviewDocumentStatement = ({
         break;
       case 'In draft':
         cssClass = 'status-bullet indraft';
+        break;
+      case 'Manually added':
+        cssClass = 'status-bullet manualyadded';
         break;
       default:
         cssClass = 'status-bullet pending';

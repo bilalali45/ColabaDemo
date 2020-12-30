@@ -17,7 +17,7 @@ export const PSPDFKitWebViewer = ({ documentURL, appBaseURL, licenseKey, clientN
         type: "custom",
         id: "download-pdf",
         icon: `<svg data-testid="SVGdownload" className="SVGdownload" xmlns="http://www.w3.org/2000/svg" width="17.024" height="17.024" viewBox="0 0 17.024 17.024" >
-        <path id="download" d="M12.985,8.825,8.112,13.7,3.239,8.825l.9-.9,3.343,3.343V0H8.746V11.271l3.343-3.343Zm3.239,6.131H0v1.267H16.224Zm0,0" transform="translate(1 0.4)" fill="#FFF" stroke="#FFF" strokeWidth="0.4" />
+        <path id="download" d="M12.985,8.825,8.112,13.7,3.239,8.825l.9-.9,3.343,3.343V0H8.746V11.271l3.343-3.343Zm3.239,6.131H0v1.267H16.224Zm0,0" transform="translate(1 0.4)" fill="#8e8e8e" stroke="#8e8e8e" strokeWidth="0.4" />
       </svg>`,
         title: "Download",
         onPress: () => {
@@ -59,8 +59,9 @@ export const PSPDFKitWebViewer = ({ documentURL, appBaseURL, licenseKey, clientN
 
     useEffect(() => {
         const load = async () => {
-
             console.log('calling');
+            if(documentURL && documentURL.byteLength){
+            
             let config : any = {
                 document: documentURL,
                 container: viewerRef.current || '',
@@ -91,11 +92,13 @@ export const PSPDFKitWebViewer = ({ documentURL, appBaseURL, licenseKey, clientN
                 console.log('error', error)
             }
         }
+        }
 
         load();
 
         return () => {
-            PSPDFKit.unload(_instance || viewerRef?.current)
+            if(_instance)
+                PSPDFKit.unload(_instance)
             
             _instance = null;
         }

@@ -18,14 +18,14 @@ export class ViewerTools extends Viewer {
     static currentToolbar: Array<string> = [
         "pan",
         "annotate",
-        "ink",
-        "highlighter",
         "text-highlighter",
+        "highlighter",
+        "ink",
         "ink-eraser",
         "note",
         "text",
-        "line",
         "arrow",
+        "line",
         "rectangle",
         "ellipse",
         "polygon",
@@ -101,10 +101,15 @@ export class ViewerTools extends Viewer {
 
     static async discardChanges(dispatch: Function, currentDoc: any, currentFile: any) {
 
+        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
+        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+    }
+
         dispatch({type: ViewerActionsType.SetCurrentFile, payload: null});
         dispatch({type: ViewerActionsType.SetCurrentFile, payload: currentFile});
     }
 
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
 
     static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
 
@@ -150,7 +155,57 @@ export class ViewerTools extends Viewer {
         this.instance.setViewState((viewState: any) => viewState.set("zoom", "FIT_TO_VIEWPORT"));
     }
 
-    // static async convertImageToPDF(src: any, isImported: boolean) {
+    static async updateAnnotationDefaultValues(instance: any) {
+
+        const red = new PSPDFKit.Color({ r: 255, g: 0, b: 0 });
+        const yellow = new PSPDFKit.Color({ r: 255, g: 255, b: 0 })
+
+        for (const [key, value] of Object.entries(PSPDFKit.defaultAnnotationPresets)) {
+            console.log(key, value);
+            if (typeof value === 'object') {
+
+                const ap = instance.annotationPresets;
+
+                switch (key) {
+                    case 'text-highlighter':
+                    case 'note':
+                        ap[key] = {
+                            ...value,
+                            color: yellow
+                        }
+                        break;
+
+                    case 'highlighter':
+                        ap[key] = {
+                            ...value,
+                            strokeColor: yellow
+                        }
+                        break;
+
+                    case 'text':
+                        ap[key] = {
+                            ...value,
+                            fontColor: red,
+                            fontSize: 12,
+                            fontFamily: 'Helvetica'
+                        }
+                        break;
+
+                    default:
+                        ap[key] = {
+                            ...value,
+                            strokeWidth: 4,
+                            strokeColor: red
+                        }
+                        break;
+                }
+
+
+                instance.setAnnotationPresets(ap)
+            }
+        }
+    }
+
     static editPDF(instance: any, dispatch: any) {
         instance.setViewState((viewState: any) =>
             viewState.set(
@@ -180,7 +235,7 @@ export class ViewerTools extends Viewer {
         el.style.width = '0.01vh';
         el.style.display = 'none';
         document.body.appendChild(el);
-        let localInstance: any = await this.loadlocalInstance(src);
+        let localInstance: any = await this.loadlocalInstance(src?.arrayBuffer());
         try {
 
             let file: any;
@@ -190,31 +245,32 @@ export class ViewerTools extends Viewer {
                 await this.addAnEmptyPage(localInstance, pageIndex);
                 let newPageSize = await localInstance.pageInfoForIndex(0);
                 await this.addImageAsAnnotationOnThePage(localInstance, src, newPageSize, pageIndex, imageSize);
+                file = await this.createPDFFileFromImage(localInstance, isPDF, true);
+                await PSPDFKit.unload(localInstance);
+                localInstance = await this.loadlocalInstance(file.arrayBuffer());
             }
 
             if (isImported)
                 await this.addAnnotationToPage(localInstance, fileData)
 
-            file = await this.createPDFFileFromImage(localInstance, isPDF);
+            file = await this.createPDFFileFromImage(localInstance, isPDF, false);
 
+            
             PSPDFKit.unload(localInstance);
             document.body.removeChild(el);
-
             return file;
 
         } catch (error) {
-            PSPDFKit.unload(localInstance);
-            document.body.removeChild(el);
+           
             console.log('error', error);
-        }
-
-        return null;
+        }  
+          return null;
     }
 
     static async loadlocalInstance(src: any) {
         try {
             let instance = await PSPDFKit.load({
-                document: await src.arrayBuffer(),
+                document: await src,
                 container: '#local-viewer-container',
                 licenseKey: licenseKey,
                 baseUrl: baseUrl,
@@ -303,12 +359,12 @@ export class ViewerTools extends Viewer {
 
     }
 
-    static async createPDFFileFromImage(instance: any, isPDF: boolean) {
+    static async createPDFFileFromImage(instance: any, isPDF: boolean, isFlatten:boolean) {
 
-        const buffer = await instance.exportPDF({ flatten: true });
+        const buffer = await instance.exportPDF({ flatten: isFlatten });
         const blob = new Blob([buffer], { type: "arraybuffer" });
-        let file = await new File([blob], "file_name", { lastModified: Date.now() });
-
+        let file = await new File([blob], "file_name.pdf", { lastModified: Date.now(), type: "application/pdf"  });
+console.log(file)
         return file;
     }
 

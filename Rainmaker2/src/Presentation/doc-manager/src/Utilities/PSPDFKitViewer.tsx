@@ -60,7 +60,7 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
         try {
             let instance = await PSPDFKit.load(instanceConfig);
             console.log('PSPDFKit.PageInfo', instance.pageInfoForIndex(0));
-
+            ViewerTools.updateAnnotationDefaultValues(instance);
             _cachedInstance = instance;
             // ViewerTools.addEmptyPage(instance);
             retrieveViewerInstance(instance);
