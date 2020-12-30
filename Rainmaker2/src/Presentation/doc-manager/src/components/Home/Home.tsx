@@ -59,13 +59,15 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('beforeunload', (e: any) => {
-      if (isFileChanged) {
+    if (isFileChanged) {
+      window.onbeforeunload = (e: any) => {
         e.preventDefault();
         e.returnValue = ''
-      }
-    }, false)
-  }, [isFileChanged])
+      };
+    } else {
+      window.onbeforeunload = null;
+    }
+  }, [isFileChanged, !isFileChanged])
 
   const setStateProps = () => {
     dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })

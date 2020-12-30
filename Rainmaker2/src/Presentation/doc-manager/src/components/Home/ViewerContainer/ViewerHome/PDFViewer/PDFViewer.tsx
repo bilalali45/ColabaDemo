@@ -59,7 +59,7 @@ export const PDFViewer = () => {
               });
         }
 
-    }, [instance, currentDoc, currentFile])
+    }, [instance, currentDoc, currentFile, isFileChanged, !isFileChanged])
 
     const getViewerInstance = (instance: Instance) => {
 

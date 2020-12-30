@@ -168,6 +168,15 @@ export class AnnotationActions extends Viewer {
         }
     }
 
-    
+    static async annotationsExist() {
+        const pagesAnnotations = await Promise.all(
+            Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
+                Viewer.instance.getAnnotations(pageIndex)
+            )
+        );
+        return Boolean(pagesAnnotations.filter( pageList => pageList.toJS().length).length);
+        // const allAnnotations : any = await this.instance.exportInstantJSON();
+        // console.log(allAnnotations);
+    }
 
 }

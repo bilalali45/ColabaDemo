@@ -36,7 +36,7 @@ export const ViewerThumbnails = () => {
   const documents: any = state.documents;
   const isDragging: any = documents?.isDragging;
   const isDraggingCurrentFile:any = documents?.isDraggingCurrentFile;
-  const { isFileChanged, selectedFileData }: any = state.viewer;
+  const { isFileChanged, selectedFileData, SaveCurrentFile, DiscardCurrentFile }: any = state.viewer;
   const scrlUpRef = useRef<HTMLUListElement | any>(null);
   const doScrlUp = () => scrollToRef(scrlUpRef, 'up');
   const doScrlDn = () => scrollToRef(scrlUpRef, '');
@@ -61,13 +61,11 @@ export const ViewerThumbnails = () => {
       if (instance) {
 
         await generateAllThumbnailData();
-        instance.addEventListener("annotations.change", () => {
-          Viewer.instance = instance
-           if(!thumbDragged){
-            let currpage = instance?.viewState?.currentPageIndex
+        instance.addEventListener("annotations.didSave", () => {
+          // ...
+          let currpage = instance?.viewState?.currentPageIndex
             generateThumbnailForSinglePage(currpage)
-          }
-        })
+        });
 
         instance.addEventListener("document.change", async () => {
           generateAllThumbnailData()
@@ -84,6 +82,7 @@ export const ViewerThumbnails = () => {
 
 
   const generateAllThumbnailData = async () => {
+    
     // if(!isThumbnailGenerated){
     let TempThumbnails: any = [];
     for (let i = 0; i < instance?.totalPageCount; i++) {
@@ -115,6 +114,11 @@ export const ViewerThumbnails = () => {
       ...prevState.map((item, index) => index === currPage ? thumbnail : item),
     ]);
 
+    if (!isFileChanged) {
+      await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
+      
+  }
+  
   }
 
 
