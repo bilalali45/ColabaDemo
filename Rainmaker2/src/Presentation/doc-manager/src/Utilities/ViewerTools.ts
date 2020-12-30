@@ -103,13 +103,8 @@ export class ViewerTools extends Viewer {
 
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+        
     }
-
-        dispatch({type: ViewerActionsType.SetCurrentFile, payload: null});
-        dispatch({type: ViewerActionsType.SetCurrentFile, payload: currentFile});
-    }
-
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
 
     static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
 
