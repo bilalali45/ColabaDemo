@@ -5,7 +5,7 @@ import { Store } from "../../../store/store";
 import { Auth } from "../../../services/auth/Auth";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../store/reducers/documentReducer";
-import { SVGSearch, SVGUploadDoc, SVGDragFilesToUpload, SVGUploadedDoc } from "../../../shared/Components/SVGs";
+import { SVGSearch, SVGUploadDoc, SVGDragFilesToUpload, SVGUploadedDoc, SVGUploadDocumentStikyIcon } from "../../../shared/Components/SVGs";
 import { UploadDocumentWithoutRequest } from "../UploadDocumentWithoutRequest/UploadDocumentWithoutRequest";
 
 export const UploadedDocuments = () => {
@@ -24,9 +24,9 @@ export const UploadedDocuments = () => {
   useEffect(() => {
     const checkPopupOpen = () => {
       if (popupDocumentUpload == true) {
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('overflow-hidden');
       } else {
-        document.body.removeAttribute('style');
+        document.body.classList.remove('overflow-hidden');
       }
     }
     checkPopupOpen();
@@ -91,7 +91,8 @@ export const UploadedDocuments = () => {
       {isMobile?.value &&
         <div className="mobile-uploaded-document-option">          
             <button className={`btn-mudo`} onClick={() => { setPopupDocumentUpload(true) }} id="btnPopupDocumentUpload">
-              <span>Upload Document</span>
+              <span className="mudo-text">Upload Document</span>
+              <span className="mudo-icon"><SVGUploadDocumentStikyIcon/></span>
             </button>
         </div>
       } 

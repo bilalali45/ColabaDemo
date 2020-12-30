@@ -92,6 +92,10 @@
         height: calc(100vh - 101px);
         overflow-y: auto;
 
+        .document-view--floating-options > ul {
+            //bottom: 150px;
+        }
+
         .popup-doc-upload{
             &--list-group{
                 .h4{
@@ -103,7 +107,6 @@
             &--list{
                 margin-left: 0;
                 margin-right: 0;
-                padding-bottom: 50px;
             }
 
             &--content-area{
@@ -117,6 +120,7 @@
                     padding: 10px 20px;
                     border-bottom: none;
                     height: auto;
+                    position: relative;
                     .h2,h2{
                         border-bottom: 1px solid color('border');
                         padding: 10px 0;
@@ -133,7 +137,7 @@
                     }
 
                     @include mobile {
-                        height: 290px;
+                        //height: 290px;
                     }
                 }
                 &-footer{
@@ -142,6 +146,7 @@
                     bottom: 61px;
                     left: 0;
                     right: 0;
+                    z-index: 2;
 
                     .wrap{
                         max-width: 500px;
@@ -163,6 +168,7 @@
             nav{
                 ul{
                     min-height: auto;
+                    padding-bottom: 0;
                     li{
                         a{
                             background-color: color('widgetBg');

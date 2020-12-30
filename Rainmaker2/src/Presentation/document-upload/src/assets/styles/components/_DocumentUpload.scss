@@ -305,6 +305,7 @@
             width          : 100%;
             left           : 0;
             margin         : 0;
+            z-index: 10;
         }
 
         .doc-submit-wrap {
@@ -382,6 +383,12 @@
                         padding  : 13px 12px 11px;
                     }
 
+                    @include extraSmallMobile{
+                        font-size: 10px;
+                        min-width: 0;
+                        padding: 13px 8px 11px;
+                    }
+
                     &:last-child {
                         margin-right: 0;
                     }
@@ -437,7 +444,8 @@
 
 .rename-popup {
     .modal-dialog {
-        max-width: 350px;
+        max-width: 96vw;
+        width: 350px;
         margin   : 0 auto;
 
         .modal-header {
@@ -634,6 +642,12 @@
 
         }
 
+        &.dopen{
+            .doc-liWrap{
+                z-index: 9;
+            }
+        }
+
         &.editmode {
             border: 1px solid color('primary');
         }
@@ -735,6 +749,7 @@
             padding      : 18px 10px;
             padding-left : 60px;
             padding-right: 170px;
+            z-index: 1;
 
             @include media-breakpoint-down(md) {
                 padding-right: 120px;
@@ -895,7 +910,7 @@
             right    : 20px;
             top      : 50%;
             transform: translateY(-50%);
-            z-index: 2;
+            z-index: 0;
 
             ul {
                 padding-top: 4px;

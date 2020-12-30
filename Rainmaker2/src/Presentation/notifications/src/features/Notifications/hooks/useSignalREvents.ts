@@ -100,24 +100,26 @@ export const useSignalREvents = (props: UseSignalREventsProps): void => {
       );
 
       SignalRHub.hubConnection.onclose(() => {
-        const auth = LocalDB.getAuthToken();
-
-        if (auth) {
-          SignalRHub.configureHubConnection(
-            window.envConfig.API_BASE_URL + '/serverhub',
-            LocalDB.getAuthToken() || '',
-            signalREventRegister
-          );
-        }
+        configureSignalRHub(signalREventRegister);
       });
     };
 
-    const accessToken = LocalDB.getAuthToken() || '';
+    configureSignalRHub(signalREventRegister);
+    
+    window.addEventListener('tokenrefreshed', (e: any) => { 
+      configureSignalRHub(signalREventRegister);
+     }, false);
+    
+  }, [dispatch, getFetchNotifications, getUnseenNotificationsCount]);
 
+ const configureSignalRHub = (signalREventRegister : any) => {
+  const accessToken = LocalDB.getAuthToken() || '';
+  if (accessToken) {
     SignalRHub.configureHubConnection(
       window.envConfig.API_BASE_URL + '/serverhub',
       accessToken,
       signalREventRegister
     );
-  }, [dispatch, getFetchNotifications, getUnseenNotificationsCount]);
+  }
+ } 
 };

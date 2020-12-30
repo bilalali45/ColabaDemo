@@ -50,6 +50,19 @@ export const DocumentItem = ({
   const [renameModalShow, setRenameModalShow] = useState(true);
   const [openItemDropdown, setOpenItemDropdown] = useState(false);
   const txtInput = useRef<HTMLInputElement>(null);
+  const refViewDoc = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handerClickViewDoc = () =>{
+      document.body.classList.add('openDocumentViewer');
+    }
+    refViewDoc.current?.addEventListener('click',handerClickViewDoc);
+    document.getElementById('closeDocumentView')?.addEventListener('click',()=>{ document.body.classList.remove('openDocumentViewer'); });
+    return () => {
+      refViewDoc.current?.addEventListener('click',handerClickViewDoc);
+      document.getElementById('closeDocumentView')?.addEventListener('click',()=>{ document.body.classList.remove('openDocumentViewer'); });
+    }
+  })
 
   const doubleClickHandler = (isUploaded: string | undefined) => {
     if (isMobile?.value) {
@@ -252,7 +265,7 @@ export const DocumentItem = ({
                 </div>
 
               )}
-              <div className="m-d-l-item" onClick={() => viewDocument(file)}
+              <div className="m-d-l-item" ref={refViewDoc} onClick={() => viewDocument(file)}
                 title="View Document"
                 tabIndex={-1}
               >

@@ -94,6 +94,10 @@ export default class Authorization {
 
       const payload = this.decodeJwt(token);
       LocalDB.storeTokenPayload(payload);
+
+      // Event raise to refresh 
+      const refreshedTokenEvent = new Event('tokenrefreshed');
+      window.dispatchEvent(refreshedTokenEvent);
       this.addExpiryListener();
 
       return true;

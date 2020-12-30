@@ -27,6 +27,8 @@ export const UploadDocumentWithoutRequest = (props) => {
   const searchArea = useRef<HTMLDivElement>(null);
   const [documentTypeItems, setDocumentTypeList] = useState<any>(categoryDocuments);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
+  const [showSubmitBtn, setshowSubmitBtn] = useState<boolean>(false);
+
   var temp = {};
   useEffect(() => {
     if (Object.keys(currentDoc).length === 0) {
@@ -39,7 +41,6 @@ export const UploadDocumentWithoutRequest = (props) => {
   useEffect(() => {
     const resetToggleSearch = (e:any) => {
       if(!searchArea.current?.contains(e.target)){
-        //setDocumentTypeList(categoryDocuments);
         setToggleSearch(false);        
       }
     }
@@ -52,6 +53,15 @@ export const UploadDocumentWithoutRequest = (props) => {
   useEffect(() => {
     filterCategoryList();
 }, [categoryDocuments])
+
+useEffect(() => {
+  let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
+  if (newFiles.length) {
+    setshowSubmitBtn(true);
+  }else{
+    setshowSubmitBtn(false);
+  }
+}, [selectedFiles])
 
 const filterCategoryList = () => {
   setDocumentTypeList((pre: any) => {
@@ -298,11 +308,14 @@ const filterCategoryList = () => {
                     <div className="popup-doc-upload--content-area">
                       <DocumentUpload />
                     </div>
+                    {showSubmitBtn && 
                     <footer className="popup-doc-upload--content-area-footer">
-                      <div className="wrap">
-                        <button onClick={uploadFiles} disabled={handleSubmitBtnDisabled()} className={`btn btn-sm btn-primary`}>Send for Review</button>
+                      <div className="wrap">                     
+                      <button onClick={uploadFiles} disabled={handleSubmitBtnDisabled()} className={`btn btn-sm btn-primary`}>Send for Review</button>
+                     
                       </div>
                     </footer>
+                    } 
                   </>
                 }
 

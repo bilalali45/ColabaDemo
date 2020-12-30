@@ -165,3 +165,33 @@ export const SVGUploadedDoc = () => {
         </svg>
     )
 }
+
+export const SVGUploadDocumentStikyIcon = () => {
+    return (
+    <svg width="100" height="78.202" viewBox="0 0 100 78.202">
+        <defs>
+            <filter id="Ellipse_46" x="14.535" y="0" width="72" height="72" filterUnits="userSpaceOnUse">
+                <feOffset dy="3" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feFlood flood-opacity="0.161" />
+                <feComposite operator="in" in2="blur" />
+                <feComposite in="SourceGraphic" />
+            </filter>
+        </defs>
+        <g id="FILE" transform="translate(-414.465 -136)">
+            <path id="Subtraction_1" data-name="Subtraction 1" d="M1459.465,63.2h-100V18H1377a33,33,0,1,0,66,0h16.465V63.2Z" transform="translate(-945 151)" fill="#4484f4" />
+            <g id="Group_1072" data-name="Group 1072" transform="translate(258 -507)">
+                <g transform="matrix(1, 0, 0, 1, 156.47, 643)" filter="url(#Ellipse_46)">
+                    <circle id="Ellipse_46-2" data-name="Ellipse 46" cx="27" cy="27" r="27" transform="translate(23.53 6)" fill="#4484f4" />
+                </g>
+                <g id="surface1" transform="translate(194.095 659.783)">
+                    <path id="Path_625" data-name="Path 625" d="M17.978.251A.785.785,0,0,0,17.414,0H4.762A4.28,4.28,0,0,0,.5,4.254V28.179a4.28,4.28,0,0,0,4.262,4.254H21.934A4.28,4.28,0,0,0,26.2,28.179v-19a.843.843,0,0,0-.227-.548Zm.227,2.515,5.351,5.617H20.078a1.866,1.866,0,0,1-1.872-1.865Zm3.729,28.1H4.762a2.714,2.714,0,0,1-2.695-2.687V4.254A2.714,2.714,0,0,1,4.762,1.567H16.638V6.518a3.427,3.427,0,0,0,3.439,3.431h4.552v18.23A2.708,2.708,0,0,1,21.934,30.867Zm0,0" fill="#fff" />
+                    <path id="Path_626" data-name="Path 626" d="M102.85,401.934h-12.9a.783.783,0,1,0,0,1.567h12.9a.783.783,0,1,0-.008-1.567Zm0,0" transform="translate(-83.055 -376.472)" fill="#fff" />
+                    <path id="Path_627" data-name="Path 627" d="M147.563,202.439h-2.421v-2.421a.783.783,0,0,0-1.567,0v2.421h-2.421a.783.783,0,0,0,0,1.567h2.421v2.421a.783.783,0,0,0,1.567,0v-2.421h2.421a.783.783,0,0,0,0-1.567Zm0,0" transform="translate(-131.011 -186.614)" fill="#fff" />
+                    <path id="Path_628" data-name="Path 628" d="M85.284,136.164a7.983,7.983,0,1,0,7.983,7.983A7.991,7.991,0,0,0,85.284,136.164Zm0,14.4a6.416,6.416,0,1,1,6.416-6.416A6.419,6.419,0,0,1,85.284,150.563Zm0,0" transform="translate(-71.936 -127.538)" fill="#fff" />
+                </g>
+            </g>
+        </g>
+    </svg>
+    )
+}

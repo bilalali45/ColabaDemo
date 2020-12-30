@@ -556,9 +556,6 @@ export const SelectedDocuments = ({
           <DocumentView
             hideViewer={() => {
               setCurrentDoc(null);
-              document.body.style.overflow = "visible";
-              document.body.removeAttribute("style");
-              document.body.classList.remove("lockbody");
               history.goBack();
             }}
             {...currentDoc}

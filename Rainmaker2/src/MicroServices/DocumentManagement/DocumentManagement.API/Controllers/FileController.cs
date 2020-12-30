@@ -383,7 +383,7 @@ namespace DocumentManagement.API.Controllers
                 };
                 await fileService.Order(model: model,
                                         userProfileId: userProfileId, tenantId);
-                return Ok(new FileViewModel { docId = docId, id = requestResponseModel.id, requestId = requestResponseModel.requestId, fileId = fileId.FirstOrDefault() }) ;
+                return Ok(new FileViewModel { docId = requestResponseModel.docId, id = requestResponseModel.id, requestId = requestResponseModel.requestId, fileId = fileId.FirstOrDefault() }) ;
             }
             return NotFound();
         }

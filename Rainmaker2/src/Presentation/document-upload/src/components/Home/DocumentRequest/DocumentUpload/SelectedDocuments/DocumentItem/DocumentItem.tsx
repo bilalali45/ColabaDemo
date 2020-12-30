@@ -245,6 +245,7 @@ export const DocumentItem = ({
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
+              <div>
               {file.file && !file.uploadProgress && (
                 <div className="m-d-l-item" data-testid={`file-edit-btn-${indexKey}`} onClick={EditTitle} title="Rename" tabIndex={-1}>
                   <div className="d-l-m-icon">{<DocEditIcon />}</div>
@@ -274,7 +275,7 @@ export const DocumentItem = ({
                   <span>Delete</span>
                 </div>
               )}
-
+              </div>
             </Dropdown.Menu>
           </Dropdown>
         }

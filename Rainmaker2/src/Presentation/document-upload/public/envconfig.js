@@ -1,5 +1,3 @@
-// localStorage.setItem("devusername", "taruf.ali@rainsoftfn.com");
-// localStorage.setItem("devuserpassword", "test@124");
 
 window.envConfig = {
    //API_BASE_URL: 'https://172.16.100.17:9088',
