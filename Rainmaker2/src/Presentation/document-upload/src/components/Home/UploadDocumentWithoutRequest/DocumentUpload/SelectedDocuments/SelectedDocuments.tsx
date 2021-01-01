@@ -17,6 +17,8 @@ import folderIcon from "../../../../../assets/images/folder-icon.svg";
 import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { render } from "@testing-library/react";
+import {SVGUploadCameraIcon, SVGUploadFolderIcon} from "../../../../../shared/Components/SVGs";
+
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -62,6 +64,8 @@ export const SelectedDocuments = ({
   const documents: any = state.documents;
   const pendingDocs: any = documents.pendingDocs;
   const currentSelected: any = documents.currentDoc;
+  const submitBtnPressed: any = documents.submitBtnPressed;
+
   const selectedFiles = currentSelected.files || [];
   const [blobData, setBlobData] = useState<any | null>();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,6 +92,11 @@ export const SelectedDocuments = ({
     }
 
   }, [selectedFiles, selectedFiles.length, uploadingFiles]);
+
+  // useEffect(() => {
+  //   if()
+
+  // },[submitBtnPressed])
 
   const handleDeleteAction = (file) => {
     let updatedFiles = selectedFiles.map((f: Document) => {
@@ -154,31 +163,7 @@ export const SelectedDocuments = ({
     setBlobData(null);
   };
 
-  const uploadFiles = async () => {
-    setSubBtnPressed(true);
-    setUploadingFiles(true);
-    for (const file of selectedFiles) {
-      if (file.file && file.uploadStatus !== "done" && !file.notAllowed && file.uploadStatus !== 'failed') {
-        try {
-          await DocumentUploadActions.submitDocuments(
-            currentSelected,
-            file,
-            dispatch,
-            Auth.getLoanAppliationId()
-          );
-        } catch (error) {
-          file.uploadStatus = "failed";
-          console.log("error during file submit", error);
-          console.log("error during file submit", error.response);
-        }
-      }
-    }
-    setSubBtnPressed(false);
-    setUploadingFiles(false);
-    try {
-      Promise.resolve(fetchUploadedDocuments());
-    } catch (error) { }
-  };
+ 
 
   const fileAlreadyExists = (file, newName) => {
     var alreadyExist = selectedFiles.find(
@@ -249,55 +234,7 @@ export const SelectedDocuments = ({
     dispatch({ type: DocumentsActionType.AddFileToCategoryDocs, payload: updatedFiles });
   };
 
-  const fetchUploadedDocuments = async () => {
-    let uploadedDocs = await DocumentActions.getSubmittedDocuments(
-      Auth.getLoanAppliationId()
-    );
-    if (uploadedDocs) {
-      dispatch({
-        type: DocumentsActionType.FetchSubmittedDocs,
-        payload: uploadedDocs,
-      });
-    }
-  };
-
-  const doneDoc = async () => {
-    setDonePressed(true);
-    let fields = ["id", "requestId", "docId"];
-    let data = {};
-
-    if (currentSelected) {
-      for (const field of fields) {
-        data[field] = currentSelected[field];
-      }
-      let docs:
-        | DocumentRequest[]
-        | undefined = await DocumentActions.finishDocument(
-          Auth.getLoanAppliationId(),
-          data
-        );
-      if (docs?.length) {
-        let indForCurrentDoc = currentDocIndex;
-        if (currentDocIndex === pendingDocs.length - 1) {
-          setCurrentDocIndex(0);
-          indForCurrentDoc = 0;
-        }
-        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-        dispatch({
-          type: DocumentsActionType.SetCurrentDoc,
-          payload: docs[indForCurrentDoc],
-        });
-      } else if (docs?.length === 0) {
-        dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
-      }
-
-      await fetchUploadedDocuments();
-    }
-    if (isMobile?.value && pendingDocs.length === 1) {
-      setCurrentInview('documetsRequired');
-    }
-    setDonePressed(false);
-  };
+  
 
   const checkFocus = (file: Document, index: number) => {
     let foundIndx = selectedFiles.filter(
@@ -306,22 +243,6 @@ export const SelectedDocuments = ({
     return foundIndx === index;
   };
 
-  const handleSubmitBtnDisabled = () => {
-    let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
-    let filesEditing = newFiles?.filter(f => f.editName);
-
-    if (subBtnPressed) {
-      return true;
-    }
-
-    if (!newFiles.length) {
-      return true;
-    }
-
-    if (filesEditing.length) {
-      return true;
-    }
-  }
   const checkFreezBody = async () => {
 
     if (document.body.style.overflow == "hidden") {
@@ -340,14 +261,7 @@ export const SelectedDocuments = ({
     }
     addMore(fileToRemove);
   }
-  // useEffect(() => {
-  //   if (currentSelected?.isRejected === true && !currentSelected?.resubmittedNewFiles) {
-  //     setDoneVisible(false);
-  //     setBtnDisabled(true);
-  //   }
-  // }, [currentSelected?.docName, currentSelected?.isRejected === true && !selectedFiles.filter((df) => df.uploadStatus === "pending").length])
-
-
+ 
   const renderUploadButton = () => {
 
     if (isMobile?.value) {
@@ -356,14 +270,11 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile1"
             data-testid="add-more-btn"
-            className="addmoreDoc camera-wrap"
-            onClick={(e) => {
-              //setFileInput(inputRef2.current);
-              // addMore(e, inputRef2);
-              // setFiles(e.target.files, fileToRemove);
-            }}
+           // className="addmoreDoc camera-wrap"
+            className={submitBtnPressed ? "addmoreDoc camera-wrap disabled" : "addmoreDoc camera-wrap"}          
           >
-            <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>
+            {/*<span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>*/}
+            <span className="iconic-btn-img"><SVGUploadCameraIcon/></span>
             <span className="iconic-btn-lbl">   Camera </span>
             <input
               onChange={(e) => {
@@ -383,12 +294,11 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile2"
             data-testid="add-more-btn"
-            className="addmoreDoc folder-wrap"
-            onClick={(e) => {
-              // addMore(e, null);
-            }}
+            //className="addmoreDoc folder-wrap"
+            className={submitBtnPressed ? "addmoreDoc folder-wrap disabled" : "addmoreDoc folder-wrap"}           
           >
-            <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>
+            {/*<span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>*/}
+            <span className="iconic-btn-img"><SVGUploadFolderIcon/></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
               onChange={(e) => {
@@ -411,7 +321,8 @@ export const SelectedDocuments = ({
       return (
         <a
           data-testid="add-more-btn"
-          className="addmoreDoc"
+          //className="addmoreDoc"
+          className={submitBtnPressed ? "addmoreDoc disabled" : "addmoreDoc"}
           onClick={(e) => {
             addMore(e);
           }}

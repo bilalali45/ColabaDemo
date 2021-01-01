@@ -11,7 +11,8 @@ export enum DocumentsActionType {
     SetCurrentDoc = 'SET_CURRENT_DOC',
     AddFileToDoc = 'ADD_FILE_TO_DOC',
     SetCategoryDocuments = "SET_CATEGORY_DOCUMENTS",
-    AddFileToCategoryDocs = "ADD_FILE_TO_CATEGORY_DOCS"
+    AddFileToCategoryDocs = "ADD_FILE_TO_CATEGORY_DOCS",
+    SubmitButtonPressed = "SUBMITBUTTONPRESSED"
 }
 
 export type DocumentsType = {
@@ -19,6 +20,7 @@ export type DocumentsType = {
     currentDoc: DocumentRequest | null,
     submittedDocs: UploadedDocuments[] | null,
     categoryDocuments: CategoryDocument[],
+    submitBtnPressed: { value: Boolean }
 }
 
 
@@ -28,7 +30,8 @@ type DocumentsActionPayload = {
     [DocumentsActionType.AddFileToDoc]: Document[],
     [DocumentsActionType.FetchSubmittedDocs]: UploadedDocuments[],
     [DocumentsActionType.SetCategoryDocuments]: CategoryDocument[],
-    [DocumentsActionType.AddFileToCategoryDocs]: CategoryDocument[]
+    [DocumentsActionType.AddFileToCategoryDocs]: CategoryDocument[],
+    [DocumentsActionType.SubmitButtonPressed]: { value: Boolean }
 }
 
 export type DocumentsActions = ActionMap<DocumentsActionPayload>[keyof ActionMap<DocumentsActionPayload>];
@@ -105,6 +108,13 @@ export const documentsReducer = (state: DocumentsType | {}, { type, payload }: A
                 ...state,
                 categoryDocuments: payload
             }
+
+        case DocumentsActionType.SubmitButtonPressed:
+            return {
+                ...state,
+                submitBtnPressed: payload
+            }
+
 
         default:
             return state;

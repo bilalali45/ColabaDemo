@@ -9,7 +9,7 @@
                 min-height: calc(100vh - 245px);
                 max-height: initial;
                 @include scrollbar(6,6);
-                padding-bottom:50px;
+                //padding-bottom:50px;
             }
             li {
                 position: relative;
@@ -78,7 +78,7 @@ background-color: color('listhover');
                 position: absolute;
                 right: 15px;
                 top: 50%;
-                margin-top: -8px;
+                margin-top: -10px;
                 cursor: pointer;
                 color: color("light-purple");
                 pointer-events: none;

@@ -51,6 +51,33 @@ const App = () => {
     }, []);
     return size;
   }
+
+  const checkBrowser = () => {
+    let agent = navigator.userAgent;
+    var isSafari = /^((?!chrome|android).)*safari/i.test(agent);
+
+    let browser = '';
+    if((agent.indexOf("Opera") || agent.indexOf("OPR")) != -1){
+      browser = 'opera';
+    }else if(isSafari){
+      browser = 'safari';
+    }else if(agent.indexOf("Chrome")){
+      browser = 'chrome';
+    }else if(agent.indexOf("Firefox")){
+      browser = 'firefox';
+    }else if(agent.indexOf("MSIE") != -1){
+      browser = 'msie';
+    }else {
+      browser = 'unknown';
+    }
+    document.body.classList.add(browser);
+
+    // setTimeout(()=>{
+    //   //alert(window.innerWidth +" "+ window.innerHeight +" "+ document.body.offsetWidth +" "+ document.body.offsetHeight;
+    //   alert(navigator.userAgent);
+    //   alert(document.body.classList[0])
+    // },100)
+  }
   
   const [width, height] = useWindowSize();
   useEffect(() => {
@@ -58,8 +85,13 @@ const App = () => {
     sessionStorage.setItem('isMobile', String(isMobile));
     sessionStorage.setItem('width', String(width));
     dispatch({type: LoanActionsType.SetIsMobile, payload: {value: isMobile}})
-
-  }, [width, height])
+    checkBrowser();
+    if(isMobile){
+      document.body.classList.add('mobile');
+    }else{
+      document.body.classList.remove('mobile');
+    }
+  }, [width, height]);
 
   const history = useHistory()
 

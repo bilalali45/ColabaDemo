@@ -268,7 +268,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     if (data === null || data.length === 0) {
       return (
         <div className="td" data-testid="need-list-files" style={{width:"25%"}}>
-          <span className="block-element">No file submitted yet</span>
+          <span className="block-element">No files yet</span>
         </div>
       );
     } else {

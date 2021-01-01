@@ -132,6 +132,7 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
         )}
         </div>
       </FileDropper>
+      
       {showAlert && <AlertBox hideAlert={() => setshowAlert(false)} />}
     </section>
    </>

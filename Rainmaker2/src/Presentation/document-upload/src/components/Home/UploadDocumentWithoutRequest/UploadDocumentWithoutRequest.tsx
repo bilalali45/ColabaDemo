@@ -58,8 +58,10 @@ useEffect(() => {
   let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
   if (newFiles.length) {
     setshowSubmitBtn(true);
+    document.body.classList.add('footer-btn-enabled');
   }else{
     setshowSubmitBtn(false);
+    document.body.classList.remove('footer-btn-enabled');
   }
 }, [selectedFiles])
 
@@ -151,6 +153,7 @@ const filterCategoryList = () => {
 
   const uploadFiles = async () => {
     setSubBtnPressed(true);
+    dispatch({type: DocumentsActionType.SubmitButtonPressed, payload:true});
     for (const file of selectedFiles) {
       if (file.file && file.uploadStatus !== "done" && !file.notAllowed && file.uploadStatus !== 'failed') {
         try {
@@ -164,12 +167,13 @@ const filterCategoryList = () => {
       }
     } 
     setSubBtnPressed(false);
+    dispatch({type: DocumentsActionType.SubmitButtonPressed, payload:false});
     dispatch({
       type: DocumentsActionType.FetchSubmittedDocs,
       payload: [temp, ...submittedDocs],
     });
     try {
-      debugger
+     
       let fileStatus = selectedFiles?.filter(f => f.uploadStatus === 'failed');
       if (fileStatus.length === 0) {
         setTimeout(() => {

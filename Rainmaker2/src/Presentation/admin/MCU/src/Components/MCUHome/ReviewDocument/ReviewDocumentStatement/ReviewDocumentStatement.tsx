@@ -494,7 +494,7 @@ export const ReviewDocumentStatement = ({
                   />
                 ))
               ) : (
-                  <span>No file submitted yet</span>
+                  <span>No files yet</span>
                 )}
 
               {rejectDocumentModal && (

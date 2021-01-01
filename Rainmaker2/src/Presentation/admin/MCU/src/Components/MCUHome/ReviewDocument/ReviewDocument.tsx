@@ -510,7 +510,7 @@ export const ReviewDocument = () => {
                     <img src={emptyIcon} alt="No preview available" />
                   </div>
                   <h2>Nothing In {currentDocument?.docName}</h2>
-                  <p>No file submitted yet</p>
+                  <p>No files yet</p>
                 </div>
               </div>
             )}

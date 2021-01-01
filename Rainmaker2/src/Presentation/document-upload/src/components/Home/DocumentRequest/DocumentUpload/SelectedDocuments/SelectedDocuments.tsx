@@ -17,6 +17,7 @@ import folderIcon from "../../../../../assets/images/folder-icon.svg";
 import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { render } from "@testing-library/react";
+import {SVGUploadCameraIcon, SVGUploadFolderIcon} from "../../../../../shared/Components/SVGs";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -72,7 +73,7 @@ export const SelectedDocuments = ({
   const location = useLocation();
   const history = useHistory();
 
-  console.log('in here!!!!');
+ 
   useEffect(() => {
     setFileInput(inputRef.current);
 
@@ -141,11 +142,9 @@ export const SelectedDocuments = ({
         docId,
         fileId,
       });
-      console.log('response', response);
       setBlobData(response);
     } catch (error) {
       if (location.pathname.includes('/view')) {
-        console.log('in here!!!! ', error, 'request failed');
         history.goBack();
       }
     }
@@ -360,14 +359,16 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile1"
             data-testid="add-more-btn"
-            className="addmoreDoc camera-wrap"
+           // className="addmoreDoc camera-wrap"
+            className={subBtnPressed ? "addmoreDoc camera-wrap disabled" : "addmoreDoc camera-wrap"}
             onClick={(e) => {
               //setFileInput(inputRef2.current);
               // addMore(e, inputRef2);
               // setFiles(e.target.files, fileToRemove);
             }}
           >
-            <span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>
+            {/*<span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>*/}
+            <span className="iconic-btn-img"><SVGUploadCameraIcon/></span>
             <span className="iconic-btn-lbl">   Camera </span>
             <input
               onChange={(e) => {
@@ -388,12 +389,14 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile2"
             data-testid="add-more-btn"
-            className="addmoreDoc folder-wrap"
+            // className="addmoreDoc folder-wrap"
+            className={subBtnPressed ? "addmoreDoc folder-wrap disabled" : "addmoreDoc folder-wrap"}
             onClick={(e) => {
               // addMore(e, null);
             }}
           >
-            <span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>
+            {/*<span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>*/}
+            <span className="iconic-btn-img"><SVGUploadFolderIcon/></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
               onChange={(e) => {
@@ -417,7 +420,8 @@ export const SelectedDocuments = ({
       return (
         <a
           data-testid="add-more-btn"
-          className="addmoreDoc"
+          //className="addmoreDoc"
+          className={subBtnPressed ? "addmoreDoc disabled" : "addmoreDoc"}
           onClick={(e) => {
             addMore(e);
           }}
@@ -425,8 +429,7 @@ export const SelectedDocuments = ({
           {" "}
     Add more files
           <input
-            onChange={(e) => {
-              console.log('in here ----------', e.target.files);
+            onChange={(e) => {            
               setFiles(e.target.files, fileToRemove);
             }}
             data-testid="file-input"

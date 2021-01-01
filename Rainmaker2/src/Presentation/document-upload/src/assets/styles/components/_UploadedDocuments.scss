@@ -14,6 +14,10 @@
         background: color('colorgray');
         border: none;
         box-shadow:none;
+
+        .uploaded-documents & .UploadedDocumentsTable{
+            margin-bottom: 10px;
+        }
     }
 
     .box-wrap{

@@ -30,7 +30,7 @@ export class Home extends Component<any> {
     return (
       <div data-testid="activity">
         <ActivityHeader {...this.props} />
-        <main className={`page-content ${"mainPage-"+window.location?.pathname.split("/")[2]}`}>
+        <div className={`page-content ${"mainPage-"+window.location?.pathname.split("/")[2]}`}>
           <div className="container">
             <Switch>
               <Redirect
@@ -54,7 +54,7 @@ export class Home extends Component<any> {
               <Redirect exact from={"*"} to={"/404"} />
             </Switch>
           </div>
-        </main>
+        </div>
       </div>
     );
   }

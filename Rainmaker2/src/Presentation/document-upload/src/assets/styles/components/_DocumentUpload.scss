@@ -264,6 +264,10 @@
                     -ms-user-select    : none;
                     -o-user-select     : none;
                     user-select        : none;
+                    svg{
+                        [fill="#4484f4"]{fill:color('disabled-text');}
+                        [stroke="#4887f1"]{stroke:color('disabled-text');}
+                    }
                 }
             }
 
@@ -751,6 +755,11 @@
             padding-right: 170px;
             z-index: 1;
 
+            .doc-list-content{
+                padding-right: 50px;
+                max-width: 100%;
+            }
+
             @include media-breakpoint-down(md) {
                 padding-right: 120px;
             }
@@ -996,6 +1005,7 @@
                             align-items  : center;
                             margin-bottom: 2px;
                             cursor: pointer;
+                            line-height: 1.5;
 
                             .d-l-m-icon {
                                 width       : 16px;
