@@ -46,7 +46,7 @@ namespace Milestone.API.Controllers
             await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId,userProfileId);
             return Ok();
         }
-        [Authorize(Roles ="MCU,Customer")]
+        [Authorize(Roles ="MCU")]
         [HttpPost("[action]")]
         public async Task<IActionResult> InsertMilestoneLog(MilestoneIdModel model)
         {
@@ -54,7 +54,16 @@ namespace Milestone.API.Controllers
             await _milestoneService.InsertMilestoneLog(model.loanApplicationId,model.milestoneId,userProfileId);
             return Ok();
         }
-        
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> InsertMilestoneLogForCustomer(MilestoneIdModel model)
+        {
+            int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            await _milestoneService.InsertMilestoneLog(model.loanApplicationId, model.milestoneId, userProfileId);
+            return Ok();
+        }
+
         [Authorize(Roles = "Customer")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetMilestoneForLoanCenter(int loanApplicationId)
