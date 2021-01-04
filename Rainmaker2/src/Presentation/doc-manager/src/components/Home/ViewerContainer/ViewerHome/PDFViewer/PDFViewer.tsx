@@ -31,12 +31,14 @@ export const PDFViewer = () => {
 
     useEffect(() => {
         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
+        dispatch({ type: ViewerActionsType.SetSaveFile, payload: false })
+        dispatch({ type: ViewerActionsType.SetDiscardFile, payload: false })
+        dispatch({ type: DocumentActionsType.SetImportedFileIds, payload: [] })
     }, []);
 
     useEffect(() => {
         if (instance) {
             instance.addEventListener("document.change", async () => {
-                console.log('in here document change')
                 Viewer.instance = instance
                 if (!isFileChanged) {
                     await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
@@ -45,7 +47,6 @@ export const PDFViewer = () => {
             });
             
             instance.addEventListener("annotations.willChange", async () => {
-                console.log('in here annotations change')
                 Viewer.instance = instance
                 if (!isFileChanged) {
                     await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
@@ -53,8 +54,24 @@ export const PDFViewer = () => {
                 }
             });
 
+
+            instance.addEventListener('annotations.willChange', event => {
+                const annotation = event.annotations.get(0)
+                if (event.reason === PSPDFKit.AnnotationsWillChangeReason.DELETE_START) {
+                    console.log('Will open deletion confirmation dialog')
+                  // We need to wrap the logic in a setTimeOut() because modal will get actually rendered on the next tick
+                  setTimeout(function() {
+                    
+                  // The button is in the context of the PSPDFKit iframe
+                  const button = instance.contentDocument.getElementsByClassName(
+                    'PSPDFKit-Confirm-Dialog-Button-Confirm',
+                  )[0]
+                  if(button)
+                  button.click();
+                  }, 0)
+                }
+              })
             instance.addEventListener("annotations.delete", (deletedAnnotations:any) => {
-                console.log("in delete annotations")
                 Viewer.instance = instance
               });
         }

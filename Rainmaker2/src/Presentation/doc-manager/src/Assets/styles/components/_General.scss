@@ -26,12 +26,12 @@ h6,.h6 {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
-// * {
-//     -webkit-user-select: none;  
-//     -moz-user-select: none;    
-//     -ms-user-select: none;      
-//     user-select: none;         
-// }
+* {
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;         
+}
 
 h1,.h1{
     font-size: fontSize('xlg');

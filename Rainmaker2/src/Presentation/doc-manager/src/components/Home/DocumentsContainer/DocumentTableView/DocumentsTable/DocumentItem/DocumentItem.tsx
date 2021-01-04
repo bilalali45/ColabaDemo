@@ -15,6 +15,9 @@ import { DocumentFile } from "../../../../../../Models/DocumentFile";
 import { CategoryDocument } from "../../../../../../Models/CategoryDocument";
 import { fail } from "assert";
 import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReducer";
+import { PDFActions } from "../../../../../../Utilities/PDFActions";
+import { ViewerTools } from "../../../../../../Utilities/ViewerTools";
+import { PDFThumbnails } from "../../../../../../Utilities/PDFThumbnails";
 
 type DocumentItemType = {
   // isDragging: boolean
@@ -24,60 +27,64 @@ type DocumentItemType = {
   setFileClicked:Function;
   fileClicked:boolean;
   setOpenReassignDropdown:any;
-  getDocswithfailedFiles:Function;
+  getDocswithfailedFiles: Function;
   setRetryFile:Function;
   inputRef:MutableRefObject<HTMLInputElement>,
-  selectedDoc:DocumentRequest
+  selectedDoc:DocumentRequest,
+  retryFile
 };
 
 export const DocumentItem = ({
   docInd,
   document,
   refReassignDropdown,
-  setFileClicked, 
+  setFileClicked,
   fileClicked,
   setOpenReassignDropdown,
   getDocswithfailedFiles,
-  setRetryFile, 
+  setRetryFile,
   inputRef,
-  selectedDoc
+  selectedDoc,
+  retryFile
 }: DocumentItemType) => {
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  // const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const [show, setShow] = useState(true);
 
   const [showReassignOverlay, setShowReassign] = useState<boolean>(false);
+  const [draggingOverItem, setDraggingOverItem] = useState<boolean>(false);
 
   const [targetReassign, setTargetReassign] = useState(null);
   const refReassignOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, documentItems, uploadFailedDocs }: any = state.documents;
+  const { currentDoc, documentItems, uploadFailedDocs, isDragging, isDraggingSelf, importedFileIds }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
   let loanApplicationId = LocalDB.getLoanAppliationId();
-  const { currentFile }: any = state.viewer;
-  
+  const { currentFile, isFileChanged }: any = state.viewer;
+
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
-  
+
+
   let fileListRef = useRef<HTMLUListElement>(null);
 
-    useEffect(()=>{
-      
-        if(document && currentDoc && document.docId === currentDoc.docId && !fileClicked){
-          fileListRef.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
-          setFileClicked(true)
-        }
-      },[currentDoc])
+  useEffect(() => {
 
-      useEffect(()=>{
-        if(document === selectedDoc && !show){
-          setShow(true)
-        }
+    if (document && currentDoc && document.docId === currentDoc.docId && !fileClicked) {
+      fileListRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+      setFileClicked(true)
+    }
+  }, [currentDoc])
 
-      },[selectedDoc])
-      
+  useEffect(() => {
+    if (document === selectedDoc && !show) {
+      setShow(true)
+    }
+
+  }, [selectedDoc])
+
   const handleClick = () => {
     setShow(!show);
   };
@@ -97,33 +104,116 @@ export const DocumentItem = ({
     setShow(!show);
   };
 
-  const renderDeleteDocSlider = () =>{
+  const onDrophandler = async (e: any) => {
+    if (document.files.find(f => f.id === isDraggingSelf.id)) {
+      return;
+    }
+
+    let file = JSON.parse(e.dataTransfer.getData('file'))
+    if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
+      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+
+      return;
+    }
+    if (isDragging) {
+      dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
+      dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
+    }
+
+
+    let { isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
+    if (isFromWorkbench) {
+
+      let success = await DocumentActions.moveFromWorkBenchToCategory(
+        document.id,
+        document.requestId,
+        document.docId,
+        file.fromFileId,
+      );
+
+      if (success) {
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+        await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
+      }
+
+    } else if (isFromCategory) {
+      let success = await DocumentActions.reassignDoc(
+        file.id,
+        file.fromRequestId,
+        file.fromDocId,
+        file.fromFileId,
+        document.requestId,
+        document.docId
+
+      );
+
+      if (success) {
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+      }
+    } else if (isFromThumbnail) {
+      let { id, requestId, docId } = document
+      let fileObj = {
+        id,
+        requestId,
+        docId,
+        fileId: "000000000000000000000000",
+        isFromCategory: true
+      }
+      let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
+      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, document, importedFileIds);
+
+      // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
+      if (!!success) {
+        await PDFThumbnails.removePages([file.index])
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+        dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
+      }
+
+    } else if (isFromTrash) {
+
+      let success = await DocumentActions.moveFromTrashToCategory(
+        document.id,
+        document.requestId,
+        document.docId,
+        file.fromFileId,
+      );
+
+      if (success) {
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+        await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
+      }
+
+    }
+    setShow(true);
+  }
+
+  const renderDeleteDocSlider = () => {
     return (
-          <div className="list-remove-alert">
-            <span className="list-remove-text">
-              Remove this document type from Doc Manager?
+      <div className="list-remove-alert">
+        <span className="list-remove-text">
+          Remove this document type?
             </span>
-            <div className="list-remove-options">
-              <button
-                onClick={() => {
-                  deleteDoc();
-                  setConfirmDelete(false);
-                }}
-                className="btn btn-sm btn-secondry"
-              >
-                Yes
+        <div className="list-remove-options">
+          <button
+            onClick={() => {
+              deleteDoc();
+              setConfirmDelete(false);
+            }}
+            className="btn btn-sm btn-secondry"
+          >
+            Yes
               </button>
-              <button
-                onClick={() => setConfirmDelete(false)}
-                className="btn btn-sm btn-primary"
-              >
-                No
+          <button
+            onClick={() => setConfirmDelete(false)}
+            className="btn btn-sm btn-primary"
+          >
+            No
               </button>
-            </div>
-          </div>
+        </div>
+      </div>
     )
   }
-  const deleteDoc = async () =>{
+  const deleteDoc = async () => {
 
     try {
       await DocumentActions.deleteDocCategory(
@@ -137,20 +227,20 @@ export const DocumentItem = ({
       console.log("error during file submit", error.response);
     }
     getDocswithfailedFiles()
-    
+
   }
 
-  
 
-  
-  
-  const CapitalizeText = (text:string ) =>{
-if(text){
+
+
+
+  const CapitalizeText = (text: string) => {
+    if (text) {
       var splitStr = text.toLowerCase().split(' ');
       for (var i = 0; i < splitStr.length; i++) {
-          splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
       }
-      return splitStr.join(' '); 
+      return splitStr.join(' ');
     }
   }
 
@@ -193,42 +283,59 @@ if(text){
         </div>
         <div className="dm-dt-tr1-right d-flex align-items-center">
           <div className={`lbl-status capitalize ${renderStatus(document?.status)}`}>{CapitalizeText(document?.status)}</div>
-        {/*</div>*/}
-        {/*<div>*/}
+          {/*</div>*/}
+          {/*<div>*/}
           {document.files && document.files.length === 0 ?
             (<button
-                data-testid="btn-delete"
-                onClick={()=> setConfirmDelete(true)}
-                className="btn btn-delete btn-sm"
-              >
-                <em className="zmdi zmdi-close"></em>
-              </button>): null
+              data-testid="btn-delete"
+              onClick={() => setConfirmDelete(true)}
+              className="btn btn-delete btn-sm"
+            >
+              <em className="zmdi zmdi-close"></em>
+            </button>) : null
           }
 
 
         </div>
         {confirmDelete &&
-
-renderDeleteDocSlider()
-
-}
+          renderDeleteDocSlider()
+        }
       </div>
     );
   };
+
   return (
-    <section className="dm-dt-tr doc-m-cat-list"
-    ref={fileListRef}>
+    <section className={`dm-dt-tr doc-m-cat-list ${draggingOverItem ? 'cat-drag-wrap' : ''}`}
+      onDragEnter={(e: any) => {
+        e.preventDefault();
+        setDraggingOverItem(true);
+      }}
+      onDragOver={(e: any) => {
+        e.preventDefault();
+        setDraggingOverItem(true);
+      }}
+      onDragLeave={(e: any) => {
+        e.preventDefault();
+        setDraggingOverItem(false);
+      }}
+      onDrop={(e: any) => {
+        e.preventDefault();
+        onDrophandler(e);
+        setDraggingOverItem(false);
+      }}
+      ref={fileListRef}>
       {renderDocumentTile()}
       {show && (
         <FilesList
           document={document}
           docInd={docInd}
           refReassignDropdown={refReassignDropdown}
-          setRetryFile = {setRetryFile}
-          setFileClicked ={setFileClicked}
-          getDocswithfailedFiles = {getDocswithfailedFiles}
+          setRetryFile={setRetryFile}
+          setFileClicked={setFileClicked}
+          getDocswithfailedFiles={getDocswithfailedFiles}
           setOpenReassignDropdown={setOpenReassignDropdown}
           inputRef={inputRef}
+          retryFile = {retryFile}
         />
       )}
     </section>

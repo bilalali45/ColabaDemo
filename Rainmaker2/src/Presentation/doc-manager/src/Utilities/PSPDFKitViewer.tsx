@@ -35,7 +35,6 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
 
     useEffect(() => {
         return () => {
-            console.log('in here unmount!!!');
             destroyViewer();
         }
     }, [])
@@ -59,7 +58,6 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
         };
         try {
             let instance = await PSPDFKit.load(instanceConfig);
-            console.log('PSPDFKit.PageInfo', instance.pageInfoForIndex(0));
             ViewerTools.updateAnnotationDefaultValues(instance);
             _cachedInstance = instance;
             // ViewerTools.addEmptyPage(instance);
@@ -74,10 +72,8 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
         return null;
     }
 
-    // const retrieveViewerInstance = () => viewerInstance;
 
     const destroyViewer = () => {
-        console.log('in unmount');
         if (_cachedInstance)
             PSPDFKit.unload(_cachedInstance);
     }

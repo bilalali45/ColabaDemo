@@ -9,11 +9,12 @@ import { AnnotationActions } from '../../../../../../Utilities/AnnotationActions
 import { PDFActions } from '../../../../../../Utilities/PDFActions';
 import { PDFThumbnails } from '../../../../../../Utilities/PDFThumbnails';
 import { ViewerTools } from '../../../../../../Utilities/ViewerTools';
+import { AddFileToDoc } from '../../../../AddDocument/AddFileToDoc/AddFileToDoc';
 // import { ViewerActions } from '../../../../../../Utilities/ViewerActions';
 import { DocumentDropBox } from '../DocumentDropBox/DocumentDropBox';
 import { FileItem } from '../FileItem/FileItem';
 
-export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, getDocswithfailedFiles, setOpenReassignDropdown, inputRef }: any) => {
+export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, getDocswithfailedFiles, setOpenReassignDropdown, inputRef, retryFile }: any) => {
 
     const [draggingSelf, setDraggingSelf] = useState<boolean>(false);
     const [draggingItem, setDraggingItem] = useState<boolean>(false);
@@ -21,92 +22,14 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
 
     const documents: any = state.documents;
     const { isFileChanged, currentFile }: any = state.viewer;
-    
+
     const isDragging: any = documents?.isDragging;
     const uploadFailedDocs: any = documents?.uploadFailedDocs;
     const documentItems: any = documents?.documentItems;
-
-    const onDrophandler = async (e: any) => {
-        let file = JSON.parse(e.dataTransfer.getData('file'))
-        if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
-            dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
-            return;
-        }
-        if (isDragging) {
-            dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
-            dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
-        }
+    const importedFileIds:any = documents?.importedFileIds;
+    const [addFileDialog, setAddFileDialog] = useState<boolean>(false);
 
 
-        let { isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
-        if (isFromWorkbench) {
-
-            let success = await DocumentActions.moveFromWorkBenchToCategory(
-                document.id,
-                document.requestId,
-                document.docId,
-                file.fromFileId,
-            );
-
-            if (success) {
-                await DocumentActions.getDocumentItems(dispatch)
-                await DocumentActions.getWorkBenchItems(dispatch);
-            }
-
-        } else if (isFromCategory) {
-            let success = await DocumentActions.reassignDoc(
-                file.id,
-                file.fromRequestId,
-                file.fromDocId,
-                file.fromFileId,
-                document.requestId,
-                document.docId
-
-            );
-
-            if (success) {
-                await DocumentActions.getDocumentItems(dispatch)
-            }
-        } else if (isFromThumbnail) {
-            let { id, requestId, docId } = document
-            let fileObj = {
-                id,
-                requestId,
-                docId,
-                fileId: "000000000000000000000000",
-                isFromCategory: true
-            }
-            let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
-            let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, document);
-
-            // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
-            if(!!success){
-            await PDFThumbnails.removePages([file.index])
-            await DocumentActions.getDocumentItems(dispatch)
-            dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
-            }
-           
-        } else if(isFromTrash){
-
-            let success = await DocumentActions.moveFromTrashToCategory(
-                document.id,
-                document.requestId,
-                document.docId,
-                file.fromFileId,
-            );
-
-            if (success) {
-                await DocumentActions.getDocumentItems(dispatch)
-                await DocumentActions.getTrashedDocuments(dispatch);
-            }
-
-        }
-
-    }
-
-
-    
     const deleteFiles = async (deletedFile: any) => {
         let files = document?.files.filter((docFile: any) => docFile.id !== deletedFile.id)
 
@@ -118,26 +41,22 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
         })
         dispatch({ type: DocumentActionsType.SetDocumentItems, payload: docItems });
         let updatedFailedFiles = uploadFailedDocs.filter((file: any) => file.id !== deletedFile.id)
-        
+
         dispatch({
             type: DocumentActionsType.SetFailedDocs,
             payload: updatedFailedFiles
         })
     }
-    
+
     const retry = (file: any) => {
+        
         setRetryFile({file, document})
         // removeFile(file);
-
-        if (inputRef?.value) {
-            inputRef.value = "";
-        }
-        if (inputRef) {
-            inputRef.current.click();
-        }
+        setAddFileDialog(true)
     }
 
     return (
+        <div>
         <div onDragEnd={() => {
             setDraggingSelf(false);
         }} className="dm-dt-tr2">
@@ -173,11 +92,7 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
                 }
                 {isDragging && !draggingSelf &&
                     <li
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={(e: any) => {
-                            e.preventDefault();
-                            onDrophandler(e)
-                        }}
+
                         className="drag-wrap"
                     >
                         <p>Drop Here</p>
@@ -186,5 +101,13 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
             </ul>
 
         </div>
+            { addFileDialog && <AddFileToDoc 
+            selectedDocTypeId = {document?.typeId}
+            showFileDialog = {true}
+            setVisible={()=>{}}
+            setAddFileDialog={setAddFileDialog}
+            retryFile = {retryFile}
+            selectedDocName={document.docName}/>}
+    </div>
     )
 }

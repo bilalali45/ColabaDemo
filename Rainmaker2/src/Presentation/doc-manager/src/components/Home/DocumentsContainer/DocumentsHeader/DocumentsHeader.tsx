@@ -9,6 +9,7 @@ import {
   SyncIcon,
   ReassignListIcon,
   PutBackIcon,
+  SearchIcon
 } from "../../../../shared/Components/Assets/SVG";
 import { AddDocument } from "../../AddDocument/AddDocument";
 import Overlay from "react-bootstrap/Overlay";
@@ -36,8 +37,8 @@ export const DocumentsHeader = () => {
   const [targetTrash, setTargetTrash] = useState(null);
   const refTrashOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, uploadFailedDocs }: any = state.documents;
-  const { currentFile, selectedFileData, isFileChanged }: any = state.viewer;
+  const { currentDoc, uploadFailedDocs, importedFileIds }: any = state.documents;
+  const { currentFile, selectedFileData, SaveCurrentFile, DiscardCurrentFile, isFileChanged }: any = state.viewer;
 
   const templateManager: any = state.templateManager;
   const [isDraggingItem, setIsDraggingItem] = useState(false);
@@ -61,7 +62,6 @@ export const DocumentsHeader = () => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
   }, [isDraggingItem]);
 
-
   const handleClickTrash = async (event: any) => {
 
     setShowTrash(!showTrashOverlay);
@@ -74,7 +74,7 @@ export const DocumentsHeader = () => {
   };
 
   const fetchTrashedDocs = async () => {
-    let res = await DocumentActions.getTrashedDocuments(dispatch);
+    let res = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
 
   }
   const fetchCurrentCatDocs = async () => {
@@ -97,8 +97,12 @@ export const DocumentsHeader = () => {
     };
     try {
       let res = await DocumentActions.addDocCategory(loanApplicationId, data);
+      // if (res) {
+      //   await DocumentActions.getDocumentItems(dispatch, importedFileIds);
+
+      // }
       if (res) {
-        await DocumentActions.getDocumentItems(dispatch);
+        await getDocswithfailedFiles()
 
       }
     } catch (error) { }
@@ -110,15 +114,14 @@ export const DocumentsHeader = () => {
       file.fileId
     );
     if (success) {
-      await DocumentActions.getTrashedDocuments(dispatch);
-      await DocumentActions.getWorkBenchItems(dispatch);
+      await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
+      await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
 
     }
   };
 
   const onDrophandler = async (e: any) => {
     let file = JSON.parse(e.dataTransfer.getData('file'))
-    console.log(file, currentFile);
 
     if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
@@ -146,13 +149,13 @@ export const DocumentsHeader = () => {
             ViewerActions.resetInstance(dispatch)
           }
           dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-          await DocumentActions.getCurrentWorkbenchItem(dispatch);
+          await DocumentActions.getCurrentWorkbenchItem(dispatch, importedFileIds);
         }
         else {
 
-          let d = await DocumentActions.getWorkBenchItems(dispatch);
+          let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
         }
-        let docs = await DocumentActions.getTrashedDocuments(dispatch)
+        let docs = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds)
       }
     }
     else if (isFromCategory) {
@@ -172,10 +175,10 @@ export const DocumentsHeader = () => {
 
 
         if (selectedFileData && selectedFileData?.fileId === file.fromFileId) {
-          await DocumentActions.getCurrentDocumentItems(dispatch, false);
+          await DocumentActions.getCurrentDocumentItems(dispatch, false, importedFileIds);
         }
         await getDocswithfailedFiles()
-        let res = await DocumentActions.getTrashedDocuments(dispatch);
+        let res = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
       }
     } else if (isFromThumbnail) {
 
@@ -187,12 +190,12 @@ export const DocumentsHeader = () => {
         isFromTrash: true
       }
       let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
-      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, trashedDoc);
+      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, trashedDoc, importedFileIds);
 
       // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
       // if(!!success){
       await PDFThumbnails.removePages([file.index])
-      await DocumentActions.getTrashedDocuments(dispatch)
+      await DocumentActions.getTrashedDocuments(dispatch, importedFileIds)
       dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
       // }
     }
@@ -204,7 +207,7 @@ export const DocumentsHeader = () => {
     let foundFirstFile: any = null;
 
 
-    let docs: any = await DocumentActions.getDocumentItems(dispatch)
+    let docs: any = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
 
     let uploadFailedFiles: DocumentFile[] = uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
 
@@ -279,9 +282,36 @@ export const DocumentsHeader = () => {
     }
 
   }
+  const [showSearch, setShowSearch] = useState(false);
+  const [targetSearch, setTargetSearch] = useState(null);
+  const refSearch = useRef(null);
+  const refSearchWrap = useRef(null);
+  const refSearchPopover = useRef(null);
+
+  // const handleClickOutsideSearch = (event: any) => {
+  //   if (showSearch && refSearchPopover && !refSearchPopover.current?.contains(event.target) && !refSearch.current?.contains(event.target)) {
+  //     setShowSearch(!showSearch);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   window.addEventListener("mousedown", handleClickOutsideSearch);
+  //   return () => {
+  //     window.removeEventListener("mousedown", handleClickOutsideSearch);
+  //   };
+  // }, [showSearch]);
+
+  
+  // const hideSearch = () => {
+  //   setShowSearch(false);
+  // };
+  // const handleClickSearch = (event) => {
+  //   setShowSearch(!showSearch);
+  //   setTargetSearch(event.target);
+  // };
 
   return (
-    <div id="c-DocHeader" className="c-DocHeader">
+    <div id="c-DocHeader" className="c-DocHeader" ref={refSearchWrap}>
       <div className="c-DocHeader-wrap">
         <div className="h-title">
           <h2>Doc Manager</h2>
@@ -289,6 +319,16 @@ export const DocumentsHeader = () => {
         <div className="dh-actions" ref={refTrashOverlay}>
           <ul>
 
+            {/* <li ref={refSearch}  onClick={handleClickSearch}>
+              <div className="dh-actions-lbl-wrap">
+                <div className="dm-h-icon">
+                 <SearchIcon />
+                </div>
+                <div className="dm-h-lbl">
+                  <span>Search</span>
+                </div>
+              </div>
+            </li> */}
             <li onClick={handleClickTrash} className={showTrashOverlay ? 'active' : ''}>
 
               <div
@@ -305,8 +345,6 @@ export const DocumentsHeader = () => {
                   {trashedDoc && trashedDoc.length > 0 ? (<TrashIcon />) : (<EmptyTrashIcon />)}
                 </div>
                 <div className="dm-h-lbl">
-
-
                   <span>Trash Bin</span>
                 </div>
               </div>
@@ -318,6 +356,26 @@ export const DocumentsHeader = () => {
               popoverplacement="right-start"
             />
           </ul>
+
+          {/* <Overlay
+        show={showSearch}
+        target={refSearch.current}
+        placement="bottom"
+        container={refSearchWrap.current}
+        containerPadding={0}
+        onHide={hideSearch}
+        rootClose={true}
+      >
+        <Popover id="searchPopover" className="searchPopover">
+          <Popover.Content>
+            <div className="searchPopover-inputWrap" ref={refSearchPopover}>
+              <div className="icon-wrap-search"><i className="zmdi zmdi-search"></i></div>
+              <input type="text" className="input-doc-search" autoFocus />
+              <div className="icon-wrap-clear"><i className="zmdi zmdi-close"></i></div>
+            </div>
+          </Popover.Content>
+        </Popover>
+      </Overlay>   */}
 
           <Overlay
             show={showTrashOverlay}

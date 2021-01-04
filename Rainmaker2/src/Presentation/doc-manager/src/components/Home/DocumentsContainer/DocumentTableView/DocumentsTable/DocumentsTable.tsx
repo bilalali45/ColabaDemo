@@ -15,6 +15,7 @@ import { DocumentFile } from '../../../../../Models/DocumentFile';
 import { ViewerActions } from '../../../../../Store/actions/ViewerActions';
 import { DocumentRequest } from '../../../../../Models/DocumentRequest';
 import {AddDocIcon} from "../../../../../shared/Components/Assets/SVG";
+import { AddFileToDoc } from '../../../AddDocument/AddFileToDoc/AddFileToDoc';
 
 
 export const DocumentsTable = () => {
@@ -23,20 +24,21 @@ export const DocumentsTable = () => {
 
     const documents: any = state.documents;
     const catScrollFreeze: any = documents?.catScrollFreeze;
-    const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress }: any = state.documents;
-    const {isLoading, selectedFileData, currentFile}:any  = state.viewer;
+    const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress, importedFileIds }: any = state.documents;
+    const {isLoading, SaveCurrentFile, DiscardCurrentFile,  currentFile}:any  = state.viewer;
     const [fileClicked, setFileClicked]= useState<boolean>(false);
     const [retryFile, setRetryFile] = useState<any>();
     const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
     const [selectedDoc, setSelectedDoc] = useState<DocumentRequest>();
     const [popshow, popsetShow] = useState(false);
-    const [isDocumentSelected, setIsDocumentSelected] = useState<boolean>(false);
     const [poptarget, popsetTarget] = useState(null);
     const docTypePopUp = useRef(null);
     const popUpDv = useRef<any>(null);
     const refAddFileLink = useRef<any>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [addFileDialog, setAddFileDialog] = useState<boolean>(false);
 
-
+    const nonExistentDocId = '000000000000000000000000';
     useEffect(() => {
       window.addEventListener("mousedown", handleClickOutside);
       return () => {
@@ -44,10 +46,78 @@ export const DocumentsTable = () => {
       };
   },[popshow] );
 
-  
+    useEffect(()=>{
+      
+      if(DiscardCurrentFile && importedFileIds && importedFileIds.length){
+          removeHiddenFilesFromStore(importedFileIds.length)
+        
+      }
+    }, [DiscardCurrentFile])
+
+    useEffect(()=>{
+      
+      if(SaveCurrentFile && importedFileIds){
+      if( importedFileIds.length){
+        removeOriginalFiles()
+      }
+      
+      removeHiddenFilesFromStore(importedFileIds?.length)
+    }
+    }, [SaveCurrentFile])
+
+    const removeOriginalFiles = async() =>{
+    const temp  = await Promise.all(Array.from(importedFileIds).map(async (fileData) => {
+         return removeOriginalFile(fileData)
+         
+    }).flat())    
+       
+    }
+    const removeOriginalFile = async (fileData:any)=>{
+          
+      if(fileData.isFromWorkbench){
+        return await DocumentActions.DeleteWorkbenchFile(fileData.id, fileData.fromFileId)
+      } else if(fileData.isFromCategory){
+        return await DocumentActions.DeleteCategoryFile(fileData)
+      } else if(fileData.isFromTrash){
+        return await DocumentActions.DeleteTrashFile(fileData.id, fileData.fromFileId)
+      }
+
+      
+      
+    }
+
+    const removeHiddenFilesFromStore = async (isRemoveAllFiles)=> {
+      
+      dispatch({ type: DocumentActionsType.SetImportedFileIds, payload: [] })
+      dispatch({ type: ViewerActionsType.SetSaveFile, payload: false })
+      dispatch({ type: ViewerActionsType.SetDiscardFile, payload: false })
+      if(isRemoveAllFiles){
+        await DocumentActions.getTrashedDocuments(dispatch, [])
+        await DocumentActions.getDocumentItems(dispatch, [])
+        await DocumentActions.getWorkBenchItems(dispatch, [])
+        
+      }
+        
+      else{
+        if(currentDoc.docId === nonExistentDocId){
+          await DocumentActions.getWorkBenchItems(dispatch, [])
+        }
+        else{
+          await DocumentActions.getDocumentItems(dispatch, [])
+        }
+      }
+      
+    }
     const handlePopClick = (event) => {
         popsetShow(!popshow);
         popsetTarget(event.target);
+    };
+    const hideAddfilePopover = () => {
+        popsetShow(false);
+    };
+    const openAddDocPopover = () => {
+      let addDocLInk = window.document.getElementById("dm-h-linkAddDoc");
+      addDocLInk.click();  
     };
 
     const handleClickOutside = (event:any) => {
@@ -57,13 +127,12 @@ export const DocumentsTable = () => {
         }
     }
     
-    const inputRef = useRef<HTMLInputElement>(null);
-    
+      
     const [openedReassignDropdown,setOpenReassignDropdown] = useState<boolean>(false);
 
     useEffect(() => {
         if (!documentItems) {
-            DocumentActions.getCurrentDocumentItems(dispatch, true);
+            DocumentActions.getCurrentDocumentItems(dispatch, true, importedFileIds);
             checkIsByteProAuto()
         }
     }, [!documentItems]);
@@ -73,26 +142,6 @@ export const DocumentsTable = () => {
         let isAuto = res?.syncToBytePro != 2 ? true : false;
         dispatch({type: DocumentActionsType.SetIsByteProAuto, payload: isAuto});
       };
-
-      const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        let target = e.target;
-        await addFiles(e.target.files, selectedDoc).then(() => {
-          target.value = '';
-        });
-      };
-
-    //   const removeFile = () => {
-    //     let files = retryFile?.document?.files.filter((docFile: any) => docFile.id !== retryFile?.file?.id)
-
-    //     let docItems = documentItems.map((doc: any) => {
-    //         if (doc.docId === retryFile?.document?.docId) {
-    //             doc.files = files
-    //         }
-    //         return doc
-    //     })
-    //     dispatch({ type: DocumentActionsType.SetDocumentItems, payload: docItems });
-        
-    // }
 
       const getDocswithfailedFiles = async() => {
         let foundFirstFileDoc: any = null;
@@ -153,63 +202,14 @@ export const DocumentsTable = () => {
       } 
 
       const fetchDocuments = async()=>{
-        let d = await DocumentActions.getDocumentItems(dispatch)
+        let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
         return d;
     
       }
-      const addFiles = async (selectedFiles: FileList, document:any) => {
-    
-        if (document) {
-          if (selectedFiles) {
-            dispatch({
-              type: DocumentActionsType.SetFileUploadInProgress,
-              payload: true,
-            });
-            for (let index = 0; index < selectedFiles.length; index++) {
-              const file = selectedFiles[index];
-              if (file) {
-                try {
-                  let d =  new Date();
-                  let fileId =  d.getDate().toString() + d.getMonth().toString() + d.getFullYear().toString() + d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()+ d.getMilliseconds().toString()
-                  let res = await DocumentActions.submitDocuments(
-                    documentItems,
-                    document,
-                    fileId,
-                    file,
-                    dispatch
-                  );
-    
-                  if(res.notAllowed || res.uploadStatus === 'failed'){
-                    failedDocs.push(res)
-                    
-                  }
-                  // console.log(documentItems)
-                  // if(documentItems?.files?.length === 1 ){
-                  //   console.log(documentItems)
-                  // }
-                  
-                } catch (error) {
-                  // file.uploadStatus = "failed";
-                  console.log("error during file submit", error);
-                  console.log("error during file submit", error.response);
-                }
-              }
-            }
-            await getDocswithfailedFiles();
-            dispatch({
-              type: DocumentActionsType.SetFileUploadInProgress,
-              payload: false,
-            });
-          }
-        }
-        
-        
-      };
-
       const selectDocTypeClick=(doc:DocumentRequest)=>{
         setSelectedDoc(doc);
-        inputRef.current.click();
           popsetShow(!popshow);
+          setAddFileDialog(true)
       }
 
     
@@ -237,6 +237,7 @@ export const DocumentsTable = () => {
                                 getDocswithfailedFiles ={getDocswithfailedFiles}
                                 setRetryFile = {setRetryFile}
                                 selectedDoc={selectedDoc}
+                                retryFile = {retryFile}
                             />
                         )
                     })
@@ -245,14 +246,14 @@ export const DocumentsTable = () => {
 
             </div>
             {!fileUploadInProgress && 
-                        <div className="dm-dt-foot" ref={popUpDv}>
+                        <div className="dm-dt-foot" >
                             {/*<button>Add Files</button>*/}
                             {/*<OverlayTrigger trigger="click" placement="right-end" overlay={popover} rootClose={true}>
                                 <a>Add Files +</a>
                             </OverlayTrigger>*/}
                             <a ref={refAddFileLink} onClick={handlePopClick} className="addFile">Add Files +</a>
-                            <div >
-                            <Overlay placement="right-end" target={poptarget} show={popshow} rootClose={true}>
+                            <div ref={popUpDv}>
+                            <Overlay placement="right-end" onHide={hideAddfilePopover} container={popUpDv.current} target={poptarget} show={popshow} rootClose={true}>
                                 <Popover id="addFiles-popover" className="ReassignOverlay">
                                     <div >
                                         <Popover.Title as="h3">Select Document Type</Popover.Title>
@@ -276,35 +277,29 @@ export const DocumentsTable = () => {
                                                 </div>
                                             )}
                                         </Popover.Content>
-                                        {/* <Popover.Title as="div" bsPrefix="popover-footer">
-                                            <div className="dh-actions-lbl-wrap">
+                                        <Popover.Title as="div" bsPrefix="popover-footer">
+                                            <div className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
                                                 <div className="dm-h-icon"><AddDocIcon /></div>
                                                 <div className="dm-h-lbl">
                                                     <span>Add Document</span>
                                                 </div>
                                             </div>
-                                        </Popover.Title> */}
+                                        </Popover.Title>
                                     </div>
                                 </Popover>
                             </Overlay>
                             </div>
-                            <div className="add-files-toCat" style={{display:"none"}} >
-
-                                                    <input
-                                                        data-testid="file-input"
-                                                        ref={inputRef}
-                                                        type="file"
-                                                        name="file"
-                                                        id="inputFile"
-                                                        onChange={(e) => handleChange(e)}
-                                                        multiple
-                                                        accept={FileUpload.allowedExtensions}
-                                                    />
-
-                                                </div>
-                        </div>
+                            {addFileDialog &&
+                            <AddFileToDoc 
+                                selectedDocTypeId = {selectedDoc?.typeId}
+                                showFileDialog = {addFileDialog}
+                                setVisible={popsetShow}
+                                setAddFileDialog={setAddFileDialog}
+                                retryFile = {retryFile}
+                                selectedDocName={selectedDoc?.docName}/>
+                            }
+            </div>
             }
-            
         </div>
     )
 }

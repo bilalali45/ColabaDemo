@@ -29,7 +29,9 @@ export enum ViewerActionsType {
     SetSelectedFileData = "SET_SELECTED_FILE_DATA",
     SetIsLoading = "SET_IS_LOADING",
     SetShowingConfirmationAlert = "SET_SHOWING_CONFIRMATION_ALERT",
-    SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED"
+    SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED",
+    SetSaveFile="SET_SAVE_FILE",
+    SetDiscardFile="SET_DISCARD_FILE"
 
 }
 
@@ -43,7 +45,9 @@ export type ViewerType = {
     selectedFileData: SelectedFile;
     isLoading: boolean;
     showingConfirmationAlert: boolean;
-    SetFileToChangeWhenUnSaved: FileToChange
+    SetFileToChangeWhenUnSaved: FileToChange,
+    SaveCurrentFile:boolean,
+    DiscardCurrentFile:boolean
     // documentsSelection: {}
 }
 
@@ -58,6 +62,8 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetIsLoading]: boolean;
     [ViewerActionsType.SetShowingConfirmationAlert]: boolean;
     [ViewerActionsType.SetFileToChangeWhenUnSaved]: FileToChange;
+    [ViewerActionsType.SetSaveFile]:boolean;
+    [ViewerActionsType.SetDiscardFile]:boolean;
 
 }
 
@@ -118,6 +124,16 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
                 ...state,
                 fileToChangeWhenUnSaved: payload
             };
+        case ViewerActionsType.SetSaveFile:
+        return {
+            ...state,
+            SaveCurrentFile: payload
+        };
+        case ViewerActionsType.SetDiscardFile:
+        return {
+            ...state,
+            DiscardCurrentFile: payload
+        };
         default:
             return state;
     }

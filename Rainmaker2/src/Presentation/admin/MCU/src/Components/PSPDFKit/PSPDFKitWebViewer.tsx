@@ -23,7 +23,7 @@ export const PSPDFKitWebViewer = ({ documentURL, appBaseURL, licenseKey, clientN
         onPress: () => {
             _instance.exportPDF().then((buffer: any) => {
                 const blob = new Blob([buffer], { type: "application/pdf" });
-                const fileName = "document.pdf";
+                const fileName = `${clientName.split('.').slice(0, -1).join('.')}.pdf`;
                 if (window.navigator.msSaveOrOpenBlob) {
                     window.navigator.msSaveOrOpenBlob(blob, fileName);
                 } else {

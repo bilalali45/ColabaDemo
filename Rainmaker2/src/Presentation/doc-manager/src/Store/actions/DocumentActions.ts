@@ -24,7 +24,7 @@ export default class DocumentActions {
   static nonExistentFileId = "000000000000000000000000"
   static loanApplicationId = LocalDB.getLoanAppliationId();
   static documentViewCancelToken: any = Axios.CancelToken.source();
-  static async getDocumentItems(dispatch: Function) {
+  static async getDocumentItems(dispatch: Function, importedFileIds:any) {
     let url = Endpoints.Document.GET.all(
       DocumentActions.loanApplicationId
     );
@@ -32,11 +32,21 @@ export default class DocumentActions {
       let res: AxiosResponse<DocumentRequest[]> = await Http.get<DocumentRequest[]>(url);
       if (res) {
 
-        dispatch({ type: DocumentActionsType.SetDocumentItems, payload: res.data });
+        let docItems = res.data;
+        if(importedFileIds && importedFileIds.length){
+          importedFileIds.forEach(file => {
+            
+            docItems = docItems.map((doc:any)=>{
+              doc.files = doc.files.filter((f:any) => f.id !== file.fromFileId)
+              return doc
+            })
+          });
+        }
+        
+        dispatch({ type: DocumentActionsType.SetDocumentItems, payload: docItems });
       }
       let docs = res.data;
       if (docs.length === 1 && docs[0]?.files.length === 0) {
-        ViewerActions.resetInstance(dispatch)
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
       }
       return res.data;
@@ -45,12 +55,13 @@ export default class DocumentActions {
     }
   }
 
-  static getCurrentDocumentItems = async (dispatch: Function, isFirstLoad: boolean) => {
-    let docs: any = await DocumentActions.getDocumentItems(dispatch);
+  static getCurrentDocumentItems = async (dispatch: Function, isFirstLoad: boolean, importedFileIds:any) => {
+    let docs: any = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
     let foundFirstFileDoc: any = null;
     let foundFirstFile: any = null;
     ViewerActions.resetInstance(dispatch)
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+    
     if (docs && docs.length > 0) {
 
       for (const doc of docs) {
@@ -63,7 +74,7 @@ export default class DocumentActions {
           await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
           break;
         } else
-          if (!isFirstLoad) {
+          if (!isFirstLoad ) {
             ViewerActions.resetInstance(dispatch)
             dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
           }
@@ -73,18 +84,17 @@ export default class DocumentActions {
 
     }
 
-
-
   }
 
 
-  static getCurrentWorkbenchItem = async (dispatch: Function) => {
-    let files: any = await DocumentActions.getWorkBenchItems(dispatch);
+  static getCurrentWorkbenchItem = async (dispatch: Function, importedFileIds:any) => {
+    let files: any = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
     let foundFirstFile: any = null;
     if (files?.length > 0) {
       foundFirstFile = files[0];
 
       let selectedFileData = new SelectedFile(foundFirstFile.id, DocumentActions.getFileName(foundFirstFile), foundFirstFile.fileId)
+    
       dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
       let f = await DocumentActions.getFileToView(
         foundFirstFile?.id,
@@ -144,7 +154,7 @@ export default class DocumentActions {
       let file : any;
       if (!response.data.type.includes('pdf')) {
         file = await ViewerTools.convertImageToPDF(response.data, false,fileData, false);
-
+        
       } else {
 
         file = response.data;
@@ -171,6 +181,7 @@ export default class DocumentActions {
           request: requestData
         }
       );
+      console.log(res)
       return true;
     } catch (error) {
       console.log(error);
@@ -293,7 +304,7 @@ export default class DocumentActions {
     })
 
     dispatchProgress({
-      type: DocumentActionsType.AddFileToDoc,
+      type: DocumentActionsType.SetDocumentItems,
       payload: allDocs,
     });
     try {
@@ -335,7 +346,7 @@ export default class DocumentActions {
             })
 
             dispatchProgress({
-              type: DocumentActionsType.AddFileToDoc,
+              type: DocumentActionsType.SetDocumentItems,
               payload: allDocs,
             });
 
@@ -356,7 +367,7 @@ export default class DocumentActions {
       currentSelected.files = [...currentSelected?.files, selectedFile]
 
       dispatchProgress({
-        type: DocumentActionsType.AddFileToDoc,
+        type: DocumentActionsType.SetDocumentItems,
         payload: currentSelected
       });
       console.log("-------------->Upload errors------------>", error);
@@ -379,14 +390,24 @@ export default class DocumentActions {
     return data;
   }
 
-  static async getWorkBenchItems(dispatch: Function) {
+  static async getWorkBenchItems(dispatch: Function, importedFileIds:any) {
+    
     let url = Endpoints.WorkBench.GET.list(
       DocumentActions.loanApplicationId
     );
     try {
       let res: AxiosResponse<DocumentRequest[]> = await Http.get<DocumentRequest[]>(url);
       if (res) {
-        dispatch({ type: DocumentActionsType.SetWorkbenchItems, payload: res.data });
+
+        let docItems = res.data;
+        if(importedFileIds && importedFileIds.length){
+          importedFileIds.forEach(file => {
+            
+            docItems = docItems.filter((f:any) => f.fileId !== file.fromFileId)
+            
+          });
+        }
+        dispatch({ type: DocumentActionsType.SetWorkbenchItems, payload: docItems });
       }
       return res.data;
     } catch (error) {
@@ -395,7 +416,7 @@ export default class DocumentActions {
 
   }
 
-  static async getTrashedDocuments(dispatch: Function) {
+  static async getTrashedDocuments(dispatch: Function, importedFileIds:any) {
     let url = Endpoints.Trash.GET.trash.list(
       DocumentActions.loanApplicationId
     );
@@ -403,7 +424,15 @@ export default class DocumentActions {
       let res: AxiosResponse<TrashItem[]> = await Http.get<TrashItem[]>(url);
 
       if (res) {
-        dispatch({ type: DocumentActionsType.SetTrashedDoc, payload: res.data });
+        let docItems = res.data;
+        if(importedFileIds && importedFileIds.length){
+          importedFileIds.forEach(file => {
+            
+            docItems = docItems.filter((f:any) => f.fileId !== file.fromFileId)
+          });
+        }
+        
+        dispatch({ type: DocumentActionsType.SetTrashedDoc, payload: docItems });
       }
 
       return res.data;
@@ -564,7 +593,7 @@ export default class DocumentActions {
           fileId: fromFileId,
         }
       );
-      return true;
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -580,7 +609,7 @@ export default class DocumentActions {
           fileId: fileId
         }
       );
-      return true;
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -597,7 +626,7 @@ export default class DocumentActions {
           fileId: fileId
         }
       );
-      return true;
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -653,8 +682,6 @@ export default class DocumentActions {
               return docFile;
             })
             currentDoc.files = docFiles;
-
-
             dispatchProgress({
               type: DocumentActionsType.UpdateDocFile,
               payload: currentDoc
@@ -674,12 +701,6 @@ export default class DocumentActions {
       selectedFile.uploadStatus = 'failed';
       selectedFile.notAllowedReason = 'Failed';
       selectedFile.failedReason = err.Message ? err.Message : err;
-      document.files = [...document?.files, selectedFile]
-
-      dispatchProgress({
-        type: DocumentActionsType.AddFileToDoc,
-        payload: document
-      });
       console.log("-------------->Upload errors------------>", error);
     }
   }
@@ -728,7 +749,6 @@ export default class DocumentActions {
             }
             const docFiles = files?.map((docFile: any) => {
               if (docFile.fileId === DocumentActions.nonExistentFileId) {
-                console.log(docFile)
                 docFile = selectedFile
               }
                 return docFile;
@@ -847,7 +867,6 @@ export default class DocumentActions {
     let url = Endpoints.Document.POST.syncToLOS();
     try {
       let res: any = await Http.post(url, fileData);
-      console.log(res);
       return true;
     } catch (error) {
       console.log('error', '-------------------------------------', error);

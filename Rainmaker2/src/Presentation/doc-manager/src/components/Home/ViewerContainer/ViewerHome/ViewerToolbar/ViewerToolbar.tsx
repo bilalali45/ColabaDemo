@@ -10,7 +10,7 @@ export const ViewerToolbar = () => {
   const viewer: any = state.viewer;
   const instance: any = viewer.instance;
   const { currentFile, isFileChanged }: any = state.viewer;
-  const { currentDoc, workbenchItems }: any = state.documents;
+  const { currentDoc, workbenchItems, importedFileIds }: any = state.documents;
 
 
   
@@ -23,9 +23,8 @@ export const ViewerToolbar = () => {
 
     const generateToolbarData = async () => {
       
-      
       if(currentFile.isWorkBenchFile){
-        let{id, fileId, isWorkBenchFile, name } = currentFile
+        let{id, fileId, name } = currentFile
         let annotationObj = {
           id, 
           requestId:"000000000000000000000000", 
@@ -34,7 +33,7 @@ export const ViewerToolbar = () => {
           isFromWorkbench:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems, currentFile );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems, currentFile, importedFileIds );
         
       }
       else{
@@ -48,7 +47,7 @@ export const ViewerToolbar = () => {
           isFromCategory:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc, currentFile );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds );
 
       }
       

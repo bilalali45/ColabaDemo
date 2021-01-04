@@ -10,6 +10,7 @@ import { ScrollDownArrow, ErrorIcon } from "../../../../../shared/Components/Ass
 import PSPDFKit from "pspdfkit";
 import { Viewer } from "../../../../../Utilities/Viewer";
 import { AnnotationActions } from "../../../../../Utilities/AnnotationActions";
+import { DocumentRequest } from "../../../../../Models/DocumentRequest";
 
 const scrollToRef = (ref: any, dir: any) => {
   if (dir == 'up') { ref.current.scrollTo(0, (ref.current.scrollTop - 5)); }
@@ -34,13 +35,13 @@ export const ViewerThumbnails = () => {
   const instance: any = viewer.instance;
 
   const documents: any = state.documents;
-  const isDragging: any = documents?.isDragging;
-  const isDraggingCurrentFile:any = documents?.isDraggingCurrentFile;
+  const {documentItems, currentDoc, isDraggingCurrentFile, isDragging, importedFileIds}:any = state.documents;
   const { isFileChanged, selectedFileData, SaveCurrentFile, DiscardCurrentFile }: any = state.viewer;
   const scrlUpRef = useRef<HTMLUListElement | any>(null);
   const doScrlUp = () => scrollToRef(scrlUpRef, 'up');
   const doScrlDn = () => scrollToRef(scrlUpRef, '');
 
+  const nonExistentFileId = '000000000000000000000000';
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: thumbDragged });
     
@@ -113,7 +114,7 @@ export const ViewerThumbnails = () => {
     setThumbnails((prevState) => [
       ...prevState.map((item, index) => index === currPage ? thumbnail : item),
     ]);
-
+    console.log('in here single page thumb', isFileChanged);
     if (!isFileChanged) {
       await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
       
@@ -159,7 +160,8 @@ export const ViewerThumbnails = () => {
       dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
       success = await addAPage(tempFile, draggingIndex - 1);
       if(success){
-        await removeOriginalFile(tempFile)
+        let hiddenFiles = await hideOriginalFile(tempFile)
+        setCurrentDocument(tempFile, hiddenFiles)
       }
       dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
 
@@ -170,20 +172,25 @@ export const ViewerThumbnails = () => {
     }
   };
 
-  const removeOriginalFile = async (fileData:any)=>{
-    console.log(fileData)
-    if(fileData.isFromWorkbench){
-      await DocumentActions.DeleteWorkbenchFile(fileData.id, fileData.fromFileId)
-      await DocumentActions.getWorkBenchItems(dispatch)
-    } else if(fileData.isFromCategory){
-      await DocumentActions.DeleteCategoryFile(fileData)
-      await DocumentActions.getDocumentItems(dispatch)
-    } else if(fileData.isFromTrash){
-      await DocumentActions.DeleteTrashFile(fileData.id, fileData.fromFileId)
-      await DocumentActions.getTrashedDocuments(dispatch)
+  const hideOriginalFile = async(fileData:any) => {
+    
+    if(fileData){
+      let hiddenFileData = importedFileIds ? importedFileIds :[];
+      hiddenFileData.push(fileData)
+      dispatch({ type: DocumentActionsType.SetImportedFileIds, payload: hiddenFileData })
+      if(fileData.isFromCategory){
+        await DocumentActions.getDocumentItems(dispatch, hiddenFileData)
+      } else if(fileData.isFromWorkbench){
+        await DocumentActions.getWorkBenchItems(dispatch, hiddenFileData)
+      } else if(fileData.isFromTrash){
+        await DocumentActions.getTrashedDocuments(dispatch, hiddenFileData)
+      }
+      
+      return hiddenFileData
     }
-  }
 
+    return []
+  }
 
   const onDragOverHandler = (i: number) => {
     setDraggingIndex(i);
@@ -212,8 +219,52 @@ export const ViewerThumbnails = () => {
 
   const addAPage = async (fileData: any, index: number) => {
     let success = await PDFThumbnails.addAPage(fileData, index, dispatch);
+    
+    return success;
 
-    return success
+
+  };
+
+
+  const setCurrentDocument = (fileData:any, hiddenFiles:any) => {
+    
+    if (currentDoc && currentDoc.docId === fileData.fromDocId) {
+      
+      let document:any =""
+      if(fileData.isFromCategory){
+        document = documentItems.filter((doc:any)=> {
+          console.log(doc)
+          console.log(currentDoc)
+         if( doc.docId === currentDoc.docId){
+           console.log(doc)
+           hiddenFiles.forEach(file => {
+           doc.files = doc.files.filter((f:any) => f.id !== file.fromFileId)
+           })
+           return doc
+         }
+        })
+        document = document[0]
+        
+      } else{ 
+        
+        document = new DocumentRequest(fileData?.id,
+          nonExistentFileId,
+          nonExistentFileId,
+          "",
+          "",
+          "",
+          [],
+          "",
+          ""
+        )
+        
+      }
+  
+      dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: document });
+    }
+
+
+    
   };
 
 

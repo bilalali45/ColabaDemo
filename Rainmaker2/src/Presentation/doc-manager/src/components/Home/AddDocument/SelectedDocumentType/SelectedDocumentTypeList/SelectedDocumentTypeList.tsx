@@ -3,6 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { TemplateDocument } from '../../../../../Models/TemplateDocument';
 import { Store } from '../../../../../Store/Store';
 import { Document } from '../../../../../Models/Document';
+import { AddFileToDoc } from '../../AddFileToDoc/AddFileToDoc';
 
 
 type SelectedTypeType = {
@@ -23,6 +24,7 @@ export const SelectedDocumentTypeList = ({
   const [requestSent, setRequestSent] = useState<boolean>(false);
   const [removeDocName, setRemoveDocName] = useState<string>();
   const { state, dispatch } = useContext(Store);
+  const [addFileDialog, setAddFileDialog] = useState<boolean>(false);
 
     const {documentItems}: any = state.documents;
   const templateManager: any = state?.templateManager;
@@ -73,7 +75,7 @@ export const SelectedDocumentTypeList = ({
                   setRequestSent(true);
                   await addNewDoc(dl, 'typeId');
                   setRequestSent(false);
-                  setVisible(false);
+                  setAddFileDialog(true)
                 }}
               >
                 {dl?.docType}
@@ -107,8 +109,8 @@ export const SelectedDocumentTypeList = ({
                     setRemoveDocName(dl?.docTypeId);
                     setRequestSent(true);
                     await addNewDoc(dl, 'typeId');
+                    setAddFileDialog(true)
                     setRequestSent(false);
-                    setVisible(false);
                   }}
                 >
                   {dl?.docType}
@@ -135,6 +137,16 @@ export const SelectedDocumentTypeList = ({
           <p>The list is empty.</p>
         </div>
       )}
+      
+      {addFileDialog && 
+      <AddFileToDoc 
+      selectedDocTypeId = {removeDocName}
+      showFileDialog = {addFileDialog}
+      setVisible={setVisible}
+      setAddFileDialog = {setAddFileDialog}
+      retryFile = {null}
+      selectedDocName =""/>
+      }
     </div>
   );
 };

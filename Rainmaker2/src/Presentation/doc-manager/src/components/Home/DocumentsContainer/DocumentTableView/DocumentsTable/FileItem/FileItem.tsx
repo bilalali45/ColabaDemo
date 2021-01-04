@@ -71,6 +71,7 @@ export const FileItem = ({
   const viewer: any = state.viewer;
   const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
   const documents: any = state.documents;
+  const importedFileIds:any = state.documents;
   const catScrollFreeze: any = documents?.catScrollFreeze;
 
   const isDragging: any = documents;
@@ -147,16 +148,13 @@ useEffect(() => {
       await getDocswithfailedFiles()
 
       if (selectedFileData && selectedFileData?.fileId === file.id) {
-        await DocumentActions.getCurrentDocumentItems(dispatch, false);
+        await DocumentActions.getCurrentDocumentItems(dispatch, false, importedFileIds);
       }
-      let res = await DocumentActions.getTrashedDocuments(dispatch);
+      let res = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
     }
   };
 
   const toggleSyncAlert = () => {
-
-    console.log('in here file', file);
-    console.log('in here file current', currentFile);
 
     if (isFileChanged && file?.id === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
@@ -169,7 +167,6 @@ useEffect(() => {
       return;
     }
     if (file.byteProStatus !== 'Synchronized') {
-      console.log('isSynching', isSynching, docInd, fileInd);
       let fileToSync: any = { document, file, syncStatus: 'started' }
 
       let selectedFiles;
@@ -258,6 +255,7 @@ useEffect(() => {
         isFromWorkbench: false,
         isFromCategory: true
       }
+      dispatch({type: DocumentActionsType.SetIsDraggingSelf, payload: file});
       setIsDraggingItem(true);
       setDraggingSelf(true);
       setDraggingItem(true);

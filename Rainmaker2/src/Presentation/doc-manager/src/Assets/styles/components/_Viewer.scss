@@ -84,6 +84,18 @@
                             object-fit: cover;
                         }
                         &.active{border-color: color('primary');}
+                        &.selected {
+                            position: relative;
+                           &::after {
+                                content: "";
+                                width: 100%;
+                                height: 100%;
+                                background:rgba(color('primary'),0.4);
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                            }
+                        }
                         &.dragOverActive{
                             border: 2px dashed color('primary');background: none;position:relative;
                             img{opacity:0;}
@@ -149,4 +161,44 @@
           align-items: center;
           justify-content: center;
     }
+
+.n-loader {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    top:0;
+    z-index: 100;
+    height: 100vh;
+    width: 100vw;  
+    display: flex;
+    align-items: flex-end;
+    justify-content: center; 
+    .row-box {
+        width: 326px;
+        height: 68px;
+        background: color('colorWhite');
+        display: flex;
+        align-items: center;
+        padding: 15px 25px;
+        box-shadow:0 0px 6px rgba(color('colorBlack'), 0.16);
+        margin-bottom: 100px;
+        position: relative;
+        padding-left: 65px;
+        cursor: default;
+        .n-loaderIcon {
+            position: absolute;
+            left: 25px;
+        }
+        .n-content {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        }
+
+
+    }
+}
+
 }

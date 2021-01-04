@@ -222,7 +222,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           >
             Details
           </button>
-          {data.status === 'Borrower to do' && !count ? (
+          {(data.status === 'Borrower to do' || data.status === 'Manually added') && !count ? (
             deleteRequestSent && currentItem === data ? (
               <span className="btnloader">
                 <Spinner size="sm" animation="border" role="status">

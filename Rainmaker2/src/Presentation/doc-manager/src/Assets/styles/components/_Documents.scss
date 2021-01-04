@@ -171,6 +171,7 @@
                     align-items: center;
                     justify-content: space-between;
                     .list-remove-text {
+                        color:color('colorRed');
                         font: 400 #{fontSize("sm") + "/1"} fontFamily("base");
                         white-space: nowrap;
                         padding: 0 15px;
@@ -601,7 +602,23 @@
         }
     }
 }
-
+.cat-drag-wrap {
+    position: relative;
+    * {
+        pointer-events:none ;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        display: block;
+        height: 100%;
+        width: calc(100% + 5px);
+        border: 2px dashed color('primary') !important;
+        top: 0px;
+        margin-left: -5px;
+        z-index: 888;
+    }
+} 
 .drag-wrap {
     display: flex !important;
     border: 2px dashed color('primary') !important;
@@ -983,7 +1000,7 @@
 
 #addFiles-popover {
     .popover-body {
-        padding-bottom: 25px;
+        padding-bottom: 15px;
         .dm-dt-docList {
             li {
                 &:hover {

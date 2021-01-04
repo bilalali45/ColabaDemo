@@ -840,7 +840,8 @@ namespace DocumentManagement.Service
                                 ""docMessage"": ""$requests.documents.message"",
                                 ""typeName"": ""$documentObjects.name"",
                                 ""typeMessage"": ""$documentObjects.message"",
-                                ""messages"": ""$documentObjects.messages""
+                                ""messages"": ""$documentObjects.messages"",
+                                ""isMcuVisible"": ""$requests.documents.isMcuVisible""
                                 }
                          } "
 
@@ -848,32 +849,34 @@ namespace DocumentManagement.Service
 
             while (await asyncCursorDocumentDraft.MoveNextAsync())
             {
-
                 foreach (var current in asyncCursorDocumentDraft.Current)
                 {
                     DraftDocumentQuery query = BsonSerializer.Deserialize<DraftDocumentQuery>(current);
-                    DraftDocumentDto dto = new DraftDocumentDto();
-                    dto.message = query.message;
-                    dto.typeId = query.typeId;
-                    dto.docId = query.docId;
-                    dto.requestId = query.requestId;
-                    dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
-                    if (string.IsNullOrEmpty(query.docMessage))
+                    if (query.isMcuVisible != false)
                     {
-                        if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                        DraftDocumentDto dto = new DraftDocumentDto();
+                        dto.message = query.message;
+                        dto.typeId = query.typeId;
+                        dto.docId = query.docId;
+                        dto.requestId = query.requestId;
+                        dto.docName = string.IsNullOrEmpty(query.docName) ? query.typeName : query.docName;
+                        if (string.IsNullOrEmpty(query.docMessage))
                         {
-                            dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
+                            if (query.messages?.Any(x => x.tenantId == tenantId) == true)
+                            {
+                                dto.docMessage = query.messages.First(x => x.tenantId == tenantId).message;
+                            }
+                            else
+                            {
+                                dto.docMessage = query.typeMessage;
+                            }
                         }
                         else
                         {
-                            dto.docMessage = query.typeMessage;
+                            dto.docMessage = query.docMessage;
                         }
+                        result.Add(dto);
                     }
-                    else
-                    {
-                        dto.docMessage = query.docMessage;
-                    }
-                    result.Add(dto);
                 }
             }
 

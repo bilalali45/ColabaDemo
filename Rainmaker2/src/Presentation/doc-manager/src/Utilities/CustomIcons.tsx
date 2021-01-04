@@ -6,16 +6,16 @@ export const saveIconDisabled = '<svg xmlns="http://www.w3.org/2000/svg" style="
 export const downloadIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
 export const printIcon = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 248.059 248.059" style="enable-background:new 0 0 248.059 248.059;" xml:space="preserve"><g><path d="M230.559,62.498h-27.785V17.133c0-4.143-3.358-7.5-7.5-7.5H52.785c-4.142,0-7.5,3.357-7.5,7.5v45.365H17.5   c-9.649,0-17.5,7.85-17.5,17.5v96.225c0,9.649,7.851,17.5,17.5,17.5h27.785v37.203c0,4.143,3.358,7.5,7.5,7.5h142.488   c4.142,0,7.5-3.357,7.5-7.5v-37.203h27.785c9.649,0,17.5-7.851,17.5-17.5V79.998C248.059,70.349,240.208,62.498,230.559,62.498z    M60.285,24.633h127.488v37.865H60.285V24.633z M187.773,223.426H60.285v-74.404h127.488V223.426z M233.059,176.223   c0,1.355-1.145,2.5-2.5,2.5h-27.785v-37.201c0-4.143-3.358-7.5-7.5-7.5H52.785c-4.142,0-7.5,3.357-7.5,7.5v37.201H17.5   c-1.355,0-2.5-1.145-2.5-2.5V79.998c0-1.356,1.145-2.5,2.5-2.5h35.285h142.488h35.285c1.355,0,2.5,1.144,2.5,2.5V176.223z"/><circle cx="195.273" cy="105.76" r="10.668"/><path d="M158.151,163.822H89.907c-4.142,0-7.5,3.357-7.5,7.5c0,4.143,3.358,7.5,7.5,7.5h68.244c4.142,0,7.5-3.357,7.5-7.5   C165.651,167.18,162.294,163.822,158.151,163.822z"/><path d="M158.151,193.623H89.907c-4.142,0-7.5,3.357-7.5,7.5c0,4.143,3.358,7.5,7.5,7.5h68.244c4.142,0,7.5-3.357,7.5-7.5   C165.651,196.98,162.294,193.623,158.151,193.623z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>'
 export const editIcon = '<?xml version="1.0" encoding="iso-8859-1"?> <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><g><g><polygon points="85.333,282.64 85.333,362.64 165.333,362.64 378.667,149.307 298.667,69.307"/><path d="M441.707,56.08L391.893,6.267c-8.32-8.32-21.867-8.32-30.187,0L320,47.973l80,80l41.707-41.707C450.027,77.947,450.027,64.4,441.707,56.08z"/></g></g></g><g><g style="opacity:0.36;"><rect y="426.64" width="512" height="85.333"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>'
-export const trashIcon = `<svg id="paper-shredder" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-<path id="Path_637" data-name="Path 637" d="M18.5,10a.5.5,0,0,1-.5-.5v-7A1.5,1.5,0,0,0,16.5,1h-9A1.5,1.5,0,0,0,6,2.5v7a.5.5,0,0,1-1,0v-7A2.5,2.5,0,0,1,7.5,0h9A2.5,2.5,0,0,1,19,2.5v7A.5.5,0,0,1,18.5,10Z" fill="#fff"/>
-<path id="Path_638" data-name="Path 638" d="M22.5,18H1.5A1.5,1.5,0,0,1,0,16.5v-5A2.5,2.5,0,0,1,2.5,9h19A2.5,2.5,0,0,1,24,11.5v5A1.5,1.5,0,0,1,22.5,18Zm-20-8A1.5,1.5,0,0,0,1,11.5v5a.5.5,0,0,0,.5.5h21a.5.5,0,0,0,.5-.5v-5A1.5,1.5,0,0,0,21.5,10Z" fill="#fff"/>
-<path id="Path_639" data-name="Path 639" d="M5.5,24a.5.5,0,0,1-.5-.5v-6a.5.5,0,0,1,1,0v6A.5.5,0,0,1,5.5,24Z" fill="#fff"/>
-<path id="Path_640" data-name="Path 640" d="M8.5,24a.5.5,0,0,1-.5-.5v-6a.5.5,0,0,1,1,0v6A.5.5,0,0,1,8.5,24Z" fill="#fff"/>
-<path id="Path_641" data-name="Path 641" d="M12,24a.5.5,0,0,1-.5-.5v-6a.5.5,0,0,1,1,0v6A.5.5,0,0,1,12,24Z" fill="#fff"/>
-<path id="Path_642" data-name="Path 642" d="M15.5,24a.5.5,0,0,1-.5-.5v-6a.5.5,0,0,1,1,0v6A.5.5,0,0,1,15.5,24Z" fill="#fff"/>
-<path id="Path_643" data-name="Path 643" d="M18.5,24a.5.5,0,0,1-.5-.5v-6a.5.5,0,0,1,1,0v6A.5.5,0,0,1,18.5,24Z" fill="#fff"/>
-<path id="Path_644" data-name="Path 644" d="M14.5,8h-6a.5.5,0,0,1,0-1h6a.5.5,0,0,1,0,1Z" fill="#fff"/>
-<path id="Path_645" data-name="Path 645" d="M14.5,6h-6a.5.5,0,0,1,0-1h6a.5.5,0,0,1,0,1Z" fill="#fff"/>
-<path id="Path_646" data-name="Path 646" d="M10.5,4h-2a.5.5,0,0,1,0-1h2a.5.5,0,0,1,0,1Z" fill="#fff"/>
-<path id="Path_647" data-name="Path 647" d="M19.5,13h-4a.5.5,0,0,1,0-1h4a.5.5,0,0,1,0,1Z" fill="#fff"/>
+export const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18.115" height="24" viewBox="0 0 18.115 24">
+<g id="_006-document" data-name="006-document" transform="translate(-48.4)">
+  <g id="Group_1640" data-name="Group 1640" transform="translate(48.4)">
+    <g id="Group_1639" data-name="Group 1639" transform="translate(0)">
+      <path id="Path_681" data-name="Path 681" d="M66.467,4.79l-.024-.024V4.742L61.822.122,61.8.1a.024.024,0,0,1-.024-.024A.024.024,0,0,1,61.75.049.4.4,0,0,0,61.506,0H50.053a1.618,1.618,0,0,0-1.143.462l-.024.024A1.7,1.7,0,0,0,48.4,1.653V22.347a1.653,1.653,0,0,0,.486,1.167A1.7,1.7,0,0,0,50.053,24H64.862a1.653,1.653,0,0,0,1.167-.486,1.7,1.7,0,0,0,.486-1.167V5.033A.72.72,0,0,0,66.467,4.79Zm-4.5-3.04,1.386,1.386L64.716,4.5H62.7a.662.662,0,0,1-.511-.219.758.758,0,0,1-.219-.511Zm3.5,20.6a.667.667,0,0,1-.632.632H50.053a.7.7,0,0,1-.438-.17.586.586,0,0,1-.17-.438V1.629a.609.609,0,0,1,.195-.438l.024-.024A.69.69,0,0,1,50.078,1H60.971V3.745a1.766,1.766,0,0,0,.535,1.264,1.824,1.824,0,0,0,1.264.535h2.7Z" transform="translate(-48.4)" fill="#fff"/>
+      <g id="refresh-24px" transform="translate(0 5)">
+        <path id="Path_686" data-name="Path 686" d="M18,0H0V18H18Z" fill="none"/>
+        <path id="Path_687" data-name="Path 687" d="M5.478,5.469a5,5,0,1,1-1.3,4.781h1.3a3.747,3.747,0,1,0,3.53-5A3.7,3.7,0,0,0,6.372,6.362L8.383,8.375H4.01V4Z" transform="translate(-0.01)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</g>
 </svg>`

@@ -31,7 +31,7 @@ export const RenameFile = ({
     { fileId: string; mcuName: string }[]
   >([]);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc }: any = state.documents;
+  const { currentDoc, importedFileIds }: any = state.documents;
   const { currentFile }: any = state.viewer;
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
@@ -163,11 +163,11 @@ export const RenameFile = ({
 
 
           if (currentFile.isWorkBenchFile) {
-            let d = await DocumentActions.getWorkBenchItems(dispatch);
+            let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
 
           }
           else {
-            let d = await DocumentActions.getDocumentItems(dispatch);
+            let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
 
             dispatch({ type: DocumentActionsType.SetDocumentItems, payload: d });
           }

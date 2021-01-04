@@ -13,7 +13,6 @@ export enum DocumentActionsType {
     SetSyncStatus = 'SET_SYNC_STATUS',
     SetCurrentDoc = 'SET_CURRENT_DOC',
     SetTrashedDoc = 'SET_TRASHED_DOC',
-    AddFileToDoc = 'ADD_FILE_TO_DOC',
     UpdateDocFile = 'UPDATE_DOC_FILE',
     UpdateWorkbenchFile = 'UPDATE_WORKBENCH_FILE',
     AddFileToTrash = 'ADD_FILE_TO_TRASH',
@@ -25,9 +24,11 @@ export enum DocumentActionsType {
     SetIsFileDirty = 'SET_IS_FILE_DIRTY',
     SetFileUploadInProgress = 'SET_FILE_UPLOAD_IN_PROGRESS',
     SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
+    SetIsDraggingSelf = "SET_IS_DRAGGING_SELF",
     SetCatScrollFreeze= "SET_CAT_SCROLL_FREEZE",
     SetWbScrollFreeze= "SET_WB_SCROLL_FREEZE",
-    SetIsDraggingCurrentFile = "SET_IS_DRAGGING_CURRENT_FILE"
+    SetIsDraggingCurrentFile = "SET_IS_DRAGGING_CURRENT_FILE",
+    SetImportedFileIds = "SET_IMPORTED_FILE_IDS"
 }
 
 export type DocumentsType = {
@@ -43,10 +44,12 @@ export type DocumentsType = {
     syncStarted: boolean,
     uploadFailedDocs: DocumentFile | [],
     isFileDirty: boolean,
-    fileUploadInProgress:boolean,
+    fileUploadInProgress: boolean,
     isByteProAuto: boolean,
+    isDraggingSelf: DocumentFile
     catScrollFreeze:boolean,
     wbScrollFreeze:boolean,
+    importedFileIds:any[]
     
 }
 
@@ -61,7 +64,6 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetSyncStatus]: string,
     [DocumentActionsType.SetFilesToSync]: any[],
     [DocumentActionsType.SetSyncStarted]: boolean,
-    [DocumentActionsType.AddFileToDoc]: DocumentRequest,
     [DocumentActionsType.UpdateDocFile]: DocumentRequest,
     [DocumentActionsType.AddFileToTrash]: DocumentRequest,
     [DocumentActionsType.AddFileToWorkbench]: DocumentRequest,
@@ -69,15 +71,17 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetUploadFailedDocs]: DocumentFile[],
     [DocumentActionsType.SetFailedDocs]: DocumentFile[],
     [DocumentActionsType.SetIsFileDirty]: boolean
-    [DocumentActionsType.AddFileToTrash]:DocumentRequest, 
-    [DocumentActionsType.AddFileToWorkbench]:DocumentRequest, 
-    [DocumentActionsType.UpdateWorkbenchFile]:DocumentRequest,
-    [DocumentActionsType.SetUploadFailedDocs]:DocumentFile[],
-    [DocumentActionsType.SetFailedDocs]:DocumentFile[],
-    [DocumentActionsType.SetFileUploadInProgress]:boolean
+    [DocumentActionsType.AddFileToTrash]: DocumentRequest,
+    [DocumentActionsType.AddFileToWorkbench]: DocumentRequest,
+    [DocumentActionsType.UpdateWorkbenchFile]: DocumentRequest,
+    [DocumentActionsType.SetUploadFailedDocs]: DocumentFile[],
+    [DocumentActionsType.SetFailedDocs]: DocumentFile[],
+    [DocumentActionsType.SetFileUploadInProgress]: boolean
     [DocumentActionsType.SetIsByteProAuto]: string,
     [DocumentActionsType.SetCatScrollFreeze]: boolean,
     [DocumentActionsType.SetWbScrollFreeze]: boolean,
+    [DocumentActionsType.SetIsDraggingSelf]: DocumentFile,
+    [DocumentActionsType.SetImportedFileIds]:any[]
 }
 
 export type DocumentsActions = ActionMap<DocumentActionsPayload>[keyof ActionMap<DocumentActionsPayload>];
@@ -112,13 +116,7 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 ...state,
                 uploadFailedDocs: payload
             };
-        case DocumentActionsType.AddFileToDoc:
-
-            return {
-                ...state,
-                documentItems: payload
-            };
-
+            
         case DocumentActionsType.UpdateDocFile:
             const updatedDocs = state['documentItems']?.map((doc: any) => {
                 if (doc.docId === state['currentDoc']?.docId) {
@@ -164,10 +162,10 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
             }
 
         case DocumentActionsType.SetIsDraggingCurrentFile:
-        return {
-            ...state,
-            isDraggingCurrentFile: payload
-        }
+            return {
+                ...state,
+                isDraggingCurrentFile: payload
+            }
 
         case DocumentActionsType.SetIsSynching:
             return {
@@ -210,19 +208,35 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 fileUploadInProgress: payload
             }
         case DocumentActionsType.SetIsByteProAuto:
-        return {
-            ...state,
-            isByteProAuto: payload
-        }
+            return {
+                ...state,
+                isByteProAuto: payload
+            }
         case DocumentActionsType.SetCatScrollFreeze:
-        return {
-            ...state,
-            catScrollFreeze: payload
-        }
+            return {
+                ...state,
+                catScrollFreeze: payload
+            }
         case DocumentActionsType.SetWbScrollFreeze:
+            return {
+                ...state,
+                wbScrollFreeze: payload
+            }
+        case DocumentActionsType.SetIsDraggingSelf:
+            return {
+                ...state,
+                isDraggingSelf: payload
+            }
         return {
             ...state,
             wbScrollFreeze: payload
+        }
+
+        case DocumentActionsType.SetImportedFileIds:
+            
+        return {
+            ...state,
+            importedFileIds: payload
         }
         default:
             return state;

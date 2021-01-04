@@ -13,6 +13,7 @@ import DocumentActions from '../../Store/actions/DocumentActions';
 import { UserActions } from '../../Store/actions/UserActions';
 import { ViewerActionsType } from '../../Store/reducers/ViewerReducer';
 import { Loader } from '../../Utilities/Loader';
+import { AlertLoader } from '../../Utilities/AlertLoader';
 import { ConfirmationAlert } from './ConfirmationAlert/ConfirmationAlert';
 
 
@@ -46,7 +47,6 @@ export const Home = () => {
     }
     return () => {
       clearInterval(timer);
-      console.log('in here clear interval');
     }
   }, [isNeedListLocked?.lockUserName]);
 
@@ -81,7 +81,8 @@ export const Home = () => {
         dispatch({ type: DocumentActionsType.SetIsDragging, payload: false });
         dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
       }}>
-      {isLoading && <Loader containerHeight={"153px"} />}
+      {/* {isLoading && <Loader containerHeight={"153px"} />} */}
+      {isLoading && <AlertLoader content="Please wait..." />}
       <div className="c-Home-wrap">
         <div className="c-Home-left">
           <DocumentsContainer />

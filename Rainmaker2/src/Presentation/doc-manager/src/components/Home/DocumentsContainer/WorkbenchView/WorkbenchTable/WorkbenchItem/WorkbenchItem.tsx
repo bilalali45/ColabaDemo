@@ -40,7 +40,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   const { state, dispatch } = useContext(Store);
 
   const viewer: any = state.viewer;
-  const { currentDoc }: any = state.documents;
+  const { currentDoc, importedFileIds }: any = state.documents;
   const instance: any = viewer?.instance;
   const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
 
@@ -131,13 +131,13 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
           ViewerActions.resetInstance(dispatch)
         }
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-        await DocumentActions.getCurrentWorkbenchItem(dispatch);
+        await DocumentActions.getCurrentWorkbenchItem(dispatch, importedFileIds);
       }
       else {
 
-        let d = await DocumentActions.getWorkBenchItems(dispatch);
+        let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
       }
-      let docs = await DocumentActions.getTrashedDocuments(dispatch)
+      let docs = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds)
     }
   };
 
@@ -180,7 +180,6 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   };
 
   const viewFile = async (file: any, document: any, dispatch: any) => {
-    console.log('file', file, 'document', document)
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
     setCurrentDocument();
 

@@ -184,12 +184,12 @@ namespace DocumentManagement.Service
                                                                     new BsonDocument()
                                                                     {
                                                                         { "id", BsonObjectId.Create(model.docId) }
-                                                                    },
+                                                                    }/*,
                                                                     new BsonDocument()
                                                                     {
                                                                       { "status", DocumentStatus.BorrowerTodo}
 
-                                                                    }
+                                                                    }*/
                                                                 }
                                                             }
                                                         }
@@ -287,7 +287,8 @@ namespace DocumentManagement.Service
                            @"{
                             ""$project"": {
                                 ""_id"": 0,
-                                ""requestId"": ""$requests.id""
+                                ""requestId"": ""$requests.id"",
+                                ""isMcuVisible"": ""$requests.documents.isMcuVisible""
                                 }
                          } "
 
@@ -297,7 +298,10 @@ namespace DocumentManagement.Service
                 {
                     foreach (var current in asyncCursorDocumentDraft.Current)
                     {
-                        query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                        if (query.isMcuVisible != false)
+                        {
+                            query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                        }
                     }
                 }
             }

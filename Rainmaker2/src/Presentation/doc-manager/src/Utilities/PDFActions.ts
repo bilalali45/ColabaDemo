@@ -6,18 +6,18 @@ export class PDFActions extends Viewer {
 
 
 
-    static async createPDFforDownload() {
+    static async createPDFforDownload(filename: any) {
         try {
             const buffer = await this.instance.exportPDF();
             const blob = new Blob([buffer], { type: "application/pdf" });
             if (navigator.msSaveOrOpenBlob) {
-                navigator.msSaveOrOpenBlob(blob, "download.pdf");
+                navigator.msSaveOrOpenBlob(blob, filename);
             } else {
                 let a: any = document.createElement("a");
                 const objectUrl = window.URL.createObjectURL(blob);
                 a.href = objectUrl;
                 a.style = "display: none";
-                a.download = "download.pdf";
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(objectUrl);
@@ -30,7 +30,7 @@ export class PDFActions extends Viewer {
     }
 
 
-    static async createPDFWithoutAnnotations() {
+    static async createPDFWithoutAnnotations(fileName: any) {
         try {
             const pagesAnnotations = await Promise.all(
                 Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
@@ -52,7 +52,7 @@ export class PDFActions extends Viewer {
 
             }).flat())
 
-            let res = await this.createPDFforDownload();
+            let res = await this.createPDFforDownload(fileName);
 
 
             await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {

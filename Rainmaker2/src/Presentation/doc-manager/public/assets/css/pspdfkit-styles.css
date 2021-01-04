@@ -32,3 +32,6 @@
   .PSPDFKit-Scroll::-webkit-scrollbar-thumb {
       background-color:  #DBDBDB;;
   }
+ .PSPDFKit-Confirm-Dialog {
+     display: none;
+ }

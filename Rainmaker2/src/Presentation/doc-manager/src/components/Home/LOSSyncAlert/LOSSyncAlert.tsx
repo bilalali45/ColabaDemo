@@ -20,6 +20,7 @@ export const LOSSyncAlert = () => {
     const filesToSync: any = documents?.filesToSync;
     const isSynching: any = documents?.isSynching;
     const syncStatus: any = documents?.syncStatus;
+    const importedFileIds:any = documents?.importedFileIds
 
 
     const updateFilesBeingSynched = (filesToSync: any, fileInSyncProcess: any, status: any) => {
@@ -41,7 +42,6 @@ export const LOSSyncAlert = () => {
         dispatch({ type: DocumentActionsType.SetSyncStarted, payload: true });
 
         for (const file of filesToSync) {
-            console.log(file);
             let fileToSync: any = {
                 LoanApplicationId: Number(LocalDB.getLoanAppliationId()),
                 DocumentLoanApplicationId: file?.document?.id,
@@ -58,7 +58,6 @@ export const LOSSyncAlert = () => {
 
 
             } catch (error) {
-                console.log('in error!!!!');
                 await updateFilesBeingSynched(filesToSync, file, 'failed');
 
             }
@@ -77,7 +76,6 @@ export const LOSSyncAlert = () => {
             dispatch({ type: DocumentActionsType.SetSyncStarted, payload: false });
         } else {
             setSyncSuccessful(false);
-            console.log('in else ---');
         }
 
     };
@@ -155,7 +153,7 @@ export const LOSSyncAlert = () => {
     }
 
     const getDocumentItems = async () => {
-        let docs = await DocumentActions.getDocumentItems(dispatch);
+        let docs = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
         let allDocs: any;
         for (let index = 0; index < uploadFailedDocs.length; index++) {
             allDocs = docs?.map((doc: any) => {

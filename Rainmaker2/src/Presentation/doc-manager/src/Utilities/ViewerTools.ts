@@ -9,12 +9,14 @@ import { AnnotationActions } from "./AnnotationActions";
 import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon } from "./CustomIcons";
 import { PDFActions } from "./PDFActions";
 import { Viewer } from "./Viewer";
+import { Rename } from '../Utilities/helpers/Rename';
+import { DocumentActionsType } from "../Store/reducers/documentsReducer";
 
 const baseUrl = `${window.location.protocol}//${window.location.host}/DocManager/`;
 const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 
 export class ViewerTools extends Viewer {
-    
+
     static currentToolbar: Array<string> = [
         "pan",
         "annotate",
@@ -38,22 +40,23 @@ export class ViewerTools extends Viewer {
         return { type, id, title, icon, onPress, className }
     }
 
-    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
-        return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc)
+    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any) {
+        return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
 
     }
-    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
+    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any) {
         let fileId = fileObj.fileId;
         // if(isFileChanged){
+            console.log(importedFileIds)
         if (fileObj.isFromCategory) {
             fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
-            await DocumentActions.getDocumentItems(dispatch)
+            
         } else if (fileObj.isFromWorkbench) {
             fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
-            await DocumentActions.getWorkBenchItems(dispatch)
+            
         } else if (fileObj.isFromTrash) {
             fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
-            await DocumentActions.getTrashedDocuments(dispatch)
+            
         }
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
@@ -61,21 +64,54 @@ export class ViewerTools extends Viewer {
         if (fileId) {
             await AnnotationActions.saveAnnotations(fileObj, fileId, false)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
-
-            return fileId
+            dispatch({ type: ViewerActionsType.SetSaveFile, payload: true })
         }
+        return fileId
 
     }
 
-    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any) {
-
+    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds:any) {       
         dispatch({
             type: ViewerActionsType.SetIsLoading,
             payload: true
         });
 
         let file = await PDFActions.createPDFFromInstance(fileObj.name);
-        let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc)
+        let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
+        let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
+        let fileId = currentFile.fileId;
+        console.log(currentFile);
+        if (!currentFile.name.includes('.pdf')) {
+            console.log('in if!!!');
+            let newName = `${Rename.removeExt(currentFile.name)}.pdf`;
+            let docId = currentDoc.docId || '000000000000000000000000'
+            let requestId = currentDoc.requestId || '000000000000000000000000'
+            await DocumentActions.renameDoc(id, requestId, docId, fileId, newName)
+            if (currentFile.isWorkBenchFile) {
+                let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
+
+            }
+            else {
+                let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
+
+                dispatch({ type: DocumentActionsType.SetDocumentItems, payload: d });
+            }
+            let newFile: any = new CurrentInView(
+                id,
+                currentFile.src,
+                newName,
+                currentFile.isWorkBenchFile,
+                fileId,
+
+            );
+            dispatch({
+                type: ViewerActionsType.SetCurrentFile,
+                payload: newFile,
+            });
+
+            let selectedFileData = new SelectedFile(currentFile.id, newName, currentFile.fileId)
+            dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
+        }
 
         dispatch({
             type: ViewerActionsType.SetIsLoading,
@@ -85,8 +121,8 @@ export class ViewerTools extends Viewer {
         return res;
     }
 
-    static downloadFile() {
-        PDFActions.createPDFWithoutAnnotations();
+    static downloadFile(file: any) {
+        PDFActions.createPDFWithoutAnnotations(file.name);
     }
 
     static rotateLeft() {
@@ -103,10 +139,11 @@ export class ViewerTools extends Viewer {
 
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-        
+        dispatch({ type: ViewerActionsType.SetDiscardFile, payload: true });
     }
 
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any) {
+
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds:any) {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
         // let saveButton: any = null;
@@ -116,10 +153,10 @@ export class ViewerTools extends Viewer {
         // } else {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
-        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc))
+        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds))
         const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentDoc, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
-        const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, this.downloadFile);
+        const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));
         const printButton: any = this.createToolbarItem('custom', 'print', 'Print', printIcon, PDFActions.printPDF);
 
         let customizedToolBarItems: any = [editPDF, downloadButton, printButton];
@@ -129,9 +166,9 @@ export class ViewerTools extends Viewer {
                 toolbarItems.filter((el) => el.type === toolbaritem)[0]
             );
         });
-        if (isFileChanged) {
+        //if (isFileChanged) {
             customizedToolBarItems.push(discardButton)
-        }
+        //}
         customizedToolBarItems.push(saveButton)
         this.instance?.setToolbarItems(customizedToolBarItems);
     };
@@ -156,7 +193,6 @@ export class ViewerTools extends Viewer {
         const yellow = new PSPDFKit.Color({ r: 255, g: 255, b: 0 })
 
         for (const [key, value] of Object.entries(PSPDFKit.defaultAnnotationPresets)) {
-            console.log(key, value);
             if (typeof value === 'object') {
 
                 const ap = instance.annotationPresets;
@@ -230,10 +266,10 @@ export class ViewerTools extends Viewer {
         el.style.width = '0.01vh';
         el.style.display = 'none';
         document.body.appendChild(el);
-        let localInstance: any = await this.loadlocalInstance(src?.arrayBuffer());
+        let localInstance: any = await this.loadlocalInstance(src);
         try {
 
-            let file: any;
+            
             if (!isPDF) {
                 let imageSize = localInstance.pageInfoForIndex(0);
 
@@ -241,8 +277,10 @@ export class ViewerTools extends Viewer {
                 let newPageSize = await localInstance.pageInfoForIndex(0);
                 await this.addImageAsAnnotationOnThePage(localInstance, src, newPageSize, pageIndex, imageSize);
                 file = await this.createPDFFileFromImage(localInstance, isPDF, true);
+                if(localInstance){
                 await PSPDFKit.unload(localInstance);
-                localInstance = await this.loadlocalInstance(file.arrayBuffer());
+                }
+                localInstance = await this.loadlocalInstance(file);
             }
 
             if (isImported)
@@ -251,21 +289,24 @@ export class ViewerTools extends Viewer {
             file = await this.createPDFFileFromImage(localInstance, isPDF, false);
 
             
-            PSPDFKit.unload(localInstance);
-            document.body.removeChild(el);
-            return file;
+            
 
         } catch (error) {
-           
+
             console.log('error', error);
         }  
-          return null;
+        if(localInstance){
+            PSPDFKit.unload(localInstance);
+            document.body.removeChild(el);
+        }
+        
+        return file;
     }
 
     static async loadlocalInstance(src: any) {
         try {
             let instance = await PSPDFKit.load({
-                document: await src,
+                document: await src?.arrayBuffer(),
                 container: '#local-viewer-container',
                 licenseKey: licenseKey,
                 baseUrl: baseUrl,
@@ -319,7 +360,6 @@ export class ViewerTools extends Viewer {
         let anno = await instance.createAnnotation(annotation);
         await instance.saveAnnotations();
         await instance.ensureAnnotationSaved(anno);
-        console.log('anno', anno);
     }
 
 
@@ -354,12 +394,11 @@ export class ViewerTools extends Viewer {
 
     }
 
-    static async createPDFFileFromImage(instance: any, isPDF: boolean, isFlatten:boolean) {
+    static async createPDFFileFromImage(instance: any, isPDF: boolean, isFlatten: boolean) {
 
         const buffer = await instance.exportPDF({ flatten: isFlatten });
         const blob = new Blob([buffer], { type: "arraybuffer" });
         let file = await new File([blob], "file_name.pdf", { lastModified: Date.now(), type: "application/pdf"  });
-console.log(file)
         return file;
     }
 

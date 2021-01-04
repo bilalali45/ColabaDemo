@@ -17,6 +17,15 @@ import React from 'react'
 //   )
 // }
 
+export const SearchIcon = () => {
+  return (
+<svg id="search_1_" data-name="search (1)" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
+  <g id="Group_761" data-name="Group 761" transform="translate(0 0)">
+    <path id="Path_363" data-name="Path 363" d="M18.884,17.765l-5.519-5.519a7.536,7.536,0,1,0-1.119,1.119l5.519,5.519a.4.4,0,0,0,.56,0l.56-.56A.4.4,0,0,0,18.884,17.765ZM7.521,13.458a5.938,5.938,0,1,1,5.938-5.938A5.944,5.944,0,0,1,7.521,13.458Z" transform="translate(0 0)" fill="#7e829e"/>
+  </g>
+</svg>
+  )
+}
 export const SyncIcon = () => {
   return (
     <svg id="Component_3" data-name="Component 3" xmlns="http://www.w3.org/2000/svg" width="18" height="18.001" viewBox="0 0 18 18.001">

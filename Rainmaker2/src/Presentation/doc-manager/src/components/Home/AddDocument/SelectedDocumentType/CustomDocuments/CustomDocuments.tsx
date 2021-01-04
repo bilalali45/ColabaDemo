@@ -1,6 +1,8 @@
-import React, { useState, ChangeEvent, useEffect } from 'react'
+import React, { useState, ChangeEvent, useEffect, useContext } from 'react'
 import Spinner from 'react-bootstrap/Spinner';
 import { kMaxLength } from 'buffer';
+import { AddFileToDoc } from '../../AddFileToDoc/AddFileToDoc';
+import { Store } from '../../../../../Store/Store';
 
 type CustomDocumentsType = {
     setVisible: Function,
@@ -13,7 +15,13 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
     const [docNameError, setDocNameError] = useState('');
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(true);
-
+    const [addFileDialog, setAddFileDialog] = useState<boolean>(false);
+    const [newDoc, setNewDoc] = useState<any>();
+    const { state, dispatch } = useContext(Store);
+    const {
+        documentItems
+    
+      }: any = state.documents;
 
     useEffect(() => {
         setIsValid(true);
@@ -50,13 +58,17 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                 docMessage: '',
                 isCustom: true
             }
+            setNewDoc(docName)
             await addDocToTemplate(newDoc, 'docName');
+            
             setDocName('');
+            setAddFileDialog(true)
             setRequestSent(false);
         }
         // setVisible()        
     }
 
+    
     return (
         <div className="add-custom-doc">
 
@@ -94,6 +106,16 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 {docNameError && <label className={'error'}>{docNameError}</label>}
             </div>
+            {console.log(newDoc)}
+            {addFileDialog && 
+      <AddFileToDoc 
+      selectedDocTypeId = {""}
+      showFileDialog = {addFileDialog}
+      setVisible={setVisible}
+      setAddFileDialog = {setAddFileDialog}
+      retryFile = {null}
+      selectedDocName = {newDoc}/>
+      }
         </div>
     )
 }

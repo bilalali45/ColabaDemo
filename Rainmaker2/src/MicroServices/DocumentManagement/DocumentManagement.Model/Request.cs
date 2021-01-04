@@ -107,6 +107,7 @@ namespace DocumentManagement.Model
         public string requestId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string docId { get; set; }
+        public bool? isMcuVisible { get; set; }
 
     }
 

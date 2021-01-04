@@ -60,7 +60,7 @@ export class DocumentUploadActions {
         dispatchProgress({
           type: DocumentsActionType.AddFileToCategoryDocs,
           payload: currentSelected?.files?.map(f => {         
-            let err = error.response.data;
+            let err = error?.response?.data || 'Something went wrong. Please try again.';
             if(f?.clientName === file?.clientName) {
               f.uploadStatus = 'failed';
               f.notAllowedReason = 'Failed';
@@ -73,7 +73,7 @@ export class DocumentUploadActions {
         dispatchProgress({
           type: DocumentsActionType.AddFileToDoc,
           payload: currentSelected?.files?.map(f => {
-            let err = error.response.data;
+            let err = error?.response?.data || 'Something went wrong. Please try again.';
             if(f?.clientName === file?.clientName) {
               f.uploadStatus = 'failed';
               f.notAllowedReason = 'Failed';

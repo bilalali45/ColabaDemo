@@ -8,6 +8,7 @@ import { DocumentActionsType } from "../../../../../../Store/reducers/documentsR
 import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReducer";
 import { Store } from "../../../../../../Store/Store";
 import { LocalDB } from "../../../../../../Utilities/LocalDB";
+import {AddDocIcon} from "../../../../../../shared/Components/Assets/SVG";
 
 export const ReassignDropdown = ({
   target,
@@ -23,7 +24,7 @@ export const ReassignDropdown = ({
 }: any) => {
   const { state, dispatch } = useContext(Store);
   const { currentFile, isFileChanged }: any = state.viewer;
-  const { currentDoc, documentItems }: any = state.documents;
+  const { currentDoc, documentItems, importedFileIds }: any = state.documents;
   const [docCategories, setDocCategories] = useState<DocumentRequest[]>();
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
@@ -39,7 +40,6 @@ export const ReassignDropdown = ({
 
     if (isFromWorkbench) {
 
-      console.log('in here!!!!', currentFile, selectedFile)
       if (isFileChanged && selectedFile?.fileId === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
 
@@ -53,13 +53,12 @@ export const ReassignDropdown = ({
         selectedFile.fileId
       );
       if (res) {
-        await DocumentActions.getDocumentItems(dispatch);
-        await DocumentActions.getWorkBenchItems(dispatch);
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds);
+        await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
       }
 
     } else {
 
-      console.log('in here!!!!', currentFile, selectedFile)
       if (isFileChanged && selectedFile?.id === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
 
@@ -94,7 +93,10 @@ export const ReassignDropdown = ({
       }
     }
   };
-
+  const openAddDocPopover = () => {
+    let addDocLInk = window.document.getElementById("dm-h-linkAddDoc");
+    addDocLInk.click(); 
+  };
   return (
     <Overlay
       show={visible}
@@ -103,6 +105,7 @@ export const ReassignDropdown = ({
       container={container}
       containerPadding={20}
       onHide={hide}
+      rootClose={true}
     >
       <Popover id="popover-contained" className="ReassignOverlay">
         <div ref={refReassignPopover}>
@@ -126,6 +129,14 @@ export const ReassignDropdown = ({
                 </div>
               )}
           </Popover.Content>
+          <Popover.Title as="div" bsPrefix="popover-footer">
+                                            <div className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
+                                                <div className="dm-h-icon"><AddDocIcon /></div>
+                                                <div className="dm-h-lbl">
+                                                    <span>Add Document</span>
+                                                </div>
+                                            </div>
+                                        </Popover.Title>
         </div>
       </Popover>
     </Overlay>

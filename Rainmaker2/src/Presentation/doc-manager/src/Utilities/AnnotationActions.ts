@@ -43,7 +43,7 @@ export class AnnotationActions extends Viewer {
             }
             return res?.data.annotations;
         } catch (error) {
-            console.log(error())
+            console.log(error)
         }
 
     }
