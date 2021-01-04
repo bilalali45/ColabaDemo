@@ -448,14 +448,17 @@ export default class DocumentActions {
 
   static async moveFileToWorkbench(body: any, isFromThumbnail: boolean) {
 
-    if (isFromThumbnail) {
+    /*if (isFromThumbnail) {
       let url = Endpoints.Document.POST.moveFromCategoryToWorkBench();
       return this.moveFileToWorkbenchLocal(url, body);
 
     } else {
       let url = Endpoints.Document.POST.moveFromCategoryToWorkBench();
       return this.moveFileToWorkbenchLocal(url, body);
-    }
+    }*/
+
+    let url = Endpoints.Document.POST.moveFromCategoryToWorkBench();
+    return this.moveFileToWorkbenchLocal(url, body);
 
   }
 

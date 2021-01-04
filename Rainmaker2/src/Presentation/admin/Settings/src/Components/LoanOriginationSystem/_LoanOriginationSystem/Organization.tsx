@@ -27,8 +27,8 @@ export const LOSOrganization = ({ backHandler }: Props) => {
 
     const  fetchOrganizationSettings = async () => {
         let data = await OrganizationsActions.fetchOrganizationSettings();
-        const organizations = cloneDeep(data);
-        setOrganization(organizations);
+        const organizationsb = cloneDeep(data);
+        setOrganization(organizationsb);
         dispatch({ type: OrganizationActionsType.SetOrganizationData, payload: data })   
     }
     const updateOrganizations = async () => {
@@ -54,8 +54,8 @@ export const LOSOrganization = ({ backHandler }: Props) => {
         setOrganization(localOrganizations);
     }
     const handlerCancel =() => {
-        const organizations = cloneDeep(organizationData);
-        setOrganization(organizations);
+        const organizationsc = cloneDeep(organizationData);
+        setOrganization(organizationsc);
         setFooter(false);
        }
 

@@ -95,8 +95,8 @@ describe('Loan origination System Users Tab', () => {
         fireEvent.click(navsLink[3]);
 
         await waitFor(() => {
-            let byteUserInput = getAllByTestId('input-text');
-            fireEvent.focus(byteUserInput[0]);
+            let byteUserInputb = getAllByTestId('input-text');
+            fireEvent.focus(byteUserInputb[0]);
             let saveBtn = screen.queryByTestId('save-btn');
             expect(saveBtn).not.toBeNull();
             let cancelBtn = screen.queryByTestId('cancel-btn');
@@ -146,8 +146,8 @@ describe('Loan origination System Users Tab', () => {
         fireEvent.click(navsLink[3]);
 
         await waitFor(() => {
-            let byteUserInput = getAllByTestId('input-text');
-            fireEvent.focus(byteUserInput[0]);
+            let byteUserInputc = getAllByTestId('input-text');
+            fireEvent.focus(byteUserInputc[0]);
             let saveBtn = screen.queryByTestId('save-btn');
             expect(saveBtn).not.toBeNull();
             let cancelBtn = screen.queryByTestId('cancel-btn');
@@ -238,8 +238,8 @@ describe('Loan origination System Users Tab', () => {
         );
    
         await waitFor(() => {
-            let byteUserInput = getAllByTestId('input-text');
-            fireEvent.focus(byteUserInput[0]);
+            let byteUserInputd = getAllByTestId('input-text');
+            fireEvent.focus(byteUserInputd[0]);
             let saveBtn = screen.queryByTestId('save-btn');
             expect(saveBtn).not.toBeNull();
             let cancelBtn = screen.queryByTestId('cancel-btn');
@@ -273,8 +273,8 @@ describe('Loan origination System Users Tab', () => {
         );
 
         await waitFor(() => {
-            let byteUserInput = getAllByTestId('input-text');
-            fireEvent.focus(byteUserInput[0]);
+            let byteUserInpute = getAllByTestId('input-text');
+            fireEvent.focus(byteUserInpute[0]);
             let saveBtn = screen.queryByTestId('save-btn');
             expect(saveBtn).not.toBeNull();
             let cancelBtn = screen.queryByTestId('cancel-btn');

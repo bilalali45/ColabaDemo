@@ -91,8 +91,8 @@ describe('Loan origination System',()=>{
         </StoreProvider>
     );
     await waitFor(()=>{
-      let losOrg = getByTestId('los-menu-org');
-      expect(losOrg).toHaveTextContent('Organization');
+      let losOrgb = getByTestId('los-menu-org');
+      expect(losOrgb).toHaveTextContent('Organization');
       const losName = getByTestId('th-templateName');
       expect(losName).toHaveTextContent('Name');
       const losByteOrgCode = getByTestId('th-byteOrgCode');

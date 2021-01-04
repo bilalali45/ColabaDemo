@@ -58,10 +58,10 @@ export const ReviewDocumentActivityLog = ({
     width: totalWidth
   };
 
-  const getActivityLogs = useCallback(async (id, docId, requestId) => {
+  const getActivityLogs = useCallback(async (idb, docIdb, requestIdb) => {
     try {
       ///const {data} = await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
-      const data = await ReviewDocumentActions.getActivityLogs(id, docId, requestId);
+      const data = await ReviewDocumentActions.getActivityLogs(idb, docIdb, requestIdb);
       setActivityLogs(data);
     } catch (error) {
       console.log(error);
@@ -105,8 +105,8 @@ export const ReviewDocumentActivityLog = ({
   }, []);
 
   const renderActivityLog = useCallback(
-    (activityLogs: ActivityLogType[]) => {
-      return activityLogs.map((activityLog: ActivityLogType, index: number) => {
+    (activityLogsb: ActivityLogType[]) => {
+      return activityLogsb.map((activityLog: ActivityLogType, index: number) => {
         return (
           <li data-testid="activity-log-list"
             className={`${index === logIndex && 'active'}`}
@@ -193,10 +193,10 @@ export const ReviewDocumentActivityLog = ({
     }
   };
 
-  const getEmailLogs = useCallback(async (id, docId, requestId) => {
+  const getEmailLogs = useCallback(async (idc, docIdc, requestIdc) => {
     try {
       const {data} = await Http.get<EmailLogsType[]>(
-        NeedListEndpoints.GET.documents.emailLogs(id, docId, requestId)
+        NeedListEndpoints.GET.documents.emailLogs(idc, docIdc, requestIdc)
       );
 
       setEmailLogs(data);
@@ -207,13 +207,13 @@ export const ReviewDocumentActivityLog = ({
     }
   }, []);
 
-  const renderEmailLogs = (emailLogs: EmailLogsType[]) => {
+  const renderEmailLogs = (emailLogsb: EmailLogsType[]) => {
     const style = {
       marginTop: 0
     };
-    return emailLogs.map((emailLog, index) => (
+    return emailLogsb.map((emailLog, index) => (
       <li className={index === emailLogIndex ? 'active' : ''} key={index}>
-        <a href="javascript:void" onClick={() => setEmailLogIndex(index)}>
+        <a href="javascript:;" onClick={() => setEmailLogIndex(index)}>
           <div className="d-flex justify-content-between">
             {/* <h6>
               {emailLog.message ? `${emailLog.message}:` : 'Requested by:'}
@@ -228,8 +228,8 @@ export const ReviewDocumentActivityLog = ({
     ));
   };
 
-  const renderEmailLogDetails = (emailLogIndex: number) => {
-    const emailLog = emailLogs[emailLogIndex];
+  const renderEmailLogDetails = (emailLogIndexb: number) => {
+    const emailLog = emailLogs[emailLogIndexb];
 
     return <div id="emailContent" >{ReactHtmlParser(emailLog?.emailText)}</div>;
   };

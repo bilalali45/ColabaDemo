@@ -34,9 +34,9 @@ const Footer = ({
     rejectDocument();
   };
 
-  const checkAlertMsgForAcceptDocumentOnly = (status:number) => {
+  const checkAlertMsgForAcceptDocumentOnly = (statusb:number) => {
     acceptDocumentOnly();
-    setAcceptDocumentAlert(status);
+    setAcceptDocumentAlert(statusb);
   }
 
   if (status === DocumentStatus.COMPLETED) {
