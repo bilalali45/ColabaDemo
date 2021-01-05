@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom';
 import {LocalDB} from '../../../../Utils/LocalDB';
 import {DocManagerIcon} from "../../../../Shared/SVG";
 
-
 export const NeedListHeader = () => {
   const history = useHistory();
 
@@ -17,8 +16,6 @@ export const NeedListHeader = () => {
 
   const redirectToMVC = () => {
     const portalReferralUrl = LocalDB.getPortalReferralUrl();
-
-    console.log('portalReferralUrl', portalReferralUrl);
 
     if (portalReferralUrl) {
       window.top.location.href = portalReferralUrl;
