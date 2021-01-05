@@ -25,13 +25,13 @@ export class AnnotationActions extends Viewer {
         }
     }
 
-    static async fetchAnnotations(body: any, isFromWorkbench: boolean,isFromCategory:boolean, isFromTrash: boolean = false) {
+    static async fetchAnnotations(body: any, isFromWorkbench: boolean, isFromCategory: boolean, isFromTrash: boolean = false) {
         let res: any;
         try {
             if (isFromWorkbench) {
                 res = await Http.post(Endpoints.Document.POST.viewWorkbenchAnnotations(), body);
             }
-            else if(isFromTrash) {
+            else if (isFromTrash) {
                 res = await Http.post(Endpoints.Document.POST.viewTrashhAnnotations(), body);
             }
             else if (isFromCategory) {
@@ -48,7 +48,7 @@ export class AnnotationActions extends Viewer {
 
     }
 
-    static AddAnnotationsToInstance(annotations: any){
+    static AddAnnotationsToInstance(annotations: any) {
 
 
         for (const annotation of annotations) {
@@ -56,7 +56,8 @@ export class AnnotationActions extends Viewer {
         }
     }
 
-    static async saveAnnotations(AnnotationObj: any, fileId: string, wasDragged: boolean, pageIndex?: number) {
+    static async saveAnnotations(AnnotationObj: any, fileId: string, wasDragged: boolean, pageIndexes?: [number]) {
+
         let body: any;
         let url: any;
 
@@ -85,9 +86,10 @@ export class AnnotationActions extends Viewer {
         }
 
         try {
-            if (wasDragged && pageIndex) {
+            if (wasDragged && pageIndexes.length) {
 
-                let annotationsAsString = this.extractPageAnnotationsAsString(pageIndex);
+                let annotationsAsString = this.extractPageesAnnotationsAsString(pageIndexes);
+
                 let data = {
                     ...body,
                     annotations: annotationsAsString
@@ -143,6 +145,30 @@ export class AnnotationActions extends Viewer {
         }
     }
 
+    static async extractPageesAnnotationsAsString(pageIndexes: [number]) {
+        let pagesAnnotations = [];
+
+        try {
+            for (const p of pageIndexes) {
+
+                const pageAnnotations: any = await this.instance.getAnnotations(p);
+
+                let annotationsToJSON = [];
+
+                for (const annotation of pageAnnotations) {
+                    let json = PSPDFKit.Annotations.toSerializableObject(annotation);
+                    annotationsToJSON.push(json);
+                }
+                pagesAnnotations.push(pageAnnotations)
+            }
+
+            return JSON.stringify(pagesAnnotations);
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
 
     static async saveAnnotationsLocal(url: any, body: any) {
         try {
@@ -163,7 +189,7 @@ export class AnnotationActions extends Viewer {
             id, fromRequestId: requestId, fromDocId: docId, fromFileId: fileId
         }
         let annotations = await AnnotationActions.fetchAnnotations(body, isWorkBenchFile, !isWorkBenchFile, isFromTrash)
-        if(annotations){
+        if (annotations) {
             AnnotationActions.AddAnnotationsToInstance(annotations);
         }
     }
@@ -174,7 +200,7 @@ export class AnnotationActions extends Viewer {
                 Viewer.instance.getAnnotations(pageIndex)
             )
         );
-        return Boolean(pagesAnnotations.filter( pageList => pageList.toJS().length).length);
+        return Boolean(pagesAnnotations.filter(pageList => pageList.toJS().length).length);
         // const allAnnotations : any = await this.instance.exportInstantJSON();
         // console.log(allAnnotations);
     }

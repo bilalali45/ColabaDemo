@@ -24,6 +24,7 @@ export const WorkbenchTable = () => {
     const { state, dispatch } = useContext(Store);
     const { currentFile, isFileChanged }: any = state.viewer;
     const { currentDoc, importedFileIds }: any = state.documents;
+    const selectedfiles: Document[] = currentDoc?.files || null;
     const documents: any = state.documents;
     const workbenchItems: any = documents?.workbenchItems;
     const isDragging: any = documents?.isDragging;
@@ -60,12 +61,13 @@ export const WorkbenchTable = () => {
        
         let {isFromThumbnail, isFromCategory, isFromTrash} = file
         
+        dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
         if(isFromCategory){
             let {id, fromRequestId, fromDocId, fromFileId} : any = file;
             let newWorkBench = await DocumentActions.moveFileToWorkbench({id, fromRequestId, fromDocId, fromFileId}, false);
             if(newWorkBench){
                 await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
-    
+
                 await DocumentActions.getDocumentItems(dispatch, importedFileIds)
             }
         }
@@ -75,22 +77,22 @@ export const WorkbenchTable = () => {
 
             let { id } = currentFile
             let fileObj = {
-                id, 
-                
-                fileId:"000000000000000000000000",
-                isFromWorkbench:true
-                }
+                id,
 
-                let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
-            let success : any = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, workbenchItems, importedFileIds  );
-                
-                    // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
-                    // if(!!success){
-                        await PDFThumbnails.removePages([file.index])
-                        await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
-                        dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
-                    // }
-      
+                fileId: "000000000000000000000000",
+                isFromWorkbench: true
+            }
+
+            let fileData = await PDFActions.createNewFileFromThumbnail(file.indexes, currentFile, workbenchItems);
+            let success: any = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, workbenchItems, importedFileIds, file.indexes);
+
+            // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
+            // if(!!success){
+            await PDFThumbnails.removePages(file.indexes)
+            await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
+            dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
+            // }
+
         }
 
         if (isFromTrash) {
@@ -98,15 +100,15 @@ export const WorkbenchTable = () => {
             let success = await DocumentActions.moveTrashFileToWorkBench(
                 id,
                 fromFileId
-              );
-              if (success) {
+            );
+            if (success) {
                 await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
                 await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
-                
-              }
+
+            }
 
         }
-
+        dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
     }
 
 

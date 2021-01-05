@@ -523,6 +523,7 @@ useEffect(() => {
           let dragView: any = window.document.getElementById('fileBeingDragged');
           window.document.body.removeChild(dragView);
           setIsDraggingItem(false);
+          dispatch({type: DocumentActionsType.SetIsDraggingSelf, payload: null})
         }}
       >
         <div className="l-icon">

@@ -16,6 +16,7 @@ namespace DocManager.Service
         {
             this.mongoService = mongoService;
         }
+        /*
         public async Task<bool> Delete(DeleteModel deleteModel, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
@@ -109,7 +110,7 @@ namespace DocManager.Service
             }
 
             return false;
-        }
+        }*/
         public async Task<bool> MoveFromCategoryToTrash(MoveFromCategoryToTrash moveFromCategoryToTrash, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");

@@ -79,8 +79,10 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
     // document.body.onfocus = null
 }
   const addFiles = async (selectedFiles: FileList, document:any) => {  
+
     if (document) {
       if (selectedFiles) {
+        setAddFileDialog(false)
         dispatch({
           type: DocumentActionsType.SetFileUploadInProgress,
           payload: true,

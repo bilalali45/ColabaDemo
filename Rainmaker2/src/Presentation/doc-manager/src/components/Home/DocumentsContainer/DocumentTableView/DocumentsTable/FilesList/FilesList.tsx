@@ -90,14 +90,14 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
                         )
 
                 }
-                {isDragging && !draggingSelf &&
+                {/* {isDragging && !draggingSelf &&
                     <li
 
                         className="drag-wrap"
                     >
                         <p>Drop Here</p>
                     </li>
-                }
+                } */}
             </ul>
 
         </div>

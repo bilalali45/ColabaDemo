@@ -27,7 +27,7 @@ export class PDFThumbnails extends Viewer {
         this.instance?.setViewState(state => state.set("currentPageIndex", page));
     }
 
-    static getFileDataToView = async (file: any) => {
+    static getFileDataToView = async (file: any, dispatch:Function) => {
         let buffer = await DocumentActions.getFileToView(
             file.id,
             file.fromRequestId,
@@ -35,7 +35,8 @@ export class PDFThumbnails extends Viewer {
             file.fromFileId,
             file.isFromCategory, 
             file.isFromWorkbench, 
-            false
+            false,
+            dispatch
 
         );
 
@@ -56,7 +57,7 @@ export class PDFThumbnails extends Viewer {
         // }
 
         let isPDF:boolean = fileData.fileName?.includes('.pdf')
-        let buffer = await PDFThumbnails.getFileDataToView(fileData);
+        let buffer = await PDFThumbnails.getFileDataToView(fileData, dispatch);
         file = await ViewerTools.convertImageToPDF(buffer, true, fileData, isPDF );
 
         try {

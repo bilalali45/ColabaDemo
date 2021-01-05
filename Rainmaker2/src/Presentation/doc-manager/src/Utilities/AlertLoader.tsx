@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Store } from '../Store/Store';
 
 type AlertLoaderprops = {
   width?: any,
@@ -8,6 +9,9 @@ type AlertLoaderprops = {
   content?: any
 }
 export const AlertLoader = ({ width, height, containerHeight, content, hasBG }: AlertLoaderprops) => {
+  const { state, dispatch } = useContext(Store);
+  const { fileProgress }: any = state.viewer;
+
 
   const DocIcon = () => {
     return (
@@ -89,6 +93,12 @@ export const AlertLoader = ({ width, height, containerHeight, content, hasBG }: 
     <div className="n-content">
       {content?content:"Loading..."}
     </div>
+    {console.log("MArk",fileProgress)}
+    <div
+            data-testid="upload-progress-bar"
+            className="progress-upload"
+            style={{ width: fileProgress + "%" }}
+          >{fileProgress}</div>
   </div>
 </div>
 

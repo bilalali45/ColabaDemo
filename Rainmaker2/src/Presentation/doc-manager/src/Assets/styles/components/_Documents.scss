@@ -49,7 +49,7 @@
         }
 
         .dm-dt-tr {
-            padding-bottom: 10px;
+            padding-bottom: 10px; position: relative;
 
             &:last-child {
                 padding-bottom: 20px;
@@ -226,6 +226,16 @@
                         color: color('primary');
                         cursor: pointer;
                     }
+                }
+            }
+
+            .abc{
+                position:absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 100; border: 2px dashed color('primary'); 
+                display: flex; justify-content: center; align-items: center; background: #ffffffe0;
+                span{
+                    color: color('primary'); pointer-events: none;
+                    font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
+                    margin: 0;
                 }
             }
         }

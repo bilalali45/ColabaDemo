@@ -5,6 +5,11 @@ using System.Collections.Generic;
 
 namespace DocumentManagement.Model
 {
+    public class DocumentStatusQuery
+    {
+        public string status { get; set; }
+
+    }
     public enum SyncToBytePro
     {
         Off=0,

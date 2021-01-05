@@ -150,6 +150,7 @@ namespace DocumentManagement.Service
 
         public async Task<bool> Delete(AdminDeleteModel model, int tenantId, IEnumerable<string> authHeader)
         {
+            /*
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
 
             UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
@@ -184,12 +185,7 @@ namespace DocumentManagement.Service
                                                                     new BsonDocument()
                                                                     {
                                                                         { "id", BsonObjectId.Create(model.docId) }
-                                                                    }/*,
-                                                                    new BsonDocument()
-                                                                    {
-                                                                      { "status", DocumentStatus.BorrowerTodo}
-
-                                                                    }*/
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -220,6 +216,115 @@ namespace DocumentManagement.Service
                     new JsonArrayFilterDefinition<Entity.Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
                 }
             });
+            */
+            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+             @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(model.id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                     @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                     @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(model.requestId).ToJson() + @"
+                            }
+                        }",
+                     @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                      @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(model.docId).ToJson() + @"
+                            }
+                        }",
+
+                     @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                                ""status"": ""$requests.documents.status""
+                            }
+                        }"
+             ));
+            UpdateResult result = new UpdateResult.Acknowledged(0,0,BsonNull.Value);
+            while (await asyncCursor.MoveNextAsync())
+            {
+                foreach (var current in asyncCursor.Current)
+                {
+                    var query = BsonSerializer.Deserialize<DocumentStatusQuery>((BsonDocument)current);
+
+                    if (query.status == DocumentStatus.BorrowerTodo)
+                    {
+                        result = await collection.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "_id", BsonObjectId.Create(model.id) },
+                            { "tenantId", tenantId}
+                        }, new BsonDocument()
+                        {
+                            { "$set", new BsonDocument()
+                                {
+                                    { "requests.$[request].documents.$[document].status", DocumentStatus.Deleted}
+                                }
+                            }
+                        }, new UpdateOptions()
+                        {
+                            ArrayFilters = new List<ArrayFilterDefinition>()
+                            {
+                                new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                                new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
+                            }
+                        });
+                    }
+                    else if(query.status==DocumentStatus.Completed || query.status == DocumentStatus.Draft || query.status == DocumentStatus.ManuallyAdded || query.status == DocumentStatus.PendingReview)
+                    {
+                        result = await collection.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "_id", BsonObjectId.Create(model.id) },
+                            { "tenantId", tenantId}
+                        }, new BsonDocument()
+                        {
+                            { "$set", new BsonDocument()
+                                {
+                                    { "requests.$[request].documents.$[document].isMcuVisible", false}
+                                }
+                            }
+                        }, new UpdateOptions()
+                        {
+                            ArrayFilters = new List<ArrayFilterDefinition>()
+                            {
+                                new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                                new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
+                            }
+                        });
+                    }
+                    else if (query.status == DocumentStatus.Started)
+                    {
+                        result = await collection.UpdateOneAsync(new BsonDocument()
+                        {
+                            { "_id", BsonObjectId.Create(model.id) },
+                            { "tenantId", tenantId}
+                        }, new BsonDocument()
+                        {
+                            { "$set", new BsonDocument()
+                                {
+                                    { "requests.$[request].documents.$[document].isMcuVisible", false},
+                                    { "requests.$[request].documents.$[document].status", DocumentStatus.Completed}
+                                }
+                            }
+                        }, new UpdateOptions()
+                        {
+                            ArrayFilters = new List<ArrayFilterDefinition>()
+                            {
+                                new JsonArrayFilterDefinition<Request>("{ \"request.id\": "+new ObjectId(model.requestId).ToJson()+"}"),
+                                new JsonArrayFilterDefinition<Request>("{ \"document.id\": "+new ObjectId(model.docId).ToJson()+"}")
+                            }
+                        });
+                    }
+                }
+            }
 
             if (result.ModifiedCount == 1)
             {
@@ -298,9 +403,10 @@ namespace DocumentManagement.Service
                 {
                     foreach (var current in asyncCursorDocumentDraft.Current)
                     {
-                        if (query.isMcuVisible != false)
+                        query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                        if (query.isMcuVisible == false)
                         {
-                            query = BsonSerializer.Deserialize<RequestIdQuery>(current);
+                            query = new RequestIdQuery();
                         }
                     }
                 }

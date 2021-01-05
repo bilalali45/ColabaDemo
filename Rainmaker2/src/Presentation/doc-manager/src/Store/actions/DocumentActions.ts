@@ -103,7 +103,8 @@ export default class DocumentActions {
         foundFirstFile.fileId, 
         false,
         true, 
-        false
+        false,
+        dispatch
       );
 
 
@@ -122,7 +123,8 @@ export default class DocumentActions {
 
 
 
-  static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory:boolean, isFromWorkbench:boolean, isFromTrash:boolean) {
+  static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory:boolean, isFromWorkbench:boolean, isFromTrash:boolean, dispatch:Function) {
+    
     await DocumentActions.documentViewCancelToken.cancel();
     DocumentActions.documentViewCancelToken = Axios.CancelToken.source();
     let url = Endpoints.Document.GET.viewDocument(
@@ -132,6 +134,7 @@ export default class DocumentActions {
       fileId
     );
 
+    let downloadProgress  = 0;
     const authToken = LocalDB.getAuthToken();
     try {
       const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
@@ -139,7 +142,27 @@ export default class DocumentActions {
         responseType: 'blob',
         headers: {
           Authorization: `Bearer ${authToken}`
-        }
+        },
+        onDownloadProgress: (e) => {
+          let p = Math.floor((e.loaded / e.total) * 100);
+          downloadProgress = p;
+          if (p === 100) {
+            dispatch({
+              type: ViewerActionsType.SetIsLoading,
+              payload: false
+          })
+          dispatch({
+            type: ViewerActionsType.SetFileProgress,
+            payload: 0,
+          });
+
+          }
+
+          dispatch({
+            type: ViewerActionsType.SetFileProgress,
+            payload: downloadProgress,
+          });
+         },
       });
 
       let fileData={
@@ -197,7 +220,7 @@ export default class DocumentActions {
 
     let url = Endpoints.Document.POST.delDocCategory();
     try {
-      let res: AxiosResponse = await Http.post(
+      let res: AxiosResponse = await Http.put(
         url,
         {
           id: id,
@@ -336,6 +359,10 @@ export default class DocumentActions {
             if (p === 100) {
               selectedFile.uploadStatus = "done";
 
+              dispatchProgress({
+                type: ViewerActionsType.SetFileProgress,
+                payload: 0,
+              });
             }
 
             let allDocs = documents.map((doc: any) => {
@@ -349,7 +376,6 @@ export default class DocumentActions {
               type: DocumentActionsType.SetDocumentItems,
               payload: allDocs,
             });
-
 
           },
         },
@@ -676,6 +702,11 @@ export default class DocumentActions {
             selectedFile.uploadProgress = p;
             if (p === 100) {
               selectedFile.uploadStatus = "done";
+              dispatchProgress({
+                type: ViewerActionsType.SetIsSaving,
+                payload: false,
+              });
+              
             }
 
             const docFiles = currentDoc?.files?.map((docFile: any) => {
@@ -690,6 +721,10 @@ export default class DocumentActions {
               payload: currentDoc
             });
 
+            dispatchProgress({
+              type: ViewerActionsType.SetFileProgress,
+              payload: p,
+            });
           },
         },
         {
@@ -749,6 +784,11 @@ export default class DocumentActions {
             selectedFile.uploadProgress = p;
             if (p === 100) {
               selectedFile.uploadStatus = "done";
+              dispatchProgress({
+                type: ViewerActionsType.SetIsSaving,
+                payload: false,
+              });
+              
             }
             const docFiles = files?.map((docFile: any) => {
               if (docFile.fileId === DocumentActions.nonExistentFileId) {
@@ -762,6 +802,10 @@ export default class DocumentActions {
                 payload: docFiles
               });
             
+              dispatchProgress({
+                type: ViewerActionsType.SetFileProgress,
+                payload: p,
+              });
           },
         },
         {
@@ -823,6 +867,11 @@ export default class DocumentActions {
             selectedFile.uploadProgress = p;
             if (p === 100) {
               selectedFile.uploadStatus = "done";
+              dispatchProgress({
+                type: ViewerActionsType.SetIsSaving,
+                payload: false,
+              });
+              
             }
 
             const docFiles = files?.map((docFile: any) => {
@@ -834,6 +883,10 @@ export default class DocumentActions {
             dispatchProgress({
               type: DocumentActionsType.AddFileToWorkbench,
               payload: docFiles
+            });
+            dispatchProgress({
+              type: ViewerActionsType.SetFileProgress,
+              payload: p,
             });
           }
 
@@ -892,11 +945,16 @@ export default class DocumentActions {
         file.id, 
         true, 
         false, 
-        false
+        false,
+        dispatch
       );
         let currentFile = new CurrentInView(document.id, f, this.getFileName(file), false, file.id);
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+        dispatch({
+          type: ViewerActionsType.SetFileProgress,
+          payload: 0,
+        });
     
   }
 

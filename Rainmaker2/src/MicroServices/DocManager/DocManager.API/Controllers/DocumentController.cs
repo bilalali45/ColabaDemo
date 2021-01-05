@@ -54,7 +54,7 @@ namespace DocManager.API.Controllers
             var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             return Ok(await documentService.SaveCategoryAnnotations(saveCategoryAnnotations, tenantId));
         }
-
+        /*
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete(DeleteModel deleteModel)
         {
@@ -63,7 +63,7 @@ namespace DocManager.API.Controllers
             await rainmakerService.UpdateLoanInfo(null,deleteModel.id, Request.Headers["Authorization"].Select(x => x.ToString()));
             return Ok(res);
         }
-
+        */
         [HttpPost("[action]")]
         public async Task<IActionResult> DeleteCategoryFile(DeleteCategoryFile deleteModel)
         {

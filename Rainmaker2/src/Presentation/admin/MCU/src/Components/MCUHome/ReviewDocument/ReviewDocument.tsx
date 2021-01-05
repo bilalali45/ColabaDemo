@@ -75,6 +75,15 @@ export const ReviewDocument = () => {
     []
   );
 
+  useEffect(()=>{
+    if(currentDocument){
+      const { id, requestId, docId, files } = currentDocument;
+      getDocumentForView(id, requestId, docId, files[currentFileIndex].id);
+    }
+    
+  },[MCUName])
+
+
   const moveNextFile = useCallback(
     async (
       index: number,
@@ -529,6 +538,7 @@ export const ReviewDocument = () => {
                   }
                   fileViewd={fileViewd}
                   documentViewLoading={loading || acceptRejectLoading}
+                  setMCUName={setMCUName}
                 />
               </aside>
             )}

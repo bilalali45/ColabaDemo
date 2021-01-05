@@ -28,6 +28,8 @@ export enum ViewerActionsType {
     SetIsNeedListLocked = "SET_IS_NEED_LIST_LOCKED",
     SetSelectedFileData = "SET_SELECTED_FILE_DATA",
     SetIsLoading = "SET_IS_LOADING",
+    SetIsSaving = "SET_IS_SAVING",
+    SetFileProgress = "SET_FILE_PROGRESS",
     SetShowingConfirmationAlert = "SET_SHOWING_CONFIRMATION_ALERT",
     SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED",
     SetSaveFile="SET_SAVE_FILE",
@@ -44,6 +46,8 @@ export type ViewerType = {
     isNeedListLocked: NeedListLock;
     selectedFileData: SelectedFile;
     isLoading: boolean;
+    isSaving:boolean;
+    fileProgress:number;
     showingConfirmationAlert: boolean;
     SetFileToChangeWhenUnSaved: FileToChange,
     SaveCurrentFile:boolean,
@@ -60,6 +64,8 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetIsNeedListLocked]: NeedListLock;
     [ViewerActionsType.SetSelectedFileData]: SelectedFile;
     [ViewerActionsType.SetIsLoading]: boolean;
+    [ViewerActionsType.SetIsSaving]: boolean;
+    [ViewerActionsType.SetFileProgress]: number;
     [ViewerActionsType.SetShowingConfirmationAlert]: boolean;
     [ViewerActionsType.SetFileToChangeWhenUnSaved]: FileToChange;
     [ViewerActionsType.SetSaveFile]:boolean;
@@ -113,6 +119,20 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
                 ...state,
                 isLoading: payload
             };
+        case ViewerActionsType.SetIsSaving:
+
+            return {
+                ...state,
+                isSaving: payload
+            };
+
+        case ViewerActionsType.SetFileProgress:
+
+            return {
+                ...state,
+                fileProgress: payload
+            };
+            
         case ViewerActionsType.SetShowingConfirmationAlert:
             return {
                 ...state,

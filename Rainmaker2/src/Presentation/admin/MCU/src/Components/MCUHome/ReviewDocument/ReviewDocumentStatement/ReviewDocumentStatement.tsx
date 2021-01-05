@@ -216,7 +216,8 @@ export const ReviewDocumentStatement = ({
   acceptDocument,
   rejectDocument,
   documentViewLoading,
-  fileViewd
+  fileViewd, 
+  setMCUName
 }: {
   moveNextFile: Function;
   currentDocument: NeedList;
@@ -225,6 +226,7 @@ export const ReviewDocumentStatement = ({
   rejectDocument: (rejectMessage: string) => void;
   documentViewLoading: boolean;
   fileViewd: boolean;
+  setMCUName:Function
 }) => {
   const [documentFiles, setDocumentFiles] = useState<FileType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -491,6 +493,7 @@ export const ReviewDocumentStatement = ({
                     username={username}
                     allowFileRenameMCU={allowFileRenameMCU}
                     getMcuNameUpdated={getMcuNameUpdated}
+                    setMCUName={setMCUName}
                   />
                 ))
               ) : (

@@ -49,12 +49,13 @@
             background: color('colorgray');
             position: relative;
             display: flex;flex-direction: column;
-            ul {
+            .v-thumb-wrap {
                 padding: 30px 20px;
                 max-height: 100%;
                 overflow: auto;
                 @include scrollbar(6,6);
                 &::-webkit-scrollbar-thumb {background-color: #bbb9b9;}
+            ul {
                 li {
                     text-align: center;
                     margin-bottom: 5px;
@@ -113,6 +114,7 @@
                     }
                 }
             }
+        }
             .directionGuide{
                 background: #ccc;text-align: center;
                 svg{width: 40px; height: 40px; fill:#aaa;}
@@ -197,7 +199,17 @@
         width: 100%;
         }
 
-
+      .progress-upload {
+    background: color('primary');
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    transition: 0.5s all ease-in-out;
+    text-indent: -999999em;
+    overflow: hidden;
+    font-size: 0px;
+}
     }
 }
 

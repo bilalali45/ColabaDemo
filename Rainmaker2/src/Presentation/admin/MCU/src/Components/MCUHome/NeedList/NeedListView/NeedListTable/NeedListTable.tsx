@@ -173,7 +173,8 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         <div>
           <div className="list-remove-alert">
             <span className="list-remove-text">
-              Remove this document from Needs List?
+            Are you sure you want to delete this document type? 
+              {(data.status === 'Borrower to do' || data.status === 'Started')?  " This item will disappear from the borrower's Needs List.": null}
             </span>
             <div className="list-remove-options">
               <button
@@ -222,7 +223,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           >
             Details
           </button>
-          {(data.status === 'Borrower to do' || data.status === 'Manually added') && !count ? (
+          { !count ? (
             deleteRequestSent && currentItem === data ? (
               <span className="btnloader">
                 <Spinner size="sm" animation="border" role="status">

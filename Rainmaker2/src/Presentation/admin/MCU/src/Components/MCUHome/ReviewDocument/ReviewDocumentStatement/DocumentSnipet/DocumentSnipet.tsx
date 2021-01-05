@@ -21,7 +21,8 @@ export const DocumentSnipet = ({
   username,
   allowFileRenameMCU,
   getMcuNameUpdated,
-  isCurrent
+  isCurrent,
+  setMCUName
 }: {
   index: number;
   moveNextFile: (index: number, fileId: string, clientName: string, mcuName: string) => void;
@@ -36,10 +37,12 @@ export const DocumentSnipet = ({
   isRead: boolean;
   username: string;
   isCurrent: boolean;
+  setMCUName:Function;
   allowFileRenameMCU: (
     filename: string,
     fileId: string,
-    addToList?: boolean
+    addToList?: boolean,
+    
   ) => boolean;
   getMcuNameUpdated: (fileId: string) => string;
 }) => {
@@ -127,6 +130,7 @@ export const DocumentSnipet = ({
 
           setMCUNamePreviousName(() => newNameWithFileExtension);
           setRenameMCUName(() => newNameWithFileExtension);
+          setMCUName(newNameWithFileExtension)
         } catch (error) {
           //swallod error because it should not update
 

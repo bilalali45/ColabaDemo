@@ -31,8 +31,8 @@ export const RenameFile = ({
     { fileId: string; mcuName: string }[]
   >([]);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, importedFileIds }: any = state.documents;
-  const { currentFile }: any = state.viewer;
+  const { currentDoc, importedFileIds,documentItems }: any = state.documents;
+  const { currentFile, selectedFileData }: any = state.viewer;
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
   useEffect(() => {
@@ -205,6 +205,23 @@ export const RenameFile = ({
   };
 
 
+  const showingNewNameInList = (newName:string)=>{
+    
+    newName = newName+"|"
+        let allDocs = documentItems.map((doc:any)=>{
+          doc.files.map((file:any)=>{
+            if(file.id === selectedFileData.fileId){
+              file.mcuName && file.mcuName.length? file.mcuName = newName : file.clientName = newName
+              return file
+            }
+
+            return file
+          })
+          return doc
+        })
+
+        dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
+      }
 
   const eventBubblingHandler = (
     event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>
@@ -270,7 +287,7 @@ export const RenameFile = ({
 
     // Here we won't be saving name to list insdie ReviewDocumentStatement.tsx, its just for checking
     // We will only save name in list onBlur or onEnter events.
-    const filenameAlreadyInList = allowFileRenameMCU(value, currentFile.id, false);
+    const filenameAlreadyInList = allowFileRenameMCU(value, currentFile?.id, false);
 
     if (filenameAlreadyInList) {
       setFilenameUnique(false);
@@ -330,7 +347,7 @@ export const RenameFile = ({
             type="text"
             value={renameMCUName}
             onBlur={(event) => onBlur(renameMCUName.trim(), event)}
-            onChange={(event) => validateFilename(event.target.value)}
+            onChange={(event) =>{showingNewNameInList(event.target.value); validateFilename(event.target.value)}}
             onClick={(event) => event.stopPropagation()}
             onKeyDown={(event) => onKeyDown(event, renameMCUName.trim())}
           />

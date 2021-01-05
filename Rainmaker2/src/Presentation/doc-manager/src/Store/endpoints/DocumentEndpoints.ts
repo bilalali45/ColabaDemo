@@ -12,7 +12,7 @@ export class DocumentEndpoints {
         filesAddedToCategory: ()=> `/api/DocManager/Request/submit`,
         rename:()=>`/api/documentmanagement/document/mcurename`,
         reassignDoc: ()=> `/api/DocManager/Document/MoveFromoneCategoryToAnotherCategory`,
-        delDocCategory: ()=> `/api/DocManager/Document/Delete`,
+        delDocCategory: ()=> `/api/documentmanagement/admindashboard/delete`,
         moveFromCategoryToWorkBench: ()=> `/api/DocManager/Document/MoveFromCategoryToWorkBench`,
         moveFromWorkBenchToCategory: ()=> `/api/DocManager/Workbench/MoveFromWorkBenchToCategory`,
         moveFromTrashToCategory: ()=> `/api/DocManager/Trash/MoveFromTrashToCategory`,

@@ -1,5 +1,6 @@
 import PSPDFKit from "pspdfkit";
 import { FileUpload } from "./helpers/FileUpload";
+import { Rename } from "./helpers/Rename";
 import { Viewer } from "./Viewer";
 
 export class PDFActions extends Viewer {
@@ -58,17 +59,17 @@ export class PDFActions extends Viewer {
             await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 
                 if (pageList.toJS().length) {
-    
+
                     return Array.from(pageList.toArray()).map((annotation: any) => (
                         // Viewer.instance.update(annotation.set("noView", false))
-                             Viewer.instance.updateAnnotation(annotation)
+                        Viewer.instance.updateAnnotation(annotation)
                     )
-    
+
                     )
                 }
                 else
                     return Promise.resolve()
-    
+
             }).flat())
             return res
         }
@@ -115,7 +116,7 @@ export class PDFActions extends Viewer {
 
                 return Array.from(pageList.toArray()).map((annotation: any) => (
                     // Viewer.instance.update(annotation.set("noView", false))
-                         Viewer.instance.updateAnnotation(annotation)
+                    Viewer.instance.updateAnnotation(annotation)
                 )
 
                 )
@@ -124,7 +125,7 @@ export class PDFActions extends Viewer {
                 return Promise.resolve()
 
         }).flat())
-        
+
 
         console.timeEnd("completeExport")
         return file;
@@ -132,9 +133,9 @@ export class PDFActions extends Viewer {
 
     }
 
-    static async createNewFileFromThumbnail(pageIndex: number) {
+    static async createNewFileFromThumbnail(pageIndexes: any[], currentFile: any, files: any[]) {
 
-        const pagesAnnotations = await Viewer.instance.getAnnotations(pageIndex)
+        const pagesAnnotations = await Viewer.instance.getAnnotations(Number(pageIndexes[0]))
 
         await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 
@@ -142,9 +143,7 @@ export class PDFActions extends Viewer {
 
                 return Array.from(pageList.toArray()).map((annotation: any) => (
                     Viewer.instance.update(annotation.set("noView", true))
-                )
-
-                )
+                ))
             }
             else
                 return Promise.resolve()
@@ -156,7 +155,7 @@ export class PDFActions extends Viewer {
             buffer = await this.instance.exportPDFWithOperations([
                 {
                     type: "keepPages",
-                    pageIndexes: [+pageIndex]
+                    pageIndexes: pageIndexes.map(pi => Number(pi))
                 }
             ], null);
         }
@@ -164,17 +163,23 @@ export class PDFActions extends Viewer {
             console.log(error)
         }
         const blob = new Blob([buffer], { type: "application/pdf" });
-        let file = new File([blob], FileUpload.getFileNameByDate(), { lastModified: Date.now(), type: "application/pdf" });
+        let newName = currentFile.name;
 
+        if (files?.length) {
+            currentFile.clientName = newName;
+            let file = new File([blob], `${newName}`, { lastModified: Date.now(), type: "application/pdf" });
+            currentFile.file = file;
+            newName = Rename.rename(files, currentFile).clientName;
+        }
+        let file = new File([blob], `${newName}`, { lastModified: Date.now(), type: "application/pdf" });
 
         await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 
             if (pageList.toJS().length) {
 
                 return Array.from(pageList.toArray()).map((annotation: any) => (
-                         Viewer.instance.updateAnnotation(annotation)
+                    Viewer.instance.updateAnnotation(annotation)
                 )
-
                 )
             }
             else

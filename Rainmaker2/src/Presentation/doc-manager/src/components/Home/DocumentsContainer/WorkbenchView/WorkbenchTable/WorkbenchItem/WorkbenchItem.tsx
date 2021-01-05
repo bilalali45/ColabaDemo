@@ -189,6 +189,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
     }
     dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
+
     let f = await DocumentActions.getFileToView(
       file?.id,
       nonExistentFileId,
@@ -196,12 +197,17 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       file.fileId,
       false,
       true,
-      false
+      false,
+      dispatch
     );
 
     let currentFile = new CurrentInView(file.id, f, getFileName(), true, file.fileId);
     dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+    dispatch({
+      type: ViewerActionsType.SetFileProgress,
+      payload: 0,
+    });
   }
 
 

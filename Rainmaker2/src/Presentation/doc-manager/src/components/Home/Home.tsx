@@ -35,7 +35,7 @@ export const Home = () => {
   const isNeedListLocked = viewer?.isNeedListLocked;
 
 
-  const { currentFile, isLoading, isFileChanged, showingConfirmationAlert }: any = state.viewer;
+  const { currentFile, isLoading, isFileChanged, showingConfirmationAlert, isSaving }: any = state.viewer;
 
   useEffect(() => {
 
@@ -82,7 +82,8 @@ export const Home = () => {
         dispatch({ type: DocumentActionsType.SetIsDraggingCurrentFile, payload: false });
       }}>
       {/* {isLoading && <Loader containerHeight={"153px"} />} */}
-      {isLoading && <AlertLoader content="Please wait..." />}
+      {isLoading && <AlertLoader content="Loading File. Please wait..." />}
+      {isSaving && <AlertLoader content="Saving File. Please wait.."/>}
       <div className="c-Home-wrap">
         <div className="c-Home-left">
           <DocumentsContainer />

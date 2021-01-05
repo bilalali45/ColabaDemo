@@ -24,13 +24,13 @@ type DocumentItemType = {
   docInd: number,
   document: DocumentRequest;
   refReassignDropdown: any;
-  setFileClicked:Function;
-  fileClicked:boolean;
-  setOpenReassignDropdown:any;
+  setFileClicked: Function;
+  fileClicked: boolean;
+  setOpenReassignDropdown: any;
   getDocswithfailedFiles: Function;
-  setRetryFile:Function;
-  inputRef:MutableRefObject<HTMLInputElement>,
-  selectedDoc:DocumentRequest,
+  setRetryFile: Function;
+  inputRef: MutableRefObject<HTMLInputElement>,
+  selectedDoc: DocumentRequest,
   retryFile
 };
 
@@ -105,11 +105,15 @@ export const DocumentItem = ({
   };
 
   const onDrophandler = async (e: any) => {
-    if (document.files.find(f => f.id === isDraggingSelf.id)) {
-      return;
+    let file = JSON.parse(e.dataTransfer.getData('file'));
+
+    if (!file.indexes) {
+      if (document.files.find(f => f.id === isDraggingSelf.id)) {
+        return;
+      }
     }
 
-    let file = JSON.parse(e.dataTransfer.getData('file'))
+    console.log(file);
     if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
 
@@ -122,6 +126,7 @@ export const DocumentItem = ({
 
 
     let { isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
+    dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
     if (isFromWorkbench) {
 
       let success = await DocumentActions.moveFromWorkBenchToCategory(
@@ -159,12 +164,13 @@ export const DocumentItem = ({
         fileId: "000000000000000000000000",
         isFromCategory: true
       }
-      let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
-      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, document, importedFileIds);
+
+      let fileData = await PDFActions.createNewFileFromThumbnail(file.indexes, currentFile, document.files);
+      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, document, importedFileIds, file.indexes);
 
       // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
       if (!!success) {
-        await PDFThumbnails.removePages([file.index])
+        await PDFThumbnails.removePages(file.indexes)
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
       }
@@ -184,15 +190,18 @@ export const DocumentItem = ({
       }
 
     }
+    dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
     setShow(true);
   }
 
-  const renderDeleteDocSlider = () => {
+  const renderDeleteDocSlider = (document: DocumentRequest) => {
     return (
       <div className="list-remove-alert">
         <span className="list-remove-text">
-          Remove this document type?
-            </span>
+          Are you sure you want to delete this document type?
+        <br />
+          {(document.status === 'Borrower to do' || document.status === 'Started') ? " This item will disappear from the borrower's Needs List." : null}
+        </span>
         <div className="list-remove-options">
           <button
             onClick={() => {
@@ -298,14 +307,16 @@ export const DocumentItem = ({
 
         </div>
         {confirmDelete &&
-          renderDeleteDocSlider()
+          renderDeleteDocSlider(document)
         }
       </div>
     );
   };
 
   return (
-    <section className={`dm-dt-tr doc-m-cat-list ${draggingOverItem ? 'cat-drag-wrap' : ''}`}
+    <section
+      onMouseLeave={() => setDraggingOverItem(false)}
+      className={`dm-dt-tr doc-m-cat-list`}
       onDragEnter={(e: any) => {
         e.preventDefault();
         setDraggingOverItem(true);
@@ -314,10 +325,7 @@ export const DocumentItem = ({
         e.preventDefault();
         setDraggingOverItem(true);
       }}
-      onDragLeave={(e: any) => {
-        e.preventDefault();
-        setDraggingOverItem(false);
-      }}
+
       onDrop={(e: any) => {
         e.preventDefault();
         onDrophandler(e);
@@ -335,9 +343,14 @@ export const DocumentItem = ({
           getDocswithfailedFiles={getDocswithfailedFiles}
           setOpenReassignDropdown={setOpenReassignDropdown}
           inputRef={inputRef}
-          retryFile = {retryFile}
+          retryFile={retryFile}
         />
       )}
+      {draggingOverItem && !document?.files?.find(f => f?.id == isDraggingSelf?.id) ? <div className="abc"
+        onDragLeave={(e: any) => {
+          e.preventDefault();
+          setDraggingOverItem(false);
+        }}><span>Drop Here</span></div> : ''}
     </section>
   );
 };

@@ -38,6 +38,8 @@ export const DocumentsHeader = () => {
   const refTrashOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
   const { currentDoc, uploadFailedDocs, importedFileIds }: any = state.documents;
+  const selectedfiles: Document[] = currentDoc?.files || null;
+
   const { currentFile, selectedFileData, SaveCurrentFile, DiscardCurrentFile, isFileChanged }: any = state.viewer;
 
   const templateManager: any = state.templateManager;
@@ -189,12 +191,12 @@ export const DocumentsHeader = () => {
         fileId: "000000000000000000000000",
         isFromTrash: true
       }
-      let fileData = await PDFActions.createNewFileFromThumbnail(file.index);
-      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, trashedDoc, importedFileIds);
+      let fileData = await PDFActions.createNewFileFromThumbnail(file.indexes, currentFile, trashedDoc);
+      let success = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, trashedDoc, importedFileIds, file.indexes);
 
       // let saveAnnotation = await AnnotationActions.saveAnnotations(annotationObj,true);
       // if(!!success){
-      await PDFThumbnails.removePages([file.index])
+      await PDFThumbnails.removePages(file.indexes)
       await DocumentActions.getTrashedDocuments(dispatch, importedFileIds)
       dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
       // }

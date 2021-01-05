@@ -40,14 +40,13 @@ export class ViewerTools extends Viewer {
         return { type, id, title, icon, onPress, className }
     }
 
-    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any) {
-        return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
+    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any, pageIndexes?: [number]) {
+        return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds, pageIndexes)
 
     }
-    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any) {
+    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any, pageIndexes? : [number]) {
         let fileId = fileObj.fileId;
-        // if(isFileChanged){
-            console.log(importedFileIds)
+
         if (fileObj.isFromCategory) {
             fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
             
@@ -58,13 +57,17 @@ export class ViewerTools extends Viewer {
             fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
             
         }
-        dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
+        // dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
 
         if (fileId) {
-            await AnnotationActions.saveAnnotations(fileObj, fileId, false)
+            await AnnotationActions.saveAnnotations(fileObj, fileId, false, pageIndexes)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
             dispatch({ type: ViewerActionsType.SetSaveFile, payload: true })
+            dispatch({
+                type: ViewerActionsType.SetFileProgress,
+                payload: 0,
+              });
         }
         return fileId
 
@@ -72,7 +75,7 @@ export class ViewerTools extends Viewer {
 
     static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds:any) {       
         dispatch({
-            type: ViewerActionsType.SetIsLoading,
+            type: ViewerActionsType.SetIsSaving,
             payload: true
         });
 
@@ -80,7 +83,7 @@ export class ViewerTools extends Viewer {
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
-        console.log(currentFile);
+        
         if (!currentFile.name.includes('.pdf')) {
             console.log('in if!!!');
             let newName = `${Rename.removeExt(currentFile.name)}.pdf`;
@@ -113,10 +116,7 @@ export class ViewerTools extends Viewer {
             dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
         }
 
-        dispatch({
-            type: ViewerActionsType.SetIsLoading,
-            payload: false
-        })
+        
         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
         return res;
     }
@@ -125,11 +125,11 @@ export class ViewerTools extends Viewer {
         PDFActions.createPDFWithoutAnnotations(file.name);
     }
 
-    static rotateLeft() {
+    static rotateLeft(indexes: any[]) {
         Viewer.instance.applyOperations([
             {
                 type: "rotatePages",
-                pageIndexes: [0],
+                pageIndexes: indexes.map(i => Number(i)),
                 rotateBy: 90
             }
         ], null);
@@ -287,9 +287,6 @@ export class ViewerTools extends Viewer {
                 await this.addAnnotationToPage(localInstance, fileData)
 
             file = await this.createPDFFileFromImage(localInstance, isPDF, false);
-
-            
-            
 
         } catch (error) {
 

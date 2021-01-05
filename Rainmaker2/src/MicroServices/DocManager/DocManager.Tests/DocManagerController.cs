@@ -254,7 +254,7 @@ namespace DocManager.Tests
             Assert.IsType<OkObjectResult>(result);
 
         }
-
+        /*
         [Fact]
         public async Task TestDelete()
         {
@@ -289,7 +289,7 @@ namespace DocManager.Tests
             Assert.IsType<OkObjectResult>(result);
 
         }
-
+        */
         [Fact]
         public async Task TestSaveCategoryAnnotations()
         {
