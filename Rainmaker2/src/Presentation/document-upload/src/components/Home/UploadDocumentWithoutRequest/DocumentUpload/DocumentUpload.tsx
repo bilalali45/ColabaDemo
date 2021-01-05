@@ -20,6 +20,8 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
   const { currentDoc }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
   let docTitle = currentDoc ? currentDoc.docName : "";
+  const documents: any = state.documents;
+  const submitBtnPressed: any = documents.submitBtnPressed;
   let docMessage = currentDoc?.docMessage
     ? currentDoc.docMessage
     : "Please upload the following documents.";
@@ -57,37 +59,11 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
       fileInput.click();
     }
   };
-  return (
-    <>
-    {currentDoc && (<>
-           <header className={`popup-doc-upload--content-area-header`}>
-           <h2 className="h2" title={docTitle}><span className="text-ellipsis">{docTitle}</span>
-           {currentDoc?.isRejected && (
-                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
-              )}
-          </h2>
-          {/* <div className="doc-note">
-              <p>
-                <i className="fas fa-info-circle"></i>
-                {docMessage?.replace(/<br\s*[\/]?>/gi, "\n")}
-              </p>
-            </div> */}
-         </header>
-          {/* <div className="Doc-head-wrap">
-            <h2 title={docTitle}>
-              <span data-testid="selected-doc-title" className="text-ellipsis">
-                {docTitle}
-              </span>
-              {currentDoc?.isRejected && (
-                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
-              )}
-            </h2>
-            
-          </div> */}
-          </>
-        )}
-    <section  data-testid="document-dropper" className={`Doc-upload ${!selectedfiles?.length ?"pageEmptyUpload":"pageHaveDocUpload" }`} ref={parentRef}>
-      <FileDropper
+  
+  const renderDroperBox = () => {
+    return(
+      <>
+       <FileDropper
         parent={parentRef.current}
         getDroppedFiles={(files) =>
           DocumentUploadActions.updateFiles(
@@ -98,8 +74,7 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
             'WithoutReq'
           )
         }
-      >
-        
+      >     
         <div className="popup-doc-upload--content-area-body">
         {currentDoc && (
           <Fragment>
@@ -132,6 +107,87 @@ export const DocumentUpload = ({setCurrentInview} : DocumentUploadType) => {
         )}
         </div>
       </FileDropper>
+      </>
+    )
+  }
+  
+  const renderWithoutDropper = () => {
+    return(
+      <>      
+        <div className="popup-doc-upload--content-area-body">
+        {currentDoc && (
+          <Fragment>
+            {!selectedfiles?.length ? (
+              <DocumentDropBox
+                getFiles={(files) =>
+                  DocumentUploadActions.updateFiles(
+                    files,
+                    selectedfiles,
+                    dispatch,
+                    setFileLimitError,
+                    'WithoutReq'
+                  )
+                }
+                setFileInput={getFileInput}
+              />
+            ) : (
+              <>
+                <SelectedDocuments
+                  setFiles={setFiles}
+                  fileLimitError={fileLimitError}
+                  setFileLimitError={setFileLimitError}
+                  addMore={showFileExplorer}
+                  setFileInput={getFileInput}
+                  setCurrentInview={setCurrentInview}
+                />
+              </>
+            )}
+          </Fragment>
+        )}
+        </div>
+     
+      </>
+    )
+  }
+  
+  return (
+    <>
+    {currentDoc && (<>
+           <header className={`popup-doc-upload--content-area-header`}>
+           <h2 className="h2" title={docTitle}><span className="text-ellipsis">{docTitle}</span>
+           {currentDoc?.isRejected && (
+                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
+              )}
+          </h2>
+          {/* <div className="doc-note">
+              <p>
+                <i className="fas fa-info-circle"></i>
+                {docMessage?.replace(/<br\s*[\/]?>/gi, "\n")}
+              </p>
+            </div> */}
+         </header>
+          {/* <div className="Doc-head-wrap">
+            <h2 title={docTitle}>
+              <span data-testid="selected-doc-title" className="text-ellipsis">
+                {docTitle}
+              </span>
+              {currentDoc?.isRejected && (
+                <span className="Doc-head-wrap--alert">CHANGES REQUESTED</span>
+              )}
+            </h2>
+            
+          </div> */}
+          </>
+        )}
+    <section  data-testid="document-dropper" className={`Doc-upload ${!selectedfiles?.length ?"pageEmptyUpload":"pageHaveDocUpload" }`} ref={parentRef}>
+    { !submitBtnPressed 
+      ? 
+      renderDroperBox()
+      :
+      renderWithoutDropper()
+    }
+   
+      
       
       {showAlert && <AlertBox hideAlert={() => setshowAlert(false)} />}
     </section>

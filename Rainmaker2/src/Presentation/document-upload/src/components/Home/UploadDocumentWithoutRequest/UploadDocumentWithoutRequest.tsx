@@ -163,6 +163,7 @@ const filterCategoryList = () => {
           file.uploadStatus = "failed";
           console.log("error during file submit", error);
           console.log("error during file submit", error.response);
+          dispatch({type: DocumentsActionType.SubmitButtonPressed, payload:false});
         }
       }
     } 

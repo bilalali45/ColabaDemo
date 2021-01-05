@@ -87,8 +87,8 @@ export const EmailReview = ({
   useEffect(() => {
     if(draftEmail){
       if(isListUpdated){
-        getSelectedEmailTemplate(selectedId.toString());
-        setSelectedEmailTemplate(selectedId.toString());
+        getSelectedEmailTemplate(selectedId?.toString());
+        setSelectedEmailTemplate(selectedId?.toString());
         dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: false})
       }else if(draftEmail.emailTemplateId){
         setDefaultValue(draftEmail);
