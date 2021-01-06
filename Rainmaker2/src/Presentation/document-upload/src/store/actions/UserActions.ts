@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import { Http } from "rainsoft-js";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import LogRocket from 'logrocket';
 const cookies = new Cookies();
 
 export class UserActions {
@@ -40,8 +41,11 @@ export class UserActions {
     try {
       await axios.get('https://reqres.in/api/users?page=2');
       console.log("Third party executed Successfully")
-    } catch (error) {
+    } catch (error) {      
       console.log("Third party Error", error)
+      const errorMessage = "Network Error: Third party Error " + error.message;
+      LogRocket.captureException(new Error(errorMessage));
+      throw "Network Error: Third party Error " + error.message
       return false;
     }
     // Azure Maingateway
@@ -50,6 +54,20 @@ export class UserActions {
       console.log("Azure Maingateway Executed Successfully")
     } catch (error) {
       console.log("Azure Maingateway Error", error)
+      const errorMessage = "Network Error: Azure Maingateway Error " + error.message
+      LogRocket.captureException(new Error(errorMessage));
+      throw errorMessage
+      return false;
+    }
+    // Rainmaker API Maingateway
+    try {
+      await axios.get('https://apigateway.ahcloans.com/api/MainGateway/TestAPI/Test?text=TestGetCallfromAjax');
+      console.log("Rainmaker API Maingateway Executed Successfully")
+    } catch (error) {
+      console.log("Rainmaker API Maingateway Error", error)
+      const errorMessage = "Network Error: Rainmaker API Maingateway Error " + error.message
+      LogRocket.captureException(new Error(errorMessage));
+      throw errorMessage
       return false;
     }
     
