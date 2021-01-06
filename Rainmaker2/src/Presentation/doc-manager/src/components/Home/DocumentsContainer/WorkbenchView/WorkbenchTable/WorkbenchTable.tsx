@@ -137,7 +137,7 @@ export const WorkbenchTable = () => {
 
 
             {isDraggingOver && !draggingSelf && <div className="dropwarp"
-                onDrop={handleOnDrop}
+                // onDrop={handleOnDrop}
                 onDragLeave={(e) => {
 
                     e.preventDefault();
