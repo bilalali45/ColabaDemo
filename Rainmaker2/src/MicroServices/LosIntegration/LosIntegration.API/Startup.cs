@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net.Http;
 using System.Security.Authentication;
+using System.Text;
 using LosIntegration.Service.InternalServices;
 using LosIntegration.Service.InternalServices.Rainmaker;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,8 @@ using URF.Core.EF;
 using URF.Core.EF.Factories;
 using ElmahCore.Mvc;
 using ElmahCore.Sql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LosIntegration.API
 {
@@ -45,7 +48,12 @@ namespace LosIntegration.API
             services.AddControllers();
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=RainMakerCS"));
             csResponse.EnsureSuccessStatusCode();
-            services.AddDbContext<LosIntegration.Data.LosIntegrationContext>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
+
+            var losCsResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=LosCS"));
+            losCsResponse.EnsureSuccessStatusCode();
+            services.AddDbContext<LosIntegration.Data.LosIntegrationContext>(optionsAction: options => options.UseSqlServer(connectionString: AsyncHelper.RunSync(() => losCsResponse.Content.ReadAsStringAsync())));
+
+            //services.AddDbContext<LosIntegration.Data.LosIntegrationContext>(options => options.UseSqlServer(Configuration["LosConnectionString"])); //todo shehroz get from keystore
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<LosIntegration.Data.LosIntegrationContext>, UnitOfWork<LosIntegration.Data.LosIntegrationContext>>();
             services.AddScoped<IMappingService, MappingService>();
@@ -72,7 +80,31 @@ namespace LosIntegration.API
             services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
-         
+
+            #endregion
+
+            #region Authentication Setup
+
+            var keyResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
+            keyResponse.EnsureSuccessStatusCode();
+            var securityKey = AsyncHelper.RunSync(func: () => keyResponse.Content.ReadAsStringAsync());
+            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(configureOptions: options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                                                            {
+                                                                //what to validate
+                                                                ValidateIssuer = true,
+                                                                ValidateAudience = true,
+                                                                ValidateIssuerSigningKey = true,
+                                                                //setup validate data
+                                                                ValidIssuer = "rainsoftfn",
+                                                                ValidAudience = "readers",
+                                                                IssuerSigningKey = symmetricSecurityKey
+                                                            };
+                    });
+
             #endregion
         }
 
@@ -90,6 +122,7 @@ namespace LosIntegration.API
             AppContext.Configure(httpContextAccessor:
                                  app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

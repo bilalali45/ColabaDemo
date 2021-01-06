@@ -80,14 +80,32 @@ namespace LosIntegration.Service.InternalServices
             return await externalOriginatorSendDocumentResponse;
         }
 
-        public async Task<short> GetLoanStatusAsync(string fileDataId)
+
+        public async Task<CallResponse<ApiResponse<LoanFileInfo>>> SendLoanApplicationViaSDK(LoanApplication loanApplication, List<ThirdPartyCode> byteProCodeList)
         {
-            short currentLoanStatus = 0;
-            var response = await this._httpClient.EasyGetAsync<response>(requestUri: $"{_baseUrl}/api/ByteWebConnector/LoanFile/GetLoanStatus?fileDataId={fileDataId}");
+            var sendLoanFileRequest = new SendLoanFileRequest
+                                      {
+                                          LoanApplication = loanApplication,
+                                          LoanRequest = null,
+                                          ThirdPartyCodeList = new ThirdPartyCodeList() { ThirdPartyCodes = byteProCodeList }
+                                      };
+            var response = await _httpClient.EasyPostAsync<ApiResponse<LoanFileInfo>>(requestUri: $"{_baseUrl}/api/ByteWebConnector/LoanFile/SendLoanFileViaSDK",
+                                                                                 content: sendLoanFileRequest,
+                                                                                 attachAuthorizationHeadersFromCurrentRequest: true
+                                                                                );
 
-            return response.ResponseObject.loanStatusId;
 
-            
+            return response;
+        }
+
+        public async Task<CallResponse<ApiResponse<string>>> GetByteLoanStatusNameViaSDK(string byteFileName)
+        {
+            var response = await _httpClient.EasyGetAsync<ApiResponse<string>>(requestUri: $"{_baseUrl}/api/ByteWebConnector/LoanFile/GetLoanStatusNameViaSDK?byteFileName={byteFileName}",
+                                                                                      attachAuthorizationHeadersFromCurrentRequest: true
+                                                                                     );
+
+
+            return response;
         }
 
 

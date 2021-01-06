@@ -150,12 +150,13 @@ namespace ByteWebConnector.API.Controllers
 
                 #region BytePro API Call
 
-                ByteSession = ByteSession.HasValue() ? ByteSession : _byteProService.GetByteProSession();
-                if (!_byteProService.ValidateByteSession(byteSession: ByteSession)) ByteSession = _byteProService.GetByteProSession();
+                //ByteSession = ByteSession.HasValue() ? ByteSession : _byteProService.GetByteProSession();
+                //if (!_byteProService.ValidateByteSession(byteSession: ByteSession)) ByteSession = _byteProService.GetByteProSession();
 
-                var fileData = _byteProService.GetFileData(byteSession: ByteSession,
-                                                           fileDataId: loanApplication.ByteLoanNumber);
-                documentUploadModel.FileName = fileData.FileName;
+                //var fileData = _byteProService.GetFileData(byteSession: ByteSession,
+                //                                           fileDataId: loanApplication.ByteLoanNumber);
+                //documentUploadModel.FileName = fileData.FileName;
+                documentUploadModel.FileName = loanApplication.ByteFileName;
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadRequest: documentUploadModel).ResponseObject;
 

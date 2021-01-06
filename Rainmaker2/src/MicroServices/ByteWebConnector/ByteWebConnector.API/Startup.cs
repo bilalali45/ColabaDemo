@@ -60,7 +60,10 @@ namespace ByteWebConnector.API
 
             #region BWC Context
 
-            services.AddDbContext<BwcContext>(optionsAction: options => options.UseSqlServer(connectionString: Configuration[key: "BWCConnString"]));
+            var bwcCsResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "ServiceAddress:KeyStore:Url"]}/api/keystore/keystore?key=BWCCS"));
+            bwcCsResponse.EnsureSuccessStatusCode();
+            //services.AddDbContext<BwcContext>(optionsAction: options => options.UseSqlServer(connectionString: Configuration[key: "BWCConnString"]));
+            services.AddDbContext<BwcContext>(optionsAction: options => options.UseSqlServer(connectionString: AsyncHelper.RunSync(() => bwcCsResponse.Content.ReadAsStringAsync())));
             services.AddScoped<IRepositoryProvider, RepositoryProvider>(implementationFactory: x => new RepositoryProvider(repositoryFactories: new RepositoryFactories()));
             services.AddScoped<IUnitOfWork<BwcContext>, UnitOfWork<BwcContext>>();
 

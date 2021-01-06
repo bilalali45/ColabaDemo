@@ -13,6 +13,7 @@ using ByteWebConnector.Model.Models.ActionModels.LoanFile;
 using ByteWebConnector.Model.Models.OwnModels;
 using ByteWebConnector.Model.Models.OwnModels.Settings;
 using ByteWebConnector.Model.Models.ServiceRequestModels.ByteApi;
+using ByteWebConnector.Model.Models.ServiceRequestModels.Los;
 using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 using ByteWebConnector.Service.DbServices;
 using Extensions.ExtensionClasses;
@@ -444,7 +445,7 @@ namespace ByteWebConnector.Service.ExternalServices
             return byteFile;
         }
 
-        
+
         public void UpdateLoanFileToByte(ref ByteFile byteFile)
         {
             _logger.LogInformation(message: "ByteFile update call start");

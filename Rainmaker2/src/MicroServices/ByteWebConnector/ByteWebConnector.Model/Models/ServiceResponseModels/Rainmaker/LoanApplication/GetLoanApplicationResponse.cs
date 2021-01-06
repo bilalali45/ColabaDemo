@@ -35,7 +35,7 @@ namespace ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanAppl
         public decimal? MonthlyPi { get; set; } // MonthlyPi
         public decimal? MonthlyMi { get; set; } // MonthlyMi
         public decimal? MonthlyEscrow { get; set; } // MonthlyEscrow
-        public DateTime? ExpectedClosingDate { get; set; } // ExpectedClosingDate
+        public System.DateTime? ExpectedClosingDate { get; set; } // ExpectedClosingDate
         public bool? EverHadAVaLoan { get; set; } // EverHadAVaLoan
         public bool? VaLoanStatusId { get; set; } // VaLoanStatusId
         public bool? FirstTimeHomeBuyer { get; set; } // FirstTimeHomeBuyer
@@ -43,7 +43,7 @@ namespace ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanAppl
         public int? DtiTotal { get; set; } // DtiTotal
         public int? DocTypeId { get; set; } // DocTypeId
         public int? CompletedById { get; set; } // CompletedById
-        public DateTime? SearchDateUtc { get; set; } // SearchDateUtc
+        public System.DateTime? SearchDateUtc { get; set; } // SearchDateUtc
         public int? SessionId { get; set; } // SessionId
         public string FinalXml { get; set; } // FinalXml (length: 1073741823)
         public int EntityTypeId { get; set; } // EntityTypeId
@@ -61,11 +61,14 @@ namespace ByteWebConnector.Model.Models.ServiceResponseModels.Rainmaker.LoanAppl
         public string EncompassId { get; set; } // EncompassId (length: 50)
         public string EncompassNumber { get; set; } // EncompassNumber (length: 50)
         public string ByteLoanNumber { get; set; } // ByteLoanNumber (length: 50)
-        public bool? PostToEncompass { get; set; } // PostToEncompass
         public int? ModifiedBy { get; set; } // ModifiedBy
-        public DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
+        public System.DateTime? ModifiedOnUtc { get; set; } // ModifiedOnUtc
         public int? CreatedBy { get; set; } // CreatedBy
-        public DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
+        public System.DateTime? CreatedOnUtc { get; set; } // CreatedOnUtc
+        public string ByteFileName { get; set; } // ByteFileName (length: 50)
+        public int? MilestoneId { get; set; } // MilestoneId
+        public int? LosMilestoneId { get; set; } // LosMilestoneId
+        public System.DateTime? BytePostDateUtc { get; set; }
     }
 }
 // </auto-generated>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using LosIntegration.Model.Model.ServiceResponseModels;
 
 namespace LosIntegration.Service.InternalServices
 {
@@ -12,5 +13,9 @@ namespace LosIntegration.Service.InternalServices
                                                             int rainmakerApplicationId,
                                                             short byteStatusId,
                                                             string byteFileName);
+
+
+        Task<List<MilestoneMappingResponse>> GetMappingAll(int tenantId,
+                                                           short losId);
     }
 }

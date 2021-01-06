@@ -24,3 +24,12 @@ pspdfkit-lib
 build.zip
 
 Rainmaker2/.idea/
+/Rainmaker2/src/MicroServices/KeyStore/KeyStore.API/Keys.zip
+Rainmaker2/src/Presentation/notifications/.idea/
+Rainmaker2/src/Presentation/document-upload/.idea/
+Rainmaker2/src/Presentation/admin/.idea/admin.iml
+Rainmaker2/src/Presentation/admin/.idea/misc.xml
+Rainmaker2/src/Presentation/admin/.idea/modules.xml
+Rainmaker2/src/Presentation/admin/.idea/vcs.xml
+Rainmaker2/src/Presentation/admin/.idea/workspace.xml
+Rainmaker2/src/Presentation/admin/MCU/.idea/

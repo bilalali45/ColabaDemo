@@ -28,6 +28,7 @@ namespace Rainmaker.Model.ServiceResponseModels.Rainmaker
         public string AbbreviatedName { get; set; }
         public string ScheduleUrl { get; set; }
         public string Logo { get; set; }
+        public string ByteOrganizationCode { get; set; }
 
         //public System.Collections.Generic.ICollection<Activity> Activities { get; set; }
 

@@ -4,6 +4,7 @@ using ByteWebConnector.Model.Models;
 using ByteWebConnector.Model.Models.ActionModels.LoanFile;
 using ByteWebConnector.Model.Models.OwnModels;
 using ByteWebConnector.Model.Models.ServiceRequestModels.ByteApi;
+using ByteWebConnector.Model.Models.ServiceRequestModels.Los;
 using ByteWebConnector.Model.Models.ServiceResponseModels.ByteApi;
 
 namespace ByteWebConnector.Service.ExternalServices

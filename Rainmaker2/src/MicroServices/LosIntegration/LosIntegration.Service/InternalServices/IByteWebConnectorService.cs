@@ -20,6 +20,11 @@ namespace LosIntegration.Service.InternalServices
         Task<CallResponse<ApiResponse<LoanFileInfo>>> SendLoanApplication(LoanApplication loanApplication,
                                                                           LoanRequest loanRequest,
                                                                           List<ThirdPartyCode> byteProCodeList);
-        Task<short> GetLoanStatusAsync(string fileDataId);
+
+        Task<CallResponse<ApiResponse<LoanFileInfo>>> SendLoanApplicationViaSDK(LoanApplication loanApplication,
+                                                                                List<ThirdPartyCode> byteProCodeList);
+
+
+        Task<CallResponse<ApiResponse<string>>> GetByteLoanStatusNameViaSDK(string byteFileName);
     }
 }

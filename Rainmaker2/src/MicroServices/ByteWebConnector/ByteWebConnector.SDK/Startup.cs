@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
+using ByteWebConnector.SDK.Abstraction;
+using ByteWebConnector.SDK.Mismo;
 
 namespace ByteWebConnector.SDK
 {
@@ -29,6 +31,11 @@ namespace ByteWebConnector.SDK
             {
                 options.ConnectionString = elmahKey;
             });
+
+            services.AddScoped<IMismoConverter, MismoConverter34>();
+            services.AddScoped<ITextFileWriter, TextFileWriter>();
+            services.AddScoped<IByteSDKHelper, ByteSDKHelper>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

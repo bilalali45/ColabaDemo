@@ -34,6 +34,7 @@
     <Compile Include="Model\ServiceResponseModels\ByteWebConnector\FileData.cs" />
     <Compile Include="Model\ServiceResponseModels\ByteWebConnector\LoanFileInfo.cs" />
     <Compile Include="Model\ServiceResponseModels\ByteWebConnector\SendSdkDocumentResponse.cs" />
+    <Compile Include="Model\ServiceResponseModels\MilestoneMappingResponse.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\AccountType.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\Acl.cs" />
     <Compile Include="Model\ServiceResponseModels\Rainmaker\Activity.cs" />

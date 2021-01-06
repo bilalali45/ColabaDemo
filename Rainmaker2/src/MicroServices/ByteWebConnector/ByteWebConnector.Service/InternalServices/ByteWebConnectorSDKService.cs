@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using ServiceCallHelper;
 using System.Net.Http;
+using ByteWebConnector.Model.Models.ActionModels.LoanFile;
+using ByteWebConnector.Model.Models.OwnModels;
+using ByteWebConnector.Model.Models.ServiceRequestModels;
 using ByteWebConnector.Model.Models.ServiceRequestModels.ByteWebConnectorSDK;
 
 namespace ByteWebConnector.Service.InternalServices
@@ -42,6 +45,37 @@ namespace ByteWebConnector.Service.InternalServices
                                                                                          true);
 
             return callResponse;
+        }
+
+
+        public ApiResponse<SendLoanApplicationResponse> SendLoanApplicationToByteViaSDK(LoanFileRequest loanFileRequest)
+        {
+            var byteProSettings = _settingService.GetByteProSettings();
+            CreateLoanApplicationRequest content = new CreateLoanApplicationRequest()
+                                                   {
+                                                       ByteProSettings = byteProSettings,
+                                                       LoanFileRequest = loanFileRequest
+                                                   };
+            var byteFileCreateResponse =  this._httpClient.EasyPost<ApiResponse<SendLoanApplicationResponse>>(out var callResponse,
+                                                                                                $"{_baseUrl}/api/ByteWebConnectorSdk/LoanApplication/PostLoanApplicationToByte",
+                                                                                                content,
+                                                                                                true);
+
+            return byteFileCreateResponse;
+        }
+        public ApiResponse<string> GetLoanApplicationStatusNameViaSDK(string byteFileName)
+        {
+            LoanApplicationStatusNameRequest request = new LoanApplicationStatusNameRequest()
+                                                       {
+                                                           ByteFileName = byteFileName,
+                                                           ByteProSettings = _settingService.GetByteProSettings()
+                                                       };
+            var byteFileCreateResponse = this._httpClient.EasyPost<ApiResponse<string>>(out var callResponse,
+                                                                                                             $"{_baseUrl}/api/ByteWebConnectorSdk/LoanApplication/GetLoanApplicationStatusName",
+                                                                                                             content: request,
+                                                                                                             true);
+
+            return byteFileCreateResponse;
         }
     }
 }

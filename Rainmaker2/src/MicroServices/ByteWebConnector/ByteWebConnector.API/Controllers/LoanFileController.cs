@@ -3,9 +3,12 @@ using ByteWebConnector.Model.Models.ActionModels.LoanFile;
 using ByteWebConnector.Model.Models.OwnModels;
 using ByteWebConnector.Model.Models.ServiceRequestModels.Los;
 using ByteWebConnector.Service.ExternalServices;
+using ByteWebConnector.Service.InternalServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Extensions.ExtensionClasses;
+using Microsoft.AspNetCore.Authorization;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ByteWebConnector.API.Controllers
@@ -17,10 +20,12 @@ namespace ByteWebConnector.API.Controllers
         #region Constructor
 
         public LoanFileController(ILogger<LoanFileController> logger,
-                                  IByteProService byteProService)
+                                  IByteProService byteProService
+        , IByteWebConnectorSdkService byteWebConnectorSdkService)
         {
             _logger = logger;
             _byteProService = byteProService;
+            this._sdkService = byteWebConnectorSdkService;
         }
 
         #endregion
@@ -44,6 +49,28 @@ namespace ByteWebConnector.API.Controllers
             apiResponse.Code = ApiResponseStatus.Success;
 
             return Ok(value: apiResponse);
+        }
+
+
+        [Route(template: "[action]")]
+        [HttpPost]
+        [DisableRequestSizeLimit]
+        [Authorize(Roles = "MCU")]
+        public IActionResult SendLoanFileViaSDK(LoanFileRequest loanFileRequest)
+        {
+            var response = this._sdkService.SendLoanApplicationToByteViaSDK(loanFileRequest);
+            return Ok(value: response);
+        }
+
+
+        [Route(template: "[action]")]
+        [HttpGet]
+        [DisableRequestSizeLimit]
+        [Authorize(Roles = "MCU")]
+        public IActionResult GetLoanStatusNameViaSDK([FromQuery]string byteFileName)
+        {
+            var response = this._sdkService.GetLoanApplicationStatusNameViaSDK(byteFileName);
+            return Ok(value: response);
         }
 
         [Route(template: "[action]")]
@@ -78,6 +105,7 @@ namespace ByteWebConnector.API.Controllers
 
         private readonly ILogger<LoanFileController> _logger;
         private readonly IByteProService _byteProService;
+        private readonly IByteWebConnectorSdkService _sdkService;
 
         #endregion
     }

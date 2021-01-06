@@ -2,10 +2,10 @@
 
 namespace ByteWebConnector.SDK.Models
 {
-    public class ApiResponse
+    public class ApiResponse<T>
     {
         public string Status { get; set; }
-        public dynamic Data { get; set; }
+        public T Data { get; set; }
         public string Message { get; set; }
         public string Code { get; set; }
 
@@ -16,12 +16,14 @@ namespace ByteWebConnector.SDK.Models
         }
 
 
-        public static class ApiResponseStatus
-        {
-            public static string Success => "Success";
-            public static string NotFound => "NotFound";
-            public static string Fail => "Fail";
-            public static string Error => "Error";
-        }
+       
+    }
+
+    public class ApiResponseStatus
+    {
+        public const string Success = "Success";
+        public const string NotFound = "NotFound";
+        public const string Fail = "Fail";
+        public const string Error = "Error";
     }
 }

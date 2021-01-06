@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LosIntegration.API.Enums;
 using LosIntegration.Model.Model.ServiceRequestModels.RainMaker;
@@ -20,16 +21,16 @@ namespace LosIntegration.API.Controllers
 {
     [Route(template: "api/LosIntegration/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "MCU,Customer")]
+    [Authorize(Roles = "MCU")]
     public class LoanApplicationController : BaseApiController<LoanApplicationController>
     {
         #region Constructor
 
-        public LoanApplicationController( 
+        public LoanApplicationController(
                                          ILogger<LoanApplicationController> logger,
                                          ILoanApplicationService loanApplicationService,
                                          IByteWebConnectorService byteWebConnectorService,
-                                         IMilestoneService milestoneService ,
+                                         IMilestoneService milestoneService,
                                          ILoanRequestService loanRequestService,
                                          IThirdPartyCodeService thirdPartyCodeService) : base(logger)
         {
@@ -49,38 +50,82 @@ namespace LosIntegration.API.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateLoanStatusFromByte([FromQuery] int loanApplicationId)
         {
-            try { 
-            short byteProLoanStatusId = 0;
-            var loanApplicationDetail = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId: loanApplicationId);
+            try
+            {
+                var loanApplicationDetail = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId: loanApplicationId);
                 if (loanApplicationDetail == null)
                 {
 
 
-                    return NotFound(new {
+                    return NotFound(new
+                    {
                         Message = "Unable to find loanApplicationId=" + loanApplicationId.ToString()
                     });
                 }
                 else
                 {
-                    byteProLoanStatusId = await this._byteWebConnectorService.GetLoanStatusAsync(loanApplicationDetail.ByteLoanNumber);
-                    if (byteProLoanStatusId <= 0)
+                    var statusNameResponse = await this._byteWebConnectorService.GetByteLoanStatusNameViaSDK(loanApplicationDetail.ByteFileName);
+                    if (statusNameResponse == null)
                     {
-                        base._logger.LogWarning($"Loan status return from LOS is not valid. Loan Status : {byteProLoanStatusId}");
-                        return BadRequest(new
-                        {
-                            Message = "Unable to find loanApplicationId=" + loanApplicationId.ToString()
-                        });
+                        throw new Exception("Cannot retrieve loan status response.");
                     }
                     else
                     {
-                        //var loanApplication = _loanApplicationService.GetLoanApplicationWithDetails(loanApplicationId);
-                        var updateRespose = await this.UpdateRainmakerLoanStatus(loanApplicationId, loanApplicationDetail.ByteFileName, byteProLoanStatusId);
-                        return Ok(updateRespose);
+                        if (statusNameResponse.ResponseObject.Status == ApiResponseStatus.Success)
+                        {
+                            var milestoneMappedStatus = await this._milestoneService.GetMappingAll(tenantId: 1,
+                                                                                             losId: 1);
+                            if (milestoneMappedStatus == null || milestoneMappedStatus.Count <= 0)
+                            {
+                                base._logger.LogWarning($"Could not retrieve milestone list from milestone api : {statusNameResponse.ResponseObject.Status}");
+                                return BadRequest(new
+                                                  {
+                                                      Message = "Milestone list is not configured."
+                                                  });
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(statusNameResponse.ResponseObject.Data))
+                                {
+                                    var milestone = milestoneMappedStatus.Where(ms => ms.Name == statusNameResponse.ResponseObject.Data)
+                                                                         .FirstOrDefault();
+                                    if (milestone == null)
+                                    {
+                                        base._logger.LogWarning($"Cannot find matching status name in milestone list. BytePro Status Name {statusNameResponse.ResponseObject.Data}");
+                                        return BadRequest(new
+                                                          {
+                                                              Message = "Milestone is not configured.".ToString()
+                                                          });
+                                    }
+                                    else
+                                    {
+                                        var updateRespose = await this.UpdateRainmakerLoanStatus(loanApplicationId, loanApplicationDetail.ByteFileName, (short)milestone.StatusId);
+                                        return Ok(updateRespose);
+                                    }
+                                }
+                                else
+                                {
+                                    base._logger.LogWarning($"Loan status is not set in BytePro : {statusNameResponse.ResponseObject.Status}");
+                                    return BadRequest(new
+                                                      {
+                                                          Message = "Loan status is not set in external originator."
+                                                      });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            base._logger.LogWarning($"Loan status return from LOS is not valid. Loan Status : {statusNameResponse.ResponseObject.Status}");
+                            return BadRequest(new
+                                              {
+                                                  Message = "Unable to find loanApplicationId=" + loanApplicationId.ToString()
+                                              });
+                        }
                     }
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {
@@ -130,9 +175,12 @@ namespace LosIntegration.API.Controllers
                                                                                        null);
             var byteProCodeList = _thirdPartyCodeService.GetRefIdByThirdPartyId((int)ThirdParty.BytePro);
 
-            var sendLoanApplicationCallResponse = await _byteWebConnectorService.SendLoanApplication(loanApplication: loanApplication,
-                                                                                         loanRequest: loanRequest, byteProCodeList: byteProCodeList);
-            var apiResponse = sendLoanApplicationCallResponse.ResponseObject;
+            var sdkResponse = await _byteWebConnectorService.SendLoanApplicationViaSDK(loanApplication, byteProCodeList);
+
+            //var sendLoanApplicationCallResponse = await _byteWebConnectorService.SendLoanApplication(loanApplication: loanApplication,
+            //                                                                             loanRequest: loanRequest, byteProCodeList: byteProCodeList);
+            var apiResponse = sdkResponse.ResponseObject;
+            //apiResponse = sdkResponse.ResponseObject;
             if (apiResponse.Data != null)
             {
                 var byteResponseFile = apiResponse.Data;
@@ -149,7 +197,7 @@ namespace LosIntegration.API.Controllers
                 _loanApplicationService.UpdateLoanApplication(updateLoanApplicationRequest);
             }
 
-            return sendLoanApplicationCallResponse.ResponseObject;
+            return sdkResponse.ResponseObject;
 
         }
 
@@ -158,7 +206,7 @@ namespace LosIntegration.API.Controllers
         #region Private Fields
         private readonly ILogger<LoanApplicationController> _logger;
         private readonly ILoanApplicationService _loanApplicationService;
-        private readonly IByteWebConnectorService  _byteWebConnectorService;
+        private readonly IByteWebConnectorService _byteWebConnectorService;
         private readonly IMilestoneService _milestoneService;
         private readonly ILoanRequestService _loanRequestService;
         private readonly IThirdPartyCodeService _thirdPartyCodeService;

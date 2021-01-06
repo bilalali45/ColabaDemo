@@ -135,31 +135,31 @@ namespace LosIntegration.API.Controllers
             var file = document.Files.Single(predicate: f => f.Id == request.FileId);
 
             //GetDocument Categories
-            var getCategoriesResponse = Call.Get<List<DocumentCategory>>(httpClient: _httpClient,
-                                                                         endPoint:
-                                                                         $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
-                                                                         request: Request,
-                                                                         attachBearerTokenFromCurrentRequest: true);
-            _logger.LogInformation(message:
-                                   $"DocSync SendFileToExternalOriginator :getCategoriesResponse {getCategoriesResponse} ");
+            //var getCategoriesResponse = Call.Get<List<DocumentCategory>>(httpClient: _httpClient,
+            //                                                             endPoint:
+            //                                                             $"{_configuration[key: "ServiceAddress:DocumentManagement:Url"]}/api/DocumentManagement/BytePro/GetCategoryDocument",
+            //                                                             request: Request,
+            //                                                             attachBearerTokenFromCurrentRequest: true);
+            //_logger.LogInformation(message:
+            //                       $"DocSync SendFileToExternalOriginator :getCategoriesResponse {getCategoriesResponse} ");
 
-            if (!getCategoriesResponse.HttpResponseMessage.IsSuccessStatusCode)
-                return BadRequest(error: "Unable to get all document categories from DocumentManagement");
-            var categories = getCategoriesResponse.ResponseObject;
+            //if (!getCategoriesResponse.HttpResponseMessage.IsSuccessStatusCode)
+            //    return BadRequest(error: "Unable to get all document categories from DocumentManagement");
+            //var categories = getCategoriesResponse.ResponseObject;
 
-            var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
-                                         .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
+            //var documentType = categories.SelectMany(selector: c => c.DocumentTypes)
+            //                             .SingleOrDefault(predicate: dt => dt.DocTypeId == document.TypeId);
 
             ByteDocTypeMapping byteDocTypeMapping = null;
-            if (documentType?.DocType != null)
+            if (document?.DocName != null)
             {
                 byteDocTypeMapping = _byteDocTypeMappingService
-                                     .GetByteDocTypeMappingWithDetails(docType: documentType.DocType,
+                                     .GetByteDocTypeMappingWithDetails(docType: document?.DocName,
                                                                        includes: ByteDocTypeMappingService
                                                                                  .RelatedEntities.ByteDocCategoryMapping)
                                      .SingleOrDefault();
                 _logger.LogInformation(message:
-                                       $"DocSync DocType Mapping  {documentType.DocType} => {byteDocTypeMapping?.ByteDoctypeName} ");
+                                       $"DocSync DocType Mapping  {document?.DocName} => {byteDocTypeMapping?.ByteDoctypeName} ");
             }
 
             if (byteDocTypeMapping == null)

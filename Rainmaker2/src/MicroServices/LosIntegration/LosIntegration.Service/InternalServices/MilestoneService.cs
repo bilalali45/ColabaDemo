@@ -9,6 +9,7 @@ using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using ServiceCallHelper;
 using LosIntegration.Model.Model.ServiceRequestModels.Milestone;
+using LosIntegration.Model.Model.ServiceResponseModels;
 
 namespace LosIntegration.Service.InternalServices
 {
@@ -27,7 +28,6 @@ namespace LosIntegration.Service.InternalServices
         }
         public async Task<IActionResult> SyncRainmakerLoanStatusFromByte(int tenantId, int rainmakerApplicationId, short byteStatusId, string byteFileName)
         {
-            //https://localhost:5001/api/milestone/milestone/SetLosMilestone
             LosMilestoneRequest content = new LosMilestoneRequest() {
                 loanId = byteFileName,
                 losId = 1,
@@ -36,6 +36,14 @@ namespace LosIntegration.Service.InternalServices
                 tenantId = 1
             };
             var response = await this._httpclient.EasyPostAsync<IActionResult>(requestUri: $"{this._baseUrl}/api/milestone/milestone/SetLosMilestone", content: content, attachAuthorizationHeadersFromCurrentRequest: true);
+            return response.ResponseObject;
+        }
+
+
+        public async Task<List<MilestoneMappingResponse>> GetMappingAll(int tenantId,
+                                                                        short losId)
+        {
+            var response = await this._httpclient.EasyGetAsync<List<MilestoneMappingResponse>>(requestUri: $"{this._baseUrl}/api/milestone/milestone/GetMappingAll?tenantId={tenantId}&losId={losId}", attachAuthorizationHeadersFromCurrentRequest: true);
             return response.ResponseObject;
         }
 

@@ -94,6 +94,8 @@ namespace Rainmaker.API.Controllers
                                   LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes |
                                   LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences_LoanAddress |
                                   LoanApplicationService.RelatedEntities.Borrower_BorrowerAccount_AccountType |
+                                  LoanApplicationService.RelatedEntities.Borrower_OtherIncomes_IncomeType |
+                                  LoanApplicationService.RelatedEntities.Borrower_BorrowerAssets |
                                   LoanApplicationService.RelatedEntities.Borrower_LoanContact_Ethnicity;
 
 
