@@ -20,6 +20,7 @@ export const WorkbenchTable = () => {
 
     const [draggingSelf, setDraggingSelf] = useState<boolean>(false);
     const [draggingItem, setDraggingItem] = useState<boolean>(false);
+    const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
     const refReassignDropdownWB = useRef<any>(null);
     const { state, dispatch } = useContext(Store);
     const { currentFile, isFileChanged }: any = state.viewer;
@@ -42,6 +43,7 @@ export const WorkbenchTable = () => {
     }
 
     const handleOnDrop = async (e: any) => {
+        setIsDraggingOver(false);
         let file: any = JSON.parse(e.dataTransfer.getData('file'));
 
         if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
@@ -58,14 +60,14 @@ export const WorkbenchTable = () => {
             setDraggingItem(false);
             return;
         }
-       
-        let {isFromThumbnail, isFromCategory, isFromTrash} = file
-        
+
+        let { isFromThumbnail, isFromCategory, isFromTrash } = file
+
         dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
-        if(isFromCategory){
-            let {id, fromRequestId, fromDocId, fromFileId} : any = file;
-            let newWorkBench = await DocumentActions.moveFileToWorkbench({id, fromRequestId, fromDocId, fromFileId}, false);
-            if(newWorkBench){
+        if (isFromCategory) {
+            let { id, fromRequestId, fromDocId, fromFileId }: any = file;
+            let newWorkBench = await DocumentActions.moveFileToWorkbench({ id, fromRequestId, fromDocId, fromFileId }, false);
+            if (newWorkBench) {
                 await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
 
                 await DocumentActions.getDocumentItems(dispatch, importedFileIds)
@@ -115,8 +117,17 @@ export const WorkbenchTable = () => {
     return (
 
         <div
-            onDragEnd={() => setDraggingSelf(false)}
-            onDragOver={(e) => e.preventDefault()}
+            onMouseLeave={() => setDraggingSelf(false)}
+            onDragEnd={() => {
+                setDraggingSelf(false);
+                // setIsDraggingOver(false)
+            }}
+            onDragOver={(e) => {
+                e.preventDefault();
+                setIsDraggingOver(true)
+            }}
+
+
             onDrop={handleOnDrop}
             id="c-WorkbenchTable"
             className="dm-workbenchTable c-WorkbenchTable">
@@ -124,16 +135,30 @@ export const WorkbenchTable = () => {
                 <div className="dm-wb-thead-left">Document</div>
             </div>
 
-            {isDragging && !draggingSelf && <div className="isDragging-wrap"><div className="drag-wrap"><p>Drop Here</p></div></div>}
+
+            {isDraggingOver && !draggingSelf && <div className="dropwarp"
+                onDrop={handleOnDrop}
+                onDragLeave={(e) => {
+
+                    e.preventDefault();
+                    setIsDraggingOver(false);
+                    setDraggingSelf(false);
+                }}
+                onMouseLeave={(e) => {
+                    e.preventDefault();
+                    setIsDraggingOver(false)
+                    setDraggingSelf(false);
+                }}
+            ><span>Drop Here</span></div>}
             <div className="dm-wb-tbody" ref={refReassignDropdownWB}
 
             //style={{ minHeight: (isDragging && !draggingSelf ? '227px' : '287px') }}
 
             >
 
-                <section className="dm-wb-tr dm-wb-doc-list" >
+                <section className={`dm-wb-tr dm-wb-doc-list`} >
                     <div className="dm-wb-row">
-                        <ul className={`dm-dt-docList ${isDragging ? 'dragActive' : ''}`}
+                        <ul className={`dm-dt-docList ${isDraggingOver ? 'dragActive' : ''}`}
                         >
                             {
                                 workbenchItems && workbenchItems.length > 0 && workbenchItems?.map((d: any, i: number) => {
@@ -142,6 +167,7 @@ export const WorkbenchTable = () => {
                                             file={d}
                                             setDraggingSelf={setDraggingSelf}
                                             setDraggingItem={setDraggingItem}
+                                            setIsDraggingOver={setIsDraggingOver}
                                             refReassignDropdown={refReassignDropdownWB}
                                         />
                                         // file={d} />
@@ -149,11 +175,11 @@ export const WorkbenchTable = () => {
                                 })
                             }
 
-                            {/*{isDragging && !draggingSelf && <li
+                            {/* {isDraggingOver && !draggingSelf && <li
                                 className="drag-wrap"
-                                >
+                            >
                                 <p>Drop Here</p>
-                            </li>}*/}
+                            </li>} */}
                         </ul>
                     </div>
                 </section>

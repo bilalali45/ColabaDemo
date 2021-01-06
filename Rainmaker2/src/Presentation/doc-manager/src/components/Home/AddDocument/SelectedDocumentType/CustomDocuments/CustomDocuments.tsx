@@ -106,7 +106,6 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 {docNameError && <label className={'error'}>{docNameError}</label>}
             </div>
-            {console.log(newDoc)}
             {addFileDialog && 
       <AddFileToDoc 
       selectedDocTypeId = {""}

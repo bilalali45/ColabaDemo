@@ -102,17 +102,12 @@ export class PDFThumbnails extends Viewer {
     }
 
 
-    static async movePages(pageIndex: number, moveIndex: number) {
-        if (pageIndex < moveIndex) {
-            let cachedIndex = pageIndex;
-            pageIndex = moveIndex;
-            moveIndex = cachedIndex;
-        }
+    static async movePages(pageIndex: number[], moveIndex: number) {
         try {
             await this.instance.applyOperations([
                 {
                     type: "movePages",
-                    pageIndexes: [pageIndex], // Move pages 0 and 4.
+                    pageIndexes: pageIndex, // Move pages 0 and 4.
                     beforePageIndex: moveIndex // The specified pages will be moved after page 7.
                 }
             ], null);

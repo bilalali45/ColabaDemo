@@ -20,7 +20,7 @@ import { ConfirmationAlert } from '../../../../././ConfirmationAlert/Confirmatio
 
 export const nonExistentFileId = '000000000000000000000000';
 
-export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReassignDropdown }: any) => {
+export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReassignDropdown, setIsDraggingOver }: any) => {
 
   const [
     showingReassignDropdown,
@@ -301,6 +301,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
           onDragEnd={() => {
             setIsDraggingItem(false);
+            setIsDraggingOver(false);
             let dragView: any = window.document.getElementById('fileBeingDragged');
             window.document.body.removeChild(dragView);
           }}

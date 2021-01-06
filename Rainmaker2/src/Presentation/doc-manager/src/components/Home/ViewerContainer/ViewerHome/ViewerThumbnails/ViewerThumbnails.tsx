@@ -48,12 +48,13 @@ export const ViewerThumbnails = () => {
   const doScrlDn = () => scrollToRef(scrlUpRef, '');
 
   const nonExistentFileId = '000000000000000000000000';
+
   useEffect(() => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: thumbDragged });
 
-  }, [thumbDragged])
+  }, [thumbDragged === true, thumbDragged === false]);
 
-  
+
   useEffect(() => {
 
 
@@ -117,7 +118,6 @@ export const ViewerThumbnails = () => {
     setThumbnails((prevState) => [
       ...prevState.map((item, index) => index === currPage ? thumbnail : item),
     ]);
-    console.log('in here single page thumb', isFileChanged);
     if (!isFileChanged) {
       await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
 
@@ -126,20 +126,11 @@ export const ViewerThumbnails = () => {
   }
 
 
-  const swapThumnails = (pageIndex: number, moveIndex: number) => {
-    let swappedThumbnails = thumbnails;
-    swappedThumbnails[pageIndex] = swappedThumbnails.splice(
-      moveIndex,
-      1,
-      swappedThumbnails[pageIndex]
-    )[0];
-    setThumbnails(swappedThumbnails);
-  };
 
-  const moveAPage = (pageIndex: number, moveIndex: number) => {
-    let res = PDFThumbnails.movePages(pageIndex, moveIndex);
+  const moveAPage = (pageIndex: number[], moveIndex: number) => {
+    let selectedPages = multiThumbs.length ? multiThumbs : pageIndex
+    let res = PDFThumbnails.movePages(selectedPages, moveIndex);
     setThumbDragged(false);
-    swapThumnails(pageIndex, moveIndex);
     return res;
   };
 
@@ -155,7 +146,7 @@ export const ViewerThumbnails = () => {
     }
     let success = false;
     if (thumbDragged) {
-      success = await moveAPage(afterIndex, i);
+      success = await moveAPage([afterIndex], i);
       setThumbDragged(false);
     } else if (thumbnails?.length) {
       let tempFile = JSON.parse(file);
@@ -199,9 +190,10 @@ export const ViewerThumbnails = () => {
     setDraggingIndex(i);
   };
 
-  const onDragStartHandler = (e: any, i: number) => {
+  const onDragStartHandler = (e: any, i: number) => { 
     setIsScrolling(scrlUpRef?.current?.offsetHeight != scrlUpRef?.current?.scrollHeight)
-
+    setThumbDragged(true);
+    setDragOverSelfIndex(i);
     if (multiThumbs.length) {
 
       let FileData = {
@@ -212,11 +204,10 @@ export const ViewerThumbnails = () => {
       }
 
       e.dataTransfer.setData("file", JSON.stringify(FileData));
+
       return;
 
     }
-    setThumbDragged(true);
-    setDragOverSelfIndex(i);
     e.dataTransfer.setData('index', i);
     setIsScrolling(scrlUpRef?.current?.offsetHeight != scrlUpRef?.current?.scrollHeight)
 
@@ -231,6 +222,8 @@ export const ViewerThumbnails = () => {
       isFromCategory: false
     }
     e.dataTransfer.setData("file", JSON.stringify(FileData));
+
+
 
   };
 
@@ -250,10 +243,7 @@ export const ViewerThumbnails = () => {
       let document: any = ""
       if (fileData.isFromCategory) {
         document = documentItems.filter((doc: any) => {
-          console.log(doc)
-          console.log(currentDoc)
           if (doc.docId === currentDoc.docId) {
-            console.log(doc)
             hiddenFiles.forEach(file => {
               doc.files = doc.files.filter((f: any) => f.id !== file.fromFileId)
             })
@@ -335,23 +325,17 @@ export const ViewerThumbnails = () => {
 
       onKeyDown={(e) => {
         if (e.shiftKey) {
-          console.log(e.keyCode);
           if (!isShiftPressed) {
-            console.log('shift pressed!!!');
             setIsShiftPressed(true);
           }
         }
         if (e.ctrlKey) {
-          console.log(e.keyCode);
           if (!isCtrltPressed) {
-            console.log('shift pressed!!!');
             setIsCtrlPressed(true);
           }
         }
       }}
       onKeyUp={(e) => {
-        console.log(e.keyCode);
-        console.log('shift key released!!!',);
         setIsShiftPressed(e.shiftKey);
         setIsCtrlPressed(e.ctrlKey);
       }}
@@ -361,90 +345,89 @@ export const ViewerThumbnails = () => {
         ViewerTools.rotateLeft(multiThumbs);
         generateAllThumbnailData();
       }}>Rotate Left</button> : ''} */}
-      {isDragging && isScrolling && (<div className="directionGuide upArrowDv" onDragOver={doScrlUp}><ScrollDownArrow /></div>)}
-      <div className="v-thumb-wrap">
-      <ul
-      tabIndex={0}
-      onBlur={(e) => {
-        console.log('in blur!')
-        setMultithumbs([]);
-      }}
-        ref={scrlUpRef} onDrop={(e) => { }}
-        onDragOver={(e) => {
-          e.preventDefault();
 
-          setIndexToInsertAfter(instance?.totalPageCount);
-        }}
-        onDragLeave={(e) => {
-          setIndexToInsertAfter(0);
-        }}>
-        {thumbnails.map((t, i) => (
-          <li key={i} className={`${thumbDragged && draggingIndex === i ? 'dragging' : ''} `}>
-            {i === draggingIndex && isDragging && !isDraggingCurrentFile && !thumbDragged ? (
+      {isDragging && isScrolling && (<div className="directionGuide upArrowDv" onDragOver={doScrlUp}><ScrollDownArrow /></div>)}
+      
+      <div className="v-thumb-wrap">
+        <ul
+          tabIndex={0}
+          onBlur={(e) => {
+            setMultithumbs([]);
+          }}
+          ref={scrlUpRef} onDrop={(e) => { }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setIndexToInsertAfter(instance?.totalPageCount);
+          }}
+          onDragLeave={(e) => {
+            setIndexToInsertAfter(0);
+          }}>
+          {thumbnails.map((t, i) => (
+            <li key={i} className={`${thumbDragged && draggingIndex === i ? '-dragging' : ''} `}>
+              {i === draggingIndex && isDragging && !isDraggingCurrentFile && !thumbDragged ? (
+                <div
+                  onDrop={(e) => {
+                    e.stopPropagation();
+                    let afterIndex = e.dataTransfer.getData("index");
+                    let fileData = e.dataTransfer.getData("file");
+                    onDroptoThumbnail(+afterIndex, i, fileData);
+                  }}
+                  className={"drag-wrap viewer-drag-wrap"}>
+                  <p>Drop Here</p>
+                </div>
+              ) : null}
               <div
+                // className={`pagepdf ${}`}
+                className={`pagepdf ${currentPageIndex === i ? 'active' : ''} ${multiThumbs.includes(i) ? 'selected' : ''}  ${dragOverSelfIndex !== i && draggingIndex === i && thumbDragged ? 'dragOverActive' : ''}`}
+
+                draggable
+                onDragOver={(e: any) => {
+                  // if (thumbDragged) {
+                  //   e.target.style.border = '2px dashed blue'
+                  // }
+
+                  onDragOverHandler(i);
+                }}
+                onDragLeave={(e: any) => {
+                  // e.target.style.border = ''
+                  // onDragOverHandler(i);
+                }}
                 onDrop={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   let afterIndex = e.dataTransfer.getData("index");
                   let fileData = e.dataTransfer.getData("file");
                   onDroptoThumbnail(+afterIndex, i, fileData);
                 }}
-                className={"drag-wrap viewer-drag-wrap"}>
-                <p>Drop Here</p>
-              </div>
-            ) : null}
-            <div
-              // className={`pagepdf ${}`}
-              className={`pagepdf ${currentPageIndex === i ? 'active' : ''} ${multiThumbs.includes(i) ? 'selected' : ''}  ${dragOverSelfIndex !== i && draggingIndex === i && thumbDragged ? 'dragOverActive' : ''}`}
-
-              draggable
-              onDragOver={(e: any) => {
-                // if (thumbDragged) {
-                //   e.target.style.border = '2px dashed blue'
-                // }
-
-                onDragOverHandler(i);
-              }}
-              onDragLeave={(e: any) => {
-                // e.target.style.border = ''
-                // onDragOverHandler(i);
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                let afterIndex = e.dataTransfer.getData("index");
-                let fileData = e.dataTransfer.getData("file");
-                onDroptoThumbnail(+afterIndex, i, fileData);
-              }}
-              // onDrag={(e: any) => {
-              //   if (isDragging === true || thumbDragged) {
-              //     return;
-              //   }
-              //   dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
-              // }}
-              onDragStart={(e: any) => {
-                dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
-                onDragStartHandler(e, i)
-              }}
-              onDragEnd={(e) => {
-                setThumbDragged(false);
-                setMultithumbs([]);
-              }}
-              onMouseDown={(e) => {
-                if (instance?.totalPageCount <= 1) {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  return false
+                // onDrag={(e: any) => {
+                //   if (isDragging === true || thumbDragged) {
+                //     return;
+                //   }
+                //   dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
+                // }}
+                onDragStart={(e: any) => {
+                  onDragStartHandler(e, i)
+                }}
+                onDragEnd={(e) => {
+                  setThumbDragged(false);
+                  setMultithumbs([]);
+                }}
+                onMouseDown={(e) => {
+                  if (instance?.totalPageCount <= 1) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    return false
+                  }
                 }
-              }
 
-              }
-              onClick={() => handleThumbClick(i)}>
-              {t && <img height={"200"} src={t} alt="" />}
-            </div>
-            <div className="pagepdfindex">{i < 9 ? "0" : ""}{i + 1}</div>
-          </li>
-        ))}
-      </ul>
+                }
+                onClick={() => handleThumbClick(i)}>
+                {t && <img height={"200"} src={t} alt="" />}
+              </div>
+              <div className="pagepdfindex">{i < 9 ? "0" : ""}{i + 1}</div>
+            </li>
+          ))}
+        </ul>
       </div>
       {isDragging && isScrolling && (<div className="directionGuide downArrowDv" onDragOver={doScrlDn}><ScrollDownArrow /></div>)}
     </div>

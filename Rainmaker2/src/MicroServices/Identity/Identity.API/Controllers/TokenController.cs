@@ -3,6 +3,7 @@ using Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -17,6 +18,35 @@ namespace Identity.Controllers
     [ApiController]
     public class TokenController : Controller
     {
+        static TokenController()
+        {
+            Task.Factory.StartNew(async ()=> 
+            { 
+                while(true)
+                {
+                    await Task.Delay(5 * 60 * 1000);
+                    try
+                    {
+                        lock (TokenService.lockObject)
+                        {
+                            foreach (var pair in TokenService.RefreshTokens)
+                            {
+                                for (int i=0;i<pair.Value.Count;i++)
+                                {
+                                    if ((DateTime.UtcNow-pair.Value[i].RefreshIssueDate).TotalMinutes>5*24*60)
+                                    {
+                                        pair.Value.RemoveAt(i);
+                                        i--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    { }
+                }
+            },TaskCreationOptions.LongRunning);
+        }
         #region Constructors
 
         public TokenController(IHttpClientFactory clientFactory,
@@ -58,7 +88,10 @@ namespace Identity.Controllers
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
 
             TokenPair tokenPair = null;
-            if (TokenService.RefreshTokens.ContainsKey(key: username)) tokenPair = TokenService.RefreshTokens[key: username]?.FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
+            lock (TokenService.lockObject)
+            {
+                if (TokenService.RefreshTokens.ContainsKey(key: username)) tokenPair = TokenService.RefreshTokens[key: username]?.FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
+            }
 
             var user = await GetUser(userName: username);
             if (user == null || tokenPair == null)
@@ -74,13 +107,17 @@ namespace Identity.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: newJwtToken);
 
-            
-            TokenService.RefreshTokens[key: username].Remove(item: tokenPair);
-            TokenService.RefreshTokens[key: username].Add(item: new TokenPair
-                                                                {
-                                                                    JwtToken = tokenString,
-                                                                    RefreshToken = newRefreshToken
-                                                                });
+
+            //TokenService.RefreshTokens[key: username].Remove(item: tokenPair);
+            lock (TokenService.lockObject)
+            {
+                TokenService.RefreshTokens[key: username].Add(item: new TokenPair
+                {
+                    JwtToken = tokenString,
+                    RefreshToken = newRefreshToken,
+                    RefreshIssueDate = DateTime.UtcNow
+                });
+            }
 
             
             response.Data = new
@@ -112,8 +149,10 @@ namespace Identity.Controllers
                 return Ok(value: response);
             }
 
-
-            TokenService.RefreshTokens.Remove(key: username);
+            lock (TokenService.lockObject)
+            {
+                TokenService.RefreshTokens.Remove(key: username);
+            }
 
 
             response.Status = ApiResponse.ApiResponseStatus.Success;
@@ -125,13 +164,16 @@ namespace Identity.Controllers
         [HttpGet]
         public IActionResult SingleSignOn(string key)
         {
-            foreach(var pair in TokenService.RefreshTokens)
+            lock (TokenService.lockObject)
             {
-                foreach(var tokens in pair.Value)
+                foreach (var pair in TokenService.RefreshTokens)
                 {
-                    if(tokens.RefreshToken==key)
+                    foreach (var tokens in pair.Value)
                     {
-                        return Ok(tokens.JwtToken);
+                        if (tokens.RefreshToken == key)
+                        {
+                            return Ok(tokens.JwtToken);
+                        }
                     }
                 }
             }
@@ -189,15 +231,17 @@ namespace Identity.Controllers
             var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims);
             var refreshToken = _tokenService.GenerateRefreshToken();
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
+            lock (TokenService.lockObject)
+            {
+                if (!TokenService.RefreshTokens.ContainsKey(key: userProfile.UserName)) TokenService.RefreshTokens[key: userProfile.UserName] = new List<TokenPair>();
 
-            if (!TokenService.RefreshTokens.ContainsKey(key: userProfile.UserName)) TokenService.RefreshTokens[key: userProfile.UserName] = new List<TokenPair>();
-
-            TokenService.RefreshTokens[key: userProfile.UserName].Add(item: new TokenPair
-                                                                            {
-                                                                                JwtToken = tokenString,
-                                                                                RefreshToken = refreshToken
-                                                                            });
-
+                TokenService.RefreshTokens[key: userProfile.UserName].Add(item: new TokenPair
+                {
+                    JwtToken = tokenString,
+                    RefreshToken = refreshToken,
+                    RefreshIssueDate = DateTime.UtcNow
+                });
+            }
             response.Status = ApiResponse.ApiResponseStatus.Success;
             response.Data = new
                             {

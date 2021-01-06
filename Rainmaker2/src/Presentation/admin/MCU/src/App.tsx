@@ -11,6 +11,7 @@ import { UserActions } from './Store/actions/UserActions';
 import { LocalDB } from './Utils/LocalDB';
 
 import { Authorized } from './Components/Authorized/Authorized';
+import { useCookies } from 'react-cookie';
 
 let baseUrl: any = window?.envConfig?.API_BASE_URL;
 declare global {
@@ -21,12 +22,19 @@ declare global {
 }
 window.envConfig = window.envConfig || {};
 
-const App = () => {
+const App = (props: any) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const hubUrl: string = baseUrl + '/serverhub';
+  const [rainmakerCookie, setCookieAccess] = useCookies(['Rainmaker2Token']);
+  const [rainmakerRefreshCookie, setCookieRefresh] = useCookies(['Rainmaker2RefreshToken']);
 
   useEffect(() => {
     console.log('MCU App Version', '0.0.1');
+    if(props.authToken && props.refreshToken){
+      setCookieAccess('Rainmaker2Token', props.authToken, { path: '/', secure: true, sameSite: 'none', domain: window.location.host });
+      setCookieRefresh('Rainmaker2RefreshToken', props.refreshToken, { path: '/', secure: true, sameSite: 'none', domain: window.location.host });
+    }
+    
     authenticate();
     // component unmount
     return () => {
@@ -36,9 +44,9 @@ const App = () => {
 
   const authenticate = async () => {
     console.log('Before Authorize');
-    if (process.env.NODE_ENV === 'development') {
+    //if (process.env.NODE_ENV === 'development') {
       await window.Authorization.authorize();
-    }
+    //}
     if (LocalDB.getAuthToken()) {
       setAuthenticated(Boolean(true));
       UserActions.keepAliveParentApp();

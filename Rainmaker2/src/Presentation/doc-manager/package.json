@@ -19,6 +19,7 @@
     "rainsoft-js": "^1.0.47",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-idle-timer": "^4.5.0",
     "react-router-dom": "^5.2.0",

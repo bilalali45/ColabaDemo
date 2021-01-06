@@ -85,7 +85,8 @@ namespace Identity.Services
         }
 
 
-        public static readonly Dictionary<string, List<TokenPair>> RefreshTokens= RefreshTokens = new Dictionary<string, List<TokenPair>>();
+        public static readonly Dictionary<string, List<TokenPair>> RefreshTokens = new Dictionary<string, List<TokenPair>>();
+        public static readonly object lockObject = new object();
         private readonly IKeyStoreService _keyStoreService;
     }
 
@@ -93,7 +94,7 @@ namespace Identity.Services
     {
         public string JwtToken { get; set; }
         public string RefreshToken { get; set; }
-
+        public DateTime RefreshIssueDate { get; set; }
     }
 
 }

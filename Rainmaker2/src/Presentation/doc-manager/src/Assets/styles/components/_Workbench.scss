@@ -20,6 +20,19 @@
 }
 
 .dm-workbenchTable {
+position: relative;
+    .dropwarp{
+        position:absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 100; border: 2px dashed color('primary'); 
+        display: flex; justify-content: center; align-items: center; background:rgba(color('colorWhite'),0.5);
+        span{
+            color: color('primary'); pointer-events: none;
+            font: 400 #{fontSize("nr") + "/1"} fontFamily("base");
+            margin: 0;
+        }
+        * {
+            // pointer-events: none;    
+        }
+    }
 
     .dm-wb-thead {
         padding: 20px 30px 10px 30px;
@@ -57,4 +70,5 @@
 }
 
 }
+
 

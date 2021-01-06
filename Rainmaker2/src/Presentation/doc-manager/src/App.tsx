@@ -37,9 +37,9 @@ const App = () => {
 
   const authenticate = async () => {
     console.log('Before Authorize');
-    if (process.env.NODE_ENV === 'development') {
+    //if (process.env.NODE_ENV === 'development') {
       await window.Authorization.authorize();
-    }
+    //}
     if (LocalDB.getAuthToken()) {
       console.log('After Authorize');
       setAuthenticated(Boolean(true));
@@ -49,10 +49,10 @@ const App = () => {
 
   const onIdle = (e: any) => {
     console.log('Idle time meet');
-    window.onbeforeunload = null;
-    LocalDB.removeAuth();
+    //window.onbeforeunload = null;
+    //LocalDB.removeAuth();
     //window.open("/Login/LogOff", "_self");
-    window.top.location.href = '/Login/LogOff';
+    //window.top.location.href = '/Login/LogOff';
   };
 
   console.log(

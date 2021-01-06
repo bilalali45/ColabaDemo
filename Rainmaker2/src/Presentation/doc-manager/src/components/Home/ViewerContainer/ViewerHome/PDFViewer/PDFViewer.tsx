@@ -58,7 +58,6 @@ export const PDFViewer = () => {
             instance.addEventListener('annotations.willChange', event => {
                 const annotation = event.annotations.get(0)
                 if (event.reason === PSPDFKit.AnnotationsWillChangeReason.DELETE_START) {
-                    console.log('Will open deletion confirmation dialog')
                   // We need to wrap the logic in a setTimeOut() because modal will get actually rendered on the next tick
                   setTimeout(function() {
                     

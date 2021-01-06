@@ -4,6 +4,7 @@ import {Http} from 'rainsoft-js';
 import {Endpoints} from '../endpoints/Endpoints';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
+import { URL } from 'url';
 
 const cookies = new Cookies();
 
@@ -19,10 +20,12 @@ export class UserActions {
   static async refreshParentApp() {
     try {
       console.log('In refreshParentApp');
-      axios.get(window.location.origin + '/Login/KeepAlive');
+      let baseUrl =  (new window.URL(localStorage.getItem('PortalReferralUrl')!)).origin;
+
+      axios.get(baseUrl + '/Login/KeepAlive');
       return true;
     } catch (error) {
-      console.log('In refreshParentApp Error');
+      console.log('In refreshParentApp Error',error);
       return false;
     }
   }

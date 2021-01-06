@@ -63,6 +63,15 @@ export const NeedList = () => {
         return <div></div>
     }
 
+    const redirectToMVC = () => {
+        const portalReferralUrl = LocalDB.getPortalReferralUrl();
+    
+        if (portalReferralUrl) {
+          window.top.location.href = portalReferralUrl;
+        } else {
+          window.top.location.href = '/Admin/Dashboard';
+        }
+      };
 
     const renderNeedListLock = () => {
         return (
@@ -80,7 +89,7 @@ export const NeedList = () => {
                     <div>
                         <figure><NeedListLockIcon /></figure>
                         <h4>This Need List is Locked By: <span>{isNeedListLocked?.lockUserName?.toUpperCase()}</span></h4>
-                        <Button variant="primary" onClick={() => window.top.history.back()}>{"Go Back"}</Button>
+                        <Button variant="primary" onClick={redirectToMVC}>{"Go Back"}</Button>
                     </div>
                 </Modal.Body>
             </Modal>

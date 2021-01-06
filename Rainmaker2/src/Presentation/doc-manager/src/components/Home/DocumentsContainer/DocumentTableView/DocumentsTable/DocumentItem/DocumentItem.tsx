@@ -346,7 +346,7 @@ export const DocumentItem = ({
           retryFile={retryFile}
         />
       )}
-      {draggingOverItem && !document?.files?.find(f => f?.id == isDraggingSelf?.id) ? <div className="abc"
+      {draggingOverItem && !document?.files?.find(f => f?.id == isDraggingSelf?.id) ? <div className="dropwarp"
         onDragLeave={(e: any) => {
           e.preventDefault();
           setDraggingOverItem(false);

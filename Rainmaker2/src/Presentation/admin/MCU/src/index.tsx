@@ -29,6 +29,7 @@ const params = useParametersQuery();
 const key = params.get('key'); 
 const mvcURL = params.get('PortalReferralUrl')
 
+
 /**
  * We are now using cross origin domains, we are passing param to iFrame URL (PortalReferralUrl)
  * so that we can go back from within iframe
@@ -48,12 +49,12 @@ const baseUrl: any = window?.envConfig?.API_BASE_URL;
       key
     }
   }).then((response) => {
-    createCookie('Rainmaker2RefreshToken', key!); // This is RereshToken
-    createCookie('Rainmaker2Token', response.data); // This is AccessToken
-   
+    //createCookie('Rainmaker2RefreshToken', key!); // This is RereshToken
+    //createCookie('Rainmaker2Token', response.data); // This is AccessToken
+    
     ReactDOM.render(
       <React.StrictMode>
-        <App />
+        <App authToken={response.data} refreshToken={key!} />
       </React.StrictMode>,
       document.getElementById('root')
     );

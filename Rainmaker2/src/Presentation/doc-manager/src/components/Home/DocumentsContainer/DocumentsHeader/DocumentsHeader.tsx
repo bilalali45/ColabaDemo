@@ -138,6 +138,7 @@ export const DocumentsHeader = () => {
       cancelCurrentFileViewRequest = true;
     }
 
+    dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
     if (isFromWorkbench) {
       success = await DocumentActions.moveWorkBenchFileToTrash(
         file.id,
@@ -201,6 +202,7 @@ export const DocumentsHeader = () => {
       dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
       // }
     }
+    dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
   }
 
 
