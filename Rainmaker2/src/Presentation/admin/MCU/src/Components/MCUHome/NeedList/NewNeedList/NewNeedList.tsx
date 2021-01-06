@@ -317,7 +317,8 @@ export const NewNeedList = () => {
    
     let emailData : any = {};
     if(emailContent === null && selectedEmailTemplate){     
-      emailData.emailTemplateId = selectedEmailTemplate.id; 
+     // emailData.emailTemplateId = selectedEmailTemplate.id; 
+     emailData.emailTemplateId = null; 
       emailData.toAddress = null;
       emailData.fromAddress = null;
       emailData.ccAddress = null;

@@ -87,9 +87,15 @@ export const EmailReview = ({
   useEffect(() => {
     if(draftEmail){
       if(isListUpdated){
-        getSelectedEmailTemplate(selectedId?.toString());
-        setSelectedEmailTemplate(selectedId?.toString());
-        dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: false})
+        if(selectedId){
+          getSelectedEmailTemplate(selectedId?.toString());
+          setSelectedEmailTemplate(selectedId?.toString());
+          dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: false});
+        }else{
+          getSelectedEmailTemplate(emailTemplates[0]?.id?.toString());
+          setSelectedEmailTemplate(emailTemplates[0]?.id?.toString());
+          dispatch({ type: RequestEmailTemplateActionsType.SetListUpdated, payload: false});
+        }       
       }else if(draftEmail.emailTemplateId){
         setDefaultValue(draftEmail);
         setSelectedEmailTemplate(draftEmail.emailTemplateId);
