@@ -17,6 +17,8 @@ const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 
 export class ViewerTools extends Viewer {
 
+    static currentRotation: any = 90;
+
     static currentToolbar: Array<string> = [
         "pan",
         "annotate",
@@ -40,22 +42,22 @@ export class ViewerTools extends Viewer {
         return { type, id, title, icon, onPress, className }
     }
 
-    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any, pageIndexes?: [number]) {
+    static async saveFileWithAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds: any, pageIndexes?: [number]) {
         return this.uploadFileWithoutAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds, pageIndexes)
 
     }
-    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds:any, pageIndexes? : [number]) {
+    static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds: any, pageIndexes?: [number]) {
         let fileId = fileObj.fileId;
 
         if (fileObj.isFromCategory) {
             fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
-            
+
         } else if (fileObj.isFromWorkbench) {
             fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
-            
+
         } else if (fileObj.isFromTrash) {
             fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
-            
+
         }
         // dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
@@ -67,13 +69,13 @@ export class ViewerTools extends Viewer {
             dispatch({
                 type: ViewerActionsType.SetFileProgress,
                 payload: 0,
-              });
+            });
         }
         return fileId
 
     }
 
-    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds:any) {       
+    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any) {
         dispatch({
             type: ViewerActionsType.SetIsSaving,
             payload: true
@@ -83,7 +85,7 @@ export class ViewerTools extends Viewer {
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
-        
+
         if (!currentFile.name.includes('.pdf')) {
             console.log('in if!!!');
             let newName = `${Rename.removeExt(currentFile.name)}.pdf`;
@@ -116,7 +118,7 @@ export class ViewerTools extends Viewer {
             dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
         }
 
-        
+
         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
         return res;
     }
@@ -126,6 +128,18 @@ export class ViewerTools extends Viewer {
     }
 
     static rotateLeft(indexes: any[]) {
+        console.log(this.instance.pageInfoForIndex(indexes[0]));
+        Viewer.instance.applyOperations([
+            {
+                type: "rotatePages",
+                pageIndexes: indexes.map(i => Number(i)),
+                rotateBy: 270,
+            }
+        ], null);
+    }
+
+    static rotateRight(indexes: any[]) {
+        console.log(this.instance.viewState.pagesRotation);
         Viewer.instance.applyOperations([
             {
                 type: "rotatePages",
@@ -135,15 +149,17 @@ export class ViewerTools extends Viewer {
         ], null);
     }
 
-    static async discardChanges(dispatch: Function, currentDoc: any, currentFile: any) {
+    static async discardChanges(dispatch: Function, currentFile: any) {
 
-        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
-        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-        dispatch({ type: ViewerActionsType.SetDiscardFile, payload: true });
+        await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
+        await dispatch({ type: ViewerActionsType.SetDiscardFile, payload: true });
+        await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
+        
+        
     }
 
 
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds:any) {
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any) {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
         // let saveButton: any = null;
@@ -154,7 +170,7 @@ export class ViewerTools extends Viewer {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
         const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds))
-        const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentDoc, currentFile));
+        const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));
         const printButton: any = this.createToolbarItem('custom', 'print', 'Print', printIcon, PDFActions.printPDF);
@@ -167,7 +183,7 @@ export class ViewerTools extends Viewer {
             );
         });
         //if (isFileChanged) {
-            customizedToolBarItems.push(discardButton)
+        customizedToolBarItems.push(discardButton)
         //}
         customizedToolBarItems.push(saveButton)
         this.instance?.setToolbarItems(customizedToolBarItems);
@@ -269,7 +285,7 @@ export class ViewerTools extends Viewer {
         let localInstance: any = await this.loadlocalInstance(src);
         try {
 
-            
+
             if (!isPDF) {
                 let imageSize = localInstance.pageInfoForIndex(0);
 
@@ -277,8 +293,8 @@ export class ViewerTools extends Viewer {
                 let newPageSize = await localInstance.pageInfoForIndex(0);
                 await this.addImageAsAnnotationOnThePage(localInstance, src, newPageSize, pageIndex, imageSize);
                 file = await this.createPDFFileFromImage(localInstance, isPDF, true);
-                if(localInstance){
-                await PSPDFKit.unload(localInstance);
+                if (localInstance) {
+                    await PSPDFKit.unload(localInstance);
                 }
                 localInstance = await this.loadlocalInstance(file);
             }
@@ -291,12 +307,12 @@ export class ViewerTools extends Viewer {
         } catch (error) {
 
             console.log('error', error);
-        }  
-        if(localInstance){
+        }
+        if (localInstance) {
             PSPDFKit.unload(localInstance);
             document.body.removeChild(el);
         }
-        
+
         return file;
     }
 
@@ -395,7 +411,7 @@ export class ViewerTools extends Viewer {
 
         const buffer = await instance.exportPDF({ flatten: isFlatten });
         const blob = new Blob([buffer], { type: "arraybuffer" });
-        let file = await new File([blob], "file_name.pdf", { lastModified: Date.now(), type: "application/pdf"  });
+        let file = await new File([blob], "file_name.pdf", { lastModified: Date.now(), type: "application/pdf" });
         return file;
     }
 

@@ -203,6 +203,7 @@ export const DocumentsHeader = () => {
       // }
     }
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
   }
 
 

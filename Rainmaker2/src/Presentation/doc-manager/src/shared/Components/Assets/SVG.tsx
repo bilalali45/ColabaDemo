@@ -17,6 +17,48 @@ import React from 'react'
 //   )
 // }
 
+export const RotateLeftIocn = () => {
+  return (
+<svg xmlns="http://www.w3.org/2000/svg" width="27.677" height="24" viewBox="0 0 27.677 24">
+  <g id="Group_1653" data-name="Group 1653" transform="translate(0)">
+    <g id="Group_1644" data-name="Group 1644" transform="translate(9.378 24) rotate(-172)">
+      <path id="Path_689" data-name="Path 689" d="M.721,0a.72.72,0,0,0-.51,1.229L2.26,3.278a.72.72,0,0,0,1.067-.053L4.086,2.3A7.406,7.406,0,0,1,8.03,8.756a.72.72,0,0,0,.72.715h.006a.721.721,0,0,0,.715-.726A8.853,8.853,0,0,0,.727,0Z" transform="translate(0 0)" fill="#f8f8f8"/>
+    </g>
+    <g id="Group_1647" data-name="Group 1647" transform="translate(18.299 0.32) rotate(8)">
+      <path id="Path_689-2" data-name="Path 689" d="M.721,0a.72.72,0,0,0-.51,1.229L2.26,3.278a.72.72,0,0,0,1.067-.053L4.086,2.3A7.407,7.407,0,0,1,8.03,8.756a.72.72,0,0,0,.72.715h.006a.721.721,0,0,0,.715-.726A8.854,8.854,0,0,0,.727,0Z" transform="translate(0)" fill="#f8f8f8"/>
+    </g>
+    <g id="_005-google-docs" data-name="005-google-docs" transform="matrix(-0.883, 0.469, -0.469, -0.883, 24.051, 16.405)">
+      <path id="Path_691" data-name="Path 691" d="M13.993,14.066,9.638,18.42a.545.545,0,0,1-.385.159H1.633A1.635,1.635,0,0,1,0,16.947V1.633A1.635,1.635,0,0,1,1.633,0H12.519a1.635,1.635,0,0,1,1.633,1.633V13.681A.549.549,0,0,1,13.993,14.066ZM9.8,16.721l2.5-2.5H10.342a.545.545,0,0,0-.544.544ZM12.519,1.089H1.633a.545.545,0,0,0-.544.544V16.947a.545.545,0,0,0,.544.544H8.709V14.769a1.635,1.635,0,0,1,1.633-1.633h2.722V1.633A.545.545,0,0,0,12.519,1.089Z" transform="translate(0)" fill="#f8f8f8"/>
+      <path id="Path_692" data-name="Path 692" d="M7.076,1.089H.544A.544.544,0,1,1,.544,0H7.076a.544.544,0,0,1,0,1.089Z" transform="translate(3.266 9.798)" fill="#f8f8f8"/>
+      <path id="Path_693" data-name="Path 693" d="M7.076,1.089H.544A.544.544,0,1,1,.544,0H7.076a.544.544,0,0,1,0,1.089Z" transform="translate(3.266 7.621)" fill="#f8f8f8"/>
+      <path id="Path_694" data-name="Path 694" d="M7.076,1.089H.544A.544.544,0,1,1,.544,0H7.076a.544.544,0,0,1,0,1.089Z" transform="translate(3.266 5.443)" fill="#f8f8f8"/>
+      <path id="Path_695" data-name="Path 695" d="M4.9,1.089H.544A.544.544,0,0,1,.544,0H4.9a.544.544,0,0,1,0,1.089Z" transform="translate(3.266 3.266)" fill="#f8f8f8"/>
+    </g>
+  </g>
+</svg>
+  )
+}
+export const RotateRightIocn = () => {
+  return (
+<svg xmlns="http://www.w3.org/2000/svg" width="27.677" height="24" viewBox="0 0 27.677 24">
+  <g id="Group_1650" data-name="Group 1650" transform="translate(1266.67 -8600.769)">
+    <g id="Group_1644" data-name="Group 1644" transform="translate(-1249.689 8615.39) rotate(-8)">
+      <path id="Path_689" data-name="Path 689" d="M.721,9.471a.72.72,0,0,1-.51-1.229L2.26,6.193a.72.72,0,0,1,1.067.053l.759.929A7.406,7.406,0,0,0,8.03.715.72.72,0,0,1,8.75,0h.006A.721.721,0,0,1,9.47.726,8.853,8.853,0,0,1,.727,9.471Z" transform="translate(0)" fill="#f8f8f8"/>
+    </g>
+    <g id="Group_1647" data-name="Group 1647" transform="translate(-1255.974 8610.467) rotate(172)">
+      <path id="Path_689-2" data-name="Path 689" d="M.721,9.471a.72.72,0,0,1-.51-1.229L2.26,6.193a.72.72,0,0,1,1.067.053l.759.929A7.407,7.407,0,0,0,8.03.715.72.72,0,0,1,8.75,0h.006A.721.721,0,0,1,9.47.726,8.853,8.853,0,0,1,.727,9.471Z" transform="translate(0 0)" fill="#f8f8f8"/>
+    </g>
+    <g id="_005-google-docs" data-name="005-google-docs" transform="matrix(0.883, 0.469, -0.469, 0.883, -1254.321, 8600.769)">
+      <path id="Path_691" data-name="Path 691" d="M13.993,4.514,9.638.159A.545.545,0,0,0,9.253,0H1.633A1.635,1.635,0,0,0,0,1.633V16.947A1.635,1.635,0,0,0,1.633,18.58H12.519a1.635,1.635,0,0,0,1.633-1.633V4.9A.549.549,0,0,0,13.993,4.514ZM9.8,1.858l2.5,2.5H10.342A.545.545,0,0,1,9.8,3.81Zm2.722,15.633H1.633a.545.545,0,0,1-.544-.544V1.633a.545.545,0,0,1,.544-.544H8.709V3.81a1.635,1.635,0,0,0,1.633,1.633h2.722v11.5A.545.545,0,0,1,12.519,17.491Z" transform="translate(0 0)" fill="#f8f8f8"/>
+      <path id="Path_692" data-name="Path 692" d="M7.076,0H.544a.544.544,0,1,0,0,1.089H7.076A.544.544,0,0,0,7.076,0Z" transform="translate(3.266 7.693)" fill="#f8f8f8"/>
+      <path id="Path_693" data-name="Path 693" d="M7.076,0H.544a.544.544,0,1,0,0,1.089H7.076A.544.544,0,0,0,7.076,0Z" transform="translate(3.266 9.87)" fill="#f8f8f8"/>
+      <path id="Path_694" data-name="Path 694" d="M7.076,0H.544a.544.544,0,1,0,0,1.089H7.076A.544.544,0,0,0,7.076,0Z" transform="translate(3.266 12.048)" fill="#f8f8f8"/>
+      <path id="Path_695" data-name="Path 695" d="M4.9,0H.544a.544.544,0,0,0,0,1.089H4.9A.544.544,0,0,0,4.9,0Z" transform="translate(3.266 14.225)" fill="#f8f8f8"/>
+    </g>
+  </g>
+</svg>
+  )
+}
 export const SearchIcon = () => {
   return (
 <svg id="search_1_" data-name="search (1)" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">

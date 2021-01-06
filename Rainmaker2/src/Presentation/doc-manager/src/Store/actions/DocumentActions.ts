@@ -685,7 +685,7 @@ export default class DocumentActions {
       formData.append('file', file);
 
       if (fileId === DocumentActions.nonExistentFileId) {
-        let files = [...currentDoc.files, selectedFile]
+        let files = [selectedFile,...currentDoc.files]
         currentDoc.files = files
       }
       let res = await Http.fetch(
@@ -764,7 +764,7 @@ export default class DocumentActions {
       formData.append('file', file);
 
 
-      let files = [...currentDoc, selectedFile]
+      let files = [selectedFile,...currentDoc]
       dispatchProgress({
         type: DocumentActionsType.AddFileToTrash,
         payload: files
@@ -849,7 +849,7 @@ export default class DocumentActions {
 
       let files: any = currentDoc;
       if (fileId === DocumentActions.nonExistentFileId) {
-        files = [...currentDoc, selectedFile]
+        files = [selectedFile,...currentDoc]
 
       }
       let res = await Http.fetch(

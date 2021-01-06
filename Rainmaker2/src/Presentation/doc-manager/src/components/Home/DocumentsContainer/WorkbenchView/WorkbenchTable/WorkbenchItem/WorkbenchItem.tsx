@@ -42,17 +42,51 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
   const viewer: any = state.viewer;
   const { currentDoc, importedFileIds }: any = state.documents;
   const instance: any = viewer?.instance;
-  const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
+  const { currentFile, selectedFileData, isLoading, isFileChanged, performNextAction, fileToChangeWhenUnSaved }: any = state.viewer;
 
   const loanApplicationId = LocalDB.getLoanAppliationId();
 
+
+  useEffect(()=>{
+    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved.isWorkbenchFile && performNextAction){
+      setTimeout(() => {
+        performNextActionFn()
+      }, 0);
+    }
+
+  },[performNextAction])
+
+
+const performNextActionFn= async () =>{
+  
+  switch (fileToChangeWhenUnSaved.action) {
+    case "view":
+      await viewFile(fileToChangeWhenUnSaved.file)
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      break;
+
+    case "delete":
+      file = fileToChangeWhenUnSaved.file
+      await moveWorkBenchToTrash()
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      break;
+
+    case "reassign":
+      setShowingReassignDropdown(true)
+      break;
+   
+    default:
+      break;
+  }
+}
+
   const toggleReassignDropdown = async (e: any) => {
 
-    if (isFileChanged && file?.id === currentFile?.id) {
-      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+    // if (isFileChanged && file?.id === currentFile?.id) {
+    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
 
-      return;
-    }
+    //   return;
+    // }
 
     let target = e.target
     await setCurrentDocument();
@@ -109,7 +143,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
     if (isFileChanged && file?.fileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document:null, action:"delete", isWorkbenchFile:true } });
       return;
     }
 
@@ -125,11 +159,9 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       cancelCurrentFileViewRequest
     );
 
-    if (success) {
+    if (success) {  
       if (selectedFileData && selectedFileData?.fileId === file.fileId) {
-        if (viewer?.currentFile) {
           ViewerActions.resetInstance(dispatch)
-        }
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
         await DocumentActions.getCurrentWorkbenchItem(dispatch, importedFileIds);
       }
@@ -139,6 +171,8 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       }
       let docs = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds)
     }
+    dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
   };
 
   const renderFileActions = () => {
@@ -168,6 +202,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
     if (isFileChanged) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document:null, action:"view", isWorkbenchFile: true } });
       return;
     }
     // if (isFileChanged) {
@@ -176,18 +211,15 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
     //   return;
     // }
 
-    viewFile(file, null, dispatch);
+    viewFile(file);
   };
 
-  const viewFile = async (file: any, document: any, dispatch: any) => {
+  const viewFile = async (file: any) => {
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
     setCurrentDocument();
 
     let selectedFileData = new SelectedFile(file.id, DocumentActions.getFileName(file), file.fileId)
-    if (viewer?.currentFile) {
       ViewerActions.resetInstance(dispatch)
-
-    }
     dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
 
     let f = await DocumentActions.getFileToView(
@@ -208,6 +240,8 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
       type: ViewerActionsType.SetFileProgress,
       payload: 0,
     });
+    dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
   }
 
 

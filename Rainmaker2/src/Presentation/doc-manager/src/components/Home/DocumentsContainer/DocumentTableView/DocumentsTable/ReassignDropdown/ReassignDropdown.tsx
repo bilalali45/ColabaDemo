@@ -23,7 +23,7 @@ export const ReassignDropdown = ({
 
 }: any) => {
   const { state, dispatch } = useContext(Store);
-  const { currentFile, isFileChanged }: any = state.viewer;
+  let { currentFile, isFileChanged,fileToChangeWhenUnSaved, performNextAction }: any = state.viewer;
   const { currentDoc, documentItems, importedFileIds }: any = state.documents;
   const [docCategories, setDocCategories] = useState<DocumentRequest[]>();
   let loanApplicationId = LocalDB.getLoanAppliationId();
@@ -35,14 +35,31 @@ export const ReassignDropdown = ({
     fetchDocCategories();
   }, []);
 
+  useEffect(()=>{
+    
+    if(fileToChangeWhenUnSaved && performNextAction && fileToChangeWhenUnSaved.action === "reassign"){
+      performNextActionFn()
+    }
+
+  },[performNextAction])
+
+
+  const performNextActionFn= async () =>{
+
+    selectedFile = fileToChangeWhenUnSaved.selectedFile;
+    isFromWorkbench = currentFile.isWorkBenchFile;
+    isFileChanged = false
+    await ReassignCategory(fileToChangeWhenUnSaved.document)
+    
+  }
+
   const ReassignCategory = async (document: DocumentRequest) => {
-
-
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+    
     if (isFromWorkbench) {
-
       if (isFileChanged && selectedFile?.fileId === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+        dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { selectedFile, document, action:"reassign", isWorkbenchFile:isFromWorkbench } });
         return;
       }
 
@@ -61,10 +78,10 @@ export const ReassignDropdown = ({
 
       if (isFileChanged && selectedFile?.id === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+        dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { selectedFile, document, action:"reassign" } });
         return;
       }
-      if (selectedFile.id) {
+      if (selectedFile && selectedFile.id) {
         let res = await DocumentActions.reassignDoc(
           currentDoc.id,
           currentDoc.requestId,
@@ -74,10 +91,13 @@ export const ReassignDropdown = ({
           document.docId
         );
         if (res) {
+          
           getDocswithfailedFiles()
         }
       }
     }
+    dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     hide();
 
   };

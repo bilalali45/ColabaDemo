@@ -6,12 +6,13 @@ import { DocumentActionsType } from "../../../../../Store/reducers/documentsRedu
 import { ViewerActionsType } from "../../../../../Store/reducers/ViewerReducer";
 import { Store } from "../../../../../Store/Store";
 import { PDFThumbnails } from "../../../../../Utilities/PDFThumbnails";
-import { ScrollDownArrow, ErrorIcon } from "../../../../../shared/Components/Assets/SVG";
+import { ScrollDownArrow, ErrorIcon,RotateLeftIocn,RotateRightIocn } from "../../../../../shared/Components/Assets/SVG";
 import PSPDFKit from "pspdfkit";
 import { Viewer } from "../../../../../Utilities/Viewer";
 import { AnnotationActions } from "../../../../../Utilities/AnnotationActions";
 import { DocumentRequest } from "../../../../../Models/DocumentRequest";
 import { ViewerTools } from "../../../../../Utilities/ViewerTools";
+import { debug } from "console";
 
 const scrollToRef = (ref: any, dir: any) => {
   if (dir == 'up') { ref.current.scrollTo(0, (ref.current.scrollTop - 5)); }
@@ -26,6 +27,7 @@ export const ViewerThumbnails = () => {
   const [draggingIndex, setDraggingIndex] = useState<number>(-1);
   const [dragOverSelfIndex, setDragOverSelfIndex] = useState<number>(-1);
   const [currentPageIndex, setCurrentIndex] = useState(0);
+  const [blurCalled, setBlurCalled] = useState<Boolean>(false);
 
   const [isThumbnailGenerated, setIsThumbnailGenerated] = useState(false);
   const [isEmptythumbnailSet, setIsEmptythumbnailSet] = useState(false)
@@ -49,8 +51,38 @@ export const ViewerThumbnails = () => {
 
   const nonExistentFileId = '000000000000000000000000';
 
+
   useEffect(() => {
+
+    const deselectThumbs = (e: any) => {
+
+      if (e.target.id === "thumbnail" || e.target.id === 'rotate-button' || isCtrltPressed || isShiftPressed) {
+        return;
+      }
+      setMultithumbs([]);
+    }
+
+    let frame: any;
+
+    for (frame of Array(document.getElementsByTagName('IFRAME')[0])) {
+      if (frame && frame.contentWindow) {
+        if (!frame?.contentWindow?.body?.onclick) {
+          frame.contentWindow.document.body.onclick = deselectThumbs;
+        }
+      }
+    }
+
+    document.body.onclick = deselectThumbs;
+
+    return () => {
+      document.body.onclick = null;
+    }
+  }, [instance !== null && document.body.onclick !== null, isShiftPressed === true, isShiftPressed === false, isCtrltPressed === true, isCtrltPressed === false])
+
+  useEffect(() => {
+
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: thumbDragged });
+
 
   }, [thumbDragged === true, thumbDragged === false]);
 
@@ -65,9 +97,12 @@ export const ViewerThumbnails = () => {
           new Array(instance?.totalPageCount).map((item) => (item = ""))
         );
 
-        await generateAllThumbnailData();
-        instance.addEventListener("annotations.didSave", () => {
-          // ...
+        generateAllThumbnailData();
+        instance.addEventListener("annotations.didSave", async () => {
+          if (!isFileChanged) {
+            await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
+            
+        }
           let currpage = instance?.viewState?.currentPageIndex
           generateThumbnailForSinglePage(currpage)
         });
@@ -84,6 +119,7 @@ export const ViewerThumbnails = () => {
     })();
 
   }, [instance, instance?.totalPageCount]);
+
 
 
   const generateAllThumbnailData = async () => {
@@ -190,7 +226,7 @@ export const ViewerThumbnails = () => {
     setDraggingIndex(i);
   };
 
-  const onDragStartHandler = (e: any, i: number) => { 
+  const onDragStartHandler = (e: any, i: number) => {
     setIsScrolling(scrlUpRef?.current?.offsetHeight != scrlUpRef?.current?.scrollHeight)
     setThumbDragged(true);
     setDragOverSelfIndex(i);
@@ -341,19 +377,30 @@ export const ViewerThumbnails = () => {
       }}
 
     >
-      {/* {multiThumbs.length ? <button onClick={() => {
-        ViewerTools.rotateLeft(multiThumbs);
-        generateAllThumbnailData();
-      }}>Rotate Left</button> : ''} */}
+      {multiThumbs.length ? <div className="thumb-tools-wrap">
+
+        <a id="rotate-button" onClick={async () => {
+          ViewerTools.rotateLeft(multiThumbs);
+          // generateAllThumbnailData();
+        }}>
+          <RotateLeftIocn />
+          </a>
+
+        <a id="rotate-button" onClick={async () => {
+          ViewerTools.rotateRight(multiThumbs);
+          // generateAllThumbnailData();
+        }}>
+           <RotateRightIocn />
+        </a>
+
+      </div> : ''}
 
       {isDragging && isScrolling && (<div className="directionGuide upArrowDv" onDragOver={doScrlUp}><ScrollDownArrow /></div>)}
-      
-      <div className="v-thumb-wrap">
+
+      <div className={`v-thumb-wrap ${multiThumbs.length ? "havetoolbar":""}`}>
         <ul
           tabIndex={0}
-          onBlur={(e) => {
-            setMultithumbs([]);
-          }}
+
           ref={scrlUpRef} onDrop={(e) => { }}
           onDragOver={(e) => {
             e.preventDefault();
@@ -363,7 +410,7 @@ export const ViewerThumbnails = () => {
             setIndexToInsertAfter(0);
           }}>
           {thumbnails.map((t, i) => (
-            <li key={i} className={`${thumbDragged && draggingIndex === i ? '-dragging' : ''} `}>
+            <li id="thumbnail" key={i} className={`${thumbDragged && draggingIndex === i ? 'dragging' : ''} `}>
               {i === draggingIndex && isDragging && !isDraggingCurrentFile && !thumbDragged ? (
                 <div
                   onDrop={(e) => {
@@ -422,7 +469,7 @@ export const ViewerThumbnails = () => {
 
                 }
                 onClick={() => handleThumbClick(i)}>
-                {t && <img height={"200"} src={t} alt="" />}
+                {t && <img id="thumbnail" height={"200"} src={t} alt="" />}
               </div>
               <div className="pagepdfindex">{i < 9 ? "0" : ""}{i + 1}</div>
             </li>

@@ -16,7 +16,9 @@ export type NeedListLock = {
 
 export type FileToChange = {
     file: CurrentInView,
-    document: DocumentRequest
+    document: DocumentRequest,
+    action: string,
+    isWorkbenchFile:boolean
 }
 
 export enum ViewerActionsType {
@@ -33,7 +35,8 @@ export enum ViewerActionsType {
     SetShowingConfirmationAlert = "SET_SHOWING_CONFIRMATION_ALERT",
     SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED",
     SetSaveFile="SET_SAVE_FILE",
-    SetDiscardFile="SET_DISCARD_FILE"
+    SetDiscardFile="SET_DISCARD_FILE",
+    SetPerformNextAction="SET_PERFORM_NEXT_ACTION"
 
 }
 
@@ -49,9 +52,10 @@ export type ViewerType = {
     isSaving:boolean;
     fileProgress:number;
     showingConfirmationAlert: boolean;
-    SetFileToChangeWhenUnSaved: FileToChange,
+    fileToChangeWhenUnSaved: FileToChange,
     SaveCurrentFile:boolean,
-    DiscardCurrentFile:boolean
+    DiscardCurrentFile:boolean,
+    performNextAction:boolean
     // documentsSelection: {}
 }
 
@@ -70,6 +74,7 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetFileToChangeWhenUnSaved]: FileToChange;
     [ViewerActionsType.SetSaveFile]:boolean;
     [ViewerActionsType.SetDiscardFile]:boolean;
+    [ViewerActionsType.SetPerformNextAction]:boolean
 
 }
 
@@ -143,6 +148,12 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
             return {
                 ...state,
                 fileToChangeWhenUnSaved: payload
+            };
+
+        case ViewerActionsType.SetPerformNextAction:
+            return {
+                ...state,
+                performNextAction: payload
             };
         case ViewerActionsType.SetSaveFile:
         return {

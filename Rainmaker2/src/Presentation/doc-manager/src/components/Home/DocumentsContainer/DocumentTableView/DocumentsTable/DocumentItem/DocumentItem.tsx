@@ -191,6 +191,7 @@ export const DocumentItem = ({
 
     }
     dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     setShow(true);
   }
 

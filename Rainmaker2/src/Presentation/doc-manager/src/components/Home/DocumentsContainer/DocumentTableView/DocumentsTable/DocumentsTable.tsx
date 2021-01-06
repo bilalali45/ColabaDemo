@@ -111,6 +111,7 @@ export const DocumentsTable = () => {
     const handlePopClick = (event) => {
         popsetShow(!popshow);
         popsetTarget(event.target);
+        setAddFileDialog(false)
     };
     const hideAddfilePopover = () => {
         popsetShow(false);

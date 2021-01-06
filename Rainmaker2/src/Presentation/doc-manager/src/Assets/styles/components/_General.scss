@@ -445,7 +445,11 @@ a,button{
                 padding: 6px 15px;
                 min-width: 100px;
                 font: 400 #{fontSize('sm')+'/1'} fontFamily('base');
+                & + .btn {
+                    margin-left: 5px;
+                }
             }
+
             & > * {
                 margin: 0;
             }

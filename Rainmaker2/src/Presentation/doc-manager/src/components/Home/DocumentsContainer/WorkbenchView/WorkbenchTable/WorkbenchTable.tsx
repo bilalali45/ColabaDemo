@@ -111,6 +111,7 @@ export const WorkbenchTable = () => {
 
         }
         dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
+        dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     }
 
 

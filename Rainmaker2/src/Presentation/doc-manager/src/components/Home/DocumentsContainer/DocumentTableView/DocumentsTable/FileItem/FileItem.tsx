@@ -69,7 +69,7 @@ export const FileItem = ({
   const { state, dispatch } = useContext(Store);
 
   const viewer: any = state.viewer;
-  const { currentFile, selectedFileData, isLoading, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
+  const { currentFile, selectedFileData, performNextAction, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
   const documents: any = state.documents;
   const importedFileIds:any = state.documents;
   const catScrollFreeze: any = documents?.catScrollFreeze;
@@ -82,12 +82,53 @@ export const FileItem = ({
   const instance: any = viewer?.instance;
   const loanApplicationId = LocalDB.getLoanAppliationId();
   
+  useEffect(()=>{
+    
+    if(fileToChangeWhenUnSaved && !fileToChangeWhenUnSaved.isWorkbenchFile && performNextAction ){
+      setTimeout(() => {
+        performNextActionFn()
+      }, 0);
+       
+    }
+
+  },[performNextAction])
+
+
+const performNextActionFn= async () =>{
+  
+  switch (fileToChangeWhenUnSaved.action) {
+    case "view":
+      await viewFile(fileToChangeWhenUnSaved.file, fileToChangeWhenUnSaved.document)
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      break;
+
+    case "delete":
+      file = fileToChangeWhenUnSaved.file
+      document = fileToChangeWhenUnSaved.document
+      await moveDocToTrash()
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      break;
+
+    case "reassign":
+      setShowingReassignDropdown(true)
+      break;
+    case "LOSSync":
+      file = fileToChangeWhenUnSaved.file
+      document = fileToChangeWhenUnSaved.document
+      toggleSyncAlert()
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      break;
+    default:
+      break;
+  }
+}
+
   const toggleReassignDropdown = async (e: any) => {
     
-    if (isFileChanged && file?.id === currentFile?.fileId) {
-      dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-      return;
-    }
+    // if (isFileChanged && file?.id === currentFile?.fileId) {
+    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+    //   return;
+    // }
 
     let target = e.target
     await setCurrentDocument();
@@ -97,8 +138,10 @@ export const FileItem = ({
     showingReassignDropdown? refReassignDropdown.current.classList.remove("freeze"):refReassignDropdown.current.classList.add("freeze");
   };
 
-  const hideReassign = () => { 
+  const hideReassign = async() => { 
     setShowingReassignDropdown(false);
+    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved?.file?.id === currentFile?.fileId )
+    await viewFile(fileToChangeWhenUnSaved.file, fileToChangeWhenUnSaved.document)
   refReassignDropdown.current?.classList.remove("freeze")
 
 }
@@ -127,6 +170,7 @@ useEffect(() => {
 
     if (isFileChanged && file?.id === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document, action:"delete", isWorkbenchFile:false } });
       return;
     }
 
@@ -152,13 +196,15 @@ useEffect(() => {
       }
       let res = await DocumentActions.getTrashedDocuments(dispatch, importedFileIds);
     }
+    dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
   };
 
   const toggleSyncAlert = () => {
 
     if (isFileChanged && file?.id === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document, action:"LOSSync", isWorkbenchFile:false } });
       return;
   }
 
@@ -198,15 +244,15 @@ useEffect(() => {
 
     if (isFileChanged) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document, action:"view", isWorkbenchFile:false } });
       return;
     }
 
-    viewFile(file, document, dispatch);
+    viewFile(file, document);
 
   };
 
-  const viewFile = async (file: any, document: any, dispatch: any) => {
+  const viewFile = async (file: any, document: any) => {
     dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
     if (file.file && file.uploadProgress <= 100) return;
     ViewerActions.resetInstance(dispatch);
@@ -214,6 +260,8 @@ useEffect(() => {
     await setCurrentDocument();
     await DocumentActions.viewFile(document, file, dispatch);
     dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
+    dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    
   }
 
   const onDoubleClick = (
