@@ -108,7 +108,7 @@ export const DocumentItem = ({
     let file = JSON.parse(e.dataTransfer.getData('file'));
 
     if (!file.indexes) {
-      if (document.files.find(f => f.id === isDraggingSelf.id)) {
+      if (document.files.find(f => f?.id === isDraggingSelf?.id)) {
         return;
       }
     }
