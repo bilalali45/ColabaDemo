@@ -12,6 +12,7 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
   const DiscardChanges = async() => {
     ViewerTools.discardChanges(dispatch, currentFile)
     await dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
+    if(fileToChangeWhenUnSaved.action !== "dragged")
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });
   };
 
@@ -45,8 +46,8 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
       }
       await ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds)
      }
-    
-    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });
+     if(fileToChangeWhenUnSaved.action !== "dragged")
+      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });
     
   };
 

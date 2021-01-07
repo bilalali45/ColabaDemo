@@ -29,6 +29,11 @@ export const ViewerHeader = () => {
     
   };
 
+  useEffect(()=>{
+      if(currentFile){
+        setEditingModeEnabled(false)
+      }
+  },[currentFile])
   const editMode = (isEditEnabled: boolean) => {
     setEditingModeEnabled(isEditEnabled);
   };

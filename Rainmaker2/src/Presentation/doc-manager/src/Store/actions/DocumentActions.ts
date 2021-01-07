@@ -950,7 +950,9 @@ export default class DocumentActions {
       );
         let currentFile = new CurrentInView(document.id, f, this.getFileName(file), false, file.id);
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-        dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
+        selectedFileData = new SelectedFile(document.id,this.getFileName(file), file.id )
+        dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
+        // dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
         dispatch({
           type: ViewerActionsType.SetFileProgress,
           payload: 0,

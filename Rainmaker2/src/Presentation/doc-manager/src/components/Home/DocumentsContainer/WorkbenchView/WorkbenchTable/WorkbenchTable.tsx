@@ -48,7 +48,7 @@ export const WorkbenchTable = () => {
 
         if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
             dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+            dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file:null, document:null, action:"dragged", isWorkbenchFile:false } });
             return;
         }
         e.preventDefault();

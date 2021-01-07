@@ -36,7 +36,8 @@ export enum ViewerActionsType {
     SetFileToChangeWhenUnSaved = "SET_FILE_TO_CHANGE_WHEN_UNSAVED",
     SetSaveFile="SET_SAVE_FILE",
     SetDiscardFile="SET_DISCARD_FILE",
-    SetPerformNextAction="SET_PERFORM_NEXT_ACTION"
+    SetPerformNextAction="SET_PERFORM_NEXT_ACTION",
+    SetAnnotationsFirstTime= "SET_ANNOTATIONS_FIRST_TIME"
 
 }
 
@@ -55,7 +56,8 @@ export type ViewerType = {
     fileToChangeWhenUnSaved: FileToChange,
     SaveCurrentFile:boolean,
     DiscardCurrentFile:boolean,
-    performNextAction:boolean
+    performNextAction:boolean,
+    setAnnotationsFirstTime:boolean
     // documentsSelection: {}
 }
 
@@ -74,7 +76,8 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetFileToChangeWhenUnSaved]: FileToChange;
     [ViewerActionsType.SetSaveFile]:boolean;
     [ViewerActionsType.SetDiscardFile]:boolean;
-    [ViewerActionsType.SetPerformNextAction]:boolean
+    [ViewerActionsType.SetPerformNextAction]:boolean;
+    [ViewerActionsType.SetAnnotationsFirstTime]:boolean
 
 }
 
@@ -117,6 +120,12 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
             return {
                 ...state,
                 selectedFileData: payload
+            };
+        case ViewerActionsType.SetAnnotationsFirstTime:
+
+            return {
+                ...state,
+                setAnnotationsFirstTime: payload
             };
         case ViewerActionsType.SetIsLoading:
 

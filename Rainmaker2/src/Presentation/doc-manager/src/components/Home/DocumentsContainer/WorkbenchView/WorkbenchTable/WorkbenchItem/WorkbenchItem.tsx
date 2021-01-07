@@ -82,12 +82,6 @@ const performNextActionFn= async () =>{
 
   const toggleReassignDropdown = async (e: any) => {
 
-    // if (isFileChanged && file?.id === currentFile?.id) {
-    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
-    //   return;
-    // }
-
     let target = e.target
     await setCurrentDocument();
 
@@ -205,17 +199,14 @@ const performNextActionFn= async () =>{
       dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document:null, action:"view", isWorkbenchFile: true } });
       return;
     }
-    // if (isFileChanged) {
-    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-    //   dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document } });
-    //   return;
-    // }
+   
 
     viewFile(file);
   };
 
   const viewFile = async (file: any) => {
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+    await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
     setCurrentDocument();
 
     let selectedFileData = new SelectedFile(file.id, DocumentActions.getFileName(file), file.fileId)
@@ -235,7 +226,6 @@ const performNextActionFn= async () =>{
 
     let currentFile = new CurrentInView(file.id, f, getFileName(), true, file.fileId);
     dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-    dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
     dispatch({
       type: ViewerActionsType.SetFileProgress,
       payload: 0,
@@ -340,13 +330,6 @@ const performNextActionFn= async () =>{
             window.document.body.removeChild(dragView);
           }}
           className="d-name">
-          {!!editingModeEnabled ? (
-            <RenameFile
-              editingModeEnabled={editingModeEnabled}
-              editMode={editMode}
-              isWorkBenchFile={true}
-            />
-          ) : (
               <div>
                 <p title={getFileName()}>{getFileName()}</p>
                 {file.file && file.uploadProgress <= 100 ? null :
@@ -358,7 +341,6 @@ const performNextActionFn= async () =>{
                     </span>
                   </div>}
               </div>
-            )}
         </div>
         <div className={`dl-actions ${showingReassignDropdown ? "show" : ""}`}>
           {renderFileActions()}

@@ -124,12 +124,7 @@ const performNextActionFn= async () =>{
 }
 
   const toggleReassignDropdown = async (e: any) => {
-    
-    // if (isFileChanged && file?.id === currentFile?.fileId) {
-    //   dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-    //   return;
-    // }
-
+   
     let target = e.target
     await setCurrentDocument();
 
@@ -253,6 +248,7 @@ useEffect(() => {
   };
 
   const viewFile = async (file: any, document: any) => {
+    await DocumentActions.getDocumentItems(dispatch, importedFileIds)
     dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
     if (file.file && file.uploadProgress <= 100) return;
     ViewerActions.resetInstance(dispatch);
@@ -582,13 +578,6 @@ useEffect(() => {
           onDoubleClick={(event) => onDoubleClick(event)}
           onClick={viewFileForDocCategory}
         >
-          {!!editingModeEnabled ? (
-            <RenameFile
-              editingModeEnabled={editingModeEnabled}
-              editMode={editMode}
-              isWorkBenchFile={false}
-            />
-          ) : (
               <div>
                 <p title={DocumentActions.getFileName(file)}>{DocumentActions.getFileName(file)}</p>
                 {file.file && file.uploadProgress <= 100 ? null :
@@ -600,7 +589,6 @@ useEffect(() => {
                     </span>
                   </div>}
               </div>
-            )}
         </div>
         {doesFileExist() && <div className={`syncActive`} style={{ flex: 1 }}>
         </div>}

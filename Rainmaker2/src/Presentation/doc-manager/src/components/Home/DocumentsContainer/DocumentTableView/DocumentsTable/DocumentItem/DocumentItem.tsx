@@ -113,10 +113,9 @@ export const DocumentItem = ({
       }
     }
 
-    console.log(file);
     if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file:null, document:null, action:"dragged", isWorkbenchFile:false } });
       return;
     }
     if (isDragging) {

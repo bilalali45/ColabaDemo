@@ -15,7 +15,8 @@ export class Rename {
             file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length}.${fileExt}`;
             let f = files.find((f:any) => DocumentActions.getFileName(f).toLowerCase() === file.clientName.toLowerCase());
             if (f) {
-                file.mcuName = `${fileName}${this.counterPrefix}${filesFiltered.length + 1}.${fileExt}`;
+                file.clientName = `${fileName}${this.counterPrefix}${filesFiltered.length + 1}.${fileExt}`;
+                file = this.duplicateFileName(file, files)
             }
         } else {
             file.clientName = `${fileName}.${fileExt}`
@@ -44,5 +45,24 @@ export class Rename {
         }
 
         return name;
+    }
+
+    static duplicateFileName(file:any, files:any){
+        let f = files.find((f:any) => DocumentActions.getFileName(f).toLowerCase() === file.clientName.toLowerCase());
+        if(f){
+            let existingFileName = DocumentActions.getFileName(f)
+            if(existingFileName){
+                let fileName = this.removeExt(file.clientName);
+                let fileExt = this.getExt(file.file);
+                let counterPrefixIndex = existingFileName.lastIndexOf(this.counterPrefix)
+                if(counterPrefixIndex !== -1){
+                let fileNumber = existingFileName[counterPrefixIndex + this.counterPrefix.length];
+                file.clientName = `${fileName}${this.counterPrefix}${+fileNumber+1}.${fileExt}`;
+                
+            }
+            }
+                    
+        }
+            return file;
     }
 }

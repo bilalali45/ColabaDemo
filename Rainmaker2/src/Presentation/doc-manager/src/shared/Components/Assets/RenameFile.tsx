@@ -33,6 +33,7 @@ export const RenameFile = ({
   const { state, dispatch } = useContext(Store);
   const { currentDoc, importedFileIds,documentItems }: any = state.documents;
   const { currentFile, selectedFileData }: any = state.viewer;
+  const regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export const RenameFile = ({
 
   const setInputValue = () => {
 
+    setRenameMCUName("")
     const filenameWithoutExtension =
       getFileNameWithoutExtension(renameMCUName) ||
       getFileNameWithoutExtension(currentFile.name);
@@ -153,39 +155,42 @@ export const RenameFile = ({
         try {
           let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
           let fileId = currentFile.fileId
-
-
-          await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newNameWithFileExtension)
-
-          setMCUNamePreviousName(() => newNameWithFileExtension);
-          setRenameMCUName(() => newNameWithFileExtension);
-
-
-
-          if (currentFile.isWorkBenchFile) {
-            let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
-
+          if(newName !== "" && !allowFileRenameMCU(newName, currentFile?.id, false) && !regex.test(newName)){
+            
+            await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newNameWithFileExtension)
           }
-          else {
-            let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
+            let selectedFileData = new SelectedFile(currentFile.id,newNameWithFileExtension, currentFile.fileId )
+            await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
+            let newFile: any = new CurrentInView(
+              currentFile.id,
+              currentFile.src,
+              newNameWithFileExtension,
+              currentFile.isWorkBenchFile,
+              currentFile.fileId,
+  
+            );
+            dispatch({
+              type: ViewerActionsType.SetCurrentFile,
+              payload: newFile,
+            });
+  
+           
+  
+            setMCUNamePreviousName(() => newNameWithFileExtension);
+            setRenameMCUName(() => newNameWithFileExtension);
+            
+            if (currentFile.isWorkBenchFile) {
+              let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
+  
+            }
+            else {
+              
+               await DocumentActions.getDocumentItems(dispatch, importedFileIds);
 
-            dispatch({ type: DocumentActionsType.SetDocumentItems, payload: d });
-          }
-          let newFile: any = new CurrentInView(
-            currentFile.id,
-            currentFile.src,
-            newNameWithFileExtension,
-            currentFile.isWorkBenchFile,
-            currentFile.fileId,
-
-          );
-          dispatch({
-            type: ViewerActionsType.SetCurrentFile,
-            payload: newFile,
-          });
-
-          let selectedFileData = new SelectedFile(currentFile.id,newNameWithFileExtension, currentFile.fileId )
-          dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
+            }
+            
+          
+          
         } catch (error) {
           //swallod error because it should not update
 
@@ -279,7 +284,6 @@ export const RenameFile = ({
 
     !filenameUnique && setFilenameUnique(true);
 
-    const regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
 
     if (regex.test(value)) {
       setValidFilename(false);

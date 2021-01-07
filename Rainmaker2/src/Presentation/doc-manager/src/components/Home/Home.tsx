@@ -72,6 +72,7 @@ export const Home = () => {
   const setStateProps = () => {
     dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })
     dispatch({ type: DocumentActionsType.SetDocumentItems, payload: [] })
+    dispatch({type: ViewerActionsType.SetAnnotationsFirstTime, payload: true});
   }
   return (
     <section className="c-Home loader-parent-Wrap"
