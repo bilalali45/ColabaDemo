@@ -9,6 +9,7 @@ import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReduce
 import { Store } from "../../../../../../Store/Store";
 import { LocalDB } from "../../../../../../Utilities/LocalDB";
 import {AddDocIcon} from "../../../../../../shared/Components/Assets/SVG";
+import { CurrentInView } from "../../../../../../Models/CurrentInView";
 
 export const ReassignDropdown = ({
   target,
@@ -45,17 +46,17 @@ export const ReassignDropdown = ({
 
 
   const performNextActionFn= async () =>{
-
+    if(DocumentActions.performNextAction){
     selectedFile = fileToChangeWhenUnSaved.selectedFile;
     isFromWorkbench = currentFile.isWorkBenchFile;
     isFileChanged = false
     await ReassignCategory(fileToChangeWhenUnSaved.document)
-    
+    }
   }
 
   const ReassignCategory = async (document: DocumentRequest) => {
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
-    
+    DocumentActions.performNextAction = false
     if (isFromWorkbench) {
       if (isFileChanged && selectedFile?.fileId === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
@@ -72,6 +73,8 @@ export const ReassignDropdown = ({
       if (res) {
         await DocumentActions.getDocumentItems(dispatch, importedFileIds);
         await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
+        let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+        dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
       }
 
     } else {
@@ -91,7 +94,7 @@ export const ReassignDropdown = ({
           document.docId
         );
         if (res) {
-          
+          if(getDocswithfailedFiles)
           getDocswithfailedFiles()
         }
       }

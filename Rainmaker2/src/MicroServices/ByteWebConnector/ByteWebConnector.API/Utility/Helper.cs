@@ -41,6 +41,7 @@ namespace ByteWebConnector.API.Utility
 
                 pdf.Save(path: pdfFilename1);
                 pdfbyte.Add(item: File.ReadAllBytes(path: pdfFilename1));
+                File.Delete(pdfFilename1);
             }
 
             return pdfbyte;

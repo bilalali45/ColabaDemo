@@ -478,10 +478,11 @@ namespace DocumentManagement.API.Controllers
             var filepath = Path.GetTempFileName();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
                                           localFile: filepath);
-
-            return File(fileStream: fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
+            Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
                                                                                                                           password: await keyStoreService.GetFileKey(),
-                                                                                                                          originalFileName: fileviewdto.clientName),
+                                                                                                                          originalFileName: fileviewdto.clientName);
+            System.IO.File.Delete(filepath);
+            return File(ms,
                         contentType: fileviewdto.contentType,
                         fileDownloadName: fileviewdto.clientName);
         }

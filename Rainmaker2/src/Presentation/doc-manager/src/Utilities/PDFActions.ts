@@ -135,7 +135,11 @@ export class PDFActions extends Viewer {
 
     static async createNewFileFromThumbnail(pageIndexes: any[], currentFile: any, files: any[]) {
 
-        const pagesAnnotations = await Viewer.instance.getAnnotations(Number(pageIndexes[0]))
+        const pagesAnnotations = await Promise.all(
+            Array.from({ length: Viewer.instance.totalPageCount }).map((_, pageIndex) =>
+                Viewer.instance.getAnnotations(pageIndex)
+            )
+        );
 
         await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 

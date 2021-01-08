@@ -71,7 +71,6 @@ export const FileItem = ({
   const viewer: any = state.viewer;
   const { currentFile, selectedFileData, performNextAction, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
   const documents: any = state.documents;
-  const importedFileIds:any = state.documents;
   const catScrollFreeze: any = documents?.catScrollFreeze;
 
   const isDragging: any = documents;
@@ -80,14 +79,13 @@ export const FileItem = ({
   const isByteProAuto:boolean = documents?.isByteProAuto;
   const syncStarted: any = documents?.syncStarted;
   const instance: any = viewer?.instance;
+  const { currentDoc, importedFileIds }: any = state.documents;
   const loanApplicationId = LocalDB.getLoanAppliationId();
   
   useEffect(()=>{
     
-    if(fileToChangeWhenUnSaved && !fileToChangeWhenUnSaved.isWorkbenchFile && performNextAction ){
-      setTimeout(() => {
+    if(fileToChangeWhenUnSaved && !fileToChangeWhenUnSaved.isWorkbenchFile && performNextAction ){ 
         performNextActionFn()
-      }, 0);
        
     }
 
@@ -96,37 +94,50 @@ export const FileItem = ({
 
 const performNextActionFn= async () =>{
   
+  
   switch (fileToChangeWhenUnSaved.action) {
     case "view":
-      await viewFile(fileToChangeWhenUnSaved.file, fileToChangeWhenUnSaved.document)
+      if(DocumentActions.performNextAction){
       dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      DocumentActions.performNextAction = false
+      await viewFile(fileToChangeWhenUnSaved.file, fileToChangeWhenUnSaved.document)
+      }
       break;
 
     case "delete":
-      file = fileToChangeWhenUnSaved.file
-      document = fileToChangeWhenUnSaved.document
-      await moveDocToTrash()
-      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      if(DocumentActions.performNextAction){
+        file = fileToChangeWhenUnSaved.file
+        document = fileToChangeWhenUnSaved.document
+        DocumentActions.performNextAction = false
+        await moveDocToTrash()
+        dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      }
       break;
 
     case "reassign":
+      if(DocumentActions.performNextAction){
+    if(fileToChangeWhenUnSaved.selectedFile.id === file.id)
       setShowingReassignDropdown(true)
+      }
       break;
     case "LOSSync":
+      if(DocumentActions.performNextAction){
       file = fileToChangeWhenUnSaved.file
       document = fileToChangeWhenUnSaved.document
       toggleSyncAlert()
       dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      }
       break;
     default:
       break;
-  }
+  
+}
 }
 
   const toggleReassignDropdown = async (e: any) => {
    
     let target = e.target
-    await setCurrentDocument();
+    await setCurrentDocument(document);
 
     setReassignDropdownTarget(target);
     setShowingReassignDropdown(!showingReassignDropdown);
@@ -134,9 +145,13 @@ const performNextActionFn= async () =>{
   };
 
   const hideReassign = async() => { 
+    
+    // setReassignDropdownTarget(null);
     setShowingReassignDropdown(false);
-    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved?.file?.id === currentFile?.fileId )
-    await viewFile(fileToChangeWhenUnSaved.file, fileToChangeWhenUnSaved.document)
+    if(refReassignlink && refReassignlink.current)
+    refReassignlink.current.classList.remove("overlayOpen")
+    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved?.selectedFile?.id === currentFile?.fileId )
+    await viewFile(fileToChangeWhenUnSaved.selectedFile, fileToChangeWhenUnSaved.document)
   refReassignDropdown.current?.classList.remove("freeze")
 
 }
@@ -162,7 +177,7 @@ useEffect(() => {
   }, [isDraggingItem]);
 
   const moveDocToTrash = async () => {
-
+    DocumentActions.performNextAction = false
     if (isFileChanged && file?.id === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
       dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document, action:"delete", isWorkbenchFile:false } });
@@ -174,7 +189,7 @@ useEffect(() => {
     if (selectedFileData && selectedFileData?.fileId === file.id) {
       cancelCurrentFileViewRequest = true;
     }
-    setCurrentDocument();
+    setCurrentDocument(document);
     let success = await DocumentActions.moveCatFileToTrash(
       document.id,
       document.requestId,
@@ -227,7 +242,7 @@ useEffect(() => {
 
   const doesFileExist = () => filesToSync?.map((f: any) => f.file.id)?.includes(file.id)
 
-  const setCurrentDocument = () => {
+  const setCurrentDocument = (document:any) => {
     if (document) {
       dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: null });
     }
@@ -248,15 +263,18 @@ useEffect(() => {
   };
 
   const viewFile = async (file: any, document: any) => {
+    
     await DocumentActions.getDocumentItems(dispatch, importedFileIds)
     dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
     if (file.file && file.uploadProgress <= 100) return;
     ViewerActions.resetInstance(dispatch);
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-    await setCurrentDocument();
+    await setCurrentDocument(document);
     await DocumentActions.viewFile(document, file, dispatch);
     dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
     dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
+    dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+    
     
   }
 
@@ -276,11 +294,10 @@ useEffect(() => {
         type: ViewerActionsType.SetCurrentFile,
         payload: currentFile,
       });
-      setCurrentDocument();
+      setCurrentDocument(document);
       editMode(true);
     }
   };
-
 
   const editMode = (isEditEnabled: boolean) => {
     setEditingModeEnabled(isEditEnabled);
@@ -555,7 +572,6 @@ useEffect(() => {
     }
     return '';
   }
-
   return (
     <>
       <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''} ${getCurrentFileSelectedStyle()}`}

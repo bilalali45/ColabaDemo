@@ -38,7 +38,6 @@ export enum ViewerActionsType {
     SetDiscardFile="SET_DISCARD_FILE",
     SetPerformNextAction="SET_PERFORM_NEXT_ACTION",
     SetAnnotationsFirstTime= "SET_ANNOTATIONS_FIRST_TIME"
-
 }
 
 export type ViewerType = {

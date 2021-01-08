@@ -68,6 +68,7 @@ namespace DocumentManagement.Service
             // upload to ftp
             await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                         localFile: filePath);
+            System.IO.File.Delete(filePath);
             // get document upload status
             string status = string.Empty;
             IMongoCollection<Entity.StatusList> collection =
@@ -157,7 +158,7 @@ namespace DocumentManagement.Service
                 { "byteProStatus", ByteProStatus.Synchronized },
                 { "isRead", true }
             };
-
+            
             filesArray.Add(fileDocument);
 
             BsonDocument bsonDocument = new BsonDocument();

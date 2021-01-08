@@ -125,7 +125,7 @@ export const DocumentItem = ({
 
 
     let { isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
-    dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
+    
     if (isFromWorkbench) {
 
       let success = await DocumentActions.moveFromWorkBenchToCategory(
@@ -155,6 +155,7 @@ export const DocumentItem = ({
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
       }
     } else if (isFromThumbnail) {
+      dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
       let { id, requestId, docId } = document
       let fileObj = {
         id,
@@ -173,7 +174,7 @@ export const DocumentItem = ({
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
       }
-
+      dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
     } else if (isFromTrash) {
 
       let success = await DocumentActions.moveFromTrashToCategory(
@@ -189,7 +190,7 @@ export const DocumentItem = ({
       }
 
     }
-    dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
+   
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     setShow(true);
   }

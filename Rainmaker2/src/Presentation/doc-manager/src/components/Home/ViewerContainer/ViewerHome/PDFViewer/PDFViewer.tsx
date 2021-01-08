@@ -8,6 +8,7 @@ import { AnnotationActions } from '../../../../../Utilities/AnnotationActions';
 import { Loader } from '../../../../../Utilities/Loader';
 import { PSPDFKitViewer } from '../../../../../Utilities/PSPDFKitViewer';
 import { Viewer } from '../../../../../Utilities/Viewer';
+import { ViewerTools } from '../../../../../Utilities/ViewerTools';
 
 
 
@@ -25,7 +26,7 @@ export const PDFViewer = () => {
     const viewer: any = state.viewer;
     const instance: any = viewer.instance;
 
-    const { currentFile, isLoading }: any = state.viewer;
+    const { currentFile,isLoading }: any = state.viewer;
     const { currentDoc, isFileDirty }: any = state.documents;
     const { isFileChanged }: any = state.viewer;
 
@@ -40,6 +41,7 @@ export const PDFViewer = () => {
         if (instance) {
             instance.addEventListener("document.change", async () => {
                 Viewer.instance = instance
+                ViewerTools.isDocChanged =true
                 if (!isFileChanged) {
                     await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
                     

@@ -49,9 +49,7 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
 
   useEffect(()=>{
     if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved.isWorkbenchFile && performNextAction){
-      setTimeout(() => {
         performNextActionFn()
-      }, 0);
     }
 
   },[performNextAction])
@@ -61,23 +59,33 @@ const performNextActionFn= async () =>{
   
   switch (fileToChangeWhenUnSaved.action) {
     case "view":
-      await viewFile(fileToChangeWhenUnSaved.file)
-      dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      if(DocumentActions.performNextAction){
+        dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+        DocumentActions.performNextAction =false;
+        await viewFile(fileToChangeWhenUnSaved.file)
+      
+      }
       break;
 
     case "delete":
-      file = fileToChangeWhenUnSaved.file
+      if(DocumentActions.performNextAction){  
+    file = fileToChangeWhenUnSaved.file
+    DocumentActions.performNextAction = false
       await moveWorkBenchToTrash()
       dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+      }
       break;
 
     case "reassign":
-      setShowingReassignDropdown(true)
+      if(DocumentActions.performNextAction){
+        if(fileToChangeWhenUnSaved.selectedFile.id === file.id)
+    setShowingReassignDropdown(true)
+      }
       break;
    
     default:
       break;
-  }
+}
 }
 
   const toggleReassignDropdown = async (e: any) => {
@@ -90,8 +98,11 @@ const performNextActionFn= async () =>{
     showingReassignDropdown ? refReassignDropdown.current.classList.remove("freeze") : refReassignDropdown.current.classList.add("freeze");
   };
 
-  const hideReassign = () => {
-
+  const hideReassign = async() => {
+    if(refReassignlink && refReassignlink.current)
+     refReassignlink?.current?.classList.remove("overlayOpen")
+    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved?.selectedFile?.id === currentFile?.fileId )
+    await viewFile(fileToChangeWhenUnSaved.selectedFile)
     setShowingReassignDropdown(false);
     refReassignDropdown.current?.classList.remove("freeze")
   }
@@ -134,7 +145,7 @@ const performNextActionFn= async () =>{
 
   }
   const moveWorkBenchToTrash = async () => {
-
+    DocumentActions.performNextAction = false
     if (isFileChanged && file?.fileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
       dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file, document:null, action:"delete", isWorkbenchFile:true } });
@@ -205,6 +216,7 @@ const performNextActionFn= async () =>{
   };
 
   const viewFile = async (file: any) => {
+    DocumentActions.performNextAction = false
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
     await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
     setCurrentDocument();
@@ -232,6 +244,7 @@ const performNextActionFn= async () =>{
     });
     dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
+    
   }
 
 

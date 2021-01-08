@@ -63,7 +63,7 @@ export const WorkbenchTable = () => {
 
         let { isFromThumbnail, isFromCategory, isFromTrash } = file
 
-        dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
+        
         if (isFromCategory) {
             let { id, fromRequestId, fromDocId, fromFileId }: any = file;
             let newWorkBench = await DocumentActions.moveFileToWorkbench({ id, fromRequestId, fromDocId, fromFileId }, false);
@@ -76,7 +76,7 @@ export const WorkbenchTable = () => {
 
         if (isFromThumbnail) {
 
-
+            dispatch({ type: ViewerActionsType.SetIsSaving, payload: true });
             let { id } = currentFile
             let fileObj = {
                 id,
@@ -94,6 +94,7 @@ export const WorkbenchTable = () => {
             await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
             // }
+            dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
 
         }
 
@@ -110,7 +111,7 @@ export const WorkbenchTable = () => {
             }
 
         }
-        dispatch({ type: ViewerActionsType.SetIsSaving, payload: false });
+        
         dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     }
 

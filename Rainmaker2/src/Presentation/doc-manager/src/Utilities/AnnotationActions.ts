@@ -92,7 +92,7 @@ export class AnnotationActions extends Viewer {
 
                 let data = {
                     ...body,
-                    annotations: annotationsAsString
+                    annotations: annotationsAsString || '{annotations: []}'
                 }
 
                 return this.saveAnnotationsLocal(url, data);
@@ -102,7 +102,7 @@ export class AnnotationActions extends Viewer {
                 let annotations = await this.extractAnnotationsAsString();
                 let data = {
                     ...body,
-                    annotations
+                    annotations: annotations || '{annotations: []}'
                 }
 
                 return this.saveAnnotationsLocal(url, data);
@@ -131,13 +131,13 @@ export class AnnotationActions extends Viewer {
 
             const annotations: any = await this.instance.getAnnotations(pageIndex);
 
-            let annotationsToJSON = [];
+            /*let annotationsToJSON = [];
 
             for (const annotation of annotations) {
                 let json = PSPDFKit.Annotations.toSerializableObject(annotation);
                 annotationsToJSON.push(json);
             }
-
+            */
             return JSON.stringify(annotations);
         }
         catch (error) {

@@ -18,6 +18,7 @@ const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 export class ViewerTools extends Viewer {
 
     static currentRotation: any = 90;
+    static isDocChanged:any = false;
 
     static currentToolbar: Array<string> = [
         "pan",
@@ -49,30 +50,37 @@ export class ViewerTools extends Viewer {
     static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds: any, pageIndexes?: [number]) {
         let fileId = fileObj.fileId;
 
-        if (fileObj.isFromCategory) {
-            fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
-
-        } else if (fileObj.isFromWorkbench) {
-            fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
-
-        } else if (fileObj.isFromTrash) {
-            fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
-
-        }
+            if (fileObj.isFromCategory) {
+                fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
+    
+            } else if (fileObj.isFromWorkbench) {
+                fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
+    
+            } else if (fileObj.isFromTrash) {
+                fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
+    
+            }
+            ViewerTools.isDocChanged =false
+        this.saveFileAnnotations(fileObj, fileId, dispatch, pageIndexes)
         // dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
 
+        
+        return fileId
+
+    }
+
+    static async saveFileAnnotations(fileObj:any, fileId:any,  dispatch:any, pageIndexes:any){
         if (fileId) {
             await AnnotationActions.saveAnnotations(fileObj, fileId, false, pageIndexes)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
+            
             dispatch({ type: ViewerActionsType.SetSaveFile, payload: true })
             dispatch({
                 type: ViewerActionsType.SetFileProgress,
                 payload: 0,
             });
         }
-        return fileId
-
     }
 
     static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any) {
@@ -80,7 +88,18 @@ export class ViewerTools extends Viewer {
             type: ViewerActionsType.SetIsSaving,
             payload: true
         });
-
+        if (!currentFile.name.includes('.pdf')) {
+            ViewerTools.isDocChanged =true
+        }
+        if(!ViewerTools.isDocChanged){
+            this.saveFileAnnotations(fileObj, fileObj.fileId, dispatch, [])
+            dispatch({
+                type: ViewerActionsType.SetIsSaving,
+                payload: false
+            });
+            dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
+            return;
+        }
         let file = await PDFActions.createPDFFromInstance(fileObj.name);
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
@@ -169,7 +188,7 @@ export class ViewerTools extends Viewer {
         // } else {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
-        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds))
+        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds ))
         const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));

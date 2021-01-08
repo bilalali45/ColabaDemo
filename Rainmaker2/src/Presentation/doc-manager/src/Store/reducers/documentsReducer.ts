@@ -118,13 +118,16 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
             };
             
         case DocumentActionsType.UpdateDocFile:
+            
+            let currentDoc:any = (<DocumentRequest>payload)
             const updatedDocs = state['documentItems']?.map((doc: any) => {
-                if (doc.docId === state['currentDoc']?.docId) {
+                if (doc.docId === currentDoc?.docId) {
                     doc = payload
                 }
+
+                
                 return doc;
             })
-
             return {
                 ...state,
                 documentItems: updatedDocs

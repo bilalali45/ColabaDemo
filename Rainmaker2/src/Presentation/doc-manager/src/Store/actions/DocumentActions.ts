@@ -24,6 +24,7 @@ export default class DocumentActions {
   static nonExistentFileId = "000000000000000000000000"
   static loanApplicationId = LocalDB.getLoanAppliationId();
   static documentViewCancelToken: any = Axios.CancelToken.source();
+  static performNextAction:any = true
   static async getDocumentItems(dispatch: Function, importedFileIds:any) {
     let url = Endpoints.Document.GET.all(
       DocumentActions.loanApplicationId

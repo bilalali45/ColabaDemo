@@ -24,9 +24,9 @@ namespace DocManager.Service
             AES.Mode = CipherMode.ECB;
 
             using CryptoStream cs = new CryptoStream(fsCrypt, AES.CreateDecryptor(), CryptoStreamMode.Read);
-            var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(originalFileName));
-            FileStream fsOut = new FileStream(filePath, FileMode.Create);
-
+            //var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(originalFileName));
+            //FileStream fsOut = new FileStream(filePath, FileMode.Create);
+            MemoryStream fsOut = new MemoryStream();
             int read;
             byte[] buffer = new byte[100000];
 

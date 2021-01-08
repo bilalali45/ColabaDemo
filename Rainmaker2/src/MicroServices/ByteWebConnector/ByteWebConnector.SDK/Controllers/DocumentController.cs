@@ -111,6 +111,7 @@ namespace ByteWebConnector.SDK.Controllers
 
                         embeddedDoc.LoadFromFile(fileNameAndPath);
                         _logger.LogInformation($"DocsyncSDK LoadFromFile = true");
+                        System.IO.File.Delete(fileNameAndPath);
                     }
 
                     file.Save();

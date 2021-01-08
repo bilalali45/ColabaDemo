@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Modal } from "react-bootstrap";
+import DocumentActions from "../../../Store/actions/DocumentActions";
 import { ViewerActionsType } from "../../../Store/reducers/ViewerReducer";
 import { Store } from "../../../Store/Store";
 import { ViewerTools } from "../../../Utilities/ViewerTools";
@@ -14,6 +15,7 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
     await dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: false });
     if(fileToChangeWhenUnSaved.action !== "dragged")
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });
+    DocumentActions.performNextAction = true
   };
 
    
@@ -48,7 +50,7 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
      }
      if(fileToChangeWhenUnSaved.action !== "dragged")
       dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });
-    
+      DocumentActions.performNextAction = true
   };
 
   return (
