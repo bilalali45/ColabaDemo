@@ -324,7 +324,6 @@ export const NewNeedList = () => {
       emailData.ccAddress = null;
       emailData.subject = null;
       emailData.emailBody = null;
-
     }else{
       const regExOpenTag = new RegExp('<li>', "g");
       emailData.emailTemplateId = emailContent?.emailTemplateId; 
@@ -346,6 +345,7 @@ export const NewNeedList = () => {
     }
     disableBrowserPrompt();
   };
+
 
   const addTemplatesDocuments = (idArray: string[]) => {
     if (!idArray) {

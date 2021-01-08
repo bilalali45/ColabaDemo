@@ -12,7 +12,7 @@ import { debug } from "console";
 const cookies = new Cookies();
 
 if(window.envConfig.LOGROCKET_ENABLE){
-    LogRocket.init('evhjvq/borrowerside-react', {
+    LogRocket.init(window.envConfig.LOGROCKET_APPID, {
       // dom: {
       //     textSanitizer: true,
       //     inputSanitizer: true,

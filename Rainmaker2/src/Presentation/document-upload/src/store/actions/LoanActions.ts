@@ -42,7 +42,7 @@ export class LaonActions {
       };
      // let res: AxiosResponse<LoanApplication> = await Http.get<LoanApplication>(url);
      let res: AxiosResponse<LoanApplication> =  await axios(options)  
-      console.log('Axios Direct Network Response getLoanApplication',res.data)
+      console.log('Axios Direct Network Response getLoanApplication Success')
       return new LoanApplication().fromJson(res.data);
     } catch (error) {
       console.log("Axios Direct Network Response Error", error);
