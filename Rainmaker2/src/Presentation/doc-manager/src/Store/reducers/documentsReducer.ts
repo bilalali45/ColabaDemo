@@ -25,10 +25,11 @@ export enum DocumentActionsType {
     SetFileUploadInProgress = 'SET_FILE_UPLOAD_IN_PROGRESS',
     SetIsByteProAuto = "SET_IS_BYTE_PRO_AUTO",
     SetIsDraggingSelf = "SET_IS_DRAGGING_SELF",
-    SetCatScrollFreeze= "SET_CAT_SCROLL_FREEZE",
-    SetWbScrollFreeze= "SET_WB_SCROLL_FREEZE",
+    SetCatScrollFreeze = "SET_CAT_SCROLL_FREEZE",
+    SetWbScrollFreeze = "SET_WB_SCROLL_FREEZE",
     SetIsDraggingCurrentFile = "SET_IS_DRAGGING_CURRENT_FILE",
-    SetImportedFileIds = "SET_IMPORTED_FILE_IDS"
+    SetImportedFileIds = "SET_IMPORTED_FILE_IDS",
+    SetLoanApplication = "SET_LOAN_APPLICATION",
 }
 
 export type DocumentsType = {
@@ -47,10 +48,10 @@ export type DocumentsType = {
     fileUploadInProgress: boolean,
     isByteProAuto: boolean,
     isDraggingSelf: DocumentFile
-    catScrollFreeze:boolean,
-    wbScrollFreeze:boolean,
-    importedFileIds:any[]
-    
+    catScrollFreeze: boolean,
+    wbScrollFreeze: boolean,
+    importedFileIds: any[]
+    loanApplication: any
 }
 
 export type DocumentActionsPayload = {
@@ -81,7 +82,8 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetCatScrollFreeze]: boolean,
     [DocumentActionsType.SetWbScrollFreeze]: boolean,
     [DocumentActionsType.SetIsDraggingSelf]: DocumentFile,
-    [DocumentActionsType.SetImportedFileIds]:any[]
+    [DocumentActionsType.SetImportedFileIds]: any[],
+    [DocumentActionsType.SetLoanApplication]: {},
 }
 
 export type DocumentsActions = ActionMap<DocumentActionsPayload>[keyof ActionMap<DocumentActionsPayload>];
@@ -116,16 +118,16 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 ...state,
                 uploadFailedDocs: payload
             };
-            
+
         case DocumentActionsType.UpdateDocFile:
-            
-            let currentDoc:any = (<DocumentRequest>payload)
+
+            let currentDoc: any = (<DocumentRequest>payload)
             const updatedDocs = state['documentItems']?.map((doc: any) => {
                 if (doc.docId === currentDoc?.docId) {
                     doc = payload
                 }
 
-                
+
                 return doc;
             })
             return {
@@ -230,17 +232,24 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
                 ...state,
                 isDraggingSelf: payload
             }
-        return {
-            ...state,
-            wbScrollFreeze: payload
-        }
+            return {
+                ...state,
+                wbScrollFreeze: payload
+            }
 
         case DocumentActionsType.SetImportedFileIds:
-            
-        return {
-            ...state,
-            importedFileIds: payload
-        }
+
+            return {
+                ...state,
+                importedFileIds: payload
+            }
+
+        case DocumentActionsType.SetLoanApplication:
+
+            return {
+                ...state,
+                loanApplication: payload
+            }
         default:
             return state;
     }

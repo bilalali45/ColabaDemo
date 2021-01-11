@@ -918,6 +918,16 @@ export default class DocumentActions {
     return f;
   }
 
+  static async getLoanApplicationDetail(loanApplicationId: string) {
+    try {
+      let result: any = await Http.get<any>(Endpoints.Document.GET.loanInfo(loanApplicationId));
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   static async syncFileToLos(fileData: any) {
 
@@ -987,5 +997,6 @@ export default class DocumentActions {
       console.log(error);
     }
   }
+
 
 }

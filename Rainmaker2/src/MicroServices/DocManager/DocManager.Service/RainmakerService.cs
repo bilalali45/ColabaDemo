@@ -82,6 +82,7 @@ namespace DocManager.Service
         {
             if (loanApplicationId == null)
                 loanApplicationId = await this.GetLoanApplicationId(id);
+
             IMongoCollection<Request> collectionLastDocUploadDate = mongoService.db.GetCollection<Request>("Request");
 
             using var asyncCursor = collectionLastDocUploadDate.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
@@ -109,13 +110,56 @@ namespace DocManager.Service
                 ));
 
             DateTime? lastDocUploadDate = null;
+            DateTime? lastFileDocUploadDate = null;
+            DateTime? lastMcuFileDocUploadDate = null;
             if (await asyncCursor.MoveNextAsync())
             {
                 foreach (var current in asyncCursor.Current)
                 {
                     LastDocUploadQuery query = BsonSerializer.Deserialize<LastDocUploadQuery>(current);
-                    lastDocUploadDate = query.LastDocUploadDate;
+                    lastFileDocUploadDate = query.LastDocUploadDate;
                 }
+            }
+            IMongoCollection<Request> collectionLastDocUploadDateMcu = mongoService.db.GetCollection<Request>("Request");
+
+            using var asyncCursorMcu = collectionLastDocUploadDateMcu.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @"
+                            }
+                        }", @"{
+                            ""$unwind"": ""$requests""
+                        }", @"{
+                            ""$unwind"": ""$requests.documents""
+                        }", @"{
+                            ""$unwind"": ""$requests.documents.mcuFiles""
+                        }", @"{
+                            ""$sort"": {
+                                 ""requests.documents.mcuFiles.fileUploadedOn"": -1
+                            }
+                        }", @"{
+                            ""$limit"":1
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                               ""LastDocUploadDate"": ""$requests.documents.mcuFiles.fileUploadedOn""
+                            }
+                        }"
+                ));
+            if (await asyncCursorMcu.MoveNextAsync())
+            {
+                foreach (var current in asyncCursorMcu.Current)
+                {
+                    LastDocUploadQuery query = BsonSerializer.Deserialize<LastDocUploadQuery>(current);
+                    lastMcuFileDocUploadDate = query.LastDocUploadDate;
+                }
+            }
+            if ((lastMcuFileDocUploadDate ?? DateTime.MinValue) > (lastFileDocUploadDate ?? DateTime.MinValue))
+            {
+                lastDocUploadDate = lastMcuFileDocUploadDate;
+            }
+            else
+            {
+                lastDocUploadDate = lastFileDocUploadDate;
             }
 
             IMongoCollection<Request> collectionLastDocRequestSentDate = mongoService.db.GetCollection<Request>("Request");
@@ -143,7 +187,7 @@ namespace DocManager.Service
                         }"
                 ));
 
-            DateTime? lastDocRequestSentDate = null; 
+            DateTime? lastDocRequestSentDate = null;
             if (await asyncCursorLastDocRequestSentDate.MoveNextAsync())
             {
                 foreach (var current in asyncCursorLastDocRequestSentDate.Current)
@@ -172,7 +216,10 @@ namespace DocManager.Service
                                 {""requests.documents.status"": """ + DocumentStatus.Started + @"""}
                             ]}
                         }", @"{
-                            ""$count"": ""RemainingDocuments""
+                            ""$project"": {
+                                            ""_id"":0,
+                                            ""isMcuVisible"":""$requests.documents.isMcuVisible""
+                                            }
                         }"
                 ));
 
@@ -182,7 +229,8 @@ namespace DocManager.Service
                 foreach (var current in asyncCursorRemainingDocuments.Current)
                 {
                     RemainingDocumentsQuery query = BsonSerializer.Deserialize<RemainingDocumentsQuery>(current);
-                    remainingDocuments = query.RemainingDocuments;
+                    if (query.isMcuVisible == null || query.isMcuVisible == true)
+                        remainingDocuments = (remainingDocuments ?? 0) + 1;
                 }
             }
 
@@ -205,7 +253,10 @@ namespace DocManager.Service
                                 {""requests.documents.status"": """ + DocumentStatus.PendingReview + @"""}
                             ]}
                         }", @"{
-                            ""$count"": ""OutstandingDocuments""
+                            ""$project"": {
+                                            ""_id"":0,
+                                            ""isMcuVisible"":""$requests.documents.isMcuVisible""
+                                            }
                         }"
                 ));
 
@@ -215,7 +266,8 @@ namespace DocManager.Service
                 foreach (var current in asyncCursorOutstandingDocuments.Current)
                 {
                     OutstandingDocumentsQuery query = BsonSerializer.Deserialize<OutstandingDocumentsQuery>(current);
-                    outstandingDocuments = query.OutstandingDocuments;
+                    if (query.isMcuVisible == null || query.isMcuVisible == true)
+                        outstandingDocuments = (outstandingDocuments ?? 0) + 1;
                 }
             }
 
@@ -234,10 +286,14 @@ namespace DocManager.Service
                             ""$unwind"": ""$requests.documents""
                         }", @"{
                             ""$match"": { ""$or"":[
-                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""}
+                                {""requests.documents.status"": """ + DocumentStatus.Completed + @"""},
+                                {""requests.documents.status"": """ + DocumentStatus.ManuallyAdded + @"""}
                             ]}
                         }", @"{
-                            ""$count"": ""CompletedDocuments""
+                            ""$project"": {
+                                            ""_id"":0,
+                                            ""isMcuVisible"":""$requests.documents.isMcuVisible""
+                                            }
                         }"
                 ));
 
@@ -247,7 +303,8 @@ namespace DocManager.Service
                 foreach (var current in asyncCursorCompletedDocuments.Current)
                 {
                     CompletedDocumentsQuery query = BsonSerializer.Deserialize<CompletedDocumentsQuery>(current);
-                    completedDocuments = query.CompletedDocuments;
+                    if (query.isMcuVisible == null || query.isMcuVisible == true)
+                        completedDocuments = (completedDocuments ?? 0) + 1;
                 }
             }
 
@@ -271,7 +328,7 @@ namespace DocManager.Service
             };
             request.Headers.Add("Authorization", authHeader);
             await _httpClient.SendAsync(request);
-            }
+        }
 
     }
 }

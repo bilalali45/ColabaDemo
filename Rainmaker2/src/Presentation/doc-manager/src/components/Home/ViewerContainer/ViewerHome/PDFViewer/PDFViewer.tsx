@@ -97,7 +97,7 @@ export const PDFViewer = () => {
         if (currentDoc && currentFile) {
            await AnnotationActions?.getAnnoations(currentDoc, currentFile);
            dispatch({type: ViewerActionsType.SetIsFileChanged, payload: false});
-           dispatch({type: ViewerActionsType.SetAnnotationsFirstTime, payload: true});
+           AnnotationActions.annotationsAttached = true
         }
     }
 

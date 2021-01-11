@@ -5,6 +5,7 @@ export class DocumentEndpoints {
         categoryDocuments: () => `/api/documentmanagement/template/GetCategoryDocument`,
         viewDocument: (id:string, requestId:string, docId: string, fileId:string) => `/api/documentmanagement/document/view?id=${id}&requestId=${requestId}&docId=${docId}&fileId=${fileId}`,
         checkIsByteProAuto: () =>`/api/documentmanagement/setting/GetTenantSetting`,
+        loanInfo: (loanApplicationId: string) => `/api/Rainmaker/admindashboard/getloaninfo?loanApplicationId=${loanApplicationId}`,
     }
   
     static POST = {

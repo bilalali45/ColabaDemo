@@ -168,7 +168,7 @@ namespace DocManager.Service
                 );
             }
 
-            //await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId,"", authHeader);
+            await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId,"", authHeader);
             return true;
         }
         public async Task<string> Submit(string contentType, string id, string requestId, string docId,string mcuName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId,int userId, string userName, IEnumerable<string> authHeader)
@@ -245,7 +245,7 @@ namespace DocManager.Service
                 */
             }
             
-            //await rainmakerService.UpdateLoanInfo(null, id, authHeader);
+            await rainmakerService.UpdateLoanInfo(null, id, authHeader);
             if (result.ModifiedCount == 1)
             {
                 return fileId.ToString();

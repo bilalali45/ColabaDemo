@@ -55,11 +55,11 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
     let target = e.target;
     setVisible(false)
     let selectedDoc:any = []
-    if(selectedDocTypeId.length && selectedDocTypeId.length){
-      selectedDoc = documentItems.filter((doc:any)=> doc.typeId === selectedDocTypeId)
+    if(selectedDocTypeId?.length && selectedDocTypeId?.length){
+      selectedDoc = documentItems?.filter((doc:any)=> doc.typeId === selectedDocTypeId)
     }
     else{
-      selectedDoc = documentItems.filter((doc:any)=> doc.docName === selectedDocName)
+      selectedDoc = documentItems?.filter((doc:any)=> doc.docName === selectedDocName)
     }
     
     await addFiles(e.target.files, selectedDoc[0]).then(() => {
@@ -87,7 +87,7 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
           type: DocumentActionsType.SetFileUploadInProgress,
           payload: true,
         });
-        for (let index = 0; index < selectedFiles.length; index++) {
+        for (let index = 0; index < selectedFiles?.length; index++) {
           const file = selectedFiles[index];
           if (file) {
             try {
@@ -124,8 +124,7 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
         });
       }
     }
-    
-    
+  
   };
   const getDocswithfailedFiles = async() => {
     let foundFirstFileDoc: any = null;
@@ -133,13 +132,13 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
 
     let docs:any = await fetchDocuments()
     
-        let uploadFailedFiles:DocumentFile[] = uploadFailedDocs.length? uploadFailedDocs : failedDocs;
+        let uploadFailedFiles:DocumentFile[] = uploadFailedDocs?.length? uploadFailedDocs : failedDocs;
     
         let failedFiles:DocumentFile[] = []
-        if(uploadFailedFiles && uploadFailedFiles.length > 0){
+        if(uploadFailedFiles && uploadFailedFiles?.length > 0){
             
-           failedFiles= uploadFailedDocs.length? uploadFailedFiles.concat(failedDocs): uploadFailedFiles
-          failedFiles = failedFiles.filter((file)=> file.id !== retryFile?.file?.id)
+           failedFiles= uploadFailedDocs?.length? uploadFailedFiles?.concat(failedDocs): uploadFailedFiles
+          failedFiles = failedFiles?.filter((file)=> file.id !== retryFile?.file?.id)
 
           
           dispatch({
@@ -149,7 +148,7 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
           
           
             let allDocs:any;
-            for (let index = 0; index < failedFiles.length; index++) {
+            for (let index = 0; index < failedFiles?.length; index++) {
               allDocs = docs?.map((doc:any)=> {
                 if(doc.docId === failedFiles[index].docCategoryId){
                   doc.files = [...doc.files, failedFiles[index]]
@@ -162,7 +161,7 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
           
             setFailedDocs([])
             
-            if(allDocs && allDocs.length) {
+            if(allDocs && allDocs?.length) {
               dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
             }
           }

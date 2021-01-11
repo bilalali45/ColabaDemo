@@ -1,17 +1,17 @@
-import React, {useState, useEffect, FunctionComponent} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useState, useEffect, FunctionComponent } from 'react';
+import { useHistory } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 
-import {NeedList} from '../../../../../Entities/Models/NeedList';
-import {NeedListDocuments} from '../../../../../Entities/Models/NeedListDocuments';
-import {truncate} from '../../../../../Utils/helpers/TruncateString';
-import {LocalDB} from '../../../../../Utils/LocalDB';
-import {DocumentStatus} from '../../../../../Entities/Types/Types';
+import { NeedList } from '../../../../../Entities/Models/NeedList';
+import { NeedListDocuments } from '../../../../../Entities/Models/NeedListDocuments';
+import { truncate } from '../../../../../Utils/helpers/TruncateString';
+import { LocalDB } from '../../../../../Utils/LocalDB';
+import { DocumentStatus } from '../../../../../Entities/Types/Types';
 import sycLOSIcon from '../../../../../Assets/images/sync-los-icon.svg';
 import syncedIcon from '../../../../../Assets/images/check-icon.svg';
 import loadingIcon from '../../../../../Assets/images/loading.svg';
 import emptyIcon from './../../../../../Assets/images/empty-icon.svg';
-import {toTitleCase} from 'rainsoft-js';
+import { toTitleCase } from 'rainsoft-js';
 
 type NeedListProps = {
   needList: NeedList | null | undefined | any;
@@ -32,6 +32,7 @@ type NeedListProps = {
   syncSuccess: boolean;
   closeSyncCompletedBox: Function;
   syncTitleClass: string;
+  loanNumber: string;
 };
 
 export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
@@ -53,7 +54,8 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     synchronizing,
     syncSuccess,
     closeSyncCompletedBox,
-    syncTitleClass
+    syncTitleClass,
+    loanNumber
   } = props;
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -94,7 +96,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           {renderDocName(item.docName, item.files)}
           {renderStatus(item.status)}
           {renderFile(item.files, item.status, index)}
-          {!isByteProAuto && renderSyncToLos(item.files, item.index)}
+          {!isByteProAuto && renderSyncToLos(item.files, item.index, loanNumber)}
           {renderButton(item, index)}
           <div className="td td-options">
             {confirmDelete &&
@@ -119,7 +121,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
 
     if (count > 0)
       return (
-        <div className="td" style={{width:"40%"}}>
+        <div className="td" style={{ width: "40%" }}>
           <span className="f-normal" title={name}>
             <i className="far fa-file text-primary"></i> <strong>{name}</strong>
           </span>
@@ -127,7 +129,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="td" style={{width:"40%"}}>
+        <div className="td" style={{ width: "40%" }}>
           <span className="f-normal" title={name}>
             <i className="far fa-file"></i> {name}
           </span>
@@ -160,7 +162,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         cssClass = 'status-bullet pending';
     }
     return (
-      <div className="td" style={{width:"15%"}}>
+      <div className="td" style={{ width: "15%" }}>
         <span data-testid="needListStatus" className={cssClass}></span>{' '}
         {toTitleCase(status)}
       </div>
@@ -173,8 +175,8 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
         <div>
           <div className="list-remove-alert">
             <span className="list-remove-text">
-            Are you sure you want to delete this document type? 
-              {(data.status === 'Borrower to do' || data.status === 'Started')?  " This item will disappear from the borrower's Needs List.": null}
+              Remove this document type?
+              {(data.status === 'Borrower to do' || data.status === 'Started') ? " It will disappear from the borrower’s Needs List?" : null}
             </span>
             <div className="list-remove-options">
               <button
@@ -211,6 +213,39 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           >
             Review
           </button>
+          { !count ? (
+            deleteRequestSent && currentItem === data ? (
+              <span className="btnloader">
+                <Spinner size="sm" animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </span>
+            ) : deleteRequestSent && currentItem != data ? (
+              <button
+                data-testid="btn-delete"
+                onClick={() => {
+                  setCurrentItem(data);
+                  setConfirmDelete(true);
+                }}
+                className="btn btn-delete btn-sm"
+              >
+                <em className="zmdi zmdi-close"></em>
+              </button>
+            ) : (
+                  <button
+                    data-testid="btn-delete"
+                    onClick={() => {
+                      setCurrentItem(data);
+                      setConfirmDelete(true);
+                    }}
+                    className="btn btn-delete btn-sm"
+                  >
+                    <em className="zmdi zmdi-close"></em>
+                  </button>
+                )
+          ) : (
+              ''
+            )}
         </div>
       );
     } else {
@@ -242,20 +277,20 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
                 <em className="zmdi zmdi-close"></em>
               </button>
             ) : (
-              <button
-                data-testid="btn-delete"
-                onClick={() => {
-                  setCurrentItem(data);
-                  setConfirmDelete(true);
-                }}
-                className="btn btn-delete btn-sm"
-              >
-                <em className="zmdi zmdi-close"></em>
-              </button>
-            )
+                  <button
+                    data-testid="btn-delete"
+                    onClick={() => {
+                      setCurrentItem(data);
+                      setConfirmDelete(true);
+                    }}
+                    className="btn btn-delete btn-sm"
+                  >
+                    <em className="zmdi zmdi-close"></em>
+                  </button>
+                )
           ) : (
-            ''
-          )}
+              ''
+            )}
         </div>
       );
     }
@@ -268,16 +303,16 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   ) => {
     if (data === null || data.length === 0) {
       return (
-        <div className="td" data-testid="need-list-files" style={{width:"25%"}}>
+        <div className="td" data-testid="need-list-files" style={{ width: "25%" }}>
           <span className="block-element">No files yet</span>
         </div>
       );
     } else {
       return (
-        <div className="td " data-testid="need-list-files" style={{width:"25%"}}>
+        <div className="td " data-testid="need-list-files" style={{ width: "25%" }}>
           {data.map((file: NeedListDocuments, index) => {
             const pendingReview = status === DocumentStatus.PENDING_REVIEW;
-            const {mcuName, clientName, isRead} = file;
+            const { mcuName, clientName, isRead } = file;
 
             return (
               <span key={index} className="block-element c-filename">
@@ -305,27 +340,27 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
                     </span>
                   </React.Fragment>
                 ) : (
-                  <span
-                    title={clientName}
-                    className={
-                      isRead === false
-                        ? 'block-element-child td-filename filename-by-mcu filename-p'
-                        : 'block-element-child td-filename filename-by-mcu'
-                    }
-                  >
-                    <a
-                      data-testid="file-link"
-                      href="#"
-                      onClick={() =>
-                        pendingReview
-                          ? reviewClickHandler(documentIndex, index)
-                          : detailClickHandler(documentIndex, index)
+                    <span
+                      title={clientName}
+                      className={
+                        isRead === false
+                          ? 'block-element-child td-filename filename-by-mcu filename-p'
+                          : 'block-element-child td-filename filename-by-mcu'
                       }
                     >
-                      {truncate(clientName, 47)}
-                    </a>
-                  </span>
-                )}
+                      <a
+                        data-testid="file-link"
+                        href="#"
+                        onClick={() =>
+                          pendingReview
+                            ? reviewClickHandler(documentIndex, index)
+                            : detailClickHandler(documentIndex, index)
+                        }
+                      >
+                        {truncate(clientName, 47)}
+                      </a>
+                    </span>
+                  )}
               </span>
             );
           })}
@@ -334,12 +369,12 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
     }
   };
 
-  const renderSyncToLos = (data: NeedListDocuments[], index: number) => {
-    if (data === null || data.length === 0) {
-      return <div data-testid="sync-status" className="td"></div>;
+  const renderSyncToLos = (data: NeedListDocuments[], index: number, loanNumber: any) => {
+    if (!loanNumber || data === null || data.length === 0) {
+      return <div data-testid="sync-status" className="td sync-status-td"></div>;
     } else {
       return (
-        <div data-testid="sync-status" id={String(index)} className="td" style={{width:"15%"}}>
+        <div data-testid="sync-status" id={String(index)} className="td sync-status-td" style={{ width: "15%" }}>
           {data.map((item: NeedListDocuments) => {
             return (
               <span
@@ -355,19 +390,19 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
                       alt=""
                     />
                   ) : (
-                    <em
-                      className={'icon-refresh ' + item.byteProStatusClassName}
-                    ></em>
-                  )}
+                      <em
+                        className={'icon-refresh ' + item.byteProStatusClassName}
+                      ></em>
+                    )}
                 </a>{' '}
                 {item.byteProStatusClassName == 'synced' ? (
                   item.byteProStatusText
                 ) : (
-                  <span className="txt-stl" onClick={() => FileSyncToLos(item)}>
-                    {' '}
-                    {item.byteProStatusText}
-                  </span>
-                )}
+                    <span className="txt-stl" onClick={() => FileSyncToLos(item)}>
+                      {' '}
+                      {item.byteProStatusText}
+                    </span>
+                  )}
               </span>
             );
           })}
@@ -395,7 +430,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderDocumentTitle = () => {
     if (documentSortClick)
       return (
-        <div className="th" style={{width:"40%"}}>
+        <div className="th" style={{ width: "40%" }}>
           <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document{' '}
             <em
@@ -410,7 +445,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="th" style={{width:"40%"}}>
+        <div className="th" style={{ width: "40%" }}>
           <a data-testid="doc-title" onClick={() => sortDocumentTitle()} href="javascript:;">
             Document
           </a>
@@ -421,7 +456,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   const renderStatusTitle = () => {
     if (statusSortClick)
       return (
-        <div className="th" style={{width:"15%"}}>
+        <div className="th" style={{ width: "15%" }}>
           <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
             <em
@@ -436,7 +471,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
       );
     else
       return (
-        <div className="th" style={{width:"15%"}}>
+        <div className="th" style={{ width: "15%" }}>
           <a data-testid="status-title" onClick={() => sortStatusTitle()} href="javascript:;">
             Status{' '}
           </a>
@@ -445,11 +480,11 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
   };
 
   const renderSyncToLosTitle = () => {
-    if (isByteProAuto) {
-      return <></>;
+    if (isByteProAuto || !loanNumber) {
+      return <div className="th" style={{ width: "15%" }}></div>;
     } else {
       return (
-        <div className="th" style={{width:"15%"}}>
+        <div className="th" style={{ width: "15%" }}>
           <a
             onClick={() =>
               syncButtonEnabled === true ? FilesSyncToLos(syncTitleClass) : {}
@@ -496,10 +531,10 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
                 {synchronizing != true ? (
                   <>Sync</>
                 ) : (
-                  <div className="spinning-loader">
-                    <img src={loadingIcon} />
-                  </div>
-                )}
+                    <div className="spinning-loader">
+                      <img src={loadingIcon} />
+                    </div>
+                  )}
               </button>
             </div>
           </div>
@@ -538,7 +573,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           <div className="tr" data-testid="needlist-table-header">
             {renderDocumentTitle()}
             {renderStatusTitle()}
-            <div className="th" style={{width:"25%"}}>File Name</div>
+            <div className="th" style={{ width: "25%" }}>File Name</div>
             {renderSyncToLosTitle()}
 
             <div className="th options">&nbsp;</div>

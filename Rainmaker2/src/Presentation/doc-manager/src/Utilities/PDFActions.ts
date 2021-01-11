@@ -108,7 +108,8 @@ export class PDFActions extends Viewer {
 
         const buffer = await this.instance.exportPDF();
         const blob = new Blob([buffer], { type: "application/pdf" });
-        let file = new File([blob], name, { lastModified: Date.now(), type: "application/pdf" });
+        let newName = `${Rename.removeExt(name)}.pdf`;
+        let file = new File([blob], newName, { lastModified: Date.now(), type: "application/pdf" });
 
         await Promise.all(Array.from(pagesAnnotations).map(async (pageList) => {
 

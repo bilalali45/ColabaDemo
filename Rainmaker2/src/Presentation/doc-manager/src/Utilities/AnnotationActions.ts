@@ -9,6 +9,7 @@ import { AxiosResponse } from 'axios';
 
 export class AnnotationActions extends Viewer {
 
+    static annotationsAttached:boolean = false
 
     static async getAnnotationForThePage(body: any) {
         try {

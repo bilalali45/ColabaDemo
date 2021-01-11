@@ -23,6 +23,12 @@
     cursor: pointer;
 }
 
+.sync-status-td {
+    .c-filename {
+        padding-top: 5px;
+    }
+}
+
 .needListlocked{filter: blur(3px);}
 
 .sync-alert {

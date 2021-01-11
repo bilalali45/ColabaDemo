@@ -18,6 +18,7 @@ import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReduce
 import { PDFActions } from "../../../../../../Utilities/PDFActions";
 import { ViewerTools } from "../../../../../../Utilities/ViewerTools";
 import { PDFThumbnails } from "../../../../../../Utilities/PDFThumbnails";
+import { CurrentInView } from "../../../../../../Models/CurrentInView";
 
 type DocumentItemType = {
   // isDragging: boolean
@@ -60,7 +61,7 @@ export const DocumentItem = ({
   const { currentDoc, documentItems, uploadFailedDocs, isDragging, isDraggingSelf, importedFileIds }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
   let loanApplicationId = LocalDB.getLoanAppliationId();
-  const { currentFile, isFileChanged }: any = state.viewer;
+  const { currentFile, isFileChanged, selectedFileData }: any = state.viewer;
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
 
@@ -115,7 +116,7 @@ export const DocumentItem = ({
 
     if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
       dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
-      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file:null, document:null, action:"dragged", isWorkbenchFile:false } });
+      dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: { file: null, document: null, action: "dragged", isWorkbenchFile: false } });
       return;
     }
     if (isDragging) {
@@ -125,7 +126,7 @@ export const DocumentItem = ({
 
 
     let { isFromWorkbench, isFromCategory, isFromThumbnail, isFromTrash } = file;
-    
+
     if (isFromWorkbench) {
 
       let success = await DocumentActions.moveFromWorkBenchToCategory(
@@ -136,6 +137,13 @@ export const DocumentItem = ({
       );
 
       if (success) {
+        if(selectedFileData.fileId === file.id){
+          let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
+          setCurrentDocument(currentDocument)
+          await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
+          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+          await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
+        }
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
         await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
       }
@@ -152,6 +160,14 @@ export const DocumentItem = ({
       );
 
       if (success) {
+        if(selectedFileData.fileId === file.id){
+          let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
+          setCurrentDocument(currentDocument)
+          await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
+          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+          await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
+        }
+
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
       }
     } else if (isFromThumbnail) {
@@ -190,18 +206,25 @@ export const DocumentItem = ({
       }
 
     }
-   
+
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     setShow(true);
   }
 
+  const setCurrentDocument = (document:any) => {
+    if (document) {
+      dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: null });
+    }
+
+    dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: document });
+  };
   const renderDeleteDocSlider = (document: DocumentRequest) => {
     return (
       <div className="list-remove-alert">
         <span className="list-remove-text">
-          Are you sure you want to delete this document type?
+          Remove this document type?
         <br />
-          {(document.status === 'Borrower to do' || document.status === 'Started') ? " This item will disappear from the borrower's Needs List." : null}
+          {(document.status === 'Borrower to do' || document.status === 'Started') ? " It will disappear from the borrower’s Needs List?" : null}
         </span>
         <div className="list-remove-options">
           <button

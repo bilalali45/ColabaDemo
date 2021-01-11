@@ -12,6 +12,7 @@ import { AnnotationActions } from '../../../../../Utilities/AnnotationActions';
 import { ViewerTools } from '../../../../../Utilities/ViewerTools';
 import { ViewerActionsType } from '../../../../../Store/reducers/ViewerReducer';
 import { PDFActions } from '../../../../../Utilities/PDFActions';
+import { CurrentInView } from '../../../../../Models/CurrentInView';
 
 const nonExistentFileId = '000000000000000000000000';
 
@@ -42,6 +43,25 @@ export const WorkbenchTable = () => {
         let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
     }
 
+
+    const setCurrentDocument = () => {
+        let document = new DocumentRequest(currentFile?.id,
+          nonExistentFileId,
+          nonExistentFileId,
+          "",
+          "",
+          "",
+          [],
+          "",
+          ""
+        )
+        if (document) {
+          dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: null });
+    
+          dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: document });
+        }
+    
+      }
     const handleOnDrop = async (e: any) => {
         setIsDraggingOver(false);
         let file: any = JSON.parse(e.dataTransfer.getData('file'));
@@ -68,6 +88,11 @@ export const WorkbenchTable = () => {
             let { id, fromRequestId, fromDocId, fromFileId }: any = file;
             let newWorkBench = await DocumentActions.moveFileToWorkbench({ id, fromRequestId, fromDocId, fromFileId }, false);
             if (newWorkBench) {
+                await setCurrentDocument()
+                
+                await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
+                let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+                await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
                 await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
 
                 await DocumentActions.getDocumentItems(dispatch, importedFileIds)

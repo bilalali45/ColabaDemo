@@ -12,14 +12,14 @@ namespace DocumentManagement.Model
     }
     public class RemainingDocumentsQuery
     {
-        public int? RemainingDocuments { get; set; }
+        public bool? isMcuVisible { get; set; }
     }
     public class OutstandingDocumentsQuery
     {
-        public int? OutstandingDocuments { get; set; }
+        public bool? isMcuVisible { get; set; }
     }
     public class CompletedDocumentsQuery
     {
-        public int? CompletedDocuments { get; set; }
+        public bool? isMcuVisible { get; set; }
     }
 }

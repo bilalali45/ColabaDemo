@@ -83,7 +83,7 @@ export class ViewerTools extends Viewer {
         }
     }
 
-    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any) {
+    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData:any) {
         dispatch({
             type: ViewerActionsType.SetIsSaving,
             payload: true
@@ -100,45 +100,18 @@ export class ViewerTools extends Viewer {
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
             return;
         }
-        let file = await PDFActions.createPDFFromInstance(fileObj.name);
+        let file = await PDFActions.createPDFFromInstance(currentFile.name);
+        
+        if (!currentFile.name.includes('.pdf')) {
+            selectedFileData.name = `${Rename.removeExt(currentFile.name)}.pdf`
+        }
+        selectedFileData = new SelectedFile(selectedFileData.id,selectedFileData.name, selectedFileData.fileId )
+        await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
 
-        if (!currentFile.name.includes('.pdf')) {
-            console.log('in if!!!');
-            let newName = `${Rename.removeExt(currentFile.name)}.pdf`;
-            let docId = currentDoc.docId || '000000000000000000000000'
-            let requestId = currentDoc.requestId || '000000000000000000000000'
-            await DocumentActions.renameDoc(id, requestId, docId, fileId, newName)
-            if (currentFile.isWorkBenchFile) {
-                let d = await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
-
-            }
-            else {
-                let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds);
-
-                dispatch({ type: DocumentActionsType.SetDocumentItems, payload: d });
-            }
-            let newFile: any = new CurrentInView(
-                id,
-                currentFile.src,
-                newName,
-                currentFile.isWorkBenchFile,
-                fileId,
-
-            );
-            dispatch({
-                type: ViewerActionsType.SetCurrentFile,
-                payload: newFile,
-            });
-
-            let selectedFileData = new SelectedFile(currentFile.id, newName, currentFile.fileId)
-            dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
-        }
-
-
-        dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
+         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
         return res;
     }
 
@@ -178,7 +151,7 @@ export class ViewerTools extends Viewer {
     }
 
 
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any) {
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData:any) {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
         // let saveButton: any = null;
@@ -188,7 +161,7 @@ export class ViewerTools extends Viewer {
         // } else {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
-        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds ))
+        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData ))
         const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));

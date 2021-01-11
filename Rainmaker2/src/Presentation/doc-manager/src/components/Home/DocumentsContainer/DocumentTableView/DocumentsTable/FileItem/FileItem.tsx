@@ -71,6 +71,9 @@ export const FileItem = ({
   const viewer: any = state.viewer;
   const { currentFile, selectedFileData, performNextAction, isFileChanged, showingConfirmationAlert, fileToChangeWhenUnSaved }: any = state.viewer;
   const documents: any = state.documents;
+  const loanApplication: any = documents?.loanApplication;
+  const loanNumber: any = loanApplication?.loanNumber;
+  
   const catScrollFreeze: any = documents?.catScrollFreeze;
 
   const isDragging: any = documents;
@@ -353,13 +356,17 @@ useEffect(() => {
           </a>
         </li>
 
-        {!isByteProAuto &&  renderSyncIcon()}
+        {!isByteProAuto && renderSyncIcon()}
       </ul>
     );
   };
 
 
   const renderSyncIcon = () => {
+    if(!loanNumber) {
+      return '';
+    }
+
     let fileNeedToBeSynched = filesToSync.find((fs: any) => fs.file.id === file.id);
     let syncStartedClass = 'active';
     let syncFailedClass = 'active failed'

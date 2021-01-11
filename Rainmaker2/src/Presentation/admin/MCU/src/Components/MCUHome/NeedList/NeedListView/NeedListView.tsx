@@ -50,6 +50,7 @@ export const NeedListView = () => {
   const templates: Template[] = templateManager?.templates;
   const isDocumentDraft = templateManager?.isDocumentDraft;
   const isByteProAuto: boolean = needListManager?.isByteProAuto;
+  const loanInfo: any = needListManager?.loanInfo;
   const [deleteRequestSent, setDeleteRequestSent] = useState<boolean>(false);
   const [showConfirmBox, setShowConfirmBox] = useState<boolean>(false);
   const [synchronizing, setSynchronizing] = useState<boolean>(false);
@@ -537,6 +538,7 @@ export const NeedListView = () => {
         syncSuccess={syncSuccess}
         closeSyncCompletedBox={closeSyncCompletedBoxhandler}
         syncTitleClass={syncTitleClass}
+        loanNumber={loanInfo?.loanNumber}
       />
       {showFailedToSyncBox && (
         <NeedListAlertBox

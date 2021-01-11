@@ -33,7 +33,7 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
         isFromWorkbench:true,
         name
       }
-      await ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, workbenchItems, currentFile, importedFileIds)
+      await ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, workbenchItems, currentFile, importedFileIds, selectedFileData)
     }
     else{
       let{fileId, name } = currentFile
@@ -46,7 +46,7 @@ export const ConfirmationAlert = ({ viewFile }: any) => {
         isFromCategory:true,
         name
       }
-      await ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds)
+      await ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData)
      }
      if(fileToChangeWhenUnSaved.action !== "dragged")
       dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: true });

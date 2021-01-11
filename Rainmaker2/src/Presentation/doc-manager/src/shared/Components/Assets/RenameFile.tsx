@@ -156,11 +156,13 @@ export const RenameFile = ({
           let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
           let fileId = currentFile.fileId
           if(newName !== "" && !allowFileRenameMCU(newName, currentFile?.id, false) && !regex.test(newName)){
+            setTimeout(async() => {
+              const fileExtension = getFileExtension(selectedFileData.name);
+              await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newName + fileExtension)
             
-            await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newNameWithFileExtension)
-          }
-            let selectedFileData = new SelectedFile(currentFile.id,newNameWithFileExtension, currentFile.fileId )
-            await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
+
+            let selectedFile = new SelectedFile(currentFile.id,newName + fileExtension, currentFile.fileId )
+            await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFile});
             let newFile: any = new CurrentInView(
               currentFile.id,
               currentFile.src,
@@ -188,7 +190,9 @@ export const RenameFile = ({
                await DocumentActions.getDocumentItems(dispatch, importedFileIds);
 
             }
+          }, 500);
             
+        }
           
           
         } catch (error) {

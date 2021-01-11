@@ -100,11 +100,11 @@ export const ViewerThumbnails = () => {
         generateAllThumbnailData();
         instance.addEventListener("annotations.didSave", async () => {
           
-          if (!isFileChanged && !setAnnotationsFirstTime) {
+          if (!isFileChanged && !AnnotationActions.annotationsAttached) {
             await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true });
             
           }
-          dispatch({type: ViewerActionsType.SetAnnotationsFirstTime, payload: false});
+          AnnotationActions.annotationsAttached = true
           let currpage = instance?.viewState?.currentPageIndex
           generateThumbnailForSinglePage(currpage)
         });
@@ -128,6 +128,7 @@ export const ViewerThumbnails = () => {
 
     // if(!isThumbnailGenerated){
     let TempThumbnails: any = [];
+    console.time("generateThumbnails")
     for (let i = 0; i < instance?.totalPageCount; i++) {
       TempThumbnails.push(await PDFThumbnails.generateThumbnailData(i));
       setThumbnails((prevState) => [
@@ -145,6 +146,7 @@ export const ViewerThumbnails = () => {
       }
     }
     // } 
+    console.timeEnd("generateThumbnails")
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
 
   };
@@ -377,14 +379,14 @@ export const ViewerThumbnails = () => {
     >
       {multiThumbs.length ? <div className="thumb-tools-wrap">
 
-        <a id="rotate-button" onClick={async () => {
+        <a title="Rotate Left" id="rotate-button" onClick={async () => {
           ViewerTools.rotateLeft(multiThumbs);
           // generateAllThumbnailData();
         }}>
           <RotateLeftIocn />
           </a>
 
-        <a id="rotate-button" onClick={async () => {
+        <a title="Rotate Right" id="rotate-button" onClick={async () => {
           ViewerTools.rotateRight(multiThumbs);
           // generateAllThumbnailData();
         }}>

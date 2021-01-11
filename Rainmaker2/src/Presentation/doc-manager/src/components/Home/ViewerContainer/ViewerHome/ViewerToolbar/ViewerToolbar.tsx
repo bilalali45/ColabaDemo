@@ -9,7 +9,7 @@ export const ViewerToolbar = () => {
 
   const viewer: any = state.viewer;
   const instance: any = viewer.instance;
-  const { currentFile, isFileChanged }: any = state.viewer;
+  const { currentFile, isFileChanged,  selectedFileData}: any = state.viewer;
   const { currentDoc, workbenchItems, importedFileIds }: any = state.documents;
 
 
@@ -33,7 +33,7 @@ export const ViewerToolbar = () => {
           isFromWorkbench:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems, currentFile, importedFileIds );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, workbenchItems, currentFile, importedFileIds, selectedFileData );
         
       }
       else{
@@ -47,7 +47,7 @@ export const ViewerToolbar = () => {
           isFromCategory:true,
           name
         }
-        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds );
+        await ViewerTools.generateToolBarData(annotationObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData );
 
       }
       
