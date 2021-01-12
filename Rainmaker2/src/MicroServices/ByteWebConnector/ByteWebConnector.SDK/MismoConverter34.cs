@@ -240,6 +240,10 @@ namespace ByteWebConnector.SDK.Mismo
             return rmBorrowers;
         }
 
+
+        private string firstMortgageAssetLabel = string.Empty;
+        private bool subjectPropertyAdded = false;
+
         private ASSETS SetAssets(LoanApplication loanApplication)
         {
             List<ASSET> assets = new List<ASSET>();
@@ -349,8 +353,49 @@ namespace ByteWebConnector.SDK.Mismo
                                 To = borrowerLabel
                             });
                         }
+                    }
+                }
 
+                ASSET propertyAsset = null;
+                if ((!subjectPropertyAdded) && Enum.IsDefined(typeof(LoanPurposeBase), (LoanPurposeBase)loanApplication.LoanPurposeId) || (loanApplication.LoanPurposeId == 3))
+                {
+                    if (((LoanPurposeBase)loanApplication.LoanPurposeId) == LoanPurposeBase.Refinance || (loanApplication.LoanPurposeId == 3)) // If refinance or cash out
+                    {
+                        propertyAsset = new ASSET()
+                        {
+                            Label = $"ASSET_{++assetIndex}",
+                            SequenceNumber = assetIndex
+                        };
+                        firstMortgageAssetLabel = propertyAsset.Label;
+                        assets.Add(propertyAsset);
+                        relationships.Add(new MismoRelationShipModel()
+                        {
+                            From = propertyAsset.Label,
+                            To = borrowerLabel
+                        });
+                        propertyAsset.OWNED_PROPERTY = new OWNED_PROPERTY();
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL = new OWNED_PROPERTY_DETAIL();
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyDispositionStatusType = Convert.ToString(OwnedPropertyDispositionStatusBase.Retain);
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyLienUPBAmount = loanApplication.PropertyInfo.FirstMortgageBalance;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyRentalIncomeGrossAmount = 0;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyRentalIncomeNetAmount = 0;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertySubjectIndicator = false;
 
+                        propertyAsset.OWNED_PROPERTY.PROPERTY = new PROPERTY();
+                        propertyAsset.OWNED_PROPERTY.PROPERTY.ADDRESS = new List<ADDRESS>();
+                        ADDRESS propertyAddress = new ADDRESS()
+                        {
+                            //SequenceNumber = 1,
+                            CityName = loanApplication.PropertyInfo.AddressInfo?.CityName,
+                            PostalCode = loanApplication.PropertyInfo.AddressInfo?.ZipCode,
+                            StateCode = loanApplication.PropertyInfo.AddressInfo?.State?.Abbreviation,
+                            CountyName = loanApplication.PropertyInfo.AddressInfo?.CountyName,
+                            //CountryCode = rmProperty.PropertyInfo.AddressInfo?.Country?.TwoLetterIsoCode,
+                            CountryCode = "US", // TODO
+                            AddressLineText = $"{loanApplication.PropertyInfo.AddressInfo?.StreetAddress} {loanApplication.PropertyInfo.AddressInfo?.UnitNo}".Trim()
+                        };
+                        propertyAsset.OWNED_PROPERTY.PROPERTY.ADDRESS.Add(propertyAddress);
+                        subjectPropertyAdded = true;
                     }
                 }
 
@@ -619,8 +664,9 @@ namespace ByteWebConnector.SDK.Mismo
                                 LIABILITY_DETAIL firstLiabilityDetail = new LIABILITY_DETAIL();
                                 firstLiabilityDetail.LiabilityExclusionIndicator = false; // TODO
                                 firstLiabilityDetail.LiabilityMonthlyPaymentAmount = firstMortgage.MonthlyPayment;
-                                firstLiabilityDetail.LiabilityPayoffStatusIndicator = false; // TODO
-                                firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.Installment);
+                                firstLiabilityDetail.LiabilityPayoffStatusIndicator = true; // TODO
+                                //firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.Installment);
+                                firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.MortgageLoan);
                                 firstLiabilityDetail.LiabilityUnpaidBalanceAmount = firstMortgage.MortgageBalance;
 
                                 LIABILITY_HOLDER liabilityHolder = new LIABILITY_HOLDER()
@@ -634,6 +680,15 @@ namespace ByteWebConnector.SDK.Mismo
 
                                 firstMortgageLiability.LIABILITY_DETAIL = firstLiabilityDetail;
                                 liabilities.Add(firstMortgageLiability);
+                                if (!string.IsNullOrEmpty(firstMortgageAssetLabel))
+                                {
+                                    firstMortgageLiability.LIABILITY_DETAIL.LiabilityPayoffStatusIndicator = false; // Byte sets this to true automatically if not passed
+                                    relationships.Add(new MismoRelationShipModel()
+                                    {
+                                        From = firstMortgageAssetLabel,
+                                        To = firstMortgageLiability.Label
+                                    });
+                                }
                                 relationships.Add(new MismoRelationShipModel()
                                 {
                                     From = firstMortgageLiability.Label,
@@ -852,6 +907,19 @@ namespace ByteWebConnector.SDK.Mismo
                 loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(housingExpense2);
             }
 
+            if (loanApplication?.PropertyInfo?.MortgageOnProperties != null)
+            {
+                var firstMortgage = loanApplication?.PropertyInfo?.MortgageOnProperties.FirstOrDefault(mort => mort.IsFirstMortgage == true);
+                if (firstMortgage != null)
+                {
+                    var mortgageExpenses = new HOUSING_EXPENSE();
+                    mortgageExpenses.HousingExpensePaymentAmount = firstMortgage.MonthlyPayment;
+                    mortgageExpenses.HousingExpenseTimingType = Convert.ToString(HousingExpenseTimingBase.Present);
+                    mortgageExpenses.HousingExpenseType = Convert.ToString(HousingExpenseBase.FirstMortgagePrincipalAndInterest);
+                    loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(mortgageExpenses);
+                }
+            }
+
             #endregion
 
             #region Loan Detail
@@ -896,6 +964,16 @@ namespace ByteWebConnector.SDK.Mismo
 
             #region Refinance
 
+            //if(Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),(RefinancePrimaryPurposeBase) loanApplication.LoanGoalId)
+            if (Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),
+                               (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId))
+            {
+                loanToAdd.REFINANCE = new REFINANCE()
+                {
+                    RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                    RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
+                };
+            }
             #endregion
 
             #region Terms Of Loan
@@ -1484,6 +1562,7 @@ namespace ByteWebConnector.SDK.Mismo
                     var PriorPropertyTitleType = rmBorrower.BorrowerQuestionResponses.SingleOrDefault(bqr => bqr.QuestionId == 50)?.QuestionResponse.AnswerText;
                     var DeclarationsKIndicator = rmBorrower.BorrowerQuestionResponses.SingleOrDefault(bqr => bqr.QuestionId == 54)?.QuestionResponse.AnswerText;
 
+
                     declarationDetail.AlimonyChildSupportObligationIndicator = AlimonyChildSupportObligationIndicator == "1";
                     declarationDetail.BankruptcyIndicator = BankruptcyIndicator == "1";
                     int isUsCitizen = (DeclarationsJIndicator == "1" || rmBorrower.LoanContact.ResidencyStateId == (int)CitizenshipResidencyBase.USCitizen) ? 1 : 0; // US Citizen
@@ -1493,15 +1572,40 @@ namespace ByteWebConnector.SDK.Mismo
                     }
                     else
                     {
-                        if (Enum.IsDefined(typeof(CitizenshipResidencyBase),
-                                           (CitizenshipResidencyBase)rmBorrower.LoanContact.ResidencyStateId))
+                        if (DeclarationsKIndicator == "1")
                         {
-                            declarationDetail.CitizenshipResidencyType = Convert.ToString((CitizenshipResidencyBase)rmBorrower.LoanContact.ResidencyStateId);
+                            declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.PermanentResidentAlien);
                         }
                         else
                         {
-                            declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.Unknown);
+                            var VisaResponse = rmBorrower.BorrowerQuestionResponses.SingleOrDefault(bqr => bqr.QuestionId == 57)?.QuestionResponse?.AnswerText;
+                            if (string.IsNullOrEmpty(VisaResponse))
+                        {
+                                declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonResidentAlien);
+                            }
+                            else
+                            {
+                                if (VisaResponse.Trim().Equals("3") // Valid work VISA (H1, L1 etc.)
+                                    || VisaResponse.Trim().Equals("4") // Temporary workers (H -2A)
+                                )
+                                {
+                                    declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonPermanentResidentAlien);
                         }
+                        else
+                        {
+                                    declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonResidentAlien);
+                                }
+                            }
+                        }
+                        //if (Enum.IsDefined(typeof(CitizenshipResidencyBase),
+                        //                   (CitizenshipResidencyBase)rmBorrower.LoanContact.ResidencyStateId))
+                        //{
+                        //    declarationDetail.CitizenshipResidencyType = Convert.ToString((CitizenshipResidencyBase)rmBorrower.LoanContact.ResidencyStateId);
+                        //}
+                        //else
+                        //{
+                        //    declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.Unknown);
+                        //}
                     }
 
                     declarationDetail.HomeownerPastThreeYearsType = HomeownerPastThreeYearsIndicator == "1" ? "Yes" : "No";

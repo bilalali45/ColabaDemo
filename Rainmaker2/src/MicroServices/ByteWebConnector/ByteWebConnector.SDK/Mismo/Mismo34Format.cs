@@ -75,6 +75,8 @@ namespace ByteWebConnector.SDK.Models
 	[XmlRoot(ElementName = "OWNED_PROPERTY_DETAIL", Namespace = "http://www.mismo.org/residential/2009/schemas")]
 	public class OWNED_PROPERTY_DETAIL
 	{
+        [XmlElement(ElementName = "OwnedPropertyLienUPBAmount", Namespace = "http://www.mismo.org/residential/2009/schemas")]
+		public decimal? OwnedPropertyLienUPBAmount { get; set; }
 		[XmlElement(ElementName = "OwnedPropertyDispositionStatusType", Namespace = "http://www.mismo.org/residential/2009/schemas")]
 		//public OwnedPropertyDispositionStatusBase OwnedPropertyDispositionStatusType { get; set; }
 		public string OwnedPropertyDispositionStatusType { get; set; }
@@ -450,6 +452,16 @@ namespace ByteWebConnector.SDK.Models
 		public decimal? LandOriginalCostAmount { get; set; }
 	}
 
+    [XmlRoot(ElementName = "REFINANCE", Namespace = "http://www.mismo.org/residential/2009/schemas")]
+    public class REFINANCE
+    {
+        [XmlElement(ElementName = "RefinanceCashOutDeterminationType", Namespace = "http://www.mismo.org/residential/2009/schemas")]
+        public string RefinanceCashOutDeterminationType { get; set; }
+        [XmlElement(ElementName = "RefinancePrimaryPurposeType", Namespace = "http://www.mismo.org/residential/2009/schemas")]
+        public string RefinancePrimaryPurposeType { get; set; }
+
+    }
+
 	[XmlRoot(ElementName = "LOAN", Namespace = "http://www.mismo.org/residential/2009/schemas")]
 	public class LOAN
 	{
@@ -477,7 +489,7 @@ namespace ByteWebConnector.SDK.Models
 		[XmlElement(ElementName = "QUALIFICATION", Namespace = "http://www.mismo.org/residential/2009/schemas")]
 		public string QUALIFICATION { get; set; }
 		[XmlElement(ElementName = "REFINANCE", Namespace = "http://www.mismo.org/residential/2009/schemas")]
-		public string REFINANCE { get; set; }
+		public REFINANCE REFINANCE { get; set; }
 		[XmlElement(ElementName = "TERMS_OF_LOAN", Namespace = "http://www.mismo.org/residential/2009/schemas")]
 		public TERMS_OF_LOAN TERMS_OF_LOAN { get; set; }
 		[XmlAttribute(AttributeName = "SequenceNumber")]

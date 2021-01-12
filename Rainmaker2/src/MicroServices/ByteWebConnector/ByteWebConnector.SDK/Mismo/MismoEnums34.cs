@@ -1522,4 +1522,78 @@ namespace ByteWebConnector.SDK.Mismo
         Utilities,
     }
 
+    public enum RefinancePrimaryPurposeBase
+    {
+
+        /// <remarks/>
+        AssetAcquisition = 100,
+
+        /// <remarks/>
+        CapitalizedInterestTaxesInsuranceOrFees,
+
+        /// <remarks/>
+        Cash = 6,
+
+        /// <remarks/>
+        Convenience = 101,
+
+        /// <remarks/>
+        DebtConsolidation = 7,
+
+        /// <remarks/>
+        Education = 102,
+
+        /// <remarks/>
+        EquityBuyout = 103,
+
+        /// <remarks/>
+        HomeImprovement = 104,
+
+        /// <remarks/>
+        InterestRateReduction = 5,
+
+        /// <remarks/>
+        Medical = 105,
+
+        /// <remarks/>
+        MortgageTermReduction = 106,
+
+        /// <remarks/>
+        Other,
+
+        /// <remarks/>
+        PayoffLeaseholdInterest = 107,
+
+        /// <remarks/>
+        PrimaryLienPayoff = 108,
+
+        /// <remarks/>
+        SecondaryLienPayoff = 109,
+
+        /// <remarks/>
+        SpecialPurpose = 110,
+
+        /// <remarks/>
+        UnsecuredLienPayoff = 111,
+
+        /// <remarks/>
+        Unspecified = 112,
+    }
+
+    public enum RefinanceCashOutDeterminationBase
+    {
+
+        /// <remarks/>
+        CashOut,
+
+        /// <remarks/>
+        LimitedCashOut,
+
+        /// <remarks/>
+        NoCashOut,
+
+        /// <remarks/>
+        Unknown,
+    }
+
 }
