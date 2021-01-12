@@ -10,6 +10,7 @@ import { DocumentUploadActions } from "../../../store/actions/DocumentUploadActi
 import { Auth } from "../../../services/auth/Auth";
 import { DocumentActions } from "../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../store/reducers/documentReducer";
+import { useHistory } from "react-router-dom";
 
 export const UploadDocumentWithoutRequest = (props) => {
 
@@ -18,7 +19,7 @@ export const UploadDocumentWithoutRequest = (props) => {
   const { submittedDocs }: any = state.documents;
   const { currentDoc, categoryDocuments }: any = state.documents;
   const currentSelected: any = currentDoc;
-  const selectedFiles = currentSelected.files || [];
+  const selectedFiles = currentSelected?.files || [];
   const loan: any = state.loan;
   const { isMobile } = loan;
   const [showAlert, setshowAlert] = useState<boolean>(false);
@@ -28,6 +29,7 @@ export const UploadDocumentWithoutRequest = (props) => {
   const [documentTypeItems, setDocumentTypeList] = useState<any>(categoryDocuments);
   const [subBtnPressed, setSubBtnPressed] = useState<boolean>(false);
   const [showSubmitBtn, setshowSubmitBtn] = useState<boolean>(false);
+  const history = useHistory();
 
   var temp = {};
   useEffect(() => {
@@ -121,7 +123,8 @@ const filterCategoryList = () => {
     if (files) {
       setshowAlert(true);
     } else {
-      props.handlerClose();
+      handlerClose();
+     // history.push(`/uploadedDocuments/${Auth.getLoanAppliationId()}`)
     }
   }
 
@@ -178,12 +181,28 @@ const filterCategoryList = () => {
       let fileStatus = selectedFiles?.filter(f => f.uploadStatus === 'failed');
       if (fileStatus.length === 0) {
         setTimeout(() => {
-          props.handlerClose();
+         // history.push(`/uploadedDocuments/${Auth.getLoanAppliationId()}`)
+          handlerClose();
         },1000)          
       }         
       } catch (error) { }
     };
+
+    const handlerClose = () => {
+      history.push(`/uploadedDocuments/${Auth.getLoanAppliationId()}`)
+      fetchCategoryDocuments();
+    }
   
+    const fetchCategoryDocuments = async () => {
+      let categoryDocuments = await DocumentActions.fetchCategoryDocuments();
+      if (categoryDocuments) {
+        dispatch({
+          type: DocumentsActionType.SetCategoryDocuments,
+          payload: categoryDocuments
+        });
+        dispatch({ type: DocumentsActionType.SetCurrentDoc, payload: {} });
+      }
+    };
   const handleSearch = ({target: {value}}: ChangeEvent<HTMLInputElement>) => {    
      let filteredData = categoryDocuments.map(cd => {
         const {catId, catName} = cd;       
@@ -240,7 +259,7 @@ const filterCategoryList = () => {
             <AlertBox
               hideAlert={() => setshowAlert(false)}
               type={`WithoutReq`}
-              callbackHandler={() => props.handlerClose()}
+              callbackHandler={() => handlerClose()}
             />
           )}
         </div>
@@ -336,7 +355,8 @@ const filterCategoryList = () => {
                 if(isMobile?.value){ 
                   setWidgetState(1)
                 }else{
-                   props.handlerClose();
+                  //history.push(`/uploadedDocuments/${Auth.getLoanAppliationId()}`)
+                  handlerClose();
                 }
                             
               }}

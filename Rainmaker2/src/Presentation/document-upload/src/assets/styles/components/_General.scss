@@ -661,20 +661,19 @@ html {
 
 .overflow-hidden{
     overflow: hidden;
-
     .mui-body{
         .popup-doc-upload--content-area-body{
             overflow: hidden;
         }
     }
-    
 }
 
 .openDocumentViewer{
     .mui-body .popup-doc-upload--content-area-footer{
         z-index: -1;
     }
-    .activityHeader,.mui-header {
+    .mui-header,
+    .mobile-navigation {
         display: none;
     }
 }

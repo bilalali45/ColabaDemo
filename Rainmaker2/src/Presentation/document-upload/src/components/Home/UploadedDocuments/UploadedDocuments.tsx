@@ -7,6 +7,8 @@ import { DocumentActions } from "../../../store/actions/DocumentActions";
 import { DocumentsActionType } from "../../../store/reducers/documentReducer";
 import { SVGSearch, SVGUploadDoc, SVGDragFilesToUpload, SVGUploadedDoc, SVGUploadDocumentStikyIcon } from "../../../shared/Components/SVGs";
 import { UploadDocumentWithoutRequest } from "../UploadDocumentWithoutRequest/UploadDocumentWithoutRequest";
+import { useHistory } from "react-router-dom";
+import { Authorized } from "../../../shared/Components/Authorized/Authorized";
 
 export const UploadedDocuments = () => {
   const { state, dispatch } = useContext(Store);
@@ -14,6 +16,8 @@ export const UploadedDocuments = () => {
   const loan: any = state.loan;
   const { isMobile } = loan;
   const [popupDocumentUpload, setPopupDocumentUpload] = useState<boolean>(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     fetchUploadedDocuments();
@@ -75,24 +79,36 @@ export const UploadedDocuments = () => {
         <h2>My Documents</h2>
         {!isMobile?.value &&
           <div className="options">
-            <button className={`btn btn-icon`} onClick={() => { setPopupDocumentUpload(true) }}><SVGUploadDoc /> Upload Document</button>
+            <button className={`btn btn-icon`} onClick={() => { 
+              history.push(`/uploadedDocuments/upload/${Auth.getLoanAppliationId()}`)
+             }}><SVGUploadDoc /> Upload Document</button>
           </div>
         }        
       </div>
       <div className="box-wrap--body clearfix">
         <UploadedDocumentsTable />
-        {popupDocumentUpload && 
-        <UploadDocumentWithoutRequest 
+        {/* {popupDocumentUpload && 
+        <UploadDocumentWithoutRequest />} */}
+        {/* <UploadDocumentWithoutRequest 
           handlerClose={() => {         
             setPopupDocumentUpload(false);           
             fetchCategoryDocuments();
              }} 
-        />}
+        />} */}
+             
+              <Authorized
+                path="/uploadedDocuments/upload/:loanApplicationId"
+                component={UploadDocumentWithoutRequest}
+              />
+
+
       </div>
 
       {isMobile?.value &&
         <div className="mobile-uploaded-document-option">          
-            <button className={`btn-mudo`} onClick={() => { setPopupDocumentUpload(true) }} id="btnPopupDocumentUpload">
+            <button className={`btn-mudo`} onClick={() => { 
+              history.push(`/uploadedDocuments/upload/${Auth.getLoanAppliationId()}`)
+             }} id="btnPopupDocumentUpload">
               <span className="mudo-text">Upload Document</span>
               <span className="mudo-icon"><SVGUploadDocumentStikyIcon/></span>
             </button>
