@@ -141,7 +141,7 @@ export const DocumentItem = ({
           let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
-          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         }
         await DocumentActions.getDocumentItems(dispatch, importedFileIds)
@@ -164,7 +164,7 @@ export const DocumentItem = ({
           let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
-          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+          let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         }
 
@@ -223,8 +223,7 @@ export const DocumentItem = ({
       <div className="list-remove-alert">
         <span className="list-remove-text">
           Remove this document type?
-        <br />
-          {(document.status === 'Borrower to do' || document.status === 'Started') ? " It will disappear from the borrower’s Needs List?" : null}
+          {(document.status === 'Borrower to do' || document.status === 'Started') ? " It’ll disappear from the borrower’s Needs List?" : null}
         </span>
         <div className="list-remove-options">
           <button

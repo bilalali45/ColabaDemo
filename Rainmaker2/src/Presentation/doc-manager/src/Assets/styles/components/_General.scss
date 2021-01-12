@@ -26,11 +26,17 @@ h6,.h6 {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
-* {
+.Doc-Manager-Wrapper {
+    overflow: hidden;
+}
+*{
+
+    &:not(input):not(textarea) {
     -webkit-user-select: none;  
     -moz-user-select: none;    
     -ms-user-select: none;      
-    user-select: none;         
+    user-select: none;    
+}     
 }
 
 h1,.h1{

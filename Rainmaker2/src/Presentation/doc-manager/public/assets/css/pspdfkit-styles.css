@@ -3,7 +3,15 @@
 }
 
 .PSPDFKit-Toolbar-Button-Icon{
+
     
+}
+.PSPDFKit-Toolbar-Button-Pan .PSPDFKit-Toolbar-Button-Icon{
+    align-items: center;
+    
+}
+.PSPDFKit-Toolbar-Button-Annotate {
+    border-right: 1px solid var(--PSPDFKit-Toolbar-button-border);
 }
 
 .PSPDFKit-Toolbar-Button{

@@ -68,7 +68,7 @@ const App = () => {
       <StoreProvider>
         <Router basename="/DocManager">
           <Switch>
-            <div data-testid="app-body" className="settings__wrapper">
+            <div data-testid="app-body" className="settings__wrapper Doc-Manager-Wrapper">
               <Header />
               <div className="settings__body">
                 

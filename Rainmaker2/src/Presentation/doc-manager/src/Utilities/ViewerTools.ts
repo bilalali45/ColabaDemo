@@ -6,7 +6,7 @@ import { SelectedFile } from "../Models/SelectedFile";
 import DocumentActions from "../Store/actions/DocumentActions";
 import { ViewerActionsType } from "../Store/reducers/ViewerReducer";
 import { AnnotationActions } from "./AnnotationActions";
-import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon } from "./CustomIcons";
+import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon,panIcon,annotationsIcon } from "./CustomIcons";
 import { PDFActions } from "./PDFActions";
 import { Viewer } from "./Viewer";
 import { Rename } from '../Utilities/helpers/Rename';
@@ -163,7 +163,7 @@ export class ViewerTools extends Viewer {
         // }
         const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData ))
         const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentFile));
-        const editPDF: any = this.createToolbarItem('custom', 'rotate-left', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
+        const editPDF: any = this.createToolbarItem('custom', 'edit-pdf', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));
         const printButton: any = this.createToolbarItem('custom', 'print', 'Print', printIcon, PDFActions.printPDF);
 
@@ -174,6 +174,19 @@ export class ViewerTools extends Viewer {
                 toolbarItems.filter((el) => el.type === toolbaritem)[0]
             );
         });
+
+        customizedToolBarItems = customizedToolBarItems.map((toolbarItem:any)=>{
+            if(toolbarItem.type === "annotate")
+            {
+                toolbarItem.icon = annotationsIcon
+            }
+            else if (toolbarItem.type === "pan")
+            {
+                toolbarItem.icon = panIcon
+            }
+            return toolbarItem
+        }) 
+
         //if (isFileChanged) {
         customizedToolBarItems.push(discardButton)
         //}

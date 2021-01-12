@@ -176,7 +176,7 @@ export const NeedListTable: FunctionComponent<NeedListProps> = (props) => {
           <div className="list-remove-alert">
             <span className="list-remove-text">
               Remove this document type?
-              {(data.status === 'Borrower to do' || data.status === 'Started') ? " It will disappear from the borrower’s Needs List?" : null}
+              {(data.status === 'Borrower to do' || data.status === 'Started') ? " It’ll disappear from the borrower’s Needs List?" : null}
             </span>
             <div className="list-remove-options">
               <button

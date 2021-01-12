@@ -7,10 +7,11 @@ export class PDFActions extends Viewer {
 
 
 
-    static async createPDFforDownload(filename: any) {
+    static async createPDFforDownload(clientName: any) {
         try {
             const buffer = await this.instance.exportPDF();
             const blob = new Blob([buffer], { type: "application/pdf" });
+            const filename = `${clientName.split('.').slice(0, -1).join('.')}.pdf`;
             if (navigator.msSaveOrOpenBlob) {
                 navigator.msSaveOrOpenBlob(blob, filename);
             } else {

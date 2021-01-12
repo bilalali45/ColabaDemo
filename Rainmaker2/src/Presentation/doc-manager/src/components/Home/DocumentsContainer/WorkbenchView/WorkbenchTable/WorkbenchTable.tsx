@@ -91,7 +91,7 @@ export const WorkbenchTable = () => {
                 await setCurrentDocument()
                 
                 await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
-                let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+                let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
                 await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
                 await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
 
