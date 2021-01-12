@@ -313,7 +313,8 @@ namespace DocumentManagement.Service
                     {
                         { "$set", new BsonDocument()
                             {
-                                { "requests.$[request].documents.$[document].message", item.message}
+                                { "requests.$[request].documents.$[document].message", item.message},
+                                { "requests.$[request].createdOn", DateTime.UtcNow}
                             }
                         }
                     }, new UpdateOptions()

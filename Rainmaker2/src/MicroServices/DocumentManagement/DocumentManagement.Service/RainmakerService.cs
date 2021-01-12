@@ -193,7 +193,9 @@ namespace DocumentManagement.Service
                         }", @"{""$match"": {
                                 ""requests.status"": """ + RequestStatus.Active + @"""
                             }
-                        }", @"{
+                        }",
+                @"{""$match"":{""$or"":[{""requests.isFromBorrower"":{""$exists"":false}},{""requests.isFromBorrower"":false}]}}"
+                , @"{
                             ""$sort"": {
                                  ""requests.createdOn"": -1
                             }
