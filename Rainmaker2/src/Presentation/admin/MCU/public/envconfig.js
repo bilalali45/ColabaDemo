@@ -1,6 +1,7 @@
 window.envConfig = {
-   API_BASE_URL: 'https://qamaingateway.rainsoftfn.com',
-  // API_BASE_URL: "https://localhost:5001",
+   //API_BASE_URL: 'https://qamaingateway.rainsoftfn.com',
+   API_BASE_URL: "https://devMainGateway.rainsoftfn.com:5001",
+   RAIN_MAKER_URL: "https://localdev.rainsoftfn.com",
    IDLE_TIMER: '10', // Must be in minutes
    LOCK_RETAIN_DURATION: 30, // In seconds
    // We are using trial/evaluation version of PSPDF Kit.

@@ -9,11 +9,22 @@ import App from './App';
 function useParametersQuery() {
   return (new URL(window.location.href)).searchParams
 }
+function isValidHttpUrl(string : any) {
+  let url;
+  
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;  
+  }
 
-// Set cookie since we can't edit/modify so just create a new one 
-// New cookie with same name, will override previous one
-function createCookie(name:string,value:string) {
-  document.cookie = name + "=" + value + "; path=/";
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+function getCookie(name:any){
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return decodeURIComponent(parts.pop()?.split(';').shift()!);
+  return null;
 }
 
 if(process.env.NODE_ENV==='development'){
@@ -26,20 +37,34 @@ if(process.env.NODE_ENV==='development'){
 }else{
 
 const params = useParametersQuery();
-const key = params.get('key'); 
+let key : string | null | undefined = params.get('key'); 
 const mvcURL = params.get('PortalReferralUrl')
-
-
+if(!key)
+{
+  console.log('reading key from cookie');
+  key = getCookie('Rainmaker2RefreshToken');
+}
+else
+{
+  console.log('reading key from param');
+  key = decodeURIComponent(key!)
+}
+console.log(`key is ${key}`);
 /**
  * We are now using cross origin domains, we are passing param to iFrame URL (PortalReferralUrl)
  * so that we can go back from within iframe
  * we can't access localStorage of cross origin domains.
  * widow.top.history.back() will not work since it tries to access cross origin domain's data.
- **/ 
-if(mvcURL){
+ **/
+const rainmakerUrl = window?.envConfig?.RAIN_MAKER_URL; 
+if(mvcURL && isValidHttpUrl(mvcURL)){
   localStorage.setItem('PortalReferralUrl', mvcURL)
 }
-
+else
+{
+  localStorage.setItem('PortalReferralUrl', `${rainmakerUrl}/Admin/Dashboard`)
+}
+console.log(`Portal referral URL is ${localStorage.getItem('PortalReferralUrl')}`);
 const baseUrl: any = window?.envConfig?.API_BASE_URL;
 
   // Reset cookies to use GoColaba Domain.

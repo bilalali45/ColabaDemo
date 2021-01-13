@@ -65,11 +65,11 @@ export const NeedList = () => {
 
     const redirectToMVC = () => {
         const portalReferralUrl = LocalDB.getPortalReferralUrl();
-    
+        const rainmakerUrl = window?.envConfig?.RAIN_MAKER_URL;
         if (portalReferralUrl) {
           window.top.location.href = portalReferralUrl;
         } else {
-          window.top.location.href = '/Admin/Dashboard';
+          window.top.location.href = `${rainmakerUrl}/Admin/Dashboard`;
         }
       };
 
