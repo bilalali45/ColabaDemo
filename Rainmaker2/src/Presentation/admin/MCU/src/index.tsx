@@ -62,7 +62,10 @@ if(mvcURL && isValidHttpUrl(mvcURL)){
 }
 else
 {
-  localStorage.setItem('PortalReferralUrl', `${rainmakerUrl}/Admin/Dashboard`)
+   if(!localStorage.getItem('PortalReferralUrl'))
+  {
+    localStorage.setItem('PortalReferralUrl', `${rainmakerUrl}/Admin/Dashboard`)
+  }
 }
 console.log(`Portal referral URL is ${localStorage.getItem('PortalReferralUrl')}`);
 const baseUrl: any = window?.envConfig?.API_BASE_URL;
