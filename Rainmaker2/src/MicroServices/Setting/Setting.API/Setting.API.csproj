@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>e8b14604-678c-4c62-8fc3-55a5b3a92283</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ElmahCore" Version="1.2.5" />
