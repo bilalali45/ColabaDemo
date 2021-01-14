@@ -213,6 +213,7 @@ namespace ByteWebConnector.SDK.Abstraction
             }
             this.SyncSkippedLiabilities(byteFile, loanApplication);
             this.SyncReoType(byteFile, loanApplication, thirdPartyCodeList);
+            this.SyncYearOnJob(byteFile, loanApplication);
 
             byteFile.Save(false);
         }
@@ -271,6 +272,60 @@ namespace ByteWebConnector.SDK.Abstraction
                         }
                     }
                 }
+            }
+        }
+
+        private void SyncYearOnJob(SDKFile byteFile,
+                                   LoanApplication loanApplication)
+        {
+            try
+            {
+                var rmBorrowers = loanApplication.Borrowers.ToList();
+                foreach (var rmBorrower in rmBorrowers)
+                {
+                    int borrowerIndex = rmBorrowers.IndexOf(rmBorrower);
+                    SDKObject sdkBorrower = byteFile.GetChildObject($"Bor{(borrowerIndex + 1)}",
+                                                                    false);
+                    if (rmBorrower.EmploymentInfoes != null)
+                    {
+                        var rmBorrowerEmployers = rmBorrower.EmploymentInfoes.ToList();
+                        foreach (var rmBorrowerEmployer in rmBorrowerEmployers)
+                        {
+                            int employerIndex = rmBorrowerEmployers.IndexOf(rmBorrowerEmployer);
+                            var endDate = rmBorrowerEmployer.EndDate == null ? DateTime.Now : rmBorrowerEmployer.EndDate;
+
+                            bool isPrimary = employerIndex == 0;
+                            SDKObject sdkEmployer = null;
+                            string sdkEmployerStatus = "Primary";
+                            if (isPrimary)
+                            {
+                                sdkEmployer = sdkBorrower.GetChildObject("PrimaryEmployer",
+                                                                         false);
+                            }
+                            else
+                            {
+                                var formerCount = sdkBorrower.GetCollectionCount("FormerEmployer");
+                                if (formerCount > 0)
+                                {
+                                    sdkEmployer = sdkBorrower.GetCollectionObject("FormerEmployer",
+                                                                                  employerIndex);
+                                    sdkEmployerStatus = "SecondaryCurrent";
+                                }
+                            }
+
+                            if (sdkEmployer != null)
+                            {
+                                var yearsOnJob = (decimal?)Math.Abs((rmBorrowerEmployer.StartDate.Value - endDate.Value).TotalDays / 365);
+                                sdkEmployer.SetFieldValue("YearsOnJob", Convert.ToString(yearsOnJob));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

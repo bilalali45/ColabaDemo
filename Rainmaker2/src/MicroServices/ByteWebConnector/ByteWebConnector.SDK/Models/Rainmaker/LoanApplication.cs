@@ -70,7 +70,7 @@ namespace ByteWebConnector.SDK.Models.Rainmaker
 
         public LoanDocumentPipeLine LoanDocumentPipeLine { get; set; }
 
-        public ICollection<Borrower> Borrowers { get; set; }
+        public IList<Borrower> Borrowers { get; set; }
 
         public ICollection<BorrowerConsent> BorrowerConsents { get; set; }
 

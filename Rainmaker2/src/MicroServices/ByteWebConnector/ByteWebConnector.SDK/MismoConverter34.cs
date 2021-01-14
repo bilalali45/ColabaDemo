@@ -249,9 +249,9 @@ namespace ByteWebConnector.SDK.Mismo
             List<ASSET> assets = new List<ASSET>();
             var rmBorrowers = this.SortRainMakerBorrowers(loanApplication);
             List<int> assetAdded = new List<int>();
+            int assetIndex = 1;
             foreach (Borrower rmBorrower in rmBorrowers)
             {
-                int assetIndex = 1;
                 int borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
                 string borrowerLabel = $"BORROWER_{borrowerIndex}";
                 if (rmBorrower.BorrowerAccountBinders != null)
@@ -319,7 +319,6 @@ namespace ByteWebConnector.SDK.Mismo
                                     break;
 
                                 default:
-                                    assetDetail.AssetAccountIdentifier = binder.BorrowerAccount.AccountNumber;
                                     if (Enum.IsDefined(typeof(AssetBase),
                                                        (AssetBase)binder.BorrowerAccount.AccountTypeId))
                                     {
@@ -861,7 +860,7 @@ namespace ByteWebConnector.SDK.Mismo
             urlaData.URLA_DETAIL = urlaDetail;
             dataSetToAdd.URLA = urlaData;
 
-            urlaDetail.ApplicationSignedByLoanOriginatorDate = loanApplication.CreatedOnUtc.Value.ToString("yyyy-MM-dd");
+            //urlaDetail.ApplicationSignedByLoanOriginatorDate = loanApplication.CreatedOnUtc.Value.ToString("yyyy-MM-dd");
             urlaDetail.EstimatedClosingCostsAmount = 0; //TODO
             urlaDetail.MIAndFundingFeeFinancedAmount = 0; //TODO
             //urlaDetail.MIAndFundingFeeTotalAmount = loanApplication.LoanAmount; //TODO
@@ -924,7 +923,7 @@ namespace ByteWebConnector.SDK.Mismo
 
             #region Loan Detail
             LOAN_DETAIL loanDetail = new LOAN_DETAIL();
-            loanDetail.ApplicationReceivedDate = loanApplication.CreatedOnUtc.Value.ToString("yyyy-MM-dd");
+            //loanDetail.ApplicationReceivedDate = loanApplication.CreatedOnUtc.Value.ToString("yyyy-MM-dd");
             loanDetail.BalloonIndicator = false; // TODO
             loanDetail.BelowMarketSubordinateFinancingIndicator = false; // TODO
             loanDetail.BuydownTemporarySubsidyFundingIndicator = false; // TODO
@@ -964,14 +963,31 @@ namespace ByteWebConnector.SDK.Mismo
 
             #region Refinance
 
-            //if(Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),(RefinancePrimaryPurposeBase) loanApplication.LoanGoalId)
+
+
             if (Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),
                                (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId))
+            {
+                var cashoutType = RefinanceCashOutDeterminationBase.CashOut;
+                var refiPurposeType = (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId;
+                if (refiPurposeType == RefinancePrimaryPurposeBase.InterestRateReduction)
+                {
+                    cashoutType = RefinanceCashOutDeterminationBase.NoCashOut;
+                }
+                loanToAdd.REFINANCE = new REFINANCE()
+                {
+                    //RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                    //RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
+                    RefinanceCashOutDeterminationType = Convert.ToString(cashoutType),
+                    RefinancePrimaryPurposeType = Convert.ToString(refiPurposeType)
+                };
+            }
+            else
             {
                 loanToAdd.REFINANCE = new REFINANCE()
                 {
                     RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
-                    RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
+                    RefinancePrimaryPurposeType = Convert.ToString(RefinancePrimaryPurposeBase.Other)
                 };
             }
             #endregion
@@ -1036,9 +1052,6 @@ namespace ByteWebConnector.SDK.Mismo
             int totalCurrentIncomesCount = 0;
             foreach (var rmBorrower in rmBorrowers)
             {
-
-
-
                 borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
                 string borrowerLabel = $"BORROWER_{borrowerIndex}";
                 PARTY borrowerToAdd = new PARTY()
@@ -1580,7 +1593,7 @@ namespace ByteWebConnector.SDK.Mismo
                         {
                             var VisaResponse = rmBorrower.BorrowerQuestionResponses.SingleOrDefault(bqr => bqr.QuestionId == 57)?.QuestionResponse?.AnswerText;
                             if (string.IsNullOrEmpty(VisaResponse))
-                        {
+                            {
                                 declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonResidentAlien);
                             }
                             else
@@ -1590,9 +1603,9 @@ namespace ByteWebConnector.SDK.Mismo
                                 )
                                 {
                                     declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonPermanentResidentAlien);
-                        }
-                        else
-                        {
+                                }
+                                else
+                                {
                                     declarationDetail.CitizenshipResidencyType = Convert.ToString(CitizenshipResidencyBase.NonResidentAlien);
                                 }
                             }
