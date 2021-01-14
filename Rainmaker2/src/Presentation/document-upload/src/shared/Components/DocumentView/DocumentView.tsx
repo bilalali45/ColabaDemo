@@ -119,6 +119,9 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
       (event) => {
         if (event.keyCode === 27) {
           hideViewer({});
+          document.body.classList.remove('openDocumentViewer');
+          document.body.classList.remove('lockbody');
+          document.body.removeAttribute('style');
         }
       },
       [hideViewer]
@@ -222,6 +225,8 @@ export const DocumentView: FunctionComponent<DocumentViewProps> = ({
                     className="document-view--button"
                     onClick={() => {
                       hideViewer(false);
+                      document.body.removeAttribute("style");
+                      document.body.classList.remove('lockbody');
                     }}
                 >
                   <SVGclose />

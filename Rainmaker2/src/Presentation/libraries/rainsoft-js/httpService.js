@@ -126,6 +126,8 @@ var Http = /** @class */ (function () {
                             ((_d = (_c = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.name) === "JsonWebTokenError" ||
                             ((_e = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _e === void 0 ? void 0 : _e.data) === "Could not login" ||
                             ((_f = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _f === void 0 ? void 0 : _f.status) === 401) {
+                            console.log("Request intercept token issue.");
+                            window.top.location.href = "/Account/LogOff";
                         }
                         console.log("API request error", error_1, "request url", url);
                         return [2 /*return*/, new Promise(function (_, reject) {

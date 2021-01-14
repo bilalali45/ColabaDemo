@@ -107,7 +107,8 @@ export const UploadedDocuments = () => {
       {isMobile?.value &&
         <div className="mobile-uploaded-document-option">          
             <button className={`btn-mudo`} onClick={() => { 
-              history.push(`/uploadedDocuments/upload/${Auth.getLoanAppliationId()}`)
+              history.push(`/uploadedDocuments/upload/${Auth.getLoanAppliationId()}`);
+              document.body.classList.add('overflow-hidden');
              }} id="btnPopupDocumentUpload">
               <span className="mudo-text">Upload Document</span>
               <span className="mudo-icon"><SVGUploadDocumentStikyIcon/></span>

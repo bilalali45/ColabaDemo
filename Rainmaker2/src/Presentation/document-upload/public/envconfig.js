@@ -6,6 +6,3 @@ window.envConfig = {
    LOGROCKET_ENABLE: false, // Must be in minutes
    LOGROCKET_APPID: "3fn3m4/testproject"
 };
-
-
-

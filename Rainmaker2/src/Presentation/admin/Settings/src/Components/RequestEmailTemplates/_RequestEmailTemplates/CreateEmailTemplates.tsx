@@ -68,6 +68,7 @@ export const CreateEmailTemplates = ({
   useEffect(() => {
     if (token) {
       if (lastSelectedInput) {
+        
         setValues(lastSelectedInput, token.symbol);
         enableBrowserPrompt();
         dispatch({
@@ -163,6 +164,7 @@ export const CreateEmailTemplates = ({
   }
 
   const setValues = (target: string, value?: string) => {
+   
     if (target === 'fromAddress') {
       if (value) addFromToken(value);
     } else if (target === 'ccAddress') {
@@ -189,17 +191,19 @@ export const CreateEmailTemplates = ({
             let firstPart = prevValues.substring(0, slectionPos);
             let secondPart = prevValues.substring(slectionPos);
             setValue(target, firstPart + value + secondPart);
-            setSelectionPos(getValues(target).length);                
+            setSelectionPos(getValues(target).length);
+            setSubjectWithValidation(firstPart + value + secondPart);              
         }else{
           setValue(target,value);
           setSelectionPos(getValues(target).length);
+          setSubjectWithValidation(value)
         }    
       }      
     }
     dispatch({type: RequestEmailTemplateActionsType.SetSelectedToken, payload: null});
   };
 
-  const onBlurSubjectHandler = (event: any) => {
+  const onBlurSubjectHandler = (event: any) => { 
     const startPos = event.target.selectionStart;
     setSelectionPos(startPos);
   }
@@ -321,6 +325,7 @@ export const CreateEmailTemplates = ({
   };
 
   const addCCToken = (token: string) => {
+  
     let ccArray = [...cCEmailArray];
     if(ccArray.find( x => x == token) == undefined){
       ccArray.push(token);
@@ -333,16 +338,16 @@ export const CreateEmailTemplates = ({
   const isTokenExist = (value: string) => {
     return value.includes('###') ? false : true
   }
-  const setSubjectWithValidation=(text: string) =>{
+  const setSubjectWithValidation=(text?: string) =>{
     var str = removeSpecialChars(text)
-    setvalidSubject(str);
+    setvalidSubject(str ? str : '');
   }
-  const removeSpecialChars= (text: string) => {
-      return text.replace(/[^ -~]/gi, "");
+  const removeSpecialChars= (text?: string) => {
+      return text?.replace(/[^ -~]/gi, "");
     }
   const onChangeHandler = (event?: any, field?: string) => {
     let val = event.target.value;
-    setSubjectWithValidation(val);
+   
     if(field === "templateName"){
       if(event.target.value.includes('###')){
         trigger(field);
@@ -356,6 +361,9 @@ export const CreateEmailTemplates = ({
       }else{
         clearErrors(field);
       }    
+    }
+    if(field === "subjectLine"){
+      setSubjectWithValidation(val);
     }
     enableBrowserPrompt();
     dispatch({
@@ -534,7 +542,7 @@ export const CreateEmailTemplates = ({
                    setLastSelectedInput('subjectLine');
                    setSelectedField('subjectLine');
                 }}
-                onChange= {onChangeHandler}
+                onChange= {(e) => onChangeHandler(e,"subjectLine")}
                 onBlur= {onBlurSubjectHandler}
               />
               {errors.subjectLine && (
