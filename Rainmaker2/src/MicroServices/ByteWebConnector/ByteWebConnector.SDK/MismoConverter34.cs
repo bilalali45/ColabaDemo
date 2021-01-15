@@ -889,7 +889,7 @@ namespace ByteWebConnector.SDK.Mismo
             if (homeOwnersInsurance != null)
             {
                 var housingExpense1 = new HOUSING_EXPENSE();
-                housingExpense1.HousingExpensePaymentAmount = homeOwnersInsurance.AnnuallyPayment;
+                housingExpense1.HousingExpensePaymentAmount = homeOwnersInsurance.AnnuallyPayment / 12;
                 housingExpense1.HousingExpenseTimingType = HousingExpenseTimingBase.Proposed.ToString();
                 housingExpense1.HousingExpenseType = HousingExpenseBase.HomeownersInsurance.ToString();
                 loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(housingExpense1);
@@ -900,7 +900,7 @@ namespace ByteWebConnector.SDK.Mismo
             if (propertyTaxes != null)
             {
                 var housingExpense2 = new HOUSING_EXPENSE();
-                housingExpense2.HousingExpensePaymentAmount = propertyTaxes.AnnuallyPayment;
+                housingExpense2.HousingExpensePaymentAmount = propertyTaxes.AnnuallyPayment / 12;
                 housingExpense2.HousingExpenseTimingType = HousingExpenseTimingBase.Proposed.ToString();
                 housingExpense2.HousingExpenseType = HousingExpenseBase.RealEstateTax.ToString();
                 loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(housingExpense2);
@@ -965,8 +965,9 @@ namespace ByteWebConnector.SDK.Mismo
 
 
 
-            if (Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),
-                               (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId))
+            if ((loanApplication.LoanPurposeId == 2 || loanApplication.LoanPurposeId == 3) // 2: Refinance, 3: Cashout
+                && Enum.IsDefined(typeof(RefinancePrimaryPurposeBase),
+                                  (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId))
             {
                 var cashoutType = RefinanceCashOutDeterminationBase.CashOut;
                 var refiPurposeType = (RefinancePrimaryPurposeBase)loanApplication.LoanGoalId;
@@ -974,21 +975,21 @@ namespace ByteWebConnector.SDK.Mismo
                 {
                     cashoutType = RefinanceCashOutDeterminationBase.NoCashOut;
                 }
-                loanToAdd.REFINANCE = new REFINANCE()
+                else
                 {
-                    //RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
-                    //RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
-                    RefinanceCashOutDeterminationType = Convert.ToString(cashoutType),
-                    RefinancePrimaryPurposeType = Convert.ToString(refiPurposeType)
-                };
-            }
-            else
-            {
+                    loanToAdd.REFINANCE = new REFINANCE()
+                                          {
+                                              RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                                              RefinancePrimaryPurposeType = Convert.ToString(RefinancePrimaryPurposeBase.Other)
+                                          };
+                }
                 loanToAdd.REFINANCE = new REFINANCE()
-                {
-                    RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
-                    RefinancePrimaryPurposeType = Convert.ToString(RefinancePrimaryPurposeBase.Other)
-                };
+                                      {
+                                          //RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                                          //RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
+                                          RefinanceCashOutDeterminationType = Convert.ToString(cashoutType),
+                                          RefinancePrimaryPurposeType = Convert.ToString(refiPurposeType)
+                                      };
             }
             #endregion
 
