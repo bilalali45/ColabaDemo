@@ -38,6 +38,7 @@ namespace ByteWebConnector.SDK.Controllers
 
         [Route(template: "[action]")]
         [HttpPost]
+        [DisableRequestSizeLimit]
         public EmbedDocumentResponse SendSdkDocument([FromBody] SdkSendDocumentRequest sdkSendDocumentRequest)
         {
             try

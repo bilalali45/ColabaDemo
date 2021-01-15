@@ -119,6 +119,7 @@ namespace ByteWebConnector.API.Controllers
 
         [Route(template: "[action]")]
         [HttpPost]
+        [DisableRequestSizeLimit]
         public SendSdkDocumentResponse SendDocument([FromBody] SendDocumentRequest request)
         {
             var loanApplication =
