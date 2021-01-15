@@ -28,8 +28,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 270px;
+  max-width: 100%;
+  flex: 45 1 0%;
   display: block;
+  text-align: left;
 
 }
   .PSPDFKit-Root{
