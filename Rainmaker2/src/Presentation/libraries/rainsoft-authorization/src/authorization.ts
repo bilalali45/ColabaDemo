@@ -72,36 +72,40 @@ export default class Authorization {
       if (!LocalDB.checkAuth()) {
         return;
       }
-      const refreshTokenResponse = await Http.post(
+      const refreshTokenResponse : any = await Http.post(
         UserEndpoints.POST.refreshToken(),
         {
           token: LocalDB.getAuthToken(),
           refreshToken: LocalDB.getRefreshToken(),
         }
       );
+      
+      if(refreshTokenResponse?.data?.data){
+        const { token, refreshToken } = get(refreshTokenResponse, "data.data");
+        if (token && refreshToken) {
+          LocalDB.storeAuthTokens(token, refreshToken);
 
-      const { token, refreshToken } = get(refreshTokenResponse, "data.data");
+          const payload = this.decodeJwt(token);
+          LocalDB.storeTokenPayload(payload);
 
-      if (!token || !refreshToken) {
-        console.log("Refresh token fail.");
-        LocalDB.removeAuth();
-        window.top.location.href = "/Login/LogOff";
-
-        return false;
+          // Event raise to refresh 
+          const refreshedTokenEvent = new Event('tokenrefreshed');
+          window.dispatchEvent(refreshedTokenEvent);
+          this.addExpiryListener();
+          console.log("Token refresh successfully.");
+          return true;
+        }
       }
+      
+      console.log("Refresh token request fail.");
+      LocalDB.removeAuth();
+      window.top.location.href = "/Account/LogOff";
 
-      LocalDB.storeAuthTokens(token, refreshToken);
-
-      const payload = this.decodeJwt(token);
-      LocalDB.storeTokenPayload(payload);
-
-      // Event raise to refresh 
-      const refreshedTokenEvent = new Event('tokenrefreshed');
-      window.dispatchEvent(refreshedTokenEvent);
-      this.addExpiryListener();
-
-      return true;
+      return false;
+      
+      
     } catch (error) {
+      console.log("Refresh Token Error", error)
       setTimeout(() => {
         this.refreshToken();
       }, 10 * 1000);

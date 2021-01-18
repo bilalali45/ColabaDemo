@@ -60,10 +60,14 @@ useEffect(() => {
   let newFiles = selectedFiles?.filter(f => f.uploadStatus === 'pending');
   if (newFiles.length) {
     setshowSubmitBtn(true);
-    document.body.classList.add('footer-btn-enabled');
+    if(isMobile?.value){
+      document.body.classList.add('footer-btn-enabled');
+    }    
   }else{
     setshowSubmitBtn(false);
-    document.body.classList.remove('footer-btn-enabled');
+    if(isMobile?.value){
+      document.body.classList.remove('footer-btn-enabled');
+    }
   }
 }, [selectedFiles])
 
@@ -119,6 +123,8 @@ const filterCategoryList = () => {
 
 
   const closePopup = () => {
+    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('lockbody');
     const files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
     if (files) {
       setshowAlert(true);
@@ -132,6 +138,12 @@ const filterCategoryList = () => {
     const files = selectedFiles.filter((f) => f.uploadStatus === "pending").length > 0;
     if (files) {
       setshowAlert(true);
+      /// zzzz
+      if(showAlert==true){
+        document.getElementById('showAlertYes')?.addEventListener('click',()=>{
+          document.body.classList.remove('overflow-hidden');
+        });        
+      }
     }else{
       setWidgetState(1)
     }

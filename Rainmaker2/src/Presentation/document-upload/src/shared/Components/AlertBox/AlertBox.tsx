@@ -122,6 +122,7 @@ export const AlertBox = ({
               onClick={yesHandler}
               className="btn btn-secondary "
               data-testid="btnyes"
+              id="showAlertYes"
             >
               Yes
             </button>
