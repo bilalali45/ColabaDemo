@@ -192,10 +192,11 @@ namespace LosIntegration.API.Controllers
                                           FileData = fileData,
                                           DocumentCategory =
                                               byteDocCategoryMapping.ByteDocCategoryName ?? "MISC", // mapping required
-                                          DocumentExension = !string.IsNullOrEmpty(value: file.ClientName)
+                                          DocumentExension = string.IsNullOrEmpty(value: file.McuName)
                                               ? Path.GetExtension(path: file.ClientName).Replace(oldValue: ".",
                                                                                                  newValue: "")
-                                              : "",
+                                              : Path.GetExtension(path: file.McuName).Replace(oldValue: ".",
+                                                                                                 newValue: ""),
                                           DocumentName = Path.GetFileNameWithoutExtension(path: !string.IsNullOrEmpty(file.McuName) ? file.McuName : file.ClientName),
                                           DocumentStatus =
                                               byteDocStatusMapping?.ByteDocStatusName ?? "0", // mapping required
