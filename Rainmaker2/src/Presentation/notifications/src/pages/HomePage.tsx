@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  FunctionComponent,
-  useRef,
-  useCallback,
-  useMemo
-} from 'react';
+import React, {useEffect, FunctionComponent, useRef, useCallback} from 'react';
 import {Http} from 'rainsoft-js';
 
 import {Notifications} from '../features/Notifications/Notifications';
@@ -69,6 +63,7 @@ export const HomePage: FunctionComponent = () => {
         type: 'UPDATE_STATE',
         state: {notificationsVisible: !notificationsVisible}
       });
+      window.focus();
     } else {
       openEffect();
 

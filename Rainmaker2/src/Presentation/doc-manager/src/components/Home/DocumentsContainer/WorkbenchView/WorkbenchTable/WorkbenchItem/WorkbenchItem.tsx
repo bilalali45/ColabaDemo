@@ -16,6 +16,7 @@ import { AnnotationActions } from '../../../../../../Utilities/AnnotationActions
 import { SelectedFile } from '../../../../../../Models/SelectedFile'
 import { ViewerActions } from '../../../../../../Store/actions/ViewerActions'
 import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
+import { ViewerTools } from '../../../../../../Utilities/ViewerTools'
 
 
 export const nonExistentFileId = '000000000000000000000000';
@@ -224,6 +225,7 @@ const performNextActionFn= async () =>{
     let selectedFileData = new SelectedFile(file.id, DocumentActions.getFileName(file), file.fileId)
       ViewerActions.resetInstance(dispatch)
     dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
+    ViewerTools.currentFileName = selectedFileData.name
 
     let f = await DocumentActions.getFileToView(
       file?.id,
@@ -238,10 +240,6 @@ const performNextActionFn= async () =>{
 
     let currentFile = new CurrentInView(file.id, f, getFileName(), true, file.fileId);
     dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-    dispatch({
-      type: ViewerActionsType.SetFileProgress,
-      payload: 0,
-    });
     dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     

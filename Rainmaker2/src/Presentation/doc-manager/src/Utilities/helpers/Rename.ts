@@ -47,6 +47,17 @@ export class Rename {
         return name;
     }
 
+    static checkFileNameExist(fileName:string, files:any){
+        if(files && files.length){
+            let f = files.filter((f:any) => DocumentActions.getFileName(f).toLowerCase() === fileName)
+            if(f && f.length) return true
+            return false
+        }
+        
+            return false
+        
+    }
+
     static duplicateFileName(file:any, files:any){
         let f = files.find((f:any) => DocumentActions.getFileName(f).toLowerCase() === file.clientName.toLowerCase());
         if(f){

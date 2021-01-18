@@ -8,7 +8,6 @@ import { AnnotationActions } from "../../../../Utilities/AnnotationActions";
 import { datetimeFormatRenameFile } from "../../../../Utilities/helpers/DateFormat";
 
 export const ViewerHeader = () => {
-  const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [fileName, setFileName] = useState("");
   const [filenameUnique, setFilenameUnique] = useState(true);
   const [validFilename, setValidFilename] = useState(true);
@@ -20,7 +19,7 @@ export const ViewerHeader = () => {
   
   
   const { state, dispatch } = useContext(Store);
-  const { currentFile, selectedFileData }: any = state.viewer;
+  const { currentFile, selectedFileData, isRenameEditMode }: any = state.viewer;
 
   const onDoubleClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -31,20 +30,22 @@ export const ViewerHeader = () => {
 
   useEffect(()=>{
       if(currentFile){
-        setEditingModeEnabled(false)
+        editMode(false)
       }
   },[currentFile])
+  
   const editMode = (isEditEnabled: boolean) => {
-    setEditingModeEnabled(isEditEnabled);
+    dispatch({
+      type: ViewerActionsType.SetRenameEditMode,
+      payload: isEditEnabled,
+    });
   };
 
   useEffect(() => {
-    if (editingModeEnabled) {
+    if (isRenameEditMode) {
       inputRef.current?.focus();
     }
-  }, [editingModeEnabled]);
-
-
+  }, [isRenameEditMode]);
   
   return (
     <div
@@ -53,9 +54,8 @@ export const ViewerHeader = () => {
       id="docName"
       className="vc-head-hWrap"
       >
-      {!!editingModeEnabled ? (
+      {!!isRenameEditMode ? (
         <RenameFile
-          editingModeEnabled={editingModeEnabled}
           editMode={editMode}
           isWorkBenchFile={false}
         />

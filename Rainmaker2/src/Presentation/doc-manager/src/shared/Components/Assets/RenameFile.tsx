@@ -6,15 +6,14 @@ import { DocumentActionsType } from '../../../Store/reducers/documentsReducer';
 import { ViewerActionsType } from '../../../Store/reducers/ViewerReducer';
 import { Store } from '../../../Store/Store';
 import { LocalDB } from '../../../Utilities/LocalDB';
+import { ViewerTools } from '../../../Utilities/ViewerTools';
 
 export const RenameFile = ({
-  editingModeEnabled,
   editMode,
   isWorkBenchFile
 
 }
   : {
-    editingModeEnabled: boolean;
     editMode: Function;
     isWorkBenchFile: boolean
   }
@@ -32,7 +31,7 @@ export const RenameFile = ({
   >([]);
   const { state, dispatch } = useContext(Store);
   const { currentDoc, importedFileIds,documentItems }: any = state.documents;
-  const { currentFile, selectedFileData }: any = state.viewer;
+  const { currentFile, selectedFileData, isRenameEditMode }: any = state.viewer;
   const regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
   let loanApplicationId = LocalDB.getLoanAppliationId();
 
@@ -156,12 +155,9 @@ export const RenameFile = ({
           let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
           let fileId = currentFile.fileId
           if(newName !== "" && !allowFileRenameMCU(newName, currentFile?.id, false) && !regex.test(newName)){
-            setTimeout(async() => {
-              const fileExtension = getFileExtension(selectedFileData.name);
-              await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newName + fileExtension)
-            
-
-            let selectedFile = new SelectedFile(currentFile.id,newName + fileExtension, currentFile.fileId )
+            let fileName = selectedFileData.name
+              const fileExt = getFileExtension(fileName);
+              let selectedFile = new SelectedFile(currentFile.id,newName + fileExt, currentFile.fileId )
             await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFile});
             let newFile: any = new CurrentInView(
               currentFile.id,
@@ -175,10 +171,8 @@ export const RenameFile = ({
               type: ViewerActionsType.SetCurrentFile,
               payload: newFile,
             });
-  
-           
-  
-            setMCUNamePreviousName(() => newNameWithFileExtension);
+              await DocumentActions.renameDoc(id, currentDoc.requestId, currentDoc.docId, fileId, newName + fileExt)
+              setMCUNamePreviousName(() => newNameWithFileExtension);
             setRenameMCUName(() => newNameWithFileExtension);
             
             if (currentFile.isWorkBenchFile) {
@@ -190,7 +184,6 @@ export const RenameFile = ({
                await DocumentActions.getDocumentItems(dispatch, importedFileIds);
 
             }
-          }, 500);
             
         }
           
@@ -215,7 +208,7 @@ export const RenameFile = ({
 
 
   const showingNewNameInList = (newName:string)=>{
-    
+    ViewerTools.currentFileName = newName
     newName = newName+"|"
         let allDocs = documentItems.map((doc:any)=>{
           doc.files.map((file:any)=>{
@@ -249,6 +242,7 @@ export const RenameFile = ({
     event: React.KeyboardEvent<HTMLInputElement>,
     newValue: string
   ) => {
+    
     if (event.key === 'Enter') {
       if (
         validFilename === false ||
@@ -305,10 +299,10 @@ export const RenameFile = ({
   };
 
   useEffect(() => {
-    if (editingModeEnabled) {
+    if (isRenameEditMode) {
       inputRef.current?.focus();
     }
-  }, [editingModeEnabled]);
+  }, [isRenameEditMode]);
 
 
   const renderNameError = () => {

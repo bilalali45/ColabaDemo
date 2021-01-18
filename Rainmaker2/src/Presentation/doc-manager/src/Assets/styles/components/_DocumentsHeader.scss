@@ -41,6 +41,10 @@
                     border-left: 1px solid color('border');
                     min-width: 140px;
 
+                    @media (max-width:1500px){
+                        min-width: 125px;
+                    }
+
                     &:hover,
                     &.active {
                         background: color('primaryactive');
@@ -91,6 +95,9 @@
 
                     &:last-child {
                         min-width: 200px;
+                        @media (max-width:1500px){
+                            min-width: 160px;
+                        }
                     }
                 }
 
@@ -528,8 +535,8 @@
 }
 .searchPopover {
     width: 100%;
-    max-width: 94%;
-    margin-left: -20px !important;
+    max-width: 100%;
+    margin-left: -5px !important;
     .popover-body {
         padding: 0;
       .searchPopover-inputWrap {  

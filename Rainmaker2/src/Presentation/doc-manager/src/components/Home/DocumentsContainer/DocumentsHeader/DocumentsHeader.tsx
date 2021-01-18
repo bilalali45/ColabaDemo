@@ -37,7 +37,7 @@ export const DocumentsHeader = () => {
   const [targetTrash, setTargetTrash] = useState(null);
   const refTrashOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, uploadFailedDocs, importedFileIds }: any = state.documents;
+  const { currentDoc, uploadFailedDocs, importedFileIds,searchdocumentItems,documentItems }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
 
   const { currentFile, selectedFileData, SaveCurrentFile, DiscardCurrentFile, isFileChanged }: any = state.viewer;
@@ -289,6 +289,7 @@ export const DocumentsHeader = () => {
   }
   const [showSearch, setShowSearch] = useState(false);
   const [targetSearch, setTargetSearch] = useState(null);
+  const [docSearchValue, setDocSearchValue] = useState("");
   const refSearch = useRef(null);
   const refSearchWrap = useRef(null);
   const refSearchPopover = useRef(null);
@@ -306,14 +307,38 @@ export const DocumentsHeader = () => {
   //   };
   // }, [showSearch]);
 
+
+
   
-  // const hideSearch = () => {
-  //   setShowSearch(false);
-  // };
-  // const handleClickSearch = (event) => {
-  //   setShowSearch(!showSearch);
-  //   setTargetSearch(event.target);
-  // };
+  const hideSearch = () => {
+    setShowSearch(false);
+  };
+  const handleClickSearch = (event) => {
+    setShowSearch(!showSearch);
+    setTargetSearch(event.target);
+  };
+
+  const filterDocumentItems =  (term) => {
+    term = term.trim();
+   let d = DocumentActions.filterDocumentItems(dispatch, searchdocumentItems || [],term);
+   return d;
+  };
+  const searchDocumentItems = (event) => {
+    setDocSearchValue(event.target.value);
+    let term = event.target.value.trim();
+    DocumentActions.docsSearchTerm = term;
+     filterDocumentItems(term);
+  };
+
+  const clearSearch = () => {
+    setDocSearchValue("")
+    hideSearch();
+    let term = "";
+    DocumentActions.docsSearchTerm = '';
+     filterDocumentItems(term)
+  };
+  
+
 
   return (
     <div id="c-DocHeader" className="c-DocHeader" ref={refSearchWrap}>
@@ -324,7 +349,7 @@ export const DocumentsHeader = () => {
         <div className="dh-actions" ref={refTrashOverlay}>
           <ul>
 
-            {/* <li ref={refSearch}  onClick={handleClickSearch}>
+          <li ref={refSearch}  onClick={handleClickSearch}>
               <div className="dh-actions-lbl-wrap">
                 <div className="dm-h-icon">
                  <SearchIcon />
@@ -333,7 +358,7 @@ export const DocumentsHeader = () => {
                   <span>Search</span>
                 </div>
               </div>
-            </li> */}
+            </li>
             <li onClick={handleClickTrash} className={showTrashOverlay ? 'active' : ''}>
 
               <div
@@ -362,25 +387,24 @@ export const DocumentsHeader = () => {
             />
           </ul>
 
-          {/* <Overlay
+          <Overlay
         show={showSearch}
         target={refSearch.current}
-        placement="bottom"
+        placement="bottom-end"
         container={refSearchWrap.current}
-        containerPadding={0}
         onHide={hideSearch}
-        rootClose={true}
+        rootClose={!docSearchValue ? true : false}
       >
         <Popover id="searchPopover" className="searchPopover">
-          <Popover.Content>
-            <div className="searchPopover-inputWrap" ref={refSearchPopover}>
+          <Popover.Content ref={refSearchPopover}>
+            <div className="searchPopover-inputWrap" >
               <div className="icon-wrap-search"><i className="zmdi zmdi-search"></i></div>
-              <input type="text" className="input-doc-search" autoFocus />
-              <div className="icon-wrap-clear"><i className="zmdi zmdi-close"></i></div>
+              <input type="text" className="input-doc-search" value={docSearchValue} onChange={(e)=>searchDocumentItems(e)} autoFocus />
+              <div className="icon-wrap-clear" onClick={clearSearch}><i className="zmdi zmdi-close"></i></div>
             </div>
           </Popover.Content>
         </Popover>
-      </Overlay>   */}
+      </Overlay>    
 
           <Overlay
             show={showTrashOverlay}
