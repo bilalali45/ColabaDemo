@@ -43,7 +43,7 @@ namespace ByteWebConnector.Model.Models.ActionModels.LoanFile
         public string ScheduleUrl { get; set; } // ScheduleUrl (length: 500)
         public string Logo { get; set; } // Logo (length: 50)
         public string FavIcon { get; set; } // Logo (length: 50)
-
+        public string ByteOrganizationCode { get; set; }
         // Reverse navigation
 
         /// <summary>

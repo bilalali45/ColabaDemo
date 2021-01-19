@@ -155,6 +155,7 @@ namespace LosIntegration.Model.Model.ServiceResponseModels.Rainmaker
         /// Parent LeadSource pointed by [BusinessUnit].([DefaultLeadSourceId]) (FK_BusinessUnit_LeadSource)
         /// </summary>
         public virtual LeadSource LeadSource { get; set; } // FK_BusinessUnit_LeadSource
+        public string ByteOrganizationCode { get; set; }
 
         public BusinessUnit()
         {

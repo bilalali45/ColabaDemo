@@ -76,6 +76,7 @@ namespace ByteWebConnector.SDK.Abstraction
                                                               xml);
                 var byteSession = ByteProSession.GetInstance(request.ByteProSettings);
                 var byteApplication = byteSession.GetApplication();
+                _logger.LogInformation($"Loan applicaiton ID : {request.LoanFileRequest.LoanApplication.Id} Byte Organization Code : {request.LoanFileRequest.LoanApplication.BusinessUnit?.ByteOrganizationCode}");
                 var options = new SDKNewFileOptions()
                               {
                                   SubPropState = request.LoanFileRequest.LoanApplication.PropertyInfo.AddressInfo.State.Abbreviation,

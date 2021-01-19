@@ -171,6 +171,7 @@ namespace LosIntegration.API.Controllers
 
 
                                                                                                   );
+            _logger.LogInformation($"Loan applicaiton ID : {loanApplication.Id} Byte Organization Code : {loanApplication.BusinessUnit?.ByteOrganizationCode}");
             var loanRequest = _loanRequestService.GetLoanRequestWithDetails(loanApplicationId: loanApplicationId,
                                                                                        null);
             var byteProCodeList = _thirdPartyCodeService.GetRefIdByThirdPartyId((int)ThirdParty.BytePro);
