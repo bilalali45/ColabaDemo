@@ -112,6 +112,8 @@ export class ViewerTools extends Viewer {
         selectedFileData.name = `${Rename.removeExt(fileName)}.pdf`
         selectedFileData = new SelectedFile(selectedFileData.id,selectedFileData.name, selectedFileData.fileId )
         await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});  
+        let currFile = new CurrentInView(currentFile.id, currentFile.src, selectedFileData.name, false, currentFile.fileId);
+        await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
@@ -122,7 +124,7 @@ export class ViewerTools extends Viewer {
 
     static setCurrentFileName(fileName:string, files:any){
         if( files && files.length){
-            let currentFileName = ViewerTools.currentFileName + '.pdf'
+            let currentFileName = `${Rename.removeExt(ViewerTools.currentFileName)}.pdf`
             if(ViewerTools.currentFileName !== '' && !Rename.checkFileNameExist(currentFileName, files) && !ViewerTools.regex.test(ViewerTools.currentFileName)){
                 return currentFileName
             }

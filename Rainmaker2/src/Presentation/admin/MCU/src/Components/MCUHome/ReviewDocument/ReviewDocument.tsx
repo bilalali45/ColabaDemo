@@ -490,6 +490,7 @@ export const ReviewDocument = () => {
             nextDocumentButtonDisabled || acceptRejectLoading
           }
           documentDetail={documentDetail}
+          currentDocument={currentDocument}
         />
       )}
       <div className="review-document-body">

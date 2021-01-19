@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
@@ -1167,6 +1168,7 @@ namespace Rainmaker.Test
         public async Task TestGetLoanOfficersService()
         {
             //Arrange
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
             DbContextOptions<RainMakerContext> options;
             var builder = new DbContextOptionsBuilder<RainMakerContext>();
             builder.UseInMemoryDatabase("RainMaker");
@@ -1174,7 +1176,7 @@ namespace Rainmaker.Test
             using RainMakerContext dataContext = new RainMakerContext(options);
 
             dataContext.Database.EnsureCreated();
-
+            mockcommonservice.Setup(x => x.GetSettingValueByKeyAsync<string>(string.Empty, 1, default)).ReturnsAsync(string.Empty);
             RainMaker.Entity.Models.UserProfile userProfile = new RainMaker.Entity.Models.UserProfile()
             {
                 Id = 201,
@@ -1190,7 +1192,8 @@ namespace Rainmaker.Test
                 Id = 201,
                 ContactId = 201,
                 UserId = 201,
-                IsDeleted = false
+                IsDeleted = false,
+                Photo = String.Empty
             };
             dataContext.Set<Employee>().Add(employee);
 
@@ -1212,7 +1215,7 @@ namespace Rainmaker.Test
 
             dataContext.SaveChanges();
 
-            ISettingService settingService = new SettingService(null,null, null,null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null, null, null, mockcommonservice.Object, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             List<Model.ByteUserNameModel> res = await settingService.GetLoanOfficers();
@@ -1224,10 +1227,12 @@ namespace Rainmaker.Test
             Assert.Equal("Minaz Karim", res[0].byteUserName);
             Assert.Equal("Minaz Karim", res[0].fullName);
         }
+
         [Fact]
         public async Task TestGetBusinessUnitsService()
         {
             //Arrange
+            Mock<ICommonService> mockcommonservice = new Mock<ICommonService>();
             DbContextOptions<RainMakerContext> options;
             var builder = new DbContextOptionsBuilder<RainMakerContext>();
             builder.UseInMemoryDatabase("RainMaker");
@@ -1237,18 +1242,19 @@ namespace Rainmaker.Test
             dataContext.Database.EnsureCreated();
 
             BusinessUnit businessUnit = new BusinessUnit()
-            {
-                Id = 12,
-                Name = "AHCLending",
-                ByteOrganizationCode = "302039",
-                IsDeleted = false,
-                IsActive = true
-            };
+                                        {
+                                            Id = 12,
+                                            Name = "AHCLending",
+                                            ByteOrganizationCode = "302039",
+                                            IsDeleted = false,
+                                            IsActive = true
+                                        };
             dataContext.Set<BusinessUnit>().Add(businessUnit);
 
             dataContext.SaveChanges();
+            mockcommonservice.Setup(x => x.GetSettingValueByKeyAsync<string>(string.Empty, 1, default)).ReturnsAsync(string.Empty);
 
-            ISettingService settingService = new SettingService(null, null,null, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null, null, null, mockcommonservice.Object, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             //Act
             List<Model.ByteBusinessUnitModel> res = await settingService.GetBusinessUnits();
 
@@ -1258,6 +1264,7 @@ namespace Rainmaker.Test
             Assert.Equal("AHCLending", res[0].name);
             Assert.Equal("302039", res[0].byteOrganizationCode);
         }
+
         [Fact]
         public async Task TestUpdateByteUserNameService()
         {

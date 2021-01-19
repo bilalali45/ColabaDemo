@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { NeedList } from '../../../../Entities/Models/NeedList';
 
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
 
@@ -16,6 +17,7 @@ export const ReviewDocumentHeader = ({
   nextDocumentButtonDisabled,
   documentDetail,
   haveDocuments,
+  currentDocument
 }: {
   id: string | null;
   docId: string,
@@ -29,7 +31,9 @@ export const ReviewDocumentHeader = ({
   nextDocumentButtonDisabled: boolean;
   documentDetail: boolean;
   haveDocuments?: boolean;
+  currentDocument:NeedList
 }) => {
+  console.log(currentDocument)
   return (
     <div data-testid = "review-headerts"
       id="ReviewDocumentHeader"
@@ -72,7 +76,7 @@ export const ReviewDocumentHeader = ({
             }`}
         >
           {/* <button className="btn btn-primary">Activity Log</button> */}
-          {haveDocuments === false ? (
+          {currentDocument.status !== "Manually added" && haveDocuments === false ? (
             <Dropdown>
               <Dropdown.Toggle
                 size="lg"

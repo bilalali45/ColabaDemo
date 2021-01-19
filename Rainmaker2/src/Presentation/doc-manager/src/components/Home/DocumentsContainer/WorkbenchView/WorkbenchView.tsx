@@ -4,6 +4,7 @@ import {
     MinusIcon,
     PlusIcon,
   } from "../../../../shared/Components/Assets/SVG";
+import { LocalDB } from '../../../../Utilities/LocalDB';
 type WorkbenchViewType = {
     setSplitSizes?:Function
 }
@@ -16,7 +17,7 @@ export const WorkbenchView = ({
     const [show, setShow] = useState(true);
     const handleClick = () => {
         setShow(!show);
-
+        LocalDB.setWorkbenchState(show)
         let gutterDiv: any = window.document.getElementsByClassName('gutter');
         
         if (show) {
@@ -31,11 +32,21 @@ export const WorkbenchView = ({
 
         
       };
-    // useEffect(()=>{
+    useEffect(()=>{
       
-    //     setSplitSizes([50,50])
+        let showWorkbench = (localStorage.getItem('isWorkbenchCollapsed') ?  localStorage.getItem('isWorkbenchCollapsed' )=== "true": false)
+        setShow(!showWorkbench)
+        let gutterDiv: HTMLCollectionOf<Element> = window.document.getElementsByClassName('gutter');
         
-    //   },[])
+        if (showWorkbench) {
+            setSplitSizes([93,7])
+            gutterDiv[0]?.classList.add('hide');
+        }
+        else {
+            setSplitSizes([55,45])
+            gutterDiv[0]?.classList.remove('hide');
+        }
+      },[])
 
     return (
         <div className="c-WorkbenchView">
