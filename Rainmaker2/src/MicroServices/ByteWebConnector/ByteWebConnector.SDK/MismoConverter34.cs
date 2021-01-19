@@ -330,7 +330,7 @@ namespace ByteWebConnector.SDK.Mismo
                                     }
                                     break;
                             }
-
+                            assetDetail.AssetAccountIdentifier = binder.BorrowerAccount.AccountNumber;
                             assetDetail.AssetCashOrMarketValueAmount = binder.BorrowerAccount.Balance;
 
 
@@ -978,18 +978,18 @@ namespace ByteWebConnector.SDK.Mismo
                 else
                 {
                     loanToAdd.REFINANCE = new REFINANCE()
-                                          {
-                                              RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
-                                              RefinancePrimaryPurposeType = Convert.ToString(RefinancePrimaryPurposeBase.Other)
-                                          };
+                    {
+                        RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                        RefinancePrimaryPurposeType = Convert.ToString(RefinancePrimaryPurposeBase.Other)
+                    };
                 }
                 loanToAdd.REFINANCE = new REFINANCE()
-                                      {
-                                          //RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
-                                          //RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
-                                          RefinanceCashOutDeterminationType = Convert.ToString(cashoutType),
-                                          RefinancePrimaryPurposeType = Convert.ToString(refiPurposeType)
-                                      };
+                {
+                    //RefinanceCashOutDeterminationType = Convert.ToString(RefinanceCashOutDeterminationBase.CashOut),
+                    //RefinancePrimaryPurposeType = Convert.ToString((RefinancePrimaryPurposeBase)loanApplication.LoanGoalId)
+                    RefinanceCashOutDeterminationType = Convert.ToString(cashoutType),
+                    RefinancePrimaryPurposeType = Convert.ToString(refiPurposeType)
+                };
             }
             #endregion
 
@@ -1775,11 +1775,11 @@ namespace ByteWebConnector.SDK.Mismo
             monitoring.GOVERNMENT_MONITORING_DETAIL = new GOVERNMENT_MONITORING_DETAIL();
 
             monitoring.GOVERNMENT_MONITORING_DETAIL.HMDAEthnicityCollectedBasedOnVisualObservationOrSurnameIndicator = false; // TODO
-            monitoring.GOVERNMENT_MONITORING_DETAIL.HMDAEthnicityRefusalIndicator = rmBorrower.LoanContact.LoanContactEthnicityBinders.Any(b => b.EthnicityId == 3); // TODO; // TODO
+            monitoring.GOVERNMENT_MONITORING_DETAIL.HMDAEthnicityRefusalIndicator = rmBorrower.LoanContact.LoanContactEthnicityBinders?.Any(b => b.EthnicityId == 3); // TODO; // TODO
             monitoring.GOVERNMENT_MONITORING_DETAIL.HMDAGenderCollectedBasedOnVisualObservationOrNameIndicator = false; // TODO
             monitoring.GOVERNMENT_MONITORING_DETAIL.HMDAGenderRefusalIndicator = rmBorrower.LoanContact.GenderId == 3; // TODO
             monitoring.GOVERNMENT_MONITORING_DETAIL.HMDARaceCollectedBasedOnVisualObservationOrSurnameIndicator = false; // TODO
-            monitoring.GOVERNMENT_MONITORING_DETAIL.HMDARaceRefusalIndicator = rmBorrower.LoanContact.LoanContactRaceBinders.Any(b => b.RaceId == 6); // TODO
+            monitoring.GOVERNMENT_MONITORING_DETAIL.HMDARaceRefusalIndicator = rmBorrower.LoanContact.LoanContactRaceBinders?.Any(b => b.RaceId == 6); // TODO
 
             //rmBorrower.LoanContact.gen
             if (rmBorrower.LoanContact.GenderId.HasValue && Enum.IsDefined(typeof(GenderBase),
