@@ -107,7 +107,7 @@ export const useSignalREvents = (props: UseSignalREventsProps): void => {
     configureSignalRHub(signalREventRegister);
     
     window.addEventListener('tokenrefreshed', (e: any) => { 
-      configureSignalRHub(signalREventRegister);
+      SignalRHub.hubStop().then( () => { configureSignalRHub(signalREventRegister); });
      }, false);
     
   }, [dispatch, getFetchNotifications, getUnseenNotificationsCount]);
