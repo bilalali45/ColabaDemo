@@ -642,6 +642,7 @@ namespace ByteWebConnector.SDK.Mismo
                 var rmBorrowers = this.SortRainMakerBorrowers(loanApplication);
                 int liabilityIndex = 1;
                 int borrowerIndex = 0;
+
                 #region First Mortgage
                 if (Enum.IsDefined(typeof(LoanPurposeBase),
                                            (LoanPurposeBase)loanApplication.LoanPurposeId))
@@ -699,48 +700,49 @@ namespace ByteWebConnector.SDK.Mismo
                 }
                 #endregion
 
+                #region Second Mortgages
+                // var secondMortgages = loanApplication.PropertyInfo?.MortgageOnProperties.Where(mortgage => mortgage.IsFirstMortgage == false).ToList();// todo clearfication required
+                var secondMortgage = loanApplication.PropertyInfo?.MortgageOnProperties?.FirstOrDefault(mortgage => mortgage.IsFirstMortgage == false);
+                if (secondMortgage != null && secondMortgage.MonthlyPayment > 0)
+                {
+                    liabilityIndex = liabilities.Count() + 1;
+                    LIABILITY secondMortgageLiability = new LIABILITY();
+                    //relationships.Add($"LIABILITY_{liabilityIndex}", "BORROWER_1");
+                    secondMortgageLiability.SequenceNumber = liabilityIndex;
+                    secondMortgageLiability.Label = $"LIABILITY_{liabilityIndex}";
+
+                    LIABILITY_DETAIL firstLiabilityDetail = new LIABILITY_DETAIL();
+                    firstLiabilityDetail.LiabilityExclusionIndicator = false; // TODO
+                    firstLiabilityDetail.LiabilityMonthlyPaymentAmount = secondMortgage.MonthlyPayment;
+                    firstLiabilityDetail.LiabilityPayoffStatusIndicator = false; // TODO
+                    firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.Installment);
+                    firstLiabilityDetail.LiabilityUnpaidBalanceAmount = secondMortgage.MortgageBalance;
+
+                    LIABILITY_HOLDER liabilityHolder = new LIABILITY_HOLDER()
+                    {
+                        NAME = new NAME()
+                        {
+                            FullName = "Second Mortgage"
+                        }
+                    };
+                    secondMortgageLiability.LIABILITY_HOLDER = liabilityHolder;
+
+                    secondMortgageLiability.LIABILITY_DETAIL = firstLiabilityDetail;
+                    liabilities.Add(secondMortgageLiability);
+                    relationships.Add(new MismoRelationShipModel()
+                    {
+                        From = secondMortgageLiability.Label,
+                        To = "BORROWER_1"
+                    });
+                }
+                #endregion
+
                 #region Liabilities Other Than First Mortgage
 
                 foreach (var rmBorrower in rmBorrowers)
                 {
                     borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
-                    string borrowerLabel = $"BORROWER_{borrowerIndex}";
-                    #region Second Mortgages
-                    // var secondMortgages = loanApplication.PropertyInfo?.MortgageOnProperties.Where(mortgage => mortgage.IsFirstMortgage == false).ToList();// todo clearfication required
-                    var secondMortgage = loanApplication.PropertyInfo?.MortgageOnProperties?.FirstOrDefault(mortgage => mortgage.IsFirstMortgage == false);
-                    if (secondMortgage != null && secondMortgage.MonthlyPayment > 0)
-                    {
-                        liabilityIndex = liabilities.Count() + 1;
-                        LIABILITY secondMortgageLiability = new LIABILITY();
-                        //relationships.Add($"LIABILITY_{liabilityIndex}", "BORROWER_1");
-                        secondMortgageLiability.SequenceNumber = liabilityIndex;
-                        secondMortgageLiability.Label = $"LIABILITY_{liabilityIndex}";
-
-                        LIABILITY_DETAIL firstLiabilityDetail = new LIABILITY_DETAIL();
-                        firstLiabilityDetail.LiabilityExclusionIndicator = false; // TODO
-                        firstLiabilityDetail.LiabilityMonthlyPaymentAmount = secondMortgage.MonthlyPayment;
-                        firstLiabilityDetail.LiabilityPayoffStatusIndicator = false; // TODO
-                        firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.Installment);
-                        firstLiabilityDetail.LiabilityUnpaidBalanceAmount = secondMortgage.MortgageBalance;
-
-                        LIABILITY_HOLDER liabilityHolder = new LIABILITY_HOLDER()
-                        {
-                            NAME = new NAME()
-                            {
-                                FullName = "Second Mortgage"
-                            }
-                        };
-                        secondMortgageLiability.LIABILITY_HOLDER = liabilityHolder;
-
-                        secondMortgageLiability.LIABILITY_DETAIL = firstLiabilityDetail;
-                        liabilities.Add(secondMortgageLiability);
-                        relationships.Add(new MismoRelationShipModel()
-                        {
-                            From = secondMortgageLiability.Label,
-                            To = "BORROWER_1"
-                        });
-                    }
-                    #endregion
+                    string borrowerLabel = $"BORROWER_{borrowerIndex}";                    
 
                     if (rmBorrower.BorrowerLiabilities != null)
                     {
@@ -1232,7 +1234,7 @@ namespace ByteWebConnector.SDK.Mismo
 
                         #region Borrower's Base Income
 
-                        if (employerType == EmploymentClassificationBase.Secondary)
+                        //if (employerType == EmploymentClassificationBase.Secondary)
                         {
                             CURRENT_INCOME_ITEM incomeItemToAdd = new CURRENT_INCOME_ITEM()
                             {
@@ -1419,7 +1421,7 @@ namespace ByteWebConnector.SDK.Mismo
                         {
                             employerToAdd.EMPLOYMENT.EmploymentClassificationType = Convert.ToString(employerType);
                         }
-                        employerToAdd.EMPLOYMENT.EmploymentMonthlyIncomeAmount = employmentInfo.MonthlyBaseIncome;
+                        //employerToAdd.EMPLOYMENT.EmploymentMonthlyIncomeAmount = employmentInfo.MonthlyBaseIncome;
                         employerToAdd.EMPLOYMENT.EmploymentPositionDescription = employmentInfo.JobTitle;
                         if (employmentInfo.StartDate.HasValue)
                         {
