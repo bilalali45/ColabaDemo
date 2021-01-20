@@ -37,7 +37,8 @@ export enum ViewerActionsType {
     SetSaveFile="SET_SAVE_FILE",
     SetDiscardFile="SET_DISCARD_FILE",
     SetPerformNextAction="SET_PERFORM_NEXT_ACTION",
-    SetAnnotationsFirstTime= "SET_ANNOTATIONS_FIRST_TIME"
+    SetAnnotationsFirstTime= "SET_ANNOTATIONS_FIRST_TIME",
+    SetRenameEditMode="SET_RENAME_EDIT_MODE"
 }
 
 export type ViewerType = {
@@ -56,7 +57,8 @@ export type ViewerType = {
     SaveCurrentFile:boolean,
     DiscardCurrentFile:boolean,
     performNextAction:boolean,
-    setAnnotationsFirstTime:boolean
+    setAnnotationsFirstTime:boolean,
+    isRenameEditMode:boolean
     // documentsSelection: {}
 }
 
@@ -77,6 +79,7 @@ export type ViewerActionsPayload = {
     [ViewerActionsType.SetDiscardFile]:boolean;
     [ViewerActionsType.SetPerformNextAction]:boolean;
     [ViewerActionsType.SetAnnotationsFirstTime]:boolean
+    [ViewerActionsType.SetRenameEditMode]:boolean
 
 }
 
@@ -102,6 +105,11 @@ export const viewerReducer = (state: ViewerType | {}, { type, payload }: Actions
             return {
                 ...state,
                 containerElement: payload
+            };
+        case ViewerActionsType.SetRenameEditMode:
+            return {
+                ...state,
+                isRenameEditMode: payload
             };
         case ViewerActionsType.SetIsFileChanged:
             return {

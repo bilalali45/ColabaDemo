@@ -31,15 +31,32 @@ export const useHandleClickOutside = (
       }
     };
 
-    const iframes = document.querySelectorAll('iframe');
+    /*const iframes = document.querySelectorAll('iframe');
 
     iframes.forEach((iframe: any) => {
       iframe.contentWindow.addEventListener('click', handleClickOutside, true);
     });
-
+    */
     document.addEventListener('click', handleClickOutside, true);
-
+    const listener: any = window.addEventListener('blur', () => blurevent());
+    const blurevent = () => {
+      setTimeout(() => {
+        if (document.activeElement?.tagName == 'IFRAME') {
+          dispatch({
+            type: 'UPDATE_STATE',
+            state: {
+              showToss: false,
+              notificationsVisible: false,
+              receivedNewNotification: false,
+              confirmDeleteAll: false
+            }
+          });
+        }
+        window.removeEventListener('blur', listener);
+      }, 200);
+    };
     return () => {
+      /*
       iframes.forEach((iframe: any) => {
         iframe.contentWindow.removeEventListener(
           'click',
@@ -47,7 +64,7 @@ export const useHandleClickOutside = (
           true
         );
       });
-
+*/
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, [dispatch, refContainerSidebar]);

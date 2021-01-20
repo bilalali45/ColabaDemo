@@ -18,6 +18,7 @@ using Xunit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System.Linq;
+using Request = DocumentManagement.Model.Request;
 
 namespace DocumentManagement.Tests
 {
@@ -341,18 +342,34 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            List<BsonDocument> list = new List<BsonDocument>()
+                                      {
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", "Started"}
+
+                                          }
+                                      };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            //  mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(0)));
 
             var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
-            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
-            mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object, Mock.Of<IRainmakerService>());
-            bool result = await adminDashboardService.Delete(adminDeleteModel,1,new List<string>());
-
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object, mockActivityLogService.Object, Mock.Of<IRainmakerService>());
+            bool result = await adminDashboardService.Delete(adminDeleteModel, 1, new List<string>());
             //Assert
             Assert.True(result);
         }
@@ -364,19 +381,36 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            List<BsonDocument> list = new List<BsonDocument>()
+                                      {
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", "Started"}
+
+                                          }
+                                      };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            //  mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
 
             var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
-            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Request>>(), It.IsAny<UpdateDefinition<Entity.Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
-            mock.SetupGet(x => x.db).Returns(mockdb.Object);
 
             //Act
 
-            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object,mockActivityLogService.Object,Mock.Of<IRainmakerService>());
-            bool result = await adminDashboardService.Delete(adminDeleteModel,1, new List<string>());
+            IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object, mockActivityLogService.Object, Mock.Of<IRainmakerService>());
+            bool result = await adminDashboardService.Delete(adminDeleteModel, 1, new List<string>());
             //Assert
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Fact]

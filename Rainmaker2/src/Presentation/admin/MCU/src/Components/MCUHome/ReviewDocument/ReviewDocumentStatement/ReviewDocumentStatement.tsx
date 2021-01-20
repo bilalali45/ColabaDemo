@@ -416,7 +416,7 @@ export const ReviewDocumentStatement = ({
           {renderStatus(currentDocument.status)}
         </div>
 
-        <Dropdown>
+        {currentDocument.status !== "Manually added" && <Dropdown>
           <Dropdown.Toggle
             size="lg"
             variant="primary"
@@ -435,7 +435,7 @@ export const ReviewDocumentStatement = ({
               />
             </Dropdown.Menu>
           )}
-        </Dropdown>
+        </Dropdown>}
       </header>
       {!!loading ? (
         <div

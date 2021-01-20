@@ -32,9 +32,9 @@ export const NeedListHeader = () => {
         </a>
       </div>
       <div className="need-list-header--right" data-testId="NeedListManageButton">
-        <button onClick={redirectToTemplate} className="btn btn-primary">
+        {/* <button onClick={redirectToTemplate} className="btn btn-primary">
           <em className="icon-record"></em> Manage Document Template
-        </button>
+        </button> */}
         <button onClick={redirectTodDocManager} className="btn btn-secondary">
           <DocManagerIcon/> DOC MANAGER
         </button>

@@ -25,7 +25,7 @@ export const DocumentsContainer = () => {
 
     const getLoanAppliation = async () => {
        let res : any = await DocumentActions.getLoanApplicationDetail(LocalDB.getLoanAppliationId());
-       dispatch({type: DocumentActionsType.SetLoanApplication, payload: res.data})
+       dispatch({type: DocumentActionsType.SetLoanApplication, payload: res?.data})
     }
 
     const splitOnDragStart = () => {

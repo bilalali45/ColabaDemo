@@ -54,7 +54,7 @@
   "scripts": {
     "verify-installation": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js",
     "start": "set PORT=3000 && node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts start",
-    "build": "react-scripts build",
+    "build": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
     "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
     "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",

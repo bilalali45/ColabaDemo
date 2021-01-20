@@ -24,7 +24,7 @@ export const DocumentsTable = () => {
 
     const documents: any = state.documents;
     const catScrollFreeze: any = documents?.catScrollFreeze;
-    const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress, importedFileIds }: any = state.documents;
+    const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress, importedFileIds,searchdocumentItems,docSearchTerm }: any = state.documents;
     const {isLoading, SaveCurrentFile, DiscardCurrentFile,  currentFile}:any  = state.viewer;
     const [fileClicked, setFileClicked]= useState<boolean>(false);
     const [retryFile, setRetryFile] = useState<any>();
@@ -212,10 +212,13 @@ export const DocumentsTable = () => {
           popsetShow(!popshow);
           setAddFileDialog(true)
       }
+      const noDocFound=()=>{
+        if(docSearchTerm){return (<div> No Results Found for “{docSearchTerm}”</div>)}
+        else {return (<div>  </div> )}
+        }
 
-    
     return (
-        <div id="c-DocTable" className="dm-docTable c-DocTable" >
+        <div id="c-DocTable" className="dm-docTable c-DocTable" > 
 
             <div className="dm-dt-thead">
                 <div className="dm-dt-thead-left">Document</div>
@@ -224,25 +227,45 @@ export const DocumentsTable = () => {
 
             <div className={`dm-dt-tbody ${catScrollFreeze?" freeze":""}`} ref={refReassignDropdown}>
 
-                {
-                    documentItems && documentItems.length ?( documentItems?.map((d: any, i: number) => {
-                        return (
-                            <DocumentItem key={i}
-                                docInd={i}
-                                document={d}
-                                refReassignDropdown={refReassignDropdown}
-                                setFileClicked={setFileClicked}
-                                inputRef={inputRef}
-                                fileClicked = {fileClicked}
-                                setOpenReassignDropdown={setOpenReassignDropdown}
-                                getDocswithfailedFiles ={getDocswithfailedFiles}
-                                setRetryFile = {setRetryFile}
-                                selectedDoc={selectedDoc}
-                                retryFile = {retryFile}
-                            />
-                        )
-                    })
-                    ):null
+            {
+                 documentItems && documentItems.length ?
+                 documentItems?.map((d: any, i: number) => {
+                      return (
+                          <DocumentItem key={i}
+                              docInd={i}
+                              document={d}
+                              refReassignDropdown={refReassignDropdown}
+                              setFileClicked={setFileClicked}
+                              inputRef={inputRef}
+                              fileClicked = {fileClicked}
+                              setOpenReassignDropdown={setOpenReassignDropdown}
+                              getDocswithfailedFiles ={getDocswithfailedFiles}
+                              setRetryFile = {setRetryFile}
+                              selectedDoc={selectedDoc}
+                              retryFile = {retryFile}
+                          />
+                      )
+                  }) :  noDocFound()
+                  // :
+                  
+                  //   documentItems && documentItems.length ?( documentItems?.map((d: any, i: number) => {
+                  //       return (
+                  //           <DocumentItem key={i}
+                  //               docInd={i}
+                  //               document={d}
+                  //               refReassignDropdown={refReassignDropdown}
+                  //               setFileClicked={setFileClicked}
+                  //               inputRef={inputRef}
+                  //               fileClicked = {fileClicked}
+                  //               setOpenReassignDropdown={setOpenReassignDropdown}
+                  //               getDocswithfailedFiles ={getDocswithfailedFiles}
+                  //               setRetryFile = {setRetryFile}
+                  //               selectedDoc={selectedDoc}
+                  //               retryFile = {retryFile}
+                  //           />
+                  //       )
+                  //   })
+                  //   ):null
                 }
 
             </div>

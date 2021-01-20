@@ -16,9 +16,10 @@ const baseUrl = `${window.location.protocol}//${window.location.host}/DocManager
 const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 
 export class ViewerTools extends Viewer {
-
+    static regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
     static currentRotation: any = 90;
-    static isDocChanged:any = false;
+    static isDocChanged:boolean = false;
+    static currentFileName:string = '';
 
     static currentToolbar: Array<string> = [
         "pan",
@@ -88,6 +89,11 @@ export class ViewerTools extends Viewer {
             type: ViewerActionsType.SetIsSaving,
             payload: true
         });
+        dispatch({
+            type: ViewerActionsType.SetFileProgress,
+            payload: 0,
+          });
+        await dispatch({ type: ViewerActionsType.SetRenameEditMode,payload: false});
         if (!currentFile.name.includes('.pdf')) {
             ViewerTools.isDocChanged =true
         }
@@ -100,13 +106,14 @@ export class ViewerTools extends Viewer {
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
             return;
         }
-        let file = await PDFActions.createPDFFromInstance(currentFile.name);
+        let fileName = this.setCurrentFileName(currentFile.name, currentDoc.files)
+        let file = await PDFActions.createPDFFromInstance(fileName);
         
-        if (!currentFile.name.includes('.pdf')) {
-            selectedFileData.name = `${Rename.removeExt(currentFile.name)}.pdf`
-        }
+        selectedFileData.name = `${Rename.removeExt(fileName)}.pdf`
         selectedFileData = new SelectedFile(selectedFileData.id,selectedFileData.name, selectedFileData.fileId )
-        await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});
+        await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});  
+        let currFile = new CurrentInView(currentFile.id, currentFile.src, selectedFileData.name, false, currentFile.fileId);
+        await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
@@ -115,6 +122,18 @@ export class ViewerTools extends Viewer {
         return res;
     }
 
+    static setCurrentFileName(fileName:string, files:any){
+        if( files && files.length){
+            let currentFileName = `${Rename.removeExt(ViewerTools.currentFileName)}.pdf`
+            if(ViewerTools.currentFileName !== '' && !Rename.checkFileNameExist(currentFileName, files) && !ViewerTools.regex.test(ViewerTools.currentFileName)){
+                return currentFileName
+            }
+            return fileName
+        }
+        return fileName
+        
+
+    }
     static downloadFile(file: any) {
         PDFActions.createPDFWithoutAnnotations(file.name);
     }

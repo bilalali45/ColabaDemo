@@ -1263,7 +1263,7 @@ namespace DocManager.Tests
                         //Cover all empty fields except typeMessage
                         { "_id" , "5fcf7d048c317adf72924eea" },
                         { "lockDateTime" , DateTime.UtcNow.AddMinutes(- 10)},
-                        { "lockUserId" ,1},
+                        { "lockUserId" ,0},
                         { "lockUserName" ,"System Administrator"},
                         { "loanApplicationId" , 1002}
 

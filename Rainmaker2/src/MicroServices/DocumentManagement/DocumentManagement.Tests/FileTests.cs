@@ -1277,7 +1277,7 @@ namespace DocumentManagement.Tests
             Assert.IsType<OkObjectResult>(result);
             var content = (result as OkObjectResult).Value as FileViewModel;
             Assert.Equal("5fe0bb4d9d83dc28cc10c16d", content.id);
-            Assert.Equal("ddd25d1fe456057652eeb72d", content.docId);
+            Assert.Equal("5fe0bb4d9d83dc28cc10c16f", content.docId);
             Assert.Equal("5f0ede3cce9c4b62509d0dbf", content.fileId);
             Assert.Equal("5fe0bb4d9d83dc28cc10c16e", content.requestId);
         }

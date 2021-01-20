@@ -102,5 +102,9 @@ export class LocalDB {
     LocalDB.setCurrentUrl(currentNavigation);
     return true;
   }
+
+  public static setWorkbenchState(isCollapsed:boolean){
+    localStorage.setItem("isWorkbenchCollapsed", isCollapsed.toString());
+  }
   //#endregion
 }

@@ -115,7 +115,7 @@ namespace DocumentManagement.API.Controllers
                                           localFile: filepath);
             Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
                                                                                                               password: await keyStoreService.GetFileKey(),
-                                                                                                              originalFileName: fileviewdto.clientName);
+                                                                                                              originalFileName: string.IsNullOrEmpty(fileviewdto.mcuName) ? fileviewdto.clientName : fileviewdto.mcuName);
             System.IO.File.Delete(filepath);
             return File(ms,
                         fileviewdto.contentType,

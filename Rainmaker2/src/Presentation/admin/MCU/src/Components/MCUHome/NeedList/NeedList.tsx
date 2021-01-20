@@ -41,7 +41,7 @@ export const NeedList = () => {
 
     const aquireLock = async () => {
         let res = await NeedListActions.aquireLock();
-        if(res.status === 200 || (res?.status === 400 && res?.data?.id)) {
+        if(res && res.status === 200 || (res?.status === 400 && res?.data?.id)) {
             dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: res.data });
         }else {
             setAquireLockFailed(true);

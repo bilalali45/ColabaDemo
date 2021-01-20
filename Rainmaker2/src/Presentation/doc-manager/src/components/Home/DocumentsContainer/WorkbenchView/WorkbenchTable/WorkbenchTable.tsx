@@ -110,6 +110,10 @@ export const WorkbenchTable = () => {
                 isFromWorkbench: true
             }
 
+            dispatch({
+                type: ViewerActionsType.SetFileProgress,
+                payload: 0,
+              });
             let fileData = await PDFActions.createNewFileFromThumbnail(file.indexes, currentFile, workbenchItems);
             let success: any = await ViewerTools.saveFileWithAnnotations(fileObj, fileData, true, dispatch, workbenchItems, importedFileIds, file.indexes);
 

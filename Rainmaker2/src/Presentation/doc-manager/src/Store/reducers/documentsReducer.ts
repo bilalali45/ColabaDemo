@@ -30,6 +30,8 @@ export enum DocumentActionsType {
     SetIsDraggingCurrentFile = "SET_IS_DRAGGING_CURRENT_FILE",
     SetImportedFileIds = "SET_IMPORTED_FILE_IDS",
     SetLoanApplication = "SET_LOAN_APPLICATION",
+    SearchDocumentItems = "SEARCH_DOCUMENT_ITEMS",
+    DocSearchTerm = "DOC_SEARCH_TERM",
 }
 
 export type DocumentsType = {
@@ -52,6 +54,9 @@ export type DocumentsType = {
     wbScrollFreeze: boolean,
     importedFileIds: any[]
     loanApplication: any
+    searchdocumentItems: any[] | [];
+    docSearchTerm: string;
+    
 }
 
 export type DocumentActionsPayload = {
@@ -84,6 +89,8 @@ export type DocumentActionsPayload = {
     [DocumentActionsType.SetIsDraggingSelf]: DocumentFile,
     [DocumentActionsType.SetImportedFileIds]: any[],
     [DocumentActionsType.SetLoanApplication]: {},
+    [DocumentActionsType.SearchDocumentItems]: any[],
+    [DocumentActionsType.DocSearchTerm]: string,
 }
 
 export type DocumentsActions = ActionMap<DocumentActionsPayload>[keyof ActionMap<DocumentActionsPayload>];
@@ -249,6 +256,18 @@ export const documentsReducer = (state: DocumentsType | {} | any, { type, payloa
             return {
                 ...state,
                 loanApplication: payload
+            
+            }
+        
+        case DocumentActionsType.SearchDocumentItems:
+            return {
+                ...state,
+                searchdocumentItems: payload
+            }
+        case DocumentActionsType.DocSearchTerm:
+            return {
+                ...state,
+                docSearchTerm: payload
             }
         default:
             return state;

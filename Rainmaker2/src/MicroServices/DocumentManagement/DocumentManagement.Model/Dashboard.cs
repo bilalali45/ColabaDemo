@@ -154,6 +154,7 @@ namespace DocumentManagement.Model
         public string encryptionAlgorithm { get; set; }
         public string clientName { get; set; }
         public string contentType { get; set; }
+        public string mcuName { get; set; }
     }
 
     public class DashboardStatus
