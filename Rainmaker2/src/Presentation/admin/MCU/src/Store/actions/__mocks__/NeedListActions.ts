@@ -478,4 +478,14 @@ export class NeedListActions {
       console.log(error);
     }
   }
-}
+
+  static async retainLock() {
+    let retainLockDetails = {"id":"5feb1ef8f003f008c174d6cd","loanApplicationId":2514,"lockUserId":6741,"lockUserName":"Ali Momin","lockDateTime":"2021-01-20T10:26:47.94239Z"}
+    return retainLockDetails;
+  }
+
+  static async aquireLock() {
+    let aquireLockDetails = {"id":"5feb1ef8f003f008c174d6cd","loanApplicationId":2514,"lockUserId":6741,"lockUserName":"Ali Momin","lockDateTime":"2021-01-20T10:25:16.4058242Z"}
+    return aquireLockDetails
+  }
+  }

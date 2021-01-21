@@ -31,7 +31,8 @@
   max-width: 100%;
   flex: 45 1 0%;
   display: block;
-  text-align: left; 
+  text-align: left;
+  
 }
   .PSPDFKit-Root{
     /* background-color: black; */

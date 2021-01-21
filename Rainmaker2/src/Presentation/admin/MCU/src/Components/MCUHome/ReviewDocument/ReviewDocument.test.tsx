@@ -521,15 +521,9 @@ beforeEach(() => {
         //   const acceptDocBtn = getByText("Accept Document");
         // expect(acceptDocBtn).toBeInTheDocument();
         
-<<<<<<< HEAD
         //   const doc = getByTestId("req-doc-dialog");
 
         // expect(doc).toBeInTheDocument();
-=======
-          const doc = getByTestId("req-doc-dialog");
-
-        expect(doc).toBeInTheDocument();
->>>>>>> pspdfkit-trial
         });
       })
     });

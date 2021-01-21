@@ -6,7 +6,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^11.0.4",
-    "@testing-library/user-event": "^7.2.1",
+    "@testing-library/user-event": "^12.6.0",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.39",
     "@types/react": "^16.9.35",
@@ -33,7 +33,10 @@
     "verify-installation": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js",
     "start": "set PORT=3002 && node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts start",
     "build": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
+    "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
+    "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",
+    "test-debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -43,6 +46,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.29.4",
+    "jest-canvas-mock": "^2.3.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "ncp": "^2.0.0"
   },
   "browserslist": {

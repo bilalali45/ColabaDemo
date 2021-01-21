@@ -437,6 +437,61 @@ namespace DocManager.Tests
             Assert.IsType<bool>(result);
 
         }
+
+        [Fact]
+        public async Task TestServiceMoveFromCategoryToTrashNoFile()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromCategoryToTrash moveFromCategoryToTrash = new MoveFromCategoryToTrash();
+            moveFromCategoryToTrash.id = "5fb51519e223e0428d82c41b";
+            moveFromCategoryToTrash.fromRequestId = "5fb5152ee223e0428d82c41c";
+            moveFromCategoryToTrash.fromDocId = "5fb51533e223e0428d82c41d";
+            moveFromCategoryToTrash.fromFileId = "5fbc8ac67501aedc18992591";
+
+
+            List<BsonDocument> list = new List<BsonDocument>()
+                                      {
+
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "files" ,  new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } }
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                      };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(true) ;
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            var result = await service.MoveFromCategoryToTrash(moveFromCategoryToTrash, 1);
+            //Assert
+            Assert.IsType<bool>(result);
+
+        }
         [Fact]
         public async Task TestServiceMoveFromCategoryToWorkBench()
         {
@@ -491,7 +546,60 @@ namespace DocManager.Tests
             Assert.IsType<bool>(result);
 
         }
+        [Fact]
+        public async Task TestServiceMoveFromCategoryToWorkBenchNoFile()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromCategoryToWorkBench moveFromCategoryToWorkBench = new MoveFromCategoryToWorkBench();
+            moveFromCategoryToWorkBench.id = "5fb51519e223e0428d82c41b";
+            moveFromCategoryToWorkBench.fromRequestId = "5fb5152ee223e0428d82c41c";
+            moveFromCategoryToWorkBench.fromDocId = "5fb51533e223e0428d82c41d";
+            moveFromCategoryToWorkBench.fromFileId = "5fbc8ac67501aedc18992591";
 
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "files" ,  new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } }
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                    }
+                 };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            var result = await service.MoveFromCategoryToWorkBench(moveFromCategoryToWorkBench, 1);
+            //Assert
+            Assert.IsType<bool>(result);
+
+        }
 
         [Fact]
         public async Task TestServiceViewCategoryAnnotations()
@@ -1433,6 +1541,261 @@ namespace DocManager.Tests
             Assert.NotNull(result);
            
 
+        }
+
+        [Fact]
+        public async Task TestServiceMoveFromoneCategoryToAnotherCategoryIsMcuFilesExists()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromOneCategoryToAnotherCategory  moveFromOneCategoryToAnotherCategory  = new MoveFromOneCategoryToAnotherCategory();
+            moveFromOneCategoryToAnotherCategory.id = "5fb51519e223e0428d82c41b";
+            moveFromOneCategoryToAnotherCategory.fromRequestId = "5fb5152ee223e0428d82c41c";
+            moveFromOneCategoryToAnotherCategory.fromDocId = "5fb51533e223e0428d82c41d";
+            moveFromOneCategoryToAnotherCategory.fromFileId = "5fbc8ac67501aedc18992591";
+            moveFromOneCategoryToAnotherCategory.toRequestId = "5ff805bd37795ecc4f97c6d3";
+            moveFromOneCategoryToAnotherCategory.toDocId = "5ff805bd37795ecc4f97c6d3";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+                                      {
+
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "files" ,  new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } }
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                      };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            var result = await service.MoveFromoneCategoryToAnotherCategory(moveFromOneCategoryToAnotherCategory, 1);
+            //Assert
+            Assert.IsType<bool>(result);
+
+        }
+
+        [Fact]
+        public async Task TestServiceMoveFromoneCategoryToAnotherCategoryIsFilesExists()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromOneCategoryToAnotherCategory moveFromOneCategoryToAnotherCategory = new MoveFromOneCategoryToAnotherCategory();
+            moveFromOneCategoryToAnotherCategory.id = "5fb51519e223e0428d82c41b";
+            moveFromOneCategoryToAnotherCategory.fromRequestId = "5fb5152ee223e0428d82c41c";
+            moveFromOneCategoryToAnotherCategory.fromDocId = "5fb51533e223e0428d82c41d";
+            moveFromOneCategoryToAnotherCategory.fromFileId = "5fbc8ac67501aedc18992591";
+            moveFromOneCategoryToAnotherCategory.toRequestId = "5ff805bd37795ecc4f97c6d3";
+            moveFromOneCategoryToAnotherCategory.toDocId = "5ff805bd37795ecc4f97c6d3";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+                                      {
+
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "files" ,  new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } }
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except files
+                                              { "_id" , BsonString.Empty },
+                                              { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                                          }
+                                      };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object);
+            //Act
+            var result = await service.MoveFromoneCategoryToAnotherCategory(moveFromOneCategoryToAnotherCategory, 1);
+            //Assert
+            Assert.IsType<bool>(result);
+
+        }
+
+        [Fact]
+        public async Task TestServiceViewTrashAnnotations()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            ViewTrashAnnotations  viewTrashAnnotations = new ViewTrashAnnotations();
+            viewTrashAnnotations.id = "5fb51519e223e0428d82c41b";
+            viewTrashAnnotations.fromFileId = "5fbc8ac67501aedc18992591";
+
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "files" ,  new BsonDocument() { { "annotations", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } }
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "mcuFiles" ,   new BsonDocument() { { "annotations", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "mcuFiles" ,   new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } }}
+                    }
+                 };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new TrashService(mock.Object);
+            //Act
+            var result = await service.ViewTrashAnnotations(viewTrashAnnotations, 1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal("asd", result);
+        }
+        [Fact]
+        public async Task TestServiceMoveFromTrashToCategory()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromTrashToCategory  moveFromTrashToCategory  = new MoveFromTrashToCategory();
+            moveFromTrashToCategory.fromFileId = "5fbbb0e35a5666bd808a2a6b";
+            moveFromTrashToCategory.id = "5fb51519e223e0428d82c41b";
+            moveFromTrashToCategory.toRequestId = "5fb6650080996b6a2c6a1e4e";
+            moveFromTrashToCategory.toDocId = "5fb6650080996b6a2c6a1e4f";
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+              new BsonDocument
+                    {
+                        //Cover all empty fields except typeMessage
+                        { "_id" , BsonString.Empty },
+                        { "files" , BsonNull.Value}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
+                    }
+                 };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            var service = new TrashService(mock.Object);
+
+            //Act
+            var result = await service.MoveFromTrashToCategory(moveFromTrashToCategory, 1);
+            //Assert
+            Assert.IsType<bool>(result);
+        }
+
+        [Fact]
+        public async Task TestServiceMoveFromTrashToCategoryIsNotNull()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Request>> mockCollection = new Mock<IMongoCollection<Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            MoveFromTrashToCategory moveFromTrashToCategory = new MoveFromTrashToCategory();
+            moveFromTrashToCategory.fromFileId = "5fbbb0e35a5666bd808a2a6b";
+            moveFromTrashToCategory.id = "5fb51519e223e0428d82c41b";
+            moveFromTrashToCategory.toRequestId = "5fb6650080996b6a2c6a1e4e";
+            moveFromTrashToCategory.toDocId = "5fb6650080996b6a2c6a1e4f";
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+              new BsonDocument
+                    {
+                        //Cover all empty fields except typeMessage
+                        { "_id" , BsonString.Empty },
+                        { "files" , BsonNull.Value}
+                    }
+                 ,
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                        { "_id" , BsonString.Empty },
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() { { "mcuName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "size", 1 },{ "order",1 } } })}
+                    }
+                 };
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            var service = new TrashService(mock.Object);
+
+            //Act
+            var result = await service.MoveFromTrashToCategory(moveFromTrashToCategory, 1);
+            //Assert
+            Assert.IsType<bool>(result);
         }
     }
 }

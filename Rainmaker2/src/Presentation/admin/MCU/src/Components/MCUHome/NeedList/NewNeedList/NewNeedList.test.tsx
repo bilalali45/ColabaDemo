@@ -327,7 +327,6 @@ describe('New Need List', () => {
 
     });
 
-<<<<<<< HEAD
     test('Should edit document message', async () => {
         const { getByAltText, getByTestId, getAllByTestId, getByText } = render(
             <MemoryRouter>
@@ -463,7 +462,7 @@ describe('New Need List', () => {
 
             fireEvent.click(itemsToClick[2]);
 
-            let saveAsTempBtn;
+            let saveAsTempBtn:any;
             await waitFor(() => {
                 saveAsTempBtn = getByTestId("save-as-template-btn");
                 expect(saveAsTempBtn).toBeInTheDocument();
@@ -537,7 +536,7 @@ describe('New Need List', () => {
 
             fireEvent.click(itemsToClick[2]);
 
-            let saveAsTempBtn;
+            let saveAsTempBtn:any;
             await waitFor(() => {
                 saveAsTempBtn = getByTestId("save-as-template-btn");
                 expect(saveAsTempBtn).toBeInTheDocument();
@@ -659,8 +658,6 @@ describe('New Need List', () => {
 
     // });
 
-=======
->>>>>>> pspdfkit-trial
     test('Should search a document from search textbox', async () => {
         const { getByAltText, getByTestId, getAllByTestId, getByText } = render(
             <MemoryRouter>

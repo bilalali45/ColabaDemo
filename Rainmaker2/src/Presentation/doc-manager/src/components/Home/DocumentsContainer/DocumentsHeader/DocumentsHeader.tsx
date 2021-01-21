@@ -30,6 +30,8 @@ import { ViewerActionsType } from "../../../../Store/reducers/ViewerReducer";
 import { ViewerActions } from "../../../../Store/actions/ViewerActions";
 import { DocumentFile } from "../../../../Models/DocumentFile";
 import { PDFActions } from "../../../../Utilities/PDFActions";
+import { CategoryDocument } from "../../../../Models/CategoryDocument";
+import { DocumentRequest } from "../../../../Models/DocumentRequest";
 
 
 export const DocumentsHeader = () => {
@@ -37,7 +39,7 @@ export const DocumentsHeader = () => {
   const [targetTrash, setTargetTrash] = useState(null);
   const refTrashOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, uploadFailedDocs, importedFileIds,searchdocumentItems,documentItems }: any = state.documents;
+  const { currentDoc, uploadFailedDocs, importedFileIds,searchdocumentItems,documentItems, trashedDoc, isDragging }: any = state.documents;
   const selectedfiles: Document[] = currentDoc?.files || null;
 
   const { currentFile, selectedFileData, SaveCurrentFile, DiscardCurrentFile, isFileChanged }: any = state.viewer;
@@ -45,9 +47,7 @@ export const DocumentsHeader = () => {
   const templateManager: any = state.templateManager;
   const [isDraggingItem, setIsDraggingItem] = useState(false);
   const categoryDocuments = templateManager?.categoryDocuments;
-  const { trashedDoc }: any = state.documents;
-  const documents: any = state.documents;
-  const isDragging: any = documents?.isDragging;
+  
   const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
   const [retryFile, setRetryFile] = useState<DocumentFile>();
   let loanApplicationId = LocalDB.getLoanAppliationId();
@@ -64,7 +64,7 @@ export const DocumentsHeader = () => {
     dispatch({ type: DocumentActionsType.SetIsDragging, payload: isDraggingItem });
   }, [isDraggingItem]);
 
-  const handleClickTrash = async (event: any) => {
+  const handleClickTrash = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
 
     setShowTrash(!showTrashOverlay);
     setIsDraggingItem(false);
@@ -80,7 +80,7 @@ export const DocumentsHeader = () => {
 
   }
   const fetchCurrentCatDocs = async () => {
-    let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
+    let currentCatDocs: CategoryDocument[] = await TemplateActions.fetchCategoryDocuments();
 
     if (currentCatDocs) {
       dispatch({
@@ -122,7 +122,7 @@ export const DocumentsHeader = () => {
     }
   };
 
-  const onDrophandler = async (e: any) => {
+  const onDrophandler = async (e: React.DragEvent<HTMLDivElement>) => {
     let file = JSON.parse(e.dataTransfer.getData('file'))
 
     if (isFileChanged && file?.fromFileId === currentFile?.fileId) {
@@ -208,11 +208,11 @@ export const DocumentsHeader = () => {
 
 
   const getDocswithfailedFiles = async () => {
-    let foundFirstFileDoc: any = null;
-    let foundFirstFile: any = null;
+    let foundFirstFileDoc: DocumentRequest = null;
+    let foundFirstFile: DocumentFile = null;
 
 
-    let docs: any = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+    let docs: DocumentRequest[] = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
 
     let uploadFailedFiles: DocumentFile[] = uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
 
@@ -229,9 +229,9 @@ export const DocumentsHeader = () => {
       })
 
 
-      let allDocs: any;
+      let allDocs: DocumentRequest[];
       for (let index = 0; index < failedFiles.length; index++) {
-        allDocs = docs?.map((doc: any) => {
+        allDocs = docs?.map((doc: DocumentRequest) => {
           if (doc.docId === failedFiles[index].docCategoryId) {
             doc.files = [...doc.files, failedFiles[index]]
           }
@@ -266,7 +266,7 @@ export const DocumentsHeader = () => {
       }
   }
 
-  const dragStartHandler = (e: any, file: any) => {
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, file: any) => {
     DocumentActions.showFileBeingDragged(e, file);
 
     if (isDragging) {
@@ -351,7 +351,7 @@ export const DocumentsHeader = () => {
 
           <li ref={refSearch}  onClick={handleClickSearch}>
               <div className="dh-actions-lbl-wrap">
-                <div className="dm-h-icon">
+                <div className="dm-h-icon" data-testid="searchIcon">
                  <SearchIcon />
                 </div>
                 <div className="dm-h-lbl">
@@ -362,8 +362,9 @@ export const DocumentsHeader = () => {
             <li onClick={handleClickTrash} className={showTrashOverlay ? 'active' : ''}>
 
               <div
+              data-testid="drop-to-trashbin"
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={(e: any) => {
+                onDrop={(e: React.DragEvent<HTMLDivElement>) => {
                   e.preventDefault();
                   onDrophandler(e)
                 }}
@@ -371,7 +372,7 @@ export const DocumentsHeader = () => {
               // className="dh-actions-lbl-wrap"
               >
 
-                <div className="dm-h-icon">
+                <div className="dm-h-icon" data-testid="trashIcon">
                   {trashedDoc && trashedDoc.length > 0 ? (<TrashIcon />) : (<EmptyTrashIcon />)}
                 </div>
                 <div className="dm-h-lbl">
@@ -399,8 +400,8 @@ export const DocumentsHeader = () => {
           <Popover.Content ref={refSearchPopover}>
             <div className="searchPopover-inputWrap" >
               <div className="icon-wrap-search"><i className="zmdi zmdi-search"></i></div>
-              <input type="text" className="input-doc-search" value={docSearchValue} onChange={(e)=>searchDocumentItems(e)} autoFocus />
-              <div className="icon-wrap-clear" onClick={clearSearch}><i className="zmdi zmdi-close"></i></div>
+              <input type="text" data-testid="search-bar" className="input-doc-search" value={docSearchValue} onChange={(e)=>searchDocumentItems(e)} autoFocus />
+              <div className="icon-wrap-clear" data-testid="clear-search" onClick={clearSearch}><i className="zmdi zmdi-close"></i></div>
             </div>
           </Popover.Content>
         </Popover>
@@ -416,7 +417,7 @@ export const DocumentsHeader = () => {
             rootClose={true}
             placement="bottom-end">
             <Popover id="popover-contained" className={`TrashOverlay ${trashedDoc && trashedDoc.length > 0 ? "" : "empty"}`}>
-              <Popover.Title as="h3">Document</Popover.Title>
+              <Popover.Title as="h3" data-testid="trashHeader">Document</Popover.Title>
               <Popover.Content>
                 {trashedDoc && trashedDoc.length > 0 ? (
                   <div className="trashBin-listWrap">
@@ -425,19 +426,19 @@ export const DocumentsHeader = () => {
                         trashedDoc.length > 0 &&
                         trashedDoc.map((doc: any, i: number) => {
                           return (
-                            <li key={i} title={doc.mcuName}>
-                              <div className="l-icon">
+                            <li key={i} title={doc.mcuName} data-testid="trashDoc">
+                              <div className="l-icon" datat-testid="fileIcon">
                                 <FileIcon />
                               </div>
                               <div className="d-name"
                                 draggable
-                                onDragStart={(e: any) => {
+                                onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
 
                                   dragStartHandler(e, doc)
                                 }}
                                 onDragEnd={() => {
                                   setIsDraggingItem(false);
-                                  let dragView: any = window.document.getElementById('fileBeingDragged');
+                                  let dragView: HTMLElement = window.document.getElementById('fileBeingDragged');
                                   window.document.body.removeChild(dragView);
                                 }}
                               >
@@ -462,7 +463,9 @@ export const DocumentsHeader = () => {
                                       onClick={() =>
                                         moveTrashFileToWorkbench(doc)
                                       }>
+                                        <div className="dm-h-icon" data-testid="putBackIcon">
                                       <PutBackIcon />
+                                      </div>
                                     </a>
                                   </li>
                                 </ul>
