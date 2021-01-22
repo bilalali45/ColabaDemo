@@ -21,6 +21,31 @@ namespace DocumentManagement.Service
             this.activityLogService = activityLogService;
             this.rainmakerService = rainmakerService;
         }
+        public async Task<string> GetLoanApplicationId(int loanApplicationId)
+        {
+            IMongoCollection<Entity.Request> collectionRequest =
+                mongoService.db.GetCollection<Entity.Request>("Request");
+
+            using var asyncCursorRequest = collectionRequest.Aggregate(
+                PipelineDefinition<Entity.Request, BsonDocument>.Create(
+                    @"{""$match"": {
+                  ""loanApplicationId"": " + loanApplicationId + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1
+                            }
+                        }"
+                ));
+            if(await asyncCursorRequest.MoveNextAsync())
+            {
+                if(asyncCursorRequest.Current.FirstOrDefault()!=null)
+                {
+                    return asyncCursorRequest.Current.First().GetValue("_id").ToString();
+                }
+            }
+            return null;
+        }
         public async Task<List<DocumentDto>> GetFiles(string id, string requestId, string docId)
         {
             IMongoCollection<Entity.Request> collection = mongoService.db.GetCollection<Entity.Request>("Request");
@@ -112,7 +137,7 @@ namespace DocumentManagement.Service
                         }).ToList();
                         dto.files.AddRange(mcufiles);
                     }
-                    dto.files=dto.files.OrderBy(x => x.fileUploadedOn).ToList();
+                    dto.files= dto.files.OrderByDescending(x => (x.fileUploadedOn > (x.fileModifiedOn ?? DateTime.MinValue)) ? x.fileUploadedOn : x.fileModifiedOn).ToList();
                     result.Add(dto);
                 }
             }

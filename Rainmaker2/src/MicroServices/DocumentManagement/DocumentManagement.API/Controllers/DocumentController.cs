@@ -63,8 +63,16 @@ namespace DocumentManagement.API.Controllers
                                                             docId: getFiles.docId));
         }
 
+        [HttpGet(template: "[action]")]
+        public async Task<IActionResult> GetLoanApplicationId(int loanApplicationId)
 
-         
+        {
+            var id = await documentService.GetLoanApplicationId(loanApplicationId);
+            if (!string.IsNullOrEmpty(id))
+                return Ok(id);
+            return BadRequest("Loan Application does not exist");
+        }
+
         [HttpGet(template: "[action]")]
         public async Task<IActionResult> GetActivityLog([FromQuery] GetActivityLog getActivityLog)
 

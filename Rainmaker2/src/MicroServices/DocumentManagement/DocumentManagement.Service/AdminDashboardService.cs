@@ -117,7 +117,7 @@ namespace DocumentManagement.Service
 
                             dto.files.AddRange(mcufiles);
                         }
-                        dto.files = dto.files.OrderBy(x => x.fileUploadedOn).ToList();
+                        dto.files = dto.files.OrderByDescending(x => (x.fileUploadedOn>(x.fileModifiedOn??DateTime.MinValue))?x.fileUploadedOn:x.fileModifiedOn).ToList();
                         result.Add(dto);
                     }
                 }
