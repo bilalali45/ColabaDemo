@@ -155,6 +155,7 @@ namespace DocManager.API.Controllers
                 // update file
                 var docQuery = await thumbnailService.SaveCategoryDocument(id, requestId, docId, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
                             userProfileId, userName, algo, key);
+
                 return Ok(docQuery.fileId);
             }
             return BadRequest();

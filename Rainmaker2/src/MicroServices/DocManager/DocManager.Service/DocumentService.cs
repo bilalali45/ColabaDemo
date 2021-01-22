@@ -693,34 +693,114 @@ namespace DocManager.Service
             }
             return null;
         }
-        public async Task<bool> SaveCategoryAnnotations(SaveCategoryAnnotations saveCategoryAnnotations, int tenantId)
+        private async Task<bool> IsExistfile(string id, string requestId, string docId, string fileId, int tenantId)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
-            UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
-            {
-                { "_id", BsonObjectId.Create(saveCategoryAnnotations.id) },
-                { "tenantId", tenantId}
 
-            }, new BsonDocument()
+            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                        @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(requestId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                         @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(docId).ToJson() + @"
+                            }
+                        }",
+                         @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+                         @"{
+                            ""$match"": {
+                                ""requests.documents.files.id"": " + new ObjectId(fileId).ToJson() + @"
+                            }
+                        }",
+                        @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                               ""files"": ""$requests.documents.files"",
+                            }
+                        }"
+                ));
+            while (await asyncCursor.MoveNextAsync())
             {
-                { "$set", new BsonDocument()
-                    {
-                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].annotations", saveCategoryAnnotations.annotations},
-                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].fileModifiedOn", DateTime.UtcNow}
-                    }
-                }
-            }, new UpdateOptions()
-            {
-                ArrayFilters = new List<ArrayFilterDefinition>()
+                foreach (var current in asyncCursor.Current)
                 {
-                    new JsonArrayFilterDefinition< Request>("{ \"request.id\": "+new ObjectId( saveCategoryAnnotations.requestId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition< Request>("{ \"document.id\": "+new ObjectId( saveCategoryAnnotations.docId).ToJson()+"}"),
-                    new JsonArrayFilterDefinition< Request>("{ \"mcuFile.id\": "+new ObjectId( saveCategoryAnnotations.fileId).ToJson()+"}")
+                    return true;
                 }
-            });
+            }
+            return false;
+        }
+        public async Task<bool> SaveCategoryAnnotations(SaveCategoryAnnotations saveCategoryAnnotations, int tenantId)
+        {
+            if (await IsExistfile(saveCategoryAnnotations.id, saveCategoryAnnotations.requestId, saveCategoryAnnotations.docId, saveCategoryAnnotations.fileId, tenantId))
+            {
+                IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+                UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+                {
+                    { "_id", BsonObjectId.Create(saveCategoryAnnotations.id) },
+                    { "tenantId", tenantId}
 
-            return result.ModifiedCount == 1;
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                        { "requests.$[request].documents.$[document].files.$[file].annotations", saveCategoryAnnotations.annotations},
+                        { "requests.$[request].documents.$[document].files.$[file].fileModifiedOn", DateTime.UtcNow}
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition< Request>("{ \"request.id\": "+new ObjectId( saveCategoryAnnotations.requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition< Request>("{ \"document.id\": "+new ObjectId( saveCategoryAnnotations.docId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition< Request>("{ \"file.id\": "+new ObjectId( saveCategoryAnnotations.fileId).ToJson()+"}")
+                    }
+                });
+                return result.ModifiedCount == 1;
+            }
+            else
+            {
+                IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+                UpdateResult result = await collection.UpdateOneAsync(new BsonDocument()
+                {
+                    { "_id", BsonObjectId.Create(saveCategoryAnnotations.id) },
+                    { "tenantId", tenantId}
 
+                }, new BsonDocument()
+                {
+                    { "$set", new BsonDocument()
+                        {
+                        { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].annotations", saveCategoryAnnotations.annotations},
+                        { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].fileModifiedOn", DateTime.UtcNow}
+                        }
+                    }
+                }, new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition>()
+                    {
+                        new JsonArrayFilterDefinition< Request>("{ \"request.id\": "+new ObjectId( saveCategoryAnnotations.requestId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition< Request>("{ \"document.id\": "+new ObjectId( saveCategoryAnnotations.docId).ToJson()+"}"),
+                        new JsonArrayFilterDefinition< Request>("{ \"mcuFile.id\": "+new ObjectId( saveCategoryAnnotations.fileId).ToJson()+"}")
+                    }
+                });
+
+                return result.ModifiedCount == 1;
+            }
         }
 
     }
