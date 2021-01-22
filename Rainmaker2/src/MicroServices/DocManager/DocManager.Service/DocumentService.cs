@@ -642,55 +642,112 @@ namespace DocManager.Service
         }
         public async Task<string> ViewCategoryAnnotations(ViewCategoryAnnotations viewCategoryAnnotations, int tenantId)
         {
-            IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+            if(await IsExistfile(viewCategoryAnnotations.id,viewCategoryAnnotations.fromRequestId,viewCategoryAnnotations.fromDocId,viewCategoryAnnotations.fromFileId,tenantId))
+            {
+                IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
 
-            using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
-                @"{""$match"": {
+                using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                    @"{""$match"": {
 
                   ""_id"": " + new ObjectId(viewCategoryAnnotations.id).ToJson() + @",
                   ""tenantId"": " + tenantId + @"
                             }
                         }",
-                        @"{
+                            @"{
                             ""$unwind"": ""$requests""
                         }",
-                        @"{
+                            @"{
                             ""$match"": {
                                 ""requests.id"": " + new ObjectId(viewCategoryAnnotations.fromRequestId).ToJson() + @"
                             }
                         }",
-                        @"{
+                            @"{
                             ""$unwind"": ""$requests.documents""
                         }",
-                         @"{
+                             @"{
                             ""$match"": {
                                 ""requests.documents.id"": " + new ObjectId(viewCategoryAnnotations.fromDocId).ToJson() + @"
                             }
                         }",
-                         @"{
+                             @"{
+                            ""$unwind"": ""$requests.documents.files""
+                        }",
+                             @"{
+                            ""$match"": {
+                                ""requests.documents.files.id"": " + new ObjectId(viewCategoryAnnotations.fromFileId).ToJson() + @"
+                            }
+                        }",
+                            @"{
+                            ""$project"": {
+                                ""_id"": 0,
+                               ""files"": ""$requests.documents.files"",
+                            }
+                        }"
+                    ));
+
+                while (await asyncCursor.MoveNextAsync())
+                {
+
+                    foreach (var current in asyncCursor.Current)
+                    {
+                        RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
+                        return query.annotations;
+                    }
+                }
+            }
+            else
+            {
+                IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
+
+                using var asyncCursor = collection.Aggregate(PipelineDefinition<Request, BsonDocument>.Create(
+                    @"{""$match"": {
+
+                  ""_id"": " + new ObjectId(viewCategoryAnnotations.id).ToJson() + @",
+                  ""tenantId"": " + tenantId + @"
+                            }
+                        }",
+                            @"{
+                            ""$unwind"": ""$requests""
+                        }",
+                            @"{
+                            ""$match"": {
+                                ""requests.id"": " + new ObjectId(viewCategoryAnnotations.fromRequestId).ToJson() + @"
+                            }
+                        }",
+                            @"{
+                            ""$unwind"": ""$requests.documents""
+                        }",
+                             @"{
+                            ""$match"": {
+                                ""requests.documents.id"": " + new ObjectId(viewCategoryAnnotations.fromDocId).ToJson() + @"
+                            }
+                        }",
+                             @"{
                             ""$unwind"": ""$requests.documents.mcuFiles""
                         }",
-                         @"{
+                             @"{
                             ""$match"": {
                                 ""requests.documents.mcuFiles.id"": " + new ObjectId(viewCategoryAnnotations.fromFileId).ToJson() + @"
                             }
                         }",
-                        @"{
+                            @"{
                             ""$project"": {
                                 ""_id"": 0,
                                ""files"": ""$requests.documents.mcuFiles"",
                             }
                         }"
-                ));
-            while (await asyncCursor.MoveNextAsync())
-            {
-
-                foreach (var current in asyncCursor.Current)
+                    ));
+                while (await asyncCursor.MoveNextAsync())
                 {
-                    RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
-                    return query.annotations;
+
+                    foreach (var current in asyncCursor.Current)
+                    {
+                        RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
+                        return query.annotations;
+                    }
                 }
             }
+            
             return null;
         }
         private async Task<bool> IsExistfile(string id, string requestId, string docId, string fileId, int tenantId)
