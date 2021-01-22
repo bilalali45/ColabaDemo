@@ -32,7 +32,10 @@ type DocumentItemType = {
   setRetryFile: Function;
   inputRef: MutableRefObject<HTMLInputElement>,
   selectedDoc: DocumentRequest,
-  retryFile
+  retryFile,
+  setDroppedOnDoc: Function,
+  setWasFileDropped: Function,
+  setFilesDroppedFromPC: any
 };
 
 export const DocumentItem = ({
@@ -46,7 +49,10 @@ export const DocumentItem = ({
   setRetryFile,
   inputRef,
   selectedDoc,
-  retryFile
+  retryFile,
+  setDroppedOnDoc,
+  setWasFileDropped,
+  setFilesDroppedFromPC
 }: DocumentItemType) => {
   // const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -106,6 +112,15 @@ export const DocumentItem = ({
   };
 
   const onDrophandler = async (e: any) => {
+    e.preventDefault();
+    let filesFromPC = e?.dataTransfer?.files;
+    if (filesFromPC?.length) {
+      setDroppedOnDoc(document);
+      setWasFileDropped(true);
+      setFilesDroppedFromPC(filesFromPC);
+      return;
+    }
+    setWasFileDropped(false);
     let file = JSON.parse(e.dataTransfer.getData('file'));
 
     if (!file.indexes) {
@@ -137,8 +152,8 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if(selectedFileData.fileId === file.id){
-          let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
+        if (selectedFileData.fileId === file.id) {
+          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
           let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
@@ -160,8 +175,8 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if(selectedFileData.fileId === file.id){
-          let currentDocument = documentItems.filter((doc:any)=> doc.docId === document.docId)
+        if (selectedFileData.fileId === file.id) {
+          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
           let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
@@ -211,7 +226,7 @@ export const DocumentItem = ({
     setShow(true);
   }
 
-  const setCurrentDocument = (document:any) => {
+  const setCurrentDocument = (document: any) => {
     if (document) {
       dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: null });
     }
@@ -352,7 +367,9 @@ export const DocumentItem = ({
       onDrop={(e: any) => {
         e.preventDefault();
         onDrophandler(e);
+        setDroppedOnDoc(document);
         setDraggingOverItem(false);
+
       }}
       ref={fileListRef}>
       {renderDocumentTile()}

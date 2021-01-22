@@ -16,16 +16,25 @@ export const DocumentsContainer = () => {
 
     let documents : any = state.documents;
     let loanApplication = documents?.loanApplication;
+    let loanApplicationId = documents?.loanApplicationId;
 
     useEffect(() => {
         if(!loanApplication) {
             getLoanAppliation();
+        }
+        if(!loanApplicationId) {
+            getLoanAppliationId();
         }
     }, [])
 
     const getLoanAppliation = async () => {
        let res : any = await DocumentActions.getLoanApplicationDetail(LocalDB.getLoanAppliationId());
        dispatch({type: DocumentActionsType.SetLoanApplication, payload: res?.data})
+    }
+    
+    const getLoanAppliationId = async () => {
+       let res : any = await DocumentActions.getLoanApplicationId(LocalDB.getLoanAppliationId());
+       dispatch({type: DocumentActionsType.SetLoanApplicationId, payload: res?.data})
     }
 
     const splitOnDragStart = () => {

@@ -56,6 +56,8 @@ namespace DocManager.API.Controllers
 
             if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
                 return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+            if (file.Length > setting.maxMcuFileSize)
+                return BadRequest($"File size must be under {((decimal)setting.maxMcuFileSize) / (1024 * 1024)} mb");
             if (file.FileName.Length > setting.maxFileNameSize)
                 return BadRequest("File Name size exceeded limit");
             if (file.Length <= 0)

@@ -233,7 +233,7 @@ export const DocumentsHeader = () => {
       for (let index = 0; index < failedFiles.length; index++) {
         allDocs = docs?.map((doc: DocumentRequest) => {
           if (doc.docId === failedFiles[index].docCategoryId) {
-            doc.files = [...doc.files, failedFiles[index]]
+            doc.files = [failedFiles[index], ...doc.files]
           }
           return doc
         })

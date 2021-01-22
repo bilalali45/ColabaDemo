@@ -397,7 +397,7 @@ export default class DocumentActions {
         return selectedFile;
 
       }
-      currentSelected.files = [...currentSelected?.files, selectedFile]
+      currentSelected.files = [selectedFile, ...currentSelected?.files]
       await Http.fetch(
         {
           method: Http.methods.POST,
@@ -894,12 +894,17 @@ export default class DocumentActions {
       "pending",
 
     );
+    selectedFile = await Rename.rename(currentDoc, selectedFile);
     try {
       let { id, fileId } = fileObj
       const formData = new FormData();
       formData.append('id', id)
       formData.append('fileId', fileId);
-      formData.append('file', file);
+      
+
+      if (selectedFile.file) {
+        formData.append("file", selectedFile.file, `${selectedFile.clientName}`);
+      }
 
       let files: any = currentDoc;
       if (fileId === DocumentActions.nonExistentFileId) {
@@ -974,6 +979,16 @@ export default class DocumentActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
     try {
       let result: any = await Http.get<any>(Endpoints.Document.GET.loanInfo(loanApplicationId));
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ 
+  static async getLoanApplicationId(loanApplicationId: string) {
+    try {
+      let result: any = await Http.get<any>(Endpoints.Document.GET.loanApplicationId(loanApplicationId));
       console.log(result);
       return result;
     } catch (error) {

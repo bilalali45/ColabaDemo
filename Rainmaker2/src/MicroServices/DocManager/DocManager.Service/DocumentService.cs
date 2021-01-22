@@ -684,7 +684,7 @@ namespace DocManager.Service
                             }
                         }"
                     ));
-
+                 
                 while (await asyncCursor.MoveNextAsync())
                 {
 

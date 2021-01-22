@@ -17,11 +17,13 @@ import { SelectedFile } from '../../../../../../Models/SelectedFile'
 import { ViewerActions } from '../../../../../../Store/actions/ViewerActions'
 import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
 import { ViewerTools } from '../../../../../../Utilities/ViewerTools'
+import erroricon from "../../../../../../Assets/images/warning-icon.svg";
+import { FileUpload } from '../../../../../../Utilities/helpers/FileUpload'
 
 
 export const nonExistentFileId = '000000000000000000000000';
 
-export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReassignDropdown, setIsDraggingOver }: any) => {
+export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReassignDropdown, setIsDraggingOver, removeFailedItem }) => {
 
   const [
     showingReassignDropdown,
@@ -319,6 +321,93 @@ const performNextActionFn= async () =>{
     }
     return '';
   }
+
+  const renderTypeIsNotAllowed = () => {
+    return (
+      <li className="item-error" data-testid="type-not-allowed-item">
+        <div className="l-icon">
+          <img src={erroricon} alt="" />
+        </div>
+        <div className="d-name">
+          <div>
+            <p>{file.clientName}</p>
+            <div className="modify-info">
+              <span className="mb-text">
+                {" "}
+                File type is not supported. Allowed types: PDF,JPEG,PNG
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="action-btns">
+          <ul>
+            <li>
+              <a
+                data-testid={``}
+                onClick={() => removeFailedItem(file)}
+                tabIndex={-1}
+                title="Remove"
+              >
+                <i className="zmdi zmdi-close"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    );
+  };
+
+  const renderSizeNotAllowed = () => {
+    return (
+      <li className="item-error" data-testid="type-not-allowed-item">
+        <div className="l-icon">
+          <img src={erroricon} alt="" />
+        </div>
+        <div className="d-name">
+          <div>
+            <p>{file.clientName}</p>
+            <div className="modify-info">
+              <span className="mb-text">
+                {" "}
+                File size must be under {FileUpload.allowedSize} mb
+                {/* File size over {FileUpload.allowedSize}mb limit{" "} */}
+              </span>
+            </div>
+          </div>
+          <div className="action-btns">
+          <ul>
+            <li>
+              <a
+                data-testid={``}
+                onClick={() => removeFailedItem(file)}
+                tabIndex={-1}
+                title="Remove"
+              >
+                <i className="zmdi zmdi-close"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </li>
+    );
+  };
+
+  const renderNotAllowedFile = () => {
+    if (file.notAllowedReason === "FileSize") {
+      return renderSizeNotAllowed();
+    } else if (file.notAllowedReason === "FileType") {
+      return renderTypeIsNotAllowed();
+    } else if (file.notAllowedReason === "Failed") {
+      // return renderFileUploadFailed();
+    }
+    return null
+  };
+
+  if (file.notAllowed || file.uploadStatus === 'failed') {
+    return renderNotAllowedFile();
+  }
+
   return (
     <>
       <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''}  ${getCurrentFileSelectedStyle()}`}>

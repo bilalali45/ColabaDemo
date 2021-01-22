@@ -6,7 +6,7 @@ import { SelectedFile } from "../Models/SelectedFile";
 import DocumentActions from "../Store/actions/DocumentActions";
 import { ViewerActionsType } from "../Store/reducers/ViewerReducer";
 import { AnnotationActions } from "./AnnotationActions";
-import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon,panIcon,annotationsIcon } from "./CustomIcons";
+import { editIcon, saveIcon, downloadIcon, printIcon, trashIcon, panIcon, annotationsIcon } from "./CustomIcons";
 import { PDFActions } from "./PDFActions";
 import { Viewer } from "./Viewer";
 import { Rename } from '../Utilities/helpers/Rename';
@@ -18,8 +18,8 @@ const licenseKey = window?.envConfig?.PSPDFKIT_LICENCE;
 export class ViewerTools extends Viewer {
     static regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
     static currentRotation: any = 90;
-    static isDocChanged:boolean = false;
-    static currentFileName:string = '';
+    static isDocChanged: boolean = false;
+    static currentFileName: string = '';
 
     static currentToolbar: Array<string> = [
         "pan",
@@ -51,31 +51,31 @@ export class ViewerTools extends Viewer {
     static async uploadFileWithoutAnnotations(fileObj: any, file: File, isFileChanged: boolean, dispatch: Function, currentDoc: any, importedFileIds: any, pageIndexes?: [number]) {
         let fileId = fileObj.fileId;
 
-            if (fileObj.isFromCategory) {
-                fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
-    
-            } else if (fileObj.isFromWorkbench) {
-                fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
-    
-            } else if (fileObj.isFromTrash) {
-                fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
-    
-            }
-            ViewerTools.isDocChanged =false
+        if (fileObj.isFromCategory) {
+            fileId = await DocumentActions.SaveCategoryDocument(fileObj, file, dispatch, currentDoc)
+
+        } else if (fileObj.isFromWorkbench) {
+            fileId = await DocumentActions.SaveWorkbenchDocument(fileObj, file, dispatch, currentDoc)
+
+        } else if (fileObj.isFromTrash) {
+            fileId = await DocumentActions.SaveTrashDocument(fileObj, file, dispatch, currentDoc)
+
+        }
+        ViewerTools.isDocChanged = false
         this.saveFileAnnotations(fileObj, fileId, dispatch, pageIndexes)
         // dispatch({ type: ViewerActionsType.SetIsLoading, payload: false })
         // }
 
-        
+
         return fileId
 
     }
 
-    static async saveFileAnnotations(fileObj:any, fileId:any,  dispatch:any, pageIndexes:any){
+    static async saveFileAnnotations(fileObj: any, fileId: any, dispatch: any, pageIndexes: any) {
         if (fileId) {
             await AnnotationActions.saveAnnotations(fileObj, fileId, false, pageIndexes)
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
-            
+
             dispatch({ type: ViewerActionsType.SetSaveFile, payload: true })
             dispatch({
                 type: ViewerActionsType.SetFileProgress,
@@ -84,7 +84,7 @@ export class ViewerTools extends Viewer {
         }
     }
 
-    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData:any) {
+    static async saveViewerFileWithAnnotations(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData: any) {
         dispatch({
             type: ViewerActionsType.SetIsSaving,
             payload: true
@@ -92,46 +92,49 @@ export class ViewerTools extends Viewer {
         dispatch({
             type: ViewerActionsType.SetFileProgress,
             payload: 0,
-          });
-        await dispatch({ type: ViewerActionsType.SetRenameEditMode,payload: false});
+        });
+        await dispatch({ type: ViewerActionsType.SetRenameEditMode, payload: false });
         if (!currentFile.name.includes('.pdf')) {
-            ViewerTools.isDocChanged =true
+            ViewerTools.isDocChanged = true
         }
-        if(!ViewerTools.isDocChanged){
+        if (!ViewerTools.isDocChanged) {
             this.saveFileAnnotations(fileObj, fileObj.fileId, dispatch, [])
             dispatch({
                 type: ViewerActionsType.SetIsSaving,
                 payload: false
             });
+            await DocumentActions.getDocumentItems(dispatch, [])
             dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false })
             return;
         }
         let fileName = this.setCurrentFileName(currentFile.name, currentDoc.files)
         let file = await PDFActions.createPDFFromInstance(fileName);
-        
+
         selectedFileData.name = `${Rename.removeExt(fileName)}.pdf`
-        selectedFileData = new SelectedFile(selectedFileData.id,selectedFileData.name, selectedFileData.fileId )
-        await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData});  
+        selectedFileData = new SelectedFile(selectedFileData.id, selectedFileData.name, selectedFileData.fileId)
+        await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
         let currFile = new CurrentInView(currentFile.id, currentFile.src, selectedFileData.name, false, currentFile.fileId);
         await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
         let fileId = currentFile.fileId;
 
-         dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
+        dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: false });
+        await DocumentActions.getDocumentItems(dispatch, [])
+
         return res;
     }
 
-    static setCurrentFileName(fileName:string, files:any){
-        if( files && files.length){
+    static setCurrentFileName(fileName: string, files: any) {
+        if (files && files.length) {
             let currentFileName = `${Rename.removeExt(ViewerTools.currentFileName)}.pdf`
-            if(ViewerTools.currentFileName !== '' && !Rename.checkFileNameExist(currentFileName, files) && !ViewerTools.regex.test(ViewerTools.currentFileName)){
+            if (ViewerTools.currentFileName !== '' && !Rename.checkFileNameExist(currentFileName, files) && !ViewerTools.regex.test(ViewerTools.currentFileName)) {
                 return currentFileName
             }
             return fileName
         }
         return fileName
-        
+
 
     }
     static downloadFile(file: any) {
@@ -165,12 +168,12 @@ export class ViewerTools extends Viewer {
         await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
         await dispatch({ type: ViewerActionsType.SetDiscardFile, payload: true });
         await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
-        
-        
+
+
     }
 
 
-    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData:any) {
+    static async generateToolBarData(fileObj: any, isFileChanged: boolean, dispatch: Function, currentDoc: any, currentFile: any, importedFileIds: any, selectedFileData: any) {
 
         let toolbarItems = PSPDFKit.defaultToolbarItems;
         // let saveButton: any = null;
@@ -180,7 +183,7 @@ export class ViewerTools extends Viewer {
         // } else {
         //     saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIconDisabled, () => {}, 'disabled-save-icon')
         // }
-        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData ))
+        const saveButton = this.createToolbarItem('custom', 'save', 'Save', saveIcon, () => ViewerTools.saveViewerFileWithAnnotations(fileObj, isFileChanged, dispatch, currentDoc, currentFile, importedFileIds, selectedFileData))
         const discardButton = this.createToolbarItem('custom', 'discard', 'Discard', trashIcon, () => this.discardChanges(dispatch, currentFile));
         const editPDF: any = this.createToolbarItem('custom', 'edit-pdf', 'Edit PDF', editIcon, () => this.editPDF(this.instance, dispatch));
         const downloadButton: any = this.createToolbarItem('custom', 'download', 'Download', downloadIcon, () => this.downloadFile(currentFile));
@@ -194,17 +197,15 @@ export class ViewerTools extends Viewer {
             );
         });
 
-        customizedToolBarItems = customizedToolBarItems.map((toolbarItem:any)=>{
-            if(toolbarItem.type === "annotate")
-            {
+        customizedToolBarItems = customizedToolBarItems.map((toolbarItem: any) => {
+            if (toolbarItem.type === "annotate") {
                 toolbarItem.icon = annotationsIcon
             }
-            else if (toolbarItem.type === "pan")
-            {
+            else if (toolbarItem.type === "pan") {
                 toolbarItem.icon = panIcon
             }
             return toolbarItem
-        }) 
+        })
 
         //if (isFileChanged) {
         customizedToolBarItems.push(discardButton)

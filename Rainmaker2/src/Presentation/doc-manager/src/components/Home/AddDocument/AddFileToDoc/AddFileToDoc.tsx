@@ -18,20 +18,24 @@ import { DocumentItem } from "../../DocumentsContainer/DocumentTableView/Documen
 type AddFileToDocType = {
   selectedDocTypeId: any;
   showFileDialog: boolean;
-  setVisible:Function;
-  setAddFileDialog:Function;
-  retryFile:any;
-  selectedDocName:string
+  setVisible: Function;
+  setAddFileDialog: Function;
+  retryFile: any;
+  selectedDocName?: string;
+  setWasFileDropped?: Function;
+  wasFileDropped?: boolean;
+  droppedFiles?: FileList;
+  droppedOnDocument?: any;
 };
 
 
-export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, setAddFileDialog, retryFile, selectedDocName}: AddFileToDocType) => {
+export const AddFileToDoc = ({ selectedDocTypeId, showFileDialog, setVisible, setAddFileDialog, retryFile, selectedDocName, wasFileDropped, droppedFiles, droppedOnDocument, setWasFileDropped }: AddFileToDocType) => {
   const refReassignDropdown = useRef<HTMLDivElement>(null);
   const { state, dispatch } = useContext(Store);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
-  
+
   const {
     currentDoc,
     documentItems,
@@ -39,46 +43,60 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
     fileUploadInProgress,
     importedFileIds,
 
+
   }: any = state.documents;
   const {
     currentFile,
   }: any = state.viewer;
 
 
-  useEffect(()=>{
-    if(showFileDialog)
-    inputRef.current.click();
-  },[showFileDialog])
+  useEffect(() => {
+    if (showFileDialog)
+      inputRef.current.click();
+  }, [showFileDialog]);
+
+  useEffect(() => {
+    // console.log('in here reached', droppedFiles);
+    if(!wasFileDropped) {
+      return;
+    }
+    if (setWasFileDropped) {
+      setWasFileDropped(false);
+    }
+    (async () => {
+      await addFiles(droppedFiles, droppedOnDocument);
+    })();
+  }, [wasFileDropped === true])
 
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     let target = e.target;
     setVisible(false)
-    let selectedDoc:any = []
-    if(selectedDocTypeId?.length && selectedDocTypeId?.length){
-      selectedDoc = documentItems?.filter((doc:any)=> doc.typeId === selectedDocTypeId)
+    let selectedDoc: any = []
+    if (selectedDocTypeId?.length && selectedDocTypeId?.length) {
+      selectedDoc = documentItems?.filter((doc: any) => doc.typeId === selectedDocTypeId)
     }
-    else{
-      selectedDoc = documentItems?.filter((doc:any)=> doc.docName === selectedDocName)
+    else {
+      selectedDoc = documentItems?.filter((doc: any) => doc.docName === selectedDocName)
     }
-    
+
     await addFiles(e.target.files, selectedDoc[0]).then(() => {
       target.value = '';
       setAddFileDialog(false)
     });
   };
 
-  const handleClick = (e:any) =>{
-  
+  const handleClick = (e: any) => {
+
     // document.body.onfocus = handleBlur
-      e.target.value = ""
+    e.target.value = ""
   }
-  const handleBlur = (e:any) =>{
-    
-    
+  const handleBlur = (e: any) => {
+
+
     // document.body.onfocus = null
-}
-  const addFiles = async (selectedFiles: FileList, document:any) => {  
+  }
+  const addFiles = async (selectedFiles: FileList, document: any) => {
 
     if (document) {
       if (selectedFiles) {
@@ -91,8 +109,8 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
           const file = selectedFiles[index];
           if (file) {
             try {
-              let d =  new Date();
-              let fileId =  d.getDate().toString() + d.getMonth().toString() + d.getFullYear().toString() + d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()+ d.getMilliseconds().toString()
+              let d = new Date();
+              let fileId = d.getDate().toString() + d.getMonth().toString() + d.getFullYear().toString() + d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString() + d.getMilliseconds().toString()
               let res = await DocumentActions.submitDocuments(
                 documentItems,
                 document,
@@ -101,15 +119,14 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
                 dispatch
               );
 
-              if(res.notAllowed || res.uploadStatus === 'failed'){
+              if (res.notAllowed || res.uploadStatus === 'failed') {
                 failedDocs.push(res)
-                
               }
               // console.log(documentItems)
               // if(documentItems?.files?.length === 1 ){
               //   console.log(documentItems)
               // }
-              
+
             } catch (error) {
               // file.uploadStatus = "failed";
               console.log("error during file submit", error);
@@ -124,67 +141,67 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
         });
       }
     }
-  
+
   };
-  const getDocswithfailedFiles = async() => {
+  const getDocswithfailedFiles = async () => {
     let foundFirstFileDoc: any = null;
     let foundFirstFile: any = null;
 
-    let docs:any = await fetchDocuments()
-    
-        let uploadFailedFiles:DocumentFile[] = uploadFailedDocs?.length? uploadFailedDocs : failedDocs;
-    
-        let failedFiles:DocumentFile[] = []
-        if(uploadFailedFiles && uploadFailedFiles?.length > 0){
-            
-           failedFiles= uploadFailedDocs?.length? uploadFailedFiles?.concat(failedDocs): uploadFailedFiles
-          failedFiles = failedFiles?.filter((file)=> file.id !== retryFile?.file?.id)
+    let docs: any = await fetchDocuments()
 
-          
-          dispatch({
-            type:DocumentActionsType.SetFailedDocs, 
-            payload:failedFiles
-          })
-          
-          
-            let allDocs:any;
-            for (let index = 0; index < failedFiles?.length; index++) {
-              allDocs = docs?.map((doc:any)=> {
-                if(doc.docId === failedFiles[index].docCategoryId){
-                  doc.files = [...doc.files, failedFiles[index]]
-                }
-                return doc
-              })
-              
-              
-            }
-          
-            setFailedDocs([])
-            
-            if(allDocs && allDocs?.length) {
-              dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
-            }
+    let uploadFailedFiles: DocumentFile[] = uploadFailedDocs?.length ? uploadFailedDocs : failedDocs;
+
+    let failedFiles: DocumentFile[] = []
+    if (uploadFailedFiles && uploadFailedFiles?.length > 0) {
+
+      failedFiles = uploadFailedDocs?.length ? uploadFailedFiles?.concat(failedDocs) : uploadFailedFiles
+      failedFiles = failedFiles?.filter((file) => file.id !== retryFile?.file?.id)
+
+
+      dispatch({
+        type: DocumentActionsType.SetFailedDocs,
+        payload: failedFiles
+      })
+
+
+      let allDocs: any;
+      for (let index = 0; index < failedFiles?.length; index++) {
+        allDocs = docs?.map((doc: any) => {
+          if (doc.docId === failedFiles[index].docCategoryId) {
+            doc.files = [failedFiles[index], ...doc.files]
           }
-          else 
-          if(docs && !currentFile){
-        
-                for (const doc of docs) {
-                    if (doc?.files?.length) {
-                        dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
-                        dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
-                        foundFirstFileDoc = doc;
-                        foundFirstFile = doc?.files[0];
-                        ViewerActions.resetInstance(dispatch)
-                        
-                        await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
-                        break;
-                    }
-                    
-                }
-            }
-  } 
+          return doc
+        })
 
-  const fetchDocuments = async()=>{
+
+      }
+
+      setFailedDocs([])
+
+      if (allDocs && allDocs?.length) {
+        dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
+      }
+    }
+    else
+      if (docs && !currentFile) {
+
+        for (const doc of docs) {
+          if (doc?.files?.length) {
+            dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: doc });
+            dispatch({ type: ViewerActionsType.SetIsLoading, payload: true });
+            foundFirstFileDoc = doc;
+            foundFirstFile = doc?.files[0];
+            ViewerActions.resetInstance(dispatch)
+
+            await DocumentActions.viewFile(foundFirstFileDoc, foundFirstFile, dispatch);
+            break;
+          }
+
+        }
+      }
+  }
+
+  const fetchDocuments = async () => {
     let d = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
     return d;
 
@@ -197,12 +214,12 @@ export const AddFileToDoc = ({selectedDocTypeId, showFileDialog, setVisible, set
         type="file"
         name="file"
         id="inputFile"
-        onClick={(e)=> handleClick(e)}
-        onBlur={(e)=> handleBlur(e)}
+        onClick={(e) => handleClick(e)}
+        onBlur={(e) => handleBlur(e)}
         onChange={(e) => handleChange(e)}
         multiple
         accept={FileUpload.allowedExtensions}
       />
-     </div>
+    </div>
   );
 };
