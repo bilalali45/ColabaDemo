@@ -8,7 +8,7 @@ export const Header = () => {
     return (
         <header>
          <div className="dm-h-wrap">
-             <a className="dm-h-backBtn" href={`/documentmanagement/${loanApplicationId}?key=${encodeURIComponent(rainmakerRefreshCookie["Rainmaker2RefreshToken"])}`}><i className="zmdi zmdi-arrow-left"></i> <span>Back</span></a>
+             <a data-testid="back-btn" className="dm-h-backBtn" href={`/documentmanagement/${loanApplicationId}?key=${encodeURIComponent(rainmakerRefreshCookie["Rainmaker2RefreshToken"])}`}><i className="zmdi zmdi-arrow-left"></i> <span >Back</span></a>
          </div>
         </header>
     )

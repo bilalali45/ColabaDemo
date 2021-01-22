@@ -183,13 +183,17 @@ export default class DocumentActions {
     }
 
     static filterDocumentItems = (dispatch: Function, documentsList: any, term: string) => {
+        dispatch({ type: DocumentActionsType.SearchDocumentItems, payload: documentItems });
+        return documentItems;
     }
 
     static getCurrentDocumentItems = async (dispatch: Function, isFirstLoad: boolean, importedFileIds: any) => {
-
+        
+        return documentItems[0];
     }
 
     static getCurrentWorkbenchItem = async (dispatch: Function, importedFileIds: any) => {
+        return workbenchItems[0];
     }
 
     static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory: boolean, isFromWorkbench: boolean, isFromTrash: boolean, dispatch: Function) {

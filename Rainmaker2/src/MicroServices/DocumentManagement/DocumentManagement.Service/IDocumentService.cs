@@ -19,6 +19,6 @@ namespace DocumentManagement.Service
         Task<bool> UpdateByteProStatus(string id, string requestId, string docId, string fileId, bool isUploaded, int userId, int tenantId);
 
         Task<bool> DeleteFile(int loanApplicationId, string fileId);
-        Task<string> GetLoanApplicationId(int loanApplicationId);
+        Task<string> CreateLoanApplication(int loanApplicationId, int tenantId, int userId, string userName);
     }
 }

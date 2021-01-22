@@ -39,6 +39,21 @@
     "test-debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/index.tsx",
+      "!src/serviceWorker.ts",
+      "!src/Store/endpoints/*.{ts,tsx}",
+      "!src/Components/DevLogin/DevLogin.tsx",
+      "!src/Entities/Models/*.{ts,tsx}",
+      "!src/Shared/*.{ts,tsx}",
+      "!src/Store/actions/*.{ts,tsx}",
+      "!src/test_utilities/*.{ts,tsx}",
+      "!src/Utils/helpers/Delay.ts",
+      "!src/Models/*.ts"
+    ]
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

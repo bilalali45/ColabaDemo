@@ -7,13 +7,6 @@ import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
 
-// test('renders learn react link', () => {
-//     const { getByText } = render(<DocumentsHeader />);
-//     waitFor(() => {
-//         const title = getByText('DOC MANAGER');
-//         expect(title).toBeInTheDocument();
-//     })
-// });
 
 jest.mock('pspdfkit');
 jest.mock('../../../../Store/actions/DocumentActions');
@@ -235,6 +228,90 @@ describe('Doc Manager Header', () => {
             })
     });
 
+    test('Should show Add Document Overlay', async () => {
+        const { getByText, getByTestId, getAllByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <DocumentsHeader></DocumentsHeader>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+        let addDocumentText:any;
+            waitFor(() => {
+                addDocumentText  = getByText('Add Document');
+                expect(addDocumentText).toBeInTheDocument();
+
+               
+            })
+            
+            
+
+            fireEvent.click(addDocumentText);
+            let docPopOver;
+            await waitFor(() => {
+                docPopOver = getByTestId('popup-add-doc');
+                expect(docPopOver).toBeInTheDocument();
+            });
+    
+            let docCats = getAllByTestId('doc-cat');
+    
+            fireEvent.click(docCats[2]);
+    
+            const selectedCatDocsContainer = getByTestId('selected-cat-docs-container');
+    
+            expect(selectedCatDocsContainer).toHaveTextContent('Liabilities');
+    
+            const itemsToClick = getAllByTestId('doc-item');
+    
+            expect(itemsToClick[2]).toHaveTextContent('Rental Agreement');
+    
+            fireEvent.click(itemsToClick[2]);
+    
+            fireEvent.click(document.body);
+
+    });
+
+    test('Should search a document from search textbox', async () => {
+        const { getByAltText, getByTestId, getAllByTestId, getByText } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <DocumentsHeader></DocumentsHeader>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+
+        let addDocumentText:any;
+            waitFor(() => {
+                addDocumentText  = getByText('Add Document');
+                expect(addDocumentText).toBeInTheDocument();
+
+               
+            })
+            
+            
+
+            fireEvent.click(addDocumentText);
+
+
+            let docPopOver;
+            await waitFor(() => {
+                docPopOver = getByTestId('popup-add-doc');
+                expect(docPopOver).toBeInTheDocument();
+            });
+
+            expect(getByText("All")).toBeInTheDocument();
+
+            const searchTextBox = getByTestId("search-doc-name")
+            expect(searchTextBox).toBeInTheDocument();
+
+            fireEvent.change(searchTextBox, { target: { value: "Rental Agreement" } });
+
+            expect(getByText("Search Result")).toBeInTheDocument();
+
+            const docs = getAllByTestId("doc-item");
+            expect(docs[0]).toHaveTextContent("Rental Agreement");
+
+        });
 
     test('Should drag file from trash bin', async () => {
         const { getByText, getAllByTestId, getByTestId } = render(

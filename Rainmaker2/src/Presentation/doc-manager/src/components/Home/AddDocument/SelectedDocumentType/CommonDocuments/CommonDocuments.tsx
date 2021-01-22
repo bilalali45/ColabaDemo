@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CommonDocumentSearch} from './CommonDocumentSearch/CommonDocumentSearch';
 import {SelectedDocumentTypeList} from '../SelectedDocumentTypeList/SelectedDocumentTypeList';
 
 
@@ -51,6 +50,7 @@ export const CommonDocuments = ({
     <div className="common-wrap">
       <div className="s-wrap">
         <input
+        data-testid="search-doc-name"
           maxLength={255}
           autoFocus={true}
           onChange={handleSearch}

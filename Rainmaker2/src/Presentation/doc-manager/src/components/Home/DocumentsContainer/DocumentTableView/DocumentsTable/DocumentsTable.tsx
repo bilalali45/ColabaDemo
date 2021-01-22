@@ -225,7 +225,7 @@ export const DocumentsTable = () => {
                 <div className="dm-dt-thead-right">Status</div>
             </div>
 
-            <div className={`dm-dt-tbody ${catScrollFreeze?" freeze":""}`} ref={refReassignDropdown}>
+            <div data-testid="doc-item" className={`dm-dt-tbody ${catScrollFreeze?" freeze":""}`} ref={refReassignDropdown}>
 
             {
                  documentItems && documentItems.length ?

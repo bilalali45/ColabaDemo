@@ -705,8 +705,8 @@ namespace DocManager.Service
             {
                 { "$set", new BsonDocument()
                     {
-                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].annotations", saveCategoryAnnotations.annotations}
-
+                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].annotations", saveCategoryAnnotations.annotations},
+                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].fileModifiedOn", DateTime.UtcNow}
                     }
                 }
             }, new UpdateOptions()

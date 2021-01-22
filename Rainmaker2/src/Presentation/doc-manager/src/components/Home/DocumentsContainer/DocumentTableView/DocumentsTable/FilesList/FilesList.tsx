@@ -52,7 +52,7 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
         
         setRetryFile({file, document})
         // removeFile(file);
-        setAddFileDialog(true)
+        setAddFileDialog(!addFileDialog)
     }
 
     return (

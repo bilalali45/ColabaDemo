@@ -21,8 +21,33 @@ namespace DocumentManagement.Service
             this.activityLogService = activityLogService;
             this.rainmakerService = rainmakerService;
         }
-        public async Task<string> GetLoanApplicationId(int loanApplicationId)
+        public async Task<string> CreateLoanApplication(int loanApplicationId, int tenantId, int userId, string userName)
         {
+            // get document upload status
+            IMongoCollection<Entity.StatusList> collection =
+                mongoService.db.GetCollection<Entity.StatusList>("StatusList");
+
+            using var asyncCursorStatus = collection.Aggregate(
+                PipelineDefinition<Entity.StatusList, BsonDocument>.Create(
+                    @"{""$match"": {
+                  ""order"": " + 3 + @"
+                            }
+                        }", @"{
+                            ""$project"": {
+                                ""_id"": 1
+                            }
+                        }"
+                ));
+            string status=null;
+            while (await asyncCursorStatus.MoveNextAsync())
+            {
+                foreach (var current in asyncCursorStatus.Current)
+                {
+                    StatusNameQuery query = BsonSerializer.Deserialize<StatusNameQuery>(current);
+                    status = query._id;
+                }
+            }
+            // check whether loan application already exists
             IMongoCollection<Entity.Request> collectionRequest =
                 mongoService.db.GetCollection<Entity.Request>("Request");
 
@@ -33,18 +58,33 @@ namespace DocumentManagement.Service
                             }
                         }", @"{
                             ""$project"": {
-                                ""_id"": 1
+                                ""loanApplicationId"": 1
                             }
                         }"
                 ));
-            if(await asyncCursorRequest.MoveNextAsync())
+            // if loan application does not exists create loan application
+            if (await asyncCursorRequest.MoveNextAsync())
             {
-                if(asyncCursorRequest.Current.FirstOrDefault()!=null)
+                foreach (var current in asyncCursorRequest.Current)
                 {
-                    return asyncCursorRequest.Current.First().GetValue("_id").ToString();
+                    LoanApplicationIdQuery query = BsonSerializer.Deserialize<LoanApplicationIdQuery>(current);
+                    return query._id;
                 }
             }
-            return null;
+            IMongoCollection<Entity.LoanApplication> collectionLoanApplication =
+                mongoService.db.GetCollection<Entity.LoanApplication>("Request");
+            Entity.LoanApplication loanApplicationModel = new Entity.LoanApplication()
+            {
+                id = ObjectId.GenerateNewId().ToString(),
+                loanApplicationId = loanApplicationId,
+                tenantId = tenantId,
+                status = status,
+                userId = userId,
+                userName = userName,
+                requests = new List<Entity.Request>() { }
+            };
+            await collectionLoanApplication.InsertOneAsync(loanApplicationModel);
+            return loanApplicationModel.id;
         }
         public async Task<List<DocumentDto>> GetFiles(string id, string requestId, string docId)
         {

@@ -4,6 +4,7 @@ using DocumentManagement.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,8 @@ namespace DocumentManagement.API.Controllers
             ISettingService settingService,
             IKeyStoreService keyStoreService,
             ILogger<DocumentController> logger,
-            IByteProService byteProService)
+            IByteProService byteProService,
+            IRainmakerService rainmakerService)
         {
             this.documentService = documentService;
             this.fileEncryptionFactory = fileEncryptionFactory;
@@ -32,6 +34,7 @@ namespace DocumentManagement.API.Controllers
             this.keyStoreService = keyStoreService;
             this.logger = logger;
             this.byteProService = byteProService;
+            this.rainmakerService = rainmakerService;
         }
 
         #endregion
@@ -45,6 +48,7 @@ namespace DocumentManagement.API.Controllers
         private readonly IKeyStoreService keyStoreService;
         private readonly ILogger<DocumentController> logger;
         private readonly IByteProService byteProService;
+        private readonly IRainmakerService rainmakerService;
 
         #endregion
 
@@ -67,9 +71,16 @@ namespace DocumentManagement.API.Controllers
         public async Task<IActionResult> GetLoanApplicationId(int loanApplicationId)
 
         {
-            var id = await documentService.GetLoanApplicationId(loanApplicationId);
-            if (!string.IsNullOrEmpty(id))
-                return Ok(id);
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
+            var responseBody = await rainmakerService.PostLoanApplication(loanApplicationId, false, Request.Headers["Authorization"].Select(x => x.ToString()));
+
+            if (!string.IsNullOrEmpty(responseBody))
+            {
+                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                var id = await documentService.CreateLoanApplication(loanApplicationId, tenantId,user.userId,user.userName);
+                if (!string.IsNullOrEmpty(id))
+                    return Ok(id);
+            }
             return BadRequest("Loan Application does not exist");
         }
 

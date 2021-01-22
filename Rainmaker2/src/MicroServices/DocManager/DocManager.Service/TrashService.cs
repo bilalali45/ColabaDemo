@@ -58,7 +58,7 @@ namespace DocManager.Service
                     }
                 }
             }
-            result.Reverse();
+            result = result.OrderByDescending(x => (x.fileUploadedOn > (x.fileModifiedOn ?? DateTime.MinValue)) ? x.fileUploadedOn : x.fileModifiedOn).ToList();
             return result;
         }
 
@@ -155,7 +155,8 @@ namespace DocManager.Service
             {
                 { "$set", new BsonDocument()
                     {
-                     { "trash.$[trashs].annotations", saveTrashAnnotations.annotations}  
+                     { "trash.$[trashs].annotations", saveTrashAnnotations.annotations}  ,
+                     { "trash.$[trashs].fileModifiedOn", DateTime.UtcNow}
                     }
                 }
             }, new UpdateOptions()
