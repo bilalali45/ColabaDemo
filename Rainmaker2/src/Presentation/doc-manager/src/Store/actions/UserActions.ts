@@ -19,13 +19,11 @@ export class UserActions {
 
   static async refreshParentApp() {
     try {
-      console.log('In refreshParentApp');
       let baseUrl =  (new window.URL(localStorage.getItem('PortalReferralUrl')!)).origin;
 
       axios.get(baseUrl + '/Login/KeepAlive');
       return true;
     } catch (error) {
-      console.log('In refreshParentApp Error');
       return false;
     }
   }

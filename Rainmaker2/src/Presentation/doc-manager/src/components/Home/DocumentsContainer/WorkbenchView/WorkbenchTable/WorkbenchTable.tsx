@@ -150,13 +150,13 @@ export const WorkbenchTable = () => {
             let newWorkBench = await DocumentActions.moveFileToWorkbench({ id, fromRequestId, fromDocId, fromFileId }, false);
             if (newWorkBench) {
                 await setCurrentDocument()
-
-                await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
-                let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
-                await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
-                await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
-
+                if(currentFile && currentFile.fileId === file.fromFileId){
+                    let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, true, currentFile.fileId);
+                    await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
+                }
                 await DocumentActions.getDocumentItems(dispatch, importedFileIds)
+                await DocumentActions.getWorkBenchItems(dispatch, importedFileIds)
+        
             }
         }
 

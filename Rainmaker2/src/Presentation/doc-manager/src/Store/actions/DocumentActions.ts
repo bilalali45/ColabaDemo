@@ -258,7 +258,6 @@ export default class DocumentActions {
           request: requestData
         }
       );
-      console.log(res)
       return true;
     } catch (error) {
       console.log(error);
@@ -979,7 +978,6 @@ export default class DocumentActions {
   static async getLoanApplicationDetail(loanApplicationId: string) {
     try {
       let result: any = await Http.get<any>(Endpoints.Document.GET.loanInfo(loanApplicationId));
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error);
@@ -989,7 +987,6 @@ export default class DocumentActions {
   static async getLoanApplicationId(loanApplicationId: string) {
     try {
       let result: any = await Http.get<any>(Endpoints.Document.GET.loanApplicationId(loanApplicationId));
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error);

@@ -108,6 +108,7 @@ const performNextActionFn= async () =>{
     await viewFile(fileToChangeWhenUnSaved.selectedFile)
     setShowingReassignDropdown(false);
     refReassignDropdown.current?.classList.remove("freeze")
+    if(reassignDropdownTarget)setReassignDropdownTarget(null);
   }
 
   const handleClickOutside = (event: any) => {

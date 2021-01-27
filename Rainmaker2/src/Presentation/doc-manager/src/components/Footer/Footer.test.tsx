@@ -7,6 +7,7 @@ import { MockEnvConfig } from '../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../Store/Store';
 import { DocumentsHeader } from '../Home/DocumentsContainer/DocumentsHeader/DocumentsHeader';
+import { Footer } from './Footer';
 
 
 jest.mock('pspdfkit');
@@ -24,12 +25,12 @@ describe('Doc Manager Header', () => {
         const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsHeader></DocumentsHeader>
+                    <Footer></Footer>
                 </MemoryRouter>
             </StoreProvider>
         );
         
-            waitFor(() => {
+        await waitFor(() => {
                 const footerText = getByTestId('footer-text');
                 expect(footerText).toHaveTextContent("Powered by Colaba");
             })

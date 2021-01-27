@@ -309,7 +309,8 @@ namespace DocumentManagement.Tests
                         { "typeName" , BsonString.Empty },
                         { "status" , "Started" },
                         { "createdOn" , BsonNull.Value },
-                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
+                        { "files" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })},
+                        { "mcuFiles" , BsonArray.Create(new BsonDocument[]{ new BsonDocument() {{"id", "5ef454cd86c96583744140d9" }, { "clientName", "asd" },{ "fileUploadedOn", BsonDateTime.Create(DateTime.Now) }, { "mcuName", "abc" },{ "byteProStatus","Active" },{ "status", "Submitted To Mcu" } } })}
                     }
             };
 
@@ -350,7 +351,51 @@ namespace DocumentManagement.Tests
                                           {
                                               //Cover all empty fields except status
                                              
-                                              {"status", "Started"}
+                                              {"status", DocumentStatus.BorrowerTodo}
+
+                                          },
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.Completed}
+
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.Deleted}
+
+                                          },
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.Draft}
+
+                                          },
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.ManuallyAdded}
+
+                                          }
+                                          ,
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.PendingReview}
+
+                                          },
+                                          new BsonDocument
+                                          {
+                                              //Cover all empty fields except status
+                                             
+                                              {"status", DocumentStatus.Started}
 
                                           }
                                       };
@@ -401,7 +446,7 @@ namespace DocumentManagement.Tests
 
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
-            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
+            mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
 
             var adminDeleteModel = new AdminDeleteModel() { id = "5eb25d1fe519051af2eeb72d", docId = "5eb25d1fe519051af2eeb72d", requestId = "5eb25d1fe519051af2eeb72d" };
 
@@ -410,7 +455,7 @@ namespace DocumentManagement.Tests
             IAdminDashboardService adminDashboardService = new AdminDashboardService(mock.Object, mockActivityLogService.Object, Mock.Of<IRainmakerService>());
             bool result = await adminDashboardService.Delete(adminDeleteModel, 1, new List<string>());
             //Assert
-            Assert.True(result);
+            Assert.False(result);
         }
 
         [Fact]
@@ -485,6 +530,101 @@ namespace DocumentManagement.Tests
             var dto = await service.IsDocumentDraft(14, 3842);
             //Assert
             Assert.NotNull(dto);
+        }
+        [Fact]
+        public async Task TestGetDashboardSettingService()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "userId" , 1 },
+                        { "pending" , true }
+                    }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object, null);
+            //Act
+            var dto = await service.GetDashboardSetting(1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(1, dto.userId);
+        }
+        [Fact]
+        public async Task TestGetDashboardSettingServiceFalse()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "userId" , 1 },
+                        { "pending" , true }
+                    }
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+
+            mockdb.Setup(x => x.GetCollection<Entity.Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new AdminDashboardService(mock.Object, mockActivityLogService.Object, null);
+            //Act
+            var dto = await service.GetDashboardSetting(1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal(1,dto.userId);
+        }
+        [Fact] 
+        public async Task TestGetDashboardSetting()
+        {
+            //Arrange
+            Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
+            mock.Setup(x => x.GetDashboardSetting(It.IsAny<int>())).ReturnsAsync(new DashboardSettingModel() { userId=1,pending=true});
+
+            var adminDashboardController = new AdminDashboardController(mock.Object, Mock.Of<ILogger<AdminDashboardController>>()
+            );
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            adminDashboardController.ControllerContext = context;
+            
+            //Act
+            IActionResult result = await adminDashboardController.GetDashboardSetting();
+            //Assert
+            Assert.NotNull(result);
+            var res = Assert.IsType<OkObjectResult>(result);
+            var data = Assert.IsType<DashboardSettingModel>(res.Value);
+            Assert.Equal(1,data.userId);
         }
     }
 }

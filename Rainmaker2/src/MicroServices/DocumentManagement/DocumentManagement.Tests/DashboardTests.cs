@@ -797,5 +797,86 @@ namespace DocumentManagement.Tests
             Assert.NotNull(dto);
             Assert.Equal(string.Empty, dto);
         }
+        [Fact]
+        public async Task TestGetPendingDocumentsByLoanApplication()
+        {
+            //Arrange
+            Mock<IDashboardService> mock = new Mock<IDashboardService>();
+            List<TaskCountDTO> list = new List<TaskCountDTO>() { { new TaskCountDTO() { loanId = 1 } } };
+
+            mock.Setup(x => x.GetPendingDocumentsByLoanApplications(It.IsAny<int[]>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(), null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            IActionResult result = await dashboardController.GetPendingDocumentsByLoanApplication(new GetPendingDocumentsByLoanApplication() { loanApplicationId = new int[] { 1 } });
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<TaskCountDTO>;
+            Assert.Single(content);
+            Assert.Equal(1, content[0].loanId);
+        }
+
+        [Fact]
+        public async Task TestGetPendingDocumentsByLoanApplicationNull()
+        {
+            //Arrange
+            Mock<IDashboardService> mock = new Mock<IDashboardService>();
+            List<TaskCountDTO> list = new List<TaskCountDTO>() { { new TaskCountDTO() { loanId = 1 } } };
+
+            mock.Setup(x => x.GetPendingDocumentsByLoanApplications(It.IsAny<int[]>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(), null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            IActionResult result = await dashboardController.GetPendingDocumentsByLoanApplication(new GetPendingDocumentsByLoanApplication());
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<TaskCountDTO>;
+            Assert.Empty(content);
+        }
+
+        [Fact]
+        public async Task TestGetPendingDocumentsByLoanApplicationEmpty()
+        {
+            //Arrange
+            Mock<IDashboardService> mock = new Mock<IDashboardService>();
+            List<TaskCountDTO> list = new List<TaskCountDTO>() { { new TaskCountDTO() { loanId = 1 } } };
+
+            mock.Setup(x => x.GetPendingDocumentsByLoanApplications(It.IsAny<int[]>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(list);
+
+            var dashboardController = new DashboardController(mock.Object, Mock.Of<ILogger<DashboardController>>(), null);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            dashboardController.ControllerContext = context;
+
+            IActionResult result = await dashboardController.GetPendingDocumentsByLoanApplication(new GetPendingDocumentsByLoanApplication() { loanApplicationId=new int[] { } });
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var content = (result as OkObjectResult).Value as List<TaskCountDTO>;
+            Assert.Empty(content);
+        }
     }
 }

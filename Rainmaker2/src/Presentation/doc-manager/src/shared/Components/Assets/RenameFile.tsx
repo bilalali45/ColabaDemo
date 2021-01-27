@@ -225,19 +225,6 @@ export const RenameFile = ({
         dispatch({ type: DocumentActionsType.SetDocumentItems, payload: allDocs });
       }
 
-  const eventBubblingHandler = (
-    event: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>
-  ) => {
-    switch (event.currentTarget.id) {
-      //   case 'moveNext':
-      //     return moveNext(event);
-      case 'rename':
-        return renameDocumentMCU(renameMCUName.trim(), event);
-      case 'enableMode':
-        return setInputValue();
-    }
-  };
-
   const onKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>,
     newValue: string
@@ -325,7 +312,7 @@ export const RenameFile = ({
       )
     } else if (!validFilename) {
       return (
-        <label className="document-snipet--detail error rename-input-error" data-testid="unique-file-name-error">
+        <label className="document-snipet--detail error rename-input-error" data-testid="special-character-error">
           {specialCharsError}
         </label>
       )
@@ -339,7 +326,7 @@ export const RenameFile = ({
 
         <React.Fragment>
           <input
-            data-testid="rename-doc"
+            data-testid="rename-file"
             ref={inputRef}
             className={`${(!filenameUnique || !!filenameEmpty || !validFilename) &&
               'error'

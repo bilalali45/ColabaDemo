@@ -56,7 +56,6 @@ export const AddFileToDoc = ({ selectedDocTypeId, showFileDialog, setVisible, se
   }, [showFileDialog]);
 
   useEffect(() => {
-    // console.log('in here reached', droppedFiles);
     if(!wasFileDropped) {
       return;
     }
@@ -79,7 +78,6 @@ export const AddFileToDoc = ({ selectedDocTypeId, showFileDialog, setVisible, se
     else {
       selectedDoc = documentItems?.filter((doc: any) => doc.docName === selectedDocName)
     }
-
     await addFiles(e.target.files, selectedDoc[0]).then(() => {
       target.value = '';
       setAddFileDialog(false)
@@ -96,9 +94,10 @@ export const AddFileToDoc = ({ selectedDocTypeId, showFileDialog, setVisible, se
 
     // document.body.onfocus = null
   }
-  const addFiles = async (selectedFiles: FileList, document: any) => {
-
+  const addFiles = async (selectedFiles: any, document: any) => {
+    console.log("----------------------- selectedFiles", document)
     if (document) {
+      
       if (selectedFiles) {
         setAddFileDialog(false)
         dispatch({

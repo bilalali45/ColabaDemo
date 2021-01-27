@@ -6,8 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { MockEnvConfig } from '../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../Store/Store';
-import { DocumentsHeader } from '../Home/DocumentsContainer/DocumentsHeader/DocumentsHeader';
-
+import { Header } from './Header';
 jest.mock('pspdfkit');
 
 const Url = '/DocManager/2515'
@@ -23,12 +22,12 @@ describe('Doc Manager Header', () => {
         const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsHeader></DocumentsHeader>
+                    <Header></Header>
                 </MemoryRouter>
             </StoreProvider>
         );
         
-            waitFor(() => {
+            await waitFor(() => {
                 const backBtn = getByTestId('back-btn');
                 expect(backBtn).toHaveTextContent("Back");
             })

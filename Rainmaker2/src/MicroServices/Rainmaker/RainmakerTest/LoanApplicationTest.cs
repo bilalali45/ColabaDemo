@@ -295,18 +295,18 @@ namespace RainmakerTest
             dataContext.Database.EnsureCreated();
             LoanApplication app = new LoanApplication()
             {
-                Id = 2,
+                Id = 10,
                 LoanAmount = 1000,
-                LoanPurposeId = 1,
+                LoanPurposeId = 10,
                 EntityTypeId = 1,
-                OpportunityId = 1,
-                BusinessUnitId = 1,
+                OpportunityId = 10,
+                BusinessUnitId = 10,
             };
             dataContext.Set<LoanApplication>().Add(app);
 
             Opportunity opportunity = new Opportunity
             {
-                Id = 1,
+                Id = 10,
                 IsActive = true,
                 EntityTypeId = 1,
                 IsDeleted = false,
@@ -315,25 +315,25 @@ namespace RainmakerTest
                 IsPickedByOwner = true,
                 IsDuplicate = false
                 ,
-                BusinessUnitId = 1
+                BusinessUnitId = 10
                 ,
-                OwnerId = 1
+                OwnerId = 10
             };
             dataContext.Set<Opportunity>().Add(opportunity);
 
             OpportunityLeadBinder opportunityLeadBinder = new OpportunityLeadBinder
             {
-                Id = 1,
-                OpportunityId = 1,
-                CustomerId = 1,
+                Id = 10,
+                OpportunityId = 10,
+                CustomerId = 10,
                 OwnTypeId = 1
             };
             dataContext.Set<OpportunityLeadBinder>().Add(opportunityLeadBinder);
 
             Customer customer = new Customer()
             {
-                Id = 1,
-                UserId = 1,
+                Id = 10,
+                UserId = 10,
                 EntityTypeId = 1,
                 DisplayOrder = 1,
                 IsActive = true,
@@ -344,7 +344,7 @@ namespace RainmakerTest
 
             Employee employee = new Employee
             {
-                Id = 1,
+                Id = 10,
                 IsActive = true,
                 IsSystem = true,
                 EntityTypeId = 1,
@@ -353,7 +353,7 @@ namespace RainmakerTest
                 Photo = "abc.png",
                 CmsName = "Shehroz"
                 ,
-                ContactId = 1
+                ContactId = 10
 
             };
             dataContext.Set<Employee>().Add(employee);
@@ -362,9 +362,9 @@ namespace RainmakerTest
             EmployeePhoneBinder employeePhoneBinder = new EmployeePhoneBinder
 
             {
-                Id = 1,
-                EmployeeId = 1,
-                CompanyPhoneInfoId = 1,
+                Id = 10,
+                EmployeeId = 10,
+                CompanyPhoneInfoId = 10,
                 TypeId = 3
 
 
@@ -372,7 +372,7 @@ namespace RainmakerTest
             dataContext.Set<EmployeePhoneBinder>().Add(employeePhoneBinder);
             CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo
             {
-                Id = 1,
+                Id = 10,
                 Phone = "030012345678",
                 IsDeleted = false,
                 EntityTypeId = 1,
@@ -387,11 +387,11 @@ namespace RainmakerTest
 
             EmployeeBusinessUnitEmail employeeBusinessUnitEmail = new EmployeeBusinessUnitEmail
             {
-                Id = 1,
-                EmployeeId = 1,
-                EmailAccountId = 1,
+                Id = 10,
+                EmployeeId = 10,
+                EmailAccountId = 10,
                 TypeId = 1,
-                BusinessUnitId = 1
+                BusinessUnitId = 10
 
             };
 
@@ -399,7 +399,7 @@ namespace RainmakerTest
 
             BusinessUnit businessUnit = new BusinessUnit
             {
-                Id = 1,
+                Id = 10,
                 DisplayOrder = 1,
                 IsActive = true,
                 EntityTypeId = 1,
@@ -413,7 +413,7 @@ namespace RainmakerTest
 
             EmailAccount emailAccount = new EmailAccount
             {
-                Id = 1,
+                Id = 10,
                 UseDefaultCredentials = true,
                 UseReplyTo = true,
                 DisplayOrder = 1,
@@ -429,7 +429,7 @@ namespace RainmakerTest
 
             Contact contact = new Contact
             {
-                Id = 1,
+                Id = 10,
                 EntityTypeId = 1,
                 IsDeleted = false,
                 FirstName = "Shehroz",
@@ -442,7 +442,7 @@ namespace RainmakerTest
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
-            LoanOfficer res = await loanService.GetLOInfo(2, 1, 1);
+            LoanOfficer res = await loanService.GetLOInfo(10,10,10);
 
             // Assert
             Assert.NotNull(res);
@@ -526,14 +526,14 @@ namespace RainmakerTest
 
             BusinessUnit businessUnit = new BusinessUnit()
             {
-                Id = 2,
+                Id = 6,
                 Name = "Shehroz",
                 DisplayOrder = 1,
                 IsActive = true,
                 IsDefault = true,
                 IsSystem = true,
                 IsDeleted = false,
-                EmailAccountId = 2,
+                EmailAccountId = 6,
                 Logo = "",
                 WebUrl = "https://entityframeworkcore.com//lo/Shehroz"
 
@@ -544,7 +544,7 @@ namespace RainmakerTest
 
             EmailAccount emailAccount = new EmailAccount
             {
-                Id = 2,
+                Id = 6,
                 UseDefaultCredentials = true,
                 UseReplyTo = true,
                 DisplayOrder = 1,
@@ -560,7 +560,7 @@ namespace RainmakerTest
 
             CompanyPhoneInfo companyPhoneInfo = new CompanyPhoneInfo
             {
-                Id = 2,
+                Id = 6,
                 Phone = "030012345678",
                 IsDeleted = false,
                 EntityTypeId = 1,
@@ -575,8 +575,8 @@ namespace RainmakerTest
             BusinessUnitPhone businessUnitPhone = new BusinessUnitPhone()
             {
                 Id = 1,
-                BusinessUnitId = 2,
-                CompanyPhoneInfoId = 2,
+                BusinessUnitId = 6,
+                CompanyPhoneInfoId = 6,
                 TypeId = 3
 
             };
@@ -586,7 +586,7 @@ namespace RainmakerTest
             ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
 
             //Act
-            LoanOfficer res = await loanService.GetDbaInfo(2);
+            LoanOfficer res = await loanService.GetDbaInfo(6);
 
             // Assert
             Assert.NotNull(res);

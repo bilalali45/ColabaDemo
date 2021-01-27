@@ -246,9 +246,7 @@ export const DocumentsTable = () => {
                 <DocumentItem key={i}
                   docInd={i}
                   document={d}
-                  refReassignDropdown={refReassignDropdown}
                   setFileClicked={setFileClicked}
-                  inputRef={inputRef}
                   fileClicked={fileClicked}
                   setOpenReassignDropdown={setOpenReassignDropdown}
                   getDocswithfailedFiles={getDocswithfailedFiles}

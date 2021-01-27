@@ -73,10 +73,10 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
         <div className="add-custom-doc">
 
             <div className="others-doc-input-wrap">
-                <div className="title-wrap"><h3>Add Custom Document</h3></div>
+                <div className="title-wrap" data-testid="custom-doc-header"><h3>Add Custom Document</h3></div>
                 <div className="input-wrap">
 
-                    <input maxLength={50} onKeyDown={(e: any) => {
+                    <input data-testid="custom-doc-name"maxLength={50} onKeyDown={(e: any) => {
                         if (e.keyCode === 9) {
                             e.preventDefault()
                             return;
@@ -96,7 +96,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
                                 <span className="btn-text">Add</span>
                             </button>
                             :
-                            <button onClick={addDoc} className="btn btn-primary btn-sm">
+                            <button data-testid="add-custom-doc"onClick={addDoc} className="btn btn-primary btn-sm">
                                 <span className="btn-text">Add</span>
                             </button>
                         }
@@ -104,7 +104,7 @@ export const CustomDocuments = ({ addDocToTemplate, setVisible }: CustomDocument
 
                 </div>
 
-                {docNameError && <label className={'error'}>{docNameError}</label>}
+                {docNameError && <label data-testid="doc-name-error" className={'error'}>{docNameError}</label>}
             </div>
             {addFileDialog && 
       <AddFileToDoc 

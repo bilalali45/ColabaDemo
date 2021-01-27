@@ -57,6 +57,7 @@ export const ReassignDropdown = ({
   const ReassignCategory = async (document: DocumentRequest) => {
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
     DocumentActions.performNextAction = false
+    hide();
     if (isFromWorkbench) {
       if (isFileChanged && selectedFile?.fileId === currentFile?.fileId) {
         dispatch({ type: ViewerActionsType.SetShowingConfirmationAlert, payload: true });
@@ -71,12 +72,15 @@ export const ReassignDropdown = ({
         selectedFile.fileId
       );
       if (res) {
-        await DocumentActions.getDocumentItems(dispatch, importedFileIds);
         await DocumentActions.getWorkBenchItems(dispatch, importedFileIds);
-        let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.Name, false, currentFile.fileId);
+        await DocumentActions.getDocumentItems(dispatch, importedFileIds);
+        let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
         dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
-      }
+        if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved.document){
+          dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: document });
+    }
 
+      }
     } else {
 
       if (isFileChanged && selectedFile?.id === currentFile?.fileId) {
@@ -96,12 +100,15 @@ export const ReassignDropdown = ({
         if (res) {
           if(getDocswithfailedFiles)
           getDocswithfailedFiles()
+          if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved.document){
+            dispatch({ type: DocumentActionsType.SetCurrentDoc, payload: document });
+          }
         }
-      }
     }
+  }
     dispatch({ type: ViewerActionsType.SetFileToChangeWhenUnSaved, payload: null });
     dispatch({ type: ViewerActionsType.SetPerformNextAction, payload: false });
-    hide();
+    
 
   };
 

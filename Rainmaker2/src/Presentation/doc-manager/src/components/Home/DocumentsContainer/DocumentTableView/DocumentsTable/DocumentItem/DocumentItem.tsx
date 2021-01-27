@@ -24,13 +24,11 @@ type DocumentItemType = {
   // isDragging: boolean
   docInd: number,
   document: DocumentRequest;
-  refReassignDropdown: any;
   setFileClicked: Function;
   fileClicked: boolean;
   setOpenReassignDropdown: any;
   getDocswithfailedFiles: Function;
   setRetryFile: Function;
-  inputRef: MutableRefObject<HTMLInputElement>,
   selectedDoc: DocumentRequest,
   retryFile,
   setDroppedOnDoc: Function,
@@ -41,13 +39,11 @@ type DocumentItemType = {
 export const DocumentItem = ({
   docInd,
   document,
-  refReassignDropdown,
   setFileClicked,
   fileClicked,
   setOpenReassignDropdown,
   getDocswithfailedFiles,
   setRetryFile,
-  inputRef,
   selectedDoc,
   retryFile,
   setDroppedOnDoc,
@@ -77,10 +73,10 @@ export const DocumentItem = ({
   useEffect(() => {
 
     if (document && currentDoc && document.docId === currentDoc.docId && !fileClicked) {
-      fileListRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+      // fileListRef.current?.scrollIntoView({
+      //   behavior: 'smooth',
+      //   block: 'start',
+      // });
       setFileClicked(true)
     }
   }, [currentDoc])
@@ -323,7 +319,7 @@ export const DocumentItem = ({
     return (
       <div className="dm-dt-tr1">
         <div className="dm-dt-tr1-left">
-          <h4 title={document.docName} className="viewed" onClick={handleSync}>
+          <h4 data-testid="document-name" title={document.docName} className="viewed" onClick={handleSync}>
             {show ? <MinusIcon /> : <PlusIcon />} {document.docName}
           </h4>
           {/* {show && <div className="link-hiddenFiles"><a >Hidden (2 files)</a> </div>} */}
@@ -377,12 +373,10 @@ export const DocumentItem = ({
         <FilesList
           document={document}
           docInd={docInd}
-          refReassignDropdown={refReassignDropdown}
           setRetryFile={setRetryFile}
           setFileClicked={setFileClicked}
           getDocswithfailedFiles={getDocswithfailedFiles}
           setOpenReassignDropdown={setOpenReassignDropdown}
-          inputRef={inputRef}
           retryFile={retryFile}
         />
       )}

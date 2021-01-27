@@ -21,9 +21,7 @@ export const ViewerHeader = () => {
   const { state, dispatch } = useContext(Store);
   const { currentFile, selectedFileData, isRenameEditMode }: any = state.viewer;
 
-  const onDoubleClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const onDoubleClick = () => {
       editMode(true);
     
   };
@@ -49,8 +47,8 @@ export const ViewerHeader = () => {
   
   return (
     <div
-      data-testid="document-item"
-      onDoubleClick={(event) => onDoubleClick(event)}
+      data-testid="current-file-name-div"
+      onDoubleClick={(event) => onDoubleClick()}
       id="docName"
       className="vc-head-hWrap"
       >
@@ -60,7 +58,7 @@ export const ViewerHeader = () => {
           isWorkBenchFile={false}
         />
       ) : (
-        <h2 title={selectedFileData?.name}>
+        <h2 data-testid="current-file-name" title={selectedFileData?.name}>
          {selectedFileData?.name}
         </h2>
       )}

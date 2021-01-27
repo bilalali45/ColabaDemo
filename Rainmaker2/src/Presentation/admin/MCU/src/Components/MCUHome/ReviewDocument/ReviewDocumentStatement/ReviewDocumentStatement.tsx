@@ -375,7 +375,6 @@ export const ReviewDocumentStatement = ({
   }, [currentDocument!.docName]);
 
   const renderStatus = (status: string) => {
-    console.log("RenderStatus",status)
     let cssClass = '';
     switch (status) {
       case 'Pending review':

@@ -144,7 +144,13 @@ const performNextActionFn= async () =>{
 
     setReassignDropdownTarget(target);
     setShowingReassignDropdown(!showingReassignDropdown);
-    showingReassignDropdown? refReassignDropdown.current.classList.remove("freeze"):refReassignDropdown.current.classList.add("freeze");
+
+    if(showingReassignDropdown) {
+      refReassignDropdown?.current?.classList?.remove("freeze")
+    }else {
+      refReassignDropdown?.current?.classList?.add("freeze")
+    }
+
   };
 
   const hideReassign = async() => { 
@@ -153,9 +159,7 @@ const performNextActionFn= async () =>{
     setShowingReassignDropdown(false);
     if(refReassignlink && refReassignlink.current)
     refReassignlink.current.classList.remove("overlayOpen")
-    if(fileToChangeWhenUnSaved && fileToChangeWhenUnSaved?.selectedFile?.id === currentFile?.fileId )
-    await viewFile(fileToChangeWhenUnSaved.selectedFile, fileToChangeWhenUnSaved.document)
-  refReassignDropdown.current?.classList.remove("freeze")
+  refReassignDropdown?.current?.classList?.remove("freeze")
 
 }
 
@@ -280,31 +284,6 @@ useEffect(() => {
     
     
   }
-
-  const onDoubleClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (file.file && file.uploadProgress <= 100) return;
-    if (file) {
-      let currentFile: any = new CurrentInView(
-        document.id,
-        file.src,
-        DocumentActions.getFileName(file),
-        false,
-        file.id
-      );
-      dispatch({
-        type: ViewerActionsType.SetCurrentFile,
-        payload: currentFile,
-      });
-      setCurrentDocument(document);
-      editMode(true);
-    }
-  };
-
-  const editMode = (isEditEnabled: boolean) => {
-    setEditingModeEnabled(isEditEnabled);
-  };
 
   const DragStartHandler = async (e: any) => {
     if(file && document){
@@ -581,7 +560,7 @@ useEffect(() => {
   }
   return (
     <>
-      <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''} ${getCurrentFileSelectedStyle()}`}
+      <li data-testid="file-item" key={file.name} className={`${isDraggingItem ? 'dragging' : ''} ${getCurrentFileSelectedStyle()}`}
         draggable={!editingModeEnabled ? true : false}
         onDragStart={async (e: any) => {
           await DragStartHandler(e)
@@ -598,7 +577,6 @@ useEffect(() => {
         </div>
         <div
           className="d-name"
-          onDoubleClick={(event) => onDoubleClick(event)}
           onClick={viewFileForDocCategory}
         >
               <div>

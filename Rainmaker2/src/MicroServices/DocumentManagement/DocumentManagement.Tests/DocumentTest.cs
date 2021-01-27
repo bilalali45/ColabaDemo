@@ -1536,5 +1536,86 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.True(result);
         }
+        [Fact]
+        public async Task TestGetLoanApplicationId()
+        {
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
+
+            mock.Setup(x => x.CreateLoanApplication(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync("test");
+            mockRainmakerService.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("{\"userId\":1,\"userName\":\"test\"}");
+            var httpContext = new Mock<HttpContext>();
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            // also check the 'http' call was like we expected it
+            // Act  
+            DocumentController controller = new DocumentController(mock.Object, null, null,null,null,Mock.Of<ILogger<DocumentController>>(),null,mockRainmakerService.Object);
+            controller.ControllerContext = context;
+            IActionResult result = await controller.GetLoanApplicationId(1);
+            //Assert
+            Assert.NotNull(result);
+            var res = Assert.IsType<OkObjectResult>(result);
+            var resString = Assert.IsType<string>(res.Value);
+            Assert.Equal("test",resString);
+        }
+        [Fact]
+        public async Task TestGetLoanApplicationIdResponseNull()
+        {
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
+
+            mock.Setup(x => x.CreateLoanApplication(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync("test");
+            mockRainmakerService.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("");
+            var httpContext = new Mock<HttpContext>();
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            // also check the 'http' call was like we expected it
+            // Act  
+            DocumentController controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(), null, mockRainmakerService.Object);
+            controller.ControllerContext = context;
+            IActionResult result = await controller.GetLoanApplicationId(1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task TestGetLoanApplicationIdNull()
+        {
+            Mock<IDocumentService> mock = new Mock<IDocumentService>();
+            Mock<IRainmakerService> mockRainmakerService = new Mock<IRainmakerService>();
+
+            mock.Setup(x => x.CreateLoanApplication(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync("");
+            mockRainmakerService.Setup(x => x.PostLoanApplication(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("{\"userId\":1,\"userName\":\"test\"}");
+            var httpContext = new Mock<HttpContext>();
+            var request = new Mock<HttpRequest>();
+            request.SetupGet(x => x.Headers["Authorization"]).Returns(
+                new StringValues("Test")
+                );
+            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
+            httpContext.SetupGet(x => x.Request).Returns(request.Object);
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
+
+            // also check the 'http' call was like we expected it
+            // Act  
+            DocumentController controller = new DocumentController(mock.Object, null, null, null, null, Mock.Of<ILogger<DocumentController>>(), null, mockRainmakerService.Object);
+            controller.ControllerContext = context;
+            IActionResult result = await controller.GetLoanApplicationId(1);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
     }
 }

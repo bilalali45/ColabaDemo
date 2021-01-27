@@ -94,7 +94,7 @@ export class ViewerTools extends Viewer {
             payload: 0,
         });
         await dispatch({ type: ViewerActionsType.SetRenameEditMode, payload: false });
-        if (!currentFile.name.includes('.pdf')) {
+        if (currentFile && currentFile.name && !currentFile.name.includes('.pdf')) {
             ViewerTools.isDocChanged = true
         }
         if (!ViewerTools.isDocChanged) {
@@ -113,7 +113,7 @@ export class ViewerTools extends Viewer {
         selectedFileData.name = `${Rename.removeExt(fileName)}.pdf`
         selectedFileData = new SelectedFile(selectedFileData.id, selectedFileData.name, selectedFileData.fileId)
         await dispatch({ type: ViewerActionsType.SetSelectedFileData, payload: selectedFileData });
-        let currFile = new CurrentInView(currentFile.id, currentFile.src, selectedFileData.name, false, currentFile.fileId);
+        let currFile = new CurrentInView(currentFile.id, currentFile.src, selectedFileData.name, currentFile.isWorkBenchFile, currentFile.fileId );
         await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currFile });
         let res = await ViewerTools.saveFileWithAnnotations(fileObj, file, isFileChanged, dispatch, currentDoc, importedFileIds)
         let id = currentFile.isWorkBenchFile ? currentFile.id : currentDoc.id
@@ -142,7 +142,6 @@ export class ViewerTools extends Viewer {
     }
 
     static rotateLeft(indexes: any[]) {
-        console.log(this.instance.pageInfoForIndex(indexes[0]));
         Viewer.instance.applyOperations([
             {
                 type: "rotatePages",
@@ -153,7 +152,6 @@ export class ViewerTools extends Viewer {
     }
 
     static rotateRight(indexes: any[]) {
-        console.log(this.instance.viewState.pagesRotation);
         Viewer.instance.applyOperations([
             {
                 type: "rotatePages",
@@ -193,15 +191,15 @@ export class ViewerTools extends Viewer {
 
         this.currentToolbar.forEach((toolbaritem) => {
             customizedToolBarItems.push(
-                toolbarItems.filter((el) => el.type === toolbaritem)[0]
+                toolbarItems?.filter((el) => el.type === toolbaritem)[0]
             );
         });
 
         customizedToolBarItems = customizedToolBarItems.map((toolbarItem: any) => {
-            if (toolbarItem.type === "annotate") {
+            if (toolbarItem?.type === "annotate") {
                 toolbarItem.icon = annotationsIcon
             }
-            else if (toolbarItem.type === "pan") {
+            else if (toolbarItem?.type === "pan") {
                 toolbarItem.icon = panIcon
             }
             return toolbarItem
@@ -312,10 +310,10 @@ export class ViewerTools extends Viewer {
 
 
             if (!isPDF) {
-                let imageSize = localInstance.pageInfoForIndex(0);
+                let imageSize = localInstance?.pageInfoForIndex(0);
 
                 await this.addAnEmptyPage(localInstance, pageIndex);
-                let newPageSize = await localInstance.pageInfoForIndex(0);
+                let newPageSize = await localInstance?.pageInfoForIndex(0);
                 await this.addImageAsAnnotationOnThePage(localInstance, src, newPageSize, pageIndex, imageSize);
                 file = await this.createPDFFileFromImage(localInstance, isPDF, true);
                 if (localInstance) {

@@ -127,12 +127,12 @@ export const SelectedDocumentTypeList = ({
               );
             })}
         </ul>}
-      {!documentList.length && term && (
+      {documentList && !documentList.length && term && (
         <div className="doc-notfound">
           <p>No Results Found for “{term?.toLowerCase()}”</p>
         </div>
       )}
-      {!documentList.length && !term && (
+      {documentList && !documentList.length && !term && (
         <div className="doc-notfound">
           <p>The list is empty.</p>
         </div>
